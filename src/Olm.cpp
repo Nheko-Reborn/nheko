@@ -278,11 +278,168 @@ mtx::events::msg::Encrypted
 encrypt_group_message(const std::string &room_id, const std::string &device_id, nlohmann::json body)
 {
         using namespace mtx::events;
+        using namespace mtx::identifiers;
 
-        // relations shouldn't be encrypted...
+        auto own_user_id = http::client()->user_id().to_string();
+
+        auto members = cache::client()->getMembersWithKeys(room_id);
+
+        std::map<std::string, std::vector<std::string>> sendSessionTo;
+        mtx::crypto::OutboundGroupSessionPtr session = nullptr;
+        OutboundGroupSessionData group_session_data;
+
+        if (cache::outboundMegolmSessionExists(room_id)) {
+                auto res = cache::getOutboundMegolmSession(room_id);
+
+                auto member_it             = members.begin();
+                auto session_member_it     = res.data.currently.keys.begin();
+                auto session_member_it_end = res.data.currently.keys.end();
+
+                while (member_it != members.end() || session_member_it != session_member_it_end) {
+                        if (member_it == members.end()) {
+                                // a member left, purge session!
+                                nhlog::crypto()->debug(
+                                  "Rotating megolm session because of left member");
+                                break;
+                        }
+
+                        if (session_member_it == session_member_it_end) {
+                                // share with all remaining members
+                                while (member_it != members.end()) {
+                                        sendSessionTo[member_it->first] = {};
+
+                                        if (member_it->second)
+                                                for (const auto &dev :
+                                                     member_it->second->device_keys)
+                                                        if (member_it->first != own_user_id ||
+                                                            dev.first != device_id)
+                                                                sendSessionTo[member_it->first]
+                                                                  .push_back(dev.first);
+
+                                        ++member_it;
+                                }
+
+                                session = std::move(res.session);
+                                break;
+                        }
+
+                        if (member_it->first > session_member_it->first) {
+                                // a member left, purge session
+                                nhlog::crypto()->debug(
+                                  "Rotating megolm session because of left member");
+                                break;
+                        } else if (member_it->first < session_member_it->first) {
+                                // new member, send them the session at this index
+                                sendSessionTo[member_it->first] = {};
+
+                                for (const auto &dev : member_it->second->device_keys)
+                                        if (member_it->first != own_user_id ||
+                                            dev.first != device_id)
+                                                sendSessionTo[member_it->first].push_back(
+                                                  dev.first);
+
+                                ++member_it;
+                        } else {
+                                // compare devices
+                                bool device_removed = false;
+                                for (const auto &dev : session_member_it->second.devices) {
+                                        if (!member_it->second ||
+                                            !member_it->second->device_keys.count(dev.first)) {
+                                                device_removed = true;
+                                                break;
+                                        }
+                                }
+
+                                if (device_removed) {
+                                        // device removed, rotate session!
+                                        nhlog::crypto()->debug(
+                                          "Rotating megolm session because of removed device of {}",
+                                          member_it->first);
+                                        break;
+                                }
+
+                                // check for new devices to share with
+                                if (member_it->second)
+                                        for (const auto &dev : member_it->second->device_keys)
+                                                if (!session_member_it->second.devices.count(
+                                                      dev.first) &&
+                                                    (member_it->first != own_user_id ||
+                                                     dev.first != device_id))
+                                                        sendSessionTo[member_it->first].push_back(
+                                                          dev.first);
+
+                                ++member_it;
+                                ++session_member_it;
+                                if (member_it == members.end() &&
+                                    session_member_it == session_member_it_end) {
+                                        // all devices match or are newly added
+                                        session = std::move(res.session);
+                                }
+                        }
+                }
+
+                group_session_data = std::move(res.data);
+        }
+
+        if (!session) {
+                nhlog::ui()->debug("creating new outbound megolm session");
+
+                // Create a new outbound megolm session.
+                session                = olm::client()->init_outbound_group_session();
+                const auto session_id  = mtx::crypto::session_id(session.get());
+                const auto session_key = mtx::crypto::session_key(session.get());
+
+                // Saving the new megolm session.
+                OutboundGroupSessionData session_data{};
+                session_data.session_id    = mtx::crypto::session_id(session.get());
+                session_data.session_key   = mtx::crypto::session_key(session.get());
+                session_data.message_index = 0;
+
+                sendSessionTo.clear();
+
+                for (const auto &[user, devices] : members) {
+                        sendSessionTo[user]               = {};
+                        session_data.initially.keys[user] = {};
+                        if (devices) {
+                                for (const auto &[device_id_, key] : devices->device_keys) {
+                                        (void)key;
+                                        if (device_id != device_id_ || user != own_user_id) {
+                                                sendSessionTo[user].push_back(device_id_);
+                                                session_data.initially.keys[user]
+                                                  .devices[device_id_] = 0;
+                                        }
+                                }
+                        }
+                }
+
+                cache::saveOutboundMegolmSession(room_id, session_data, session);
+                group_session_data = std::move(session_data);
+
+                {
+                        MegolmSessionIndex index;
+                        index.room_id    = room_id;
+                        index.session_id = session_id;
+                        index.sender_key = olm::client()->identity_keys().curve25519;
+                        auto megolm_session =
+                          olm::client()->init_inbound_group_session(session_key);
+                        cache::saveInboundMegolmSession(index, std::move(megolm_session));
+                }
+        }
+
+        mtx::events::DeviceEvent<mtx::events::msg::RoomKey> megolm_payload{};
+        megolm_payload.content.algorithm   = MEGOLM_ALGO;
+        megolm_payload.content.room_id     = room_id;
+        megolm_payload.content.session_id  = mtx::crypto::session_id(session.get());
+        megolm_payload.content.session_key = mtx::crypto::session_key(session.get());
+        megolm_payload.type                = mtx::events::EventType::RoomKey;
+
+        if (!sendSessionTo.empty())
+                olm::send_encrypted_to_device_messages(sendSessionTo, megolm_payload);
+
         mtx::common::ReplyRelatesTo relation;
         mtx::common::RelatesTo r_relation;
 
+        // relations shouldn't be encrypted...
         if (body["content"].contains("m.relates_to") &&
             body["content"]["m.relates_to"].contains("m.in_reply_to")) {
                 relation = body["content"]["m.relates_to"];
@@ -292,25 +449,35 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
                 body["content"].erase("m.relates_to");
         }
 
-        // Always check before for existence.
-        auto res     = cache::getOutboundMegolmSession(room_id);
-        auto payload = olm::client()->encrypt_group_message(res.session.get(), body.dump());
+        auto payload = olm::client()->encrypt_group_message(session.get(), body.dump());
 
         // Prepare the m.room.encrypted event.
         msg::Encrypted data;
         data.ciphertext   = std::string((char *)payload.data(), payload.size());
         data.sender_key   = olm::client()->identity_keys().curve25519;
-        data.session_id   = mtx::crypto::session_id(res.session.get());
+        data.session_id   = mtx::crypto::session_id(session.get());
         data.device_id    = device_id;
         data.algorithm    = MEGOLM_ALGO;
         data.relates_to   = relation;
         data.r_relates_to = r_relation;
 
-        res.data.message_index = olm_outbound_group_session_message_index(res.session.get());
-        nhlog::crypto()->debug("next message_index {}", res.data.message_index);
+        group_session_data.message_index = olm_outbound_group_session_message_index(session.get());
+        nhlog::crypto()->debug("next message_index {}", group_session_data.message_index);
+
+        // update current set of members for the session with the new members and that message_index
+        for (const auto &[user, devices] : sendSessionTo) {
+                if (!group_session_data.currently.keys.count(user))
+                        group_session_data.currently.keys[user] = {};
+
+                for (const auto &device_id : devices) {
+                        if (!group_session_data.currently.keys[user].devices.count(device_id))
+                                group_session_data.currently.keys[user].devices[device_id] =
+                                  group_session_data.message_index;
+                }
+        }
 
         // We need to re-pickle the session after we send a message to save the new message_index.
-        cache::updateOutboundMegolmSession(room_id, res.session);
+        cache::updateOutboundMegolmSession(room_id, group_session_data, session);
 
         return data;
 }

@@ -235,13 +235,14 @@ isRoomMember(const std::string &user_id, const std::string &room_id);
 void
 saveOutboundMegolmSession(const std::string &room_id,
                           const OutboundGroupSessionData &data,
-                          mtx::crypto::OutboundGroupSessionPtr session);
+                          mtx::crypto::OutboundGroupSessionPtr &session);
 OutboundGroupSessionDataRef
 getOutboundMegolmSession(const std::string &room_id);
 bool
 outboundMegolmSessionExists(const std::string &room_id) noexcept;
 void
 updateOutboundMegolmSession(const std::string &room_id,
+                            const OutboundGroupSessionData &data,
                             mtx::crypto::OutboundGroupSessionPtr &session);
 void
 dropOutboundMegolmSession(const std::string &room_id);

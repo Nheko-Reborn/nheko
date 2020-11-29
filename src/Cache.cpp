@@ -362,6 +362,7 @@ Cache::inboundMegolmSessionExists(const MegolmSessionIndex &index)
 
 void
 Cache::updateOutboundMegolmSession(const std::string &room_id,
+                                   const OutboundGroupSessionData &data_,
                                    mtx::crypto::OutboundGroupSessionPtr &ptr)
 {
         using namespace mtx::crypto;
@@ -369,10 +370,10 @@ Cache::updateOutboundMegolmSession(const std::string &room_id,
         if (!outboundMegolmSessionExists(room_id))
                 return;
 
-        OutboundGroupSessionData data;
-        data.message_index = olm_outbound_group_session_message_index(ptr.get());
-        data.session_id    = mtx::crypto::session_id(ptr.get());
-        data.session_key   = mtx::crypto::session_key(ptr.get());
+        OutboundGroupSessionData data = data_;
+        data.message_index            = olm_outbound_group_session_message_index(ptr.get());
+        data.session_id               = mtx::crypto::session_id(ptr.get());
+        data.session_key              = mtx::crypto::session_key(ptr.get());
 
         // Save the updated pickled data for the session.
         json j;
@@ -402,7 +403,7 @@ Cache::dropOutboundMegolmSession(const std::string &room_id)
 void
 Cache::saveOutboundMegolmSession(const std::string &room_id,
                                  const OutboundGroupSessionData &data,
-                                 mtx::crypto::OutboundGroupSessionPtr session)
+                                 mtx::crypto::OutboundGroupSessionPtr &session)
 {
         using namespace mtx::crypto;
         const auto pickled = pickle<OutboundSessionObject>(session.get(), SECRET);
@@ -3095,6 +3096,39 @@ Cache::roomMembers(const std::string &room_id)
         return members;
 }
 
+std::map<std::string, std::optional<UserKeyCache>>
+Cache::getMembersWithKeys(const std::string &room_id)
+{
+        lmdb::val keys;
+
+        try {
+                auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+                std::map<std::string, std::optional<UserKeyCache>> members;
+
+                auto db     = getMembersDb(txn, room_id);
+                auto keysDb = getUserKeysDb(txn);
+
+                std::string user_id, unused;
+                auto cursor = lmdb::cursor::open(txn, db);
+                while (cursor.get(user_id, unused, MDB_NEXT)) {
+                        auto res = lmdb::dbi_get(txn, keysDb, lmdb::val(user_id), keys);
+
+                        if (res) {
+                                members[user_id] =
+                                  json::parse(std::string_view(keys.data(), keys.size()))
+                                    .get<UserKeyCache>();
+                        } else {
+                                members[user_id] = {};
+                        }
+                }
+                cursor.close();
+
+                return members;
+        } catch (std::exception &) {
+                return {};
+        }
+}
+
 QString
 Cache::displayName(const QString &room_id, const QString &user_id)
 {
@@ -3235,6 +3269,8 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                 updates[user].self_signing_keys = keys;
 
         for (auto &[user, update] : updates) {
+                nhlog::db()->debug("Updated user keys: {}", user);
+
                 lmdb::val oldKeys;
                 auto res = lmdb::dbi_get(txn, db, lmdb::val(user), oldKeys);
 
@@ -3297,6 +3333,8 @@ Cache::markUserKeysOutOfDate(lmdb::txn &txn,
         query.token = sync_token;
 
         for (const auto &user : user_ids) {
+                nhlog::db()->debug("Marking user keys out of date: {}", user);
+
                 lmdb::val oldKeys;
                 auto res = lmdb::dbi_get(txn, db, lmdb::val(user), oldKeys);
 
@@ -3651,11 +3689,40 @@ from_json(const json &j, MemberInfo &info)
 }
 
 void
+to_json(nlohmann::json &obj, const DeviceAndMasterKeys &msg)
+{
+        obj["devices"]     = msg.devices;
+        obj["master_keys"] = msg.master_keys;
+}
+
+void
+from_json(const nlohmann::json &obj, DeviceAndMasterKeys &msg)
+{
+        msg.devices     = obj.at("devices").get<decltype(msg.devices)>();
+        msg.master_keys = obj.at("master_keys").get<decltype(msg.master_keys)>();
+}
+
+void
+to_json(nlohmann::json &obj, const SharedWithUsers &msg)
+{
+        obj["keys"] = msg.keys;
+}
+
+void
+from_json(const nlohmann::json &obj, SharedWithUsers &msg)
+{
+        msg.keys = obj.at("keys").get<std::map<std::string, DeviceAndMasterKeys>>();
+}
+
+void
 to_json(nlohmann::json &obj, const OutboundGroupSessionData &msg)
 {
         obj["session_id"]    = msg.session_id;
         obj["session_key"]   = msg.session_key;
         obj["message_index"] = msg.message_index;
+
+        obj["initially"] = msg.initially;
+        obj["currently"] = msg.currently;
 }
 
 void
@@ -3664,6 +3731,9 @@ from_json(const nlohmann::json &obj, OutboundGroupSessionData &msg)
         msg.session_id    = obj.at("session_id");
         msg.session_key   = obj.at("session_key");
         msg.message_index = obj.at("message_index");
+
+        msg.initially = obj.value("initially", SharedWithUsers{});
+        msg.currently = obj.value("currently", SharedWithUsers{});
 }
 
 void
@@ -4098,9 +4168,9 @@ isRoomMember(const std::string &user_id, const std::string &room_id)
 void
 saveOutboundMegolmSession(const std::string &room_id,
                           const OutboundGroupSessionData &data,
-                          mtx::crypto::OutboundGroupSessionPtr session)
+                          mtx::crypto::OutboundGroupSessionPtr &session)
 {
-        instance_->saveOutboundMegolmSession(room_id, data, std::move(session));
+        instance_->saveOutboundMegolmSession(room_id, data, session);
 }
 OutboundGroupSessionDataRef
 getOutboundMegolmSession(const std::string &room_id)
@@ -4114,9 +4184,10 @@ outboundMegolmSessionExists(const std::string &room_id) noexcept
 }
 void
 updateOutboundMegolmSession(const std::string &room_id,
+                            const OutboundGroupSessionData &data,
                             mtx::crypto::OutboundGroupSessionPtr &session)
 {
-        instance_->updateOutboundMegolmSession(room_id, session);
+        instance_->updateOutboundMegolmSession(room_id, data, session);
 }
 void
 dropOutboundMegolmSession(const std::string &room_id)

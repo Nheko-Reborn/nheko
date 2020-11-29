@@ -910,80 +910,16 @@ TimelineModel::sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::
                     {"room_id", room_id}};
 
         try {
-                // Check if we have already an outbound megolm session then we can use.
-                if (cache::outboundMegolmSessionExists(room_id)) {
-                        mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> event;
-                        event.content =
-                          olm::encrypt_group_message(room_id, http::client()->device_id(), doc);
-                        event.event_id         = msg.event_id;
-                        event.room_id          = room_id;
-                        event.sender           = http::client()->user_id().to_string();
-                        event.type             = mtx::events::EventType::RoomEncrypted;
-                        event.origin_server_ts = QDateTime::currentMSecsSinceEpoch();
+                mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> event;
+                event.content =
+                  olm::encrypt_group_message(room_id, http::client()->device_id(), doc);
+                event.event_id         = msg.event_id;
+                event.room_id          = room_id;
+                event.sender           = http::client()->user_id().to_string();
+                event.type             = mtx::events::EventType::RoomEncrypted;
+                event.origin_server_ts = QDateTime::currentMSecsSinceEpoch();
 
-                        emit this->addPendingMessageToStore(event);
-                        return;
-                }
-
-                nhlog::ui()->debug("creating new outbound megolm session");
-
-                // Create a new outbound megolm session.
-                auto outbound_session  = olm::client()->init_outbound_group_session();
-                const auto session_id  = mtx::crypto::session_id(outbound_session.get());
-                const auto session_key = mtx::crypto::session_key(outbound_session.get());
-
-                mtx::events::DeviceEvent<mtx::events::msg::RoomKey> megolm_payload;
-                megolm_payload.content.algorithm   = "m.megolm.v1.aes-sha2";
-                megolm_payload.content.room_id     = room_id;
-                megolm_payload.content.session_id  = session_id;
-                megolm_payload.content.session_key = session_key;
-                megolm_payload.type                = mtx::events::EventType::RoomKey;
-
-                // Saving the new megolm session.
-                // TODO: Maybe it's too early to save.
-                OutboundGroupSessionData session_data;
-                session_data.session_id    = session_id;
-                session_data.session_key   = session_key;
-                session_data.message_index = 0;
-                cache::saveOutboundMegolmSession(
-                  room_id, session_data, std::move(outbound_session));
-
-                {
-                        MegolmSessionIndex index;
-                        index.room_id    = room_id;
-                        index.session_id = session_id;
-                        index.sender_key = olm::client()->identity_keys().curve25519;
-                        auto megolm_session =
-                          olm::client()->init_inbound_group_session(session_key);
-                        cache::saveInboundMegolmSession(index, std::move(megolm_session));
-                }
-
-                const auto members = cache::roomMembers(room_id);
-                nhlog::ui()->info("retrieved {} members for {}", members.size(), room_id);
-
-                std::map<std::string, std::vector<std::string>> targets;
-                for (const auto &member : members)
-                        targets[member] = {};
-
-                olm::send_encrypted_to_device_messages(targets, megolm_payload);
-
-                try {
-                        mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> event;
-                        event.content =
-                          olm::encrypt_group_message(room_id, http::client()->device_id(), doc);
-                        event.event_id         = msg.event_id;
-                        event.room_id          = room_id;
-                        event.sender           = http::client()->user_id().to_string();
-                        event.type             = mtx::events::EventType::RoomEncrypted;
-                        event.origin_server_ts = QDateTime::currentMSecsSinceEpoch();
-
-                        emit this->addPendingMessageToStore(event);
-                } catch (const lmdb::error &e) {
-                        nhlog::db()->critical("failed to save megolm outbound session: {}",
-                                              e.what());
-                        emit ChatPage::instance()->showNotification(
-                          tr("Failed to encrypt event, sending aborted!"));
-                }
+                emit this->addPendingMessageToStore(event);
 
                 // TODO: Let the user know about the errors.
         } catch (const lmdb::error &e) {
