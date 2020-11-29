@@ -473,7 +473,7 @@
         <translation>Matrix ID</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>e.g @joe:matrix.org</source>
         <translation>e.g @joe:matrix.org</translation>
     </message>
@@ -512,7 +512,7 @@ Example: https://server.my:8787</translation>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+220"/>
+        <location line="+216"/>
         <source>LOGIN</source>
         <translation>LOGIN</translation>
     </message>
@@ -547,12 +547,12 @@ Example: https://server.my:8787</translation>
         <translation>SSO LOGIN</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+37"/>
         <source>Empty password</source>
         <translation>Empty password</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+54"/>
         <source>SSO login failed</source>
         <translation>SSO login failed</translation>
     </message>
@@ -757,18 +757,18 @@ Example: https://server.my:8787</translation>
         <translation>Username</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+254"/>
+        <location line="+2"/>
+        <location line="+291"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
         <translation>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</translation>
     </message>
     <message>
-        <location line="-250"/>
+        <location line="-287"/>
         <source>Password</source>
         <translation>Password</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
         <translation>Please choose a secure password. The exact requirements for password strength may depend on your server.</translation>
     </message>
@@ -788,32 +788,32 @@ Example: https://server.my:8787</translation>
         <translation>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+36"/>
         <source>REGISTER</source>
         <translation>REGISTER</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+62"/>
         <source>No supported registration flows!</source>
         <translation>No supported registration flows!</translation>
     </message>
     <message>
-        <location line="+172"/>
-        <source>Invalid username</source>
-        <translation>Invalid username</translation>
+        <location line="+200"/>
+        <source>Regisration Failed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-19"/>
         <source>Password is not long enough (min 8 chars)</source>
         <translation>Password is not long enough (min 8 chars)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Passwords don&apos;t match</source>
         <translation>Passwords don&apos;t match</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Invalid server name</source>
         <translation>Invalid server name</translation>
     </message>

@@ -473,7 +473,7 @@
         <translation>Matrix&apos;i kasutajatunnus</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>e.g @joe:matrix.org</source>
         <translation>näiteks @kadri:matrix.org</translation>
     </message>
@@ -512,7 +512,7 @@ Näiteks: https://server.minu:8787</translation>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+220"/>
+        <location line="+216"/>
         <source>LOGIN</source>
         <translation>LOGI SISSE</translation>
     </message>
@@ -547,12 +547,12 @@ Näiteks: https://server.minu:8787</translation>
         <translation>ÜHEKORDNE SISSELOGIMINE</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+37"/>
         <source>Empty password</source>
         <translation>Tühi salasõna</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+54"/>
         <source>SSO login failed</source>
         <translation>Ühekordne sisselogimine ei õnnestunud</translation>
     </message>
@@ -757,18 +757,18 @@ Näiteks: https://server.minu:8787</translation>
         <translation>Kasutajanimi</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+254"/>
+        <location line="+2"/>
+        <location line="+291"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
         <translation>Kasutajanimi ei tohi olla tühi ning võib sisaldada vaid a-z, 0-9, ., _, =, -, / tähemärke.</translation>
     </message>
     <message>
-        <location line="-250"/>
+        <location line="-287"/>
         <source>Password</source>
         <translation>Salasõna</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
         <translation>Palun vali tutvaline salasõna. Täpsemad nõuded salasõnale sõltuvad sinu koduserveri seadistustest.</translation>
     </message>
@@ -788,32 +788,32 @@ Näiteks: https://server.minu:8787</translation>
         <translation>See on server, kus sa oma kasutajakonto registreerid. Kuna Matrix on hajutatud suhtlusvõrk, siis esmalt pead leidma sulle sobiliku koduserveri või panema püsti täitsa oma enda koduserveri.</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+36"/>
         <source>REGISTER</source>
         <translation>REGISTREERI</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+62"/>
         <source>No supported registration flows!</source>
         <translation>Selline registreerimise töövoog pole toetatud!</translation>
     </message>
     <message>
-        <location line="+172"/>
-        <source>Invalid username</source>
-        <translation>Vigane kasutajanimi</translation>
+        <location line="+200"/>
+        <source>Regisration Failed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-19"/>
         <source>Password is not long enough (min 8 chars)</source>
         <translation>Salasõna pole piisavalt pikk (vähemalt 8 tähemärki)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Passwords don&apos;t match</source>
         <translation>Salasõnad ei klapi omavahel</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Invalid server name</source>
         <translation>Vigane koduserveri nimi</translation>
     </message>

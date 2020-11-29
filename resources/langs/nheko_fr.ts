@@ -473,7 +473,7 @@
         <translation>Identifiant Matrix</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>e.g @joe:matrix.org</source>
         <translation>ex : @joe:matrix.org</translation>
     </message>
@@ -512,7 +512,7 @@ Exemple&#xa0;: https&#x202f;://monserveur.example.com&#x202f;:8787</translation>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+220"/>
+        <location line="+216"/>
         <source>LOGIN</source>
         <translation>CONNEXION</translation>
     </message>
@@ -547,12 +547,12 @@ Exemple&#xa0;: https&#x202f;://monserveur.example.com&#x202f;:8787</translation>
         <translation>CONNEXION SSO</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+37"/>
         <source>Empty password</source>
         <translation>Mot de passe vide</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+54"/>
         <source>SSO login failed</source>
         <translation>Échec de la connexion SSO</translation>
     </message>
@@ -757,18 +757,18 @@ Exemple&#xa0;: https&#x202f;://monserveur.example.com&#x202f;:8787</translation>
         <translation>Nom d&apos;utilisateur</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location line="+254"/>
+        <location line="+2"/>
+        <location line="+291"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
         <translation>Le nom d&apos;utilisateur ne doit pas être vide, et ne peut contenir que les caractères a à z, 0 à 9, et «&#x202f;. _ = - /&#x202f;».</translation>
     </message>
     <message>
-        <location line="-250"/>
+        <location line="-287"/>
         <source>Password</source>
         <translation>Mot de passe</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
         <translation>Veuillez choisir un mot de passe fort. Les demandes exactes sur la robustesse du mot de passe peuvent dépendre de votre serveur.</translation>
     </message>
@@ -788,32 +788,32 @@ Exemple&#xa0;: https&#x202f;://monserveur.example.com&#x202f;:8787</translation>
         <translation>Un serveur qui autorise les créations de compte. Matrix étant décentralisé, vous devez tout d&apos;abord trouver un serveur sur lequel vous pouvez vous inscrire, ou bien héberger le vôtre.</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+36"/>
         <source>REGISTER</source>
         <translation>S&apos;ENREGISTRER</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+62"/>
         <source>No supported registration flows!</source>
         <translation>Pas de méthode d&apos;inscription supportée&#xa0;!</translation>
     </message>
     <message>
-        <location line="+172"/>
-        <source>Invalid username</source>
-        <translation>Nom d&apos;utilisateur invalide</translation>
+        <location line="+200"/>
+        <source>Regisration Failed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-19"/>
         <source>Password is not long enough (min 8 chars)</source>
         <translation>Le mot de passe n&apos;est pas assez long (8 caractères minimum)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Passwords don&apos;t match</source>
         <translation>Les mots de passe ne sont pas identiques</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Invalid server name</source>
         <translation>Le nom du serveur est invalide</translation>
     </message>

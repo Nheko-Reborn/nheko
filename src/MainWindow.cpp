@@ -108,7 +108,7 @@ MainWindow::MainWindow(const QString profile, QWidget *parent)
         connect(chat_page_, &ChatPage::unreadMessages, this, &MainWindow::setWindowTitle);
         connect(chat_page_, SIGNAL(unreadMessages(int)), trayIcon_, SLOT(setUnreadCount(int)));
         connect(chat_page_, &ChatPage::showLoginPage, this, [this](const QString &msg) {
-                login_page_->loginError(msg);
+                login_page_->showError(msg);
                 showLoginPage();
         });
 

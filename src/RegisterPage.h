@@ -57,15 +57,13 @@ private slots:
         void onBackButtonClicked();
         void onRegisterButtonClicked();
 
-        // Display registration specific errors to the user.
-        void registerError(const QString &msg);
-        // Display username hint, if it's not valid
-        void usernameError(const QString &msg);
+        // function for showing different errors
+        void showError(const QString &msg);
 
 private:
-        bool isUsernameValid(const QString &username);
-        bool checkUsername();
-
+        bool checkOneField(QLabel *label, const TextField *t_field, const QString &msg);
+        bool checkFields();
+        void showError(QLabel *label, const QString &msg);
         QVBoxLayout *top_layout_;
 
         QHBoxLayout *back_layout_;
@@ -75,6 +73,8 @@ private:
         QLabel *logo_;
         QLabel *error_label_;
         QLabel *error_username_label_;
+        QLabel *error_password_label_;
+        QLabel *error_password_confirmation_label_;
 
         FlatButton *back_button_;
         RaisedButton *register_button_;

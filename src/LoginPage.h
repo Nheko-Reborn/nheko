@@ -66,8 +66,8 @@ protected:
 
 public slots:
         // Displays errors produced during the login.
-        void loginError(const QString &msg);
-        void matrixIdError(const QString &msg);
+        void showError(const QString &msg);
+        void showError(QLabel *label, const QString &msg);
 
 private slots:
         // Callback for the back button.
@@ -88,7 +88,6 @@ private slots:
         void versionOk(LoginPage::LoginMethod method);
 
 private:
-        bool isMatrixIdValid();
         void checkHomeserverVersion();
         std::string initialDeviceName()
         {
