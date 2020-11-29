@@ -49,17 +49,17 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+767"/>
+        <location line="+766"/>
         <source>Invited user: %1</source>
         <translation>Приглашённый пользователь: %1</translation>
     </message>
     <message>
-        <location line="-495"/>
+        <location line="-494"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Миграция кэша для текущей версии не удалась. Это может происходить по разным причинам. Пожалуйста сообщите о проблеме и попробуйте временно использовать старую версию. Так-же вы можете попробовать удалить кэш самостоятельно.</translation>
     </message>
     <message>
-        <location line="+451"/>
+        <location line="+450"/>
         <source>Room %1 created.</source>
         <translation>Комната %1 создана.</translation>
     </message>
@@ -139,7 +139,7 @@
         <translation>Разблокированный пользователь: %1</translation>
     </message>
     <message>
-        <location line="-577"/>
+        <location line="-576"/>
         <source>Cache migration failed!</source>
         <translation>Миграция кэша не удалась!</translation>
     </message>
@@ -164,7 +164,7 @@
         <translation>Не удалось восстановить сохраненные данные. Пожалуйста, войдите снова.</translation>
     </message>
     <message>
-        <location line="+166"/>
+        <location line="+165"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Не удалось настроить ключи шифрования. Ответ сервера:%1 %2. Пожалуйста, попробуйте позже.</translation>
     </message>
@@ -261,7 +261,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+74"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+73"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
@@ -752,17 +752,18 @@ Example: https://server.my:8787</source>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+88"/>
+        <location filename="../../src/RegisterPage.cpp" line="+89"/>
         <source>Username</source>
         <translation>Имя пользователя</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+1"/>
+        <location line="+254"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
         <translation>Имя пользователя не должно быть пустым и должно содержать только символы a-z, 0-9, ., _, =, -, and /.</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="-250"/>
         <source>Password</source>
         <translation>Пароль</translation>
     </message>
@@ -787,7 +788,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+24"/>
         <source>REGISTER</source>
         <translation>РЕГИСТРАЦИЯ</translation>
     </message>
@@ -797,7 +798,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+135"/>
+        <location line="+172"/>
         <source>Invalid username</source>
         <translation>Некорректное имя пользователя</translation>
     </message>
@@ -2066,7 +2067,7 @@ Media size: %2
         <translation>Шифрование</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+31"/>
         <source>End-to-End Encryption</source>
         <translation>Сквозное шифрование</translation>
     </message>
@@ -2076,7 +2077,7 @@ Media size: %2
         <translation>Шифрование в настоящее время является экспериментальным, поэтому возможны сбои. &lt;br&gt;Пожалуйста, имейте ввиду, что его нельзя отключить впоследствии.</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="-24"/>
         <source>Respond to key requests</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2088,7 +2089,7 @@ Media size: %2
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+51"/>
+        <location line="+80"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n участник</numerusform>
@@ -2097,7 +2098,7 @@ Media size: %2
         </translation>
     </message>
     <message>
-        <location line="+140"/>
+        <location line="+142"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Не удалось включить шифрование: %1</translation>
     </message>

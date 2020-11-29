@@ -20,6 +20,7 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QTimer>
+#include <QtMath>
 
 #include <mtx/responses/register.hpp>
 
@@ -86,8 +87,6 @@ RegisterPage::RegisterPage(QWidget *parent)
 
         username_input_ = new TextField();
         username_input_->setLabel(tr("Username"));
-        username_input_->setValidator(
-          new QRegularExpressionValidator(QRegularExpression("[a-z0-9._=/-]+"), this));
         username_input_->setToolTip(tr("The username must not be empty, and must contain only the "
                                        "characters a-z, 0-9, ., _, =, -, and /."));
 
@@ -107,7 +106,15 @@ RegisterPage::RegisterPage(QWidget *parent)
           tr("A server that allows registration. Since matrix is decentralized, you need to first "
              "find a server you can register on or host your own."));
 
+        QFont font;
+
+        error_username_label_ = new QLabel(this);
+        error_username_label_->setFont(font);
+        error_username_label_->setWordWrap(true);
+        error_username_label_->hide();
+
         form_layout_->addWidget(username_input_, Qt::AlignHCenter);
+        form_layout_->addWidget(error_username_label_, Qt::AlignHCenter);
         form_layout_->addWidget(password_input_, Qt::AlignHCenter);
         form_layout_->addWidget(password_confirmation_, Qt::AlignHCenter);
         form_layout_->addWidget(server_input_, Qt::AlignHCenter);
@@ -116,10 +123,9 @@ RegisterPage::RegisterPage(QWidget *parent)
         button_layout_->setSpacing(0);
         button_layout_->setMargin(0);
 
-        QFont font;
-
         error_label_ = new QLabel(this);
         error_label_->setFont(font);
+        error_label_->setWordWrap(true);
 
         register_button_ = new RaisedButton(tr("REGISTER"), this);
         register_button_->setMinimumSize(350, 65);
@@ -135,8 +141,8 @@ RegisterPage::RegisterPage(QWidget *parent)
         top_layout_->addLayout(form_wrapper_);
         top_layout_->addStretch(1);
         top_layout_->addLayout(button_layout_);
-        top_layout_->addStretch(1);
         top_layout_->addWidget(error_label_, 0, Qt::AlignHCenter);
+        top_layout_->addStretch(1);
 
         connect(back_button_, SIGNAL(clicked()), this, SLOT(onBackButtonClicked()));
         connect(register_button_, SIGNAL(clicked()), this, SLOT(onRegisterButtonClicked()));
@@ -302,15 +308,52 @@ void
 RegisterPage::registerError(const QString &msg)
 {
         emit errorOccurred();
+        auto rect  = QFontMetrics(font()).boundingRect(msg);
+        int width  = rect.width();
+        int height = rect.height();
+        error_label_->setFixedHeight(qCeil(width / 200.0) * height);
         error_label_->setText(msg);
+}
+bool
+RegisterPage::isUsernameValid(const QString &username)
+{
+        QRegularExpressionValidator v(QRegularExpression("[a-z0-9._=/-]+"), this);
+        QString s = username;
+        int pos   = 0;
+        return v.validate(s, pos) == QValidator::Acceptable;
+}
+
+void
+RegisterPage::usernameError(const QString &msg)
+{
+        emit errorOccurred();
+        error_username_label_->show();
+        error_username_label_->setText(msg);
+}
+
+bool
+RegisterPage::checkUsername()
+{
+        if (isUsernameValid(username_input_->text())) {
+                error_username_label_->setText("");
+                error_username_label_->hide();
+                username_input_->setValid(true);
+                return true;
+        } else {
+                username_input_->setValid(false);
+                usernameError(tr("The username must not be empty, and must contain only the "
+                                 "characters a-z, 0-9, ., _, =, -, and /."));
+                return false;
+        }
 }
 
 void
 RegisterPage::onRegisterButtonClicked()
 {
         error_label_->setText("");
+        error_username_label_->setText("");
 
-        if (!username_input_->hasAcceptableInput()) {
+        if (!checkUsername()) {
                 registerError(tr("Invalid username"));
         } else if (!password_input_->hasAcceptableInput()) {
                 registerError(tr("Password is not long enough (min 8 chars)"));

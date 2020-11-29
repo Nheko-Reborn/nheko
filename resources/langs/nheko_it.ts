@@ -49,17 +49,17 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+767"/>
+        <location line="+766"/>
         <source>Invited user: %1</source>
         <translation>Invitato utente: %1</translation>
     </message>
     <message>
-        <location line="-495"/>
+        <location line="-494"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Migrazione della cache alla versione corrente fallita. Questo può avere diverse cause. Per favore apri una issue e nel frattempo prova ad usare una versione più vecchia. In alternativa puoi provare a cancellare la cache manualmente.</translation>
     </message>
     <message>
-        <location line="+451"/>
+        <location line="+450"/>
         <source>Room %1 created.</source>
         <translation>Stanza %1 creata.</translation>
     </message>
@@ -139,7 +139,7 @@
         <translation>Rimosso il ban dall&apos;utente: %1</translation>
     </message>
     <message>
-        <location line="-577"/>
+        <location line="-576"/>
         <source>Cache migration failed!</source>
         <translation>Migrazione della cache fallita!</translation>
     </message>
@@ -164,7 +164,7 @@
         <translation>Impossibile ripristinare i dati salvati. Per favore accedi nuovamente.</translation>
     </message>
     <message>
-        <location line="+166"/>
+        <location line="+165"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Impossibile configurare le chiavi crittografiche. Risposta del server: %1 %2. Per favore riprova in seguito.</translation>
     </message>
@@ -261,7 +261,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+74"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+73"/>
         <source>Apply</source>
         <translation>Applica</translation>
     </message>
@@ -752,17 +752,18 @@ Esempio: https://server.mio:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+88"/>
+        <location filename="../../src/RegisterPage.cpp" line="+89"/>
         <source>Username</source>
         <translation>Nome utente</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+1"/>
+        <location line="+254"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
         <translation>Il nome utente non deve essere vuoto e deve contenere solo i caratteri a-z, 0-9, ., _, =, -, e /.</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="-250"/>
         <source>Password</source>
         <translation>Password</translation>
     </message>
@@ -787,7 +788,7 @@ Esempio: https://server.mio:8787</translation>
         <translation>Un server che consente la registrazione. Siccome matrix è decentralizzata, devi prima trovare un server su cui registrarti o ospitarne uno tuo.</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+24"/>
         <source>REGISTER</source>
         <translation>REGISTRATI</translation>
     </message>
@@ -797,7 +798,7 @@ Esempio: https://server.mio:8787</translation>
         <translation>Non ci sono processi di registrazione supportati!</translation>
     </message>
     <message>
-        <location line="+135"/>
+        <location line="+172"/>
         <source>Invalid username</source>
         <translation>Nome utente non valido</translation>
     </message>
@@ -2064,7 +2065,7 @@ Peso media: %2
         <translation>Crittografia</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+31"/>
         <source>End-to-End Encryption</source>
         <translation>Crittografia End-to-End</translation>
     </message>
@@ -2074,7 +2075,7 @@ Peso media: %2
         <translation>La crittografia è ancora sperimentale e le cose potrebbero rompersi inaspettatamente. &lt;br&gt;Per favore prendi nota che in seguito non potrà essere disabilitata.</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="-24"/>
         <source>Respond to key requests</source>
         <translation>Rispondi alle richieste di chiavi</translation>
     </message>
@@ -2088,7 +2089,7 @@ Peso media: %2
  l&apos;implementazione di E2E fino al completamento della verifica dei dispositivi.</translation>
     </message>
     <message numerus="yes">
-        <location line="+51"/>
+        <location line="+80"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n membro</numerusform>
@@ -2096,7 +2097,7 @@ Peso media: %2
         </translation>
     </message>
     <message>
-        <location line="+140"/>
+        <location line="+142"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Impossibile abilitare la crittografia: %1</translation>
     </message>
