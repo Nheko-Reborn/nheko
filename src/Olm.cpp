@@ -469,9 +469,9 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
                 if (!group_session_data.currently.keys.count(user))
                         group_session_data.currently.keys[user] = {};
 
-                for (const auto &device_id : devices) {
-                        if (!group_session_data.currently.keys[user].devices.count(device_id))
-                                group_session_data.currently.keys[user].devices[device_id] =
+                for (const auto &device_id_ : devices) {
+                        if (!group_session_data.currently.keys[user].devices.count(device_id_))
+                                group_session_data.currently.keys[user].devices[device_id_] =
                                   group_session_data.message_index;
                 }
         }
