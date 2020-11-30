@@ -59,6 +59,8 @@ public:
 
         // user cache stores user keys
         std::optional<UserKeyCache> userKeys(const std::string &user_id);
+        std::map<std::string, std::optional<UserKeyCache>> getMembersWithKeys(
+          const std::string &room_id);
         void updateUserKeys(const std::string &sync_token,
                             const mtx::responses::QueryKeys &keyQuery);
         void markUserKeysOutOfDate(lmdb::txn &txn,
@@ -232,10 +234,12 @@ public:
         //
         void saveOutboundMegolmSession(const std::string &room_id,
                                        const OutboundGroupSessionData &data,
-                                       mtx::crypto::OutboundGroupSessionPtr session);
+                                       mtx::crypto::OutboundGroupSessionPtr &session);
         OutboundGroupSessionDataRef getOutboundMegolmSession(const std::string &room_id);
         bool outboundMegolmSessionExists(const std::string &room_id) noexcept;
-        void updateOutboundMegolmSession(const std::string &room_id, int message_index);
+        void updateOutboundMegolmSession(const std::string &room_id,
+                                         const OutboundGroupSessionData &data,
+                                         mtx::crypto::OutboundGroupSessionPtr &session);
         void dropOutboundMegolmSession(const std::string &room_id);
 
         void importSessionKeys(const mtx::crypto::ExportedSessionKeys &keys);
@@ -246,7 +250,8 @@ public:
         //
         void saveInboundMegolmSession(const MegolmSessionIndex &index,
                                       mtx::crypto::InboundGroupSessionPtr session);
-        OlmInboundGroupSession *getInboundMegolmSession(const MegolmSessionIndex &index);
+        mtx::crypto::InboundGroupSessionPtr getInboundMegolmSession(
+          const MegolmSessionIndex &index);
         bool inboundMegolmSessionExists(const MegolmSessionIndex &index);
 
         //
@@ -263,8 +268,6 @@ public:
 
         void saveOlmAccount(const std::string &pickled);
         std::string restoreOlmAccount();
-
-        void restoreSessions();
 
 signals:
         void newReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
@@ -577,7 +580,6 @@ private:
         QString localUserId_;
         QString cacheDirectory_;
 
-        OlmSessionStorage session_storage;
         VerificationStorage verification_storage;
 };
 

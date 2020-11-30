@@ -526,7 +526,6 @@ ChatPage::loadStateFromCache()
         nhlog::db()->info("restoring state from cache");
 
         try {
-                cache::restoreSessions();
                 olm::client()->load(cache::restoreOlmAccount(), STORAGE_SECRET_KEY);
 
                 emit initializeEmptyViews(cache::client()->roomIds());
