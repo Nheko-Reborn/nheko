@@ -55,9 +55,7 @@ Rectangle {
             id: mouseArea
 
             anchors.fill: parent
-            onClicked: {
-                TimelineManager.openImageOverlay(usrUrl, TimelineManager.timeline.data.id)
-            }
+            onClicked: TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
         }
     }
 
