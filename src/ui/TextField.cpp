@@ -6,6 +6,7 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QPropertyAnimation>
+#include <QRegularExpression>
 #include <QRegularExpressionValidator>
 
 TextField::TextField(QWidget *parent)
@@ -22,7 +23,6 @@ TextField::TextField(QWidget *parent)
         show_label_       = false;
         background_color_ = pal.color(QPalette::Window);
         is_valid_         = true;
-        regexp_           = "";
 
         setFrame(false);
         setAttribute(Qt::WA_Hover);
@@ -83,7 +83,7 @@ TextField::isValid() const
 {
         QString s = text();
         int pos   = 0;
-        if (regexp_.isEmpty()) {
+        if (regexp_.pattern().isEmpty()) {
                 return is_valid_;
         }
         QRegularExpressionValidator v(QRegularExpression(regexp_), 0);
@@ -167,7 +167,7 @@ TextField::setUnderlineColor(const QColor &color)
 void
 TextField::setRegexp(const QString &regexp)
 {
-        regexp_ = regexp;
+        regexp_.setPattern(regexp);
 }
 
 QColor

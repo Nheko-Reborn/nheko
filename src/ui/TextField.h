@@ -4,6 +4,7 @@
 #include <QLineEdit>
 #include <QPaintEvent>
 #include <QPropertyAnimation>
+#include <QRegularExpression>
 #include <QStateMachine>
 #include <QtGlobal>
 
@@ -57,7 +58,7 @@ private:
         TextFieldLabel *label_;
         TextFieldStateMachine *state_machine_;
         bool show_label_;
-        QString regexp_;
+        QRegularExpression regexp_;
         bool is_valid_;
         qreal label_font_size_;
 };
