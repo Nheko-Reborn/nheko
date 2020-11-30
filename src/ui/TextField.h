@@ -4,6 +4,7 @@
 #include <QLineEdit>
 #include <QPaintEvent>
 #include <QPropertyAnimation>
+#include <QRegularExpression>
 #include <QStateMachine>
 #include <QtGlobal>
 
@@ -30,6 +31,7 @@ public:
         void setLabelFontSize(qreal size);
         void setShowLabel(bool value);
         void setUnderlineColor(const QColor &color);
+        void setRegexp(const QRegularExpression &regexp);
         void setValid(bool valid);
 
         QColor inkColor() const;
@@ -56,6 +58,7 @@ private:
         TextFieldLabel *label_;
         TextFieldStateMachine *state_machine_;
         bool show_label_;
+        QRegularExpression regexp_;
         bool is_valid_;
         qreal label_font_size_;
 };

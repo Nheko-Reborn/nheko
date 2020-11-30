@@ -49,17 +49,17 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+767"/>
+        <location line="+766"/>
         <source>Invited user: %1</source>
         <translation>Invited user: %1</translation>
     </message>
     <message>
-        <location line="-495"/>
+        <location line="-494"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</translation>
     </message>
     <message>
-        <location line="+451"/>
+        <location line="+450"/>
         <source>Room %1 created.</source>
         <translation>Room %1 created.</translation>
     </message>
@@ -139,7 +139,7 @@
         <translation>Unbanned user: %1</translation>
     </message>
     <message>
-        <location line="-577"/>
+        <location line="-576"/>
         <source>Cache migration failed!</source>
         <translation>Cache migration failed!</translation>
     </message>
@@ -164,7 +164,7 @@
         <translation>Failed to restore save data. Please login again.</translation>
     </message>
     <message>
-        <location line="+166"/>
+        <location line="+165"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</translation>
     </message>
@@ -261,7 +261,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+74"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+73"/>
         <source>Apply</source>
         <translation>Apply</translation>
     </message>
@@ -473,7 +473,7 @@
         <translation>Matrix ID</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>e.g @joe:matrix.org</source>
         <translation>e.g @joe:matrix.org</translation>
     </message>
@@ -512,7 +512,7 @@ Example: https://server.my:8787</translation>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+220"/>
+        <location line="+216"/>
         <source>LOGIN</source>
         <translation>LOGIN</translation>
     </message>
@@ -547,12 +547,12 @@ Example: https://server.my:8787</translation>
         <translation>SSO LOGIN</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+37"/>
         <source>Empty password</source>
         <translation>Empty password</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+54"/>
         <source>SSO login failed</source>
         <translation>SSO login failed</translation>
     </message>
@@ -752,22 +752,23 @@ Example: https://server.my:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+88"/>
+        <location filename="../../src/RegisterPage.cpp" line="+89"/>
         <source>Username</source>
         <translation>Username</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
+        <location line="+291"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
         <translation>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="-287"/>
         <source>Password</source>
         <translation>Password</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
         <translation>Please choose a secure password. The exact requirements for password strength may depend on your server.</translation>
     </message>
@@ -787,32 +788,32 @@ Example: https://server.my:8787</translation>
         <translation>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+36"/>
         <source>REGISTER</source>
         <translation>REGISTER</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+62"/>
         <source>No supported registration flows!</source>
         <translation>No supported registration flows!</translation>
     </message>
     <message>
-        <location line="+135"/>
-        <source>Invalid username</source>
-        <translation>Invalid username</translation>
+        <location line="+200"/>
+        <source>Regisration Failed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-19"/>
         <source>Password is not long enough (min 8 chars)</source>
         <translation>Password is not long enough (min 8 chars)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Passwords don&apos;t match</source>
         <translation>Passwords don&apos;t match</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Invalid server name</source>
         <translation>Invalid server name</translation>
     </message>
@@ -2072,7 +2073,7 @@ Media size: %2
         <translation>Encryption</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+31"/>
         <source>End-to-End Encryption</source>
         <translation>End-to-End Encryption</translation>
     </message>
@@ -2082,7 +2083,7 @@ Media size: %2
         <translation>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="-24"/>
         <source>Respond to key requests</source>
         <translation>Respond to key requests</translation>
     </message>
@@ -2096,7 +2097,7 @@ Media size: %2
  E2E implementation until device verification is completed.</translation>
     </message>
     <message numerus="yes">
-        <location line="+51"/>
+        <location line="+80"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n member</numerusform>
@@ -2104,7 +2105,7 @@ Media size: %2
         </translation>
     </message>
     <message>
-        <location line="+140"/>
+        <location line="+142"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Failed to enable encryption: %1</translation>
     </message>

@@ -90,6 +90,7 @@ LoginPage::LoginPage(QWidget *parent)
 
         matrixid_input_ = new TextField(this);
         matrixid_input_->setLabel(tr("Matrix ID"));
+        matrixid_input_->setRegexp(QRegularExpression("@.+?:.{3,}"));
         matrixid_input_->setPlaceholderText(tr("e.g @joe:matrix.org"));
         matrixid_input_->setToolTip(
           tr("Your login name. A mxid should start with @ followed by the user id. After the user "
@@ -175,7 +176,6 @@ LoginPage::LoginPage(QWidget *parent)
 
         connect(this, &LoginPage::versionOkCb, this, &LoginPage::versionOk);
         connect(this, &LoginPage::versionErrorCb, this, &LoginPage::versionError);
-        connect(this, &LoginPage::loginErrorCb, this, &LoginPage::loginError);
 
         connect(back_button_, SIGNAL(clicked()), this, SLOT(onBackButtonClicked()));
         connect(login_button_, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
@@ -186,32 +186,24 @@ LoginPage::LoginPage(QWidget *parent)
         connect(matrixid_input_, SIGNAL(editingFinished()), this, SLOT(onMatrixIdEntered()));
         connect(serverInput_, SIGNAL(editingFinished()), this, SLOT(onServerAddressEntered()));
 }
-
 void
-LoginPage::loginError(const QString &msg)
+LoginPage::showError(const QString &msg)
 {
         auto rect  = QFontMetrics(font()).boundingRect(msg);
         int width  = rect.width();
         int height = rect.height();
-        error_label_->setFixedHeight(qCeil(width / 200) * height);
+        error_label_->setFixedHeight((int)qCeil(width / 200.0) * height);
         error_label_->setText(msg);
 }
 
 void
-LoginPage::matrixIdError(const QString &msg)
+LoginPage::showError(QLabel *label, const QString &msg)
 {
-        error_matrixid_label_->show();
-        error_matrixid_label_->setText(msg);
-        matrixid_input_->setValid(false);
-}
-
-bool
-LoginPage::isMatrixIdValid()
-{
-        QRegularExpressionValidator v(QRegularExpression("@.+?:.{3,}"), this);
-        QString s = matrixid_input_->text();
-        int pos   = 0;
-        return v.validate(s, pos) == QValidator::Acceptable;
+        auto rect  = QFontMetrics(font()).boundingRect(msg);
+        int width  = rect.width();
+        int height = rect.height();
+        label->setFixedHeight((int)qCeil(width / 200.0) * height);
+        label->setText(msg);
 }
 
 void
@@ -221,19 +213,21 @@ LoginPage::onMatrixIdEntered()
 
         User user;
 
-        if (!isMatrixIdValid()) {
-                matrixIdError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+        if (!matrixid_input_->isValid()) {
+                error_matrixid_label_->show();
+                showError(error_matrixid_label_,
+                          "You have entered an invalid Matrix ID  e.g @joe:matrix.org");
                 return;
         } else {
                 error_matrixid_label_->setText("");
                 error_matrixid_label_->hide();
-                matrixid_input_->setValid(true);
         }
 
         try {
                 user = parse<User>(matrixid_input_->text().toStdString());
         } catch (const std::exception &e) {
-                matrixIdError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                showError(error_matrixid_label_,
+                          "You have entered an invalid Matrix ID  e.g @joe:matrix.org");
                 return;
         }
 
@@ -345,7 +339,7 @@ LoginPage::onServerAddressEntered()
 void
 LoginPage::versionError(const QString &error)
 {
-        loginError(error);
+        showError(error_label_, error);
         serverInput_->show();
 
         spinner_->stop();
@@ -383,25 +377,27 @@ LoginPage::onLoginButtonClicked()
 
         User user;
 
-        if (!isMatrixIdValid()) {
-                matrixIdError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+        if (!matrixid_input_->isValid()) {
+                error_matrixid_label_->show();
+                showError(error_matrixid_label_,
+                          "You have entered an invalid Matrix ID  e.g @joe:matrix.org");
                 return;
         } else {
                 error_matrixid_label_->setText("");
                 error_matrixid_label_->hide();
-                matrixid_input_->setValid(true);
         }
 
         try {
                 user = parse<User>(matrixid_input_->text().toStdString());
         } catch (const std::exception &e) {
-                matrixIdError("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                showError(error_matrixid_label_,
+                          "You have entered an invalid Matrix ID  e.g @joe:matrix.org");
                 return;
         }
 
         if (loginMethod == LoginMethod::Password) {
                 if (password_input_->text().isEmpty())
-                        return loginError(tr("Empty password"));
+                        return showError(error_label_, tr("Empty password"));
 
                 http::client()->login(
                   user.localpart(),
@@ -410,7 +406,8 @@ LoginPage::onLoginButtonClicked()
                                                           : deviceName_->text().toStdString(),
                   [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
                           if (err) {
-                                  emit loginError(QString::fromStdString(err->matrix_error.error));
+                                  showError(error_label_,
+                                            QString::fromStdString(err->matrix_error.error));
                                   emit errorOccurred();
                                   return;
                           }
@@ -435,7 +432,8 @@ LoginPage::onLoginButtonClicked()
                         http::client()->login(
                           req, [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
                                   if (err) {
-                                          emit loginError(
+                                          showError(
+                                            error_label_,
                                             QString::fromStdString(err->matrix_error.error));
                                           emit errorOccurred();
                                           return;
@@ -453,7 +451,7 @@ LoginPage::onLoginButtonClicked()
                         sso->deleteLater();
                 });
                 connect(sso, &SSOHandler::ssoFailed, this, [this, sso]() {
-                        emit loginError(tr("SSO login failed"));
+                        showError(error_label_, tr("SSO login failed"));
                         emit errorOccurred();
                         sso->deleteLater();
                 });

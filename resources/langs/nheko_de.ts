@@ -49,17 +49,17 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+767"/>
+        <location line="+766"/>
         <source>Invited user: %1</source>
         <translation>Eingeladener Benutzer: %1</translation>
     </message>
     <message>
-        <location line="-495"/>
+        <location line="-494"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Das Migrieren des Caches auf die aktuelle Version ist fehlgeschlagen. Das kann verschiedene Gründe als Ursache haben. Bitte melde den Fehler und verwende in der Zwischenzeit eine ältere Version. Alternativ kannst du das Cache manuell löschen.</translation>
     </message>
     <message>
-        <location line="+451"/>
+        <location line="+450"/>
         <source>Room %1 created.</source>
         <translation>Raum %1 erzeugt.</translation>
     </message>
@@ -139,7 +139,7 @@
         <translation>Verbannung von %1 wurde aufgehoben.</translation>
     </message>
     <message>
-        <location line="-577"/>
+        <location line="-576"/>
         <source>Cache migration failed!</source>
         <translation>Cache migration fehlgeschlagen!</translation>
     </message>
@@ -164,7 +164,7 @@
         <translation>Gespeicherte Nachrichten konnten nicht wiederhergestellt werden. Bitte melde Dich erneut an.</translation>
     </message>
     <message>
-        <location line="+166"/>
+        <location line="+165"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Fehler beim Setup der Verschlüsselungsschlüssel. Servermeldung: %1 %2. Bitte versuche es später erneut.</translation>
     </message>
@@ -261,7 +261,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+74"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+73"/>
         <source>Apply</source>
         <translation>Anwenden</translation>
     </message>
@@ -473,7 +473,7 @@
         <translation>Matrix-ID</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>e.g @joe:matrix.org</source>
         <translation>z.B. @joe:matrix.org</translation>
     </message>
@@ -512,7 +512,7 @@ Beispiel: https://mein.server:8787</translation>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+220"/>
+        <location line="+216"/>
         <source>LOGIN</source>
         <translation>ANMELDEN</translation>
     </message>
@@ -547,12 +547,12 @@ Beispiel: https://mein.server:8787</translation>
         <translation>SSO ANMELDUNG</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+37"/>
         <source>Empty password</source>
         <translation>Leeres Passwort</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+54"/>
         <source>SSO login failed</source>
         <translation>SSO Anmeldung fehlgeschlagen</translation>
     </message>
@@ -752,22 +752,23 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+88"/>
+        <location filename="../../src/RegisterPage.cpp" line="+89"/>
         <source>Username</source>
         <translation>Benutzername</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
+        <location line="+291"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
         <translation>Der Benutzername sollte nicht leer sein und nur aus a-z, 0-9, ., _, =, - und / bestehen.</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="-287"/>
         <source>Password</source>
         <translation>Passwort</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
         <translation>Bitte wähle ein sicheres Passwort. Die genauen Anforderungen bestimmt dein Server.</translation>
     </message>
@@ -787,32 +788,32 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Ein Server, der Registrierungen zulässt. Weil Matrix ein dezentralisiertes Protokoll ist, musst du erst einen Server ausfindig machen oder einen persönlichen Server aufsetzen.</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+36"/>
         <source>REGISTER</source>
         <translation>REGISTRIEREN</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+62"/>
         <source>No supported registration flows!</source>
         <translation>Keine unterstützten Registrierungsmethoden!</translation>
     </message>
     <message>
-        <location line="+135"/>
-        <source>Invalid username</source>
-        <translation>Ungültiger Benutzername</translation>
+        <location line="+200"/>
+        <source>Regisration Failed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-19"/>
         <source>Password is not long enough (min 8 chars)</source>
         <translation>Passwort nicht lang genug (mind. 8 Zeichen)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Passwords don&apos;t match</source>
         <translation>Passwörter stimmen nicht überein</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Invalid server name</source>
         <translation>Ungültiger Servername</translation>
     </message>
@@ -2064,7 +2065,7 @@ Medien-Größe: %2
         <translation>Verschlüsselung</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+31"/>
         <source>End-to-End Encryption</source>
         <translation>Ende-zu-Ende Verschlüsselung</translation>
     </message>
@@ -2074,7 +2075,7 @@ Medien-Größe: %2
         <translation>Verschlüsselung befindet sich momentan in einem experimentellen Stadium, unerwartete Fehler können auftreten. &lt;br&gt;Sie kann anschließend nicht wieder deaktiviert werden.</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="-24"/>
         <source>Respond to key requests</source>
         <translation>Schlüsselnfrage beantworten</translation>
     </message>
@@ -2086,7 +2087,7 @@ Medien-Größe: %2
         <translation>Ob nheko automatisch auf Anfragen mit Sessionschlüsseln antworten soll, oder nicht. Bitte mit Vorsicht nutzen, da dies eine temporäre Massnahme ist. Sie dient dem Test von E2E Verschlüsselung, bis die Geräteverifikation fertig gestellt ist.</translation>
     </message>
     <message numerus="yes">
-        <location line="+51"/>
+        <location line="+80"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n Teilnehmer</numerusform>
@@ -2094,7 +2095,7 @@ Medien-Größe: %2
         </translation>
     </message>
     <message>
-        <location line="+140"/>
+        <location line="+142"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Aktivierung der Verschlüsselung fehlgeschlagen: %1</translation>
     </message>

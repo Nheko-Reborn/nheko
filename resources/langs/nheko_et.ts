@@ -49,17 +49,17 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+767"/>
+        <location line="+766"/>
         <source>Invited user: %1</source>
         <translation>Kutsutud kasutaja: %1</translation>
     </message>
     <message>
-        <location line="-495"/>
+        <location line="-494"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Puhverdatud andmete muutmine sobivaks rakenduse praeguse versiooniga ei õnnestunud. Sellel võib olla erinevaid põhjuseid. Palun saada meile veateade ja seni kasuta vanemat rakenduse versiooni. Aga kui sa soovid proovida, siis kustuta puhverdatud andmed käsitsi.</translation>
     </message>
     <message>
-        <location line="+451"/>
+        <location line="+450"/>
         <source>Room %1 created.</source>
         <translation>%1 jututuba on loodud.</translation>
     </message>
@@ -139,7 +139,7 @@
         <translation>Suhtluskeeld eemaldatud: %1</translation>
     </message>
     <message>
-        <location line="-577"/>
+        <location line="-576"/>
         <source>Cache migration failed!</source>
         <translation>Puhvri versiooniuuendus ebaõnnestus!</translation>
     </message>
@@ -164,7 +164,7 @@
         <translation>Salvestatud andmete taastamine ei õnnestunud. Palun logi uuesti sisse.</translation>
     </message>
     <message>
-        <location line="+166"/>
+        <location line="+165"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Krüptovõtmete kasutusele võtmine ei õnnestunud. Koduserveri vastus päringule: %1 %2. Palun proovi hiljem uuesti.</translation>
     </message>
@@ -261,7 +261,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+74"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+73"/>
         <source>Apply</source>
         <translation>Rakenda</translation>
     </message>
@@ -473,7 +473,7 @@
         <translation>Matrix&apos;i kasutajatunnus</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>e.g @joe:matrix.org</source>
         <translation>näiteks @kadri:matrix.org</translation>
     </message>
@@ -512,7 +512,7 @@ Näiteks: https://server.minu:8787</translation>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+220"/>
+        <location line="+216"/>
         <source>LOGIN</source>
         <translation>LOGI SISSE</translation>
     </message>
@@ -547,12 +547,12 @@ Näiteks: https://server.minu:8787</translation>
         <translation>ÜHEKORDNE SISSELOGIMINE</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+37"/>
         <source>Empty password</source>
         <translation>Tühi salasõna</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+54"/>
         <source>SSO login failed</source>
         <translation>Ühekordne sisselogimine ei õnnestunud</translation>
     </message>
@@ -752,22 +752,23 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+88"/>
+        <location filename="../../src/RegisterPage.cpp" line="+89"/>
         <source>Username</source>
         <translation>Kasutajanimi</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
+        <location line="+291"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
         <translation>Kasutajanimi ei tohi olla tühi ning võib sisaldada vaid a-z, 0-9, ., _, =, -, / tähemärke.</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="-287"/>
         <source>Password</source>
         <translation>Salasõna</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
         <translation>Palun vali tutvaline salasõna. Täpsemad nõuded salasõnale sõltuvad sinu koduserveri seadistustest.</translation>
     </message>
@@ -787,32 +788,32 @@ Näiteks: https://server.minu:8787</translation>
         <translation>See on server, kus sa oma kasutajakonto registreerid. Kuna Matrix on hajutatud suhtlusvõrk, siis esmalt pead leidma sulle sobiliku koduserveri või panema püsti täitsa oma enda koduserveri.</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+36"/>
         <source>REGISTER</source>
         <translation>REGISTREERI</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+62"/>
         <source>No supported registration flows!</source>
         <translation>Selline registreerimise töövoog pole toetatud!</translation>
     </message>
     <message>
-        <location line="+135"/>
-        <source>Invalid username</source>
-        <translation>Vigane kasutajanimi</translation>
+        <location line="+200"/>
+        <source>Regisration Failed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-19"/>
         <source>Password is not long enough (min 8 chars)</source>
         <translation>Salasõna pole piisavalt pikk (vähemalt 8 tähemärki)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Passwords don&apos;t match</source>
         <translation>Salasõnad ei klapi omavahel</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Invalid server name</source>
         <translation>Vigane koduserveri nimi</translation>
     </message>
@@ -2072,7 +2073,7 @@ Meedia suurus: %2
         <translation>Krüptimine</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+31"/>
         <source>End-to-End Encryption</source>
         <translation>Läbiv krüptimine</translation>
     </message>
@@ -2082,7 +2083,7 @@ Meedia suurus: %2
         <translation>Krüptimine on nhekos hetkel veel katseline ning nii mõndagi võib ootamatult katki minna. &lt;br&gt;Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="-24"/>
         <source>Respond to key requests</source>
         <translation>Vasta krüptovõtmete päringutele</translation>
     </message>
@@ -2096,7 +2097,7 @@ Meedia suurus: %2
  testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.</translation>
     </message>
     <message numerus="yes">
-        <location line="+51"/>
+        <location line="+80"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n kasutaja</numerusform>
@@ -2104,7 +2105,7 @@ Meedia suurus: %2
         </translation>
     </message>
     <message>
-        <location line="+140"/>
+        <location line="+142"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Krüptimise kasutuselevõtmine ei õnnestunud: %1</translation>
     </message>

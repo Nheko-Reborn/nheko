@@ -49,17 +49,17 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+767"/>
+        <location line="+766"/>
         <source>Invited user: %1</source>
         <translation>招待されたユーザー: %1</translation>
     </message>
     <message>
-        <location line="-495"/>
+        <location line="-494"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+451"/>
+        <location line="+450"/>
         <source>Room %1 created.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -139,7 +139,7 @@
         <translation>永久追放を解除されたユーザー: %1</translation>
     </message>
     <message>
-        <location line="-577"/>
+        <location line="-576"/>
         <source>Cache migration failed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -164,7 +164,7 @@
         <translation>セーブデータを復元できませんでした。もう一度ログインして下さい。</translation>
     </message>
     <message>
-        <location line="+166"/>
+        <location line="+165"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>暗号化鍵を設定できませんでした。サーバーの応答: %1 %2. 後でやり直して下さい。</translation>
     </message>
@@ -261,7 +261,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+74"/>
+        <location filename="../../src/dialogs/RoomSettings.cpp" line="+73"/>
         <source>Apply</source>
         <translation>適用</translation>
     </message>
@@ -473,7 +473,7 @@
         <translation>Matrix ID</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>e.g @joe:matrix.org</source>
         <translation>例 @joe:matrix.org</translation>
     </message>
@@ -508,7 +508,7 @@ Example: https://server.my:8787</source>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+220"/>
+        <location line="+216"/>
         <source>LOGIN</source>
         <translation>ログイン</translation>
     </message>
@@ -543,12 +543,12 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+37"/>
         <source>Empty password</source>
         <translation>パスワードが入力されていません</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+54"/>
         <source>SSO login failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -748,22 +748,23 @@ Example: https://server.my:8787</source>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+88"/>
+        <location filename="../../src/RegisterPage.cpp" line="+89"/>
         <source>Username</source>
         <translation>ユーザー名</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
+        <location line="+291"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="-287"/>
         <source>Password</source>
         <translation>パスワード</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -783,32 +784,32 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+36"/>
         <source>REGISTER</source>
         <translation>登録</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+62"/>
         <source>No supported registration flows!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+135"/>
-        <source>Invalid username</source>
-        <translation>無効なユーザー名です</translation>
+        <location line="+200"/>
+        <source>Regisration Failed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-19"/>
         <source>Password is not long enough (min 8 chars)</source>
         <translation>パスワード長が不足しています (最小8文字)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Passwords don&apos;t match</source>
         <translation>パスワードが一致しません</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Invalid server name</source>
         <translation>無効なサーバー名です</translation>
     </message>
@@ -2059,7 +2060,7 @@ Media size: %2
         <translation>暗号化</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+31"/>
         <source>End-to-End Encryption</source>
         <translation>エンドツーエンド暗号化</translation>
     </message>
@@ -2069,7 +2070,7 @@ Media size: %2
         <translation>暗号化機能は実験段階にあるので、予期せずに壊れるかもしれません。 &lt;br&gt;この機能を後から無効にできないことに注意して下さい。</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="-24"/>
         <source>Respond to key requests</source>
         <translation>鍵の要求に応答する</translation>
     </message>
@@ -2083,14 +2084,14 @@ Media size: %2
 これを利用する際は注意して下さい。</translation>
     </message>
     <message numerus="yes">
-        <location line="+51"/>
+        <location line="+80"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n人</numerusform>
         </translation>
     </message>
     <message>
-        <location line="+140"/>
+        <location line="+142"/>
         <source>Failed to enable encryption: %1</source>
         <translation>暗号化を有効にできませんでした: %1</translation>
     </message>

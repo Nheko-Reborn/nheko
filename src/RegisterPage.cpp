@@ -20,6 +20,7 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QTimer>
+#include <QtMath>
 
 #include <mtx/responses/register.hpp>
 
@@ -86,13 +87,13 @@ RegisterPage::RegisterPage(QWidget *parent)
 
         username_input_ = new TextField();
         username_input_->setLabel(tr("Username"));
-        username_input_->setValidator(
-          new QRegularExpressionValidator(QRegularExpression("[a-z0-9._=/-]+"), this));
+        username_input_->setRegexp(QRegularExpression("[a-z0-9._=/-]+"));
         username_input_->setToolTip(tr("The username must not be empty, and must contain only the "
                                        "characters a-z, 0-9, ., _, =, -, and /."));
 
         password_input_ = new TextField();
         password_input_->setLabel(tr("Password"));
+        password_input_->setRegexp(QRegularExpression("^.{8,}$"));
         password_input_->setEchoMode(QLineEdit::Password);
         password_input_->setToolTip(tr("Please choose a secure password. The exact requirements "
                                        "for password strength may depend on your server."));
@@ -107,19 +108,32 @@ RegisterPage::RegisterPage(QWidget *parent)
           tr("A server that allows registration. Since matrix is decentralized, you need to first "
              "find a server you can register on or host your own."));
 
+        error_username_label_ = new QLabel(this);
+        error_username_label_->setWordWrap(true);
+        error_username_label_->hide();
+
+        error_password_label_ = new QLabel(this);
+        error_password_label_->setWordWrap(true);
+        error_password_label_->hide();
+
+        error_password_confirmation_label_ = new QLabel(this);
+        error_password_confirmation_label_->setWordWrap(true);
+        error_password_confirmation_label_->hide();
+
         form_layout_->addWidget(username_input_, Qt::AlignHCenter);
+        form_layout_->addWidget(error_username_label_, Qt::AlignHCenter);
         form_layout_->addWidget(password_input_, Qt::AlignHCenter);
+        form_layout_->addWidget(error_password_label_, Qt::AlignHCenter);
         form_layout_->addWidget(password_confirmation_, Qt::AlignHCenter);
+        form_layout_->addWidget(error_password_confirmation_label_, Qt::AlignHCenter);
         form_layout_->addWidget(server_input_, Qt::AlignHCenter);
 
         button_layout_ = new QHBoxLayout();
         button_layout_->setSpacing(0);
         button_layout_->setMargin(0);
 
-        QFont font;
-
         error_label_ = new QLabel(this);
-        error_label_->setFont(font);
+        error_label_->setWordWrap(true);
 
         register_button_ = new RaisedButton(tr("REGISTER"), this);
         register_button_->setMinimumSize(350, 65);
@@ -135,17 +149,24 @@ RegisterPage::RegisterPage(QWidget *parent)
         top_layout_->addLayout(form_wrapper_);
         top_layout_->addStretch(1);
         top_layout_->addLayout(button_layout_);
-        top_layout_->addStretch(1);
         top_layout_->addWidget(error_label_, 0, Qt::AlignHCenter);
+        top_layout_->addStretch(1);
 
         connect(back_button_, SIGNAL(clicked()), this, SLOT(onBackButtonClicked()));
         connect(register_button_, SIGNAL(clicked()), this, SLOT(onRegisterButtonClicked()));
 
         connect(username_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
+        connect(username_input_, &TextField::editingFinished, this, &RegisterPage::checkFields);
         connect(password_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
+        connect(password_input_, &TextField::editingFinished, this, &RegisterPage::checkFields);
         connect(password_confirmation_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
+        connect(
+          password_confirmation_, &TextField::editingFinished, this, &RegisterPage::checkFields);
         connect(server_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
-        connect(this, &RegisterPage::registerErrorCb, this, &RegisterPage::registerError);
+        connect(server_input_, &TextField::editingFinished, this, &RegisterPage::checkFields);
+        connect(this, &RegisterPage::registerErrorCb, this, [this](const QString &msg) {
+                showError(msg);
+        });
         connect(
           this,
           &RegisterPage::registrationFlow,
@@ -299,25 +320,93 @@ RegisterPage::onBackButtonClicked()
 }
 
 void
-RegisterPage::registerError(const QString &msg)
+RegisterPage::showError(const QString &msg)
 {
         emit errorOccurred();
+        auto rect  = QFontMetrics(font()).boundingRect(msg);
+        int width  = rect.width();
+        int height = rect.height();
+        error_label_->setFixedHeight(qCeil(width / 200.0) * height);
         error_label_->setText(msg);
+}
+
+void
+RegisterPage::showError(QLabel *label, const QString &msg)
+{
+        emit errorOccurred();
+        auto rect  = QFontMetrics(font()).boundingRect(msg);
+        int width  = rect.width();
+        int height = rect.height();
+        label->setFixedHeight((int)qCeil(width / 200.0) * height);
+        label->setText(msg);
+}
+
+bool
+RegisterPage::checkOneField(QLabel *label, const TextField *t_field, const QString &msg)
+{
+        if (t_field->isValid()) {
+                label->setText("");
+                label->hide();
+                return true;
+        } else {
+                label->show();
+                showError(label, msg);
+                return false;
+        }
+}
+
+bool
+RegisterPage::checkFields()
+{
+        error_label_->setText("");
+        error_username_label_->setText("");
+        error_password_label_->setText("");
+        error_password_confirmation_label_->setText("");
+
+        error_username_label_->hide();
+        error_password_label_->hide();
+        error_password_confirmation_label_->hide();
+
+        password_confirmation_->setValid(true);
+        server_input_->setValid(true);
+
+        bool all_fields_good = true;
+        if (username_input_->isModified() &&
+            !checkOneField(error_username_label_,
+                           username_input_,
+                           tr("The username must not be empty, and must contain only the "
+                              "characters a-z, 0-9, ., _, =, -, and /."))) {
+                all_fields_good = false;
+        } else if (password_input_->isModified() &&
+                   !checkOneField(error_password_label_,
+                                  password_input_,
+                                  tr("Password is not long enough (min 8 chars)"))) {
+                all_fields_good = false;
+        } else if (password_confirmation_->isModified() &&
+                   password_input_->text() != password_confirmation_->text()) {
+                error_password_confirmation_label_->show();
+                showError(error_password_confirmation_label_, tr("Passwords don't match"));
+                password_confirmation_->setValid(false);
+                all_fields_good = false;
+        } else if (server_input_->isModified() &&
+                   (!server_input_->hasAcceptableInput() || server_input_->text().isEmpty())) {
+                showError(tr("Invalid server name"));
+                server_input_->setValid(false);
+                all_fields_good = false;
+        }
+        if (!username_input_->isModified() || !password_input_->isModified() ||
+            !password_confirmation_->isModified() || !server_input_->isModified()) {
+                all_fields_good = false;
+        }
+        return all_fields_good;
 }
 
 void
 RegisterPage::onRegisterButtonClicked()
 {
-        error_label_->setText("");
-
-        if (!username_input_->hasAcceptableInput()) {
-                registerError(tr("Invalid username"));
-        } else if (!password_input_->hasAcceptableInput()) {
-                registerError(tr("Password is not long enough (min 8 chars)"));
-        } else if (password_input_->text() != password_confirmation_->text()) {
-                registerError(tr("Passwords don't match"));
-        } else if (!server_input_->hasAcceptableInput()) {
-                registerError(tr("Invalid server name"));
+        if (!checkFields()) {
+                showError(error_label_, tr("One or more fields have invalid inputs. Please correct those issues and try again."));
+                return;
         } else {
                 auto username = username_input_->text().toStdString();
                 auto password = password_input_->text().toStdString();

@@ -56,7 +56,6 @@ signals:
 
         //! Used to trigger the corresponding slot outside of the main thread.
         void versionErrorCb(const QString &err);
-        void loginErrorCb(const QString &err);
         void versionOkCb(LoginPage::LoginMethod method);
 
         void loginOk(const mtx::responses::Login &res);
@@ -66,8 +65,8 @@ protected:
 
 public slots:
         // Displays errors produced during the login.
-        void loginError(const QString &msg);
-        void matrixIdError(const QString &msg);
+        void showError(const QString &msg);
+        void showError(QLabel *label, const QString &msg);
 
 private slots:
         // Callback for the back button.
@@ -88,7 +87,6 @@ private slots:
         void versionOk(LoginPage::LoginMethod method);
 
 private:
-        bool isMatrixIdValid();
         void checkHomeserverVersion();
         std::string initialDeviceName()
         {
