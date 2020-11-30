@@ -31,7 +31,7 @@ public:
         void setLabelFontSize(qreal size);
         void setShowLabel(bool value);
         void setUnderlineColor(const QColor &color);
-        void setRegexp(const QString &regexp);
+        void setRegexp(const QRegularExpression &regexp);
         void setValid(bool valid);
 
         QColor inkColor() const;

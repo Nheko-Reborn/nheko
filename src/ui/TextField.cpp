@@ -6,7 +6,6 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QPropertyAnimation>
-#include <QRegularExpression>
 #include <QRegularExpressionValidator>
 
 TextField::TextField(QWidget *parent)
@@ -165,9 +164,9 @@ TextField::setUnderlineColor(const QColor &color)
 }
 
 void
-TextField::setRegexp(const QString &regexp)
+TextField::setRegexp(const QRegularExpression &regexp)
 {
-        regexp_.setPattern(regexp);
+        regexp_ = regexp;
 }
 
 QColor

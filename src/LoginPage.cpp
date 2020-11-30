@@ -90,7 +90,7 @@ LoginPage::LoginPage(QWidget *parent)
 
         matrixid_input_ = new TextField(this);
         matrixid_input_->setLabel(tr("Matrix ID"));
-        matrixid_input_->setRegexp("@.+?:.{3,}");
+        matrixid_input_->setRegexp(QRegularExpression("@.+?:.{3,}"));
         matrixid_input_->setPlaceholderText(tr("e.g @joe:matrix.org"));
         matrixid_input_->setToolTip(
           tr("Your login name. A mxid should start with @ followed by the user id. After the user "
@@ -176,9 +176,6 @@ LoginPage::LoginPage(QWidget *parent)
 
         connect(this, &LoginPage::versionOkCb, this, &LoginPage::versionOk);
         connect(this, &LoginPage::versionErrorCb, this, &LoginPage::versionError);
-        // unused thing, but if enable, you should check loginError function now,
-        // because loginError now accept QLabel *label
-        // connect(this, &LoginPage::loginErrorCb, this, &LoginPage::loginError);
 
         connect(back_button_, SIGNAL(clicked()), this, SLOT(onBackButtonClicked()));
         connect(login_button_, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
@@ -454,7 +451,7 @@ LoginPage::onLoginButtonClicked()
                         sso->deleteLater();
                 });
                 connect(sso, &SSOHandler::ssoFailed, this, [this, sso]() {
-                        emit showError(error_label_, tr("SSO login failed"));
+                        showError(error_label_, tr("SSO login failed"));
                         emit errorOccurred();
                         sso->deleteLater();
                 });

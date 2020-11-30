@@ -87,13 +87,13 @@ RegisterPage::RegisterPage(QWidget *parent)
 
         username_input_ = new TextField();
         username_input_->setLabel(tr("Username"));
-        username_input_->setRegexp("[a-z0-9._=/-]+");
+        username_input_->setRegexp(QRegularExpression("[a-z0-9._=/-]+"));
         username_input_->setToolTip(tr("The username must not be empty, and must contain only the "
                                        "characters a-z, 0-9, ., _, =, -, and /."));
 
         password_input_ = new TextField();
         password_input_->setLabel(tr("Password"));
-        password_input_->setRegexp("^.{8,}$");
+        password_input_->setRegexp(QRegularExpression("^.{8,}$"));
         password_input_->setEchoMode(QLineEdit::Password);
         password_input_->setToolTip(tr("Please choose a secure password. The exact requirements "
                                        "for password strength may depend on your server."));

@@ -56,7 +56,6 @@ signals:
 
         //! Used to trigger the corresponding slot outside of the main thread.
         void versionErrorCb(const QString &err);
-        void loginErrorCb(const QString &err);
         void versionOkCb(LoginPage::LoginMethod method);
 
         void loginOk(const mtx::responses::Login &res);
