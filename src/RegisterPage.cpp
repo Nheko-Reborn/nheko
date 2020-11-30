@@ -371,7 +371,8 @@ RegisterPage::checkFields()
         server_input_->setValid(true);
 
         bool all_fields_good = true;
-        if (username_input_->isModified() && !checkOneField(error_username_label_,
+        if (username_input_->isModified() &&
+            !checkOneField(error_username_label_,
                            username_input_,
                            tr("The username must not be empty, and must contain only the "
                               "characters a-z, 0-9, ., _, =, -, and /."))) {
@@ -388,9 +389,13 @@ RegisterPage::checkFields()
                 password_confirmation_->setValid(false);
                 all_fields_good = false;
         } else if (server_input_->isModified() &&
-                  (!server_input_->hasAcceptableInput() || server_input_->text().isEmpty())) {
+                   (!server_input_->hasAcceptableInput() || server_input_->text().isEmpty())) {
                 showError(tr("Invalid server name"));
                 server_input_->setValid(false);
+                all_fields_good = false;
+        }
+        if (!username_input_->isModified() || !password_input_->isModified() ||
+            !password_confirmation_->isModified() || !server_input_->isModified()) {
                 all_fields_good = false;
         }
         return all_fields_good;
