@@ -82,6 +82,7 @@ Rectangle {
                     popup.completer.setSearchString(textArea.getText(completerTriggeredAt, cursorPosition));
                 }
 
+                selectByMouse: true
                 placeholderText: qsTr("Write a message...")
                 placeholderTextColor: colors.buttonText
                 color: colors.text
