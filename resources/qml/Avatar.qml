@@ -9,8 +9,6 @@ Rectangle {
     property alias url: img.source
     property string userid
     property string displayName
- 
-    property string usrUrl: TimelineManager.timeline.avatarUrl(userid)
 
     width: 48
     height: 48
