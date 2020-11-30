@@ -406,8 +406,8 @@ LoginPage::onLoginButtonClicked()
                                                           : deviceName_->text().toStdString(),
                   [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
                           if (err) {
-                                  emit showError(error_label_,
-                                                 QString::fromStdString(err->matrix_error.error));
+                                  showError(error_label_,
+                                            QString::fromStdString(err->matrix_error.error));
                                   emit errorOccurred();
                                   return;
                           }
@@ -432,7 +432,7 @@ LoginPage::onLoginButtonClicked()
                         http::client()->login(
                           req, [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
                                   if (err) {
-                                          emit showError(
+                                          showError(
                                             error_label_,
                                             QString::fromStdString(err->matrix_error.error));
                                           emit errorOccurred();
