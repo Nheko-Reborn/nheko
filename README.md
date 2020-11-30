@@ -28,6 +28,7 @@ Most of the features you would expect from a chat application are missing right 
 but we are getting close to a more feature complete client.
 Specifically there is support for:
 - E2E encryption.
+- VoIP calls (voice & video)
 - User registration.
 - Creating, joining & leaving rooms.
 - Sending & receiving invites.
@@ -124,6 +125,13 @@ brew cask install nheko
 - Boost 1.70 or greater.
 - [libolm](https://gitlab.matrix.org/matrix-org/olm)
 - [spdlog](https://github.com/gabime/spdlog)
+- [GStreamer](https://gitlab.freedesktop.org/gstreamer) 1.18.0 or greater (optional, needed for VoIP support).
+    - Installing the gstreamer core library plus gst-plugins-base, gst-plugins-good & gst-plugins-bad
+      is often sufficient. The qmlgl plugin though is often packaged separately. The actual plugin requirements
+      are as follows:
+    - Voice call support: dtls, opus, rtpmanager, srtp, webrtc
+    - Video call support (optional): compositor, opengl, qmlgl, rtp, vpx
+    - [libnice](https://gitlab.freedesktop.org/libnice/libnice)
 - A compiler that supports C++ 17:
     - Clang 6 (tested on Travis CI)
     - GCC 7 (tested on Travis CI)
