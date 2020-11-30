@@ -108,20 +108,15 @@ RegisterPage::RegisterPage(QWidget *parent)
           tr("A server that allows registration. Since matrix is decentralized, you need to first "
              "find a server you can register on or host your own."));
 
-        QFont font;
-
         error_username_label_ = new QLabel(this);
-        error_username_label_->setFont(font);
         error_username_label_->setWordWrap(true);
         error_username_label_->hide();
 
         error_password_label_ = new QLabel(this);
-        error_password_label_->setFont(font);
         error_password_label_->setWordWrap(true);
         error_password_label_->hide();
 
         error_password_confirmation_label_ = new QLabel(this);
-        error_password_confirmation_label_->setFont(font);
         error_password_confirmation_label_->setWordWrap(true);
         error_password_confirmation_label_->hide();
 
@@ -138,7 +133,6 @@ RegisterPage::RegisterPage(QWidget *parent)
         button_layout_->setMargin(0);
 
         error_label_ = new QLabel(this);
-        error_label_->setFont(font);
         error_label_->setWordWrap(true);
 
         register_button_ = new RaisedButton(tr("REGISTER"), this);
@@ -162,14 +156,14 @@ RegisterPage::RegisterPage(QWidget *parent)
         connect(register_button_, SIGNAL(clicked()), this, SLOT(onRegisterButtonClicked()));
 
         connect(username_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
-        connect(username_input_, &TextField::editingFinished, this, [this]() { checkFields(); });
+        connect(username_input_, &TextField::editingFinished, this, &RegisterPage::checkFields);
         connect(password_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
-        connect(password_input_, &TextField::editingFinished, this, [this]() { checkFields(); });
+        connect(password_input_, &TextField::editingFinished, this, &RegisterPage::checkFields);
         connect(password_confirmation_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
         connect(
-          password_confirmation_, &TextField::editingFinished, this, [this]() { checkFields(); });
+          password_confirmation_, &TextField::editingFinished, this, &RegisterPage::checkFields);
         connect(server_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
-        connect(server_input_, &TextField::editingFinished, this, [this]() { checkFields(); });
+        connect(server_input_, &TextField::editingFinished, this, &RegisterPage::checkFields);
         connect(this, &RegisterPage::registerErrorCb, this, [this](const QString &msg) {
                 showError(msg);
         });
