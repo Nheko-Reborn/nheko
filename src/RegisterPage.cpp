@@ -371,21 +371,24 @@ RegisterPage::checkFields()
         server_input_->setValid(true);
 
         bool all_fields_good = true;
-        if (!checkOneField(error_username_label_,
+        if (username_input_->isModified() && !checkOneField(error_username_label_,
                            username_input_,
                            tr("The username must not be empty, and must contain only the "
                               "characters a-z, 0-9, ., _, =, -, and /."))) {
                 all_fields_good = false;
-        } else if (!checkOneField(error_password_label_,
+        } else if (password_input_->isModified() &&
+                   !checkOneField(error_password_label_,
                                   password_input_,
                                   tr("Password is not long enough (min 8 chars)"))) {
                 all_fields_good = false;
-        } else if (password_input_->text() != password_confirmation_->text()) {
+        } else if (password_confirmation_->isModified() &&
+                   password_input_->text() != password_confirmation_->text()) {
                 error_password_confirmation_label_->show();
                 showError(error_password_confirmation_label_, tr("Passwords don't match"));
                 password_confirmation_->setValid(false);
                 all_fields_good = false;
-        } else if (!server_input_->hasAcceptableInput() || server_input_->text().isEmpty()) {
+        } else if (server_input_->isModified() &&
+                  (!server_input_->hasAcceptableInput() || server_input_->text().isEmpty())) {
                 showError(tr("Invalid server name"));
                 server_input_->setValid(false);
                 all_fields_good = false;
