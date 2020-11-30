@@ -339,7 +339,7 @@ TimelineViewManager::toggleCameraView()
 void
 TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId) const
 {
-        if (mxcUrl.isEmpty() || mxcUrl.isNull()) {
+        if (mxcUrl.isEmpty()) {
                 return;
         }
         QQuickImageResponse *imgResponse =
