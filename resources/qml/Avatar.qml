@@ -49,6 +49,12 @@ Rectangle {
 
         }
 
+        MouseArea {
+            id: mouseArea
+
+            anchors.fill: parent
+            onClicked: TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
+        }
     }
 
     Rectangle {
