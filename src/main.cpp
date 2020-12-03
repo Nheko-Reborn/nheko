@@ -174,7 +174,7 @@ main(int argc, char *argv[])
 
         parser.process(app);
 
-        app.setWindowIcon(QIcon(":/logos/nheko.png"));
+        app.setWindowIcon(QIcon::fromTheme("nheko", QIcon{":/logos/nheko.png"}));
 
         http::init();
 
