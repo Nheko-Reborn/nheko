@@ -4,7 +4,7 @@
 <context>
     <name>ActiveCallBar</name>
     <message>
-        <location filename="../qml/ActiveCallBar.qml" line="+132"/>
+        <location filename="../qml/ActiveCallBar.qml" line="+174"/>
         <source>Unmute Mic</source>
         <translation type="unfinished"></translation>
     </message>
@@ -35,7 +35,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1850"/>
+        <location filename="../../src/Cache.cpp" line="+1821"/>
         <source>You joined this room.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -49,17 +49,17 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+766"/>
+        <location line="+765"/>
         <source>Invited user: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-494"/>
+        <location line="-493"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+450"/>
+        <location line="+449"/>
         <source>Room %1 created.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -139,7 +139,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-576"/>
+        <location line="-575"/>
         <source>Cache migration failed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -154,7 +154,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+50"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -376,20 +376,20 @@
     </message>
     <message>
         <location line="+32"/>
-        <location line="+62"/>
+        <location line="+63"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-48"/>
-        <location line="+61"/>
+        <location line="-49"/>
+        <location line="+62"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-51"/>
+        <location line="-52"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
         <translation type="unfinished"></translation>
@@ -508,7 +508,7 @@ Example: https://server.my:8787</source>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+216"/>
+        <location line="+213"/>
         <source>LOGIN</source>
         <translation>ΕΙΣΟΔΟΣ</translation>
     </message>
@@ -653,7 +653,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+41"/>
         <source>Write a message...</source>
         <translation type="unfinished">Γράψε ένα μήνυμα...</translation>
     </message>
@@ -754,12 +754,12 @@ Example: https://server.my:8787</source>
     </message>
     <message>
         <location line="+2"/>
-        <location line="+291"/>
+        <location line="+286"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-287"/>
+        <location line="-282"/>
         <source>Password</source>
         <translation>Κωδικός</translation>
     </message>
@@ -784,7 +784,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+30"/>
         <source>REGISTER</source>
         <translation>ΕΓΓΡΑΦΗ</translation>
     </message>
@@ -794,22 +794,22 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+200"/>
-        <source>Regisration Failed</source>
+        <location line="+208"/>
+        <source>One or more fields have invalid inputs. Please correct those issues and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-19"/>
+        <location line="-25"/>
         <source>Password is not long enough (min 8 chars)</source>
         <translation>Ο κωδικός δεν αποτελείται από αρκετους χαρακτήρες</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Passwords don&apos;t match</source>
         <translation>Οι κωδικοί δεν ταιριίαζουν</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Invalid server name</source>
         <translation>Λανθασμένο όνομα διακομιστή</translation>
     </message>
@@ -825,7 +825,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1794"/>
+        <location filename="../../src/Cache.cpp" line="+1831"/>
         <source>no version stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -972,8 +972,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+130"/>
-        <location line="+8"/>
+        <location line="+74"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation type="unfinished"></translation>
@@ -1118,12 +1117,12 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-812"/>
+        <location line="-748"/>
         <source>You joined this room.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+814"/>
+        <location line="+750"/>
         <source>Rejected the knock from %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1213,7 +1212,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+452"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+455"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation type="unfinished"></translation>
     </message>

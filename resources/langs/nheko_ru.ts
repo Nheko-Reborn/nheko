@@ -4,7 +4,7 @@
 <context>
     <name>ActiveCallBar</name>
     <message>
-        <location filename="../qml/ActiveCallBar.qml" line="+132"/>
+        <location filename="../qml/ActiveCallBar.qml" line="+174"/>
         <source>Unmute Mic</source>
         <translation>Включить Микрофон</translation>
     </message>
@@ -35,7 +35,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1850"/>
+        <location filename="../../src/Cache.cpp" line="+1821"/>
         <source>You joined this room.</source>
         <translation>Вы присоединились к этой комнате.</translation>
     </message>
@@ -49,17 +49,17 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+766"/>
+        <location line="+765"/>
         <source>Invited user: %1</source>
         <translation>Приглашённый пользователь: %1</translation>
     </message>
     <message>
-        <location line="-494"/>
+        <location line="-493"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Миграция кэша для текущей версии не удалась. Это может происходить по разным причинам. Пожалуйста сообщите о проблеме и попробуйте временно использовать старую версию. Так-же вы можете попробовать удалить кэш самостоятельно.</translation>
     </message>
     <message>
-        <location line="+450"/>
+        <location line="+449"/>
         <source>Room %1 created.</source>
         <translation>Комната %1 создана.</translation>
     </message>
@@ -139,7 +139,7 @@
         <translation>Разблокированный пользователь: %1</translation>
     </message>
     <message>
-        <location line="-576"/>
+        <location line="-575"/>
         <source>Cache migration failed!</source>
         <translation>Миграция кэша не удалась!</translation>
     </message>
@@ -154,7 +154,7 @@
         <translation>Ваш кэш новее, чем эта версия Nheko поддерживает. Пожалуйста обновитесь или отчистите ваш кэш.</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+50"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Не удалось восстановить учетную запись OLM. Пожалуйста, войдите снова.</translation>
     </message>
@@ -376,20 +376,20 @@
     </message>
     <message>
         <location line="+32"/>
-        <location line="+62"/>
+        <location line="+63"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
         <translation>-- Ошибка дешифрования (Не удалось получить megolm-ключи для бд) --</translation>
     </message>
     <message>
-        <location line="-48"/>
-        <location line="+61"/>
+        <location line="-49"/>
+        <location line="+62"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
         <translation>-- Ошибка Дешифрования (%1) --</translation>
     </message>
     <message>
-        <location line="-51"/>
+        <location line="-52"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
         <translation>-- Шифрованое Событие (Неизвестный тип события) --</translation>
@@ -444,17 +444,17 @@
     <message>
         <location filename="../../src/timeline/InputBar.cpp" line="+228"/>
         <source>Select a file</source>
-        <translation type="unfinished">Выберите файл</translation>
+        <translation>Выберите файл</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Все файлы (*)</translation>
+        <translation>Все файлы (*)</translation>
     </message>
     <message>
         <location line="+329"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished">Не удалось загрузить медиа. Пожалуйста попробуйте ещё раз</translation>
+        <translation>Не удалось загрузить медиа. Пожалуйста попробуйте ещё раз</translation>
     </message>
 </context>
 <context>
@@ -512,19 +512,19 @@ Example: https://server.my:8787</source>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+216"/>
+        <location line="+213"/>
         <source>LOGIN</source>
         <translation>ВОЙТИ</translation>
     </message>
     <message>
         <location line="-100"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished"></translation>
+        <translation>Автообноружение не удалось. Получен поврежденный ответ.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished"></translation>
+        <translation>Автообноружение не удалось. Не известаня ошибка во время запроса .well-known.</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -544,7 +544,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+55"/>
         <source>SSO LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>SSO ВХОД</translation>
     </message>
     <message>
         <location line="+37"/>
@@ -576,7 +576,7 @@ Example: https://server.my:8787</source>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+105"/>
         <location line="+9"/>
         <source>removed</source>
-        <translation type="unfinished"></translation>
+        <translation>убрано</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -636,7 +636,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>Negotiating call...</source>
-        <translation type="unfinished"></translation>
+        <translation>Совершение звонка...</translation>
     </message>
 </context>
 <context>
@@ -644,32 +644,32 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/MessageInput.qml" line="+27"/>
         <source>Hang up</source>
-        <translation type="unfinished">Завершить звонок</translation>
+        <translation>Завершить звонок</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Place a call</source>
-        <translation type="unfinished">Позвонить</translation>
+        <translation>Позвонить</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Send a file</source>
-        <translation type="unfinished">Отправить файл</translation>
+        <translation>Отправить файл</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+41"/>
         <source>Write a message...</source>
         <translation>Написать сообщение…</translation>
     </message>
     <message>
         <location line="+144"/>
         <source>Emoji</source>
-        <translation type="unfinished">Эмоджи</translation>
+        <translation>Эмоджи</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>Отправить</translation>
     </message>
 </context>
 <context>
@@ -728,7 +728,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/main.cpp" line="+169"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать уникальный профиль, который позволяет вести несколько аккаунтов и запускать множество сущностей nheko. </translation>
     </message>
     <message>
         <location line="+2"/>
@@ -758,19 +758,19 @@ Example: https://server.my:8787</source>
     </message>
     <message>
         <location line="+2"/>
-        <location line="+291"/>
+        <location line="+286"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
-        <translation>Имя пользователя не должно быть пустым и должно содержать только символы a-z, 0-9, ., _, =, -, and /.</translation>
+        <translation>Имя пользователя не должно быть пустым и должно содержать только символы a-z, 0-9, ., _, =, -, и /.</translation>
     </message>
     <message>
-        <location line="-287"/>
+        <location line="-282"/>
         <source>Password</source>
         <translation>Пароль</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Пожалуйста выбирите надежный пароль. Надёжность пароля, влияет на безопасность сервера.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -785,35 +785,35 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сервер разрешающий регистрацию.Поскольку matrix децентрализованный, нужно выбрать сервер где вы можете зарегистрироваться или поднимите свой сервер.</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+30"/>
         <source>REGISTER</source>
         <translation>РЕГИСТРАЦИЯ</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>No supported registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет поддреживаемых регистрационных потоков</translation>
     </message>
     <message>
-        <location line="+200"/>
-        <source>Regisration Failed</source>
-        <translation type="unfinished"></translation>
+        <location line="+208"/>
+        <source>One or more fields have invalid inputs. Please correct those issues and try again.</source>
+        <translation>Одно или более полей имеют некорректный ввод. Пожалуйста устраните ошибки и попробуйте снова.</translation>
     </message>
     <message>
-        <location line="-19"/>
+        <location line="-25"/>
         <source>Password is not long enough (min 8 chars)</source>
         <translation>Слишком короткий пароль (минимум 8 символов)</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Passwords don&apos;t match</source>
         <translation>Пароли не совпадают</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Invalid server name</source>
         <translation>Неверное имя сервера</translation>
     </message>
@@ -829,9 +829,9 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1794"/>
+        <location filename="../../src/Cache.cpp" line="+1831"/>
         <source>no version stored</source>
-        <translation type="unfinished"></translation>
+        <translation>нет сохраненной версии</translation>
     </message>
 </context>
 <context>
@@ -850,25 +850,25 @@ Example: https://server.my:8787</source>
         <location line="+18"/>
         <source>Favourite</source>
         <comment>Standard matrix tag for favourites</comment>
-        <translation type="unfinished"></translation>
+        <translation>Важные</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Low Priority</source>
         <comment>Standard matrix tag for low priority rooms</comment>
-        <translation type="unfinished"></translation>
+        <translation>Низкий Приоритет</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Server Notice</source>
         <comment>Standard matrix tag for server notices</comment>
-        <translation type="unfinished"></translation>
+        <translation>Серверное Объявление</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Adds or removes the specified tag.</source>
         <comment>WhatsThis hint for tag menu actions</comment>
-        <translation type="unfinished"></translation>
+        <translation>Добавить или удалить выбранные тэг.</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -880,13 +880,13 @@ Example: https://server.my:8787</source>
         <location line="+4"/>
         <source>New Tag</source>
         <comment>Tag name prompt title</comment>
-        <translation type="unfinished"></translation>
+        <translation>Новый Тэг</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Tag:</source>
         <comment>Tag name prompt</comment>
-        <translation type="unfinished"></translation>
+        <translation>Тэг:</translation>
     </message>
     <message>
         <location line="+169"/>
@@ -976,8 +976,7 @@ Example: https://server.my:8787</source>
         <translation>Ошибка редактирования сообщения: %1</translation>
     </message>
     <message>
-        <location line="+130"/>
-        <location line="+8"/>
+        <location line="+74"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation>Не удалось зашифровать сообщение, отправка отменена!</translation>
@@ -1020,7 +1019,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>%1 made this room require and invitation to join.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 сделал вход в комнату по приглашению.</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -1095,7 +1094,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>Revoked the invite to %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Приглашение для %1 отменено.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1120,23 +1119,23 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-11"/>
         <source>%1 redacted their knock.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 отредактировал его &quot;стук&quot;.</translation>
     </message>
     <message>
-        <location line="-812"/>
+        <location line="-748"/>
         <source>You joined this room.</source>
         <translation>Вы присоединились к этой комнате.</translation>
     </message>
     <message>
-        <location line="+814"/>
+        <location line="+750"/>
         <source>Rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отверг &quot;стук&quot; от %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 покинул чат, после того, как уже его покинул.</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1146,7 +1145,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-5"/>
         <source>%1 knocked.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 постучался.</translation>
     </message>
 </context>
 <context>
@@ -1202,7 +1201,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>Remove message</source>
-        <translation type="unfinished"></translation>
+        <translation>Убрать сообщение</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1212,15 +1211,15 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+41"/>
         <source>No room open</source>
-        <translation type="unfinished"></translation>
+        <translation>Комната не выбрана</translation>
     </message>
 </context>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+452"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+455"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не найдено личного чата с этим пользователем. Создайте зашифрованный личный чат с этим пользователем и попытайтесь еще раз.</translation>
     </message>
 </context>
 <context>
@@ -1300,7 +1299,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>Set presence automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить &apos;presence&apos;автоматически</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1376,54 +1375,54 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+57"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Держать приложение запущенным в фоне, после закрытия окна.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Запускать приложение в фоне, без открытия окна.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - Circle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Поменять отображение пользовательского аватара в чатах. ВЫКЛ - квадратный, ВКЛ - округлый.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отображать колонку содержащую группы и тэги рядом со списком комнаты.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Дешифровывать сообщение в сайдбаре</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Дешифровывать сообщение отображающиеся в сайдбаре. Действует только на шифрованные чаты.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Отображать кнопки в таймлайне</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отображать кнопки быстрого ответа, реакции или предоставления дополнительных опций рядом с каждым сообщением.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Ограничить ширину таймлайна</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить максимальную ширину сообщений в таймлайне (в пикселях). Это может повысить читаемость на широких экранах, когда Nheko в полноэкранном режиме.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1434,19 +1433,21 @@ Only affects messages in encrypted chats.</source>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отображать кто печатает в комнате.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Sort rooms by unreads</source>
-        <translation type="unfinished"></translation>
+        <translation>Сортировать комнату по непрочитанным</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отображать сначала комнаты с новыми сообщениями.
+Если это выключено, список комнат будет отсортировать по времени последнего сообщения в комнате.
+Если это включено, комнаты в которых включены уведомления (маленькие кружки с числами) буду отсортированы на верху. Комнаты, которые вы заглушили, будут отсортированы по времени, пока вы не сделаете их важнее чем другие комнаты.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1457,18 +1458,20 @@ If this is on, rooms which have active notifications (the small circle with a nu
         <location line="+2"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывать, если ваше сообщение было прочитано.
+Стату отображается за временем сообщения.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Посылать сообщение в формате Markdown</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished"></translation>
+        <translation>Разрешить использовать markdown в сообщениях.
+Когда выключено, все сообщения посылаются как обычный текст.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1478,43 +1481,44 @@ When disabled, all messages are sent as a plain text.</source>
     <message>
         <location line="+2"/>
         <source>Notify about received message when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Предупреждать о получании сообщение, когда приложение не выбрано.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Alert on notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Предупреждать о уведомлении</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывать предупреждение, когда получено сообщеение.
+На это обычно реагирует иконка приложения в таскбаре.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Подсвечивать сообщение на панели</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Поменять цвет фона сообщения, когда вы навели курсор над ним.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Большие эмоджи в таймлайне</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Делать шрифт больше, если сообщения содержать только несколько эмоджи.</translation>
     </message>
     <message>
         <location line="+56"/>
         <source>Share keys with verified users and devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Делиться ключами с проверенными участниками и устройствами</translation>
     </message>
     <message>
         <location line="-48"/>
@@ -1524,7 +1528,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished"></translation>
+        <translation>Поменять коэфициент масштаба для всего пользовательского интерфейса.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1534,7 +1538,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+1"/>
         <source>Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Семья Шрифта</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1544,42 +1548,42 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+4"/>
         <source>Ringtone</source>
-        <translation type="unfinished"></translation>
+        <translation>Мелодия Звонка</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить звук уведомления, когда получено приглашение для звонка.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Microphone</source>
-        <translation type="unfinished"></translation>
+        <translation>Микрофон</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Камера</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Разрешение Камеры</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera frame rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Частота смены кадров для камеры</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished"></translation>
+        <translation>Разрешить помощь резервного сервера для звонков</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Будет использован turn.matrix.org для помощи, когда вам домашний сервер не позволяет.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1619,37 +1623,37 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+57"/>
         <source>INTERFACE</source>
-        <translation type="unfinished"></translation>
+        <translation>ИНТЕРФЕЙС</translation>
     </message>
     <message>
         <location line="+156"/>
         <source>Touchscreen mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Сенсорный режим</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation type="unfinished"></translation>
+        <translation>Будет прерывать выделение текста в таймлайне, чтобы сделать перелистывание косанием проще.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Семья шрифта эмоджи</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>Automatically replies to key requests from other users, if they are verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Автоматически отвечать на запросы ключей от других пользователей, если они верифицированы.</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Select a file</source>
-        <translation type="unfinished">Выберите файл</translation>
+        <translation>Выберите файл</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Все файлы (*)</translation>
+        <translation>Все файлы (*)</translation>
     </message>
     <message>
         <location line="+217"/>
@@ -1700,22 +1704,22 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../qml/device-verification/Waiting.qml" line="+7"/>
         <source>Waiting for other party</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидание другой стороны</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Waiting for other side to accept the verification request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидание подтверждения запроса верификации другой стороной.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to continue the verification process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидание другой стороны для продолжения верификационного процесса.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to complete the verification process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидание другой стороны, для завершение верификационного процесса.</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1728,7 +1732,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+47"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation>Добро пожаловать в nheko, клиент протокола Matrix!</translation>
+        <translation>Добро пожаловать в nheko, клиент для протокола Matrix!</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1759,17 +1763,17 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/AcceptCall.cpp" line="+43"/>
         <source>Incoming call: No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Входящий звонок: Микрофон не выбран.</translation>
     </message>
     <message>
         <location line="+51"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Видео Звонок</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Голосовой Звонок</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1830,7 +1834,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/FallbackAuth.cpp" line="+30"/>
         <source>Open Fallback in Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть ответ в Браузере</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1910,7 +1914,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/PlaceCall.cpp" line="+35"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Микрофон не найден.</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1920,7 +1924,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+6"/>
         <source>Video</source>
-        <translation type="unfinished"></translation>
+        <translation>Видео</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1930,7 +1934,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+10"/>
         <source>Place a call to </source>
-        <translation type="unfinished"></translation>
+        <translation>Позвонить </translation>
     </message>
 </context>
 <context>
@@ -2079,7 +2083,7 @@ Media size: %2
     <message>
         <location line="-24"/>
         <source>Respond to key requests</source>
-        <translation type="unfinished"></translation>
+        <translation>Отвечать на запросы на ключ</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2154,7 +2158,7 @@ Media size: %2
     <message>
         <location line="+14"/>
         <source>Confirm DM</source>
-        <translation type="unfinished"></translation>
+        <translation>Подтвердить личный чат</translation>
     </message>
     <message>
         <location line="+1"/>
