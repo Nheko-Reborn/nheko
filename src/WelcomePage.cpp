@@ -37,8 +37,7 @@ WelcomePage::WelcomePage(QWidget *parent)
         QFont subTitleFont;
         subTitleFont.setPointSizeF(subTitleFont.pointSizeF() * 1.5);
 
-        QIcon icon;
-        icon.addFile(":/logos/splash.png");
+        QIcon icon{QIcon::fromTheme("nheko", QIcon{":/logos/splash.png"})};
 
         auto logo_ = new QLabel(this);
         logo_->setPixmap(icon.pixmap(256));
