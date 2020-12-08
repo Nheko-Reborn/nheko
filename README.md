@@ -56,6 +56,7 @@ can be found in the [Github releases](https://github.com/Nheko-Reborn/nheko/rele
 [![Packaging status](https://repology.org/badge/tiny-repos/nheko.svg)](https://repology.org/project/nheko/versions)
 
 #### Arch Linux
+
 ```bash
 pacaur -S nheko # nheko-git
 ```
