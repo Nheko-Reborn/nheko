@@ -405,7 +405,9 @@ void
 RegisterPage::onRegisterButtonClicked()
 {
         if (!checkFields()) {
-                showError(error_label_, tr("One or more fields have invalid inputs. Please correct those issues and try again."));
+                showError(error_label_,
+                          tr("One or more fields have invalid inputs. Please correct those issues "
+                             "and try again."));
                 return;
         } else {
                 auto username = username_input_->text().toStdString();
