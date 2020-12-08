@@ -66,6 +66,13 @@ build-macos:
         -DUSE_BUNDLED_BOOST=ON
         -DCI_BUILD=ON
     - cmake --build build
+  after_script:
+    - ./.ci/macos/deploy.sh
+    - ./.ci/upload-nightly-gitlab.sh artifacts/nheko-${VERSION}.dmg
+  artifacts:
+    paths:
+      - artifacts/nheko-${VERSION}.dmg
+    name: nheko-${CI_COMMIT_REF_NAME}-${VERSION}-macos
   cache:
     key: "${CI_JOB_NAME}"
     paths:
