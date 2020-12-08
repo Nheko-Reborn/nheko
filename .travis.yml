@@ -14,27 +14,9 @@ notifications:
 cache:
   directories:
     - .hunter
-    - build-flatpak/.flatpak-builder
 
 matrix:
     include:
-        - os: osx
-          compiler: clang
-          # C++17 support
-          osx_image: xcode10.2
-          env:
-            - DEPLOYMENT=1
-          addons:
-            homebrew:
-              taps: nlohmann/json
-              packages:
-                - clang-format
-                - cmake
-                - ninja
-                - openssl
-                - qt5
-                - python3 # for uploads
-              update: true # workaround for broken travis homebrew
         - os: linux
           compiler: gcc-7
           env:
@@ -56,28 +38,6 @@ matrix:
                     - qt512multimedia
                     - qt512quickcontrols2
                     - qt512graphicaleffects
-                    - liblmdb-dev
-                    - libgl1-mesa-dev # needed for missing gl.h
-        - os: linux
-          compiler: gcc-8
-          env:
-              - CXX=g++-8
-              - CC=gcc-8
-              - QT_PKG=510
-          addons:
-              apt:
-                  sources: 
-                    - ubuntu-toolchain-r-test
-                    - sourceline: 'ppa:beineri/opt-qt-5.10.1-xenial'
-                  packages: 
-                    - g++-8 
-                    - ninja-build
-                    - qt510base
-                    - qt510tools
-                    - qt510svg
-                    - qt510multimedia
-                    - qt510quickcontrols2
-                    - qt510graphicaleffects
                     - liblmdb-dev
                     - libgl1-mesa-dev # needed for missing gl.h
         - os: linux
@@ -104,27 +64,6 @@ matrix:
                     - qt510graphicaleffects
                     - liblmdb-dev
                     - libgl1-mesa-dev # needed for missing gl.h
-        - os: linux
-          env:
-              - DEPLOYMENT=1
-              - FLATPAK=1
-              - ARCH=amd64
-          addons:
-              apt:
-                  sources: 
-                    - sourceline: 'ppa:alexlarsson/flatpak'
-        - os: linux
-          arch: arm64
-          env:
-              - DEPLOYMENT=1
-              - FLATPAK=1
-              - ARCH=arm64
-          addons:
-              apt:
-                  sources: 
-                    - sourceline: 'ppa:alexlarsson/flatpak'
-                  packages: 
-                    - librsvg2-bin
 
 before_install:
     # Use TRAVIS_TAG if defined, or the short commit SHA otherwise
@@ -156,15 +95,5 @@ deploy:
   - nheko-${VERSION}-x86_64.AppImage
   on:
     condition: "$TRAVIS_OS_NAME == linux && $DEPLOYMENT == 1"
-    repo: Nheko-Reborn/nheko
-    tags: true
-- skip_cleanup: true
-  overwrite: true
-  provider: releases
-  api_key:
-    secure: "rDFG4DIwIG+A9R8seQ3SIXfWOWhJgJHlNQHtAsnfRrPOSIpI7kMebHLDO5sBPNaJ+9MH9acVTJZOabVLf0DdPqRsDUw/PN28aiiqbaH9+zAGOTxahaQ222Gz/ROf/iXvDoTDUnUzURqQUA0YlHy89Z1CnO7TKwlsYhA5A8n0biG7d8i7vQayvwYXfxlk7CouK+Y86ana4r54j1emGRg97p7BOhORibg54ZD520hN0Iif7EJM2hQDTWKZzTDdBt3mF1kBr7cBbuBHWuvE+eIFO3F3yi+u7ggHzw5FaAv245N4fhkpYUl/mSbhLrQG2NOnkglFCpQ2lLd6mWdXHwUNrxN/j+UPewmLg7CymY25zkiL43deDsT8KmpzYalmdaevCqEaX2VehuBzblmH4Re8wnXqBrab14fq0TNDfPqC+NKxy75mdxszbKBC55nTlTB+hsox43dvfvyXDSON4qAzwe9Q/tfp8mL2mehcM868vhw5cbNIskKT8SrhMwmA+sxoqnqLsmAjNVJVTgg6ppbMhjNMOBTndblRHfH6bxsgpTXPtnzC17o9Mw1WgF63eOWNYBEj2wW5ZvWX95Gvg5YzvsF178ipHZDqZfA62ShB3b89fcqN5SOxBsE8UYoHjQIHxQdWeKv23iFwmT8fWAOD8sKDcRyz0WCgidZ1/RjLqsU="
-  file: nheko-${VERSION}.dmg
-  on:
-    condition: "$TRAVIS_OS_NAME == osx && $DEPLOYMENT == 1"
     repo: Nheko-Reborn/nheko
     tags: true
