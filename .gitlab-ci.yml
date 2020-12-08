@@ -54,6 +54,7 @@ build-macos:
     - brew update
     - brew bundle --file=./.ci/macos/Brewfile
   script:
+    - export VERSION=$(git describe)
     - export PATH=/usr/local/opt/qt/bin/:${PATH}
     - export CMAKE_PREFIX_PATH=/usr/local/opt/qt5
     - cmake -GNinja -H. -Bbuild
