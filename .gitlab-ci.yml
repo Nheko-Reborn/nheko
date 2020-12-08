@@ -53,6 +53,7 @@ build-macos:
   before_script:
     - brew update
     - brew bundle --file=./.ci/macos/Brewfile
+    - pip install dmgbuild
   script:
     - export PATH=/usr/local/opt/qt/bin/:${PATH}
     - export CMAKE_PREFIX_PATH=/usr/local/opt/qt5
