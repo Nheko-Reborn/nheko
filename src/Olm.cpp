@@ -602,8 +602,8 @@ send_key_request_for(mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> e,
                                e.content.session_id);
 
         mtx::events::msg::KeyRequest request;
-        request.action               = !cancel ? mtx::events::msg::RequestAction::Request
-                                               : mtx::events::msg::RequestAction::Cancellation;
+        request.action = !cancel ? mtx::events::msg::RequestAction::Request
+                                 : mtx::events::msg::RequestAction::Cancellation;
         request.algorithm            = MEGOLM_ALGO;
         request.room_id              = e.room_id;
         request.sender_key           = e.content.sender_key;

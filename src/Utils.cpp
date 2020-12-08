@@ -638,7 +638,7 @@ utils::luminance(const QColor &col)
         qreal lumRgb[3];
 
         for (int i = 0; i < 3; i++) {
-                qreal v = colRgb[i] / 255.0;
+                qreal v                  = colRgb[i] / 255.0;
                 v <= 0.03928 ? lumRgb[i] = v / 12.92 : lumRgb[i] = qPow((v + 0.055) / 1.055, 2.4);
         }
 
