@@ -8,6 +8,7 @@
 #include <QString>
 #include <QTimer>
 
+#include "WebRTCSession.h"
 #include "mtx/events/collections.hpp"
 #include "mtx/events/voip.hpp"
 
@@ -16,11 +17,17 @@ struct TurnServer;
 }
 
 class QUrl;
-class WebRTCSession;
 
 class CallManager : public QObject
 {
         Q_OBJECT
+        Q_PROPERTY(bool isOnCall READ isOnCall NOTIFY newCallState)
+        Q_PROPERTY(bool isOnVideoCall READ isOnVideoCall NOTIFY newVideoCallState)
+        Q_PROPERTY(webrtc::State callState READ callState NOTIFY newCallState)
+        Q_PROPERTY(QString callPartyName READ callPartyName NOTIFY newCallParty)
+        Q_PROPERTY(QString callPartyAvatarUrl READ callPartyAvatarUrl NOTIFY newCallParty)
+        Q_PROPERTY(bool isMicMuted READ isMicMuted NOTIFY micMuteChanged)
+        Q_PROPERTY(bool callsSupported READ callsSupported CONSTANT)
 
 public:
         CallManager(QObject *);
@@ -28,21 +35,29 @@ public:
         void sendInvite(const QString &roomid, bool isVideo);
         void hangUp(
           mtx::events::msg::CallHangUp::Reason = mtx::events::msg::CallHangUp::Reason::User);
-        bool onActiveCall() const;
+        bool isOnCall() const { return session_.state() != webrtc::State::DISCONNECTED; }
+        bool isOnVideoCall() const { return session_.isVideo(); }
+        webrtc::State callState() const { return session_.state(); }
         QString callPartyName() const { return callPartyName_; }
         QString callPartyAvatarUrl() const { return callPartyAvatarUrl_; }
+        bool isMicMuted() const { return session_.isMicMuted(); }
+        bool callsSupported() const;
         void refreshTurnServer();
 
 public slots:
         void syncEvent(const mtx::events::collections::TimelineEvents &event);
+        void toggleMicMute();
+        void toggleCameraView() { session_.toggleCameraView(); }
 
 signals:
         void newMessage(const QString &roomid, const mtx::events::msg::CallInvite &);
         void newMessage(const QString &roomid, const mtx::events::msg::CallCandidates &);
         void newMessage(const QString &roomid, const mtx::events::msg::CallAnswer &);
         void newMessage(const QString &roomid, const mtx::events::msg::CallHangUp &);
-        void newCallParty();
+        void newCallState();
         void newVideoCallState();
+        void newCallParty();
+        void micMuteChanged();
         void turnServerRetrieved(const mtx::responses::TurnServer &);
 
 private slots:

@@ -36,13 +36,6 @@ class TimelineViewManager : public QObject
           bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
         Q_PROPERTY(
           bool isNarrowView MEMBER isNarrowView_ READ isNarrowView NOTIFY narrowViewChanged)
-        Q_PROPERTY(webrtc::State callState READ callState NOTIFY callStateChanged)
-        Q_PROPERTY(bool onVideoCall READ onVideoCall NOTIFY videoCallChanged)
-        Q_PROPERTY(QString callPartyName READ callPartyName NOTIFY callPartyChanged)
-        Q_PROPERTY(QString callPartyAvatarUrl READ callPartyAvatarUrl NOTIFY callPartyChanged)
-        Q_PROPERTY(bool isMicMuted READ isMicMuted NOTIFY micMuteChanged)
-        Q_PROPERTY(bool isOnCall READ isOnCall NOTIFY onCallChanged)
-        Q_PROPERTY(bool callsSupported READ callsSupported CONSTANT)
 
 public:
         TimelineViewManager(CallManager *callManager, ChatPage *parent = nullptr);
@@ -61,14 +54,6 @@ public:
         Q_INVOKABLE TimelineModel *activeTimeline() const { return timeline_; }
         Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
         bool isNarrowView() const { return isNarrowView_; }
-        webrtc::State callState() const { return WebRTCSession::instance().state(); }
-        bool onVideoCall() const { return WebRTCSession::instance().isVideo(); }
-        Q_INVOKABLE void setVideoCallItem();
-        QString callPartyName() const { return callManager_->callPartyName(); }
-        QString callPartyAvatarUrl() const { return callManager_->callPartyAvatarUrl(); }
-        bool isMicMuted() const { return WebRTCSession::instance().isMicMuted(); }
-        Q_INVOKABLE void toggleMicMute();
-        Q_INVOKABLE void toggleCameraView();
         Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId) const;
         Q_INVOKABLE QColor userColor(QString id, QColor background);
         Q_INVOKABLE QString escapeEmoji(QString str) const;
@@ -98,11 +83,6 @@ signals:
         void inviteUsers(QStringList users);
         void showRoomList();
         void narrowViewChanged();
-        void callStateChanged(webrtc::State);
-        void videoCallChanged();
-        void callPartyChanged();
-        void micMuteChanged();
-        void onCallChanged();
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
@@ -130,8 +110,7 @@ public slots:
         void queueCallMessage(const QString &roomid, const mtx::events::msg::CallHangUp &);
 
         void updateEncryptedDescriptions();
-        bool isOnCall() const;
-        bool callsSupported() const;
+        void setVideoCallItem();
 
         void enableBackButton()
         {

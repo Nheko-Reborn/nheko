@@ -6,14 +6,14 @@ import im.nheko 1.0
 Rectangle {
     id: activeCallBar
 
-    visible: TimelineManager.callState != WebRTCState.DISCONNECTED
+    visible: CallManager.isOnCall
     color: "#2ECC71"
     implicitHeight: visible ? rowLayout.height + 8 : 0
 
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            if (TimelineManager.onVideoCall)
+            if (CallManager.isOnVideoCall)
                 stackLayout.currentIndex = stackLayout.currentIndex ? 0 : 1;
 
         }
@@ -30,19 +30,19 @@ Rectangle {
         Avatar {
             width: avatarSize
             height: avatarSize
-            url: TimelineManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
-            displayName: TimelineManager.callPartyName
+            url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
+            displayName: CallManager.callPartyName
         }
 
         Label {
             font.pointSize: fontMetrics.font.pointSize * 1.1
-            text: "  " + TimelineManager.callPartyName + " "
+            text: "  " + CallManager.callPartyName + " "
         }
 
         Image {
             Layout.preferredWidth: 24
             Layout.preferredHeight: 24
-            source: TimelineManager.onVideoCall ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
+            source: CallManager.isOnVideoCall ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
         }
 
         Label {
@@ -52,11 +52,10 @@ Rectangle {
         }
 
         Item {
-            state: TimelineManager.callState
             states: [
                 State {
                     name: "OFFERSENT"
-                    when: state == WebRTCState.OFFERSENT
+                    when: CallManager.callState == WebRTCState.OFFERSENT
 
                     PropertyChanges {
                         target: callStateLabel
@@ -66,7 +65,7 @@ Rectangle {
                 },
                 State {
                     name: "CONNECTING"
-                    when: state == WebRTCState.CONNECTING
+                    when: CallManager.callState == WebRTCState.CONNECTING
 
                     PropertyChanges {
                         target: callStateLabel
@@ -76,7 +75,7 @@ Rectangle {
                 },
                 State {
                     name: "ANSWERSENT"
-                    when: state == WebRTCState.ANSWERSENT
+                    when: CallManager.callState == WebRTCState.ANSWERSENT
 
                     PropertyChanges {
                         target: callStateLabel
@@ -86,7 +85,7 @@ Rectangle {
                 },
                 State {
                     name: "CONNECTED"
-                    when: state == WebRTCState.CONNECTED
+                    when: CallManager.callState == WebRTCState.CONNECTED
 
                     PropertyChanges {
                         target: callStateLabel
@@ -100,13 +99,13 @@ Rectangle {
 
                     PropertyChanges {
                         target: stackLayout
-                        currentIndex: TimelineManager.onVideoCall ? 1 : 0
+                        currentIndex: CallManager.isOnVideoCall ? 1 : 0
                     }
 
                 },
                 State {
                     name: "DISCONNECTED"
-                    when: state == WebRTCState.DISCONNECTED
+                    when: CallManager.callState == WebRTCState.DISCONNECTED
 
                     PropertyChanges {
                         target: callStateLabel
@@ -132,7 +131,7 @@ Rectangle {
             }
 
             interval: 1000
-            running: TimelineManager.callState == WebRTCState.CONNECTED
+            running: CallManager.callState == WebRTCState.CONNECTED
             repeat: true
             onTriggered: {
                 var d = new Date();
@@ -149,7 +148,7 @@ Rectangle {
         }
 
         ImageButton {
-            visible: TimelineManager.onVideoCall
+            visible: CallManager.isOnVideoCall
             width: 24
             height: 24
             buttonTextColor: "#000000"
@@ -157,7 +156,7 @@ Rectangle {
             hoverEnabled: true
             ToolTip.visible: hovered
             ToolTip.text: "Toggle camera view"
-            onClicked: TimelineManager.toggleCameraView()
+            onClicked: CallManager.toggleCameraView()
         }
 
         Item {
@@ -168,11 +167,11 @@ Rectangle {
             width: 24
             height: 24
             buttonTextColor: "#000000"
-            image: TimelineManager.isMicMuted ? ":/icons/icons/ui/microphone-unmute.png" : ":/icons/icons/ui/microphone-mute.png"
+            image: CallManager.isMicMuted ? ":/icons/icons/ui/microphone-unmute.png" : ":/icons/icons/ui/microphone-mute.png"
             hoverEnabled: true
             ToolTip.visible: hovered
-            ToolTip.text: TimelineManager.isMicMuted ? qsTr("Unmute Mic") : qsTr("Mute Mic")
-            onClicked: TimelineManager.toggleMicMute()
+            ToolTip.text: CallManager.isMicMuted ? qsTr("Unmute Mic") : qsTr("Mute Mic")
+            onClicked: CallManager.toggleMicMute()
         }
 
         Item {

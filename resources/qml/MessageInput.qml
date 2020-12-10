@@ -17,14 +17,14 @@ Rectangle {
         spacing: 16
 
         ImageButton {
-            visible: TimelineManager.callsSupported
+            visible: CallManager.callsSupported
             Layout.alignment: Qt.AlignBottom
             hoverEnabled: true
             width: 22
             height: 22
-            image: TimelineManager.isOnCall ? ":/icons/icons/ui/end-call.png" : ":/icons/icons/ui/place-call.png"
+            image: CallManager.isOnCall ? ":/icons/icons/ui/end-call.png" : ":/icons/icons/ui/place-call.png"
             ToolTip.visible: hovered
-            ToolTip.text: TimelineManager.isOnCall ? qsTr("Hang up") : qsTr("Place a call")
+            ToolTip.text: CallManager.isOnCall ? qsTr("Hang up") : qsTr("Place a call")
             Layout.topMargin: 8
             Layout.bottomMargin: 8
             Layout.leftMargin: 16
@@ -39,7 +39,7 @@ Rectangle {
             image: ":/icons/icons/ui/paper-clip-outline.png"
             Layout.topMargin: 8
             Layout.bottomMargin: 8
-            Layout.leftMargin: TimelineManager.callsSupported ? 0 : 16
+            Layout.leftMargin: CallManager.callsSupported ? 0 : 16
             onClicked: TimelineManager.timeline.input.openFileSelection()
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Send a file")

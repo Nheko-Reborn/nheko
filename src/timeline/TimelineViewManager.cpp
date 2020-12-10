@@ -136,6 +136,10 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           "im.nheko", 1, 0, "Settings", [](QQmlEngine *, QJSEngine *) -> QObject * {
                   return ChatPage::instance()->userSettings().data();
           });
+        qmlRegisterSingletonType<CallManager>(
+          "im.nheko", 1, 0, "CallManager", [](QQmlEngine *, QJSEngine *) -> QObject * {
+                  return ChatPage::instance()->callManager();
+          });
 
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();
         qRegisterMetaType<std::vector<DeviceInfo>>();
@@ -237,36 +241,6 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                 isInitialSync_ = true;
                 emit initialSyncChanged(true);
         });
-        connect(&WebRTCSession::instance(),
-                &WebRTCSession::stateChanged,
-                this,
-                &TimelineViewManager::callStateChanged);
-        connect(
-          callManager_, &CallManager::newCallParty, this, &TimelineViewManager::callPartyChanged);
-        connect(callManager_,
-                &CallManager::newVideoCallState,
-                this,
-                &TimelineViewManager::videoCallChanged);
-
-        connect(&WebRTCSession::instance(),
-                &WebRTCSession::stateChanged,
-                this,
-                &TimelineViewManager::onCallChanged);
-}
-
-bool
-TimelineViewManager::isOnCall() const
-{
-        return callManager_->onActiveCall();
-}
-bool
-TimelineViewManager::callsSupported() const
-{
-#ifdef GSTREAMER_AVAILABLE
-        return true;
-#else
-        return false;
-#endif
 }
 
 void
@@ -352,19 +326,6 @@ QString
 TimelineViewManager::escapeEmoji(QString str) const
 {
         return utils::replaceEmoji(str);
-}
-
-void
-TimelineViewManager::toggleMicMute()
-{
-        WebRTCSession::instance().toggleMicMute();
-        emit micMuteChanged();
-}
-
-void
-TimelineViewManager::toggleCameraView()
-{
-        WebRTCSession::instance().toggleCameraView();
 }
 
 void

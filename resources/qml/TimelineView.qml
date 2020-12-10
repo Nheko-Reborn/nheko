@@ -210,7 +210,7 @@ Page {
                         }
 
                         Loader {
-                            source: TimelineManager.onVideoCall ? "VideoCall.qml" : ""
+                            source: CallManager.isOnVideoCall ? "VideoCall.qml" : ""
                             onLoaded: TimelineManager.setVideoCallItem()
                         }
 

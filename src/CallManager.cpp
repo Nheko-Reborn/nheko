@@ -13,7 +13,6 @@
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "Utils.h"
-#include "WebRTCSession.h"
 #include "dialogs/AcceptCall.h"
 
 #include "mtx/responses/turn_server.hpp"
@@ -112,6 +111,7 @@ CallManager::CallManager(QObject *parent)
                 default:
                         break;
                 }
+                emit newCallState();
         });
 
         connect(&player_,
@@ -144,7 +144,7 @@ CallManager::CallManager(QObject *parent)
 void
 CallManager::sendInvite(const QString &roomid, bool isVideo)
 {
-        if (onActiveCall())
+        if (isOnCall())
                 return;
 
         auto roomInfo = cache::singleRoomInfo(roomid.toStdString());
@@ -206,12 +206,6 @@ CallManager::hangUp(CallHangUp::Reason reason)
         }
 }
 
-bool
-CallManager::onActiveCall() const
-{
-        return session_.state() != webrtc::State::DISCONNECTED;
-}
-
 void
 CallManager::syncEvent(const mtx::events::collections::TimelineEvents &event)
 {
@@ -257,7 +251,7 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
                 return;
 
         auto roomInfo = cache::singleRoomInfo(callInviteEvent.room_id);
-        if (onActiveCall() || roomInfo.member_count != 2) {
+        if (isOnCall() || roomInfo.member_count != 2) {
                 emit newMessage(QString::fromStdString(callInviteEvent.room_id),
                                 CallHangUp{callInviteEvent.content.call_id,
                                            0,
@@ -332,7 +326,7 @@ CallManager::handleEvent(const RoomEvent<CallCandidates> &callCandidatesEvent)
                            callCandidatesEvent.sender);
 
         if (callid_ == callCandidatesEvent.content.call_id) {
-                if (onActiveCall())
+                if (isOnCall())
                         session_.acceptICECandidates(callCandidatesEvent.content.candidates);
                 else {
                         // CallInvite has been received and we're awaiting localUser to accept or
@@ -350,7 +344,7 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
                            callAnswerEvent.content.call_id,
                            callAnswerEvent.sender);
 
-        if (!onActiveCall() && callAnswerEvent.sender == utils::localUser().toStdString() &&
+        if (!isOnCall() && callAnswerEvent.sender == utils::localUser().toStdString() &&
             callid_ == callAnswerEvent.content.call_id) {
                 emit ChatPage::instance()->showNotification("Call answered on another device.");
                 stopRingtone();
@@ -358,7 +352,7 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
                 return;
         }
 
-        if (onActiveCall() && callid_ == callAnswerEvent.content.call_id) {
+        if (isOnCall() && callid_ == callAnswerEvent.content.call_id) {
                 stopRingtone();
                 if (!session_.acceptAnswer(callAnswerEvent.content.sdp)) {
                         emit ChatPage::instance()->showNotification("Problem setting up call.");
@@ -379,6 +373,23 @@ CallManager::handleEvent(const RoomEvent<CallHangUp> &callHangUpEvent)
                 MainWindow::instance()->hideOverlay();
                 endCall();
         }
+}
+
+void
+CallManager::toggleMicMute()
+{
+        session_.toggleMicMute();
+        emit micMuteChanged();
+}
+
+bool
+CallManager::callsSupported() const
+{
+#ifdef GSTREAMER_AVAILABLE
+        return true;
+#else
+        return false;
+#endif
 }
 
 void
