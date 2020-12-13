@@ -21,6 +21,7 @@
 #include "MatrixClient.h"
 #include "Olm.h"
 #include "TimelineModel.h"
+#include "TimelineViewManager.h"
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
 #include "Utils.h"
@@ -433,6 +434,11 @@ InputBar::command(QString command, QString args)
 {
         if (command == "me") {
                 emote(args);
+        } else if (command == "react") {
+                auto eventId = room->reply();
+                if (!eventId.isEmpty())
+                        ChatPage::instance()->timelineManager()->queueReactionMessage(
+                          eventId, args.trimmed());
         } else if (command == "join") {
                 ChatPage::instance()->joinRoom(args);
         } else if (command == "invite") {
