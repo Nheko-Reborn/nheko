@@ -484,37 +484,37 @@ RoomInfoListItem::mousePressEvent(QMouseEvent *event)
         if (event->buttons() == Qt::RightButton) {
                 QWidget::mousePressEvent(event);
                 return;
+        } else if (event->buttons() == Qt::LeftButton) {
+                if (roomType_ == RoomType::Invited) {
+                        const auto point = event->pos();
+
+                        if (acceptBtnRegion_.contains(point))
+                                emit acceptInvite(roomId_);
+
+                        if (declineBtnRegion_.contains(point))
+                                emit declineInvite(roomId_);
+
+                        return;
+                }
+
+                emit clicked(roomId_);
+
+                setPressedState(true);
+
+                // Ripple on mouse position by default.
+                QPoint pos           = event->pos();
+                qreal radiusEndValue = static_cast<qreal>(width()) / 3;
+
+                Ripple *ripple = new Ripple(pos);
+
+                ripple->setRadiusEndValue(radiusEndValue);
+                ripple->setOpacityStartValue(0.15);
+                ripple->setColor(QColor("white"));
+                ripple->radiusAnimation()->setDuration(200);
+                ripple->opacityAnimation()->setDuration(400);
+
+                ripple_overlay_->addRipple(ripple);
         }
-
-        if (roomType_ == RoomType::Invited) {
-                const auto point = event->pos();
-
-                if (acceptBtnRegion_.contains(point))
-                        emit acceptInvite(roomId_);
-
-                if (declineBtnRegion_.contains(point))
-                        emit declineInvite(roomId_);
-
-                return;
-        }
-
-        emit clicked(roomId_);
-
-        setPressedState(true);
-
-        // Ripple on mouse position by default.
-        QPoint pos           = event->pos();
-        qreal radiusEndValue = static_cast<qreal>(width()) / 3;
-
-        Ripple *ripple = new Ripple(pos);
-
-        ripple->setRadiusEndValue(radiusEndValue);
-        ripple->setOpacityStartValue(0.15);
-        ripple->setColor(QColor("white"));
-        ripple->radiusAnimation()->setDuration(200);
-        ripple->opacityAnimation()->setDuration(400);
-
-        ripple_overlay_->addRipple(ripple);
 }
 
 void

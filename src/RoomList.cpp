@@ -45,8 +45,10 @@ RoomList::RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         scrollArea_->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
         scrollArea_->setWidgetResizable(true);
         scrollArea_->setAlignment(Qt::AlignLeading | Qt::AlignTop | Qt::AlignVCenter);
+        scrollArea_->setAttribute(Qt::WA_AcceptTouchEvents);
 
         QScroller::grabGesture(scrollArea_, QScroller::TouchGesture);
+        QScroller::grabGesture(scrollArea_, QScroller::LeftMouseButtonGesture);
 
         // The scrollbar on macOS will hide itself when not active so it won't interfere
         // with the content.
