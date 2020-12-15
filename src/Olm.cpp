@@ -340,11 +340,13 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
                                 // new member, send them the session at this index
                                 sendSessionTo[member_it->first] = {};
 
-                                for (const auto &dev : member_it->second->device_keys)
-                                        if (member_it->first != own_user_id ||
-                                            dev.first != device_id)
-                                                sendSessionTo[member_it->first].push_back(
-                                                  dev.first);
+                                if (member_it->second) {
+                                        for (const auto &dev : member_it->second->device_keys)
+                                                if (member_it->first != own_user_id ||
+                                                    dev.first != device_id)
+                                                        sendSessionTo[member_it->first].push_back(
+                                                          dev.first);
+                                }
 
                                 ++member_it;
                         } else {
