@@ -6,6 +6,7 @@
 #include <nlohmann/json.hpp>
 #include <variant>
 
+#include <mtx/responses/common.hpp>
 #include <mtx/secret_storage.hpp>
 
 #include "Cache.h"
@@ -169,59 +170,60 @@ handle_olm_message(const OlmMessage &msg)
                 }
 
                 if (!payload.is_null()) {
-                        std::string msg_type = payload["type"];
+                        mtx::events::collections::DeviceEvents device_event;
 
-                        if (msg_type == to_string(mtx::events::EventType::KeyVerificationAccept)) {
-                                ChatPage::instance()->receivedDeviceVerificationAccept(
-                                  payload["content"]);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::KeyVerificationRequest)) {
-                                ChatPage::instance()->receivedDeviceVerificationRequest(
-                                  payload["content"], payload["sender"]);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::KeyVerificationCancel)) {
-                                ChatPage::instance()->receivedDeviceVerificationCancel(
-                                  payload["content"]);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::KeyVerificationKey)) {
-                                ChatPage::instance()->receivedDeviceVerificationKey(
-                                  payload["content"]);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::KeyVerificationMac)) {
-                                ChatPage::instance()->receivedDeviceVerificationMac(
-                                  payload["content"]);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::KeyVerificationStart)) {
-                                ChatPage::instance()->receivedDeviceVerificationStart(
-                                  payload["content"], payload["sender"]);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::KeyVerificationReady)) {
-                                ChatPage::instance()->receivedDeviceVerificationReady(
-                                  payload["content"]);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::KeyVerificationDone)) {
-                                ChatPage::instance()->receivedDeviceVerificationDone(
-                                  payload["content"]);
-                                return;
-                        } else if (msg_type == to_string(mtx::events::EventType::RoomKey)) {
-                                mtx::events::DeviceEvent<mtx::events::msg::RoomKey> roomKey =
-                                  payload;
-                                create_inbound_megolm_session(roomKey, msg.sender_key);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::ForwardedRoomKey)) {
-                                mtx::events::DeviceEvent<mtx::events::msg::ForwardedRoomKey>
-                                  roomKey = payload;
-                                import_inbound_megolm_session(roomKey);
-                                return;
+                        {
+                                std::string msg_type = payload["type"];
+                                json event_array     = json::array();
+                                event_array.push_back(payload);
+
+                                std::vector<mtx::events::collections::DeviceEvents> temp_events;
+                                mtx::responses::utils::parse_device_events(event_array,
+                                                                           temp_events);
+                                if (temp_events.empty()) {
+                                        nhlog::crypto()->warn("Decrypted unknown event: {}",
+                                                              payload.dump());
+                                        continue;
+                                }
+                                device_event = temp_events.at(0);
                         }
+
+                        using namespace mtx::events;
+                        if (auto e =
+                              std::get_if<DeviceEvent<msg::KeyVerificationAccept>>(&device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationAccept(e->content);
+                        } else if (auto e = std::get_if<DeviceEvent<msg::KeyVerificationRequest>>(
+                                     &device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationRequest(e->content,
+                                                                                        e->sender);
+                        } else if (auto e = std::get_if<DeviceEvent<msg::KeyVerificationCancel>>(
+                                     &device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationCancel(e->content);
+                        } else if (auto e = std::get_if<DeviceEvent<msg::KeyVerificationKey>>(
+                                     &device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationKey(e->content);
+                        } else if (auto e = std::get_if<DeviceEvent<msg::KeyVerificationMac>>(
+                                     &device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationMac(e->content);
+                        } else if (auto e = std::get_if<DeviceEvent<msg::KeyVerificationStart>>(
+                                     &device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationStart(e->content,
+                                                                                      e->sender);
+                        } else if (auto e = std::get_if<DeviceEvent<msg::KeyVerificationReady>>(
+                                     &device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationReady(e->content);
+                        } else if (auto e = std::get_if<DeviceEvent<msg::KeyVerificationDone>>(
+                                     &device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationDone(e->content);
+                        } else if (auto roomKey =
+                                     std::get_if<DeviceEvent<msg::RoomKey>>(&device_event)) {
+                                create_inbound_megolm_session(*roomKey, msg.sender_key);
+                        } else if (auto roomKey = std::get_if<DeviceEvent<msg::ForwardedRoomKey>>(
+                                     &device_event)) {
+                                import_inbound_megolm_session(*roomKey);
+                        }
+
+                        return;
                 }
         }
 }
