@@ -1,8 +1,12 @@
 #include "Olm.h"
 
 #include <QObject>
+#include <QTimer>
+
 #include <nlohmann/json.hpp>
 #include <variant>
+
+#include <mtx/secret_storage.hpp>
 
 #include "Cache.h"
 #include "Cache_p.h"
@@ -18,6 +22,8 @@ constexpr auto MEGOLM_ALGO = "m.megolm.v1.aes-sha2";
 
 namespace {
 auto client_ = std::make_unique<mtx::crypto::OlmClient>();
+
+std::map<std::string, std::string> request_id_to_secret_name;
 }
 
 namespace olm {
@@ -1034,5 +1040,79 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                   });
         }
 }
+
+void
+request_cross_signing_keys()
+{
+        mtx::events::msg::SecretRequest secretRequest{};
+        secretRequest.action               = mtx::events::msg::RequestAction::Request;
+        secretRequest.requesting_device_id = http::client()->device_id();
+
+        auto local_user = http::client()->user_id();
+
+        auto verificationStatus = cache::verificationStatus(local_user.to_string());
+
+        if (!verificationStatus)
+                return;
+
+        auto request = [&](std::string secretName) {
+                secretRequest.name       = secretName;
+                secretRequest.request_id = "ss." + http::client()->generate_txn_id();
+
+                request_id_to_secret_name[secretRequest.request_id] = secretRequest.name;
+
+                std::map<mtx::identifiers::User,
+                         std::map<std::string, mtx::events::msg::SecretRequest>>
+                  body;
+
+                for (const auto &dev : verificationStatus->verified_devices) {
+                        if (dev != secretRequest.requesting_device_id)
+                                body[local_user][dev] = secretRequest;
+                }
+
+                http::client()->send_to_device<mtx::events::msg::SecretRequest>(
+                  http::client()->generate_txn_id(),
+                  body,
+                  [request_id = secretRequest.request_id, secretName](mtx::http::RequestErr err) {
+                          if (err) {
+                                  request_id_to_secret_name.erase(request_id);
+                                  nhlog::net()->error("Failed to send request for secrect '{}'",
+                                                      secretName);
+                                  return;
+                          }
+                  });
+
+                for (const auto &dev : verificationStatus->verified_devices) {
+                        if (dev != secretRequest.requesting_device_id)
+                                body[local_user][dev].action =
+                                  mtx::events::msg::RequestAction::Cancellation;
+                }
+
+                // timeout after 15 min
+                QTimer::singleShot(15 * 60 * 1000, [secretRequest, body]() {
+                        if (request_id_to_secret_name.count(secretRequest.request_id)) {
+                                request_id_to_secret_name.erase(secretRequest.request_id);
+                                http::client()->send_to_device<mtx::events::msg::SecretRequest>(
+                                  http::client()->generate_txn_id(),
+                                  body,
+                                  [secretRequest](mtx::http::RequestErr err) {
+                                          if (err) {
+                                                  nhlog::net()->error(
+                                                    "Failed to cancel request for secrect '{}'",
+                                                    secretRequest.name);
+                                                  return;
+                                          }
+                                  });
+                        }
+                });
+        };
+
+        request(mtx::secret_storage::secrets::cross_signing_self_signing);
+        request(mtx::secret_storage::secrets::cross_signing_user_signing);
+        request(mtx::secret_storage::secrets::megolm_backup_v1);
+}
+void
+download_cross_signing_keys()
+{}
 
 } // namespace olm

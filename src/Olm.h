@@ -102,4 +102,11 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                                   const mtx::events::collections::DeviceEvents &event,
                                   bool force_new_session = false);
 
+//! Request backup and signing keys and cache them locally
+void
+request_cross_signing_keys();
+//! Download backup and signing keys and cache them locally
+void
+download_cross_signing_keys();
+
 } // namespace olm

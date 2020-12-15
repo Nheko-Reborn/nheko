@@ -649,6 +649,18 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         sessionKeysLayout->addWidget(sessionKeysExportBtn, 0, Qt::AlignRight);
         sessionKeysLayout->addWidget(sessionKeysImportBtn, 0, Qt::AlignRight);
 
+        auto crossSigningKeysLabel = new QLabel{tr("Cross Signing Keys"), this};
+        crossSigningKeysLabel->setFont(font);
+        crossSigningKeysLabel->setMargin(OptionMargin);
+
+        auto crossSigningRequestBtn  = new QPushButton{tr("REQUEST"), this};
+        auto crossSigningDownloadBtn = new QPushButton{tr("DOWNLOAD"), this};
+
+        auto crossSigningKeysLayout = new QHBoxLayout;
+        crossSigningKeysLayout->addWidget(new QLabel{"", this}, 1, Qt::AlignRight);
+        crossSigningKeysLayout->addWidget(crossSigningRequestBtn, 0, Qt::AlignRight);
+        crossSigningKeysLayout->addWidget(crossSigningDownloadBtn, 0, Qt::AlignRight);
+
         auto boxWrap = [this, &font](QString labelText, QWidget *field, QString tooltipText = "") {
                 auto label = new QLabel{labelText, this};
                 label->setFont(font);
@@ -787,6 +799,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
           tr("Automatically replies to key requests from other users, if they are verified."));
         formLayout_->addRow(new HorizontalLine{this});
         formLayout_->addRow(sessionKeysLabel, sessionKeysLayout);
+        formLayout_->addRow(crossSigningKeysLabel, crossSigningKeysLayout);
 
         auto scrollArea_ = new QScrollArea{this};
         scrollArea_->setFrameShape(QFrame::NoFrame);
@@ -981,6 +994,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         connect(
           sessionKeysExportBtn, &QPushButton::clicked, this, &UserSettingsPage::exportSessionKeys);
+
+        connect(crossSigningRequestBtn, &QPushButton::clicked, this, []() {
+                olm::request_cross_signing_keys();
+        });
 
         connect(backBtn_, &QPushButton::clicked, this, [this]() {
                 settings_->save();
