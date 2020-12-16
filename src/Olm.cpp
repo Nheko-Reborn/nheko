@@ -18,13 +18,13 @@
 #include "UserSettingsPage.h"
 #include "Utils.h"
 
-static const std::string STORAGE_SECRET_KEY("secret");
-constexpr auto MEGOLM_ALGO = "m.megolm.v1.aes-sha2";
-
 namespace {
 auto client_ = std::make_unique<mtx::crypto::OlmClient>();
 
 std::map<std::string, std::string> request_id_to_secret_name;
+
+const std::string STORAGE_SECRET_KEY("secret");
+constexpr auto MEGOLM_ALGO = "m.megolm.v1.aes-sha2";
 }
 
 namespace olm {
@@ -221,6 +221,133 @@ handle_olm_message(const OlmMessage &msg)
                         } else if (auto roomKey = std::get_if<DeviceEvent<msg::ForwardedRoomKey>>(
                                      &device_event)) {
                                 import_inbound_megolm_session(*roomKey);
+                        } else if (auto e =
+                                     std::get_if<DeviceEvent<msg::SecretSend>>(&device_event)) {
+                                auto local_user = http::client()->user_id();
+
+                                if (msg.sender != local_user.to_string())
+                                        continue;
+
+                                auto secret_name =
+                                  request_id_to_secret_name.find(e->content.request_id);
+
+                                if (secret_name != request_id_to_secret_name.end()) {
+                                        nhlog::crypto()->info("Received secret: {}",
+                                                              secret_name->second);
+
+                                        mtx::events::msg::SecretRequest secretRequest{};
+                                        secretRequest.action =
+                                          mtx::events::msg::RequestAction::Cancellation;
+                                        secretRequest.requesting_device_id =
+                                          http::client()->device_id();
+                                        secretRequest.request_id = e->content.request_id;
+
+                                        auto verificationStatus =
+                                          cache::verificationStatus(local_user.to_string());
+
+                                        if (!verificationStatus)
+                                                continue;
+
+                                        auto deviceKeys = cache::userKeys(local_user.to_string());
+                                        std::string sender_device_id;
+                                        if (deviceKeys) {
+                                                for (auto &[dev, key] : deviceKeys->device_keys) {
+                                                        if (key.keys["curve25519:" + dev] ==
+                                                            msg.sender_key) {
+                                                                sender_device_id = dev;
+                                                                break;
+                                                        }
+                                                }
+                                        }
+
+                                        std::map<
+                                          mtx::identifiers::User,
+                                          std::map<std::string, mtx::events::msg::SecretRequest>>
+                                          body;
+
+                                        for (const auto &dev :
+                                             verificationStatus->verified_devices) {
+                                                if (dev != secretRequest.requesting_device_id &&
+                                                    dev != sender_device_id)
+                                                        body[local_user][dev] = secretRequest;
+                                        }
+
+                                        http::client()
+                                          ->send_to_device<mtx::events::msg::SecretRequest>(
+                                            http::client()->generate_txn_id(),
+                                            body,
+                                            [name =
+                                               secret_name->second](mtx::http::RequestErr err) {
+                                                    if (err) {
+                                                            nhlog::net()->error(
+                                                              "Failed to send request cancellation "
+                                                              "for secrect "
+                                                              "'{}'",
+                                                              name);
+                                                            return;
+                                                    }
+                                            });
+
+                                        cache::client()->storeSecret(secret_name->second,
+                                                                     e->content.secret);
+
+                                        request_id_to_secret_name.erase(secret_name);
+                                }
+
+                        } else if (auto e =
+                                     std::get_if<DeviceEvent<msg::SecretRequest>>(&device_event)) {
+                                if (e->content.action != mtx::events::msg::RequestAction::Request)
+                                        continue;
+
+                                auto local_user = http::client()->user_id();
+
+                                if (msg.sender != local_user.to_string())
+                                        continue;
+
+                                auto verificationStatus =
+                                  cache::verificationStatus(local_user.to_string());
+
+                                if (!verificationStatus)
+                                        continue;
+
+                                auto deviceKeys = cache::userKeys(local_user.to_string());
+                                if (!deviceKeys)
+                                        continue;
+
+                                for (auto &[dev, key] : deviceKeys->device_keys) {
+                                        if (key.keys["curve25519:" + dev] == msg.sender_key) {
+                                                if (std::find(
+                                                      verificationStatus->verified_devices.begin(),
+                                                      verificationStatus->verified_devices.end(),
+                                                      dev) ==
+                                                    verificationStatus->verified_devices.end())
+                                                        break;
+
+                                                // this is a verified device
+                                                mtx::events::DeviceEvent<
+                                                  mtx::events::msg::SecretSend>
+                                                  secretSend;
+                                                secretSend.type = EventType::SecretSend;
+                                                secretSend.content.request_id =
+                                                  e->content.request_id;
+
+                                                auto secret =
+                                                  cache::client()->secret(e->content.name);
+                                                if (!secret)
+                                                        break;
+
+                                                secretSend.content.secret = secret.value();
+
+                                                send_encrypted_to_device_messages(
+                                                  {{local_user.to_string(), {{dev}}}}, secretSend);
+
+                                                nhlog::net()->info("Sent secret to ({},{})",
+                                                                   local_user.to_string(),
+                                                                   dev);
+
+                                                break;
+                                        }
+                                }
                         }
 
                         return;

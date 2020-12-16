@@ -269,6 +269,10 @@ public:
         void saveOlmAccount(const std::string &pickled);
         std::string restoreOlmAccount();
 
+        void storeSecret(const std::string &name, const std::string &secret);
+        void deleteSecret(const std::string &name);
+        std::optional<std::string> secret(const std::string &name);
+
 signals:
         void newReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
         void roomReadStatus(const std::map<QString, bool> &status);
@@ -276,6 +280,7 @@ signals:
         void userKeysUpdate(const std::string &sync_token,
                             const mtx::responses::QueryKeys &keyQuery);
         void verificationStatusChanged(const std::string &userid);
+        void secretChanged(const std::string name);
 
 private:
         //! Save an invited room.

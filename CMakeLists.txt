@@ -136,6 +136,7 @@ endif()
 find_package(Qt5 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia Qml QuickControls2 QuickWidgets REQUIRED)
 find_package(Qt5QuickCompiler)
 find_package(Qt5DBus)
+find_package(Qt5Keychain REQUIRED)
 
 if (APPLE)
 	find_package(Qt5MacExtras REQUIRED)
@@ -587,6 +588,7 @@ target_link_libraries(nheko PRIVATE
 	Qt5::Qml
 	Qt5::QuickControls2
 	Qt5::QuickWidgets
+	qt5keychain
 	nlohmann_json::nlohmann_json
 	lmdbxx::lmdbxx
 	liblmdb::lmdb

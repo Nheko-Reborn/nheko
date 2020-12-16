@@ -372,9 +372,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 void
 ChatPage::logout()
 {
-        deleteConfigs();
-
         resetUI();
+        deleteConfigs();
 
         emit closing();
         connectivityTimer_.stop();
@@ -385,11 +384,11 @@ ChatPage::dropToLoginPage(const QString &msg)
 {
         nhlog::ui()->info("dropping to the login page: {}", msg.toStdString());
 
-        deleteConfigs();
-        resetUI();
-
         http::client()->shutdown();
         connectivityTimer_.stop();
+
+        resetUI();
+        deleteConfigs();
 
         emit showLoginPage(msg);
 }
@@ -418,8 +417,8 @@ ChatPage::deleteConfigs()
         settings.remove("");
         settings.endGroup();
 
+        http::client()->shutdown();
         cache::deleteData();
-        http::client()->clear();
 }
 
 void

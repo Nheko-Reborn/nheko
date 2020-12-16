@@ -282,4 +282,9 @@ saveOlmAccount(const std::string &pickled);
 
 std::string
 restoreOlmAccount();
+
+void
+storeSecret(const std::string &name, const std::string &secret);
+std::optional<std::string>
+secret(const std::string &name);
 }

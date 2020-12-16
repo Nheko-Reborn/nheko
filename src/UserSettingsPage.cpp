@@ -637,6 +637,15 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         deviceFingerprintValue_->setText(utils::humanReadableFingerprint(QString(44, 'X')));
 
+        backupSecretCached      = new QLabel{this};
+        masterSecretCached      = new QLabel{this};
+        selfSigningSecretCached = new QLabel{this};
+        userSigningSecretCached = new QLabel{this};
+        backupSecretCached->setFont(monospaceFont);
+        masterSecretCached->setFont(monospaceFont);
+        selfSigningSecretCached->setFont(monospaceFont);
+        userSigningSecretCached->setFont(monospaceFont);
+
         auto sessionKeysLabel = new QLabel{tr("Session Keys"), this};
         sessionKeysLabel->setFont(font);
         sessionKeysLabel->setMargin(OptionMargin);
@@ -800,6 +809,27 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         formLayout_->addRow(new HorizontalLine{this});
         formLayout_->addRow(sessionKeysLabel, sessionKeysLayout);
         formLayout_->addRow(crossSigningKeysLabel, crossSigningKeysLayout);
+
+        boxWrap(tr("Master signing key"),
+                masterSecretCached,
+                tr("Your most important key. You don't need to have it cached, since not caching "
+                   "it makes it less likely it can be stolen and it is only needed to rotate your "
+                   "other signing keys."));
+        boxWrap(tr("User signing key"),
+                userSigningSecretCached,
+                tr("The key to verify other users. If it is cached, verifying a user will verify "
+                   "all their devices."));
+        boxWrap(
+          tr("Self signing key"),
+          selfSigningSecretCached,
+          tr("The key to verify your own devices. If it is cached, verifying one of your devices "
+             "will mark it verified for all your other devices and for users, that have verified "
+             "you."));
+        boxWrap(tr("Backup key"),
+                backupSecretCached,
+                tr("The key to decrypt online key backups. If it is cached, you can enable online "
+                   "key backup to store encryption keys securely encrypted on the server."));
+        updateSecretStatus();
 
         auto scrollArea_ = new QScrollArea{this};
         scrollArea_->setFrameShape(QFrame::NoFrame);
@@ -1153,4 +1183,31 @@ UserSettingsPage::exportSessionKeys()
         } catch (const std::exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
         }
+}
+
+void
+UserSettingsPage::updateSecretStatus()
+{
+        QString ok      = "QLabel { color : #00cc66; }";
+        QString notSoOk = "QLabel { color : #ff9933; }";
+
+        auto updateLabel = [&, this](QLabel *label, const std::string &secretName) {
+                if (cache::secret(secretName)) {
+                        label->setStyleSheet(ok);
+                        label->setText(tr("CACHED"));
+                } else {
+                        if (secretName == mtx::secret_storage::secrets::cross_signing_master)
+                                label->setStyleSheet(ok);
+                        else
+                                label->setStyleSheet(notSoOk);
+                        label->setText(tr("NOT CACHED"));
+                }
+        };
+
+        updateLabel(masterSecretCached, mtx::secret_storage::secrets::cross_signing_master);
+        updateLabel(userSigningSecretCached,
+                    mtx::secret_storage::secrets::cross_signing_user_signing);
+        updateLabel(selfSigningSecretCached,
+                    mtx::secret_storage::secrets::cross_signing_self_signing);
+        updateLabel(backupSecretCached, mtx::secret_storage::secrets::megolm_backup_v1);
 }

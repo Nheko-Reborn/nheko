@@ -26,6 +26,7 @@
 #include <mtx/responses/login.hpp>
 
 #include "Cache.h"
+#include "Cache_p.h"
 #include "ChatPage.h"
 #include "Config.h"
 #include "Logging.h"
@@ -294,6 +295,10 @@ MainWindow::showChatPage()
 
         login_page_->reset();
         chat_page_->bootstrap(userid, homeserver, token);
+        connect(cache::client(),
+                &Cache::secretChanged,
+                userSettingsPage_,
+                &UserSettingsPage::updateSecretStatus);
 
         instance_ = this;
 }
