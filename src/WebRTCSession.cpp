@@ -242,12 +242,14 @@ newBusMessage(GstBus *bus G_GNUC_UNUSED, GstMessage *msg, gpointer user_data)
                 GstDevice *device;
                 gst_message_parse_device_added(msg, &device);
                 addDevice(device);
+                emit WebRTCSession::instance().devicesChanged();
                 break;
         }
         case GST_MESSAGE_DEVICE_REMOVED: {
                 GstDevice *device;
                 gst_message_parse_device_removed(msg, &device);
                 removeDevice(device, false);
+                emit WebRTCSession::instance().devicesChanged();
                 break;
         }
         case GST_MESSAGE_DEVICE_CHANGED: {

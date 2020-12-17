@@ -75,6 +75,7 @@ signals:
                            const std::vector<mtx::events::msg::CallCandidates::Candidate> &);
         void newICECandidate(const mtx::events::msg::CallCandidates::Candidate &);
         void stateChanged(webrtc::State);
+        void devicesChanged();
 
 private slots:
         void setState(webrtc::State state) { state_ = state; }

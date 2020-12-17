@@ -2,18 +2,18 @@ import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import im.nheko 1.0
+import "../"
 
 Rectangle {
-    id: activeCallBar
 
     visible: CallManager.isOnCall
-    color: "#2ECC71"
+    color: callInviteBar.color
     implicitHeight: visible ? rowLayout.height + 8 : 0
 
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            if (CallManager.isOnVideoCall)
+            if (CallManager.isVideo)
                 stackLayout.currentIndex = stackLayout.currentIndex ? 0 : 1;
 
         }
@@ -31,18 +31,18 @@ Rectangle {
             width: avatarSize
             height: avatarSize
             url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
-            displayName: CallManager.callPartyName
+            displayName: CallManager.callParty
         }
 
         Label {
             font.pointSize: fontMetrics.font.pointSize * 1.1
-            text: "  " + CallManager.callPartyName + " "
+            text: "  " + CallManager.callParty + " "
         }
 
         Image {
             Layout.preferredWidth: 24
             Layout.preferredHeight: 24
-            source: CallManager.isOnVideoCall ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
+            source: CallManager.isVideo ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
         }
 
         Label {
@@ -99,7 +99,7 @@ Rectangle {
 
                     PropertyChanges {
                         target: stackLayout
-                        currentIndex: CallManager.isOnVideoCall ? 1 : 0
+                        currentIndex: CallManager.isVideo ? 1 : 0
                     }
 
                 },
@@ -148,7 +148,7 @@ Rectangle {
         }
 
         ImageButton {
-            visible: CallManager.isOnVideoCall
+            visible: CallManager.isVideo
             width: 24
             height: 24
             buttonTextColor: "#000000"

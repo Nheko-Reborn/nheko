@@ -245,7 +245,6 @@ configure_file(cmake/nheko.h config/nheko.h)
 #
 set(SRC_FILES
 	# Dialogs
-	src/dialogs/AcceptCall.cpp
 	src/dialogs/CreateRoom.cpp
 	src/dialogs/FallbackAuth.cpp
 	src/dialogs/ImageOverlay.cpp
@@ -464,7 +463,6 @@ feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAG
 
 qt5_wrap_cpp(MOC_HEADERS
 	# Dialogs
-	src/dialogs/AcceptCall.h
 	src/dialogs/CreateRoom.h
 	src/dialogs/FallbackAuth.h
 	src/dialogs/ImageOverlay.h

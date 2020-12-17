@@ -597,7 +597,9 @@ void
 InputBar::callButton()
 {
         auto callManager_ = ChatPage::instance()->callManager();
-        if (callManager_->isOnCall()) {
+        if (callManager_->haveCallInvite()) {
+                return;
+        } else if (callManager_->isOnCall()) {
                 callManager_->hangUp();
         } else {
                 auto current_room_ = room->roomId();
