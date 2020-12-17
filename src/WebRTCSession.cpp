@@ -555,7 +555,10 @@ getResolution(GstPad *pad)
 void
 addCameraView(GstElement *pipe, const std::pair<int, int> &videoCallSize)
 {
-        GstElement *tee       = gst_bin_get_by_name(GST_BIN(pipe), "videosrctee");
+        GstElement *tee = gst_bin_get_by_name(GST_BIN(pipe), "videosrctee");
+        if (!tee)
+                return;
+
         GstElement *queue     = gst_element_factory_make("queue", nullptr);
         GstElement *videorate = gst_element_factory_make("videorate", nullptr);
         gst_bin_add_many(GST_BIN(pipe), queue, videorate, nullptr);
@@ -1153,6 +1156,19 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
 }
 
 bool
+WebRTCSession::haveLocalVideo() const
+{
+        if (isVideo_ && state_ >= State::INITIATED) {
+                GstElement *tee = gst_bin_get_by_name(GST_BIN(pipe_), "videosrctee");
+                if (tee) {
+                        gst_object_unref(tee);
+                        return true;
+                }
+        }
+        return false;
+}
+
+bool
 WebRTCSession::isMicMuted() const
 {
         if (state_ < State::INITIATED)
@@ -1322,6 +1338,12 @@ WebRTCSession::getFrameRates(const std::string &cameraName, const std::string &r
 
 bool
 WebRTCSession::havePlugins(bool, std::string *)
+{
+        return false;
+}
+
+bool
+WebRTCSession::haveLocalVideo() const
 {
         return false;
 }

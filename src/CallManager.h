@@ -25,6 +25,7 @@ class CallManager : public QObject
         Q_PROPERTY(bool haveCallInvite READ haveCallInvite NOTIFY newInviteState)
         Q_PROPERTY(bool isOnCall READ isOnCall NOTIFY newCallState)
         Q_PROPERTY(bool isVideo READ isVideo NOTIFY newInviteState)
+        Q_PROPERTY(bool haveLocalVideo READ haveLocalVideo NOTIFY newCallState)
         Q_PROPERTY(webrtc::State callState READ callState NOTIFY newCallState)
         Q_PROPERTY(QString callParty READ callParty NOTIFY newInviteState)
         Q_PROPERTY(QString callPartyAvatarUrl READ callPartyAvatarUrl NOTIFY newInviteState)
@@ -40,6 +41,7 @@ public:
         bool haveCallInvite() const { return haveCallInvite_; }
         bool isOnCall() const { return session_.state() != webrtc::State::DISCONNECTED; }
         bool isVideo() const { return isVideo_; }
+        bool haveLocalVideo() const { return session_.haveLocalVideo(); }
         webrtc::State callState() const { return session_.state(); }
         QString callParty() const { return callParty_; }
         QString callPartyAvatarUrl() const { return callPartyAvatarUrl_; }

@@ -148,7 +148,7 @@ Rectangle {
         }
 
         ImageButton {
-            visible: CallManager.isVideo
+            visible: CallManager.haveLocalVideo
             width: 24
             height: 24
             buttonTextColor: "#000000"
