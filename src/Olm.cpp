@@ -50,6 +50,54 @@ client()
         return client_.get();
 }
 
+static void
+handle_secret_request(const mtx::events::DeviceEvent<mtx::events::msg::SecretRequest> *e,
+                      const std::string &sender)
+{
+        using namespace mtx::events;
+
+        if (e->content.action != mtx::events::msg::RequestAction::Request)
+                return;
+
+        auto local_user = http::client()->user_id();
+
+        if (sender != local_user.to_string())
+                return;
+
+        auto verificationStatus = cache::verificationStatus(local_user.to_string());
+
+        if (!verificationStatus)
+                return;
+
+        auto deviceKeys = cache::userKeys(local_user.to_string());
+        if (!deviceKeys)
+                return;
+
+        if (std::find(verificationStatus->verified_devices.begin(),
+                      verificationStatus->verified_devices.end(),
+                      e->content.requesting_device_id) ==
+            verificationStatus->verified_devices.end())
+                return;
+
+        // this is a verified device
+        mtx::events::DeviceEvent<mtx::events::msg::SecretSend> secretSend;
+        secretSend.type               = EventType::SecretSend;
+        secretSend.content.request_id = e->content.request_id;
+
+        auto secret = cache::client()->secret(e->content.name);
+        if (!secret)
+                return;
+        secretSend.content.secret = secret.value();
+
+        send_encrypted_to_device_messages(
+          {{local_user.to_string(), {{e->content.requesting_device_id}}}}, secretSend);
+
+        nhlog::net()->info("Sent secret '{}' to ({},{})",
+                           e->content.name,
+                           local_user.to_string(),
+                           e->content.requesting_device_id);
+}
+
 void
 handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEvents> &msgs)
 {
@@ -134,6 +182,10 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
                           std::get<mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationDone>>(
                             msg);
                         ChatPage::instance()->receivedDeviceVerificationDone(message.content);
+                } else if (auto e =
+                             std::get_if<mtx::events::DeviceEvent<mtx::events::msg::SecretRequest>>(
+                               &msg)) {
+                        handle_secret_request(e, e->sender);
                 } else {
                         nhlog::crypto()->warn("unhandled event: {}", j_msg.dump(2));
                 }
@@ -296,58 +348,7 @@ handle_olm_message(const OlmMessage &msg)
 
                         } else if (auto e =
                                      std::get_if<DeviceEvent<msg::SecretRequest>>(&device_event)) {
-                                if (e->content.action != mtx::events::msg::RequestAction::Request)
-                                        continue;
-
-                                auto local_user = http::client()->user_id();
-
-                                if (msg.sender != local_user.to_string())
-                                        continue;
-
-                                auto verificationStatus =
-                                  cache::verificationStatus(local_user.to_string());
-
-                                if (!verificationStatus)
-                                        continue;
-
-                                auto deviceKeys = cache::userKeys(local_user.to_string());
-                                if (!deviceKeys)
-                                        continue;
-
-                                for (auto &[dev, key] : deviceKeys->device_keys) {
-                                        if (key.keys["curve25519:" + dev] == msg.sender_key) {
-                                                if (std::find(
-                                                      verificationStatus->verified_devices.begin(),
-                                                      verificationStatus->verified_devices.end(),
-                                                      dev) ==
-                                                    verificationStatus->verified_devices.end())
-                                                        break;
-
-                                                // this is a verified device
-                                                mtx::events::DeviceEvent<
-                                                  mtx::events::msg::SecretSend>
-                                                  secretSend;
-                                                secretSend.type = EventType::SecretSend;
-                                                secretSend.content.request_id =
-                                                  e->content.request_id;
-
-                                                auto secret =
-                                                  cache::client()->secret(e->content.name);
-                                                if (!secret)
-                                                        break;
-
-                                                secretSend.content.secret = secret.value();
-
-                                                send_encrypted_to_device_messages(
-                                                  {{local_user.to_string(), {{dev}}}}, secretSend);
-
-                                                nhlog::net()->info("Sent secret to ({},{})",
-                                                                   local_user.to_string(),
-                                                                   dev);
-
-                                                break;
-                                        }
-                                }
+                                handle_secret_request(e, msg.sender);
                         }
 
                         return;

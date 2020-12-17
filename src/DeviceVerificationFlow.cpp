@@ -761,6 +761,14 @@ DeviceVerificationFlow::acceptDevice()
                 cache::markDeviceVerified(this->toClient.to_string(), this->deviceId.toStdString());
                 this->sendVerificationDone();
                 setState(Success);
+
+                // Request secrets. We should probably check somehow, if a device knowns about the
+                // secrets.
+                if (utils::localUser().toStdString() == this->toClient.to_string() &&
+                    (!cache::secret(mtx::secret_storage::secrets::cross_signing_self_signing) ||
+                     !cache::secret(mtx::secret_storage::secrets::cross_signing_user_signing))) {
+                        olm::request_cross_signing_keys();
+                }
         }
 }
 
