@@ -270,9 +270,10 @@ handle_olm_message(const OlmMessage &msg)
                         } else if (auto roomKey =
                                      std::get_if<DeviceEvent<msg::RoomKey>>(&device_event)) {
                                 create_inbound_megolm_session(*roomKey, msg.sender_key);
-                        } else if (auto roomKey = std::get_if<DeviceEvent<msg::ForwardedRoomKey>>(
-                                     &device_event)) {
-                                import_inbound_megolm_session(*roomKey);
+                        } else if (auto forwardedRoomKey =
+                                     std::get_if<DeviceEvent<msg::ForwardedRoomKey>>(
+                                       &device_event)) {
+                                import_inbound_megolm_session(*forwardedRoomKey);
                         } else if (auto e =
                                      std::get_if<DeviceEvent<msg::SecretSend>>(&device_event)) {
                                 auto local_user = http::client()->user_id();
