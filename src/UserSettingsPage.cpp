@@ -1029,6 +1029,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 olm::request_cross_signing_keys();
         });
 
+        connect(crossSigningDownloadBtn, &QPushButton::clicked, this, []() {
+                olm::download_cross_signing_keys();
+        });
+
         connect(backBtn_, &QPushButton::clicked, this, [this]() {
                 settings_->save();
                 emit moveBack();

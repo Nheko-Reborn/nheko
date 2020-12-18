@@ -27,6 +27,7 @@
 #include <mtx/events/encrypted.hpp>
 #include <mtx/events/member.hpp>
 #include <mtx/events/presence.hpp>
+#include <mtx/secret_storage.hpp>
 
 #include <QFrame>
 #include <QHBoxLayout>
@@ -71,6 +72,8 @@ struct LeftRoom;
 namespace popups {
 class UserMentions;
 }
+
+using SecretsToDecrypt = std::map<std::string, mtx::secret_storage::AesHmacSha2EncryptedData>;
 
 class ChatPage : public QWidget
 {
@@ -117,6 +120,8 @@ public slots:
         void unbanUser(QString userid, QString reason);
 
         void receivedSessionKey(const std::string &room_id, const std::string &session_id);
+        void decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescription keyDesc,
+                                      const SecretsToDecrypt &secrets);
 
 signals:
         void connectionLost();
@@ -184,6 +189,9 @@ signals:
                                              std::string sender);
         void receivedDeviceVerificationReady(const mtx::events::msg::KeyVerificationReady &message);
         void receivedDeviceVerificationDone(const mtx::events::msg::KeyVerificationDone &message);
+
+        void downloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescription keyDesc,
+                               const SecretsToDecrypt &secrets);
 
 private slots:
         void logout();
