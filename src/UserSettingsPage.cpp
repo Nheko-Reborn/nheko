@@ -1195,7 +1195,7 @@ UserSettingsPage::updateSecretStatus()
         QString ok      = "QLabel { color : #00cc66; }";
         QString notSoOk = "QLabel { color : #ff9933; }";
 
-        auto updateLabel = [&, this](QLabel *label, const std::string &secretName) {
+        auto updateLabel = [&ok, &notSoOk](QLabel *label, const std::string &secretName) {
                 if (cache::secret(secretName)) {
                         label->setStyleSheet(ok);
                         label->setText(tr("CACHED"));
