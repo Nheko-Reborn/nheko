@@ -24,8 +24,13 @@
 #include <QFile>
 #include <QHash>
 #include <QMap>
-#include <QSettings>
 #include <QStandardPaths>
+
+#if __has_include(<keychain.h>)
+#include <keychain.h>
+#else
+#include <qt5keychain/keychain.h>
+#endif
 
 #include <mtx/responses/common.hpp>
 
@@ -569,6 +574,64 @@ Cache::restoreOlmAccount()
         return std::string(pickled.data(), pickled.size());
 }
 
+void
+Cache::storeSecret(const std::string &name, const std::string &secret)
+{
+        QKeychain::WritePasswordJob job(QCoreApplication::applicationName());
+        job.setAutoDelete(false);
+        job.setInsecureFallback(true);
+        job.setKey(QString::fromStdString(name));
+        job.setTextData(QString::fromStdString(secret));
+        QEventLoop loop;
+        job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
+        job.start();
+        loop.exec();
+
+        if (job.error()) {
+                nhlog::db()->warn(
+                  "Storing secret '{}' failed: {}", name, job.errorString().toStdString());
+        } else {
+                emit secretChanged(name);
+        }
+}
+
+void
+Cache::deleteSecret(const std::string &name)
+{
+        QKeychain::DeletePasswordJob job(QCoreApplication::applicationName());
+        job.setAutoDelete(false);
+        job.setInsecureFallback(true);
+        job.setKey(QString::fromStdString(name));
+        QEventLoop loop;
+        job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
+        job.start();
+        loop.exec();
+
+        emit secretChanged(name);
+}
+
+std::optional<std::string>
+Cache::secret(const std::string &name)
+{
+        QKeychain::ReadPasswordJob job(QCoreApplication::applicationName());
+        job.setAutoDelete(false);
+        job.setInsecureFallback(true);
+        job.setKey(QString::fromStdString(name));
+        QEventLoop loop;
+        job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
+        job.start();
+        loop.exec();
+
+        const QString secret = job.textData();
+        if (job.error()) {
+                nhlog::db()->debug(
+                  "Restoring secret '{}' failed: {}", name, job.errorString().toStdString());
+                return std::nullopt;
+        }
+
+        return secret.toStdString();
+}
+
 //
 // Media Management
 //
@@ -726,10 +789,32 @@ void
 Cache::deleteData()
 {
         // TODO: We need to remove the env_ while not accepting new requests.
+        lmdb::dbi_close(env_, syncStateDb_);
+        lmdb::dbi_close(env_, roomsDb_);
+        lmdb::dbi_close(env_, invitesDb_);
+        lmdb::dbi_close(env_, mediaDb_);
+        lmdb::dbi_close(env_, readReceiptsDb_);
+        lmdb::dbi_close(env_, notificationsDb_);
+
+        lmdb::dbi_close(env_, devicesDb_);
+        lmdb::dbi_close(env_, deviceKeysDb_);
+
+        lmdb::dbi_close(env_, inboundMegolmSessionDb_);
+        lmdb::dbi_close(env_, outboundMegolmSessionDb_);
+
+        env_.close();
+
+        verification_storage.status.clear();
+
         if (!cacheDirectory_.isEmpty()) {
                 QDir(cacheDirectory_).removeRecursively();
                 nhlog::db()->info("deleted cache files from disk");
         }
+
+        deleteSecret(mtx::secret_storage::secrets::megolm_backup_v1);
+        deleteSecret(mtx::secret_storage::secrets::cross_signing_master);
+        deleteSecret(mtx::secret_storage::secrets::cross_signing_user_signing);
+        deleteSecret(mtx::secret_storage::secrets::cross_signing_self_signing);
 }
 
 //! migrates db to the current format
@@ -4261,5 +4346,16 @@ std::string
 restoreOlmAccount()
 {
         return instance_->restoreOlmAccount();
+}
+
+void
+storeSecret(const std::string &name, const std::string &secret)
+{
+        instance_->storeSecret(name, secret);
+}
+std::optional<std::string>
+secret(const std::string &name)
+{
+        return instance_->secret(name);
 }
 } // namespace cache

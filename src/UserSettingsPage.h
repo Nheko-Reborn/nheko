@@ -253,6 +253,9 @@ signals:
         void themeChanged();
         void decryptSidebarChanged();
 
+public slots:
+        void updateSecretStatus();
+
 private slots:
         void importSessionKeys();
         void exportSessionKeys();
@@ -285,6 +288,10 @@ private:
         Toggle *mobileMode_;
         QLabel *deviceFingerprintValue_;
         QLabel *deviceIdValue_;
+        QLabel *backupSecretCached;
+        QLabel *masterSecretCached;
+        QLabel *selfSigningSecretCached;
+        QLabel *userSigningSecretCached;
 
         QComboBox *themeCombo_;
         QComboBox *scaleFactorCombo_;

@@ -1,8 +1,13 @@
 #include "Olm.h"
 
 #include <QObject>
+#include <QTimer>
+
 #include <nlohmann/json.hpp>
 #include <variant>
+
+#include <mtx/responses/common.hpp>
+#include <mtx/secret_storage.hpp>
 
 #include "Cache.h"
 #include "Cache_p.h"
@@ -13,11 +18,13 @@
 #include "UserSettingsPage.h"
 #include "Utils.h"
 
-static const std::string STORAGE_SECRET_KEY("secret");
-constexpr auto MEGOLM_ALGO = "m.megolm.v1.aes-sha2";
-
 namespace {
 auto client_ = std::make_unique<mtx::crypto::OlmClient>();
+
+std::map<std::string, std::string> request_id_to_secret_name;
+
+const std::string STORAGE_SECRET_KEY("secret");
+constexpr auto MEGOLM_ALGO = "m.megolm.v1.aes-sha2";
 }
 
 namespace olm {
@@ -41,6 +48,54 @@ mtx::crypto::OlmClient *
 client()
 {
         return client_.get();
+}
+
+static void
+handle_secret_request(const mtx::events::DeviceEvent<mtx::events::msg::SecretRequest> *e,
+                      const std::string &sender)
+{
+        using namespace mtx::events;
+
+        if (e->content.action != mtx::events::msg::RequestAction::Request)
+                return;
+
+        auto local_user = http::client()->user_id();
+
+        if (sender != local_user.to_string())
+                return;
+
+        auto verificationStatus = cache::verificationStatus(local_user.to_string());
+
+        if (!verificationStatus)
+                return;
+
+        auto deviceKeys = cache::userKeys(local_user.to_string());
+        if (!deviceKeys)
+                return;
+
+        if (std::find(verificationStatus->verified_devices.begin(),
+                      verificationStatus->verified_devices.end(),
+                      e->content.requesting_device_id) ==
+            verificationStatus->verified_devices.end())
+                return;
+
+        // this is a verified device
+        mtx::events::DeviceEvent<mtx::events::msg::SecretSend> secretSend;
+        secretSend.type               = EventType::SecretSend;
+        secretSend.content.request_id = e->content.request_id;
+
+        auto secret = cache::client()->secret(e->content.name);
+        if (!secret)
+                return;
+        secretSend.content.secret = secret.value();
+
+        send_encrypted_to_device_messages(
+          {{local_user.to_string(), {{e->content.requesting_device_id}}}}, secretSend);
+
+        nhlog::net()->info("Sent secret '{}' to ({},{})",
+                           e->content.name,
+                           local_user.to_string(),
+                           e->content.requesting_device_id);
 }
 
 void
@@ -127,6 +182,10 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
                           std::get<mtx::events::DeviceEvent<mtx::events::msg::KeyVerificationDone>>(
                             msg);
                         ChatPage::instance()->receivedDeviceVerificationDone(message.content);
+                } else if (auto e =
+                             std::get_if<mtx::events::DeviceEvent<mtx::events::msg::SecretRequest>>(
+                               &msg)) {
+                        handle_secret_request(e, e->sender);
                 } else {
                         nhlog::crypto()->warn("unhandled event: {}", j_msg.dump(2));
                 }
@@ -163,59 +222,137 @@ handle_olm_message(const OlmMessage &msg)
                 }
 
                 if (!payload.is_null()) {
-                        std::string msg_type = payload["type"];
+                        mtx::events::collections::DeviceEvents device_event;
 
-                        if (msg_type == to_string(mtx::events::EventType::KeyVerificationAccept)) {
-                                ChatPage::instance()->receivedDeviceVerificationAccept(
-                                  payload["content"]);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::KeyVerificationRequest)) {
-                                ChatPage::instance()->receivedDeviceVerificationRequest(
-                                  payload["content"], payload["sender"]);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::KeyVerificationCancel)) {
-                                ChatPage::instance()->receivedDeviceVerificationCancel(
-                                  payload["content"]);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::KeyVerificationKey)) {
-                                ChatPage::instance()->receivedDeviceVerificationKey(
-                                  payload["content"]);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::KeyVerificationMac)) {
-                                ChatPage::instance()->receivedDeviceVerificationMac(
-                                  payload["content"]);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::KeyVerificationStart)) {
-                                ChatPage::instance()->receivedDeviceVerificationStart(
-                                  payload["content"], payload["sender"]);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::KeyVerificationReady)) {
-                                ChatPage::instance()->receivedDeviceVerificationReady(
-                                  payload["content"]);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::KeyVerificationDone)) {
-                                ChatPage::instance()->receivedDeviceVerificationDone(
-                                  payload["content"]);
-                                return;
-                        } else if (msg_type == to_string(mtx::events::EventType::RoomKey)) {
-                                mtx::events::DeviceEvent<mtx::events::msg::RoomKey> roomKey =
-                                  payload;
-                                create_inbound_megolm_session(roomKey, msg.sender_key);
-                                return;
-                        } else if (msg_type ==
-                                   to_string(mtx::events::EventType::ForwardedRoomKey)) {
-                                mtx::events::DeviceEvent<mtx::events::msg::ForwardedRoomKey>
-                                  roomKey = payload;
-                                import_inbound_megolm_session(roomKey);
-                                return;
+                        {
+                                std::string msg_type = payload["type"];
+                                json event_array     = json::array();
+                                event_array.push_back(payload);
+
+                                std::vector<mtx::events::collections::DeviceEvents> temp_events;
+                                mtx::responses::utils::parse_device_events(event_array,
+                                                                           temp_events);
+                                if (temp_events.empty()) {
+                                        nhlog::crypto()->warn("Decrypted unknown event: {}",
+                                                              payload.dump());
+                                        continue;
+                                }
+                                device_event = temp_events.at(0);
                         }
+
+                        using namespace mtx::events;
+                        if (auto e1 =
+                              std::get_if<DeviceEvent<msg::KeyVerificationAccept>>(&device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationAccept(e1->content);
+                        } else if (auto e2 = std::get_if<DeviceEvent<msg::KeyVerificationRequest>>(
+                                     &device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationRequest(e2->content,
+                                                                                        e2->sender);
+                        } else if (auto e3 = std::get_if<DeviceEvent<msg::KeyVerificationCancel>>(
+                                     &device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationCancel(e3->content);
+                        } else if (auto e4 = std::get_if<DeviceEvent<msg::KeyVerificationKey>>(
+                                     &device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationKey(e4->content);
+                        } else if (auto e5 = std::get_if<DeviceEvent<msg::KeyVerificationMac>>(
+                                     &device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationMac(e5->content);
+                        } else if (auto e6 = std::get_if<DeviceEvent<msg::KeyVerificationStart>>(
+                                     &device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationStart(e6->content,
+                                                                                      e6->sender);
+                        } else if (auto e7 = std::get_if<DeviceEvent<msg::KeyVerificationReady>>(
+                                     &device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationReady(e7->content);
+                        } else if (auto e8 = std::get_if<DeviceEvent<msg::KeyVerificationDone>>(
+                                     &device_event)) {
+                                ChatPage::instance()->receivedDeviceVerificationDone(e8->content);
+                        } else if (auto roomKey =
+                                     std::get_if<DeviceEvent<msg::RoomKey>>(&device_event)) {
+                                create_inbound_megolm_session(*roomKey, msg.sender_key);
+                        } else if (auto forwardedRoomKey =
+                                     std::get_if<DeviceEvent<msg::ForwardedRoomKey>>(
+                                       &device_event)) {
+                                import_inbound_megolm_session(*forwardedRoomKey);
+                        } else if (auto e =
+                                     std::get_if<DeviceEvent<msg::SecretSend>>(&device_event)) {
+                                auto local_user = http::client()->user_id();
+
+                                if (msg.sender != local_user.to_string())
+                                        continue;
+
+                                auto secret_name =
+                                  request_id_to_secret_name.find(e->content.request_id);
+
+                                if (secret_name != request_id_to_secret_name.end()) {
+                                        nhlog::crypto()->info("Received secret: {}",
+                                                              secret_name->second);
+
+                                        mtx::events::msg::SecretRequest secretRequest{};
+                                        secretRequest.action =
+                                          mtx::events::msg::RequestAction::Cancellation;
+                                        secretRequest.requesting_device_id =
+                                          http::client()->device_id();
+                                        secretRequest.request_id = e->content.request_id;
+
+                                        auto verificationStatus =
+                                          cache::verificationStatus(local_user.to_string());
+
+                                        if (!verificationStatus)
+                                                continue;
+
+                                        auto deviceKeys = cache::userKeys(local_user.to_string());
+                                        std::string sender_device_id;
+                                        if (deviceKeys) {
+                                                for (auto &[dev, key] : deviceKeys->device_keys) {
+                                                        if (key.keys["curve25519:" + dev] ==
+                                                            msg.sender_key) {
+                                                                sender_device_id = dev;
+                                                                break;
+                                                        }
+                                                }
+                                        }
+
+                                        std::map<
+                                          mtx::identifiers::User,
+                                          std::map<std::string, mtx::events::msg::SecretRequest>>
+                                          body;
+
+                                        for (const auto &dev :
+                                             verificationStatus->verified_devices) {
+                                                if (dev != secretRequest.requesting_device_id &&
+                                                    dev != sender_device_id)
+                                                        body[local_user][dev] = secretRequest;
+                                        }
+
+                                        http::client()
+                                          ->send_to_device<mtx::events::msg::SecretRequest>(
+                                            http::client()->generate_txn_id(),
+                                            body,
+                                            [name =
+                                               secret_name->second](mtx::http::RequestErr err) {
+                                                    if (err) {
+                                                            nhlog::net()->error(
+                                                              "Failed to send request cancellation "
+                                                              "for secrect "
+                                                              "'{}'",
+                                                              name);
+                                                            return;
+                                                    }
+                                            });
+
+                                        cache::client()->storeSecret(secret_name->second,
+                                                                     e->content.secret);
+
+                                        request_id_to_secret_name.erase(secret_name);
+                                }
+
+                        } else if (auto sec_req =
+                                     std::get_if<DeviceEvent<msg::SecretRequest>>(&device_event)) {
+                                handle_secret_request(sec_req, msg.sender);
+                        }
+
+                        return;
                 }
         }
 }
@@ -332,11 +469,13 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
                                 // new member, send them the session at this index
                                 sendSessionTo[member_it->first] = {};
 
-                                for (const auto &dev : member_it->second->device_keys)
-                                        if (member_it->first != own_user_id ||
-                                            dev.first != device_id)
-                                                sendSessionTo[member_it->first].push_back(
-                                                  dev.first);
+                                if (member_it->second) {
+                                        for (const auto &dev : member_it->second->device_keys)
+                                                if (member_it->first != own_user_id ||
+                                                    dev.first != device_id)
+                                                        sendSessionTo[member_it->first].push_back(
+                                                          dev.first);
+                                }
 
                                 ++member_it;
                         } else {
@@ -1033,6 +1172,145 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                           http::client()->claim_keys(claim_keys, BindPks(deviceKeys));
                   });
         }
+}
+
+void
+request_cross_signing_keys()
+{
+        mtx::events::msg::SecretRequest secretRequest{};
+        secretRequest.action               = mtx::events::msg::RequestAction::Request;
+        secretRequest.requesting_device_id = http::client()->device_id();
+
+        auto local_user = http::client()->user_id();
+
+        auto verificationStatus = cache::verificationStatus(local_user.to_string());
+
+        if (!verificationStatus)
+                return;
+
+        auto request = [&](std::string secretName) {
+                secretRequest.name       = secretName;
+                secretRequest.request_id = "ss." + http::client()->generate_txn_id();
+
+                request_id_to_secret_name[secretRequest.request_id] = secretRequest.name;
+
+                std::map<mtx::identifiers::User,
+                         std::map<std::string, mtx::events::msg::SecretRequest>>
+                  body;
+
+                for (const auto &dev : verificationStatus->verified_devices) {
+                        if (dev != secretRequest.requesting_device_id)
+                                body[local_user][dev] = secretRequest;
+                }
+
+                http::client()->send_to_device<mtx::events::msg::SecretRequest>(
+                  http::client()->generate_txn_id(),
+                  body,
+                  [request_id = secretRequest.request_id, secretName](mtx::http::RequestErr err) {
+                          if (err) {
+                                  request_id_to_secret_name.erase(request_id);
+                                  nhlog::net()->error("Failed to send request for secrect '{}'",
+                                                      secretName);
+                                  return;
+                          }
+                  });
+
+                for (const auto &dev : verificationStatus->verified_devices) {
+                        if (dev != secretRequest.requesting_device_id)
+                                body[local_user][dev].action =
+                                  mtx::events::msg::RequestAction::Cancellation;
+                }
+
+                // timeout after 15 min
+                QTimer::singleShot(15 * 60 * 1000, [secretRequest, body]() {
+                        if (request_id_to_secret_name.count(secretRequest.request_id)) {
+                                request_id_to_secret_name.erase(secretRequest.request_id);
+                                http::client()->send_to_device<mtx::events::msg::SecretRequest>(
+                                  http::client()->generate_txn_id(),
+                                  body,
+                                  [secretRequest](mtx::http::RequestErr err) {
+                                          if (err) {
+                                                  nhlog::net()->error(
+                                                    "Failed to cancel request for secrect '{}'",
+                                                    secretRequest.name);
+                                                  return;
+                                          }
+                                  });
+                        }
+                });
+        };
+
+        request(mtx::secret_storage::secrets::cross_signing_self_signing);
+        request(mtx::secret_storage::secrets::cross_signing_user_signing);
+        request(mtx::secret_storage::secrets::megolm_backup_v1);
+}
+
+namespace {
+void
+unlock_secrets(const std::string &key,
+               const std::map<std::string, mtx::secret_storage::AesHmacSha2EncryptedData> &secrets)
+{
+        http::client()->secret_storage_key(
+          key,
+          [secrets](mtx::secret_storage::AesHmacSha2KeyDescription keyDesc,
+                    mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->error("Failed to download secret storage key");
+                          return;
+                  }
+
+                  emit ChatPage::instance()->downloadedSecrets(keyDesc, secrets);
+          });
+}
+}
+
+void
+download_cross_signing_keys()
+{
+        using namespace mtx::secret_storage;
+        http::client()->secret_storage_secret(
+          secrets::megolm_backup_v1, [](Secret secret, mtx::http::RequestErr err) {
+                  std::optional<Secret> backup_key;
+                  if (!err)
+                          backup_key = secret;
+
+                  http::client()->secret_storage_secret(
+                    secrets::cross_signing_self_signing,
+                    [backup_key](Secret secret, mtx::http::RequestErr err) {
+                            std::optional<Secret> self_signing_key;
+                            if (!err)
+                                    self_signing_key = secret;
+
+                            http::client()->secret_storage_secret(
+                              secrets::cross_signing_user_signing,
+                              [backup_key, self_signing_key](Secret secret,
+                                                             mtx::http::RequestErr err) {
+                                      std::optional<Secret> user_signing_key;
+                                      if (!err)
+                                              user_signing_key = secret;
+
+                                      std::map<std::string,
+                                               std::map<std::string, AesHmacSha2EncryptedData>>
+                                        secrets;
+
+                                      if (backup_key && !backup_key->encrypted.empty())
+                                              secrets[backup_key->encrypted.begin()->first]
+                                                     [secrets::megolm_backup_v1] =
+                                                       backup_key->encrypted.begin()->second;
+                                      if (self_signing_key && !self_signing_key->encrypted.empty())
+                                              secrets[self_signing_key->encrypted.begin()->first]
+                                                     [secrets::cross_signing_self_signing] =
+                                                       self_signing_key->encrypted.begin()->second;
+                                      if (user_signing_key && !user_signing_key->encrypted.empty())
+                                              secrets[user_signing_key->encrypted.begin()->first]
+                                                     [secrets::cross_signing_user_signing] =
+                                                       user_signing_key->encrypted.begin()->second;
+
+                                      for (const auto &[key, secrets] : secrets)
+                                              unlock_secrets(key, secrets);
+                              });
+                    });
+          });
 }
 
 } // namespace olm

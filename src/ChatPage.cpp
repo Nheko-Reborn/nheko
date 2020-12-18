@@ -17,6 +17,7 @@
 
 #include <QApplication>
 #include <QImageReader>
+#include <QInputDialog>
 #include <QMessageBox>
 #include <QSettings>
 #include <QShortcut>
@@ -64,6 +65,8 @@ constexpr size_t MAX_ONETIME_KEYS         = 50;
 Q_DECLARE_METATYPE(std::optional<mtx::crypto::EncryptedFile>)
 Q_DECLARE_METATYPE(std::optional<RelatedInfo>)
 Q_DECLARE_METATYPE(mtx::presence::PresenceState)
+Q_DECLARE_METATYPE(mtx::secret_storage::AesHmacSha2KeyDescription)
+Q_DECLARE_METATYPE(SecretsToDecrypt)
 
 ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   : QWidget(parent)
@@ -79,6 +82,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         qRegisterMetaType<std::optional<mtx::crypto::EncryptedFile>>();
         qRegisterMetaType<std::optional<RelatedInfo>>();
         qRegisterMetaType<mtx::presence::PresenceState>();
+        qRegisterMetaType<mtx::secret_storage::AesHmacSha2KeyDescription>();
+        qRegisterMetaType<SecretsToDecrypt>();
 
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(0);
@@ -135,6 +140,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         splitter->addWidget(sideBar_);
         splitter->addWidget(content_);
         splitter->restoreSizes(parent->width());
+
+        connect(this,
+                &ChatPage::downloadedSecrets,
+                this,
+                &ChatPage::decryptDownloadedSecrets,
+                Qt::QueuedConnection);
 
         connect(this, &ChatPage::connectionLost, this, [this]() {
                 nhlog::net()->info("connectivity lost");
@@ -372,9 +383,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 void
 ChatPage::logout()
 {
-        deleteConfigs();
-
         resetUI();
+        deleteConfigs();
 
         emit closing();
         connectivityTimer_.stop();
@@ -385,11 +395,11 @@ ChatPage::dropToLoginPage(const QString &msg)
 {
         nhlog::ui()->info("dropping to the login page: {}", msg.toStdString());
 
-        deleteConfigs();
-        resetUI();
-
         http::client()->shutdown();
         connectivityTimer_.stop();
+
+        resetUI();
+        deleteConfigs();
 
         emit showLoginPage(msg);
 }
@@ -418,8 +428,8 @@ ChatPage::deleteConfigs()
         settings.remove("");
         settings.endGroup();
 
+        http::client()->shutdown();
         cache::deleteData();
-        http::client()->clear();
 }
 
 void
@@ -1208,4 +1218,46 @@ ChatPage::connectCallMessage()
                 qOverload<const QString &, const T &>(&CallManager::newMessage),
                 view_manager_,
                 qOverload<const QString &, const T &>(&TimelineViewManager::queueCallMessage));
+}
+
+void
+ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescription keyDesc,
+                                   const SecretsToDecrypt &secrets)
+{
+        QString text = QInputDialog::getText(
+          ChatPage::instance(),
+          QCoreApplication::translate("CrossSigningSecrets", "Decrypt secrets"),
+          keyDesc.name.empty()
+            ? QCoreApplication::translate(
+                "CrossSigningSecrets",
+                "Enter your recovery key or passphrase to decrypt your secrets:")
+            : QCoreApplication::translate(
+                "CrossSigningSecrets",
+                "Enter your recovery key or passphrase called %1 to decrypt your secrets:")
+                .arg(QString::fromStdString(keyDesc.name)),
+          QLineEdit::Password);
+
+        if (text.isEmpty())
+                return;
+
+        auto decryptionKey = mtx::crypto::key_from_recoverykey(text.toStdString(), keyDesc);
+
+        if (!decryptionKey)
+                decryptionKey = mtx::crypto::key_from_passphrase(text.toStdString(), keyDesc);
+
+        if (!decryptionKey) {
+                QMessageBox::information(
+                  ChatPage::instance(),
+                  QCoreApplication::translate("CrossSigningSecrets", "Decrytion failed"),
+                  QCoreApplication::translate("CrossSigningSecrets",
+                                              "Failed to decrypt secrets with the "
+                                              "provided recovery key or passphrase"));
+                return;
+        }
+
+        for (const auto &[secretName, encryptedSecret] : secrets) {
+                auto decrypted = mtx::crypto::decrypt(encryptedSecret, *decryptionKey, secretName);
+                if (!decrypted.empty())
+                        cache::storeSecret(secretName, decrypted);
+        }
 }

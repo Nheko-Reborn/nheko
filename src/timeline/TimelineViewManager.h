@@ -51,7 +51,12 @@ public:
         void sync(const mtx::responses::Rooms &rooms);
         void addRoom(const QString &room_id);
 
-        void clearAll() { models.clear(); }
+        void clearAll()
+        {
+                timeline_ = nullptr;
+                emit activeTimelineChanged(nullptr);
+                models.clear();
+        }
 
         Q_INVOKABLE TimelineModel *activeTimeline() const { return timeline_; }
         Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }

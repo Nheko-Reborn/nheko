@@ -275,11 +275,66 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                                   req.signatures[utils::localUser().toStdString()]
                                                                 [master_key.keys.at(mac.first)] =
                                                     master_key;
+                                          } else if (mac.first ==
+                                                     "ed25519:" + this->deviceId.toStdString()) {
+                                                  // Sign their device key with self signing key
+
+                                                  auto device_id = this->deviceId.toStdString();
+
+                                                  if (their_keys.device_keys.count(device_id)) {
+                                                          json j =
+                                                            their_keys.device_keys.at(device_id);
+                                                          j.erase("signatures");
+                                                          j.erase("unsigned");
+
+                                                          auto secret = cache::secret(
+                                                            mtx::secret_storage::secrets::
+                                                              cross_signing_self_signing);
+                                                          if (!secret)
+                                                                  continue;
+                                                          auto ssk =
+                                                            mtx::crypto::PkSigning::from_seed(
+                                                              *secret);
+
+                                                          mtx::crypto::DeviceKeys dev = j;
+                                                          dev.signatures
+                                                            [utils::localUser().toStdString()]
+                                                            ["ed25519:" + ssk.public_key()] =
+                                                            ssk.sign(j.dump());
+
+                                                          req.signatures[utils::localUser()
+                                                                           .toStdString()]
+                                                                        [device_id] = dev;
+                                                  }
                                           }
                                   }
-                                  // TODO(Nico): Sign their device key with self signing key
                           } else {
-                                  // TODO(Nico): Sign their master key with user signing key
+                                  // Sign their master key with user signing key
+                                  for (const auto &mac : msg.mac) {
+                                          if (their_keys.master_keys.keys.count(mac.first)) {
+                                                  json j = their_keys.master_keys;
+                                                  j.erase("signatures");
+                                                  j.erase("unsigned");
+
+                                                  auto secret =
+                                                    cache::secret(mtx::secret_storage::secrets::
+                                                                    cross_signing_user_signing);
+                                                  if (!secret)
+                                                          continue;
+                                                  auto usk =
+                                                    mtx::crypto::PkSigning::from_seed(*secret);
+
+                                                  mtx::crypto::CrossSigningKeys master_key = j;
+                                                  master_key
+                                                    .signatures[utils::localUser().toStdString()]
+                                                               ["ed25519:" + usk.public_key()] =
+                                                    usk.sign(j.dump());
+
+                                                  req.signatures[toClient.to_string()]
+                                                                [master_key.keys.at(mac.first)] =
+                                                    master_key;
+                                          }
+                                  }
                           }
 
                           if (!req.signatures.empty()) {
@@ -706,6 +761,14 @@ DeviceVerificationFlow::acceptDevice()
                 cache::markDeviceVerified(this->toClient.to_string(), this->deviceId.toStdString());
                 this->sendVerificationDone();
                 setState(Success);
+
+                // Request secrets. We should probably check somehow, if a device knowns about the
+                // secrets.
+                if (utils::localUser().toStdString() == this->toClient.to_string() &&
+                    (!cache::secret(mtx::secret_storage::secrets::cross_signing_self_signing) ||
+                     !cache::secret(mtx::secret_storage::secrets::cross_signing_user_signing))) {
+                        olm::request_cross_signing_keys();
+                }
         }
 }
 

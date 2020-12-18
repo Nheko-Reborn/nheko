@@ -43,7 +43,11 @@ public:
         void initialize(const QMap<QString, RoomInfo> &info);
         void sync(const std::map<QString, RoomInfo> &info);
 
-        void clear() { rooms_.clear(); };
+        void clear()
+        {
+                rooms_.clear();
+                rooms_sort_cache_.clear();
+        };
         void updateAvatar(const QString &room_id, const QString &url);
 
         void addRoom(const QString &room_id, const RoomInfo &info);

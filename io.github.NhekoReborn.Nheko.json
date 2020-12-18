@@ -95,6 +95,22 @@
       ]
     },
     {
+      "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_TEST_APPLICATION=OFF"
+      ],
+      "buildsystem": "cmake-ninja",
+      "name": "QtKeychain",
+      "sources": [
+        {
+          "commit": "815fe610353ff8ad7e2f1121c368a74df8db5eb7",
+          "tag": "v0.12.0",
+          "type": "git",
+          "url": "https://github.com/frankosterfeld/qtkeychain.git"
+        }
+      ]
+    },
+    {
       "config-opts":[
         "-DJSON_BuildTests=OFF"
       ],
@@ -145,7 +161,7 @@
       "name": "mtxclient",
       "sources": [
         {
-          "commit": "ed6315563409ce9d47978ff2a2d771b863e375c5",
+          "commit": "ce8bc9c3dd6bba432e716f55136133111b0186e7",
           "type": "git",
           "url": "https://github.com/Nheko-Reborn/mtxclient.git"
         }

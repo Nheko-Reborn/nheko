@@ -54,8 +54,9 @@ bool
 utils::codepointIsEmoji(uint code)
 {
         // TODO: Be more precise here.
-        return (code >= 0x2600 && code <= 0x27bf) || (code >= 0x1f300 && code <= 0x1f3ff) ||
-               (code >= 0x1f000 && code <= 0x1faff);
+        return (code >= 0x2600 && code <= 0x27bf) || (code >= 0x2b00 && code <= 0x2bff) ||
+               (code >= 0x1f300 && code <= 0x1f3ff) || (code >= 0x1f000 && code <= 0x1faff) ||
+               code == 0x200d;
 }
 
 QString
