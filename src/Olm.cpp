@@ -241,32 +241,32 @@ handle_olm_message(const OlmMessage &msg)
                         }
 
                         using namespace mtx::events;
-                        if (auto e =
+                        if (auto e1 =
                               std::get_if<DeviceEvent<msg::KeyVerificationAccept>>(&device_event)) {
-                                ChatPage::instance()->receivedDeviceVerificationAccept(e->content);
-                        } else if (auto e = std::get_if<DeviceEvent<msg::KeyVerificationRequest>>(
+                                ChatPage::instance()->receivedDeviceVerificationAccept(e1->content);
+                        } else if (auto e2 = std::get_if<DeviceEvent<msg::KeyVerificationRequest>>(
                                      &device_event)) {
-                                ChatPage::instance()->receivedDeviceVerificationRequest(e->content,
-                                                                                        e->sender);
-                        } else if (auto e = std::get_if<DeviceEvent<msg::KeyVerificationCancel>>(
+                                ChatPage::instance()->receivedDeviceVerificationRequest(e2->content,
+                                                                                        e2->sender);
+                        } else if (auto e3 = std::get_if<DeviceEvent<msg::KeyVerificationCancel>>(
                                      &device_event)) {
-                                ChatPage::instance()->receivedDeviceVerificationCancel(e->content);
-                        } else if (auto e = std::get_if<DeviceEvent<msg::KeyVerificationKey>>(
+                                ChatPage::instance()->receivedDeviceVerificationCancel(e3->content);
+                        } else if (auto e4 = std::get_if<DeviceEvent<msg::KeyVerificationKey>>(
                                      &device_event)) {
-                                ChatPage::instance()->receivedDeviceVerificationKey(e->content);
-                        } else if (auto e = std::get_if<DeviceEvent<msg::KeyVerificationMac>>(
+                                ChatPage::instance()->receivedDeviceVerificationKey(e4->content);
+                        } else if (auto e5 = std::get_if<DeviceEvent<msg::KeyVerificationMac>>(
                                      &device_event)) {
-                                ChatPage::instance()->receivedDeviceVerificationMac(e->content);
-                        } else if (auto e = std::get_if<DeviceEvent<msg::KeyVerificationStart>>(
+                                ChatPage::instance()->receivedDeviceVerificationMac(e5->content);
+                        } else if (auto e6 = std::get_if<DeviceEvent<msg::KeyVerificationStart>>(
                                      &device_event)) {
-                                ChatPage::instance()->receivedDeviceVerificationStart(e->content,
-                                                                                      e->sender);
-                        } else if (auto e = std::get_if<DeviceEvent<msg::KeyVerificationReady>>(
+                                ChatPage::instance()->receivedDeviceVerificationStart(e6->content,
+                                                                                      e6->sender);
+                        } else if (auto e7 = std::get_if<DeviceEvent<msg::KeyVerificationReady>>(
                                      &device_event)) {
-                                ChatPage::instance()->receivedDeviceVerificationReady(e->content);
-                        } else if (auto e = std::get_if<DeviceEvent<msg::KeyVerificationDone>>(
+                                ChatPage::instance()->receivedDeviceVerificationReady(e7->content);
+                        } else if (auto e8 = std::get_if<DeviceEvent<msg::KeyVerificationDone>>(
                                      &device_event)) {
-                                ChatPage::instance()->receivedDeviceVerificationDone(e->content);
+                                ChatPage::instance()->receivedDeviceVerificationDone(e8->content);
                         } else if (auto roomKey =
                                      std::get_if<DeviceEvent<msg::RoomKey>>(&device_event)) {
                                 create_inbound_megolm_session(*roomKey, msg.sender_key);
@@ -346,9 +346,9 @@ handle_olm_message(const OlmMessage &msg)
                                         request_id_to_secret_name.erase(secret_name);
                                 }
 
-                        } else if (auto e =
+                        } else if (auto sec_req =
                                      std::get_if<DeviceEvent<msg::SecretRequest>>(&device_event)) {
-                                handle_secret_request(e, msg.sender);
+                                handle_secret_request(sec_req, msg.sender);
                         }
 
                         return;
