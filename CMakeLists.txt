@@ -41,6 +41,8 @@ option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdb++."
 	${HUNTER_ENABLED})
 option(USE_BUNDLED_TWEENY "Use the bundled version of tweeny."
 	${HUNTER_ENABLED})
+option(USE_BUNDLED_QTKEYCHAIN "Use the bundled version of Qt5Keychain."
+	${HUNTER_ENABLED})
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
@@ -136,7 +138,24 @@ endif()
 find_package(Qt5 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia Qml QuickControls2 QuickWidgets REQUIRED)
 find_package(Qt5QuickCompiler)
 find_package(Qt5DBus)
+
+if (USE_BUNDLED_QTKEYCHAIN)
+	include(FetchContent)
+	FetchContent_Declare(
+		qt5keychain
+		GIT_REPOSITORY https://github.com/frankosterfeld/qtkeychain.git
+		GIT_TAG        v0.12.0
+		)
+	if (BUILD_SHARED_LIBS)
+		set(QTKEYCHAIN_STATIC OFF CACHE INTERNAL "")
+	else()
+		set(QTKEYCHAIN_STATIC ON CACHE INTERNAL "")
+	endif()
+	set(BUILD_TEST_APPLICATION OFF CACHE INTERNAL "")
+	FetchContent_MakeAvailable(qt5keychain)
+else()
 find_package(Qt5Keychain REQUIRED)
+endif()
 
 if (APPLE)
 	find_package(Qt5MacExtras REQUIRED)
@@ -334,25 +353,25 @@ endif()
 find_package(OpenSSL 1.1.0 REQUIRED)
 if(USE_BUNDLED_MTXCLIENT)
 	include(FetchContent)
-	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
-	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        ed6315563409ce9d47978ff2a2d771b863e375c5
+		GIT_TAG        ce8bc9c3dd6bba432e716f55136133111b0186e7
 		)
+	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
+	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(MatrixClient)
 else()
 	find_package(MatrixClient 0.3.1 REQUIRED)
 endif()
 if(USE_BUNDLED_OLM)
 	include(FetchContent)
-	set(OLM_TESTS OFF CACHE INTERNAL "")
 	FetchContent_Declare(
 		Olm
 		GIT_REPOSITORY https://gitlab.matrix.org/matrix-org/olm.git
 		GIT_TAG        3.1.4
 		)
+	set(OLM_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(Olm)
 else()
 	find_package(Olm 3)
@@ -573,6 +592,11 @@ else()
 	target_link_libraries (nheko PRIVATE Qt5::DBus)
 endif()
 target_include_directories(nheko PRIVATE src includes third_party/blurhash third_party/cpp-httplib-0.5.12)
+
+# Fixup bundled keychain include dirs
+if (USE_BUNDLED_QTKEYCHAIN)
+target_include_directories(nheko PRIVATE ${qt5keychain_SOURCE_DIR} ${qt5keychain_BINARY_DIR})
+endif()
 
 target_link_libraries(nheko PRIVATE
 	MatrixClient::MatrixClient
