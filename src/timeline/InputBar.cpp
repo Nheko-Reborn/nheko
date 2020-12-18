@@ -13,7 +13,6 @@
 #include <mtx/responses/media.hpp>
 
 #include "Cache.h"
-#include "CallManager.h"
 #include "ChatPage.h"
 #include "CompletionProxyModel.h"
 #include "Logging.h"
@@ -25,7 +24,6 @@
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
 #include "Utils.h"
-#include "dialogs/PlaceCall.h"
 #include "dialogs/PreviewUploadOverlay.h"
 #include "emoji/EmojiModel.h"
 
@@ -591,50 +589,6 @@ InputBar::showPreview(const QMimeData &source, QString path, const QStringList &
                             setUploading(false);
                     });
           });
-}
-
-void
-InputBar::callButton()
-{
-        auto callManager_ = ChatPage::instance()->callManager();
-        if (callManager_->haveCallInvite()) {
-                return;
-        } else if (callManager_->isOnCall()) {
-                callManager_->hangUp();
-        } else {
-                auto current_room_ = room->roomId();
-                if (auto roomInfo = cache::singleRoomInfo(current_room_.toStdString());
-                    roomInfo.member_count != 2) {
-                        ChatPage::instance()->showNotification("Calls are limited to 1:1 rooms.");
-                } else {
-                        std::vector<RoomMember> members(
-                          cache::getMembers(current_room_.toStdString()));
-                        const RoomMember &callee = members.front().user_id == utils::localUser()
-                                                     ? members.back()
-                                                     : members.front();
-                        auto dialog =
-                          new dialogs::PlaceCall(callee.user_id,
-                                                 callee.display_name,
-                                                 QString::fromStdString(roomInfo.name),
-                                                 QString::fromStdString(roomInfo.avatar_url),
-                                                 ChatPage::instance()->userSettings(),
-                                                 MainWindow::instance());
-                        connect(dialog,
-                                &dialogs::PlaceCall::voice,
-                                callManager_,
-                                [callManager_, current_room_]() {
-                                        callManager_->sendInvite(current_room_, false);
-                                });
-                        connect(dialog,
-                                &dialogs::PlaceCall::video,
-                                callManager_,
-                                [callManager_, current_room_]() {
-                                        callManager_->sendInvite(current_room_, true);
-                                });
-                        utils::centerWidget(dialog, MainWindow::instance());
-                        dialog->show();
-                }
-        }
 }
 
 void

@@ -253,7 +253,6 @@ set(SRC_FILES
 	src/dialogs/LeaveRoom.cpp
 	src/dialogs/Logout.cpp
 	src/dialogs/MemberList.cpp
-	src/dialogs/PlaceCall.cpp
 	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
 	src/dialogs/ReadReceipts.cpp
@@ -471,7 +470,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/LeaveRoom.h
 	src/dialogs/Logout.h
 	src/dialogs/MemberList.h
-	src/dialogs/PlaceCall.h
 	src/dialogs/PreviewUploadOverlay.h
 	src/dialogs/RawMessage.h
 	src/dialogs/ReCaptcha.h

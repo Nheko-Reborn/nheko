@@ -3,12 +3,20 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import im.nheko 1.0
+import "./voip"
 
 Rectangle {
     color: colors.window
     Layout.fillWidth: true
     Layout.preferredHeight: textInput.height
     Layout.minimumHeight: 40
+
+    Component {
+        id: placeCallDialog
+
+        PlaceCall {
+        }
+    }
 
     RowLayout {
         id: inputBar
@@ -28,7 +36,20 @@ Rectangle {
             Layout.topMargin: 8
             Layout.bottomMargin: 8
             Layout.leftMargin: 16
-            onClicked: TimelineManager.timeline.input.callButton()
+            onClicked: {
+                if (TimelineManager.timeline) {
+                    if (CallManager.haveCallInvite) {
+                        return;
+                    }
+                    else if (CallManager.isOnCall) {
+                        CallManager.hangUp();
+                    }
+                    else {
+                        var dialog = placeCallDialog.createObject(timelineRoot);
+                        dialog.show();
+                    }
+                }
+            }
         }
 
         ImageButton {

@@ -37,7 +37,6 @@ class CallManager : public QObject
 public:
         CallManager(QObject *);
 
-        void sendInvite(const QString &roomid, bool isVideo);
         bool haveCallInvite() const { return haveCallInvite_; }
         bool isOnCall() const { return session_.state() != webrtc::State::DISCONNECTED; }
         bool isVideo() const { return isVideo_; }
@@ -52,6 +51,7 @@ public:
         void refreshTurnServer();
 
 public slots:
+        void sendInvite(const QString &roomid, bool isVideo);
         void syncEvent(const mtx::events::collections::TimelineEvents &event);
         void toggleMicMute();
         void toggleCameraView() { session_.toggleCameraView(); }

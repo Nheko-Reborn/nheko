@@ -47,7 +47,6 @@
 
 #include "notifications/Manager.h"
 
-#include "dialogs/PlaceCall.h"
 #include "dialogs/ReadReceipts.h"
 #include "popups/UserMentions.h"
 #include "timeline/TimelineViewManager.h"
