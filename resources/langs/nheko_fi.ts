@@ -6,12 +6,12 @@
     <message>
         <location filename="../qml/ActiveCallBar.qml" line="+174"/>
         <source>Unmute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Poista mikrofonin vaimennus</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaimenna mikrofoni</translation>
     </message>
 </context>
 <context>
@@ -19,7 +19,7 @@
     <message>
         <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+7"/>
         <source>Awaiting Confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Odotetaan vahvistusta</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -232,7 +232,7 @@
     <message>
         <location line="+3"/>
         <source> (community)</source>
-        <translation> (community)</translation>
+        <translation> (yhteisö)</translation>
     </message>
 </context>
 <context>
@@ -617,12 +617,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>%1 placed a call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 soitti puhelun.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 answered the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 vastasi puheluun.</translation>
     </message>
     <message>
         <location line="+9"/>
