@@ -133,6 +133,7 @@ brew cask install nheko
     - Voice call support: dtls, opus, rtpmanager, srtp, webrtc
     - Video call support (optional): compositor, opengl, qmlgl, rtp, vpx
     - [libnice](https://gitlab.freedesktop.org/libnice/libnice)
+- [qtkeychain](https://github.com/frankosterfeld/qtkeychain)
 - A compiler that supports C++ 17:
     - Clang 6 (tested on Travis CI)
     - GCC 7 (tested on Travis CI)
@@ -178,20 +179,21 @@ sudo pacman -S qt5-base \
     fontconfig \
     lmdb \
     cmark \
-    boost
+    boost \
+    qtkeychain-qt5
 ```
 
 ##### Gentoo Linux
 
 ```bash
-sudo emerge -a ">=dev-qt/qtgui-5.10.0" media-libs/fontconfig
+sudo emerge -a ">=dev-qt/qtgui-5.10.0" media-libs/fontconfig dev-libs/qtkeychain
 ```
 
 ##### Ubuntu 20.04
 
 ```bash
 # Build requirements + qml modules needed at runtime (you may not need all of them, but the following seem to work according to reports):
-sudo apt install g++ cmake zlib1g-dev libssl-dev qt{base,declarative,tools,multimedia,quickcontrols2-}5-dev libqt5svg5-dev libboost-system-dev libboost-thread-dev libboost-iostreams-dev libolm-dev liblmdb++-dev libcmark-dev nlohmann-json3-dev libspdlog-dev libgtest-dev qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,graphicaleffects,quick-controls2}
+sudo apt install g++ cmake zlib1g-dev libssl-dev qt{base,declarative,tools,multimedia,quickcontrols2-}5-dev libqt5svg5-dev libboost-system-dev libboost-thread-dev libboost-iostreams-dev libolm-dev liblmdb++-dev libcmark-dev nlohmann-json3-dev libspdlog-dev libgtest-dev qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,graphicaleffects,quick-controls2} qt5keychain-dev
 ```
 This will install all dependencies, except for tweeny (use bundled tweeny)
 and mtxclient (needs to be build separately).
@@ -204,7 +206,8 @@ and mtxclient (needs to be build separately).
 sudo apt install cmake gcc make automake liblmdb-dev \
     qt5-default libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev \
     qml-module-qtgstreamer qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools \
-    qml-module-qtgraphicaleffects qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts
+    qml-module-qtgraphicaleffects qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts \
+    qt5keychain-dev
 ```
 
 ##### Guix
@@ -218,7 +221,7 @@ guix environment nheko
 
 ```bash
 brew update
-brew install qt5 lmdb cmake llvm spdlog boost cmark libolm
+brew install qt5 lmdb cmake llvm spdlog boost cmark libolm qtkeychain
 ```
 
 ##### Windows
