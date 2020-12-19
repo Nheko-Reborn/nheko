@@ -1943,7 +1943,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+41"/>
         <source>Upload</source>
-        <translation>Lae üles</translation>
+        <translation>Laadi üles</translation>
     </message>
     <message>
         <location line="+1"/>
