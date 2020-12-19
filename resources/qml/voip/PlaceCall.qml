@@ -19,8 +19,8 @@ ApplicationWindow {
     }
 
     ColumnLayout {
-
         id: columnLayout
+
         spacing: 16
 
         RowLayout {
@@ -30,7 +30,7 @@ ApplicationWindow {
 
             Label {
                 font.pointSize: fontMetrics.font.pointSize * 1.1
-                text: "Place a call to " + TimelineManager.timeline.roomName + "?"
+                text: qsTr("Place a call to ") + TimelineManager.timeline.roomName + "?"
             }
 
             Item {
@@ -39,21 +39,15 @@ ApplicationWindow {
         }
 
         RowLayout {
+            id: buttonLayout
 
-            id: rowLayout
             Layout.leftMargin: 8
             Layout.rightMargin: 8
-            Layout.bottomMargin: 16
             spacing: 16
 
             function validateMic() {
                 if (CallManager.mics.length == 0) {
                     warningDialog.text = "No microphone found.";
-                    warningDialog.open();
-                    return false;
-                }
-                else if (!CallManager.mics.includes(Settings.microphone)) {
-                    warningDialog.text = "Unknown microphone: " + Settings.microphone;
                     warningDialog.open();
                     return false;
                 }
@@ -71,7 +65,8 @@ ApplicationWindow {
                 text: qsTr("Voice")
                 icon.source: "qrc:/icons/icons/ui/place-call.png"
                 onClicked: {
-                    if (rowLayout.validateMic()) {
+                    if (buttonLayout.validateMic()) {
+                        Settings.microphone = micCombo.currentText
                         CallManager.sendInvite(TimelineManager.timeline.roomId(), false);
                         close();
                     }
@@ -83,12 +78,9 @@ ApplicationWindow {
                 text: qsTr("Video")
                 icon.source: "qrc:/icons/icons/ui/video-call.png"
                 onClicked: {
-                    if (rowLayout.validateMic()) {
-                        if (!CallManager.cameras.includes(Settings.camera)) {
-                            warningDialog.text = "Unknown camera: " + Settings.camera;
-                            warningDialog.open();
-                            return;
-                        }
+                    if (buttonLayout.validateMic()) {
+                        Settings.microphone = micCombo.currentText
+                        Settings.camera = cameraCombo.currentText
                         CallManager.sendInvite(TimelineManager.timeline.roomId(), true);
                         close();
                     }
@@ -101,6 +93,45 @@ ApplicationWindow {
                 onClicked: {
                     close();
                 }
+            }
+        }
+
+        RowLayout {
+
+            Layout.leftMargin: 8
+            Layout.rightMargin: 8
+            Layout.bottomMargin: cameraCombo.visible ? 0 : 16
+
+            Image {
+                Layout.preferredWidth: 22
+                Layout.preferredHeight: 22
+                source: "qrc:/icons/icons/ui/microphone-unmute.png"
+            }
+
+            ComboBox {
+                id: micCombo
+                Layout.fillWidth: true
+                model: CallManager.mics
+            }
+        }
+
+        RowLayout {
+
+            visible: CallManager.cameras.length > 0
+            Layout.leftMargin: 8
+            Layout.rightMargin: 8
+            Layout.bottomMargin: 16
+
+            Image {
+                Layout.preferredWidth: 22
+                Layout.preferredHeight: 22
+                source: "qrc:/icons/icons/ui/video-call.png"
+            }
+
+            ComboBox {
+                id: cameraCombo
+                Layout.fillWidth: true
+                model: CallManager.cameras
             }
         }
     }
