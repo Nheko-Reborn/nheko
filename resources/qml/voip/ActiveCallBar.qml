@@ -35,11 +35,13 @@ Rectangle {
         }
 
         Label {
+            Layout.leftMargin: 8
             font.pointSize: fontMetrics.font.pointSize * 1.1
-            text: "  " + CallManager.callParty + " "
+            text: CallManager.callParty
         }
 
         Image {
+            Layout.leftMargin: 4
             Layout.preferredWidth: 24
             Layout.preferredHeight: 24
             source: CallManager.isVideo ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
