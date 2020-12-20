@@ -158,6 +158,7 @@
         <file>qml/device-verification/Failed.qml</file>
         <file>qml/device-verification/Success.qml</file>
         <file>qml/voip/ActiveCallBar.qml</file>
+        <file>qml/voip/CallDevices.qml</file>
         <file>qml/voip/CallInviteBar.qml</file>
         <file>qml/voip/PlaceCall.qml</file>
         <file>qml/voip/VideoCall.qml</file>

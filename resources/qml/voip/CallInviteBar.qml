@@ -16,6 +16,13 @@ Rectangle {
         icon: StandardIcon.Warning
     }
 
+    Component {
+        id: devicesDialog
+
+        CallDevices {
+        }
+    }
+
     RowLayout {
         id: rowLayout
 
@@ -53,6 +60,24 @@ Rectangle {
             Layout.fillWidth: true
         }
 
+        ImageButton {
+            width: 24
+            height: 24
+            buttonTextColor: "#000000"
+            image: ":/icons/icons/ui/settings.png"
+            hoverEnabled: true
+            ToolTip.visible: hovered
+            ToolTip.text: "Devices"
+            onClicked: {
+                  var dialog = devicesDialog.createObject(timelineRoot);
+                  dialog.show();
+            }
+        }
+
+        Item {
+            implicitWidth: 8
+        }
+
         Button {
             icon.source: CallManager.isVideo ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
             palette: colors
@@ -78,7 +103,7 @@ Rectangle {
         }
 
         Item {
-            implicitWidth: 8
+            implicitWidth: 4
         }
 
         Button {
