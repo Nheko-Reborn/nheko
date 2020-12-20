@@ -31,7 +31,7 @@ ApplicationWindow {
             Label {
                 font.pointSize: fontMetrics.font.pointSize * 1.1
                 text: qsTr("Place a call to ") + TimelineManager.timeline.roomName + "?"
-                color: windowText
+                color: colors.windowText
             }
 
             Item {

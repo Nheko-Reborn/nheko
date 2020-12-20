@@ -42,7 +42,7 @@ Rectangle {
             Layout.leftMargin: 8
             font.pointSize: fontMetrics.font.pointSize * 1.1
             text: CallManager.callParty
-            color: windowText
+            color: colors.windowText
         }
 
         Image {
@@ -55,7 +55,7 @@ Rectangle {
         Label {
             font.pointSize: fontMetrics.font.pointSize * 1.1
             text: CallManager.isVideo ? qsTr("Video Call") : qsTr("Voice Call")
-            color: windowText
+            color: colors.windowText
         }
 
         Item {
