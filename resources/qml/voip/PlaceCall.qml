@@ -43,11 +43,10 @@ ApplicationWindow {
 
             Layout.leftMargin: 8
             Layout.rightMargin: 8
-            spacing: 16
 
             function validateMic() {
                 if (CallManager.mics.length == 0) {
-                    warningDialog.text = "No microphone found.";
+                    warningDialog.text = qsTr("No microphone found.");
                     warningDialog.open();
                     return false;
                 }
@@ -59,6 +58,10 @@ ApplicationWindow {
                 height: avatarSize
                 url: TimelineManager.timeline.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
                 displayName: TimelineManager.timeline.roomName
+            }
+
+            Item {
+                implicitWidth: cameraCombo.visible ? 16 : 64
             }
 
             Button {
@@ -88,7 +91,6 @@ ApplicationWindow {
             }
 
             Button {
-                palette: colors
                 text: qsTr("Cancel")
                 onClicked: {
                     close();
@@ -96,42 +98,46 @@ ApplicationWindow {
             }
         }
 
-        RowLayout {
+        ColumnLayout {
+            spacing: 8
 
-            Layout.leftMargin: 8
-            Layout.rightMargin: 8
-            Layout.bottomMargin: cameraCombo.visible ? 0 : 16
+            RowLayout {
 
-            Image {
-                Layout.preferredWidth: 22
-                Layout.preferredHeight: 22
-                source: "qrc:/icons/icons/ui/microphone-unmute.png"
+                Layout.leftMargin: 8
+                Layout.rightMargin: 8
+                Layout.bottomMargin: cameraCombo.visible ? 0 : 16
+
+                Image {
+                    Layout.preferredWidth: 22
+                    Layout.preferredHeight: 22
+                    source: "qrc:/icons/icons/ui/microphone-unmute.png"
+                }
+
+                ComboBox {
+                    id: micCombo
+                    Layout.fillWidth: true
+                    model: CallManager.mics
+                }
             }
 
-            ComboBox {
-                id: micCombo
-                Layout.fillWidth: true
-                model: CallManager.mics
-            }
-        }
+            RowLayout {
 
-        RowLayout {
+                visible: CallManager.cameras.length > 0
+                Layout.leftMargin: 8
+                Layout.rightMargin: 8
+                Layout.bottomMargin: 16
 
-            visible: CallManager.cameras.length > 0
-            Layout.leftMargin: 8
-            Layout.rightMargin: 8
-            Layout.bottomMargin: 16
+                Image {
+                    Layout.preferredWidth: 22
+                    Layout.preferredHeight: 22
+                    source: "qrc:/icons/icons/ui/video-call.png"
+                }
 
-            Image {
-                Layout.preferredWidth: 22
-                Layout.preferredHeight: 22
-                source: "qrc:/icons/icons/ui/video-call.png"
-            }
-
-            ComboBox {
-                id: cameraCombo
-                Layout.fillWidth: true
-                model: CallManager.cameras
+                ComboBox {
+                    id: cameraCombo
+                    Layout.fillWidth: true
+                    model: CallManager.cameras
+                }
             }
         }
     }
