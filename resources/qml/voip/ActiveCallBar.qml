@@ -38,6 +38,7 @@ Rectangle {
             Layout.leftMargin: 8
             font.pointSize: fontMetrics.font.pointSize * 1.1
             text: CallManager.callParty
+            color: colors.windowText
         }
 
         Image {
@@ -51,6 +52,7 @@ Rectangle {
             id: callStateLabel
 
             font.pointSize: fontMetrics.font.pointSize * 1.1
+            color: colors.windowText
         }
 
         Item {
