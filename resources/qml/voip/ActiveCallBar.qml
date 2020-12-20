@@ -61,7 +61,7 @@ Rectangle {
 
                     PropertyChanges {
                         target: callStateLabel
-                        text: "Calling..."
+                        text: qsTr("Calling...")
                     }
 
                 },
@@ -71,7 +71,7 @@ Rectangle {
 
                     PropertyChanges {
                         target: callStateLabel
-                        text: "Connecting..."
+                        text: qsTr("Connecting...")
                     }
 
                 },
@@ -81,7 +81,7 @@ Rectangle {
 
                     PropertyChanges {
                         target: callStateLabel
-                        text: "Connecting..."
+                        text: qsTr("Connecting...")
                     }
 
                 },
@@ -157,7 +157,7 @@ Rectangle {
             image: ":/icons/icons/ui/toggle-camera-view.png"
             hoverEnabled: true
             ToolTip.visible: hovered
-            ToolTip.text: "Toggle camera view"
+            ToolTip.text: qsTr("Toggle camera view")
             onClicked: CallManager.toggleCameraView()
         }
 

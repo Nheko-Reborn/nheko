@@ -53,7 +53,7 @@ Rectangle {
 
         Label {
             font.pointSize: fontMetrics.font.pointSize * 1.1
-            text: CallManager.isVideo ? "Video Call" : "Voice Call"
+            text: CallManager.isVideo ? qsTr("Video Call") : qsTr("Voice Call")
         }
 
         Item {
@@ -67,7 +67,7 @@ Rectangle {
             image: ":/icons/icons/ui/settings.png"
             hoverEnabled: true
             ToolTip.visible: hovered
-            ToolTip.text: "Devices"
+            ToolTip.text: qsTr("Devices")
             onClicked: {
                   var dialog = devicesDialog.createObject(timelineRoot);
                   dialog.show();
@@ -84,17 +84,17 @@ Rectangle {
             text: qsTr("Accept")
             onClicked: {
                 if (CallManager.mics.length == 0) {
-                    warningDialog.text = "No microphone found.";
+                    warningDialog.text = qsTr("No microphone found.");
                     warningDialog.open();
                     return;
                 }
                 else if (!CallManager.mics.includes(Settings.microphone)) {
-                    warningDialog.text = "Unknown microphone: " + Settings.microphone;
+                    warningDialog.text = qsTr("Unknown microphone: ") + Settings.microphone;
                     warningDialog.open();
                     return;
                 }
                 if (CallManager.isVideo && CallManager.cameras.length > 0 && !CallManager.cameras.includes(Settings.camera)) {
-                    warningDialog.text = "Unknown camera: " + Settings.camera;
+                    warningDialog.text = qsTr("Unknown camera: ") + Settings.camera;
                     warningDialog.open();
                     return;
                 }
