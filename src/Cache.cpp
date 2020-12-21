@@ -512,7 +512,6 @@ Cache::getLatestOlmSession(const std::string &curve25519)
         auto db  = getOlmSessionsDb(txn, curve25519);
 
         std::string session_id, pickled_session;
-        std::vector<std::string> res;
 
         std::optional<StoredOlmSession> currentNewest;
 
