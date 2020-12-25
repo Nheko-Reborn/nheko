@@ -1259,7 +1259,8 @@ Cache::saveState(const mtx::responses::Sync &res)
                                                 nhlog::db()->warn(
                                                   "failed to parse room info: room_id ({}), {}: {}",
                                                   room.first,
-                                                  std::string(data.data(), data.size()), e.what());
+                                                  std::string(data.data(), data.size()),
+                                                  e.what());
                                         }
                                 }
                         }
@@ -1460,7 +1461,8 @@ Cache::singleRoomInfo(const std::string &room_id)
                 } catch (const json::exception &e) {
                         nhlog::db()->warn("failed to parse room info: room_id ({}), {}: {}",
                                           room_id,
-                                          std::string(data.data(), data.size()), e.what());
+                                          std::string(data.data(), data.size()),
+                                          e.what());
                 }
         }
 
@@ -1494,7 +1496,8 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
                         } catch (const json::exception &e) {
                                 nhlog::db()->warn("failed to parse room info: room_id ({}), {}: {}",
                                                   room,
-                                                  std::string(data.data(), data.size()), e.what());
+                                                  std::string(data.data(), data.size()),
+                                                  e.what());
                         }
                 } else {
                         // Check if the room is an invite.
@@ -1507,10 +1510,11 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
                                         room_info.emplace(QString::fromStdString(room),
                                                           std::move(tmp));
                                 } catch (const json::exception &e) {
-                                        nhlog::db()->warn(
-                                          "failed to parse room info for invite: room_id ({}), {}: {}",
-                                          room,
-                                          std::string(data.data(), data.size()), e.what());
+                                        nhlog::db()->warn("failed to parse room info for invite: "
+                                                          "room_id ({}), {}: {}",
+                                                          room,
+                                                          std::string(data.data(), data.size()),
+                                                          e.what());
                                 }
                         }
                 }
@@ -2043,7 +2047,7 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
                 }
         }
 
-        auto cursor     = lmdb::cursor::open(txn, membersdb);
+        auto cursor      = lmdb::cursor::open(txn, membersdb);
         const auto total = membersdb.size(txn);
 
         std::size_t ii = 0;

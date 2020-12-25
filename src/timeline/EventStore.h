@@ -29,7 +29,8 @@ public:
                 friend uint qHash(const Index &i, uint seed = 0) noexcept
                 {
                         QtPrivate::QHashCombine hash;
-                        seed = hash(seed, QByteArray::fromRawData(i.room.data(), (int)i.room.size()));
+                        seed =
+                          hash(seed, QByteArray::fromRawData(i.room.data(), (int)i.room.size()));
                         seed = hash(seed, i.idx);
                         return seed;
                 }
@@ -46,7 +47,8 @@ public:
                 friend uint qHash(const IdIndex &i, uint seed = 0) noexcept
                 {
                         QtPrivate::QHashCombine hash;
-                        seed = hash(seed, QByteArray::fromRawData(i.room.data(), (int)i.room.size()));
+                        seed =
+                          hash(seed, QByteArray::fromRawData(i.room.data(), (int)i.room.size()));
                         seed = hash(seed, QByteArray::fromRawData(i.id.data(), (int)i.id.size()));
                         return seed;
                 }

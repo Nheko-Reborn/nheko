@@ -104,7 +104,8 @@ CommunitiesList::setTagsForRoom(const QString &room_id, const std::vector<std::s
                 }
                 // insert or remove the room from the tag as appropriate
                 std::string current_tag =
-                  it->first.right(static_cast<int>(it->first.size() - strlen("tag:"))).toStdString();
+                  it->first.right(static_cast<int>(it->first.size() - strlen("tag:")))
+                    .toStdString();
                 if (std::find(tags.begin(), tags.end(), current_tag) != tags.end()) {
                         // the room has this tag
                         it->second->addRoom(room_id);

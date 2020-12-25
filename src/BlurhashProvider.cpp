@@ -31,7 +31,8 @@ BlurhashResponse::run()
                 return;
         }
 
-        QImage image(decoded.image.data(), (int)decoded.width, (int)decoded.height, QImage::Format_RGB32);
+        QImage image(
+          decoded.image.data(), (int)decoded.width, (int)decoded.height, QImage::Format_RGB32);
 
         m_image = image.copy();
         emit finished();

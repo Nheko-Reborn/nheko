@@ -388,8 +388,9 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
                 switch (data.at(pos)) {
                 case '<': {
                         bool oneTagMatched = false;
-                        const int endPos      = static_cast<int>(std::min(static_cast<size_t>(data.indexOf('>', pos)),
-                                                 static_cast<size_t>(data.indexOf(' ', pos))));
+                        const int endPos =
+                          static_cast<int>(std::min(static_cast<size_t>(data.indexOf('>', pos)),
+                                                    static_cast<size_t>(data.indexOf(' ', pos))));
 
                         auto mid = data.mid(pos + 1, endPos - pos - 1);
                         for (const auto &tag : allowedTags) {

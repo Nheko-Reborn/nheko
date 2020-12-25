@@ -150,7 +150,8 @@ SuggestionsPopup::removeLayoutItemsAfter(size_t startingPos)
         size_t posToRemove = layout_->count() - 1;
 
         QLayoutItem *item;
-        while (startingPos <= posToRemove && (item = layout_->takeAt((int)posToRemove)) != nullptr) {
+        while (startingPos <= posToRemove &&
+               (item = layout_->takeAt((int)posToRemove)) != nullptr) {
                 delete item->widget();
                 delete item;
 
