@@ -28,7 +28,7 @@ namespace std {
 inline uint
 qHash(const std::string &key, uint seed = 0)
 {
-        return qHash(QByteArray::fromRawData(key.data(), key.length()), seed);
+        return qHash(QByteArray::fromRawData(key.data(), (int)key.length()), seed);
 }
 }
 
@@ -1208,7 +1208,7 @@ TimelineModel::cacheMedia(QString eventId)
                           if (!file.open(QIODevice::WriteOnly))
                                   return;
 
-                          file.write(QByteArray(temp.data(), temp.size()));
+                          file.write(QByteArray(temp.data(), (int)temp.size()));
                           file.close();
                   } catch (const std::exception &e) {
                           nhlog::ui()->warn("Error while saving file to: {}", e.what());
@@ -1227,7 +1227,7 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, QColor bg)
              "multiple users. Second argument is the last user of that list. (If only one user is "
              "typing, %1 is empty. You should still use it in your string though to silence Qt "
              "warnings.)",
-             users.size());
+             (int)users.size());
 
         if (users.empty()) {
                 return "";

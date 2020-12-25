@@ -167,7 +167,7 @@ MainWindow::MainWindow(const QString profile, QWidget *parent)
                 try {
                         using namespace mtx::identifiers;
                         http::client()->set_user(parse<User>(user_id.toStdString()));
-                } catch (const std::invalid_argument &e) {
+                } catch (const std::invalid_argument &) {
                         nhlog::ui()->critical("bootstrapped with invalid user_id: {}",
                                               user_id.toStdString());
                 }
@@ -472,7 +472,7 @@ MainWindow::openReadReceiptsDialog(const QString &event_id)
 
         try {
                 dialog->addUsers(cache::readReceipts(event_id, room_id));
-        } catch (const lmdb::error &e) {
+        } catch (const lmdb::error &) {
                 nhlog::db()->warn("failed to retrieve read receipts for {} {}",
                                   event_id.toStdString(),
                                   chat_page_->currentRoom().toStdString());

@@ -35,14 +35,14 @@ SuggestionsPopup::addRooms(const std::vector<RoomSearchResult> &rooms)
                 return;
         }
 
-        const size_t layoutCount = layout_->count();
-        const size_t roomCount   = rooms.size();
+        const int layoutCount = (int)layout_->count();
+        const int roomCount   = (int)rooms.size();
 
         // Remove the extra widgets from the layout.
         if (roomCount < layoutCount)
                 removeLayoutItemsAfter(roomCount - 1);
 
-        for (size_t i = 0; i < roomCount; ++i) {
+        for (int i = 0; i < roomCount; ++i) {
                 auto item = layout_->itemAt(i);
 
                 // Create a new widget if there isn't already one in that
@@ -62,7 +62,7 @@ SuggestionsPopup::addRooms(const std::vector<RoomSearchResult> &rooms)
         resetSelection();
         adjustSize();
 
-        resize(geometry().width(), 40 * rooms.size());
+        resize(geometry().width(), 40 * (int)rooms.size());
 
         selectNextSuggestion();
 }
@@ -150,7 +150,7 @@ SuggestionsPopup::removeLayoutItemsAfter(size_t startingPos)
         size_t posToRemove = layout_->count() - 1;
 
         QLayoutItem *item;
-        while (startingPos <= posToRemove && (item = layout_->takeAt(posToRemove)) != nullptr) {
+        while (startingPos <= posToRemove && (item = layout_->takeAt((int)posToRemove)) != nullptr) {
                 delete item->widget();
                 delete item;
 

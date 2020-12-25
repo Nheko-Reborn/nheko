@@ -225,7 +225,7 @@ LoginPage::onMatrixIdEntered()
 
         try {
                 user = parse<User>(matrixid_input_->text().toStdString());
-        } catch (const std::exception &e) {
+        } catch (const std::exception &) {
                 showError(error_matrixid_label_,
                           "You have entered an invalid Matrix ID  e.g @joe:matrix.org");
                 return;
@@ -389,7 +389,7 @@ LoginPage::onLoginButtonClicked()
 
         try {
                 user = parse<User>(matrixid_input_->text().toStdString());
-        } catch (const std::exception &e) {
+        } catch (const std::exception &) {
                 showError(error_matrixid_label_,
                           "You have entered an invalid Matrix ID  e.g @joe:matrix.org");
                 return;

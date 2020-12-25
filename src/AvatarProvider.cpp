@@ -81,7 +81,7 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
                           cache::saveImage(cacheKey.toStdString(), res);
                   }
 
-                  emit proxy->avatarDownloaded(QByteArray(res.data(), res.size()));
+                  emit proxy->avatarDownloaded(QByteArray(res.data(), (int)res.size()));
           });
 }
 

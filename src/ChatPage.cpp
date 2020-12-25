@@ -439,7 +439,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 
         try {
                 http::client()->set_user(parse<User>(userid.toStdString()));
-        } catch (const std::invalid_argument &e) {
+        } catch (const std::invalid_argument &) {
                 nhlog::ui()->critical("bootstrapped with invalid user_id: {}",
                                       userid.toStdString());
         }

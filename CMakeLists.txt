@@ -579,6 +579,7 @@ endif()
 
 if(WIN32)
 	add_executable (nheko WIN32 ${OS_BUNDLE} ${NHEKO_DEPS})
+	target_compile_definitions(nheko PRIVATE _WIN32_WINNT=0x0601)
 else()
 	add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
 endif()

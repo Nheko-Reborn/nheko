@@ -244,20 +244,20 @@ utils::humanReadableFileSize(uint64_t bytes)
 int
 utils::levenshtein_distance(const std::string &s1, const std::string &s2)
 {
-        const int nlen = s1.size();
-        const int hlen = s2.size();
+        const auto nlen = s1.size();
+        const auto hlen = s2.size();
 
         if (hlen == 0)
                 return -1;
         if (nlen == 1)
-                return s2.find(s1);
+                return (int)s2.find(s1);
 
         std::vector<int> row1(hlen + 1, 0);
 
-        for (int i = 0; i < nlen; ++i) {
-                std::vector<int> row2(1, i + 1);
+        for (size_t i = 0; i < nlen; ++i) {
+                std::vector<int> row2(1, (int)i + 1);
 
-                for (int j = 0; j < hlen; ++j) {
+                for (size_t j = 0; j < hlen; ++j) {
                         const int cost = s1[i] != s2[j];
                         row2.push_back(
                           std::min(row1[j + 1] + 1, std::min(row2[j] + 1, row1[j] + cost)));
@@ -381,15 +381,15 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
           "caption",    "/caption",    "pre",    "/pre",    "span",  "/span",  "img",    "/img"};
         QByteArray data = rawStr.toUtf8();
         QByteArray buffer;
-        const size_t length = data.size();
+        const int length = data.size();
         buffer.reserve(length);
         bool escapingTag = false;
-        for (size_t pos = 0; pos != length; ++pos) {
+        for (int pos = 0; pos != length; ++pos) {
                 switch (data.at(pos)) {
                 case '<': {
                         bool oneTagMatched = false;
-                        size_t endPos      = std::min(static_cast<size_t>(data.indexOf('>', pos)),
-                                                 static_cast<size_t>(data.indexOf(' ', pos)));
+                        const int endPos      = static_cast<int>(std::min(static_cast<size_t>(data.indexOf('>', pos)),
+                                                 static_cast<size_t>(data.indexOf(' ', pos))));
 
                         auto mid = data.mid(pos + 1, endPos - pos - 1);
                         for (const auto &tag : allowedTags) {
@@ -543,7 +543,7 @@ utils::generateContrastingHexColor(const QString &input, const QString &backgrou
         // Create a color for the input
         auto hash = hashQString(input);
         // create a hue value based on the hash of the input.
-        auto userHue = static_cast<int>(qAbs(hash % 360));
+        auto userHue = static_cast<int>(hash % 360);
         // start with moderate saturation and lightness values.
         auto sat       = 220;
         auto lightness = 125;

@@ -61,7 +61,7 @@ struct RoomInfo
         //! Whether or not the room is an invite.
         bool is_invite = false;
         //! Total number of members in the room.
-        int16_t member_count = 0;
+        size_t member_count = 0;
         //! Who can access to the room.
         mtx::events::state::JoinRule join_rule = mtx::events::state::JoinRule::Public;
         bool guest_access                      = false;

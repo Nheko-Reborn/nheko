@@ -493,7 +493,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         roomNameLabel_ = new QLabel(QString::fromStdString(info_.name), this);
         roomNameLabel_->setFont(largeFont);
 
-        auto membersLabel = new QLabel(tr("%n member(s)", "", info_.member_count), this);
+        auto membersLabel = new QLabel(tr("%n member(s)", "", (int)info_.member_count), this);
 
         auto textLayout = new QVBoxLayout;
         textLayout->addWidget(roomNameLabel_);
