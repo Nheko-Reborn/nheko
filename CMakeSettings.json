@@ -2,45 +2,65 @@
   "configurations": [
     {
       "name": "Debug",
-      "generator": "Visual Studio 15 2017 Win64",
+      "generator": "Visual Studio 16 2019 Win64",
       "configurationType": "Debug",
       "buildRoot": "${workspaceRoot}\\build-vc\\${name}",
       "cmakeCommandArgs": "",
       "variables": [
         {
-          "name": "CMAKE_TOOLCHAIN_FILE",
-          "value": "${workspaceRoot}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake" // <-- change vcpkg location here
+          "name": "HUNTER_ENABLED",
+          "value": "OFF",
+          "type": "BOOL"
+        },
+        {
+          "name": "BUILD_SHARED_LIBS",
+          "value": "ON",
+          "type": "BOOL"
         },
         {
           "name": "CMAKE_INSTALL_PREFIX",
-          "value": "${workspaceRoot}/.deps"
+          "value": "${workspaceRoot}/.deps",
+          "type": "STRING"
         },
         {
           "name": "Qt5_DIR",
-          "value": "C:\\Qt\\5.11.1\\msvc2017_64\\lib\\cmake\\Qt5" // <-- change qt location here
+          "value": "C:\\Qt\\5.12.5\\msvc2017_64\\lib\\cmake\\Qt5", // <-- change qt location here
+          "type": "STRING"
         }
-      ]
+      ],
+      "cmakeToolchain": "${workspaceRoot}\\toolchain.cmake",
+      "inheritEnvironments": [ "msvc_x64" ]
     },
     {
       "name": "Release",
-      "generator": "Visual Studio 15 2017 Win64",
+      "generator": "Visual Studio 16 2019 Win64",
       "configurationType": "Release",
       "buildRoot": "${workspaceRoot}\\build-vc\\${name}",
       "cmakeCommandArgs": "",
       "variables": [
         {
-          "name": "CMAKE_TOOLCHAIN_FILE",
-          "value": "${workspaceRoot}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake" // <-- change vcpkg location here
+          "name": "HUNTER_ENABLED",
+          "value": "ON",
+          "type": "BOOL"
+        },
+        {
+          "name": "BUILD_SHARED_LIBS",
+          "value": "OFF",
+          "type": "BOOL"
         },
         {
           "name": "CMAKE_INSTALL_PREFIX",
-          "value": "${workspaceRoot}/.deps"
+          "value": "${workspaceRoot}/.deps",
+          "type": "STRING"
         },
         {
           "name": "Qt5_DIR",
-          "value": "C:\\Qt\\5.11.1\\msvc2017_64\\lib\\cmake\\Qt5" // <-- change qt location here
+          "value": "C:\\Qt\\5.12.5\\msvc2017_64\\lib\\cmake\\Qt5", // <-- change qt location here
+          "type": "STRING"
         }
-      ]
-    },
- ]
+      ],
+      "cmakeToolchain": "${workspaceRoot}\\toolchain.cmake",
+      "inheritEnvironments": [ "msvc_x64" ]
+    }
+  ]
 }
