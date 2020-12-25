@@ -11,7 +11,8 @@ namespace ui {
 enum class AvatarType
 {
         Image,
-        Letter
+        Letter,
+        Jdenticon
 };
 
 // Default font size.

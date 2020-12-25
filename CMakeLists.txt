@@ -345,6 +345,7 @@ set(SRC_FILES
 	src/DeviceVerificationFlow.cpp
 	src/EventAccessors.cpp
 	src/InviteesModel.cpp
+	src/JdenticonProvider.cpp
 	src/Logging.cpp
 	src/LoginPage.cpp
 	src/MainWindow.cpp
@@ -557,6 +558,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/DeviceVerificationFlow.h
 	src/ImagePackListModel.h
 	src/InviteesModel.h
+	src/JdenticonProvider.h
 	src/LoginPage.h
 	src/MainWindow.h
 	src/MemberList.h

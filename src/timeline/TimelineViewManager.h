@@ -18,6 +18,7 @@
 
 #include "Cache.h"
 #include "CallManager.h"
+#include "JdenticonProvider.h"
 #include "Logging.h"
 #include "TimelineModel.h"
 #include "Utils.h"
@@ -141,6 +142,7 @@ private:
         MxcImageProvider *imgProvider;
         ColorImageProvider *colorImgProvider;
         BlurhashProvider *blurhashProvider;
+        JdenticonProvider *jdenticonProvider;
 
         CallManager *callManager_ = nullptr;
 
