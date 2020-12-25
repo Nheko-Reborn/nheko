@@ -56,8 +56,8 @@
 MainWindow *MainWindow::instance_ = nullptr;
 
 MainWindow::MainWindow(QWidget *parent)
-  : QMainWindow(parent),
-    userSettings_{QSharedPointer<UserSettings>{new UserSettings}}
+  : QMainWindow(parent)
+  , userSettings_{QSharedPointer<UserSettings>{new UserSettings}}
 {
         setWindowTitle(0);
         setObjectName("MainWindow");

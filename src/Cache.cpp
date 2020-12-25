@@ -173,7 +173,8 @@ Cache::setup()
 
         cacheDirectory_ = QString("%1/%2%3")
                             .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-                            .arg(QString::fromUtf8(localUserId_.toUtf8().toHex())).arg(QString::fromUtf8(settings.profile().toUtf8().toHex()));
+                            .arg(QString::fromUtf8(localUserId_.toUtf8().toHex()))
+                            .arg(QString::fromUtf8(settings.profile().toUtf8().toHex()));
 
         bool isInitial = !QFile::exists(cacheDirectory_);
 
@@ -186,7 +187,9 @@ Cache::setup()
 
                 if (!QDir().mkpath(cacheDirectory_)) {
                         throw std::runtime_error(
-                          ("Unable to create state directory:" + cacheDirectory_).toStdString().c_str());
+                          ("Unable to create state directory:" + cacheDirectory_)
+                            .toStdString()
+                            .c_str());
                 }
         }
 
@@ -575,14 +578,14 @@ Cache::restoreOlmAccount()
 void
 Cache::storeSecret(const std::string &name, const std::string &secret)
 {
-      UserSettings settings;
+        UserSettings settings;
         QKeychain::WritePasswordJob job(QCoreApplication::applicationName());
         job.setAutoDelete(false);
         job.setInsecureFallback(true);
-        job.setKey(
-          "matrix." +
-          QString(QCryptographicHash::hash(settings.profile().toUtf8(), QCryptographicHash::Sha256)) +
-          "." + name.c_str());
+        job.setKey("matrix." +
+                   QString(QCryptographicHash::hash(settings.profile().toUtf8(),
+                                                    QCryptographicHash::Sha256)) +
+                   "." + name.c_str());
         job.setTextData(QString::fromStdString(secret));
         QEventLoop loop;
         job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
@@ -604,10 +607,10 @@ Cache::deleteSecret(const std::string &name)
         QKeychain::DeletePasswordJob job(QCoreApplication::applicationName());
         job.setAutoDelete(false);
         job.setInsecureFallback(true);
-        job.setKey(
-          "matrix." +
-          QString(QCryptographicHash::hash(settings.profile().toUtf8(), QCryptographicHash::Sha256)) +
-          "." + name.c_str());
+        job.setKey("matrix." +
+                   QString(QCryptographicHash::hash(settings.profile().toUtf8(),
+                                                    QCryptographicHash::Sha256)) +
+                   "." + name.c_str());
         QEventLoop loop;
         job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
         job.start();
@@ -623,10 +626,10 @@ Cache::secret(const std::string &name)
         QKeychain::ReadPasswordJob job(QCoreApplication::applicationName());
         job.setAutoDelete(false);
         job.setInsecureFallback(true);
-        job.setKey(
-          "matrix." +
-          QString(QCryptographicHash::hash(settings.profile().toUtf8(), QCryptographicHash::Sha256)) +
-          "." + name.c_str());
+        job.setKey("matrix." +
+                   QString(QCryptographicHash::hash(settings.profile().toUtf8(),
+                                                    QCryptographicHash::Sha256)) +
+                   "." + name.c_str());
         QEventLoop loop;
         job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
         job.start();
