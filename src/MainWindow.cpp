@@ -55,9 +55,9 @@
 
 MainWindow *MainWindow::instance_ = nullptr;
 
-MainWindow::MainWindow(const QString profile, QWidget *parent)
-  : QMainWindow(parent)
-  , profile_{profile}
+MainWindow::MainWindow(QWidget *parent)
+  : QMainWindow(parent),
+    userSettings_{QSharedPointer<UserSettings>{new UserSettings}}
 {
         setWindowTitle(0);
         setObjectName("MainWindow");
@@ -70,8 +70,7 @@ MainWindow::MainWindow(const QString profile, QWidget *parent)
         font.setStyleStrategy(QFont::PreferAntialias);
         setFont(font);
 
-        userSettings_ = QSharedPointer<UserSettings>(new UserSettings);
-        trayIcon_     = new TrayIcon(":/logos/nheko.svg", this);
+        trayIcon_ = new TrayIcon(":/logos/nheko.svg", this);
 
         welcome_page_     = new WelcomePage(this);
         login_page_       = new LoginPage(this);
@@ -150,15 +149,13 @@ MainWindow::MainWindow(const QString profile, QWidget *parent)
                         chat_page_->showQuickSwitcher();
         });
 
-        QSettings settings;
-
         trayIcon_->setVisible(userSettings_->tray());
 
         if (hasActiveUser()) {
-                QString token       = settings.value("auth/access_token").toString();
-                QString home_server = settings.value("auth/home_server").toString();
-                QString user_id     = settings.value("auth/user_id").toString();
-                QString device_id   = settings.value("auth/device_id").toString();
+                QString token       = userSettings_->accessToken();
+                QString home_server = userSettings_->homeserver();
+                QString user_id     = userSettings_->userId();
+                QString device_id   = userSettings_->deviceId();
 
                 http::client()->set_access_token(token.toStdString());
                 http::client()->set_server(home_server.toStdString());
@@ -184,8 +181,9 @@ void
 MainWindow::setWindowTitle(int notificationCount)
 {
         QString name = "nheko";
-        if (!profile_.isEmpty())
-                name += " | " + profile_;
+
+        if (!userSettings_.data()->profile().isEmpty())
+                name += " | " + userSettings_.data()->profile();
         if (notificationCount > 0) {
                 name.append(QString{" (%1)"}.arg(notificationCount));
         }
@@ -279,11 +277,10 @@ MainWindow::showChatPage()
                                                  std::to_string(http::client()->port()));
         auto token      = QString::fromStdString(http::client()->access_token());
 
-        QSettings settings;
-        settings.setValue("auth/access_token", token);
-        settings.setValue("auth/home_server", homeserver);
-        settings.setValue("auth/user_id", userid);
-        settings.setValue("auth/device_id", device_id);
+        userSettings_.data()->setUserId(userid);
+        userSettings_.data()->setAccessToken(token);
+        userSettings_.data()->setDeviceId(device_id);
+        userSettings_.data()->setHomeserver(homeserver);
 
         showOverlayProgressBar();
 
@@ -341,9 +338,13 @@ bool
 MainWindow::hasActiveUser()
 {
         QSettings settings;
+        QString prefix;
+        if (userSettings_->profile() != "")
+                prefix = "profile/" + userSettings_->profile() + "/";
 
-        return settings.contains("auth/access_token") && settings.contains("auth/home_server") &&
-               settings.contains("auth/user_id");
+        return settings.contains(prefix + "auth/access_token") &&
+               settings.contains(prefix + "auth/home_server") &&
+               settings.contains(prefix + "auth/user_id");
 }
 
 void

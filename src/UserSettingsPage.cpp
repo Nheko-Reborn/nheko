@@ -89,6 +89,14 @@ UserSettings::load()
         cameraResolution_ = settings.value("user/camera_resolution", QString()).toString();
         cameraFrameRate_  = settings.value("user/camera_frame_rate", QString()).toString();
         useStunServer_    = settings.value("user/use_stun_server", false).toBool();
+        profile_          = settings.value("user/currentProfile", "").toString();
+
+        QString prefix =
+          (profile_ != "" && profile_ != "default") ? "profile/" + profile_ + "/" : "";
+        accessToken_ = settings.value(prefix + "auth/access_token", "").toString();
+        homeserver_  = settings.value(prefix + "auth/home_server", "").toString();
+        userId_      = settings.value(prefix + "auth/user_id", "").toString();
+        deviceId_    = settings.value(prefix + "auth/device_id", "").toString();
 
         applyTheme();
 }
@@ -373,6 +381,56 @@ UserSettings::setCameraFrameRate(QString frameRate)
 }
 
 void
+UserSettings::setProfile(QString profile)
+{
+        if (profile == profile_)
+                return;
+        profile_ = profile;
+        emit profileChanged(profile_);
+        save();
+}
+
+void
+UserSettings::setUserId(QString userId)
+{
+        if (userId == userId_)
+                return;
+        userId_ = userId;
+        emit userIdChanged(userId_);
+        save();
+}
+
+void
+UserSettings::setAccessToken(QString accessToken)
+{
+        if (accessToken == accessToken_)
+                return;
+        accessToken_ = accessToken;
+        emit accessTokenChanged(accessToken_);
+        save();
+}
+
+void
+UserSettings::setDeviceId(QString deviceId)
+{
+        if (deviceId == deviceId_)
+                return;
+        deviceId_ = deviceId;
+        emit deviceIdChanged(deviceId_);
+        save();
+}
+
+void
+UserSettings::setHomeserver(QString homeserver)
+{
+        if (homeserver == homeserver_)
+                return;
+        homeserver_ = homeserver;
+        emit homeserverChanged(homeserver_);
+        save();
+}
+
+void
 UserSettings::applyTheme()
 {
         QFile stylefile;
@@ -436,14 +494,14 @@ UserSettings::save()
         settings.beginGroup("window");
         settings.setValue("tray", tray_);
         settings.setValue("start_in_tray", startInTray_);
-        settings.endGroup();
+        settings.endGroup(); // window
 
         settings.beginGroup("timeline");
         settings.setValue("buttons", buttonsInTimeline_);
         settings.setValue("message_hover_highlight", messageHoverHighlight_);
         settings.setValue("enlarge_emoji_only_msg", enlargeEmojiOnlyMessages_);
         settings.setValue("max_width", timelineMaxWidth_);
-        settings.endGroup();
+        settings.endGroup(); // timeline
 
         settings.setValue("avatar_circles", avatarCircles_);
         settings.setValue("decrypt_sidebar", decryptSidebar_);
@@ -467,8 +525,16 @@ UserSettings::save()
         settings.setValue("camera_resolution", cameraResolution_);
         settings.setValue("camera_frame_rate", cameraFrameRate_);
         settings.setValue("use_stun_server", useStunServer_);
+        settings.setValue("currentProfile", profile_);
 
-        settings.endGroup();
+        QString prefix =
+          (profile_ != "" && profile_ != "default") ? "profile/" + profile_ + "/" : "";
+        settings.setValue(prefix + "auth/access_token", accessToken_);
+        settings.setValue(prefix + "auth/home_server", homeserver_);
+        settings.setValue(prefix + "auth/user_id", userId_);
+        settings.setValue(prefix + "auth/device_id", deviceId_);
+
+        settings.endGroup(); // user
 
         settings.sync();
 }

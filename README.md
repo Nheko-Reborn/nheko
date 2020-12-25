@@ -42,7 +42,7 @@ Specifically there is support for:
 - Basic communities support.
 - Room switcher (ctrl-K).
 - Light, Dark & System themes.
-- Creating separate profiles (command line only, use `--profile=name`).
+- Creating separate profiles (command line only, use `-p name`).
 
 ## Installation
 

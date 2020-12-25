@@ -62,7 +62,7 @@ class MainWindow : public QMainWindow
         Q_OBJECT
 
 public:
-        explicit MainWindow(const QString name, QWidget *parent = nullptr);
+        explicit MainWindow(QWidget *parent = nullptr);
 
         static MainWindow *instance() { return instance_; };
         void saveCurrentWindowSize();
@@ -149,6 +149,4 @@ private:
         LoadingIndicator *spinner_ = nullptr;
 
         JdenticonInterface *jdenticonInteface_ = nullptr;
-
-        QString profile_;
 };

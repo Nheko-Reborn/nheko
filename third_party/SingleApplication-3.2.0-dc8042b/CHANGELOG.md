@@ -3,6 +3,30 @@ Changelog
 
 If by accident I have forgotten to credit someone in the CHANGELOG, email me and I will fix it.
 
+__3.2.0__
+---------
+
+* Added support for Qt 6  - _Jonas Kvinge_
+* Fixed warning in `Qt 5.9` with `min`/`max` functions on Windows - _Nick Korotysh_
+* Fix return value of connectToPrimary() when connect is successful - _Jonas Kvinge_
+* Fix build issue with MinGW GCC pedantic mode - _Iakov Kirilenko_
+* Fixed conversion from `int` to `quint32` and Clang Tidy warnings - _Hennadii Chernyshchyk_
+
+__3.1.5__
+---------
+
+* Improved library stability in edge cases and very rapid process initialisation
+* Fixed Bug where the shared memory block may have been modified without a lock
+* Fixed Bug causing `instanceStarted()` to not get emitted when a second instance
+  has been started before the primary has initiated it's `QLocalServer`.
+
+__3.1.4__
+---------
+* Officially supporting and build-testing against Qt 5.15
+* Fixed an MSVC C4996 warning that suggests using `strncpy_s`.
+
+    _Hennadii Chernyshchyk_
+
 __3.1.3.1__
 ---------
 * CMake build system improvements
@@ -38,18 +62,18 @@ __3.1.0a__
 __3.0.19__
 ----------
 
-* Fixed code warning for depricated functions in Qt 5.10 related to `QTime` and `qrand()`. 
+* Fixed code warning for depricated functions in Qt 5.10 related to `QTime` and `qrand()`.
 
    _Hennadii Chernyshchyk_  
    _Anton Filimonov_  
    _Jonas Kvinge_
-   
+
 __3.0.18__
 ----------
 
 * Fallback to standard QApplication class on iOS and Android systems where
   the library is not supported.
-  
+
 * Added Build CI tests to verify the library builds successfully on Linux, Windows and MacOS  across multiple Qt versions.
 
   _Anton Filimonov_

@@ -2,7 +2,7 @@ SingleApplication
 =================
 [![CI](https://github.com/itay-grudev/SingleApplication/workflows/CI:%20Build%20Test/badge.svg)](https://github.com/itay-grudev/SingleApplication/actions)
 
-This is a replacement of the QtSingleApplication for `Qt5`.
+This is a replacement of the QtSingleApplication for `Qt5` and `Qt6`.
 
 Keeps the Primary Instance of your Application and kills each subsequent
 instances. It can (if enabled) spawn secondary (non-related to the primary)
@@ -139,13 +139,22 @@ app.isSecondary();
 *__Note:__ If your Primary Instance is terminated a newly launched instance
 will replace the Primary one even if the Secondary flag has been set.*
 
+Examples
+--------
+
+There are three examples provided in this repository:
+
+* Basic example that prevents a secondary instance from starting [`examples/basic`](https://github.com/itay-grudev/SingleApplication/tree/master/examples/basic)
+* An example of a graphical application raising it's parent window [`examples/calculator`](https://github.com/itay-grudev/SingleApplication/tree/master/examples/calculator)
+* A console application sending the primary instance it's command line parameters [`examples/sending_arguments`](https://github.com/itay-grudev/SingleApplication/tree/master/examples/sending_arguments)
+
 API
 ---
 
 ### Members
 
 ```cpp
-SingleApplication::SingleApplication( int &argc, char *argv[], bool allowSecondary = false, Options options = Mode::User, int timeout = 100 )
+SingleApplication::SingleApplication( int &argc, char *argv[], bool allowSecondary = false, Options options = Mode::User, int timeout = 100, QString userData = QString() )
 ```
 
 Depending on whether `allowSecondary` is set, this constructor may terminate
@@ -154,7 +163,7 @@ can be specified to set whether the SingleApplication block should work
 user-wide or system-wide. Additionally the `Mode::SecondaryNotification` may be
 used to notify the primary instance whenever a secondary instance had been
 started (disabled by default). `timeout` specifies the maximum time in
-milliseconds to wait for blocking operations.
+milliseconds to wait for blocking operations. Setting `userData` provides additional data that will isolate this instance from other instances that do not have the same (or any) user data set.
 
 *__Note:__ `argc` and `argv` may be changed as Qt removes arguments that it
 recognizes.*

@@ -84,6 +84,12 @@ class UserSettings : public QObject
           bool useStunServer READ useStunServer WRITE setUseStunServer NOTIFY useStunServerChanged)
         Q_PROPERTY(bool shareKeysWithTrustedUsers READ shareKeysWithTrustedUsers WRITE
                      setShareKeysWithTrustedUsers NOTIFY shareKeysWithTrustedUsersChanged)
+        Q_PROPERTY(QString profile READ profile WRITE setProfile NOTIFY profileChanged)
+        Q_PROPERTY(QString userId READ userId WRITE setUserId NOTIFY userIdChanged)
+        Q_PROPERTY(
+          QString accessToken READ accessToken WRITE setAccessToken NOTIFY accessTokenChanged)
+        Q_PROPERTY(QString deviceId READ deviceId WRITE setDeviceId NOTIFY deviceIdChanged)
+        Q_PROPERTY(QString homeserver READ homeserver WRITE setHomeserver NOTIFY homeserverChanged)
 
 public:
         UserSettings();
@@ -95,7 +101,7 @@ public:
                 Unavailable,
                 Offline,
         };
-        Q_ENUM(Presence);
+        Q_ENUM(Presence)
 
         void save();
         void load();
@@ -128,6 +134,11 @@ public:
         void setCameraFrameRate(QString frameRate);
         void setUseStunServer(bool state);
         void setShareKeysWithTrustedUsers(bool state);
+        void setProfile(QString profile);
+        void setUserId(QString userId);
+        void setAccessToken(QString accessToken);
+        void setDeviceId(QString deviceId);
+        void setHomeserver(QString homeserver);
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
         bool messageHoverHighlight() const { return messageHoverHighlight_; }
@@ -161,6 +172,11 @@ public:
         QString cameraFrameRate() const { return cameraFrameRate_; }
         bool useStunServer() const { return useStunServer_; }
         bool shareKeysWithTrustedUsers() const { return shareKeysWithTrustedUsers_; }
+        QString profile() const { return profile_; }
+        QString userId() const { return userId_; }
+        QString accessToken() const { return accessToken_; }
+        QString deviceId() const { return deviceId_; }
+        QString homeserver() const { return homeserver_; }
 
 signals:
         void groupViewStateChanged(bool state);
@@ -191,6 +207,11 @@ signals:
         void cameraFrameRateChanged(QString frameRate);
         void useStunServerChanged(bool state);
         void shareKeysWithTrustedUsersChanged(bool state);
+        void profileChanged(QString profile);
+        void userIdChanged(QString userId);
+        void accessTokenChanged(QString accessToken);
+        void deviceIdChanged(QString deviceId);
+        void homeserverChanged(QString homeserver);
 
 private:
         // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
@@ -226,6 +247,11 @@ private:
         QString cameraResolution_;
         QString cameraFrameRate_;
         bool useStunServer_;
+        QString profile_;
+        QString userId_;
+        QString accessToken_;
+        QString deviceId_;
+        QString homeserver_;
 };
 
 class HorizontalLine : public QFrame

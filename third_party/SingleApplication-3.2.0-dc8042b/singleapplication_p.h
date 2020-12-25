@@ -41,8 +41,8 @@ struct InstancesInfo {
     bool primary;
     quint32 secondary;
     qint64 primaryPid;
-    quint16 checksum;
     char primaryUser[128];
+    quint16 checksum; // Must be the last field
 };
 
 struct ConnectionInfo {
@@ -70,17 +70,20 @@ public:
     SingleApplicationPrivate( SingleApplication *q_ptr );
     ~SingleApplicationPrivate() override;
 
-    QString getUsername();
+    static QString getUsername();
     void genBlockServerName();
-    void initializeMemoryBlock();
+    void initializeMemoryBlock() const;
     void startPrimary();
     void startSecondary();
-    void connectToPrimary(int msecs, ConnectionType connectionType );
-    quint16 blockChecksum();
-    qint64 primaryPid();
-    QString primaryUser();
+    bool connectToPrimary( int msecs, ConnectionType connectionType );
+    quint16 blockChecksum() const;
+    qint64 primaryPid() const;
+    QString primaryUser() const;
     void readInitMessageHeader(QLocalSocket *socket);
     void readInitMessageBody(QLocalSocket *socket);
+    static void randomSleep();
+    void addAppData(const QString &data);
+    QStringList appData() const;
 
     SingleApplication *q_ptr;
     QSharedMemory *memory;
@@ -90,6 +93,7 @@ public:
     QString blockServerName;
     SingleApplication::Options options;
     QMap<QLocalSocket*, ConnectionInfo> connectionMap;
+    QStringList appDataList;
 
 public Q_SLOTS:
     void slotConnectionEstablished();
