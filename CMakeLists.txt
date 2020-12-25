@@ -18,8 +18,8 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "compile as PIC by default")
 option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
 include("cmake/HunterGate.cmake")
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.23.260.tar.gz"
-    SHA1 "13775235910a3fa85644568d1c5be8271de72e1c"
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.288.tar.gz"
+    SHA1 "6c9b2bc606d86ae31f96a62fc68f0a593024815b"
 )
 
 option(USE_BUNDLED_BOOST "Use the bundled version of Boost." ${HUNTER_ENABLED})
@@ -579,6 +579,7 @@ endif()
 
 if(WIN32)
 	add_executable (nheko WIN32 ${OS_BUNDLE} ${NHEKO_DEPS})
+	target_compile_definitions(nheko PRIVATE _WIN32_WINNT=0x0601)
 else()
 	add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
 endif()

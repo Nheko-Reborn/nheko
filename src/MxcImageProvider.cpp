@@ -48,7 +48,7 @@ MxcImageResponse::run()
                                   return;
                           }
 
-                          auto data = QByteArray(res.data(), res.size());
+                          auto data = QByteArray(res.data(), (int)res.size());
                           cache::saveImage(fileName, data);
                           m_image = utils::readImage(&data);
                           if (!m_image.isNull()) {
@@ -92,7 +92,7 @@ MxcImageResponse::run()
                                   temp = mtx::crypto::to_string(
                                     mtx::crypto::decrypt_file(temp, m_encryptionInfo.value()));
 
-                          auto data = QByteArray(temp.data(), temp.size());
+                          auto data = QByteArray(temp.data(), (int)temp.size());
                           cache::saveImage(m_id, data);
                           m_image = utils::readImage(&data);
                           m_image.setText("original filename",

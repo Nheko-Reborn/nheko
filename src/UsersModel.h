@@ -17,7 +17,7 @@ public:
         int rowCount(const QModelIndex &parent = QModelIndex()) const override
         {
                 (void)parent;
-                return roomMembers_.size();
+                return (int)roomMembers_.size();
         }
         QVariant data(const QModelIndex &index, int role) const override;
 

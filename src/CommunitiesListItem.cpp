@@ -117,7 +117,7 @@ CommunitiesListItem::resolveName() const
         if (!name_.isEmpty())
                 return name_;
         if (groupId_.startsWith("tag:"))
-                return groupId_.right(groupId_.size() - strlen("tag:"));
+                return groupId_.right(static_cast<int>(groupId_.size() - strlen("tag:")));
         if (!groupId_.startsWith("+"))
                 return QString("Group"); // Group with no name or id.
 
@@ -132,7 +132,7 @@ CommunitiesListItem::updateTooltip()
         if (groupId_ == "world")
                 setToolTip(tr("All rooms"));
         else if (is_tag()) {
-                QString tag = groupId_.right(groupId_.size() - strlen("tag:"));
+                QString tag = groupId_.right(static_cast<int>(groupId_.size() - strlen("tag:")));
                 if (tag == "m.favourite")
                         setToolTip(tr("Favourite rooms"));
                 else if (tag == "m.lowpriority")

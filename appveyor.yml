@@ -3,7 +3,7 @@
 version: 0.7.2-{build}
 
 configuration: Release
-image: Visual Studio 2017
+image: Visual Studio 2019
 platform: x64
 
 environment:
@@ -22,9 +22,9 @@ build:
     verbosity: minimal
 
 install:
-    - set QT_DIR=C:\Qt\5.13\msvc2017_64
-    - set PATH=%PATH%;%QT_DIR%\bin
-    - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+    - set QT_DIR=C:\Qt\5.15\msvc2019_64
+    - set PATH=C:\Strawberry\perl\bin;%PATH%;%QT_DIR%\bin
+    - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 
 build_script:
     # VERSION format:     branch-master/branch-1.2
@@ -46,8 +46,8 @@ build_script:
     - echo %DATE%
 
     # Build nheko
-    #- cmake -G "Visual Studio 16 2019" -A x64 -H. -Bbuild
-    - cmake -G "Visual Studio 15 2017 Win64" -H. -Bbuild
+    #- cmake -G "Visual Studio 15 2017 Win64" -H. -Bbuild
+    - cmake -G "Visual Studio 16 2019" -A x64 -H. -Bbuild
       -DHUNTER_ROOT="C:\hunter"
       -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF
       -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release

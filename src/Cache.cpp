@@ -685,7 +685,7 @@ Cache::image(lmdb::txn &txn, const std::string &url) const
                 if (!res)
                         return QByteArray();
 
-                return QByteArray(image.data(), image.size());
+                return QByteArray(image.data(), (int)image.size());
         } catch (const lmdb::error &e) {
                 nhlog::db()->critical("image: {}, {}", e.what(), url);
         }
@@ -713,7 +713,7 @@ Cache::image(const QString &url) const
                 if (!res)
                         return QByteArray();
 
-                return QByteArray(image.data(), image.size());
+                return QByteArray(image.data(), (int)image.size());
         } catch (const lmdb::error &e) {
                 nhlog::db()->critical("image: {} {}", e.what(), url.toStdString());
         }
@@ -1267,9 +1267,10 @@ Cache::saveState(const mtx::responses::Sync &res)
                                                 updatedInfo.tags = tmp.tags;
                                         } catch (const json::exception &e) {
                                                 nhlog::db()->warn(
-                                                  "failed to parse room info: room_id ({}), {}",
+                                                  "failed to parse room info: room_id ({}), {}: {}",
                                                   room.first,
-                                                  std::string(data.data(), data.size()));
+                                                  std::string(data.data(), data.size()),
+                                                  e.what());
                                         }
                                 }
                         }
@@ -1468,9 +1469,10 @@ Cache::singleRoomInfo(const std::string &room_id)
 
                         return tmp;
                 } catch (const json::exception &e) {
-                        nhlog::db()->warn("failed to parse room info: room_id ({}), {}",
+                        nhlog::db()->warn("failed to parse room info: room_id ({}), {}: {}",
                                           room_id,
-                                          std::string(data.data(), data.size()));
+                                          std::string(data.data(), data.size()),
+                                          e.what());
                 }
         }
 
@@ -1502,9 +1504,10 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
 
                                 room_info.emplace(QString::fromStdString(room), std::move(tmp));
                         } catch (const json::exception &e) {
-                                nhlog::db()->warn("failed to parse room info: room_id ({}), {}",
+                                nhlog::db()->warn("failed to parse room info: room_id ({}), {}: {}",
                                                   room,
-                                                  std::string(data.data(), data.size()));
+                                                  std::string(data.data(), data.size()),
+                                                  e.what());
                         }
                 } else {
                         // Check if the room is an invite.
@@ -1517,10 +1520,11 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
                                         room_info.emplace(QString::fromStdString(room),
                                                           std::move(tmp));
                                 } catch (const json::exception &e) {
-                                        nhlog::db()->warn(
-                                          "failed to parse room info for invite: room_id ({}), {}",
-                                          room,
-                                          std::string(data.data(), data.size()));
+                                        nhlog::db()->warn("failed to parse room info for invite: "
+                                                          "room_id ({}), {}: {}",
+                                                          room,
+                                                          std::string(data.data(), data.size()),
+                                                          e.what());
                                 }
                         }
                 }
@@ -2053,8 +2057,8 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
                 }
         }
 
-        auto cursor     = lmdb::cursor::open(txn, membersdb);
-        const int total = membersdb.size(txn);
+        auto cursor      = lmdb::cursor::open(txn, membersdb);
+        const auto total = membersdb.size(txn);
 
         std::size_t ii = 0;
         std::string user_id;
@@ -2337,7 +2341,7 @@ Cache::getRoomAvatar(const std::string &room_id)
 
         txn.commit();
 
-        return QImage::fromData(QByteArray(response.data(), response.size()));
+        return QImage::fromData(QByteArray(response.data(), (int)response.size()));
 }
 
 std::vector<std::string>
