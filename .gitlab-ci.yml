@@ -143,3 +143,53 @@ linting:
     - apk update && apk add clang make git
   script:
     - make lint
+
+appimage-amd64:
+  stage: build
+  image: appimagecrafters/appimage-builder
+  tags: [docker]
+  before_script:
+    # app build requirements
+    - echo 'deb http://archive.neon.kde.org/user/ bionic main' > /etc/apt/sources.list.d/neon.list
+    - wget -qO - https://archive.neon.kde.org/public.key | apt-key add -
+    - apt-get update
+    - apt-get install -y git wget
+
+    # update appimage-builder (optional)
+    - pip3 install --upgrade git+https://www.opencode.net/azubieta/appimagecraft.git
+
+    - apt-get install -y qt5-default qtdeclarative5-dev qttools5-dev qtscript5-dev qtquickcontrols2-5-dev qtmultimedia5-dev libqt5svg5-dev liblmdb-dev libssl-dev git ninja-build qt5keychain-dev libgtest-dev ccache
+    - wget https://github.com/Kitware/CMake/releases/download/v3.19.0/cmake-3.19.0-Linux-x86_64.sh && sh cmake-3.19.0-Linux-x86_64.sh  --skip-license  --prefix=/usr/local
+    - /usr/sbin/update-ccache-symlinks
+  script:
+    - export PATH="/usr/local/bin/:/usr/lib/ccache:${PATH}"
+    - export CMAKE_BUILD_PARALLEL_LEVEL=$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l)
+    - cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -GNinja
+      -DHUNTER_ROOT=".hunter"
+      -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF
+      -DHUNTER_CONFIGURATION_TYPES=Release
+      -DUSE_BUNDLED_BOOST=ON
+      -DUSE_BUNDLED_SPDLOG=ON
+      -DUSE_BUNDLED_OLM=ON
+      -DUSE_BUNDLED_GTEST=OFF
+      -DUSE_BUNDLED_CMARK=ON
+      -DUSE_BUNDLED_JSON=ON
+      -DUSE_BUNDLED_OPENSSL=OFF
+      -DUSE_BUNDLED_MTXCLIENT=ON
+      -DUSE_BUNDLED_LMDB=OFF
+      -DUSE_BUNDLED_LMDBXX=ON
+      -DUSE_BUNDLED_TWEENY=ON
+      -DUSE_BUNDLED_QTKEYCHAIN=OFF
+    - DESTDIR=`pwd`/AppDir ninja -C build install/local
+    - DESTDIR=`pwd`/AppDir ninja -C build _deps/cmark-build/src/install
+    - mkdir -p AppDir/usr/lib/x86_64-linux-gnu AppDir/lib/x86_64-linux-gnu
+    - appimage-builder --skip-test
+  artifacts:
+    paths:
+      - '*.AppImage*'
+    expire_in: 1 week
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - .hunter/
+      - .ccache
