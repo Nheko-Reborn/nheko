@@ -122,13 +122,6 @@ deploy:
       prerelease: true
       on:
           appveyor_repo_tag: true
-    - provider: S3
-      access_key_id: ${AWS_ACCESS_KEY}
-      secret_access_key: ${AWS_SECRET_KEY}
-      bucket: ${AWS_BUCKET_NAME}
-      region: ${AWS_DEFAULT_REGION}
-      set_public: true
-      artifact: nheko-$(APPVEYOR_REPO_TAG_NAME)-installer.exe, nheko_win_64.zip
 
 artifacts:
     - path: nheko_win_64.zip
