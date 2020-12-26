@@ -188,8 +188,9 @@ appimage-amd64:
     - bash ./.ci/upload-nightly-gitlab.sh nheko-latest-x86_64.AppImage
   artifacts:
     paths:
-      - '*.AppImage*'
+      - 'nheko-latest-x86_64.AppImage'
     expire_in: 1 week
+    expose_as: 'appimage-amd64'
   cache:
     key: "$CI_JOB_NAME"
     paths:
