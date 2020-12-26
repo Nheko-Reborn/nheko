@@ -153,7 +153,7 @@ appimage-amd64:
     - echo 'deb http://archive.neon.kde.org/user/ bionic main' > /etc/apt/sources.list.d/neon.list
     - wget -qO - https://archive.neon.kde.org/public.key | apt-key add -
     - apt-get update
-    - apt-get install -y git wget
+    - apt-get install -y git wget curl
 
     # update appimage-builder (optional)
     - pip3 install --upgrade git+https://www.opencode.net/azubieta/appimagecraft.git
@@ -184,6 +184,8 @@ appimage-amd64:
     - DESTDIR=`pwd`/AppDir ninja -C build _deps/cmark-build/src/install
     - mkdir -p AppDir/usr/lib/x86_64-linux-gnu AppDir/lib/x86_64-linux-gnu
     - appimage-builder --skip-test
+  after_script:
+    - bash ./.ci/upload-nightly-gitlab.sh nheko-latest-x86_64.AppImage
   artifacts:
     paths:
       - '*.AppImage*'
