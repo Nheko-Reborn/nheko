@@ -196,17 +196,19 @@ main(int argc, char *argv[])
                 std::exit(1);
         }
 
-        UserSettings settings;
-
         if (parser.isSet(configName))
-                settings.setProfile(parser.value(configName));
+                UserSettings::initialize(parser.value(configName));
+        else
+                UserSettings::initialize(std::nullopt);
+
+        auto settings = UserSettings::instance().toWeakRef();
 
         QFont font;
-        QString userFontFamily = settings.font();
+        QString userFontFamily = settings.lock()->font();
         if (!userFontFamily.isEmpty()) {
                 font.setFamily(userFontFamily);
         }
-        font.setPointSizeF(settings.fontSize());
+        font.setPointSizeF(settings.lock()->fontSize());
 
         app.setFont(font);
 
@@ -226,7 +228,7 @@ main(int argc, char *argv[])
         // Move the MainWindow to the center
         w.move(screenCenter(w.width(), w.height()));
 
-        if (!settings.startInTray() && !settings.tray())
+        if (!settings.lock()->startInTray() && !settings.lock()->tray())
                 w.show();
 
         QObject::connect(&app, &QApplication::aboutToQuit, &w, [&w]() {

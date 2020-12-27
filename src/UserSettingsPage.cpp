@@ -50,10 +50,30 @@
 
 #include "config/nheko.h"
 
-UserSettings::UserSettings() { load(); }
+QSharedPointer<UserSettings> UserSettings::instance_;
+
+UserSettings::UserSettings()
+{
+        connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, [this]() {
+                instance_.clear();
+        });
+}
+
+QSharedPointer<UserSettings>
+UserSettings::instance()
+{
+        return instance_;
+}
 
 void
-UserSettings::load()
+UserSettings::initialize(std::optional<QString> profile)
+{
+        instance_.reset(new UserSettings());
+        instance_->load(profile);
+}
+
+void
+UserSettings::load(std::optional<QString> profile)
 {
         QSettings settings;
         tray_                    = settings.value("user/window/tray", false).toBool();
@@ -89,7 +109,11 @@ UserSettings::load()
         cameraResolution_ = settings.value("user/camera_resolution", QString()).toString();
         cameraFrameRate_  = settings.value("user/camera_frame_rate", QString()).toString();
         useStunServer_    = settings.value("user/use_stun_server", false).toBool();
-        profile_          = settings.value("user/currentProfile", "").toString();
+
+        if (profile)
+                profile_ = *profile;
+        else
+                profile_ = settings.value("user/currentProfile", "").toString();
 
         QString prefix =
           (profile_ != "" && profile_ != "default") ? "profile/" + profile_ + "/" : "";
@@ -527,14 +551,14 @@ UserSettings::save()
         settings.setValue("use_stun_server", useStunServer_);
         settings.setValue("currentProfile", profile_);
 
+        settings.endGroup(); // user
+
         QString prefix =
           (profile_ != "" && profile_ != "default") ? "profile/" + profile_ + "/" : "";
         settings.setValue(prefix + "auth/access_token", accessToken_);
         settings.setValue(prefix + "auth/home_server", homeserver_);
         settings.setValue(prefix + "auth/user_id", userId_);
         settings.setValue(prefix + "auth/device_id", deviceId_);
-
-        settings.endGroup(); // user
 
         settings.sync();
 }

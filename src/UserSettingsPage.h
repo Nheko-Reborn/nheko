@@ -91,8 +91,11 @@ class UserSettings : public QObject
         Q_PROPERTY(QString deviceId READ deviceId WRITE setDeviceId NOTIFY deviceIdChanged)
         Q_PROPERTY(QString homeserver READ homeserver WRITE setHomeserver NOTIFY homeserverChanged)
 
-public:
         UserSettings();
+
+public:
+        static QSharedPointer<UserSettings> instance();
+        static void initialize(std::optional<QString> profile);
 
         enum class Presence
         {
@@ -104,7 +107,7 @@ public:
         Q_ENUM(Presence)
 
         void save();
-        void load();
+        void load(std::optional<QString> profile);
         void applyTheme();
         void setTheme(QString theme);
         void setMessageHoverHighlight(bool state);
@@ -252,6 +255,8 @@ private:
         QString accessToken_;
         QString deviceId_;
         QString homeserver_;
+
+        static QSharedPointer<UserSettings> instance_;
 };
 
 class HorizontalLine : public QFrame
