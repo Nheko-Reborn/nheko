@@ -97,7 +97,8 @@
     {
       "config-opts": [
         "-DCMAKE_BUILD_TYPE=Release",
-        "-DBUILD_TEST_APPLICATION=OFF"
+        "-DBUILD_TEST_APPLICATION=OFF",
+        "-DQTKEYCHAIN_STATIC=ON"
       ],
       "buildsystem": "cmake-ninja",
       "name": "QtKeychain",
