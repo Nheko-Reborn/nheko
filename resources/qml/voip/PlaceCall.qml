@@ -1,22 +1,38 @@
-import QtQuick 2.3
+import "../"
+import QtQuick 2.9
 import QtQuick.Controls 2.3
-import QtQuick.Dialogs 1.3
 import QtQuick.Layouts 1.2
 import im.nheko 1.0
-import "../"
 
-ApplicationWindow {
+Popup {
 
-    flags: Qt.Dialog
-    modality: Qt.ApplicationModal
-    palette: colors
-    width: columnLayout.implicitWidth
-    height: columnLayout.implicitHeight
-
-    MessageDialog {
-        id: warningDialog
-        icon: StandardIcon.Warning
+    modal: true
+    anchors.centerIn: parent
+    background: Rectangle {
+        color: colors.window
+        border.color: colors.windowText
     }
+
+    Component {
+        id: deviceError
+        DeviceError {
+        }
+    }
+
+    // palette: colors
+    // colorize controls correctly
+    palette.base:             colors.base
+    palette.brightText:       colors.brightText
+    palette.button:           colors.button
+    palette.buttonText:       colors.buttonText
+    palette.dark:             colors.dark
+    palette.highlight:        colors.highlight
+    palette.highlightedText:  colors.highlightedText
+    palette.light:            colors.light
+    palette.mid:              colors.mid
+    palette.text:             colors.text
+    palette.window:           colors.window
+    palette.windowText:       colors.windowText
 
     ColumnLayout {
         id: columnLayout
@@ -25,11 +41,10 @@ ApplicationWindow {
 
         RowLayout {
 
-            Layout.topMargin: 16
+            Layout.topMargin: 8
             Layout.leftMargin: 8
 
             Label {
-                font.pointSize: fontMetrics.font.pointSize * 1.1
                 text: qsTr("Place a call to ") + TimelineManager.timeline.roomName + "?"
                 color: colors.windowText
             }
@@ -47,22 +62,22 @@ ApplicationWindow {
 
             function validateMic() {
                 if (CallManager.mics.length == 0) {
-                    warningDialog.text = qsTr("No microphone found.");
-                    warningDialog.open();
+                    var dialog = deviceError.createObject(timelineRoot, {
+                        "errorString": qsTr("No microphone found."),
+                        "iconSource": "qrc:/icons/icons/ui/place-call.png"
+                    });
+                    dialog.open();
                     return false;
                 }
                 return true;
             }
 
             Avatar {
+                Layout.rightMargin: cameraCombo.visible ? 16 : 64
                 width: avatarSize
                 height: avatarSize
                 url: TimelineManager.timeline.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
                 displayName: TimelineManager.timeline.roomName
-            }
-
-            Item {
-                implicitWidth: cameraCombo.visible ? 16 : 64
             }
 
             Button {
@@ -106,7 +121,7 @@ ApplicationWindow {
 
                 Layout.leftMargin: 8
                 Layout.rightMargin: 8
-                Layout.bottomMargin: cameraCombo.visible ? 0 : 16
+                Layout.bottomMargin: cameraCombo.visible ? 0 : 8
 
                 Image {
                     Layout.preferredWidth: 22
@@ -126,7 +141,7 @@ ApplicationWindow {
                 visible: CallManager.cameras.length > 0
                 Layout.leftMargin: 8
                 Layout.rightMargin: 8
-                Layout.bottomMargin: 16
+                Layout.bottomMargin: 8
 
                 Image {
                     Layout.preferredWidth: 22

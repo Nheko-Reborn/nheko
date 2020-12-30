@@ -1,8 +1,8 @@
+import "../"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import im.nheko 1.0
-import "../"
 
 Rectangle {
 
@@ -38,7 +38,7 @@ Rectangle {
             Layout.leftMargin: 8
             font.pointSize: fontMetrics.font.pointSize * 1.1
             text: CallManager.callParty
-            color: colors.windowText
+            color: "#000000"
         }
 
         Image {
@@ -52,7 +52,7 @@ Rectangle {
             id: callStateLabel
 
             font.pointSize: fontMetrics.font.pointSize * 1.1
-            color: colors.windowText
+            color: "#000000"
         }
 
         Item {
@@ -163,11 +163,9 @@ Rectangle {
             onClicked: CallManager.toggleCameraView()
         }
 
-        Item {
-            implicitWidth: 8
-        }
-
         ImageButton {
+            Layout.leftMargin: 8
+            Layout.rightMargin: 16
             width: 24
             height: 24
             buttonTextColor: "#000000"
@@ -177,11 +175,5 @@ Rectangle {
             ToolTip.text: CallManager.isMicMuted ? qsTr("Unmute Mic") : qsTr("Mute Mic")
             onClicked: CallManager.toggleMicMute()
         }
-
-        Item {
-            implicitWidth: 16
-        }
-
     }
-
 }

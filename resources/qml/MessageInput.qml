@@ -1,9 +1,9 @@
+import "./voip"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import im.nheko 1.0
-import "./voip"
 
 Rectangle {
     color: colors.window
@@ -26,6 +26,7 @@ Rectangle {
 
         ImageButton {
             visible: CallManager.callsSupported
+            opacity: CallManager.haveCallInvite ? 0.3 : 1.0
             Layout.alignment: Qt.AlignBottom
             hoverEnabled: true
             width: 22
@@ -46,7 +47,7 @@ Rectangle {
                     }
                     else {
                         var dialog = placeCallDialog.createObject(timelineRoot);
-                        dialog.show();
+                        dialog.open();
                     }
                 }
             }

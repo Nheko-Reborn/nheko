@@ -464,7 +464,7 @@ UserSettings::applyTheme()
                 stylefile.setFileName(":/styles/styles/nheko.qss");
                 QPalette lightActive(
                   /*windowText*/ QColor("#333"),
-                  /*button*/ QColor("#333"),
+                  /*button*/ QColor("white"),
                   /*light*/ QColor(0xef, 0xef, 0xef),
                   /*dark*/ QColor(110, 110, 110),
                   /*mid*/ QColor(220, 220, 220),
@@ -477,7 +477,7 @@ UserSettings::applyTheme()
                 lightActive.setColor(QPalette::ToolTipBase, lightActive.base().color());
                 lightActive.setColor(QPalette::ToolTipText, lightActive.text().color());
                 lightActive.setColor(QPalette::Link, QColor("#0077b5"));
-                lightActive.setColor(QPalette::ButtonText, QColor("#495057"));
+                lightActive.setColor(QPalette::ButtonText, QColor("#333"));
                 QApplication::setPalette(lightActive);
         } else if (this->theme() == "dark") {
                 stylefile.setFileName(":/styles/styles/nheko-dark.qss");

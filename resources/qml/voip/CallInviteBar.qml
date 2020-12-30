@@ -1,9 +1,8 @@
+import "../"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
-import QtQuick.Dialogs 1.3
 import QtQuick.Layouts 1.2
 import im.nheko 1.0
-import "../"
 
 Rectangle {
 
@@ -11,15 +10,15 @@ Rectangle {
     color: "#2ECC71"
     implicitHeight: visible ? rowLayout.height + 8 : 0
 
-    MessageDialog {
-        id: warningDialog
-        icon: StandardIcon.Warning
+    Component {
+        id: devicesDialog
+        CallDevices {
+        }
     }
 
     Component {
-        id: devicesDialog
-
-        CallDevices {
+        id: deviceError
+        DeviceError {
         }
     }
 
@@ -42,7 +41,7 @@ Rectangle {
             Layout.leftMargin: 8
             font.pointSize: fontMetrics.font.pointSize * 1.1
             text: CallManager.callParty
-            color: colors.windowText
+            color: "#000000"
         }
 
         Image {
@@ -55,7 +54,7 @@ Rectangle {
         Label {
             font.pointSize: fontMetrics.font.pointSize * 1.1
             text: CallManager.isVideo ? qsTr("Video Call") : qsTr("Voice Call")
-            color: colors.windowText
+            color: "#000000"
         }
 
         Item {
@@ -63,8 +62,9 @@ Rectangle {
         }
 
         ImageButton {
-            width: 24
-            height: 24
+            Layout.rightMargin: 16
+            width: 20
+            height: 20
             buttonTextColor: "#000000"
             image: ":/icons/icons/ui/settings.png"
             hoverEnabled: true
@@ -72,53 +72,56 @@ Rectangle {
             ToolTip.text: qsTr("Devices")
             onClicked: {
                   var dialog = devicesDialog.createObject(timelineRoot);
-                  dialog.show();
+                  dialog.open();
             }
         }
 
-        Item {
-            implicitWidth: 8
-        }
-
         Button {
+            Layout.rightMargin: 4
             icon.source: CallManager.isVideo ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
-            palette: colors
             text: qsTr("Accept")
+            palette.button:     colors.button
+            palette.buttonText: colors.buttonText
+
             onClicked: {
                 if (CallManager.mics.length == 0) {
-                    warningDialog.text = qsTr("No microphone found.");
-                    warningDialog.open();
+                    var dialog = deviceError.createObject(timelineRoot, {
+                        "errorString": qsTr("No microphone found."),
+                        "iconSource": "qrc:/icons/icons/ui/place-call.png"
+                    });
+                    dialog.open();
                     return;
                 }
                 else if (!CallManager.mics.includes(Settings.microphone)) {
-                    warningDialog.text = qsTr("Unknown microphone: ") + Settings.microphone;
-                    warningDialog.open();
+                    var dialog = deviceError.createObject(timelineRoot, {
+                        "errorString": qsTr("Unknown microphone: ") + Settings.microphone,
+                        "iconSource": "qrc:/icons/icons/ui/place-call.png"
+                    });
+                    dialog.open();
                     return;
                 }
                 if (CallManager.isVideo && CallManager.cameras.length > 0 && !CallManager.cameras.includes(Settings.camera)) {
-                    warningDialog.text = qsTr("Unknown camera: ") + Settings.camera;
-                    warningDialog.open();
+                    var dialog = deviceError.createObject(timelineRoot, {
+                        "errorString": qsTr("Unknown camera: ") + Settings.camera,
+                        "iconSource": "qrc:/icons/icons/ui/video-call.png"
+                    });
+                    dialog.open();
                     return;
                 }
                 CallManager.acceptInvite();
             }
         }
 
-        Item {
-            implicitWidth: 4
-        }
-
         Button {
+            Layout.rightMargin: 16
             icon.source: "qrc:/icons/icons/ui/end-call.png"
-            palette: colors
             text: qsTr("Decline")
+            palette.button:     colors.button
+            palette.buttonText: colors.buttonText
+
             onClicked: {
                 CallManager.hangUp();
             }
-        }
-
-        Item {
-            implicitWidth: 16
         }
     }
 }

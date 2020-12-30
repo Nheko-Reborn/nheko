@@ -1,31 +1,44 @@
-import QtQuick 2.3
+import QtQuick 2.9
 import QtQuick.Controls 2.3
-import QtQuick.Dialogs 1.3
 import QtQuick.Layouts 1.2
 import im.nheko 1.0
-import "../"
 
-ApplicationWindow {
+Popup {
 
-    flags: Qt.Dialog
-    modality: Qt.ApplicationModal
-    palette: colors
-    width: columnLayout.implicitWidth
-    height: columnLayout.implicitHeight
+    modal: true
+    anchors.centerIn: parent
+    background: Rectangle {
+        color: colors.window
+        border.color: colors.windowText
+    }
+
+    // palette: colors
+    // colorize controls correctly
+    palette.base:             colors.base
+    palette.brightText:       colors.brightText
+    palette.button:           colors.button
+    palette.buttonText:       colors.buttonText
+    palette.dark:             colors.dark
+    palette.highlight:        colors.highlight
+    palette.highlightedText:  colors.highlightedText
+    palette.light:            colors.light
+    palette.mid:              colors.mid
+    palette.text:             colors.text
+    palette.window:           colors.window
+    palette.windowText:       colors.windowText
 
     ColumnLayout {
-        id: columnLayout
 
         spacing: 16
 
         ColumnLayout {
             spacing: 8
 
-            RowLayout {
+            Layout.topMargin: 8
+            Layout.leftMargin: 8
+            Layout.rightMargin: 8
 
-                Layout.topMargin: 8
-                Layout.leftMargin: 8
-                Layout.rightMargin: 8
+            RowLayout {
 
                 Image {
                     Layout.preferredWidth: 22
@@ -42,9 +55,7 @@ ApplicationWindow {
 
             RowLayout {
 
-                visible: CallManager.cameras.length > 0
-                Layout.leftMargin: 8
-                Layout.rightMargin: 8
+                visible: CallManager.isVideo && CallManager.cameras.length > 0
 
                 Image {
                     Layout.preferredWidth: 22
@@ -60,31 +71,21 @@ ApplicationWindow {
             }
         }
 
-        RowLayout {
+        DialogButtonBox {
 
-            Layout.rightMargin: 8
-            Layout.bottomMargin: 8
+            Layout.leftMargin: 128
+            standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
 
-            Item {
-                implicitWidth: 128
+            onAccepted:  {
+                Settings.microphone = micCombo.currentText
+                if (cameraCombo.visible) {
+                    Settings.camera = cameraCombo.currentText
+                }
+                close();
             }
 
-            Button {
-                text: qsTr("Ok")
-                onClicked: {
-                      Settings.microphone = micCombo.currentText
-                      if (cameraCombo.visible) {
-                          Settings.camera = cameraCombo.currentText
-                      }
-                      close();
-                }
-            }
-
-            Button {
-                text: qsTr("Cancel")
-                onClicked: {
-                    close();
-                }
+            onRejected: {
+                close();
             }
         }
     }
