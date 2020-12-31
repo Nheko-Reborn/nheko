@@ -315,14 +315,14 @@ LoginPage::checkHomeserverVersion()
                             if (err || flows.flows.empty())
                                     emit versionOkCb(LoginMethod::Password);
 
-                            LoginMethod login_method = LoginMethod::Password;
+                            LoginMethod loginMethod = LoginMethod::Password;
                             for(const auto &flow : flows.flows) {
                                 if (flow.type == mtx::user_interactive::auth_types::sso) {
-                                    login_method = LoginMethod::SSO;
+                                    loginMethod = LoginMethod::SSO;
                                     break;
                                 }
                             }
-                            emit versionOk(login_method);
+                            emit versionOk(loginMethod);
                     });
           });
 }
