@@ -316,11 +316,11 @@ LoginPage::checkHomeserverVersion()
                                     emit versionOkCb(LoginMethod::Password);
 
                             LoginMethod loginMethod = LoginMethod::Password;
-                            for(const auto &flow : flows.flows) {
-                                if (flow.type == mtx::user_interactive::auth_types::sso) {
-                                    loginMethod = LoginMethod::SSO;
-                                    break;
-                                }
+                            for (const auto &flow : flows.flows) {
+                                    if (flow.type == mtx::user_interactive::auth_types::sso) {
+                                            loginMethod = LoginMethod::SSO;
+                                            break;
+                                    }
                             }
                             emit versionOk(loginMethod);
                     });
