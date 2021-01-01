@@ -351,12 +351,15 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
                            callAnswerEvent.content.call_id,
                            callAnswerEvent.sender);
 
-        if (!isOnCall() && callAnswerEvent.sender == utils::localUser().toStdString() &&
+        if (callAnswerEvent.sender == utils::localUser().toStdString() &&
             callid_ == callAnswerEvent.content.call_id) {
-                emit ChatPage::instance()->showNotification("Call answered on another device.");
-                stopRingtone();
-                haveCallInvite_ = false;
-                emit newInviteState();
+                if (!isOnCall()) {
+                        emit ChatPage::instance()->showNotification(
+                          "Call answered on another device.");
+                        stopRingtone();
+                        haveCallInvite_ = false;
+                        emit newInviteState();
+                }
                 return;
         }
 
