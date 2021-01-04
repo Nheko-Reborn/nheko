@@ -140,6 +140,15 @@ ListView {
 
                 }
 
+                Label {
+                    color: colors.buttonText
+                    text: TimelineManager.userStatus(modelData.userId)
+                    textFormat: Text.PlainText
+                    elide: Text.ElideRight
+                    width: chat.delegateMaxWidth - parent.spacing * 2 - userName.implicitWidth - avatarSize
+                    font.italic: true
+                }
+
             }
 
         }
