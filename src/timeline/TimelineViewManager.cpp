@@ -297,13 +297,20 @@ TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
                                    &CallManager::syncEvent);
 
                 if (ChatPage::instance()->userSettings()->typingNotifications()) {
-                        std::vector<QString> typing;
-                        typing.reserve(room.ephemeral.typing.size());
-                        for (const auto &user : room.ephemeral.typing) {
-                                if (user != http::client()->user_id().to_string())
-                                        typing.push_back(QString::fromStdString(user));
+                        for (const auto &ev : room.ephemeral.events) {
+                                if (auto t = std::get_if<
+                                      mtx::events::EphemeralEvent<mtx::events::ephemeral::Typing>>(
+                                      &ev)) {
+                                        std::vector<QString> typing;
+                                        typing.reserve(t->content.user_ids.size());
+                                        for (const auto &user : t->content.user_ids) {
+                                                if (user != http::client()->user_id().to_string())
+                                                        typing.push_back(
+                                                          QString::fromStdString(user));
+                                        }
+                                        room_model->updateTypingUsers(typing);
+                                }
                         }
-                        room_model->updateTypingUsers(typing);
                 }
         }
 
