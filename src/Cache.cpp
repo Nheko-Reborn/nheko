@@ -124,17 +124,15 @@ Cache::isHiddenEvent(lmdb::txn &txn,
           EventType::Reaction, EventType::CallCandidates, EventType::Unsupported};
 
         if (auto temp = getAccountData(txn, mtx::events::EventType::NhekoHiddenEvents, ""))
-                hiddenEvents = std::move(
-                  std::get<
-                    mtx::events::Event<mtx::events::account_data::nheko_extensions::HiddenEvents>>(
-                    *temp)
-                    .content);
+                hiddenEvents =
+                  std::move(std::get<mtx::events::AccountDataEvent<
+                              mtx::events::account_data::nheko_extensions::HiddenEvents>>(*temp)
+                              .content);
         if (auto temp = getAccountData(txn, mtx::events::EventType::NhekoHiddenEvents, room_id))
-                hiddenEvents = std::move(
-                  std::get<
-                    mtx::events::Event<mtx::events::account_data::nheko_extensions::HiddenEvents>>(
-                    *temp)
-                    .content);
+                hiddenEvents =
+                  std::move(std::get<mtx::events::AccountDataEvent<
+                              mtx::events::account_data::nheko_extensions::HiddenEvents>>(*temp)
+                              .content);
 
         return std::visit(
           [hiddenEvents](const auto &ev) {
@@ -1197,7 +1195,7 @@ void
 Cache::saveState(const mtx::responses::Sync &res)
 {
         using namespace mtx::events;
-        auto user_id = this->localUserId_.toStdString();
+        auto local_user_id = this->localUserId_.toStdString();
 
         auto currentBatchToken = nextBatchToken();
 
@@ -1252,12 +1250,18 @@ Cache::saveState(const mtx::responses::Sync &res)
                                   evt);
 
                                 // for tag events
-                                if (std::holds_alternative<Event<account_data::Tags>>(evt)) {
-                                        auto tags_evt = std::get<Event<account_data::Tags>>(evt);
-                                        has_new_tags  = true;
+                                if (std::holds_alternative<AccountDataEvent<account_data::Tags>>(
+                                      evt)) {
+                                        auto tags_evt =
+                                          std::get<AccountDataEvent<account_data::Tags>>(evt);
+                                        has_new_tags = true;
                                         for (const auto &tag : tags_evt.content.tags) {
                                                 updatedInfo.tags.push_back(tag.first);
                                         }
+                                }
+                                if (auto fr = std::get_if<mtx::events::AccountDataEvent<
+                                      mtx::events::account_data::FullyRead>>(&evt)) {
+                                        nhlog::db()->debug("Fully read: {}", fr->content.event_id);
                                 }
                         }
                         if (!has_new_tags) {
@@ -1282,7 +1286,20 @@ Cache::saveState(const mtx::responses::Sync &res)
                 lmdb::dbi_put(
                   txn, roomsDb_, lmdb::val(room.first), lmdb::val(json(updatedInfo).dump()));
 
-                updateReadReceipt(txn, room.first, room.second.ephemeral.receipts);
+                for (const auto &e : room.second.ephemeral.events) {
+                        if (auto receiptsEv = std::get_if<
+                              mtx::events::EphemeralEvent<mtx::events::ephemeral::Receipt>>(&e)) {
+                                Receipts receipts;
+
+                                for (const auto &[event_id, userReceipts] :
+                                     receiptsEv->content.receipts) {
+                                        for (const auto &[user_id, receipt] : userReceipts.users) {
+                                                receipts[event_id][user_id] = receipt.ts;
+                                        }
+                                }
+                                updateReadReceipt(txn, room.first, receipts);
+                        }
+                }
 
                 // Clean up non-valid invites.
                 removeInvite(txn, room.first);
@@ -1302,19 +1319,27 @@ Cache::saveState(const mtx::responses::Sync &res)
         std::map<QString, bool> readStatus;
 
         for (const auto &room : res.rooms.join) {
-                if (!room.second.ephemeral.receipts.empty()) {
-                        std::vector<QString> receipts;
-                        for (const auto &receipt : room.second.ephemeral.receipts) {
-                                for (const auto &receiptUsersTs : receipt.second) {
-                                        if (receiptUsersTs.first != user_id) {
-                                                receipts.push_back(
-                                                  QString::fromStdString(receipt.first));
-                                                break;
+                for (const auto &e : room.second.ephemeral.events) {
+                        if (auto receiptsEv = std::get_if<
+                              mtx::events::EphemeralEvent<mtx::events::ephemeral::Receipt>>(&e)) {
+                                std::vector<QString> receipts;
+
+                                for (const auto &[event_id, userReceipts] :
+                                     receiptsEv->content.receipts) {
+                                        for (const auto &[user_id, receipt] : userReceipts.users) {
+                                                (void)receipt;
+
+                                                if (user_id != local_user_id) {
+                                                        receipts.push_back(
+                                                          QString::fromStdString(event_id));
+                                                        break;
+                                                }
                                         }
                                 }
+                                if (!receipts.empty())
+                                        emit newReadReceipts(QString::fromStdString(room.first),
+                                                             receipts);
                         }
-                        if (!receipts.empty())
-                                emit newReadReceipts(QString::fromStdString(room.first), receipts);
                 }
                 readStatus.emplace(QString::fromStdString(room.first),
                                    calculateRoomReadStatus(room.first));
@@ -1440,7 +1465,7 @@ Cache::roomsWithTagUpdates(const mtx::responses::Sync &res)
         for (const auto &room : res.rooms.join) {
                 bool hasUpdates = false;
                 for (const auto &evt : room.second.account_data.events) {
-                        if (std::holds_alternative<Event<account_data::Tags>>(evt)) {
+                        if (std::holds_alternative<AccountDataEvent<account_data::Tags>>(evt)) {
                                 hasUpdates = true;
                         }
                 }
