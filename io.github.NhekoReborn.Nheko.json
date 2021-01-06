@@ -126,16 +126,6 @@
       ]
     },
     {
-      "name": "sodium",
-      "sources": [
-        {
-          "sha256": "6f504490b342a4f8a4c4a02fc9b866cbef8622d5df4e5452b46be121e46636c1",
-          "type": "archive",
-          "url": "https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE/libsodium-1.0.18.tar.gz"
-        }
-      ]
-    },
-    {
       "build-commands": [
         "./bootstrap.sh --with-libraries=thread,system,iostreams --prefix=/app",
         "./b2 -d0 variant=release link=static threading=multi --layout=system",
