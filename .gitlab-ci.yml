@@ -52,7 +52,8 @@ build-macos:
   tags: [macos]
   before_script:
     - brew update
-    - brew bundle --file=./.ci/macos/Brewfile
+    - brew reinstall --force python3
+    - brew bundle --file=./.ci/macos/Brewfile --force --cleanup
     - pip3 install dmgbuild
   script:
     - export PATH=/usr/local/opt/qt/bin/:${PATH}
