@@ -54,7 +54,7 @@ QSharedPointer<UserSettings> UserSettings::instance_;
 
 UserSettings::UserSettings()
 {
-        connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, [this]() {
+        connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, []() {
                 instance_.clear();
         });
 }
