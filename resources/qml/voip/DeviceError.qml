@@ -6,7 +6,7 @@ import im.nheko 1.0
 Popup {
 
     property string errorString
-    property var iconSource
+    property var image
 
     modal: true
     anchors.centerIn: parent
@@ -20,7 +20,7 @@ Popup {
         Image {
             Layout.preferredWidth: 16
             Layout.preferredHeight: 16
-            source: iconSource
+            source: "image://colorimage/" + image + "?" + colors.windowText
         }
 
         Label {

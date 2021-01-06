@@ -12,20 +12,7 @@ Popup {
         border.color: colors.windowText
     }
 
-    // palette: colors
-    // colorize controls correctly
-    palette.base:             colors.base
-    palette.brightText:       colors.brightText
-    palette.button:           colors.button
-    palette.buttonText:       colors.buttonText
-    palette.dark:             colors.dark
-    palette.highlight:        colors.highlight
-    palette.highlightedText:  colors.highlightedText
-    palette.light:            colors.light
-    palette.mid:              colors.mid
-    palette.text:             colors.text
-    palette.window:           colors.window
-    palette.windowText:       colors.windowText
+    palette: colors
 
     ColumnLayout {
 
@@ -43,7 +30,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "qrc:/icons/icons/ui/microphone-unmute.png"
+                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.png?" + colors.windowText
                 }
 
                 ComboBox {
@@ -60,7 +47,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "qrc:/icons/icons/ui/video-call.png"
+                    source: "image://colorimage/:/icons/icons/ui/video-call.png?" + colors.windowText
                 }
 
                 ComboBox {

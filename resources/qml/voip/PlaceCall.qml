@@ -8,6 +8,7 @@ Popup {
 
     modal: true
     anchors.centerIn: parent
+    palette: colors
     background: Rectangle {
         color: colors.window
         border.color: colors.windowText
@@ -18,21 +19,6 @@ Popup {
         DeviceError {
         }
     }
-
-    // palette: colors
-    // colorize controls correctly
-    palette.base:             colors.base
-    palette.brightText:       colors.brightText
-    palette.button:           colors.button
-    palette.buttonText:       colors.buttonText
-    palette.dark:             colors.dark
-    palette.highlight:        colors.highlight
-    palette.highlightedText:  colors.highlightedText
-    palette.light:            colors.light
-    palette.mid:              colors.mid
-    palette.text:             colors.text
-    palette.window:           colors.window
-    palette.windowText:       colors.windowText
 
     ColumnLayout {
         id: columnLayout
@@ -64,7 +50,7 @@ Popup {
                 if (CallManager.mics.length == 0) {
                     var dialog = deviceError.createObject(timelineRoot, {
                         "errorString": qsTr("No microphone found."),
-                        "iconSource": "qrc:/icons/icons/ui/place-call.png"
+                        "image": ":/icons/icons/ui/place-call.png"
                     });
                     dialog.open();
                     return false;
@@ -81,7 +67,7 @@ Popup {
             }
 
             Button {
-                text: qsTr("Voice")
+                text: qsTr(" Voice ")
                 icon.source: "qrc:/icons/icons/ui/place-call.png"
                 onClicked: {
                     if (buttonLayout.validateMic()) {
@@ -94,7 +80,7 @@ Popup {
 
             Button {
                 visible: CallManager.cameras.length > 0
-                text: qsTr("Video")
+                text: qsTr(" Video ")
                 icon.source: "qrc:/icons/icons/ui/video-call.png"
                 onClicked: {
                     if (buttonLayout.validateMic()) {
@@ -126,7 +112,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "qrc:/icons/icons/ui/microphone-unmute.png"
+                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.png?" + colors.windowText
                 }
 
                 ComboBox {
@@ -146,7 +132,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "qrc:/icons/icons/ui/video-call.png"
+                    source: "image://colorimage/:/icons/icons/ui/video-call.png?" + colors.windowText
                 }
 
                 ComboBox {

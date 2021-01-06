@@ -79,15 +79,14 @@ Rectangle {
         Button {
             Layout.rightMargin: 4
             icon.source: CallManager.isVideo ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
-            text: qsTr("Accept")
-            palette.button:     colors.button
-            palette.buttonText: colors.buttonText
+            text: qsTr(" Accept ")
+            palette: colors
 
             onClicked: {
                 if (CallManager.mics.length == 0) {
                     var dialog = deviceError.createObject(timelineRoot, {
                         "errorString": qsTr("No microphone found."),
-                        "iconSource": "qrc:/icons/icons/ui/place-call.png"
+                        "image": ":/icons/icons/ui/place-call.png"
                     });
                     dialog.open();
                     return;
@@ -95,7 +94,7 @@ Rectangle {
                 else if (!CallManager.mics.includes(Settings.microphone)) {
                     var dialog = deviceError.createObject(timelineRoot, {
                         "errorString": qsTr("Unknown microphone: ") + Settings.microphone,
-                        "iconSource": "qrc:/icons/icons/ui/place-call.png"
+                        "image": ":/icons/icons/ui/place-call.png"
                     });
                     dialog.open();
                     return;
@@ -103,7 +102,7 @@ Rectangle {
                 if (CallManager.isVideo && CallManager.cameras.length > 0 && !CallManager.cameras.includes(Settings.camera)) {
                     var dialog = deviceError.createObject(timelineRoot, {
                         "errorString": qsTr("Unknown camera: ") + Settings.camera,
-                        "iconSource": "qrc:/icons/icons/ui/video-call.png"
+                        "image": ":/icons/icons/ui/video-call.png"
                     });
                     dialog.open();
                     return;
@@ -115,9 +114,8 @@ Rectangle {
         Button {
             Layout.rightMargin: 16
             icon.source: "qrc:/icons/icons/ui/end-call.png"
-            text: qsTr("Decline")
-            palette.button:     colors.button
-            palette.buttonText: colors.buttonText
+            text: qsTr(" Decline ")
+            palette: colors
 
             onClicked: {
                 CallManager.hangUp();
