@@ -40,6 +40,11 @@ NotificationsManager::postNotification(
 void
 NotificationsManager::actionInvoked(uint, QString)
 {
+    }
+
+void
+NotificationsManager::notificationReplied(uint, QString)
+{
 }
 
 void

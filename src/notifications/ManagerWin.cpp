@@ -61,6 +61,7 @@ NotificationsManager::postNotification(const QString &room_id,
 }
 
 void NotificationsManager::actionInvoked(uint, QString) {}
+void NotificationsManager::notificationReplied(uint, QString) {}
 
 void NotificationsManager::notificationClosed(uint, uint) {}
 
