@@ -443,15 +443,11 @@ else()
 endif()
 
 include(FindPkgConfig)
-pkg_check_modules(GSTREAMER IMPORTED_TARGET gstreamer-sdp-1.0>=1.14 gstreamer-webrtc-1.0>=1.14) 
+pkg_check_modules(GSTREAMER IMPORTED_TARGET gstreamer-sdp-1.0>=1.16 gstreamer-webrtc-1.0>=1.16)
 if (TARGET PkgConfig::GSTREAMER)
-	add_feature_info(voip ON "GStreamer found. Call support is enabled
-	automatically.")
+	add_feature_info(voip ON "GStreamer found. Call support is enabled automatically.")
 else()
-	add_feature_info(voip OFF "GStreamer could not be found on your system.
-	As a consequence call support has been disabled. If you don't want that,
-	make sure gstreamer-sdp-1.0>=1.16 gstreamer-webrtc-1.0>=1.16 can be found
-	via pkgconfig.")
+	add_feature_info(voip OFF "GStreamer could not be found on your system.  As a consequence call support has been disabled. If you don't want that, make sure gstreamer-sdp-1.0>=1.16 gstreamer-webrtc-1.0>=1.16 can be found via pkgconfig.")
 endif()
 
 # single instance functionality
