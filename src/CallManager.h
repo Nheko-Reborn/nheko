@@ -53,6 +53,7 @@ public:
 public slots:
         void sendInvite(const QString &roomid, bool isVideo);
         void syncEvent(const mtx::events::collections::TimelineEvents &event);
+        void refreshDevices() { session_.refreshDevices(); }
         void toggleMicMute();
         void toggleCameraView() { session_.toggleCameraView(); }
         void acceptInvite();

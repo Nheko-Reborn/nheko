@@ -1292,6 +1292,7 @@ WebRTCSession::refreshDevices()
                         addDevice(GST_DEVICE_CAST(l->data));
                 g_list_free(devices);
         }
+        emit devicesChanged();
 #endif
 }
 

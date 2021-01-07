@@ -46,6 +46,7 @@ Rectangle {
                         CallManager.hangUp();
                     }
                     else {
+                        CallManager.refreshDevices();
                         var dialog = placeCallDialog.createObject(timelineRoot);
                         dialog.open();
                     }
