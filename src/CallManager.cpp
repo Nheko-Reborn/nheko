@@ -10,11 +10,9 @@
 #include "CallManager.h"
 #include "ChatPage.h"
 #include "Logging.h"
-#include "MainWindow.h"
 #include "MatrixClient.h"
+#include "UserSettingsPage.h"
 #include "Utils.h"
-#include "WebRTCSession.h"
-#include "dialogs/AcceptCall.h"
 
 #include "mtx/responses/turn_server.hpp"
 
@@ -112,6 +110,23 @@ CallManager::CallManager(QObject *parent)
                 default:
                         break;
                 }
+                emit newCallState();
+        });
+
+        connect(&session_, &WebRTCSession::devicesChanged, this, [this]() {
+                if (ChatPage::instance()->userSettings()->microphone().isEmpty()) {
+                        auto mics = session_.getDeviceNames(false, std::string());
+                        if (!mics.empty())
+                                ChatPage::instance()->userSettings()->setMicrophone(
+                                  QString::fromStdString(mics.front()));
+                }
+                if (ChatPage::instance()->userSettings()->camera().isEmpty()) {
+                        auto cameras = session_.getDeviceNames(true, std::string());
+                        if (!cameras.empty())
+                                ChatPage::instance()->userSettings()->setCamera(
+                                  QString::fromStdString(cameras.front()));
+                }
+                emit devicesChanged();
         });
 
         connect(&player_,
@@ -144,7 +159,7 @@ CallManager::CallManager(QObject *parent)
 void
 CallManager::sendInvite(const QString &roomid, bool isVideo)
 {
-        if (onActiveCall())
+        if (isOnCall())
                 return;
 
         auto roomInfo = cache::singleRoomInfo(roomid.toStdString());
@@ -160,7 +175,8 @@ CallManager::sendInvite(const QString &roomid, bool isVideo)
                 return;
         }
 
-        roomid_ = roomid;
+        isVideo_ = isVideo;
+        roomid_  = roomid;
         session_.setTurnServers(turnURIs_);
         generateCallID();
         nhlog::ui()->debug(
@@ -168,16 +184,14 @@ CallManager::sendInvite(const QString &roomid, bool isVideo)
         std::vector<RoomMember> members(cache::getMembers(roomid.toStdString()));
         const RoomMember &callee =
           members.front().user_id == utils::localUser() ? members.back() : members.front();
-        callPartyName_      = callee.display_name.isEmpty() ? callee.user_id : callee.display_name;
+        callParty_          = callee.display_name.isEmpty() ? callee.user_id : callee.display_name;
         callPartyAvatarUrl_ = QString::fromStdString(roomInfo.avatar_url);
-        emit newCallParty();
+        emit newInviteState();
         playRingtone(QUrl("qrc:/media/media/ringback.ogg"), true);
         if (!session_.createOffer(isVideo)) {
                 emit ChatPage::instance()->showNotification("Problem setting up call.");
                 endCall();
         }
-        if (isVideo)
-                emit newVideoCallState();
 }
 
 namespace {
@@ -204,12 +218,6 @@ CallManager::hangUp(CallHangUp::Reason reason)
                 emit newMessage(roomid_, CallHangUp{callid_, 0, reason});
                 endCall();
         }
-}
-
-bool
-CallManager::onActiveCall() const
-{
-        return session_.state() != webrtc::State::DISCONNECTED;
 }
 
 void
@@ -257,7 +265,7 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
                 return;
 
         auto roomInfo = cache::singleRoomInfo(callInviteEvent.room_id);
-        if (onActiveCall() || roomInfo.member_count != 2) {
+        if (isOnCall() || roomInfo.member_count != 2) {
                 emit newMessage(QString::fromStdString(callInviteEvent.room_id),
                                 CallHangUp{callInviteEvent.content.call_id,
                                            0,
@@ -277,48 +285,41 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
         std::vector<RoomMember> members(cache::getMembers(callInviteEvent.room_id));
         const RoomMember &caller =
           members.front().user_id == utils::localUser() ? members.back() : members.front();
-        callPartyName_      = caller.display_name.isEmpty() ? caller.user_id : caller.display_name;
+        callParty_          = caller.display_name.isEmpty() ? caller.user_id : caller.display_name;
         callPartyAvatarUrl_ = QString::fromStdString(roomInfo.avatar_url);
-        emit newCallParty();
-        auto dialog = new dialogs::AcceptCall(caller.user_id,
-                                              caller.display_name,
-                                              QString::fromStdString(roomInfo.name),
-                                              QString::fromStdString(roomInfo.avatar_url),
-                                              isVideo,
-                                              MainWindow::instance());
-        connect(dialog, &dialogs::AcceptCall::accept, this, [this, callInviteEvent, isVideo]() {
-                MainWindow::instance()->hideOverlay();
-                answerInvite(callInviteEvent.content, isVideo);
-        });
-        connect(dialog, &dialogs::AcceptCall::reject, this, [this]() {
-                MainWindow::instance()->hideOverlay();
-                hangUp();
-        });
-        MainWindow::instance()->showSolidOverlayModal(dialog);
+
+        haveCallInvite_ = true;
+        isVideo_        = isVideo;
+        inviteSDP_      = callInviteEvent.content.sdp;
+        session_.refreshDevices();
+        emit newInviteState();
 }
 
 void
-CallManager::answerInvite(const CallInvite &invite, bool isVideo)
+CallManager::acceptInvite()
 {
+        if (!haveCallInvite_)
+                return;
+
         stopRingtone();
         std::string errorMessage;
         if (!session_.havePlugins(false, &errorMessage) ||
-            (isVideo && !session_.havePlugins(true, &errorMessage))) {
+            (isVideo_ && !session_.havePlugins(true, &errorMessage))) {
                 emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
                 hangUp();
                 return;
         }
 
         session_.setTurnServers(turnURIs_);
-        if (!session_.acceptOffer(invite.sdp)) {
+        if (!session_.acceptOffer(inviteSDP_)) {
                 emit ChatPage::instance()->showNotification("Problem setting up call.");
                 hangUp();
                 return;
         }
         session_.acceptICECandidates(remoteICECandidates_);
         remoteICECandidates_.clear();
-        if (isVideo)
-                emit newVideoCallState();
+        haveCallInvite_ = false;
+        emit newInviteState();
 }
 
 void
@@ -332,7 +333,7 @@ CallManager::handleEvent(const RoomEvent<CallCandidates> &callCandidatesEvent)
                            callCandidatesEvent.sender);
 
         if (callid_ == callCandidatesEvent.content.call_id) {
-                if (onActiveCall())
+                if (isOnCall())
                         session_.acceptICECandidates(callCandidatesEvent.content.candidates);
                 else {
                         // CallInvite has been received and we're awaiting localUser to accept or
@@ -350,15 +351,19 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
                            callAnswerEvent.content.call_id,
                            callAnswerEvent.sender);
 
-        if (!onActiveCall() && callAnswerEvent.sender == utils::localUser().toStdString() &&
+        if (callAnswerEvent.sender == utils::localUser().toStdString() &&
             callid_ == callAnswerEvent.content.call_id) {
-                emit ChatPage::instance()->showNotification("Call answered on another device.");
-                stopRingtone();
-                MainWindow::instance()->hideOverlay();
+                if (!isOnCall()) {
+                        emit ChatPage::instance()->showNotification(
+                          "Call answered on another device.");
+                        stopRingtone();
+                        haveCallInvite_ = false;
+                        emit newInviteState();
+                }
                 return;
         }
 
-        if (onActiveCall() && callid_ == callAnswerEvent.content.call_id) {
+        if (isOnCall() && callid_ == callAnswerEvent.content.call_id) {
                 stopRingtone();
                 if (!session_.acceptAnswer(callAnswerEvent.content.sdp)) {
                         emit ChatPage::instance()->showNotification("Problem setting up call.");
@@ -375,10 +380,42 @@ CallManager::handleEvent(const RoomEvent<CallHangUp> &callHangUpEvent)
                            callHangUpReasonString(callHangUpEvent.content.reason),
                            callHangUpEvent.sender);
 
-        if (callid_ == callHangUpEvent.content.call_id) {
-                MainWindow::instance()->hideOverlay();
+        if (callid_ == callHangUpEvent.content.call_id)
                 endCall();
-        }
+}
+
+void
+CallManager::toggleMicMute()
+{
+        session_.toggleMicMute();
+        emit micMuteChanged();
+}
+
+bool
+CallManager::callsSupported() const
+{
+#ifdef GSTREAMER_AVAILABLE
+        return true;
+#else
+        return false;
+#endif
+}
+
+QStringList
+CallManager::devices(bool isVideo) const
+{
+        QStringList ret;
+        const QString &defaultDevice = isVideo ? ChatPage::instance()->userSettings()->camera()
+                                               : ChatPage::instance()->userSettings()->microphone();
+        std::vector<std::string> devices =
+          session_.getDeviceNames(isVideo, defaultDevice.toStdString());
+        ret.reserve(devices.size());
+        std::transform(devices.cbegin(),
+                       devices.cend(),
+                       std::back_inserter(ret),
+                       [](const auto &d) { return QString::fromStdString(d); });
+
+        return ret;
 }
 
 void
@@ -393,9 +430,13 @@ void
 CallManager::clear()
 {
         roomid_.clear();
-        callPartyName_.clear();
+        callParty_.clear();
         callPartyAvatarUrl_.clear();
         callid_.clear();
+        isVideo_        = false;
+        haveCallInvite_ = false;
+        emit newInviteState();
+        inviteSDP_.clear();
         remoteICECandidates_.clear();
 }
 
@@ -403,11 +444,8 @@ void
 CallManager::endCall()
 {
         stopRingtone();
-        clear();
-        bool isVideo = session_.isVideo();
         session_.end();
-        if (isVideo)
-                emit newVideoCallState();
+        clear();
 }
 
 void

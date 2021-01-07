@@ -242,12 +242,14 @@ newBusMessage(GstBus *bus G_GNUC_UNUSED, GstMessage *msg, gpointer user_data)
                 GstDevice *device;
                 gst_message_parse_device_added(msg, &device);
                 addDevice(device);
+                emit WebRTCSession::instance().devicesChanged();
                 break;
         }
         case GST_MESSAGE_DEVICE_REMOVED: {
                 GstDevice *device;
                 gst_message_parse_device_removed(msg, &device);
                 removeDevice(device, false);
+                emit WebRTCSession::instance().devicesChanged();
                 break;
         }
         case GST_MESSAGE_DEVICE_CHANGED: {
@@ -553,7 +555,10 @@ getResolution(GstPad *pad)
 void
 addCameraView(GstElement *pipe, const std::pair<int, int> &videoCallSize)
 {
-        GstElement *tee       = gst_bin_get_by_name(GST_BIN(pipe), "videosrctee");
+        GstElement *tee = gst_bin_get_by_name(GST_BIN(pipe), "videosrctee");
+        if (!tee)
+                return;
+
         GstElement *queue     = gst_element_factory_make("queue", nullptr);
         GstElement *videorate = gst_element_factory_make("videorate", nullptr);
         gst_bin_add_many(GST_BIN(pipe), queue, videorate, nullptr);
@@ -1151,6 +1156,19 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
 }
 
 bool
+WebRTCSession::haveLocalVideo() const
+{
+        if (isVideo_ && state_ >= State::INITIATED) {
+                GstElement *tee = gst_bin_get_by_name(GST_BIN(pipe_), "videosrctee");
+                if (tee) {
+                        gst_object_unref(tee);
+                        return true;
+                }
+        }
+        return false;
+}
+
+bool
 WebRTCSession::isMicMuted() const
 {
         if (state_ < State::INITIATED)
@@ -1274,6 +1292,7 @@ WebRTCSession::refreshDevices()
                         addDevice(GST_DEVICE_CAST(l->data));
                 g_list_free(devices);
         }
+        emit devicesChanged();
 #endif
 }
 
@@ -1320,6 +1339,12 @@ WebRTCSession::getFrameRates(const std::string &cameraName, const std::string &r
 
 bool
 WebRTCSession::havePlugins(bool, std::string *)
+{
+        return false;
+}
+
+bool
+WebRTCSession::haveLocalVideo() const
 {
         return false;
 }

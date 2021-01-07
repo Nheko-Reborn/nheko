@@ -41,7 +41,6 @@ public slots:
         void updateState(int selectionStart, int selectionEnd, int cursorPosition, QString text);
         void openFileSelection();
         bool uploading() const { return uploading_; }
-        void callButton();
         void message(QString body);
 
         QObject *completerFor(QString completerName);

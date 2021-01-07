@@ -613,8 +613,13 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
                         std::visit(
                           [this](auto &event) {
                                   event.room_id = room_id_.toStdString();
-                                  if (event.sender != http::client()->user_id().to_string())
+                                  if constexpr (std::is_same_v<std::decay_t<decltype(event)>,
+                                                               RoomEvent<msg::CallAnswer>>)
                                           emit newCallEvent(event);
+                                  else {
+                                          if (event.sender != http::client()->user_id().to_string())
+                                                  emit newCallEvent(event);
+                                  }
                           },
                           e);
                 else if (std::holds_alternative<StateEvent<state::Avatar>>(e))
