@@ -120,6 +120,9 @@ public slots:
         }
 
         void updateColorPalette();
+        void queueReply(const QString &roomid,
+                        const QString &repliedToEvent,
+                        const QString &replyBody);
         void queueReactionMessage(const QString &reactedEvent, const QString &reactionKey);
         void queueCallMessage(const QString &roomid, const mtx::events::msg::CallInvite &);
         void queueCallMessage(const QString &roomid, const mtx::events::msg::CallCandidates &);

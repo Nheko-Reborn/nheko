@@ -42,6 +42,7 @@ public slots:
         void openFileSelection();
         bool uploading() const { return uploading_; }
         void callButton();
+        void message(QString body);
 
         QObject *completerFor(QString completerName);
 
@@ -54,7 +55,6 @@ signals:
         void uploadingChanged(bool value);
 
 private:
-        void message(QString body);
         void emote(QString body);
         void command(QString name, QString args);
         void image(const QString &filename,

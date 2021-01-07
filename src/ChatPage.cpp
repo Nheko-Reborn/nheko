@@ -282,6 +282,14 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                         room_list_->highlightSelectedRoom(roomid);
                         activateWindow();
                 });
+        connect(&notificationsManager,
+                &NotificationsManager::sendNotificationReply,
+                this,
+                [this](const QString &roomid, const QString &eventid, const QString &body) {
+                        view_manager_->queueReply(roomid, eventid, body);
+                        room_list_->highlightSelectedRoom(roomid);
+                        activateWindow();
+                });
 
         setGroupViewState(userSettings_->groupView());
 

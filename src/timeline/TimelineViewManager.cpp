@@ -509,6 +509,18 @@ TimelineViewManager::initWithMessages(const std::vector<QString> &roomIds)
 }
 
 void
+TimelineViewManager::queueReply(const QString &roomid,
+                                const QString &repliedToEvent,
+                                const QString &replyBody)
+{
+        auto room = models.find(roomid);
+        if (room != models.end()) {
+                room.value()->setReply(repliedToEvent);
+                room.value()->input()->message(replyBody);
+        }
+}
+
+void
 TimelineViewManager::queueReactionMessage(const QString &reactedEvent, const QString &reactionKey)
 {
         if (!timeline_)

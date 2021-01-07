@@ -28,6 +28,12 @@ NotificationsManager::NotificationsManager(QObject *parent)
                                               "NotificationClosed",
                                               this,
                                               SLOT(notificationClosed(uint, uint)));
+        QDBusConnection::sessionBus().connect("org.freedesktop.Notifications",
+                                              "/org/freedesktop/Notifications",
+                                              "org.freedesktop.Notifications",
+                                              "NotificationReplied",
+                                              this,
+                                              SLOT(notificationReplied(uint, QString)));
 }
 
 void
@@ -56,14 +62,19 @@ NotificationsManager::showNotification(const QString summary,
         hints["image-data"] = image;
         hints["sound-name"] = "message-new-instant";
         QList<QVariant> argumentList;
-        argumentList << "nheko";                             // app_name
-        argumentList << (uint)0;                             // replace_id
-        argumentList << "";                                  // app_icon
-        argumentList << summary;                             // summary
-        argumentList << text;                                // body
-        argumentList << (QStringList("default") << "reply"); // actions
-        argumentList << hints;                               // hints
-        argumentList << (int)-1;                             // timeout in ms
+        argumentList << "nheko"; // app_name
+        argumentList << (uint)0; // replace_id
+        argumentList << "";      // app_icon
+        argumentList << summary; // summary
+        argumentList << text;    // body
+        // The list of actions has always the action name and then a localized version of that
+        // action. Currently we just use an empty string for that.
+        // TODO(Nico): Look into what to actually put there.
+        argumentList << (QStringList("default") << ""
+                                                << "inline-reply"
+                                                << ""); // actions
+        argumentList << hints;                          // hints
+        argumentList << (int)-1;                        // timeout in ms
 
         static QDBusInterface notifyApp("org.freedesktop.Notifications",
                                         "/org/freedesktop/Notifications",
@@ -121,9 +132,20 @@ NotificationsManager::removeNotification(const QString &roomId, const QString &e
 void
 NotificationsManager::actionInvoked(uint id, QString action)
 {
-        if (action == "default" && notificationIds.contains(id)) {
+        if (notificationIds.contains(id)) {
                 roomEventId idEntry = notificationIds[id];
-                emit notificationClicked(idEntry.roomId, idEntry.eventId);
+                if (action == "default") {
+                        emit notificationClicked(idEntry.roomId, idEntry.eventId);
+                }
+        }
+}
+
+void
+NotificationsManager::notificationReplied(uint id, QString reply)
+{
+        if (notificationIds.contains(id)) {
+                roomEventId idEntry = notificationIds[id];
+                emit sendNotificationReply(idEntry.roomId, idEntry.eventId, reply);
         }
 }
 
