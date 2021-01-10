@@ -614,7 +614,9 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
                           [this](auto &event) {
                                   event.room_id = room_id_.toStdString();
                                   if constexpr (std::is_same_v<std::decay_t<decltype(event)>,
-                                                               RoomEvent<msg::CallAnswer>>)
+                                                               RoomEvent<msg::CallAnswer>> ||
+                                                std::is_same_v<std::decay_t<decltype(event)>,
+                                                               RoomEvent<msg::CallHangUp>>)
                                           emit newCallEvent(event);
                                   else {
                                           if (event.sender != http::client()->user_id().to_string())
