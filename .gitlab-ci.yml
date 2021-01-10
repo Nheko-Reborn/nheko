@@ -96,8 +96,8 @@ build-flatpak-amd64:
     - export VERSION=$(git describe)
     - mkdir -p build-flatpak
     - cd build-flatpak
-    - flatpak-builder --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME} --subject="Build of Nheko ${VERSION} `date`" app ../io.github.NhekoReborn.Nheko.json
-    - flatpak build-bundle repo nheko-amd64.flatpak io.github.NhekoReborn.Nheko ${CI_COMMIT_REF_NAME}
+    - flatpak-builder --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date`" app ../io.github.NhekoReborn.Nheko.json
+    - flatpak build-bundle repo nheko-amd64.flatpak io.github.NhekoReborn.Nheko ${CI_COMMIT_REF_NAME//\//_}
   after_script:
     - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-amd64.flatpak
   cache:
@@ -123,8 +123,8 @@ build-flatpak-arm64:
     - export VERSION=$(git describe)
     - mkdir -p build-flatpak
     - cd build-flatpak
-    - flatpak-builder --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME} --subject="Build of Nheko ${VERSION} `date` for arm64" app ../io.github.NhekoReborn.Nheko.json
-    - flatpak build-bundle repo nheko-arm64.flatpak io.github.NhekoReborn.Nheko ${CI_COMMIT_REF_NAME}
+    - flatpak-builder --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for arm64" app ../io.github.NhekoReborn.Nheko.json
+    - flatpak build-bundle repo nheko-arm64.flatpak io.github.NhekoReborn.Nheko ${CI_COMMIT_REF_NAME//\//_}
   after_script:
     - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-arm64.flatpak
   cache:
