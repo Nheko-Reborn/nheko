@@ -2221,6 +2221,34 @@ Cache::getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb)
         return QString("1");
 }
 
+std::optional<mtx::events::state::CanonicalAlias>
+Cache::getRoomAliases(const std::string &roomid)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        auto txn      = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        auto statesdb = getStatesDb(txn, roomid);
+
+        lmdb::val event;
+        bool res = lmdb::dbi_get(
+          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomCanonicalAlias)), event);
+
+        if (res) {
+                try {
+                        StateEvent<CanonicalAlias> msg =
+                          json::parse(std::string_view(event.data(), event.size()));
+
+                        return msg.content;
+                } catch (const json::exception &e) {
+                        nhlog::db()->warn("failed to parse m.room.canonical_alias event: {}",
+                                          e.what());
+                }
+        }
+
+        return std::nullopt;
+}
+
 QString
 Cache::getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
 {
