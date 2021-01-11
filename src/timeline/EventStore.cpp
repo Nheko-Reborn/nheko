@@ -67,11 +67,25 @@ EventStore::EventStore(std::string room_id, QObject *)
                   if (newFirst == first)
                           fetchMore();
                   else {
-                          emit beginInsertRows(toExternalIdx(newFirst),
-                                               toExternalIdx(this->first - 1));
-                          this->first = newFirst;
-                          emit endInsertRows();
-                          emit fetchedMore();
+                          if (this->last != std::numeric_limits<uint64_t>::max()) {
+                                  emit beginInsertRows(toExternalIdx(newFirst),
+                                                       toExternalIdx(this->first - 1));
+                                  this->first = newFirst;
+                                  emit endInsertRows();
+                                  emit fetchedMore();
+                          } else {
+                                  auto range = cache::client()->getTimelineRange(room_id_);
+
+                                  if (range && range->last - range->first != 0) {
+                                          emit beginInsertRows(0, int(range->last - range->first));
+                                          this->first = range->first;
+                                          this->last  = range->last;
+                                          emit endInsertRows();
+                                          emit fetchedMore();
+                                  } else {
+                                          fetchMore();
+                                  }
+                          }
                   }
           },
           Qt::QueuedConnection);
@@ -247,15 +261,19 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                 nhlog::db()->warn("{} called from a different thread!", __func__);
 
         auto range = cache::client()->getTimelineRange(room_id_);
-        if (!range)
+        if (!range) {
+                emit beginResetModel();
+                this->first = std::numeric_limits<uint64_t>::max();
+                this->last  = std::numeric_limits<uint64_t>::max();
+                emit endResetModel();
                 return;
+        }
 
         if (events.limited) {
                 emit beginResetModel();
                 this->last  = range->last;
                 this->first = range->first;
                 emit endResetModel();
-
         } else if (range->last > this->last) {
                 emit beginInsertRows(toExternalIdx(this->last + 1), toExternalIdx(range->last));
                 this->last = range->last;

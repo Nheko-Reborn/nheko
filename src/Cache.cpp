@@ -1208,10 +1208,11 @@ Cache::saveState(const mtx::responses::Sync &res)
                 for (const auto &ev : res.account_data.events)
                         std::visit(
                           [&txn, &accountDataDb](const auto &event) {
+                                  auto j = json(event);
                                   lmdb::dbi_put(txn,
                                                 accountDataDb,
-                                                lmdb::val(to_string(event.type)),
-                                                lmdb::val(json(event).dump()));
+                                                lmdb::val(j["type"].get<std::string>()),
+                                                lmdb::val(j.dump()));
                           },
                           ev);
         }
@@ -1242,10 +1243,11 @@ Cache::saveState(const mtx::responses::Sync &res)
                         for (const auto &evt : room.second.account_data.events) {
                                 std::visit(
                                   [&txn, &accountDataDb](const auto &event) {
+                                          auto j = json(event);
                                           lmdb::dbi_put(txn,
                                                         accountDataDb,
-                                                        lmdb::val(to_string(event.type)),
-                                                        lmdb::val(json(event).dump()));
+                                                        lmdb::val(j["type"].get<std::string>()),
+                                                        lmdb::val(j.dump()));
                                   },
                                   evt);
 
@@ -1391,10 +1393,11 @@ Cache::saveInvite(lmdb::txn &txn,
                 } else {
                         std::visit(
                           [&txn, &statesdb](auto msg) {
+                                  auto j   = json(msg);
                                   bool res = lmdb::dbi_put(txn,
                                                            statesdb,
-                                                           lmdb::val(to_string(msg.type)),
-                                                           lmdb::val(json(msg).dump()));
+                                                           lmdb::val(j["type"].get<std::string>()),
+                                                           lmdb::val(j.dump()));
 
                                   if (!res)
                                           nhlog::db()->warn("couldn't save data: {}",
