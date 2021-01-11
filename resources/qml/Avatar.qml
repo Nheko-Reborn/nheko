@@ -1,3 +1,4 @@
+import "./ui"
 import QtGraphicalEffects 1.0
 import QtQuick 2.6
 import QtQuick.Controls 2.3
@@ -43,6 +44,12 @@ Rectangle {
 
             anchors.fill: parent
             onClicked: TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
+
+            Ripple {
+                rippleTarget: mouseArea
+                color: Qt.rgba(colors.alternateBase.r, colors.alternateBase.g, colors.alternateBase.b, 0.5)
+            }
+
         }
 
         layer.effect: OpacityMask {

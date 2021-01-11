@@ -159,6 +159,7 @@
         <file>qml/device-verification/NewVerificationRequest.qml</file>
         <file>qml/device-verification/Failed.qml</file>
         <file>qml/device-verification/Success.qml</file>
+        <file>qml/ui/Ripple.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>

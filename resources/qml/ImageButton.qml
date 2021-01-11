@@ -1,3 +1,4 @@
+import "./ui"
 import QtQuick 2.3
 import QtQuick.Controls 2.3
 
@@ -26,6 +27,12 @@ AbstractButton {
         anchors.fill: parent
         onPressed: mouse.accepted = false
         cursorShape: Qt.PointingHandCursor
+    }
+
+    Ripple {
+        color: Qt.rgba(buttonTextColor.r, buttonTextColor.g, buttonTextColor.b, 0.5)
+        clip: false
+        rippleTarget: button
     }
 
 }
