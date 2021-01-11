@@ -43,6 +43,7 @@ public:
         bool havePlugins(bool isVideo, std::string *errorMessage = nullptr);
         webrtc::State state() const { return state_; }
         bool isVideo() const { return isVideo_; }
+        bool haveLocalVideo() const;
         bool isOffering() const { return isOffering_; }
         bool isRemoteVideoRecvOnly() const { return isRemoteVideoRecvOnly_; }
 
@@ -75,6 +76,7 @@ signals:
                            const std::vector<mtx::events::msg::CallCandidates::Candidate> &);
         void newICECandidate(const mtx::events::msg::CallCandidates::Candidate &);
         void stateChanged(webrtc::State);
+        void devicesChanged();
 
 private slots:
         void setState(webrtc::State state) { state_ = state; }

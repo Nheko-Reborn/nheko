@@ -579,13 +579,12 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
         mtx::common::RelatesTo r_relation;
 
         // relations shouldn't be encrypted...
-        if (body["content"].contains("m.relates_to") &&
-            body["content"]["m.relates_to"].contains("m.in_reply_to")) {
-                relation = body["content"]["m.relates_to"];
-                body["content"].erase("m.relates_to");
-        } else if (body["content"]["m.relates_to"].contains("event_id")) {
-                r_relation = body["content"]["m.relates_to"];
-                body["content"].erase("m.relates_to");
+        if (body["content"].contains("m.relates_to")) {
+                if (body["content"]["m.relates_to"].contains("m.in_reply_to")) {
+                        relation = body["content"]["m.relates_to"];
+                } else if (body["content"]["m.relates_to"].contains("event_id")) {
+                        r_relation = body["content"]["m.relates_to"];
+                }
         }
 
         auto payload = olm::client()->encrypt_group_message(session.get(), body.dump());

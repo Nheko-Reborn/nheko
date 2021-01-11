@@ -81,6 +81,7 @@ public:
         std::vector<std::string> joinedRooms();
 
         QMap<QString, RoomInfo> roomInfo(bool withInvites = true);
+        std::optional<mtx::events::state::CanonicalAlias> getRoomAliases(const std::string &roomid);
         std::map<QString, bool> invites();
 
         //! Calculate & return the name of the room.

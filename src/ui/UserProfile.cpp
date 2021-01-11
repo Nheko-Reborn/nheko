@@ -202,12 +202,7 @@ UserProfile::kickUser()
 void
 UserProfile::startChat()
 {
-        mtx::requests::CreateRoom req;
-        req.preset     = mtx::requests::Preset::PrivateChat;
-        req.visibility = mtx::requests::Visibility::Private;
-        if (utils::localUser() != this->userid_)
-                req.invite = {this->userid_.toStdString()};
-        emit ChatPage::instance()->createRoom(req);
+        ChatPage::instance()->startChat(this->userid_);
 }
 
 void

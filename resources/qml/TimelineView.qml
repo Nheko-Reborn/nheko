@@ -1,6 +1,7 @@
 import "./delegates"
 import "./device-verification"
 import "./emoji"
+import "./voip"
 import QtGraphicalEffects 1.0
 import QtQuick 2.9
 import QtQuick.Controls 2.3
@@ -210,7 +211,7 @@ Page {
                         }
 
                         Loader {
-                            source: TimelineManager.onVideoCall ? "VideoCall.qml" : ""
+                            source: CallManager.isOnCall && CallManager.isVideo ? "voip/VideoCall.qml" : ""
                             onLoaded: TimelineManager.setVideoCallItem()
                         }
 
@@ -221,6 +222,13 @@ Page {
 
                 }
 
+            }
+
+            CallInviteBar {
+                id: callInviteBar
+
+                Layout.fillWidth: true
+                z: 3
             }
 
             ActiveCallBar {

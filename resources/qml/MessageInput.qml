@@ -1,3 +1,4 @@
+import "./voip"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
@@ -10,6 +11,14 @@ Rectangle {
     Layout.preferredHeight: textInput.height
     Layout.minimumHeight: 40
 
+    Component {
+        id: placeCallDialog
+
+        PlaceCall {
+        }
+
+    }
+
     RowLayout {
         id: inputBar
 
@@ -17,18 +26,31 @@ Rectangle {
         spacing: 16
 
         ImageButton {
-            visible: TimelineManager.callsSupported
+            visible: CallManager.callsSupported
+            opacity: CallManager.haveCallInvite ? 0.3 : 1
             Layout.alignment: Qt.AlignBottom
             hoverEnabled: true
             width: 22
             height: 22
-            image: TimelineManager.isOnCall ? ":/icons/icons/ui/end-call.png" : ":/icons/icons/ui/place-call.png"
+            image: CallManager.isOnCall ? ":/icons/icons/ui/end-call.png" : ":/icons/icons/ui/place-call.png"
             ToolTip.visible: hovered
-            ToolTip.text: TimelineManager.isOnCall ? qsTr("Hang up") : qsTr("Place a call")
+            ToolTip.text: CallManager.isOnCall ? qsTr("Hang up") : qsTr("Place a call")
             Layout.topMargin: 8
             Layout.bottomMargin: 8
             Layout.leftMargin: 16
-            onClicked: TimelineManager.timeline.input.callButton()
+            onClicked: {
+                if (TimelineManager.timeline) {
+                    if (CallManager.haveCallInvite) {
+                        return ;
+                    } else if (CallManager.isOnCall) {
+                        CallManager.hangUp();
+                    } else {
+                        CallManager.refreshDevices();
+                        var dialog = placeCallDialog.createObject(timelineRoot);
+                        dialog.open();
+                    }
+                }
+            }
         }
 
         ImageButton {
@@ -39,7 +61,7 @@ Rectangle {
             image: ":/icons/icons/ui/paper-clip-outline.png"
             Layout.topMargin: 8
             Layout.bottomMargin: 8
-            Layout.leftMargin: TimelineManager.callsSupported ? 0 : 16
+            Layout.leftMargin: CallManager.callsSupported ? 0 : 16
             onClicked: TimelineManager.timeline.input.openFileSelection()
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Send a file")

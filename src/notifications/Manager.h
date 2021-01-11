@@ -36,6 +36,7 @@ public:
 
 signals:
         void notificationClicked(const QString roomId, const QString eventId);
+        void sendNotificationReply(const QString roomId, const QString eventId, const QString body);
 
 public slots:
         void removeNotification(const QString &roomId, const QString &eventId);
@@ -58,6 +59,7 @@ private:
 private slots:
         void actionInvoked(uint id, QString action);
         void notificationClosed(uint id, uint reason);
+        void notificationReplied(uint id, QString reply);
 };
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)

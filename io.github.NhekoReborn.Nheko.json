@@ -97,7 +97,8 @@
     {
       "config-opts": [
         "-DCMAKE_BUILD_TYPE=Release",
-        "-DBUILD_TEST_APPLICATION=OFF"
+        "-DBUILD_TEST_APPLICATION=OFF",
+        "-DQTKEYCHAIN_STATIC=ON"
       ],
       "buildsystem": "cmake-ninja",
       "name": "QtKeychain",
@@ -121,16 +122,6 @@
           "sha256": "d51a3a8d3efbb1139d7608e28782ea9efea7e7933157e8ff8184901efd8ee760",
           "type": "archive",
           "url": "https://github.com/nlohmann/json/archive/v3.7.0.tar.gz"
-        }
-      ]
-    },
-    {
-      "name": "sodium",
-      "sources": [
-        {
-          "sha256": "6f504490b342a4f8a4c4a02fc9b866cbef8622d5df4e5452b46be121e46636c1",
-          "type": "archive",
-          "url": "https://github.com/jedisct1/libsodium/releases/download/1.0.18-RELEASE/libsodium-1.0.18.tar.gz"
         }
       ]
     },
@@ -161,7 +152,7 @@
       "name": "mtxclient",
       "sources": [
         {
-          "commit": "ce8bc9c3dd6bba432e716f55136133111b0186e7",
+          "commit": "cad81d1677a4845366b93112f8f2e267ee8c9ae0",
           "type": "git",
           "url": "https://github.com/Nheko-Reborn/mtxclient.git"
         }

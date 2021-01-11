@@ -110,6 +110,10 @@ public:
         mtx::presence::PresenceState currentPresence() const;
 
 public slots:
+        void handleMatrixUri(const QByteArray &uri);
+        void handleMatrixUri(const QUrl &uri);
+
+        void startChat(QString userid);
         void leaveRoom(const QString &room_id);
         void createRoom(const mtx::requests::CreateRoom &req);
         void joinRoom(const QString &room);

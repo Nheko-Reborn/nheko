@@ -245,7 +245,6 @@ configure_file(cmake/nheko.h config/nheko.h)
 #
 set(SRC_FILES
 	# Dialogs
-	src/dialogs/AcceptCall.cpp
 	src/dialogs/CreateRoom.cpp
 	src/dialogs/FallbackAuth.cpp
 	src/dialogs/ImageOverlay.cpp
@@ -254,7 +253,6 @@ set(SRC_FILES
 	src/dialogs/LeaveRoom.cpp
 	src/dialogs/Logout.cpp
 	src/dialogs/MemberList.cpp
-	src/dialogs/PlaceCall.cpp
 	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
 	src/dialogs/ReadReceipts.cpp
@@ -356,7 +354,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        ce8bc9c3dd6bba432e716f55136133111b0186e7
+		GIT_TAG        cad81d1677a4845366b93112f8f2e267ee8c9ae0
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -445,7 +443,12 @@ else()
 endif()
 
 include(FindPkgConfig)
-pkg_check_modules(GSTREAMER IMPORTED_TARGET gstreamer-sdp-1.0>=1.14 gstreamer-webrtc-1.0>=1.14) 
+pkg_check_modules(GSTREAMER IMPORTED_TARGET gstreamer-sdp-1.0>=1.16 gstreamer-webrtc-1.0>=1.16)
+if (TARGET PkgConfig::GSTREAMER)
+	add_feature_info(voip ON "GStreamer found. Call support is enabled automatically.")
+else()
+	add_feature_info(voip OFF "GStreamer could not be found on your system.  As a consequence call support has been disabled. If you don't want that, make sure gstreamer-sdp-1.0>=1.16 gstreamer-webrtc-1.0>=1.16 can be found via pkgconfig.")
+endif()
 
 # single instance functionality
 set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
@@ -455,7 +458,6 @@ feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAG
 
 qt5_wrap_cpp(MOC_HEADERS
 	# Dialogs
-	src/dialogs/AcceptCall.h
 	src/dialogs/CreateRoom.h
 	src/dialogs/FallbackAuth.h
 	src/dialogs/ImageOverlay.h
@@ -464,7 +466,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/LeaveRoom.h
 	src/dialogs/Logout.h
 	src/dialogs/MemberList.h
-	src/dialogs/PlaceCall.h
 	src/dialogs/PreviewUploadOverlay.h
 	src/dialogs/RawMessage.h
 	src/dialogs/ReCaptcha.h

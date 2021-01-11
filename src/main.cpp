@@ -19,6 +19,7 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
+#include <QDesktopServices>
 #include <QDesktopWidget>
 #include <QDir>
 #include <QFile>
@@ -33,6 +34,7 @@
 #include <QStandardPaths>
 #include <QTranslator>
 
+#include "ChatPage.h"
 #include "Config.h"
 #include "Logging.h"
 #include "MainWindow.h"
@@ -128,33 +130,42 @@ main(int argc, char *argv[])
         // This is some hacky programming, but it's necessary (AFAIK?) to get the unique config name
         // parsed before the SingleApplication userdata is set.
         QString userdata{""};
+        QString matrixUri;
         for (int i = 0; i < argc; ++i) {
-                if (QString{argv[i]}.startsWith("--profile=")) {
-                        QString q{argv[i]};
-                        q.remove("--profile=");
-                        userdata = q;
-                } else if (QString{argv[i]}.startsWith("--p=")) {
-                        QString q{argv[i]};
-                        q.remove("-p=");
-                        userdata = q;
-                } else if (QString{argv[i]} == "--profile" || QString{argv[i]} == "-p") {
+                QString arg{argv[i]};
+                if (arg.startsWith("--profile=")) {
+                        arg.remove("--profile=");
+                        userdata = arg;
+                } else if (arg.startsWith("--p=")) {
+                        arg.remove("-p=");
+                        userdata = arg;
+                } else if (arg == "--profile" || arg == "-p") {
                         if (i < argc - 1) // if i is less than argc - 1, we still have a parameter
                                           // left to process as the name
                         {
                                 ++i; // the next arg is the name, so increment
                                 userdata = QString{argv[i]};
                         }
+                } else if (arg.startsWith("matrix:")) {
+                        matrixUri = arg;
                 }
         }
 
         SingleApplication app(argc,
                               argv,
-                              false,
+                              true,
                               SingleApplication::Mode::User |
                                 SingleApplication::Mode::ExcludeAppPath |
-                                SingleApplication::Mode::ExcludeAppVersion,
+                                SingleApplication::Mode::ExcludeAppVersion |
+                                SingleApplication::Mode::SecondaryNotification,
                               100,
                               userdata);
+
+        if (app.isSecondary()) {
+                // open uri in main instance
+                app.sendMessage(matrixUri.toUtf8());
+                return 0;
+        }
 
         QCommandLineParser parser;
         parser.addHelpOption();
@@ -244,6 +255,25 @@ main(int argc, char *argv[])
                 w.raise();
                 w.activateWindow();
         });
+
+        QObject::connect(
+          &app,
+          &SingleApplication::receivedMessage,
+          ChatPage::instance(),
+          [&](quint32, QByteArray message) { ChatPage::instance()->handleMatrixUri(message); });
+
+        QMetaObject::Connection uriConnection;
+        if (app.isPrimary() && !matrixUri.isEmpty()) {
+                uriConnection = QObject::connect(ChatPage::instance(),
+                                                 &ChatPage::contentLoaded,
+                                                 ChatPage::instance(),
+                                                 [&uriConnection, matrixUri]() {
+                                                         ChatPage::instance()->handleMatrixUri(
+                                                           matrixUri.toUtf8());
+                                                         QObject::disconnect(uriConnection);
+                                                 });
+        }
+        QDesktopServices::setUrlHandler("matrix", ChatPage::instance(), "handleMatrixUri");
 
 #if defined(Q_OS_MAC)
         // Temporary solution for the emoji picker until

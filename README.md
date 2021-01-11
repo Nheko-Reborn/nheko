@@ -28,7 +28,7 @@ Most of the features you would expect from a chat application are missing right 
 but we are getting close to a more feature complete client.
 Specifically there is support for:
 - E2E encryption.
-- VoIP calls (voice & video)
+- VoIP calls (voice & video).
 - User registration.
 - Creating, joining & leaving rooms.
 - Sending & receiving invites.
@@ -208,6 +208,14 @@ sudo apt install cmake gcc make automake liblmdb-dev \
     qml-module-qtgstreamer qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools \
     qml-module-qtgraphicaleffects qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts \
     qt5keychain-dev
+```
+
+##### Fedora
+
+```bash
+sudo dnf install qt5-qtbase-devel qt5-linguist qt5-qtsvg-devel qt5-qtmultimedia-devel \
+    qt5-qtquickcontrols2-devel qtkeychain-qt5-devel spdlog-devel openssl-devel \
+    libolm-devel cmark-devel lmdb-devel lmdbxx-devel tweeny-devel 
 ```
 
 ##### Guix

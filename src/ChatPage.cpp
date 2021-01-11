@@ -47,7 +47,6 @@
 
 #include "notifications/Manager.h"
 
-#include "dialogs/PlaceCall.h"
 #include "dialogs/ReadReceipts.h"
 #include "popups/UserMentions.h"
 #include "timeline/TimelineViewManager.h"
@@ -279,6 +278,14 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 this,
                 [this](const QString &roomid, const QString &eventid) {
                         Q_UNUSED(eventid)
+                        room_list_->highlightSelectedRoom(roomid);
+                        activateWindow();
+                });
+        connect(&notificationsManager,
+                &NotificationsManager::sendNotificationReply,
+                this,
+                [this](const QString &roomid, const QString &eventid, const QString &body) {
+                        view_manager_->queueReply(roomid, eventid, body);
                         room_list_->highlightSelectedRoom(roomid);
                         activateWindow();
                 });
@@ -911,6 +918,8 @@ ChatPage::joinRoom(const QString &room)
                   } catch (const lmdb::error &e) {
                           emit showNotification(tr("Failed to remove invite: %1").arg(e.what()));
                   }
+
+                  room_list_->highlightSelectedRoom(QString::fromStdString(room_id));
           });
 }
 
@@ -1260,4 +1269,142 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
                 if (!decrypted.empty())
                         cache::storeSecret(secretName, decrypted);
         }
+}
+
+void
+ChatPage::startChat(QString userid)
+{
+        auto joined_rooms = cache::joinedRooms();
+        auto room_infos   = cache::getRoomInfo(joined_rooms);
+
+        for (std::string room_id : joined_rooms) {
+                if (room_infos[QString::fromStdString(room_id)].member_count == 2) {
+                        auto room_members = cache::roomMembers(room_id);
+                        if (std::find(room_members.begin(),
+                                      room_members.end(),
+                                      (userid).toStdString()) != room_members.end()) {
+                                room_list_->highlightSelectedRoom(QString::fromStdString(room_id));
+                                return;
+                        }
+                }
+        }
+
+        mtx::requests::CreateRoom req;
+        req.preset     = mtx::requests::Preset::PrivateChat;
+        req.visibility = mtx::requests::Visibility::Private;
+        if (utils::localUser() != userid)
+                req.invite = {userid.toStdString()};
+        emit ChatPage::instance()->createRoom(req);
+}
+
+static QString
+mxidFromSegments(QStringRef sigil, QStringRef mxid)
+{
+        if (mxid.isEmpty())
+                return "";
+
+        auto mxid_ = QUrl::fromPercentEncoding(mxid.toUtf8());
+
+        if (sigil == "user") {
+                return "@" + mxid_;
+        } else if (sigil == "roomid") {
+                return "!" + mxid_;
+        } else if (sigil == "room") {
+                return "#" + mxid_;
+        } else if (sigil == "group") {
+                return "+" + mxid_;
+        } else {
+                return "";
+        }
+}
+
+void
+ChatPage::handleMatrixUri(const QByteArray &uri)
+{
+        nhlog::ui()->info("Received uri! {}", uri.toStdString());
+        QUrl uri_{QString::fromUtf8(uri)};
+
+        if (uri_.scheme() != "matrix")
+                return;
+
+        auto tempPath = uri_.path(QUrl::ComponentFormattingOption::FullyEncoded);
+        if (tempPath.startsWith('/'))
+                tempPath.remove(0, 1);
+        auto segments = tempPath.splitRef('/');
+
+        if (segments.size() != 2 && segments.size() != 4)
+                return;
+
+        auto sigil1 = segments[0];
+        auto mxid1  = mxidFromSegments(sigil1, segments[1]);
+        if (mxid1.isEmpty())
+                return;
+
+        QString mxid2;
+        if (segments.size() == 4 && segments[2] == "event") {
+                if (segments[3].isEmpty())
+                        return;
+                else
+                        mxid2 = "$" + QUrl::fromPercentEncoding(segments[3].toUtf8());
+        }
+
+        std::vector<std::string> vias;
+        QString action;
+
+        for (QString item : uri_.query(QUrl::ComponentFormattingOption::FullyEncoded).split('&')) {
+                nhlog::ui()->info("item: {}", item.toStdString());
+
+                if (item.startsWith("action=")) {
+                        action = item.remove("action=");
+                } else if (item.startsWith("via=")) {
+                        vias.push_back(
+                          QUrl::fromPercentEncoding(item.remove("via=").toUtf8()).toStdString());
+                }
+        }
+
+        if (sigil1 == "user") {
+                if (action.isEmpty()) {
+                        view_manager_->activeTimeline()->openUserProfile(mxid1);
+                } else if (action == "chat") {
+                        this->startChat(mxid1);
+                }
+        } else if (sigil1 == "roomid") {
+                auto joined_rooms = cache::joinedRooms();
+                auto targetRoomId = mxid1.toStdString();
+
+                for (auto roomid : joined_rooms) {
+                        if (roomid == targetRoomId) {
+                                room_list_->highlightSelectedRoom(mxid1);
+                                break;
+                        }
+                }
+
+                if (action == "join") {
+                        joinRoom(mxid1);
+                }
+        } else if (sigil1 == "room") {
+                auto joined_rooms    = cache::joinedRooms();
+                auto targetRoomAlias = mxid1.toStdString();
+
+                for (auto roomid : joined_rooms) {
+                        auto aliases = cache::client()->getRoomAliases(roomid);
+                        if (aliases) {
+                                if (aliases->alias == targetRoomAlias) {
+                                        room_list_->highlightSelectedRoom(
+                                          QString::fromStdString(roomid));
+                                        break;
+                                }
+                        }
+                }
+
+                if (action == "join") {
+                        joinRoom(mxid1);
+                }
+        }
+}
+
+void
+ChatPage::handleMatrixUri(const QUrl &uri)
+{
+        handleMatrixUri(uri.toString(QUrl::ComponentFormattingOption::FullyEncoded).toUtf8());
 }

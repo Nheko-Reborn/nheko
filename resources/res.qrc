@@ -123,7 +123,6 @@
         <file>qtquickcontrols2.conf</file>
 
         <file>qml/TimelineView.qml</file>
-        <file>qml/ActiveCallBar.qml</file>
         <file>qml/Avatar.qml</file>
         <file>qml/Completer.qml</file>
         <file>qml/EncryptionIndicator.qml</file>
@@ -139,7 +138,6 @@
         <file>qml/TimelineRow.qml</file>
         <file>qml/TopBar.qml</file>
         <file>qml/TypingIndicator.qml</file>
-        <file>qml/VideoCall.qml</file>
         <file>qml/emoji/EmojiButton.qml</file>
         <file>qml/emoji/EmojiPicker.qml</file>
         <file>qml/UserProfile.qml</file>
@@ -159,7 +157,16 @@
         <file>qml/device-verification/NewVerificationRequest.qml</file>
         <file>qml/device-verification/Failed.qml</file>
         <file>qml/device-verification/Success.qml</file>
+<<<<<<< HEAD
         <file>qml/ui/Ripple.qml</file>
+=======
+        <file>qml/voip/ActiveCallBar.qml</file>
+        <file>qml/voip/CallDevices.qml</file>
+        <file>qml/voip/CallInviteBar.qml</file>
+        <file>qml/voip/DeviceError.qml</file>
+        <file>qml/voip/PlaceCall.qml</file>
+        <file>qml/voip/VideoCall.qml</file>
+>>>>>>> b8b642219db37b1bf46ae47c01a446a7a4e24317
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>

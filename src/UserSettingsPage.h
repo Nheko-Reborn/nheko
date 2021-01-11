@@ -23,6 +23,8 @@
 #include <QSharedPointer>
 #include <QWidget>
 
+#include <optional>
+
 class Toggle;
 class QLabel;
 class QFormLayout;

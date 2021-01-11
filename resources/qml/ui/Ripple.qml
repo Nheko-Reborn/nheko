@@ -116,10 +116,10 @@ Item {
     ]
 
     Connections {
-        function onPressed(mouse) {
-            // Button
-            // Default to center
+        // Button
+        // Default to center
 
+        function onPressed(mouse) {
             // MouseArea
             if (mouse) {
                 ripple.centerX = mouse.x;
