@@ -900,9 +900,14 @@ void
 ChatPage::joinRoom(const QString &room)
 {
         const auto room_id = room.toStdString();
+        joinRoomVia(room_id, {});
+}
 
+void
+ChatPage::joinRoomVia(const std::string &room_id, const std::vector<std::string> &via)
+{
         http::client()->join_room(
-          room_id, [this, room_id](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
+          room_id, via, [this, room_id](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
                   if (err) {
                           emit showNotification(
                             tr("Failed to join room: %1")
@@ -1291,7 +1296,7 @@ ChatPage::startChat(QString userid)
 
         mtx::requests::CreateRoom req;
         req.preset     = mtx::requests::Preset::PrivateChat;
-        req.visibility = mtx::requests::Visibility::Private;
+        req.visibility = mtx::common::RoomVisibility::Private;
         if (utils::localUser() != userid)
                 req.invite = {userid.toStdString()};
         emit ChatPage::instance()->createRoom(req);
@@ -1380,7 +1385,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                 }
 
                 if (action == "join") {
-                        joinRoom(mxid1);
+                        joinRoomVia(targetRoomId, vias);
                 }
         } else if (sigil1 == "room") {
                 auto joined_rooms    = cache::joinedRooms();
@@ -1398,7 +1403,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                 }
 
                 if (action == "join") {
-                        joinRoom(mxid1);
+                        joinRoomVia(mxid1.toStdString(), vias);
                 }
         }
 }
