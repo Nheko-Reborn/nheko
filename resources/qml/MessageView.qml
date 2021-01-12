@@ -1,9 +1,9 @@
 import "./delegates"
 import QtGraphicalEffects 1.0
-import QtQuick 2.9
+import QtQuick 2.10
 import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.2
-import QtQuick.Window 2.2
+import QtQuick.Layouts 1.10
+import QtQuick.Window 2.10
 import im.nheko 1.0
 
 ListView {
