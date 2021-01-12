@@ -180,7 +180,7 @@ if(NOT MSVC)
 		-fsized-deallocation \
 		-fdiagnostics-color=always \
 		-Wunreachable-code \
-		-std=c++17"
+		-Wno-attributes"
 		)
 	if (NOT CMAKE_COMPILER_IS_GNUCXX)
 		# -Wshadow is buggy and broken in GCC, so do not enable it.
