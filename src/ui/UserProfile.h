@@ -84,6 +84,9 @@ class UserProfile : public QObject
         Q_PROPERTY(QString avatarUrl READ avatarUrl CONSTANT)
         Q_PROPERTY(DeviceInfoModel *deviceList READ deviceList CONSTANT)
         Q_PROPERTY(bool isUserVerified READ getUserStatus NOTIFY userStatusChanged)
+        Q_PROPERTY(
+          bool userVerificationEnabled READ userVerificationEnabled NOTIFY userStatusChanged)
+        Q_PROPERTY(bool isSelf READ isSelf CONSTANT)
 public:
         UserProfile(QString roomid,
                     QString userid,
@@ -96,6 +99,8 @@ public:
         QString displayName();
         QString avatarUrl();
         bool getUserStatus();
+        bool userVerificationEnabled() const;
+        bool isSelf() const;
 
         Q_INVOKABLE void verify(QString device = "");
         Q_INVOKABLE void unverify(QString device = "");
@@ -112,6 +117,7 @@ private:
         QString roomid_, userid_;
         DeviceInfoModel deviceList_;
         bool isUserVerified = false;
+        bool hasMasterKey   = false;
         TimelineViewManager *manager;
         TimelineModel *model;
 };

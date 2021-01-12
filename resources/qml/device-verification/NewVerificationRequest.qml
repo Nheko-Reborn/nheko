@@ -10,6 +10,8 @@ Pane {
         spacing: 16
 
         Label {
+            // Self verification
+
             Layout.maximumWidth: 400
             Layout.fillHeight: true
             Layout.fillWidth: true
@@ -21,14 +23,12 @@ Pane {
                     else
                         return qsTr("To ensure that no malicious user can eavesdrop on your encrypted communications you can verify the other party.");
                 } else {
-                    // Self verification
-
                     if (!flow.isSelfVerification && flow.isDeviceVerification)
                         return qsTr("%1 has requested to verify their device %2.").arg(flow.userId).arg(flow.deviceId);
                     else if (!flow.isSelfVerification && !flow.isDeviceVerification)
                         return qsTr("%1 using the device %2 has requested to be verified.").arg(flow.userId).arg(flow.deviceId);
                     else
-                        return qsTr("Your devices (%1) has requested to be verified.").arg(flow.deviceId);
+                        return qsTr("Your device (%1) has requested to be verified.").arg(flow.deviceId);
                 }
             }
             color: colors.text

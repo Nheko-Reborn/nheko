@@ -112,6 +112,17 @@ UserProfile::getUserStatus()
         return isUserVerified;
 }
 
+bool
+UserProfile::userVerificationEnabled() const
+{
+        return hasMasterKey;
+}
+bool
+UserProfile::isSelf() const
+{
+        return this->userid_ == utils::localUser();
+}
+
 void
 UserProfile::fetchDeviceList(const QString &userID)
 {
@@ -128,10 +139,10 @@ UserProfile::fetchDeviceList(const QString &userID)
                           return;
                   }
 
-                  // Finding if the User is Verified or not based on the Signatures
+                  // Ensure local key cache is up to date
                   cache::client()->query_keys(
                     utils::localUser().toStdString(),
-                    [other_user_id, other_user_keys, this](const UserKeyCache &res,
+                    [other_user_id, other_user_keys, this](const UserKeyCache &,
                                                            mtx::http::RequestErr err) {
                             using namespace mtx;
                             std::string local_user_id = utils::localUser().toStdString();
@@ -143,10 +154,7 @@ UserProfile::fetchDeviceList(const QString &userID)
                                     return;
                             }
 
-                            if (res.device_keys.empty()) {
-                                    nhlog::net()->warn("no devices retrieved {}", local_user_id);
-                                    return;
-                            }
+                            this->hasMasterKey = !other_user_keys.master_keys.keys.empty();
 
                             std::vector<DeviceInfo> deviceInfo;
                             auto devices = other_user_keys.device_keys;

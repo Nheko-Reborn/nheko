@@ -61,8 +61,16 @@ ApplicationWindow {
             text: qsTr("Verify")
             Layout.alignment: Qt.AlignHCenter
             enabled: !profile.isUserVerified
-            visible: !profile.isUserVerified
+            visible: !profile.isUserVerified && !profile.isSelf && profile.userVerificationEnabled
             onClicked: profile.verify()
+        }
+
+        Image {
+            Layout.preferredHeight: 16
+            Layout.preferredWidth: 16
+            source: "image://colorimage/:/icons/icons/ui/lock.png?green"
+            visible: profile.isUserVerified
+            Layout.alignment: Qt.AlignHCenter
         }
 
         RowLayout {
@@ -153,6 +161,7 @@ ApplicationWindow {
                 Button {
                     id: verifyButton
 
+                    visible: (!profile.userVerificationEnabled && !profile.isSelf) || (profile.isSelf && (model.verificationStatus != VerificationStatus.VERIFIED || !profile.userVerificationEnabled))
                     text: (model.verificationStatus != VerificationStatus.VERIFIED) ? "Verify" : "Unverify"
                     onClicked: {
                         if (model.verificationStatus == VerificationStatus.VERIFIED)
