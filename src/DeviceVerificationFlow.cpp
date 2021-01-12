@@ -505,6 +505,12 @@ DeviceVerificationFlow::getSasList()
         return this->sasList;
 }
 
+bool
+DeviceVerificationFlow::isSelfVerification() const
+{
+        return this->toClient.to_string() == http::client()->user_id().to_string();
+}
+
 void
 DeviceVerificationFlow::setEventId(std::string event_id_)
 {
