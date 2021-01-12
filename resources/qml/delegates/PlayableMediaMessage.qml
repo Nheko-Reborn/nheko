@@ -1,7 +1,7 @@
-import QtMultimedia 5.10
-import QtQuick 2.10
-import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.10
+import QtMultimedia 5.6
+import QtQuick 2.6
+import QtQuick.Controls 2.1
+import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
 Rectangle {

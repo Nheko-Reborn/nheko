@@ -1,8 +1,8 @@
 import "../"
 import QtGraphicalEffects 1.0
-import QtQuick 2.10
+import QtQuick 2.9
 import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.10
+import QtQuick.Layouts 1.3
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
 
