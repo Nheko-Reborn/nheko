@@ -160,6 +160,7 @@
         <file>qml/ui/Ripple.qml</file>
         <file>qml/voip/ActiveCallBar.qml</file>
         <file>qml/voip/CallDevices.qml</file>
+        <file>qml/voip/CallInvite.qml</file>
         <file>qml/voip/CallInviteBar.qml</file>
         <file>qml/voip/DeviceError.qml</file>
         <file>qml/voip/PlaceCall.qml</file>
