@@ -115,9 +115,9 @@ CreateRoom::CreateRoom(QWidget *parent)
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &text) {
                         if (text == "Private") {
-                                request_.visibility = mtx::requests::Visibility::Private;
+                                request_.visibility = mtx::common::RoomVisibility::Private;
                         } else {
-                                request_.visibility = mtx::requests::Visibility::Public;
+                                request_.visibility = mtx::common::RoomVisibility::Public;
                         }
                 });
 

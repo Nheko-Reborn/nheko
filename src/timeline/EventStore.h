@@ -74,7 +74,7 @@ public:
 
         int size() const
         {
-                return last != std::numeric_limits<uint64_t>::max()
+                return (last != std::numeric_limits<uint64_t>::max() && last >= first)
                          ? static_cast<int>(last - first) + 1
                          : 0;
         }

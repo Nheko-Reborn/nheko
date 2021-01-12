@@ -117,6 +117,7 @@ public slots:
         void leaveRoom(const QString &room_id);
         void createRoom(const mtx::requests::CreateRoom &req);
         void joinRoom(const QString &room);
+        void joinRoomVia(const std::string &room_id, const std::vector<std::string> &via);
 
         void inviteUser(QString userid, QString reason);
         void kickUser(QString userid, QString reason);
