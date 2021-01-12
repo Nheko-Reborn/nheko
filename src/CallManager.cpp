@@ -45,8 +45,9 @@ CallManager::CallManager(QObject *parent)
                   nhlog::ui()->debug("WebRTC: call id: {} - sending offer", callid_);
                   emit newMessage(roomid_, CallInvite{callid_, sdp, 0, timeoutms_});
                   emit newMessage(roomid_, CallCandidates{callid_, candidates, 0});
-                  QTimer::singleShot(timeoutms_, this, [this]() {
-                          if (session_.state() == webrtc::State::OFFERSENT) {
+                  std::string callid(callid_);
+                  QTimer::singleShot(timeoutms_, this, [this, callid]() {
+                          if (session_.state() == webrtc::State::OFFERSENT && callid == callid_) {
                                   hangUp(CallHangUp::Reason::InviteTimeOut);
                                   emit ChatPage::instance()->showNotification(
                                     "The remote side failed to pick up.");
