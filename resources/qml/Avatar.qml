@@ -11,10 +11,15 @@ Rectangle {
     property string userid
     property string displayName
 
+    signal clicked(var mouse)
+
     width: 48
     height: 48
     radius: Settings.avatarCircles ? height / 2 : 3
     color: colors.alternateBase
+    Component.onCompleted: {
+        mouseArea.clicked.connect(clicked);
+    }
 
     Label {
         anchors.fill: parent
@@ -43,7 +48,6 @@ Rectangle {
             id: mouseArea
 
             anchors.fill: parent
-            onClicked: TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
 
             Ripple {
                 rippleTarget: mouseArea

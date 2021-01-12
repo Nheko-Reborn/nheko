@@ -104,6 +104,7 @@ Popup {
                             width: 24
                             displayName: model.displayName
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                            onClicked: popup.completionClicked(completer.completionAt(model.index))
                         }
 
                         Label {

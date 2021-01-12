@@ -53,12 +53,7 @@ Rectangle {
             height: avatarSize
             url: room ? room.roomAvatarUrl.replace("mxc://", "image://MxcImage/") : ""
             displayName: room ? room.roomName : qsTr("No room selected")
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: TimelineManager.openRoomSettings()
-            }
-
+            onClicked: TimelineManager.openRoomSettings()
         }
 
         Label {

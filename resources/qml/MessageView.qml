@@ -108,19 +108,19 @@ ListView {
                 spacing: 8
 
                 Avatar {
+                    // MouseArea {
+                    //     anchors.fill: parent
+                    //     onClicked: chat.model.openUserProfile(modelData.userId)
+                    //     cursorShape: Qt.PointingHandCursor
+                    //     propagateComposedEvents: true
+                    // }
+
                     width: avatarSize
                     height: avatarSize
                     url: chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/")
                     displayName: modelData.userName
                     userid: modelData.userId
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: chat.model.openUserProfile(modelData.userId)
-                        cursorShape: Qt.PointingHandCursor
-                        propagateComposedEvents: true
-                    }
-
+                    onClicked: chat.model.openUserProfile(modelData.userId)
                 }
 
                 Label {

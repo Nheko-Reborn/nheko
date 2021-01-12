@@ -61,6 +61,7 @@ Popup {
                 height: avatarSize
                 url: TimelineManager.timeline.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
                 displayName: TimelineManager.timeline.roomName
+                onClicked: TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
             }
 
             Button {

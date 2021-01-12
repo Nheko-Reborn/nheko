@@ -37,6 +37,7 @@ ApplicationWindow {
             displayName: profile.displayName
             userid: profile.userid
             Layout.alignment: Qt.AlignHCenter
+            onClicked: TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
         }
 
         Label {

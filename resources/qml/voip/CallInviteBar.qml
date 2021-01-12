@@ -38,6 +38,7 @@ Rectangle {
             height: avatarSize
             url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
             displayName: CallManager.callParty
+            onClicked: TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
         }
 
         Label {
