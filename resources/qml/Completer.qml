@@ -1,3 +1,4 @@
+import "./ui"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
@@ -79,10 +80,18 @@ Popup {
             implicitWidth: chooser.childrenRect.width + 4
 
             MouseArea {
+                id: mouseArea
+
                 anchors.fill: parent
                 hoverEnabled: true
                 onEntered: popup.currentIndex = model.index
                 onClicked: popup.completionClicked(completer.completionAt(model.index))
+
+                Ripple {
+                    rippleTarget: mouseArea
+                    color: Qt.rgba(colors.base.r, colors.base.g, colors.base.b, 0.5)
+                }
+
             }
 
             DelegateChooser {
