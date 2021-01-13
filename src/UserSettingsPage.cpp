@@ -671,7 +671,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         for (double option = 1; option <= 3; option += 0.25)
                 scaleFactorCombo_->addItem(QString::number(option));
-        for (double option = 10; option < 17; option += 0.5)
+        for (double option = 6; option <= 24; option += 0.5)
                 fontSizeCombo_->addItem(QString("%1 ").arg(QString::number(option)));
 
         QFontDatabase fontDb;
