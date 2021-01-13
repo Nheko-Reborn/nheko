@@ -34,14 +34,9 @@ Popup {
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
 
-        spacing: 48
-
-        Item {
-            Layout.fillHeight: true
-        }
-
         Label {
             Layout.alignment: Qt.AlignCenter
+            Layout.topMargin: msgView.height / 25
             text: CallManager.callParty
             font.pointSize: fontMetrics.font.pointSize * 2
             color: colors.windowText
@@ -49,20 +44,21 @@ Popup {
 
         Avatar {
             Layout.alignment: Qt.AlignCenter
-            width: avatarSize * 4
-            height: avatarSize * 4
+            width: msgView.height / 5
+            height: msgView.height / 5
             url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
             displayName: CallManager.callParty
         }
 
         ColumnLayout {
             Layout.alignment: Qt.AlignCenter
+            Layout.bottomMargin: msgView.height / 25
 
             Image {
-                Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: avatarSize
-                Layout.preferredHeight: avatarSize
                 property string image: CallManager.isVideo ? ":/icons/icons/ui/video-call.png" : ":/icons/icons/ui/place-call.png"
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredWidth: msgView.height / 10
+                Layout.preferredHeight: msgView.height  / 10
                 source: "image://colorimage/" + image + "?" + colors.windowText
             }
 
@@ -76,8 +72,10 @@ Popup {
 
         ColumnLayout {
             id: deviceCombos
+
+            property int imageSize: msgView.height / 20
             Layout.alignment: Qt.AlignCenter
-            property int imageSize: 32
+            Layout.bottomMargin: msgView.height / 25
 
             RowLayout {
 
@@ -118,9 +116,9 @@ Popup {
         RowLayout {
             id: buttonLayout
 
-            property int iconSize: 64
+            property int buttonSize: msgView.height / 8
             Layout.alignment: Qt.AlignCenter
-            spacing: 160
+            spacing: msgView.height / 6
 
             function validateMic() {
                 if (CallManager.mics.length == 0) {
@@ -135,11 +133,17 @@ Popup {
             }
 
             RoundButton {
-                icon.source: "qrc:/icons/icons/ui/end-call.png"
-                icon.width: buttonLayout.iconSize
-                icon.height: buttonLayout.iconSize
-                icon.color: "#ffffff"
-                palette.button: "#ff0000"
+                implicitWidth: buttonLayout.buttonSize
+                implicitHeight: buttonLayout.buttonSize
+
+                background: Rectangle {
+                    radius: buttonLayout.buttonSize / 2
+                    color: "#ff0000"
+                }
+
+                contentItem : Image {
+                    source: "image://colorimage/:/icons/icons/ui/end-call.png?#ffffff"
+                }
 
                 onClicked: {
                     CallManager.hangUp();
@@ -148,11 +152,20 @@ Popup {
             }
 
             RoundButton {
-                icon.source: CallManager.isVideo ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
-                icon.width: buttonLayout.iconSize
-                icon.height: buttonLayout.iconSize
-                icon.color: "#ffffff"
-                palette.button: "#00ff00"
+                id: acceptButton
+
+                property string image: CallManager.isVideo ? ":/icons/icons/ui/video-call.png" : ":/icons/icons/ui/place-call.png"
+                implicitWidth: buttonLayout.buttonSize
+                implicitHeight: buttonLayout.buttonSize
+
+                background: Rectangle {
+                    radius: buttonLayout.buttonSize / 2
+                    color: "#00ff00"
+                }
+
+                contentItem : Image {
+                    source: "image://colorimage/" + acceptButton.image + "?#ffffff"
+                }
 
                 onClicked: {
                     if (buttonLayout.validateMic()) {
@@ -164,10 +177,6 @@ Popup {
                     }
                 }
             }
-        }
-
-        Item {
-            Layout.fillHeight: true
         }
     }
 }
