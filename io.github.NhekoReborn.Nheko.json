@@ -142,11 +142,79 @@
       ]
     },
     {
+      "buildsystem": "meson",
+      "name": "gstreamer",
+      "sources": [
+        {
+          "commit": "a42fe476d3ee5576921f67a331464065ec33b9a4",
+          "tag": "1.18.3",
+          "type": "git",
+          "url": "https://gitlab.freedesktop.org/gstreamer/gstreamer.git"
+        }
+      ]
+    },
+    {
+      "config-opts": [
+        "-Dcompositor=enabled",
+        "-Dgl=enabled"
+      ],
+      "buildsystem": "meson",
+      "name": "gstreamer-plugins-base",
+      "sources": [
+        {
+          "commit": "2cc319ee13f6b72df3d432b7c75aca81feb260e5",
+          "tag": "1.18.3",
+          "type": "git",
+          "url": "https://gitlab.freedesktop.org/gstreamer/gst-plugins-base.git"
+        }
+      ]
+    },
+    {
+      "config-opts": [
+        "-Dpulse=enabled",
+        "-Dqt5=enabled",
+        "-Drtp=enabled",
+        "-Drtpmanager=enabled",
+        "-Dvpx=enabled"
+      ],
+      "buildsystem": "meson",
+      "name": "gstreamer-plugins-good",
+      "sources": [
+        {
+          "commit": "e816c6cd73c9e0676828c9e227a049ebad3d019f",
+          "tag": "1.18.3",
+          "type": "git",
+          "url": "https://gitlab.freedesktop.org/gstreamer/gst-plugins-good.git"
+        }
+      ]
+    },
+    {
+      "config-opts": [
+        "-Ddtls=enabled",
+        "-Dgl=enabled",
+        "-Dopenh264=enabled",
+        "-Dopus=enabled",
+        "-Dsrtp=enabled",
+        "-Dwebrtc=enabled",
+        "-Dflite=disabled"
+      ],
+      "buildsystem": "meson",
+      "name": "gstreamer-plugins-bad",
+      "sources": [
+        {
+          "commit": "382e373d9be363f1e21b12990a4d12f1ecb6df41",
+          "tag": "1.18.3",
+          "type": "git",
+          "url": "https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad.git"
+        }
+      ]
+    },
+    {
       "config-opts": [
         "-DBUILD_LIB_TESTS=OFF",
         "-DBUILD_LIB_EXAMPLES=OFF",
         "-DCMAKE_BUILD_TYPE=Release",
-	"-DBUILD_SHARED_LIBS=OFF"
+        "-DBUILD_SHARED_LIBS=OFF"
       ],
       "buildsystem": "cmake-ninja",
       "name": "mtxclient",
