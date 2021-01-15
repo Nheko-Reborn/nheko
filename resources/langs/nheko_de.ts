@@ -484,7 +484,7 @@
         <location line="+63"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation>-- Entschlüsselungsfehler (Fehler bei Suche nach megolm Schlüsseln in Datenbank) --</translation>
+        <translation>-- Entschlüsselungsfehler (Fehler bei Suche nach Megolm Schlüsseln in Datenbank) --</translation>
     </message>
     <message>
         <location line="-49"/>
