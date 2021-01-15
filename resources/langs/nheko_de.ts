@@ -1366,7 +1366,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../../src/timeline/TimelineViewManager.cpp" line="+423"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Keinen verschlüsselten Chat mit diesem User gefunden. Erstelle einen verschlüsselten 1:1 Chat mit diesem Nutzer und versuche es erneut.</translation>
     </message>
 </context>
 <context>
@@ -1374,38 +1374,38 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../qml/TopBar.qml" line="+43"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Zurück zur Raumliste</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+10"/>
         <source>No room selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Kein Raum ausgewählt</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Room options</source>
-        <translation type="unfinished">Raumoptionen</translation>
+        <translation>Raumoptionen</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Invite users</source>
-        <translation type="unfinished">Benutzer einladen</translation>
+        <translation>Benutzer einladen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Members</source>
-        <translation type="unfinished">Teilnehmer</translation>
+        <translation>Teilnehmer</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished">Raum verlassen</translation>
+        <translation>Raum verlassen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished">Einstellungen</translation>
+        <translation>Einstellungen</translation>
     </message>
 </context>
 <context>
@@ -1431,37 +1431,37 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+20"/>
         <source>Set custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Setze eine benutzerdefinierte Statusnachricht</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzerdefinierter Status</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Status:</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Set presence automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Setze Präsenz automatisch</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation>Online</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht verfügbar</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Offline</translation>
     </message>
 </context>
 <context>
@@ -1469,22 +1469,22 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../qml/UserProfile.qml" line="+61"/>
         <source>Verify</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifizieren</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Ban the user</source>
-        <translation type="unfinished"></translation>
+        <translation>Banne den Nutzer</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Start a private chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Starte eine private Konservation</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Kick the user</source>
-        <translation type="unfinished"></translation>
+        <translation>Kicke den Nutzer</translation>
     </message>
 </context>
 <context>
@@ -1512,48 +1512,49 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="-195"/>
         <source>profile: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Profil: %1</translation>
     </message>
     <message>
         <location line="+112"/>
         <source>CALLS</source>
-        <translation type="unfinished"></translation>
+        <translation>TELEFONATE</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>Cross Signing Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Cross-Signing Schlüssel</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>REQUEST</source>
-        <translation type="unfinished"></translation>
+        <translation>ANFRAGEN</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>DOWNLOAD</source>
-        <translation type="unfinished"></translation>
+        <translation>DOWNLOADEN</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Applikation im Hintergrund weiterlaufen lassen.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Starte die Applikation im Hintergrund ohne ein Fenster zu öffnen.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - Circle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ändert das Aussehen von Benutzeravataren.
+AUS - Quadratisch, AN - Kreis.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Seitenleiste mit Gruppen und Tags neben der Raumliste.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1564,7 +1565,8 @@ OFF - square, ON - Circle.</source>
         <location line="+2"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Entschlüssle Nachrichten in der Seitenliste.
+Betrifft nur Nachrichten in verschlüsselten Chats.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1574,17 +1576,17 @@ Only affects messages in encrypted chats.</source>
     <message>
         <location line="+2"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Knöpfe für das schnelle Antworten, Reagieren und zusätzliche Optionen neben jeder Nachricht.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Mache die Nachrichtenliste schmaler</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation type="unfinished"></translation>
+        <translation>Setze die maximale Breite für die Nachrichtenliste (in Pixeln). Das kann Nachrichten auf breiten Bildschirmen verbessern, wenn Nheko im Vollbildmodus verwendet wird.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1595,7 +1597,8 @@ Only affects messages in encrypted chats.</source>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige wer gerade in einem Raum tippt.
+Diese Einstellung steuert auch, ob das eigene Tippen an andere gesendet wird.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1618,7 +1621,8 @@ If this is on, rooms which have active notifications (the small circle with a nu
         <location line="+2"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige ob eine Nachricht gelesen wurde.
+Der Status wird neben der Nachricht angezeigt.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1629,7 +1633,8 @@ Status is displayed next to timestamps.</source>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nutze Markdown als Format für Nachrichten.
+Wenn deaktiviert werden alle Nachrichten als unformatierter Text gesendet.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1639,18 +1644,19 @@ When disabled, all messages are sent as a plain text.</source>
     <message>
         <location line="+2"/>
         <source>Notify about received message when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Benachrichtigungen für empfangene Nachrichten, wenn der Client ist nicht fokussiert.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Alert on notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Bei Nachrichten Fenster hervorheben</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hebe das Fenster hervor, wenn eine Nachricht empfangen wurde.
+Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1680,12 +1686,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+395"/>
         <source>CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>IM CACHE</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>NOT CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>NICHT IM CACHE</translation>
     </message>
     <message>
         <location line="-449"/>
@@ -1910,27 +1916,27 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../qml/device-verification/Waiting.qml" line="+7"/>
         <source>Waiting for other party…</source>
-        <translation type="unfinished"></translation>
+        <translation>Warten auf die andere Seite...</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Waiting for other side to accept the verification request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Es wird gewartet, dass die andere Seite die Verifizierungsanfrage akzeptiert.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to continue the verification process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Es wird gewartet, dass die andere Seite den Verifizierungsprozess fortsetzt.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to complete the verification process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Es wird gewartet, dass die andere Seite den Verifizierungsprozess abschließt.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
 </context>
 <context>
@@ -2307,12 +2313,12 @@ Medien-Größe: %2
     <message>
         <location line="+14"/>
         <source>Confirm DM</source>
-        <translation type="unfinished"></translation>
+        <translation>Direktnachrickt bestätigen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to invite %1 (%2) to a direct chat?</source>
-        <translation type="unfinished"></translation>
+        <translation>Möchtest du wirklich einen privaten Chat mit %1 (%2) starten?</translation>
     </message>
     <message>
         <location line="+54"/>
