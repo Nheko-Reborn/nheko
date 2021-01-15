@@ -2229,7 +2229,14 @@ Media size: %2
         <translation>Encryption</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+11"/>
+        <source>Whether or not the client should respond automatically with the session keys
+ upon request. Use with caution, this is a temporary measure to test the
+ E2E implementation until device verification is completed.</source>
+        <translation>Whether or not the client should respond automatically with the session keys upon request. Use with caution, this is a temporary measure to test the E2E implementation until device verification is completed.</translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>End-to-End Encryption</source>
         <translation>End-to-End Encryption</translation>
     </message>
@@ -2244,7 +2251,7 @@ Media size: %2
         <translation>Respond to key requests</translation>
     </message>
     <message numerus="yes">
-        <location line="+80"/>
+        <location line="+83"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n member</numerusform>
