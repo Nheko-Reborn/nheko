@@ -22,12 +22,12 @@
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation>Mikrofon einschalten</translation>
+        <translation>Stummschaltung aufheben</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation>Mikrofon stummstellen</translation>
+        <translation>Mikrofon stummschalten</translation>
     </message>
 </context>
 <context>
@@ -133,7 +133,7 @@
     <message>
         <location line="-500"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
-        <translation>Das Migrieren des Caches auf die aktuelle Version ist fehlgeschlagen. Das kann verschiedene Gründe als Ursache haben. Bitte melde den Fehler und verwende in der Zwischenzeit eine ältere Version. Alternativ kannst du das Cache manuell löschen.</translation>
+        <translation>Das Migrieren des Caches auf die aktuelle Version ist fehlgeschlagen. Das kann verschiedene Gründe als Ursache haben. Bitte melde den Fehler und verwende in der Zwischenzeit eine ältere Version. Alternativ kannst du den Cache manuell löschen.</translation>
     </message>
     <message>
         <location line="+456"/>
@@ -198,7 +198,7 @@
     <message>
         <location line="+10"/>
         <source>Confirm unban</source>
-        <translation>Entbannen bestätigen</translation>
+        <translation>Aufhebung des Banns bestätigen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -218,7 +218,7 @@
     <message>
         <location line="-582"/>
         <source>Cache migration failed!</source>
-        <translation>Cache migration fehlgeschlagen!</translation>
+        <translation>Migration des Caches fehlgeschlagen!</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -726,7 +726,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+2"/>
         <source>%1 placed a call.</source>
-        <translation>%1 hat angerufen</translation>
+        <translation>%1 hat angerufen.</translation>
     </message>
     <message>
         <location line="+11"/>
