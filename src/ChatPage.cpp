@@ -1262,7 +1262,7 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
         if (!decryptionKey) {
                 QMessageBox::information(
                   ChatPage::instance(),
-                  QCoreApplication::translate("CrossSigningSecrets", "Decrytion failed"),
+                  QCoreApplication::translate("CrossSigningSecrets", "Decryption failed"),
                   QCoreApplication::translate("CrossSigningSecrets",
                                               "Failed to decrypt secrets with the "
                                               "provided recovery key or passphrase"));

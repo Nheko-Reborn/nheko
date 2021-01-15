@@ -331,7 +331,7 @@
     </message>
     <message>
         <location line="+17"/>
-        <source>Decrytion failed</source>
+        <source>Decryption failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
