@@ -1610,7 +1610,9 @@ Diese Einstellung steuert auch, ob das eigene Tippen an andere gesendet wird.</t
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Räume mit neuen Nachrichten zuerst an.
+Wenn das aus ist, werden die Räume in der Raumliste rein nach dem Sendezeitpunkt der letzten Nachricht sortiert.
+Wenn das eingeschaltet ist, werden Nachrichten mit aktiven Erwähnung zuerst sortiert (der rote Kreis). Danach kommen andere Benachrichtigungen (weißer Kreis) und zuletzt stummgeschaltete Räume sortiert nach deren Zeitstempel.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1661,27 +1663,27 @@ Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Hebe Nachrichten unter dem Mauszeiger hervor</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ändert die Hintergrundfarbe von Nachrichten, wenn der Mauszeiger über ihnen ist.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Große Emoji in der Nachrichtenliste</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Erhöht die Schriftgröße, wenn die Nachricht nur aus ein paar Emoji besteht.</translation>
     </message>
     <message>
         <location line="+56"/>
         <source>Share keys with verified users and devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Teile Schlüssel mit verifizierten Nutzern und Geräten</translation>
     </message>
     <message>
         <location line="+395"/>
@@ -1701,7 +1703,7 @@ Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</
     <message>
         <location line="+2"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ändere den Skalierungsfaktor für das gesamte Userinterface.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1721,42 +1723,42 @@ Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</
     <message>
         <location line="+4"/>
         <source>Ringtone</source>
-        <translation type="unfinished"></translation>
+        <translation>Klingelton</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation type="unfinished"></translation>
+        <translation>Ändere den Klingelton für eingehende Anrufe</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Microphone</source>
-        <translation type="unfinished"></translation>
+        <translation>Mikrofon</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamera</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Kameraauflösung</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera frame rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Bildwiederholungsrate der Kamera</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished"></translation>
+        <translation>Erlaube den Fallbackassistenzserver zu verwenden</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dies verwendet matrix.org Server als Assistent, wenn der eigene Homeserver keinen anbietet oder unzureichend ist.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1801,12 +1803,12 @@ Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</
     <message>
         <location line="+177"/>
         <source>Touchscreen mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Touchscreenmodus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deaktiviert Textselektion in Nachrichten, damit das nicht beim Scrollen mit den Fingern stört.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1816,57 +1818,57 @@ Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</
     <message>
         <location line="+40"/>
         <source>Automatically replies to key requests from other users, if they are verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Antortet automatsch auf Schlüsselanfragen von anderen Nutzern, wenn du diese verifiziert hast.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Master signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Masterverifizierungsschlüssel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der wichtigste Schlüssel. Muss nicht lokal gecachet wrden, weil es das schwieriger macht ihn auszulesen und dadurch das Rotieren der anderen Schlüsel leichter ist.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>User signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzerverifizierungsschlüssel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Schlüssel um andere Nutzer zu verifizieren. Wenn der lokal zwischengespeichert ist, dann werden durch eine Nutzerverifizierung alle Geräte verifiziert.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Self signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Selbstverifizierungsschlüssel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users, that have verified you.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Schlüssel um deine eigenen Geräte zu verifizieren. Wenn dieser lokal zwischengespeichert ist, dann werden durch eine Verifizierung eines deiner eigenen Geräte diese für alle deine anderen Geräte und für andere Nutzer als verifiziert makiert.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Backup key</source>
-        <translation type="unfinished"></translation>
+        <translation>Sicherungsschlüssel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Schlüssel um Schlüssel aus der Onlinesicherung zu laden. Wenn dieser vorhanden ist, können die Schlüssel für verschlüsselte Nachrichten sicher online gespeichert und wieder runtergeladen werden.</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Select a file</source>
-        <translation type="unfinished">Datei auswählen</translation>
+        <translation>Datei auswählen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Alle Dateien (*)</translation>
+        <translation>Alle Dateien (*)</translation>
     </message>
     <message>
         <location line="+225"/>
