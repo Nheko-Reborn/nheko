@@ -40,12 +40,12 @@
     <message>
         <location line="+12"/>
         <source>Waiting for other side to complete verification.</source>
-        <translation>Oczekiwanie na dokończenie weryfikacji przez drugą stronę</translation>
+        <translation>Oczekiwanie na dokończenie weryfikacji przez drugą stronę.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
 </context>
 <context>
@@ -53,7 +53,7 @@
     <message>
         <location filename="../../src/Cache.cpp" line="+1951"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dołączyłeś(-łaś) do tego pokoju</translation>
     </message>
 </context>
 <context>
