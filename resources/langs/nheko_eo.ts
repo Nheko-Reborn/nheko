@@ -4,7 +4,23 @@
 <context>
     <name>ActiveCallBar</name>
     <message>
-        <location filename="../qml/ActiveCallBar.qml" line="+174"/>
+        <location filename="../qml/voip/ActiveCallBar.qml" line="+66"/>
+        <source>Calling...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <location line="+10"/>
+        <source>Connecting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+76"/>
+        <source>Toggle camera view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
         <source>Unmute Mic</source>
         <translation type="unfinished"></translation>
     </message>
@@ -35,31 +51,92 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1821"/>
+        <location filename="../../src/Cache.cpp" line="+1951"/>
         <source>You joined this room.</source>
         <translation>Vi aliĝis ĉi tiun ĉambron.</translation>
     </message>
 </context>
 <context>
+    <name>CallInvite</name>
+    <message>
+        <location filename="../qml/voip/CallInvite.qml" line="+67"/>
+        <source>Video Call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Voice Call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+59"/>
+        <source>No microphone found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CallInviteBar</name>
+    <message>
+        <location filename="../qml/voip/CallInviteBar.qml" line="+60"/>
+        <source>Video Call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Voice Call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Unknown microphone: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Unknown camera: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Decline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-28"/>
+        <source>No microphone found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+201"/>
+        <location filename="../../src/ChatPage.cpp" line="+211"/>
         <source>Failed to invite user: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+765"/>
+        <location line="+779"/>
         <source>Invited user: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-493"/>
+        <location line="-500"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+449"/>
+        <location line="+456"/>
         <source>Room %1 created.</source>
         <translatorcomment>I believe that the -at ending is correct here.</translatorcomment>
         <translation>Ĉambro %1 farit.</translation>
@@ -140,7 +217,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-575"/>
+        <location line="-582"/>
         <source>Cache migration failed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -176,7 +253,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+37"/>
         <source>Failed to join room: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -191,7 +268,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+21"/>
         <source>Room creation failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -233,6 +310,34 @@
     <message>
         <location line="+3"/>
         <source> (community)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CrossSigningSecrets</name>
+    <message>
+        <location filename="../../src/ChatPage.cpp" line="+281"/>
+        <source>Decrypt secrets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Enter your recovery key or passphrase to decrypt your secrets:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Enter your recovery key or passphrase called %1 to decrypt your secrets:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Decrytion failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Failed to decrypt secrets with the provided recovery key or passphrase</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -370,7 +475,7 @@
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+522"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+548"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation type="unfinished"></translation>
@@ -443,7 +548,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+228"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+227"/>
         <source>Select a file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -453,7 +558,7 @@
         <translation type="unfinished">Ĉiuj dosieroj (*)</translation>
     </message>
     <message>
-        <location line="+329"/>
+        <location line="+334"/>
         <source>Failed to upload media. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -512,13 +617,13 @@ Ekzemplo: https://servisto.mia:8787</translation>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+213"/>
+        <location line="+217"/>
         <source>LOGIN</source>
         <translatorcomment>Maybe shouldn&apos;t be imperative?</translatorcomment>
         <translation>ENSALUTU</translation>
     </message>
     <message>
-        <location line="-100"/>
+        <location line="-104"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -543,7 +648,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+59"/>
         <source>SSO LOGIN</source>
         <translation>SSO ENSALUTU</translation>
     </message>
@@ -643,7 +748,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+27"/>
+        <location filename="../qml/MessageInput.qml" line="+37"/>
         <source>Hang up</source>
         <translation type="unfinished"></translation>
     </message>
@@ -653,7 +758,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+30"/>
         <source>Send a file</source>
         <translation type="unfinished">Sendu dosieron</translation>
     </message>
@@ -677,26 +782,41 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <name>NewVerificationRequest</name>
     <message>
         <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+7"/>
-        <source>Send Device Verification Request</source>
+        <source>Send Verification Request</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>Recieved Device Verification Request</source>
+        <source>Recieved Verification Request</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>To ensure that no malicious user can eavesdrop on your encrypted communications you can verify the other party.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 has requested to verify their device %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 using the device %2 has requested to be verified.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Your device (%1) has requested to be verified.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
-        <source>To ensure that no malicious user can eavesdrop on your encrypted communications, you can verify this device.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>The device was requested to be verified</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -717,6 +837,34 @@ Ekzemplo: https://servisto.mia:8787</translation>
     </message>
 </context>
 <context>
+    <name>PlaceCall</name>
+    <message>
+        <location filename="../qml/voip/PlaceCall.qml" line="+30"/>
+        <source>Place a call to %1?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>No microphone found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Voice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Placeholder</name>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
@@ -727,7 +875,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+169"/>
+        <location filename="../../src/main.cpp" line="+182"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -799,12 +947,12 @@ Ekzemplo: https://servisto.mia:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+208"/>
+        <location line="+209"/>
         <source>One or more fields have invalid inputs. Please correct those issues and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-25"/>
+        <location line="-26"/>
         <source>Password is not long enough (min 8 chars)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -830,7 +978,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1831"/>
+        <location filename="../../src/Cache.cpp" line="+1859"/>
         <source>no version stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -975,7 +1123,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+855"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+862"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1174,7 +1322,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+74"/>
+        <location filename="../qml/TimelineView.qml" line="+82"/>
         <source>React</source>
         <translation>Reagu</translation>
     </message>
@@ -1214,7 +1362,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+51"/>
         <source>No room open</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1222,7 +1370,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+455"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+423"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1236,12 +1384,12 @@ Ekzemplo: https://servisto.mia:8787</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+15"/>
+        <location line="+10"/>
         <source>No room selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+29"/>
         <source>Room options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1325,12 +1473,12 @@ Ekzemplo: https://servisto.mia:8787</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+60"/>
+        <location filename="../qml/UserProfile.qml" line="+61"/>
         <source>Verify</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+23"/>
         <source>Ban the user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1348,7 +1496,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+670"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+781"/>
         <source>Minimize to tray</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1368,7 +1516,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-174"/>
+        <location line="-195"/>
         <source>profile: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1378,7 +1526,22 @@ Ekzemplo: https://servisto.mia:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+46"/>
+        <source>Cross Signing Keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>REQUEST</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>DOWNLOAD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
         <source>Keep the application running in the background after closing the client window.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1521,7 +1684,17 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-48"/>
+        <location line="+395"/>
+        <source>CACHED</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>NOT CACHED</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-449"/>
         <source>Scale factor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1596,7 +1769,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-143"/>
+        <location line="-155"/>
         <source>Session Keys</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1611,7 +1784,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-25"/>
+        <location line="-34"/>
         <source>ENCRYPTION</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1626,7 +1799,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+156"/>
+        <location line="+177"/>
         <source>Touchscreen mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1646,6 +1819,46 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+5"/>
+        <source>Master signing key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>User signing key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Self signing key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users, that have verified you.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Backup key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+54"/>
         <source>Select a file</source>
         <translation type="unfinished"></translation>
@@ -1656,7 +1869,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished">Ĉiuj dosieroj (*)</translation>
     </message>
     <message>
-        <location line="+217"/>
+        <location line="+225"/>
         <source>Open Sessions File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1702,7 +1915,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <name>Waiting</name>
     <message>
         <location filename="../qml/device-verification/Waiting.qml" line="+7"/>
-        <source>Waiting for other party</source>
+        <source>Waiting for other party…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1729,7 +1942,7 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>WelcomePage</name>
     <message>
-        <location filename="../../src/WelcomePage.cpp" line="+47"/>
+        <location filename="../../src/WelcomePage.cpp" line="+46"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
         <translatorcomment>Should &quot;Matrico&quot; be &quot;Matrica&quot;? (I don&apos;t think so)</translatorcomment>
         <translation>Bonvenon al nheko! La labortabla kliento por la Matrico protokolo.</translation>
@@ -1753,37 +1966,9 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+146"/>
+        <location filename="../../src/Utils.cpp" line="+147"/>
         <source>Yesterday</source>
         <translation>Hieraŭ</translation>
-    </message>
-</context>
-<context>
-    <name>dialogs::AcceptCall</name>
-    <message>
-        <location filename="../../src/dialogs/AcceptCall.cpp" line="+43"/>
-        <source>Incoming call: No microphone found.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+51"/>
-        <source>Video Call</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>Voice Call</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Accept</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Reject</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1906,34 +2091,6 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+8"/>
         <source>Logout. Are you sure?</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>dialogs::PlaceCall</name>
-    <message>
-        <location filename="../../src/dialogs/PlaceCall.cpp" line="+35"/>
-        <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+27"/>
-        <source>Voice</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Video</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Place a call to </source>
         <translation type="unfinished"></translation>
     </message>
 </context>

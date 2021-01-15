@@ -27,7 +27,7 @@ Popup {
             Layout.leftMargin: 8
 
             Label {
-                text: qsTr("Place a call to ") + TimelineManager.timeline.roomName + "?"
+                text: qsTr("Place a call to %1?").arg(TimelineManager.timeline.roomName)
                 color: colors.windowText
             }
 
@@ -65,7 +65,7 @@ Popup {
             }
 
             Button {
-                text: qsTr(" Voice ")
+                text: qsTr("Voice")
                 icon.source: "qrc:/icons/icons/ui/place-call.png"
                 onClicked: {
                     if (buttonLayout.validateMic()) {
@@ -78,7 +78,7 @@ Popup {
 
             Button {
                 visible: CallManager.cameras.length > 0
-                text: qsTr(" Video ")
+                text: qsTr("Video")
                 icon.source: "qrc:/icons/icons/ui/video-call.png"
                 onClicked: {
                     if (buttonLayout.validateMic()) {
