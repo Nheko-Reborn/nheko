@@ -53,7 +53,7 @@
     <message>
         <location filename="../../src/Cache.cpp" line="+1951"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Te-ai alăturat camerei.</translation>
     </message>
 </context>
 <context>
@@ -122,23 +122,23 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+211"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a putut invita utilizatorul: %1</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+779"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizator invitat: %1</translation>
     </message>
     <message>
         <location line="-500"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a putut muta cache-ul pe versiunea curentă. Acest lucru poate avea diferite cauze. Vă rugăm să deschideți un issue și încercați să folosiți o versiune mai veche între timp. O altă opțiune ar fi să încercați să ștergeți cache-ul manual.</translation>
     </message>
     <message>
         <location line="+456"/>
         <source>Room %1 created.</source>
-        <translation type="unfinished"></translation>
+        <translation>Camera %1 a fost creată.</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -153,7 +153,7 @@
     <message>
         <location line="+11"/>
         <source>Failed to invite %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a putut invita %1 în %2: %3</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -168,12 +168,12 @@
     <message>
         <location line="+11"/>
         <source>Failed to kick %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a putut elimina %1 în %2: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Kicked user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizator eliminat: %1</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -188,12 +188,12 @@
     <message>
         <location line="+11"/>
         <source>Failed to ban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a putut interzice utilizatorul %1 în %2: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Banned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizator interzis: %1</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -208,73 +208,73 @@
     <message>
         <location line="+11"/>
         <source>Failed to unban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a putut dezinterzice %1 în %2: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unbanned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizator dezinterzis: %1</translation>
     </message>
     <message>
         <location line="-582"/>
         <source>Cache migration failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a putut migra cache-ul!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Incompatible cache version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versiune cache incompatibilă</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cache-ul de pe disc este mai nou decât versiunea pe care Nheko o suportă. Vă rugăm actualizați sau ștergeți cache-ul.</translation>
     </message>
     <message>
         <location line="+50"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a putut restabili contul OLM. Vă rugăm să vă reconectați.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-au putut restabili datele salvate. Vă rugăm să vă reconectați.</translation>
     </message>
     <message>
         <location line="+165"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-au putut stabili cheile. Răspunsul serverului: %1 %2. Vă rugăm încercați mai târziu.</translation>
     </message>
     <message>
         <location line="+34"/>
         <location line="+116"/>
         <source>Please try to login again: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Vă rugăm să vă reconectați: %1</translation>
     </message>
     <message>
         <location line="+37"/>
         <source>Failed to join room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a putut alătura la cameră: %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You joined the room</source>
-        <translation type="unfinished"></translation>
+        <translation>V-ați alăturat camerei</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Failed to remove invite: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a putut șterge invitația: %1</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Room creation failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a putut crea camera: %1</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Failed to leave room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a putut părăsi camera: %1</translation>
     </message>
 </context>
 <context>
@@ -282,17 +282,17 @@
     <message>
         <location filename="../../src/CommunitiesListItem.cpp" line="+133"/>
         <source>All rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Toate camerele</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Favourite rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Camere favorite</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Low priority rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Camere cu prioritate scăzută</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -304,7 +304,7 @@
         <location line="+2"/>
         <location line="+2"/>
         <source> (tag)</source>
-        <translation type="unfinished"></translation>
+        <translation> (etichetă)</translation>
     </message>
     <message>
         <location line="+3"/>
