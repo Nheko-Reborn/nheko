@@ -6,18 +6,18 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+66"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ringer upp...</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ansluter...</translation>
     </message>
     <message>
         <location line="+76"/>
         <source>Toggle camera view</source>
-        <translation type="unfinished"></translation>
+        <translation>Byt kamera</translation>
     </message>
     <message>
         <location line="+13"/>
