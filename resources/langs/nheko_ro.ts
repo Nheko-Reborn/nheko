@@ -309,7 +309,7 @@
     <message>
         <location line="+3"/>
         <source> (community)</source>
-        <translation type="unfinished"></translation>
+        <translation> (comunitate)</translation>
     </message>
 </context>
 <context>
