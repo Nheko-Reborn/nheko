@@ -345,22 +345,22 @@
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+7"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Kod weryfikacyjny</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Zweryfikuj poniższy ciąg cyfr. Po obu stronach powinny być wyświetlane identyczne. Jeżeli ciągi się różnią, naciśnij &apos;Nie pasują!&apos; aby przerwać weryfikację!</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie pasują!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Pasują!</translation>
     </message>
 </context>
 <context>
@@ -368,12 +368,12 @@
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+73"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Zastosuj</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -392,22 +392,22 @@
         <location filename="../qml/emoji/EmojiPicker.qml" line="+113"/>
         <location line="+181"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Szukaj</translation>
     </message>
     <message>
         <location line="-66"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>Ludzie</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>Przyroda</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished"></translation>
+        <translation>Jedzenie</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -417,7 +417,7 @@
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished"></translation>
+        <translation>Podróże</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -440,22 +440,22 @@
     <message>
         <location filename="../qml/device-verification/EmojiVerification.qml" line="+7"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Kod weryfikacyjny</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Zweryfikuj poniższe emotikony. Powinny być identyczne po obu stronach. Jeżeli są różne, naciśnij &apos;Nie pasują!&apos; aby przerwać weryfikację!</translation>
     </message>
     <message>
         <location line="+376"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie pasują!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Pasują!</translation>
     </message>
 </context>
 <context>
@@ -463,12 +463,12 @@
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+19"/>
         <source>Encrypted</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaszyfrowane</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta wiadomość nie jest zaszyfrowana!</translation>
     </message>
 </context>
 <context>
@@ -477,37 +477,37 @@
         <location filename="../../src/timeline/EventStore.cpp" line="+548"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Zdarzenie szyfrowania (Nie znaleziono kluczy deszyfrujących)</translation>
     </message>
     <message>
         <location line="+32"/>
         <location line="+63"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation type="unfinished"></translation>
+        <translation>--Błąd deszyfrowania (nie udało się uzyskać kluczy megolm z bazy danych) --</translation>
     </message>
     <message>
         <location line="-49"/>
         <location line="+62"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Błąd Deszyfracji (%1) --</translation>
     </message>
     <message>
         <location line="-52"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Zdarzenie szyfrowania (Nieznany typ zdarzenia) --</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>-- Replay attack! This message index was reused! --</source>
-        <translation type="unfinished"></translation>
+        <translation>-- Atak powtórzeniowy! Indeks tej wiadomości został użyty ponownie! --</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>-- Message by unverified device! --</source>
-        <translation type="unfinished"></translation>
+        <translation>-- Wiadomość z niezweryfikowanego urządzenia! --</translation>
     </message>
 </context>
 <context>
@@ -515,33 +515,33 @@
     <message>
         <location filename="../qml/device-verification/Failed.qml" line="+7"/>
         <source>Verification failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Weryfikacja nieudana</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Other client does not support our verification protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Inny klient nie obsługuje naszego protokołu weryfikacji.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Key mismatch detected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Wykryto niedopasowanie kluczy!</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+4"/>
         <source>Device verification timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Przekroczono limit czasu na weryfikację urządzenia.</translation>
     </message>
     <message>
         <location line="-2"/>
         <source>Other party canceled the verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>Druga strona anulowała weryfikację.</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Zamknij</translation>
     </message>
 </context>
 <context>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+18"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń</translation>
     </message>
 </context>
 <context>
@@ -588,7 +588,9 @@
 You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Twój login. Mxid powinien zaczynać się od @ po którym następuje identyfikator użytkownika. Po identyfikatorze użytkownika musisz podać nazwę Twojego serwera domowego oddzielając ją dwukropkiem (&apos;:&apos;). Zamiast nazwy możesz też podać jego adres (jeżeli nie obsługuje on normalnego wyszukiwania). 
+Przykład: @user:server.my
+Jeżeli Nheko nie odnajdzie Twojego serwera domowego, wyświetli formularz umożliwiający ręczne podanie jego adresu.</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -603,7 +605,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa dla tego urządzenia, będzie ona widoczna dla innych użytkowników, kiedy będą weryfikować Twoje urządzenia. Jeżeli żadna nie jest podana, używana jest domyślna.</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -620,12 +622,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-104"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatyczne odkrywanie zakończone niepowodzeniem. Otrzymano nieprawidłową odpowiedź.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatyczne odkrywanie zakończone niepowodzeniem. Napotkano nieznany błąd. .well-known.</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -645,7 +647,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+59"/>
         <source>SSO LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>Logowanie SSO</translation>
     </message>
     <message>
         <location line="+37"/>
@@ -655,7 +657,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+54"/>
         <source>SSO login failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Logowanie SSO zakończone niepowodzeniem</translation>
     </message>
 </context>
 <context>
@@ -668,7 +670,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+4"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -682,37 +684,37 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>Encryption enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Szyfrowanie włączone</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>room name changed to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa pokoju zmieniona na: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>removed room name</source>
-        <translation type="unfinished"></translation>
+        <translation>usunięto nazwę pokoju</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>topic changed to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>temat zmieniono na: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>removed topic</source>
-        <translation type="unfinished"></translation>
+        <translation>usunięto temat</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 created and configured room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 utworzył i skonfigurował pokój: %2</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 placed a voice call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 rozpoczął(-ęła) połączenie głosowe</translation>
     </message>
     <message>
         <location line="+2"/>
