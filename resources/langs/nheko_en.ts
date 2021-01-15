@@ -2243,15 +2243,6 @@ Media size: %2
         <source>Respond to key requests</source>
         <translation>Respond to key requests</translation>
     </message>
-    <message>
-        <location line="+3"/>
-        <source>Whether or not the client should respond automatically with the session keys
- upon request. Use with caution, this is a temporary measure to test the
- E2E implementation until device verification is completed.</source>
-        <translation>Whether or not the client should respond automatically with the session keys
- upon request. Use with caution, this is a temporary measure to test the
- E2E implementation until device verification is completed.</translation>
-    </message>
     <message numerus="yes">
         <location line="+80"/>
         <source>%n member(s)</source>
