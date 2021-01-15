@@ -22,12 +22,12 @@
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyłącz wyciszenie mikrofonu</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Wycisz mikrofon</translation>
     </message>
 </context>
 <context>
@@ -35,12 +35,12 @@
     <message>
         <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+7"/>
         <source>Awaiting Confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Oczekiwanie na potwierdzenie</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Waiting for other side to complete verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>Oczekiwanie na dokończenie weryfikacji przez drugą stronę</translation>
     </message>
     <message>
         <location line="+12"/>
