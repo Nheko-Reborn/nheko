@@ -368,22 +368,22 @@
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+73"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplicare</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Renunță</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nume</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Subiect</translation>
     </message>
 </context>
 <context>
@@ -412,7 +412,7 @@
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished"></translation>
+        <translation>Activitate</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -422,17 +422,17 @@
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>Obiecte</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>Simboluri</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>Steaguri</translation>
     </message>
 </context>
 <context>
@@ -463,7 +463,7 @@
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+19"/>
         <source>Encrypted</source>
-        <translation type="unfinished"></translation>
+        <translation>Criptat</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+18"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Ștergere</translation>
     </message>
 </context>
 <context>
@@ -575,12 +575,12 @@
     <message>
         <location filename="../../src/LoginPage.cpp" line="+92"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID Matrix</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>ex. @joe:matrix.org</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -588,17 +588,20 @@
 You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Numele de conectare. Un mxid trebuie să înceapă cu @ urmat de id-ul utilizatorului. După id trebuie să includeți numele serverului dvs. după :.
+Puteți pune și adresa homeserverului, dacă serverul dumneavoastră nu suportă căutare .well-known.
+Exemplu: @utilizator:serverul.meu
+Dacă Nheko nu vă poate găsi homeserverul, vă va arăta un câmp pentru introducerea manuală a serverului.</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Parolă</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nume dispozitiv</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -609,53 +612,54 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
         <location line="+6"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresa la care se poate contacta APIul homeserverului dumneavoastră.
+Exemplu: https://serverul.meu:8787</translation>
     </message>
     <message>
         <location line="+19"/>
         <location line="+217"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>CONECTARE</translation>
     </message>
     <message>
         <location line="-104"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished"></translation>
+        <translation>Autodescoperirea a eșuat. Răspunsul primit este defectuos.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished"></translation>
+        <translation>Autodescoperirea a eșuat. Eroare necunoscută la solicitarea .well-known.</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Punctele finale necesare nu au fost găsite. Posibil a nu fi un server Matrix.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Răspuns eronat primit. Verificați ca domeniul homeserverului să fie valid.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>A apărut o eroare necunoscută. Verificați ca domeniul homeserverului să fie valid.</translation>
     </message>
     <message>
         <location line="+59"/>
         <source>SSO LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>CONECTARE SSO</translation>
     </message>
     <message>
         <location line="+37"/>
         <source>Empty password</source>
-        <translation type="unfinished"></translation>
+        <translation>Parolă necompletată</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>SSO login failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectarea SSO a eșuat</translation>
     </message>
 </context>
 <context>
@@ -663,12 +667,12 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/dialogs/MemberList.cpp" line="+90"/>
         <source>Room members</source>
-        <translation type="unfinished"></translation>
+        <translation>Membrii camerei</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -682,32 +686,32 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>Encryption enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Criptare activată</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>room name changed to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>numele camerei schimbat la: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>removed room name</source>
-        <translation type="unfinished"></translation>
+        <translation>numele camerei șters</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>topic changed to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>subiect schimbat la: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>removed topic</source>
-        <translation type="unfinished"></translation>
+        <translation>subiect șters</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 created and configured room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a creat și configurat camera: %2</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -727,12 +731,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+11"/>
         <source>%1 answered the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a răspuns apelului.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 ended the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a închis apelul.</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -864,7 +868,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
         <source>unimplemented event: </source>
-        <translation type="unfinished"></translation>
+        <translation>eveniment neimplementat: </translation>
     </message>
 </context>
 <context>
@@ -890,7 +894,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/QuickSwitcher.cpp" line="+74"/>
         <source>Search for a room...</source>
-        <translation type="unfinished"></translation>
+        <translation>Caută o cameră…</translation>
     </message>
 </context>
 <context>
