@@ -53,7 +53,7 @@
     <message>
         <location filename="../../src/Cache.cpp" line="+1951"/>
         <source>You joined this room.</source>
-        <translation>Dołączyłeś(-łaś) do tego pokoju</translation>
+        <translation>Dołączyłeś(-łaś) do tego pokoju.</translation>
     </message>
 </context>
 <context>
@@ -122,7 +122,7 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+211"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się zaprosić użytkownika: %1</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -148,7 +148,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy na pewno chcesz zaprosić %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -158,12 +158,12 @@
     <message>
         <location line="+15"/>
         <source>Confirm kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Potwierdź kopniaka</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to kick %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>czy na pewno chcesz wykopać %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -173,17 +173,17 @@
     <message>
         <location line="+5"/>
         <source>Kicked user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Wykopano użytkownika: %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Confirm ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Potwierdź zablokowanie</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to ban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy na pewno chcesz zablokować %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -193,17 +193,17 @@
     <message>
         <location line="+5"/>
         <source>Banned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Zablokowano użytkownika: %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Confirm unban</source>
-        <translation type="unfinished"></translation>
+        <translation>Potwierdź odblokowanie</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to unban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy na pewno chcesz odblokować %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -213,22 +213,22 @@
     <message>
         <location line="+5"/>
         <source>Unbanned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Odblokowano użytkownika: %1</translation>
     </message>
     <message>
         <location line="-582"/>
         <source>Cache migration failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się przenieść pamięci podręcznej!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Incompatible cache version</source>
-        <translation type="unfinished"></translation>
+        <translation>Niekompatybilna wersja pamięci podręcznej</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pamięć podręczna na Twoim dysku jest nowsza niż wersja obsługiwana przez Nheko. Zaktualizuj lub wyczyść pamięć podręczną.</translation>
     </message>
     <message>
         <location line="+50"/>
@@ -243,7 +243,7 @@
     <message>
         <location line="+165"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się ustawić kluczy szyfrujących. Odpowiedź serwera: %1 %2. Spróbuj ponownie później.</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -254,17 +254,17 @@
     <message>
         <location line="+37"/>
         <source>Failed to join room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się dołączyć do pokoju: %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You joined the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Dołączyłeś do pokoju</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Failed to remove invite: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się usunąć zaproszenia: %1</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -282,29 +282,29 @@
     <message>
         <location filename="../../src/CommunitiesListItem.cpp" line="+133"/>
         <source>All rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Wszystkie pokoje</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Favourite rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Ulubione pokoje</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Low priority rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokoje o niskim priorytecie</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Server Notices</source>
         <comment>Tag translation for m.server_notice</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ogłoszenia serwera</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source> (tag)</source>
-        <translation type="unfinished"></translation>
+        <translation> (tag)</translation>
     </message>
     <message>
         <location line="+3"/>
