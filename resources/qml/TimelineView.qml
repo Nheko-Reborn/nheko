@@ -52,6 +52,13 @@ Page {
 
     }
 
+    Component {
+        id: mobileCallInviteDialog
+
+        CallInvite {
+        }
+    }
+
     Menu {
         id: messageContextMenu
 
@@ -151,6 +158,16 @@ Page {
             }
         }
 
+        Connections {
+            target: CallManager
+            onNewInviteState: {
+                if (CallManager.haveCallInvite && Settings.mobileMode) {
+                    var dialog = mobileCallInviteDialog.createObject(msgView);
+                    dialog.open();
+                }
+            }
+        }
+
         Label {
             visible: !TimelineManager.timeline && !TimelineManager.isInitialSync
             anchors.centerIn: parent
@@ -184,6 +201,7 @@ Page {
             }
 
             Rectangle {
+                id: msgView
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 color: colors.base
