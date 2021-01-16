@@ -8,6 +8,7 @@ AbstractButton {
     property string image: undefined
     property color highlightColor: colors.highlight
     property color buttonTextColor: colors.buttonText
+    property bool changeColorOnHover: true
 
     focusPolicy: Qt.NoFocus
     width: 16
@@ -18,7 +19,12 @@ AbstractButton {
 
         // Workaround, can't get icon.source working for now...
         anchors.fill: parent
-        source: "image://colorimage/" + image + "?" + (button.hovered ? highlightColor : buttonTextColor)
+        source: {
+            var src = "image://colorimage/" + image;
+            if (changeColorOnHover)
+                src += "?" + (button.hovered ? highlightColor : buttonTextColor);
+            return src;
+        }
     }
 
     MouseArea {
