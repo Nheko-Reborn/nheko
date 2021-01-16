@@ -445,7 +445,7 @@
     <message>
         <location line="+10"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>Vänligen bekräfta följande emoji.  Samma emoji ska visas på bägge sidor. Stämmer de inte överens, vänligen tryck på &apos;De överensstämmer inte!&apos; för att avbryta verifikationen!</translation>
+        <translation>Vänligen bekräfta följande emoji. Samma emoji ska visas på bägge sidor. Stämmer de inte överens, vänligen tryck på &apos;De överensstämmer inte!&apos; för att avbryta verifikationen!</translation>
     </message>
     <message>
         <location line="+376"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+18"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort</translation>
     </message>
 </context>
 <context>
@@ -575,12 +575,12 @@
     <message>
         <location filename="../../src/LoginPage.cpp" line="+92"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Matrix-ID</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>t.ex. @joe:matrix.org</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -588,74 +588,78 @@
 You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ditt inloggningsnamn. Ett mxid inleds med @ efterföljt av användarnamnet. Efter användarnamnet behöver du inkludera ditt servernamn efter ett :.
+Servernamnet kan också vara adressen till din hemserver, om denna inte stödjer uppslag via .well-known.
+Exempel: @användare:server.my
+Om Nheko inte kan hitta din hemserver automatiskt kommer ett fält dyka upp där du kan fylla i adressen manuellt.</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösenord</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>Enhetsnamn</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ett namn för denna enhet. Namnet kommer synas för andra när du verifierar dina enheter. Om du inte förser ett namn kommer ett standardnamn användas.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>Addressen som kan användas för att kontakta din hemservers klient-API.
+Exempel: https://server.my:8787</translation>
     </message>
     <message>
         <location line="+19"/>
         <location line="+217"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>INLOGGNING</translation>
     </message>
     <message>
         <location line="-104"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished"></translation>
+        <translation>Autouppslag misslyckades. Mottog felkonstruerat svar.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished"></translation>
+        <translation>Autouppslag misslyckades. Okänt fel uppstod vid begäran av .well-known.</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunde inte hitta de nödvändiga ändpunkterna. Möjligtvis inte en Matrix-server.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mottog felkonstruerat svar. Se till att hemserver-domänen är giltig.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ett okänt fel uppstod. Se till att hemserver-domänen är giltig.</translation>
     </message>
     <message>
         <location line="+59"/>
         <source>SSO LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>SSO INLOGGNING</translation>
     </message>
     <message>
         <location line="+37"/>
         <source>Empty password</source>
-        <translation type="unfinished"></translation>
+        <translation>Tomt lösenord</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>SSO login failed</source>
-        <translation type="unfinished"></translation>
+        <translation>SSO-inloggning misslyckades</translation>
     </message>
 </context>
 <context>
@@ -663,12 +667,12 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/dialogs/MemberList.cpp" line="+90"/>
         <source>Room members</source>
-        <translation type="unfinished"></translation>
+        <translation>Rumsmedlemmar</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -676,57 +680,57 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+123"/>
         <source>Encryption enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Kryptering aktiverad</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>room name changed to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>rummets namn ändrat till: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>removed room name</source>
-        <translation type="unfinished"></translation>
+        <translation>tog bort rummets namn</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>topic changed to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>ämne ändrat till: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>removed topic</source>
-        <translation type="unfinished"></translation>
+        <translation>tog bort ämne</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 created and configured room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 skapade och konfigurerade rum: %2</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 placed a voice call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 påbörjade ett röstsamtal.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a video call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 påbörjade ett videosamtal.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 påbörjade ett samtal.</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Negotiating call...</source>
-        <translation type="unfinished"></translation>
+        <translation>Förhandlar samtal…</translation>
     </message>
     <message>
         <location line="-18"/>
         <source>%1 answered the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 besvarade samtalet.</translation>
     </message>
     <message>
         <location line="-72"/>
@@ -737,7 +741,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+72"/>
         <source>%1 ended the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 avslutade samtalet.</translation>
     </message>
 </context>
 <context>
@@ -760,7 +764,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+41"/>
         <source>Write a message...</source>
-        <translation type="unfinished"></translation>
+        <translation>Skriv ett meddelande…</translation>
     </message>
     <message>
         <location line="+144"/>
@@ -813,22 +817,22 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+10"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>Avvisa</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Start verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Påbörja verifikation</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Godkänn</translation>
     </message>
 </context>
 <context>
@@ -864,7 +868,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
         <source>unimplemented event: </source>
-        <translation type="unfinished"></translation>
+        <translation>ej implementerat event: </translation>
     </message>
 </context>
 <context>
@@ -872,17 +876,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/main.cpp" line="+182"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa en unik profil, vilket tillåter dig att logga in på flera konton samtidigt och starta flera instanser av Nheko.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>profile</source>
-        <translation type="unfinished"></translation>
+        <translation>profil</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>profile name</source>
-        <translation type="unfinished"></translation>
+        <translation>profilnamn</translation>
     </message>
 </context>
 <context>
@@ -890,7 +894,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/QuickSwitcher.cpp" line="+74"/>
         <source>Search for a room...</source>
-        <translation type="unfinished"></translation>
+        <translation>Sök efter ett rum…</translation>
     </message>
 </context>
 <context>
@@ -898,48 +902,48 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/RegisterPage.cpp" line="+89"/>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Användarnamn</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+286"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
-        <translation type="unfinished"></translation>
+        <translation>Användarnamnet kan inte vara tomt, och måste enbart innehålla tecknen a-z, 0-9, ., _, =, -, och /.</translation>
     </message>
     <message>
         <location line="-282"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösenord</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänligen välj ett säkert lösenord. De specifika kraven för lösenordsstyrka kan variera beroende på din hemserver.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Password confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekräfta lösenord</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Hemserver</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
-        <translation type="unfinished"></translation>
+        <translation>En server som tillåter registrering. Eftersom matrix är decentraliserat behöver du först hitta en server du kan registrera dig på, eller upprätta en på egen hand.</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REGISTRERA</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>No supported registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Inga stödda registreringsflöden!</translation>
     </message>
     <message>
         <location line="+209"/>
@@ -949,17 +953,17 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-26"/>
         <source>Password is not long enough (min 8 chars)</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösenordet är inte långt nog (minst 8 tecken)</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Passwords don&apos;t match</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösenorden stämmer inte överens</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Invalid server name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogiltigt servernamn</translation>
     </message>
 </context>
 <context>
@@ -967,7 +971,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/ReplyPopup.qml" line="+43"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Stäng</translation>
     </message>
 </context>
 <context>
@@ -975,7 +979,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/Cache.cpp" line="+1859"/>
         <source>no version stored</source>
-        <translation type="unfinished"></translation>
+        <translation>ingen version lagrad</translation>
     </message>
 </context>
 <context>
@@ -983,64 +987,64 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/RoomInfoListItem.cpp" line="+102"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Lämna rum</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Tag room as:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagga rum som:</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Favourite</source>
         <comment>Standard matrix tag for favourites</comment>
-        <translation type="unfinished"></translation>
+        <translation>Favorit</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Low Priority</source>
         <comment>Standard matrix tag for low priority rooms</comment>
-        <translation type="unfinished"></translation>
+        <translation>Låg prioritet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Server Notice</source>
         <comment>Standard matrix tag for server notices</comment>
-        <translation type="unfinished"></translation>
+        <translation>Servernotis</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Adds or removes the specified tag.</source>
         <comment>WhatsThis hint for tag menu actions</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lägger till eller tar bort den angivna taggen.</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>New tag...</source>
         <comment>Add a new tag to the room</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ny tagg…</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>New Tag</source>
         <comment>Tag name prompt title</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ny tagg</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Tag:</source>
         <comment>Tag name prompt</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tagg:</translation>
     </message>
     <message>
         <location line="+169"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Godkänn</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Avvisa</translation>
     </message>
 </context>
 <context>
@@ -1048,27 +1052,27 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/SideBarActions.cpp" line="+40"/>
         <source>User settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Användarinställningar</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Create new room</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa nytt rum</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join a room</source>
-        <translation type="unfinished"></translation>
+        <translation>Gå med i ett rum</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Start a new chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Starta en ny chatt</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Rumkatalog</translation>
     </message>
 </context>
 <context>
@@ -1076,22 +1080,22 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/StatusIndicator.qml" line="+17"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Misslyckat</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Skickat</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Received</source>
-        <translation type="unfinished"></translation>
+        <translation>Mottaget</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Read</source>
-        <translation type="unfinished"></translation>
+        <translation>Läst</translation>
     </message>
 </context>
 <context>
@@ -1099,17 +1103,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/device-verification/Success.qml" line="+6"/>
         <source>Successful Verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Lyckad verifikation</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Verification successful! Both sides verified their devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifikationen lyckades!  Bägge sidor verifierade sina enheter!</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Stäng</translation>
     </message>
 </context>
 <context>
@@ -1117,178 +1121,178 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/timeline/TimelineModel.cpp" line="+862"/>
         <source>Message redaction failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunde inte maskera meddelande: %1</translation>
     </message>
     <message>
         <location line="+74"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunde inte kryptera event, sändning avbruten!</translation>
     </message>
     <message>
         <location line="+156"/>
         <source>Save image</source>
-        <translation type="unfinished"></translation>
+        <translation>Spara bild</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save video</source>
-        <translation type="unfinished"></translation>
+        <translation>Spara video</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save audio</source>
-        <translation type="unfinished"></translation>
+        <translation>Spara ljud</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save file</source>
-        <translation type="unfinished"></translation>
+        <translation>Spara fil</translation>
     </message>
     <message numerus="yes">
         <location line="+129"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1%2 skriver.</numerusform>
+            <numerusform>%1 och %2 skriver.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+68"/>
         <source>%1 opened the room to the public.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 öppnade rummet till allmänheten.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 made this room require and invitation to join.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 satte rummet till att kräva inbjudan för att gå med.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room open to guests.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 öppnade rummet för gäståtkomst.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 has closed the room to guest access.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 stängde rummet för gäståtkomst.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room history world readable. Events may be now read by non-joined people.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 gjorde rummets historik läsligt för omvärlden. Event kan nu läsas av användare som inte är i rummet.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 set the room history visible to members from this point on.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 gjorde rummets historik läslig för medlemmar från och med nu.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they were invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 gjorde rummets historik läslig för medlemmar sedan de blev inbjudna.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they joined the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 gjorde rummets historik läslig för medlemmar sedan de gick med i rummet.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 has changed the room&apos;s permissions.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 har ändrat rummets behörigheter.</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>%1 was invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 blev inbjuden.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 changed their display name and avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ändrade sitt smeknamn och sin avatar.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed their display name.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ändrade sitt smeknamn.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed their avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ändrade sin avatar.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed some profile info.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ändrade någon profilinfo.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 joined.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 gick med.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 rejected their invite.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 avvisade sin inbjudan.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Revoked the invite to %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Återkallade inbjudan till %1.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 left the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lämnade rummet.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kicked %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sparkade ut %1.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unbanned %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Upphävde bannlysningen av %1.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 was banned.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 blev bannlyst.</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>%1 redacted their knock.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 maskerade sin knackning.</translation>
     </message>
     <message>
         <location line="-748"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Du gick med i detta rum.</translation>
     </message>
     <message>
         <location line="+750"/>
         <source>Rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Avvisade knackningen från %1.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 lämnade efter att redan ha lämnat!</translation>
     </message>
     <message>
         <location line="+15"/>
         <source> Reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Anledning: %1</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>%1 knocked.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 knackade.</translation>
     </message>
 </context>
 <context>
@@ -1296,17 +1300,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/TimelineRow.qml" line="+95"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Reagera</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Svara</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Alternativ</translation>
     </message>
 </context>
 <context>
@@ -1314,32 +1318,32 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/TimelineView.qml" line="+82"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Reagera</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Svara</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Läskvitton</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Markera som läst</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>View raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa meddelandekälla</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>View decrypted raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa dekrypterad meddelandekälla</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1349,12 +1353,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Spara som</translation>
     </message>
     <message>
         <location line="+51"/>
         <source>No room open</source>
-        <translation type="unfinished"></translation>
+        <translation>Inget rum öppet</translation>
     </message>
 </context>
 <context>
@@ -1370,38 +1374,38 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/TopBar.qml" line="+43"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillbaka till rumlista</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+10"/>
         <source>No room selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Inget rum markerat</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Room options</source>
-        <translation type="unfinished"></translation>
+        <translation>Alternativ för rum</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Invite users</source>
-        <translation type="unfinished"></translation>
+        <translation>Bjud in användare</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Members</source>
-        <translation type="unfinished"></translation>
+        <translation>Medlemmar</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Lämna rum</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Inställningar</translation>
     </message>
 </context>
 <context>
@@ -1409,12 +1413,12 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/TrayIcon.cpp" line="+122"/>
         <source>Show</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Avsluta</translation>
     </message>
 </context>
 <context>
@@ -1422,42 +1426,42 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/UserInfoWidget.cpp" line="+95"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Logga ut</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Set custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Sätt statusmeddelande</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Statusmeddelande</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Status:</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Set presence automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Sätt närvaro automatiskt</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation>Online</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Otillgänglig</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Offline</translation>
     </message>
 </context>
 <context>
@@ -1465,22 +1469,22 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/UserProfile.qml" line="+61"/>
         <source>Verify</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekräfta</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Ban the user</source>
-        <translation type="unfinished"></translation>
+        <translation>Bannlys användaren</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Start a private chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Starta en privat chatt</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Kick the user</source>
-        <translation type="unfinished"></translation>
+        <translation>Sparka ut användaren</translation>
     </message>
 </context>
 <context>
@@ -1488,32 +1492,32 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/UserSettingsPage.cpp" line="+781"/>
         <source>Minimize to tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimera till systemtråg</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start in tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Starta i systemtråg</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Group&apos;s sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppens sidofält</translation>
     </message>
     <message>
         <location line="-3"/>
         <source>Circular Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>Cirkulära avatarer</translation>
     </message>
     <message>
         <location line="-195"/>
         <source>profile: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>profil: %1</translation>
     </message>
     <message>
         <location line="+112"/>
         <source>CALLS</source>
-        <translation type="unfinished"></translation>
+        <translation>SAMTAL</translation>
     </message>
     <message>
         <location line="+46"/>
@@ -1533,140 +1537,148 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+27"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Håll applikationen igång i bakgrunden efter att ha stängt klienten.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Starta applikationen i bakgrunden utan att visa klienten.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - Circle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ändra utseendet av användaravatarer i chattar.
+AV - Kvadrat, PÅ - Cirkel.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa en kolumn innehållande grupper och taggar bredvid listan över rum.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Dekryptera meddelanden i sidofält</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dekryptera meddelanden visade i sidofältet.
+Påverkar endast krypterade chattar.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa knappar i tidslinje</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa knappar för att enkelt svara, reagera eller komma åt ytterligare alternativ bredvid varje meddelande.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Begränsa bredd av tidslinje</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation type="unfinished"></translation>
+        <translation>Ställ in maximal bredd av meddelanden i tidslinjen (i pixlar). Detta kan förbättra läsligheten på breda skärmar när Nheko är maximerat.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Typing notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;Skriver&quot;-notifikationer</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa vem som skriver i ett rum.
+Denna inställning avgör också huruvida notifikation skickas till andra när du skriver.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Sort rooms by unreads</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortera rum efter olästa</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa rum med nya meddelanden först.
+Om denna inställning är av kommer listan över rum endast sorteras efter när det sista meddelandet i rummet skickades.
+Om denna inställning är på kommer rum med aktiva notifikationer (den lilla cirkeln med ett nummer i) sorteras högst upp. Rum som du stängt av notifikationer för kommer fortfarande sorteras efter när det sista meddelandet skickades, eftersom du inte verkar tycka att de är lika viktiga som andra rum.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Läskvitton</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa om ditt meddelande har blivit läst.
+Status visas bredvid tidsstämpel.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Skicka meddelanden som Markdown</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillåt användning av Markdown i meddelanden.
+Om denna inställning är av kommer alla meddelanden skickas som oformatterad text.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Desktop notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrivbordsnotifikationer</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Notify about received message when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Notifiera om mottagna meddelanden när klienten inte är i fokus.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Alert on notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Notis vid notifikation</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Visar en notis när ett meddelande mottags.
+Detta gör vanligtvis att ikonen i aktivitetsfältet animeras på något sätt.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Markera meddelande vid hållande av muspekare</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ändra bakgrundsfärgen av meddelanden när du håller muspekaren över dem.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Stor Emoji i tidslinje</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Öka fontstorleken på meddelanden som enbart innehåller ett par emoji.</translation>
     </message>
     <message>
         <location line="+56"/>
@@ -1686,27 +1698,27 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="-449"/>
         <source>Scale factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Storleksfaktor</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ändrar storleksfaktorn av hela användargränssnittet.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Fontstorlek</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Font-familj</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Tema</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1741,52 +1753,52 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+14"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillåt reserv-turnserver</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kommer falla tillbaka på turn.matrix.org som turnserver om din hemserver inte erbjuder någon.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Enhets-ID</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished"></translation>
+        <translation>Enhetsfingeravtryck</translation>
     </message>
     <message>
         <location line="-155"/>
         <source>Session Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Sessionsnycklar</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>IMPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>IMPORTERA</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>EXPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>EXPORTERA</translation>
     </message>
     <message>
         <location line="-34"/>
         <source>ENCRYPTION</source>
-        <translation type="unfinished"></translation>
+        <translation>KRYPTERING</translation>
     </message>
     <message>
         <location line="-100"/>
         <source>GENERAL</source>
-        <translation type="unfinished"></translation>
+        <translation>ALLMÄNT</translation>
     </message>
     <message>
         <location line="+57"/>
         <source>INTERFACE</source>
-        <translation type="unfinished"></translation>
+        <translation>GRÄNSSNITT</translation>
     </message>
     <message>
         <location line="+177"/>
@@ -1801,12 +1813,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+12"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Emoji font-familj</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>Automatically replies to key requests from other users, if they are verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Svarar automatiskt på nyckelförfrågningar från andra användare om de är verifierade.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1861,7 +1873,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+225"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished"></translation>
+        <translation>Öppna sessionsfil</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1871,34 +1883,34 @@ This usually causes the application icon in the task bar to animate in some fash
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fel</translation>
     </message>
     <message>
         <location line="-66"/>
         <location line="+28"/>
         <source>File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Fillösenord</translation>
     </message>
     <message>
         <location line="-27"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ange lösenfrasen för att dekryptera filen:</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+28"/>
         <source>The password cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösenordet kan inte vara tomt</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ange lösenfrasen för att kryptera dina sessionsnycklar:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>File to save the exported session keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Fil för att spara de exporterade sessionsnycklarna</translation>
     </message>
 </context>
 <context>
@@ -1911,7 +1923,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+15"/>
         <source>Waiting for other side to accept the verification request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Väntar på att motparten ska acceptera verifikationsförfrågan.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1926,7 +1938,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+15"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Avbryt</translation>
     </message>
 </context>
 <context>
@@ -1934,22 +1946,22 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+46"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Välkommen till Nheko! Skrivbordsklienten för Matrix-protokollet.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enjoy your stay!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ha en trevlig vistelse!</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REGISTRERA</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>LOGGA IN</translation>
     </message>
 </context>
 <context>
@@ -1957,7 +1969,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/Utils.cpp" line="+147"/>
         <source>Yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation>Igår</translation>
     </message>
 </context>
 <context>
@@ -1965,42 +1977,42 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/CreateRoom.cpp" line="+36"/>
         <source>Create room</source>
-        <translation type="unfinished"></translation>
+        <translation>Skapa rum</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Namn</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Ämne</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Visibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Rummets synlighet</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Rumsmall</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Direktchatt</translation>
     </message>
 </context>
 <context>
@@ -2008,22 +2020,22 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/FallbackAuth.cpp" line="+30"/>
         <source>Open Fallback in Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Öppna reserv i webbläsare</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekräfta</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Öppna reserven, följ stegen och bekräfta när du slutfört dem.</translation>
     </message>
 </context>
 <context>
@@ -2031,12 +2043,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/InviteUsers.cpp" line="+42"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>User ID to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Användar-ID att bjuda in</translation>
     </message>
 </context>
 <context>
@@ -2044,17 +2056,17 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/JoinRoom.cpp" line="+30"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Gå med</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Rum-ID eller alias</translation>
     </message>
 </context>
 <context>
@@ -2062,12 +2074,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished"></translation>
+        <translation>Är du säker på att du vill lämna?</translation>
     </message>
 </context>
 <context>
@@ -2075,12 +2087,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Logout. Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Logga ut. Är du säker?</translation>
     </message>
 </context>
 <context>
@@ -2088,19 +2100,21 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+41"/>
         <source>Upload</source>
-        <translation type="unfinished"></translation>
+        <translation>Ladda upp</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location line="+87"/>
         <source>Media type: %1
 Media size: %2
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Mediatyp: %1
+Mediastorlek: %2
+</translation>
     </message>
 </context>
 <context>
@@ -2108,17 +2122,17 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekräfta</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished"></translation>
+        <translation>Lös reCAPTCHAn och tryck på Bekräfta</translation>
     </message>
 </context>
 <context>
@@ -2126,12 +2140,12 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReadReceipts.cpp" line="+120"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Läskvitton</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Stäng</translation>
     </message>
 </context>
 <context>
@@ -2139,12 +2153,12 @@ Media size: %2
     <message>
         <location line="-46"/>
         <source>Today %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Idag %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Yesterday %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Igår %1</translation>
     </message>
 </context>
 <context>
@@ -2152,82 +2166,82 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+135"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Inställningar</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Info</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Internal ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Internt ID</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Room Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Rumversion</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notifikationer</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Muted</source>
-        <translation type="unfinished"></translation>
+        <translation>Tystad</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Mentions only</source>
-        <translation type="unfinished"></translation>
+        <translation>Endast omnämningar</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Alla meddelanden</translation>
     </message>
     <message>
         <location line="+97"/>
         <source>Room access</source>
-        <translation type="unfinished"></translation>
+        <translation>Rumåtkomst</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Anyone and guests</source>
-        <translation type="unfinished"></translation>
+        <translation>Alla och gäster</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Anyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Alla som känner till rummets länk (inga gäster)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invited users</source>
-        <translation type="unfinished"></translation>
+        <translation>Inbjudna användare</translation>
     </message>
     <message>
         <location line="+50"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Kryptering</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Totalsträckskryptering</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kryptering är för närvarande experimentell och saker och ting kan oväntat gå sönder. &lt;br&gt;Vänligen notera att det inte kan stängas av det slagits på.</translation>
     </message>
     <message>
         <location line="-24"/>
         <source>Respond to key requests</source>
-        <translation type="unfinished"></translation>
+        <translation>Besvara nyckelförfrågningar</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2239,41 +2253,41 @@ Media size: %2
     <message numerus="yes">
         <location line="+80"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n medlem</numerusform>
+            <numerusform>%n medlemmar</numerusform>
         </translation>
     </message>
     <message>
         <location line="+142"/>
         <source>Failed to enable encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunde inte aktivera kryptering: %1</translation>
     </message>
     <message>
         <location line="+147"/>
         <source>Select an avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj en avatar</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Alla Filer (*)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Den valda filen är inte en bild</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunde inte läsa filen: %1</translation>
     </message>
     <message>
         <location line="+35"/>
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunde inte ladda upp bilden: %s</translation>
     </message>
 </context>
 <context>
@@ -2281,37 +2295,37 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/UserProfile.cpp" line="+64"/>
         <source>Ban the user from the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Bannlys användaren från rummet</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Ignore messages from this user</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorera meddelanden från denna användare</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Kick the user from the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Sparka ut användaren från rummet</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Start a conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>Påbörja en konversation</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Confirm DM</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekräfta DM</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to invite %1 (%2) to a direct chat?</source>
-        <translation type="unfinished"></translation>
+        <translation>Är du säker på att du vill bjuda in %1 (%2) till en direktchatt?</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Enheter</translation>
     </message>
 </context>
 <context>
@@ -2319,112 +2333,112 @@ Media size: %2
     <message>
         <location filename="../../src/Utils.h" line="+108"/>
         <source>You sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>Du skickade ett ljudklipp</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 skickade ett ljudklipp</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Du skickade en bild</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 skickade en bild</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Du skickade en fil</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 skickade en fil</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>Du skickade en video</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 skickade en video</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Du skickade en sticker</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 skickade en sticker</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Du skickade en notis</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 skickade en notis</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Du: %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>You sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>Du skickade ett krypterat meddelande</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 skickade ett krypterat meddelande</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Du ringde upp</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ringde upp</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Du besvarade ett samtal</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 besvarade ett samtal</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Du lade på</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lade på</translation>
     </message>
 </context>
 <context>
@@ -2432,12 +2446,12 @@ Media size: %2
     <message>
         <location filename="../../src/popups/UserMentions.cpp" line="+64"/>
         <source>This Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Detta Rum</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Alla Rum</translation>
     </message>
 </context>
 <context>
@@ -2445,7 +2459,7 @@ Media size: %2
     <message>
         <location filename="../../src/Utils.h" line="+4"/>
         <source>Unknown Message Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Okänd meddelandetyp</translation>
     </message>
 </context>
 </TS>
