@@ -902,48 +902,48 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location filename="../../src/RegisterPage.cpp" line="+89"/>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Nume de utilizator</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+286"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
-        <translation type="unfinished"></translation>
+        <translation>Numele de utilizator nu poate fi gol, și trebuie să conțină doar caracterele a-z, 0-9, ., =, - și /.</translation>
     </message>
     <message>
         <location line="-282"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Parolă</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vă rugăm să alegeți o parolă sigură. Cerințele necesare pentru rezistența parolei pot depinde de serverul dumneavoastră.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Password confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmare parolă</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Homeserver</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
-        <translation type="unfinished"></translation>
+        <translation>Un server care permite înregistrarea. Deoarece Matrix este decentralizat, trebuie să găsiți un server pe care să vă înregistrați sau să vă găzduiți propriul server.</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>ÎNREGISTRARE</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>No supported registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Fluxuri de înregistrare nesuportate!</translation>
     </message>
     <message>
         <location line="+209"/>
@@ -953,17 +953,17 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location line="-26"/>
         <source>Password is not long enough (min 8 chars)</source>
-        <translation type="unfinished"></translation>
+        <translation>Parola nu este destul de lungă (minim 8 caractere)</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Passwords don&apos;t match</source>
-        <translation type="unfinished"></translation>
+        <translation>Parolele nu se potrivesc</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Invalid server name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nume server invalid</translation>
     </message>
 </context>
 <context>
@@ -979,7 +979,7 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location filename="../../src/Cache.cpp" line="+1859"/>
         <source>no version stored</source>
-        <translation type="unfinished"></translation>
+        <translation>nicio versiune stocată</translation>
     </message>
 </context>
 <context>
@@ -987,7 +987,7 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location filename="../../src/RoomInfoListItem.cpp" line="+102"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Părăsește camera</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1039,12 +1039,12 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location line="+169"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Acceptare</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Refuzare</translation>
     </message>
 </context>
 <context>
@@ -1052,27 +1052,27 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location filename="../../src/SideBarActions.cpp" line="+40"/>
         <source>User settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Setări utilizator</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Create new room</source>
-        <translation type="unfinished"></translation>
+        <translation>Crează cameră nouă</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join a room</source>
-        <translation type="unfinished"></translation>
+        <translation>Alătură-te unei camere</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Start a new chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Începe o nouă conversație</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Registru de camere</translation>
     </message>
 </context>
 <context>
@@ -1080,22 +1080,22 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location filename="../qml/StatusIndicator.qml" line="+17"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Eșuat</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Trimis</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Received</source>
-        <translation type="unfinished"></translation>
+        <translation>Primit</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Read</source>
-        <translation type="unfinished"></translation>
+        <translation>Citit</translation>
     </message>
 </context>
 <context>
@@ -1121,7 +1121,7 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location filename="../../src/timeline/TimelineModel.cpp" line="+862"/>
         <source>Message redaction failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Redactare mesaj eșuată: %1</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -1132,168 +1132,168 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location line="+156"/>
         <source>Save image</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvați imaginea</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save video</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvați video</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save audio</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvați audio</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save file</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvați fișier</translation>
     </message>
     <message numerus="yes">
         <location line="+129"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 scrie.</numerusform>
+            <numerusform>%1 și %2 scriu.</numerusform>
+            <numerusform>%1 și %2 scriu.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+68"/>
         <source>%1 opened the room to the public.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a deschis camera publicului.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 made this room require and invitation to join.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a făcut ca această cameră să necesite o invitație pentru alăturare.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room open to guests.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a deschis camera pentru vizitatori.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 has closed the room to guest access.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a revocat accesul vizitatorilor în această cameră.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room history world readable. Events may be now read by non-joined people.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a făcut istoricul camerei să fie citibil de toată lumea. Evenimentele vor putea fi citite de neparticipanți de acum.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 set the room history visible to members from this point on.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a făcut istoricul camerei accesibil membrilor din acest moment.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they were invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a setat istoricul camerei accesibil participanților din momentul invitării.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they joined the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a setat istoricul camerei accesibil membrilor din momentul alăturării.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 has changed the room&apos;s permissions.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a modificat permisiunile camerei.</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>%1 was invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a fost invitat(ă).</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 changed their display name and avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 și-a schimbat numele afișat și avatarul.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed their display name.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 și-a schimbat numele afișat.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed their avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 și-a schimbat avatarul.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed some profile info.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 și-a schimbat niște informații de pe profil.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 joined.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 s-a alăturat.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 rejected their invite.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a respins invitația.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Revoked the invite to %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Invitația utilizatorului %1 revocată.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 left the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a părăsit camera.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kicked %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a fost dat(ă) afară.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unbanned %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 repermis(ă).</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 was banned.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a fost interzis(ă).</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>%1 redacted their knock.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 și-a redactat ciocănitul.</translation>
     </message>
     <message>
         <location line="-748"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Te-ai alăturat camerei.</translation>
     </message>
     <message>
         <location line="+750"/>
         <source>Rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ciocănit refuzat de la %1.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 a părăsit camera după ce a părăsit-o deja înainte!</translation>
     </message>
     <message>
         <location line="+15"/>
         <source> Reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Motiv: %1</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>%1 knocked.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a ciocănit.</translation>
     </message>
 </context>
 <context>
@@ -1306,12 +1306,12 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location line="+15"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Răspunde</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opțiuni</translation>
     </message>
 </context>
 <context>
@@ -1324,27 +1324,27 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location line="+7"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Răspuns</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmări de citire</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Marcați ca citit</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>View raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Vedeți mesajul brut</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>View decrypted raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Vedeți mesajul brut decriptat</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1354,12 +1354,12 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location line="+7"/>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvare ca</translation>
     </message>
     <message>
         <location line="+51"/>
         <source>No room open</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicio cameră deschisă</translation>
     </message>
 </context>
 <context>
@@ -1414,12 +1414,12 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location filename="../../src/TrayIcon.cpp" line="+122"/>
         <source>Show</source>
-        <translation type="unfinished"></translation>
+        <translation>Arată</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Ieșire</translation>
     </message>
 </context>
 <context>
@@ -1427,7 +1427,7 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location filename="../../src/UserInfoWidget.cpp" line="+95"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Deconectare</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1493,22 +1493,22 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location filename="../../src/UserSettingsPage.cpp" line="+781"/>
         <source>Minimize to tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimizează în bara de notificări</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start in tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Pornește în bara de notificări</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Group&apos;s sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Bara laterală a grupului</translation>
     </message>
     <message>
         <location line="-3"/>
         <source>Circular Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>Avatare rotunde</translation>
     </message>
     <message>
         <location line="-195"/>
@@ -1559,7 +1559,7 @@ OFF - square, ON - Circle.</source>
     <message>
         <location line="+1"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Decriptează mesajele din bara laterală</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1570,7 +1570,7 @@ Only affects messages in encrypted chats.</source>
     <message>
         <location line="+2"/>
         <source>Show buttons in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Arată butoanele în cronologie</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1590,7 +1590,7 @@ Only affects messages in encrypted chats.</source>
     <message>
         <location line="+2"/>
         <source>Typing notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notificări de scriere</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1601,7 +1601,7 @@ This will also enable or disable sending typing notifications to others.</source
     <message>
         <location line="+3"/>
         <source>Sort rooms by unreads</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortează camerele după necitite</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1613,65 +1613,65 @@ If this is on, rooms which have active notifications (the small circle with a nu
     <message>
         <location line="+7"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmări de citire</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vezi dacă mesajul tău a fost citit. Starea este afișată lângă timestampuri.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Trimite mesaje ca Markdown</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished"></translation>
+        <translation>Permite folosirea markdown în mesaje. Când este dezactivată, mesajele sunt trimise ca text simplu.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Desktop notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notificări desktop</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Notify about received message when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Trimite o notificare despre mesajele primite când clientul nu este în prim plan.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Alert on notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Alertă la notificare</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Arată o alertă când primiți un mesaj. Deobicei pictograma aplicației se animează în taskbar.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Scoate mesajul în evidență când se trece cu mouseul peste</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Schimbă culoarea de fundal a mesajelor când se trece cu mouseul peste.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Emoji mari în cronologie</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mărește fontul mesajelor dacă doar câteva emojiuri sunt afișate.</translation>
     </message>
     <message>
         <location line="+56"/>
@@ -1691,27 +1691,27 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="-449"/>
         <source>Scale factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Factor de dimensiune</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished"></translation>
+        <translation>Schimbă dimensiunea întregii interfețe.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensiunea fontului</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Familie de font</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Temă</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1756,42 +1756,42 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+4"/>
         <source>Device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID Dispozitiv</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished"></translation>
+        <translation>Amprentă Dispozitiv</translation>
     </message>
     <message>
         <location line="-155"/>
         <source>Session Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Chei de sesiune</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>IMPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>IMPORTARE</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>EXPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>EXPORTARE</translation>
     </message>
     <message>
         <location line="-34"/>
         <source>ENCRYPTION</source>
-        <translation type="unfinished"></translation>
+        <translation>CRIPTARE</translation>
     </message>
     <message>
         <location line="-100"/>
         <source>GENERAL</source>
-        <translation type="unfinished"></translation>
+        <translation>GENERAL</translation>
     </message>
     <message>
         <location line="+57"/>
         <source>INTERFACE</source>
-        <translation type="unfinished"></translation>
+        <translation>INTERFAȚĂ</translation>
     </message>
     <message>
         <location line="+177"/>
@@ -1806,7 +1806,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+12"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Familia de font pentru Emoji</translation>
     </message>
     <message>
         <location line="+40"/>
@@ -1866,7 +1866,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+225"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschide fișierul de sesiuni</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1876,34 +1876,34 @@ This usually causes the application icon in the task bar to animate in some fash
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Eroare</translation>
     </message>
     <message>
         <location line="-66"/>
         <location line="+28"/>
         <source>File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Parolă fișier</translation>
     </message>
     <message>
         <location line="-27"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Introduceți parola pentru a decripta fișierul:</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+28"/>
         <source>The password cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Parola nu poate fi necompletată</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation type="unfinished"></translation>
+        <translation>Introduceți parola pentru criptarea cheilor de sesiune:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>File to save the exported session keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Fișier pentru salvarea cheilor de sesiune exportate</translation>
     </message>
 </context>
 <context>
@@ -1939,22 +1939,22 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+46"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bine ați venit în nheko! Clientul desktop pentru protocolul Matrix.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enjoy your stay!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ședere plăcută!</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>ÎNREGISTRARE</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>CONECTARE</translation>
     </message>
 </context>
 <context>
@@ -1962,7 +1962,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/Utils.cpp" line="+147"/>
         <source>Yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation>Ieri</translation>
     </message>
 </context>
 <context>
@@ -1970,42 +1970,42 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/CreateRoom.cpp" line="+36"/>
         <source>Create room</source>
-        <translation type="unfinished"></translation>
+        <translation>Crează cameră</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anulare</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nume</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Subiect</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Visibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Vizibilitate cameră</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Prestabilire cameră</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Conversații Directe</translation>
     </message>
 </context>
 <context>
@@ -2013,22 +2013,22 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/FallbackAuth.cpp" line="+30"/>
         <source>Open Fallback in Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschide Fallback în Browser</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anulare</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmare</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschideți fallback, urmăriți pașii și confirmați după ce i-ați completat.</translation>
     </message>
 </context>
 <context>
@@ -2036,12 +2036,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/InviteUsers.cpp" line="+42"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anulare</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>User ID to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>IDul utilizatorului de invitat</translation>
     </message>
 </context>
 <context>
@@ -2049,17 +2049,17 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/JoinRoom.cpp" line="+30"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Alăturare</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anulare</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished"></translation>
+        <translation>IDul camerei sau alias</translation>
     </message>
 </context>
 <context>
@@ -2067,12 +2067,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anulare</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sigur vrei să părăsești camera?</translation>
     </message>
 </context>
 <context>
@@ -2080,12 +2080,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anulare</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Logout. Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Deconectare. Ești sigur(ă)?</translation>
     </message>
 </context>
 <context>
@@ -2093,19 +2093,21 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+41"/>
         <source>Upload</source>
-        <translation type="unfinished"></translation>
+        <translation>Încărcare</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anulare</translation>
     </message>
     <message>
         <location line="+87"/>
         <source>Media type: %1
 Media size: %2
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Tip media: %1
+Dimensiune media: %2
+</translation>
     </message>
 </context>
 <context>
@@ -2113,17 +2115,17 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anulare</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmare</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished"></translation>
+        <translation>Rezolvă reCAPTCHA și apasă butonul de confirmare</translation>
     </message>
 </context>
 <context>
@@ -2131,12 +2133,12 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReadReceipts.cpp" line="+120"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmări de citire</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Închide</translation>
     </message>
 </context>
 <context>
@@ -2144,12 +2146,12 @@ Media size: %2
     <message>
         <location line="-46"/>
         <source>Today %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Azi %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Yesterday %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ieri %1</translation>
     </message>
 </context>
 <context>
@@ -2157,82 +2159,82 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+135"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Setări</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Info</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Internal ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID intern</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Room Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versiune cameră</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notificări</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Muted</source>
-        <translation type="unfinished"></translation>
+        <translation>Dezactivat</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Mentions only</source>
-        <translation type="unfinished"></translation>
+        <translation>Doar mențiuni</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Toate mesajele</translation>
     </message>
     <message>
         <location line="+97"/>
         <source>Room access</source>
-        <translation type="unfinished"></translation>
+        <translation>Acces cameră</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Anyone and guests</source>
-        <translation type="unfinished"></translation>
+        <translation>Oricine și vizitatori</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Anyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Oricine are linkul camerei (fără vizitatori)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invited users</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizatori invitați</translation>
     </message>
     <message>
         <location line="+50"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Criptare</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Criptare Capăt-la-Capăt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Criptarea este în prezent experimentală și unele lucruri se pot strica neașteptat. &lt;br&gt;Ține minte că nu poate fi dezactivat ulterior.</translation>
     </message>
     <message>
         <location line="-24"/>
         <source>Respond to key requests</source>
-        <translation type="unfinished"></translation>
+        <translation>Răspunde cererilor de chei</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2244,42 +2246,42 @@ Media size: %2
     <message numerus="yes">
         <location line="+80"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n membru</numerusform>
+            <numerusform>%n membri</numerusform>
+            <numerusform>%n membri</numerusform>
         </translation>
     </message>
     <message>
         <location line="+142"/>
         <source>Failed to enable encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a putut activa criptarea: %1</translation>
     </message>
     <message>
         <location line="+147"/>
         <source>Select an avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectează un avatar</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Toate fișierele (*)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Fișierul selectat nu este imagine</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Eroare întâmpinată la citirea fișierului: %1</translation>
     </message>
     <message>
         <location line="+35"/>
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a putut încărca imaginea: %s</translation>
     </message>
 </context>
 <context>
@@ -2287,22 +2289,22 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/UserProfile.cpp" line="+64"/>
         <source>Ban the user from the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Interzi utilizatorul din cameră</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Ignore messages from this user</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoră mesajele de la acest utilizator</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Kick the user from the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Dă utilizatorul afară din cameră</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Start a conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>Începe o conversație</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -2317,7 +2319,7 @@ Media size: %2
     <message>
         <location line="+54"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Dispozitive</translation>
     </message>
 </context>
 <context>
@@ -2325,112 +2327,112 @@ Media size: %2
     <message>
         <location filename="../../src/Utils.h" line="+108"/>
         <source>You sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>Ai trimis un clip audio</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a trimis un clip audio</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Ai trimis o imagine</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a trimis o imagine</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Ai trimis un fișier</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a trimis un fișier</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>Ai trimis un video</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a trimis un video</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Ai trimis un sticker</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a trimis un sticker</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Ai trimis o notificare</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a trimis o notificare</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tu: %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>You sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ai trimis un mesaj criptat</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a trimis un mesaj criptat</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Ai inițiat un apel</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a inițiat un apel</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Ai răspuns unui apel</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a răspuns unui apel</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Ai încheiat un apel</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a încheiat un apel</translation>
     </message>
 </context>
 <context>
@@ -2438,12 +2440,12 @@ Media size: %2
     <message>
         <location filename="../../src/popups/UserMentions.cpp" line="+64"/>
         <source>This Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Această cameră</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Toate camerele</translation>
     </message>
 </context>
 <context>
@@ -2451,7 +2453,7 @@ Media size: %2
     <message>
         <location filename="../../src/Utils.h" line="+4"/>
         <source>Unknown Message Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tip mesaj necunoscut</translation>
     </message>
 </context>
 </TS>
