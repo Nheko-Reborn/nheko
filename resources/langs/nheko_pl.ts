@@ -714,32 +714,32 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+12"/>
         <source>%1 placed a voice call.</source>
-        <translation>%1 rozpoczął(-ęła) połączenie głosowe</translation>
+        <translation>%1 rozpoczął(-ęła) połączenie głosowe.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a video call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 rozpoczął(-ęła) połączenie wideo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 rozpoczął(-ęła) połączenie.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 answered the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 odebrał(a) połączenie.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 ended the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zakończył(a) połączenie.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Negotiating call...</source>
-        <translation type="unfinished"></translation>
+        <translation>Negocjowanie połączenia…</translation>
     </message>
 </context>
 <context>
@@ -815,22 +815,22 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+10"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>Odmów</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Start verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozpocznij weryfikację</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Accept</source>
-        <translation type="unfinished">Akceptuj</translation>
+        <translation>Akceptuj</translation>
     </message>
 </context>
 <context>
@@ -866,7 +866,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
         <source>unimplemented event: </source>
-        <translation type="unfinished"></translation>
+        <translation>Niezaimplementowane wydarzenie: </translation>
     </message>
 </context>
 <context>
@@ -874,17 +874,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/main.cpp" line="+182"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation type="unfinished"></translation>
+        <translation>Stwórz unikalny profil, który pozwoli Ci na zalogowanie się do kilku kont jednocześnie i uruchomienie wielu instancji Nheko.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Profil</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>profile name</source>
-        <translation type="unfinished"></translation>
+        <translation>nazwa profilu</translation>
     </message>
 </context>
 <context>
@@ -906,7 +906,7 @@ Example: https://server.my:8787</source>
         <location line="+2"/>
         <location line="+286"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa użytkownika nie może być pusta i  może  zawierać wyłącznie znaki a-z, 0-9, ., _, =, -, i /.</translation>
     </message>
     <message>
         <location line="-282"/>
@@ -916,7 +916,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+3"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wpisz swoje hasło. Dokładne wymagania dotyczące jego siły mogą zależeć od Twojego serwera.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -926,12 +926,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+4"/>
         <source>Homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Serwer domowy</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
-        <translation type="unfinished"></translation>
+        <translation>Serwer, który pozwala na rejestrację. Ponieważ Matrix jest zdecentralizowany, musisz najpierw znaleźć serwer który pozwala na rejestrację bądź hostować swój własny.</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -941,7 +941,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+62"/>
         <source>No supported registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie wspierana procedura rejestracji!</translation>
     </message>
     <message>
         <location line="+209"/>
@@ -969,7 +969,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/ReplyPopup.qml" line="+43"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Zamknij</translation>
     </message>
 </context>
 <context>
@@ -1327,7 +1327,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Potwierdzenia przeczytania</translation>
+        <translation>Potwierdzenia przeczytania</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1399,12 +1399,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished">Opuść pokój</translation>
+        <translation>Opuść pokój</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished">Ustawienia</translation>
+        <translation>Ustawienia</translation>
     </message>
 </context>
 <context>
@@ -1929,7 +1929,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+15"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
 </context>
 <context>
@@ -1973,7 +1973,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2016,7 +2016,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2034,7 +2034,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/InviteUsers.cpp" line="+42"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2052,7 +2052,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2065,7 +2065,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2078,7 +2078,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2113,7 +2113,7 @@ Rozmiar multimediów: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <location line="+1"/>
