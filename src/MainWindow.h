@@ -61,10 +61,15 @@ class MainWindow : public QMainWindow
 {
         Q_OBJECT
 
+        Q_PROPERTY(int x READ x)
+        Q_PROPERTY(int y READ y)
+        Q_PROPERTY(int width READ width)
+        Q_PROPERTY(int height READ height)
+
 public:
         explicit MainWindow(QWidget *parent = nullptr);
 
-        static MainWindow *instance() { return instance_; };
+        static MainWindow *instance() { return instance_; }
         void saveCurrentWindowSize();
 
         void openLeaveRoomDialog(const QString &room_id);
