@@ -142,7 +142,7 @@ brew cask install nheko
 Nheko can use bundled version for most of those libraries automatically, if the versions in your distro are too old.
 To use them, you can enable the hunter integration by passing `-DHUNTER_ENABLED=ON`.
 It is probably wise to link those dependencies statically by passing `-DBUILD_SHARED_LIBS=OFF`
-You can select which bundled dependencies you want to use py passing various `-DUSE_BUNDLED_*` flags. By default all dependencies are bundled *if* you enable hunter.
+You can select which bundled dependencies you want to use by passing various `-DUSE_BUNDLED_*` flags. By default all dependencies are bundled *if* you enable hunter.
 If you experience build issues and you are trying to link `mtxclient` library without hunter, make sure the library version(commit) as mentioned in the `CMakeList.txt` is used. Sometimes we have to make breaking changes in `mtxclient` and for that period the master branch of both repos may not be compatible.
 
 The bundle flags are currently:
