@@ -45,7 +45,7 @@
     <message>
         <location line="+12"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -53,7 +53,7 @@
     <message>
         <location filename="../../src/Cache.cpp" line="+1951"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>您已加入此房间</translation>
     </message>
 </context>
 <context>
@@ -122,23 +122,23 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+211"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>邀请用户失败: %1</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+779"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>邀请已发送: %1</translation>
     </message>
     <message>
         <location line="-500"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>无法迁移缓存到目前版本，可能有多种原因引发此类问题。您可以新建一个议题并继续使用之前版本，或者您可以尝试手动删除缓存。</translation>
     </message>
     <message>
         <location line="+456"/>
         <source>Room %1 created.</source>
-        <translation type="unfinished"></translation>
+        <translation>房间“%1”已创建</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -173,7 +173,7 @@
     <message>
         <location line="+5"/>
         <source>Kicked user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>踢出用户: %1</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -193,7 +193,7 @@
     <message>
         <location line="+5"/>
         <source>Banned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>禁止用户: %1</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -213,22 +213,22 @@
     <message>
         <location line="+5"/>
         <source>Unbanned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>解禁用户: %1</translation>
     </message>
     <message>
         <location line="-582"/>
         <source>Cache migration failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>缓存迁移失败！</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Incompatible cache version</source>
-        <translation type="unfinished"></translation>
+        <translation>无法兼容缓存版本</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>本地缓存版本比现用的Nheko版本新。请升级Nheko或手动清除缓存。</translation>
     </message>
     <message>
         <location line="+50"/>
@@ -243,7 +243,7 @@
     <message>
         <location line="+165"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>设置密钥失败。服务器返回信息: %1 %2。请稍后再试。</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -254,17 +254,17 @@
     <message>
         <location line="+37"/>
         <source>Failed to join room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>无法加入房间: %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You joined the room</source>
-        <translation type="unfinished"></translation>
+        <translation>您已加入房间</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Failed to remove invite: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>无法移除邀请: %1</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -287,7 +287,7 @@
     <message>
         <location line="+4"/>
         <source>Favourite rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>收藏的聊天室</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -368,12 +368,12 @@
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+73"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>应用</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -412,7 +412,7 @@
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished">Activity</translation>
+        <translation>Activity</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -463,12 +463,12 @@
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+19"/>
         <source>Encrypted</source>
-        <translation type="unfinished"></translation>
+        <translation>已加密</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>此条信息没有加密</translation>
     </message>
 </context>
 <context>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+18"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>移除</translation>
     </message>
 </context>
 <context>
@@ -760,7 +760,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+41"/>
         <source>Write a message...</source>
-        <translation type="unfinished">写一条消息...</translation>
+        <translation>写一条消息…</translation>
     </message>
     <message>
         <location line="+144"/>
@@ -813,7 +813,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+10"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -828,7 +828,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+0"/>
         <source>Accept</source>
-        <translation type="unfinished">接受</translation>
+        <translation>接受</translation>
     </message>
 </context>
 <context>
@@ -1323,7 +1323,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>Read receipts</source>
-        <translation type="unfinished">阅读回执</translation>
+        <translation>阅读回执</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1385,7 +1385,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>Invite users</source>
-        <translation type="unfinished">邀请用户</translation>
+        <translation>被邀请的用户</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1395,12 +1395,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished">离开聊天室</translation>
+        <translation>离开聊天室</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished">设置</translation>
+        <translation>设置</translation>
     </message>
 </context>
 <context>
@@ -1925,7 +1925,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+15"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -1969,7 +1969,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2012,7 +2012,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2030,7 +2030,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/InviteUsers.cpp" line="+42"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2048,7 +2048,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2061,7 +2061,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2074,7 +2074,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2109,7 +2109,7 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location line="+1"/>
