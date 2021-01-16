@@ -128,7 +128,7 @@
         <location line="+4"/>
         <location line="+779"/>
         <source>Invited user: %1</source>
-        <translation>Приглашённый пользователь: %1</translation>
+        <translation>Приглашенный пользователь: %1</translation>
     </message>
     <message>
         <location line="-500"/>
@@ -1153,10 +1153,10 @@ Example: https://server.my:8787</source>
         <location line="+129"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1%2 печатает.</numerusform>
+            <numerusform>%1 и %2 печатают.</numerusform>
+            <numerusform>%1, %2 печатают.</numerusform>
         </translation>
     </message>
     <message>
@@ -2034,7 +2034,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Запустите резервный вариант, пройдите его шаги и подтвердите завершение.</translation>
     </message>
 </context>
 <context>
