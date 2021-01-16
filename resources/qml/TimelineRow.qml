@@ -69,8 +69,6 @@ Item {
         }
 
         StatusIndicator {
-            state: model.state
-            eventId: model.id
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
             Layout.preferredHeight: 16
             width: 16

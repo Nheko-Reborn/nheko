@@ -5,13 +5,11 @@ import im.nheko 1.0
 ImageButton {
     id: indicator
 
-    property int state: 0
-    property string eventId
-
     width: 16
     height: 16
     hoverEnabled: true
-    ToolTip.visible: hovered && state != MtxEvent.Empty
+    changeColorOnHover: (model.state == MtxEvent.Read)
+    ToolTip.visible: hovered && model.state != MtxEvent.Empty
     ToolTip.text: {
         switch (state) {
         case MtxEvent.Failed:
@@ -28,12 +26,12 @@ ImageButton {
     }
 
     onClicked: {
-        if (state == MtxEvent.Read)
-            TimelineManager.timeline.readReceiptsAction(eventId);
+        if (model.state == MtxEvent.Read)
+            TimelineManager.timeline.readReceiptsAction(model.id);
     }
 
     image: {
-        switch (state) {
+        switch (model.state) {
         case MtxEvent.Failed:
             return ":/icons/icons/ui/remove-symbol.png";
         case MtxEvent.Sent:
@@ -45,12 +43,5 @@ ImageButton {
         default:
             return "";
         }
-    }
-
-    changeColorOnHover: {
-        if (state == MtxEvent.Read)
-            return true;
-        else
-            return false;
     }
 }
