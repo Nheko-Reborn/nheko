@@ -6,6 +6,7 @@ Rectangle {
     id: indicator
 
     property int state: 0
+    property string eventId
 
     color: "transparent"
     width: 16
@@ -31,6 +32,11 @@ Rectangle {
 
         anchors.fill: parent
         hoverEnabled: true
+
+        onClicked: {
+            if (indicator.state == MtxEvent.Read)
+                TimelineManager.timeline.readReceiptsAction(indicator.eventId);
+        }
     }
 
     Image {
