@@ -11,7 +11,7 @@ ImageButton {
     changeColorOnHover: (model.state == MtxEvent.Read)
     ToolTip.visible: hovered && model.state != MtxEvent.Empty
     ToolTip.text: {
-        switch (state) {
+        switch (model.state) {
         case MtxEvent.Failed:
             return qsTr("Failed");
         case MtxEvent.Sent:
