@@ -84,7 +84,7 @@
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation>Video Call</translation>
+        <translation>Voice Call</translation>
     </message>
     <message>
         <location line="+16"/>
