@@ -19,7 +19,7 @@ AbstractButton {
 
         // Workaround, can't get icon.source working for now...
         anchors.fill: parent
-        source: "image://colorimage/" + image + "?" + ((button.hovered && changeColorOnHover) ? highlightColor : buttonTextColor)
+        source: image != "" ? ("image://colorimage/" + image + "?" + ((button.hovered && changeColorOnHover) ? highlightColor : buttonTextColor)) : ""
     }
 
     MouseArea {
