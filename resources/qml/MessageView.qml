@@ -20,10 +20,10 @@ ListView {
     spacing: 4
     verticalLayoutDirection: ListView.BottomToTop
     onCountChanged: {
+	    // Mark timeline as read
         if (atYEnd)
             model.currentIndex = 0;
-
-    } // Mark last event as read, since we are at the bottom
+    }
 
     ScrollHelper {
         flickable: parent

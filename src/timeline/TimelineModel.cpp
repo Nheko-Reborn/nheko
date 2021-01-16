@@ -728,12 +728,14 @@ TimelineModel::updateLastMessage()
 void
 TimelineModel::setCurrentIndex(int index)
 {
+        if (!ChatPage::instance()->isActiveWindow())
+                return;
+
         auto oldIndex = idToIndex(currentId);
         currentId     = indexToId(index);
         emit currentIndexChanged(index);
 
-        if ((oldIndex > index || oldIndex == -1) && !currentId.startsWith("m") &&
-            ChatPage::instance()->isActiveWindow()) {
+        if ((oldIndex > index || oldIndex == -1) && !currentId.startsWith("m")) {
                 readEvent(currentId.toStdString());
         }
 }
@@ -896,7 +898,6 @@ TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
                 read.insert(id);
                 int idx = idToIndex(id);
                 if (idx < 0) {
-                        nhlog::ui()->warn("Read index out of range");
                         return;
                 }
                 emit dataChanged(index(idx, 0), index(idx, 0));
