@@ -45,7 +45,7 @@
     <message>
         <location line="+12"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annulla</translation>
+        <translation>Annulla</translation>
     </message>
 </context>
 <context>
@@ -541,7 +541,7 @@
     <message>
         <location line="+18"/>
         <source>Close</source>
-        <translation type="unfinished">Chiudi</translation>
+        <translation>Chiudi</translation>
     </message>
 </context>
 <context>
@@ -817,7 +817,7 @@ Esempio: https://server.mio:8787</translation>
     <message>
         <location line="+10"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annulla</translation>
+        <translation>Annulla</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -832,7 +832,7 @@ Esempio: https://server.mio:8787</translation>
     <message>
         <location line="+0"/>
         <source>Accept</source>
-        <translation type="unfinished">Accetta</translation>
+        <translation>Accetta</translation>
     </message>
 </context>
 <context>
@@ -868,7 +868,7 @@ Esempio: https://server.mio:8787</translation>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
         <source>unimplemented event: </source>
-        <translation> event non implementato:</translation>
+        <translation>event non implementato: </translation>
     </message>
 </context>
 <context>
@@ -971,7 +971,7 @@ Esempio: https://server.mio:8787</translation>
     <message>
         <location filename="../qml/ReplyPopup.qml" line="+43"/>
         <source>Close</source>
-        <translation type="unfinished">Chiudi</translation>
+        <translation>Chiudi</translation>
     </message>
 </context>
 <context>
@@ -998,19 +998,19 @@ Esempio: https://server.mio:8787</translation>
         <location line="+18"/>
         <source>Favourite</source>
         <comment>Standard matrix tag for favourites</comment>
-        <translation type="unfinished">Tag matrix standard per i preferiti</translation>
+        <translation>preferiti</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Low Priority</source>
         <comment>Standard matrix tag for low priority rooms</comment>
-        <translation type="unfinished"></translation>
+        <translation>bassa priorità</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Server Notice</source>
         <comment>Standard matrix tag for server notices</comment>
-        <translation type="unfinished"></translation>
+        <translation>notifiche del server</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1113,7 +1113,7 @@ Esempio: https://server.mio:8787</translation>
     <message>
         <location line="+12"/>
         <source>Close</source>
-        <translation type="unfinished">Chiudi</translation>
+        <translation>Chiudi</translation>
     </message>
 </context>
 <context>
@@ -1390,7 +1390,7 @@ Esempio: https://server.mio:8787</translation>
     <message>
         <location line="+7"/>
         <source>Invite users</source>
-        <translation type="unfinished">Invita utenti</translation>
+        <translation>Utenti invitati</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1400,12 +1400,12 @@ Esempio: https://server.mio:8787</translation>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished">Lascia la stanza</translation>
+        <translation>Lascia la stanza</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished">Impostazioni</translation>
+        <translation>Impostazioni</translation>
     </message>
 </context>
 <context>
@@ -1930,7 +1930,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+15"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annulla</translation>
+        <translation>Annulla</translation>
     </message>
 </context>
 <context>
