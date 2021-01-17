@@ -5,6 +5,7 @@ import QtQuick.Controls 2.3
 AbstractButton {
     id: button
 
+    property alias cursor: mouseArea.cursorShape
     property string image: undefined
     property color highlightColor: colors.highlight
     property color buttonTextColor: colors.buttonText
