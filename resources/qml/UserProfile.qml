@@ -15,14 +15,6 @@ ApplicationWindow {
     minimumHeight: 420
     palette: colors
 
-    Component {
-        id: deviceVerificationDialog
-
-        DeviceVerification {
-        }
-
-    }
-
     ColumnLayout {
         id: contentL
 
