@@ -6,12 +6,12 @@ import im.nheko 1.0
 Popup {
     modal: true
     palette: colors
-
     // only set the anchors on Qt 5.12 or higher
     // see https://doc.qt.io/qt-5/qml-qtquick-controls2-popup.html#anchors.centerIn-prop
     Component.onCompleted: {
         if (anchors)
             anchors.centerIn = parent;
+
     }
 
     ColumnLayout {

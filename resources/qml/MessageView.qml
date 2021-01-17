@@ -20,9 +20,10 @@ ListView {
     spacing: 4
     verticalLayoutDirection: ListView.BottomToTop
     onCountChanged: {
-	    // Mark timeline as read
+        // Mark timeline as read
         if (atYEnd)
             model.currentIndex = 0;
+
     }
 
     ScrollHelper {

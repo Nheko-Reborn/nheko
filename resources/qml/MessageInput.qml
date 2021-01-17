@@ -8,7 +8,7 @@ import im.nheko 1.0
 Rectangle {
     color: colors.window
     Layout.fillWidth: true
-    Layout.preferredHeight: textInput.height
+    Layout.preferredHeight: textInput.height + 16
     Layout.minimumHeight: 40
 
     Component {
@@ -23,6 +23,7 @@ Rectangle {
         id: inputBar
 
         anchors.fill: parent
+        anchors.margins: 8
         spacing: 16
 
         ImageButton {
@@ -35,9 +36,7 @@ Rectangle {
             image: CallManager.isOnCall ? ":/icons/icons/ui/end-call.png" : ":/icons/icons/ui/place-call.png"
             ToolTip.visible: hovered
             ToolTip.text: CallManager.isOnCall ? qsTr("Hang up") : qsTr("Place a call")
-            Layout.topMargin: 8
-            Layout.bottomMargin: 8
-            Layout.leftMargin: 16
+            Layout.leftMargin: 8
             onClicked: {
                 if (TimelineManager.timeline) {
                     if (CallManager.haveCallInvite) {
@@ -59,9 +58,7 @@ Rectangle {
             width: 22
             height: 22
             image: ":/icons/icons/ui/paper-clip-outline.png"
-            Layout.topMargin: 8
-            Layout.bottomMargin: 8
-            Layout.leftMargin: CallManager.callsSupported ? 0 : 16
+            Layout.leftMargin: CallManager.callsSupported ? 0 : 8
             onClicked: TimelineManager.timeline.input.openFileSelection()
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Send a file")
@@ -80,12 +77,30 @@ Rectangle {
 
         }
 
-        ScrollView {
+        Flickable {
             id: textInput
+
+            function ensureVisible(r) {
+                if (contentX >= r.x)
+                    contentX = r.x;
+                else if (contentX + width <= r.x + r.width)
+                    contentX = r.x + r.width - width;
+                if (contentY >= r.y)
+                    contentY = r.y;
+                else if (contentY + height <= r.y + r.height)
+                    contentY = r.y + r.height - height;
+            }
 
             Layout.alignment: Qt.AlignBottom
             Layout.maximumHeight: Window.height / 4
+            Layout.minimumHeight: Settings.fontSize
             Layout.fillWidth: true
+            clip: true
+            boundsBehavior: Flickable.StopAtBounds
+            implicitWidth: textArea.width
+            implicitHeight: textArea.height
+            contentWidth: textArea.width
+            contentHeight: textArea.height
 
             TextArea {
                 id: textArea
@@ -104,13 +119,17 @@ Rectangle {
                     popup.completer.setSearchString(textArea.getText(completerTriggeredAt, cursorPosition));
                 }
 
+                text: "asfkajsdf"
                 selectByMouse: true
                 placeholderText: qsTr("Write a message...")
                 placeholderTextColor: colors.buttonText
                 color: colors.text
+                width: textInput.width
                 wrapMode: TextEdit.Wrap
+                padding: 0
                 focus: true
                 onTextChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
+                onCursorRectangleChanged: textInput.ensureVisible(cursorRectangle)
                 onCursorPositionChanged: {
                     TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
                     if (cursorPosition <= completerTriggeredAt) {
@@ -189,6 +208,7 @@ Rectangle {
                         popup.down();
                     }
                 }
+                background: null
 
                 Connections {
                     onTimelineChanged: {
@@ -230,10 +250,9 @@ Rectangle {
                     roomid: TimelineManager.timeline.roomId()
                 }
 
-                background: Rectangle {
-                    color: colors.window
-                }
+            }
 
+            ScrollBar.vertical: ScrollBar {
             }
 
         }
@@ -246,8 +265,6 @@ Rectangle {
             width: 22
             height: 22
             image: ":/icons/icons/ui/smile.png"
-            Layout.topMargin: 8
-            Layout.bottomMargin: 8
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Emoji")
             onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
@@ -261,9 +278,7 @@ Rectangle {
             width: 22
             height: 22
             image: ":/icons/icons/ui/cursor.png"
-            Layout.topMargin: 8
-            Layout.bottomMargin: 8
-            Layout.rightMargin: 16
+            Layout.rightMargin: 8
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Send")
             onClicked: {

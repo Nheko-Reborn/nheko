@@ -57,6 +57,7 @@ Page {
 
         CallInvite {
         }
+
     }
 
     Menu {
@@ -202,6 +203,7 @@ Page {
 
             Rectangle {
                 id: msgView
+
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 color: colors.base

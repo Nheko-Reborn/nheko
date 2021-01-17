@@ -9,23 +9,21 @@ Popup {
     width: parent.width
     height: parent.height
     palette: colors
-    background: Rectangle {
-        color: colors.window
-        border.color: colors.windowText
-    }
 
     Component {
         id: deviceError
+
         DeviceError {
         }
+
     }
 
     Connections {
         target: CallManager
         onNewInviteState: {
-            if (!CallManager.haveCallInvite) {
+            if (!CallManager.haveCallInvite)
                 close();
-            }
+
         }
     }
 
@@ -56,9 +54,10 @@ Popup {
 
             Image {
                 property string image: CallManager.isVideo ? ":/icons/icons/ui/video-call.png" : ":/icons/icons/ui/place-call.png"
+
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: msgView.height / 10
-                Layout.preferredHeight: msgView.height  / 10
+                Layout.preferredHeight: msgView.height / 10
                 source: "image://colorimage/" + image + "?" + colors.windowText
             }
 
@@ -68,17 +67,18 @@ Popup {
                 font.pointSize: fontMetrics.font.pointSize * 2
                 color: colors.windowText
             }
+
         }
 
         ColumnLayout {
             id: deviceCombos
 
             property int imageSize: msgView.height / 20
+
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: msgView.height / 25
 
             RowLayout {
-
                 Layout.alignment: Qt.AlignCenter
 
                 Image {
@@ -89,13 +89,14 @@ Popup {
 
                 ComboBox {
                     id: micCombo
+
                     Layout.fillWidth: true
                     model: CallManager.mics
                 }
+
             }
 
             RowLayout {
-
                 visible: CallManager.isVideo && CallManager.cameras.length > 0
                 Layout.alignment: Qt.AlignCenter
 
@@ -107,18 +108,19 @@ Popup {
 
                 ComboBox {
                     id: cameraCombo
+
                     Layout.fillWidth: true
                     model: CallManager.cameras
                 }
+
             }
+
         }
 
         RowLayout {
             id: buttonLayout
 
             property int buttonSize: msgView.height / 8
-            Layout.alignment: Qt.AlignCenter
-            spacing: msgView.height / 6
 
             function validateMic() {
                 if (CallManager.mics.length == 0) {
@@ -132,51 +134,64 @@ Popup {
                 return true;
             }
 
+            Layout.alignment: Qt.AlignCenter
+            spacing: msgView.height / 6
+
             RoundButton {
                 implicitWidth: buttonLayout.buttonSize
                 implicitHeight: buttonLayout.buttonSize
+                onClicked: {
+                    CallManager.hangUp();
+                    close();
+                }
 
                 background: Rectangle {
                     radius: buttonLayout.buttonSize / 2
                     color: "#ff0000"
                 }
 
-                contentItem : Image {
+                contentItem: Image {
                     source: "image://colorimage/:/icons/icons/ui/end-call.png?#ffffff"
                 }
 
-                onClicked: {
-                    CallManager.hangUp();
-                    close();
-                }
             }
 
             RoundButton {
                 id: acceptButton
 
                 property string image: CallManager.isVideo ? ":/icons/icons/ui/video-call.png" : ":/icons/icons/ui/place-call.png"
+
                 implicitWidth: buttonLayout.buttonSize
                 implicitHeight: buttonLayout.buttonSize
+                onClicked: {
+                    if (buttonLayout.validateMic()) {
+                        Settings.microphone = micCombo.currentText;
+                        if (cameraCombo.visible)
+                            Settings.camera = cameraCombo.currentText;
+
+                        CallManager.acceptInvite();
+                        close();
+                    }
+                }
 
                 background: Rectangle {
                     radius: buttonLayout.buttonSize / 2
                     color: "#00ff00"
                 }
 
-                contentItem : Image {
+                contentItem: Image {
                     source: "image://colorimage/" + acceptButton.image + "?#ffffff"
                 }
 
-                onClicked: {
-                    if (buttonLayout.validateMic()) {
-                        Settings.microphone = micCombo.currentText;
-                        if (cameraCombo.visible)
-                            Settings.camera = cameraCombo.currentText;
-                        CallManager.acceptInvite();
-                        close();
-                    }
-                }
             }
+
         }
+
     }
+
+    background: Rectangle {
+        color: colors.window
+        border.color: colors.windowText
+    }
+
 }
