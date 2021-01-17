@@ -5,9 +5,11 @@ import QtQuick.Controls 2.3
 AbstractButton {
     id: button
 
+    property alias cursor: mouseArea.cursorShape
     property string image: undefined
     property color highlightColor: colors.highlight
     property color buttonTextColor: colors.buttonText
+    property bool changeColorOnHover: true
 
     focusPolicy: Qt.NoFocus
     width: 16
@@ -18,7 +20,7 @@ AbstractButton {
 
         // Workaround, can't get icon.source working for now...
         anchors.fill: parent
-        source: "image://colorimage/" + image + "?" + (button.hovered ? highlightColor : buttonTextColor)
+        source: image != "" ? ("image://colorimage/" + image + "?" + ((button.hovered && changeColorOnHover) ? highlightColor : buttonTextColor)) : ""
     }
 
     MouseArea {

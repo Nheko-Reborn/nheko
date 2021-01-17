@@ -2,17 +2,17 @@ import QtQuick 2.5
 import QtQuick.Controls 2.1
 import im.nheko 1.0
 
-Rectangle {
+ImageButton {
     id: indicator
 
-    property int state: 0
-
-    color: "transparent"
     width: 16
     height: 16
-    ToolTip.visible: ma.containsMouse && state != MtxEvent.Empty
+    hoverEnabled: true
+    changeColorOnHover: (model.state == MtxEvent.Read)
+    cursor: (model.state == MtxEvent.Read) ? Qt.PointingHandCursor : Qt.ArrowCursor
+    ToolTip.visible: hovered && model.state != MtxEvent.Empty
     ToolTip.text: {
-        switch (state) {
+        switch (model.state) {
         case MtxEvent.Failed:
             return qsTr("Failed");
         case MtxEvent.Sent:
@@ -26,32 +26,23 @@ Rectangle {
         }
     }
 
-    MouseArea {
-        id: ma
-
-        anchors.fill: parent
-        hoverEnabled: true
+    onClicked: {
+        if (model.state == MtxEvent.Read)
+            TimelineManager.timeline.readReceiptsAction(model.id);
     }
 
-    Image {
-        id: stateImg
-
-        // Workaround, can't get icon.source working for now...
-        anchors.fill: parent
-        source: {
-            switch (indicator.state) {
-            case MtxEvent.Failed:
-                return "image://colorimage/:/icons/icons/ui/remove-symbol.png?" + colors.buttonText;
-            case MtxEvent.Sent:
-                return "image://colorimage/:/icons/icons/ui/clock.png?" + colors.buttonText;
-            case MtxEvent.Received:
-                return "image://colorimage/:/icons/icons/ui/checkmark.png?" + colors.buttonText;
-            case MtxEvent.Read:
-                return "image://colorimage/:/icons/icons/ui/double-tick-indicator.png?" + colors.buttonText;
-            default:
-                return "";
-            }
+    image: {
+        switch (model.state) {
+        case MtxEvent.Failed:
+            return ":/icons/icons/ui/remove-symbol.png";
+        case MtxEvent.Sent:
+            return ":/icons/icons/ui/clock.png";
+        case MtxEvent.Received:
+            return ":/icons/icons/ui/checkmark.png";
+        case MtxEvent.Read:
+            return ":/icons/icons/ui/double-tick-indicator.png";
+        default:
+            return "";
         }
     }
-
 }
