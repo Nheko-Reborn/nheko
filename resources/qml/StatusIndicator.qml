@@ -25,12 +25,11 @@ ImageButton {
             return "";
         }
     }
-
     onClicked: {
         if (model.state == MtxEvent.Read)
             TimelineManager.timeline.readReceiptsAction(model.id);
-    }
 
+    }
     image: {
         switch (model.state) {
         case MtxEvent.Failed:

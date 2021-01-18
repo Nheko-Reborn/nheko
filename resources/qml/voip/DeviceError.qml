@@ -8,7 +8,13 @@ Popup {
     property var image
 
     modal: true
-    anchors.centerIn: parent
+    // only set the anchors on Qt 5.12 or higher
+    // see https://doc.qt.io/qt-5/qml-qtquick-controls2-popup.html#anchors.centerIn-prop
+    Component.onCompleted: {
+        if (anchors)
+            anchors.centerIn = parent;
+
+    }
 
     RowLayout {
         Image {
