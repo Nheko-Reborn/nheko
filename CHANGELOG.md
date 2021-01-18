@@ -1,5 +1,98 @@
 # Changelog
 
+## [0.8.0] -- unreleased
+
+### Highlights
+
+- VOIP (contributed by trilene)
+  - Call your friends right from within Nheko.
+  - Use your camera if you want them to see your face!
+  - This requires a somewhat new gstreamer, so our builds don't support it on all platforms yet.
+- Cross-Signing and Device/User Verification (contributed by Chethan)
+  - Verify who you are talking to!
+  - Ensure no malicious people eavesdrop on you!
+  - Enable your connected devices to access key backup and your friends to see, which of your devices you trust!
+  - Show devices in a users profile.
+- Separate profiles (contributed by lorendb)
+  - Run multiple Nheko instances with separate profiles side by side.
+  - Use multiple accounts at the same time in separate windows.
+
+### Features
+
+- Before a call select which audio device to use. (contributed by trilene)
+- Auto request unknown keys from your own devices.
+- Add a command to clear the timeline and reload it (/clear-timeline).
+- Add a command to rotate the outbound megolm session (/rotate-megolm-session).
+- Inline emoji and user completers. (contributed by Lurkki)
+- Show filename on hover over an image. (contributed by kamathmanu)
+- Mobile mode, that disables text selection and changes some dialogs.
+- Allow sending text after a `/shrug` command. (contributed by MayeulC)
+- Allow selecting a ringtone. (contributed by trilene)
+- View avatars fullscreen. (contributed by kamathmanu)
+- Request or download cross signing secrets in the settings.
+- Support 'matrix:' URIs. This works in app on all platforms and on Linux Nheko may be opened by clicking a 'matrix:' link.
+- Support inline replies on notifications on Linux.
+
+### Improvements
+
+- Remove dependency on libsodium.
+- Keep a cache of received messages on disk.
+- Warn when kicking, banning or inviting people.
+- Align day separators in the timeline. (contributed by lorendb)
+- Confirm quit during an active call. (contributed by trilene)
+- Make timestamps somwhat fixed width.
+- Add NixOS to readme. (contributed by Tony)
+- Speed up database accesses.
+- A lot of translation updates by various users.
+- Port a few more parts of the UI to Qml.
+- Various end-to-end encryption fixes.
+- Use a QFontComboBox to select fonts. (contributed by lorendb)
+- Delete text in input area with Ctrl+U. (contributed by lorendb)
+- Reduce memory usage by not loading members into RAM.
+- Speed up rendering the timeline by a lot by removing excessive clipping.
+- Reload encrypted message when room_key is received.
+- Improve wording in various places. (contributed by MayeulC)
+- Improve rendering of avatars in various places. (contributed by MayeulC)
+- Riot -> Element in README. (Contributed by Kim)
+- Improve login and registration page error reporting. (contributed by kirillpt)
+- Move CI to Gitlab.
+- Use system Nheko icon on login page. (contributed by lorendb)
+- Add Fedora build requirements. (contributed by trilene)
+- Add ripple effect to various buttons.
+- Allow more font sizes to be selected.
+- Swedish translation. (contributed by Emilie)
+- German translation. (contributed by Mr X and various others)
+- Romanian translation. (contributed by Mihai)
+- Polish translation. (contributed by luff)
+- Russian translation. (contributed by kirillpt and librehacker)
+- Italian translation. (contributed by Lorenzo)
+- French translation. (contributed by MayeulC)
+- Hungarian translation. (contributed by maxigaz)
+- Show read markers when clicking read indicator. (contributed by lorendb)
+
+### Bugfixes
+
+- Fix text sometimes being rendered blurry.
+- Fix not being able to change theme (contributed by lorem)
+- Fix relations sometimes being sent as null in encrypted messages.
+- Don't send formatted body without format.
+- Links sometimes not opening properly from Qml.
+- Fix autolinking breaking on single quotes.
+- Fix translation loading on some locales.
+- Don't send url in encrypted file events.
+- Prevent duplicate messages from showing up in the timeline.
+- Fix crash when pasting image from clipboard on macOS.
+- Settings toggles don't get stuck anymore. (contributed by kirillpt)
+- Fix some emojis being rendered as two emoji.
+- Fix SSO login on some servers that allow multiple login methods. (contributed by d42)
+
+### For packagers
+
+- Nheko now depends on QtKeychain.
+- Nheko optionally depends on GStreamer for VOIP.
+- Nheko does not depend on Sodium anymore.
+- Minimum OpenSSL version is now 1.1.
+
 ## [0.7.2] -- 2020-06-12
 
 ### Highlights
