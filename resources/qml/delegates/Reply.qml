@@ -15,7 +15,7 @@ Item {
 
     MouseArea {
         anchors.fill: parent
-        preventStealing: true
+        preventStealing: false
         onClicked: chat.positionViewAtIndex(chat.model.idToIndex(modelData.id), ListView.Contain)
         cursorShape: Qt.PointingHandCursor
     }

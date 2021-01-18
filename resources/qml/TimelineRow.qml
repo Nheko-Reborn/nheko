@@ -11,25 +11,28 @@ Item {
     anchors.right: parent.right
     height: row.height
 
+    Rectangle {
+        color: (Settings.messageHoverHighlight && hoverHandler.containsMouse) ? colors.alternateBase : "transparent"
+        anchors.fill: row
+    }
+
     MouseArea {
+        id: hoverHandler
         anchors.fill: parent
         propagateComposedEvents: true
-        preventStealing: true
+        preventStealing: false
         hoverEnabled: true
         acceptedButtons: Qt.AllButtons
         onClicked: {
             if (mouse.button === Qt.RightButton)
-                messageContextMenu.show(model.id, model.type, model.isEncrypted, row);
+            messageContextMenu.show(model.id, model.type, model.isEncrypted, row);
+            else
+            event.accepted = false
 
         }
         onPressAndHold: {
             messageContextMenu.show(model.id, model.type, model.isEncrypted, row, mapToItem(timelineRoot, mouse.x, mouse.y));
         }
-    }
-
-    Rectangle {
-        color: (Settings.messageHoverHighlight && parent.containsMouse) ? colors.base : "transparent"
-        anchors.fill: row
     }
 
     RowLayout {
