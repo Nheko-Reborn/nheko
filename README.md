@@ -111,7 +111,7 @@ guix install nheko
 with [homebrew](https://brew.sh/):
 
 ```sh
-brew cask install nheko
+brew install --cask nheko
 ```
 
 ### Build Requirements
