@@ -158,15 +158,20 @@
     <message>
         <location line="+15"/>
         <source>Confirm kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirúgás megerősítése</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to kick %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Biztosan ki akarod rúgni %1 (%2) felhasználót?</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+11"/>
+        <source>Failed to kick %1 to %2: %3</source>
+        <translation>Nem sikerült kirúgni %1 felhasználót %2 szobából: %3.</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Kicked user: %1</source>
         <translation type="unfinished"></translation>
     </message>
