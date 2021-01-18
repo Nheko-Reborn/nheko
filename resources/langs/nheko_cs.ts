@@ -763,7 +763,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+145"/>
+        <location line="+152"/>
         <source>Emoji</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1295,7 +1295,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+94"/>
+        <location filename="../qml/TimelineRow.qml" line="+97"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
