@@ -4,7 +4,7 @@
 
 ### Highlights
 
-- VOIP (contributed by trilene)
+- Voice and Video Calls (contributed by trilene)
   - Call your friends right from within Nheko.
   - Use your camera if you want them to see your face!
   - This requires a somewhat new gstreamer, so our builds don't support it on all platforms yet.
