@@ -6,18 +6,18 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+66"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>Helistan...</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ühendan...</translation>
     </message>
     <message>
         <location line="+76"/>
         <source>Toggle camera view</source>
-        <translation type="unfinished"></translation>
+        <translation>Klõpsi kaameravaade sisse või välja</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -61,17 +61,17 @@
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+67"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Videokõne</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Häälkõne</translation>
     </message>
     <message>
         <location line="+59"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei suuda tuvastada mikrofoni.</translation>
     </message>
 </context>
 <context>
@@ -79,42 +79,42 @@
     <message>
         <location filename="../qml/voip/CallInviteBar.qml" line="+60"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Videokõne</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Häälkõne</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Devices</source>
-        <translation type="unfinished">Seadmed</translation>
+        <translation>Seadmed</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Accept</source>
-        <translation type="unfinished">Nõustu</translation>
+        <translation>Võta vastu</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Unknown microphone: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tundmatu mikrofon: %1</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Unknown camera: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tundmatu kaamera: %1</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Decline</source>
-        <translation type="unfinished">Ei nõustu</translation>
+        <translation>Keeldu</translation>
     </message>
     <message>
         <location line="-28"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei suuda tuvastada mikrofoni.</translation>
     </message>
 </context>
 <context>
@@ -317,27 +317,27 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+281"/>
         <source>Decrypt secrets</source>
-        <translation type="unfinished"></translation>
+        <translation>Dekrüpti andmed</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase to decrypt your secrets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Andmete dekrüptimiseks sisesta oma taastevõti või salafraas:</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Enter your recovery key or passphrase called %1 to decrypt your secrets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Andmete dekrüptimiseks sisesta oma taastevõti või salafraas nimega %1:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Decryption failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Dekrüptimine ei õnnestunud</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Failed to decrypt secrets with the provided recovery key or passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisestatud taastevõme või salafraasi abil ei õnnestunud andmeid dekrüptida</translation>
     </message>
 </context>
 <context>
@@ -549,17 +549,17 @@
     <message>
         <location filename="../../src/timeline/InputBar.cpp" line="+227"/>
         <source>Select a file</source>
-        <translation type="unfinished">Vali fail</translation>
+        <translation>Vali fail</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Kõik failid (*)</translation>
+        <translation>Kõik failid (*)</translation>
     </message>
     <message>
         <location line="+334"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished">Meediafailide üleslaadimine ei õnnestunud. Palun proovi uuesti.</translation>
+        <translation>Meediafailide üleslaadimine ei õnnestunud. Palun proovi uuesti.</translation>
     </message>
 </context>
 <context>
@@ -736,7 +736,7 @@ Näiteks: https://server.minu:8787</translation>
         <location line="-72"/>
         <location line="+9"/>
         <source>removed</source>
-        <translation type="unfinished"></translation>
+        <translation>eemaldatud</translation>
     </message>
     <message>
         <location line="+72"/>
@@ -749,17 +749,17 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/MessageInput.qml" line="+37"/>
         <source>Hang up</source>
-        <translation type="unfinished">Lõpeta kõne</translation>
+        <translation>Lõpeta kõne</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Place a call</source>
-        <translation type="unfinished">Helista</translation>
+        <translation>Helista</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Send a file</source>
-        <translation type="unfinished">Saada fail</translation>
+        <translation>Saada fail</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -769,12 +769,12 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+144"/>
         <source>Emoji</source>
-        <translation type="unfinished">Emoji</translation>
+        <translation>Emoji</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada</translation>
     </message>
 </context>
 <context>
@@ -782,12 +782,12 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+7"/>
         <source>Send Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada verifitseerimispäring</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Recieved Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Saabus verifitseerimispäring</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -797,17 +797,17 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+2"/>
         <source>To ensure that no malicious user can eavesdrop on your encrypted communications you can verify the other party.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagamaks, et mitte ainsamgi kõrvaline osapool ei saa sinu krüptitud suhtlust pealt kuulata, võid teise osapoole verifitseerida.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has requested to verify their device %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 soovib verifitseerida oma seadet %2.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 using the device %2 has requested to be verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutades seadet %2 on %1 palunud verifitseerimist.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1748,7 +1748,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+1"/>
         <source>Camera frame rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaamera kaadrisagedus</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1803,7 +1803,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+177"/>
         <source>Touchscreen mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Puuteekraani režiim</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1863,12 +1863,12 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+54"/>
         <source>Select a file</source>
-        <translation type="unfinished">Vali fail</translation>
+        <translation>Vali fail</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Kõik failid (*)</translation>
+        <translation>Kõik failid (*)</translation>
     </message>
     <message>
         <location line="+225"/>
@@ -1923,17 +1923,17 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+15"/>
         <source>Waiting for other side to accept the verification request.</source>
-        <translation>Ootan, et teine osapool nõustuks verifitseerimispäringuga…</translation>
+        <translation>Ootan, et teine osapool nõustuks verifitseerimispäringuga.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to continue the verification process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ootan, et teine osapool jätkaks verifitseerimist.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to complete the verification process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ootan, et teine osapool lõpetaks verifitseerimise.</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -2248,9 +2248,7 @@ Meedia suurus: %2
         <source>Whether or not the client should respond automatically with the session keys
  upon request. Use with caution, this is a temporary measure to test the
  E2E implementation until device verification is completed.</source>
-        <translation>Kas klient peaks automaatselt vastama või mitte vastama sessioonivõtmete päringule.
- Kasuta seda võimalust ettevaatlikult. Tegemist on ajutise lahendusega läbiva krüptimise
- testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.</translation>
+        <translation>Kas klient peaks automaatselt vastama või mitte vastama sessioonivõtmete päringule. Kasuta seda võimalust ettevaatlikult. Tegemist on ajutise lahendusega läbiva krüptimise testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.</translation>
     </message>
     <message numerus="yes">
         <location line="+80"/>
