@@ -59,7 +59,7 @@
 <context>
     <name>CallInvite</name>
     <message>
-        <location filename="../qml/voip/CallInvite.qml" line="+67"/>
+        <location filename="../qml/voip/CallInvite.qml" line="+66"/>
         <source>Video Call</source>
         <translation type="unfinished"></translation>
     </message>
@@ -69,7 +69,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+62"/>
         <source>No microphone found.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -166,12 +166,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Failed to kick %1 to %2: %3</source>
-        <translation>%2に%1を一時的に追放できませんでした: %3</translation>
-    </message>
-    <message>
-        <location line="+5"/>
+        <location line="+16"/>
         <source>Kicked user: %1</source>
         <translation>一時的に追放されたユーザー: %1</translation>
     </message>
@@ -276,6 +271,11 @@
         <source>Failed to leave room: %1</source>
         <translation>部屋から出られませんでした: %1</translation>
     </message>
+    <message>
+        <location line="+54"/>
+        <source>Failed to kick %1 from %2: %3</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CommunitiesListItem</name>
@@ -315,7 +315,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+281"/>
+        <location filename="../../src/ChatPage.cpp" line="+227"/>
         <source>Decrypt secrets</source>
         <translation type="unfinished"></translation>
     </message>
@@ -743,7 +743,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+37"/>
+        <location filename="../qml/MessageInput.qml" line="+38"/>
         <source>Hang up</source>
         <translation type="unfinished"></translation>
     </message>
@@ -753,22 +753,22 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+26"/>
         <source>Send a file</source>
         <translation type="unfinished">ファイルを送信</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+60"/>
         <source>Write a message...</source>
         <translation type="unfinished">メッセージを書く...</translation>
     </message>
     <message>
-        <location line="+144"/>
+        <location line="+145"/>
         <source>Emoji</source>
         <translation type="unfinished">絵文字</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+14"/>
         <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
@@ -834,7 +834,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>PlaceCall</name>
     <message>
-        <location filename="../qml/voip/PlaceCall.qml" line="+30"/>
+        <location filename="../qml/voip/PlaceCall.qml" line="+36"/>
         <source>Place a call to %1?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1115,12 +1115,12 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+862"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+864"/>
         <source>Message redaction failed: %1</source>
         <translation>メッセージを編集できませんでした: %1</translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation type="unfinished"></translation>
@@ -1264,12 +1264,12 @@ Example: https://server.my:8787</source>
         <translation>%1がノックを編集しました。</translation>
     </message>
     <message>
-        <location line="-748"/>
+        <location line="-749"/>
         <source>You joined this room.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+750"/>
+        <location line="+751"/>
         <source>Rejected the knock from %1.</source>
         <translation>%1からのノックを拒否しました。</translation>
     </message>
@@ -1293,7 +1293,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+95"/>
+        <location filename="../qml/TimelineRow.qml" line="+94"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1311,7 +1311,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+82"/>
+        <location filename="../qml/TimelineView.qml" line="+83"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1462,7 +1462,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+61"/>
+        <location filename="../qml/UserProfile.qml" line="+53"/>
         <source>Verify</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2276,44 +2276,6 @@ Media size: %2
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
         <translation>画像をアップロードできませんでした: %s</translation>
-    </message>
-</context>
-<context>
-    <name>dialogs::UserProfile</name>
-    <message>
-        <location filename="../../src/dialogs/UserProfile.cpp" line="+64"/>
-        <source>Ban the user from the room</source>
-        <translation>ユーザーを部屋から永久追放する</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Ignore messages from this user</source>
-        <translation>このユーザーからのメッセージを無視する</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Kick the user from the room</source>
-        <translation>ユーザーを部屋から一時的に追放する</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Start a conversation</source>
-        <translation>会話を始める</translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>Confirm DM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Do you really want to invite %1 (%2) to a direct chat?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+54"/>
-        <source>Devices</source>
-        <translation>デバイス</translation>
     </message>
 </context>
 <context>

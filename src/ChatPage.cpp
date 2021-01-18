@@ -1013,7 +1013,7 @@ ChatPage::kickUser(QString userid, QString reason)
           [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
                   if (err) {
                           emit showNotification(
-                            tr("Failed to kick %1 to %2: %3")
+                            tr("Failed to kick %1 from %2: %3")
                               .arg(userid)
                               .arg(room)
                               .arg(QString::fromStdString(err->matrix_error.error)));

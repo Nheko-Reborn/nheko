@@ -59,7 +59,7 @@
 <context>
     <name>CallInvite</name>
     <message>
-        <location filename="../qml/voip/CallInvite.qml" line="+67"/>
+        <location filename="../qml/voip/CallInvite.qml" line="+66"/>
         <source>Video Call</source>
         <translation>Videóhívás</translation>
     </message>
@@ -69,7 +69,7 @@
         <translation>Hanghívás</translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+62"/>
         <source>No microphone found.</source>
         <translation>Nem található mikrofon.</translation>
     </message>
@@ -166,12 +166,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Failed to kick %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
+        <location line="+16"/>
         <source>Kicked user: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -276,6 +271,11 @@
         <source>Failed to leave room: %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="+54"/>
+        <source>Failed to kick %1 from %2: %3</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CommunitiesListItem</name>
@@ -315,7 +315,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+281"/>
+        <location filename="../../src/ChatPage.cpp" line="+227"/>
         <source>Decrypt secrets</source>
         <translation type="unfinished"></translation>
     </message>
@@ -373,7 +373,7 @@
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mégse</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -743,7 +743,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+37"/>
+        <location filename="../qml/MessageInput.qml" line="+38"/>
         <source>Hang up</source>
         <translation type="unfinished"></translation>
     </message>
@@ -753,22 +753,22 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+26"/>
         <source>Send a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+60"/>
         <source>Write a message...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+144"/>
+        <location line="+145"/>
         <source>Emoji</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+14"/>
         <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
@@ -813,7 +813,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+10"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mégse</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -828,20 +828,20 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+0"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elfogadás</translation>
     </message>
 </context>
 <context>
     <name>PlaceCall</name>
     <message>
-        <location filename="../qml/voip/PlaceCall.qml" line="+30"/>
+        <location filename="../qml/voip/PlaceCall.qml" line="+36"/>
         <source>Place a call to %1?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nem található mikrofon.</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -856,7 +856,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+13"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mégse</translation>
     </message>
 </context>
 <context>
@@ -1035,12 +1035,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+169"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elfogadás</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elutasítás</translation>
     </message>
 </context>
 <context>
@@ -1115,12 +1115,12 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+862"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+864"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation type="unfinished"></translation>
@@ -1150,7 +1150,6 @@ Example: https://server.my:8787</source>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation type="unfinished">
-            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -1265,12 +1264,12 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-748"/>
+        <location line="-749"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Csatlakoztál ehhez a szobához.</translation>
     </message>
     <message>
-        <location line="+750"/>
+        <location line="+751"/>
         <source>Rejected the knock from %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1294,7 +1293,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+95"/>
+        <location filename="../qml/TimelineRow.qml" line="+94"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1312,7 +1311,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+82"/>
+        <location filename="../qml/TimelineView.qml" line="+83"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1463,7 +1462,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+61"/>
+        <location filename="../qml/UserProfile.qml" line="+53"/>
         <source>Verify</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1926,7 +1925,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+15"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mégse</translation>
     </message>
 </context>
 <context>
@@ -1970,7 +1969,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mégse</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2013,7 +2012,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mégse</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2031,7 +2030,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/InviteUsers.cpp" line="+42"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mégse</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2049,7 +2048,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mégse</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2062,7 +2061,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mégse</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2075,7 +2074,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mégse</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2093,7 +2092,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mégse</translation>
     </message>
     <message>
         <location line="+87"/>
@@ -2108,7 +2107,7 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mégse</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2241,7 +2240,6 @@ Media size: %2
         <source>%n member(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -2273,44 +2271,6 @@ Media size: %2
         <location line="+35"/>
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>dialogs::UserProfile</name>
-    <message>
-        <location filename="../../src/dialogs/UserProfile.cpp" line="+64"/>
-        <source>Ban the user from the room</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Ignore messages from this user</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Kick the user from the room</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Start a conversation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>Confirm DM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Do you really want to invite %1 (%2) to a direct chat?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+54"/>
-        <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

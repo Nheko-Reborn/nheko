@@ -59,7 +59,7 @@
 <context>
     <name>CallInvite</name>
     <message>
-        <location filename="../qml/voip/CallInvite.qml" line="+67"/>
+        <location filename="../qml/voip/CallInvite.qml" line="+66"/>
         <source>Video Call</source>
         <translation type="unfinished"></translation>
     </message>
@@ -69,7 +69,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+62"/>
         <source>No microphone found.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -89,12 +89,12 @@
     <message>
         <location line="+16"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dispozitive</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Acceptare</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -109,7 +109,7 @@
     <message>
         <location line="+13"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Refuzare</translation>
     </message>
     <message>
         <location line="-28"/>
@@ -166,12 +166,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Failed to kick %1 to %2: %3</source>
-        <translation>Nu s-a putut elimina %1 în %2: %3</translation>
-    </message>
-    <message>
-        <location line="+5"/>
+        <location line="+16"/>
         <source>Kicked user: %1</source>
         <translation>Utilizator eliminat: %1</translation>
     </message>
@@ -276,6 +271,11 @@
         <source>Failed to leave room: %1</source>
         <translation>Nu s-a putut părăsi camera: %1</translation>
     </message>
+    <message>
+        <location line="+54"/>
+        <source>Failed to kick %1 from %2: %3</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CommunitiesListItem</name>
@@ -315,7 +315,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+281"/>
+        <location filename="../../src/ChatPage.cpp" line="+227"/>
         <source>Decrypt secrets</source>
         <translation type="unfinished"></translation>
     </message>
@@ -541,7 +541,7 @@
     <message>
         <location line="+18"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Închide</translation>
     </message>
 </context>
 <context>
@@ -554,7 +554,7 @@
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Toate fișierele (*)</translation>
     </message>
     <message>
         <location line="+334"/>
@@ -747,7 +747,7 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+37"/>
+        <location filename="../qml/MessageInput.qml" line="+38"/>
         <source>Hang up</source>
         <translation type="unfinished"></translation>
     </message>
@@ -757,22 +757,22 @@ Exemplu: https://serverul.meu:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+26"/>
         <source>Send a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+60"/>
         <source>Write a message...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+144"/>
+        <location line="+145"/>
         <source>Emoji</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+14"/>
         <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
@@ -832,13 +832,13 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location line="+0"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Acceptare</translation>
     </message>
 </context>
 <context>
     <name>PlaceCall</name>
     <message>
-        <location filename="../qml/voip/PlaceCall.qml" line="+30"/>
+        <location filename="../qml/voip/PlaceCall.qml" line="+36"/>
         <source>Place a call to %1?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -971,7 +971,7 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location filename="../qml/ReplyPopup.qml" line="+43"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Închide</translation>
     </message>
 </context>
 <context>
@@ -1113,18 +1113,18 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location line="+12"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Închide</translation>
     </message>
 </context>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+862"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+864"/>
         <source>Message redaction failed: %1</source>
         <translation>Redactare mesaj eșuată: %1</translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation type="unfinished"></translation>
@@ -1270,12 +1270,12 @@ Exemplu: https://serverul.meu:8787</translation>
         <translation>%1 și-a redactat ciocănitul.</translation>
     </message>
     <message>
-        <location line="-748"/>
+        <location line="-749"/>
         <source>You joined this room.</source>
         <translation>Te-ai alăturat camerei.</translation>
     </message>
     <message>
-        <location line="+750"/>
+        <location line="+751"/>
         <source>Rejected the knock from %1.</source>
         <translation>Ciocănit refuzat de la %1.</translation>
     </message>
@@ -1299,7 +1299,7 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+95"/>
+        <location filename="../qml/TimelineRow.qml" line="+94"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1317,7 +1317,7 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+82"/>
+        <location filename="../qml/TimelineView.qml" line="+83"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1401,12 +1401,12 @@ Exemplu: https://serverul.meu:8787</translation>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Părăsește camera</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Setări</translation>
     </message>
 </context>
 <context>
@@ -1468,7 +1468,7 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+61"/>
+        <location filename="../qml/UserProfile.qml" line="+53"/>
         <source>Verify</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1861,7 +1861,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Toate fișierele (*)</translation>
     </message>
     <message>
         <location line="+225"/>
@@ -2282,44 +2282,6 @@ Dimensiune media: %2
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
         <translation>Nu s-a putut încărca imaginea: %s</translation>
-    </message>
-</context>
-<context>
-    <name>dialogs::UserProfile</name>
-    <message>
-        <location filename="../../src/dialogs/UserProfile.cpp" line="+64"/>
-        <source>Ban the user from the room</source>
-        <translation>Interzi utilizatorul din cameră</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Ignore messages from this user</source>
-        <translation>Ignoră mesajele de la acest utilizator</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Kick the user from the room</source>
-        <translation>Dă utilizatorul afară din cameră</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Start a conversation</source>
-        <translation>Începe o conversație</translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>Confirm DM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Do you really want to invite %1 (%2) to a direct chat?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+54"/>
-        <source>Devices</source>
-        <translation>Dispozitive</translation>
     </message>
 </context>
 <context>

@@ -59,7 +59,7 @@
 <context>
     <name>CallInvite</name>
     <message>
-        <location filename="../qml/voip/CallInvite.qml" line="+67"/>
+        <location filename="../qml/voip/CallInvite.qml" line="+66"/>
         <source>Video Call</source>
         <translation>Videosamtal</translation>
     </message>
@@ -69,7 +69,7 @@
         <translation>Röstsamtal</translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+62"/>
         <source>No microphone found.</source>
         <translation>Ingen mikrofon kunde hittas.</translation>
     </message>
@@ -166,12 +166,7 @@
         <translation>Är du säker på att du vill sparka ut %1 (%2)?</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Failed to kick %1 to %2: %3</source>
-        <translation>Kunde inte sparka ut %1 till %2: %3</translation>
-    </message>
-    <message>
-        <location line="+5"/>
+        <location line="+16"/>
         <source>Kicked user: %1</source>
         <translation>Sparkade ut användare: %1</translation>
     </message>
@@ -276,6 +271,11 @@
         <source>Failed to leave room: %1</source>
         <translation>Kunde inte lämna rum: %1</translation>
     </message>
+    <message>
+        <location line="+54"/>
+        <source>Failed to kick %1 from %2: %3</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CommunitiesListItem</name>
@@ -315,7 +315,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+281"/>
+        <location filename="../../src/ChatPage.cpp" line="+227"/>
         <source>Decrypt secrets</source>
         <translation>Dekryptera hemliga nycklar</translation>
     </message>
@@ -747,7 +747,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+37"/>
+        <location filename="../qml/MessageInput.qml" line="+38"/>
         <source>Hang up</source>
         <translation>Lägg på</translation>
     </message>
@@ -757,22 +757,22 @@ Exempel: https://server.my:8787</translation>
         <translation>Ring upp</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+26"/>
         <source>Send a file</source>
         <translation>Skicka en fil</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+60"/>
         <source>Write a message...</source>
         <translation>Skriv ett meddelande…</translation>
     </message>
     <message>
-        <location line="+144"/>
+        <location line="+145"/>
         <source>Emoji</source>
         <translation>Emoji</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+14"/>
         <source>Send</source>
         <translation>Skicka</translation>
     </message>
@@ -838,7 +838,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>PlaceCall</name>
     <message>
-        <location filename="../qml/voip/PlaceCall.qml" line="+30"/>
+        <location filename="../qml/voip/PlaceCall.qml" line="+36"/>
         <source>Place a call to %1?</source>
         <translation>Ring upp %1?</translation>
     </message>
@@ -1119,12 +1119,12 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+862"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+864"/>
         <source>Message redaction failed: %1</source>
         <translation>Kunde inte maskera meddelande: %1</translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation>Kunde inte kryptera event, sändning avbruten!</translation>
@@ -1269,12 +1269,12 @@ Exempel: https://server.my:8787</translation>
         <translation>%1 maskerade sin knackning.</translation>
     </message>
     <message>
-        <location line="-748"/>
+        <location line="-749"/>
         <source>You joined this room.</source>
         <translation>Du gick med i detta rum.</translation>
     </message>
     <message>
-        <location line="+750"/>
+        <location line="+751"/>
         <source>Rejected the knock from %1.</source>
         <translation>Avvisade knackningen från %1.</translation>
     </message>
@@ -1298,7 +1298,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+95"/>
+        <location filename="../qml/TimelineRow.qml" line="+94"/>
         <source>React</source>
         <translation>Reagera</translation>
     </message>
@@ -1316,7 +1316,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+82"/>
+        <location filename="../qml/TimelineView.qml" line="+83"/>
         <source>React</source>
         <translation>Reagera</translation>
     </message>
@@ -1467,7 +1467,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+61"/>
+        <location filename="../qml/UserProfile.qml" line="+53"/>
         <source>Verify</source>
         <translation>Bekräfta</translation>
     </message>
@@ -2288,44 +2288,6 @@ Mediastorlek: %2
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
         <translation>Kunde inte ladda upp bilden: %s</translation>
-    </message>
-</context>
-<context>
-    <name>dialogs::UserProfile</name>
-    <message>
-        <location filename="../../src/dialogs/UserProfile.cpp" line="+64"/>
-        <source>Ban the user from the room</source>
-        <translation>Bannlys användaren från rummet</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Ignore messages from this user</source>
-        <translation>Ignorera meddelanden från denna användare</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Kick the user from the room</source>
-        <translation>Sparka ut användaren från rummet</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Start a conversation</source>
-        <translation>Påbörja en konversation</translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>Confirm DM</source>
-        <translation>Bekräfta DM</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Do you really want to invite %1 (%2) to a direct chat?</source>
-        <translation>Är du säker på att du vill bjuda in %1 (%2) till en direktchatt?</translation>
-    </message>
-    <message>
-        <location line="+54"/>
-        <source>Devices</source>
-        <translation>Enheter</translation>
     </message>
 </context>
 <context>
