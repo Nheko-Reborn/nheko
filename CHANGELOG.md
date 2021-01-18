@@ -38,7 +38,7 @@
 - Remove dependency on libsodium.
 - Keep a cache of received messages on disk.
 - Warn when kicking, banning or inviting people.
-- Align day separators in the timeline. (contributed by lorendb)
+- Align day separators in the timeline. (contributed by not-chicken)
 - Confirm quit during an active call. (contributed by trilene)
 - Make timestamps somwhat fixed width.
 - Add NixOS to readme. (contributed by Tony)
@@ -73,7 +73,7 @@
 ### Bugfixes
 
 - Fix text sometimes being rendered blurry.
-- Fix not being able to change theme (contributed by lorem)
+- Fix not being able to change theme (contributed by not-chicken)
 - Fix relations sometimes being sent as null in encrypted messages.
 - Don't send formatted body without format.
 - Links sometimes not opening properly from Qml.
