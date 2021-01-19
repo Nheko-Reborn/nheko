@@ -2236,9 +2236,7 @@ Median koko: %2
         <source>Whether or not the client should respond automatically with the session keys
  upon request. Use with caution, this is a temporary measure to test the
  E2E implementation until device verification is completed.</source>
-        <translation>Pitäisikö asiakasohjelman palauttaa salausavaimet automaattisesti pyydettäessä.
- Käytä varoen, tämä on väliaikainen vaihtoehto salausjärjestelmän testausta varten,
- kunnes laitteiden vahvistus on valmis.</translation>
+        <translation>Pitäisikö asiakasohjelman palauttaa salausavaimet automaattisesti pyydettäessä. Käytä varoen, tämä on väliaikainen vaihtoehto salausjärjestelmän testausta varten, kunnes laitteiden vahvistus on valmis.</translation>
     </message>
     <message numerus="yes">
         <location line="+80"/>
