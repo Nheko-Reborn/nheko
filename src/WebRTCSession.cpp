@@ -184,7 +184,16 @@ addDevice(GstDevice *device)
                                   gst_structure_get_value(structure, "framerate");
                                 if (auto fr = getFrameRate(value); fr)
                                         addFrameRate(caps.frameRates, *fr);
-                                else if (GST_VALUE_HOLDS_LIST(value)) {
+                                else if (GST_VALUE_HOLDS_FRACTION_RANGE(value)) {
+                                        const GValue *minRate =
+                                          gst_value_get_fraction_range_min(value);
+                                        if (auto fr = getFrameRate(minRate); fr)
+                                                addFrameRate(caps.frameRates, *fr);
+                                        const GValue *maxRate =
+                                          gst_value_get_fraction_range_max(value);
+                                        if (auto fr = getFrameRate(maxRate); fr)
+                                                addFrameRate(caps.frameRates, *fr);
+                                } else if (GST_VALUE_HOLDS_LIST(value)) {
                                         guint nRates = gst_value_list_get_size(value);
                                         for (guint j = 0; j < nRates; ++j) {
                                                 const GValue *rate =
