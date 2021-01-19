@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.10
 import im.nheko 1.0
 
 Pane {
-    property string title: flow.sender ? qsTr("Send Verification Request") : qsTr("Recieved Verification Request")
+    property string title: flow.sender ? qsTr("Send Verification Request") : qsTr("Received Verification Request")
 
     ColumnLayout {
         spacing: 16

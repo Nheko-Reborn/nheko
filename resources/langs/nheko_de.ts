@@ -786,7 +786,7 @@ Beispiel: https://mein.server:8787</translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>Recieved Verification Request</source>
+        <source>Received Verification Request</source>
         <translation>Verifizierungsanfrage erhalten</translation>
     </message>
     <message>
