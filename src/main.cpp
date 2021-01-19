@@ -106,9 +106,6 @@ createCacheDirectory()
 int
 main(int argc, char *argv[])
 {
-        // needed for settings so need to register before any settings are read to prevent warnings
-        qRegisterMetaType<UserSettings::Presence>();
-
         QCoreApplication::setApplicationName("nheko");
         QCoreApplication::setApplicationVersion(nheko::version);
         QCoreApplication::setOrganizationName("nheko");

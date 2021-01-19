@@ -97,12 +97,14 @@ UserSettings::load(std::optional<QString> profile)
         decryptSidebar_      = settings.value("user/decrypt_sidebar", true).toBool();
         shareKeysWithTrustedUsers_ =
           settings.value("user/share_keys_with_trusted_users", true).toBool();
-        mobileMode_   = settings.value("user/mobile_mode", false).toBool();
-        emojiFont_    = settings.value("user/emoji_font_family", "default").toString();
-        baseFontSize_ = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
-        presence_ =
-          settings.value("user/presence", QVariant::fromValue(Presence::AutomaticPresence))
-            .value<Presence>();
+        mobileMode_        = settings.value("user/mobile_mode", false).toBool();
+        emojiFont_         = settings.value("user/emoji_font_family", "default").toString();
+        baseFontSize_      = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
+        auto tempPresence  = settings.value("user/presence", "").toString().toStdString();
+        auto presenceValue = QMetaEnum::fromType<Presence>().keyToValue(tempPresence.c_str());
+        if (presenceValue < 0)
+                presenceValue = 0;
+        presence_         = static_cast<Presence>(presenceValue);
         ringtone_         = settings.value("user/ringtone", "Default").toString();
         microphone_       = settings.value("user/microphone", QString()).toString();
         camera_           = settings.value("user/camera", QString()).toString();
@@ -542,7 +544,9 @@ UserSettings::save()
         settings.setValue("theme", theme());
         settings.setValue("font_family", font_);
         settings.setValue("emoji_font_family", emojiFont_);
-        settings.setValue("presence", QVariant::fromValue(presence_));
+        settings.setValue("presence",
+                          QString::fromUtf8(QMetaEnum::fromType<Presence>().valueToKey(
+                            static_cast<int>(presence_))));
         settings.setValue("ringtone", ringtone_);
         settings.setValue("microphone", microphone_);
         settings.setValue("camera", camera_);
