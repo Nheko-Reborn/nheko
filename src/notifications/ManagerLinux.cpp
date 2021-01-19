@@ -86,18 +86,6 @@ NotificationsManager::postNotification(const QString &roomid,
     });
 }
 
-uint
-NotificationsManager::showNotification(const QString summary,
-                                       const QString text,
-                                       const QImage image)
-{
-    Q_UNUSED(summary)
-    Q_UNUSED(text)
-    Q_UNUSED(image)
-
-    return 0;
-}
-
 void
 NotificationsManager::closeNotification(uint id)
 {
