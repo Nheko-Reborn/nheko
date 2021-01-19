@@ -21,8 +21,9 @@
 
 - Before a call select which audio device to use. (contributed by trilene)
 - Auto request unknown keys from your own devices.
-- Add a command to clear the timeline and reload it (/clear-timeline).
-- Add a command to rotate the outbound megolm session (/rotate-megolm-session).
+- Add a command to clear the timeline and reload it. (/clear-timeline).
+- Add a command to rotate the outbound megolm session. (/rotate-megolm-session).
+- React to messages instead of replying with arbitrary strings using `/react`.
 - Inline emoji and user completers. (contributed by Lurkki)
 - Show filename on hover over an image. (contributed by kamathmanu)
 - Mobile mode, that disables text selection and changes some dialogs.
