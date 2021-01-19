@@ -66,7 +66,7 @@ Rectangle {
             Rectangle {
                 anchors.fill: parent
                 color: colors.window
-                visible: TimelineManager.timeline.input.uploading
+                visible: TimelineManager.timeline && TimelineManager.timeline.input.uploading
 
                 NhekoBusyIndicator {
                     anchors.fill: parent
@@ -123,21 +123,28 @@ Rectangle {
                 selectByMouse: true
                 placeholderText: qsTr("Write a message...")
                 //placeholderTextColor: colors.buttonText
-		// only set the anchors on Qt 5.12 or higher
-		// see https://doc.qt.io/qt-5/qml-qtquick-controls2-popup.html#anchors.centerIn-prop
-		Component.onCompleted: {
-			if (placeholderTextColor !== undefined)
-			placeholderTextColor = colors.buttonText
+                // only set the anchors on Qt 5.12 or higher
+                // see https://doc.qt.io/qt-5/qml-qtquick-controls2-popup.html#anchors.centerIn-prop
+                Component.onCompleted: {
+                    if (placeholderTextColor !== undefined)
+                        placeholderTextColor = colors.buttonText;
 
-		}
+                }
                 color: colors.text
                 width: textInput.width
                 wrapMode: TextEdit.Wrap
                 padding: 0
                 focus: true
-                onTextChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
+                onTextChanged: {
+                    if (TimelineManager.timeline) {
+                        TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
+                    }
+                }
                 onCursorRectangleChanged: textInput.ensureVisible(cursorRectangle)
                 onCursorPositionChanged: {
+                    if (!TimelineManager.timeline)
+                        return ;
+
                     TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
                     if (cursorPosition <= completerTriggeredAt) {
                         completerTriggeredAt = -1;
@@ -235,13 +242,14 @@ Rectangle {
                 Completer {
                     id: popup
 
-                    x: textArea.positionToRectangle(textArea.completerTriggeredAt).x
-                    y: textArea.positionToRectangle(textArea.completerTriggeredAt).y - height
+                    x: textArea.positionToRectangle(textArea.completerTriggeredAt > 0 ? text.completerTriggeredAt : 0).x
+                    y: textArea.positionToRectangle(textArea.completerTriggeredAt > 0 ? text.completerTriggeredAt : 0).y - height
                 }
 
                 Connections {
+                    ignoreUnknownSignals: true
                     onInsertText: textArea.insert(textArea.cursorPosition, text)
-                    target: TimelineManager.timeline.input
+                    target: TimelineManager.timeline ? TimelineManager.timeline.input : null
                 }
 
                 MouseArea {
@@ -254,7 +262,7 @@ Rectangle {
 
                 NhekoDropArea {
                     anchors.fill: parent
-                    roomid: TimelineManager.timeline.roomId()
+                    roomid: TimelineManager.timeline ? TimelineManager.timeline.roomId() : ""
                 }
 
             }

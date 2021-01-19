@@ -18,6 +18,7 @@ Item {
 
     MouseArea {
         id: hoverHandler
+
         anchors.fill: parent
         propagateComposedEvents: true
         preventStealing: false
@@ -25,10 +26,9 @@ Item {
         acceptedButtons: Qt.AllButtons
         onClicked: {
             if (mouse.button === Qt.RightButton)
-            messageContextMenu.show(model.id, model.type, model.isEncrypted, row);
+                messageContextMenu.show(model.id, model.type, model.isEncrypted, row);
             else
-            event.accepted = false
-
+                event.accepted = false;
         }
         onPressAndHold: {
             messageContextMenu.show(model.id, model.type, model.isEncrypted, row, mapToItem(timelineRoot, mouse.x, mouse.y));
