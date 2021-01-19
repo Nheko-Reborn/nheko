@@ -76,7 +76,7 @@ NotificationsManager::postNotification(const QString &roomid,
                                     "/org/freedesktop/Notifications",
                                     "org.freedesktop.Notifications");
     auto call =
-      notifyApp.callWithArgumentList(QDBus::AutoDetect, "Notify", argumentList);
+      notifyApp.asyncCallWithArgumentList("Notify", argumentList);
     QDBusPendingCallWatcher watcher{QDBusPendingReply{call}};
     connect(&watcher, &QDBusPendingCallWatcher::finished, this, [&watcher, this, &roomid, &eventid]() {
         if (watcher.reply().type() == QDBusMessage::ErrorMessage)
