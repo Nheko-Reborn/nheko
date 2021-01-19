@@ -159,14 +159,16 @@ public:
 
         enum Roles
         {
-                Section,
                 Type,
                 TypeString,
                 IsOnlyEmoji,
                 Body,
                 FormattedBody,
+                PreviousMessageUserId,
                 UserId,
                 UserName,
+                PreviousMessageDay,
+                Day,
                 Timestamp,
                 Url,
                 ThumbnailUrl,

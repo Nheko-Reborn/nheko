@@ -265,14 +265,16 @@ QHash<int, QByteArray>
 TimelineModel::roleNames() const
 {
         return {
-          {Section, "section"},
           {Type, "type"},
           {TypeString, "typeString"},
           {IsOnlyEmoji, "isOnlyEmoji"},
           {Body, "body"},
           {FormattedBody, "formattedBody"},
+          {PreviousMessageUserId, "previousMessageUserId"},
           {UserId, "userId"},
           {UserName, "userName"},
+          {PreviousMessageDay, "previousMessageDay"},
+          {Day, "day"},
           {Timestamp, "timestamp"},
           {Url, "url"},
           {ThumbnailUrl, "thumbnailUrl"},
@@ -323,6 +325,11 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         case UserName:
                 return QVariant(displayName(QString::fromStdString(acc::sender(event))));
 
+        case Day: {
+                QDateTime prevDate = origin_server_ts(event);
+                prevDate.setTime(QTime());
+                return QVariant(prevDate.toMSecsSinceEpoch());
+        }
         case Timestamp:
                 return QVariant(origin_server_ts(event));
         case Type:
@@ -450,7 +457,6 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 QVariantMap m;
                 auto names = roleNames();
 
-                // m.insert(names[Section], data(id, static_cast<int>(Section)));
                 m.insert(names[Type], data(event, static_cast<int>(Type)));
                 m.insert(names[TypeString], data(event, static_cast<int>(TypeString)));
                 m.insert(names[IsOnlyEmoji], data(event, static_cast<int>(IsOnlyEmoji)));
@@ -458,6 +464,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 m.insert(names[FormattedBody], data(event, static_cast<int>(FormattedBody)));
                 m.insert(names[UserId], data(event, static_cast<int>(UserId)));
                 m.insert(names[UserName], data(event, static_cast<int>(UserName)));
+                m.insert(names[Day], data(event, static_cast<int>(Day)));
                 m.insert(names[Timestamp], data(event, static_cast<int>(Timestamp)));
                 m.insert(names[Url], data(event, static_cast<int>(Url)));
                 m.insert(names[ThumbnailUrl], data(event, static_cast<int>(ThumbnailUrl)));
@@ -498,30 +505,17 @@ TimelineModel::data(const QModelIndex &index, int role) const
         if (!event)
                 return "";
 
-        if (role == Section) {
-                QDateTime date = origin_server_ts(*event);
-                date.setTime(QTime());
-
-                std::string userId = acc::sender(*event);
-
-                for (int r = rowCount() - index.row(); r < events.size(); r++) {
-                        auto tempEv = events.get(r);
-                        if (!tempEv)
-                                break;
-
-                        QDateTime prevDate = origin_server_ts(*tempEv);
-                        prevDate.setTime(QTime());
-                        if (prevDate != date)
-                                return QString("%2 %1")
-                                  .arg(date.toMSecsSinceEpoch())
-                                  .arg(QString::fromStdString(userId));
-
-                        std::string prevUserId = acc::sender(*tempEv);
-                        if (userId != prevUserId)
-                                break;
-                }
-
-                return QString("%1").arg(QString::fromStdString(userId));
+        if (role == PreviousMessageDay || role == PreviousMessageUserId) {
+                int prevIdx = rowCount() - index.row() - 2;
+                if (prevIdx < 0)
+                        return QVariant();
+                auto tempEv = events.get(prevIdx);
+                if (!tempEv)
+                        return QVariant();
+                if (role == PreviousMessageUserId)
+                        return data(*tempEv, UserId);
+                else
+                        return data(*tempEv, Day);
         }
 
         return data(*event, role);

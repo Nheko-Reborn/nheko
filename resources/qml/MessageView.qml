@@ -66,33 +66,25 @@ ListView {
         }
     }
 
-    section {
-        property: "section"
-    }
-
     Component {
         id: sectionHeader
 
         Column {
-            property var modelData
-            property string section
-            property string nextSection
-
             topPadding: 4
             bottomPadding: 4
             spacing: 8
-            visible: !!modelData
-            width: parent.width
-            height: (section.includes(" ") ? dateBubble.height + 8 + userName.height : userName.height) + 8
+            visible: modelData && (modelData.previousMessageUserId !== modelData.userId || modelData.previousMessageDay !== modelData.day)
+            width: parentWidth
+            height: ((modelData && modelData.previousMessageDay !== modelData.day) ? dateBubble.height + 8 + userName.height : userName.height) + 8
 
             Label {
                 id: dateBubble
 
                 anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
-                visible: section.includes(" ")
-                text: chat.model.formatDateSeparator(modelData.timestamp)
+                visible: modelData && modelData.previousMessageDay !== modelData.day
+                text: modelData ? chat.model.formatDateSeparator(modelData.timestamp) : ""
                 color: colors.text
-                height: fontMetrics.height * 1.4
+                height: Math.round(fontMetrics.height * 1.4)
                 width: contentWidth * 1.2
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -109,26 +101,19 @@ ListView {
                 spacing: 8
 
                 Avatar {
-                    // MouseArea {
-                    //     anchors.fill: parent
-                    //     onClicked: chat.model.openUserProfile(modelData.userId)
-                    //     cursorShape: Qt.PointingHandCursor
-                    //     propagateComposedEvents: true
-                    // }
-
                     width: avatarSize
                     height: avatarSize
-                    url: chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/")
-                    displayName: modelData.userName
-                    userid: modelData.userId
+                    url: modelData ? chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/") : ""
+                    displayName: modelData ? modelData.userName : ""
+                    userid: modelData ? modelData.userId : ""
                     onClicked: chat.model.openUserProfile(modelData.userId)
                 }
 
                 Label {
                     id: userName
 
-                    text: TimelineManager.escapeEmoji(modelData.userName)
-                    color: TimelineManager.userColor(modelData.userId, colors.window)
+                    text: modelData ? TimelineManager.escapeEmoji(modelData.userName) : ""
+                    color: TimelineManager.userColor(modelData ? modelData.userId : "", colors.window)
                     textFormat: Text.RichText
 
                     MouseArea {
@@ -143,7 +128,7 @@ ListView {
 
                 Label {
                     color: colors.buttonText
-                    text: TimelineManager.userStatus(modelData.userId)
+                    text: modelData ? TimelineManager.userStatus(modelData.userId) : ""
                     textFormat: Text.PlainText
                     elide: Text.ElideRight
                     width: chat.delegateMaxWidth - parent.spacing * 2 - userName.implicitWidth - avatarSize
@@ -163,31 +148,26 @@ ListView {
     delegate: Item {
         id: wrapper
 
-        // This would normally be previousSection, but our model's order is inverted.
-        property bool sectionBoundary: (ListView.nextSection != "" && ListView.nextSection !== ListView.section) || model.index === chat.count - 1
-        property Item section
-
         anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
         width: chat.delegateMaxWidth
         height: section ? section.height + timelinerow.height : timelinerow.height
-        onSectionBoundaryChanged: {
-            if (sectionBoundary) {
-                var properties = {
-                    "modelData": model.dump,
-                    "section": ListView.section,
-                    "nextSection": ListView.nextSection
-                };
-                section = sectionHeader.createObject(wrapper, properties);
-            } else {
-                section.destroy();
-                section = null;
-            }
+
+        Loader {
+            id: section
+
+            property var modelData: model
+            property int parentWidth: parent.width
+
+            active: model.previousMessageUserId !== undefined && model.previousMessageUserId !== model.userId || model.previousMessageDay !== model.day
+            //asynchronous: true
+            sourceComponent: sectionHeader
+            visible: status == Loader.Ready
         }
 
         TimelineRow {
             id: timelinerow
 
-            y: section ? section.y + section.height : 0
+            y: section.active && section.visible ? section.y + section.height : 0
         }
 
         Connections {

@@ -136,9 +136,9 @@ Rectangle {
                 padding: 0
                 focus: true
                 onTextChanged: {
-                    if (TimelineManager.timeline) {
+                    if (TimelineManager.timeline)
                         TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
-                    }
+
                 }
                 onCursorRectangleChanged: textInput.ensureVisible(cursorRectangle)
                 onCursorPositionChanged: {
