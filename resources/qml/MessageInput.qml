@@ -97,6 +97,7 @@ Rectangle {
             Layout.fillWidth: true
             clip: true
             boundsBehavior: Flickable.StopAtBounds
+            flickableDirection: Flickable.VerticalFlick
             implicitWidth: textArea.width
             implicitHeight: textArea.height
             contentWidth: textArea.width
