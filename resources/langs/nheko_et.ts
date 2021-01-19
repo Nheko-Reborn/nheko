@@ -792,7 +792,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+15"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Selleks, et muud kasutajad automaatselt usaldaks sinu seadmeid, peaksid nad verifitseerima. Samaga muutub ka krüptovõtmete varundus automaatseks. Kas verifitseerime seadme %1?</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -812,7 +812,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+2"/>
         <source>Your device (%1) has requested to be verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinu seadme (%1) jaoks on saabunud verifitseerimispäring.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -948,7 +948,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+209"/>
         <source>One or more fields have invalid inputs. Please correct those issues and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ühel või enamal andmeväljal on vigane väärtus. Palun paranda vead ja proovi uuesti.</translation>
     </message>
     <message>
         <location line="-26"/>
@@ -1348,7 +1348,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+5"/>
         <source>Remove message</source>
-        <translation type="unfinished"></translation>
+        <translation>Eemalda sõnum</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1366,7 +1366,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../../src/timeline/TimelineViewManager.cpp" line="+423"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ühtegi krüptitud vestlust selle kasutajaga ei leidunud. Palun loo temaga krüptitud vestlus ja proovi uuesti.</translation>
     </message>
 </context>
 <context>
@@ -1522,17 +1522,17 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+46"/>
         <source>Cross Signing Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Risttunnustamise võtmed</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>REQUEST</source>
-        <translation type="unfinished"></translation>
+        <translation>PÄRING</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>DOWNLOAD</source>
-        <translation type="unfinished"></translation>
+        <translation>ALLALAADIMISED</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1683,17 +1683,17 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+56"/>
         <source>Share keys with verified users and devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaga võtmeid verifitseeritud kasutajate ja seadmetega</translation>
     </message>
     <message>
         <location line="+395"/>
         <source>CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>PUHVERDATUD</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>NOT CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>PUHVERDAMATA</translation>
     </message>
     <message>
         <location line="-449"/>
@@ -1723,27 +1723,27 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+4"/>
         <source>Ringtone</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõnehelin</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadista helin, mis annab märku uuest kõnest</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Microphone</source>
-        <translation type="unfinished"></translation>
+        <translation>Mikrofon</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaamera</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaamera eraldusvõime</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1808,7 +1808,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selleks, et puutega kerimine oleks lihtsam, blokeerib see seadistus tekstivaliku ajajoonel.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1823,42 +1823,42 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+5"/>
         <source>Master signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Üldine allkirjavõti</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinu kõige olulisem krüptovõti. See ei pea olema puhverdatud (mis hoiab ära ka võimaliku varastamise) ning teda on vaja vaid sinu muude allkirjavõtmete ringluse jaoks.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>User signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja allkirjavõti</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Teiste kasutajate verifitseerimiseks mõeldud võti. Kui see võti on puhverdatud, siis kasutaja verifitseerimine tähendab ka kõikide tema seadmete verifitseerimist.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Self signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Omatunnustusvõti</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users, that have verified you.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle võtmega verifitseerid oma seadmeid. Kui ta on puhverdatud, siis sinu seadme verifitseerimine märgib selle seadme usaldusväärseks nii sinu muude seadmete kui selliste kasutajate jaoks, kes on sind verifitseerinud.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Backup key</source>
-        <translation type="unfinished"></translation>
+        <translation>Varundusvõti</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle võtmega dekrüptitakse võrku varundatud muud võtmed. Kui see võti on puhverdatud, siis saad kasutusele võtta oma krüptovõtmete turvalise varundamise sinu koduserveris.</translation>
     </message>
     <message>
         <location line="+54"/>
@@ -1918,7 +1918,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location filename="../qml/device-verification/Waiting.qml" line="+7"/>
         <source>Waiting for other party…</source>
-        <translation type="unfinished"></translation>
+        <translation>Ootan teise osapoole tegevust…</translation>
     </message>
     <message>
         <location line="+15"/>
