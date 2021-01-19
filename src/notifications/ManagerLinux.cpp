@@ -1,12 +1,12 @@
 #include "notifications/Manager.h"
 
-#include <QDebug>
-#include <QImage>
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDBusMetaType>
 #include <QDBusPendingCallWatcher>
 #include <QDBusPendingReply>
+#include <QDebug>
+#include <QImage>
 
 NotificationsManager::NotificationsManager(QObject *parent)
   : QObject(parent)
@@ -52,38 +52,41 @@ NotificationsManager::postNotification(const QString &roomid,
                                        const QString &text,
                                        const QImage &icon)
 {
-    Q_UNUSED(icon)
+        Q_UNUSED(icon)
 
-    QVariantMap hints;
-    hints["image-data"] = sender + ": " + text;
-    hints["sound-name"] = "message-new-instant";
-    QList<QVariant> argumentList;
-    argumentList << "nheko"; // app_name
-    argumentList << (uint)0; // replace_id
-    argumentList << "";      // app_icon
-    argumentList << roomname; // summary
-    argumentList << text;    // body
-    // The list of actions has always the action name and then a localized version of that
-    // action. Currently we just use an empty string for that.
-    // TODO(Nico): Look into what to actually put there.
-    argumentList << (QStringList("default") << ""
-                                            << "inline-reply"
-                                            << ""); // actions
-    argumentList << hints;                          // hints
-    argumentList << (int)-1;                        // timeout in ms
+        QVariantMap hints;
+        hints["image-data"] = sender + ": " + text;
+        hints["sound-name"] = "message-new-instant";
+        QList<QVariant> argumentList;
+        argumentList << "nheko";  // app_name
+        argumentList << (uint)0;  // replace_id
+        argumentList << "";       // app_icon
+        argumentList << roomname; // summary
+        argumentList << text;     // body
+        // The list of actions has always the action name and then a localized version of that
+        // action. Currently we just use an empty string for that.
+        // TODO(Nico): Look into what to actually put there.
+        argumentList << (QStringList("default") << ""
+                                                << "inline-reply"
+                                                << ""); // actions
+        argumentList << hints;                          // hints
+        argumentList << (int)-1;                        // timeout in ms
 
-    static QDBusInterface notifyApp("org.freedesktop.Notifications",
-                                    "/org/freedesktop/Notifications",
-                                    "org.freedesktop.Notifications");
-    auto call =
-      notifyApp.asyncCallWithArgumentList("Notify", argumentList);
-    QDBusPendingCallWatcher watcher{QDBusPendingReply{call}};
-    connect(&watcher, &QDBusPendingCallWatcher::finished, this, [&watcher, this, &roomid, &eventid]() {
-        if (watcher.reply().type() == QDBusMessage::ErrorMessage)
-                qDebug() << "D-Bus Error:" << watcher.reply().errorMessage();
-        else
-            notificationIds[watcher.reply().arguments().first().toUInt()] = roomEventId{roomid, eventid};
-    });
+        static QDBusInterface notifyApp("org.freedesktop.Notifications",
+                                        "/org/freedesktop/Notifications",
+                                        "org.freedesktop.Notifications");
+        auto call = notifyApp.asyncCallWithArgumentList("Notify", argumentList);
+        QDBusPendingCallWatcher watcher{QDBusPendingReply{call}};
+        connect(&watcher,
+                &QDBusPendingCallWatcher::finished,
+                this,
+                [&watcher, this, &roomid, &eventid]() {
+                        if (watcher.reply().type() == QDBusMessage::ErrorMessage)
+                                qDebug() << "D-Bus Error:" << watcher.reply().errorMessage();
+                        else
+                                notificationIds[watcher.reply().arguments().first().toUInt()] =
+                                  roomEventId{roomid, eventid};
+                });
 }
 
 void
