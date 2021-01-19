@@ -168,67 +168,67 @@
     <message>
         <location line="+16"/>
         <source>Kicked user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirúgott felhasználó: %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Confirm ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Kitiltás megerősítése</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to ban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Biztosan ki akarod tiltani %1 (%2) felhasználót?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Failed to ban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült kitiltani %1 felhasználót a %2 szobából: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Banned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kitiltott felhasználó: %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Confirm unban</source>
-        <translation type="unfinished"></translation>
+        <translation>Kitiltás feloldásának megerősítése</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to unban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Biztosan fel akarod oldani %1 (%2) felhasználó kitiltását?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Failed to unban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült feloldani %1 felhasználó kitiltását a %2 szobából: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unbanned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kitiltás feloldva a felhasználónak: %1</translation>
     </message>
     <message>
         <location line="-582"/>
         <source>Cache migration failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Gyorsítótár migráció nem sikerült!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Incompatible cache version</source>
-        <translation type="unfinished"></translation>
+        <translation>Inkompatibilis gyorsítótár-verzió</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>A lemezeden lévő gyorsítótár újabb, mint amit a Nheko jelenlegi verziója támogat. Kérlek, frissítsd vagy töröld a gyorsítótárat!</translation>
     </message>
     <message>
         <location line="+50"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült visszaállítani az OLM fiókot. Kérlek, jelentkezz be ismét!</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -373,7 +373,7 @@
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -813,7 +813,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+10"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -828,7 +828,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+0"/>
         <source>Accept</source>
-        <translation type="unfinished">Elfogadás</translation>
+        <translation>Elfogadás</translation>
     </message>
 </context>
 <context>
@@ -841,7 +841,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>No microphone found.</source>
-        <translation type="unfinished">Nem található mikrofon.</translation>
+        <translation>Nem található mikrofon.</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -856,7 +856,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+13"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
 </context>
 <context>
@@ -1035,12 +1035,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+169"/>
         <source>Accept</source>
-        <translation type="unfinished">Elfogadás</translation>
+        <translation>Elfogadás</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Decline</source>
-        <translation type="unfinished">Elutasítás</translation>
+        <translation>Elutasítás</translation>
     </message>
 </context>
 <context>
@@ -1266,7 +1266,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-749"/>
         <source>You joined this room.</source>
-        <translation type="unfinished">Csatlakoztál ehhez a szobához.</translation>
+        <translation>Csatlakoztál ehhez a szobához.</translation>
     </message>
     <message>
         <location line="+751"/>
