@@ -786,7 +786,7 @@ Esempio: https://server.mio:8787</translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>Recieved Verification Request</source>
+        <source>Received Verification Request</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

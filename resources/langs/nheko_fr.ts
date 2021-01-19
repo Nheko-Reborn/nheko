@@ -786,7 +786,7 @@ Exemple&#xa0;: https&#x202f;://monserveur.example.com&#x202f;:8787</translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>Recieved Verification Request</source>
+        <source>Received Verification Request</source>
         <translation>Demande de vérification reçue</translation>
     </message>
     <message>
