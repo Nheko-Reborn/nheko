@@ -242,8 +242,8 @@ Rectangle {
                 Completer {
                     id: popup
 
-                    x: textArea.positionToRectangle(textArea.completerTriggeredAt > 0 ? text.completerTriggeredAt : 0).x
-                    y: textArea.positionToRectangle(textArea.completerTriggeredAt > 0 ? text.completerTriggeredAt : 0).y - height
+                    x: textArea.completerTriggeredAt >= 0 ? textArea.positionToRectangle(textArea.completerTriggeredAt).x : 0
+                    y: textArea.completerTriggeredAt >= 0 ? textArea.positionToRectangle(textArea.completerTriggeredAt).y - height : 0
                 }
 
                 Connections {
