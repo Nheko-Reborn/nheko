@@ -2,9 +2,11 @@
 
 #include <QDebug>
 #include <QImage>
-#include <QtDBus/QDBusConnection>
-#include <QtDBus/QDBusMessage>
-#include <QtDBus/QDBusMetaType>
+#include <QDBusConnection>
+#include <QDBusMessage>
+#include <QDBusMetaType>
+#include <QDBusPendingCallWatcher>
+#include <QDBusPendingReply>
 
 NotificationsManager::NotificationsManager(QObject *parent)
   : QObject(parent)
@@ -36,6 +38,12 @@ NotificationsManager::NotificationsManager(QObject *parent)
                                               SLOT(notificationReplied(uint, QString)));
 }
 
+/**
+ * This function is based on code from
+ * https://github.com/rohieb/StratumsphereTrayIcon
+ * Copyright (C) 2012 Roland Hieber <rohieb@rohieb.name>
+ * Licensed under the GNU General Public License, version 3
+ */
 void
 NotificationsManager::postNotification(const QString &roomid,
                                        const QString &eventid,
@@ -44,50 +52,50 @@ NotificationsManager::postNotification(const QString &roomid,
                                        const QString &text,
                                        const QImage &icon)
 {
-        uint id             = showNotification(roomname, sender + ": " + text, icon);
-        notificationIds[id] = roomEventId{roomid, eventid};
+    Q_UNUSED(icon)
+
+    QVariantMap hints;
+    hints["image-data"] = sender + ": " + text;
+    hints["sound-name"] = "message-new-instant";
+    QList<QVariant> argumentList;
+    argumentList << "nheko"; // app_name
+    argumentList << (uint)0; // replace_id
+    argumentList << "";      // app_icon
+    argumentList << roomname; // summary
+    argumentList << text;    // body
+    // The list of actions has always the action name and then a localized version of that
+    // action. Currently we just use an empty string for that.
+    // TODO(Nico): Look into what to actually put there.
+    argumentList << (QStringList("default") << ""
+                                            << "inline-reply"
+                                            << ""); // actions
+    argumentList << hints;                          // hints
+    argumentList << (int)-1;                        // timeout in ms
+
+    static QDBusInterface notifyApp("org.freedesktop.Notifications",
+                                    "/org/freedesktop/Notifications",
+                                    "org.freedesktop.Notifications");
+    auto call =
+      notifyApp.callWithArgumentList(QDBus::AutoDetect, "Notify", argumentList);
+    QDBusPendingCallWatcher watcher{QDBusPendingReply{call}};
+    connect(&watcher, &QDBusPendingCallWatcher::finished, this, [&watcher, this, &roomid, &eventid]() {
+        if (watcher.reply().type() == QDBusMessage::ErrorMessage)
+                qDebug() << "D-Bus Error:" << watcher.reply().errorMessage();
+        else
+            notificationIds[watcher.reply().arguments().first().toUInt()] = roomEventId{roomid, eventid};
+    });
 }
-/**
- * This function is based on code from
- * https://github.com/rohieb/StratumsphereTrayIcon
- * Copyright (C) 2012 Roland Hieber <rohieb@rohieb.name>
- * Licensed under the GNU General Public License, version 3
- */
+
 uint
 NotificationsManager::showNotification(const QString summary,
                                        const QString text,
                                        const QImage image)
 {
-        QVariantMap hints;
-        hints["image-data"] = image;
-        hints["sound-name"] = "message-new-instant";
-        QList<QVariant> argumentList;
-        argumentList << "nheko"; // app_name
-        argumentList << (uint)0; // replace_id
-        argumentList << "";      // app_icon
-        argumentList << summary; // summary
-        argumentList << text;    // body
-        // The list of actions has always the action name and then a localized version of that
-        // action. Currently we just use an empty string for that.
-        // TODO(Nico): Look into what to actually put there.
-        argumentList << (QStringList("default") << ""
-                                                << "inline-reply"
-                                                << ""); // actions
-        argumentList << hints;                          // hints
-        argumentList << (int)-1;                        // timeout in ms
+    Q_UNUSED(summary)
+    Q_UNUSED(text)
+    Q_UNUSED(image)
 
-        static QDBusInterface notifyApp("org.freedesktop.Notifications",
-                                        "/org/freedesktop/Notifications",
-                                        "org.freedesktop.Notifications");
-        QDBusMessage reply =
-          notifyApp.callWithArgumentList(QDBus::AutoDetect, "Notify", argumentList);
-        if (reply.type() == QDBusMessage::ErrorMessage) {
-                qDebug() << "D-Bus Error:" << reply.errorMessage();
-                return 0;
-        } else {
-                return reply.arguments().first().toUInt();
-        }
-        return true;
+    return 0;
 }
 
 void
