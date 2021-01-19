@@ -2688,10 +2688,13 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
 
                         if (event.contains("content") &&
                             event["content"].contains("m.relates_to")) {
-                                auto temp              = event["content"]["m.relates_to"];
-                                std::string relates_to = temp.contains("m.in_reply_to")
-                                                           ? temp["m.in_reply_to"]["event_id"]
-                                                           : temp["event_id"];
+                                auto temp         = event["content"]["m.relates_to"];
+                                json relates_to_j = temp.contains("m.in_reply_to") &&
+                                                        temp["m.in_reply_to"].is_object()
+                                                      ? temp["m.in_reply_to"]["event_id"]
+                                                      : temp["event_id"];
+                                std::string relates_to =
+                                  relates_to_j.is_string() ? relates_to_j.get<std::string>() : "";
 
                                 if (!relates_to.empty()) {
                                         lmdb::dbi_del(txn,
@@ -2780,10 +2783,13 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
 
                         if (event.contains("content") &&
                             event["content"].contains("m.relates_to")) {
-                                auto temp              = event["content"]["m.relates_to"];
-                                std::string relates_to = temp.contains("m.in_reply_to")
-                                                           ? temp["m.in_reply_to"]["event_id"]
-                                                           : temp["event_id"];
+                                auto temp         = event["content"]["m.relates_to"];
+                                json relates_to_j = temp.contains("m.in_reply_to") &&
+                                                        temp["m.in_reply_to"].is_object()
+                                                      ? temp["m.in_reply_to"]["event_id"]
+                                                      : temp["event_id"];
+                                std::string relates_to =
+                                  relates_to_j.is_string() ? relates_to_j.get<std::string>() : "";
 
                                 if (!relates_to.empty())
                                         lmdb::dbi_put(
@@ -2869,10 +2875,13 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
                 }
 
                 if (event.contains("content") && event["content"].contains("m.relates_to")) {
-                        auto temp              = event["content"]["m.relates_to"];
-                        std::string relates_to = temp.contains("m.in_reply_to")
-                                                   ? temp["m.in_reply_to"]["event_id"]
-                                                   : temp["event_id"];
+                        auto temp = event["content"]["m.relates_to"];
+                        json relates_to_j =
+                          temp.contains("m.in_reply_to") && temp["m.in_reply_to"].is_object()
+                            ? temp["m.in_reply_to"]["event_id"]
+                            : temp["event_id"];
+                        std::string relates_to =
+                          relates_to_j.is_string() ? relates_to_j.get<std::string>() : "";
 
                         if (!relates_to.empty())
                                 lmdb::dbi_put(txn, relationsDb, lmdb::val(relates_to), event_id);
