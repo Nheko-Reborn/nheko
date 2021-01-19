@@ -169,12 +169,34 @@ Cache::setup()
 
         nhlog::db()->debug("setting up cache");
 
+        // Previous location of the cache directory
+        auto oldCache = QString("%1/%2%3")
+                          .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
+                          .arg(QString::fromUtf8(localUserId_.toUtf8().toHex()))
+                          .arg(QString::fromUtf8(settings->profile().toUtf8().toHex()));
+
         cacheDirectory_ = QString("%1/%2%3")
-                            .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
+                            .arg(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation))
                             .arg(QString::fromUtf8(localUserId_.toUtf8().toHex()))
                             .arg(QString::fromUtf8(settings->profile().toUtf8().toHex()));
 
         bool isInitial = !QFile::exists(cacheDirectory_);
+
+        // NOTE: If both cache directories exist it's better to do nothing: it
+        // could mean a previous migration failed or was interrupted.
+        bool needsMigration = isInitial && QFile::exists(oldCache);
+
+        if (needsMigration) {
+                nhlog::db()->info("found old state directory, migrating");
+                if (!QDir().rename(oldCache, cacheDirectory_)) {
+                        throw std::runtime_error(("Unable to migrate the old state directory (" +
+                                                  oldCache + ") to the new location (" +
+                                                  cacheDirectory_ + ")")
+                                                   .toStdString()
+                                                   .c_str());
+                }
+                nhlog::db()->info("completed state migration");
+        }
 
         env_ = lmdb::env::create();
         env_.set_mapsize(DB_SIZE);

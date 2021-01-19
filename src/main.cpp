@@ -93,9 +93,9 @@ screenCenter(int width, int height)
 }
 
 void
-createCacheDirectory()
+createStandardDirectory(QStandardPaths::StandardLocation path)
 {
-        auto dir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+        auto dir = QStandardPaths::writableLocation(path);
 
         if (!QDir().mkpath(dir)) {
                 throw std::runtime_error(
@@ -188,7 +188,8 @@ main(int argc, char *argv[])
 
         http::init();
 
-        createCacheDirectory();
+        createStandardDirectory(QStandardPaths::CacheLocation);
+        createStandardDirectory(QStandardPaths::AppDataLocation);
 
         registerSignalHandlers();
 
