@@ -52,8 +52,6 @@ NotificationsManager::postNotification(const QString &roomid,
                                        const QString &text,
                                        const QImage &icon)
 {
-        Q_UNUSED(icon)
-
         QVariantMap hints;
         hints["image-data"] = icon;
         hints["sound-name"] = "message-new-instant";
@@ -75,8 +73,8 @@ NotificationsManager::postNotification(const QString &roomid,
         static QDBusInterface notifyApp("org.freedesktop.Notifications",
                                         "/org/freedesktop/Notifications",
                                         "org.freedesktop.Notifications");
-        auto call    = notifyApp.asyncCallWithArgumentList("Notify", argumentList);
-        auto watcher = new QDBusPendingCallWatcher{QDBusPendingCall{QDBusPendingReply{call}}};
+        QDBusPendingCall call = notifyApp.asyncCallWithArgumentList("Notify", argumentList);
+        auto watcher          = new QDBusPendingCallWatcher{call, this};
         connect(
           watcher, &QDBusPendingCallWatcher::finished, this, [watcher, this, roomid, eventid]() {
                   if (watcher->reply().type() == QDBusMessage::ErrorMessage)
@@ -91,14 +89,11 @@ NotificationsManager::postNotification(const QString &roomid,
 void
 NotificationsManager::closeNotification(uint id)
 {
-        QList<QVariant> argumentList;
-        argumentList << (uint)id; // replace_id
-
         static QDBusInterface closeCall("org.freedesktop.Notifications",
                                         "/org/freedesktop/Notifications",
                                         "org.freedesktop.Notifications");
-        auto call    = closeCall.asyncCallWithArgumentList("CloseNotification", argumentList);
-        auto watcher = new QDBusPendingCallWatcher{QDBusPendingCall{QDBusPendingReply{call}}};
+        auto call    = closeCall.asyncCall("CloseNotification", (uint)id); // replace_id
+        auto watcher = new QDBusPendingCallWatcher{call, this};
         connect(watcher, &QDBusPendingCallWatcher::finished, this, [watcher, this]() {
                 if (watcher->reply().type() == QDBusMessage::ErrorMessage) {
                         qDebug() << "D-Bus Error:" << watcher->reply().errorMessage();
