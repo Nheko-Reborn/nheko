@@ -525,6 +525,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/CallDevices.h
 	src/CallManager.h
 	src/ChatPage.h
+	src/Clipboard.h
 	src/CommunitiesList.h
 	src/CommunitiesListItem.h
 	src/CompletionProxyModel.h
