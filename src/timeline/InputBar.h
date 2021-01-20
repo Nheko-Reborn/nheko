@@ -12,6 +12,13 @@ class QMimeData;
 class QDropEvent;
 class QStringList;
 
+enum class MarkdownOverride
+{
+    NONE, // no override set
+    ON,
+    OFF,
+};
+
 class InputBar : public QObject
 {
         Q_OBJECT
@@ -41,7 +48,7 @@ public slots:
         void updateState(int selectionStart, int selectionEnd, int cursorPosition, QString text);
         void openFileSelection();
         bool uploading() const { return uploading_; }
-        void message(QString body);
+        void message(QString body, MarkdownOverride useMarkdown = MarkdownOverride::NONE);
 
         QObject *completerFor(QString completerName);
 

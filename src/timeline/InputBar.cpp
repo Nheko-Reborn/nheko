@@ -251,12 +251,12 @@ InputBar::openFileSelection()
 }
 
 void
-InputBar::message(QString msg)
+InputBar::message(QString msg, MarkdownOverride useMarkdown)
 {
         mtx::events::msg::Text text = {};
         text.body                   = msg.trimmed().toStdString();
 
-        if (ChatPage::instance()->userSettings()->markdown()) {
+        if ((ChatPage::instance()->userSettings()->markdown() && (useMarkdown != MarkdownOverride::OFF)) || (useMarkdown == MarkdownOverride::ON)) {
                 text.formatted_body = utils::markdownToHtml(msg).toStdString();
 
                 // Don't send formatted_body, when we don't need to
@@ -477,6 +477,10 @@ InputBar::command(QString command, QString args)
                 room->clearTimeline();
         } else if (command == "rotate-megolm-session") {
                 cache::dropOutboundMegolmSession(room->roomId().toStdString());
+        } else if (command == "md") {
+            message(args, MarkdownOverride::ON);
+        } else if (command == "plain") {
+            message(args, MarkdownOverride::OFF);
         }
 }
 
