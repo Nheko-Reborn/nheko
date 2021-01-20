@@ -1,10 +1,12 @@
 #include "notifications/Manager.h"
 
+#include <QDBusConnection>
+#include <QDBusMessage>
+#include <QDBusMetaType>
+#include <QDBusPendingCallWatcher>
+#include <QDBusPendingReply>
 #include <QDebug>
 #include <QImage>
-#include <QtDBus/QDBusConnection>
-#include <QtDBus/QDBusMessage>
-#include <QtDBus/QDBusMetaType>
 
 NotificationsManager::NotificationsManager(QObject *parent)
   : QObject(parent)
@@ -36,6 +38,12 @@ NotificationsManager::NotificationsManager(QObject *parent)
                                               SLOT(notificationReplied(uint, QString)));
 }
 
+/**
+ * This function is based on code from
+ * https://github.com/rohieb/StratumsphereTrayIcon
+ * Copyright (C) 2012 Roland Hieber <rohieb@rohieb.name>
+ * Licensed under the GNU General Public License, version 3
+ */
 void
 NotificationsManager::postNotification(const QString &roomid,
                                        const QString &eventid,
@@ -44,29 +52,15 @@ NotificationsManager::postNotification(const QString &roomid,
                                        const QString &text,
                                        const QImage &icon)
 {
-        uint id             = showNotification(roomname, sender + ": " + text, icon);
-        notificationIds[id] = roomEventId{roomid, eventid};
-}
-/**
- * This function is based on code from
- * https://github.com/rohieb/StratumsphereTrayIcon
- * Copyright (C) 2012 Roland Hieber <rohieb@rohieb.name>
- * Licensed under the GNU General Public License, version 3
- */
-uint
-NotificationsManager::showNotification(const QString summary,
-                                       const QString text,
-                                       const QImage image)
-{
         QVariantMap hints;
-        hints["image-data"] = image;
+        hints["image-data"] = icon;
         hints["sound-name"] = "message-new-instant";
         QList<QVariant> argumentList;
-        argumentList << "nheko"; // app_name
-        argumentList << (uint)0; // replace_id
-        argumentList << "";      // app_icon
-        argumentList << summary; // summary
-        argumentList << text;    // body
+        argumentList << "nheko";              // app_name
+        argumentList << (uint)0;              // replace_id
+        argumentList << "";                   // app_icon
+        argumentList << roomname;             // summary
+        argumentList << sender + ": " + text; // body
         // The list of actions has always the action name and then a localized version of that
         // action. Currently we just use an empty string for that.
         // TODO(Nico): Look into what to actually put there.
@@ -79,31 +73,33 @@ NotificationsManager::showNotification(const QString summary,
         static QDBusInterface notifyApp("org.freedesktop.Notifications",
                                         "/org/freedesktop/Notifications",
                                         "org.freedesktop.Notifications");
-        QDBusMessage reply =
-          notifyApp.callWithArgumentList(QDBus::AutoDetect, "Notify", argumentList);
-        if (reply.type() == QDBusMessage::ErrorMessage) {
-                qDebug() << "D-Bus Error:" << reply.errorMessage();
-                return 0;
-        } else {
-                return reply.arguments().first().toUInt();
-        }
-        return true;
+        QDBusPendingCall call = notifyApp.asyncCallWithArgumentList("Notify", argumentList);
+        auto watcher          = new QDBusPendingCallWatcher{call, this};
+        connect(
+          watcher, &QDBusPendingCallWatcher::finished, this, [watcher, this, roomid, eventid]() {
+                  if (watcher->reply().type() == QDBusMessage::ErrorMessage)
+                          qDebug() << "D-Bus Error:" << watcher->reply().errorMessage();
+                  else
+                          notificationIds[watcher->reply().arguments().first().toUInt()] =
+                            roomEventId{roomid, eventid};
+                  watcher->deleteLater();
+          });
 }
 
 void
 NotificationsManager::closeNotification(uint id)
 {
-        QList<QVariant> argumentList;
-        argumentList << (uint)id; // replace_id
-
         static QDBusInterface closeCall("org.freedesktop.Notifications",
                                         "/org/freedesktop/Notifications",
                                         "org.freedesktop.Notifications");
-        QDBusMessage reply =
-          closeCall.callWithArgumentList(QDBus::AutoDetect, "CloseNotification", argumentList);
-        if (reply.type() == QDBusMessage::ErrorMessage) {
-                qDebug() << "D-Bus Error:" << reply.errorMessage();
-        }
+        auto call    = closeCall.asyncCall("CloseNotification", (uint)id); // replace_id
+        auto watcher = new QDBusPendingCallWatcher{call, this};
+        connect(watcher, &QDBusPendingCallWatcher::finished, this, [watcher, this]() {
+                if (watcher->reply().type() == QDBusMessage::ErrorMessage) {
+                        qDebug() << "D-Bus Error:" << watcher->reply().errorMessage();
+                };
+                watcher->deleteLater();
+        });
 }
 
 void
