@@ -11,7 +11,11 @@
 #endif
 
 #ifdef DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#if __has_include(<doctest.h>)
 #include <doctest.h>
+#else
+#include <doctest/doctest.h>
+#endif
 #endif
 
 using namespace std::literals;
