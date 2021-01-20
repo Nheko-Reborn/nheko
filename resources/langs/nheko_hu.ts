@@ -233,43 +233,43 @@
     <message>
         <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült visszaállítani a mentési adatot. Kérlek, jelentkezz be ismét!</translation>
     </message>
     <message>
         <location line="+165"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült beállítani a titkosítási kulcsokat. Válasz a szervertől: %1 %2. Kérlek, próbáld újra később!</translation>
     </message>
     <message>
         <location line="+34"/>
         <location line="+116"/>
         <source>Please try to login again: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kérlek, próbálj meg bejelentkezni újra: %1</translation>
     </message>
     <message>
         <location line="+37"/>
         <source>Failed to join room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült csatlakozni a szobához: %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You joined the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Csatlakoztál a szobához</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Failed to remove invite: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült eltávolítani a meghívót: %1</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Room creation failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült létrehozni a szobát: %1</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Failed to leave room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült elhagyni a szobát: %1</translation>
     </message>
     <message>
         <location line="+54"/>
@@ -282,23 +282,23 @@
     <message>
         <location filename="../../src/CommunitiesListItem.cpp" line="+133"/>
         <source>All rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Az összes szoba</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Favourite rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Kedvenc szobák</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Low priority rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Alacsony prioritású szobák</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Server Notices</source>
         <comment>Tag translation for m.server_notice</comment>
-        <translation type="unfinished"></translation>
+        <translation>Szerverértesítések</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -317,27 +317,27 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+227"/>
         <source>Decrypt secrets</source>
-        <translation type="unfinished"></translation>
+        <translation>Titkos tároló feloldása</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase to decrypt your secrets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Add meg a helyreállítási kulcsodat vagy a jelmondatodat a titkos tároló feloldásához:</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Enter your recovery key or passphrase called %1 to decrypt your secrets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Add meg a %1 nevű helyreállítási kulcsodat vagy a jelmondatodat a titkos tároló feloldásához:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Decryption failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Titkosítás feloldása nem sikerült</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Failed to decrypt secrets with the provided recovery key or passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült feloldani a titkosítási tárolót a megadott helyreállítási kulccsal vagy jelmondattal</translation>
     </message>
 </context>
 <context>
@@ -345,22 +345,22 @@
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+7"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Megerősítési kód</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Kérlek, ellenőrizd a következő számjegyeket. Mindkét oldalon ugyanazoknak a számoknak kell szerepelniük. Ha nem ugyanazok, kérlek, válaszd azt, hogy „Nem egyeznek!” a megerősítés megszakításához!</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem egyeznek!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Megegyeznek!</translation>
     </message>
 </context>
 <context>
@@ -368,7 +368,7 @@
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+73"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Alkalmaz</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -378,12 +378,12 @@
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Név</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Téma</translation>
     </message>
 </context>
 <context>
@@ -392,47 +392,47 @@
         <location filename="../qml/emoji/EmojiPicker.qml" line="+113"/>
         <location line="+181"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Keresés</translation>
     </message>
     <message>
         <location line="-66"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>Emberek</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>Természet</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished"></translation>
+        <translation>Ételek</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished"></translation>
+        <translation>Tevékenység</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished"></translation>
+        <translation>Utazás</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>Tárgyak</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>Jelképek</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>Zászlók</translation>
     </message>
 </context>
 <context>
@@ -440,22 +440,22 @@
     <message>
         <location filename="../qml/device-verification/EmojiVerification.qml" line="+7"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Megerősítési kód</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Kérlek, ellenőrizd a következő hangulatjeleket. Mindkét oldalon ugyanazoknak a hangulatjeleknek kell szerepelniük. Ha nem ugyanazok, kérlek, válaszd azt, hogy „Nem egyeznek!” a megerősítés megszakításához!</translation>
     </message>
     <message>
         <location line="+376"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem egyeznek!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Megegyeznek!</translation>
     </message>
 </context>
 <context>
@@ -463,12 +463,12 @@
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+19"/>
         <source>Encrypted</source>
-        <translation type="unfinished"></translation>
+        <translation>Titkosítva</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ez az üzenet nincs titkosítva!</translation>
     </message>
 </context>
 <context>
