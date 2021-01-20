@@ -84,7 +84,7 @@ NotificationsManager::postNotification(const QString &roomid,
                   else
                           notificationIds[watcher->reply().arguments().first().toUInt()] =
                             roomEventId{roomid, eventid};
-                  delete watcher;
+                  watcher->deleteLater();
           });
 }
 
@@ -103,6 +103,7 @@ NotificationsManager::closeNotification(uint id)
                 if (watcher->reply().type() == QDBusMessage::ErrorMessage) {
                         qDebug() << "D-Bus Error:" << watcher->reply().errorMessage();
                 };
+                watcher->deleteLater();
         });
 }
 
