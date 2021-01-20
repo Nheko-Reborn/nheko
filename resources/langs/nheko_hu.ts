@@ -345,12 +345,12 @@
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+7"/>
         <source>Verification Code</source>
-        <translation>Megerősítési kód</translation>
+        <translation>Ellenőrzési kód</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>Kérlek, ellenőrizd a következő számjegyeket. Mindkét oldalon ugyanazoknak a számoknak kell szerepelniük. Ha nem ugyanazok, kérlek, válaszd azt, hogy „Nem egyeznek!” a megerősítés megszakításához!</translation>
+        <translation>Kérlek, ellenőrizd a következő számjegyeket. Mindkét oldalon ugyanazoknak a számoknak kell szerepelniük. Ha nem ugyanazok, kérlek, válaszd azt, hogy „Nem egyeznek!” az ellenőrzés megszakításához!</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -440,12 +440,12 @@
     <message>
         <location filename="../qml/device-verification/EmojiVerification.qml" line="+7"/>
         <source>Verification Code</source>
-        <translation>Megerősítési kód</translation>
+        <translation>Ellenőrzési kód</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>Kérlek, ellenőrizd a következő hangulatjeleket. Mindkét oldalon ugyanazoknak a hangulatjeleknek kell szerepelniük. Ha nem ugyanazok, kérlek, válaszd azt, hogy „Nem egyeznek!” a megerősítés megszakításához!</translation>
+        <translation>Kérlek, ellenőrizd a következő hangulatjeleket. Mindkét oldalon ugyanazoknak a hangulatjeleknek kell szerepelniük. Ha nem ugyanazok, kérlek, válaszd azt, hogy „Nem egyeznek!” az ellenőrzés megszakításához!</translation>
     </message>
     <message>
         <location line="+376"/>
@@ -477,37 +477,37 @@
         <location filename="../../src/timeline/EventStore.cpp" line="+548"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Titkosított esemény (Nem találhatók kulcsok a titkosítás feloldásához) --</translation>
     </message>
     <message>
         <location line="+32"/>
         <location line="+63"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Hiba a titkosítás feloldásakor (nem sikerült lekérni a megolm kulcsokat az adatbázisból) --</translation>
     </message>
     <message>
         <location line="-49"/>
         <location line="+62"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Hiba a titkosítás feloldásakor (%1) --</translation>
     </message>
     <message>
         <location line="-52"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Titkosított esemény (Ismeretlen eseménytípus) --</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>-- Replay attack! This message index was reused! --</source>
-        <translation type="unfinished"></translation>
+        <translation>-- Újrajátszási támadás! Ez az üzenetindex újra fel lett használva! --</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>-- Message by unverified device! --</source>
-        <translation type="unfinished"></translation>
+        <translation>-- Nem ellenőrzött eszközről érkezett üzenet! --</translation>
     </message>
 </context>
 <context>
@@ -1925,7 +1925,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+15"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
 </context>
 <context>
@@ -1969,7 +1969,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2012,7 +2012,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2030,7 +2030,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/InviteUsers.cpp" line="+42"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2048,7 +2048,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2061,7 +2061,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2074,7 +2074,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2092,7 +2092,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location line="+87"/>
@@ -2107,7 +2107,7 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location line="+1"/>
