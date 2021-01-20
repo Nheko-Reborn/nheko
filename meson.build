@@ -6,12 +6,7 @@ lib = static_library('blurhash',
            'blurhash.cpp',
            install : true)
 
-doctest_dep = dependency('doctest', required : false)
-
-if not doctest_dep.found()
-	doctest_proj = subproject('doctest')
-	doctest_dep = doctest_proj.get_variable('doctest_dep')
-endif
+doctest_dep = dependency('doctest', fallback : ['doctest', 'doctest_dep'])
 
 tests = executable('blurhash-tests',
            'blurhash.cpp',
@@ -22,3 +17,13 @@ test('blurhash-tests', tests)
 
 executable('blurhash2bmp', 'blurhash2bmp.cpp', link_with: lib, install: true)
 executable('blurhash', 'image2blurhash.cpp', link_with: lib, install: true)
+
+install_headers('blurhash.hpp')
+
+pkg = import('pkgconfig')
+pkg.generate(libraries : [lib],
+             subdirs : ['.'],
+             version : meson.project_version(),
+             name : meson.project_name(),
+             filebase : meson.project_name(),
+             description : 'C++ blurhash encoder/decoder')
