@@ -78,7 +78,7 @@ NotificationsManager::postNotification(const QString &roomid,
         auto call    = notifyApp.asyncCallWithArgumentList("Notify", argumentList);
         auto watcher = new QDBusPendingCallWatcher{QDBusPendingCall{QDBusPendingReply{call}}};
         connect(
-          watcher, &QDBusPendingCallWatcher::finished, this, [watcher, this, &roomid, &eventid]() {
+          watcher, &QDBusPendingCallWatcher::finished, this, [watcher, this, roomid, eventid]() {
                   if (watcher->reply().type() == QDBusMessage::ErrorMessage)
                           qDebug() << "D-Bus Error:" << watcher->reply().errorMessage();
                   else
