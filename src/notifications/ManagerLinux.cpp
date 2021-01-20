@@ -75,19 +75,17 @@ NotificationsManager::postNotification(const QString &roomid,
         static QDBusInterface notifyApp("org.freedesktop.Notifications",
                                         "/org/freedesktop/Notifications",
                                         "org.freedesktop.Notifications");
-        auto call = notifyApp.asyncCallWithArgumentList("Notify", argumentList);
-        auto watcher = new QDBusPendingCall{QDBusPendingReply{call}};
-        connect(watcher,
-                &QDBusPendingCallWatcher::finished,
-                this,
-                [watcher, this, &roomid, &eventid]() {
-                        if (watcher->reply().type() == QDBusMessage::ErrorMessage)
-                                qDebug() << "D-Bus Error:" << watcher.reply().errorMessage();
-                        else
-                                notificationIds[watcher->reply().arguments().first().toUInt()] =
-                                  roomEventId{roomid, eventid};
-                        delete watcher;
-                });
+        auto call    = notifyApp.asyncCallWithArgumentList("Notify", argumentList);
+        auto watcher = new QDBusPendingCallWatcher{QDBusPendingCall{QDBusPendingReply{call}}};
+        connect(
+          watcher, &QDBusPendingCallWatcher::finished, this, [watcher, this, &roomid, &eventid]() {
+                  if (watcher->reply().type() == QDBusMessage::ErrorMessage)
+                          qDebug() << "D-Bus Error:" << watcher->reply().errorMessage();
+                  else
+                          notificationIds[watcher->reply().arguments().first().toUInt()] =
+                            roomEventId{roomid, eventid};
+                  delete watcher;
+          });
 }
 
 void
@@ -99,11 +97,13 @@ NotificationsManager::closeNotification(uint id)
         static QDBusInterface closeCall("org.freedesktop.Notifications",
                                         "/org/freedesktop/Notifications",
                                         "org.freedesktop.Notifications");
-        QDBusMessage reply =
-          closeCall.callWithArgumentList(QDBus::AutoDetect, "CloseNotification", argumentList);
-        if (reply.type() == QDBusMessage::ErrorMessage) {
-                qDebug() << "D-Bus Error:" << reply.errorMessage();
-        }
+        auto call    = closeCall.asyncCallWithArgumentList("CloseNotification", argumentList);
+        auto watcher = new QDBusPendingCallWatcher{QDBusPendingCall{QDBusPendingReply{call}}};
+        connect(watcher, &QDBusPendingCallWatcher::finished, this, [watcher, this]() {
+                if (watcher->reply().type() == QDBusMessage::ErrorMessage) {
+                        qDebug() << "D-Bus Error:" << watcher->reply().errorMessage();
+                };
+        });
 }
 
 void
