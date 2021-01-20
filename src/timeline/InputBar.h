@@ -14,9 +14,9 @@ class QStringList;
 
 enum class MarkdownOverride
 {
-    NONE, // no override set
-    ON,
-    OFF,
+        NONE, // no override set
+        ON,
+        OFF,
 };
 
 class InputBar : public QObject
