@@ -76,16 +76,17 @@ NotificationsManager::postNotification(const QString &roomid,
                                         "/org/freedesktop/Notifications",
                                         "org.freedesktop.Notifications");
         auto call = notifyApp.asyncCallWithArgumentList("Notify", argumentList);
-        QDBusPendingCallWatcher watcher{QDBusPendingReply{call}};
-        connect(&watcher,
+        auto watcher = new QDBusPendingCall{QDBusPendingReply{call}};
+        connect(watcher,
                 &QDBusPendingCallWatcher::finished,
                 this,
-                [&watcher, this, &roomid, &eventid]() {
-                        if (watcher.reply().type() == QDBusMessage::ErrorMessage)
+                [watcher, this, &roomid, &eventid]() {
+                        if (watcher->reply().type() == QDBusMessage::ErrorMessage)
                                 qDebug() << "D-Bus Error:" << watcher.reply().errorMessage();
                         else
-                                notificationIds[watcher.reply().arguments().first().toUInt()] =
+                                notificationIds[watcher->reply().arguments().first().toUInt()] =
                                   roomEventId{roomid, eventid};
+                        delete watcher;
                 });
 }
 
