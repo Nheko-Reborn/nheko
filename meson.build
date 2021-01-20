@@ -6,8 +6,13 @@ lib = static_library('blurhash',
            'blurhash.cpp',
            install : true)
 
-doctest_proj = subproject('doctest')
-doctest_dep = doctest_proj.get_variable('doctest_dep')
+doctest_dep = dependency('doctest', required : false)
+
+if not doctest_dep.found()
+	doctest_proj = subproject('doctest')
+	doctest_dep = doctest_proj.get_variable('doctest_dep')
+endif
+
 tests = executable('blurhash-tests',
            'blurhash.cpp',
 	   cpp_args : '-DDOCTEST_CONFIG_IMPLEMENT_WITH_MAIN',
