@@ -14,7 +14,7 @@ class QStringList;
 
 enum class MarkdownOverride
 {
-        NONE, // no override set
+        NOT_SPECIFIED, // no override set
         ON,
         OFF,
 };
@@ -48,7 +48,7 @@ public slots:
         void updateState(int selectionStart, int selectionEnd, int cursorPosition, QString text);
         void openFileSelection();
         bool uploading() const { return uploading_; }
-        void message(QString body, MarkdownOverride useMarkdown = MarkdownOverride::NONE);
+        void message(QString body, MarkdownOverride useMarkdown = MarkdownOverride::NOT_SPECIFIED);
 
         QObject *completerFor(QString completerName);
 
