@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.8.0] -- unreleased
+## [0.8.0] -- 2021-01-21
 
 ### Highlights
 

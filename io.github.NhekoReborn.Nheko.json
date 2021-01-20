@@ -220,7 +220,8 @@
       "name": "mtxclient",
       "sources": [
         {
-          "commit": "f83988606723da50b486022d859b6451228c814d",
+          "commit": "2d6e3f79917ce2065a54ca32e6a9f9d42c0b6347",
+          "tag": "v0.4.0",
           "type": "git",
           "url": "https://github.com/Nheko-Reborn/mtxclient.git"
         }
@@ -254,7 +255,7 @@
         {
           "path": ".",
           "type": "dir",
-	  "skip": ["build-flatpak"]
+          "skip": ["build-flatpak"]
         },
         {
           "dest": ".deps/lmdbxx",
