@@ -1,5 +1,7 @@
 #include "TimelineViewManager.h"
 
+#include <QApplication>
+#include <QClipboard>
 #include <QDesktopServices>
 #include <QDropEvent>
 #include <QMetaType>
@@ -551,4 +553,10 @@ void
 TimelineViewManager::focusMessageInput()
 {
         emit focusInput();
+}
+
+void
+TimelineViewManager::copyMessage(QString event) const
+{
+        QApplication::clipboard()->setText(timeline_->getMessageFromId(event));
 }

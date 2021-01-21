@@ -806,6 +806,16 @@ TimelineModel::formatDateSeparator(QDate date) const
         return date.toString(fmt);
 }
 
+QString
+TimelineModel::getMessageFromId(QString id) const
+{
+    auto e = events.get(id.toStdString(), "", false);
+    if (!e)
+        return "";
+    std::string body = mtx::accessors::body(*e);
+    return QString::fromStdString(body);
+}
+
 void
 TimelineModel::viewRawMessage(QString id) const
 {

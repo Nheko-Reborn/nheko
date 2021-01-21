@@ -109,6 +109,11 @@ Page {
         }
 
         MenuItem {
+            text: qsTr("Copy message")
+            onClicked: TimelineManager.copyMessage(messageContextMenu.eventId)
+        }
+
+        MenuItem {
             text: qsTr("Read receipts")
             onTriggered: TimelineManager.timeline.readReceiptsAction(messageContextMenu.eventId)
         }

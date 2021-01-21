@@ -31,31 +31,6 @@ TextEdit {
     CursorShape {
         anchors.fill: parent
         cursorShape: hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
-
-        acceptedButtons: {
-            if (message.selectedText == "")
-                return Qt.NoButton;
-            else
-                return Qt.RightButton;
-        }
-
-        onClicked: {
-            if (parent.selectedText != "")
-                copyMenu.popup();
-        }
-    }
-
-    Menu {
-        id: copyMenu
-
-        modal: true
-
-        MenuItem {
-            id: copy
-
-            text: qsTr("Copy")
-            onTriggered: Clipboard.setText(te.selectedText);
-        }
     }
 
 }

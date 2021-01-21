@@ -72,6 +72,8 @@ public:
         Q_INVOKABLE void openLeaveRoomDialog() const;
         Q_INVOKABLE void removeVerificationFlow(DeviceVerificationFlow *flow);
 
+        Q_INVOKABLE void copyMessage(QString event) const;
+
         void verifyUser(QString userid);
         void verifyDevice(QString userid, QString deviceid);
 
