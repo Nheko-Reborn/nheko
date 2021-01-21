@@ -965,6 +965,7 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                             !d.keys.count("ed25519:" + device)) {
                                 nhlog::crypto()->warn("Skipping device {} since it has no keys!",
                                                       device);
+                                continue;
                         }
 
                         auto session =
