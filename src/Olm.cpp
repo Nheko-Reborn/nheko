@@ -961,6 +961,12 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
 
                         auto d = deviceKeys->device_keys.at(device);
 
+                        if (!d.keys.count("curve25519:" + device) ||
+                            !d.keys.count("ed25519:" + device)) {
+                                nhlog::crypto()->warn("Skipping device {} since it has no keys!",
+                                                      device);
+                        }
+
                         auto session =
                           cache::getLatestOlmSession(d.keys.at("curve25519:" + device));
                         if (!session || force_new_session) {
