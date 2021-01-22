@@ -515,33 +515,33 @@
     <message>
         <location filename="../qml/device-verification/Failed.qml" line="+7"/>
         <source>Verification failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Az ellenőrzés nem sikerült</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Other client does not support our verification protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>A másik kliens nem támogatja az ellenőrzési protokollunkat.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Key mismatch detected!</source>
-        <translation type="unfinished"></translation>
+        <translation>A kulcsok nem egyeznek!</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+4"/>
         <source>Device verification timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Időtúllépés az eszközellenőrzés alatt.</translation>
     </message>
     <message>
         <location line="-2"/>
         <source>Other party canceled the verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>A másik fél megszakította az ellenőrzést.</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Bezárás</translation>
     </message>
 </context>
 <context>
@@ -549,17 +549,17 @@
     <message>
         <location filename="../../src/timeline/InputBar.cpp" line="+227"/>
         <source>Select a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Fájl kiválasztása</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Minden fájl (*)</translation>
     </message>
     <message>
         <location line="+334"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült feltölteni a médiafájlt. Kérlek, próbáld újra!</translation>
     </message>
 </context>
 <context>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+18"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Eltávolítás</translation>
     </message>
 </context>
 <context>
@@ -575,12 +575,12 @@
     <message>
         <location filename="../../src/LoginPage.cpp" line="+92"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Matrixazonosító</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>pl. @janos:matrix.org</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -588,74 +588,78 @@
 You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>A bejelentkezési neved. Egy Matrixazonosító a @ jellel kezdődik, amelyet a felhasználóazonosító követ, ami után pedig egy kettősponttal elválasztva kell megadnod a szervered nevét.
+Itt megadhatod a saját homeszervered címét is, amennyiben az nem támogadja a „.well-known” felderítést.
+Példa: @felhasznalo:szerver.em
+Ha a Nheko nem tud rátalálni a homeszerveredre, meg fog jelenni egy mező, ahol kézzel megadhatod a szerver adatait.</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Jelszó</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>Eszköznév</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Egy név ennek az eszköznek, amely meg fog jelenni mások számára, amikor ellenőrzöd az eszközeidet. Ha nincs megadva semmi, egy alapértelmezett név lesz használva.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>A cím, melyen keresztül el lehet érni a homeszervered kliens API-jét.
+Példa: https://szerver.em:8787</translation>
     </message>
     <message>
         <location line="+19"/>
         <location line="+217"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>BEJELENTKEZÉS</translation>
     </message>
     <message>
         <location line="-104"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az automatikus felderítés nem sikerült. Helytelen válasz érkezett.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az automatikus felderítés nem sikerült. Ismeretlen hiba a .well-known lekérése közben.</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem találhatók szükséges végpontok. Lehet, hogy nem egy Matrixszerver.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Helytelen válasz érkezett. Ellenőrizd, hogy a homeszervered domainje helyes.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Egy ismeretlen hiba történt. Ellenőrizd, hogy a homeszervered domainje helyes.</translation>
     </message>
     <message>
         <location line="+59"/>
         <source>SSO LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>SSO BEJELENTKEZÉS</translation>
     </message>
     <message>
         <location line="+37"/>
         <source>Empty password</source>
-        <translation type="unfinished"></translation>
+        <translation>Üres jelszó</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>SSO login failed</source>
-        <translation type="unfinished"></translation>
+        <translation>SSO bejelentkezés nem sikerült</translation>
     </message>
 </context>
 <context>
@@ -663,12 +667,12 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/dialogs/MemberList.cpp" line="+90"/>
         <source>Room members</source>
-        <translation type="unfinished"></translation>
+        <translation>Szobatagok</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -676,47 +680,47 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+123"/>
         <source>Encryption enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Titkosítás bekapcsolva</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>room name changed to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>a szoba neve megváltoztatva erre: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>removed room name</source>
-        <translation type="unfinished"></translation>
+        <translation>szobanév eltávolítva</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>topic changed to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>a téma megváltoztatva erre: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>removed topic</source>
-        <translation type="unfinished"></translation>
+        <translation>téma eltávolítva</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 created and configured room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 létrehozta és beállította a következő szobát: %2</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 placed a voice call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hanghívást kezdeményezett.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a video call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 videóhívást kezdeményezett.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hívást kezdeményezett.</translation>
     </message>
     <message>
         <location line="+29"/>
