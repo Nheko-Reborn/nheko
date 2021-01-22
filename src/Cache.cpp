@@ -1235,11 +1235,11 @@ Cache::saveState(const mtx::responses::Sync &res)
                 updatedInfo.avatar_url = getRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
                 updatedInfo.version    = getRoomVersion(txn, statesdb).toStdString();
 
+                bool has_new_tags = false;
                 // Process the account_data associated with this room
                 if (!room.second.account_data.events.empty()) {
                         auto accountDataDb = getAccountDataDb(txn, room.first);
 
-                        bool has_new_tags = false;
                         for (const auto &evt : room.second.account_data.events) {
                                 std::visit(
                                   [&txn, &accountDataDb](const auto &event) {
@@ -1266,21 +1266,21 @@ Cache::saveState(const mtx::responses::Sync &res)
                                         nhlog::db()->debug("Fully read: {}", fr->content.event_id);
                                 }
                         }
-                        if (!has_new_tags) {
-                                // retrieve the old tags, they haven't changed
-                                lmdb::val data;
-                                if (lmdb::dbi_get(txn, roomsDb_, lmdb::val(room.first), data)) {
-                                        try {
-                                                RoomInfo tmp = json::parse(
-                                                  std::string_view(data.data(), data.size()));
-                                                updatedInfo.tags = tmp.tags;
-                                        } catch (const json::exception &e) {
-                                                nhlog::db()->warn(
-                                                  "failed to parse room info: room_id ({}), {}: {}",
-                                                  room.first,
-                                                  std::string(data.data(), data.size()),
-                                                  e.what());
-                                        }
+                }
+                if (!has_new_tags) {
+                        // retrieve the old tags, they haven't changed
+                        lmdb::val data;
+                        if (lmdb::dbi_get(txn, roomsDb_, lmdb::val(room.first), data)) {
+                                try {
+                                        RoomInfo tmp =
+                                          json::parse(std::string_view(data.data(), data.size()));
+                                        updatedInfo.tags = tmp.tags;
+                                } catch (const json::exception &e) {
+                                        nhlog::db()->warn(
+                                          "failed to parse room info: room_id ({}), {}: {}",
+                                          room.first,
+                                          std::string(data.data(), data.size()),
+                                          e.what());
                                 }
                         }
                 }

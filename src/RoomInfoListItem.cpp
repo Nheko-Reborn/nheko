@@ -145,11 +145,12 @@ RoomInfoListItem::init(QWidget *parent)
                         tagAction->setWhatsThis(tr("Adds or removes the specified tag.",
                                                    "WhatsThis hint for tag menu actions"));
 
-                        for (const auto &riTag : roomInfo.tags)
+                        for (const auto &riTag : roomInfo.tags) {
                                 if (riTag == tag) {
                                         tagAction->setChecked(true);
                                         break;
                                 }
+                        }
 
                         connect(tagAction, &QAction::triggered, this, [this, tag](bool checked) {
                                 if (checked)
