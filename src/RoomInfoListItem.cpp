@@ -17,6 +17,7 @@
 
 #include <QDateTime>
 #include <QInputDialog>
+#include <QMenu>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QSettings>
@@ -32,7 +33,6 @@
 #include "Splitter.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
-#include "ui/Menu.h"
 #include "ui/Ripple.h"
 #include "ui/RippleOverlay.h"
 
@@ -98,7 +98,7 @@ RoomInfoListItem::init(QWidget *parent)
 
         bubbleDiameter_ = QFontMetrics(unreadCountFont_).averageCharWidth() * 3;
 
-        menu_      = new Menu(this);
+        menu_      = new QMenu(this);
         leaveRoom_ = new QAction(tr("Leave room"), this);
         connect(leaveRoom_, &QAction::triggered, this, [this]() { emit leaveRoom(roomId_); });
 

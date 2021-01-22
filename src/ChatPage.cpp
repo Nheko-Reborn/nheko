@@ -267,10 +267,27 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 [this](const QString &groupId) {
                         current_community_ = groupId;
 
-                        if (groupId == "world")
-                                room_list_->removeFilter();
-                        else
-                                room_list_->applyFilter(communitiesList_->roomList(groupId));
+                        if (groupId == "world") {
+                                auto hidden = communitiesList_->hiddenTagsAndCommunities();
+                                std::set<QString> roomsToHide = communitiesList_->roomList(groupId);
+                                for (const auto &hiddenTag : hidden) {
+                                        auto temp = communitiesList_->roomList(hiddenTag);
+                                        roomsToHide.insert(temp.begin(), temp.end());
+                                }
+
+                                room_list_->removeFilter(roomsToHide);
+                        } else {
+                                auto hidden = communitiesList_->hiddenTagsAndCommunities();
+                                hidden.erase(current_community_);
+
+                                auto roomsToShow = communitiesList_->roomList(groupId);
+                                for (const auto &hiddenTag : hidden) {
+                                        for (const auto &r : communitiesList_->roomList(hiddenTag))
+                                                roomsToShow.erase(r);
+                                }
+
+                                room_list_->applyFilter(roomsToShow);
+                        }
                 });
 
         connect(&notificationsManager,

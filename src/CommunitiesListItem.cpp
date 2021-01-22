@@ -1,5 +1,6 @@
 #include "CommunitiesListItem.h"
 
+#include <QMenu>
 #include <QMouseEvent>
 
 #include "Utils.h"
@@ -20,16 +21,26 @@ CommunitiesListItem::CommunitiesListItem(QString group_id, QWidget *parent)
         rippleOverlay_->setClipPath(path);
         rippleOverlay_->setClipping(true);
 
-        if (groupId_ == "world")
-                avatar_ = QPixmap(":/icons/icons/ui/world.png");
-        else if (groupId_ == "tag:m.favourite")
-                avatar_ = QPixmap(":/icons/icons/ui/star.png");
-        else if (groupId_ == "tag:m.lowpriority")
-                avatar_ = QPixmap(":/icons/icons/ui/lowprio.png");
-        else if (groupId_.startsWith("tag:"))
-                avatar_ = QPixmap(":/icons/icons/ui/tag.png");
+        menu_ = new QMenu(this);
+        hideRoomsWithTagAction_ =
+          new QAction(tr("Hide rooms with this tag or from this community"), this);
+        hideRoomsWithTagAction_->setCheckable(true);
+        menu_->addAction(hideRoomsWithTagAction_);
+        connect(menu_, &QMenu::aboutToShow, this, [this]() {
+                hideRoomsWithTagAction_->setChecked(isDisabled_);
+        });
+
+        connect(hideRoomsWithTagAction_, &QAction::triggered, this, [this](bool checked) {
+                this->setDisabled(checked);
+        });
 
         updateTooltip();
+}
+
+void
+CommunitiesListItem::contextMenuEvent(QContextMenuEvent *event)
+{
+        menu_->popup(event->globalPos());
 }
 
 void
@@ -45,6 +56,16 @@ CommunitiesListItem::setPressedState(bool state)
         if (isPressed_ != state) {
                 isPressed_ = state;
                 update();
+        }
+}
+
+void
+CommunitiesListItem::setDisabled(bool state)
+{
+        if (isDisabled_ != state) {
+                isDisabled_ = state;
+                update();
+                emit isDisabledChanged();
         }
 }
 
@@ -80,22 +101,47 @@ CommunitiesListItem::paintEvent(QPaintEvent *)
 
         if (isPressed_)
                 p.fillRect(rect(), highlightedBackgroundColor_);
+        else if (isDisabled_)
+                p.fillRect(rect(), disabledBackgroundColor_);
         else if (underMouse())
                 p.fillRect(rect(), hoverBackgroundColor_);
         else
                 p.fillRect(rect(), backgroundColor_);
 
         if (avatar_.isNull()) {
-                QFont font;
-                font.setPointSizeF(font.pointSizeF() * 1.3);
-                p.setFont(font);
+                QPixmap source;
+                if (groupId_ == "world")
+                        source = QPixmap(":/icons/icons/ui/world.png");
+                else if (groupId_ == "tag:m.favourite")
+                        source = QPixmap(":/icons/icons/ui/star.png");
+                else if (groupId_ == "tag:m.lowpriority")
+                        source = QPixmap(":/icons/icons/ui/lowprio.png");
+                else if (groupId_.startsWith("tag:"))
+                        source = QPixmap(":/icons/icons/ui/tag.png");
 
-                p.drawLetterAvatar(utils::firstChar(resolveName()),
-                                   avatarFgColor_,
-                                   avatarBgColor_,
-                                   width(),
-                                   height(),
-                                   IconSize);
+                if (source.isNull()) {
+                        QFont font;
+                        font.setPointSizeF(font.pointSizeF() * 1.3);
+                        p.setFont(font);
+
+                        p.drawLetterAvatar(utils::firstChar(resolveName()),
+                                           avatarFgColor_,
+                                           avatarBgColor_,
+                                           width(),
+                                           height(),
+                                           IconSize);
+                } else {
+                        QPainter painter(&source);
+                        painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+                        painter.fillRect(source.rect(), avatarFgColor_);
+                        painter.end();
+
+                        const int imageSz = 32;
+                        p.drawPixmap(
+                          QRect(
+                            (width() - imageSz) / 2, (height() - imageSz) / 2, imageSz, imageSz),
+                          source);
+                }
         } else {
                 p.save();
 

@@ -122,11 +122,12 @@ RoomInfoListItem > Avatar {
 
 CommunitiesListItem {
     qproperty-highlightedBackgroundColor: #38A3D8;
+    qproperty-disabledBackgroundColor: palette(mid);
     qproperty-hoverBackgroundColor: rgb(70, 77, 93);
     qproperty-backgroundColor: #f2f5f8;
 
     qproperty-avatarBgColor: #eee;
-    qproperty-avatarFgColor: black;
+    qproperty-avatarFgColor: palette(buttonText);
 }
 
 #ChatPageLoadSpinner {

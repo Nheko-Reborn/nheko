@@ -50,8 +50,8 @@ RoomList::RoomList(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         QScroller::grabGesture(scrollArea_, QScroller::TouchGesture);
         QScroller::grabGesture(scrollArea_, QScroller::LeftMouseButtonGesture);
 
-        // The scrollbar on macOS will hide itself when not active so it won't interfere
-        // with the content.
+// The scrollbar on macOS will hide itself when not active so it won't interfere
+// with the content.
 #if not defined(Q_OS_MAC)
         scrollArea_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 #endif
@@ -411,20 +411,24 @@ RoomList::closeJoinRoomDialog(bool isJoining, QString roomAlias)
 }
 
 void
-RoomList::removeFilter()
+RoomList::removeFilter(const std::set<QString> &roomsToHide)
 {
         setUpdatesEnabled(false);
         for (int i = 0; i < contentsLayout_->count(); i++) {
                 auto widget =
                   qobject_cast<RoomInfoListItem *>(contentsLayout_->itemAt(i)->widget());
-                if (widget)
-                        widget->show();
+                if (widget) {
+                        if (roomsToHide.find(widget->roomId()) == roomsToHide.end())
+                                widget->show();
+                        else
+                                widget->hide();
+                }
         }
         setUpdatesEnabled(true);
 }
 
 void
-RoomList::applyFilter(const std::map<QString, bool> &filter)
+RoomList::applyFilter(const std::set<QString> &filter)
 {
         // Disabling paint updates will resolve issues with screen flickering on big room lists.
         setUpdatesEnabled(false);

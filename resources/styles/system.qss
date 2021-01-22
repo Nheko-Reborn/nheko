@@ -118,6 +118,7 @@ RoomInfoListItem > Avatar {
 
 CommunitiesListItem {
     qproperty-highlightedBackgroundColor: palette(highlight);
+    qproperty-disabledBackgroundColor: palette(mid);
     qproperty-hoverBackgroundColor: palette(light);
     qproperty-backgroundColor: palette(window);
 
