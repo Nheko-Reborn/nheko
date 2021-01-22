@@ -353,7 +353,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 return QVariant(emojiCount);
         }
         case Body:
-                return QVariant(utils::replaceEmoji(QString::fromStdString(body(event))));
+                return QVariant(
+                  utils::replaceEmoji(QString::fromStdString(body(event)).toHtmlEscaped()));
         case FormattedBody: {
                 const static QRegularExpression replyFallback(
                   "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption);
