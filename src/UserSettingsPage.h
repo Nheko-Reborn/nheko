@@ -144,6 +144,7 @@ public:
         void setAccessToken(QString accessToken);
         void setDeviceId(QString deviceId);
         void setHomeserver(QString homeserver);
+        void setHiddenTags(QStringList hiddenTags);
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
         bool messageHoverHighlight() const { return messageHoverHighlight_; }
@@ -182,6 +183,7 @@ public:
         QString accessToken() const { return accessToken_; }
         QString deviceId() const { return deviceId_; }
         QString homeserver() const { return homeserver_; }
+        QStringList hiddenTags() const { return hiddenTags_; }
 
 signals:
         void groupViewStateChanged(bool state);
@@ -257,6 +259,7 @@ private:
         QString accessToken_;
         QString deviceId_;
         QString homeserver_;
+        QStringList hiddenTags_;
 
         static QSharedPointer<UserSettings> instance_;
 };

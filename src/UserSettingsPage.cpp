@@ -81,6 +81,7 @@ UserSettings::load(std::optional<QString> profile)
         hasAlertOnNotification_  = settings.value("user/alert_on_notification", false).toBool();
         startInTray_             = settings.value("user/window/start_in_tray", false).toBool();
         groupView_               = settings.value("user/group_view", true).toBool();
+        hiddenTags_              = settings.value("user/hidden_tags", QStringList{}).toStringList();
         buttonsInTimeline_       = settings.value("user/timeline/buttons", true).toBool();
         timelineMaxWidth_        = settings.value("user/timeline/max_width", 0).toInt();
         messageHoverHighlight_ =
@@ -181,6 +182,13 @@ UserSettings::setGroupView(bool state)
                 emit groupViewStateChanged(state);
 
         groupView_ = state;
+        save();
+}
+
+void
+UserSettings::setHiddenTags(QStringList hiddenTags)
+{
+        hiddenTags_ = hiddenTags;
         save();
 }
 
@@ -538,6 +546,7 @@ UserSettings::save()
         settings.setValue("minor_events", sortByImportance_);
         settings.setValue("read_receipts", readReceipts_);
         settings.setValue("group_view", groupView_);
+        settings.setValue("hidden_tags", hiddenTags_);
         settings.setValue("markdown_enabled", markdown_);
         settings.setValue("desktop_notifications", hasDesktopNotifications_);
         settings.setValue("alert_on_notification", hasAlertOnNotification_);

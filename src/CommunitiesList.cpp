@@ -3,6 +3,7 @@
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "Splitter.h"
+#include "UserSettingsPage.h"
 
 #include <mtx/responses/groups.hpp>
 #include <nlohmann/json.hpp>
@@ -125,9 +126,15 @@ CommunitiesList::setTagsForRoom(const QString &room_id, const std::vector<std::s
 void
 CommunitiesList::addCommunity(const std::string &group_id)
 {
+        auto hiddenTags = UserSettings::instance()->hiddenTags();
+
         const auto id = QString::fromStdString(group_id);
 
         CommunitiesListItem *list_item = new CommunitiesListItem(id, scrollArea_);
+
+        if (hiddenTags.contains(id))
+                list_item->setDisabled(true);
+
         communities_.emplace(id, QSharedPointer<CommunitiesListItem>(list_item));
         contentsLayout_->insertWidget(contentsLayout_->count() - 1, list_item);
 
@@ -142,6 +149,9 @@ CommunitiesList::addCommunity(const std::string &group_id)
                                 break;
                         }
                 }
+
+                auto hiddenTags = hiddenTagsAndCommunities();
+                UserSettings::instance()->setHiddenTags({hiddenTags.begin(), hiddenTags.end()});
         });
 
         if (group_id.empty() || group_id.front() != '+')
