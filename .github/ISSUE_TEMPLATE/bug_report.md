@@ -41,6 +41,16 @@ If applicable, add screenshots to help explain your problem.
     Windows: C:/Users/<USER>/AppData/Local/nheko/cache
 -->
 
+### Profile
+<!-- If applicable -->
+
+<!-- 
+Using a non-default profile may introduce some bugs. If you're not
+using the default profile, please include that. (You don't need to
+include what your profile name is; instead, just mention that you are
+not using the default profile.)
+-->
+
 ### Debugger backtrace
 <!-- 
 If the program crashed send a backtrace:
