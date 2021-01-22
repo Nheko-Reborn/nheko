@@ -94,7 +94,7 @@
     <message>
         <location line="+11"/>
         <source>Accept</source>
-        <translation type="unfinished">Hyväksy</translation>
+        <translation>Hyväksy</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -109,7 +109,7 @@
     <message>
         <location line="+13"/>
         <source>Decline</source>
-        <translation type="unfinished">Hylkää</translation>
+        <translation>Hylkää</translation>
     </message>
     <message>
         <location line="-28"/>
@@ -554,7 +554,7 @@
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Kaikki Tiedostot (*)</translation>
+        <translation>Kaikki Tiedostot (*)</translation>
     </message>
     <message>
         <location line="+334"/>
@@ -856,7 +856,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+13"/>
         <source>Cancel</source>
-        <translation type="unfinished">Peruuta</translation>
+        <translation>Peruuta</translation>
     </message>
 </context>
 <context>
@@ -1856,7 +1856,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Kaikki Tiedostot (*)</translation>
+        <translation>Kaikki Tiedostot (*)</translation>
     </message>
     <message>
         <location line="+225"/>
