@@ -26,6 +26,7 @@ If applicable, add screenshots to help explain your problem.
 ### System:
 
 - Nheko version: <!-- Get the version from the settings menu (bottom left corner)  -->
+- Profile used: <!-- If you are not using the default profile, mention it here -->
 - Installation method: <!-- AppImage, some repository, local build etc -->
 - Operating System:
 - Qt version: <!-- If you compiled it yourself -->
@@ -39,16 +40,6 @@ If applicable, add screenshots to help explain your problem.
     Linux: ~/.cache/nheko/
     macOS: ~/Library/Caches/nheko or /Library/Caches/nheko
     Windows: C:/Users/<USER>/AppData/Local/nheko/cache
--->
-
-### Profile
-<!-- If applicable -->
-
-<!-- 
-Using a non-default profile may introduce some bugs. If you're not
-using the default profile, please include that. (You don't need to
-include what your profile name is; instead, just mention that you are
-not using the default profile.)
 -->
 
 ### Debugger backtrace
