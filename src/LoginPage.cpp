@@ -174,8 +174,9 @@ LoginPage::LoginPage(QWidget *parent)
 
         setLayout(top_layout_);
 
-        connect(this, &LoginPage::versionOkCb, this, &LoginPage::versionOk);
-        connect(this, &LoginPage::versionErrorCb, this, &LoginPage::versionError);
+        connect(this, &LoginPage::versionOkCb, this, &LoginPage::versionOk, Qt::QueuedConnection);
+        connect(
+          this, &LoginPage::versionErrorCb, this, &LoginPage::versionError, Qt::QueuedConnection);
 
         connect(back_button_, SIGNAL(clicked()), this, SLOT(onBackButtonClicked()));
         connect(login_button_, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
@@ -322,7 +323,7 @@ LoginPage::checkHomeserverVersion()
                                             break;
                                     }
                             }
-                            emit versionOk(loginMethod_);
+                            emit versionOkCb(loginMethod_);
                     });
           });
 }
