@@ -260,7 +260,7 @@ set(SRC_FILES
 
 	# Emoji
 	src/emoji/EmojiModel.cpp
-	src/emoji/Provider_new.cpp
+    src/emoji/Provider.cpp
 
 
 	# Timeline
