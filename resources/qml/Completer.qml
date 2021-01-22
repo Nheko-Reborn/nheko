@@ -57,9 +57,9 @@ Popup {
             completer = undefined;
         }
     }
-    padding: 0
+    padding: 1
     onAboutToShow: currentIndex = -1
-    height: listView.contentHeight
+    height: listView.contentHeight + 2 // + 2 for the padding on top and bottom
 
     Connections {
         onTimelineChanged: completer = null
@@ -183,6 +183,8 @@ Popup {
         color: colors.base
         implicitHeight: popup.contentHeight
         implicitWidth: popup.contentWidth
+        // colors.text should always contrast nicely with the window background
+        border.color: colors.text
     }
 
 }
