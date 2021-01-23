@@ -53,7 +53,7 @@
     <message>
         <location filename="../../src/Cache.cpp" line="+1951"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Je bent lid geworden van deze kamer.</translation>
     </message>
 </context>
 <context>
@@ -122,13 +122,13 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+211"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruiker uitnodigen mislukt: %1</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+779"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruiker uitgenodigd: %1</translation>
     </message>
     <message>
         <location line="-500"/>
@@ -138,7 +138,7 @@
     <message>
         <location line="+456"/>
         <source>Room %1 created.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamer %1 gecreëerd.</translation>
     </message>
     <message>
         <location line="+27"/>
