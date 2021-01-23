@@ -151,7 +151,11 @@ CommunitiesList::addCommunity(const std::string &group_id)
                 }
 
                 auto hiddenTags = hiddenTagsAndCommunities();
-                UserSettings::instance()->setHiddenTags({hiddenTags.begin(), hiddenTags.end()});
+                // Qt < 5.14 compat
+                QStringList hiddenTags_;
+                for (auto &&t : hiddenTags)
+                        hiddenTags_.push_back(t);
+                UserSettings::instance()->setHiddenTags(hiddenTags_);
         });
 
         if (group_id.empty() || group_id.front() != '+')
