@@ -17,7 +17,9 @@ enum class DecryptionErrorCode
 {
         MissingSession, // Session was not found, retrieve from backup or request from other devices
                         // and try again
-        DbError,        // DB read failed
+        MissingSessionIndex, // Session was found, but it does not reach back enough to this index,
+                             // retrieve from backup or request from other devices and try again
+        DbError,            // DB read failed
         DecryptionFailed,   // libolm error
         ParsingFailed,      // Failed to parse the actual event
         ReplayAttack,       // Megolm index reused

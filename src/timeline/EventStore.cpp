@@ -543,12 +543,21 @@ EventStore::decryptEvent(const IdIndex &idx,
 
         if (decryptionResult.error) {
                 switch (*decryptionResult.error) {
-                case olm::DecryptionErrorCode::MissingSession: {
-                        dummy.content.body =
-                          tr("-- Encrypted Event (No keys found for decryption) --",
-                             "Placeholder, when the message was not decrypted yet or can't be "
-                             "decrypted.")
-                            .toStdString();
+                case olm::DecryptionErrorCode::MissingSession:
+                case olm::DecryptionErrorCode::MissingSessionIndex: {
+                        if (decryptionResult.error == olm::DecryptionErrorCode::MissingSession)
+                                dummy.content.body =
+                                  tr("-- Encrypted Event (No keys found for decryption) --",
+                                     "Placeholder, when the message was not decrypted yet or can't "
+                                     "be "
+                                     "decrypted.")
+                                    .toStdString();
+                        else
+                                dummy.content.body =
+                                  tr("-- Encrypted Event (Key not valid for this index) --",
+                                     "Placeholder, when the message can't be decrypted with this "
+                                     "key since it is not valid for this index ")
+                                    .toStdString();
                         nhlog::crypto()->info("Could not find inbound megolm session ({}, {}, {})",
                                               index.room_id,
                                               index.session_id,
