@@ -183,8 +183,7 @@ Popup {
         color: colors.base
         implicitHeight: popup.contentHeight
         implicitWidth: popup.contentWidth
-        // colors.text should always contrast nicely with the window background
-        border.color: colors.text
+        border.color: colors.mid
     }
 
 }
