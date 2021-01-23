@@ -26,7 +26,6 @@
 namespace emoji {
 Q_NAMESPACE
 
-
 struct Emoji
 {
         Q_GADGET
