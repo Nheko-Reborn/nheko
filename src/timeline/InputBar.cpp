@@ -257,8 +257,8 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown)
         text.body                   = msg.trimmed().toStdString();
 
         if ((ChatPage::instance()->userSettings()->markdown() &&
-             (useMarkdown == MarkdownOverride::NOT_SPECIFIED)) ||
-            (useMarkdown == MarkdownOverride::ON)) {
+             useMarkdown == MarkdownOverride::NOT_SPECIFIED) ||
+            useMarkdown == MarkdownOverride::ON) {
                 text.formatted_body = utils::markdownToHtml(msg).toStdString();
 
                 // Don't send formatted_body, when we don't need to
