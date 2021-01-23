@@ -6,13 +6,13 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+66"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>വിളിക്കുന്നു...</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>ബന്ധിപ്പിക്കുന്നു...</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -27,7 +27,7 @@
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>മൈക്ക് നിശബ്ദമാക്കുക</translation>
     </message>
 </context>
 <context>
@@ -35,7 +35,7 @@
     <message>
         <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+7"/>
         <source>Awaiting Confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>സ്ഥിരീകരണത്തിനായി കാത്തിരിക്കുന്നു</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -45,7 +45,7 @@
     <message>
         <location line="+12"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>റദ്ദാക്കു</translation>
     </message>
 </context>
 <context>
@@ -53,7 +53,7 @@
     <message>
         <location filename="../../src/Cache.cpp" line="+1951"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>നിങ്ങൾ ഈ മുറിയിൽ ചേർന്നു.</translation>
     </message>
 </context>
 <context>
@@ -61,17 +61,17 @@
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+66"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>വീഡിയോ കോൾ</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>വോയ്സ് കോൾ</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>മൈക്രോഫോൺ കണ്ടെത്തിയില്ല.</translation>
     </message>
 </context>
 <context>
@@ -79,17 +79,17 @@
     <message>
         <location filename="../qml/voip/CallInviteBar.qml" line="+60"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>വീഡിയോ കോൾ</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>വോയ്സ് കോൾ</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>ഉപകരണങ്ങൾ</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -99,22 +99,22 @@
     <message>
         <location line="+12"/>
         <source>Unknown microphone: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>അജ്ഞാത മൈക്രോഫോൺ:% 1</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Unknown camera: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>അജ്ഞാത ക്യാമറ:% 1</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>നിരസിക്കുക</translation>
     </message>
     <message>
         <location line="-28"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>മൈക്രോഫോണൊന്നും കണ്ടെത്തിയില്ല.</translation>
     </message>
 </context>
 <context>
@@ -122,13 +122,13 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+211"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>ഉപയോക്താവിനെ ക്ഷണിക്കുന്നതിൽ പരാജയപ്പെട്ടു: %1</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+779"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>ക്ഷണിച്ച ഉപയോക്താവ്:% 1</translation>
     </message>
     <message>
         <location line="-500"/>
@@ -138,12 +138,12 @@
     <message>
         <location line="+456"/>
         <source>Room %1 created.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 മുറി സൃഷ്ടിച്ചു</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Confirm invite</source>
-        <translation type="unfinished"></translation>
+        <translation>ക്ഷണം ഉറപ്പാക്കു</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -173,7 +173,7 @@
     <message>
         <location line="+10"/>
         <source>Confirm ban</source>
-        <translation type="unfinished"></translation>
+        <translation>നിരോധനം ഉറപ്പാക്കു</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -249,12 +249,12 @@
     <message>
         <location line="+37"/>
         <source>Failed to join room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>മുറിയിൽ ചേരുന്നതിൽ പരാജയം: %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You joined the room</source>
-        <translation type="unfinished"></translation>
+        <translation>നിങ്ങൾ മുറിയിൽ ചേർന്നു</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -282,17 +282,17 @@
     <message>
         <location filename="../../src/CommunitiesListItem.cpp" line="+133"/>
         <source>All rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>എല്ലാ മുറികളും</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Favourite rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>പ്രിയപ്പെട്ട മുറികൾ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Low priority rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>കുറഞ്ഞ മുൻ‌ഗണനയുള്ള മുറികൾ</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -355,12 +355,12 @@
     <message>
         <location line="+31"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>അവ പൊരുത്തപ്പെടുന്നില്ല!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>അവ പൊരുത്തപ്പെടുന്നു!</translation>
     </message>
 </context>
 <context>
@@ -368,22 +368,22 @@
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+73"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>പ്രയോഗിക്കുക</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>റദ്ദാക്കു</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>പേര്</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>വിഷയം</translation>
     </message>
 </context>
 <context>
@@ -392,22 +392,22 @@
         <location filename="../qml/emoji/EmojiPicker.qml" line="+113"/>
         <location line="+181"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>തിരയുക</translation>
     </message>
     <message>
         <location line="-66"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>ആളുകൾ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>പ്രകൃതി</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished"></translation>
+        <translation>ഭക്ഷണം</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -427,7 +427,7 @@
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>ചിഹ്നങ്ങൾ</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -450,7 +450,7 @@
     <message>
         <location line="+376"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>അവ പൊരുത്തപ്പെടുന്നില്ല!</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -541,7 +541,7 @@
     <message>
         <location line="+18"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>അടയ്‌ക്കുക</translation>
     </message>
 </context>
 <context>
@@ -549,7 +549,7 @@
     <message>
         <location filename="../../src/timeline/InputBar.cpp" line="+227"/>
         <source>Select a file</source>
-        <translation type="unfinished"></translation>
+        <translation>ഒരു ഫയൽ തിരഞ്ഞെടുക്കുക</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+18"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>നീക്കംചെയ്യുക</translation>
     </message>
 </context>
 <context>
@@ -575,7 +575,7 @@
     <message>
         <location filename="../../src/LoginPage.cpp" line="+92"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Matrix ID</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -593,12 +593,12 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+25"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>പാസ്‍വേഡ്</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>ഉപകരണത്തിന്റെ പേര്</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -668,7 +668,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+4"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>ശരി</translation>
     </message>
 </context>
 <context>
@@ -732,7 +732,7 @@ Example: https://server.my:8787</source>
         <location line="-72"/>
         <location line="+9"/>
         <source>removed</source>
-        <translation type="unfinished"></translation>
+        <translation>നീക്കംചെയ്‌തു</translation>
     </message>
     <message>
         <location line="+72"/>
@@ -760,17 +760,17 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+60"/>
         <source>Write a message...</source>
-        <translation type="unfinished"></translation>
+        <translation>ഒരു സന്ദേശം എഴുതുക….</translation>
     </message>
     <message>
         <location line="+152"/>
         <source>Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>ഇമോജി</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>അയക്കുക</translation>
     </message>
 </context>
 <context>
@@ -813,7 +813,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+10"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>റദ്ദാക്കു</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -841,7 +841,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>മൈക്രോഫോണൊന്നും കണ്ടെത്തിയില്ല.</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -856,7 +856,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+13"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>റദ്ദാക്കു</translation>
     </message>
 </context>
 <context>
@@ -877,7 +877,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>profile</source>
-        <translation type="unfinished"></translation>
+        <translation>പ്രൊഫൈൽ</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2381,12 +2381,12 @@ Media size: %2
     <message>
         <location line="+5"/>
         <source>You ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>നിങ്ങൾ ഒരു കോൾ അവസാനിപ്പിച്ചു</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ഒരു കോൾ അവസാനിപ്പിച്ചു</translation>
     </message>
 </context>
 <context>
@@ -2394,12 +2394,12 @@ Media size: %2
     <message>
         <location filename="../../src/popups/UserMentions.cpp" line="+64"/>
         <source>This Room</source>
-        <translation type="unfinished"></translation>
+        <translation>ഈ മുറി</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>എല്ലാ മുറികളും</translation>
     </message>
 </context>
 <context>
