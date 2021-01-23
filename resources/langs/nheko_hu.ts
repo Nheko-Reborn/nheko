@@ -304,12 +304,12 @@
         <location line="+2"/>
         <location line="+2"/>
         <source> (tag)</source>
-        <translation type="unfinished"></translation>
+        <translation> (címke)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source> (community)</source>
-        <translation type="unfinished"></translation>
+        <translation> (közösség)</translation>
     </message>
 </context>
 <context>
@@ -725,23 +725,23 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location line="+29"/>
         <source>Negotiating call...</source>
-        <translation type="unfinished"></translation>
+        <translation>Hívás előkészítése…</translation>
     </message>
     <message>
         <location line="-18"/>
         <source>%1 answered the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 fogadta a hívást.</translation>
     </message>
     <message>
         <location line="-72"/>
         <location line="+9"/>
         <source>removed</source>
-        <translation type="unfinished"></translation>
+        <translation>eltávolítva</translation>
     </message>
     <message>
         <location line="+72"/>
         <source>%1 ended the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 befejezte a hívást.</translation>
     </message>
 </context>
 <context>
@@ -749,32 +749,32 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/MessageInput.qml" line="+38"/>
         <source>Hang up</source>
-        <translation type="unfinished"></translation>
+        <translation>Hívás befejezése</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Place a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Hívás kezdeményezése</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Send a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Fájl küldése</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Write a message...</source>
-        <translation type="unfinished"></translation>
+        <translation>Írj egy üzenetet…</translation>
     </message>
     <message>
         <location line="+152"/>
         <source>Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>Hangulatjelek</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>Küldés</translation>
     </message>
 </context>
 <context>
@@ -1924,7 +1924,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Waiting for other side to complete the verification process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Várakozás a másik oldalra az ellenőrzés befejezéséhez.</translation>
     </message>
     <message>
         <location line="+15"/>
