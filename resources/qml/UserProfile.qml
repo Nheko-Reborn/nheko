@@ -14,6 +14,7 @@ ApplicationWindow {
     width: 420
     minimumHeight: 420
     palette: colors
+    color: colors.window
 
     ColumnLayout {
         id: contentL
