@@ -7,6 +7,7 @@
 #include "emoji/Provider.h"
 
 using namespace emoji;
+
 const QVector<Emoji> emoji::Provider::emoji = {
   // People
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x80"), "grinning face", emoji::EmojiCategory::People},
@@ -84,12 +85,18 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x90"), "neutral face", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x91"), "expressionless face", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x98\xb6"), "face without mouth", emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x98\xb6\xe2\x80\x8d\xf0\x9f\x8c\xab"),
+        "face in clouds",
+        emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x8f"), "smirking face", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x92"), "unamused face", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x99\x84"),
         "face with rolling eyes",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x98\xac"), "grimacing face", emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x98\xae\xe2\x80\x8d\xf0\x9f\x92\xa8"),
+        "face exhaling",
+        emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xa5"), "lying face", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x8c"), "relieved face", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x98\x94"), "pensive face", emoji::EmojiCategory::People},
@@ -111,7 +118,10 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xf0\x9f\xa5\xb5"), "hot face", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa5\xb6"), "cold face", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa5\xb4"), "woozy face", emoji::EmojiCategory::People},
-  Emoji{QString::fromUtf8("\xf0\x9f\x98\xb5"), "dizzy face", emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x98\xb5"), "knocked-out face", emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x98\xb5\xe2\x80\x8d\xf0\x9f\x92\xab"),
+        "face with spiral eyes",
+        emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xaf"), "exploding head", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xa0"), "cowboy hat face", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa5\xb3"), "partying face", emoji::EmojiCategory::People},
@@ -215,6 +225,18 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xf0\x9f\x92\x9f"), "heart decoration", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xe2\x9d\xa3"), "heart exclamation", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x92\x94"), "broken heart", emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xe2\x9d\xa4\xef\xb8\x8f\xe2\x80\x8d\xf0\x9f\x94\xa5"),
+        "heart on fire",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xe2\x9d\xa4\xe2\x80\x8d\xf0\x9f\x94\xa5"),
+        "heart on fire",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xe2\x9d\xa4\xef\xb8\x8f\xe2\x80\x8d\xf0\x9f\xa9\xb9"),
+        "mending heart",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xe2\x9d\xa4\xe2\x80\x8d\xf0\x9f\xa9\xb9"),
+        "mending heart",
+        emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xe2\x9d\xa4"), "red heart", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\xa1"), "orange heart", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x92\x9b"), "yellow heart", emoji::EmojiCategory::People},
@@ -1003,21 +1025,57 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
         "man: dark skin tone",
         emoji::EmojiCategory::People},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94"), "man: beard", emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94"), "person: beard", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xf0\x9f\x8f\xbb"),
-        "man: light skin tone, beard",
+        "person: light skin tone, beard",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xf0\x9f\x8f\xbc"),
-        "man: medium-light skin tone, beard",
+        "person: medium-light skin tone, beard",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xf0\x9f\x8f\xbd"),
-        "man: medium skin tone, beard",
+        "person: medium skin tone, beard",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xf0\x9f\x8f\xbe"),
-        "man: medium-dark skin tone, beard",
+        "person: medium-dark skin tone, beard",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xf0\x9f\x8f\xbf"),
+        "person: dark skin tone, beard",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xe2\x80\x8d\xe2\x99\x82"),
+        "man: beard",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x99\x82"),
+        "man: light skin tone, beard",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x99\x82"),
+        "man: medium-light skin tone, beard",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x99\x82"),
+        "man: medium skin tone, beard",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x99\x82"),
+        "man: medium-dark skin tone, beard",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x99\x82"),
         "man: dark skin tone, beard",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xe2\x80\x8d\xe2\x99\x80"),
+        "woman: beard",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x99\x80"),
+        "woman: light skin tone, beard",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x99\x80"),
+        "woman: medium-light skin tone, beard",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x99\x80"),
+        "woman: medium skin tone, beard",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x99\x80"),
+        "woman: medium-dark skin tone, beard",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x94\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x99\x80"),
+        "woman: dark skin tone, beard",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xe2\x80\x8d\xf0\x9f\xa6\xb0"),
         "man: red hair",
@@ -2881,6 +2939,22 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xf0\x9f\x92\x82\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x99\x80"),
         "woman guard: dark skin tone",
         emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa5\xb7"), "ninja", emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa5\xb7\xf0\x9f\x8f\xbb"),
+        "ninja: light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa5\xb7\xf0\x9f\x8f\xbc"),
+        "ninja: medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa5\xb7\xf0\x9f\x8f\xbd"),
+        "ninja: medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa5\xb7\xf0\x9f\x8f\xbe"),
+        "ninja: medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa5\xb7\xf0\x9f\x8f\xbf"),
+        "ninja: dark skin tone",
+        emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xb7"), "construction worker", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xb7\xf0\x9f\x8f\xbb"),
         "construction worker: light skin tone",
@@ -3019,21 +3093,23 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xb3\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x99\x80"),
         "woman wearing turban: dark skin tone",
         emoji::EmojiCategory::People},
-  Emoji{QString::fromUtf8("\xf0\x9f\x91\xb2"), "man with skullcap", emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xb2"),
+        "person with skullcap",
+        emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xb2\xf0\x9f\x8f\xbb"),
-        "man with skullcap: light skin tone",
+        "person with skullcap: light skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xb2\xf0\x9f\x8f\xbc"),
-        "man with skullcap: medium-light skin tone",
+        "person with skullcap: medium-light skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xb2\xf0\x9f\x8f\xbd"),
-        "man with skullcap: medium skin tone",
+        "person with skullcap: medium skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xb2\xf0\x9f\x8f\xbe"),
-        "man with skullcap: medium-dark skin tone",
+        "person with skullcap: medium-dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xb2\xf0\x9f\x8f\xbf"),
-        "man with skullcap: dark skin tone",
+        "person with skullcap: dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\x95"),
         "woman with headscarf",
@@ -3053,21 +3129,21 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\x95\xf0\x9f\x8f\xbf"),
         "woman with headscarf: dark skin tone",
         emoji::EmojiCategory::People},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb5"), "man in tuxedo", emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb5"), "person in tuxedo", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb5\xf0\x9f\x8f\xbb"),
-        "man in tuxedo: light skin tone",
+        "person in tuxedo: light skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb5\xf0\x9f\x8f\xbc"),
-        "man in tuxedo: medium-light skin tone",
+        "person in tuxedo: medium-light skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb5\xf0\x9f\x8f\xbd"),
-        "man in tuxedo: medium skin tone",
+        "person in tuxedo: medium skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb5\xf0\x9f\x8f\xbe"),
-        "man in tuxedo: medium-dark skin tone",
+        "person in tuxedo: medium-dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb5\xf0\x9f\x8f\xbf"),
-        "man in tuxedo: dark skin tone",
+        "person in tuxedo: dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb5\xe2\x80\x8d\xe2\x99\x82"),
         "man in tuxedo",
@@ -3105,21 +3181,21 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xb5\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x99\x80"),
         "woman in tuxedo: dark skin tone",
         emoji::EmojiCategory::People},
-  Emoji{QString::fromUtf8("\xf0\x9f\x91\xb0"), "bride with veil", emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xb0"), "person with veil", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xb0\xf0\x9f\x8f\xbb"),
-        "bride with veil: light skin tone",
+        "person with veil: light skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xb0\xf0\x9f\x8f\xbc"),
-        "bride with veil: medium-light skin tone",
+        "person with veil: medium-light skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xb0\xf0\x9f\x8f\xbd"),
-        "bride with veil: medium skin tone",
+        "person with veil: medium skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xb0\xf0\x9f\x8f\xbe"),
-        "bride with veil: medium-dark skin tone",
+        "person with veil: medium-dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xb0\xf0\x9f\x8f\xbf"),
-        "bride with veil: dark skin tone",
+        "person with veil: dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xb0\xe2\x80\x8d\xe2\x99\x82"),
         "man with veil",
@@ -3952,58 +4028,58 @@ const QVector<Emoji> emoji::Provider::emoji = {
         "woman kneeling: dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "person with probing cane",
+        "person with white cane",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "person with probing cane: light skin tone",
+        "person with white cane: light skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "person with probing cane: medium-light skin tone",
+        "person with white cane: medium-light skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "person with probing cane: medium skin tone",
+        "person with white cane: medium skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "person with probing cane: medium-dark skin tone",
+        "person with white cane: medium-dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "person with probing cane: dark skin tone",
+        "person with white cane: dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "man with probing cane",
+        "man with white cane",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "man with probing cane: light skin tone",
+        "man with white cane: light skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "man with probing cane: medium-light skin tone",
+        "man with white cane: medium-light skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "man with probing cane: medium skin tone",
+        "man with white cane: medium skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "man with probing cane: medium-dark skin tone",
+        "man with white cane: medium-dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "man with probing cane: dark skin tone",
+        "man with white cane: dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "woman with probing cane",
+        "woman with white cane",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "woman with probing cane: light skin tone",
+        "woman with white cane: light skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "woman with probing cane: medium-light skin tone",
+        "woman with white cane: medium-light skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "woman with probing cane: medium skin tone",
+        "woman with white cane: medium skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "woman with probing cane: medium-dark skin tone",
+        "woman with white cane: medium-dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xf0\x9f\xa6\xaf"),
-        "woman with probing cane: dark skin tone",
+        "woman with white cane: dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xe2\x80\x8d\xf0\x9f\xa6\xbc"),
         "person in motorized wheelchair",
@@ -4198,22 +4274,22 @@ const QVector<Emoji> emoji::Provider::emoji = {
         "man dancing: dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x95\xb4"),
-        "man in suit levitating",
+        "person in suit levitating",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x95\xb4\xf0\x9f\x8f\xbb"),
-        "man in suit levitating: light skin tone",
+        "person in suit levitating: light skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x95\xb4\xf0\x9f\x8f\xbc"),
-        "man in suit levitating: medium-light skin tone",
+        "person in suit levitating: medium-light skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x95\xb4\xf0\x9f\x8f\xbd"),
-        "man in suit levitating: medium skin tone",
+        "person in suit levitating: medium skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x95\xb4\xf0\x9f\x8f\xbe"),
-        "man in suit levitating: medium-dark skin tone",
+        "person in suit levitating: medium-dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x95\xb4\xf0\x9f\x8f\xbf"),
-        "man in suit levitating: dark skin tone",
+        "person in suit levitating: dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xaf"),
         "people with bunny ears",
@@ -4330,7 +4406,6 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xf0\x9f\xa7\x97\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x99\x80"),
         "woman climbing: dark skin tone",
         emoji::EmojiCategory::People},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa5\xb7"), "ninja", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\xa4\xba"), "person fencing", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\x87"), "horse racing", emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\x87\xf0\x9f\x8f\xbb"),
@@ -5503,6 +5578,181 @@ const QVector<Emoji> emoji::Provider::emoji = {
         "men holding hands: dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x92\x8f"), "kiss", emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x92\x8f\xf0\x9f\x8f\xbb"),
+        "kiss: light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x92\x8f\xf0\x9f\x8f\xbc"),
+        "kiss: medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x92\x8f\xf0\x9f\x8f\xbd"),
+        "kiss: medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x92\x8f\xf0\x9f\x8f\xbe"),
+        "kiss: medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x92\x8f\xf0\x9f\x8f\xbf"),
+        "kiss: dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "kiss: person, person, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "kiss: person, person, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "kiss: person, person, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "kiss: person, person, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "kiss: person, person, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "kiss: person, person, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "kiss: person, person, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "kiss: person, person, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "kiss: person, person, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "kiss: person, person, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "kiss: person, person, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "kiss: person, person, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "kiss: person, person, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "kiss: person, person, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "kiss: person, person, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "kiss: person, person, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "kiss: person, person, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "kiss: person, person, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "kiss: person, person, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "kiss: person, person, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "kiss: person, person, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "kiss: person, person, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "kiss: person, person, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "kiss: person, person, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "kiss: person, person, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "kiss: person, person, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "kiss: person, person, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "kiss: person, person, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "kiss: person, person, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "kiss: person, person, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "kiss: person, person, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "kiss: person, person, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "kiss: person, person, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "kiss: person, person, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "kiss: person, person, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "kiss: person, person, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "kiss: person, person, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "kiss: person, person, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "kiss: person, person, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "kiss: person, person, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2\x80\x8d\xf0\x9f"
                           "\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8"),
         "kiss: woman, man",
@@ -5510,6 +5760,206 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0\x9f\x92\x8b\xe2"
                           "\x80\x8d\xf0\x9f\x91\xa8"),
         "kiss: woman, man",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: woman, man, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: woman, man, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: woman, man, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: woman, man, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: woman, man, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: woman, man, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: woman, man, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: woman, man, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: woman, man, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: woman, man, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: woman, man, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: woman, man, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: woman, man, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: woman, man, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: woman, man, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: woman, man, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: woman, man, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: woman, man, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: woman, man, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: woman, man, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: woman, man, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: woman, man, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: woman, man, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: woman, man, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: woman, man, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: woman, man, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: woman, man, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: woman, man, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: woman, man, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: woman, man, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: woman, man, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: woman, man, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: woman, man, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: woman, man, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: woman, man, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: woman, man, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: woman, man, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: woman, man, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: woman, man, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: woman, man, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: woman, man, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: woman, man, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: woman, man, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: woman, man, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: woman, man, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: woman, man, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: woman, man, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: woman, man, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: woman, man, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: woman, man, dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2\x80\x8d\xf0\x9f"
                           "\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8"),
@@ -5519,6 +5969,206 @@ const QVector<Emoji> emoji::Provider::emoji = {
                           "\x80\x8d\xf0\x9f\x91\xa8"),
         "kiss: man, man",
         emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: man, man, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: man, man, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: man, man, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: man, man, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: man, man, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: man, man, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: man, man, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: man, man, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: man, man, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: man, man, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: man, man, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: man, man, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: man, man, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: man, man, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: man, man, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: man, man, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: man, man, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: man, man, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: man, man, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: man, man, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: man, man, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: man, man, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: man, man, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: man, man, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: man, man, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: man, man, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: man, man, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: man, man, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: man, man, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: man, man, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: man, man, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: man, man, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: man, man, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: man, man, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: man, man, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: man, man, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: man, man, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: man, man, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: man, man, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: man, man, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: man, man, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "kiss: man, man, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: man, man, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "kiss: man, man, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: man, man, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "kiss: man, man, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: man, man, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "kiss: man, man, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: man, man, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "kiss: man, man, dark skin tone",
+        emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2\x80\x8d\xf0\x9f"
                           "\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9"),
         "kiss: woman, woman",
@@ -5527,13 +6177,588 @@ const QVector<Emoji> emoji::Provider::emoji = {
                           "\x80\x8d\xf0\x9f\x91\xa9"),
         "kiss: woman, woman",
         emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "kiss: woman, woman, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "kiss: woman, woman, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "kiss: woman, woman, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "kiss: woman, woman, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "kiss: woman, woman, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "kiss: woman, woman, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "kiss: woman, woman, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "kiss: woman, woman, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "kiss: woman, woman, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "kiss: woman, woman, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "kiss: woman, woman, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "kiss: woman, woman, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "kiss: woman, woman, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "kiss: woman, woman, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "kiss: woman, woman, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "kiss: woman, woman, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "kiss: woman, woman, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "kiss: woman, woman, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "kiss: woman, woman, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "kiss: woman, woman, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "kiss: woman, woman, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "kiss: woman, woman, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "kiss: woman, woman, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "kiss: woman, woman, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "kiss: woman, woman, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "kiss: woman, woman, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "kiss: woman, woman, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "kiss: woman, woman, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "kiss: woman, woman, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "kiss: woman, woman, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "kiss: woman, woman, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "kiss: woman, woman, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "kiss: woman, woman, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "kiss: woman, woman, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "kiss: woman, woman, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "kiss: woman, woman, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "kiss: woman, woman, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "kiss: woman, woman, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "kiss: woman, woman, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "kiss: woman, woman, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "kiss: woman, woman, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "kiss: woman, woman, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "kiss: woman, woman, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "kiss: woman, woman, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "kiss: woman, woman, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "kiss: woman, woman, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "kiss: woman, woman, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "kiss: woman, woman, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "kiss: woman, woman, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x92\x8b\xe2\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "kiss: woman, woman, dark skin tone",
+        emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x92\x91"), "couple with heart", emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x92\x91\xf0\x9f\x8f\xbb"),
+        "couple with heart: light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x92\x91\xf0\x9f\x8f\xbc"),
+        "couple with heart: medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x92\x91\xf0\x9f\x8f\xbd"),
+        "couple with heart: medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x92\x91\xf0\x9f\x8f\xbe"),
+        "couple with heart: medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x92\x91\xf0\x9f\x8f\xbf"),
+        "couple with heart: dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "couple with heart: person, person, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "couple with heart: person, person, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "couple with heart: person, person, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "couple with heart: person, person, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "couple with heart: person, person, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "couple with heart: person, person, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "couple with heart: person, person, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "couple with heart: person, person, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "couple with heart: person, person, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "couple with heart: person, person, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "couple with heart: person, person, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "couple with heart: person, person, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "couple with heart: person, person, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "couple with heart: person, person, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "couple with heart: person, person, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "couple with heart: person, person, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "couple with heart: person, person, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "couple with heart: person, person, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "couple with heart: person, person, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "couple with heart: person, person, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "couple with heart: person, person, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "couple with heart: person, person, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "couple with heart: person, person, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "couple with heart: person, person, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "couple with heart: person, person, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "couple with heart: person, person, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "couple with heart: person, person, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "couple with heart: person, person, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "couple with heart: person, person, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "couple with heart: person, person, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "couple with heart: person, person, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbf"),
+        "couple with heart: person, person, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "couple with heart: person, person, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbb"),
+        "couple with heart: person, person, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "couple with heart: person, person, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbc"),
+        "couple with heart: person, person, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "couple with heart: person, person, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbd"),
+        "couple with heart: person, person, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "couple with heart: person, person, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa7\x91\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\xa7\x91\xf0\x9f\x8f\xbe"),
+        "couple with heart: person, person, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8(
           "\xf0\x9f\x91\xa9\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2\x80\x8d\xf0\x9f\x91\xa8"),
         "couple with heart: woman, man",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0\x9f\x91\xa8"),
         "couple with heart: woman, man",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, man, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, man, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, man, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, man, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, man, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, man, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, man, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, man, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, man, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, man, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, man, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, man, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, man, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, man, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, man, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, man, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, man, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, man, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, man, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, man, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, man, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, man, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, man, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, man, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, man, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, man, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, man, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, man, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, man, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, man, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, man, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, man, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, man, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, man, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, man, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, man, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, man, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, man, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, man, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, man, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, man, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, man, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, man, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, man, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, man, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, man, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, man, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, man, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, man, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, man, dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8(
           "\xf0\x9f\x91\xa8\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2\x80\x8d\xf0\x9f\x91\xa8"),
@@ -5542,12 +6767,412 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0\x9f\x91\xa8"),
         "couple with heart: man, man",
         emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: man, man, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: man, man, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: man, man, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: man, man, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: man, man, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: man, man, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: man, man, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: man, man, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: man, man, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: man, man, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: man, man, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: man, man, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: man, man, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: man, man, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: man, man, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: man, man, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: man, man, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: man, man, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: man, man, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: man, man, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: man, man, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: man, man, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: man, man, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: man, man, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: man, man, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: man, man, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: man, man, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: man, man, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: man, man, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: man, man, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: man, man, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: man, man, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: man, man, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: man, man, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: man, man, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: man, man, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: man, man, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: man, man, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: man, man, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: man, man, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: man, man, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbb"),
+        "couple with heart: man, man, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: man, man, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbc"),
+        "couple with heart: man, man, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: man, man, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbd"),
+        "couple with heart: man, man, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: man, man, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbe"),
+        "couple with heart: man, man, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: man, man, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa8\xf0\x9f\x8f\xbf"),
+        "couple with heart: man, man, dark skin tone",
+        emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8(
           "\xf0\x9f\x91\xa9\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2\x80\x8d\xf0\x9f\x91\xa9"),
         "couple with heart: woman, woman",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0\x9f\x91\xa9"),
         "couple with heart: woman, woman",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, woman, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, woman, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, woman, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, woman, light skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, woman, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, woman, light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, woman, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, woman, light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, woman, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, woman, light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, woman, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, woman, medium-light skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, woman, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, woman, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, woman, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, woman, medium-light skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, woman, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, woman, medium-light skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, woman, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, woman, medium-light skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, woman, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, woman, medium skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, woman, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, woman, medium skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, woman, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, woman, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, woman, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, woman, medium skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, woman, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, woman, medium skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, woman, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, woman, medium-dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, woman, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, woman, medium-dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, woman, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, woman, medium-dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, woman, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, woman, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, woman, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, woman, medium-dark skin tone, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, woman, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbb"),
+        "couple with heart: woman, woman, dark skin tone, light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, woman, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbc"),
+        "couple with heart: woman, woman, dark skin tone, medium-light skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, woman, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbd"),
+        "couple with heart: woman, woman, dark skin tone, medium skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, woman, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbe"),
+        "couple with heart: woman, woman, dark skin tone, medium-dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xef\xb8\x8f\xe2"
+                          "\x80\x8d\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, woman, dark skin tone",
+        emoji::EmojiCategory::People},
+  Emoji{QString::fromUtf8("\xf0\x9f\x91\xa9\xf0\x9f\x8f\xbf\xe2\x80\x8d\xe2\x9d\xa4\xe2\x80\x8d\xf0"
+                          "\x9f\x91\xa9\xf0\x9f\x8f\xbf"),
+        "couple with heart: woman, woman, dark skin tone",
         emoji::EmojiCategory::People},
   Emoji{QString::fromUtf8("\xf0\x9f\x91\xaa"), "family", emoji::EmojiCategory::People},
   Emoji{
@@ -5995,7 +7620,7 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xf0\x9f\x8e\xbf"), "skis", emoji::EmojiCategory::Activity},
   Emoji{QString::fromUtf8("\xf0\x9f\x9b\xb7"), "sled", emoji::EmojiCategory::Activity},
   Emoji{QString::fromUtf8("\xf0\x9f\xa5\x8c"), "curling stone", emoji::EmojiCategory::Activity},
-  Emoji{QString::fromUtf8("\xf0\x9f\x8e\xaf"), "direct hit", emoji::EmojiCategory::Activity},
+  Emoji{QString::fromUtf8("\xf0\x9f\x8e\xaf"), "bullseye", emoji::EmojiCategory::Activity},
   Emoji{QString::fromUtf8("\xf0\x9f\xaa\x80"), "yo-yo", emoji::EmojiCategory::Activity},
   Emoji{QString::fromUtf8("\xf0\x9f\xaa\x81"), "kite", emoji::EmojiCategory::Activity},
   Emoji{QString::fromUtf8("\xf0\x9f\x8e\xb1"), "pool 8 ball", emoji::EmojiCategory::Activity},
@@ -6440,8 +8065,6 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xf0\x9f\x92\xb9"),
         "chart increasing with yen",
         emoji::EmojiCategory::Objects},
-  Emoji{QString::fromUtf8("\xf0\x9f\x92\xb1"), "currency exchange", emoji::EmojiCategory::Objects},
-  Emoji{QString::fromUtf8("\xf0\x9f\x92\xb2"), "heavy dollar sign", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xe2\x9c\x89"), "envelope", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xf0\x9f\x93\xa7"), "e-mail", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xf0\x9f\x93\xa8"), "incoming envelope", emoji::EmojiCategory::Objects},
@@ -6512,7 +8135,7 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xf0\x9f\x9b\xa0"), "hammer and wrench", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xf0\x9f\x97\xa1"), "dagger", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xe2\x9a\x94"), "crossed swords", emoji::EmojiCategory::Objects},
-  Emoji{QString::fromUtf8("\xf0\x9f\x94\xab"), "pistol", emoji::EmojiCategory::Objects},
+  Emoji{QString::fromUtf8("\xf0\x9f\x94\xab"), "water pistol", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xf0\x9f\xaa\x83"), "boomerang", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xf0\x9f\x8f\xb9"), "bow and arrow", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xf0\x9f\x9b\xa1"), "shield", emoji::EmojiCategory::Objects},
@@ -6523,7 +8146,7 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xe2\x9a\x99"), "gear", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xf0\x9f\x97\x9c"), "clamp", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xe2\x9a\x96"), "balance scale", emoji::EmojiCategory::Objects},
-  Emoji{QString::fromUtf8("\xf0\x9f\xa6\xaf"), "probing cane", emoji::EmojiCategory::Objects},
+  Emoji{QString::fromUtf8("\xf0\x9f\xa6\xaf"), "white cane", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xf0\x9f\x94\x97"), "link", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xe2\x9b\x93"), "chains", emoji::EmojiCategory::Objects},
   Emoji{QString::fromUtf8("\xf0\x9f\xaa\x9d"), "hook", emoji::EmojiCategory::Objects},
@@ -6690,8 +8313,25 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xe2\x99\x80"), "female sign", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe2\x99\x82"), "male sign", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe2\x9a\xa7"), "transgender symbol", emoji::EmojiCategory::Symbols},
-  Emoji{QString::fromUtf8("\xe2\x9a\x95"), "medical symbol", emoji::EmojiCategory::Symbols},
+  Emoji{QString::fromUtf8("\xe2\x9c\x96"), "multiply", emoji::EmojiCategory::Symbols},
+  Emoji{QString::fromUtf8("\xe2\x9e\x95"), "plus", emoji::EmojiCategory::Symbols},
+  Emoji{QString::fromUtf8("\xe2\x9e\x96"), "minus", emoji::EmojiCategory::Symbols},
+  Emoji{QString::fromUtf8("\xe2\x9e\x97"), "divide", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe2\x99\xbe"), "infinity", emoji::EmojiCategory::Symbols},
+  Emoji{QString::fromUtf8("\xe2\x80\xbc"),
+        "double exclamation mark",
+        emoji::EmojiCategory::Symbols},
+  Emoji{QString::fromUtf8("\xe2\x81\x89"),
+        "exclamation question mark",
+        emoji::EmojiCategory::Symbols},
+  Emoji{QString::fromUtf8("\xe2\x9d\x93"), "red question mark", emoji::EmojiCategory::Symbols},
+  Emoji{QString::fromUtf8("\xe2\x9d\x94"), "white question mark", emoji::EmojiCategory::Symbols},
+  Emoji{QString::fromUtf8("\xe2\x9d\x95"), "white exclamation mark", emoji::EmojiCategory::Symbols},
+  Emoji{QString::fromUtf8("\xe2\x9d\x97"), "red exclamation mark", emoji::EmojiCategory::Symbols},
+  Emoji{QString::fromUtf8("\xe3\x80\xb0"), "wavy dash", emoji::EmojiCategory::Symbols},
+  Emoji{QString::fromUtf8("\xf0\x9f\x92\xb1"), "currency exchange", emoji::EmojiCategory::Symbols},
+  Emoji{QString::fromUtf8("\xf0\x9f\x92\xb2"), "heavy dollar sign", emoji::EmojiCategory::Symbols},
+  Emoji{QString::fromUtf8("\xe2\x9a\x95"), "medical symbol", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe2\x99\xbb"), "recycling symbol", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe2\x9a\x9c"), "fleur-de-lis", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xf0\x9f\x94\xb1"), "trident emblem", emoji::EmojiCategory::Symbols},
@@ -6703,29 +8343,14 @@ const QVector<Emoji> emoji::Provider::emoji = {
   Emoji{QString::fromUtf8("\xe2\x9c\x85"), "check mark button", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe2\x98\x91"), "check box with check", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe2\x9c\x94"), "check mark", emoji::EmojiCategory::Symbols},
-  Emoji{QString::fromUtf8("\xe2\x9c\x96"), "multiplication sign", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe2\x9d\x8c"), "cross mark", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe2\x9d\x8e"), "cross mark button", emoji::EmojiCategory::Symbols},
-  Emoji{QString::fromUtf8("\xe2\x9e\x95"), "plus sign", emoji::EmojiCategory::Symbols},
-  Emoji{QString::fromUtf8("\xe2\x9e\x96"), "minus sign", emoji::EmojiCategory::Symbols},
-  Emoji{QString::fromUtf8("\xe2\x9e\x97"), "division sign", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe2\x9e\xb0"), "curly loop", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe2\x9e\xbf"), "double curly loop", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe3\x80\xbd"), "part alternation mark", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe2\x9c\xb3"), "eight-spoked asterisk", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe2\x9c\xb4"), "eight-pointed star", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe2\x9d\x87"), "sparkle", emoji::EmojiCategory::Symbols},
-  Emoji{QString::fromUtf8("\xe2\x80\xbc"),
-        "double exclamation mark",
-        emoji::EmojiCategory::Symbols},
-  Emoji{QString::fromUtf8("\xe2\x81\x89"),
-        "exclamation question mark",
-        emoji::EmojiCategory::Symbols},
-  Emoji{QString::fromUtf8("\xe2\x9d\x93"), "question mark", emoji::EmojiCategory::Symbols},
-  Emoji{QString::fromUtf8("\xe2\x9d\x94"), "white question mark", emoji::EmojiCategory::Symbols},
-  Emoji{QString::fromUtf8("\xe2\x9d\x95"), "white exclamation mark", emoji::EmojiCategory::Symbols},
-  Emoji{QString::fromUtf8("\xe2\x9d\x97"), "exclamation mark", emoji::EmojiCategory::Symbols},
-  Emoji{QString::fromUtf8("\xe3\x80\xb0"), "wavy dash", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xc2\xa9"), "copyright", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xc2\xae"), "registered", emoji::EmojiCategory::Symbols},
   Emoji{QString::fromUtf8("\xe2\x84\xa2"), "trade mark", emoji::EmojiCategory::Symbols},
