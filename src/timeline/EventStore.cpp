@@ -229,6 +229,9 @@ EventStore::clearTimeline()
         }
         nhlog::ui()->info("Range {} {}", this->last, this->first);
 
+        decryptedEvents_.clear();
+        events_.clear();
+
         emit endResetModel();
 }
 
@@ -265,6 +268,9 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                 emit beginResetModel();
                 this->first = std::numeric_limits<uint64_t>::max();
                 this->last  = std::numeric_limits<uint64_t>::max();
+
+                decryptedEvents_.clear();
+                events_.clear();
                 emit endResetModel();
                 return;
         }
@@ -273,6 +279,9 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                 emit beginResetModel();
                 this->last  = range->last;
                 this->first = range->first;
+
+                decryptedEvents_.clear();
+                events_.clear();
                 emit endResetModel();
         } else if (range->last > this->last) {
                 emit beginInsertRows(toExternalIdx(this->last + 1), toExternalIdx(range->last));
