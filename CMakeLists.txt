@@ -72,12 +72,12 @@ if(${CMAKE_VERSION} VERSION_LESS "3.14.0")
 	endmacro()
 endif()
 
+# Include Qt basic functions
+include(QtCommon)
+
 project(nheko LANGUAGES CXX C)
 
 include(GNUInstallDirs)
-
-# Include Qt basic functions
-include(QtCommon)
 
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
 set(CPACK_PACKAGE_VERSION_MINOR "8")
