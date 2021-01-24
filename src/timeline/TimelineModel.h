@@ -218,8 +218,10 @@ public:
         Q_INVOKABLE void redactEvent(QString id);
         Q_INVOKABLE int idToIndex(QString id) const;
         Q_INVOKABLE QString indexToId(int index) const;
+        Q_INVOKABLE void openMedia(QString eventId);
         Q_INVOKABLE void cacheMedia(QString eventId);
         Q_INVOKABLE bool saveMedia(QString eventId) const;
+        void cacheMedia(QString eventId, std::function<void(const QString filename)> callback);
 
         std::vector<::Reaction> reactions(const std::string &event_id)
         {
