@@ -23,7 +23,7 @@ build:
 
 install:
     - set QT_DIR=C:\Qt\5.15\msvc2019_64
-    - set PATH=C:\Strawberry\perl\bin;%PATH%;%QT_DIR%\bin
+    - set PATH=C:\Strawberry\perl\bin;C:\Python39-x64;%PATH%;%QT_DIR%\bin
     - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 
 build_script:
@@ -46,7 +46,6 @@ build_script:
     - echo %DATE%
 
     # Build nheko
-    #- cmake -G "Visual Studio 15 2017 Win64" -H. -Bbuild
     - cmake -G "Visual Studio 16 2019" -A x64 -H. -Bbuild
       -DHUNTER_ROOT="C:\hunter"
       -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF
