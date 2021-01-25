@@ -40,7 +40,7 @@
     <message>
         <location line="+12"/>
         <source>Waiting for other side to complete verification.</source>
-        <translation>Várakozás a másik oldalra az igazolás befejezéséhez.</translation>
+        <translation>Várakozás a másik oldalra a hitelesítés befejezéséhez.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -345,12 +345,12 @@
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+7"/>
         <source>Verification Code</source>
-        <translation>Ellenőrzési kód</translation>
+        <translation>HItelesítési kód</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>Kérlek, ellenőrizd a következő számjegyeket. Mindkét oldalon ugyanazoknak a számoknak kell szerepelniük. Ha nem ugyanazok, kérlek, válaszd azt, hogy „Nem egyeznek!” az ellenőrzés megszakításához!</translation>
+        <translation>Kérlek, ellenőrizd a következő számjegyeket. Mindkét oldalon ugyanazoknak a számoknak kell szerepelniük. Ha nem ugyanazok, kérlek, válaszd azt, hogy „Nem egyeznek!” a hitelesítés megszakításához!</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -445,7 +445,7 @@
     <message>
         <location line="+10"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>Kérlek, ellenőrizd a következő hangulatjeleket. Mindkét oldalon ugyanazoknak a hangulatjeleknek kell szerepelniük. Ha nem ugyanazok, kérlek, válaszd azt, hogy „Nem egyeznek!” az ellenőrzés megszakításához!</translation>
+        <translation>Kérlek, ellenőrizd a következő hangulatjeleket. Mindkét oldalon ugyanazoknak a hangulatjeleknek kell szerepelniük. Ha nem ugyanazok, kérlek, válaszd azt, hogy „Nem egyeznek!” a hitelesítés megszakításához!</translation>
     </message>
     <message>
         <location line="+376"/>
@@ -507,7 +507,7 @@
     <message>
         <location line="+7"/>
         <source>-- Message by unverified device! --</source>
-        <translation>-- Nem ellenőrzött eszközről érkezett üzenet! --</translation>
+        <translation>-- Nem hitelesített eszközről érkezett üzenet! --</translation>
     </message>
 </context>
 <context>
@@ -515,12 +515,12 @@
     <message>
         <location filename="../qml/device-verification/Failed.qml" line="+7"/>
         <source>Verification failed</source>
-        <translation>Az ellenőrzés nem sikerült</translation>
+        <translation>A hitelesítés nem sikerült</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Other client does not support our verification protocol.</source>
-        <translation>A másik kliens nem támogatja az ellenőrzési protokollunkat.</translation>
+        <translation>A másik kliens nem támogatja a hitelesítési protokollunkat.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -531,12 +531,12 @@
         <location line="+2"/>
         <location line="+4"/>
         <source>Device verification timed out.</source>
-        <translation>Időtúllépés az eszközellenőrzés alatt.</translation>
+        <translation>Időtúllépés az eszközhitelesítés alatt.</translation>
     </message>
     <message>
         <location line="-2"/>
         <source>Other party canceled the verification.</source>
-        <translation>A másik fél megszakította az ellenőrzést.</translation>
+        <translation>A másik fél megszakította a hitelesítést.</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -606,7 +606,7 @@ Ha a Nheko nem tud rátalálni a homeszerveredre, meg fog jelenni egy mező, aho
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation>Egy név ennek az eszköznek, amely meg fog jelenni mások számára, amikor ellenőrzöd az eszközeidet. Ha nincs megadva semmi, egy alapértelmezett név lesz használva.</translation>
+        <translation>Egy név ennek az eszköznek, amely meg fog jelenni mások számára, amikor hitelesíted az eszközeidet. Ha nincs megadva semmi, egy alapértelmezett név lesz használva.</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -782,37 +782,37 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+7"/>
         <source>Send Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Hitelesítési kérés küldése</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Received Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Hitelesítési kérés érkezett</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Hogy mások láthassák, melyik eszköz tartozik valóban hozzád, hitelesíteni tudod őket. Ez arra is lehetőséget ad, hogy automatikus biztonsági másolat készüljön a kulcsokról. Hitelesíted a %1 nevű eszközt most?</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To ensure that no malicious user can eavesdrop on your encrypted communications you can verify the other party.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hogy ne hallgassa le semmilyen illetéktelen felhasználó a titkosított kommunikációidat, hitelesíteni tudod a másik felet.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has requested to verify their device %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kérte a %2 nevű eszközének hitelesítését.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 using the device %2 has requested to be verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>A(z) %2 eszközt használó %1 hitelesítést kért.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Your device (%1) has requested to be verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az eszközöd (%1) hitelesítést kért.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -822,12 +822,12 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location line="+0"/>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>Elutasítás</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Start verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Hitelesítés indítása</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -840,7 +840,7 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/voip/PlaceCall.qml" line="+36"/>
         <source>Place a call to %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Hívás indítása %1 felé?</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -850,12 +850,12 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location line="+22"/>
         <source>Voice</source>
-        <translation type="unfinished"></translation>
+        <translation>Hang</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Video</source>
-        <translation type="unfinished"></translation>
+        <translation>Videó</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -868,7 +868,7 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
         <source>unimplemented event: </source>
-        <translation type="unfinished"></translation>
+        <translation>nem implementált esemény: </translation>
     </message>
 </context>
 <context>
@@ -876,17 +876,17 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../../src/main.cpp" line="+182"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation type="unfinished"></translation>
+        <translation>Egy egyedi profil létrehozása, amellyel be tudsz jelentkezni egyszerre több fiókon keresztül és a Nheko több példányát is tudod futtatni.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>profile</source>
-        <translation type="unfinished"></translation>
+        <translation>profil</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>profile name</source>
-        <translation type="unfinished"></translation>
+        <translation>profilnév</translation>
     </message>
 </context>
 <context>
@@ -894,7 +894,7 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../../src/QuickSwitcher.cpp" line="+74"/>
         <source>Search for a room...</source>
-        <translation type="unfinished"></translation>
+        <translation>Szoba keresése…</translation>
     </message>
 </context>
 <context>
@@ -902,68 +902,68 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../../src/RegisterPage.cpp" line="+89"/>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Felhasználónév</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+286"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
-        <translation type="unfinished"></translation>
+        <translation>A felhasználónév nem lehet üres és csak a következő karaktereket tartalmazhatja: a-z, 0-9, ., _, =, - és /.</translation>
     </message>
     <message>
         <location line="-282"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Jelszó</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kérlek, válassz egy biztonságos jelszót! A jelszó erősségéről szóló pontos követelmények a szerveredtől függhetnek.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Password confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Jelszó megerősítése</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Homeszerver</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
-        <translation type="unfinished"></translation>
+        <translation>Egy szerver, amelyen engedélyezve vannak a regisztrációk. Mivel a Matrix decentralizált, először találnod kell egy szervert, ahol regisztrálhatsz, vagy be kell állítanod a saját szervered.</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REGISZTRÁCIÓ</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>No supported registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem támogatott regisztrációs folyamat!</translation>
     </message>
     <message>
         <location line="+209"/>
         <source>One or more fields have invalid inputs. Please correct those issues and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Egy vagy több mező nem tartalmaz megfelelő bevitelt. Kérlek, javítsd ki azokat a hibákat, és próbáld újra!</translation>
     </message>
     <message>
         <location line="-26"/>
         <source>Password is not long enough (min 8 chars)</source>
-        <translation type="unfinished"></translation>
+        <translation>A jelszó nem elég hosszú (legalább 8 karakter)</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Passwords don&apos;t match</source>
-        <translation type="unfinished"></translation>
+        <translation>A jelszavak nem egyeznek</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Invalid server name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem megfelelő szervernév</translation>
     </message>
 </context>
 <context>
@@ -971,7 +971,7 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/ReplyPopup.qml" line="+43"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Bezárás</translation>
     </message>
 </context>
 <context>
@@ -979,7 +979,7 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../../src/Cache.cpp" line="+1859"/>
         <source>no version stored</source>
-        <translation type="unfinished"></translation>
+        <translation>nincs tárolva verzió</translation>
     </message>
 </context>
 <context>
@@ -987,54 +987,54 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../../src/RoomInfoListItem.cpp" line="+102"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Szoba elhagyása</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Tag room as:</source>
-        <translation type="unfinished"></translation>
+        <translation>Szoba megcímkézése:</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Favourite</source>
         <comment>Standard matrix tag for favourites</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kedvenc</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Low Priority</source>
         <comment>Standard matrix tag for low priority rooms</comment>
-        <translation type="unfinished"></translation>
+        <translation>Alacsony prioritású</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Server Notice</source>
         <comment>Standard matrix tag for server notices</comment>
-        <translation type="unfinished"></translation>
+        <translation>Szerverértesítés</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Adds or removes the specified tag.</source>
         <comment>WhatsThis hint for tag menu actions</comment>
-        <translation type="unfinished"></translation>
+        <translation>Hozzáadja vagy eltávolítja az adott címkét.</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>New tag...</source>
         <comment>Add a new tag to the room</comment>
-        <translation type="unfinished"></translation>
+        <translation>Új címke…</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>New Tag</source>
         <comment>Tag name prompt title</comment>
-        <translation type="unfinished"></translation>
+        <translation>Új címke</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Tag:</source>
         <comment>Tag name prompt</comment>
-        <translation type="unfinished"></translation>
+        <translation>Címke:</translation>
     </message>
     <message>
         <location line="+169"/>
@@ -1052,27 +1052,27 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../../src/SideBarActions.cpp" line="+40"/>
         <source>User settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Felhasználói beállítások</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Create new room</source>
-        <translation type="unfinished"></translation>
+        <translation>Új szoba létrehozása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join a room</source>
-        <translation type="unfinished"></translation>
+        <translation>Csatlakozás egy szobához</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Start a new chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Új csevegés indítása</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Szobák jegyzéke</translation>
     </message>
 </context>
 <context>
@@ -1080,22 +1080,22 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/StatusIndicator.qml" line="+17"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Sikertelen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Elküldve</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Received</source>
-        <translation type="unfinished"></translation>
+        <translation>Megérkezett</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Read</source>
-        <translation type="unfinished"></translation>
+        <translation>Elolvasva</translation>
     </message>
 </context>
 <context>
@@ -1103,17 +1103,17 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/device-verification/Success.qml" line="+6"/>
         <source>Successful Verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Sikeres hitelesítés</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Verification successful! Both sides verified their devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>A hitelesítés sikeres! Mindkét oldal hitelesítette az eszközeit!</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Bezárás</translation>
     </message>
 </context>
 <context>
@@ -1121,13 +1121,13 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../../src/timeline/TimelineModel.cpp" line="+864"/>
         <source>Message redaction failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Az üzenet visszavonása nem sikerült: %1</translation>
     </message>
     <message>
         <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült titkosítani az eseményt, küldés megszakítva!</translation>
     </message>
     <message>
         <location line="+156"/>
@@ -1924,7 +1924,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Waiting for other side to complete the verification process.</source>
-        <translation>Várakozás a másik oldalra az ellenőrzés befejezéséhez.</translation>
+        <translation>Várakozás a másik oldalra a hitelesítés befejezéséhez.</translation>
     </message>
     <message>
         <location line="+15"/>
