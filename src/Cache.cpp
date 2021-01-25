@@ -661,6 +661,10 @@ Cache::secret(const std::string &name)
                   "Restoring secret '{}' failed: {}", name, job.errorString().toStdString());
                 return std::nullopt;
         }
+        if (secret.isEmpty()) {
+                nhlog::db()->debug("Restored empty secret '{}'.", name);
+                return std::nullopt;
+        }
 
         return secret.toStdString();
 }
