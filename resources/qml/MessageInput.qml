@@ -255,10 +255,7 @@ Rectangle {
 
                 Connections {
                     ignoreUnknownSignals: true
-                    onReplyChanged: {
-                        messageInput.forceActiveFocus();
-                        console.log("sakjlsdgfjsadfglkjsdfg");
-                    }
+                    onReplyChanged: messageInput.forceActiveFocus();
                     target: TimelineManager.timeline
                 }
 
