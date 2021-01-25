@@ -1314,8 +1314,10 @@ ChatPage::startChat(QString userid)
         mtx::requests::CreateRoom req;
         req.preset     = mtx::requests::Preset::PrivateChat;
         req.visibility = mtx::common::RoomVisibility::Private;
-        if (utils::localUser() != userid)
-                req.invite = {userid.toStdString()};
+        if (utils::localUser() != userid) {
+                req.invite    = {userid.toStdString()};
+                req.is_direct = true;
+        }
         emit ChatPage::instance()->createRoom(req);
 }
 
