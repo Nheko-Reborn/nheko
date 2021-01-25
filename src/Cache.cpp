@@ -327,6 +327,7 @@ Cache::importSessionKeys(const mtx::crypto::ExportedSessionKeys &keys)
                 auto exported_session = mtx::crypto::import_session(s.session_key);
 
                 saveInboundMegolmSession(index, std::move(exported_session));
+                ChatPage::instance()->receivedSessionKey(index.room_id, index.session_id);
         }
 }
 
