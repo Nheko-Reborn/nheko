@@ -1,3 +1,4 @@
+import "."
 import "./delegates"
 import "./device-verification"
 import "./emoji"
@@ -187,6 +188,7 @@ Page {
         }
 
         ColumnLayout {
+            id: timelineLayout
             visible: TimelineManager.timeline != null
             anchors.fill: parent
             spacing: 0
@@ -269,6 +271,12 @@ Page {
             MessageInput {
             }
 
+        }
+
+        PrivacyScreen {
+            visible: Settings.privacyScreen
+            screenTimeout: Settings.privacyScreenTimeout
+            timelineRoot: timelineRoot
         }
 
     }
