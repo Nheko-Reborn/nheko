@@ -293,16 +293,16 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
         }
 
         for (const auto &event : events.events) {
-                std::string relates_to;
+                std::set<std::string> relates_to;
                 if (auto redaction =
                       std::get_if<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(
                         &event)) {
                         // fixup reactions
                         auto redacted = events_by_id_.object({room_id_, redaction->redacts});
                         if (redacted) {
-                                auto id = mtx::accessors::relates_to_event_id(*redacted);
-                                if (!id.empty()) {
-                                        auto idx = idToIndex(id);
+                                auto id = mtx::accessors::relations(*redacted);
+                                if (id.annotates()) {
+                                        auto idx = idToIndex(id.annotates()->event_id);
                                         if (idx) {
                                                 events_by_id_.remove(
                                                   {room_id_, redaction->redacts});
@@ -312,20 +312,17 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                                 }
                         }
 
-                        relates_to = redaction->redacts;
-                } else if (auto reaction =
-                             std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(
-                               &event)) {
-                        relates_to = reaction->content.relates_to.event_id;
+                        relates_to.insert(redaction->redacts);
                 } else {
-                        relates_to = mtx::accessors::in_reply_to_event(event);
+                        for (const auto &r : mtx::accessors::relations(event).relations)
+                                relates_to.insert(r.event_id);
                 }
 
-                if (!relates_to.empty()) {
-                        auto idx = cache::client()->getTimelineIndex(room_id_, relates_to);
+                for (const auto &relates_to_id : relates_to) {
+                        auto idx = cache::client()->getTimelineIndex(room_id_, relates_to_id);
                         if (idx) {
-                                events_by_id_.remove({room_id_, relates_to});
-                                decryptedEvents_.remove({room_id_, relates_to});
+                                events_by_id_.remove({room_id_, relates_to_id});
+                                decryptedEvents_.remove({room_id_, relates_to_id});
                                 events_.remove({room_id_, *idx});
                                 emit dataChanged(toExternalIdx(*idx), toExternalIdx(*idx));
                         }
@@ -430,13 +427,14 @@ EventStore::reactions(const std::string &event_id)
 
                 if (auto reaction = std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(
                       related_event);
-                    reaction && reaction->content.relates_to.key) {
-                        auto &agg = aggregation[reaction->content.relates_to.key.value()];
+                    reaction && reaction->content.relations.annotates() &&
+                    reaction->content.relations.annotates()->key) {
+                        auto key  = reaction->content.relations.annotates()->key.value();
+                        auto &agg = aggregation[key];
 
                         if (agg.count == 0) {
                                 Reaction temp{};
-                                temp.key_ =
-                                  QString::fromStdString(reaction->content.relates_to.key.value());
+                                temp.key_ = QString::fromStdString(key);
                                 reactions.push_back(temp);
                         }
 
@@ -691,8 +689,7 @@ EventStore::decryptEvent(const IdIndex &idx,
         body["unsigned"]         = e.unsigned_data;
 
         // relations are unencrypted in content...
-        if (json old_ev = e; old_ev["content"].count("m.relates_to") != 0)
-                body["content"]["m.relates_to"] = old_ev["content"]["m.relates_to"];
+        mtx::common::add_relations(body["content"], e.content.relations);
 
         json event_array = json::array();
         event_array.push_back(body);

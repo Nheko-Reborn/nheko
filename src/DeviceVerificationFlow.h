@@ -206,7 +206,7 @@ private:
         std::vector<int> sasList;
         UserKeyCache their_keys;
         TimelineModel *model_;
-        mtx::common::RelatesTo relation;
+        mtx::common::Relation relation;
 
         State state_ = PromptStartVerification;
         Error error_ = UnknownMethod;
@@ -230,8 +230,12 @@ private:
                                             static_cast<int>(err->status_code));
                           });
                 } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
-                        if constexpr (!std::is_same_v<T, mtx::events::msg::KeyVerificationRequest>)
-                                msg.relates_to = this->relation;
+                        if constexpr (!std::is_same_v<T,
+                                                      mtx::events::msg::KeyVerificationRequest>) {
+                                msg.relations.relations.push_back(this->relation);
+                                // Set synthesized to surpress the nheko relation extensions
+                                msg.relations.synthesized = true;
+                        }
                         (model_)->sendMessageEvent(msg, mtx::events::to_device_content_to_type<T>);
                 }
 

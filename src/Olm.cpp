@@ -575,29 +575,19 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
         if (!sendSessionTo.empty())
                 olm::send_encrypted_to_device_messages(sendSessionTo, megolm_payload);
 
-        mtx::common::ReplyRelatesTo relation;
-        mtx::common::RelatesTo r_relation;
-
         // relations shouldn't be encrypted...
-        if (body["content"].contains("m.relates_to")) {
-                if (body["content"]["m.relates_to"].contains("m.in_reply_to")) {
-                        relation = body["content"]["m.relates_to"];
-                } else if (body["content"]["m.relates_to"].contains("event_id")) {
-                        r_relation = body["content"]["m.relates_to"];
-                }
-        }
+        mtx::common::Relations relations = mtx::common::parse_relations(body["content"]);
 
         auto payload = olm::client()->encrypt_group_message(session.get(), body.dump());
 
         // Prepare the m.room.encrypted event.
         msg::Encrypted data;
-        data.ciphertext   = std::string((char *)payload.data(), payload.size());
-        data.sender_key   = olm::client()->identity_keys().curve25519;
-        data.session_id   = mtx::crypto::session_id(session.get());
-        data.device_id    = device_id;
-        data.algorithm    = MEGOLM_ALGO;
-        data.relates_to   = relation;
-        data.r_relates_to = r_relation;
+        data.ciphertext = std::string((char *)payload.data(), payload.size());
+        data.sender_key = olm::client()->identity_keys().curve25519;
+        data.session_id = mtx::crypto::session_id(session.get());
+        data.device_id  = device_id;
+        data.algorithm  = MEGOLM_ALGO;
+        data.relations  = relations;
 
         group_session_data.message_index = olm_outbound_group_session_message_index(session.get());
         nhlog::crypto()->debug("next message_index {}", group_session_data.message_index);
@@ -910,8 +900,7 @@ decryptEvent(const MegolmSessionIndex &index,
         body["unsigned"]         = event.unsigned_data;
 
         // relations are unencrypted in content...
-        if (json old_ev = event; old_ev["content"].count("m.relates_to") != 0)
-                body["content"]["m.relates_to"] = old_ev["content"]["m.relates_to"];
+        mtx::common::add_relations(body["content"], event.content.relations);
 
         mtx::events::collections::TimelineEvent te;
         try {

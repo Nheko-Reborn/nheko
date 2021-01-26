@@ -294,7 +294,8 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown)
                         text.formatted_body =
                           utils::getFormattedQuoteBody(related, msg.toHtmlEscaped()).toStdString();
 
-                text.relates_to.in_reply_to.event_id = related.related_event;
+                text.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, related.related_event});
                 room->resetReply();
         }
 
@@ -316,7 +317,8 @@ InputBar::emote(QString msg)
         }
 
         if (!room->reply().isEmpty()) {
-                emote.relates_to.in_reply_to.event_id = room->reply().toStdString();
+                emote.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
                 room->resetReply();
         }
 
@@ -346,7 +348,8 @@ InputBar::image(const QString &filename,
                 image.url = url.toStdString();
 
         if (!room->reply().isEmpty()) {
-                image.relates_to.in_reply_to.event_id = room->reply().toStdString();
+                image.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
                 room->resetReply();
         }
 
@@ -371,7 +374,8 @@ InputBar::file(const QString &filename,
                 file.url = url.toStdString();
 
         if (!room->reply().isEmpty()) {
-                file.relates_to.in_reply_to.event_id = room->reply().toStdString();
+                file.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
                 room->resetReply();
         }
 
@@ -397,7 +401,8 @@ InputBar::audio(const QString &filename,
                 audio.url = url.toStdString();
 
         if (!room->reply().isEmpty()) {
-                audio.relates_to.in_reply_to.event_id = room->reply().toStdString();
+                audio.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
                 room->resetReply();
         }
 
@@ -422,7 +427,8 @@ InputBar::video(const QString &filename,
                 video.url = url.toStdString();
 
         if (!room->reply().isEmpty()) {
-                video.relates_to.in_reply_to.event_id = room->reply().toStdString();
+                video.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
                 room->resetReply();
         }
 

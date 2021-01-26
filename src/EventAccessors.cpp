@@ -250,31 +250,17 @@ struct EventFilesize
         }
 };
 
-struct EventInReplyTo
+struct EventRelations
 {
         template<class Content>
-        using related_ev_id_t = decltype(Content::relates_to.in_reply_to.event_id);
+        using related_ev_id_t = decltype(Content::relations);
         template<class T>
-        std::string operator()(const mtx::events::Event<T> &e)
+        mtx::common::Relations operator()(const mtx::events::Event<T> &e)
         {
                 if constexpr (is_detected<related_ev_id_t, T>::value) {
-                        return e.content.relates_to.in_reply_to.event_id;
+                        return e.content.relations;
                 }
-                return "";
-        }
-};
-
-struct EventRelatesTo
-{
-        template<class Content>
-        using related_ev_id_t = decltype(Content::relates_to.event_id);
-        template<class T>
-        std::string operator()(const mtx::events::Event<T> &e)
-        {
-                if constexpr (is_detected<related_ev_id_t, T>::value) {
-                        return e.content.relates_to.event_id;
-                }
-                return "";
+                return {};
         }
 };
 
@@ -434,15 +420,10 @@ mtx::accessors::mimetype(const mtx::events::collections::TimelineEvents &event)
 {
         return std::visit(EventMimeType{}, event);
 }
-std::string
-mtx::accessors::in_reply_to_event(const mtx::events::collections::TimelineEvents &event)
+mtx::common::Relations
+mtx::accessors::relations(const mtx::events::collections::TimelineEvents &event)
 {
-        return std::visit(EventInReplyTo{}, event);
-}
-std::string
-mtx::accessors::relates_to_event_id(const mtx::events::collections::TimelineEvents &event)
-{
-        return std::visit(EventRelatesTo{}, event);
+        return std::visit(EventRelations{}, event);
 }
 
 std::string

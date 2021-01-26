@@ -360,7 +360,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 const static QRegularExpression replyFallback(
                   "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption);
 
-                bool isReply = !in_reply_to_event(event).empty();
+                bool isReply = relations(event).reply_to().has_value();
 
                 auto formattedBody_ = QString::fromStdString(formatted_body(event));
                 if (formattedBody_.isEmpty()) {
@@ -442,7 +442,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 return cache::isRoomEncrypted(room_id_.toStdString());
         }
         case ReplyTo:
-                return QVariant(QString::fromStdString(in_reply_to_event(event)));
+                return QVariant(QString::fromStdString(relations(event).reply_to().value_or("")));
         case Reactions: {
                 auto id = event_id(event);
                 return QVariant::fromValue(events.reactions(id));

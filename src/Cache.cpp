@@ -2713,23 +2713,19 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                         lmdb::dbi_put(txn, evToOrderDb, event_id, txn_order);
                         lmdb::dbi_del(txn, evToOrderDb, lmdb::val(txn_id));
 
-                        if (event.contains("content") &&
-                            event["content"].contains("m.relates_to")) {
-                                auto temp         = event["content"]["m.relates_to"];
-                                json relates_to_j = temp.contains("m.in_reply_to") &&
-                                                        temp["m.in_reply_to"].is_object()
-                                                      ? temp["m.in_reply_to"]["event_id"]
-                                                      : temp["event_id"];
-                                std::string relates_to =
-                                  relates_to_j.is_string() ? relates_to_j.get<std::string>() : "";
-
-                                if (!relates_to.empty()) {
-                                        lmdb::dbi_del(txn,
-                                                      relationsDb,
-                                                      lmdb::val(relates_to),
-                                                      lmdb::val(txn_id));
-                                        lmdb::dbi_put(
-                                          txn, relationsDb, lmdb::val(relates_to), event_id);
+                        auto relations = mtx::accessors::relations(e);
+                        if (!relations.relations.empty()) {
+                                for (const auto &r : relations.relations) {
+                                        if (!r.event_id.empty()) {
+                                                lmdb::dbi_del(txn,
+                                                              relationsDb,
+                                                              lmdb::val(r.event_id),
+                                                              lmdb::val(txn_id));
+                                                lmdb::dbi_put(txn,
+                                                              relationsDb,
+                                                              lmdb::val(r.event_id),
+                                                              event_id);
+                                        }
                                 }
                         }
 
@@ -2808,19 +2804,16 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                                               lmdb::val(&msgIndex, sizeof(msgIndex)));
                         }
 
-                        if (event.contains("content") &&
-                            event["content"].contains("m.relates_to")) {
-                                auto temp         = event["content"]["m.relates_to"];
-                                json relates_to_j = temp.contains("m.in_reply_to") &&
-                                                        temp["m.in_reply_to"].is_object()
-                                                      ? temp["m.in_reply_to"]["event_id"]
-                                                      : temp["event_id"];
-                                std::string relates_to =
-                                  relates_to_j.is_string() ? relates_to_j.get<std::string>() : "";
-
-                                if (!relates_to.empty())
-                                        lmdb::dbi_put(
-                                          txn, relationsDb, lmdb::val(relates_to), event_id);
+                        auto relations = mtx::accessors::relations(e);
+                        if (!relations.relations.empty()) {
+                                for (const auto &r : relations.relations) {
+                                        if (!r.event_id.empty()) {
+                                                lmdb::dbi_put(txn,
+                                                              relationsDb,
+                                                              lmdb::val(r.event_id),
+                                                              event_id);
+                                        }
+                                }
                         }
                 }
         }
@@ -2901,17 +2894,14 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
                           txn, msg2orderDb, event_id, lmdb::val(&msgIndex, sizeof(msgIndex)));
                 }
 
-                if (event.contains("content") && event["content"].contains("m.relates_to")) {
-                        auto temp = event["content"]["m.relates_to"];
-                        json relates_to_j =
-                          temp.contains("m.in_reply_to") && temp["m.in_reply_to"].is_object()
-                            ? temp["m.in_reply_to"]["event_id"]
-                            : temp["event_id"];
-                        std::string relates_to =
-                          relates_to_j.is_string() ? relates_to_j.get<std::string>() : "";
-
-                        if (!relates_to.empty())
-                                lmdb::dbi_put(txn, relationsDb, lmdb::val(relates_to), event_id);
+                auto relations = mtx::accessors::relations(e);
+                if (!relations.relations.empty()) {
+                        for (const auto &r : relations.relations) {
+                                if (!r.event_id.empty()) {
+                                        lmdb::dbi_put(
+                                          txn, relationsDb, lmdb::val(r.event_id), event_id);
+                                }
+                        }
                 }
         }
 
