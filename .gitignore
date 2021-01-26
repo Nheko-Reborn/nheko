@@ -38,7 +38,10 @@ vgcore.*
 *.moc
 CMakeLists.txt.user
 moc_*.cpp
+moc_*.cpp_parameters
 qrc_*.cpp
+*.qrc
+*.qrc.depends
 ui_*.h
 *-build-*
 /.clangd/
@@ -121,3 +124,6 @@ package.dir
 
 # Archives
 *.bz2
+
+# Nheko config header
+config/nheko.h
