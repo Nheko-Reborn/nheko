@@ -59,8 +59,9 @@ getJdenticonInterface()
                                         }
                                 }
                         }
-                } else
+                } else {
                         nhlog::ui()->info("jdenticon plugin not found.");
+                }
         }
 
         return interface;
