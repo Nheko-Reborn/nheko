@@ -836,13 +836,15 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 decryptSidebar_,
                 tr("Decrypt the messages shown in the sidebar.\nOnly affects messages in "
                    "encrypted chats."));
-        boxWrap(tr("Encrypted chat privacy screen"),
+        boxWrap(tr("Privacy Screen"),
                 privacyScreen_,
                 tr("When the window loses focus, the timeline will\nbe blurred."));
-        boxWrap(tr("Privacy screen timeout"),
-                privacyScreenTimeout_,
-                tr("Set timeout for how long after window loses\nfocus before the screen"
-                   " will be blurred.\nSet to 0 to blur immediately after focus loss."));
+        boxWrap(
+          tr("Privacy screen timeout"),
+          privacyScreenTimeout_,
+          tr("Set timeout (in seconds) for how long after window loses\nfocus before the screen"
+             " will be blurred.\nSet to 0 to blur immediately after focus loss. Max value of 1 "
+             "hour (3600 seconds)"));
         boxWrap(tr("Show buttons in timeline"),
                 timelineButtonsToggle_,
                 tr("Show buttons to quickly reply, react or access additional options next to each "

@@ -312,6 +312,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 &ChatPage::initializeMentions,
                 user_mentions_popup_,
                 &popups::UserMentions::initializeMentions);
+        connect(
+          this, &ChatPage::chatFocusChanged, view_manager_, &TimelineViewManager::chatFocusChanged);
         connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Rooms &rooms) {
                 try {
                         room_list_->cleanupInvites(cache::invites());

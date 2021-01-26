@@ -127,7 +127,6 @@ public slots:
         void receivedSessionKey(const std::string &room_id, const std::string &session_id);
         void decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescription keyDesc,
                                       const SecretsToDecrypt &secrets);
-
 signals:
         void connectionLost();
         void connectionRestored();
@@ -176,6 +175,7 @@ signals:
         void retrievedPresence(const QString &statusMsg, mtx::presence::PresenceState state);
         void themeChanged();
         void decryptSidebarChanged();
+        void chatFocusChanged(const bool focused);
 
         //! Signals for device verificaiton
         void receivedDeviceVerificationAccept(

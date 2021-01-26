@@ -22,6 +22,8 @@ if [ ! -z "$QMLFORMAT_PATH" ]; then
     do
         qmlformat -i "$f"
     done;
+else
+    echo "qmlformat not found; skipping qml formatting"
 fi
 
 git diff --exit-code

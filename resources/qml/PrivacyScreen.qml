@@ -1,12 +1,27 @@
 import QtGraphicalEffects 1.0
 import QtQuick 2.12
+import im.nheko 1.0
 
 Item {
+    id: privacyScreen
+
     property var timelineRoot
-    property var imageSource
+    property var imageSource: ""
     property int screenTimeout
 
     anchors.fill: parent
+
+    Connections {
+        target: TimelineManager
+        onFocusChanged: {
+            if (TimelineManager.isWindowFocused) {
+                screenSaverTimer.stop();
+                screenSaver.state = "Invisible";
+            } else {
+                screenSaverTimer.start();
+            }
+        }
+    }
 
     Timer {
         id: screenSaverTimer
@@ -15,36 +30,98 @@ Item {
         running: true
         onTriggered: {
             timelineRoot.grabToImage(function(result) {
+                screenSaver.state = "Visible";
                 imageSource = result.url;
-                screenSaver.visible = true;
-                particles.resume();
             }, Qt.size(width, height));
-        }
-    }
-
-    // Reset screensaver timer when clicks are received
-    MouseArea {
-        anchors.fill: parent
-        // Pass mouse events through
-        propagateComposedEvents: true
-        hoverEnabled: true
-        onClicked: {
-            screenSaverTimer.restart();
-            mouse.accepted = false;
         }
     }
 
     Rectangle {
         id: screenSaver
 
+        state: "Invisible"
         anchors.fill: parent
         visible: false
         color: "transparent"
+        states: [
+            State {
+                name: "Visible"
+
+                PropertyChanges {
+                    target: screenSaver
+                    visible: true
+                }
+
+                PropertyChanges {
+                    target: screenSaver
+                    opacity: 1
+                }
+
+            },
+            State {
+                name: "Invisible"
+
+                PropertyChanges {
+                    target: screenSaver
+                    opacity: 0
+                }
+
+                PropertyChanges {
+                    target: screenSaver
+                    visible: false
+                }
+
+            }
+        ]
+        transitions: [
+            Transition {
+                from: "Visible"
+                to: "Invisible"
+
+                SequentialAnimation {
+                    NumberAnimation {
+                        target: screenSaver
+                        property: "opacity"
+                        duration: 250
+                        easing.type: Easing.InQuad
+                    }
+
+                    NumberAnimation {
+                        target: screenSaver
+                        property: "visible"
+                        duration: 0
+                    }
+
+                }
+
+            },
+            Transition {
+                from: "Invisible"
+                to: "Visible"
+
+                SequentialAnimation {
+                    NumberAnimation {
+                        target: screenSaver
+                        property: "visible"
+                        duration: 0
+                    }
+
+                    NumberAnimation {
+                        target: screenSaver
+                        property: "opacity"
+                        duration: 500
+                        easing.type: Easing.InQuad
+                    }
+
+                }
+
+            }
+        ]
 
         Image {
             id: image
 
-            visible: screenSaver.visible
+            cache: false
             anchors.fill: parent
             source: imageSource
         }
@@ -63,17 +140,6 @@ Item {
             anchors.fill: effectSource
             source: effectSource
             radius: 50
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            propagateComposedEvents: true
-            hoverEnabled: true
-            onClicked: {
-                screenSaver.visible = false;
-                screenSaverTimer.restart();
-                mouse.accepted = false;
-            }
         }
 
     }
