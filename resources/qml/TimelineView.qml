@@ -189,6 +189,7 @@ Page {
 
         ColumnLayout {
             id: timelineLayout
+
             visible: TimelineManager.timeline != null
             anchors.fill: parent
             spacing: 0

@@ -67,9 +67,10 @@ class UserSettings : public QObject
           bool avatarCircles READ avatarCircles WRITE setAvatarCircles NOTIFY avatarCirclesChanged)
         Q_PROPERTY(bool decryptSidebar READ decryptSidebar WRITE setDecryptSidebar NOTIFY
                      decryptSidebarChanged)
-        Q_PROPERTY(bool privacyScreen READ privacyScreen WRITE setPrivacyScreen NOTIFY
-                     privacyScreenChanged)
-        Q_PROPERTY(int privacyScreenTimeout READ privacyScreenTimeout WRITE setPrivacyScreenTimeout NOTIFY privacyScreenTimeoutChanged)
+        Q_PROPERTY(
+          bool privacyScreen READ privacyScreen WRITE setPrivacyScreen NOTIFY privacyScreenChanged)
+        Q_PROPERTY(int privacyScreenTimeout READ privacyScreenTimeout WRITE setPrivacyScreenTimeout
+                     NOTIFY privacyScreenTimeoutChanged)
         Q_PROPERTY(int timelineMaxWidth READ timelineMaxWidth WRITE setTimelineMaxWidth NOTIFY
                      timelineMaxWidthChanged)
         Q_PROPERTY(bool mobileMode READ mobileMode WRITE setMobileMode NOTIFY mobileModeChanged)

@@ -87,16 +87,16 @@ UserSettings::load(std::optional<QString> profile)
           settings.value("user/timeline/message_hover_highlight", false).toBool();
         enlargeEmojiOnlyMessages_ =
           settings.value("user/timeline/enlarge_emoji_only_msg", false).toBool();
-        markdown_            = settings.value("user/markdown_enabled", true).toBool();
-        typingNotifications_ = settings.value("user/typing_notifications", true).toBool();
-        sortByImportance_    = settings.value("user/sort_by_unread", true).toBool();
-        readReceipts_        = settings.value("user/read_receipts", true).toBool();
-        theme_               = settings.value("user/theme", defaultTheme_).toString();
-        font_                = settings.value("user/font_family", "default").toString();
-        avatarCircles_       = settings.value("user/avatar_circles", true).toBool();
-        decryptSidebar_      = settings.value("user/decrypt_sidebar", true).toBool();
-        privacyScreen_       = settings.value("user/privacy_screen", false).toBool();
-        privacyScreenTimeout_  = settings.value("user/privacy_screen_timeout", 0).toInt();
+        markdown_             = settings.value("user/markdown_enabled", true).toBool();
+        typingNotifications_  = settings.value("user/typing_notifications", true).toBool();
+        sortByImportance_     = settings.value("user/sort_by_unread", true).toBool();
+        readReceipts_         = settings.value("user/read_receipts", true).toBool();
+        theme_                = settings.value("user/theme", defaultTheme_).toString();
+        font_                 = settings.value("user/font_family", "default").toString();
+        avatarCircles_        = settings.value("user/avatar_circles", true).toBool();
+        decryptSidebar_       = settings.value("user/decrypt_sidebar", true).toBool();
+        privacyScreen_        = settings.value("user/privacy_screen", false).toBool();
+        privacyScreenTimeout_ = settings.value("user/privacy_screen_timeout", 0).toInt();
         shareKeysWithTrustedUsers_ =
           settings.value("user/share_keys_with_trusted_users", true).toBool();
         mobileMode_        = settings.value("user/mobile_mode", false).toBool();
@@ -842,7 +842,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         boxWrap(tr("Privacy screen timeout"),
                 privacyScreenTimeout_,
                 tr("Set timeout for how long after window loses\nfocus before the screen"
-                  " will be blurred.\nSet to 0 to blur immediately after focus loss."));
+                   " will be blurred.\nSet to 0 to blur immediately after focus loss."));
         boxWrap(tr("Show buttons in timeline"),
                 timelineButtonsToggle_,
                 tr("Show buttons to quickly reply, react or access additional options next to each "
@@ -1168,9 +1168,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         connect(privacyScreenTimeout_,
                 qOverload<int>(&QSpinBox::valueChanged),
                 this,
-                [this](int newValue) {
-                        settings_->setPrivacyScreenTimeout(newValue);
-                });
+                [this](int newValue) { settings_->setPrivacyScreenTimeout(newValue); });
 
         connect(
           sessionKeysImportBtn, &QPushButton::clicked, this, &UserSettingsPage::importSessionKeys);
