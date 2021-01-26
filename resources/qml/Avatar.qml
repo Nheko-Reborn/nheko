@@ -43,7 +43,7 @@ Rectangle {
         id: identicon
         anchors.fill: parent
         visible: img.status != Image.Ready && Settings.useIdenticon
-        source: "image://jdenticon/" + userid
+        source: Settings.useIdenticon ? "image://jdenticon/" + userid : ""
     }
 
     Image {
