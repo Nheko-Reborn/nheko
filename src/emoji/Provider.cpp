@@ -1,9 +1,3 @@
-/*
-    This file contains a single definition of all of the emoji from Provider.cpp.
-    It is being split out into a separate code file to alleviate compilation issues
-    in some versions of clang.
-*/
-
 #include "emoji/Provider.h"
 
 using namespace emoji;
