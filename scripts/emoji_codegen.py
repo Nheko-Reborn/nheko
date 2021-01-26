@@ -17,7 +17,7 @@ const QVector<Emoji> emoji::Provider::emoji = {
     {%- for c in kwargs.items() %}
     // {{ c[0].capitalize() }}
     {%- for e in c[1] %}
-    Emoji{QString::fromUtf8("{{ e.code }}"), "{{ e.shortname }}", emoji::EmojiCategory::{{ c[0].capitalize() }}},
+    Emoji{QString::fromUtf8("{{ e.code }}"), "{{ e.shortname }}", emoji::Emoji::Category::{{ c[0].capitalize() }}},
     {%- endfor %}
     {%- endfor %}
 };
