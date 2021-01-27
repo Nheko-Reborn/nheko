@@ -242,7 +242,9 @@ EventStore::receivedSessionKey(const std::string &session_id)
                 return;
 
         auto request = pending_key_requests.at(session_id);
-        pending_key_requests.erase(session_id);
+
+        // Don't request keys again until Nheko is restarted (for now)
+        pending_key_requests[session_id].events.clear();
 
         olm::send_key_request_for(request.events.front(), request.request_id, true);
 
@@ -778,7 +780,8 @@ EventStore::fetchMore()
                   if (cache::client()->previousBatchToken(room_id_) != opts.from) {
                           nhlog::net()->warn("Cache cleared while fetching more messages, dropping "
                                              "/messages response");
-                          emit fetchedMore();
+                          if (!opts.to.empty())
+                                  emit fetchedMore();
                           return;
                   }
                   if (err) {
