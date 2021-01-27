@@ -4,6 +4,7 @@
 #include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "Utils.h"
+#include <mtx/responses/common.hpp>
 #include "mtx/responses/crypto.hpp"
 #include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"
@@ -211,6 +212,44 @@ void
 UserProfile::startChat()
 {
         ChatPage::instance()->startChat(this->userid_);
+}
+
+void
+UserProfile::changeUsername(QString username)
+{
+        // change room username
+        mtx::events::state::Member member;
+        member.display_name = username.toStdString();
+        member.avatar_url =
+          cache::avatarUrl(roomid_,
+                           QString::fromStdString(http::client()->user_id().to_string()))
+            .toStdString();
+        member.membership = mtx::events::state::Membership::Join;
+
+        http::client()->send_state_event(roomid_.toStdString(),
+                                         http::client()->user_id().to_string(),
+                                         member,
+                                         [](mtx::responses::EventId, mtx::http::RequestErr err) {
+                                                 if (err)
+                                                         nhlog::net()->error(
+                                                           "Failed to set room displayname: {}",
+                                                           err->matrix_error.error);
+                                         });
+
+        /*connect(modal, &EditModal::nameChanged, this, [this](const QString &newName) {
+                if (roomNameLabel_)
+                        roomNameLabel_->setText(newName);
+        });*/
+
+        /*std::string newName = "jedi18";
+        // change user name
+        http::client()->set_displayname(
+          newName, [this]( mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("could not change username");
+                          return;
+                  }
+          });*/
 }
 
 void

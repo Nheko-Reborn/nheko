@@ -212,7 +212,7 @@ public:
 
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
-        Q_INVOKABLE void openUserProfile(QString userid);
+        Q_INVOKABLE void openUserProfile(QString userid, bool global = false);
         Q_INVOKABLE void replyAction(QString id);
         Q_INVOKABLE void readReceiptsAction(QString id) const;
         Q_INVOKABLE void redactEvent(QString id);

@@ -109,6 +109,7 @@ public:
         // Q_INVOKABLE void ignoreUser();
         Q_INVOKABLE void kickUser();
         Q_INVOKABLE void startChat();
+        Q_INVOKABLE void changeUsername(QString username);
 
 signals:
         void userStatusChanged();

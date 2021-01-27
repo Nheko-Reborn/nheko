@@ -58,6 +58,40 @@ ApplicationWindow {
             onClicked: profile.verify()
         }
 
+        Button {
+            id: changeUsername
+
+            text: (profile.roomid_ == "") ? qsTr("Change global username") : qsTr("Change room username")
+            Layout.alignment: Qt.AlignHCenter
+            enabled : profile.isSelf
+            visible: profile.isSelf
+            onClicked: changeUsernameDialog.open()
+
+            Dialog {
+                id: changeUsernameDialog
+                modal: true
+                title: (profile.roomid_ == "") ? qsTr("Change global username") : qsTr("Change room username")
+                onAccepted: profile.changeUsername(usernameEdit.text)
+
+                Column {
+                    anchors.fill: parent
+
+                    Text {
+                        text: "New Username"
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                    TextField {
+                        id: usernameEdit
+                        focus: true
+                        wrapMode: TextEdit.Wrap
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                }
+
+                standardButtons: Dialog.Ok | Dialog.Cancel
+            }
+        }
+
         Image {
             Layout.preferredHeight: 16
             Layout.preferredWidth: 16
