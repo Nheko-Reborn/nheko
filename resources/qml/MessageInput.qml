@@ -162,6 +162,9 @@ Rectangle {
                     if (event.matches(StandardKey.Paste)) {
                         TimelineManager.timeline.input.paste(false);
                         event.accepted = true;
+                    } else if (event.key == Qt.Key_Space) {
+                        if (popup.opened && popup.count <= 0)
+                            popup.close()
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_U) {
                         messageInput.clear();
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_P) {

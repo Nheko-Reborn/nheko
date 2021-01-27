@@ -11,6 +11,7 @@ Popup {
     property string completerName
     property var completer
     property bool bottomToTop: true
+    property alias count: listView.count
 
     signal completionClicked(string completion)
 

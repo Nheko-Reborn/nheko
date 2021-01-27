@@ -35,7 +35,7 @@ Page {
         colors: palette
 
         model: EmojiProxyModel {
-            category: EmojiCategory.People
+            category: Emoji.Category.People
 
             sourceModel: EmojiModel {
             }
