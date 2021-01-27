@@ -1256,17 +1256,17 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location line="+2"/>
         <source>Unbanned %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 tiltása vissza lett vonva.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 was banned.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ki lett tiltva.</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>%1 redacted their knock.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 visszavonta a kopogását.</translation>
     </message>
     <message>
         <location line="-749"/>
@@ -1276,23 +1276,23 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location line="+751"/>
         <source>Rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopogás elutasítva tőle: %1.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 távozott, miután már egyszer távozott!</translation>
     </message>
     <message>
         <location line="+15"/>
         <source> Reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok: %1</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>%1 knocked.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kopogott.</translation>
     </message>
 </context>
 <context>
@@ -1300,17 +1300,17 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/TimelineRow.qml" line="+97"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Reakció</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Válasz</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Műveletek</translation>
     </message>
 </context>
 <context>
@@ -1318,47 +1318,47 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/TimelineView.qml" line="+83"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Reakció</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Válasz</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Olvasási jegyek</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Megjelölés olvasottként</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>View raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Nyers üzenet megtekintése</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>View decrypted raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Előzőleg titkosított nyers üzenet megtekintése</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Remove message</source>
-        <translation type="unfinished"></translation>
+        <translation>Üzenet eltávolítása</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Mentés másként</translation>
     </message>
     <message>
         <location line="+51"/>
         <source>No room open</source>
-        <translation type="unfinished"></translation>
+        <translation>Nincs nyitott szoba</translation>
     </message>
 </context>
 <context>
@@ -1366,7 +1366,7 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../../src/timeline/TimelineViewManager.cpp" line="+423"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem található titkosított privát csevegés ezzel a felhasználóval. Hozz létre egy titkosított privát csevegést vele, és próbáld újra!</translation>
     </message>
 </context>
 <context>
@@ -1374,38 +1374,38 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/TopBar.qml" line="+43"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Vissza a szobák listájára</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+10"/>
         <source>No room selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Nincs kiválasztva szoba</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Room options</source>
-        <translation type="unfinished"></translation>
+        <translation>Szoba beállításai</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Invite users</source>
-        <translation type="unfinished"></translation>
+        <translation>Felhasználók meghívása</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Members</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagok</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Szoba elhagyása</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Beállítások</translation>
     </message>
 </context>
 <context>
@@ -1413,12 +1413,12 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../../src/TrayIcon.cpp" line="+122"/>
         <source>Show</source>
-        <translation type="unfinished"></translation>
+        <translation>Mutat</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Kilépés</translation>
     </message>
 </context>
 <context>
@@ -1426,42 +1426,42 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../../src/UserInfoWidget.cpp" line="+95"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Kijelentkezés</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Set custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyéni állapotüzenet megadása</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyéni állapotüzenet</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Állapot:</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Set presence automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Elérhetőség megadása automatikusan</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation>Bejelentkezve</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem elérhető</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Kiejelentkezve</translation>
     </message>
 </context>
 <context>
@@ -1469,12 +1469,12 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/UserProfile.qml" line="+53"/>
         <source>Verify</source>
-        <translation type="unfinished"></translation>
+        <translation>Hitelesítés</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Ban the user</source>
-        <translation type="unfinished"></translation>
+        <translation>A felhasználó tiltása</translation>
     </message>
     <message>
         <location line="+20"/>
