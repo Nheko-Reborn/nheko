@@ -405,6 +405,41 @@ EventStore::handle_room_verification(mtx::events::collections::TimelineEvents ev
           event);
 }
 
+std::vector<mtx::events::collections::TimelineEvents>
+EventStore::edits(const std::string &event_id)
+{
+        auto event_ids = cache::client()->relatedEvents(room_id_, event_id);
+
+        auto original_event = get(event_id, "", false, false);
+        if (!original_event)
+                return {};
+
+        auto original_sender = mtx::accessors::sender(*original_event);
+
+        std::vector<mtx::events::collections::TimelineEvents> edits;
+        for (const auto &id : event_ids) {
+                auto related_event = get(id, event_id, false, false);
+                if (!related_event)
+                        continue;
+
+                auto edit_rel = mtx::accessors::relations(*related_event);
+                if (edit_rel.replaces() == event_id &&
+                    original_sender == mtx::accessors::sender(*related_event))
+                        edits.push_back(*related_event);
+        }
+
+        auto c = cache::client();
+        std::sort(edits.begin(),
+                  edits.end(),
+                  [this, c](const mtx::events::collections::TimelineEvents &a,
+                            const mtx::events::collections::TimelineEvents &b) {
+                          return c->getArrivalIndex(this->room_id_, mtx::accessors::event_id(a)) <
+                                 c->getArrivalIndex(this->room_id_, mtx::accessors::event_id(b));
+                  });
+
+        return edits;
+}
+
 QVariantList
 EventStore::reactions(const std::string &event_id)
 {
@@ -487,7 +522,13 @@ EventStore::get(int idx, bool decrypt)
                 if (!event_id)
                         return nullptr;
 
-                auto event = cache::client()->getEvent(room_id_, *event_id);
+                std::optional<mtx::events::collections::TimelineEvent> event;
+                auto edits_ = edits(*event_id);
+                if (edits_.empty())
+                        event = cache::client()->getEvent(room_id_, *event_id);
+                else
+                        event = {edits_.back()};
+
                 if (!event)
                         return nullptr;
                 else
@@ -714,7 +755,7 @@ EventStore::decryptEvent(const IdIndex &idx,
 }
 
 mtx::events::collections::TimelineEvents *
-EventStore::get(std::string_view id, std::string_view related_to, bool decrypt)
+EventStore::get(std::string_view id, std::string_view related_to, bool decrypt, bool resolve_edits)
 {
         if (this->thread() != QThread::currentThread())
                 nhlog::db()->warn("{} called from a different thread!", __func__);
@@ -722,7 +763,14 @@ EventStore::get(std::string_view id, std::string_view related_to, bool decrypt)
         if (id.empty())
                 return nullptr;
 
-        IdIndex index{room_id_, std::string(id.data(), id.size())};
+        std::string id_ = std::string(id);
+        if (resolve_edits) {
+                auto edits_ = edits(id_);
+                if (!edits_.empty())
+                        id_ = mtx::accessors::event_id(edits_.back());
+        }
+
+        IdIndex index{room_id_, id_};
 
         auto event_ptr = events_by_id_.object(index);
         if (!event_ptr) {
