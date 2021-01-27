@@ -1132,125 +1132,126 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location line="+156"/>
         <source>Save image</source>
-        <translation type="unfinished"></translation>
+        <translation>Kép mentése</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save video</source>
-        <translation type="unfinished"></translation>
+        <translation>Videó mentése</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save audio</source>
-        <translation type="unfinished"></translation>
+        <translation>Hang mentése</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save file</source>
-        <translation type="unfinished"></translation>
+        <translation>Fájl mentése</translation>
     </message>
     <message numerus="yes">
         <location line="+129"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1%2 gépel.</numerusform>
+            <numerusform>%1 és %2 gépelnek.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+68"/>
         <source>%1 opened the room to the public.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 nyilvánosan elérhetővé tette a szobát.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 made this room require and invitation to join.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 beállította, hogy meghívással lehessen csatlakozni ehhez a szobához.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room open to guests.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 elérhetővé tette a szobát vendégeknek.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 has closed the room to guest access.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 eltávolította a szoba elérhetőségét vendégek számára.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room history world readable. Events may be now read by non-joined people.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 olvashatóvá tette a világon bárki számára a szoba előzményeit. Az eseményeket most már azok is láthatják, akik nem csatlakoztak.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 set the room history visible to members from this point on.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 beállította, hogy a szoba előzményei ezentúl csak a tagok számára legyenek láthatóak.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they were invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 beállította, hogy a szoba előzményei láthatóak legyenek a tagok számára a meghívásuktól kezdve.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they joined the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 beállította, hogy a szoba előzményei láthatóak legyenek a tagok számára a csatlakozásuktól kezdve.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 has changed the room&apos;s permissions.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 megváltoztatta a szoba engedélyeit.</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>%1 was invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 meg lett hívva.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 changed their display name and avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 megváltoztatta a megjelenítési nevét és a profilképét.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed their display name.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 megváltoztatta a megjelenítési nevét.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed their avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 megváltoztatta a profilképét.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed some profile info.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 megváltoztatta a profiladatait.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 joined.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 csatlakozott.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 rejected their invite.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 elutasította a meghívását.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Revoked the invite to %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Meghívás elutasítva a(z) %1 szobába.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 left the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 elhagyta a szobát.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kicked %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ki lett rúgva.</translation>
     </message>
     <message>
         <location line="+2"/>
