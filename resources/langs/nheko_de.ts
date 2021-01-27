@@ -612,7 +612,7 @@ Wenn Nheko deinen Server nicht automatisch erkennen kann, wird es dich nach dem 
     <message>
         <location line="+2"/>
         <source>Your password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dein Passwort.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -627,12 +627,12 @@ Wenn Nheko deinen Server nicht automatisch erkennen kann, wird es dich nach dem 
     <message>
         <location line="+4"/>
         <source>Homeserver address</source>
-        <translation type="unfinished"></translation>
+        <translation>Heimserveradresse</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>dein.server:8787</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -653,7 +653,7 @@ Beispiel: https://mein.server:8787</translation>
         <location line="+157"/>
         <location line="+11"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>Du hast eine invalide Matrix ID eingegeben. Normalerwise sehen die so aus: @joe:matrix.org</translation>
     </message>
     <message>
         <location line="-132"/>
