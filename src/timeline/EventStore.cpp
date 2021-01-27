@@ -246,7 +246,8 @@ EventStore::receivedSessionKey(const std::string &session_id)
         // Don't request keys again until Nheko is restarted (for now)
         pending_key_requests[session_id].events.clear();
 
-        olm::send_key_request_for(request.events.front(), request.request_id, true);
+        if (!request.events.empty())
+                olm::send_key_request_for(request.events.front(), request.request_id, true);
 
         for (const auto &e : request.events) {
                 auto idx = idToIndex(e.event_id);
