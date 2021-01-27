@@ -414,7 +414,8 @@ EventStore::edits(const std::string &event_id)
         if (!original_event)
                 return {};
 
-        auto original_sender = mtx::accessors::sender(*original_event);
+        auto original_sender    = mtx::accessors::sender(*original_event);
+        auto original_relations = mtx::accessors::relations(*original_event);
 
         std::vector<mtx::events::collections::TimelineEvents> edits;
         for (const auto &id : event_ids) {
@@ -422,10 +423,20 @@ EventStore::edits(const std::string &event_id)
                 if (!related_event)
                         continue;
 
-                auto edit_rel = mtx::accessors::relations(*related_event);
+                auto related_ev = *related_event;
+
+                auto edit_rel = mtx::accessors::relations(related_ev);
                 if (edit_rel.replaces() == event_id &&
-                    original_sender == mtx::accessors::sender(*related_event))
-                        edits.push_back(*related_event);
+                    original_sender == mtx::accessors::sender(related_ev)) {
+                        if (edit_rel.synthesized && original_relations.reply_to() &&
+                            !edit_rel.reply_to()) {
+                                edit_rel.relations.push_back(
+                                  {mtx::common::RelationType::InReplyTo,
+                                   original_relations.reply_to().value()});
+                                mtx::accessors::set_relations(related_ev, std::move(edit_rel));
+                        }
+                        edits.push_back(std::move(related_ev));
+                }
         }
 
         auto c = cache::client();

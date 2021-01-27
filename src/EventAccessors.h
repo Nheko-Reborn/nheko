@@ -55,6 +55,8 @@ std::string
 mimetype(const mtx::events::collections::TimelineEvents &event);
 mtx::common::Relations
 relations(const mtx::events::collections::TimelineEvents &event);
+void
+set_relations(mtx::events::collections::TimelineEvents &event, mtx::common::Relations relations);
 std::string
 transaction_id(const mtx::events::collections::TimelineEvents &event);
 

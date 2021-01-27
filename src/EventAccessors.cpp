@@ -264,6 +264,20 @@ struct EventRelations
         }
 };
 
+struct SetEventRelations
+{
+        mtx::common::Relations new_relations;
+        template<class Content>
+        using related_ev_id_t = decltype(Content::relations);
+        template<class T>
+        void operator()(mtx::events::Event<T> &e)
+        {
+                if constexpr (is_detected<related_ev_id_t, T>::value) {
+                        e.content.relations = std::move(new_relations);
+                }
+        }
+};
+
 struct EventTransactionId
 {
         template<class T>
@@ -424,6 +438,13 @@ mtx::common::Relations
 mtx::accessors::relations(const mtx::events::collections::TimelineEvents &event)
 {
         return std::visit(EventRelations{}, event);
+}
+
+void
+mtx::accessors::set_relations(mtx::events::collections::TimelineEvents &event,
+                              mtx::common::Relations relations)
+{
+        std::visit(SetEventRelations{std::move(relations)}, event);
 }
 
 std::string
