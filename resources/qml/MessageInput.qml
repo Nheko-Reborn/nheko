@@ -206,8 +206,11 @@ Rectangle {
                             while (pos > -1) {
                                 var t = messageInput.getText(pos, pos + 1);
                                 console.log('"' + t + '"');
-                                if (t == '@' || t == ' ' || t == '\t') {
+                                if (t == '@') {
                                     messageInput.openCompleter(pos, "user");
+                                    return ;
+                                } else if (t == ' ' || t == '\t') {
+                                    messageInput.openCompleter(pos + 1, "user");
                                     return ;
                                 } else if (t == ':') {
                                     messageInput.openCompleter(pos, "emoji");
