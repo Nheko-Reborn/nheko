@@ -610,7 +610,12 @@ Dacă Nheko nu vă poate găsi homeserverul, vă va arăta un câmp pentru intro
         <translation>Parolă</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
+        <source>Your password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Device name</source>
         <translation>Nume dispozitiv</translation>
     </message>
@@ -620,7 +625,17 @@ Dacă Nheko nu vă poate găsi homeserverul, vă va arăta un câmp pentru intro
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+4"/>
+        <source>Homeserver address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>server.my:8787</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation>Adresa la care se poate contacta APIul homeserverului dumneavoastră.
@@ -633,7 +648,15 @@ Exemplu: https://serverul.meu:8787</translation>
         <translation>CONECTARE</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="-151"/>
+        <location line="+11"/>
+        <location line="+157"/>
+        <location line="+11"/>
+        <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-132"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Autodescoperirea a eșuat. Răspunsul primit este defectuos.</translation>
     </message>
@@ -778,7 +801,7 @@ Exemplu: https://serverul.meu:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+167"/>
+        <location line="+170"/>
         <source>Emoji</source>
         <translation type="unfinished"></translation>
     </message>

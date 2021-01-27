@@ -610,7 +610,12 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
         <translation>Пароль</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
+        <source>Your password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Device name</source>
         <translation>Имя устройства</translation>
     </message>
@@ -620,7 +625,17 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
         <translation>Имя устройства, которое будет отображаться для других, когда верифицируют ваше устройство. Если не предоставить имя устройста,то будет использоваться имя по умолчанию.</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+4"/>
+        <source>Homeserver address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>server.my:8787</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation>Адрес который будет использоваться для связи клиентского API вашего домашнего сервера.
@@ -633,7 +648,15 @@ Example: https://server.my:8787</source>
         <translation>ВОЙТИ</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="-151"/>
+        <location line="+11"/>
+        <location line="+157"/>
+        <location line="+11"/>
+        <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-132"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Автообноружение не удалось. Получен поврежденный ответ.</translation>
     </message>
@@ -778,7 +801,7 @@ Example: https://server.my:8787</source>
         <translation>Написать сообщение…</translation>
     </message>
     <message>
-        <location line="+167"/>
+        <location line="+170"/>
         <source>Emoji</source>
         <translation>Эмоджи</translation>
     </message>

@@ -120,7 +120,7 @@ LoginPage::LoginPage(QWidget *parent)
         password_input_ = new TextField(this);
         password_input_->setLabel(tr("Password"));
         password_input_->setEchoMode(QLineEdit::Password);
-        password_input_->setToolTip("Your password.");
+        password_input_->setToolTip(tr("Your password."));
 
         deviceName_ = new TextField(this);
         deviceName_->setLabel(tr("Device name"));
@@ -129,8 +129,8 @@ LoginPage::LoginPage(QWidget *parent)
              "If none is provided a default is used."));
 
         serverInput_ = new TextField(this);
-        serverInput_->setLabel("Homeserver address");
-        serverInput_->setPlaceholderText("matrix.org");
+        serverInput_->setLabel(tr("Homeserver address"));
+        serverInput_->setPlaceholderText(tr("server.my:8787"));
         serverInput_->setToolTip(tr("The address that can be used to contact you homeservers "
                                     "client API.\nExample: https://server.my:8787"));
         serverInput_->hide();
@@ -217,7 +217,7 @@ LoginPage::onMatrixIdEntered()
         if (!matrixid_input_->isValid()) {
                 error_matrixid_label_->show();
                 showError(error_matrixid_label_,
-                          "You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                          tr("You have entered an invalid Matrix ID  e.g @joe:matrix.org"));
                 return;
         } else {
                 error_matrixid_label_->setText("");
@@ -228,7 +228,7 @@ LoginPage::onMatrixIdEntered()
                 user = parse<User>(matrixid_input_->text().toStdString());
         } catch (const std::exception &) {
                 showError(error_matrixid_label_,
-                          "You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                          tr("You have entered an invalid Matrix ID  e.g @joe:matrix.org"));
                 return;
         }
 
@@ -385,7 +385,7 @@ LoginPage::onLoginButtonClicked()
         if (!matrixid_input_->isValid()) {
                 error_matrixid_label_->show();
                 showError(error_matrixid_label_,
-                          "You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                          tr("You have entered an invalid Matrix ID  e.g @joe:matrix.org"));
                 return;
         } else {
                 error_matrixid_label_->setText("");
@@ -396,7 +396,7 @@ LoginPage::onLoginButtonClicked()
                 user = parse<User>(matrixid_input_->text().toStdString());
         } catch (const std::exception &) {
                 showError(error_matrixid_label_,
-                          "You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+                          tr("You have entered an invalid Matrix ID  e.g @joe:matrix.org"));
                 return;
         }
 

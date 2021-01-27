@@ -610,7 +610,12 @@ Wenn Nheko deinen Server nicht automatisch erkennen kann, wird es dich nach dem 
         <translation>Passwort</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
+        <source>Your password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Device name</source>
         <translation>Gerätename</translation>
     </message>
@@ -620,7 +625,17 @@ Wenn Nheko deinen Server nicht automatisch erkennen kann, wird es dich nach dem 
         <translation>Ein Name für dieses Gerät. Dieser wird der anderen Seite gezeigt, wenn das Gerät verifiziert wird. Wenn nichts angeben wird, wird einer generiert.</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+4"/>
+        <source>Homeserver address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>server.my:8787</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation>Die Adresse unter der dein Heimserver erreichbar ist.
@@ -633,7 +648,15 @@ Beispiel: https://mein.server:8787</translation>
         <translation>ANMELDEN</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="-151"/>
+        <location line="+11"/>
+        <location line="+157"/>
+        <location line="+11"/>
+        <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-132"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Automatische Erkennung fehlgeschlagen. Antwort war fehlerhaft.</translation>
     </message>
@@ -778,7 +801,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Schreibe eine Nachricht…</translation>
     </message>
     <message>
-        <location line="+167"/>
+        <location line="+170"/>
         <source>Emoji</source>
         <translation>Emoji</translation>
     </message>

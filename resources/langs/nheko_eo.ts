@@ -608,7 +608,12 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
         <translation type="unfinished">Pasvorto</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
+        <source>Your password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Device name</source>
         <translation>Aparata nomo</translation>
     </message>
@@ -619,7 +624,17 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
         <translation>Nomo por ĉi tiu aparato, montrot al aliaj, kiam kontrolant viajn aparatojn. Se neniom provizitis, defaŭlto uzit.</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+4"/>
+        <source>Homeserver address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>server.my:8787</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translatorcomment>API should be valid for the EO translation of application programming interface.</translatorcomment>
@@ -634,7 +649,15 @@ Ekzemplo: https://servisto.mia:8787</translation>
         <translation>ENSALUTU</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="-151"/>
+        <location line="+11"/>
+        <location line="+157"/>
+        <location line="+11"/>
+        <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-132"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -779,7 +802,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
         <translation type="unfinished">Skribu mesaĝon...</translation>
     </message>
     <message>
-        <location line="+167"/>
+        <location line="+170"/>
         <source>Emoji</source>
         <translation type="unfinished"></translation>
     </message>

@@ -610,7 +610,12 @@ Om Nheko inte kan hitta din hemserver automatiskt kommer ett fält dyka upp där
         <translation>Lösenord</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
+        <source>Your password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Device name</source>
         <translation>Enhetsnamn</translation>
     </message>
@@ -620,7 +625,17 @@ Om Nheko inte kan hitta din hemserver automatiskt kommer ett fält dyka upp där
         <translation>Ett namn för denna enhet. Namnet kommer synas för andra när du verifierar dina enheter. Om du inte förser ett namn kommer ett standardnamn användas.</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+4"/>
+        <source>Homeserver address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>server.my:8787</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation>Addressen som kan användas för att kontakta din hemservers klient-API.
@@ -633,7 +648,15 @@ Exempel: https://server.my:8787</translation>
         <translation>INLOGGNING</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="-151"/>
+        <location line="+11"/>
+        <location line="+157"/>
+        <location line="+11"/>
+        <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-132"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Autouppslag misslyckades. Mottog felkonstruerat svar.</translation>
     </message>
@@ -778,7 +801,7 @@ Exempel: https://server.my:8787</translation>
         <translation>Skriv ett meddelande…</translation>
     </message>
     <message>
-        <location line="+167"/>
+        <location line="+170"/>
         <source>Emoji</source>
         <translation>Emoji</translation>
     </message>

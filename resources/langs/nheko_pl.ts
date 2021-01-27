@@ -609,7 +609,12 @@ Jeżeli Nheko nie odnajdzie Twojego serwera domowego, wyświetli formularz umoż
         <translation>Hasło</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
+        <source>Your password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Device name</source>
         <translation>Nazwa urządzenia</translation>
     </message>
@@ -619,7 +624,17 @@ Jeżeli Nheko nie odnajdzie Twojego serwera domowego, wyświetli formularz umoż
         <translation>Nazwa dla tego urządzenia, będzie ona widoczna dla innych użytkowników, kiedy będą weryfikować Twoje urządzenia. Jeżeli żadna nie jest podana, używana jest domyślna.</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+4"/>
+        <source>Homeserver address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>server.my:8787</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
@@ -631,7 +646,15 @@ Example: https://server.my:8787</source>
         <translation>ZALOGUJ</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="-151"/>
+        <location line="+11"/>
+        <location line="+157"/>
+        <location line="+11"/>
+        <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-132"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Automatyczne odkrywanie zakończone niepowodzeniem. Otrzymano nieprawidłową odpowiedź.</translation>
     </message>
@@ -776,7 +799,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished">Napisz wiadomość…</translation>
     </message>
     <message>
-        <location line="+167"/>
+        <location line="+170"/>
         <source>Emoji</source>
         <translation type="unfinished">Emoji</translation>
     </message>

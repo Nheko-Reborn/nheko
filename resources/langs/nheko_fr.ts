@@ -610,7 +610,12 @@ Si Nheko n&apos;arrive pas à trouver votre serveur, il vous proposera de l&apos
         <translation>Mot de passe</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
+        <source>Your password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Device name</source>
         <translation>Nom de l&apos;appareil</translation>
     </message>
@@ -620,7 +625,17 @@ Si Nheko n&apos;arrive pas à trouver votre serveur, il vous proposera de l&apos
         <translation>Un nom pour cet appareil, qui sera montré aux autres utilisateurs lorsque ceux-ci le vérifieront. Si aucun n&apos;est fourni, un nom par défaut est utilisé.</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+4"/>
+        <source>Homeserver address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>server.my:8787</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation>L&apos;adresse qui peut être utilisée pour joindre l&apos;API client de votre serveur.
@@ -633,7 +648,15 @@ Exemple&#xa0;: https&#x202f;://monserveur.example.com&#x202f;:8787</translation>
         <translation>CONNEXION</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="-151"/>
+        <location line="+11"/>
+        <location line="+157"/>
+        <location line="+11"/>
+        <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-132"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Échec de la découverte automatique. Réponse mal formatée reçue.</translation>
     </message>
@@ -778,7 +801,7 @@ Exemple&#xa0;: https&#x202f;://monserveur.example.com&#x202f;:8787</translation>
         <translation>Écrivez un message…</translation>
     </message>
     <message>
-        <location line="+167"/>
+        <location line="+170"/>
         <source>Emoji</source>
         <translation>Émoji</translation>
     </message>

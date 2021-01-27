@@ -610,7 +610,12 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
         <translation>Password</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
+        <source>Your password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Device name</source>
         <translation>Device name</translation>
     </message>
@@ -620,7 +625,17 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
         <translation>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+4"/>
+        <source>Homeserver address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>server.my:8787</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation>The address that can be used to contact you homeservers client API.
@@ -633,7 +648,15 @@ Example: https://server.my:8787</translation>
         <translation>LOGIN</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="-151"/>
+        <location line="+11"/>
+        <location line="+157"/>
+        <location line="+11"/>
+        <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-132"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Autodiscovery failed. Received malformed response.</translation>
     </message>
@@ -778,7 +801,7 @@ Example: https://server.my:8787</translation>
         <translation>Write a message…</translation>
     </message>
     <message>
-        <location line="+167"/>
+        <location line="+170"/>
         <source>Emoji</source>
         <translation>Emoji</translation>
     </message>

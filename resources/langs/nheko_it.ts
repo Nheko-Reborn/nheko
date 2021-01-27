@@ -610,7 +610,12 @@ Se Nheko non conclude la ricerca del tuo homeserver, ti mostrerà un campo in cu
         <translation>Password</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
+        <source>Your password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Device name</source>
         <translation>Nome del dispositivo</translation>
     </message>
@@ -620,7 +625,17 @@ Se Nheko non conclude la ricerca del tuo homeserver, ti mostrerà un campo in cu
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+4"/>
+        <source>Homeserver address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>server.my:8787</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation>L&apos;indirizzo che può essere usato per contattare le API client del tuo homeserver.
@@ -633,7 +648,15 @@ Esempio: https://server.mio:8787</translation>
         <translation>ACCEDI</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="-151"/>
+        <location line="+11"/>
+        <location line="+157"/>
+        <location line="+11"/>
+        <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-132"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Ricerca automatica fallita. Ricevuta risposta malformata.</translation>
     </message>
@@ -778,7 +801,7 @@ Esempio: https://server.mio:8787</translation>
         <translation type="unfinished">Scrivi un messaggio…</translation>
     </message>
     <message>
-        <location line="+167"/>
+        <location line="+170"/>
         <source>Emoji</source>
         <translation type="unfinished">Emoji</translation>
     </message>
