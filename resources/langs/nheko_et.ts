@@ -51,7 +51,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1951"/>
+        <location filename="../../src/Cache.cpp" line="+1978"/>
         <source>You joined this room.</source>
         <translation>Sa liitusid selle jututoaga.</translation>
     </message>
@@ -126,7 +126,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+779"/>
+        <location line="+796"/>
         <source>Invited user: %1</source>
         <translation>Kutsutud kasutaja: %1</translation>
     </message>
@@ -280,7 +280,12 @@
 <context>
     <name>CommunitiesListItem</name>
     <message>
-        <location filename="../../src/CommunitiesListItem.cpp" line="+133"/>
+        <location filename="../../src/CommunitiesListItem.cpp" line="+26"/>
+        <source>Hide rooms with this tag or from this community</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+153"/>
         <source>All rooms</source>
         <translation>Kõik jututoad</translation>
     </message>
@@ -474,10 +479,16 @@
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+548"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+559"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation>-- Krüptitud sündmus (Dekrüptimisvõtmeid ei leidunud) --</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>-- Encrypted Event (Key not valid for this index) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted with this key since it is not valid for this index </comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+32"/>
@@ -557,7 +568,7 @@
         <translation>Kõik failid (*)</translation>
     </message>
     <message>
-        <location line="+334"/>
+        <location line="+340"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Meediafailide üleslaadimine ei õnnestunud. Palun proovi uuesti.</translation>
     </message>
@@ -617,7 +628,7 @@ Näiteks: https://server.minu:8787</translation>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+217"/>
+        <location line="+218"/>
         <source>LOGIN</source>
         <translation>LOGI SISSE</translation>
     </message>
@@ -767,7 +778,7 @@ Näiteks: https://server.minu:8787</translation>
         <translation>Kirjuta sõnum…</translation>
     </message>
     <message>
-        <location line="+152"/>
+        <location line="+167"/>
         <source>Emoji</source>
         <translation>Emoji</translation>
     </message>
@@ -874,7 +885,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+182"/>
+        <location filename="../../src/main.cpp" line="+179"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Loo unikaalne profiil, mis võimaldab sul logida samaaegselt sisse erinevatele kasutajakontodele ning käivitada mitu Nheko programmiakent.</translation>
     </message>
@@ -977,7 +988,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1859"/>
+        <location filename="../../src/Cache.cpp" line="+1868"/>
         <source>no version stored</source>
         <translation>salvestatud versiooni ei leidu</translation>
     </message>
@@ -1019,7 +1030,7 @@ Näiteks: https://server.minu:8787</translation>
         <translation>Lisab või eemaldab selle sildi.</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+39"/>
         <source>New tag...</source>
         <comment>Add a new tag to the room</comment>
         <translation>Uus silt…</translation>
@@ -1119,7 +1130,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+864"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+860"/>
         <source>Message redaction failed: %1</source>
         <translation>Sõnumi ümbersõnastamine ebaõnnestus: %1</translation>
     </message>
@@ -1130,7 +1141,7 @@ Näiteks: https://server.minu:8787</translation>
         <translation>Sündmuse krüptimine ei õnnestunud, katkestame saatmise!</translation>
     </message>
     <message>
-        <location line="+156"/>
+        <location line="+164"/>
         <source>Save image</source>
         <translation>Salvesta pilt</translation>
     </message>
@@ -1150,7 +1161,7 @@ Näiteks: https://server.minu:8787</translation>
         <translation>Salvesta fail</translation>
     </message>
     <message numerus="yes">
-        <location line="+129"/>
+        <location line="+143"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -1269,12 +1280,12 @@ Näiteks: https://server.minu:8787</translation>
         <translation>%1 muutis oma koputust jututoa uksele.</translation>
     </message>
     <message>
-        <location line="-749"/>
+        <location line="-771"/>
         <source>You joined this room.</source>
         <translation>Sa liitusid jututoaga.</translation>
     </message>
     <message>
-        <location line="+751"/>
+        <location line="+773"/>
         <source>Rejected the knock from %1.</source>
         <translation>Lükkas tagasi %1 koputuse jututoa uksele.</translation>
     </message>
@@ -1354,6 +1365,11 @@ Näiteks: https://server.minu:8787</translation>
         <location line="+7"/>
         <source>Save as</source>
         <translation>Salvesta kui</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Open in external program</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+51"/>
@@ -1467,7 +1483,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+53"/>
+        <location filename="../qml/UserProfile.qml" line="+54"/>
         <source>Verify</source>
         <translation>Verifitseeri</translation>
     </message>
@@ -1490,7 +1506,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+781"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+794"/>
         <source>Minimize to tray</source>
         <translation>Vähenda tegumiribale</translation>
     </message>

@@ -51,7 +51,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1951"/>
+        <location filename="../../src/Cache.cpp" line="+1978"/>
         <source>You joined this room.</source>
         <translation>നിങ്ങൾ ഈ മുറിയിൽ ചേർന്നു.</translation>
     </message>
@@ -126,7 +126,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+779"/>
+        <location line="+796"/>
         <source>Invited user: %1</source>
         <translation>ക്ഷണിച്ച ഉപയോക്താവ്:% 1</translation>
     </message>
@@ -280,7 +280,12 @@
 <context>
     <name>CommunitiesListItem</name>
     <message>
-        <location filename="../../src/CommunitiesListItem.cpp" line="+133"/>
+        <location filename="../../src/CommunitiesListItem.cpp" line="+26"/>
+        <source>Hide rooms with this tag or from this community</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+153"/>
         <source>All rooms</source>
         <translation>എല്ലാ മുറികളും</translation>
     </message>
@@ -455,7 +460,7 @@
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">അവ പൊരുത്തപ്പെടുന്നു!</translation>
     </message>
 </context>
 <context>
@@ -474,9 +479,15 @@
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+548"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+559"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>-- Encrypted Event (Key not valid for this index) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted with this key since it is not valid for this index </comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -557,7 +568,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+334"/>
+        <location line="+340"/>
         <source>Failed to upload media. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -613,7 +624,7 @@ Example: https://server.my:8787</source>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+217"/>
+        <location line="+218"/>
         <source>LOGIN</source>
         <translation type="unfinished"></translation>
     </message>
@@ -763,7 +774,7 @@ Example: https://server.my:8787</source>
         <translation>ഒരു സന്ദേശം എഴുതുക….</translation>
     </message>
     <message>
-        <location line="+152"/>
+        <location line="+167"/>
         <source>Emoji</source>
         <translation>ഇമോജി</translation>
     </message>
@@ -870,7 +881,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+182"/>
+        <location filename="../../src/main.cpp" line="+179"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -909,7 +920,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-282"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">പാസ്‍വേഡ്</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -967,13 +978,13 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/ReplyPopup.qml" line="+43"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">അടയ്‌ക്കുക</translation>
     </message>
 </context>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1859"/>
+        <location filename="../../src/Cache.cpp" line="+1868"/>
         <source>no version stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1015,7 +1026,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+39"/>
         <source>New tag...</source>
         <comment>Add a new tag to the room</comment>
         <translation type="unfinished"></translation>
@@ -1040,7 +1051,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+3"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">നിരസിക്കുക</translation>
     </message>
 </context>
 <context>
@@ -1109,13 +1120,13 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+12"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">അടയ്‌ക്കുക</translation>
     </message>
 </context>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+864"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+860"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1126,7 +1137,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+156"/>
+        <location line="+164"/>
         <source>Save image</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1146,7 +1157,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+129"/>
+        <location line="+143"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation type="unfinished">
@@ -1265,12 +1276,12 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-749"/>
+        <location line="-771"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">നിങ്ങൾ ഈ മുറിയിൽ ചേർന്നു.</translation>
     </message>
     <message>
-        <location line="+751"/>
+        <location line="+773"/>
         <source>Rejected the knock from %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1349,6 +1360,11 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Open in external program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1463,7 +1479,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+53"/>
+        <location filename="../qml/UserProfile.qml" line="+54"/>
         <source>Verify</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1486,7 +1502,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+781"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+794"/>
         <source>Minimize to tray</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1851,7 +1867,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+54"/>
         <source>Select a file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ഒരു ഫയൽ തിരഞ്ഞെടുക്കുക</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -1926,7 +1942,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+15"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">റദ്ദാക്കു</translation>
     </message>
 </context>
 <context>
@@ -1970,17 +1986,17 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">റദ്ദാക്കു</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">പേര്</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">വിഷയം</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2013,7 +2029,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">റദ്ദാക്കു</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2031,7 +2047,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/InviteUsers.cpp" line="+42"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">റദ്ദാക്കു</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2049,7 +2065,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">റദ്ദാക്കു</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2062,7 +2078,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">റദ്ദാക്കു</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2075,7 +2091,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">റദ്ദാക്കു</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2093,7 +2109,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">റദ്ദാക്കു</translation>
     </message>
     <message>
         <location line="+87"/>
@@ -2108,7 +2124,7 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">റദ്ദാക്കു</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2131,7 +2147,7 @@ Media size: %2
     <message>
         <location line="+4"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">അടയ്‌ക്കുക</translation>
     </message>
 </context>
 <context>
