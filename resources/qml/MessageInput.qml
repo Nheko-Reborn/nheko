@@ -164,7 +164,8 @@ Rectangle {
                         event.accepted = true;
                     } else if (event.key == Qt.Key_Space) {
                         if (popup.opened && popup.count <= 0)
-                            popup.close()
+                            popup.close();
+
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_U) {
                         messageInput.clear();
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_P) {
@@ -258,7 +259,7 @@ Rectangle {
 
                 Connections {
                     ignoreUnknownSignals: true
-                    onReplyChanged: messageInput.forceActiveFocus();
+                    onReplyChanged: messageInput.forceActiveFocus()
                     target: TimelineManager.timeline
                 }
 

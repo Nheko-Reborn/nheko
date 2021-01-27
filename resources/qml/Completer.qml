@@ -85,7 +85,7 @@ Popup {
 
                 anchors.fill: parent
                 hoverEnabled: true
-                onEntered: popup.currentIndex = model.index
+                onPositionChanged: popup.currentIndex = model.index
                 onClicked: popup.completionClicked(completer.completionAt(model.index))
 
                 Ripple {
