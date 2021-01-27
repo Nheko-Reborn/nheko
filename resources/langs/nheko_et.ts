@@ -274,7 +274,7 @@
     <message>
         <location line="+54"/>
         <source>Failed to kick %1 from %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja %1 väljamüksamine %2 jututoast ei õnnestunud: %3</translation>
     </message>
 </context>
 <context>
@@ -282,7 +282,7 @@
     <message>
         <location filename="../../src/CommunitiesListItem.cpp" line="+26"/>
         <source>Hide rooms with this tag or from this community</source>
-        <translation type="unfinished"></translation>
+        <translation>Peida sellest kogukonnast antud sildiga jututoad</translation>
     </message>
     <message>
         <location line="+153"/>
@@ -488,7 +488,7 @@
         <location line="+7"/>
         <source>-- Encrypted Event (Key not valid for this index) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted with this key since it is not valid for this index </comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Krüptitud sündmus (võti pole selle indeksi jaoks sobilik) --</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -1392,7 +1392,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+7"/>
         <source>Open in external program</source>
-        <translation type="unfinished"></translation>
+        <translation>Ava välise rakendusega</translation>
     </message>
     <message>
         <location line="+51"/>
