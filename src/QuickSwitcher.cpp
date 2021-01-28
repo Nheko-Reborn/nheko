@@ -48,6 +48,11 @@ RoomSearchInput::keyPressEvent(QKeyEvent *event)
                 event->accept();
                 break;
         }
+        case Qt::Key_Escape: {
+            reset();
+            event->accept();
+            break;
+        }
         default:
                 TextField::keyPressEvent(event);
         }
