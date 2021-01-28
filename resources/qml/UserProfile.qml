@@ -15,6 +15,7 @@ ApplicationWindow {
     minimumHeight: 420
     palette: colors
     color: colors.window
+    title: profile.globalUserProfile ? "Global User Profile" : "Room User Profile"
 
     ColumnLayout {
         id: contentL
@@ -33,13 +34,25 @@ ApplicationWindow {
             onClicked: TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
         }
 
-        Label {
+        TextInput {
+            id: displayUsername
+            readOnly: !profile.isUsernameEditingAllowed
             text: profile.displayName
-            fontSizeMode: Text.HorizontalFit
             font.pixelSize: 20
             color: TimelineManager.userColor(profile.userid, colors.window)
             font.bold: true
             Layout.alignment: Qt.AlignHCenter
+            focus: true
+
+            onEditingFinished: profile.changeUsername(displayUsername.text)
+
+            MouseArea {
+                enabled: !profile.isUsernameEditingAllowed
+                anchors.fill: parent
+                onDoubleClicked: {
+                    profile.allowUsernameEditing(true)
+                }
+            }
         }
 
         MatrixText {
@@ -56,40 +69,6 @@ ApplicationWindow {
             enabled: !profile.isUserVerified
             visible: !profile.isUserVerified && !profile.isSelf && profile.userVerificationEnabled
             onClicked: profile.verify()
-        }
-
-        Button {
-            id: changeUsername
-
-            text: (profile.roomid_ == "") ? qsTr("Change global username") : qsTr("Change room username")
-            Layout.alignment: Qt.AlignHCenter
-            enabled : profile.isSelf
-            visible: profile.isSelf
-            onClicked: changeUsernameDialog.open()
-
-            Dialog {
-                id: changeUsernameDialog
-                modal: true
-                title: (profile.roomid_ == "") ? qsTr("Change global username") : qsTr("Change room username")
-                onAccepted: profile.changeUsername(usernameEdit.text)
-
-                Column {
-                    anchors.fill: parent
-
-                    Text {
-                        text: "New Username"
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-                    TextField {
-                        id: usernameEdit
-                        focus: true
-                        wrapMode: TextEdit.Wrap
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-                }
-
-                standardButtons: Dialog.Ok | Dialog.Cancel
-            }
         }
 
         Image {

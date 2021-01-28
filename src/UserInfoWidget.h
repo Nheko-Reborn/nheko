@@ -51,6 +51,9 @@ protected:
         void paintEvent(QPaintEvent *event) override;
         void contextMenuEvent(QContextMenuEvent *) override;
 
+signals:
+        void openGlobalUserProfile();
+
 private:
         Avatar *userAvatar_;
 

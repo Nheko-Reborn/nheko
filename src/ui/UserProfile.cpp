@@ -108,6 +108,12 @@ UserProfile::avatarUrl()
 }
 
 bool
+UserProfile::globalUserProfile() const
+{
+        return (roomid_ == "") && isSelf();
+}
+
+bool
 UserProfile::getUserStatus()
 {
         return isUserVerified;
@@ -217,39 +223,37 @@ UserProfile::startChat()
 void
 UserProfile::changeUsername(QString username)
 {
-        // change room username
-        mtx::events::state::Member member;
-        member.display_name = username.toStdString();
-        member.avatar_url =
-          cache::avatarUrl(roomid_,
-                           QString::fromStdString(http::client()->user_id().to_string()))
-            .toStdString();
-        member.membership = mtx::events::state::Membership::Join;
+        if (globalUserProfile()) {
+                // change global
+                http::client()->set_displayname(
+                  username.toStdString(), [this]( mtx::http::RequestErr err) {
+                          if (err) {
+                                  nhlog::net()->warn("could not change username");
+                                  return;
+                          }
+                  });
+        } else {
+                // change room username
+                mtx::events::state::Member member;
+                member.display_name = username.toStdString();
+                member.avatar_url =
+                  cache::avatarUrl(roomid_,
+                                   QString::fromStdString(http::client()->user_id().to_string()))
+                    .toStdString();
+                member.membership = mtx::events::state::Membership::Join;
 
-        http::client()->send_state_event(roomid_.toStdString(),
-                                         http::client()->user_id().to_string(),
-                                         member,
-                                         [](mtx::responses::EventId, mtx::http::RequestErr err) {
-                                                 if (err)
-                                                         nhlog::net()->error(
-                                                           "Failed to set room displayname: {}",
-                                                           err->matrix_error.error);
-                                         });
+                http::client()->send_state_event(
+                  roomid_.toStdString(),
+                  http::client()->user_id().to_string(),
+                  member,
+                  [](mtx::responses::EventId, mtx::http::RequestErr err) {
+                          if (err)
+                                  nhlog::net()->error("Failed to set room displayname: {}",
+                                                      err->matrix_error.error);
+                  });
+        }
 
-        /*connect(modal, &EditModal::nameChanged, this, [this](const QString &newName) {
-                if (roomNameLabel_)
-                        roomNameLabel_->setText(newName);
-        });*/
-
-        /*std::string newName = "jedi18";
-        // change user name
-        http::client()->set_displayname(
-          newName, [this]( mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->warn("could not change username");
-                          return;
-                  }
-          });*/
+        allowUsernameEditing(false);
 }
 
 void
@@ -266,4 +270,17 @@ void
 UserProfile::unverify(QString device)
 {
         cache::markDeviceUnverified(userid_.toStdString(), device.toStdString());
+}
+
+void
+UserProfile::allowUsernameEditing(bool allow)
+{
+        usernameEditing = allow;
+        emit usernameEditingChanged();
+}
+
+bool
+UserProfile::isUsernameEditingAllowed() const
+{
+        return usernameEditing;
 }

@@ -112,6 +112,10 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(sidebarActions_, &SideBarActions::createRoom, this, &ChatPage::createRoom);
 
         user_info_widget_    = new UserInfoWidget(sideBar_);
+        connect(user_info_widget_, &UserInfoWidget::openGlobalUserProfile, this, [this]() {
+                view_manager_->activeTimeline()->openUserProfile("", true);
+        });
+
         user_mentions_popup_ = new popups::UserMentions();
         room_list_           = new RoomList(userSettings, sideBar_);
         connect(room_list_, &RoomList::joinRoom, this, &ChatPage::joinRoom);
