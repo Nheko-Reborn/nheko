@@ -317,6 +317,7 @@ private:
         mutable EventStore events;
 
         QString room_id_;
+        QString globalUsername;
 
         bool decryptDescription     = true;
         bool m_paginationInProgress = false;

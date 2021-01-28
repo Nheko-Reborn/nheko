@@ -22,6 +22,7 @@
 #include "TimelineViewManager.h"
 #include "Utils.h"
 #include "dialogs/RawMessage.h"
+#include <mtx/responses.hpp>
 
 Q_DECLARE_METATYPE(QModelIndex)
 
@@ -260,6 +261,17 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         connect(&events, &EventStore::updateFlowEventId, this, [this](std::string event_id) {
                 this->updateFlowEventId(event_id);
         });
+
+        const auto userid = utils::localUser().toStdString();
+        http::client()->get_profile(
+          userid, [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to retrieve own profile info");
+                          return;
+                  }
+
+                  globalUsername = QString::fromStdString(res.display_name);
+          });
 }
 
 QHash<int, QByteArray>
@@ -801,7 +813,12 @@ TimelineModel::viewDecryptedRawMessage(QString id) const
 void
 TimelineModel::openUserProfile(QString userid, bool global)
 {
-        emit openProfile(new UserProfile(global ? "" : room_id_, global ? utils::localUser() : userid, manager_, this));
+        if (global) {
+                emit openProfile(new UserProfile("",utils::localUser(),
+                                manager_, this, globalUsername));
+        } else {
+                emit openProfile(new UserProfile(room_id_, userid, manager_, this));
+        }
 }
 
 void

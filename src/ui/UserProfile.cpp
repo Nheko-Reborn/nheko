@@ -12,12 +12,14 @@
 UserProfile::UserProfile(QString roomid,
                          QString userid,
                          TimelineViewManager *manager_,
-                         TimelineModel *parent)
+                         TimelineModel *parent,
+                         QString globalUsername)
   : QObject(parent)
   , roomid_(roomid)
   , userid_(userid)
   , manager(manager_)
   , model(parent)
+  , globalUsername(globalUsername)
 {
         fetchDeviceList(this->userid_);
 
@@ -98,7 +100,7 @@ UserProfile::userid()
 QString
 UserProfile::displayName()
 {
-        return cache::displayName(roomid_, userid_);
+        return globalUserProfile() ? globalUsername : cache::displayName(roomid_, userid_);
 }
 
 QString

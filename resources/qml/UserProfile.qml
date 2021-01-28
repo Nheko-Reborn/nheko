@@ -42,15 +42,23 @@ ApplicationWindow {
             color: TimelineManager.userColor(profile.userid, colors.window)
             font.bold: true
             Layout.alignment: Qt.AlignHCenter
-            focus: true
+            selectByMouse: true
 
-            onEditingFinished: profile.changeUsername(displayUsername.text)
+            Keys.priority: Keys.BeforeItem
+            Keys.onReturnPressed: profile.changeUsername(displayUsername.text)
 
-            MouseArea {
-                enabled: !profile.isUsernameEditingAllowed
-                anchors.fill: parent
-                onDoubleClicked: {
-                    profile.allowUsernameEditing(true)
+            ImageButton {
+                anchors.leftMargin: 5
+                anchors.left: displayUsername.right
+                anchors.verticalCenter: displayUsername.verticalCenter
+                image: profile.isUsernameEditingAllowed ? ":/icons/icons/ui/checkmark.png" : ":/icons/icons/ui/edit.png"
+
+                onClicked: {
+                    if(profile.isUsernameEditingAllowed) {
+                        profile.changeUsername(displayUsername.text)
+                    }else{
+                        profile.allowUsernameEditing(true)
+                    }
                 }
             }
         }
