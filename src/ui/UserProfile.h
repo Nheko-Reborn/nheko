@@ -121,7 +121,7 @@ signals:
         void userStatusChanged();
         void usernameEditingChanged();
         void displayNameChanged();
-        void globalUsernameRetrieved(const QString& globalUser);
+        void globalUsernameRetrieved(const QString &globalUser);
 
 protected slots:
         void setGlobalUsername(const QString &globalUser);

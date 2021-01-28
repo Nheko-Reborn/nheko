@@ -7,8 +7,8 @@
 #include "mtx/responses/crypto.hpp"
 #include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"
-#include <mtx/responses/common.hpp>
 #include <mtx/responses.hpp>
+#include <mtx/responses/common.hpp>
 
 UserProfile::UserProfile(QString roomid,
                          QString userid,
@@ -304,7 +304,7 @@ UserProfile::isUsernameEditingAllowed() const
 }
 
 void
-UserProfile::setGlobalUsername(const QString& globalUser)
+UserProfile::setGlobalUsername(const QString &globalUser)
 {
         globalUsername = globalUser;
         emit displayNameChanged();
