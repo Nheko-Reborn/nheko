@@ -814,8 +814,8 @@ void
 TimelineModel::openUserProfile(QString userid, bool global)
 {
         if (global) {
-                emit openProfile(new UserProfile("",utils::localUser(),
-                                manager_, this, globalUsername));
+                emit openProfile(
+                  new UserProfile("", utils::localUser(), manager_, this, globalUsername));
         } else {
                 emit openProfile(new UserProfile(room_id_, userid, manager_, this));
         }

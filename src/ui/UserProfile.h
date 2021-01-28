@@ -94,7 +94,7 @@ public:
         UserProfile(QString roomid,
                     QString userid,
                     TimelineViewManager *manager_,
-                    TimelineModel *parent = nullptr,
+                    TimelineModel *parent  = nullptr,
                     QString globalUsername = "");
 
         DeviceInfoModel *deviceList();
@@ -126,8 +126,8 @@ private:
         QString roomid_, userid_;
         QString globalUsername;
         DeviceInfoModel deviceList_;
-        bool isUserVerified = false;
-        bool hasMasterKey   = false;
+        bool isUserVerified  = false;
+        bool hasMasterKey    = false;
         bool usernameEditing = false;
         TimelineViewManager *manager;
         TimelineModel *model;

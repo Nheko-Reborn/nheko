@@ -111,7 +111,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(sidebarActions_, &SideBarActions::joinRoom, this, &ChatPage::joinRoom);
         connect(sidebarActions_, &SideBarActions::createRoom, this, &ChatPage::createRoom);
 
-        user_info_widget_    = new UserInfoWidget(sideBar_);
+        user_info_widget_ = new UserInfoWidget(sideBar_);
         connect(user_info_widget_, &UserInfoWidget::openGlobalUserProfile, this, [this]() {
                 view_manager_->activeTimeline()->openUserProfile("", true);
         });

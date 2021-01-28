@@ -4,10 +4,10 @@
 #include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "Utils.h"
-#include <mtx/responses/common.hpp>
 #include "mtx/responses/crypto.hpp"
 #include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"
+#include <mtx/responses/common.hpp>
 
 UserProfile::UserProfile(QString roomid,
                          QString userid,
@@ -228,7 +228,7 @@ UserProfile::changeUsername(QString username)
         if (globalUserProfile()) {
                 // change global
                 http::client()->set_displayname(
-                  username.toStdString(), [this]( mtx::http::RequestErr err) {
+                  username.toStdString(), [this](mtx::http::RequestErr err) {
                           if (err) {
                                   nhlog::net()->warn("could not change username");
                                   return;
