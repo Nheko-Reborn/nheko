@@ -79,7 +79,7 @@ private:
 class UserProfile : public QObject
 {
         Q_OBJECT
-        Q_PROPERTY(QString displayName READ displayName CONSTANT)
+        Q_PROPERTY(QString displayName READ displayName NOTIFY displayNameChanged)
         Q_PROPERTY(QString userid READ userid CONSTANT)
         Q_PROPERTY(QString avatarUrl READ avatarUrl CONSTANT)
         Q_PROPERTY(DeviceInfoModel *deviceList READ deviceList CONSTANT)
@@ -94,8 +94,7 @@ public:
         UserProfile(QString roomid,
                     QString userid,
                     TimelineViewManager *manager_,
-                    TimelineModel *parent  = nullptr,
-                    QString globalUsername = "");
+                    TimelineModel *parent = nullptr);
 
         DeviceInfoModel *deviceList();
 
@@ -121,6 +120,11 @@ public:
 signals:
         void userStatusChanged();
         void usernameEditingChanged();
+        void displayNameChanged();
+        void globalUsernameRetrieved(const QString& globalUser);
+
+protected slots:
+        void setGlobalUsername(const QString &globalUser);
 
 private:
         QString roomid_, userid_;

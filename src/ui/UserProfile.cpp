@@ -8,18 +8,17 @@
 #include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"
 #include <mtx/responses/common.hpp>
+#include <mtx/responses.hpp>
 
 UserProfile::UserProfile(QString roomid,
                          QString userid,
                          TimelineViewManager *manager_,
-                         TimelineModel *parent,
-                         QString globalUsername)
+                         TimelineModel *parent)
   : QObject(parent)
   , roomid_(roomid)
   , userid_(userid)
   , manager(manager_)
   , model(parent)
-  , globalUsername(globalUsername)
 {
         fetchDeviceList(this->userid_);
 
@@ -47,6 +46,23 @@ UserProfile::UserProfile(QString roomid,
                         }
                         deviceList_.reset(deviceList_.deviceList_);
                 });
+
+        connect(this,
+                &UserProfile::globalUsernameRetrieved,
+                this,
+                &UserProfile::setGlobalUsername,
+                Qt::QueuedConnection);
+
+        http::client()->get_profile(
+          userid_.toStdString(),
+          [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to retrieve own profile info");
+                          return;
+                  }
+
+                  emit globalUsernameRetrieved(QString::fromStdString(res.display_name));
+          });
 }
 
 QHash<int, QByteArray>
@@ -285,4 +301,11 @@ bool
 UserProfile::isUsernameEditingAllowed() const
 {
         return usernameEditing;
+}
+
+void
+UserProfile::setGlobalUsername(const QString& globalUser)
+{
+        globalUsername = globalUser;
+        emit displayNameChanged();
 }
