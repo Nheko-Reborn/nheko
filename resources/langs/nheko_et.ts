@@ -612,7 +612,7 @@ Kui Nheko ei suuda tuvastada sinu koduserverit, siis ta kuvab sulle andmevälja 
     <message>
         <location line="+2"/>
         <source>Your password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinu salasõna.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -627,12 +627,12 @@ Kui Nheko ei suuda tuvastada sinu koduserverit, siis ta kuvab sulle andmevälja 
     <message>
         <location line="+4"/>
         <source>Homeserver address</source>
-        <translation type="unfinished"></translation>
+        <translation>Koduserveri aadress</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>server.minu:8787</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -653,7 +653,7 @@ Näiteks: https://server.minu:8787</translation>
         <location line="+157"/>
         <location line="+11"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisestatud Matrix&apos;i kasutajatunnus on vigane - peaks olema @kasutaja:server.tld</translation>
     </message>
     <message>
         <location line="-132"/>
