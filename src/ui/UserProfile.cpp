@@ -270,8 +270,6 @@ UserProfile::changeUsername(QString username)
                                                       err->matrix_error.error);
                   });
         }
-
-        allowUsernameEditing(false);
 }
 
 void
@@ -288,19 +286,6 @@ void
 UserProfile::unverify(QString device)
 {
         cache::markDeviceUnverified(userid_.toStdString(), device.toStdString());
-}
-
-void
-UserProfile::allowUsernameEditing(bool allow)
-{
-        usernameEditing = allow;
-        emit usernameEditingChanged();
-}
-
-bool
-UserProfile::isUsernameEditingAllowed() const
-{
-        return usernameEditing;
 }
 
 void

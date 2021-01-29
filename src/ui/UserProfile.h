@@ -88,8 +88,6 @@ class UserProfile : public QObject
         Q_PROPERTY(
           bool userVerificationEnabled READ userVerificationEnabled NOTIFY userStatusChanged)
         Q_PROPERTY(bool isSelf READ isSelf CONSTANT)
-        Q_PROPERTY(
-          bool isUsernameEditingAllowed READ isUsernameEditingAllowed NOTIFY usernameEditingChanged)
 public:
         UserProfile(QString roomid,
                     QString userid,
@@ -105,7 +103,6 @@ public:
         bool getUserStatus();
         bool userVerificationEnabled() const;
         bool isSelf() const;
-        bool isUsernameEditingAllowed() const;
 
         Q_INVOKABLE void verify(QString device = "");
         Q_INVOKABLE void unverify(QString device = "");
@@ -115,11 +112,9 @@ public:
         Q_INVOKABLE void kickUser();
         Q_INVOKABLE void startChat();
         Q_INVOKABLE void changeUsername(QString username);
-        Q_INVOKABLE void allowUsernameEditing(bool allow);
 
 signals:
         void userStatusChanged();
-        void usernameEditingChanged();
         void displayNameChanged();
         void globalUsernameRetrieved(const QString &globalUser);
 
@@ -130,9 +125,8 @@ private:
         QString roomid_, userid_;
         QString globalUsername;
         DeviceInfoModel deviceList_;
-        bool isUserVerified  = false;
-        bool hasMasterKey    = false;
-        bool usernameEditing = false;
+        bool isUserVerified = false;
+        bool hasMasterKey   = false;
         TimelineViewManager *manager;
         TimelineModel *model;
 };

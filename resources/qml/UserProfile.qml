@@ -36,7 +36,10 @@ ApplicationWindow {
 
         TextInput {
             id: displayUsername
-            readOnly: !profile.isUsernameEditingAllowed
+
+            property bool isUsernameEditingAllowed
+
+            readOnly: !isUsernameEditingAllowed
             text: profile.displayName
             font.pixelSize: 20
             color: TimelineManager.userColor(profile.userid, colors.window)
@@ -44,20 +47,24 @@ ApplicationWindow {
             Layout.alignment: Qt.AlignHCenter
             selectByMouse: true
 
-            onAccepted: profile.changeUsername(displayUsername.text)
+            onAccepted: {
+                profile.changeUsername(displayUsername.text)
+                displayUsername.isUsernameEditingAllowed = false
+            }
 
             ImageButton {
                 visible: profile.isSelf
                 anchors.leftMargin: 5
                 anchors.left: displayUsername.right
                 anchors.verticalCenter: displayUsername.verticalCenter
-                image: profile.isUsernameEditingAllowed ? ":/icons/icons/ui/checkmark.png" : ":/icons/icons/ui/edit.png"
+                image: displayUsername.isUsernameEditingAllowed ? ":/icons/icons/ui/checkmark.png" : ":/icons/icons/ui/edit.png"
 
                 onClicked: {
-                    if (profile.isUsernameEditingAllowed) {
+                    if (displayUsername.isUsernameEditingAllowed) {
                         profile.changeUsername(displayUsername.text)
+                        displayUsername.isUsernameEditingAllowed = false
                     } else {
-                        profile.allowUsernameEditing(true)
+                        displayUsername.isUsernameEditingAllowed = true
                     }
                 }
             }
