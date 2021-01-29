@@ -83,7 +83,7 @@ class UserProfile : public QObject
         Q_PROPERTY(QString userid READ userid CONSTANT)
         Q_PROPERTY(QString avatarUrl READ avatarUrl CONSTANT)
         Q_PROPERTY(DeviceInfoModel *deviceList READ deviceList CONSTANT)
-        Q_PROPERTY(bool globalUserProfile READ globalUserProfile CONSTANT)
+        Q_PROPERTY(bool isGlobalUserProfile READ isGlobalUserProfile CONSTANT)
         Q_PROPERTY(bool isUserVerified READ getUserStatus NOTIFY userStatusChanged)
         Q_PROPERTY(
           bool userVerificationEnabled READ userVerificationEnabled NOTIFY userStatusChanged)
@@ -101,7 +101,7 @@ public:
         QString userid();
         QString displayName();
         QString avatarUrl();
-        bool globalUserProfile() const;
+        bool isGlobalUserProfile() const;
         bool getUserStatus();
         bool userVerificationEnabled() const;
         bool isSelf() const;

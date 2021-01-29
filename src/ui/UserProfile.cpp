@@ -116,7 +116,7 @@ UserProfile::userid()
 QString
 UserProfile::displayName()
 {
-        return globalUserProfile() ? globalUsername : cache::displayName(roomid_, userid_);
+        return isGlobalUserProfile() ? globalUsername : cache::displayName(roomid_, userid_);
 }
 
 QString
@@ -126,9 +126,9 @@ UserProfile::avatarUrl()
 }
 
 bool
-UserProfile::globalUserProfile() const
+UserProfile::isGlobalUserProfile() const
 {
-        return (roomid_ == "") && isSelf();
+        return roomid_ == "";
 }
 
 bool
@@ -241,7 +241,7 @@ UserProfile::startChat()
 void
 UserProfile::changeUsername(QString username)
 {
-        if (globalUserProfile()) {
+        if (isGlobalUserProfile()) {
                 // change global
                 http::client()->set_displayname(
                   username.toStdString(), [this](mtx::http::RequestErr err) {

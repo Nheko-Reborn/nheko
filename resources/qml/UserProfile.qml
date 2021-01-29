@@ -15,7 +15,7 @@ ApplicationWindow {
     minimumHeight: 420
     palette: colors
     color: colors.window
-    title: profile.globalUserProfile ? "Global User Profile" : "Room User Profile"
+    title: profile.isGlobalUserProfile ? "Global User Profile" : "Room User Profile"
 
     ColumnLayout {
         id: contentL
@@ -44,19 +44,19 @@ ApplicationWindow {
             Layout.alignment: Qt.AlignHCenter
             selectByMouse: true
 
-            Keys.priority: Keys.BeforeItem
-            Keys.onReturnPressed: profile.changeUsername(displayUsername.text)
+            onAccepted: profile.changeUsername(displayUsername.text)
 
             ImageButton {
+                visible: profile.isSelf
                 anchors.leftMargin: 5
                 anchors.left: displayUsername.right
                 anchors.verticalCenter: displayUsername.verticalCenter
                 image: profile.isUsernameEditingAllowed ? ":/icons/icons/ui/checkmark.png" : ":/icons/icons/ui/edit.png"
 
                 onClicked: {
-                    if(profile.isUsernameEditingAllowed) {
+                    if (profile.isUsernameEditingAllowed) {
                         profile.changeUsername(displayUsername.text)
-                    }else{
+                    } else {
                         profile.allowUsernameEditing(true)
                     }
                 }

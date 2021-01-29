@@ -801,11 +801,7 @@ TimelineModel::viewDecryptedRawMessage(QString id) const
 void
 TimelineModel::openUserProfile(QString userid, bool global)
 {
-        if (global) {
-                emit openProfile(new UserProfile("", utils::localUser(), manager_, this));
-        } else {
-                emit openProfile(new UserProfile(room_id_, userid, manager_, this));
-        }
+        emit openProfile(new UserProfile(global ? "" : room_id_, userid, manager_, this));
 }
 
 void

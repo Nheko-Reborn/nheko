@@ -113,7 +113,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         user_info_widget_ = new UserInfoWidget(sideBar_);
         connect(user_info_widget_, &UserInfoWidget::openGlobalUserProfile, this, [this]() {
-                view_manager_->activeTimeline()->openUserProfile("", true);
+                view_manager_->activeTimeline()->openUserProfile(utils::localUser(), true);
         });
 
         user_mentions_popup_ = new popups::UserMentions();
