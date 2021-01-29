@@ -10,11 +10,18 @@ ApplicationWindow {
 
     property var profile
 
+    x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
+    y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     height: 650
     width: 420
     minimumHeight: 420
     palette: colors
     color: colors.window
+
+    Shortcut {
+        sequence: StandardKey.Cancel
+        onActivated: userProfileDialog.close()
+    }
 
     ColumnLayout {
         id: contentL
