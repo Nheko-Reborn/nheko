@@ -18,6 +18,11 @@ ApplicationWindow {
     palette: colors
     color: colors.window
 
+    Shortcut {
+        sequence: StandardKey.Cancel
+        onActivated: userProfileDialog.close()
+    }
+
     ColumnLayout {
         id: contentL
 
