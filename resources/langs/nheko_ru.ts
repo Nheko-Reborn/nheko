@@ -6,18 +6,18 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+66"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>Вызов...</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Соединение...</translation>
     </message>
     <message>
         <location line="+76"/>
         <source>Toggle camera view</source>
-        <translation type="unfinished"></translation>
+        <translation>Сменить вид камеры</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -61,17 +61,17 @@
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+66"/>
         <source>Video Call</source>
-        <translation type="unfinished">Видео Звонок</translation>
+        <translation>Видео Звонок</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished">Голосовой Звонок</translation>
+        <translation>Голосовой Звонок</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>No microphone found.</source>
-        <translation type="unfinished">Микрофон не найден.</translation>
+        <translation>Микрофон не найден.</translation>
     </message>
 </context>
 <context>
