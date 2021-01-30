@@ -65,6 +65,8 @@ ApplicationWindow {
                         displayUsername.isUsernameEditingAllowed = false
                     } else {
                         displayUsername.isUsernameEditingAllowed = true
+                        displayUsername.focus = true
+                        displayUsername.selectAll()
                     }
                 }
             }
