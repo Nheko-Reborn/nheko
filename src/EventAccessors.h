@@ -17,6 +17,9 @@ room_id(const mtx::events::collections::TimelineEvents &event);
 std::string
 sender(const mtx::events::collections::TimelineEvents &event);
 
+bool
+is_state_event(const mtx::events::collections::TimelineEvents &event);
+
 QDateTime
 origin_server_ts(const mtx::events::collections::TimelineEvents &event);
 

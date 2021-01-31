@@ -34,6 +34,20 @@ struct detector<Default, std::void_t<Op<Args...>>, Op, Args...>
 template<template<class...> class Op, class... Args>
 using is_detected = typename detail::detector<nonesuch, void, Op, Args...>::value_t;
 
+struct IsStateEvent
+{
+        template<class T>
+        bool operator()(const mtx::events::StateEvent<T> &)
+        {
+                return true;
+        }
+        template<class T>
+        bool operator()(const mtx::events::Event<T> &)
+        {
+                return false;
+        }
+};
+
 struct EventMsgType
 {
         template<class E>
@@ -475,4 +489,10 @@ nlohmann::json
 mtx::accessors::serialize_event(const mtx::events::collections::TimelineEvents &event)
 {
         return std::visit([](const auto &e) { return nlohmann::json(e); }, event);
+}
+
+bool
+mtx::accessors::is_state_event(const mtx::events::collections::TimelineEvents &event)
+{
+        return std::visit(IsStateEvent{}, event);
 }

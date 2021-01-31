@@ -145,6 +145,7 @@ class TimelineModel : public QAbstractListModel
         Q_PROPERTY(std::vector<QString> typingUsers READ typingUsers WRITE updateTypingUsers NOTIFY
                      typingUsersChanged)
         Q_PROPERTY(QString reply READ reply WRITE setReply NOTIFY replyChanged RESET resetReply)
+        Q_PROPERTY(QString edit READ edit WRITE setEdit NOTIFY editChanged RESET resetEdit)
         Q_PROPERTY(
           bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
         Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
@@ -181,6 +182,8 @@ public:
                 ProportionalHeight,
                 Id,
                 State,
+                IsEdited,
+                IsEditable,
                 IsEncrypted,
                 IsRoomEncrypted,
                 ReplyTo,
@@ -213,6 +216,7 @@ public:
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
         Q_INVOKABLE void openUserProfile(QString userid, bool global = false);
+        Q_INVOKABLE void editAction(QString id);
         Q_INVOKABLE void replyAction(QString id);
         Q_INVOKABLE void readReceiptsAction(QString id) const;
         Q_INVOKABLE void redactEvent(QString id);
@@ -268,6 +272,16 @@ public slots:
                         emit replyChanged(reply_);
                 }
         }
+        QString edit() const { return edit_; }
+        void setEdit(QString newEdit);
+        void resetEdit()
+        {
+                if (!edit_.isEmpty()) {
+                        edit_ = "";
+                        emit editChanged(edit_);
+                        resetReply();
+                }
+        }
         void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
         void clearTimeline() { events.clearTimeline(); }
         void receivedSessionKey(const std::string &session_key)
@@ -292,6 +306,7 @@ signals:
         void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
         void typingUsersChanged(std::vector<QString> users);
         void replyChanged(QString reply);
+        void editChanged(QString reply);
         void paginationInProgressChanged(const bool);
         void newCallEvent(const mtx::events::collections::TimelineEvents &event);
 
@@ -322,7 +337,7 @@ private:
         bool m_paginationInProgress = false;
 
         QString currentId;
-        QString reply_;
+        QString reply_, edit_;
         std::vector<QString> typingUsers_;
 
         TimelineViewManager *manager_;

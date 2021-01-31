@@ -774,14 +774,16 @@ EventStore::get(std::string_view id, std::string_view related_to, bool decrypt, 
         if (id.empty())
                 return nullptr;
 
-        std::string id_ = std::string(id);
+        IdIndex index{room_id_, std::string(id)};
         if (resolve_edits) {
-                auto edits_ = edits(id_);
-                if (!edits_.empty())
-                        id_ = mtx::accessors::event_id(edits_.back());
+                auto edits_ = edits(index.id);
+                if (!edits_.empty()) {
+                        index.id = mtx::accessors::event_id(edits_.back());
+                        auto event_ptr =
+                          new mtx::events::collections::TimelineEvents(std::move(edits_.back()));
+                        events_by_id_.insert(index, event_ptr);
+                }
         }
-
-        IdIndex index{room_id_, id_};
 
         auto event_ptr = events_by_id_.object(index);
         if (!event_ptr) {

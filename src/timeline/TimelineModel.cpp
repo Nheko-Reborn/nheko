@@ -288,6 +288,8 @@ TimelineModel::roleNames() const
           {ProportionalHeight, "proportionalHeight"},
           {Id, "id"},
           {State, "state"},
+          {IsEdited, "isEdited"},
+          {IsEditable, "isEditable"},
           {IsEncrypted, "isEncrypted"},
           {IsRoomEncrypted, "isRoomEncrypted"},
           {ReplyTo, "replyTo"},
@@ -409,8 +411,12 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
 
                 return QVariant(prop > 0 ? prop : 1.);
         }
-        case Id:
-                return QVariant(QString::fromStdString(event_id(event)));
+        case Id: {
+                if (auto replaces = relations(event).replaces())
+                        return QVariant(QString::fromStdString(replaces.value()));
+                else
+                        return QVariant(QString::fromStdString(event_id(event)));
+        }
         case State: {
                 auto id             = QString::fromStdString(event_id(event));
                 auto containsOthers = [](const auto &vec) {
@@ -430,6 +436,11 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 else
                         return qml_mtx_events::Received;
         }
+        case IsEdited:
+                return QVariant(relations(event).replaces().has_value());
+        case IsEditable:
+                return QVariant(!is_state_event(event) && mtx::accessors::sender(event) ==
+                                                            http::client()->user_id().to_string());
         case IsEncrypted: {
                 auto id              = event_id(event);
                 auto encrypted_event = events.get(id, id, false);
@@ -444,7 +455,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         case ReplyTo:
                 return QVariant(QString::fromStdString(relations(event).reply_to().value_or("")));
         case Reactions: {
-                auto id = event_id(event);
+                auto id = relations(event).replaces().value_or(event_id(event));
                 return QVariant::fromValue(events.reactions(id));
         }
         case RoomId:
@@ -811,6 +822,12 @@ void
 TimelineModel::replyAction(QString id)
 {
         setReply(id);
+}
+
+void
+TimelineModel::editAction(QString id)
+{
+        setEdit(id);
 }
 
 RelatedInfo
@@ -1499,6 +1516,22 @@ TimelineModel::formatMemberEvent(QString id)
         }
 
         return rendered;
+}
+
+void
+TimelineModel::setEdit(QString newEdit)
+{
+        if (edit_ != newEdit) {
+                edit_ = newEdit;
+                emit editChanged(edit_);
+
+                auto ev = events.get(newEdit.toStdString(), "");
+                if (ev) {
+                        setReply(QString::fromStdString(
+                          mtx::accessors::relations(*ev).reply_to().value_or("")));
+                        // input()->setText(mtx::accessors::body(*ev));
+                }
+        }
 }
 
 QString
