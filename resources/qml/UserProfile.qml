@@ -17,6 +17,7 @@ ApplicationWindow {
     minimumHeight: 420
     palette: colors
     color: colors.window
+    title: profile.isGlobalUserProfile ? "Global User Profile" : "Room User Profile"
 
     Shortcut {
         sequence: StandardKey.Cancel
@@ -40,13 +41,42 @@ ApplicationWindow {
             onClicked: TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
         }
 
-        Label {
+        TextInput {
+            id: displayUsername
+
+            property bool isUsernameEditingAllowed
+
+            readOnly: !isUsernameEditingAllowed
             text: profile.displayName
-            fontSizeMode: Text.HorizontalFit
             font.pixelSize: 20
             color: TimelineManager.userColor(profile.userid, colors.window)
             font.bold: true
             Layout.alignment: Qt.AlignHCenter
+            selectByMouse: true
+
+            onAccepted: {
+                profile.changeUsername(displayUsername.text)
+                displayUsername.isUsernameEditingAllowed = false
+            }
+
+            ImageButton {
+                visible: profile.isSelf
+                anchors.leftMargin: 5
+                anchors.left: displayUsername.right
+                anchors.verticalCenter: displayUsername.verticalCenter
+                image: displayUsername.isUsernameEditingAllowed ? ":/icons/icons/ui/checkmark.png" : ":/icons/icons/ui/edit.png"
+
+                onClicked: {
+                    if (displayUsername.isUsernameEditingAllowed) {
+                        profile.changeUsername(displayUsername.text)
+                        displayUsername.isUsernameEditingAllowed = false
+                    } else {
+                        displayUsername.isUsernameEditingAllowed = true
+                        displayUsername.focus = true
+                        displayUsername.selectAll()
+                    }
+                }
+            }
         }
 
         MatrixText {
