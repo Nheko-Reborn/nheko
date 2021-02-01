@@ -31,7 +31,7 @@ ApplicationWindow {
             displayName: profile.displayName
             userid: profile.userid
             Layout.alignment: Qt.AlignHCenter
-            onClicked: TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
+            onClicked: profile.isSelf ? profile.changeAvatar() : TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
         }
 
         TextInput {

@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QString>
 #include <QVector>
+#include <mtx/responses.hpp>
+#include <mtx/responses/common.hpp>
 
 namespace verification {
 Q_NAMESPACE
@@ -112,6 +114,7 @@ public:
         Q_INVOKABLE void kickUser();
         Q_INVOKABLE void startChat();
         Q_INVOKABLE void changeUsername(QString username);
+        Q_INVOKABLE void changeAvatar();
 
 signals:
         void userStatusChanged();
@@ -120,6 +123,9 @@ signals:
 
 protected slots:
         void setGlobalUsername(const QString &globalUser);
+
+private:
+        void updateRoomMemberState(mtx::events::state::Member member);
 
 private:
         QString roomid_, userid_;
