@@ -74,7 +74,7 @@ sudo dnf install nheko
 
 #### Gentoo Linux
 ```bash
-sudo eselect repository enable matrix
+sudo eselect repository enable guru
 sudo emerge -a nheko
 ```
 
