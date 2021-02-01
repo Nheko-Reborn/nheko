@@ -3,6 +3,7 @@
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "Splitter.h"
+#include "UserSettingsPage.h"
 
 #include <mtx/responses/groups.hpp>
 #include <nlohmann/json.hpp>
@@ -125,9 +126,15 @@ CommunitiesList::setTagsForRoom(const QString &room_id, const std::vector<std::s
 void
 CommunitiesList::addCommunity(const std::string &group_id)
 {
+        auto hiddenTags = UserSettings::instance()->hiddenTags();
+
         const auto id = QString::fromStdString(group_id);
 
         CommunitiesListItem *list_item = new CommunitiesListItem(id, scrollArea_);
+
+        if (hiddenTags.contains(id))
+                list_item->setDisabled(true);
+
         communities_.emplace(id, QSharedPointer<CommunitiesListItem>(list_item));
         contentsLayout_->insertWidget(contentsLayout_->count() - 1, list_item);
 
@@ -135,6 +142,21 @@ CommunitiesList::addCommunity(const std::string &group_id)
                 &CommunitiesListItem::clicked,
                 this,
                 &CommunitiesList::highlightSelectedCommunity);
+        connect(list_item, &CommunitiesListItem::isDisabledChanged, this, [this]() {
+                for (const auto &community : communities_) {
+                        if (community.second->isPressed()) {
+                                emit highlightSelectedCommunity(community.first);
+                                break;
+                        }
+                }
+
+                auto hiddenTags = hiddenTagsAndCommunities();
+                // Qt < 5.14 compat
+                QStringList hiddenTags_;
+                for (auto &&t : hiddenTags)
+                        hiddenTags_.push_back(t);
+                UserSettings::instance()->setHiddenTags(hiddenTags_);
+        });
 
         if (group_id.empty() || group_id.front() != '+')
                 return;
@@ -157,7 +179,9 @@ CommunitiesList::addCommunity(const std::string &group_id)
         connect(this,
                 &CommunitiesList::groupRoomsRetrieved,
                 this,
-                [this](const QString &id, const std::map<QString, bool> &rooms) {
+                [this](const QString &id, const std::set<QString> &rooms) {
+                        nhlog::ui()->info(
+                          "Fetched rooms for {}: {}", id.toStdString(), rooms.size());
                         if (communities_.find(id) == communities_.end())
                                 return;
 
@@ -179,9 +203,9 @@ CommunitiesList::addCommunity(const std::string &group_id)
                           return;
                   }
 
-                  std::map<QString, bool> room_ids;
+                  std::set<QString> room_ids;
                   for (const auto &room : res.at("chunk"))
-                          room_ids.emplace(QString::fromStdString(room.at("room_id")), true);
+                          room_ids.emplace(QString::fromStdString(room.at("room_id")));
 
                   emit groupRoomsRetrieved(id, room_ids);
           });
@@ -256,7 +280,7 @@ CommunitiesList::fetchCommunityAvatar(const QString &id, const QString &avatarUr
           });
 }
 
-std::map<QString, bool>
+std::set<QString>
 CommunitiesList::roomList(const QString &id) const
 {
         if (communityExists(id))
@@ -275,6 +299,18 @@ CommunitiesList::currentTags() const
                         tags.push_back(entry.first.mid(4).toStdString());
         }
         return tags;
+}
+
+std::set<QString>
+CommunitiesList::hiddenTagsAndCommunities() const
+{
+        std::set<QString> hiddenTags;
+        for (auto &entry : communities_) {
+                if (entry.second->isDisabled())
+                        hiddenTags.insert(entry.first);
+        }
+
+        return hiddenTags;
 }
 
 void

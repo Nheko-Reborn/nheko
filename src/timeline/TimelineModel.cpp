@@ -5,6 +5,7 @@
 #include <type_traits>
 
 #include <QCache>
+#include <QDesktopServices>
 #include <QFileDialog>
 #include <QMimeDatabase>
 #include <QRegularExpression>
@@ -353,7 +354,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 return QVariant(emojiCount);
         }
         case Body:
-                return QVariant(utils::replaceEmoji(QString::fromStdString(body(event))));
+                return QVariant(
+                  utils::replaceEmoji(QString::fromStdString(body(event)).toHtmlEscaped()));
         case FormattedBody: {
                 const static QRegularExpression replyFallback(
                   "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption);
@@ -797,9 +799,9 @@ TimelineModel::viewDecryptedRawMessage(QString id) const
 }
 
 void
-TimelineModel::openUserProfile(QString userid)
+TimelineModel::openUserProfile(QString userid, bool global)
 {
-        emit openProfile(new UserProfile(room_id_, userid, manager_, this));
+        emit openProfile(new UserProfile(global ? "" : room_id_, userid, manager_, this));
 }
 
 void
@@ -1072,6 +1074,14 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
         std::visit(SendMessageVisitor{this}, event);
 }
 
+void
+TimelineModel::openMedia(QString eventId)
+{
+        cacheMedia(eventId, [](QString filename) {
+                QDesktopServices::openUrl(QUrl::fromLocalFile(filename));
+        });
+}
+
 bool
 TimelineModel::saveMedia(QString eventId) const
 {
@@ -1148,7 +1158,7 @@ TimelineModel::saveMedia(QString eventId) const
 }
 
 void
-TimelineModel::cacheMedia(QString eventId)
+TimelineModel::cacheMedia(QString eventId, std::function<void(const QString)> callback)
 {
         mtx::events::collections::TimelineEvents *event = events.get(eventId.toStdString(), "");
         if (!event)
@@ -1168,12 +1178,13 @@ TimelineModel::cacheMedia(QString eventId)
 
         QString suffix = QMimeDatabase().mimeTypeForName(mimeType).preferredSuffix();
 
-        const auto url = mxcUrl.toStdString();
+        const auto url  = mxcUrl.toStdString();
+        const auto name = QString(mxcUrl).remove("mxc://");
         QFileInfo filename(QString("%1/media_cache/%2.%3")
                              .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-                             .arg(QString(mxcUrl).remove("mxc://"))
+                             .arg(name)
                              .arg(suffix));
-        if (QDir::cleanPath(filename.path()) != filename.path()) {
+        if (QDir::cleanPath(name) != name) {
                 nhlog::net()->warn("mxcUrl '{}' is not safe, not downloading file", url);
                 return;
         }
@@ -1182,15 +1193,18 @@ TimelineModel::cacheMedia(QString eventId)
 
         if (filename.isReadable()) {
                 emit mediaCached(mxcUrl, filename.filePath());
+                if (callback) {
+                        callback(filename.filePath());
+                }
                 return;
         }
 
         http::client()->download(
           url,
-          [this, mxcUrl, filename, url, encryptionInfo](const std::string &data,
-                                                        const std::string &,
-                                                        const std::string &,
-                                                        mtx::http::RequestErr err) {
+          [this, callback, mxcUrl, filename, url, encryptionInfo](const std::string &data,
+                                                                  const std::string &,
+                                                                  const std::string &,
+                                                                  mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to retrieve image {}: {} {}",
                                              url,
@@ -1212,12 +1226,22 @@ TimelineModel::cacheMedia(QString eventId)
 
                           file.write(QByteArray(temp.data(), (int)temp.size()));
                           file.close();
+
+                          if (callback) {
+                                  callback(filename.filePath());
+                          }
                   } catch (const std::exception &e) {
                           nhlog::ui()->warn("Error while saving file to: {}", e.what());
                   }
 
                   emit mediaCached(mxcUrl, filename.filePath());
           });
+}
+
+void
+TimelineModel::cacheMedia(QString eventId)
+{
+        cacheMedia(eventId, NULL);
 }
 
 QString

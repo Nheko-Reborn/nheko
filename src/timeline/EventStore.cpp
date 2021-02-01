@@ -229,6 +229,9 @@ EventStore::clearTimeline()
         }
         nhlog::ui()->info("Range {} {}", this->last, this->first);
 
+        decryptedEvents_.clear();
+        events_.clear();
+
         emit endResetModel();
 }
 
@@ -239,9 +242,12 @@ EventStore::receivedSessionKey(const std::string &session_id)
                 return;
 
         auto request = pending_key_requests.at(session_id);
-        pending_key_requests.erase(session_id);
 
-        olm::send_key_request_for(request.events.front(), request.request_id, true);
+        // Don't request keys again until Nheko is restarted (for now)
+        pending_key_requests[session_id].events.clear();
+
+        if (!request.events.empty())
+                olm::send_key_request_for(request.events.front(), request.request_id, true);
 
         for (const auto &e : request.events) {
                 auto idx = idToIndex(e.event_id);
@@ -265,6 +271,9 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                 emit beginResetModel();
                 this->first = std::numeric_limits<uint64_t>::max();
                 this->last  = std::numeric_limits<uint64_t>::max();
+
+                decryptedEvents_.clear();
+                events_.clear();
                 emit endResetModel();
                 return;
         }
@@ -273,6 +282,9 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                 emit beginResetModel();
                 this->last  = range->last;
                 this->first = range->first;
+
+                decryptedEvents_.clear();
+                events_.clear();
                 emit endResetModel();
         } else if (range->last > this->last) {
                 emit beginInsertRows(toExternalIdx(this->last + 1), toExternalIdx(range->last));
@@ -543,12 +555,21 @@ EventStore::decryptEvent(const IdIndex &idx,
 
         if (decryptionResult.error) {
                 switch (*decryptionResult.error) {
-                case olm::DecryptionErrorCode::MissingSession: {
-                        dummy.content.body =
-                          tr("-- Encrypted Event (No keys found for decryption) --",
-                             "Placeholder, when the message was not decrypted yet or can't be "
-                             "decrypted.")
-                            .toStdString();
+                case olm::DecryptionErrorCode::MissingSession:
+                case olm::DecryptionErrorCode::MissingSessionIndex: {
+                        if (decryptionResult.error == olm::DecryptionErrorCode::MissingSession)
+                                dummy.content.body =
+                                  tr("-- Encrypted Event (No keys found for decryption) --",
+                                     "Placeholder, when the message was not decrypted yet or can't "
+                                     "be "
+                                     "decrypted.")
+                                    .toStdString();
+                        else
+                                dummy.content.body =
+                                  tr("-- Encrypted Event (Key not valid for this index) --",
+                                     "Placeholder, when the message can't be decrypted with this "
+                                     "key since it is not valid for this index ")
+                                    .toStdString();
                         nhlog::crypto()->info("Could not find inbound megolm session ({}, {}, {})",
                                               index.room_id,
                                               index.session_id,
@@ -760,7 +781,8 @@ EventStore::fetchMore()
                   if (cache::client()->previousBatchToken(room_id_) != opts.from) {
                           nhlog::net()->warn("Cache cleared while fetching more messages, dropping "
                                              "/messages response");
-                          emit fetchedMore();
+                          if (!opts.to.empty())
+                                  emit fetchedMore();
                           return;
                   }
                   if (err) {

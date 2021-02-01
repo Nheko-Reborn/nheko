@@ -63,14 +63,14 @@ EmojiProxyModel::EmojiProxyModel(QObject *parent)
 
 EmojiProxyModel::~EmojiProxyModel() {}
 
-EmojiCategory
+Emoji::Category
 EmojiProxyModel::category() const
 {
         return category_;
 }
 
 void
-EmojiProxyModel::setCategory(EmojiCategory cat)
+EmojiProxyModel::setCategory(Emoji::Category cat)
 {
         if (category_ == cat) {
                 return;
@@ -106,7 +106,7 @@ EmojiProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent
         const Emoji emoji = index.data(static_cast<int>(EmojiModel::Roles::Emoji)).value<Emoji>();
 
         // TODO: Add favorites / recently used
-        if (category_ != EmojiCategory::Search) {
+        if (category_ != Emoji::Category::Search) {
                 return emoji.category == category_;
         }
 

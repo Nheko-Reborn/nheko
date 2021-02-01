@@ -72,15 +72,16 @@ if(${CMAKE_VERSION} VERSION_LESS "3.14.0")
 	endmacro()
 endif()
 
-include(GNUInstallDirs)
-
 # Include Qt basic functions
 include(QtCommon)
 
 project(nheko LANGUAGES CXX C)
+
+include(GNUInstallDirs)
+
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
 set(CPACK_PACKAGE_VERSION_MINOR "8")
-set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(CPACK_PACKAGE_VERSION_PATCH "1")
 set(PROJECT_VERSION_MAJOR ${CPACK_PACKAGE_VERSION_MAJOR})
 set(PROJECT_VERSION_MINOR ${CPACK_PACKAGE_VERSION_MINOR})
 set(PROJECT_VERSION_PATCH ${CPACK_PACKAGE_VERSION_PATCH})
@@ -260,7 +261,7 @@ set(SRC_FILES
 
 	# Emoji
 	src/emoji/EmojiModel.cpp
-	src/emoji/Provider_new.cpp
+    src/emoji/Provider.cpp
 
 
 	# Timeline
@@ -354,13 +355,13 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        v0.4.0
+		GIT_TAG        v0.4.1
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(MatrixClient)
 else()
-	find_package(MatrixClient 0.4.0 REQUIRED)
+	find_package(MatrixClient 0.4.1 REQUIRED)
 endif()
 if(USE_BUNDLED_OLM)
 	include(FetchContent)

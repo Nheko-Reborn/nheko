@@ -26,32 +26,32 @@
 namespace emoji {
 Q_NAMESPACE
 
-enum class EmojiCategory
-{
-        People,
-        Nature,
-        Food,
-        Activity,
-        Travel,
-        Objects,
-        Symbols,
-        Flags,
-        Search
-};
-Q_ENUM_NS(EmojiCategory)
-
 struct Emoji
 {
         Q_GADGET
+public:
+        enum class Category
+        {
+                People,
+                Nature,
+                Food,
+                Activity,
+                Travel,
+                Objects,
+                Symbols,
+                Flags,
+                Search
+        };
+        Q_ENUM(Category)
 
         Q_PROPERTY(const QString &unicode MEMBER unicode)
         Q_PROPERTY(const QString &shortName MEMBER shortName)
-        Q_PROPERTY(emoji::EmojiCategory category MEMBER category)
+        Q_PROPERTY(emoji::Emoji::Category category MEMBER category)
 
 public:
         QString unicode;
         QString shortName;
-        EmojiCategory category;
+        Category category;
 };
 
 class Provider

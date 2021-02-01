@@ -47,7 +47,6 @@ public:
 
 private:
         QDBusInterface dbus;
-        uint showNotification(const QString summary, const QString text, const QImage image);
         void closeNotification(uint id);
 
         // notification ID to (room ID, event ID)

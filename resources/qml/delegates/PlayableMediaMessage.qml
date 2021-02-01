@@ -194,7 +194,6 @@ Rectangle {
                 Text {
                     Layout.fillWidth: true
                     text: model.data.body
-                    textFormat: Text.PlainText
                     elide: Text.ElideRight
                     color: colors.text
                 }

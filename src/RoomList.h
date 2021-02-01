@@ -23,6 +23,8 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include <set>
+
 #include "CacheStructs.h"
 #include "UserSettingsPage.h"
 
@@ -54,9 +56,9 @@ public:
         void addInvitedRoom(const QString &room_id, const RoomInfo &info);
         void removeRoom(const QString &room_id, bool reset);
         //! Hide rooms that are not present in the given filter.
-        void applyFilter(const std::map<QString, bool> &rooms);
+        void applyFilter(const std::set<QString> &rooms);
         //! Show all the available rooms.
-        void removeFilter();
+        void removeFilter(const std::set<QString> &roomsToHide);
         void updateRoom(const QString &room_id, const RoomInfo &info);
         void cleanupInvites(const std::map<QString, bool> &invites);
 

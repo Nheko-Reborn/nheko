@@ -1,6 +1,7 @@
 #include "MatrixClient.h"
 
 #include <memory>
+#include <set>
 
 #include <QMetaType>
 #include <QObject>
@@ -21,6 +22,7 @@ Q_DECLARE_METATYPE(nlohmann::json)
 Q_DECLARE_METATYPE(std::string)
 Q_DECLARE_METATYPE(std::vector<std::string>)
 Q_DECLARE_METATYPE(std::vector<QString>)
+Q_DECLARE_METATYPE(std::set<QString>)
 
 namespace {
 auto client_ = std::make_shared<mtx::http::Client>();
@@ -55,6 +57,7 @@ init()
         qRegisterMetaType<std::vector<std::string>>();
         qRegisterMetaType<std::vector<QString>>();
         qRegisterMetaType<std::map<QString, bool>>("std::map<QString, bool>");
+        qRegisterMetaType<std::set<QString>>();
 }
 
 } // namespace http

@@ -155,11 +155,12 @@ RoomInfoListItem > Avatar {
 
 CommunitiesListItem {
     qproperty-highlightedBackgroundColor: #4d84c7;
+    qproperty-disabledBackgroundColor: palette(mid);
     qproperty-hoverBackgroundColor: rgb(67, 70, 77);
     qproperty-backgroundColor: #2d3139;
 
     qproperty-avatarBgColor: #202228;
-    qproperty-avatarFgColor: palette(window);
+    qproperty-avatarFgColor: black;
 }
 
 LoadingIndicator {

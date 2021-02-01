@@ -128,6 +128,10 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           "UserProfile needs to be instantiated on the C++ side");
 
         static auto self = this;
+        qmlRegisterSingletonType<MainWindow>(
+          "im.nheko", 1, 0, "MainWindow", [](QQmlEngine *, QJSEngine *) -> QObject * {
+                  return MainWindow::instance();
+          });
         qmlRegisterSingletonType<TimelineViewManager>(
           "im.nheko", 1, 0, "TimelineManager", [](QQmlEngine *, QJSEngine *) -> QObject * {
                   return self;

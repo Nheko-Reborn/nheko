@@ -11,6 +11,7 @@ Popup {
     property string completerName
     property var completer
     property bool bottomToTop: true
+    property alias count: listView.count
 
     signal completionClicked(string completion)
 
@@ -57,9 +58,9 @@ Popup {
             completer = undefined;
         }
     }
-    padding: 0
+    padding: 1
     onAboutToShow: currentIndex = -1
-    height: listView.contentHeight
+    height: listView.contentHeight + 2 // + 2 for the padding on top and bottom
 
     Connections {
         onTimelineChanged: completer = null
@@ -84,7 +85,7 @@ Popup {
 
                 anchors.fill: parent
                 hoverEnabled: true
-                onEntered: popup.currentIndex = model.index
+                onPositionChanged: popup.currentIndex = model.index
                 onClicked: popup.completionClicked(completer.completionAt(model.index))
 
                 Ripple {
@@ -183,6 +184,7 @@ Popup {
         color: colors.base
         implicitHeight: popup.contentHeight
         implicitWidth: popup.contentWidth
+        border.color: colors.mid
     }
 
 }

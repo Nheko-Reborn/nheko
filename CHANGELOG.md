@@ -1,5 +1,43 @@
 # Changelog
 
+## [0.8.1] -- 2021-01-27
+
+### Features
+
+- `/plain` and `/md` commands to override the current markdown setting. (contributed by lorendb)
+- Allow persistent hiding of rooms with a specific tag (or from a community) via a context menu.
+- Allow open media messages in an external program immediately. (contributed by rnhmjoj)
+
+### Improvements
+
+- Use async dbus connection for notifications. (contributed by lorendb)
+- Update Hungarian translations. (contributed by maxigaz)
+- Update Finnish translations. (contributed by Priit)
+- Update Malayalam translations. (contributed by vachan-maker)
+- Update Dutch translations. (contributed by Glael)
+- Store splitter size across restarts.
+- Add a border around the completer. (contributed by lorendb)
+- Request keys for messages with unknown message indices (once per restart, when they are shown).
+- Move the database location to XDG_DATA_DIR. (contributed by rnhmjoj)
+- Reload the timeline after key backup import.
+- Autoclose completer on `space`, when there are no matches.
+- Make completer only react, when the mouse cursor is moved.
+
+### Bugfixes
+
+- Fix unhandled exception, when a device has no keys.
+- Fix some cmake warnings regarding GNUInstallDirs.
+- Fix tags being broken. If you have no tags showing up, you may want to logout and login again.
+- Fix versionOk being called on the wrong thread. (contributed by Jedi18)
+- Fix font tags showing up in media message filenames.
+- Fix user profile in dark themes showing the wrong colors. (contributed by lorendb)
+- Fix emoji category switching on old Qt versions. (contributed by lorendb)
+- Fix old messages being replayed after a limited timeline.
+- Fix empty secrets being returned from the wallet breaking verification.
+- Make matrix link chat invites create a direct chat.
+- Fix focus handling on room change or reply button clicks.
+- Fix username completion deleting the character before it.
+
 ## [0.8.0] -- 2021-01-21
 
 ### Highlights

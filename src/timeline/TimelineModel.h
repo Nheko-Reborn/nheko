@@ -212,14 +212,16 @@ public:
 
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
-        Q_INVOKABLE void openUserProfile(QString userid);
+        Q_INVOKABLE void openUserProfile(QString userid, bool global = false);
         Q_INVOKABLE void replyAction(QString id);
         Q_INVOKABLE void readReceiptsAction(QString id) const;
         Q_INVOKABLE void redactEvent(QString id);
         Q_INVOKABLE int idToIndex(QString id) const;
         Q_INVOKABLE QString indexToId(int index) const;
+        Q_INVOKABLE void openMedia(QString eventId);
         Q_INVOKABLE void cacheMedia(QString eventId);
         Q_INVOKABLE bool saveMedia(QString eventId) const;
+        void cacheMedia(QString eventId, std::function<void(const QString filename)> callback);
 
         std::vector<::Reaction> reactions(const std::string &event_id)
         {

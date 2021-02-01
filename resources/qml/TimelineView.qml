@@ -35,7 +35,7 @@ Page {
         colors: palette
 
         model: EmojiProxyModel {
-            category: EmojiCategory.People
+            category: Emoji.Category.People
 
             sourceModel: EmojiModel {
             }
@@ -123,6 +123,13 @@ Page {
             height: visible ? implicitHeight : 0
             text: qsTr("Save as")
             onTriggered: TimelineManager.timeline.saveMedia(messageContextMenu.eventId)
+        }
+
+        MenuItem {
+            visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
+            height: visible ? implicitHeight : 0
+            text: qsTr("Open in external program")
+            onTriggered: TimelineManager.timeline.openMedia(messageContextMenu.eventId)
         }
 
     }

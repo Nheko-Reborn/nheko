@@ -36,15 +36,15 @@ class EmojiProxyModel : public QSortFilterProxyModel
         Q_OBJECT
 
         Q_PROPERTY(
-          emoji::EmojiCategory category READ category WRITE setCategory NOTIFY categoryChanged)
+          emoji::Emoji::Category category READ category WRITE setCategory NOTIFY categoryChanged)
         Q_PROPERTY(QString filter READ filter WRITE setFilter NOTIFY filterChanged)
 
 public:
         explicit EmojiProxyModel(QObject *parent = nullptr);
         ~EmojiProxyModel() override;
 
-        EmojiCategory category() const;
-        void setCategory(EmojiCategory cat);
+        Emoji::Category category() const;
+        void setCategory(Emoji::Category cat);
 
         QString filter() const;
         void setFilter(const QString &filter);
@@ -57,7 +57,7 @@ protected:
         bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
 private:
-        EmojiCategory category_ = EmojiCategory::Search;
+        Emoji::Category category_ = Emoji::Category::Search;
         emoji::Provider emoji_provider_;
 };
 }

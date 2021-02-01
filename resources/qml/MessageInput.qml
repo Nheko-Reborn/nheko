@@ -98,29 +98,28 @@ Rectangle {
             clip: true
             boundsBehavior: Flickable.StopAtBounds
             flickableDirection: Flickable.VerticalFlick
-            implicitWidth: textArea.width
-            implicitHeight: textArea.height
-            contentWidth: textArea.width
-            contentHeight: textArea.height
+            implicitWidth: messageInput.width
+            implicitHeight: messageInput.height
+            contentWidth: messageInput.width
+            contentHeight: messageInput.height
 
             TextArea {
-                id: textArea
+                id: messageInput
 
                 property int completerTriggeredAt: -1
 
                 function insertCompletion(completion) {
-                    textArea.remove(completerTriggeredAt, cursorPosition);
-                    textArea.insert(cursorPosition, completion);
+                    messageInput.remove(completerTriggeredAt, cursorPosition);
+                    messageInput.insert(cursorPosition, completion);
                 }
 
                 function openCompleter(pos, type) {
                     completerTriggeredAt = pos;
                     popup.completerName = type;
                     popup.open();
-                    popup.completer.setSearchString(textArea.getText(completerTriggeredAt, cursorPosition));
+                    popup.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition));
                 }
 
-                text: "asfkajsdf"
                 selectByMouse: true
                 placeholderText: qsTr("Write a message...")
                 //placeholderTextColor: colors.buttonText
@@ -152,7 +151,7 @@ Rectangle {
                         popup.close();
                     }
                     if (popup.opened)
-                        popup.completer.setSearchString(textArea.getText(completerTriggeredAt, cursorPosition));
+                        popup.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition));
 
                 }
                 onSelectionStartChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
@@ -163,17 +162,21 @@ Rectangle {
                     if (event.matches(StandardKey.Paste)) {
                         TimelineManager.timeline.input.paste(false);
                         event.accepted = true;
+                    } else if (event.key == Qt.Key_Space) {
+                        if (popup.opened && popup.count <= 0)
+                            popup.close();
+
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_U) {
-                        textArea.clear();
+                        messageInput.clear();
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_P) {
-                        textArea.text = TimelineManager.timeline.input.previousText();
+                        messageInput.text = TimelineManager.timeline.input.previousText();
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_N) {
-                        textArea.text = TimelineManager.timeline.input.nextText();
+                        messageInput.text = TimelineManager.timeline.input.nextText();
                     } else if (event.key == Qt.Key_At) {
-                        textArea.openCompleter(cursorPosition, "user");
+                        messageInput.openCompleter(cursorPosition, "user");
                         popup.open();
                     } else if (event.key == Qt.Key_Colon) {
-                        textArea.openCompleter(cursorPosition, "emoji");
+                        messageInput.openCompleter(cursorPosition, "emoji");
                         popup.open();
                     } else if (event.key == Qt.Key_Escape && popup.opened) {
                         completerTriggeredAt = -1;
@@ -186,13 +189,13 @@ Rectangle {
                             popup.completerName = "";
                             popup.close();
                             if (currentCompletion) {
-                                textArea.insertCompletion(currentCompletion);
+                                messageInput.insertCompletion(currentCompletion);
                                 event.accepted = true;
                                 return ;
                             }
                         }
                         TimelineManager.timeline.input.send();
-                        textArea.clear();
+                        messageInput.clear();
                         event.accepted = true;
                     } else if (event.key == Qt.Key_Tab) {
                         event.accepted = true;
@@ -201,19 +204,22 @@ Rectangle {
                         } else {
                             var pos = cursorPosition - 1;
                             while (pos > -1) {
-                                var t = textArea.getText(pos, pos + 1);
+                                var t = messageInput.getText(pos, pos + 1);
                                 console.log('"' + t + '"');
-                                if (t == '@' || t == ' ' || t == '\t') {
-                                    textArea.openCompleter(pos, "user");
+                                if (t == '@') {
+                                    messageInput.openCompleter(pos, "user");
+                                    return ;
+                                } else if (t == ' ' || t == '\t') {
+                                    messageInput.openCompleter(pos + 1, "user");
                                     return ;
                                 } else if (t == ':') {
-                                    textArea.openCompleter(pos, "emoji");
+                                    messageInput.openCompleter(pos, "emoji");
                                     return ;
                                 }
                                 pos = pos - 1;
                             }
                             // At start of input
-                            textArea.openCompleter(0, "user");
+                            messageInput.openCompleter(0, "user");
                         }
                     } else if (event.key == Qt.Key_Up && popup.opened) {
                         event.accepted = true;
@@ -226,31 +232,38 @@ Rectangle {
                 background: null
 
                 Connections {
-                    onTimelineChanged: {
-                        textArea.clear();
-                        textArea.append(TimelineManager.timeline.input.text());
-                        textArea.completerTriggeredAt = -1;
+                    onActiveTimelineChanged: {
+                        messageInput.clear();
+                        messageInput.append(TimelineManager.timeline.input.text());
+                        messageInput.completerTriggeredAt = -1;
                         popup.completerName = "";
+                        messageInput.forceActiveFocus();
                     }
                     target: TimelineManager
                 }
 
                 Connections {
-                    onCompletionClicked: textArea.insertCompletion(completion)
+                    onCompletionClicked: messageInput.insertCompletion(completion)
                     target: popup
                 }
 
                 Completer {
                     id: popup
 
-                    x: textArea.completerTriggeredAt >= 0 ? textArea.positionToRectangle(textArea.completerTriggeredAt).x : 0
-                    y: textArea.completerTriggeredAt >= 0 ? textArea.positionToRectangle(textArea.completerTriggeredAt).y - height : 0
+                    x: messageInput.completerTriggeredAt >= 0 ? messageInput.positionToRectangle(messageInput.completerTriggeredAt).x : 0
+                    y: messageInput.completerTriggeredAt >= 0 ? messageInput.positionToRectangle(messageInput.completerTriggeredAt).y - height : 0
                 }
 
                 Connections {
                     ignoreUnknownSignals: true
-                    onInsertText: textArea.insert(textArea.cursorPosition, text)
+                    onInsertText: messageInput.insert(messageInput.cursorPosition, text)
                     target: TimelineManager.timeline ? TimelineManager.timeline.input : null
+                }
+
+                Connections {
+                    ignoreUnknownSignals: true
+                    onReplyChanged: messageInput.forceActiveFocus()
+                    target: TimelineManager.timeline
                 }
 
                 MouseArea {
@@ -284,7 +297,7 @@ Rectangle {
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Emoji")
             onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
-                textArea.insert(textArea.cursorPosition, emoji);
+                messageInput.insert(messageInput.cursorPosition, emoji);
             })
         }
 
@@ -299,7 +312,7 @@ Rectangle {
             ToolTip.text: qsTr("Send")
             onClicked: {
                 TimelineManager.timeline.input.send();
-                textArea.clear();
+                messageInput.clear();
             }
         }
 

@@ -37,20 +37,22 @@ Splitter::restoreSizes(int fallback)
         int savedWidth = settings.value("sidebar/width").toInt();
 
         auto left = widget(0);
-        if (savedWidth == 0) {
+        if (savedWidth <= 0) {
                 hideSidebar();
                 return;
-        } else if (savedWidth == sz_.small) {
+        } else if (savedWidth <= sz_.small) {
                 if (left) {
                         left->setMinimumWidth(sz_.small);
                         left->setMaximumWidth(sz_.small);
                         return;
                 }
+        } else if (savedWidth < sz_.normal) {
+                savedWidth = sz_.normal;
         }
 
         left->setMinimumWidth(sz_.normal);
         left->setMaximumWidth(2 * sz_.normal);
-        setSizes({sz_.normal, fallback - sz_.normal});
+        setSizes({savedWidth, fallback - savedWidth});
 
         setStretchFactor(0, 0);
         setStretchFactor(1, 1);

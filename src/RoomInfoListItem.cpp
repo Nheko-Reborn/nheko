@@ -17,6 +17,7 @@
 
 #include <QDateTime>
 #include <QInputDialog>
+#include <QMenu>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QSettings>
@@ -32,7 +33,6 @@
 #include "Splitter.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
-#include "ui/Menu.h"
 #include "ui/Ripple.h"
 #include "ui/RippleOverlay.h"
 
@@ -98,7 +98,7 @@ RoomInfoListItem::init(QWidget *parent)
 
         bubbleDiameter_ = QFontMetrics(unreadCountFont_).averageCharWidth() * 3;
 
-        menu_      = new Menu(this);
+        menu_      = new QMenu(this);
         leaveRoom_ = new QAction(tr("Leave room"), this);
         connect(leaveRoom_, &QAction::triggered, this, [this]() { emit leaveRoom(roomId_); });
 
@@ -145,11 +145,12 @@ RoomInfoListItem::init(QWidget *parent)
                         tagAction->setWhatsThis(tr("Adds or removes the specified tag.",
                                                    "WhatsThis hint for tag menu actions"));
 
-                        for (const auto &riTag : roomInfo.tags)
+                        for (const auto &riTag : roomInfo.tags) {
                                 if (riTag == tag) {
                                         tagAction->setChecked(true);
                                         break;
                                 }
+                        }
 
                         connect(tagAction, &QAction::triggered, this, [this, tag](bool checked) {
                                 if (checked)

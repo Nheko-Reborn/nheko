@@ -26,6 +26,7 @@ If applicable, add screenshots to help explain your problem.
 ### System:
 
 - Nheko version: <!-- Get the version from the settings menu (bottom left corner)  -->
+- Profile used: <!-- If you are not using the default profile, mention it here -->
 - Installation method: <!-- AppImage, some repository, local build etc -->
 - Operating System:
 - Qt version: <!-- If you compiled it yourself -->

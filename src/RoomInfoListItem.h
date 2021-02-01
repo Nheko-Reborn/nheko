@@ -28,7 +28,7 @@
 #include "UserSettingsPage.h"
 #include "ui/Avatar.h"
 
-class Menu;
+class QMenu;
 class RippleOverlay;
 
 class RoomInfoListItem : public QWidget
@@ -178,7 +178,7 @@ private:
 
         DescInfo lastMsgInfo_;
 
-        Menu *menu_;
+        QMenu *menu_;
         QAction *leaveRoom_;
 
         bool isPressed_         = false;

@@ -169,12 +169,34 @@ Cache::setup()
 
         nhlog::db()->debug("setting up cache");
 
+        // Previous location of the cache directory
+        auto oldCache = QString("%1/%2%3")
+                          .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
+                          .arg(QString::fromUtf8(localUserId_.toUtf8().toHex()))
+                          .arg(QString::fromUtf8(settings->profile().toUtf8().toHex()));
+
         cacheDirectory_ = QString("%1/%2%3")
-                            .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
+                            .arg(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation))
                             .arg(QString::fromUtf8(localUserId_.toUtf8().toHex()))
                             .arg(QString::fromUtf8(settings->profile().toUtf8().toHex()));
 
         bool isInitial = !QFile::exists(cacheDirectory_);
+
+        // NOTE: If both cache directories exist it's better to do nothing: it
+        // could mean a previous migration failed or was interrupted.
+        bool needsMigration = isInitial && QFile::exists(oldCache);
+
+        if (needsMigration) {
+                nhlog::db()->info("found old state directory, migrating");
+                if (!QDir().rename(oldCache, cacheDirectory_)) {
+                        throw std::runtime_error(("Unable to migrate the old state directory (" +
+                                                  oldCache + ") to the new location (" +
+                                                  cacheDirectory_ + ")")
+                                                   .toStdString()
+                                                   .c_str());
+                }
+                nhlog::db()->info("completed state migration");
+        }
 
         env_ = lmdb::env::create();
         env_.set_mapsize(DB_SIZE);
@@ -305,6 +327,7 @@ Cache::importSessionKeys(const mtx::crypto::ExportedSessionKeys &keys)
                 auto exported_session = mtx::crypto::import_session(s.session_key);
 
                 saveInboundMegolmSession(index, std::move(exported_session));
+                ChatPage::instance()->receivedSessionKey(index.room_id, index.session_id);
         }
 }
 
@@ -637,6 +660,10 @@ Cache::secret(const std::string &name)
         if (job.error()) {
                 nhlog::db()->debug(
                   "Restoring secret '{}' failed: {}", name, job.errorString().toStdString());
+                return std::nullopt;
+        }
+        if (secret.isEmpty()) {
+                nhlog::db()->debug("Restored empty secret '{}'.", name);
                 return std::nullopt;
         }
 
@@ -1235,11 +1262,11 @@ Cache::saveState(const mtx::responses::Sync &res)
                 updatedInfo.avatar_url = getRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
                 updatedInfo.version    = getRoomVersion(txn, statesdb).toStdString();
 
+                bool has_new_tags = false;
                 // Process the account_data associated with this room
                 if (!room.second.account_data.events.empty()) {
                         auto accountDataDb = getAccountDataDb(txn, room.first);
 
-                        bool has_new_tags = false;
                         for (const auto &evt : room.second.account_data.events) {
                                 std::visit(
                                   [&txn, &accountDataDb](const auto &event) {
@@ -1266,21 +1293,21 @@ Cache::saveState(const mtx::responses::Sync &res)
                                         nhlog::db()->debug("Fully read: {}", fr->content.event_id);
                                 }
                         }
-                        if (!has_new_tags) {
-                                // retrieve the old tags, they haven't changed
-                                lmdb::val data;
-                                if (lmdb::dbi_get(txn, roomsDb_, lmdb::val(room.first), data)) {
-                                        try {
-                                                RoomInfo tmp = json::parse(
-                                                  std::string_view(data.data(), data.size()));
-                                                updatedInfo.tags = tmp.tags;
-                                        } catch (const json::exception &e) {
-                                                nhlog::db()->warn(
-                                                  "failed to parse room info: room_id ({}), {}: {}",
-                                                  room.first,
-                                                  std::string(data.data(), data.size()),
-                                                  e.what());
-                                        }
+                }
+                if (!has_new_tags) {
+                        // retrieve the old tags, they haven't changed
+                        lmdb::val data;
+                        if (lmdb::dbi_get(txn, roomsDb_, lmdb::val(room.first), data)) {
+                                try {
+                                        RoomInfo tmp =
+                                          json::parse(std::string_view(data.data(), data.size()));
+                                        updatedInfo.tags = tmp.tags;
+                                } catch (const json::exception &e) {
+                                        nhlog::db()->warn(
+                                          "failed to parse room info: room_id ({}), {}: {}",
+                                          room.first,
+                                          std::string(data.data(), data.size()),
+                                          e.what());
                                 }
                         }
                 }

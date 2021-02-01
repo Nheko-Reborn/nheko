@@ -51,7 +51,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1951"/>
+        <location filename="../../src/Cache.cpp" line="+1978"/>
         <source>You joined this room.</source>
         <translation>Te-ai alăturat camerei.</translation>
     </message>
@@ -126,7 +126,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+779"/>
+        <location line="+796"/>
         <source>Invited user: %1</source>
         <translation>Utilizator invitat: %1</translation>
     </message>
@@ -280,7 +280,12 @@
 <context>
     <name>CommunitiesListItem</name>
     <message>
-        <location filename="../../src/CommunitiesListItem.cpp" line="+133"/>
+        <location filename="../../src/CommunitiesListItem.cpp" line="+26"/>
+        <source>Hide rooms with this tag or from this community</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+153"/>
         <source>All rooms</source>
         <translation>Toate camerele</translation>
     </message>
@@ -474,9 +479,15 @@
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+548"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+559"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>-- Encrypted Event (Key not valid for this index) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted with this key since it is not valid for this index </comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -557,7 +568,7 @@
         <translation type="unfinished">Toate fișierele (*)</translation>
     </message>
     <message>
-        <location line="+334"/>
+        <location line="+340"/>
         <source>Failed to upload media. Please try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -599,7 +610,12 @@ Dacă Nheko nu vă poate găsi homeserverul, vă va arăta un câmp pentru intro
         <translation>Parolă</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
+        <source>Your password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Device name</source>
         <translation>Nume dispozitiv</translation>
     </message>
@@ -609,7 +625,17 @@ Dacă Nheko nu vă poate găsi homeserverul, vă va arăta un câmp pentru intro
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+4"/>
+        <source>Homeserver address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>server.my:8787</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation>Adresa la care se poate contacta APIul homeserverului dumneavoastră.
@@ -617,12 +643,20 @@ Exemplu: https://serverul.meu:8787</translation>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+217"/>
+        <location line="+218"/>
         <source>LOGIN</source>
         <translation>CONECTARE</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="-151"/>
+        <location line="+11"/>
+        <location line="+157"/>
+        <location line="+11"/>
+        <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-132"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Autodescoperirea a eșuat. Răspunsul primit este defectuos.</translation>
     </message>
@@ -767,7 +801,7 @@ Exemplu: https://serverul.meu:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+152"/>
+        <location line="+170"/>
         <source>Emoji</source>
         <translation type="unfinished"></translation>
     </message>
@@ -874,7 +908,7 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+182"/>
+        <location filename="../../src/main.cpp" line="+179"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -977,7 +1011,7 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1859"/>
+        <location filename="../../src/Cache.cpp" line="+1868"/>
         <source>no version stored</source>
         <translation>nicio versiune stocată</translation>
     </message>
@@ -1019,7 +1053,7 @@ Exemplu: https://serverul.meu:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+39"/>
         <source>New tag...</source>
         <comment>Add a new tag to the room</comment>
         <translation type="unfinished"></translation>
@@ -1119,7 +1153,7 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+864"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+860"/>
         <source>Message redaction failed: %1</source>
         <translation>Redactare mesaj eșuată: %1</translation>
     </message>
@@ -1130,7 +1164,7 @@ Exemplu: https://serverul.meu:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+156"/>
+        <location line="+164"/>
         <source>Save image</source>
         <translation>Salvați imaginea</translation>
     </message>
@@ -1150,7 +1184,7 @@ Exemplu: https://serverul.meu:8787</translation>
         <translation>Salvați fișier</translation>
     </message>
     <message numerus="yes">
-        <location line="+129"/>
+        <location line="+143"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -1270,12 +1304,12 @@ Exemplu: https://serverul.meu:8787</translation>
         <translation>%1 și-a redactat ciocănitul.</translation>
     </message>
     <message>
-        <location line="-749"/>
+        <location line="-771"/>
         <source>You joined this room.</source>
         <translation>Te-ai alăturat camerei.</translation>
     </message>
     <message>
-        <location line="+751"/>
+        <location line="+773"/>
         <source>Rejected the knock from %1.</source>
         <translation>Ciocănit refuzat de la %1.</translation>
     </message>
@@ -1355,6 +1389,11 @@ Exemplu: https://serverul.meu:8787</translation>
         <location line="+7"/>
         <source>Save as</source>
         <translation>Salvare ca</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Open in external program</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+51"/>
@@ -1468,7 +1507,7 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+53"/>
+        <location filename="../qml/UserProfile.qml" line="+54"/>
         <source>Verify</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1491,7 +1530,7 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+781"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+794"/>
         <source>Minimize to tray</source>
         <translation>Minimizează în bara de notificări</translation>
     </message>

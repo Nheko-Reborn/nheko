@@ -125,6 +125,10 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
                         ChatPage::instance()->setStatus(text);
         });
 
+        auto userProfileAction = menu->addAction(tr("User Profile Settings"));
+        connect(
+          userProfileAction, &QAction::triggered, this, [this]() { emit openGlobalUserProfile(); });
+
 #if 0 // disable presence menu until issues in synapse are resolved
         auto setAutoPresence = menu->addAction(tr("Set presence automatically"));
         connect(setAutoPresence, &QAction::triggered, this, []() {

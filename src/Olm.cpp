@@ -890,12 +890,15 @@ decryptEvent(const MegolmSessionIndex &index,
         std::string msg_str;
         try {
                 auto session = cache::client()->getInboundMegolmSession(index);
+
                 auto res =
                   olm::client()->decrypt_group_message(session.get(), event.content.ciphertext);
                 msg_str = std::string((char *)res.data.data(), res.data.size());
         } catch (const lmdb::error &e) {
                 return {DecryptionErrorCode::DbError, e.what(), std::nullopt};
         } catch (const mtx::crypto::olm_exception &e) {
+                if (e.error_code() == mtx::crypto::OlmErrorCode::UNKNOWN_MESSAGE_INDEX)
+                        return {DecryptionErrorCode::MissingSessionIndex, e.what(), std::nullopt};
                 return {DecryptionErrorCode::DecryptionFailed, e.what(), std::nullopt};
         }
 
@@ -960,6 +963,13 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                         }
 
                         auto d = deviceKeys->device_keys.at(device);
+
+                        if (!d.keys.count("curve25519:" + device) ||
+                            !d.keys.count("ed25519:" + device)) {
+                                nhlog::crypto()->warn("Skipping device {} since it has no keys!",
+                                                      device);
+                                continue;
+                        }
 
                         auto session =
                           cache::getLatestOlmSession(d.keys.at("curve25519:" + device));
