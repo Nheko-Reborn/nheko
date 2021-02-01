@@ -1721,162 +1721,162 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location line="+56"/>
         <source>Share keys with verified users and devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Kulcsok megosztása hitelesített felhasználókkal és eszközökkel</translation>
     </message>
     <message>
         <location line="+395"/>
         <source>CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>GYORSÍTÓTÁRAZVA</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>NOT CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>NINCS GYORSÍTÓTÁRAZVA</translation>
     </message>
     <message>
         <location line="-449"/>
         <source>Scale factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Nagyítási tényező</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az egész felhasználói felület méretének szorzótényezője.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Betűméret</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Betűtípus</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Téma</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Ringtone</source>
-        <translation type="unfinished"></translation>
+        <translation>Csengőhang</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation type="unfinished"></translation>
+        <translation>Az értesítőhang megadása, amely akkor szól, ha hívás érkezik</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Microphone</source>
-        <translation type="unfinished"></translation>
+        <translation>Mikrofon</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamera</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamerafelbontás</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera frame rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamera képkockasebessége</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished"></translation>
+        <translation>Tartalék hívássegéd szerver engedélyezése</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished"></translation>
+        <translation>A turn.matrix.org lesz használva segédnek, ha a homeszerverednek nincs ilyenje.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Eszközazonosító</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished"></translation>
+        <translation>Eszközujjlenyomat</translation>
     </message>
     <message>
         <location line="-155"/>
         <source>Session Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Munkamenetkulcsok</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>IMPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>IMPORTÁLÁS</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>EXPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>EXPORTÁLÁS</translation>
     </message>
     <message>
         <location line="-34"/>
         <source>ENCRYPTION</source>
-        <translation type="unfinished"></translation>
+        <translation>TITKOSÍTÁS</translation>
     </message>
     <message>
         <location line="-100"/>
         <source>GENERAL</source>
-        <translation type="unfinished"></translation>
+        <translation>ÁLTALÁNOS</translation>
     </message>
     <message>
         <location line="+57"/>
         <source>INTERFACE</source>
-        <translation type="unfinished"></translation>
+        <translation>FELÜLET</translation>
     </message>
     <message>
         <location line="+177"/>
         <source>Touchscreen mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Érintő képernyős mód</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation type="unfinished"></translation>
+        <translation>Letiltja a szövegkiemelést az idővonalban, hogy könyebb legyen érintéssel görgetni.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Hangulatjelek betűtípusa</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>Automatically replies to key requests from other users, if they are verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatikus válasz a más felhasználóktól érkező kulcskérelmekre, ha ők hitelesítve vannak.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Master signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Mester-aláírókulcs</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>A legfontosabb kulcsod. Nem kell gyorsítótáraznod, mivel így kisebb az esélye, hogy ellopják, és csak arra van használva, hogy a többi aláíró kulcsaid váltakozva legyenek.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>User signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Felhasználói aláírókulcs</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>A mások hitelesítésére használt kulcs. Ha gyorsítótárazva van, egy felhasználó hitelesítésekor hitelesítve lesz az összes eszköze.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1901,12 +1901,12 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location line="+54"/>
         <source>Select a file</source>
-        <translation type="unfinished">Fájl kiválasztása</translation>
+        <translation>Fájl kiválasztása</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Minden fájl (*)</translation>
+        <translation>Minden fájl (*)</translation>
     </message>
     <message>
         <location line="+225"/>
@@ -1994,12 +1994,12 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location line="+23"/>
         <source>REGISTER</source>
-        <translation type="unfinished">REGISZTRÁCIÓ</translation>
+        <translation>REGISZTRÁCIÓ</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LOGIN</source>
-        <translation type="unfinished">BEJELENTKEZÉS</translation>
+        <translation>BEJELENTKEZÉS</translation>
     </message>
 </context>
 <context>
@@ -2025,12 +2025,12 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished">Név</translation>
+        <translation>Név</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Topic</source>
-        <translation type="unfinished">Téma</translation>
+        <translation>Téma</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2176,12 +2176,12 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReadReceipts.cpp" line="+120"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Olvasási jegyek</translation>
+        <translation>Olvasási jegyek</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Close</source>
-        <translation type="unfinished">Bezárás</translation>
+        <translation>Bezárás</translation>
     </message>
 </context>
 <context>
@@ -2202,7 +2202,7 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+135"/>
         <source>Settings</source>
-        <translation type="unfinished">Beállítások</translation>
+        <translation>Beállítások</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2306,7 +2306,7 @@ Media size: %2
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Minden fájl (*)</translation>
+        <translation>Minden fájl (*)</translation>
     </message>
     <message>
         <location line="+12"/>
