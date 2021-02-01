@@ -18,7 +18,9 @@ Item {
                 screenSaverTimer.stop();
                 screenSaver.state = "Invisible";
             } else {
-                screenSaverTimer.start();
+                if (timelineRoot.visible) {
+                    screenSaverTimer.start();
+                }
             }
         }
     }

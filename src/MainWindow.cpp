@@ -59,6 +59,8 @@ MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
   , userSettings_{UserSettings::instance()}
 {
+        instance_ = this;
+
         setWindowTitle(0);
         setObjectName("MainWindow");
 
@@ -312,8 +314,6 @@ MainWindow::showChatPage()
                 &Cache::secretChanged,
                 userSettingsPage_,
                 &UserSettingsPage::updateSecretStatus);
-
-        instance_ = this;
 }
 
 void
