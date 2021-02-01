@@ -29,10 +29,12 @@ Item {
         interval: screenTimeout * 1000
         running: true
         onTriggered: {
-            timelineRoot.grabToImage(function(result) {
-                screenSaver.state = "Visible";
-                imageSource = result.url;
-            }, Qt.size(width, height));
+            if (MainWindow.visible) {
+                timelineRoot.grabToImage(function(result) {
+                    screenSaver.state = "Visible";
+                    imageSource = result.url;
+                }, Qt.size(width, height));
+            }
         }
     }
 

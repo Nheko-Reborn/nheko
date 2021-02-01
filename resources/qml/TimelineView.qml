@@ -1,4 +1,3 @@
-import "."
 import "./delegates"
 import "./device-verification"
 import "./emoji"
