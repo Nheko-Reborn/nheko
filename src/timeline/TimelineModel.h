@@ -274,14 +274,7 @@ public slots:
         }
         QString edit() const { return edit_; }
         void setEdit(QString newEdit);
-        void resetEdit()
-        {
-                if (!edit_.isEmpty()) {
-                        edit_ = "";
-                        emit editChanged(edit_);
-                        resetReply();
-                }
-        }
+        void resetEdit();
         void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
         void clearTimeline() { events.clearTimeline(); }
         void receivedSessionKey(const std::string &session_key)

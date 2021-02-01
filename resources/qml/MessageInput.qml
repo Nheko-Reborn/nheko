@@ -261,6 +261,10 @@ Rectangle {
                 Connections {
                     ignoreUnknownSignals: true
                     onInsertText: messageInput.insert(messageInput.cursorPosition, text)
+                    onTextChanged: {
+                        messageInput.text = newText;
+                        messageInput.cursorPosition = newText.length;
+                    }
                     target: TimelineManager.timeline ? TimelineManager.timeline.input : null
                 }
 

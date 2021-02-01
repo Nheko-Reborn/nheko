@@ -1529,8 +1529,30 @@ TimelineModel::setEdit(QString newEdit)
                 if (ev) {
                         setReply(QString::fromStdString(
                           mtx::accessors::relations(*ev).reply_to().value_or("")));
-                        // input()->setText(mtx::accessors::body(*ev));
+
+                        auto msgType = mtx::accessors::msg_type(*ev);
+                        if (msgType == mtx::events::MessageType::Text ||
+                            msgType == mtx::events::MessageType::Notice) {
+                                input()->setText(relatedInfo(newEdit).quoted_body);
+                        } else if (msgType == mtx::events::MessageType::Emote) {
+                                input()->setText("/me " + relatedInfo(newEdit).quoted_body);
+                        } else {
+                                input()->setText("");
+                        }
+                } else {
+                        input()->setText("");
                 }
+        }
+}
+
+void
+TimelineModel::resetEdit()
+{
+        if (!edit_.isEmpty()) {
+                edit_ = "";
+                emit editChanged(edit_);
+                input()->setText("");
+                resetReply();
         }
 }
 

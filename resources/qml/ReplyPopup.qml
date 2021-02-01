@@ -10,14 +10,15 @@ Rectangle {
     property var room: TimelineManager.timeline
 
     Layout.fillWidth: true
-    visible: room && room.reply
+    visible: room && (room.reply || room.edit)
     // Height of child, plus margins, plus border
-    implicitHeight: replyPreview.height + 10
+    implicitHeight: (room && room.reply ? replyPreview.height : closeEditButton.height) + 10
     color: colors.window
     z: 3
 
     Reply {
         id: replyPreview
+    visible: room && room.reply
 
         anchors.left: parent.left
         anchors.leftMargin: 2 * 22 + 3 * 16
@@ -31,9 +32,10 @@ Rectangle {
 
     ImageButton {
         id: closeReplyButton
+    visible: room && room.reply
 
         anchors.right: parent.right
-        anchors.rightMargin: 15
+        anchors.rightMargin: 16
         anchors.top: replyPreview.top
         hoverEnabled: true
         width: 16
@@ -42,6 +44,19 @@ Rectangle {
         ToolTip.visible: closeReplyButton.hovered
         ToolTip.text: qsTr("Close")
         onClicked: room.reply = undefined
+    }
+
+    Button {
+        id: closeEditButton
+    visible: room && room.edit
+
+        anchors.left: parent.left
+        anchors.rightMargin: 16
+        anchors.topMargin: 10
+        anchors.top: parent.top
+        //height: 16
+        text: qsTr("Abort edit")
+        onClicked: room.edit = undefined
     }
 
 }
