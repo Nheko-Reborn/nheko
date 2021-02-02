@@ -321,6 +321,9 @@ UserProfile::changeAvatar()
         const auto payload    = std::string(bin.data(), bin.size());
         const auto dimensions = QImageReader(&file).size();
 
+        isLoading_ = true;
+        emit loadingChanged();
+
         // First we need to create a new mxc URI
         // (i.e upload media to the Matrix content repository) for the new avatar.
         http::client()->upload(
@@ -342,11 +345,14 @@ UserProfile::changeAvatar()
 
                   if (isGlobalUserProfile()) {
                           http::client()->set_avatar_url(
-                            res.content_uri, [](mtx::http::RequestErr err) {
+                            res.content_uri, [this](mtx::http::RequestErr err) {
                                     if (err) {
                                             nhlog::ui()->error("Failed to set user avatar url",
                                                                err->matrix_error.error);
                                     }
+
+                                    isLoading_ = false;
+                                    emit loadingChanged();
                             });
                   } else {
                           // change room username
@@ -363,13 +369,28 @@ UserProfile::changeAvatar()
 void
 UserProfile::updateRoomMemberState(mtx::events::state::Member member)
 {
-        http::client()->send_state_event(roomid_.toStdString(),
-                                         http::client()->user_id().to_string(),
-                                         member,
-                                         [](mtx::responses::EventId, mtx::http::RequestErr err) {
-                                                 if (err)
-                                                         nhlog::net()->error(
-                                                           "Failed to update room member state : ",
-                                                           err->matrix_error.error);
-                                         });
+        http::client()->send_state_event(
+          roomid_.toStdString(),
+          http::client()->user_id().to_string(),
+          member,
+          [this](mtx::responses::EventId, mtx::http::RequestErr err) {
+                  if (err)
+                          nhlog::net()->error("Failed to update room member state : ",
+                                              err->matrix_error.error);
+          });
+}
+
+void
+UserProfile::updateAvatarUrl()
+{
+        isLoading_ = false;
+        emit loadingChanged();
+
+        emit avatarUrlChanged();
+}
+
+bool
+UserProfile::isLoading() const
+{
+        return isLoading_;
 }

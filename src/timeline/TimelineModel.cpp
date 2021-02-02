@@ -803,7 +803,7 @@ TimelineModel::openUserProfile(QString userid, bool global)
 {
         UserProfile *userProfile = new UserProfile(global ? "" : room_id_, userid, manager_, this);
         connect(
-          this, &TimelineModel::roomAvatarUrlChanged, userProfile, &UserProfile::avatarUrlChanged);
+          this, &TimelineModel::roomAvatarUrlChanged, userProfile, &UserProfile::updateAvatarUrl);
         emit openProfile(userProfile);
 }
 
