@@ -18,8 +18,8 @@ Rectangle {
 
     Reply {
         id: replyPreview
-    visible: room && room.reply
 
+        visible: room && room.reply
         anchors.left: parent.left
         anchors.leftMargin: 2 * 22 + 3 * 16
         anchors.right: closeReplyButton.left
@@ -32,8 +32,8 @@ Rectangle {
 
     ImageButton {
         id: closeReplyButton
-    visible: room && room.reply
 
+        visible: room && room.reply
         anchors.right: parent.right
         anchors.rightMargin: 16
         anchors.top: replyPreview.top
@@ -48,8 +48,8 @@ Rectangle {
 
     Button {
         id: closeEditButton
-    visible: room && room.edit
 
+        visible: room && room.edit
         anchors.left: parent.left
         anchors.rightMargin: 16
         anchors.topMargin: 10

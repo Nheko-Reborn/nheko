@@ -88,7 +88,7 @@ Item {
         ImageButton {
             id: editButton
 
-            visible: (Settings.buttonsInTimeline && model.isEditable) || model.isEdited 
+            visible: (Settings.buttonsInTimeline && model.isEditable) || model.isEdited
             buttonTextColor: chat.model.edit == model.id ? colors.highlight : colors.buttonText
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
             Layout.preferredHeight: 16
@@ -97,7 +97,11 @@ Item {
             image: ":/icons/icons/ui/edit.png"
             ToolTip.visible: hovered
             ToolTip.text: model.isEditable ? qsTr("Edit") : qsTr("Edited")
-            onClicked: if (model.isEditable) chat.model.editAction(model.id)
+            onClicked: {
+                if (model.isEditable)
+                    chat.model.editAction(model.id);
+
+            }
         }
 
         EmojiButton {

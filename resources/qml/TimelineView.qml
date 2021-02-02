@@ -92,6 +92,11 @@ Page {
         }
 
         MenuItem {
+            text: qsTr("Edit")
+            onClicked: TimelineManager.timeline.editAction(messageContextMenu.eventId)
+        }
+
+        MenuItem {
             text: qsTr("Read receipts")
             onTriggered: TimelineManager.timeline.readReceiptsAction(messageContextMenu.eventId)
         }

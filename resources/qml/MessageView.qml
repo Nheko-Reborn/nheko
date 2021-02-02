@@ -50,7 +50,12 @@ ListView {
 
     Shortcut {
         sequence: StandardKey.Cancel
-        onActivated: chat.model.reply = undefined
+        onActivated: {
+            if (chat.model.edit)
+                chat.model.edit = undefined;
+            else
+                chat.model.reply = undefined;
+        }
     }
 
     Shortcut {
@@ -64,6 +69,11 @@ ListView {
             var idx = chat.model.reply ? chat.model.idToIndex(chat.model.reply) - 1 : -1;
             chat.model.reply = idx >= 0 ? chat.model.indexToId(idx) : undefined;
         }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+E"
+        onActivated: chat.model.edit = chat.model.reply
     }
 
     Component {

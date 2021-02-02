@@ -139,6 +139,7 @@ Rectangle {
                     if (TimelineManager.timeline)
                         TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
 
+                    forceActiveFocus();
                 }
                 onCursorRectangleChanged: textInput.ensureVisible(cursorRectangle)
                 onCursorPositionChanged: {
@@ -260,7 +261,9 @@ Rectangle {
 
                 Connections {
                     ignoreUnknownSignals: true
-                    onInsertText: messageInput.insert(messageInput.cursorPosition, text)
+                    onInsertText: {
+                        messageInput.insert(messageInput.cursorPosition, text);
+                    }
                     onTextChanged: {
                         messageInput.text = newText;
                         messageInput.cursorPosition = newText.length;
@@ -271,6 +274,7 @@ Rectangle {
                 Connections {
                     ignoreUnknownSignals: true
                     onReplyChanged: messageInput.forceActiveFocus()
+                    onEditChanged: messageInput.forceActiveFocus()
                     target: TimelineManager.timeline
                 }
 
