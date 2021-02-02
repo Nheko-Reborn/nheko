@@ -14,13 +14,13 @@ do
     clang-format -i "$f"
 done;
 
-QMLFORMAT_PATH=$(which qmlformat)
+QMLFORMAT_PATH=$(command -v qmlformat)
 if [ -n "$QMLFORMAT_PATH" ]; then
     QML_FILES=$(find resources -type f -iname "*.qml")
 
     for f in $QML_FILES
     do
-        qmlformat -i "$f"
+        $QMLFORMAT_PATH -i "$f"
     done;
 else
     echo "qmlformat not found; skipping qml formatting"

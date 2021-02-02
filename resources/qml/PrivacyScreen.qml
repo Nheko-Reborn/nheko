@@ -18,9 +18,9 @@ Item {
                 screenSaverTimer.stop();
                 screenSaver.state = "Invisible";
             } else {
-                if (timelineRoot.visible) {
+                if (timelineRoot.visible)
                     screenSaverTimer.start();
-                }
+
             }
         }
     }
@@ -31,12 +31,12 @@ Item {
         interval: screenTimeout * 1000
         running: true
         onTriggered: {
-            if (MainWindow.visible) {
+            if (MainWindow.visible)
                 timelineRoot.grabToImage(function(result) {
                     screenSaver.state = "Visible";
                     imageSource = result.url;
                 }, Qt.size(width, height));
-            }
+
         }
     }
 
