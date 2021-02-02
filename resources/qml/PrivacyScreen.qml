@@ -33,9 +33,9 @@ Item {
         onTriggered: {
             if (MainWindow.visible)
                 timelineRoot.grabToImage(function(result) {
-                    screenSaver.state = "Visible";
-                    imageSource = result.url;
-                }, Qt.size(width, height));
+                screenSaver.state = "Visible";
+                imageSource = result.url;
+            }, Qt.size(width, height));
 
         }
     }

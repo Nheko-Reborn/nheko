@@ -14,7 +14,8 @@ do
     clang-format -i "$f"
 done;
 
-QMLFORMAT_PATH=$(command -v qmlformat)
+QMLFORMAT_PATH=$(command -v qmlformat || true)
+
 if [ -n "$QMLFORMAT_PATH" ]; then
     QML_FILES=$(find resources -type f -iname "*.qml")
 
