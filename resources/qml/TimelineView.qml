@@ -278,6 +278,10 @@ Page {
             MessageInput {
             }
 
+            NhekoDropArea {
+                anchors.fill: parent
+                roomid: TimelineManager.timeline ? TimelineManager.timeline.roomId() : ""
+            }
         }
 
         PrivacyScreen {
