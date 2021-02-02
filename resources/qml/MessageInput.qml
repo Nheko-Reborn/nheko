@@ -273,12 +273,6 @@ Rectangle {
                     cursorShape: Qt.IBeamCursor
                     onClicked: TimelineManager.timeline.input.paste(true)
                 }
-
-                NhekoDropArea {
-                    anchors.fill: parent
-                    roomid: TimelineManager.timeline ? TimelineManager.timeline.roomId() : ""
-                }
-
             }
 
             ScrollBar.vertical: ScrollBar {
