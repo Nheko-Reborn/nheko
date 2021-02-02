@@ -24,6 +24,7 @@ UserProfile::UserProfile(QString roomid,
   , model(parent)
 {
         fetchDeviceList(this->userid_);
+        globalAvatarUrl = "";
 
         connect(cache::client(),
                 &Cache::verificationStatusChanged,
@@ -56,16 +57,9 @@ UserProfile::UserProfile(QString roomid,
                 &UserProfile::setGlobalUsername,
                 Qt::QueuedConnection);
 
-        http::client()->get_profile(
-          userid_.toStdString(),
-          [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->warn("failed to retrieve own profile info");
-                          return;
-                  }
-
-                  emit globalUsernameRetrieved(QString::fromStdString(res.display_name));
-          });
+        if (isGlobalUserProfile()) {
+                getGlobalProfileData();
+        }
 }
 
 QHash<int, QByteArray>
@@ -125,7 +119,10 @@ UserProfile::displayName()
 QString
 UserProfile::avatarUrl()
 {
-        return cache::avatarUrl(roomid_, userid_);
+        return (isGlobalUserProfile() && globalAvatarUrl != "")
+                 ? globalAvatarUrl
+                 : cache::avatarUrl(roomid_, userid_);
+        ;
 }
 
 bool
@@ -353,6 +350,7 @@ UserProfile::changeAvatar()
 
                                     isLoading_ = false;
                                     emit loadingChanged();
+                                    getGlobalProfileData();
                             });
                   } else {
                           // change room username
@@ -393,4 +391,21 @@ bool
 UserProfile::isLoading() const
 {
         return isLoading_;
+}
+
+void
+UserProfile::getGlobalProfileData()
+{
+        http::client()->get_profile(
+          userid_.toStdString(),
+          [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to retrieve own profile info");
+                          return;
+                  }
+
+                  emit globalUsernameRetrieved(QString::fromStdString(res.display_name));
+                  globalAvatarUrl = QString::fromStdString(res.avatar_url);
+                  emit avatarUrlChanged();
+          });
 }

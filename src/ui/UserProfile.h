@@ -134,10 +134,12 @@ protected slots:
 
 private:
         void updateRoomMemberState(mtx::events::state::Member member);
+        void getGlobalProfileData();
 
 private:
         QString roomid_, userid_;
         QString globalUsername;
+        QString globalAvatarUrl;
         DeviceInfoModel deviceList_;
         bool isUserVerified = false;
         bool hasMasterKey   = false;
