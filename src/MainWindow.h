@@ -93,6 +93,7 @@ protected:
         void closeEvent(QCloseEvent *event) override;
         void resizeEvent(QResizeEvent *event) override;
         void showEvent(QShowEvent *event) override;
+        bool event(QEvent *event) override;
 
 private slots:
         //! Show or hide the sidebars based on window's size.
@@ -119,6 +120,9 @@ private slots:
         void removeOverlayProgressBar();
 
         virtual void setWindowTitle(int notificationCount);
+
+signals:
+        void focusChanged(const bool focused);
 
 private:
         bool loadJdenticonPlugin();

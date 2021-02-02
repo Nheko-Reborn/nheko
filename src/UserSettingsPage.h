@@ -67,6 +67,10 @@ class UserSettings : public QObject
           bool avatarCircles READ avatarCircles WRITE setAvatarCircles NOTIFY avatarCirclesChanged)
         Q_PROPERTY(bool decryptSidebar READ decryptSidebar WRITE setDecryptSidebar NOTIFY
                      decryptSidebarChanged)
+        Q_PROPERTY(
+          bool privacyScreen READ privacyScreen WRITE setPrivacyScreen NOTIFY privacyScreenChanged)
+        Q_PROPERTY(int privacyScreenTimeout READ privacyScreenTimeout WRITE setPrivacyScreenTimeout
+                     NOTIFY privacyScreenTimeoutChanged)
         Q_PROPERTY(int timelineMaxWidth READ timelineMaxWidth WRITE setTimelineMaxWidth NOTIFY
                      timelineMaxWidthChanged)
         Q_PROPERTY(bool mobileMode READ mobileMode WRITE setMobileMode NOTIFY mobileModeChanged)
@@ -131,6 +135,8 @@ public:
         void setAlertOnNotification(bool state);
         void setAvatarCircles(bool state);
         void setDecryptSidebar(bool state);
+        void setPrivacyScreen(bool state);
+        void setPrivacyScreenTimeout(int state);
         void setPresence(Presence state);
         void setRingtone(QString ringtone);
         void setMicrophone(QString microphone);
@@ -154,6 +160,8 @@ public:
         bool groupView() const { return groupView_; }
         bool avatarCircles() const { return avatarCircles_; }
         bool decryptSidebar() const { return decryptSidebar_; }
+        bool privacyScreen() const { return privacyScreen_; }
+        int privacyScreenTimeout() const { return privacyScreenTimeout_; }
         bool markdown() const { return markdown_; }
         bool typingNotifications() const { return typingNotifications_; }
         bool sortByImportance() const { return sortByImportance_; }
@@ -201,6 +209,8 @@ signals:
         void alertOnNotificationChanged(bool state);
         void avatarCirclesChanged(bool state);
         void decryptSidebarChanged(bool state);
+        void privacyScreenChanged(bool state);
+        void privacyScreenTimeoutChanged(int state);
         void timelineMaxWidthChanged(int state);
         void mobileModeChanged(bool mode);
         void fontSizeChanged(double state);
@@ -241,6 +251,8 @@ private:
         bool hasAlertOnNotification_;
         bool avatarCircles_;
         bool decryptSidebar_;
+        bool privacyScreen_;
+        int privacyScreenTimeout_;
         bool shareKeysWithTrustedUsers_;
         bool mobileMode_;
         int timelineMaxWidth_;
@@ -320,6 +332,8 @@ private:
         Toggle *avatarCircles_;
         Toggle *useStunServer_;
         Toggle *decryptSidebar_;
+        Toggle *privacyScreen_;
+        QSpinBox *privacyScreenTimeout_;
         Toggle *shareKeysWithTrustedUsers_;
         Toggle *mobileMode_;
         QLabel *deviceFingerprintValue_;

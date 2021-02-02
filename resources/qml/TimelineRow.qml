@@ -28,7 +28,7 @@ Item {
             if (mouse.button === Qt.RightButton)
                 messageContextMenu.show(model.id, model.type, model.isEncrypted, row);
             else
-                event.accepted = false;
+                mouse.accepted = false;
         }
         onPressAndHold: {
             messageContextMenu.show(model.id, model.type, model.isEncrypted, row, mapToItem(timelineRoot, mouse.x, mouse.y));

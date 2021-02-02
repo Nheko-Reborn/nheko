@@ -194,6 +194,8 @@ Page {
         }
 
         ColumnLayout {
+            id: timelineLayout
+
             visible: TimelineManager.timeline != null
             anchors.fill: parent
             spacing: 0
@@ -281,6 +283,13 @@ Page {
                 roomid: TimelineManager.timeline ? TimelineManager.timeline.roomId() : ""
             }
         }
+
+        PrivacyScreen {
+            visible: Settings.privacyScreen
+            screenTimeout: Settings.privacyScreenTimeout
+            timelineRoot: timelineRoot
+        }
+
     }
 
     systemInactive: SystemPalette {

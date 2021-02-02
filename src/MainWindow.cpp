@@ -59,6 +59,8 @@ MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
   , userSettings_{UserSettings::instance()}
 {
+        instance_ = this;
+
         setWindowTitle(0);
         setObjectName("MainWindow");
 
@@ -130,6 +132,9 @@ MainWindow::MainWindow(QWidget *parent)
                 SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
         connect(chat_page_, SIGNAL(contentLoaded()), this, SLOT(removeOverlayProgressBar()));
+
+        connect(this, &MainWindow::focusChanged, chat_page_, &ChatPage::chatFocusChanged);
+
         connect(
           chat_page_, &ChatPage::showUserSettingsPage, this, &MainWindow::showUserSettingsPage);
 
@@ -202,6 +207,19 @@ MainWindow::resizeEvent(QResizeEvent *event)
 {
         adjustSideBars();
         QMainWindow::resizeEvent(event);
+}
+
+bool
+MainWindow::event(QEvent *event)
+{
+        auto type = event->type();
+        if (type == QEvent::WindowActivate) {
+                emit focusChanged(true);
+        } else if (type == QEvent::WindowDeactivate) {
+                emit focusChanged(false);
+        }
+
+        return QMainWindow::event(event);
 }
 
 void
@@ -296,8 +314,6 @@ MainWindow::showChatPage()
                 &Cache::secretChanged,
                 userSettingsPage_,
                 &UserSettingsPage::updateSecretStatus);
-
-        instance_ = this;
 }
 
 void

@@ -53,10 +53,9 @@ ApplicationWindow {
             font.bold: true
             Layout.alignment: Qt.AlignHCenter
             selectByMouse: true
-
             onAccepted: {
-                profile.changeUsername(displayUsername.text)
-                displayUsername.isUsernameEditingAllowed = false
+                profile.changeUsername(displayUsername.text);
+                displayUsername.isUsernameEditingAllowed = false;
             }
 
             ImageButton {
@@ -65,18 +64,18 @@ ApplicationWindow {
                 anchors.left: displayUsername.right
                 anchors.verticalCenter: displayUsername.verticalCenter
                 image: displayUsername.isUsernameEditingAllowed ? ":/icons/icons/ui/checkmark.png" : ":/icons/icons/ui/edit.png"
-
                 onClicked: {
                     if (displayUsername.isUsernameEditingAllowed) {
-                        profile.changeUsername(displayUsername.text)
-                        displayUsername.isUsernameEditingAllowed = false
+                        profile.changeUsername(displayUsername.text);
+                        displayUsername.isUsernameEditingAllowed = false;
                     } else {
-                        displayUsername.isUsernameEditingAllowed = true
-                        displayUsername.focus = true
-                        displayUsername.selectAll()
+                        displayUsername.isUsernameEditingAllowed = true;
+                        displayUsername.focus = true;
+                        displayUsername.selectAll();
                     }
                 }
             }
+
         }
 
         MatrixText {
