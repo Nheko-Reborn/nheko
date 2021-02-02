@@ -15,7 +15,7 @@ do
 done;
 
 QMLFORMAT_PATH=$(which qmlformat)
-if [ ! -z "$QMLFORMAT_PATH" ]; then
+if [ -n "$QMLFORMAT_PATH" ]; then
     QML_FILES=$(find resources -type f -iname "*.qml")
 
     for f in $QML_FILES
