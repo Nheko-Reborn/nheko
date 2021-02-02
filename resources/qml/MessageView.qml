@@ -101,12 +101,20 @@ ListView {
                 spacing: 8
 
                 Avatar {
+                    id: messageUserAvatar
                     width: avatarSize
                     height: avatarSize
                     url: modelData ? chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/") : ""
                     displayName: modelData ? modelData.userName : ""
                     userid: modelData ? modelData.userId : ""
                     onClicked: chat.model.openUserProfile(modelData.userId)
+                }
+
+                Connections {
+                    target: chat.model
+                    onRoomAvatarUrlChanged: { 
+                      messageUserAvatar.url = modelData ? chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/") : ""
+                    }
                 }
 
                 Label {

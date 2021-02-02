@@ -308,12 +308,12 @@ UserProfile::changeAvatar()
 
         QFile file{fileName, this};
         if (format != "image") {
-                // displayErrorMessage(tr("The selected file is not an image"));
+                emit displayError(tr("The selected file is not an image"));
                 return;
         }
 
         if (!file.open(QIODevice::ReadOnly)) {
-                // displayErrorMessage(tr("Error while reading file: %1").arg(file.errorString()));
+                emit displayError(tr("Error while reading file: %1").arg(file.errorString()));
                 return;
         }
 

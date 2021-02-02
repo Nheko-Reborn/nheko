@@ -34,6 +34,37 @@ ApplicationWindow {
             onClicked: profile.isSelf ? profile.changeAvatar() : TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
         }
 
+        Text {
+            id: errorText
+            text: "Error Text"
+            color: "red"
+            visible: opacity > 0
+            opacity: 0
+            Layout.alignment: Qt.AlignHCenter
+        }
+
+        SequentialAnimation {
+            id: hideErrorAnimation
+            running: false
+            PauseAnimation {
+                duration: 4000
+            }
+            NumberAnimation {
+                target: errorText
+                property: 'opacity'
+                to: 0
+                duration: 1000
+            }
+        }
+
+        Connections{
+            target: profile
+            onDisplayError: {
+                errorText.opacity = 1
+                hideErrorAnimation.restart()
+            }
+        }
+
         TextInput {
             id: displayUsername
 
