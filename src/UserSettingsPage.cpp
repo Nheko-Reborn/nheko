@@ -849,7 +849,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 privacyScreen_,
                 tr("When the window loses focus, the timeline will\nbe blurred."));
         boxWrap(
-          tr("Privacy screen timeout"),
+          tr("Privacy screen timeout (in seconds [0 - 3600])"),
           privacyScreenTimeout_,
           tr("Set timeout (in seconds) for how long after window loses\nfocus before the screen"
              " will be blurred.\nSet to 0 to blur immediately after focus loss. Max value of 1 "
