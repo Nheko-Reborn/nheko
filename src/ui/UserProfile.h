@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QString>
 #include <QVector>
+#include <mtx/responses.hpp>
+#include <mtx/responses/common.hpp>
 
 namespace verification {
 Q_NAMESPACE
@@ -81,10 +83,11 @@ class UserProfile : public QObject
         Q_OBJECT
         Q_PROPERTY(QString displayName READ displayName NOTIFY displayNameChanged)
         Q_PROPERTY(QString userid READ userid CONSTANT)
-        Q_PROPERTY(QString avatarUrl READ avatarUrl CONSTANT)
+        Q_PROPERTY(QString avatarUrl READ avatarUrl NOTIFY avatarUrlChanged)
         Q_PROPERTY(DeviceInfoModel *deviceList READ deviceList CONSTANT)
         Q_PROPERTY(bool isGlobalUserProfile READ isGlobalUserProfile CONSTANT)
         Q_PROPERTY(bool isUserVerified READ getUserStatus NOTIFY userStatusChanged)
+        Q_PROPERTY(bool isLoading READ isLoading NOTIFY loadingChanged)
         Q_PROPERTY(
           bool userVerificationEnabled READ userVerificationEnabled NOTIFY userStatusChanged)
         Q_PROPERTY(bool isSelf READ isSelf CONSTANT)
@@ -103,6 +106,7 @@ public:
         bool getUserStatus();
         bool userVerificationEnabled() const;
         bool isSelf() const;
+        bool isLoading() const;
 
         Q_INVOKABLE void verify(QString device = "");
         Q_INVOKABLE void unverify(QString device = "");
@@ -112,21 +116,34 @@ public:
         Q_INVOKABLE void kickUser();
         Q_INVOKABLE void startChat();
         Q_INVOKABLE void changeUsername(QString username);
+        Q_INVOKABLE void changeAvatar();
 
 signals:
         void userStatusChanged();
+        void loadingChanged();
         void displayNameChanged();
+        void avatarUrlChanged();
+        void displayError(const QString &errorMessage);
         void globalUsernameRetrieved(const QString &globalUser);
+
+public slots:
+        void updateAvatarUrl();
 
 protected slots:
         void setGlobalUsername(const QString &globalUser);
 
 private:
+        void updateRoomMemberState(mtx::events::state::Member member);
+        void getGlobalProfileData();
+
+private:
         QString roomid_, userid_;
         QString globalUsername;
+        QString globalAvatarUrl;
         DeviceInfoModel deviceList_;
         bool isUserVerified = false;
         bool hasMasterKey   = false;
+        bool isLoading_     = false;
         TimelineViewManager *manager;
         TimelineModel *model;
 };

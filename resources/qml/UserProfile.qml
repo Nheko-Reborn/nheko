@@ -38,7 +38,45 @@ ApplicationWindow {
             displayName: profile.displayName
             userid: profile.userid
             Layout.alignment: Qt.AlignHCenter
-            onClicked: TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
+            onClicked: profile.isSelf ? profile.changeAvatar() : TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
+        }
+
+        BusyIndicator {
+            Layout.alignment: Qt.AlignHCenter
+            running: profile.isLoading
+            visible: profile.isLoading
+        }
+
+        Text {
+            id: errorText
+            text: "Error Text"
+            color: "red"
+            visible: opacity > 0
+            opacity: 0
+            Layout.alignment: Qt.AlignHCenter
+        }
+
+        SequentialAnimation {
+            id: hideErrorAnimation
+            running: false
+            PauseAnimation {
+                duration: 4000
+            }
+            NumberAnimation {
+                target: errorText
+                property: 'opacity'
+                to: 0
+                duration: 1000
+            }
+        }
+
+        Connections{
+            target: profile
+            onDisplayError: {
+                errorText.text = errorMessage
+                errorText.opacity = 1
+                hideErrorAnimation.restart()
+            }
         }
 
         TextInput {
