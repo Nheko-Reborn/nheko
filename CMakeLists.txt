@@ -645,7 +645,7 @@ if(QML_DEBUGGING)
 endif()
 
 
-if(NOT MSVC)
+if(NOT MSVC AND NOT HAIKU)
 	if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" OR CI_BUILD)
 		target_compile_options(nheko PRIVATE "-Werror")
 	endif()
