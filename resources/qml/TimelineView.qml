@@ -277,19 +277,21 @@ Page {
 
             MessageInput {
             }
+
         }
 
         NhekoDropArea {
-            anchors.fill: timelineLayout
+            anchors.fill: parent
             roomid: TimelineManager.timeline ? TimelineManager.timeline.roomId() : ""
         }
 
-        PrivacyScreen {
-            visible: Settings.privacyScreen
-            screenTimeout: Settings.privacyScreenTimeout
-            timelineRoot: timelineRoot
-        }
+    }
 
+    PrivacyScreen {
+        anchors.fill: parent
+        visible: Settings.privacyScreen
+        screenTimeout: Settings.privacyScreenTimeout
+        timelineRoot: timelineLayout
     }
 
     systemInactive: SystemPalette {

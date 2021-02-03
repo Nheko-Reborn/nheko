@@ -273,6 +273,7 @@ Rectangle {
                     cursorShape: Qt.IBeamCursor
                     onClicked: TimelineManager.timeline.input.paste(true)
                 }
+
             }
 
             ScrollBar.vertical: ScrollBar {

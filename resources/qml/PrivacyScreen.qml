@@ -6,10 +6,7 @@ Item {
     id: privacyScreen
 
     property var timelineRoot
-    property var imageSource: ""
     property int screenTimeout
-
-    anchors.fill: parent
 
     Connections {
         target: TimelineManager
@@ -31,22 +28,16 @@ Item {
         interval: screenTimeout * 1000
         running: true
         onTriggered: {
-            if (MainWindow.visible)
-                timelineRoot.grabToImage(function(result) {
-                screenSaver.state = "Visible";
-                imageSource = result.url;
-            }, Qt.size(width, height));
-
+            screenSaver.state = "Visible";
         }
     }
 
-    Rectangle {
+    Item {
         id: screenSaver
 
         state: "Invisible"
         anchors.fill: parent
         visible: false
-        color: "transparent"
         states: [
             State {
                 name: "Visible"
@@ -122,27 +113,11 @@ Item {
             }
         ]
 
-        Image {
-            id: image
-
-            cache: false
-            anchors.fill: parent
-            source: imageSource
-        }
-
-        ShaderEffectSource {
-            id: effectSource
-
-            sourceItem: image
-            anchors.fill: image
-            sourceRect: Qt.rect(0, 0, width, height)
-        }
-
         FastBlur {
             id: blur
 
-            anchors.fill: effectSource
-            source: effectSource
+            anchors.fill: parent
+            source: timelineRoot
             radius: 50
         }
 
