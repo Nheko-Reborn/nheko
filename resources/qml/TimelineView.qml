@@ -35,7 +35,7 @@ Page {
         colors: palette
 
         model: EmojiProxyModel {
-            category: EmojiCategory.People
+            category: Emoji.Category.People
 
             sourceModel: EmojiModel {
             }
@@ -194,6 +194,8 @@ Page {
         }
 
         ColumnLayout {
+            id: timelineLayout
+
             visible: TimelineManager.timeline != null
             anchors.fill: parent
             spacing: 0
@@ -278,6 +280,18 @@ Page {
 
         }
 
+        NhekoDropArea {
+            anchors.fill: parent
+            roomid: TimelineManager.timeline ? TimelineManager.timeline.roomId() : ""
+        }
+
+    }
+
+    PrivacyScreen {
+        anchors.fill: parent
+        visible: Settings.privacyScreen
+        screenTimeout: Settings.privacyScreenTimeout
+        timelineRoot: timelineLayout
     }
 
     systemInactive: SystemPalette {

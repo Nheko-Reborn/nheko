@@ -244,7 +244,7 @@ UserProfile::changeUsername(QString username)
         if (isGlobalUserProfile()) {
                 // change global
                 http::client()->set_displayname(
-                  username.toStdString(), [this](mtx::http::RequestErr err) {
+                  username.toStdString(), [](mtx::http::RequestErr err) {
                           if (err) {
                                   nhlog::net()->warn("could not change username");
                                   return;

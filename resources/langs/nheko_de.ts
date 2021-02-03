@@ -51,7 +51,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1951"/>
+        <location filename="../../src/Cache.cpp" line="+1978"/>
         <source>You joined this room.</source>
         <translation>Du bist dem Raum beigetreten.</translation>
     </message>
@@ -126,7 +126,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+779"/>
+        <location line="+796"/>
         <source>Invited user: %1</source>
         <translation>Eingeladener Benutzer: %1</translation>
     </message>
@@ -274,13 +274,18 @@
     <message>
         <location line="+54"/>
         <source>Failed to kick %1 from %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontte %1 nicht aus %2 entfernen: %3</translation>
     </message>
 </context>
 <context>
     <name>CommunitiesListItem</name>
     <message>
-        <location filename="../../src/CommunitiesListItem.cpp" line="+133"/>
+        <location filename="../../src/CommunitiesListItem.cpp" line="+26"/>
+        <source>Hide rooms with this tag or from this community</source>
+        <translation>Verstecke Räume mit diesem Tag oder aus dieser Community</translation>
+    </message>
+    <message>
+        <location line="+153"/>
         <source>All rooms</source>
         <translation>Alle Räume</translation>
     </message>
@@ -474,10 +479,16 @@
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+548"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+559"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation>-- Verschlüsseltes Event (keine Schlüssel zur Entschlüsselung gefunden) --</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>-- Encrypted Event (Key not valid for this index) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted with this key since it is not valid for this index </comment>
+        <translation>-- Verschlüsseltes Event (Schlüssel passt nicht für diesen Nachrichtenindex) --</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -557,7 +568,7 @@
         <translation>Alle Dateien (*)</translation>
     </message>
     <message>
-        <location line="+334"/>
+        <location line="+340"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Medienupload fehlgeschlagen. Bitte versuche es erneut.</translation>
     </message>
@@ -599,7 +610,12 @@ Wenn Nheko deinen Server nicht automatisch erkennen kann, wird es dich nach dem 
         <translation>Passwort</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
+        <source>Your password.</source>
+        <translation>Dein Passwort.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Device name</source>
         <translation>Gerätename</translation>
     </message>
@@ -609,7 +625,17 @@ Wenn Nheko deinen Server nicht automatisch erkennen kann, wird es dich nach dem 
         <translation>Ein Name für dieses Gerät. Dieser wird der anderen Seite gezeigt, wenn das Gerät verifiziert wird. Wenn nichts angeben wird, wird einer generiert.</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+4"/>
+        <source>Homeserver address</source>
+        <translation>Heimserveradresse</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>server.my:8787</source>
+        <translation>dein.server:8787</translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation>Die Adresse unter der dein Heimserver erreichbar ist.
@@ -617,12 +643,20 @@ Beispiel: https://mein.server:8787</translation>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+217"/>
+        <location line="+218"/>
         <source>LOGIN</source>
         <translation>ANMELDEN</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="-151"/>
+        <location line="+11"/>
+        <location line="+157"/>
+        <location line="+11"/>
+        <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
+        <translation>Du hast eine invalide Matrix ID eingegeben. Normalerwise sehen die so aus: @joe:matrix.org</translation>
+    </message>
+    <message>
+        <location line="-132"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Automatische Erkennung fehlgeschlagen. Antwort war fehlerhaft.</translation>
     </message>
@@ -767,7 +801,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Schreibe eine Nachricht…</translation>
     </message>
     <message>
-        <location line="+152"/>
+        <location line="+170"/>
         <source>Emoji</source>
         <translation>Emoji</translation>
     </message>
@@ -874,7 +908,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+182"/>
+        <location filename="../../src/main.cpp" line="+179"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Benutze ein separates profil, wodurch mehrere Accounts und Nhekoinstanzen zur gleichen Zeit verwendet werden können.</translation>
     </message>
@@ -977,7 +1011,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1859"/>
+        <location filename="../../src/Cache.cpp" line="+1868"/>
         <source>no version stored</source>
         <translation>keine Version gespeichert</translation>
     </message>
@@ -1019,7 +1053,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Fügt einen Tag hinzu oder entfernt ihn.</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+39"/>
         <source>New tag...</source>
         <comment>Add a new tag to the room</comment>
         <translation>Neuer Tag...</translation>
@@ -1119,7 +1153,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+864"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+860"/>
         <source>Message redaction failed: %1</source>
         <translation>Nachricht zurückziehen fehlgeschlagen: %1</translation>
     </message>
@@ -1130,7 +1164,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Event konnte nicht verschlüsselt werden, senden wurde abgebrochen!</translation>
     </message>
     <message>
-        <location line="+156"/>
+        <location line="+164"/>
         <source>Save image</source>
         <translation>Bild speichern</translation>
     </message>
@@ -1150,7 +1184,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Datei speichern</translation>
     </message>
     <message numerus="yes">
-        <location line="+129"/>
+        <location line="+143"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -1269,12 +1303,12 @@ Beispiel: https://mein.server:8787</translation>
         <translation>%1 hat das Anklopfen zurückgezogen.</translation>
     </message>
     <message>
-        <location line="-749"/>
+        <location line="-771"/>
         <source>You joined this room.</source>
         <translation>Du bist dem Raum beigetreten.</translation>
     </message>
     <message>
-        <location line="+751"/>
+        <location line="+773"/>
         <source>Rejected the knock from %1.</source>
         <translation>Hat das Anklopfen von %1 abgewiesen.</translation>
     </message>
@@ -1354,6 +1388,11 @@ Beispiel: https://mein.server:8787</translation>
         <location line="+7"/>
         <source>Save as</source>
         <translation>Speichern unter...</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Open in external program</source>
+        <translation>Öffne in externen Programm</translation>
     </message>
     <message>
         <location line="+51"/>
@@ -1467,7 +1506,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+53"/>
+        <location filename="../qml/UserProfile.qml" line="+54"/>
         <source>Verify</source>
         <translation>Verifizieren</translation>
     </message>
@@ -1490,7 +1529,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+781"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+794"/>
         <source>Minimize to tray</source>
         <translation>Ins Benachrichtigungsfeld minimieren</translation>
     </message>

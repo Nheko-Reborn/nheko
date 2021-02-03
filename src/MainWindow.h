@@ -61,10 +61,15 @@ class MainWindow : public QMainWindow
 {
         Q_OBJECT
 
+        Q_PROPERTY(int x READ x CONSTANT)
+        Q_PROPERTY(int y READ y CONSTANT)
+        Q_PROPERTY(int width READ width CONSTANT)
+        Q_PROPERTY(int height READ height CONSTANT)
+
 public:
         explicit MainWindow(QWidget *parent = nullptr);
 
-        static MainWindow *instance() { return instance_; };
+        static MainWindow *instance() { return instance_; }
         void saveCurrentWindowSize();
 
         void openLeaveRoomDialog(const QString &room_id);
@@ -88,6 +93,7 @@ protected:
         void closeEvent(QCloseEvent *event) override;
         void resizeEvent(QResizeEvent *event) override;
         void showEvent(QShowEvent *event) override;
+        bool event(QEvent *event) override;
 
 private slots:
         //! Show or hide the sidebars based on window's size.
@@ -114,6 +120,9 @@ private slots:
         void removeOverlayProgressBar();
 
         virtual void setWindowTitle(int notificationCount);
+
+signals:
+        void focusChanged(const bool focused);
 
 private:
         bool loadJdenticonPlugin();

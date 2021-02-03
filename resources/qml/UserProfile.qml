@@ -10,12 +10,19 @@ ApplicationWindow {
 
     property var profile
 
+    x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
+    y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     height: 650
     width: 420
     minimumHeight: 420
     palette: colors
     color: colors.window
     title: profile.isGlobalUserProfile ? "Global User Profile" : "Room User Profile"
+
+    Shortcut {
+        sequence: StandardKey.Cancel
+        onActivated: userProfileDialog.close()
+    }
 
     ColumnLayout {
         id: contentL
@@ -84,10 +91,9 @@ ApplicationWindow {
             font.bold: true
             Layout.alignment: Qt.AlignHCenter
             selectByMouse: true
-
             onAccepted: {
-                profile.changeUsername(displayUsername.text)
-                displayUsername.isUsernameEditingAllowed = false
+                profile.changeUsername(displayUsername.text);
+                displayUsername.isUsernameEditingAllowed = false;
             }
 
             ImageButton {
@@ -96,18 +102,18 @@ ApplicationWindow {
                 anchors.left: displayUsername.right
                 anchors.verticalCenter: displayUsername.verticalCenter
                 image: displayUsername.isUsernameEditingAllowed ? ":/icons/icons/ui/checkmark.png" : ":/icons/icons/ui/edit.png"
-
                 onClicked: {
                     if (displayUsername.isUsernameEditingAllowed) {
-                        profile.changeUsername(displayUsername.text)
-                        displayUsername.isUsernameEditingAllowed = false
+                        profile.changeUsername(displayUsername.text);
+                        displayUsername.isUsernameEditingAllowed = false;
                     } else {
-                        displayUsername.isUsernameEditingAllowed = true
-                        displayUsername.focus = true
-                        displayUsername.selectAll()
+                        displayUsername.isUsernameEditingAllowed = true;
+                        displayUsername.focus = true;
+                        displayUsername.selectAll();
                     }
                 }
             }
+
         }
 
         MatrixText {

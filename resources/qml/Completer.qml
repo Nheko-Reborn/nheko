@@ -11,6 +11,7 @@ Popup {
     property string completerName
     property var completer
     property bool bottomToTop: true
+    property alias count: listView.count
 
     signal completionClicked(string completion)
 
@@ -84,7 +85,7 @@ Popup {
 
                 anchors.fill: parent
                 hoverEnabled: true
-                onEntered: popup.currentIndex = model.index
+                onPositionChanged: popup.currentIndex = model.index
                 onClicked: popup.completionClicked(completer.completionAt(model.index))
 
                 Ripple {

@@ -51,7 +51,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1951"/>
+        <location filename="../../src/Cache.cpp" line="+1978"/>
         <source>You joined this room.</source>
         <translation>Csatlakoztál ehhez a szobához.</translation>
     </message>
@@ -126,7 +126,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+779"/>
+        <location line="+796"/>
         <source>Invited user: %1</source>
         <translation>A felhasználó meg lett hívva: %1</translation>
     </message>
@@ -274,13 +274,18 @@
     <message>
         <location line="+54"/>
         <source>Failed to kick %1 from %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült kirúgni %1 felhasználót %2 szobából: %3</translation>
     </message>
 </context>
 <context>
     <name>CommunitiesListItem</name>
     <message>
-        <location filename="../../src/CommunitiesListItem.cpp" line="+133"/>
+        <location filename="../../src/CommunitiesListItem.cpp" line="+26"/>
+        <source>Hide rooms with this tag or from this community</source>
+        <translation>Az ilyen címkével ellátott vagy közösséghez tartozó szobák elrejtése</translation>
+    </message>
+    <message>
+        <location line="+153"/>
         <source>All rooms</source>
         <translation>Az összes szoba</translation>
     </message>
@@ -474,10 +479,16 @@
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+548"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+559"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation>-- Titkosított esemény (Nem találhatók kulcsok a titkosítás feloldásához) --</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>-- Encrypted Event (Key not valid for this index) --</source>
+        <comment>Placeholder, when the message can&apos;t be decrypted with this key since it is not valid for this index </comment>
+        <translation>-- Titkosított esemény (a kulcs nem érvényes ehhez az indexhez) --</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -557,7 +568,7 @@
         <translation>Minden fájl (*)</translation>
     </message>
     <message>
-        <location line="+334"/>
+        <location line="+340"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Nem sikerült feltölteni a médiafájlt. Kérlek, próbáld újra!</translation>
     </message>
@@ -599,7 +610,12 @@ Ha a Nheko nem tud rátalálni a homeszerveredre, meg fog jelenni egy mező, aho
         <translation>Jelszó</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+2"/>
+        <source>Your password.</source>
+        <translation>A jelszavad.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Device name</source>
         <translation>Eszköznév</translation>
     </message>
@@ -609,7 +625,17 @@ Ha a Nheko nem tud rátalálni a homeszerveredre, meg fog jelenni egy mező, aho
         <translation>Egy név ennek az eszköznek, amely meg fog jelenni mások számára, amikor hitelesíted az eszközeidet. Ha nincs megadva semmi, egy alapértelmezett név lesz használva.</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+4"/>
+        <source>Homeserver address</source>
+        <translation>Homeszerver címe</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>server.my:8787</source>
+        <translation>szerver.em:8787</translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation>A cím, melyen keresztül el lehet érni a homeszervered kliens API-jét.
@@ -617,12 +643,20 @@ Példa: https://szerver.em:8787</translation>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+217"/>
+        <location line="+218"/>
         <source>LOGIN</source>
         <translation>BEJELENTKEZÉS</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="-151"/>
+        <location line="+11"/>
+        <location line="+157"/>
+        <location line="+11"/>
+        <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
+        <translation>Érvénytelen Matrixazonosítót adtál meg. Példa: @janos:matrix.org</translation>
+    </message>
+    <message>
+        <location line="-132"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Az automatikus felderítés nem sikerült. Helytelen válasz érkezett.</translation>
     </message>
@@ -767,7 +801,7 @@ Példa: https://szerver.em:8787</translation>
         <translation>Írj egy üzenetet…</translation>
     </message>
     <message>
-        <location line="+152"/>
+        <location line="+170"/>
         <source>Emoji</source>
         <translation>Hangulatjelek</translation>
     </message>
@@ -874,7 +908,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+182"/>
+        <location filename="../../src/main.cpp" line="+179"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Egy egyedi profil létrehozása, amellyel be tudsz jelentkezni egyszerre több fiókon keresztül és a Nheko több példányát is tudod futtatni.</translation>
     </message>
@@ -977,7 +1011,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1859"/>
+        <location filename="../../src/Cache.cpp" line="+1868"/>
         <source>no version stored</source>
         <translation>nincs tárolva verzió</translation>
     </message>
@@ -1019,7 +1053,7 @@ Példa: https://szerver.em:8787</translation>
         <translation>Hozzáadja vagy eltávolítja az adott címkét.</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+39"/>
         <source>New tag...</source>
         <comment>Add a new tag to the room</comment>
         <translation>Új címke…</translation>
@@ -1119,7 +1153,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+864"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+860"/>
         <source>Message redaction failed: %1</source>
         <translation>Az üzenet visszavonása nem sikerült: %1</translation>
     </message>
@@ -1130,168 +1164,168 @@ Példa: https://szerver.em:8787</translation>
         <translation>Nem sikerült titkosítani az eseményt, küldés megszakítva!</translation>
     </message>
     <message>
-        <location line="+156"/>
+        <location line="+164"/>
         <source>Save image</source>
-        <translation type="unfinished"></translation>
+        <translation>Kép mentése</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save video</source>
-        <translation type="unfinished"></translation>
+        <translation>Videó mentése</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save audio</source>
-        <translation type="unfinished"></translation>
+        <translation>Hang mentése</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save file</source>
-        <translation type="unfinished"></translation>
+        <translation>Fájl mentése</translation>
     </message>
     <message numerus="yes">
-        <location line="+129"/>
+        <location line="+143"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1%2 gépel.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+68"/>
         <source>%1 opened the room to the public.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 nyilvánosan elérhetővé tette a szobát.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 made this room require and invitation to join.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 beállította, hogy meghívással lehessen csatlakozni ehhez a szobához.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room open to guests.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 elérhetővé tette a szobát vendégeknek.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 has closed the room to guest access.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 eltávolította a szoba elérhetőségét vendégek számára.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room history world readable. Events may be now read by non-joined people.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 olvashatóvá tette a világon bárki számára a szoba előzményeit. Az eseményeket most már azok is láthatják, akik nem csatlakoztak.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 set the room history visible to members from this point on.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 beállította, hogy a szoba előzményei ezentúl csak a tagok számára legyenek láthatóak.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they were invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 beállította, hogy a szoba előzményei láthatóak legyenek a tagok számára a meghívásuktól kezdve.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they joined the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 beállította, hogy a szoba előzményei láthatóak legyenek a tagok számára a csatlakozásuktól kezdve.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 has changed the room&apos;s permissions.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 megváltoztatta a szoba engedélyeit.</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>%1 was invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 meg lett hívva.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 changed their display name and avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 megváltoztatta a megjelenítési nevét és a profilképét.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed their display name.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 megváltoztatta a megjelenítési nevét.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed their avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 megváltoztatta a profilképét.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed some profile info.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 megváltoztatta a profiladatait.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 joined.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 csatlakozott.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 rejected their invite.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 elutasította a meghívását.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Revoked the invite to %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Meghívás elutasítva a(z) %1 szobába.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 left the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 elhagyta a szobát.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kicked %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ki lett rúgva.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unbanned %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 tiltása vissza lett vonva.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 was banned.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ki lett tiltva.</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>%1 redacted their knock.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 visszavonta a kopogását.</translation>
     </message>
     <message>
-        <location line="-749"/>
+        <location line="-771"/>
         <source>You joined this room.</source>
         <translation>Csatlakoztál ehhez a szobához.</translation>
     </message>
     <message>
-        <location line="+751"/>
+        <location line="+773"/>
         <source>Rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopogás elutasítva tőle: %1.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 távozott, miután már egyszer távozott!</translation>
     </message>
     <message>
         <location line="+15"/>
         <source> Reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok: %1</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>%1 knocked.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kopogott.</translation>
     </message>
 </context>
 <context>
@@ -1299,17 +1333,17 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/TimelineRow.qml" line="+97"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Reakció</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Válasz</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Műveletek</translation>
     </message>
 </context>
 <context>
@@ -1317,47 +1351,52 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/TimelineView.qml" line="+83"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Reakció</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Válasz</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Olvasási jegyek</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Megjelölés olvasottként</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>View raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Nyers üzenet megtekintése</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>View decrypted raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Előzőleg titkosított nyers üzenet megtekintése</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Remove message</source>
-        <translation type="unfinished"></translation>
+        <translation>Üzenet eltávolítása</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Mentés másként</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Open in external program</source>
+        <translation>Megnyitás külső programban</translation>
     </message>
     <message>
         <location line="+51"/>
         <source>No room open</source>
-        <translation type="unfinished"></translation>
+        <translation>Nincs nyitott szoba</translation>
     </message>
 </context>
 <context>
@@ -1365,7 +1404,7 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../../src/timeline/TimelineViewManager.cpp" line="+423"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem található titkosított privát csevegés ezzel a felhasználóval. Hozz létre egy titkosított privát csevegést vele, és próbáld újra!</translation>
     </message>
 </context>
 <context>
@@ -1373,38 +1412,38 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/TopBar.qml" line="+43"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Vissza a szobák listájára</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+10"/>
         <source>No room selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Nincs kiválasztva szoba</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Room options</source>
-        <translation type="unfinished"></translation>
+        <translation>Szoba beállításai</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Invite users</source>
-        <translation type="unfinished"></translation>
+        <translation>Felhasználók meghívása</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Members</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagok</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Szoba elhagyása</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Beállítások</translation>
     </message>
 </context>
 <context>
@@ -1412,12 +1451,12 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../../src/TrayIcon.cpp" line="+122"/>
         <source>Show</source>
-        <translation type="unfinished"></translation>
+        <translation>Mutat</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Kilépés</translation>
     </message>
 </context>
 <context>
@@ -1425,411 +1464,419 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../../src/UserInfoWidget.cpp" line="+95"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Kijelentkezés</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Set custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyéni állapotüzenet megadása</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Custom status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyéni állapotüzenet</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Állapot:</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Set presence automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Elérhetőség megadása automatikusan</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation>Bejelentkezve</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem elérhető</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Kiejelentkezve</translation>
     </message>
 </context>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+53"/>
+        <location filename="../qml/UserProfile.qml" line="+54"/>
         <source>Verify</source>
-        <translation type="unfinished"></translation>
+        <translation>Hitelesítés</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Ban the user</source>
-        <translation type="unfinished"></translation>
+        <translation>A felhasználó tiltása</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Start a private chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Privát csevegés indítása</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Kick the user</source>
-        <translation type="unfinished"></translation>
+        <translation>A felhasználó kirúgása</translation>
     </message>
 </context>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+781"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+794"/>
         <source>Minimize to tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Kicsinyítés a tálcára</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start in tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Indítás a tálcán</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Group&apos;s sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Csoport oldalsávja</translation>
     </message>
     <message>
         <location line="-3"/>
         <source>Circular Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>Kerekített profilképek</translation>
     </message>
     <message>
         <location line="-195"/>
         <source>profile: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>profil: %1</translation>
     </message>
     <message>
         <location line="+112"/>
         <source>CALLS</source>
-        <translation type="unfinished"></translation>
+        <translation>HÍVÁSOK</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>Cross Signing Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Keresztaláírási kulcsok</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>REQUEST</source>
-        <translation type="unfinished"></translation>
+        <translation>LEKÉRÉS</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>DOWNLOAD</source>
-        <translation type="unfinished"></translation>
+        <translation>LETÖLTÉS</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az alkalmazás azután is a háttérben fut, miután be lett zárva a főablak.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Induljon az alkalmazás a háttérben, a főablak mutatása nélkül.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - Circle.</source>
-        <translation type="unfinished"></translation>
+        <translation>A profilképek megjelenése a csevegésekben.
+KI - szögletes, BE - kerek.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Csoportok és címkék megjelenítése a szobák listája mellett egy oszlopban.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Titkosított üzenetek mutatása az oldalsávban</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Legyenek feloldva az oldalsávban megjelenő üzenetek.
+Csak a titkosított csevegések üzeneteire vonatkozik.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Gombok mutatása az idővonalban</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gombok mutatása minden egyes üzenet mellett a gyors válaszhoz, reakcióhoz és egyéb műveletek eléréséhez.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Az idővonal szélességének korlátozása</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation type="unfinished"></translation>
+        <translation>Az idővonalon megjelenő üzenetek maximális szélességének megadása (pixelben). Ez javíthatja az olvashatóságot, amikor a Nheko teljes méretben van széles képernyőkön.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Typing notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Gépelési értesítések</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Legyen mutatva, hogy éppen ki gépel egy szobában.
+Ez be vagy ki is kapcsolja a gépelési értesítések küldését másoknak.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Sort rooms by unreads</source>
-        <translation type="unfinished"></translation>
+        <translation>Szobák sorrendje olvasatlan üzenetek alapján</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az új üzeneteket tartalmazó szobák jelenjenek meg elöl.
+Ha ki van kapcsolva, a szobák sorrendje csak a bennük lévő utolsó üzenet dátuma alapján történik.
+Ha be van kapcsolva, azok a szobák kerülnek felülre, amelyekhez aktív értesítés tartozik (amelyet a számot tartalmazó kis kör jelez). A némított szobák továbbra is dátum alapján lesznek rendezve, mivel nem valószínű, hogy ezeket annyira fontosnak tartod, mint a többi szobát.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Olvasási jegyek</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.</source>
-        <translation type="unfinished"></translation>
+        <translation>Legyen mutatva, ha az üzenetedet elolvasták.
+Ez az állapot az üzenetek ideje mellett jelenik meg.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Üzenetek küldése Markdownként</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished"></translation>
+        <translation>A Markdown használatának engedélyezése az üzenetekben.
+Ha ki van kapcsolva, az összes üzenet sima szövegként lesz elküldve.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Desktop notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Asztali értesítések</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Notify about received message when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Értesítések az érkezett üzenetekről, amikor a főablak éppen nincs fókuszban.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Alert on notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Riasztás értesítéskor</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Riasztás megjelenítése, ha üzenet érkezett.
+Ettől általában animálttá válik az alkalmazásablakok listáján szereplő ikon.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Üzenetek kiemelése, ha az egérmutató rajtuk van</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az üzenetek háttérszínének megváltoztatása, ha az egérmutatót föléjük viszed.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Hatalmas hangulatjelek az idővonalon</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished"></translation>
+        <translation>A betűméret megnövelése, ha az üzenetek csak néhány hangulatjelet tartalmaznak.</translation>
     </message>
     <message>
         <location line="+56"/>
         <source>Share keys with verified users and devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Kulcsok megosztása hitelesített felhasználókkal és eszközökkel</translation>
     </message>
     <message>
         <location line="+395"/>
         <source>CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>GYORSÍTÓTÁRAZVA</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>NOT CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>NINCS GYORSÍTÓTÁRAZVA</translation>
     </message>
     <message>
         <location line="-449"/>
         <source>Scale factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Nagyítási tényező</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az egész felhasználói felület méretének szorzótényezője.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Betűméret</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Betűtípus</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Téma</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Ringtone</source>
-        <translation type="unfinished"></translation>
+        <translation>Csengőhang</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation type="unfinished"></translation>
+        <translation>Az értesítőhang megadása, amely akkor szól, ha hívás érkezik</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Microphone</source>
-        <translation type="unfinished"></translation>
+        <translation>Mikrofon</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamera</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamerafelbontás</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera frame rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamera képkockasebessége</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished"></translation>
+        <translation>Tartalék hívássegéd szerver engedélyezése</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished"></translation>
+        <translation>A turn.matrix.org lesz használva segédnek, ha a homeszerverednek nincs ilyenje.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Eszközazonosító</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished"></translation>
+        <translation>Eszközujjlenyomat</translation>
     </message>
     <message>
         <location line="-155"/>
         <source>Session Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Munkamenetkulcsok</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>IMPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>IMPORTÁLÁS</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>EXPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>EXPORTÁLÁS</translation>
     </message>
     <message>
         <location line="-34"/>
         <source>ENCRYPTION</source>
-        <translation type="unfinished"></translation>
+        <translation>TITKOSÍTÁS</translation>
     </message>
     <message>
         <location line="-100"/>
         <source>GENERAL</source>
-        <translation type="unfinished"></translation>
+        <translation>ÁLTALÁNOS</translation>
     </message>
     <message>
         <location line="+57"/>
         <source>INTERFACE</source>
-        <translation type="unfinished"></translation>
+        <translation>FELÜLET</translation>
     </message>
     <message>
         <location line="+177"/>
         <source>Touchscreen mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Érintő képernyős mód</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation type="unfinished"></translation>
+        <translation>Letiltja a szövegkiemelést az idővonalban, hogy könyebb legyen érintéssel görgetni.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Hangulatjelek betűtípusa</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>Automatically replies to key requests from other users, if they are verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatikus válasz a más felhasználóktól érkező kulcskérelmekre, ha ők hitelesítve vannak.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Master signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Mester-aláírókulcs</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>A legfontosabb kulcsod. Nem kell gyorsítótáraznod, mivel így kisebb az esélye, hogy ellopják, és csak arra van használva, hogy a többi aláíró kulcsaid váltakozva legyenek.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>User signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Felhasználói aláírókulcs</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>A mások hitelesítésére használt kulcs. Ha gyorsítótárazva van, egy felhasználó hitelesítésekor hitelesítve lesz az összes eszköze.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1854,12 +1901,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+54"/>
         <source>Select a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Fájl kiválasztása</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Minden fájl (*)</translation>
     </message>
     <message>
         <location line="+225"/>
@@ -1947,12 +1994,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+23"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REGISZTRÁCIÓ</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>BEJELENTKEZÉS</translation>
     </message>
 </context>
 <context>
@@ -1978,12 +2025,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Név</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Téma</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2129,12 +2176,12 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReadReceipts.cpp" line="+120"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Olvasási jegyek</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Bezárás</translation>
     </message>
 </context>
 <context>
@@ -2155,7 +2202,7 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/RoomSettings.cpp" line="+135"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Beállítások</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2259,7 +2306,7 @@ Media size: %2
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Minden fájl (*)</translation>
     </message>
     <message>
         <location line="+12"/>

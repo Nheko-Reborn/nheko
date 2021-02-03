@@ -36,6 +36,8 @@ class TimelineViewManager : public QObject
           bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
         Q_PROPERTY(
           bool isNarrowView MEMBER isNarrowView_ READ isNarrowView NOTIFY narrowViewChanged)
+        Q_PROPERTY(
+          bool isWindowFocused MEMBER isWindowFocused_ READ isWindowFocused NOTIFY focusChanged)
 
 public:
         TimelineViewManager(CallManager *callManager, ChatPage *parent = nullptr);
@@ -54,6 +56,7 @@ public:
         Q_INVOKABLE TimelineModel *activeTimeline() const { return timeline_; }
         Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
         bool isNarrowView() const { return isNarrowView_; }
+        bool isWindowFocused() const { return isWindowFocused_; }
         Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId) const;
         Q_INVOKABLE QColor userColor(QString id, QColor background);
         Q_INVOKABLE QString escapeEmoji(QString str) const;
@@ -83,11 +86,17 @@ signals:
         void inviteUsers(QStringList users);
         void showRoomList();
         void narrowViewChanged();
+        void focusChanged();
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
         void receivedSessionKey(const std::string &room_id, const std::string &session_id);
         void initWithMessages(const std::vector<QString> &roomIds);
+        void chatFocusChanged(bool focused)
+        {
+                isWindowFocused_ = focused;
+                emit focusChanged();
+        }
 
         void setHistoryView(const QString &room_id);
         TimelineModel *getHistoryView(const QString &room_id)
@@ -145,8 +154,9 @@ private:
         TimelineModel *timeline_  = nullptr;
         CallManager *callManager_ = nullptr;
 
-        bool isInitialSync_ = true;
-        bool isNarrowView_  = false;
+        bool isInitialSync_   = true;
+        bool isNarrowView_    = false;
+        bool isWindowFocused_ = false;
 
         QHash<QString, QColor> userColors;
 

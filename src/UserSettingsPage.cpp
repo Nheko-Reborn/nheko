@@ -88,14 +88,16 @@ UserSettings::load(std::optional<QString> profile)
           settings.value("user/timeline/message_hover_highlight", false).toBool();
         enlargeEmojiOnlyMessages_ =
           settings.value("user/timeline/enlarge_emoji_only_msg", false).toBool();
-        markdown_            = settings.value("user/markdown_enabled", true).toBool();
-        typingNotifications_ = settings.value("user/typing_notifications", true).toBool();
-        sortByImportance_    = settings.value("user/sort_by_unread", true).toBool();
-        readReceipts_        = settings.value("user/read_receipts", true).toBool();
-        theme_               = settings.value("user/theme", defaultTheme_).toString();
-        font_                = settings.value("user/font_family", "default").toString();
-        avatarCircles_       = settings.value("user/avatar_circles", true).toBool();
-        decryptSidebar_      = settings.value("user/decrypt_sidebar", true).toBool();
+        markdown_             = settings.value("user/markdown_enabled", true).toBool();
+        typingNotifications_  = settings.value("user/typing_notifications", true).toBool();
+        sortByImportance_     = settings.value("user/sort_by_unread", true).toBool();
+        readReceipts_         = settings.value("user/read_receipts", true).toBool();
+        theme_                = settings.value("user/theme", defaultTheme_).toString();
+        font_                 = settings.value("user/font_family", "default").toString();
+        avatarCircles_        = settings.value("user/avatar_circles", true).toBool();
+        decryptSidebar_       = settings.value("user/decrypt_sidebar", true).toBool();
+        privacyScreen_        = settings.value("user/privacy_screen", false).toBool();
+        privacyScreenTimeout_ = settings.value("user/privacy_screen_timeout", 0).toInt();
         shareKeysWithTrustedUsers_ =
           settings.value("user/share_keys_with_trusted_users", true).toBool();
         mobileMode_        = settings.value("user/mobile_mode", false).toBool();
@@ -289,6 +291,28 @@ UserSettings::setDecryptSidebar(bool state)
                 return;
         decryptSidebar_ = state;
         emit decryptSidebarChanged(state);
+        save();
+}
+
+void
+UserSettings::setPrivacyScreen(bool state)
+{
+        if (state == privacyScreen_) {
+                return;
+        }
+        privacyScreen_ = state;
+        emit privacyScreenChanged(state);
+        save();
+}
+
+void
+UserSettings::setPrivacyScreenTimeout(int state)
+{
+        if (state == privacyScreenTimeout_) {
+                return;
+        }
+        privacyScreenTimeout_ = state;
+        emit privacyScreenTimeoutChanged(state);
         save();
 }
 
@@ -539,6 +563,8 @@ UserSettings::save()
 
         settings.setValue("avatar_circles", avatarCircles_);
         settings.setValue("decrypt_sidebar", decryptSidebar_);
+        settings.setValue("privacy_screen", privacyScreen_);
+        settings.setValue("privacy_screen_timeout", privacyScreenTimeout_);
         settings.setValue("share_keys_with_trusted_users", shareKeysWithTrustedUsers_);
         settings.setValue("mobile_mode", mobileMode_);
         settings.setValue("font_size", baseFontSize_);
@@ -628,6 +654,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         startInTrayToggle_         = new Toggle{this};
         avatarCircles_             = new Toggle{this};
         decryptSidebar_            = new Toggle(this);
+        privacyScreen_             = new Toggle{this};
         shareKeysWithTrustedUsers_ = new Toggle(this);
         groupViewToggle_           = new Toggle{this};
         timelineButtonsToggle_     = new Toggle{this};
@@ -651,11 +678,13 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         cameraResolutionCombo_     = new QComboBox{this};
         cameraFrameRateCombo_      = new QComboBox{this};
         timelineMaxWidthSpin_      = new QSpinBox{this};
+        privacyScreenTimeout_      = new QSpinBox{this};
 
         trayToggle_->setChecked(settings_->tray());
         startInTrayToggle_->setChecked(settings_->startInTray());
         avatarCircles_->setChecked(settings_->avatarCircles());
         decryptSidebar_->setChecked(settings_->decryptSidebar());
+        privacyScreen_->setChecked(settings_->privacyScreen());
         shareKeysWithTrustedUsers_->setChecked(settings_->shareKeysWithTrustedUsers());
         groupViewToggle_->setChecked(settings_->groupView());
         timelineButtonsToggle_->setChecked(settings_->buttonsInTimeline());
@@ -673,6 +702,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         if (!settings_->tray()) {
                 startInTrayToggle_->setState(false);
                 startInTrayToggle_->setDisabled(true);
+        }
+
+        if (!settings_->privacyScreen()) {
+                privacyScreenTimeout_->setDisabled(true);
         }
 
         avatarCircles_->setFixedSize(64, 48);
@@ -714,6 +747,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         timelineMaxWidthSpin_->setMinimum(0);
         timelineMaxWidthSpin_->setMaximum(100'000'000);
         timelineMaxWidthSpin_->setSingleStep(10);
+
+        privacyScreenTimeout_->setMinimum(0);
+        privacyScreenTimeout_->setMaximum(3600);
+        privacyScreenTimeout_->setSingleStep(10);
 
         auto callsLabel = new QLabel{tr("CALLS"), this};
         callsLabel->setFixedHeight(callsLabel->minimumHeight() + LayoutTopMargin);
@@ -808,6 +845,15 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 decryptSidebar_,
                 tr("Decrypt the messages shown in the sidebar.\nOnly affects messages in "
                    "encrypted chats."));
+        boxWrap(tr("Privacy Screen"),
+                privacyScreen_,
+                tr("When the window loses focus, the timeline will\nbe blurred."));
+        boxWrap(
+          tr("Privacy screen timeout (in seconds [0 - 3600])"),
+          privacyScreenTimeout_,
+          tr("Set timeout (in seconds) for how long after window loses\nfocus before the screen"
+             " will be blurred.\nSet to 0 to blur immediately after focus loss. Max value of 1 "
+             "hour (3600 seconds)"));
         boxWrap(tr("Show buttons in timeline"),
                 timelineButtonsToggle_,
                 tr("Show buttons to quickly reply, react or access additional options next to each "
@@ -1066,7 +1112,15 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         connect(decryptSidebar_, &Toggle::toggled, this, [this](bool enabled) {
                 settings_->setDecryptSidebar(enabled);
-                emit decryptSidebarChanged();
+        });
+
+        connect(privacyScreen_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setPrivacyScreen(enabled);
+                if (enabled) {
+                        privacyScreenTimeout_->setEnabled(true);
+                } else {
+                        privacyScreenTimeout_->setDisabled(true);
+                }
         });
 
         connect(shareKeysWithTrustedUsers_, &Toggle::toggled, this, [this](bool enabled) {
@@ -1122,6 +1176,11 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 this,
                 [this](int newValue) { settings_->setTimelineMaxWidth(newValue); });
 
+        connect(privacyScreenTimeout_,
+                qOverload<int>(&QSpinBox::valueChanged),
+                this,
+                [this](int newValue) { settings_->setPrivacyScreenTimeout(newValue); });
+
         connect(
           sessionKeysImportBtn, &QPushButton::clicked, this, &UserSettingsPage::importSessionKeys);
 
@@ -1155,6 +1214,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         startInTrayToggle_->setState(settings_->startInTray());
         groupViewToggle_->setState(settings_->groupView());
         decryptSidebar_->setState(settings_->decryptSidebar());
+        privacyScreen_->setState(settings_->privacyScreen());
         shareKeysWithTrustedUsers_->setState(settings_->shareKeysWithTrustedUsers());
         avatarCircles_->setState(settings_->avatarCircles());
         typingNotifications_->setState(settings_->typingNotifications());
@@ -1169,6 +1229,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         enlargeEmojiOnlyMessages_->setState(settings_->enlargeEmojiOnlyMessages());
         deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
         timelineMaxWidthSpin_->setValue(settings_->timelineMaxWidth());
+        privacyScreenTimeout_->setValue(settings_->privacyScreenTimeout());
 
         WebRTCSession::instance().refreshDevices();
         auto mics =

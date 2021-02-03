@@ -162,6 +162,10 @@ Rectangle {
                     if (event.matches(StandardKey.Paste)) {
                         TimelineManager.timeline.input.paste(false);
                         event.accepted = true;
+                    } else if (event.key == Qt.Key_Space) {
+                        if (popup.opened && popup.count <= 0)
+                            popup.close();
+
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_U) {
                         messageInput.clear();
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_P) {
@@ -202,8 +206,11 @@ Rectangle {
                             while (pos > -1) {
                                 var t = messageInput.getText(pos, pos + 1);
                                 console.log('"' + t + '"');
-                                if (t == '@' || t == ' ' || t == '\t') {
+                                if (t == '@') {
                                     messageInput.openCompleter(pos, "user");
+                                    return ;
+                                } else if (t == ' ' || t == '\t') {
+                                    messageInput.openCompleter(pos + 1, "user");
                                     return ;
                                 } else if (t == ':') {
                                     messageInput.openCompleter(pos, "emoji");
@@ -255,7 +262,7 @@ Rectangle {
 
                 Connections {
                     ignoreUnknownSignals: true
-                    onReplyChanged: messageInput.forceActiveFocus();
+                    onReplyChanged: messageInput.forceActiveFocus()
                     target: TimelineManager.timeline
                 }
 
@@ -265,11 +272,6 @@ Rectangle {
                     acceptedButtons: Qt.MiddleButton
                     cursorShape: Qt.IBeamCursor
                     onClicked: TimelineManager.timeline.input.paste(true)
-                }
-
-                NhekoDropArea {
-                    anchors.fill: parent
-                    roomid: TimelineManager.timeline ? TimelineManager.timeline.roomId() : ""
                 }
 
             }
