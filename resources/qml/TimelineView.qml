@@ -277,11 +277,11 @@ Page {
 
             MessageInput {
             }
+        }
 
-            NhekoDropArea {
-                anchors.fill: parent
-                roomid: TimelineManager.timeline ? TimelineManager.timeline.roomId() : ""
-            }
+        NhekoDropArea {
+            anchors.fill: timelineLayout
+            roomid: TimelineManager.timeline ? TimelineManager.timeline.roomId() : ""
         }
 
         PrivacyScreen {
