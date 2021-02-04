@@ -115,8 +115,8 @@ UserSettings::load(std::optional<QString> profile)
         cameraFrameRate_  = settings.value("user/camera_frame_rate", QString()).toString();
         useStunServer_    = settings.value("user/use_stun_server", false).toBool();
 
-        if (profile)
-                profile_ = *profile;
+        if (profile) // set to "" if it's the default to maintain compatibility
+                profile_ = (*profile == "default") ? "" : *profile;
         else
                 profile_ = settings.value("user/currentProfile", "").toString();
 
