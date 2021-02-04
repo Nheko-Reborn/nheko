@@ -20,6 +20,7 @@
 #include "Cache.h"
 #include "Config.h"
 #include "MatrixClient.h"
+#include "UserSettingsPage.h"
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
@@ -65,14 +66,11 @@ utils::replaceEmoji(const QString &body)
 
         QVector<uint> utf32_string = body.toUcs4();
 
-        QSettings settings;
-        QString userFontFamily = settings.value("user/emoji_font_family", "emoji").toString();
-
         bool insideFontBlock = false;
         for (auto &code : utf32_string) {
                 if (utils::codepointIsEmoji(code)) {
                         if (!insideFontBlock) {
-                                fmtBody += QString("<font face=\"" + userFontFamily + "\">");
+                                fmtBody += QString("<font face=\"" + UserSettings::instance()->font() + "\">");
                                 insideFontBlock = true;
                         }
 
@@ -505,13 +503,7 @@ utils::getQuoteBody(const RelatedInfo &related)
 QString
 utils::linkColor()
 {
-        QSettings settings;
-        // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
-        QString defaultTheme =
-          QProcessEnvironment::systemEnvironment().value("QT_QPA_PLATFORMTHEME", "").isEmpty()
-            ? "light"
-            : "system";
-        const auto theme = settings.value("user/theme", defaultTheme).toString();
+        const auto theme = UserSettings::instance()->theme();
 
         if (theme == "light") {
                 return "#0077b5";
