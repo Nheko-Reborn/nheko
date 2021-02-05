@@ -448,15 +448,15 @@ void
 ChatPage::deleteConfigs()
 {
         QSettings settings;
+
+        if (UserSettings::instance()->profile() != "")
+        {
+            settings.beginGroup("profile");
+            settings.beginGroup(UserSettings::instance()->profile());
+        }
         settings.beginGroup("auth");
         settings.remove("");
-        settings.endGroup();
-        settings.beginGroup("client");
-        settings.remove("");
-        settings.endGroup();
-        settings.beginGroup("notifications");
-        settings.remove("");
-        settings.endGroup();
+        settings.endGroup(); // auth
 
         http::client()->shutdown();
         cache::deleteData();
