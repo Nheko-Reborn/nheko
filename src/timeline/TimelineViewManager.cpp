@@ -545,3 +545,9 @@ TimelineViewManager::queueCallMessage(const QString &roomid,
 {
         models.value(roomid)->sendMessageEvent(callHangUp, mtx::events::EventType::CallHangUp);
 }
+
+void
+TimelineViewManager::focusMessageInput()
+{
+        emit focusInput();
+}
