@@ -725,6 +725,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         // TODO: Is there a way to limit to just emojis, rather than
         // all emoji fonts?
         auto emojiFamilies = fontDb.families(QFontDatabase::Symbol);
+        emojiFontSelectionCombo_->addItem(QString("default"));
         for (const auto &family : emojiFamilies) {
                 emojiFontSelectionCombo_->addItem(family);
         }

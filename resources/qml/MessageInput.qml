@@ -163,6 +163,10 @@ Rectangle {
                         TimelineManager.timeline.input.paste(false);
                         event.accepted = true;
                     } else if (event.key == Qt.Key_Space) {
+                        // close popup if user enters space after colon
+                        if(cursorPosition == completerTriggeredAt + 1)
+                            popup.close();
+
                         if (popup.opened && popup.count <= 0)
                             popup.close();
 
