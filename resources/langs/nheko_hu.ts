@@ -1881,22 +1881,22 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location line="+3"/>
         <source>Self signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Önaláírókulcs</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users, that have verified you.</source>
-        <translation type="unfinished"></translation>
+        <translation>A kulcs, amellyel hitelesítheted a saját eszközeidet. Ha gyorsítótárazva van, egy eszköz hitelesítése azt hitelesítettnek fogja megjelölni az összes többi eszközeidnek és azoknak a felhasználóidnak, akik már hitelesítettek téged.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Backup key</source>
-        <translation type="unfinished"></translation>
+        <translation>Biztonsági mentési kulcs</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
-        <translation type="unfinished"></translation>
+        <translation>A kulcs, amellyel hozzáférhetsz a kulcsok online biztonsági mentéseihez. Ha gyorsítótárazva van, lehetőséged van biztonsági másolatként, titkosítva a szerveren tárolni a titkosítási kulcsokat.</translation>
     </message>
     <message>
         <location line="+54"/>
@@ -1911,7 +1911,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location line="+225"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished"></translation>
+        <translation>Munkameneti fájl megnyitása</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1921,34 +1921,34 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Hiba</translation>
     </message>
     <message>
         <location line="-66"/>
         <location line="+28"/>
         <source>File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Fájljelszó</translation>
     </message>
     <message>
         <location line="-27"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Írd be a jelmondatot a fájl titkosításának feloldásához:</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+28"/>
         <source>The password cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>A jelszó nem lehet üres</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation type="unfinished"></translation>
+        <translation>Írd be a jelmondatot a munkameneti kulcsok titkosításához:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>File to save the exported session keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportált munkameneti kulcsok mentése fájlba</translation>
     </message>
 </context>
 <context>
@@ -1956,17 +1956,17 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location filename="../qml/device-verification/Waiting.qml" line="+7"/>
         <source>Waiting for other party…</source>
-        <translation type="unfinished"></translation>
+        <translation>Várakozás a másik félre…</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Waiting for other side to accept the verification request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Várakozás a másik oldalra, hogy elfogadja a hitelesítési kérelmet.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to continue the verification process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Várakozás a másik oldalra a hitelesítés folytatásához.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1984,12 +1984,12 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+46"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Üdvözöl a Nheko, egy asztali kliens a Matrix protokollhoz!</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enjoy your stay!</source>
-        <translation type="unfinished"></translation>
+        <translation>Érezd jól magad nálunk!</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -2007,7 +2007,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location filename="../../src/Utils.cpp" line="+147"/>
         <source>Yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation>Tegnap</translation>
     </message>
 </context>
 <context>
@@ -2015,7 +2015,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location filename="../../src/dialogs/CreateRoom.cpp" line="+36"/>
         <source>Create room</source>
-        <translation type="unfinished"></translation>
+        <translation>Szoba létrehozása</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2035,22 +2035,22 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location line="+3"/>
         <source>Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Álnév</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Visibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Szoba láthatósága</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Szoba jellege</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Közvetlen csevegés</translation>
     </message>
 </context>
 <context>
@@ -2068,7 +2068,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Megerősítés</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2086,7 +2086,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location line="+8"/>
         <source>User ID to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Meghívandó felhasználó azonosítója</translation>
     </message>
 </context>
 <context>
@@ -2094,7 +2094,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location filename="../../src/dialogs/JoinRoom.cpp" line="+30"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Csatlakozás</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2104,7 +2104,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location line="+7"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Szoba azonosítója vagy álneve</translation>
     </message>
 </context>
 <context>
@@ -2117,7 +2117,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location line="+8"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished"></translation>
+        <translation>Biztosan távozni akarsz?</translation>
     </message>
 </context>
 <context>
@@ -2130,7 +2130,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location line="+8"/>
         <source>Logout. Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Biztosan kijelentkezel?</translation>
     </message>
 </context>
 <context>
@@ -2138,7 +2138,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+41"/>
         <source>Upload</source>
-        <translation type="unfinished"></translation>
+        <translation>Feltöltés</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2150,7 +2150,9 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
         <source>Media type: %1
 Media size: %2
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Média típusa: %1
+Média mérete: %2
+</translation>
     </message>
 </context>
 <context>
@@ -2163,12 +2165,12 @@ Media size: %2
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Megerősítés</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished"></translation>
+        <translation>Oldd meg a reCAPTCHA feladványát, és nyomd meg a „Megerősítés” gombot</translation>
     </message>
 </context>
 <context>
@@ -2189,12 +2191,12 @@ Media size: %2
     <message>
         <location line="-46"/>
         <source>Today %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ma %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Yesterday %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tegnap %1</translation>
     </message>
 </context>
 <context>
@@ -2207,69 +2209,69 @@ Media size: %2
     <message>
         <location line="+3"/>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Infó</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Internal ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Belső azonosító</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Room Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Szoba verziója</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Értesítések</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Muted</source>
-        <translation type="unfinished"></translation>
+        <translation>Némítva</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Mentions only</source>
-        <translation type="unfinished"></translation>
+        <translation>Csak megemlítéskor</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Mindegyik üzenetnél</translation>
     </message>
     <message>
         <location line="+97"/>
         <source>Room access</source>
-        <translation type="unfinished"></translation>
+        <translation>Szoba hozzáférhetősége</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Anyone and guests</source>
-        <translation type="unfinished"></translation>
+        <translation>Bárkinek és vendégeknek</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Anyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Bárkinek, aki ismeri a szoba linkjét (vendégek nem)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invited users</source>
-        <translation type="unfinished"></translation>
+        <translation>Meghívott felhasználók</translation>
     </message>
     <message>
         <location line="+50"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Titkosítás</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Whether or not the client should respond automatically with the session keys
  upon request. Use with caution, this is a temporary measure to test the
  E2E implementation until device verification is completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Válaszoljon-e kérés esetén a kliens munkamenetkulcsokkal automatikusan. Óvatosan használandó, mivel ez csak egy átmeneti megoldás a végponttól végpontig (E2E) titkosítás teszteléséhez, amíg be nincs fejezve az eszközhitelesítés.</translation>
     </message>
     <message>
         <location line="+20"/>
