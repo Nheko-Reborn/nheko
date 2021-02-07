@@ -263,9 +263,11 @@ CallDevices::init()
                 monitor       = gst_device_monitor_new();
                 GstCaps *caps = gst_caps_new_empty_simple("audio/x-raw");
                 gst_device_monitor_add_filter(monitor, "Audio/Source", caps);
+                gst_device_monitor_add_filter(monitor, "Audio/Duplex", caps);
                 gst_caps_unref(caps);
                 caps = gst_caps_new_empty_simple("video/x-raw");
                 gst_device_monitor_add_filter(monitor, "Video/Source", caps);
+                gst_device_monitor_add_filter(monitor, "Video/Duplex", caps);
                 gst_caps_unref(caps);
 
                 GstBus *bus = gst_device_monitor_get_bus(monitor);
@@ -289,9 +291,11 @@ CallDevices::refresh()
                 monitor       = gst_device_monitor_new();
                 GstCaps *caps = gst_caps_new_empty_simple("audio/x-raw");
                 gst_device_monitor_add_filter(monitor, "Audio/Source", caps);
+                gst_device_monitor_add_filter(monitor, "Audio/Duplex", caps);
                 gst_caps_unref(caps);
                 caps = gst_caps_new_empty_simple("video/x-raw");
                 gst_device_monitor_add_filter(monitor, "Video/Source", caps);
+                gst_device_monitor_add_filter(monitor, "Video/Duplex", caps);
                 gst_caps_unref(caps);
         }
 
