@@ -102,6 +102,7 @@ ListView {
 
                 Avatar {
                     id: messageUserAvatar
+
                     width: avatarSize
                     height: avatarSize
                     url: modelData ? chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/") : ""
@@ -112,8 +113,8 @@ ListView {
 
                 Connections {
                     target: chat.model
-                    onRoomAvatarUrlChanged: { 
-                      messageUserAvatar.url = modelData ? chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/") : ""
+                    onRoomAvatarUrlChanged: {
+                        messageUserAvatar.url = modelData ? chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/") : "";
                     }
                 }
 

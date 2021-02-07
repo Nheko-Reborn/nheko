@@ -449,10 +449,9 @@ ChatPage::deleteConfigs()
 {
         QSettings settings;
 
-        if (UserSettings::instance()->profile() != "")
-        {
-            settings.beginGroup("profile");
-            settings.beginGroup(UserSettings::instance()->profile());
+        if (UserSettings::instance()->profile() != "") {
+                settings.beginGroup("profile");
+                settings.beginGroup(UserSettings::instance()->profile());
         }
         settings.beginGroup("auth");
         settings.remove("");
