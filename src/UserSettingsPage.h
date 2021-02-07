@@ -177,12 +177,13 @@ public:
         int timelineMaxWidth() const { return timelineMaxWidth_; }
         double fontSize() const { return baseFontSize_; }
         QString font() const { return font_; }
-        QString emojiFont() const {
+        QString emojiFont() const
+        {
                 if (emojiFont_ == "Default") {
                         return tr("Default");
                 }
 
-                return emojiFont_; 
+                return emojiFont_;
         }
         Presence presence() const { return presence_; }
         QString ringtone() const { return ringtone_; }

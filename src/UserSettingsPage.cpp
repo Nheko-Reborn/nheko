@@ -741,8 +741,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 fontSelectionCombo_->setCurrentIndex(
                   fontSelectionCombo_->findText(tr(currentFont.toStdString().c_str())));
         } else {
-                fontSelectionCombo_->setCurrentIndex(
-                  fontSelectionCombo_->findText(currentFont));
+                fontSelectionCombo_->setCurrentIndex(fontSelectionCombo_->findText(currentFont));
         }
 
         emojiFontSelectionCombo_->setCurrentIndex(
