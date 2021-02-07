@@ -298,6 +298,7 @@ set(SRC_FILES
 	src/AvatarProvider.cpp
 	src/BlurhashProvider.cpp
 	src/Cache.cpp
+	src/CallDevices.cpp
 	src/CallManager.cpp
 	src/ChatPage.cpp
 	src/ColorImageProvider.cpp
@@ -512,6 +513,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/AvatarProvider.h
 	src/BlurhashProvider.h
 	src/Cache_p.h
+	src/CallDevices.h
 	src/CallManager.h
 	src/ChatPage.h
 	src/CommunitiesList.h
