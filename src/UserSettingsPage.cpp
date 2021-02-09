@@ -93,7 +93,7 @@ UserSettings::load(std::optional<QString> profile)
         sortByImportance_     = settings.value("user/sort_by_unread", true).toBool();
         readReceipts_         = settings.value("user/read_receipts", true).toBool();
         theme_                = settings.value("user/theme", defaultTheme_).toString();
-        font_                 = settings.value("user/font_family", "default").toString();
+        font_                 = settings.value("user/font_family", "").toString();
         avatarCircles_        = settings.value("user/avatar_circles", true).toBool();
         decryptSidebar_       = settings.value("user/decrypt_sidebar", true).toBool();
         privacyScreen_        = settings.value("user/privacy_screen", false).toBool();
@@ -101,7 +101,7 @@ UserSettings::load(std::optional<QString> profile)
         shareKeysWithTrustedUsers_ =
           settings.value("user/share_keys_with_trusted_users", true).toBool();
         mobileMode_        = settings.value("user/mobile_mode", false).toBool();
-        emojiFont_         = settings.value("user/emoji_font_family", "default").toString();
+        emojiFont_         = settings.value("user/emoji_font_family", "Default").toString();
         baseFontSize_      = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
         auto tempPresence  = settings.value("user/presence", "").toString().toStdString();
         auto presenceValue = QMetaEnum::fromType<Presence>().keyToValue(tempPresence.c_str());
@@ -341,7 +341,13 @@ UserSettings::setEmojiFontFamily(QString family)
 {
         if (family == emojiFont_)
                 return;
-        emojiFont_ = family;
+
+        if (family == tr("Default")) {
+                emojiFont_ = "Default";
+        } else {
+                emojiFont_ = family;
+        }
+
         emit emojiFontChanged(family);
         save();
 }
@@ -725,11 +731,18 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         // TODO: Is there a way to limit to just emojis, rather than
         // all emoji fonts?
         auto emojiFamilies = fontDb.families(QFontDatabase::Symbol);
+        emojiFontSelectionCombo_->addItem(tr("Default"));
         for (const auto &family : emojiFamilies) {
                 emojiFontSelectionCombo_->addItem(family);
         }
 
-        fontSelectionCombo_->setCurrentIndex(fontSelectionCombo_->findText(settings_->font()));
+        QString currentFont = settings_->font();
+        if (currentFont == "Default") {
+                fontSelectionCombo_->setCurrentIndex(
+                  fontSelectionCombo_->findText(tr(currentFont.toStdString().c_str())));
+        } else {
+                fontSelectionCombo_->setCurrentIndex(fontSelectionCombo_->findText(currentFont));
+        }
 
         emojiFontSelectionCombo_->setCurrentIndex(
           emojiFontSelectionCombo_->findText(settings_->emojiFont()));

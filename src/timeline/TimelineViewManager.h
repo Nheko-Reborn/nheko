@@ -66,6 +66,7 @@ public:
 
         Q_INVOKABLE void openLink(QString link) const;
 
+        Q_INVOKABLE void focusMessageInput();
         Q_INVOKABLE void openInviteUsersDialog();
         Q_INVOKABLE void openMemberListDialog() const;
         Q_INVOKABLE void openLeaveRoomDialog() const;
@@ -87,6 +88,7 @@ signals:
         void showRoomList();
         void narrowViewChanged();
         void focusChanged();
+        void focusInput();
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);

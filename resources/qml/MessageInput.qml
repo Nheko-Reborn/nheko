@@ -163,6 +163,10 @@ Rectangle {
                         TimelineManager.timeline.input.paste(false);
                         event.accepted = true;
                     } else if (event.key == Qt.Key_Space) {
+                        // close popup if user enters space after colon
+                        if(cursorPosition == completerTriggeredAt + 1)
+                            popup.close();
+
                         if (popup.opened && popup.count <= 0)
                             popup.close();
 
@@ -266,6 +270,11 @@ Rectangle {
                     target: TimelineManager.timeline
                 }
 
+                Connections {
+                    target: TimelineManager
+                    onFocusInput: messageInput.forceActiveFocus()
+                }
+
                 MouseArea {
                     // workaround for wrong cursor shape on some platforms
                     anchors.fill: parent
@@ -293,6 +302,7 @@ Rectangle {
             ToolTip.text: qsTr("Emoji")
             onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
                 messageInput.insert(messageInput.cursorPosition, emoji);
+                TimelineManager.focusMessageInput()
             })
         }
 
