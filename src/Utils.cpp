@@ -71,7 +71,7 @@ utils::replaceEmoji(const QString &body)
                 if (utils::codepointIsEmoji(code)) {
                         if (!insideFontBlock) {
                                 fmtBody += QString("<font face=\"" +
-                                                   UserSettings::instance()->font() + "\">");
+                                                   UserSettings::instance()->emojiFont() + "\">");
                                 insideFontBlock = true;
                         }
 
