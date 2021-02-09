@@ -390,9 +390,10 @@ TimelineViewManager::openLeaveRoomDialog() const
         MainWindow::instance()->openLeaveRoomDialog(timeline_->roomId());
 }
 void
-TimelineViewManager::openRoomSettings() const
+TimelineViewManager::openRoomSettings()
 {
         MainWindow::instance()->openRoomSettings(timeline_->roomId());
+        emit openRoomSettingsDialog();
 }
 
 void
