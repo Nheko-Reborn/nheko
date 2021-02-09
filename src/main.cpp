@@ -214,7 +214,7 @@ main(int argc, char *argv[])
 
         QFont font;
         QString userFontFamily = settings.lock()->font();
-        if (!userFontFamily.isEmpty()) {
+        if (!userFontFamily.isEmpty() && userFontFamily != "default") {
                 font.setFamily(userFontFamily);
         }
         font.setPointSizeF(settings.lock()->fontSize());

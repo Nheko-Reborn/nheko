@@ -93,7 +93,7 @@ UserSettings::load(std::optional<QString> profile)
         sortByImportance_     = settings.value("user/sort_by_unread", true).toBool();
         readReceipts_         = settings.value("user/read_receipts", true).toBool();
         theme_                = settings.value("user/theme", defaultTheme_).toString();
-        font_                 = settings.value("user/font_family", "").toString();
+        font_                 = settings.value("user/font_family", "default").toString();
         avatarCircles_        = settings.value("user/avatar_circles", true).toBool();
         decryptSidebar_       = settings.value("user/decrypt_sidebar", true).toBool();
         privacyScreen_        = settings.value("user/privacy_screen", false).toBool();
@@ -101,7 +101,7 @@ UserSettings::load(std::optional<QString> profile)
         shareKeysWithTrustedUsers_ =
           settings.value("user/share_keys_with_trusted_users", true).toBool();
         mobileMode_        = settings.value("user/mobile_mode", false).toBool();
-        emojiFont_         = settings.value("user/emoji_font_family", "Default").toString();
+        emojiFont_         = settings.value("user/emoji_font_family", "default").toString();
         baseFontSize_      = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
         auto tempPresence  = settings.value("user/presence", "").toString().toStdString();
         auto presenceValue = QMetaEnum::fromType<Presence>().keyToValue(tempPresence.c_str());
@@ -343,7 +343,7 @@ UserSettings::setEmojiFontFamily(QString family)
                 return;
 
         if (family == tr("Default")) {
-                emojiFont_ = "Default";
+                emojiFont_ = "default";
         } else {
                 emojiFont_ = family;
         }
@@ -737,10 +737,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         }
 
         QString currentFont = settings_->font();
-        if (currentFont == "Default") {
-                fontSelectionCombo_->setCurrentIndex(
-                  fontSelectionCombo_->findText(tr(currentFont.toStdString().c_str())));
-        } else {
+        if (currentFont != "default" || currentFont != "") {
                 fontSelectionCombo_->setCurrentIndex(fontSelectionCombo_->findText(currentFont));
         }
 
