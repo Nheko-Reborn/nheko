@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QString>
 
-#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
+#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD) || defined(Q_OS_HAIKU)
 #include <QtDBus/QDBusArgument>
 #include <QtDBus/QDBusInterface>
 #endif
@@ -41,7 +41,7 @@ signals:
 public slots:
         void removeNotification(const QString &roomId, const QString &eventId);
 
-#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
+#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD) || defined(Q_OS_HAIKU)
 public:
         void closeNotifications(QString roomId);
 
@@ -61,7 +61,7 @@ private slots:
         void notificationReplied(uint id, QString reply);
 };
 
-#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
+#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD) || defined(Q_OS_HAIKU)
 QDBusArgument &
 operator<<(QDBusArgument &arg, const QImage &image);
 const QDBusArgument &
