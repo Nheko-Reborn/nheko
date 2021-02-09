@@ -5,6 +5,7 @@
 
 #include <QObject>
 
+#include "CallDevices.h"
 #include "mtx/events/voip.hpp"
 
 typedef struct _GstElement GstElement;
@@ -59,13 +60,6 @@ public:
 
         void setTurnServers(const std::vector<std::string> &uris) { turnServers_ = uris; }
 
-        void refreshDevices();
-        std::vector<std::string> getDeviceNames(bool isVideo,
-                                                const std::string &defaultDevice) const;
-        std::vector<std::string> getResolutions(const std::string &cameraName) const;
-        std::vector<std::string> getFrameRates(const std::string &cameraName,
-                                               const std::string &resolution) const;
-
         void setVideoItem(QQuickItem *item) { videoItem_ = item; }
         QQuickItem *getVideoItem() const { return videoItem_; }
 
@@ -76,7 +70,6 @@ signals:
                            const std::vector<mtx::events::msg::CallCandidates::Candidate> &);
         void newICECandidate(const mtx::events::msg::CallCandidates::Candidate &);
         void stateChanged(webrtc::State);
-        void devicesChanged();
 
 private slots:
         void setState(webrtc::State state) { state_ = state; }
@@ -84,6 +77,7 @@ private slots:
 private:
         WebRTCSession();
 
+        CallDevices &devices_;
         bool initialised_           = false;
         bool haveVoicePlugins_      = false;
         bool haveVideoPlugins_      = false;
@@ -101,7 +95,6 @@ private:
         bool startPipeline(int opusPayloadType, int vp8PayloadType);
         bool createPipeline(int opusPayloadType, int vp8PayloadType);
         bool addVideoPipeline(int vp8PayloadType);
-        void startDeviceMonitor();
 
 public:
         WebRTCSession(WebRTCSession const &) = delete;

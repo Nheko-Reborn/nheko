@@ -49,6 +49,7 @@ ApplicationWindow {
 
         Text {
             id: errorText
+
             text: "Error Text"
             color: "red"
             visible: opacity > 0
@@ -58,24 +59,28 @@ ApplicationWindow {
 
         SequentialAnimation {
             id: hideErrorAnimation
+
             running: false
+
             PauseAnimation {
                 duration: 4000
             }
+
             NumberAnimation {
                 target: errorText
                 property: 'opacity'
                 to: 0
                 duration: 1000
             }
+
         }
 
-        Connections{
+        Connections {
             target: profile
             onDisplayError: {
-                errorText.text = errorMessage
-                errorText.opacity = 1
-                hideErrorAnimation.restart()
+                errorText.text = errorMessage;
+                errorText.opacity = 1;
+                hideErrorAnimation.restart();
             }
         }
 

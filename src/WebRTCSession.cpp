@@ -35,6 +35,7 @@ using webrtc::State;
 
 WebRTCSession::WebRTCSession()
   : QObject()
+  , devices_(CallDevices::instance())
 {
         qRegisterMetaType<webrtc::State>();
         qmlRegisterUncreatableMetaObject(
@@ -68,9 +69,7 @@ WebRTCSession::init(std::string *errorMessage)
         gchar *version = gst_version_string();
         nhlog::ui()->info("WebRTC: initialised {}", version);
         g_free(version);
-#if GST_CHECK_VERSION(1, 18, 0)
-        startDeviceMonitor();
-#endif
+        devices_.init();
         return true;
 #else
         (void)errorMessage;
@@ -81,195 +80,17 @@ WebRTCSession::init(std::string *errorMessage)
 #ifdef GSTREAMER_AVAILABLE
 namespace {
 
-struct AudioSource
-{
-        std::string name;
-        GstDevice *device;
-};
-
-struct VideoSource
-{
-        struct Caps
-        {
-                std::string resolution;
-                std::vector<std::string> frameRates;
-        };
-        std::string name;
-        GstDevice *device;
-        std::vector<Caps> caps;
-};
-
 std::string localsdp_;
 std::vector<mtx::events::msg::CallCandidates::Candidate> localcandidates_;
 bool haveAudioStream_;
 bool haveVideoStream_;
-std::vector<AudioSource> audioSources_;
-std::vector<VideoSource> videoSources_;
 GstPad *insetSinkPad_ = nullptr;
-
-using FrameRate = std::pair<int, int>;
-std::optional<FrameRate>
-getFrameRate(const GValue *value)
-{
-        if (GST_VALUE_HOLDS_FRACTION(value)) {
-                gint num = gst_value_get_fraction_numerator(value);
-                gint den = gst_value_get_fraction_denominator(value);
-                return FrameRate{num, den};
-        }
-        return std::nullopt;
-}
-
-void
-addFrameRate(std::vector<std::string> &rates, const FrameRate &rate)
-{
-        constexpr double minimumFrameRate = 15.0;
-        if (static_cast<double>(rate.first) / rate.second >= minimumFrameRate)
-                rates.push_back(std::to_string(rate.first) + "/" + std::to_string(rate.second));
-}
-
-std::pair<int, int>
-tokenise(std::string_view str, char delim)
-{
-        std::pair<int, int> ret;
-        ret.first  = std::atoi(str.data());
-        auto pos   = str.find_first_of(delim);
-        ret.second = std::atoi(str.data() + pos + 1);
-        return ret;
-}
-
-void
-addDevice(GstDevice *device)
-{
-        if (!device)
-                return;
-
-        gchar *name  = gst_device_get_display_name(device);
-        gchar *type  = gst_device_get_device_class(device);
-        bool isVideo = !std::strncmp(type, "Video", 5);
-        g_free(type);
-        nhlog::ui()->debug("WebRTC: {} device added: {}", isVideo ? "video" : "audio", name);
-        if (!isVideo) {
-                audioSources_.push_back({name, device});
-                g_free(name);
-                return;
-        }
-
-        GstCaps *gstcaps = gst_device_get_caps(device);
-        if (!gstcaps) {
-                nhlog::ui()->debug("WebRTC: unable to get caps for {}", name);
-                g_free(name);
-                return;
-        }
-
-        VideoSource source{name, device, {}};
-        g_free(name);
-        guint nCaps = gst_caps_get_size(gstcaps);
-        for (guint i = 0; i < nCaps; ++i) {
-                GstStructure *structure = gst_caps_get_structure(gstcaps, i);
-                const gchar *name       = gst_structure_get_name(structure);
-                if (!std::strcmp(name, "video/x-raw")) {
-                        gint widthpx, heightpx;
-                        if (gst_structure_get(structure,
-                                              "width",
-                                              G_TYPE_INT,
-                                              &widthpx,
-                                              "height",
-                                              G_TYPE_INT,
-                                              &heightpx,
-                                              nullptr)) {
-                                VideoSource::Caps caps;
-                                caps.resolution =
-                                  std::to_string(widthpx) + "x" + std::to_string(heightpx);
-                                const GValue *value =
-                                  gst_structure_get_value(structure, "framerate");
-                                if (auto fr = getFrameRate(value); fr)
-                                        addFrameRate(caps.frameRates, *fr);
-                                else if (GST_VALUE_HOLDS_FRACTION_RANGE(value)) {
-                                        const GValue *minRate =
-                                          gst_value_get_fraction_range_min(value);
-                                        if (auto fr = getFrameRate(minRate); fr)
-                                                addFrameRate(caps.frameRates, *fr);
-                                        const GValue *maxRate =
-                                          gst_value_get_fraction_range_max(value);
-                                        if (auto fr = getFrameRate(maxRate); fr)
-                                                addFrameRate(caps.frameRates, *fr);
-                                } else if (GST_VALUE_HOLDS_LIST(value)) {
-                                        guint nRates = gst_value_list_get_size(value);
-                                        for (guint j = 0; j < nRates; ++j) {
-                                                const GValue *rate =
-                                                  gst_value_list_get_value(value, j);
-                                                if (auto fr = getFrameRate(rate); fr)
-                                                        addFrameRate(caps.frameRates, *fr);
-                                        }
-                                }
-                                if (!caps.frameRates.empty())
-                                        source.caps.push_back(std::move(caps));
-                        }
-                }
-        }
-        gst_caps_unref(gstcaps);
-        videoSources_.push_back(std::move(source));
-}
-
-#if GST_CHECK_VERSION(1, 18, 0)
-template<typename T>
-bool
-removeDevice(T &sources, GstDevice *device, bool changed)
-{
-        if (auto it = std::find_if(sources.begin(),
-                                   sources.end(),
-                                   [device](const auto &s) { return s.device == device; });
-            it != sources.end()) {
-                nhlog::ui()->debug(std::string("WebRTC: device ") +
-                                     (changed ? "changed: " : "removed: ") + "{}",
-                                   it->name);
-                gst_object_unref(device);
-                sources.erase(it);
-                return true;
-        }
-        return false;
-}
-
-void
-removeDevice(GstDevice *device, bool changed)
-{
-        if (device) {
-                if (removeDevice(audioSources_, device, changed) ||
-                    removeDevice(videoSources_, device, changed))
-                        return;
-        }
-}
-#endif
 
 gboolean
 newBusMessage(GstBus *bus G_GNUC_UNUSED, GstMessage *msg, gpointer user_data)
 {
         WebRTCSession *session = static_cast<WebRTCSession *>(user_data);
         switch (GST_MESSAGE_TYPE(msg)) {
-#if GST_CHECK_VERSION(1, 18, 0)
-        case GST_MESSAGE_DEVICE_ADDED: {
-                GstDevice *device;
-                gst_message_parse_device_added(msg, &device);
-                addDevice(device);
-                emit WebRTCSession::instance().devicesChanged();
-                break;
-        }
-        case GST_MESSAGE_DEVICE_REMOVED: {
-                GstDevice *device;
-                gst_message_parse_device_removed(msg, &device);
-                removeDevice(device, false);
-                emit WebRTCSession::instance().devicesChanged();
-                break;
-        }
-        case GST_MESSAGE_DEVICE_CHANGED: {
-                GstDevice *device;
-                GstDevice *oldDevice;
-                gst_message_parse_device_changed(msg, &device, &oldDevice);
-                removeDevice(oldDevice, true);
-                addDevice(device);
-                break;
-        }
-#endif
         case GST_MESSAGE_EOS:
                 nhlog::ui()->error("WebRTC: end of stream");
                 session->end();
@@ -724,27 +545,6 @@ getMediaAttributes(const GstSDPMessage *sdp,
         return false;
 }
 
-template<typename T>
-std::vector<std::string>
-deviceNames(T &sources, const std::string &defaultDevice)
-{
-        std::vector<std::string> ret;
-        ret.reserve(sources.size());
-        std::transform(sources.cbegin(),
-                       sources.cend(),
-                       std::back_inserter(ret),
-                       [](const auto &s) { return s.name; });
-
-        // move default device to top of the list
-        if (auto it = std::find_if(ret.begin(),
-                                   ret.end(),
-                                   [&defaultDevice](const auto &s) { return s == defaultDevice; });
-            it != ret.end())
-                std::swap(ret.front(), *it);
-
-        return ret;
-}
-
 }
 
 bool
@@ -995,19 +795,11 @@ WebRTCSession::startPipeline(int opusPayloadType, int vp8PayloadType)
 bool
 WebRTCSession::createPipeline(int opusPayloadType, int vp8PayloadType)
 {
-        std::string microphoneSetting =
-          ChatPage::instance()->userSettings()->microphone().toStdString();
-        auto it =
-          std::find_if(audioSources_.cbegin(),
-                       audioSources_.cend(),
-                       [&microphoneSetting](const auto &s) { return s.name == microphoneSetting; });
-        if (it == audioSources_.cend()) {
-                nhlog::ui()->error("WebRTC: unknown microphone: {}", microphoneSetting);
+        GstDevice *device = devices_.audioDevice();
+        if (!device)
                 return false;
-        }
-        nhlog::ui()->debug("WebRTC: microphone: {}", microphoneSetting);
 
-        GstElement *source     = gst_device_create_element(it->device, nullptr);
+        GstElement *source     = gst_device_create_element(device, nullptr);
         GstElement *volume     = gst_element_factory_make("volume", "srclevel");
         GstElement *convert    = gst_element_factory_make("audioconvert", nullptr);
         GstElement *resample   = gst_element_factory_make("audioresample", nullptr);
@@ -1070,30 +862,16 @@ bool
 WebRTCSession::addVideoPipeline(int vp8PayloadType)
 {
         // allow incoming video calls despite localUser having no webcam
-        if (videoSources_.empty())
+        if (!devices_.haveCamera())
                 return !isOffering_;
 
-        QSharedPointer<UserSettings> settings = ChatPage::instance()->userSettings();
-        std::string cameraSetting             = settings->camera().toStdString();
-        auto it                               = std::find_if(videoSources_.cbegin(),
-                               videoSources_.cend(),
-                               [&cameraSetting](const auto &s) { return s.name == cameraSetting; });
-        if (it == videoSources_.cend()) {
-                nhlog::ui()->error("WebRTC: unknown camera: {}", cameraSetting);
+        std::pair<int, int> resolution;
+        std::pair<int, int> frameRate;
+        GstDevice *device = devices_.videoDevice(resolution, frameRate);
+        if (!device)
                 return false;
-        }
 
-        std::string resSetting = settings->cameraResolution().toStdString();
-        const std::string &res = resSetting.empty() ? it->caps.front().resolution : resSetting;
-        std::string frSetting  = settings->cameraFrameRate().toStdString();
-        const std::string &fr = frSetting.empty() ? it->caps.front().frameRates.front() : frSetting;
-        auto resolution       = tokenise(res, 'x');
-        auto frameRate        = tokenise(fr, '/');
-        nhlog::ui()->debug("WebRTC: camera: {}", cameraSetting);
-        nhlog::ui()->debug("WebRTC: camera resolution: {}x{}", resolution.first, resolution.second);
-        nhlog::ui()->debug("WebRTC: camera frame rate: {}/{}", frameRate.first, frameRate.second);
-
-        GstElement *source       = gst_device_create_element(it->device, nullptr);
+        GstElement *source       = gst_device_create_element(device, nullptr);
         GstElement *videoconvert = gst_element_factory_make("videoconvert", nullptr);
         GstElement *capsfilter   = gst_element_factory_make("capsfilter", "camerafilter");
         GstCaps *caps            = gst_caps_new_simple("video/x-raw",
@@ -1239,111 +1017,6 @@ WebRTCSession::end()
                 emit stateChanged(State::DISCONNECTED);
 }
 
-#if GST_CHECK_VERSION(1, 18, 0)
-void
-WebRTCSession::startDeviceMonitor()
-{
-        if (!initialised_)
-                return;
-
-        static GstDeviceMonitor *monitor = nullptr;
-        if (!monitor) {
-                monitor       = gst_device_monitor_new();
-                GstCaps *caps = gst_caps_new_empty_simple("audio/x-raw");
-                gst_device_monitor_add_filter(monitor, "Audio/Source", caps);
-                gst_caps_unref(caps);
-                caps = gst_caps_new_empty_simple("video/x-raw");
-                gst_device_monitor_add_filter(monitor, "Video/Source", caps);
-                gst_caps_unref(caps);
-
-                GstBus *bus = gst_device_monitor_get_bus(monitor);
-                gst_bus_add_watch(bus, newBusMessage, nullptr);
-                gst_object_unref(bus);
-                if (!gst_device_monitor_start(monitor)) {
-                        nhlog::ui()->error("WebRTC: failed to start device monitor");
-                        return;
-                }
-        }
-}
-#endif
-
-void
-WebRTCSession::refreshDevices()
-{
-#if GST_CHECK_VERSION(1, 18, 0)
-        return;
-#else
-        if (!initialised_)
-                return;
-
-        static GstDeviceMonitor *monitor = nullptr;
-        if (!monitor) {
-                monitor       = gst_device_monitor_new();
-                GstCaps *caps = gst_caps_new_empty_simple("audio/x-raw");
-                gst_device_monitor_add_filter(monitor, "Audio/Source", caps);
-                gst_caps_unref(caps);
-                caps = gst_caps_new_empty_simple("video/x-raw");
-                gst_device_monitor_add_filter(monitor, "Video/Source", caps);
-                gst_caps_unref(caps);
-        }
-
-        auto clearDevices = [](auto &sources) {
-                std::for_each(
-                  sources.begin(), sources.end(), [](auto &s) { gst_object_unref(s.device); });
-                sources.clear();
-        };
-        clearDevices(audioSources_);
-        clearDevices(videoSources_);
-
-        GList *devices = gst_device_monitor_get_devices(monitor);
-        if (devices) {
-                for (GList *l = devices; l != nullptr; l = l->next)
-                        addDevice(GST_DEVICE_CAST(l->data));
-                g_list_free(devices);
-        }
-        emit devicesChanged();
-#endif
-}
-
-std::vector<std::string>
-WebRTCSession::getDeviceNames(bool isVideo, const std::string &defaultDevice) const
-{
-        return isVideo ? deviceNames(videoSources_, defaultDevice)
-                       : deviceNames(audioSources_, defaultDevice);
-}
-
-std::vector<std::string>
-WebRTCSession::getResolutions(const std::string &cameraName) const
-{
-        std::vector<std::string> ret;
-        if (auto it = std::find_if(videoSources_.cbegin(),
-                                   videoSources_.cend(),
-                                   [&cameraName](const auto &s) { return s.name == cameraName; });
-            it != videoSources_.cend()) {
-                ret.reserve(it->caps.size());
-                for (const auto &c : it->caps)
-                        ret.push_back(c.resolution);
-        }
-        return ret;
-}
-
-std::vector<std::string>
-WebRTCSession::getFrameRates(const std::string &cameraName, const std::string &resolution) const
-{
-        if (auto i = std::find_if(videoSources_.cbegin(),
-                                  videoSources_.cend(),
-                                  [&](const auto &s) { return s.name == cameraName; });
-            i != videoSources_.cend()) {
-                if (auto j =
-                      std::find_if(i->caps.cbegin(),
-                                   i->caps.cend(),
-                                   [&](const auto &s) { return s.resolution == resolution; });
-                    j != i->caps.cend())
-                        return j->frameRates;
-        }
-        return {};
-}
-
 #else
 
 bool
@@ -1400,25 +1073,4 @@ void
 WebRTCSession::end()
 {}
 
-void
-WebRTCSession::refreshDevices()
-{}
-
-std::vector<std::string>
-WebRTCSession::getDeviceNames(bool, const std::string &) const
-{
-        return {};
-}
-
-std::vector<std::string>
-WebRTCSession::getResolutions(const std::string &) const
-{
-        return {};
-}
-
-std::vector<std::string>
-WebRTCSession::getFrameRates(const std::string &, const std::string &) const
-{
-        return {};
-}
 #endif
