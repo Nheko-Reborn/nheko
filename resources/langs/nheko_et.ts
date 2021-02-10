@@ -1010,7 +1010,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+13"/>
         <source>Cancel edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühista muudatused</translation>
     </message>
 </context>
 <context>
@@ -1339,12 +1339,12 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/TimelineRow.qml" line="+99"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Edited</source>
-        <translation type="unfinished"></translation>
+        <translation>Muudetud</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1377,7 +1377,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+7"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1505,7 +1505,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+8"/>
         <source>User Profile Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajaprofiili seadistused</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1553,22 +1553,22 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+296"/>
         <source>Select an avatar</source>
-        <translation type="unfinished">Vali tunnuspilt</translation>
+        <translation>Vali tunnuspilt</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Kõik failid (*)</translation>
+        <translation>Kõik failid (*)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished">Valitud fail ei ole pildifail</translation>
+        <translation>Valitud fail ei ole pildifail</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished">Viga faili lugemisel: %1</translation>
+        <translation>Viga faili lugemisel: %1</translation>
     </message>
 </context>
 <context>
@@ -1577,7 +1577,7 @@ Näiteks: https://server.minu:8787</translation>
         <location filename="../../src/UserSettingsPage.cpp" line="+345"/>
         <location filename="../../src/UserSettingsPage.h" line="+183"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaikimisi</translation>
     </message>
 </context>
 <context>
@@ -1610,7 +1610,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+96"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaikimisi</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1669,25 +1669,28 @@ Kehtib vaid läbivalt krüptitud vestluste puhul.</translation>
     <message>
         <location line="+2"/>
         <source>Privacy Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Privaatsust tagav sirm</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kui aken kaotab fookuse,
+siis ajajoone vaade hägustub.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation type="unfinished"></translation>
+        <translation>Viivitus privaatsussirmi sisselülitamisel (sekundites [0 - 3600])</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadista aeg sekundites, mille möödumisel
+peale akna fookuse kadumist ajajoone vaade hägustub.
+0 hägustab vaate koheselt. Pikim viivitus saab olla 1 tund (3600 sekundit)</translation>
     </message>
     <message>
         <location line="+3"/>
