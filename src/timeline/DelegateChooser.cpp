@@ -123,10 +123,6 @@ DelegateChooser::DelegateIncubator::statusChanged(QQmlIncubator::Status status)
                 }
 
                 chooser.child_->setParentItem(&chooser);
-                connect(chooser.child_, &QQuickItem::heightChanged, &chooser, [this]() {
-                        chooser.setHeight(chooser.child_->height());
-                });
-                chooser.setHeight(chooser.child_->height());
                 QQmlEngine::setObjectOwnership(chooser.child_,
                                                QQmlEngine::ObjectOwnership::JavaScriptOwnership);
                 emit chooser.childChanged();

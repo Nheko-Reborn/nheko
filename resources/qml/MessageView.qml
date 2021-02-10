@@ -13,7 +13,6 @@ ListView {
 
     Layout.fillWidth: true
     Layout.fillHeight: true
-    cacheBuffer: 400
     model: TimelineManager.timeline
     boundsBehavior: Flickable.StopAtBounds
     pixelAligned: true
