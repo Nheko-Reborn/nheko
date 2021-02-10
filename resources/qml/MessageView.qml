@@ -73,7 +73,9 @@ ListView {
 
     Shortcut {
         sequence: "Ctrl+E"
-        onActivated: chat.model.edit = chat.model.reply
+        onActivated: {
+            chat.model.edit = chat.model.reply;
+        }
     }
 
     Component {

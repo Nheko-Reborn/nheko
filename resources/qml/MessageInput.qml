@@ -165,7 +165,7 @@ Rectangle {
                         event.accepted = true;
                     } else if (event.key == Qt.Key_Space) {
                         // close popup if user enters space after colon
-                        if(cursorPosition == completerTriggeredAt + 1)
+                        if (cursorPosition == completerTriggeredAt + 1)
                             popup.close();
 
                         if (popup.opened && popup.count <= 0)
@@ -310,7 +310,7 @@ Rectangle {
             ToolTip.text: qsTr("Emoji")
             onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
                 messageInput.insert(messageInput.cursorPosition, emoji);
-                TimelineManager.focusMessageInput()
+                TimelineManager.focusMessageInput();
             })
         }
 

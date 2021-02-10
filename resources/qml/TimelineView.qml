@@ -66,11 +66,13 @@ Page {
         property string eventId
         property int eventType
         property bool isEncrypted
+        property bool isEditable
 
-        function show(eventId_, eventType_, isEncrypted_, showAt_, position) {
+        function show(eventId_, eventType_, isEncrypted_, isEditable_, showAt_, position) {
             eventId = eventId_;
             eventType = eventType_;
             isEncrypted = isEncrypted_;
+            isEditable = isEditable_;
             if (position)
                 popup(position, showAt_);
             else
@@ -92,6 +94,8 @@ Page {
         }
 
         MenuItem {
+            visible: messageContextMenu.isEditable
+            height: visible ? implicitHeight : 0
             text: qsTr("Edit")
             onClicked: TimelineManager.timeline.editAction(messageContextMenu.eventId)
         }

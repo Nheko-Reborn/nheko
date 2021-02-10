@@ -26,12 +26,12 @@ Item {
         acceptedButtons: Qt.AllButtons
         onClicked: {
             if (mouse.button === Qt.RightButton)
-                messageContextMenu.show(model.id, model.type, model.isEncrypted, row);
+                messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, row);
             else
                 mouse.accepted = false;
         }
         onPressAndHold: {
-            messageContextMenu.show(model.id, model.type, model.isEncrypted, row, mapToItem(timelineRoot, mouse.x, mouse.y));
+            messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, row, mapToItem(timelineRoot, mouse.x, mouse.y));
         }
     }
 
@@ -143,7 +143,7 @@ Item {
             image: ":/icons/icons/ui/vertical-ellipsis.png"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Options")
-            onClicked: messageContextMenu.show(model.id, model.type, model.isEncrypted, optionsButton)
+            onClicked: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, optionsButton)
         }
 
         Label {

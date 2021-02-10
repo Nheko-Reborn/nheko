@@ -1537,11 +1537,11 @@ void
 TimelineModel::setEdit(QString newEdit)
 {
         if (edit_ != newEdit) {
-                edit_ = newEdit;
-                emit editChanged(edit_);
-
                 auto ev = events.get(newEdit.toStdString(), "");
-                if (ev) {
+                if (ev && mtx::accessors::sender(*ev) == http::client()->user_id().to_string()) {
+                        edit_ = newEdit;
+                        emit editChanged(edit_);
+
                         setReply(QString::fromStdString(
                           mtx::accessors::relations(*ev).reply_to().value_or("")));
 
@@ -1555,6 +1555,8 @@ TimelineModel::setEdit(QString newEdit)
                                 input()->setText("");
                         }
                 } else {
+                        edit_ = "";
+                        emit editChanged(edit_);
                         input()->setText("");
                 }
         }
