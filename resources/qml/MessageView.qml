@@ -50,10 +50,10 @@ ListView {
     Shortcut {
         sequence: StandardKey.Cancel
         onActivated: {
-            if (chat.model.edit)
-                chat.model.edit = undefined;
-            else
+            if (chat.model.reply)
                 chat.model.reply = undefined;
+            else
+                chat.model.edit = undefined;
         }
     }
 
