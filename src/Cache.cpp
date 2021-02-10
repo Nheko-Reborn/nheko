@@ -1202,25 +1202,24 @@ Cache::calculateRoomReadStatus(const std::string &room_id)
         const auto last_event_id = getLastEventId(txn, room_id);
         const auto localUser     = utils::localUser().toStdString();
 
+        std::string fullyReadEventId;
+        if (auto ev = getAccountData(txn, mtx::events::EventType::FullyRead, room_id)) {
+                if (auto fr = std::get_if<
+                      mtx::events::AccountDataEvent<mtx::events::account_data::FullyRead>>(
+                      &ev.value())) {
+                        fullyReadEventId = fr->content.event_id;
+                }
+        }
         txn.commit();
 
-        if (last_event_id.empty())
+        if (last_event_id.empty() || fullyReadEventId.empty())
+                return true;
+
+        if (last_event_id == fullyReadEventId)
                 return false;
 
         // Retrieve all read receipts for that event.
-        const auto receipts =
-          readReceipts(QString::fromStdString(last_event_id), QString::fromStdString(room_id));
-
-        if (receipts.size() == 0)
-                return true;
-
-        // Check if the local user has a read receipt for it.
-        for (auto it = receipts.cbegin(); it != receipts.cend(); it++) {
-                if (it->second == localUser)
-                        return false;
-        }
-
-        return true;
+        return getEventIndex(room_id, last_event_id) > getEventIndex(room_id, fullyReadEventId);
 }
 
 void
@@ -1918,7 +1917,6 @@ Cache::getEventIndex(const std::string &room_id, std::string_view event_id)
 
         bool success = lmdb::dbi_get(txn, orderDb, indexVal, val);
         if (!success) {
-                nhlog::db()->critical("Could not find event id: {}", event_id);
                 return {};
         }
 
@@ -3320,9 +3318,12 @@ Cache::getAccountData(lmdb::txn &txn, mtx::events::EventType type, const std::st
                 lmdb::val data;
                 if (lmdb::dbi_get(txn, db, lmdb::val(to_string(type)), data)) {
                         mtx::responses::utils::RoomAccountDataEvents events;
-                        mtx::responses::utils::parse_room_account_data_events(
-                          std::string_view(data.data(), data.size()), events);
-                        return events.front();
+                        json j = json::array({
+                          json::parse(std::string_view(data.data(), data.size())),
+                        });
+                        mtx::responses::utils::parse_room_account_data_events(j, events);
+                        if (events.size() == 1)
+                                return events.front();
                 }
         } catch (...) {
         }
