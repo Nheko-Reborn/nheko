@@ -55,7 +55,7 @@ Rectangle {
         anchors.topMargin: 10
         anchors.top: parent.top
         //height: 16
-        text: qsTr("Abort edit")
+        text: qsTr("Cancel edit")
         onClicked: room.edit = undefined
     }
 
