@@ -260,6 +260,9 @@ public slots:
         QString reply() const { return reply_; }
         void setReply(QString newReply)
         {
+                if (edit_.startsWith('m'))
+                        return;
+
                 if (reply_ != newReply) {
                         reply_ = newReply;
                         emit replyChanged(reply_);

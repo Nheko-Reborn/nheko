@@ -1536,6 +1536,9 @@ TimelineModel::formatMemberEvent(QString id)
 void
 TimelineModel::setEdit(QString newEdit)
 {
+        if (edit_.startsWith('m'))
+                return;
+
         if (edit_ != newEdit) {
                 auto ev = events.get(newEdit.toStdString(), "");
                 if (ev && mtx::accessors::sender(*ev) == http::client()->user_id().to_string()) {
