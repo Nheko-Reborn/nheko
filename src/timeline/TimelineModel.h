@@ -329,7 +329,7 @@ private:
         bool decryptDescription     = true;
         bool m_paginationInProgress = false;
 
-        QString currentId;
+        QString currentId, currentReadId;
         QString reply_, edit_;
         std::vector<QString> typingUsers_;
 

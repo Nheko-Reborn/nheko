@@ -740,10 +740,25 @@ TimelineModel::setCurrentIndex(int index)
 
         auto oldIndex = idToIndex(currentId);
         currentId     = indexToId(index);
-        emit currentIndexChanged(index);
+        if (index != oldIndex)
+                emit currentIndexChanged(index);
 
-        if ((oldIndex > index || oldIndex == -1) && !currentId.startsWith("m")) {
-                readEvent(currentId.toStdString());
+        if (!currentId.startsWith("m")) {
+                auto oldReadIndex =
+                  cache::getEventIndex(roomId().toStdString(), currentReadId.toStdString());
+                auto nextEventIndexAndId =
+                  cache::lastInvisibleEventAfter(roomId().toStdString(), currentId.toStdString());
+
+                if (nextEventIndexAndId &&
+                    (!oldReadIndex || *oldReadIndex < nextEventIndexAndId->first)) {
+                        readEvent(nextEventIndexAndId->second);
+                        currentReadId = QString::fromStdString(nextEventIndexAndId->second);
+
+                        nhlog::net()->info("Marked as read {}, index {}, oldReadIndex {}",
+                                           nextEventIndexAndId->second,
+                                           nextEventIndexAndId->first,
+                                           *oldReadIndex);
+                }
         }
 }
 

@@ -1897,6 +1897,84 @@ Cache::getTimelineIndex(const std::string &room_id, std::string_view event_id)
 }
 
 std::optional<uint64_t>
+Cache::getEventIndex(const std::string &room_id, std::string_view event_id)
+{
+        if (event_id.empty())
+                return {};
+
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        lmdb::dbi orderDb{0};
+        try {
+                orderDb = getEventToOrderDb(txn, room_id);
+        } catch (lmdb::runtime_error &e) {
+                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
+                                   room_id,
+                                   e.what());
+                return {};
+        }
+
+        lmdb::val indexVal{event_id.data(), event_id.size()}, val;
+
+        bool success = lmdb::dbi_get(txn, orderDb, indexVal, val);
+        if (!success) {
+                nhlog::db()->critical("Could not find event id: {}", event_id);
+                return {};
+        }
+
+        return *val.data<uint64_t>();
+}
+
+std::optional<std::pair<uint64_t, std::string>>
+Cache::lastInvisibleEventAfter(const std::string &room_id, std::string_view event_id)
+{
+        if (event_id.empty())
+                return {};
+
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        lmdb::dbi orderDb{0};
+        lmdb::dbi eventOrderDb{0};
+        lmdb::dbi timelineDb{0};
+        try {
+                orderDb      = getEventToOrderDb(txn, room_id);
+                eventOrderDb = getEventOrderDb(txn, room_id);
+                timelineDb   = getMessageToOrderDb(txn, room_id);
+        } catch (lmdb::runtime_error &e) {
+                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
+                                   room_id,
+                                   e.what());
+                return {};
+        }
+
+        lmdb::val eventIdVal{event_id.data(), event_id.size()}, indexVal;
+
+        bool success = lmdb::dbi_get(txn, orderDb, eventIdVal, indexVal);
+        if (!success) {
+                return {};
+        }
+        uint64_t prevIdx = *indexVal.data<uint64_t>();
+        std::string prevId{eventIdVal.data(), eventIdVal.size()};
+
+        auto cursor = lmdb::cursor::open(txn, eventOrderDb);
+        cursor.get(indexVal, MDB_SET);
+        while (cursor.get(indexVal, eventIdVal, MDB_NEXT)) {
+                std::string evId =
+                  json::parse(std::string_view(eventIdVal.data(), eventIdVal.size()))["event_id"]
+                    .get<std::string>();
+                lmdb::val temp;
+                if (lmdb::dbi_get(txn, timelineDb, lmdb::val(evId.data(), evId.size()), temp)) {
+                        return std::pair{prevIdx, std::string(prevId)};
+                } else {
+                        prevIdx = *indexVal.data<uint64_t>();
+                        prevId  = std::move(evId);
+                }
+        }
+
+        return std::pair{prevIdx, std::string(prevId)};
+}
+
+std::optional<uint64_t>
 Cache::getArrivalIndex(const std::string &room_id, std::string_view event_id)
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
@@ -4251,6 +4329,18 @@ UserReceipts
 readReceipts(const QString &event_id, const QString &room_id)
 {
         return instance_->readReceipts(event_id, room_id);
+}
+
+std::optional<uint64_t>
+getEventIndex(const std::string &room_id, std::string_view event_id)
+{
+        return instance_->getEventIndex(room_id, event_id);
+}
+
+std::optional<std::pair<uint64_t, std::string>>
+lastInvisibleEventAfter(const std::string &room_id, std::string_view event_id)
+{
+        return instance_->lastInvisibleEventAfter(room_id, event_id);
 }
 
 QByteArray
