@@ -1,4 +1,4 @@
-#include "dialogs/RoomSettings.h"
+#include "dialogs/RoomSettingsOld.h"
 #include <QApplication>
 #include <QComboBox>
 #include <QEvent>
@@ -195,7 +195,7 @@ EditModal::setFields(const QString &roomName, const QString &roomTopic)
         topicInput_->setText(roomTopic);
 }
 
-RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
+RoomSettingsOld::RoomSettingsOld(const QString &room_id, QWidget *parent)
   : QFrame(parent)
   , room_id_{std::move(room_id)}
 {
@@ -253,7 +253,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         notifCombo->addItem(tr("Mentions only")); // {"actions":["dont_notify"]}
         notifCombo->addItem(tr("All messages"));  // delete rule
 
-        connect(this, &RoomSettings::notifChanged, notifCombo, &QComboBox::setCurrentIndex);
+        connect(this, &RoomSettingsOld::notifChanged, notifCombo, &QComboBox::setCurrentIndex);
         http::client()->get_pushrules(
           "global",
           "override",
@@ -487,7 +487,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 auto filter = new ClickableFilter(this);
                 avatar_->installEventFilter(filter);
                 avatar_->setCursor(Qt::PointingHandCursor);
-                connect(filter, &ClickableFilter::clicked, this, &RoomSettings::updateAvatar);
+                connect(filter, &ClickableFilter::clicked, this, &RoomSettingsOld::updateAvatar);
         }
 
         roomNameLabel_ = new QLabel(QString::fromStdString(info_.name), this);
@@ -542,7 +542,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
         layout->addLayout(spinnerLayout);
         layout->addStretch(1);
 
-        connect(this, &RoomSettings::enableEncryptionError, this, [this](const QString &msg) {
+        connect(this, &RoomSettingsOld::enableEncryptionError, this, [this](const QString &msg) {
                 encryptionToggle_->setState(false);
                 keyRequestsToggle_->setState(false);
                 keyRequestsToggle_->setEnabled(false);
@@ -551,7 +551,7 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 emit ChatPage::instance()->showNotification(msg);
         });
 
-        connect(this, &RoomSettings::showErrorMessage, this, [this](const QString &msg) {
+        connect(this, &RoomSettingsOld::showErrorMessage, this, [this](const QString &msg) {
                 if (!errorLabel_)
                         return;
 
@@ -561,18 +561,18 @@ RoomSettings::RoomSettings(const QString &room_id, QWidget *parent)
                 errorLabel_->setText(msg);
         });
 
-        connect(this, &RoomSettings::accessRulesUpdated, this, [this]() {
+        connect(this, &RoomSettingsOld::accessRulesUpdated, this, [this]() {
                 stopLoadingSpinner();
                 resetErrorLabel();
         });
 
         auto closeShortcut = new QShortcut(QKeySequence(QKeySequence::Cancel), this);
-        connect(closeShortcut, &QShortcut::activated, this, &RoomSettings::close);
-        connect(okBtn, &QPushButton::clicked, this, &RoomSettings::close);
+        connect(closeShortcut, &QShortcut::activated, this, &RoomSettingsOld::close);
+        connect(okBtn, &QPushButton::clicked, this, &RoomSettingsOld::close);
 }
 
 void
-RoomSettings::setupEditButton()
+RoomSettingsOld::setupEditButton()
 {
         btnLayout_ = new QHBoxLayout;
         btnLayout_->setSpacing(BUTTON_SPACING);
@@ -610,7 +610,7 @@ RoomSettings::setupEditButton()
 }
 
 void
-RoomSettings::retrieveRoomInfo()
+RoomSettingsOld::retrieveRoomInfo()
 {
         try {
                 usesEncryption_ = cache::isRoomEncrypted(room_id_.toStdString());
@@ -623,7 +623,7 @@ RoomSettings::retrieveRoomInfo()
 }
 
 void
-RoomSettings::enableEncryption()
+RoomSettingsOld::enableEncryption()
 {
         const auto room_id = room_id_.toStdString();
         http::client()->enable_encryption(
@@ -645,7 +645,7 @@ RoomSettings::enableEncryption()
 }
 
 void
-RoomSettings::showEvent(QShowEvent *event)
+RoomSettingsOld::showEvent(QShowEvent *event)
 {
         resetErrorLabel();
         stopLoadingSpinner();
@@ -654,7 +654,7 @@ RoomSettings::showEvent(QShowEvent *event)
 }
 
 bool
-RoomSettings::canChangeJoinRules(const std::string &room_id, const std::string &user_id) const
+RoomSettingsOld::canChangeJoinRules(const std::string &room_id, const std::string &user_id) const
 {
         try {
                 return cache::hasEnoughPowerLevel({EventType::RoomJoinRules}, room_id, user_id);
@@ -666,7 +666,7 @@ RoomSettings::canChangeJoinRules(const std::string &room_id, const std::string &
 }
 
 bool
-RoomSettings::canChangeNameAndTopic(const std::string &room_id, const std::string &user_id) const
+RoomSettingsOld::canChangeNameAndTopic(const std::string &room_id, const std::string &user_id) const
 {
         try {
                 return cache::hasEnoughPowerLevel(
@@ -679,7 +679,7 @@ RoomSettings::canChangeNameAndTopic(const std::string &room_id, const std::strin
 }
 
 bool
-RoomSettings::canChangeAvatar(const std::string &room_id, const std::string &user_id) const
+RoomSettingsOld::canChangeAvatar(const std::string &room_id, const std::string &user_id) const
 {
         try {
                 return cache::hasEnoughPowerLevel({EventType::RoomAvatar}, room_id, user_id);
@@ -691,7 +691,7 @@ RoomSettings::canChangeAvatar(const std::string &room_id, const std::string &use
 }
 
 void
-RoomSettings::updateAccessRules(const std::string &room_id,
+RoomSettingsOld::updateAccessRules(const std::string &room_id,
                                 const mtx::events::state::JoinRules &join_rule,
                                 const mtx::events::state::GuestAccess &guest_access)
 {
@@ -732,7 +732,7 @@ RoomSettings::updateAccessRules(const std::string &room_id,
 }
 
 void
-RoomSettings::stopLoadingSpinner()
+RoomSettingsOld::stopLoadingSpinner()
 {
         if (spinner_) {
                 spinner_->stop();
@@ -741,7 +741,7 @@ RoomSettings::stopLoadingSpinner()
 }
 
 void
-RoomSettings::startLoadingSpinner()
+RoomSettingsOld::startLoadingSpinner()
 {
         if (spinner_) {
                 spinner_->start();
@@ -750,7 +750,7 @@ RoomSettings::startLoadingSpinner()
 }
 
 void
-RoomSettings::displayErrorMessage(const QString &msg)
+RoomSettingsOld::displayErrorMessage(const QString &msg)
 {
         stopLoadingSpinner();
 
@@ -759,7 +759,7 @@ RoomSettings::displayErrorMessage(const QString &msg)
 }
 
 void
-RoomSettings::setAvatar()
+RoomSettingsOld::setAvatar()
 {
         stopLoadingSpinner();
 
@@ -768,7 +768,7 @@ RoomSettings::setAvatar()
 }
 
 void
-RoomSettings::resetErrorLabel()
+RoomSettingsOld::resetErrorLabel()
 {
         if (errorLabel_) {
                 errorLabel_->hide();
@@ -777,7 +777,7 @@ RoomSettings::resetErrorLabel()
 }
 
 void
-RoomSettings::updateAvatar()
+RoomSettingsOld::updateAvatar()
 {
         const QString picturesFolder =
           QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
@@ -811,8 +811,8 @@ RoomSettings::updateAvatar()
         // Events emitted from the http callbacks (different threads) will
         // be queued back into the UI thread through this proxy object.
         auto proxy = std::make_shared<ThreadProxy>();
-        connect(proxy.get(), &ThreadProxy::error, this, &RoomSettings::displayErrorMessage);
-        connect(proxy.get(), &ThreadProxy::avatarChanged, this, &RoomSettings::setAvatar);
+        connect(proxy.get(), &ThreadProxy::error, this, &RoomSettingsOld::displayErrorMessage);
+        connect(proxy.get(), &ThreadProxy::avatarChanged, this, &RoomSettingsOld::setAvatar);
 
         const auto bin        = file.peek(file.size());
         const auto payload    = std::string(bin.data(), bin.size());

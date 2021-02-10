@@ -177,7 +177,9 @@ Page {
         Connections {
             target: TimelineManager
             onOpenRoomSettingsDialog: {
-                var roomSettings = roomSettingsComponent.createObject(timelineRoot);
+                var roomSettings = roomSettingsComponent.createObject(timelineRoot, {
+                    "roomSettings": roomSettings
+                });
                 roomSettings.show();
             }
         }

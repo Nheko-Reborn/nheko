@@ -51,7 +51,7 @@
 #include "dialogs/Logout.h"
 #include "dialogs/MemberList.h"
 #include "dialogs/ReadReceipts.h"
-#include "dialogs/RoomSettings.h"
+#include "dialogs/RoomSettingsOld.h"
 
 MainWindow *MainWindow::instance_ = nullptr;
 
@@ -366,7 +366,7 @@ MainWindow::hasActiveUser()
 void
 MainWindow::openRoomSettings(const QString &room_id)
 {
-        auto dialog = new dialogs::RoomSettings(room_id, this);
+        auto dialog = new dialogs::RoomSettingsOld(room_id, this);
 
         showDialog(dialog);
 }

@@ -393,7 +393,9 @@ void
 TimelineViewManager::openRoomSettings()
 {
         MainWindow::instance()->openRoomSettings(timeline_->roomId());
-        emit openRoomSettingsDialog();
+
+        RoomSettings *roomSettings = new RoomSettings(timeline_->roomId(), this);
+        emit openRoomSettingsDialog(roomSettings);
 }
 
 void

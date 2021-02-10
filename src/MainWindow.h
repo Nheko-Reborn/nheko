@@ -54,7 +54,7 @@ class LeaveRoom;
 class Logout;
 class MemberList;
 class ReCaptcha;
-class RoomSettings;
+class RoomSettingsOld;
 }
 
 class MainWindow : public QMainWindow

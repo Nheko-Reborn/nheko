@@ -86,11 +86,11 @@ private:
 
 namespace dialogs {
 
-class RoomSettings : public QFrame
+class RoomSettingsOld : public QFrame
 {
         Q_OBJECT
 public:
-        RoomSettings(const QString &room_id, QWidget *parent = nullptr);
+        RoomSettingsOld(const QString &room_id, QWidget *parent = nullptr);
 
 signals:
         void enableEncryptionError(const QString &msg);

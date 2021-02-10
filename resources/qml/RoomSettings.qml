@@ -16,7 +16,7 @@ ApplicationWindow {
     minimumHeight: 420
     palette: colors
     color: colors.window
-    title: "Room Settings"
+    title: roomSettings.roomName
     modality: Qt.Modal
 
     Shortcut {
