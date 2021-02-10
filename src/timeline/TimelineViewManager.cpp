@@ -503,9 +503,11 @@ TimelineViewManager::queueReactionMessage(const QString &reactedEvent, const QSt
         // If selfReactedEvent is empty, that means we haven't previously reacted
         if (selfReactedEvent.isEmpty()) {
                 mtx::events::msg::Reaction reaction;
-                reaction.relates_to.rel_type = mtx::common::RelationType::Annotation;
-                reaction.relates_to.event_id = reactedEvent.toStdString();
-                reaction.relates_to.key      = reactionKey.toStdString();
+                mtx::common::Relation rel;
+                rel.rel_type = mtx::common::RelationType::Annotation;
+                rel.event_id = reactedEvent.toStdString();
+                rel.key      = reactionKey.toStdString();
+                reaction.relations.relations.push_back(rel);
 
                 timeline_->sendMessageEvent(reaction, mtx::events::EventType::Reaction);
                 // Otherwise, we have previously reacted and the reaction should be redacted

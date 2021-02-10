@@ -204,7 +204,14 @@ public:
         std::optional<TimelineRange> getTimelineRange(const std::string &room_id);
         std::optional<uint64_t> getTimelineIndex(const std::string &room_id,
                                                  std::string_view event_id);
+        std::optional<uint64_t> getEventIndex(const std::string &room_id,
+                                              std::string_view event_id);
+        std::optional<std::pair<uint64_t, std::string>> lastInvisibleEventAfter(
+          const std::string &room_id,
+          std::string_view event_id);
         std::optional<std::string> getTimelineEventId(const std::string &room_id, uint64_t index);
+        std::optional<uint64_t> getArrivalIndex(const std::string &room_id,
+                                                std::string_view event_id);
 
         std::string previousBatchToken(const std::string &room_id);
         uint64_t saveOldMessages(const std::string &room_id, const mtx::responses::Messages &res);

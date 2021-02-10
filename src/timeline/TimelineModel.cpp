@@ -288,6 +288,8 @@ TimelineModel::roleNames() const
           {ProportionalHeight, "proportionalHeight"},
           {Id, "id"},
           {State, "state"},
+          {IsEdited, "isEdited"},
+          {IsEditable, "isEditable"},
           {IsEncrypted, "isEncrypted"},
           {IsRoomEncrypted, "isRoomEncrypted"},
           {ReplyTo, "replyTo"},
@@ -360,7 +362,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 const static QRegularExpression replyFallback(
                   "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption);
 
-                bool isReply = !in_reply_to_event(event).empty();
+                bool isReply = relations(event).reply_to().has_value();
 
                 auto formattedBody_ = QString::fromStdString(formatted_body(event));
                 if (formattedBody_.isEmpty()) {
@@ -409,8 +411,12 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
 
                 return QVariant(prop > 0 ? prop : 1.);
         }
-        case Id:
-                return QVariant(QString::fromStdString(event_id(event)));
+        case Id: {
+                if (auto replaces = relations(event).replaces())
+                        return QVariant(QString::fromStdString(replaces.value()));
+                else
+                        return QVariant(QString::fromStdString(event_id(event)));
+        }
         case State: {
                 auto id             = QString::fromStdString(event_id(event));
                 auto containsOthers = [](const auto &vec) {
@@ -430,6 +436,11 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 else
                         return qml_mtx_events::Received;
         }
+        case IsEdited:
+                return QVariant(relations(event).replaces().has_value());
+        case IsEditable:
+                return QVariant(!is_state_event(event) && mtx::accessors::sender(event) ==
+                                                            http::client()->user_id().to_string());
         case IsEncrypted: {
                 auto id              = event_id(event);
                 auto encrypted_event = events.get(id, id, false);
@@ -442,9 +453,9 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 return cache::isRoomEncrypted(room_id_.toStdString());
         }
         case ReplyTo:
-                return QVariant(QString::fromStdString(in_reply_to_event(event)));
+                return QVariant(QString::fromStdString(relations(event).reply_to().value_or("")));
         case Reactions: {
-                auto id = event_id(event);
+                auto id = relations(event).replaces().value_or(event_id(event));
                 return QVariant::fromValue(events.reactions(id));
         }
         case RoomId:
@@ -729,10 +740,25 @@ TimelineModel::setCurrentIndex(int index)
 
         auto oldIndex = idToIndex(currentId);
         currentId     = indexToId(index);
-        emit currentIndexChanged(index);
+        if (index != oldIndex)
+                emit currentIndexChanged(index);
 
-        if ((oldIndex > index || oldIndex == -1) && !currentId.startsWith("m")) {
-                readEvent(currentId.toStdString());
+        if (!currentId.startsWith("m")) {
+                auto oldReadIndex =
+                  cache::getEventIndex(roomId().toStdString(), currentReadId.toStdString());
+                auto nextEventIndexAndId =
+                  cache::lastInvisibleEventAfter(roomId().toStdString(), currentId.toStdString());
+
+                if (nextEventIndexAndId &&
+                    (!oldReadIndex || *oldReadIndex < nextEventIndexAndId->first)) {
+                        readEvent(nextEventIndexAndId->second);
+                        currentReadId = QString::fromStdString(nextEventIndexAndId->second);
+
+                        nhlog::net()->info("Marked as read {}, index {}, oldReadIndex {}",
+                                           nextEventIndexAndId->second,
+                                           nextEventIndexAndId->first,
+                                           *oldReadIndex);
+                }
         }
 }
 
@@ -811,6 +837,12 @@ void
 TimelineModel::replyAction(QString id)
 {
         setReply(id);
+}
+
+void
+TimelineModel::editAction(QString id)
+{
+        setEdit(id);
 }
 
 RelatedInfo
@@ -1499,6 +1531,44 @@ TimelineModel::formatMemberEvent(QString id)
         }
 
         return rendered;
+}
+
+void
+TimelineModel::setEdit(QString newEdit)
+{
+        if (edit_ != newEdit) {
+                edit_ = newEdit;
+                emit editChanged(edit_);
+
+                auto ev = events.get(newEdit.toStdString(), "");
+                if (ev) {
+                        setReply(QString::fromStdString(
+                          mtx::accessors::relations(*ev).reply_to().value_or("")));
+
+                        auto msgType = mtx::accessors::msg_type(*ev);
+                        if (msgType == mtx::events::MessageType::Text ||
+                            msgType == mtx::events::MessageType::Notice) {
+                                input()->setText(relatedInfo(newEdit).quoted_body);
+                        } else if (msgType == mtx::events::MessageType::Emote) {
+                                input()->setText("/me " + relatedInfo(newEdit).quoted_body);
+                        } else {
+                                input()->setText("");
+                        }
+                } else {
+                        input()->setText("");
+                }
+        }
+}
+
+void
+TimelineModel::resetEdit()
+{
+        if (!edit_.isEmpty()) {
+                edit_ = "";
+                emit editChanged(edit_);
+                input()->setText("");
+                resetReply();
+        }
 }
 
 QString

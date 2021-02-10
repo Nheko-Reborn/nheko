@@ -17,6 +17,9 @@ room_id(const mtx::events::collections::TimelineEvents &event);
 std::string
 sender(const mtx::events::collections::TimelineEvents &event);
 
+bool
+is_state_event(const mtx::events::collections::TimelineEvents &event);
+
 QDateTime
 origin_server_ts(const mtx::events::collections::TimelineEvents &event);
 
@@ -53,10 +56,10 @@ std::string
 blurhash(const mtx::events::collections::TimelineEvents &event);
 std::string
 mimetype(const mtx::events::collections::TimelineEvents &event);
-std::string
-in_reply_to_event(const mtx::events::collections::TimelineEvents &event);
-std::string
-relates_to_event_id(const mtx::events::collections::TimelineEvents &event);
+mtx::common::Relations
+relations(const mtx::events::collections::TimelineEvents &event);
+void
+set_relations(mtx::events::collections::TimelineEvents &event, mtx::common::Relations relations);
 std::string
 transaction_id(const mtx::events::collections::TimelineEvents &event);
 

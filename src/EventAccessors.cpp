@@ -34,6 +34,20 @@ struct detector<Default, std::void_t<Op<Args...>>, Op, Args...>
 template<template<class...> class Op, class... Args>
 using is_detected = typename detail::detector<nonesuch, void, Op, Args...>::value_t;
 
+struct IsStateEvent
+{
+        template<class T>
+        bool operator()(const mtx::events::StateEvent<T> &)
+        {
+                return true;
+        }
+        template<class T>
+        bool operator()(const mtx::events::Event<T> &)
+        {
+                return false;
+        }
+};
+
 struct EventMsgType
 {
         template<class E>
@@ -250,31 +264,31 @@ struct EventFilesize
         }
 };
 
-struct EventInReplyTo
+struct EventRelations
 {
         template<class Content>
-        using related_ev_id_t = decltype(Content::relates_to.in_reply_to.event_id);
+        using related_ev_id_t = decltype(Content::relations);
         template<class T>
-        std::string operator()(const mtx::events::Event<T> &e)
+        mtx::common::Relations operator()(const mtx::events::Event<T> &e)
         {
                 if constexpr (is_detected<related_ev_id_t, T>::value) {
-                        return e.content.relates_to.in_reply_to.event_id;
+                        return e.content.relations;
                 }
-                return "";
+                return {};
         }
 };
 
-struct EventRelatesTo
+struct SetEventRelations
 {
+        mtx::common::Relations new_relations;
         template<class Content>
-        using related_ev_id_t = decltype(Content::relates_to.event_id);
+        using related_ev_id_t = decltype(Content::relations);
         template<class T>
-        std::string operator()(const mtx::events::Event<T> &e)
+        void operator()(mtx::events::Event<T> &e)
         {
                 if constexpr (is_detected<related_ev_id_t, T>::value) {
-                        return e.content.relates_to.event_id;
+                        e.content.relations = std::move(new_relations);
                 }
-                return "";
         }
 };
 
@@ -434,15 +448,17 @@ mtx::accessors::mimetype(const mtx::events::collections::TimelineEvents &event)
 {
         return std::visit(EventMimeType{}, event);
 }
-std::string
-mtx::accessors::in_reply_to_event(const mtx::events::collections::TimelineEvents &event)
+mtx::common::Relations
+mtx::accessors::relations(const mtx::events::collections::TimelineEvents &event)
 {
-        return std::visit(EventInReplyTo{}, event);
+        return std::visit(EventRelations{}, event);
 }
-std::string
-mtx::accessors::relates_to_event_id(const mtx::events::collections::TimelineEvents &event)
+
+void
+mtx::accessors::set_relations(mtx::events::collections::TimelineEvents &event,
+                              mtx::common::Relations relations)
 {
-        return std::visit(EventRelatesTo{}, event);
+        std::visit(SetEventRelations{std::move(relations)}, event);
 }
 
 std::string
@@ -473,4 +489,10 @@ nlohmann::json
 mtx::accessors::serialize_event(const mtx::events::collections::TimelineEvents &event)
 {
         return std::visit([](const auto &e) { return nlohmann::json(e); }, event);
+}
+
+bool
+mtx::accessors::is_state_event(const mtx::events::collections::TimelineEvents &event)
+{
+        return std::visit(IsStateEvent{}, event);
 }
