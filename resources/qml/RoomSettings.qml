@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.3
+import QtQuick.Dialogs 1.2
 import im.nheko 1.0
 
 ApplicationWindow {
@@ -17,7 +18,8 @@ ApplicationWindow {
     palette: colors
     color: colors.window
     title: roomSettings.roomName
-    modality: Qt.Modal
+    modality: Qt.WindowModal
+    flags: Qt.WindowStaysOnTopHint
 
     Shortcut {
         sequence: StandardKey.Cancel
@@ -75,6 +77,10 @@ ApplicationWindow {
 
             ComboBox {
                 model: [ "Muted", "Mentions only", "All messages" ]
+                currentIndex: roomSettings.notifications
+                onActivated: {
+                    roomSettings.changeNotifications(index)
+                }
             }
         }
 
@@ -85,7 +91,12 @@ ApplicationWindow {
 
             ComboBox {
                 Layout.fillWidth: true
+                enabled: roomSettings.canChangeJoinRules
                 model: [ "Anyone and guests", "Anyone", "Invited users" ]
+                currentIndex: roomSettings.accessJoinRules
+                onActivated: {
+                    roomSettings.changeAccessRules(index)
+                }
             }
         }
 
@@ -99,10 +110,46 @@ ApplicationWindow {
             }
 
             Switch {
+                id: encryptionSwitch
+
+                checked: roomSettings.isEncryptionEnabled
+                onToggled: {
+                    if(roomSettings.isEncryptionEnabled) {
+                        checked=true;
+                        return;
+                    }
+
+                    confirmEncryptionDialog.open();
+                }
+            }
+
+            MessageDialog {
+                id: confirmEncryptionDialog
+                title: qsTr("End-to-End Encryption")
+                text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br> 
+                            Please take note that it can't be disabled afterwards.")
+                modality: Qt.WindowModal
+                icon: StandardIcon.Question
+
+                onAccepted: {
+                    if(roomSettings.isEncryptionEnabled) {
+                        return;
+                    }
+
+                    roomSettings.enableEncryption();
+                }
+
+                onRejected: {
+                    encryptionSwitch.checked = false
+                }
+
+                standardButtons: Dialog.Ok | Dialog.Cancel
             }
         }
 
         RowLayout {
+            visible: roomSettings.isEncryptionEnabled
+
             MatrixText {
                 text: "Respond to key requests"
             }
@@ -112,6 +159,15 @@ ApplicationWindow {
             }
 
             Switch {
+                ToolTip.text: qsTr("Whether or not the client should respond automatically with the session keys 
+                                upon request. Use with caution, this is a temporary measure to test the 
+                                E2E implementation until device verification is completed.")
+
+                checked: roomSettings.respondsToKeyRequests
+
+                onToggled: {
+                    roomSettings.changeKeyRequestsPreference(checked)
+                }
             }
         }
 

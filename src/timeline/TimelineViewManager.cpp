@@ -126,6 +126,12 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           0,
           "UserProfileModel",
           "UserProfile needs to be instantiated on the C++ side");
+        qmlRegisterUncreatableType<RoomSettings>(
+          "im.nheko",
+          1,
+          0,
+          "RoomSettingsModel",
+          "Room Settings needs to be instantiated on the C++ side");
 
         static auto self = this;
         qmlRegisterSingletonType<MainWindow>(
@@ -394,8 +400,8 @@ TimelineViewManager::openRoomSettings()
 {
         MainWindow::instance()->openRoomSettings(timeline_->roomId());
 
-        RoomSettings *roomSettings = new RoomSettings(timeline_->roomId(), this);
-        emit openRoomSettingsDialog(roomSettings);
+        RoomSettings *settings = new RoomSettings(timeline_->roomId(), this);
+        emit openRoomSettingsDialog(settings);
 }
 
 void
