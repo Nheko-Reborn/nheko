@@ -33,12 +33,53 @@ ApplicationWindow {
         spacing: 10
 
         Avatar {
-            url: ""
+            url: roomSettings.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
             height: 130
             width: 130
-            displayName: ""
-            userid: ""
             Layout.alignment: Qt.AlignHCenter
+            onClicked: {
+                if(roomSettings.canChangeAvatar) {
+                    roomSettings.updateAvatar();    
+                }
+            }
+        }
+
+        BusyIndicator {
+            Layout.alignment: Qt.AlignHCenter
+            running: roomSettings.isLoading
+            visible: roomSettings.isLoading
+        }
+
+        Text {
+            id: errorText
+            text: "Error Text"
+            color: "red"
+            visible: opacity > 0
+            opacity: 0
+            Layout.alignment: Qt.AlignHCenter
+        }
+
+        SequentialAnimation {
+            id: hideErrorAnimation
+            running: false
+            PauseAnimation {
+                duration: 4000
+            }
+            NumberAnimation {
+                target: errorText
+                property: 'opacity'
+                to: 0
+                duration: 1000
+            }
+        }
+
+        Connections{
+            target: roomSettings
+            onDisplayError: {
+                errorText.text = errorMessage
+                errorText.opacity = 1
+                hideErrorAnimation.restart()
+            }
         }
 
         ColumnLayout {

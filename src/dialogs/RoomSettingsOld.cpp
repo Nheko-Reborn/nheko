@@ -143,10 +143,10 @@ EditModal::applyClicked()
         }
 
         using namespace mtx::events;
-        auto proxy = std::make_shared<ThreadProxy>();
-        connect(proxy.get(), &ThreadProxy::topicEventSent, this, &EditModal::topicEventSent);
-        connect(proxy.get(), &ThreadProxy::nameEventSent, this, &EditModal::nameEventSent);
-        connect(proxy.get(), &ThreadProxy::error, this, &EditModal::error);
+        auto proxy = std::make_shared<ThreadProxya>();
+        connect(proxy.get(), &ThreadProxya::topicEventSent, this, &EditModal::topicEventSent);
+        connect(proxy.get(), &ThreadProxya::nameEventSent, this, &EditModal::nameEventSent);
+        connect(proxy.get(), &ThreadProxya::error, this, &EditModal::error);
 
         if (newName != initialName_ && !newName.isEmpty()) {
                 state::Name body;
@@ -810,9 +810,9 @@ RoomSettingsOld::updateAvatar()
 
         // Events emitted from the http callbacks (different threads) will
         // be queued back into the UI thread through this proxy object.
-        auto proxy = std::make_shared<ThreadProxy>();
-        connect(proxy.get(), &ThreadProxy::error, this, &RoomSettingsOld::displayErrorMessage);
-        connect(proxy.get(), &ThreadProxy::avatarChanged, this, &RoomSettingsOld::setAvatar);
+        auto proxy = std::make_shared<ThreadProxya>();
+        connect(proxy.get(), &ThreadProxya::error, this, &RoomSettingsOld::displayErrorMessage);
+        connect(proxy.get(), &ThreadProxya::avatarChanged, this, &RoomSettingsOld::setAvatar);
 
         const auto bin        = file.peek(file.size());
         const auto payload    = std::string(bin.data(), bin.size());

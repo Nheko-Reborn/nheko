@@ -40,7 +40,7 @@ protected:
 
 /// Convenience class which connects events emmited from threads
 /// outside of main with the UI code.
-class ThreadProxy : public QObject
+class ThreadProxya : public QObject
 {
         Q_OBJECT
 
