@@ -6,13 +6,13 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+66"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>Soitetaan...</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Yhdistetään...</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -89,7 +89,7 @@
     <message>
         <location line="+16"/>
         <source>Devices</source>
-        <translation type="unfinished">Laitteet</translation>
+        <translation>Laitteet</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -560,7 +560,7 @@
     <message>
         <location filename="../../src/timeline/InputBar.cpp" line="+227"/>
         <source>Select a file</source>
-        <translation type="unfinished">Valitse tiedosto</translation>
+        <translation>Valitse tiedosto</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -789,7 +789,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+26"/>
         <source>Send a file</source>
-        <translation type="unfinished">Lähetä tiedosto</translation>
+        <translation>Lähetä tiedosto</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -799,7 +799,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+186"/>
         <source>Emoji</source>
-        <translation type="unfinished">Emoji</translation>
+        <translation>Emoji</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1549,22 +1549,22 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+296"/>
         <source>Select an avatar</source>
-        <translation type="unfinished">Valitse profiilikuva</translation>
+        <translation>Valitse profiilikuva</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Kaikki Tiedostot (*)</translation>
+        <translation>Kaikki Tiedostot (*)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished">Valittu tiedosto ei ole kuva</translation>
+        <translation>Valittu tiedosto ei ole kuva</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished">Virhe lukiessa tiedostoa: %1</translation>
+        <translation>Virhe lukiessa tiedostoa: %1</translation>
     </message>
 </context>
 <context>
@@ -1972,7 +1972,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+54"/>
         <source>Select a file</source>
-        <translation type="unfinished">Valitse tiedosto</translation>
+        <translation>Valitse tiedosto</translation>
     </message>
     <message>
         <location line="+0"/>
