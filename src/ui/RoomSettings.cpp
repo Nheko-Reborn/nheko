@@ -395,7 +395,6 @@ RoomSettings::updateAvatar()
         // be queued back into the UI thread through this proxy object.
         auto proxy = std::make_shared<ThreadProxy>();
         connect(proxy.get(), &ThreadProxy::error, this, &RoomSettings::displayError);
-        connect(proxy.get(), &ThreadProxy::avatarChanged, this, &RoomSettings::avatarChanged);
         connect(proxy.get(), &ThreadProxy::stopLoading, this, &RoomSettings::stopLoading);
 
         const auto bin        = file.peek(file.size());
@@ -445,7 +444,6 @@ RoomSettings::updateAvatar()
                             }
 
                             emit proxy->stopLoading();
-                            emit proxy->avatarChanged();
                     });
           });
 }

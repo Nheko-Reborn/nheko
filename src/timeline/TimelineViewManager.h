@@ -19,7 +19,6 @@
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
 #include "dialogs/RoomSettingsOld.h"
-#include "ui/RoomSettings.h"
 
 class MxcImageProvider;
 class BlurhashProvider;
@@ -89,7 +88,6 @@ signals:
         void showRoomList();
         void narrowViewChanged();
         void focusChanged();
-        void openRoomSettingsDialog(RoomSettings *settings);
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);

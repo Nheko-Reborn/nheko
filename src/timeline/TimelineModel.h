@@ -12,6 +12,7 @@
 #include "EventStore.h"
 #include "InputBar.h"
 #include "ui/UserProfile.h"
+#include "ui/RoomSettings.h"
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
@@ -213,6 +214,7 @@ public:
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
         Q_INVOKABLE void openUserProfile(QString userid, bool global = false);
+        Q_INVOKABLE void openRoomSettings(QString roomid);
         Q_INVOKABLE void replyAction(QString id);
         Q_INVOKABLE void readReceiptsAction(QString id) const;
         Q_INVOKABLE void redactEvent(QString id);
@@ -296,6 +298,7 @@ signals:
         void newCallEvent(const mtx::events::collections::TimelineEvents &event);
 
         void openProfile(UserProfile *profile);
+        void openRoomSettingsDialog(RoomSettings *settings);
 
         void newMessageToSend(mtx::events::collections::TimelineEvents event);
         void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);

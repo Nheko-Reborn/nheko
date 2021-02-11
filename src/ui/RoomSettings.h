@@ -15,7 +15,6 @@ class ThreadProxy : public QObject
 
 signals:
         void error(const QString &msg);
-        void avatarChanged();
         void nameEventSent(const QString &);
         void topicEventSent();
         void stopLoading();
