@@ -1010,7 +1010,7 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location line="+13"/>
         <source>Cancel edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Szerkesztés megszakítása</translation>
     </message>
 </context>
 <context>
@@ -1338,12 +1338,12 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/TimelineRow.qml" line="+99"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Szerkesztés</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Edited</source>
-        <translation type="unfinished"></translation>
+        <translation>Szerkesztve</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1376,7 +1376,7 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location line="+7"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Szerkesztés</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1504,7 +1504,7 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location line="+8"/>
         <source>User Profile Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Felhasználói profil beállításai</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1552,22 +1552,22 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+296"/>
         <source>Select an avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Profilkép kiválasztása</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Minden fájl (*)</translation>
+        <translation>Minden fájl (*)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>A kiválasztott fájl nem egy kép</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Hiba a fájl olvasása közben: %1</translation>
     </message>
 </context>
 <context>
@@ -1576,7 +1576,7 @@ Példa: https://szerver.em:8787</translation>
         <location filename="../../src/UserSettingsPage.cpp" line="+345"/>
         <location filename="../../src/UserSettingsPage.h" line="+183"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Alapértelmezett</translation>
     </message>
 </context>
 <context>
@@ -1609,7 +1609,7 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location line="+96"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Alapértelmezett</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1668,25 +1668,29 @@ Csak a titkosított csevegések üzeneteire vonatkozik.</translation>
     <message>
         <location line="+2"/>
         <source>Privacy Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Idővonal automatikus kitakarása</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation type="unfinished"></translation>
+        <translation>Amikor az ablak elveszíti a fókuszt,
+az idővonal homályosítva lesz.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation type="unfinished"></translation>
+        <translation>Idővonal kitakarása ennyi idő után (másodpercben, 0 és 3600 között)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation>Add meg, hány másodperc elteltével homályosuljon el az idővonal,
+miután az ablak elveszíti a fókuszt!
+Ha azonnal el legyen homályosítva fókuszvesztéskor, állítsd
+0-ra! A maximális érték 1 óra (3600 másodperc).</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2140,7 +2144,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location filename="../../src/dialogs/FallbackAuth.cpp" line="+30"/>
         <source>Open Fallback in Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Fallback megnyitása böngészőben</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2155,7 +2159,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nyisd meg a fallback-ket, kövesd az utasításokat, és erősítsd meg, ha végeztél velük!</translation>
     </message>
 </context>
 <context>
@@ -2358,34 +2362,35 @@ Média mérete: %2
     <message>
         <location line="+20"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Végponttól végpontig titkosítás</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>A titkosítás jelenleg kísérleti stádiumú és váratlan furcsaságok történhetnek. &lt;br# Kérlek, vedd vigyelembe, hogy ha egyszer aktiváltad, nem lehet utána kikapcsolni.</translation>
     </message>
     <message>
         <location line="-24"/>
         <source>Respond to key requests</source>
-        <translation type="unfinished"></translation>
+        <translation>Válasz kulcskérelmekre</translation>
     </message>
     <message numerus="yes">
         <location line="+83"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n tag</numerusform>
+            <numerusform>%n tag</numerusform>
         </translation>
     </message>
     <message>
         <location line="+142"/>
         <source>Failed to enable encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült a titkosítás aktiválása: %1</translation>
     </message>
     <message>
         <location line="+147"/>
         <source>Select an avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Profilkép kiválasztása</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2395,18 +2400,18 @@ Média mérete: %2
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>A kiválasztott fájl nem egy kép</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Hiba a fájl olvasása közben: %1</translation>
     </message>
     <message>
         <location line="+35"/>
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült a kép feltöltése: %s</translation>
     </message>
 </context>
 <context>
