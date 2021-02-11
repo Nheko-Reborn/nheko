@@ -11,6 +11,9 @@ class RoomSettings : public QObject
 {
 		Q_OBJECT
         Q_PROPERTY(QString roomName READ roomName CONSTANT)
+        Q_PROPERTY(QString roomId READ roomId CONSTANT)
+        Q_PROPERTY(QString roomVersion READ roomVersion CONSTANT)
+        Q_PROPERTY(int memberCount READ memberCount CONSTANT)
         Q_PROPERTY(int notifications READ notifications NOTIFY notificationsChanged)
         Q_PROPERTY(int accessJoinRules READ accessJoinRules NOTIFY accessJoinRulesChanged)
         Q_PROPERTY(bool canChangeJoinRules READ canChangeJoinRules CONSTANT)
@@ -21,6 +24,9 @@ public:
         RoomSettings(QString roomid, QObject *parent = nullptr);
 
         QString roomName() const;
+        QString roomId() const;
+        QString roomVersion() const;
+        int memberCount() const;
         int notifications();
         int accessJoinRules();
         bool respondsToKeyRequests();

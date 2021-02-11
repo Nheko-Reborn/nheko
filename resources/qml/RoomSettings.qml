@@ -17,7 +17,6 @@ ApplicationWindow {
     minimumHeight: 420
     palette: colors
     color: colors.window
-    title: roomSettings.roomName
     modality: Qt.WindowModal
     flags: Qt.WindowStaysOnTopHint
 
@@ -46,13 +45,13 @@ ApplicationWindow {
             Layout.alignment: Qt.AlignHCenter
 
             MatrixText {
-                text: "room name"
+                text: roomSettings.roomName
                 font.pixelSize: 24
                 Layout.alignment: Qt.AlignHCenter
             }
 
             MatrixText {
-                text: "1 member"
+                text: "%1 member(s)".arg(roomSettings.memberCount)
                 Layout.alignment: Qt.AlignHCenter
             }
         }
@@ -185,7 +184,7 @@ ApplicationWindow {
             }
 
             MatrixText {
-                text: "asdajdhasjkdhaskjdhasjdks"
+                text: roomSettings.roomId
                 font.pixelSize: 12
             }
         }
@@ -200,7 +199,7 @@ ApplicationWindow {
             }
 
             MatrixText {
-                text: "6"
+                text: roomSettings.roomVersion
                 font.pixelSize: 12
             }
         }

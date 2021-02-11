@@ -72,6 +72,24 @@ RoomSettings::roomName() const
         return QString(info_.name.c_str());
 }
 
+QString
+RoomSettings::roomId() const
+{
+        return roomid_;
+}
+
+QString
+RoomSettings::roomVersion() const
+{
+        return QString::fromStdString(info_.version);
+}
+
+int
+RoomSettings::memberCount() const
+{
+        return info_.member_count;
+}
+
 void
 RoomSettings::retrieveRoomInfo()
 {
