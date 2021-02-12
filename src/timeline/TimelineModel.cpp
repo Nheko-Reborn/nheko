@@ -1542,13 +1542,11 @@ TimelineModel::setEdit(QString newEdit)
         if (edit_ != newEdit) {
                 auto ev = events.get(newEdit.toStdString(), "");
                 if (ev && mtx::accessors::sender(*ev) == http::client()->user_id().to_string()) {
-                        edit_ = newEdit;
-                        emit editChanged(edit_);
-
+                        auto e = *ev;
                         setReply(QString::fromStdString(
-                          mtx::accessors::relations(*ev).reply_to().value_or("")));
+                          mtx::accessors::relations(e).reply_to().value_or("")));
 
-                        auto msgType = mtx::accessors::msg_type(*ev);
+                        auto msgType = mtx::accessors::msg_type(e);
                         if (msgType == mtx::events::MessageType::Text ||
                             msgType == mtx::events::MessageType::Notice) {
                                 input()->setText(relatedInfo(newEdit).quoted_body);
@@ -1557,11 +1555,15 @@ TimelineModel::setEdit(QString newEdit)
                         } else {
                                 input()->setText("");
                         }
+
+                        edit_ = newEdit;
                 } else {
-                        edit_ = "";
-                        emit editChanged(edit_);
+                        resetReply();
+
                         input()->setText("");
+                        edit_ = "";
                 }
+                emit editChanged(edit_);
         }
 }
 
