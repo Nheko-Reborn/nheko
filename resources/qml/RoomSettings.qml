@@ -12,13 +12,11 @@ ApplicationWindow {
 
 	x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
-    height: 600
-    width: 420
-    minimumHeight: 420
+    minimumWidth: 340
+    minimumHeight: 600
     palette: colors
     color: colors.window
     modality: Qt.WindowModal
-    flags: Qt.WindowStaysOnTopHint
 
     Shortcut {
         sequence: StandardKey.Cancel
@@ -100,6 +98,8 @@ ApplicationWindow {
         ImageButton {
             Layout.alignment: Qt.AlignHCenter
             image: ":/icons/icons/ui/edit.png"
+            visible: roomSettings.canChangeNameAndTopic
+            onClicked: roomSettings.openEditModal()
         }
 
         MatrixText {
@@ -248,6 +248,7 @@ ApplicationWindow {
         Button {
             Layout.alignment: Qt.AlignRight
             text: "Ok"
+            onClicked: close()
         }
     }
 }

@@ -1,11 +1,15 @@
 #pragma once
 
+#include <QLabel>
 #include <QObject>
+#include <QPushButton>
 #include <QString>
 
 #include <mtx/events/guest_access.hpp>
 
 #include "CacheStructs.h"
+
+class TextField;
 
 /// Convenience class which connects events emmited from threads
 /// outside of main with the UI code.
@@ -20,10 +24,43 @@ signals:
         void stopLoading();
 };
 
+class EditModal : public QWidget
+{
+        Q_OBJECT
+
+public:
+        EditModal(const QString &roomId, QWidget *parent = nullptr);
+
+        void setFields(const QString &roomName, const QString &roomTopic);
+
+signals:
+        void nameChanged(const QString &roomName);
+
+private slots:
+        void topicEventSent();
+        void nameEventSent(const QString &name);
+        void error(const QString &msg);
+
+        void applyClicked();
+
+private:
+        QString roomId_;
+        QString initialName_;
+        QString initialTopic_;
+
+        QLabel *errorField_;
+
+        TextField *nameInput_;
+        TextField *topicInput_;
+
+        QPushButton *applyBtn_;
+        QPushButton *cancelBtn_;
+};
+
 class RoomSettings : public QObject
 {
         Q_OBJECT
-        Q_PROPERTY(QString roomName READ roomName CONSTANT)
+        Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
         Q_PROPERTY(QString roomId READ roomId CONSTANT)
         Q_PROPERTY(QString roomVersion READ roomVersion CONSTANT)
         Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY avatarUrlChanged)
@@ -62,6 +99,7 @@ public:
         Q_INVOKABLE void changeKeyRequestsPreference(bool isOn);
         Q_INVOKABLE void enableEncryption();
         Q_INVOKABLE void updateAvatar();
+        Q_INVOKABLE void openEditModal();
 
 signals:
         void notificationsChanged();
@@ -69,6 +107,7 @@ signals:
         void keyRequestsChanged();
         void encryptionChanged();
         void avatarUrlChanged();
+        void roomNameChanged();
         void loadingChanged();
         void displayError(const QString &errorMessage);
 

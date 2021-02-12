@@ -113,7 +113,6 @@ ApplicationWindow {
                     }
                 }
             }
-
         }
 
         MatrixText {

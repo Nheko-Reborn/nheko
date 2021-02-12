@@ -4,15 +4,164 @@
 #include <QImageReader>
 #include <QMimeDatabase>
 #include <QStandardPaths>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QApplication>
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/media.hpp>
 
 #include "Cache.h"
 #include "Logging.h"
+#include "Config.h"
 #include "MatrixClient.h"
+#include "ui/TextField.h"
 #include "Utils.h"
 
 using namespace mtx::events;
+
+EditModal::EditModal(const QString &roomId, QWidget *parent)
+  : QWidget(parent)
+  , roomId_{roomId}
+{
+        setAutoFillBackground(true);
+        setAttribute(Qt::WA_DeleteOnClose, true);
+        setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
+        setWindowModality(Qt::WindowModal);
+
+        QFont largeFont;
+        largeFont.setPointSizeF(largeFont.pointSizeF() * 1.4);
+        setMinimumWidth(conf::window::minModalWidth);
+        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+
+        auto layout = new QVBoxLayout(this);
+
+        applyBtn_  = new QPushButton(tr("Apply"), this);
+        cancelBtn_ = new QPushButton(tr("Cancel"), this);
+        cancelBtn_->setDefault(true);
+
+        auto btnLayout = new QHBoxLayout;
+        btnLayout->addStretch(1);
+        btnLayout->setSpacing(15);
+        btnLayout->addWidget(cancelBtn_);
+        btnLayout->addWidget(applyBtn_);
+
+        nameInput_ = new TextField(this);
+        nameInput_->setLabel(tr("Name").toUpper());
+        topicInput_ = new TextField(this);
+        topicInput_->setLabel(tr("Topic").toUpper());
+
+        errorField_ = new QLabel(this);
+        errorField_->setWordWrap(true);
+        errorField_->hide();
+
+        layout->addWidget(nameInput_);
+        layout->addWidget(topicInput_);
+        layout->addLayout(btnLayout, 1);
+
+        auto labelLayout = new QHBoxLayout;
+        labelLayout->setAlignment(Qt::AlignHCenter);
+        labelLayout->addWidget(errorField_);
+        layout->addLayout(labelLayout);
+
+        connect(applyBtn_, &QPushButton::clicked, this, &EditModal::applyClicked);
+        connect(cancelBtn_, &QPushButton::clicked, this, &EditModal::close);
+
+        auto window = QApplication::activeWindow();
+
+        if (window != nullptr) {
+                auto center = window->frameGeometry().center();
+                move(center.x() - (width() * 0.5), center.y() - (height() * 0.5));
+        }
+}
+
+void
+EditModal::topicEventSent()
+{
+        errorField_->hide();
+        close();
+}
+
+void
+EditModal::nameEventSent(const QString &name)
+{
+        errorField_->hide();
+        emit nameChanged(name);
+        close();
+}
+
+void
+EditModal::error(const QString &msg)
+{
+        errorField_->setText(msg);
+        errorField_->show();
+}
+
+void
+EditModal::applyClicked()
+{
+        // Check if the values are changed from the originals.
+        auto newName  = nameInput_->text().trimmed();
+        auto newTopic = topicInput_->text().trimmed();
+
+        errorField_->hide();
+
+        if (newName == initialName_ && newTopic == initialTopic_) {
+                close();
+                return;
+        }
+
+        using namespace mtx::events;
+        auto proxy = std::make_shared<ThreadProxy>();
+        connect(proxy.get(), &ThreadProxy::topicEventSent, this, &EditModal::topicEventSent);
+        connect(proxy.get(), &ThreadProxy::nameEventSent, this, &EditModal::nameEventSent);
+        connect(proxy.get(), &ThreadProxy::error, this, &EditModal::error);
+
+        if (newName != initialName_ && !newName.isEmpty()) {
+                state::Name body;
+                body.name = newName.toStdString();
+
+                http::client()->send_state_event(
+                  roomId_.toStdString(),
+                  body,
+                  [proxy, newName](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+                          if (err) {
+                                  emit proxy->error(
+                                    QString::fromStdString(err->matrix_error.error));
+                                  return;
+                          }
+
+                          emit proxy->nameEventSent(newName);
+                  });
+        }
+
+        if (newTopic != initialTopic_ && !newTopic.isEmpty()) {
+                state::Topic body;
+                body.topic = newTopic.toStdString();
+
+                http::client()->send_state_event(
+                  roomId_.toStdString(),
+                  body,
+                  [proxy](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+                          if (err) {
+                                  emit proxy->error(
+                                    QString::fromStdString(err->matrix_error.error));
+                                  return;
+                          }
+
+                          emit proxy->topicEventSent();
+                  });
+        }
+}
+
+void
+EditModal::setFields(const QString &roomName, const QString &roomTopic)
+{
+        initialName_  = roomName;
+        initialTopic_ = roomTopic;
+
+        nameInput_->setText(roomName);
+        topicInput_->setText(roomTopic);
+}
 
 RoomSettings::RoomSettings(QString roomid, QObject *parent)
   : roomid_{std::move(roomid)}
@@ -218,6 +367,21 @@ bool
 RoomSettings::isEncryptionEnabled() const
 {
         return usesEncryption_;
+}
+
+void
+RoomSettings::openEditModal()
+{
+        retrieveRoomInfo();
+
+        auto modal = new EditModal(roomid_);
+        modal->setFields(QString::fromStdString(info_.name), QString::fromStdString(info_.topic));
+        modal->raise();
+        modal->show();
+        connect(modal, &EditModal::nameChanged, this, [this](const QString &newName) {
+                info_.name = newName.toStdString();
+                emit roomNameChanged();
+        });
 }
 
 void

@@ -257,7 +257,6 @@ set(SRC_FILES
 	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
 	src/dialogs/ReadReceipts.cpp
-	src/dialogs/RoomSettingsOld.cpp
 
 	# Emoji
 	src/emoji/EmojiModel.cpp
@@ -472,7 +471,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/RawMessage.h
 	src/dialogs/ReCaptcha.h
 	src/dialogs/ReadReceipts.h
-	src/dialogs/RoomSettingsOld.h
 
 	# Emoji
 	src/emoji/EmojiModel.h

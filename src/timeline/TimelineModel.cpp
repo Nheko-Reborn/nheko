@@ -808,9 +808,9 @@ TimelineModel::openUserProfile(QString userid, bool global)
 }
 
 void
-TimelineModel::openRoomSettings(QString roomid)
+TimelineModel::openRoomSettings()
 {
-        RoomSettings *settings = new RoomSettings(roomid, this);
+        RoomSettings *settings = new RoomSettings(roomId(), this);
         connect(this, &TimelineModel::roomAvatarUrlChanged, settings, &RoomSettings::avatarChanged);
         openRoomSettingsDialog(settings);
 }

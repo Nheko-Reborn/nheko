@@ -395,12 +395,6 @@ TimelineViewManager::openLeaveRoomDialog() const
 {
         MainWindow::instance()->openLeaveRoomDialog(timeline_->roomId());
 }
-void
-TimelineViewManager::openRoomSettings()
-{
-        MainWindow::instance()->openRoomSettings(timeline_->roomId());
-        timeline_->openRoomSettings(timeline_->roomId());
-}
 
 void
 TimelineViewManager::verifyUser(QString userid)

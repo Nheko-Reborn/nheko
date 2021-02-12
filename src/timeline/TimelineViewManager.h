@@ -18,7 +18,6 @@
 #include "WebRTCSession.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
-#include "dialogs/RoomSettingsOld.h"
 
 class MxcImageProvider;
 class BlurhashProvider;
@@ -70,7 +69,6 @@ public:
         Q_INVOKABLE void openInviteUsersDialog();
         Q_INVOKABLE void openMemberListDialog() const;
         Q_INVOKABLE void openLeaveRoomDialog() const;
-        Q_INVOKABLE void openRoomSettings();
         Q_INVOKABLE void removeVerificationFlow(DeviceVerificationFlow *flow);
 
         void verifyUser(QString userid);
