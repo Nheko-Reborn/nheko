@@ -37,7 +37,8 @@ NotificationsManager::postNotification(const QString &room_id,
                                        const QString &room_name,
                                        const QString &sender,
                                        const QString &text,
-                                       const QImage &icon)
+                                       const QImage &icon,
+                                       const bool &isEmoteMessage)
 {
         Q_UNUSED(room_id)
         Q_UNUSED(event_id)
@@ -53,7 +54,13 @@ NotificationsManager::postNotification(const QString &room_id,
         else
                 templ.setTextField(QString("%1").arg(sender).toStdWString(),
                                    WinToastTemplate::FirstLine);
-        templ.setTextField(QString("%1").arg(text).toStdWString(), WinToastTemplate::SecondLine);
+        if (isEmoteMessage)
+                templ.setTextField(
+                  QString("* ").append(sender).append(" ").append(text).toStdWString(),
+                  WinToastTemplate::SecondLine);
+        else
+                templ.setTextField(QString("%1").arg(text).toStdWString(),
+                                   WinToastTemplate::SecondLine);
         // TODO: implement room or user avatar
         // templ.setImagePath(L"C:/example.png");
 

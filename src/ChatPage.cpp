@@ -691,13 +691,20 @@ ChatPage::sendNotifications(const mtx::responses::Notifications &res)
                                           this,
                                           [this, room_id, event_id, item, user_id, info](
                                             QPixmap image) {
+                                                  bool isEmote = false;
+                                                  auto ev      = cache::client()->getEvent(
+                                                    room_id.toStdString(), event_id);
+                                                  if (ev && mtx::accessors::msg_type(ev->data) ==
+                                                              mtx::events::MessageType::Emote)
+                                                          isEmote = true;
                                                   notificationsManager.postNotification(
                                                     room_id,
                                                     QString::fromStdString(event_id),
                                                     QString::fromStdString(info.name),
                                                     cache::displayName(room_id, user_id),
                                                     utils::event_body(item.event),
-                                                    image.toImage());
+                                                    image.toImage(),
+                                                    isEmote);
                                           });
                                 }
                         }

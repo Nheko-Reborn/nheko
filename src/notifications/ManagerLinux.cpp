@@ -50,17 +50,23 @@ NotificationsManager::postNotification(const QString &roomid,
                                        const QString &roomname,
                                        const QString &sender,
                                        const QString &text,
-                                       const QImage &icon)
+                                       const QImage &icon,
+                                       const bool &isEmoteMessage)
 {
         QVariantMap hints;
         hints["image-data"] = icon;
         hints["sound-name"] = "message-new-instant";
         QList<QVariant> argumentList;
-        argumentList << "nheko";              // app_name
-        argumentList << (uint)0;              // replace_id
-        argumentList << "";                   // app_icon
-        argumentList << roomname;             // summary
-        argumentList << sender + ": " + text; // body
+        argumentList << "nheko";  // app_name
+        argumentList << (uint)0;  // replace_id
+        argumentList << "";       // app_icon
+        argumentList << roomname; // summary
+
+        // body
+        if (isEmoteMessage)
+                argumentList << "* " + sender + " " + text;
+        else
+                argumentList << sender + ": " + text;
         // The list of actions has always the action name and then a localized version of that
         // action. Currently we just use an empty string for that.
         // TODO(Nico): Look into what to actually put there.

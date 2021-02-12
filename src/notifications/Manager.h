@@ -32,7 +32,8 @@ public:
                               const QString &roomName,
                               const QString &senderName,
                               const QString &text,
-                              const QImage &icon);
+                              const QImage &icon,
+                              const bool &isEmoteMsg = false);
 
 signals:
         void notificationClicked(const QString roomId, const QString eventId);

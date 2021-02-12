@@ -19,7 +19,8 @@ NotificationsManager::postNotification(
                 const QString &roomName,
                 const QString &senderName,
                 const QString &text,
-                const QImage &icon)
+                const QImage &icon,
+                const bool &isEmoteMessage)
 {
     Q_UNUSED(roomId);
     Q_UNUSED(eventId);
@@ -29,7 +30,10 @@ NotificationsManager::postNotification(
 
     notif.title           = roomName.toNSString();
     notif.subtitle        = QString("%1 sent a message").arg(senderName).toNSString();
-    notif.informativeText = text.toNSString();
+    if (isEmoteMessage)
+            notif.informativeText = QString("* ").append(senderName).append(" ").append(text).toNSString();
+    else
+            notif.informativeText = text.toNSString();
     notif.soundName       = NSUserNotificationDefaultSoundName;
 
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification: notif];
