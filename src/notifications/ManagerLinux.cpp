@@ -7,6 +7,7 @@
 #include <QDBusPendingReply>
 #include <QDebug>
 #include <QImage>
+#include <QTextDocumentFragment>
 
 #include "Cache.h"
 #include "EventAccessors.h"
@@ -59,7 +60,14 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         const auto sender   = cache::displayName(
           room_id, QString::fromStdString(mtx::accessors::sender(notification.event)));
         const auto text = utils::event_body(notification.event);
-        const auto formattedText = cmark_markdown_to_html(text.toStdString().c_str(), text.length(), CMARK_OPT_UNSAFE);
+        auto formattedText = utils::markdownToHtml(text);
+
+        static QDBusInterface notifyApp("org.freedesktop.Notifications",
+                                        "/org/freedesktop/Notifications",
+                                        "org.freedesktop.Notifications");
+        auto capabilites = notifyApp.call("GetCapabilites");
+        if (!capabilites.arguments().contains("body-markup"))
+                formattedText = QTextDocumentFragment::fromHtml(formattedText).toPlainText();
 
         QVariantMap hints;
         hints["image-data"] = icon;
@@ -86,9 +94,6 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         argumentList << hints;                          // hints
         argumentList << (int)-1;                        // timeout in ms
 
-        static QDBusInterface notifyApp("org.freedesktop.Notifications",
-                                        "/org/freedesktop/Notifications",
-                                        "org.freedesktop.Notifications");
         QDBusPendingCall call = notifyApp.asyncCallWithArgumentList("Notify", argumentList);
         auto watcher          = new QDBusPendingCallWatcher{call, this};
         connect(
