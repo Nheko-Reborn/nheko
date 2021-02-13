@@ -23,7 +23,7 @@ init()
         WinToast::instance()->setAppName(L"Nheko");
         WinToast::instance()->setAppUserModelId(WinToast::configureAUMI(L"nheko", L"nheko"));
         if (!WinToast::instance()->initialize())
-                std::wcout << "Your system in not compatible with toast notifications\n";
+                std::wcout << "Your system is not compatible with toast notifications\n";
 }
 }
 
