@@ -7,7 +7,7 @@
 #include "EventAccessors.h"
 #include "MatrixClient.h"
 #include "Utils.h"
-#include <mtx/responses.hpp>
+#include <mtx/responses/notifications.hpp>
 
 @interface NSUserNotification (CFIPrivate)
 - (void)set_identityImage:(NSImage *)image;

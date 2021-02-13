@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QString>
 
-#include <mtx/responses.hpp>
+#include <mtx/responses/notifications.hpp>
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD) || defined(Q_OS_HAIKU)
 #include <QtDBus/QDBusArgument>

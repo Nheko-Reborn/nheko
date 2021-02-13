@@ -5,7 +5,7 @@
 #include "EventAccessors.h"
 #include "MatrixClient.h"
 #include "Utils.h"
-#include <mtx/responses.hpp>
+#include <mtx/responses/notifications.hpp>
 
 using namespace WinToastLib;
 
