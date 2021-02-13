@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QString>
 
+#include <mtx/responses/notifications.hpp>
+
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD) || defined(Q_OS_HAIKU)
 #include <QtDBus/QDBusArgument>
 #include <QtDBus/QDBusInterface>
@@ -27,12 +29,7 @@ class NotificationsManager : public QObject
 public:
         NotificationsManager(QObject *parent = nullptr);
 
-        void postNotification(const QString &roomId,
-                              const QString &eventId,
-                              const QString &roomName,
-                              const QString &senderName,
-                              const QString &text,
-                              const QImage &icon);
+        void postNotification(const mtx::responses::Notification &notification, const QImage &icon);
 
 signals:
         void notificationClicked(const QString roomId, const QString eventId);

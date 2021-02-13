@@ -8,6 +8,12 @@
 #include <QDebug>
 #include <QImage>
 
+#include "Cache.h"
+#include "EventAccessors.h"
+#include "MatrixClient.h"
+#include "Utils.h"
+#include <mtx/responses/notifications.hpp>
+
 NotificationsManager::NotificationsManager(QObject *parent)
   : QObject(parent)
   , dbus("org.freedesktop.Notifications",
@@ -45,22 +51,31 @@ NotificationsManager::NotificationsManager(QObject *parent)
  * Licensed under the GNU General Public License, version 3
  */
 void
-NotificationsManager::postNotification(const QString &roomid,
-                                       const QString &eventid,
-                                       const QString &roomname,
-                                       const QString &sender,
-                                       const QString &text,
+NotificationsManager::postNotification(const mtx::responses::Notification &notification,
                                        const QImage &icon)
 {
+        const auto room_id  = QString::fromStdString(notification.room_id);
+        const auto event_id = QString::fromStdString(mtx::accessors::event_id(notification.event));
+        const auto sender   = cache::displayName(
+          room_id, QString::fromStdString(mtx::accessors::sender(notification.event)));
+        const auto text = utils::event_body(notification.event);
+
         QVariantMap hints;
         hints["image-data"] = icon;
         hints["sound-name"] = "message-new-instant";
         QList<QVariant> argumentList;
-        argumentList << "nheko";              // app_name
-        argumentList << (uint)0;              // replace_id
-        argumentList << "";                   // app_icon
-        argumentList << roomname;             // summary
-        argumentList << sender + ": " + text; // body
+        argumentList << "nheko"; // app_name
+        argumentList << (uint)0; // replace_id
+        argumentList << "";      // app_icon
+        argumentList << QString::fromStdString(
+          cache::singleRoomInfo(notification.room_id).name); // summary
+
+        // body
+        if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
+                argumentList << "* " + sender + " " + text;
+        else
+                argumentList << sender + ": " + text;
+
         // The list of actions has always the action name and then a localized version of that
         // action. Currently we just use an empty string for that.
         // TODO(Nico): Look into what to actually put there.
@@ -76,12 +91,12 @@ NotificationsManager::postNotification(const QString &roomid,
         QDBusPendingCall call = notifyApp.asyncCallWithArgumentList("Notify", argumentList);
         auto watcher          = new QDBusPendingCallWatcher{call, this};
         connect(
-          watcher, &QDBusPendingCallWatcher::finished, this, [watcher, this, roomid, eventid]() {
+          watcher, &QDBusPendingCallWatcher::finished, this, [watcher, this, room_id, event_id]() {
                   if (watcher->reply().type() == QDBusMessage::ErrorMessage)
                           qDebug() << "D-Bus Error:" << watcher->reply().errorMessage();
                   else
                           notificationIds[watcher->reply().arguments().first().toUInt()] =
-                            roomEventId{roomid, eventid};
+                            roomEventId{room_id, event_id};
                   watcher->deleteLater();
           });
 }
