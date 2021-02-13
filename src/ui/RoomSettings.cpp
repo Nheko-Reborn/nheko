@@ -1,21 +1,21 @@
 #include "RoomSettings.h"
 
+#include <QApplication>
 #include <QFileDialog>
+#include <QHBoxLayout>
 #include <QImageReader>
 #include <QMimeDatabase>
 #include <QStandardPaths>
-#include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QApplication>
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/media.hpp>
 
 #include "Cache.h"
-#include "Logging.h"
 #include "Config.h"
+#include "Logging.h"
 #include "MatrixClient.h"
-#include "ui/TextField.h"
 #include "Utils.h"
+#include "ui/TextField.h"
 
 using namespace mtx::events;
 

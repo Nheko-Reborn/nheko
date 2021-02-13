@@ -11,8 +11,8 @@
 #include "CacheCryptoStructs.h"
 #include "EventStore.h"
 #include "InputBar.h"
-#include "ui/UserProfile.h"
 #include "ui/RoomSettings.h"
+#include "ui/UserProfile.h"
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
