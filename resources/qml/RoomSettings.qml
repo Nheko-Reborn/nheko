@@ -26,10 +26,7 @@ ApplicationWindow {
     ColumnLayout {
         id: contentLayout1
 
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: undefined
+        anchors.fill: parent
         anchors.margins: 10
         spacing: 10
 
@@ -104,32 +101,21 @@ ApplicationWindow {
             visible: roomSettings.canChangeNameAndTopic
             onClicked: roomSettings.openEditModal()
         }
-    }
 
-    ScrollView {
-        id: topicScroll
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: contentLayout1.bottom
-        anchors.bottom: undefined
-        anchors.margins: 10
-        height: 100
+        ScrollView {
+            Layout.maximumHeight: 75
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
 
-        TextArea {
-            text: roomSettings.roomTopic
-            background: null
+            TextArea {
+                text: roomSettings.roomTopic
+                wrapMode: TextEdit.WordWrap
+                readOnly: true
+                background: null
+            }
         }
-    }
-
-    ColumnLayout {
-        id: contentLayout2
-
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: topicScroll.bottom
-        anchors.bottom: parent.bottom
-        anchors.margins: 10
-        spacing: 10
 
         MatrixText {
             text: "SETTINGS"
@@ -178,8 +164,8 @@ ApplicationWindow {
                 Layout.fillWidth: true
             }
 
-            Switch {
-                id: encryptionSwitch
+            ToggleButton {
+                id: encryptionToggle
 
                 checked: roomSettings.isEncryptionEnabled
                 onToggled: {
@@ -209,7 +195,7 @@ ApplicationWindow {
                 }
 
                 onRejected: {
-                    encryptionSwitch.checked = false
+                    encryptionToggle.checked = false
                 }
 
                 standardButtons: Dialog.Ok | Dialog.Cancel
@@ -227,7 +213,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
             }
 
-            Switch {
+            ToggleButton {
                 ToolTip.text: qsTr("Whether or not the client should respond automatically with the session keys 
                                 upon request. Use with caution, this is a temporary measure to test the 
                                 E2E implementation until device verification is completed.")

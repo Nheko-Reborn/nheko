@@ -128,6 +128,7 @@
         <file>qml/EncryptionIndicator.qml</file>
         <file>qml/ImageButton.qml</file>
         <file>qml/MatrixText.qml</file>
+        <file>qml/ToggleButton.qml</file>
         <file>qml/MessageInput.qml</file>
         <file>qml/MessageView.qml</file>
         <file>qml/NhekoBusyIndicator.qml</file>
