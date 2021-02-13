@@ -302,7 +302,9 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown)
 
                 // NOTE(Nico): rich replies always need a formatted_body!
                 text.format = "org.matrix.custom.html";
-                if (ChatPage::instance()->userSettings()->markdown())
+                if ((ChatPage::instance()->userSettings()->markdown() &&
+                        useMarkdown == MarkdownOverride::NOT_SPECIFIED) ||
+                       useMarkdown == MarkdownOverride::ON)
                         text.formatted_body =
                           utils::getFormattedQuoteBody(related, utils::markdownToHtml(msg))
                             .toStdString();
