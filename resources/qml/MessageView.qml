@@ -77,6 +77,19 @@ ListView {
         }
     }
 
+    Connections {
+        target: TimelineManager
+        onFocusChanged: readTimer.running = TimelineManager.isWindowFocused
+    }
+
+    Timer {
+        id: readTimer
+
+        // force current read index to update
+        onTriggered: chat.model.setCurrentIndex(chat.model.currentIndex)
+        interval: 1000
+    }
+
     Component {
         id: sectionHeader
 
@@ -193,7 +206,7 @@ ListView {
         Connections {
             target: chat
             onMovementEnded: {
-                if (y + height + 2 * chat.spacing > chat.contentY + timelineRoot.height && y < chat.contentY + timelineRoot.height)
+                if (y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height)
                     chat.model.currentIndex = index;
 
             }

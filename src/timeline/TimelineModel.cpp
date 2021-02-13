@@ -735,13 +735,13 @@ TimelineModel::updateLastMessage()
 void
 TimelineModel::setCurrentIndex(int index)
 {
-        if (!ChatPage::instance()->isActiveWindow())
-                return;
-
         auto oldIndex = idToIndex(currentId);
         currentId     = indexToId(index);
         if (index != oldIndex)
                 emit currentIndexChanged(index);
+
+        if (!ChatPage::instance()->isActiveWindow())
+                return;
 
         if (!currentId.startsWith("m")) {
                 auto oldReadIndex =
