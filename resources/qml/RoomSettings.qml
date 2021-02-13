@@ -105,7 +105,6 @@ ApplicationWindow {
         ScrollView {
             Layout.maximumHeight: 75
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
 
@@ -168,7 +167,7 @@ ApplicationWindow {
                 id: encryptionToggle
 
                 checked: roomSettings.isEncryptionEnabled
-                onToggled: {
+                onClicked: {
                     if(roomSettings.isEncryptionEnabled) {
                         checked=true;
                         return;
@@ -220,7 +219,7 @@ ApplicationWindow {
 
                 checked: roomSettings.respondsToKeyRequests
 
-                onToggled: {
+                onClicked: {
                     roomSettings.changeKeyRequestsPreference(checked)
                 }
             }
