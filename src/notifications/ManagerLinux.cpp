@@ -13,6 +13,7 @@
 #include "MatrixClient.h"
 #include "Utils.h"
 #include <mtx/responses/notifications.hpp>
+#include <cmark.h>
 
 NotificationsManager::NotificationsManager(QObject *parent)
   : QObject(parent)
@@ -58,6 +59,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         const auto sender   = cache::displayName(
           room_id, QString::fromStdString(mtx::accessors::sender(notification.event)));
         const auto text = utils::event_body(notification.event);
+        const auto formattedText = cmark_markdown_to_html(text.toStdString().c_str(), text.length(), CMARK_OPT_UNSAFE);
 
         QVariantMap hints;
         hints["image-data"] = icon;
@@ -71,9 +73,9 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
 
         // body
         if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
-                argumentList << "* " + sender + " " + text;
+                argumentList << "* " + sender + " " + formattedText;
         else
-                argumentList << sender + ": " + text;
+                argumentList << sender + ": " + formattedText;
 
         // The list of actions has always the action name and then a localized version of that
         // action. Currently we just use an empty string for that.

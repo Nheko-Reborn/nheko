@@ -10,6 +10,7 @@
 #include "MatrixClient.h"
 #include "Utils.h"
 #include <mtx/responses/notifications.hpp>
+#include <cmark.h>
 
 using namespace WinToastLib;
 
@@ -53,6 +54,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
           cache::displayName(QString::fromStdString(notification.room_id),
                              QString::fromStdString(mtx::accessors::sender(notification.event)));
         const auto text = utils::event_body(notification.event);
+        const auto formattedText = cmark_markdown_to_html(text.toStdString().c_str(), text.length(), CMARK_OPT_UNSAFE);
 
         if (!isInitialized)
                 init();
@@ -66,10 +68,10 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
                                    WinToastTemplate::FirstLine);
         if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
                 templ.setTextField(
-                  QString("* ").append(sender).append(" ").append(text).toStdWString(),
+                  QString("* ").append(sender).append(" ").append(formattedText).toStdWString(),
                   WinToastTemplate::SecondLine);
         else
-                templ.setTextField(QString("%1").arg(text).toStdWString(),
+                templ.setTextField(QString("%1").arg(formattedText).toStdWString(),
                                    WinToastTemplate::SecondLine);
         // TODO: implement room or user avatar
         // templ.setImagePath(L"C:/example.png");
