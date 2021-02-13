@@ -12,8 +12,8 @@ ApplicationWindow {
 
 	x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
-    minimumWidth: 340
-    minimumHeight: 600
+    minimumWidth: 400
+    minimumHeight: 650
     palette: colors
     color: colors.window
     modality: Qt.WindowModal
@@ -24,9 +24,12 @@ ApplicationWindow {
     }
 
     ColumnLayout {
-        id: contentLayout
+        id: contentLayout1
 
-        anchors.fill: parent
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: undefined
         anchors.margins: 10
         spacing: 10
 
@@ -101,6 +104,32 @@ ApplicationWindow {
             visible: roomSettings.canChangeNameAndTopic
             onClicked: roomSettings.openEditModal()
         }
+    }
+
+    ScrollView {
+        id: topicScroll
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: contentLayout1.bottom
+        anchors.bottom: undefined
+        anchors.margins: 10
+        height: 100
+
+        TextArea {
+            text: roomSettings.roomTopic
+            background: null
+        }
+    }
+
+    ColumnLayout {
+        id: contentLayout2
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: topicScroll.bottom
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        spacing: 10
 
         MatrixText {
             text: "SETTINGS"

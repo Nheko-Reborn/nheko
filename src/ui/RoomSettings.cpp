@@ -75,9 +75,10 @@ EditModal::EditModal(const QString &roomId, QWidget *parent)
 }
 
 void
-EditModal::topicEventSent()
+EditModal::topicEventSent(const QString &topic)
 {
         errorField_->hide();
+        emit topicChanged(topic);
         close();
 }
 
@@ -141,14 +142,14 @@ EditModal::applyClicked()
                 http::client()->send_state_event(
                   roomId_.toStdString(),
                   body,
-                  [proxy](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+                  [proxy, newTopic](const mtx::responses::EventId &, mtx::http::RequestErr err) {
                           if (err) {
                                   emit proxy->error(
                                     QString::fromStdString(err->matrix_error.error));
                                   return;
                           }
 
-                          emit proxy->topicEventSent();
+                          emit proxy->topicEventSent(newTopic);
                   });
         }
 }
@@ -222,7 +223,13 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
 QString
 RoomSettings::roomName() const
 {
-        return QString(info_.name.c_str());
+        return QString::fromStdString(info_.name);
+}
+
+QString
+RoomSettings::roomTopic() const
+{
+        return QString::fromStdString(info_.topic);
 }
 
 QString
@@ -381,6 +388,11 @@ RoomSettings::openEditModal()
         connect(modal, &EditModal::nameChanged, this, [this](const QString &newName) {
                 info_.name = newName.toStdString();
                 emit roomNameChanged();
+        });
+
+        connect(modal, &EditModal::topicChanged, this, [this](const QString &newTopic) {
+                info_.topic = newTopic.toStdString();
+                emit roomTopicChanged();
         });
 }
 

@@ -15,7 +15,7 @@ Rectangle {
 
     MouseArea {
         anchors.fill: parent
-        onClicked: TimelineManager.openRoomSettings()
+        onClicked: TimelineManager.timeline.openRoomSettings()
     }
 
     GridLayout {

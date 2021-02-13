@@ -20,7 +20,7 @@ class ThreadProxy : public QObject
 signals:
         void error(const QString &msg);
         void nameEventSent(const QString &);
-        void topicEventSent();
+        void topicEventSent(const QString &);
         void stopLoading();
 };
 
@@ -35,9 +35,10 @@ public:
 
 signals:
         void nameChanged(const QString &roomName);
+        void topicChanged(const QString &topic);
 
 private slots:
-        void topicEventSent();
+        void topicEventSent(const QString &topic);
         void nameEventSent(const QString &name);
         void error(const QString &msg);
 
@@ -60,25 +61,27 @@ private:
 class RoomSettings : public QObject
 {
         Q_OBJECT
-        Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
         Q_PROPERTY(QString roomId READ roomId CONSTANT)
         Q_PROPERTY(QString roomVersion READ roomVersion CONSTANT)
+        Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
+        Q_PROPERTY(QString roomTopic READ roomTopic NOTIFY roomTopicChanged)
         Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY avatarUrlChanged)
         Q_PROPERTY(int memberCount READ memberCount CONSTANT)
         Q_PROPERTY(int notifications READ notifications NOTIFY notificationsChanged)
         Q_PROPERTY(int accessJoinRules READ accessJoinRules NOTIFY accessJoinRulesChanged)
         Q_PROPERTY(bool isLoading READ isLoading NOTIFY loadingChanged)
+        Q_PROPERTY(bool canChangeAvatar READ canChangeAvatar CONSTANT)
         Q_PROPERTY(bool canChangeJoinRules READ canChangeJoinRules CONSTANT)
         Q_PROPERTY(bool canChangeNameAndTopic READ canChangeNameAndTopic CONSTANT)
-        Q_PROPERTY(bool canChangeAvatar READ canChangeAvatar CONSTANT)
         Q_PROPERTY(bool isEncryptionEnabled READ isEncryptionEnabled NOTIFY encryptionChanged)
         Q_PROPERTY(bool respondsToKeyRequests READ respondsToKeyRequests NOTIFY keyRequestsChanged)
 
 public:
         RoomSettings(QString roomid, QObject *parent = nullptr);
 
-        QString roomName() const;
         QString roomId() const;
+        QString roomName() const;
+        QString roomTopic() const;
         QString roomVersion() const;
         QString roomAvatarUrl();
         int memberCount() const;
@@ -94,26 +97,27 @@ public:
         bool canChangeAvatar() const;
         bool isEncryptionEnabled() const;
 
-        Q_INVOKABLE void changeNotifications(int currentIndex);
-        Q_INVOKABLE void changeAccessRules(int index);
-        Q_INVOKABLE void changeKeyRequestsPreference(bool isOn);
         Q_INVOKABLE void enableEncryption();
         Q_INVOKABLE void updateAvatar();
         Q_INVOKABLE void openEditModal();
+        Q_INVOKABLE void changeAccessRules(int index);
+        Q_INVOKABLE void changeNotifications(int currentIndex);
+        Q_INVOKABLE void changeKeyRequestsPreference(bool isOn);
 
 signals:
+        void loadingChanged();
+        void roomNameChanged();
+        void roomTopicChanged();
+        void avatarUrlChanged();
+        void encryptionChanged();
+        void keyRequestsChanged();
         void notificationsChanged();
         void accessJoinRulesChanged();
-        void keyRequestsChanged();
-        void encryptionChanged();
-        void avatarUrlChanged();
-        void roomNameChanged();
-        void loadingChanged();
         void displayError(const QString &errorMessage);
 
 public slots:
-        void avatarChanged();
         void stopLoading();
+        void avatarChanged();
 
 private:
         void retrieveRoomInfo();
