@@ -29,6 +29,7 @@ Item {
 
     TapHandler {
         onLongPressed: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, row, mapToItem(timelineRoot, point.position.x, point.position.y))
+        onDoubleTapped: chat.model.reply = model.id
     }
 
     RowLayout {
