@@ -106,6 +106,10 @@ void
 RoomList::removeRoom(const QString &room_id, bool reset)
 {
         auto roomIt = rooms_.find(room_id);
+        if (roomIt == rooms_.end()) {
+                return;
+        }
+
         for (auto roomSortIt = rooms_sort_cache_.begin(); roomSortIt != rooms_sort_cache_.end();
              ++roomSortIt) {
                 if (roomIt->second == *roomSortIt) {
@@ -523,8 +527,11 @@ RoomList::firstRoom() const
                 auto item = qobject_cast<RoomInfoListItem *>(contentsLayout_->itemAt(i)->widget());
 
                 if (item) {
-                        return std::pair<QString, QSharedPointer<RoomInfoListItem>>(
-                          item->roomId(), rooms_.at(item->roomId()));
+                        auto topRoom = rooms_.find(item->roomId());
+                        if (topRoom != rooms_.end()) {
+                                return std::pair<QString, QSharedPointer<RoomInfoListItem>>(
+                                  item->roomId(), topRoom->second);
+                        }
                 }
         }
 

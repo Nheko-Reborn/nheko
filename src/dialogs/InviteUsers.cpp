@@ -65,6 +65,10 @@ InviteUsers::InviteUsers(QWidget *parent)
 
         connect(inviteeInput_, &TextField::returnPressed, this, &InviteUsers::addUser);
         connect(confirmBtn_, &QPushButton::clicked, [this]() {
+                if (!inviteeInput_->text().isEmpty()) {
+                        addUser();
+                }
+
                 emit sendInvites(invitedUsers());
 
                 inviteeInput_->clear();
