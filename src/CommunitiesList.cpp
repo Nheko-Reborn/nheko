@@ -65,6 +65,7 @@ CommunitiesList::setCommunities(const mtx::responses::JoinedGroups &response)
                 addCommunity(group);
 
         communities_["world"]->setPressedState(true);
+        selectedCommunity_ = "world";
         emit communityChanged("world");
         sortEntries();
 }
@@ -74,6 +75,7 @@ CommunitiesList::syncTags(const std::map<QString, RoomInfo> &info)
 {
         for (const auto &room : info)
                 setTagsForRoom(room.first, room.second.tags);
+        emit communityChanged(selectedCommunity_);
         sortEntries();
 }
 
@@ -231,6 +233,7 @@ CommunitiesList::highlightSelectedCommunity(const QString &community_id)
                 return;
         }
 
+        selectedCommunity_ = community_id;
         emit communityChanged(community_id);
 
         for (const auto &community : communities_) {
