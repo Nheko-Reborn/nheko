@@ -12,7 +12,7 @@ ApplicationWindow {
 
 	x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
-    minimumWidth: 400
+    minimumWidth: 420
     minimumHeight: 650
     palette: colors
     color: colors.window
@@ -113,19 +113,24 @@ ApplicationWindow {
                 wrapMode: TextEdit.WordWrap
                 readOnly: true
                 background: null
+                horizontalAlignment: TextEdit.AlignHCenter
+                selectByMouse: true
             }
         }
 
-        MatrixText {
-            text: "SETTINGS"
-        }
+        GridLayout {
+            columns: 2
 
-        RowLayout {
             MatrixText {
-                text: "Notifications"
+                text: "SETTINGS"
             }
 
             Item {
+                Layout.fillWidth: true
+            }
+
+            MatrixText {
+                text: "Notifications"
                 Layout.fillWidth: true
             }
 
@@ -135,32 +140,26 @@ ApplicationWindow {
                 onActivated: {
                     roomSettings.changeNotifications(index)
                 }
+                Layout.fillWidth: true
             }
-        }
 
-        RowLayout {
             MatrixText {
                 text: "Room access"
+                Layout.fillWidth: true
             }
 
             ComboBox {
-                Layout.fillWidth: true
                 enabled: roomSettings.canChangeJoinRules
                 model: [ "Anyone and guests", "Anyone", "Invited users" ]
                 currentIndex: roomSettings.accessJoinRules
                 onActivated: {
                     roomSettings.changeAccessRules(index)
                 }
+                Layout.fillWidth: true
             }
-        }
 
-        RowLayout {
             MatrixText {
                 text: "Encryption"
-            }
-
-            Item {
-                Layout.fillWidth: true
             }
 
             ToggleButton {
@@ -175,6 +174,7 @@ ApplicationWindow {
 
                     confirmEncryptionDialog.open();
                 }
+                Layout.alignment: Qt.AlignRight
             }
 
             MessageDialog {
@@ -199,20 +199,14 @@ ApplicationWindow {
 
                 standardButtons: Dialog.Ok | Dialog.Cancel
             }
-        }
-
-        RowLayout {
-            visible: roomSettings.isEncryptionEnabled
 
             MatrixText {
+                visible: roomSettings.isEncryptionEnabled
                 text: "Respond to key requests"
             }
 
-            Item {
-                Layout.fillWidth: true
-            }
-
             ToggleButton {
+                visible: roomSettings.isEncryptionEnabled
                 ToolTip.text: qsTr("Whether or not the client should respond automatically with the session keys 
                                 upon request. Use with caution, this is a temporary measure to test the 
                                 E2E implementation until device verification is completed.")
@@ -222,40 +216,35 @@ ApplicationWindow {
                 onClicked: {
                     roomSettings.changeKeyRequestsPreference(checked)
                 }
+                Layout.alignment: Qt.AlignRight
             }
-        }
 
-        MatrixText {
-            text: "INFO"
-        }
-
-        RowLayout {
             MatrixText {
-                text: "Internal ID"
+                text: "INFO"
             }
 
             Item {
                 Layout.fillWidth: true
+            }
+
+            MatrixText {
+                text: "Internal ID"
             }
 
             MatrixText {
                 text: roomSettings.roomId
                 font.pixelSize: 12
+                Layout.alignment: Qt.AlignRight
             }
-        }
 
-        RowLayout {
             MatrixText {
                 text: "Room Version"
-            }
-
-            Item {
-                Layout.fillWidth: true
             }
 
             MatrixText {
                 text: roomSettings.roomVersion
                 font.pixelSize: 12
+                Layout.alignment: Qt.AlignRight
             }
         }
 

@@ -165,8 +165,8 @@ EditModal::setFields(const QString &roomName, const QString &roomTopic)
 }
 
 RoomSettings::RoomSettings(QString roomid, QObject *parent)
-  : roomid_{std::move(roomid)}
-  , QObject(parent)
+  : QObject(parent)
+  , roomid_{std::move(roomid)}
 {
         retrieveRoomInfo();
 
