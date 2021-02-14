@@ -8,5 +8,6 @@ MatrixText {
     width: parent ? parent.width : undefined
     height: isReply ? Math.round(Math.min(timelineRoot.height / 8, implicitHeight)) : undefined
     clip: isReply
+    selectByMouse: !Settings.mobileMode && !isReply
     font.pointSize: (Settings.enlargeEmojiOnlyMessages && model.data.isOnlyEmoji > 0 && model.data.isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize
 }

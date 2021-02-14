@@ -1,4 +1,4 @@
-import QtQuick 2.5
+import QtQuick 2.12
 import QtQuick.Controls 2.1
 import im.nheko 1.0
 
@@ -24,14 +24,11 @@ Rectangle {
     color: "transparent"
     width: 16
     height: 16
-    ToolTip.visible: ma.containsMouse && indicator.visible
+    ToolTip.visible: ma.hovered && indicator.visible
     ToolTip.text: getEncryptionTooltip()
 
-    MouseArea {
+    HoverHandler {
         id: ma
-
-        anchors.fill: parent
-        hoverEnabled: true
     }
 
     Image {

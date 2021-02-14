@@ -1,6 +1,6 @@
 import "./delegates"
 import "./emoji"
-import QtQuick 2.6
+import QtQuick 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
@@ -12,27 +12,23 @@ Item {
     height: row.height
 
     Rectangle {
-        color: (Settings.messageHoverHighlight && hoverHandler.containsMouse) ? colors.alternateBase : "transparent"
+        color: (Settings.messageHoverHighlight && hoverHandler.hovered) ? colors.alternateBase : "transparent"
         anchors.fill: row
     }
 
-    MouseArea {
+    HoverHandler {
         id: hoverHandler
 
-        anchors.fill: parent
-        propagateComposedEvents: true
-        preventStealing: false
-        hoverEnabled: true
-        acceptedButtons: Qt.AllButtons
-        onClicked: {
-            if (mouse.button === Qt.RightButton)
-                messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, row);
-            else
-                mouse.accepted = false;
-        }
-        onPressAndHold: {
-            messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, row, mapToItem(timelineRoot, mouse.x, mouse.y));
-        }
+        acceptedDevices: PointerDevice.GenericPointer
+    }
+
+    TapHandler {
+        acceptedButtons: Qt.RightButton
+        onSingleTapped: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, row, mapToItem(timelineRoot, eventPoint.position.x, eventPoint.position.y))
+    }
+
+    TapHandler {
+        onLongPressed: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, row, mapToItem(timelineRoot, point.position.x, point.position.y))
     }
 
     RowLayout {
@@ -151,15 +147,11 @@ Item {
             text: model.timestamp.toLocaleTimeString("HH:mm")
             width: Math.max(implicitWidth, text.length * fontMetrics.maximumCharacterWidth)
             color: inactiveColors.text
-            ToolTip.visible: ma.containsMouse
+            ToolTip.visible: ma.hovered
             ToolTip.text: Qt.formatDateTime(model.timestamp, Qt.DefaultLocaleLongDate)
 
-            MouseArea {
+            HoverHandler {
                 id: ma
-
-                anchors.fill: parent
-                hoverEnabled: true
-                propagateComposedEvents: true
             }
 
         }

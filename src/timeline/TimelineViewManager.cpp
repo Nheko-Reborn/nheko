@@ -21,6 +21,7 @@
 #include "dialogs/ImageOverlay.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
+#include "ui/NhekoCursorShape.h"
 #include "ui/NhekoDropArea.h"
 
 #include <iostream> //only for debugging
@@ -118,6 +119,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
         qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
         qmlRegisterType<NhekoDropArea>("im.nheko", 1, 0, "NhekoDropArea");
+        qmlRegisterType<NhekoCursorShape>("im.nheko", 1, 0, "CursorShape");
         qmlRegisterUncreatableType<DeviceVerificationFlow>(
           "im.nheko", 1, 0, "DeviceVerificationFlow", "Can't create verification flow from QML!");
         qmlRegisterUncreatableType<UserProfile>(

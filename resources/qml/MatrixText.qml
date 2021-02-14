@@ -8,6 +8,7 @@ TextEdit {
     focus: false
     wrapMode: Text.Wrap
     selectByMouse: !Settings.mobileMode
+    enabled: selectByMouse
     color: colors.text
     onLinkActivated: {
         if (/^https:\/\/matrix.to\/#\/(@.*)$/.test(link)) {
@@ -25,12 +26,9 @@ TextEdit {
     ToolTip.visible: hoveredLink
     ToolTip.text: hoveredLink
 
-    MouseArea {
-        id: ma
-
+    CursorShape {
         anchors.fill: parent
-        acceptedButtons: Qt.NoButton
-        cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
+        cursorShape: hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
     }
 
 }

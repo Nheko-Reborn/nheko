@@ -1,6 +1,6 @@
 import "./delegates"
 import QtGraphicalEffects 1.0
-import QtQuick 2.9
+import QtQuick 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
@@ -153,12 +153,15 @@ ScrollView {
                         color: TimelineManager.userColor(modelData ? modelData.userId : "", colors.window)
                         textFormat: Text.RichText
 
-                        MouseArea {
+                        TapHandler {
+                            //cursorShape: Qt.PointingHandCursor
+
+                            onSingleTapped: chat.model.openUserProfile(modelData.userId)
+                        }
+
+                        CursorShape {
                             anchors.fill: parent
-                            Layout.alignment: Qt.AlignHCenter
-                            onClicked: chat.model.openUserProfile(modelData.userId)
                             cursorShape: Qt.PointingHandCursor
-                            propagateComposedEvents: true
                         }
 
                     }

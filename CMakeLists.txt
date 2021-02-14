@@ -281,6 +281,7 @@ set(SRC_FILES
 	src/ui/InfoMessage.cpp
 	src/ui/Label.cpp
 	src/ui/LoadingIndicator.cpp
+	src/ui/NhekoCursorShape.cpp
 	src/ui/NhekoDropArea.cpp
 	src/ui/OverlayModal.cpp
 	src/ui/OverlayWidget.cpp
@@ -495,6 +496,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/Label.h
 	src/ui/FloatingButton.h
 	src/ui/Menu.h
+	src/ui/NhekoCursorShape.h
 	src/ui/NhekoDropArea.h
 	src/ui/OverlayWidget.h
 	src/ui/SnackBar.h
