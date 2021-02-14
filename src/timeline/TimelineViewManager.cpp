@@ -21,6 +21,7 @@
 #include "dialogs/ImageOverlay.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
+#include "ui/NhekoCursorShape.h"
 #include "ui/NhekoDropArea.h"
 
 #include <iostream> //only for debugging
@@ -118,6 +119,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
         qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
         qmlRegisterType<NhekoDropArea>("im.nheko", 1, 0, "NhekoDropArea");
+        qmlRegisterType<NhekoCursorShape>("im.nheko", 1, 0, "CursorShape");
         qmlRegisterUncreatableType<DeviceVerificationFlow>(
           "im.nheko", 1, 0, "DeviceVerificationFlow", "Can't create verification flow from QML!");
         qmlRegisterUncreatableType<UserProfile>(
@@ -175,10 +177,6 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         container = view;
         view->setResizeMode(QQuickWidget::SizeRootObjectToView);
         container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
-        view->quickWindow()->setTextRenderType(QQuickWindow::NativeTextRendering);
-#endif
 
         connect(view, &QQuickWidget::statusChanged, this, [](QQuickWidget::Status status) {
                 nhlog::ui()->debug("Status changed to {}", status);
@@ -508,9 +506,11 @@ TimelineViewManager::queueReactionMessage(const QString &reactedEvent, const QSt
         // If selfReactedEvent is empty, that means we haven't previously reacted
         if (selfReactedEvent.isEmpty()) {
                 mtx::events::msg::Reaction reaction;
-                reaction.relates_to.rel_type = mtx::common::RelationType::Annotation;
-                reaction.relates_to.event_id = reactedEvent.toStdString();
-                reaction.relates_to.key      = reactionKey.toStdString();
+                mtx::common::Relation rel;
+                rel.rel_type = mtx::common::RelationType::Annotation;
+                rel.event_id = reactedEvent.toStdString();
+                rel.key      = reactionKey.toStdString();
+                reaction.relations.relations.push_back(rel);
 
                 timeline_->sendMessageEvent(reaction, mtx::events::EventType::Reaction);
                 // Otherwise, we have previously reacted and the reaction should be redacted
@@ -545,4 +545,10 @@ TimelineViewManager::queueCallMessage(const QString &roomid,
                                       const mtx::events::msg::CallHangUp &callHangUp)
 {
         models.value(roomid)->sendMessageEvent(callHangUp, mtx::events::EventType::CallHangUp);
+}
+
+void
+TimelineViewManager::focusMessageInput()
+{
+        emit focusInput();
 }

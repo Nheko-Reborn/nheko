@@ -116,9 +116,7 @@ brew install --cask nheko
 
 ### Build Requirements
 
-- Qt5 (5.10 or greater). Qt 5.7 adds support for color font rendering with
-  Freetype, which is essential to properly support emoji, 5.8 adds some features
-  to make interopability with Qml easier, 5.10 makes sliders actually visible with different palettes.
+- Qt5 (5.12 or greater). Required for overlapping hover handlers in Qml.
 - CMake 3.15 or greater. (Lower version may work, but may break boost linking)
 - [mtxclient](https://github.com/Nheko-Reborn/mtxclient)
 - [LMDB](https://symas.com/lightning-memory-mapped-database/)
@@ -205,7 +203,7 @@ and mtxclient (needs to be build separately).
 ```bash
 sudo apt install cmake gcc make automake liblmdb-dev \
     qt5-default libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev \
-    qml-module-qtgstreamer qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools \
+    qml-module-qtgstreamer qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev \
     qml-module-qtgraphicaleffects qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts \
     qt5keychain-dev
 ```

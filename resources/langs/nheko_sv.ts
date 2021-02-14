@@ -51,7 +51,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1978"/>
+        <location filename="../../src/Cache.cpp" line="+2084"/>
         <source>You joined this room.</source>
         <translation>Du gick med i detta rum.</translation>
     </message>
@@ -120,13 +120,13 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+211"/>
+        <location filename="../../src/ChatPage.cpp" line="+215"/>
         <source>Failed to invite user: %1</source>
         <translation>Kunde inte bjuda in användare: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+796"/>
+        <location line="+797"/>
         <source>Invited user: %1</source>
         <translation>Bjöd in användare: %1</translation>
     </message>
@@ -479,7 +479,7 @@
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+559"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+612"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation>-- Krypterat Event (Inga nycklar kunde hittas för dekryptering) --</translation>
@@ -568,7 +568,7 @@
         <translation>Alla Filer (*)</translation>
     </message>
     <message>
-        <location line="+340"/>
+        <location line="+384"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Kunde inte ladda upp media. Vänligen försök igen.</translation>
     </message>
@@ -801,12 +801,12 @@ Exempel: https://server.my:8787</translation>
         <translation>Skriv ett meddelande…</translation>
     </message>
     <message>
-        <location line="+170"/>
+        <location line="+186"/>
         <source>Emoji</source>
         <translation>Emoji</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Send</source>
         <translation>Skicka</translation>
     </message>
@@ -1003,15 +1003,20 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../qml/ReplyPopup.qml" line="+43"/>
+        <location filename="../qml/ReplyPopup.qml" line="+45"/>
         <source>Close</source>
         <translation>Stäng</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Cancel edit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1868"/>
+        <location filename="../../src/Cache.cpp" line="+1861"/>
         <source>no version stored</source>
         <translation>ingen version lagrad</translation>
     </message>
@@ -1153,7 +1158,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+860"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+895"/>
         <source>Message redaction failed: %1</source>
         <translation>Kunde inte maskera meddelande: %1</translation>
     </message>
@@ -1303,12 +1308,12 @@ Exempel: https://server.my:8787</translation>
         <translation>%1 maskerade sin knackning.</translation>
     </message>
     <message>
-        <location line="-771"/>
+        <location line="-795"/>
         <source>You joined this room.</source>
         <translation>Du gick med i detta rum.</translation>
     </message>
     <message>
-        <location line="+773"/>
+        <location line="+797"/>
         <source>Rejected the knock from %1.</source>
         <translation>Avvisade knackningen från %1.</translation>
     </message>
@@ -1332,7 +1337,17 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+97"/>
+        <location filename="../qml/TimelineRow.qml" line="+99"/>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Edited</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>React</source>
         <translation>Reagera</translation>
     </message>
@@ -1350,7 +1365,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+83"/>
+        <location filename="../qml/TimelineView.qml" line="+85"/>
         <source>React</source>
         <translation>Reagera</translation>
     </message>
@@ -1358,6 +1373,11 @@ Exempel: https://server.my:8787</translation>
         <location line="+7"/>
         <source>Reply</source>
         <translation>Svara</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1483,7 +1503,12 @@ Exempel: https://server.my:8787</translation>
         <translation>Status:</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
+        <source>User Profile Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Set presence automatically</source>
         <translation>Sätt närvaro automatiskt</translation>
     </message>
@@ -1506,7 +1531,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+54"/>
+        <location filename="../qml/UserProfile.qml" line="+133"/>
         <source>Verify</source>
         <translation>Bekräfta</translation>
     </message>
@@ -1525,11 +1550,40 @@ Exempel: https://server.my:8787</translation>
         <source>Kick the user</source>
         <translation>Sparka ut användaren</translation>
     </message>
+    <message>
+        <location filename="../../src/ui/UserProfile.cpp" line="+296"/>
+        <source>Select an avatar</source>
+        <translation type="unfinished">Välj en avatar</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>All Files (*)</source>
+        <translation type="unfinished">Alla Filer (*)</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>The selected file is not an image</source>
+        <translation type="unfinished">Den valda filen är inte en bild</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Error while reading file: %1</source>
+        <translation type="unfinished">Kunde inte läsa filen: %1</translation>
+    </message>
+</context>
+<context>
+    <name>UserSettings</name>
+    <message>
+        <location filename="../../src/UserSettingsPage.cpp" line="+345"/>
+        <location filename="../../src/UserSettingsPage.h" line="+183"/>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+794"/>
+        <location line="+496"/>
         <source>Minimize to tray</source>
         <translation>Minimera till systemtråg</translation>
     </message>
@@ -1549,12 +1603,17 @@ Exempel: https://server.my:8787</translation>
         <translation>Cirkulära avatarer</translation>
     </message>
     <message>
-        <location line="-195"/>
+        <location line="-210"/>
         <source>profile: %1</source>
         <translation>profil: %1</translation>
     </message>
     <message>
-        <location line="+112"/>
+        <location line="+96"/>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
         <source>CALLS</source>
         <translation>SAMTAL</translation>
     </message>
@@ -1609,6 +1668,29 @@ Påverkar endast krypterade chattar.</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Privacy Screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>When the window loses focus, the timeline will
+be blurred.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Privacy screen timeout (in seconds [0 - 3600])</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Set timeout (in seconds) for how long after window loses
+focus before the screen will be blurred.
+Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Show buttons in timeline</source>
         <translation>Visa knappar i tidslinje</translation>
     </message>
@@ -1725,7 +1807,7 @@ Detta gör vanligtvis att ikonen i aktivitetsfältet animeras på något sätt.<
         <translation>Dela nycklar med verifierade användare och enheter</translation>
     </message>
     <message>
-        <location line="+395"/>
+        <location line="+407"/>
         <source>CACHED</source>
         <translation>SPARAD</translation>
     </message>
@@ -1735,7 +1817,7 @@ Detta gör vanligtvis att ikonen i aktivitetsfältet animeras på något sätt.<
         <translation>EJ SPARAD</translation>
     </message>
     <message>
-        <location line="-449"/>
+        <location line="-461"/>
         <source>Scale factor</source>
         <translation>Storleksfaktor</translation>
     </message>
@@ -1810,7 +1892,7 @@ Detta gör vanligtvis att ikonen i aktivitetsfältet animeras på något sätt.<
         <translation>Enhetsfingeravtryck</translation>
     </message>
     <message>
-        <location line="-155"/>
+        <location line="-164"/>
         <source>Session Keys</source>
         <translation>Sessionsnycklar</translation>
     </message>
@@ -1830,17 +1912,17 @@ Detta gör vanligtvis att ikonen i aktivitetsfältet animeras på något sätt.<
         <translation>KRYPTERING</translation>
     </message>
     <message>
-        <location line="-100"/>
+        <location line="-115"/>
         <source>GENERAL</source>
         <translation>ALLMÄNT</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+64"/>
         <source>INTERFACE</source>
         <translation>GRÄNSSNITT</translation>
     </message>
     <message>
-        <location line="+177"/>
+        <location line="+194"/>
         <source>Touchscreen mode</source>
         <translation>Touchskärmsläge</translation>
     </message>
@@ -1910,7 +1992,7 @@ Detta gör vanligtvis att ikonen i aktivitetsfältet animeras på något sätt.<
         <translation>Alla Filer (*)</translation>
     </message>
     <message>
-        <location line="+225"/>
+        <location line="+237"/>
         <source>Open Sessions File</source>
         <translation>Öppna sessionsfil</translation>
     </message>
@@ -2006,7 +2088,7 @@ Detta gör vanligtvis att ikonen i aktivitetsfältet animeras på något sätt.<
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+147"/>
+        <location filename="../../src/Utils.cpp" line="+145"/>
         <source>Yesterday</source>
         <translation>Igår</translation>
     </message>

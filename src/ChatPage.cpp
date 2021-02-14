@@ -448,15 +448,14 @@ void
 ChatPage::deleteConfigs()
 {
         QSettings settings;
+
+        if (UserSettings::instance()->profile() != "") {
+                settings.beginGroup("profile");
+                settings.beginGroup(UserSettings::instance()->profile());
+        }
         settings.beginGroup("auth");
         settings.remove("");
-        settings.endGroup();
-        settings.beginGroup("client");
-        settings.remove("");
-        settings.endGroup();
-        settings.beginGroup("notifications");
-        settings.remove("");
-        settings.endGroup();
+        settings.endGroup(); // auth
 
         http::client()->shutdown();
         cache::deleteData();
@@ -669,8 +668,6 @@ ChatPage::sendNotifications(const mtx::responses::Notifications &res)
 
                         if (!cache::isNotificationSent(event_id)) {
                                 const auto room_id = QString::fromStdString(item.room_id);
-                                const auto user_id =
-                                  QString::fromStdString(mtx::accessors::sender(item.event));
 
                                 // We should only sent one notification per event.
                                 cache::markSentNotification(event_id);
@@ -690,15 +687,9 @@ ChatPage::sendNotifications(const mtx::responses::Notifications &res)
                                           QString::fromStdString(info.avatar_url),
                                           96,
                                           this,
-                                          [this, room_id, event_id, item, user_id, info](
-                                            QPixmap image) {
+                                          [this, item](QPixmap image) {
                                                   notificationsManager.postNotification(
-                                                    room_id,
-                                                    QString::fromStdString(event_id),
-                                                    QString::fromStdString(info.name),
-                                                    cache::displayName(room_id, user_id),
-                                                    utils::event_body(item.event),
-                                                    image.toImage());
+                                                    item, image.toImage());
                                           });
                                 }
                         }

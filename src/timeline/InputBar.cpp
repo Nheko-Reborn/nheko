@@ -268,7 +268,18 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown)
                         text.format = "org.matrix.custom.html";
         }
 
-        if (!room->reply().isEmpty()) {
+        if (!room->edit().isEmpty()) {
+                if (!room->reply().isEmpty()) {
+                        text.relations.relations.push_back(
+                          {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
+                        room->resetReply();
+                }
+
+                text.relations.relations.push_back(
+                  {mtx::common::RelationType::Replace, room->edit().toStdString()});
+                room->resetEdit();
+
+        } else if (!room->reply().isEmpty()) {
                 auto related = room->relatedInfo(room->reply());
 
                 QString body;
@@ -294,7 +305,8 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown)
                         text.formatted_body =
                           utils::getFormattedQuoteBody(related, msg.toHtmlEscaped()).toStdString();
 
-                text.relates_to.in_reply_to.event_id = related.related_event;
+                text.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, related.related_event});
                 room->resetReply();
         }
 
@@ -316,8 +328,14 @@ InputBar::emote(QString msg)
         }
 
         if (!room->reply().isEmpty()) {
-                emote.relates_to.in_reply_to.event_id = room->reply().toStdString();
+                emote.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
                 room->resetReply();
+        }
+        if (!room->edit().isEmpty()) {
+                emote.relations.relations.push_back(
+                  {mtx::common::RelationType::Replace, room->edit().toStdString()});
+                room->resetEdit();
         }
 
         room->sendMessageEvent(emote, mtx::events::EventType::RoomMessage);
@@ -346,8 +364,14 @@ InputBar::image(const QString &filename,
                 image.url = url.toStdString();
 
         if (!room->reply().isEmpty()) {
-                image.relates_to.in_reply_to.event_id = room->reply().toStdString();
+                image.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
                 room->resetReply();
+        }
+        if (!room->edit().isEmpty()) {
+                image.relations.relations.push_back(
+                  {mtx::common::RelationType::Replace, room->edit().toStdString()});
+                room->resetEdit();
         }
 
         room->sendMessageEvent(image, mtx::events::EventType::RoomMessage);
@@ -371,8 +395,14 @@ InputBar::file(const QString &filename,
                 file.url = url.toStdString();
 
         if (!room->reply().isEmpty()) {
-                file.relates_to.in_reply_to.event_id = room->reply().toStdString();
+                file.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
                 room->resetReply();
+        }
+        if (!room->edit().isEmpty()) {
+                file.relations.relations.push_back(
+                  {mtx::common::RelationType::Replace, room->edit().toStdString()});
+                room->resetEdit();
         }
 
         room->sendMessageEvent(file, mtx::events::EventType::RoomMessage);
@@ -397,8 +427,14 @@ InputBar::audio(const QString &filename,
                 audio.url = url.toStdString();
 
         if (!room->reply().isEmpty()) {
-                audio.relates_to.in_reply_to.event_id = room->reply().toStdString();
+                audio.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
                 room->resetReply();
+        }
+        if (!room->edit().isEmpty()) {
+                audio.relations.relations.push_back(
+                  {mtx::common::RelationType::Replace, room->edit().toStdString()});
+                room->resetEdit();
         }
 
         room->sendMessageEvent(audio, mtx::events::EventType::RoomMessage);
@@ -422,8 +458,14 @@ InputBar::video(const QString &filename,
                 video.url = url.toStdString();
 
         if (!room->reply().isEmpty()) {
-                video.relates_to.in_reply_to.event_id = room->reply().toStdString();
+                video.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
                 room->resetReply();
+        }
+        if (!room->edit().isEmpty()) {
+                video.relations.relations.push_back(
+                  {mtx::common::RelationType::Replace, room->edit().toStdString()});
+                room->resetEdit();
         }
 
         room->sendMessageEvent(video, mtx::events::EventType::RoomMessage);
@@ -517,6 +559,8 @@ InputBar::showPreview(const QMimeData &source, QString path, const QStringList &
           this,
           [this](const QByteArray data, const QString &mime, const QString &fn) {
                   setUploading(true);
+
+                  setText("");
 
                   auto payload = std::string(data.data(), data.size());
                   std::optional<mtx::crypto::EncryptedFile> encryptedFile;

@@ -128,7 +128,7 @@ main(int argc, char *argv[])
         // parsed before the SingleApplication userdata is set.
         QString userdata{""};
         QString matrixUri;
-        for (int i = 0; i < argc; ++i) {
+        for (int i = 1; i < argc; ++i) {
                 QString arg{argv[i]};
                 if (arg.startsWith("--profile=")) {
                         arg.remove("--profile=");
@@ -214,7 +214,7 @@ main(int argc, char *argv[])
 
         QFont font;
         QString userFontFamily = settings.lock()->font();
-        if (!userFontFamily.isEmpty()) {
+        if (!userFontFamily.isEmpty() && userFontFamily != "default") {
                 font.setFamily(userFontFamily);
         }
         font.setPointSizeF(settings.lock()->fontSize());

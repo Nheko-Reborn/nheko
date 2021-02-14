@@ -39,12 +39,12 @@
 #include <QtQml>
 
 #include "Cache.h"
+#include "CallDevices.h"
 #include "Config.h"
 #include "MatrixClient.h"
 #include "Olm.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
-#include "WebRTCSession.h"
 #include "ui/FlatButton.h"
 #include "ui/ToggleButton.h"
 
@@ -115,8 +115,8 @@ UserSettings::load(std::optional<QString> profile)
         cameraFrameRate_  = settings.value("user/camera_frame_rate", QString()).toString();
         useStunServer_    = settings.value("user/use_stun_server", false).toBool();
 
-        if (profile)
-                profile_ = *profile;
+        if (profile) // set to "" if it's the default to maintain compatibility
+                profile_ = (*profile == "default") ? "" : *profile;
         else
                 profile_ = settings.value("user/currentProfile", "").toString();
 
@@ -341,7 +341,13 @@ UserSettings::setEmojiFontFamily(QString family)
 {
         if (family == emojiFont_)
                 return;
-        emojiFont_ = family;
+
+        if (family == tr("Default")) {
+                emojiFont_ = "default";
+        } else {
+                emojiFont_ = family;
+        }
+
         emit emojiFontChanged(family);
         save();
 }
@@ -725,11 +731,15 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         // TODO: Is there a way to limit to just emojis, rather than
         // all emoji fonts?
         auto emojiFamilies = fontDb.families(QFontDatabase::Symbol);
+        emojiFontSelectionCombo_->addItem(tr("Default"));
         for (const auto &family : emojiFamilies) {
                 emojiFontSelectionCombo_->addItem(family);
         }
 
-        fontSelectionCombo_->setCurrentIndex(fontSelectionCombo_->findText(settings_->font()));
+        QString currentFont = settings_->font();
+        if (currentFont != "default" || currentFont != "") {
+                fontSelectionCombo_->setCurrentIndex(fontSelectionCombo_->findText(currentFont));
+        }
 
         emojiFontSelectionCombo_->setCurrentIndex(
           emojiFontSelectionCombo_->findText(settings_->emojiFont()));
@@ -1060,7 +1070,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 [this](const QString &camera) {
                         settings_->setCamera(camera);
                         std::vector<std::string> resolutions =
-                          WebRTCSession::instance().getResolutions(camera.toStdString());
+                          CallDevices::instance().resolutions(camera.toStdString());
                         cameraResolutionCombo_->clear();
                         for (const auto &resolution : resolutions)
                                 cameraResolutionCombo_->addItem(QString::fromStdString(resolution));
@@ -1070,9 +1080,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
                 [this](const QString &resolution) {
                         settings_->setCameraResolution(resolution);
-                        std::vector<std::string> frameRates =
-                          WebRTCSession::instance().getFrameRates(settings_->camera().toStdString(),
-                                                                  resolution.toStdString());
+                        std::vector<std::string> frameRates = CallDevices::instance().frameRates(
+                          settings_->camera().toStdString(), resolution.toStdString());
                         cameraFrameRateCombo_->clear();
                         for (const auto &frameRate : frameRates)
                                 cameraFrameRateCombo_->addItem(QString::fromStdString(frameRate));
@@ -1231,9 +1240,8 @@ UserSettingsPage::showEvent(QShowEvent *)
         timelineMaxWidthSpin_->setValue(settings_->timelineMaxWidth());
         privacyScreenTimeout_->setValue(settings_->privacyScreenTimeout());
 
-        WebRTCSession::instance().refreshDevices();
-        auto mics =
-          WebRTCSession::instance().getDeviceNames(false, settings_->microphone().toStdString());
+        CallDevices::instance().refresh();
+        auto mics = CallDevices::instance().names(false, settings_->microphone().toStdString());
         microphoneCombo_->clear();
         for (const auto &m : mics)
                 microphoneCombo_->addItem(QString::fromStdString(m));
@@ -1241,8 +1249,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         auto cameraResolution = settings_->cameraResolution();
         auto cameraFrameRate  = settings_->cameraFrameRate();
 
-        auto cameras =
-          WebRTCSession::instance().getDeviceNames(true, settings_->camera().toStdString());
+        auto cameras = CallDevices::instance().names(true, settings_->camera().toStdString());
         cameraCombo_->clear();
         for (const auto &c : cameras)
                 cameraCombo_->addItem(QString::fromStdString(c));

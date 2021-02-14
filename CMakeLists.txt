@@ -280,6 +280,7 @@ set(SRC_FILES
 	src/ui/InfoMessage.cpp
 	src/ui/Label.cpp
 	src/ui/LoadingIndicator.cpp
+	src/ui/NhekoCursorShape.cpp
 	src/ui/NhekoDropArea.cpp
 	src/ui/OverlayModal.cpp
 	src/ui/OverlayWidget.cpp
@@ -298,6 +299,7 @@ set(SRC_FILES
 	src/AvatarProvider.cpp
 	src/BlurhashProvider.cpp
 	src/Cache.cpp
+	src/CallDevices.cpp
 	src/CallManager.cpp
 	src/ChatPage.cpp
 	src/ColorImageProvider.cpp
@@ -355,7 +357,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        v0.4.1
+		GIT_TAG        fee5298f068394958c2de935836a2c145f273906
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -493,6 +495,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/Label.h
 	src/ui/FloatingButton.h
 	src/ui/Menu.h
+	src/ui/NhekoCursorShape.h
 	src/ui/NhekoDropArea.h
 	src/ui/OverlayWidget.h
 	src/ui/SnackBar.h
@@ -512,6 +515,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/AvatarProvider.h
 	src/BlurhashProvider.h
 	src/Cache_p.h
+	src/CallDevices.h
 	src/CallManager.h
 	src/ChatPage.h
 	src/CommunitiesList.h
@@ -645,7 +649,7 @@ if(QML_DEBUGGING)
 endif()
 
 
-if(NOT MSVC)
+if(NOT MSVC AND NOT HAIKU)
 	if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" OR CI_BUILD)
 		target_compile_options(nheko PRIVATE "-Werror")
 	endif()

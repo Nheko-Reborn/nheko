@@ -108,6 +108,11 @@ Cache::isHiddenEvent(lmdb::txn &txn,
                      const std::string &room_id)
 {
         using namespace mtx::events;
+
+        // Always hide edits
+        if (mtx::accessors::relations(e).replaces())
+                return true;
+
         if (auto encryptedEvent = std::get_if<EncryptedEvent<msg::Encrypted>>(&e)) {
                 MegolmSessionIndex index;
                 index.room_id    = room_id;
@@ -1197,25 +1202,24 @@ Cache::calculateRoomReadStatus(const std::string &room_id)
         const auto last_event_id = getLastEventId(txn, room_id);
         const auto localUser     = utils::localUser().toStdString();
 
+        std::string fullyReadEventId;
+        if (auto ev = getAccountData(txn, mtx::events::EventType::FullyRead, room_id)) {
+                if (auto fr = std::get_if<
+                      mtx::events::AccountDataEvent<mtx::events::account_data::FullyRead>>(
+                      &ev.value())) {
+                        fullyReadEventId = fr->content.event_id;
+                }
+        }
         txn.commit();
 
-        if (last_event_id.empty())
+        if (last_event_id.empty() || fullyReadEventId.empty())
+                return true;
+
+        if (last_event_id == fullyReadEventId)
                 return false;
 
         // Retrieve all read receipts for that event.
-        const auto receipts =
-          readReceipts(QString::fromStdString(last_event_id), QString::fromStdString(room_id));
-
-        if (receipts.size() == 0)
-                return true;
-
-        // Check if the local user has a read receipt for it.
-        for (auto it = receipts.cbegin(); it != receipts.cend(); it++) {
-                if (it->second == localUser)
-                        return false;
-        }
-
-        return true;
+        return getEventIndex(room_id, last_event_id) > getEventIndex(room_id, fullyReadEventId);
 }
 
 void
@@ -1874,6 +1878,108 @@ Cache::getTimelineIndex(const std::string &room_id, std::string_view event_id)
         lmdb::dbi orderDb{0};
         try {
                 orderDb = getMessageToOrderDb(txn, room_id);
+        } catch (lmdb::runtime_error &e) {
+                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
+                                   room_id,
+                                   e.what());
+                return {};
+        }
+
+        lmdb::val indexVal{event_id.data(), event_id.size()}, val;
+
+        bool success = lmdb::dbi_get(txn, orderDb, indexVal, val);
+        if (!success) {
+                return {};
+        }
+
+        return *val.data<uint64_t>();
+}
+
+std::optional<uint64_t>
+Cache::getEventIndex(const std::string &room_id, std::string_view event_id)
+{
+        if (event_id.empty())
+                return {};
+
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        lmdb::dbi orderDb{0};
+        try {
+                orderDb = getEventToOrderDb(txn, room_id);
+        } catch (lmdb::runtime_error &e) {
+                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
+                                   room_id,
+                                   e.what());
+                return {};
+        }
+
+        lmdb::val indexVal{event_id.data(), event_id.size()}, val;
+
+        bool success = lmdb::dbi_get(txn, orderDb, indexVal, val);
+        if (!success) {
+                return {};
+        }
+
+        return *val.data<uint64_t>();
+}
+
+std::optional<std::pair<uint64_t, std::string>>
+Cache::lastInvisibleEventAfter(const std::string &room_id, std::string_view event_id)
+{
+        if (event_id.empty())
+                return {};
+
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        lmdb::dbi orderDb{0};
+        lmdb::dbi eventOrderDb{0};
+        lmdb::dbi timelineDb{0};
+        try {
+                orderDb      = getEventToOrderDb(txn, room_id);
+                eventOrderDb = getEventOrderDb(txn, room_id);
+                timelineDb   = getMessageToOrderDb(txn, room_id);
+        } catch (lmdb::runtime_error &e) {
+                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
+                                   room_id,
+                                   e.what());
+                return {};
+        }
+
+        lmdb::val eventIdVal{event_id.data(), event_id.size()}, indexVal;
+
+        bool success = lmdb::dbi_get(txn, orderDb, eventIdVal, indexVal);
+        if (!success) {
+                return {};
+        }
+        uint64_t prevIdx = *indexVal.data<uint64_t>();
+        std::string prevId{eventIdVal.data(), eventIdVal.size()};
+
+        auto cursor = lmdb::cursor::open(txn, eventOrderDb);
+        cursor.get(indexVal, MDB_SET);
+        while (cursor.get(indexVal, eventIdVal, MDB_NEXT)) {
+                std::string evId =
+                  json::parse(std::string_view(eventIdVal.data(), eventIdVal.size()))["event_id"]
+                    .get<std::string>();
+                lmdb::val temp;
+                if (lmdb::dbi_get(txn, timelineDb, lmdb::val(evId.data(), evId.size()), temp)) {
+                        return std::pair{prevIdx, std::string(prevId)};
+                } else {
+                        prevIdx = *indexVal.data<uint64_t>();
+                        prevId  = std::move(evId);
+                }
+        }
+
+        return std::pair{prevIdx, std::string(prevId)};
+}
+
+std::optional<uint64_t>
+Cache::getArrivalIndex(const std::string &room_id, std::string_view event_id)
+{
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        lmdb::dbi orderDb{0};
+        try {
+                orderDb = getEventToOrderDb(txn, room_id);
         } catch (lmdb::runtime_error &e) {
                 nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
                                    room_id,
@@ -2713,23 +2819,19 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                         lmdb::dbi_put(txn, evToOrderDb, event_id, txn_order);
                         lmdb::dbi_del(txn, evToOrderDb, lmdb::val(txn_id));
 
-                        if (event.contains("content") &&
-                            event["content"].contains("m.relates_to")) {
-                                auto temp         = event["content"]["m.relates_to"];
-                                json relates_to_j = temp.contains("m.in_reply_to") &&
-                                                        temp["m.in_reply_to"].is_object()
-                                                      ? temp["m.in_reply_to"]["event_id"]
-                                                      : temp["event_id"];
-                                std::string relates_to =
-                                  relates_to_j.is_string() ? relates_to_j.get<std::string>() : "";
-
-                                if (!relates_to.empty()) {
-                                        lmdb::dbi_del(txn,
-                                                      relationsDb,
-                                                      lmdb::val(relates_to),
-                                                      lmdb::val(txn_id));
-                                        lmdb::dbi_put(
-                                          txn, relationsDb, lmdb::val(relates_to), event_id);
+                        auto relations = mtx::accessors::relations(e);
+                        if (!relations.relations.empty()) {
+                                for (const auto &r : relations.relations) {
+                                        if (!r.event_id.empty()) {
+                                                lmdb::dbi_del(txn,
+                                                              relationsDb,
+                                                              lmdb::val(r.event_id),
+                                                              lmdb::val(txn_id));
+                                                lmdb::dbi_put(txn,
+                                                              relationsDb,
+                                                              lmdb::val(r.event_id),
+                                                              event_id);
+                                        }
                                 }
                         }
 
@@ -2808,19 +2910,16 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                                               lmdb::val(&msgIndex, sizeof(msgIndex)));
                         }
 
-                        if (event.contains("content") &&
-                            event["content"].contains("m.relates_to")) {
-                                auto temp         = event["content"]["m.relates_to"];
-                                json relates_to_j = temp.contains("m.in_reply_to") &&
-                                                        temp["m.in_reply_to"].is_object()
-                                                      ? temp["m.in_reply_to"]["event_id"]
-                                                      : temp["event_id"];
-                                std::string relates_to =
-                                  relates_to_j.is_string() ? relates_to_j.get<std::string>() : "";
-
-                                if (!relates_to.empty())
-                                        lmdb::dbi_put(
-                                          txn, relationsDb, lmdb::val(relates_to), event_id);
+                        auto relations = mtx::accessors::relations(e);
+                        if (!relations.relations.empty()) {
+                                for (const auto &r : relations.relations) {
+                                        if (!r.event_id.empty()) {
+                                                lmdb::dbi_put(txn,
+                                                              relationsDb,
+                                                              lmdb::val(r.event_id),
+                                                              event_id);
+                                        }
+                                }
                         }
                 }
         }
@@ -2901,17 +3000,14 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
                           txn, msg2orderDb, event_id, lmdb::val(&msgIndex, sizeof(msgIndex)));
                 }
 
-                if (event.contains("content") && event["content"].contains("m.relates_to")) {
-                        auto temp = event["content"]["m.relates_to"];
-                        json relates_to_j =
-                          temp.contains("m.in_reply_to") && temp["m.in_reply_to"].is_object()
-                            ? temp["m.in_reply_to"]["event_id"]
-                            : temp["event_id"];
-                        std::string relates_to =
-                          relates_to_j.is_string() ? relates_to_j.get<std::string>() : "";
-
-                        if (!relates_to.empty())
-                                lmdb::dbi_put(txn, relationsDb, lmdb::val(relates_to), event_id);
+                auto relations = mtx::accessors::relations(e);
+                if (!relations.relations.empty()) {
+                        for (const auto &r : relations.relations) {
+                                if (!r.event_id.empty()) {
+                                        lmdb::dbi_put(
+                                          txn, relationsDb, lmdb::val(r.event_id), event_id);
+                                }
+                        }
                 }
         }
 
@@ -3222,9 +3318,12 @@ Cache::getAccountData(lmdb::txn &txn, mtx::events::EventType type, const std::st
                 lmdb::val data;
                 if (lmdb::dbi_get(txn, db, lmdb::val(to_string(type)), data)) {
                         mtx::responses::utils::RoomAccountDataEvents events;
-                        mtx::responses::utils::parse_room_account_data_events(
-                          std::string_view(data.data(), data.size()), events);
-                        return events.front();
+                        json j = json::array({
+                          json::parse(std::string_view(data.data(), data.size())),
+                        });
+                        mtx::responses::utils::parse_room_account_data_events(j, events);
+                        if (events.size() == 1)
+                                return events.front();
                 }
         } catch (...) {
         }
@@ -4231,6 +4330,18 @@ UserReceipts
 readReceipts(const QString &event_id, const QString &room_id)
 {
         return instance_->readReceipts(event_id, room_id);
+}
+
+std::optional<uint64_t>
+getEventIndex(const std::string &room_id, std::string_view event_id)
+{
+        return instance_->getEventIndex(room_id, event_id);
+}
+
+std::optional<std::pair<uint64_t, std::string>>
+lastInvisibleEventAfter(const std::string &room_id, std::string_view event_id)
+{
+        return instance_->lastInvisibleEventAfter(room_id, event_id);
 }
 
 QByteArray

@@ -105,8 +105,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                         if (msg.transaction_id.has_value()) {
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
-                        } else if (msg.relates_to.has_value()) {
-                                if (msg.relates_to.value().event_id != this->relation.event_id)
+                        } else if (msg.relations.references()) {
+                                if (msg.relations.references() != this->relation.event_id)
                                         return;
                         }
                         if ((msg.key_agreement_protocol == "curve25519-hkdf-sha256") &&
@@ -136,8 +136,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                         if (msg.transaction_id.has_value()) {
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
-                        } else if (msg.relates_to.has_value()) {
-                                if (msg.relates_to.value().event_id != this->relation.event_id)
+                        } else if (msg.relations.references()) {
+                                if (msg.relations.references() != this->relation.event_id)
                                         return;
                         }
                         error_ = User;
@@ -152,8 +152,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                         if (msg.transaction_id.has_value()) {
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
-                        } else if (msg.relates_to.has_value()) {
-                                if (msg.relates_to.value().event_id != this->relation.event_id)
+                        } else if (msg.relations.references()) {
+                                if (msg.relations.references() != this->relation.event_id)
                                         return;
                         }
 
@@ -217,8 +217,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                   if (msg.transaction_id.has_value()) {
                           if (msg.transaction_id.value() != this->transaction_id)
                                   return;
-                  } else if (msg.relates_to.has_value()) {
-                          if (msg.relates_to.value().event_id != this->relation.event_id)
+                  } else if (msg.relations.references()) {
+                          if (msg.relations.references() != this->relation.event_id)
                                   return;
                   }
 
@@ -385,8 +385,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                         if (msg.transaction_id.has_value()) {
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
-                        } else if ((msg.relates_to.has_value() && sender)) {
-                                if (msg.relates_to.value().event_id != this->relation.event_id)
+                        } else if (msg.relations.references()) {
+                                if (msg.relations.references() != this->relation.event_id)
                                         return;
                                 else {
                                         this->deviceId = QString::fromStdString(msg.from_device);
@@ -402,8 +402,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                         if (msg.transaction_id.has_value()) {
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
-                        } else if (msg.relates_to.has_value()) {
-                                if (msg.relates_to.value().event_id != this->relation.event_id)
+                        } else if (msg.relations.references()) {
+                                if (msg.relations.references() != this->relation.event_id)
                                         return;
                         }
                         nhlog::ui()->info("Flow done on other side");
@@ -526,8 +526,8 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
         if (msg.transaction_id.has_value()) {
                 if (msg.transaction_id.value() != this->transaction_id)
                         return;
-        } else if (msg.relates_to.has_value()) {
-                if (msg.relates_to.value().event_id != this->relation.event_id)
+        } else if (msg.relations.references()) {
+                if (msg.relations.references() != this->relation.event_id)
                         return;
         }
         if ((std::find(msg.key_agreement_protocols.begin(),
@@ -625,8 +625,10 @@ DeviceVerificationFlow::startVerificationRequest()
                 req.transaction_id   = this->transaction_id;
                 this->canonical_json = nlohmann::json(req);
         } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
-                req.relates_to       = this->relation;
-                this->canonical_json = nlohmann::json(req);
+                req.relations.relations.push_back(this->relation);
+                // Set synthesized to surpress the nheko relation extensions
+                req.relations.synthesized = true;
+                this->canonical_json      = nlohmann::json(req);
         }
         send(req);
         setState(WaitingForOtherToAccept);

@@ -1,4 +1,4 @@
-import QtQuick 2.6
+import QtQuick 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
@@ -13,10 +13,12 @@ Item {
     width: parent.width
     height: replyContainer.height
 
-    MouseArea {
+    TapHandler {
+        onSingleTapped: chat.positionViewAtIndex(chat.model.idToIndex(modelData.id), ListView.Contain)
+    }
+
+    CursorShape {
         anchors.fill: parent
-        preventStealing: false
-        onClicked: chat.positionViewAtIndex(chat.model.idToIndex(modelData.id), ListView.Contain)
         cursorShape: Qt.PointingHandCursor
     }
 
@@ -43,10 +45,8 @@ Item {
             color: replyComponent.userColor
             textFormat: Text.RichText
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: chat.model.openUserProfile(reply.modelData.userId)
-                cursorShape: Qt.PointingHandCursor
+            TapHandler {
+                onSingleTapped: chat.model.openUserProfile(reply.modelData.userId)
             }
 
         }

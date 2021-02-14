@@ -168,6 +168,12 @@ using UserReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>
 UserReceipts
 readReceipts(const QString &event_id, const QString &room_id);
 
+//! get index of the event in the event db, not representing the visual index
+std::optional<uint64_t>
+getEventIndex(const std::string &room_id, std::string_view event_id);
+std::optional<std::pair<uint64_t, std::string>>
+lastInvisibleEventAfter(const std::string &room_id, std::string_view event_id);
+
 QByteArray
 image(const QString &url);
 QByteArray

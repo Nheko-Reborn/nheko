@@ -314,9 +314,8 @@ UserProfile::changeAvatar()
                 return;
         }
 
-        const auto bin        = file.peek(file.size());
-        const auto payload    = std::string(bin.data(), bin.size());
-        const auto dimensions = QImageReader(&file).size();
+        const auto bin     = file.peek(file.size());
+        const auto payload = std::string(bin.data(), bin.size());
 
         isLoading_ = true;
         emit loadingChanged();
@@ -328,7 +327,6 @@ UserProfile::changeAvatar()
           mime.name().toStdString(),
           QFileInfo(fileName).fileName().toStdString(),
           [this,
-           dimensions,
            payload,
            mimetype = mime.name().toStdString(),
            size     = payload.size(),
@@ -367,15 +365,15 @@ UserProfile::changeAvatar()
 void
 UserProfile::updateRoomMemberState(mtx::events::state::Member member)
 {
-        http::client()->send_state_event(
-          roomid_.toStdString(),
-          http::client()->user_id().to_string(),
-          member,
-          [this](mtx::responses::EventId, mtx::http::RequestErr err) {
-                  if (err)
-                          nhlog::net()->error("Failed to update room member state : ",
-                                              err->matrix_error.error);
-          });
+        http::client()->send_state_event(roomid_.toStdString(),
+                                         http::client()->user_id().to_string(),
+                                         member,
+                                         [](mtx::responses::EventId, mtx::http::RequestErr err) {
+                                                 if (err)
+                                                         nhlog::net()->error(
+                                                           "Failed to update room member state : ",
+                                                           err->matrix_error.error);
+                                         });
 }
 
 void

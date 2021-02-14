@@ -51,7 +51,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1978"/>
+        <location filename="../../src/Cache.cpp" line="+2084"/>
         <source>You joined this room.</source>
         <translation>Sa liitusid selle jututoaga.</translation>
     </message>
@@ -120,13 +120,13 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+211"/>
+        <location filename="../../src/ChatPage.cpp" line="+215"/>
         <source>Failed to invite user: %1</source>
         <translation>Kutse saatmine kasutajale ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+796"/>
+        <location line="+797"/>
         <source>Invited user: %1</source>
         <translation>Kutsutud kasutaja: %1</translation>
     </message>
@@ -479,7 +479,7 @@
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+559"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+612"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation>-- Krüptitud sündmus (Dekrüptimisvõtmeid ei leidunud) --</translation>
@@ -568,7 +568,7 @@
         <translation>Kõik failid (*)</translation>
     </message>
     <message>
-        <location line="+340"/>
+        <location line="+384"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Meediafailide üleslaadimine ei õnnestunud. Palun proovi uuesti.</translation>
     </message>
@@ -801,12 +801,12 @@ Näiteks: https://server.minu:8787</translation>
         <translation>Kirjuta sõnum…</translation>
     </message>
     <message>
-        <location line="+170"/>
+        <location line="+186"/>
         <source>Emoji</source>
         <translation>Emoji</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Send</source>
         <translation>Saada</translation>
     </message>
@@ -1003,15 +1003,20 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../qml/ReplyPopup.qml" line="+43"/>
+        <location filename="../qml/ReplyPopup.qml" line="+45"/>
         <source>Close</source>
         <translation>Sulge</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Cancel edit</source>
+        <translation>Tühista muudatused</translation>
     </message>
 </context>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1868"/>
+        <location filename="../../src/Cache.cpp" line="+1861"/>
         <source>no version stored</source>
         <translation>salvestatud versiooni ei leidu</translation>
     </message>
@@ -1153,7 +1158,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+860"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+895"/>
         <source>Message redaction failed: %1</source>
         <translation>Sõnumi ümbersõnastamine ebaõnnestus: %1</translation>
     </message>
@@ -1303,12 +1308,12 @@ Näiteks: https://server.minu:8787</translation>
         <translation>%1 muutis oma koputust jututoa uksele.</translation>
     </message>
     <message>
-        <location line="-771"/>
+        <location line="-795"/>
         <source>You joined this room.</source>
         <translation>Sa liitusid jututoaga.</translation>
     </message>
     <message>
-        <location line="+773"/>
+        <location line="+797"/>
         <source>Rejected the knock from %1.</source>
         <translation>Lükkas tagasi %1 koputuse jututoa uksele.</translation>
     </message>
@@ -1332,7 +1337,17 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+97"/>
+        <location filename="../qml/TimelineRow.qml" line="+99"/>
+        <source>Edit</source>
+        <translation>Muuda</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Edited</source>
+        <translation>Muudetud</translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>React</source>
         <translation>Reageeri</translation>
     </message>
@@ -1350,7 +1365,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+83"/>
+        <location filename="../qml/TimelineView.qml" line="+85"/>
         <source>React</source>
         <translation>Reageeri</translation>
     </message>
@@ -1358,6 +1373,11 @@ Näiteks: https://server.minu:8787</translation>
         <location line="+7"/>
         <source>Reply</source>
         <translation>Vasta</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Edit</source>
+        <translation>Muuda</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1483,7 +1503,12 @@ Näiteks: https://server.minu:8787</translation>
         <translation>Olek:</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
+        <source>User Profile Settings</source>
+        <translation>Kasutajaprofiili seadistused</translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Set presence automatically</source>
         <translation>Määra oma võrguolek automaatselt</translation>
     </message>
@@ -1506,7 +1531,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+54"/>
+        <location filename="../qml/UserProfile.qml" line="+133"/>
         <source>Verify</source>
         <translation>Verifitseeri</translation>
     </message>
@@ -1525,11 +1550,40 @@ Näiteks: https://server.minu:8787</translation>
         <source>Kick the user</source>
         <translation>Müksa kasutaja välja</translation>
     </message>
+    <message>
+        <location filename="../../src/ui/UserProfile.cpp" line="+296"/>
+        <source>Select an avatar</source>
+        <translation>Vali tunnuspilt</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>All Files (*)</source>
+        <translation>Kõik failid (*)</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>The selected file is not an image</source>
+        <translation>Valitud fail ei ole pildifail</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Error while reading file: %1</source>
+        <translation>Viga faili lugemisel: %1</translation>
+    </message>
+</context>
+<context>
+    <name>UserSettings</name>
+    <message>
+        <location filename="../../src/UserSettingsPage.cpp" line="+345"/>
+        <location filename="../../src/UserSettingsPage.h" line="+183"/>
+        <source>Default</source>
+        <translation>Vaikimisi</translation>
+    </message>
 </context>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+794"/>
+        <location line="+496"/>
         <source>Minimize to tray</source>
         <translation>Vähenda tegumiribale</translation>
     </message>
@@ -1549,12 +1603,17 @@ Näiteks: https://server.minu:8787</translation>
         <translation>Ümmargused tunnuspildid</translation>
     </message>
     <message>
-        <location line="-195"/>
+        <location line="-210"/>
         <source>profile: %1</source>
         <translation>Profiil: %1</translation>
     </message>
     <message>
-        <location line="+112"/>
+        <location line="+96"/>
+        <source>Default</source>
+        <translation>Vaikimisi</translation>
+    </message>
+    <message>
+        <location line="+31"/>
         <source>CALLS</source>
         <translation>KÕNED</translation>
     </message>
@@ -1609,6 +1668,32 @@ Kehtib vaid läbivalt krüptitud vestluste puhul.</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Privacy Screen</source>
+        <translation>Privaatsust tagav sirm</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>When the window loses focus, the timeline will
+be blurred.</source>
+        <translation>Kui aken kaotab fookuse,
+siis ajajoone vaade hägustub.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Privacy screen timeout (in seconds [0 - 3600])</source>
+        <translation>Viivitus privaatsussirmi sisselülitamisel (sekundites [0 - 3600])</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Set timeout (in seconds) for how long after window loses
+focus before the screen will be blurred.
+Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
+        <translation>Seadista aeg sekundites, mille möödumisel
+peale akna fookuse kadumist ajajoone vaade hägustub.
+0 hägustab vaate koheselt. Pikim viivitus saab olla 1 tund (3600 sekundit)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Show buttons in timeline</source>
         <translation>Näita ajajoonel nuppe</translation>
     </message>
@@ -1725,7 +1810,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
         <translation>Jaga võtmeid verifitseeritud kasutajate ja seadmetega</translation>
     </message>
     <message>
-        <location line="+395"/>
+        <location line="+407"/>
         <source>CACHED</source>
         <translation>PUHVERDATUD</translation>
     </message>
@@ -1735,7 +1820,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
         <translation>PUHVERDAMATA</translation>
     </message>
     <message>
-        <location line="-449"/>
+        <location line="-461"/>
         <source>Scale factor</source>
         <translation>Mastaabitegur</translation>
     </message>
@@ -1810,7 +1895,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
         <translation>Seadme sõrmejälg</translation>
     </message>
     <message>
-        <location line="-155"/>
+        <location line="-164"/>
         <source>Session Keys</source>
         <translation>Sessioonivõtmed</translation>
     </message>
@@ -1830,17 +1915,17 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
         <translation>KRÜPTIMINE</translation>
     </message>
     <message>
-        <location line="-100"/>
+        <location line="-115"/>
         <source>GENERAL</source>
         <translation>ÜLDISED SEADISTUSED</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+64"/>
         <source>INTERFACE</source>
         <translation>LIIDES</translation>
     </message>
     <message>
-        <location line="+177"/>
+        <location line="+194"/>
         <source>Touchscreen mode</source>
         <translation>Puuteekraani režiim</translation>
     </message>
@@ -1910,7 +1995,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
         <translation>Kõik failid (*)</translation>
     </message>
     <message>
-        <location line="+225"/>
+        <location line="+237"/>
         <source>Open Sessions File</source>
         <translation>Ava sessioonide fail</translation>
     </message>
@@ -2006,7 +2091,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+147"/>
+        <location filename="../../src/Utils.cpp" line="+145"/>
         <source>Yesterday</source>
         <translation>Eile</translation>
     </message>

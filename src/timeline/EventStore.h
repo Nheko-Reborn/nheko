@@ -66,7 +66,8 @@ public:
         // relatedFetched event
         mtx::events::collections::TimelineEvents *get(std::string_view id,
                                                       std::string_view related_to,
-                                                      bool decrypt = true);
+                                                      bool decrypt       = true,
+                                                      bool resolve_edits = true);
         // always returns a proper event as long as the idx is valid
         mtx::events::collections::TimelineEvents *get(int idx, bool decrypt = true);
 
@@ -110,6 +111,7 @@ public slots:
         void clearTimeline();
 
 private:
+        std::vector<mtx::events::collections::TimelineEvents> edits(const std::string &event_id);
         mtx::events::collections::TimelineEvents *decryptEvent(
           const IdIndex &idx,
           const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e);

@@ -90,4 +90,9 @@ Rectangle {
         }
     }
 
+    CursorShape {
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
+    }
+
 }

@@ -1,4 +1,4 @@
-import QtQuick 2.6
+import QtQuick 2.12
 import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
@@ -31,7 +31,15 @@ Item {
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: TimelineManager.timeline.saveMedia(model.data.id)
+                cursorShape: Qt.PointingHandCursor
+            }
+
+            TapHandler {
+                onSingleTapped: TimelineManager.timeline.saveMedia(model.data.id)
+            }
+
+            CursorShape {
+                anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
             }
 

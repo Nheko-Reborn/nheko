@@ -139,6 +139,7 @@ Rectangle {
                     if (TimelineManager.timeline)
                         TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
 
+                    forceActiveFocus();
                 }
                 onCursorRectangleChanged: textInput.ensureVisible(cursorRectangle)
                 onCursorPositionChanged: {
@@ -163,6 +164,10 @@ Rectangle {
                         TimelineManager.timeline.input.paste(false);
                         event.accepted = true;
                     } else if (event.key == Qt.Key_Space) {
+                        // close popup if user enters space after colon
+                        if (cursorPosition == completerTriggeredAt + 1)
+                            popup.close();
+
                         if (popup.opened && popup.count <= 0)
                             popup.close();
 
@@ -256,14 +261,26 @@ Rectangle {
 
                 Connections {
                     ignoreUnknownSignals: true
-                    onInsertText: messageInput.insert(messageInput.cursorPosition, text)
+                    onInsertText: {
+                        messageInput.insert(messageInput.cursorPosition, text);
+                    }
+                    onTextChanged: {
+                        messageInput.text = newText;
+                        messageInput.cursorPosition = newText.length;
+                    }
                     target: TimelineManager.timeline ? TimelineManager.timeline.input : null
                 }
 
                 Connections {
                     ignoreUnknownSignals: true
                     onReplyChanged: messageInput.forceActiveFocus()
+                    onEditChanged: messageInput.forceActiveFocus()
                     target: TimelineManager.timeline
+                }
+
+                Connections {
+                    target: TimelineManager
+                    onFocusInput: messageInput.forceActiveFocus()
                 }
 
                 MouseArea {
@@ -293,6 +310,7 @@ Rectangle {
             ToolTip.text: qsTr("Emoji")
             onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
                 messageInput.insert(messageInput.cursorPosition, emoji);
+                TimelineManager.focusMessageInput();
             })
         }
 

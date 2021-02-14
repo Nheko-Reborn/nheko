@@ -1,6 +1,7 @@
 import "./ui"
 import QtQuick 2.3
 import QtQuick.Controls 2.3
+import im.nheko 1.0 // for cursor shape
 
 AbstractButton {
     id: button
@@ -23,11 +24,10 @@ AbstractButton {
         source: image != "" ? ("image://colorimage/" + image + "?" + ((button.hovered && changeColorOnHover) ? highlightColor : buttonTextColor)) : ""
     }
 
-    MouseArea {
+    CursorShape {
         id: mouseArea
 
         anchors.fill: parent
-        onPressed: mouse.accepted = false
         cursorShape: Qt.PointingHandCursor
     }
 

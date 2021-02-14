@@ -7,6 +7,7 @@
 #include <QUrl>
 
 #include "Cache.h"
+#include "CallDevices.h"
 #include "CallManager.h"
 #include "ChatPage.h"
 #include "Logging.h"
@@ -114,21 +115,10 @@ CallManager::CallManager(QObject *parent)
                 emit newCallState();
         });
 
-        connect(&session_, &WebRTCSession::devicesChanged, this, [this]() {
-                if (ChatPage::instance()->userSettings()->microphone().isEmpty()) {
-                        auto mics = session_.getDeviceNames(false, std::string());
-                        if (!mics.empty())
-                                ChatPage::instance()->userSettings()->setMicrophone(
-                                  QString::fromStdString(mics.front()));
-                }
-                if (ChatPage::instance()->userSettings()->camera().isEmpty()) {
-                        auto cameras = session_.getDeviceNames(true, std::string());
-                        if (!cameras.empty())
-                                ChatPage::instance()->userSettings()->setCamera(
-                                  QString::fromStdString(cameras.front()));
-                }
-                emit devicesChanged();
-        });
+        connect(&CallDevices::instance(),
+                &CallDevices::devicesChanged,
+                this,
+                &CallManager::devicesChanged);
 
         connect(&player_,
                 &QMediaPlayer::mediaStatusChanged,
@@ -292,7 +282,7 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
         haveCallInvite_ = true;
         isVideo_        = isVideo;
         inviteSDP_      = callInviteEvent.content.sdp;
-        session_.refreshDevices();
+        CallDevices::instance().refresh();
         emit newInviteState();
 }
 
@@ -409,7 +399,7 @@ CallManager::devices(bool isVideo) const
         const QString &defaultDevice = isVideo ? ChatPage::instance()->userSettings()->camera()
                                                : ChatPage::instance()->userSettings()->microphone();
         std::vector<std::string> devices =
-          session_.getDeviceNames(isVideo, defaultDevice.toStdString());
+          CallDevices::instance().names(isVideo, defaultDevice.toStdString());
         ret.reserve(devices.size());
         std::transform(devices.cbegin(),
                        devices.cend(),

@@ -293,16 +293,16 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
         }
 
         for (const auto &event : events.events) {
-                std::string relates_to;
+                std::set<std::string> relates_to;
                 if (auto redaction =
                       std::get_if<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(
                         &event)) {
                         // fixup reactions
                         auto redacted = events_by_id_.object({room_id_, redaction->redacts});
                         if (redacted) {
-                                auto id = mtx::accessors::relates_to_event_id(*redacted);
-                                if (!id.empty()) {
-                                        auto idx = idToIndex(id);
+                                auto id = mtx::accessors::relations(*redacted);
+                                if (id.annotates()) {
+                                        auto idx = idToIndex(id.annotates()->event_id);
                                         if (idx) {
                                                 events_by_id_.remove(
                                                   {room_id_, redaction->redacts});
@@ -312,20 +312,17 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                                 }
                         }
 
-                        relates_to = redaction->redacts;
-                } else if (auto reaction =
-                             std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(
-                               &event)) {
-                        relates_to = reaction->content.relates_to.event_id;
+                        relates_to.insert(redaction->redacts);
                 } else {
-                        relates_to = mtx::accessors::in_reply_to_event(event);
+                        for (const auto &r : mtx::accessors::relations(event).relations)
+                                relates_to.insert(r.event_id);
                 }
 
-                if (!relates_to.empty()) {
-                        auto idx = cache::client()->getTimelineIndex(room_id_, relates_to);
+                for (const auto &relates_to_id : relates_to) {
+                        auto idx = cache::client()->getTimelineIndex(room_id_, relates_to_id);
                         if (idx) {
-                                events_by_id_.remove({room_id_, relates_to});
-                                decryptedEvents_.remove({room_id_, relates_to});
+                                events_by_id_.remove({room_id_, relates_to_id});
+                                decryptedEvents_.remove({room_id_, relates_to_id});
                                 events_.remove({room_id_, *idx});
                                 emit dataChanged(toExternalIdx(*idx), toExternalIdx(*idx));
                         }
@@ -408,6 +405,52 @@ EventStore::handle_room_verification(mtx::events::collections::TimelineEvents ev
           event);
 }
 
+std::vector<mtx::events::collections::TimelineEvents>
+EventStore::edits(const std::string &event_id)
+{
+        auto event_ids = cache::client()->relatedEvents(room_id_, event_id);
+
+        auto original_event = get(event_id, "", false, false);
+        if (!original_event)
+                return {};
+
+        auto original_sender    = mtx::accessors::sender(*original_event);
+        auto original_relations = mtx::accessors::relations(*original_event);
+
+        std::vector<mtx::events::collections::TimelineEvents> edits;
+        for (const auto &id : event_ids) {
+                auto related_event = get(id, event_id, false, false);
+                if (!related_event)
+                        continue;
+
+                auto related_ev = *related_event;
+
+                auto edit_rel = mtx::accessors::relations(related_ev);
+                if (edit_rel.replaces() == event_id &&
+                    original_sender == mtx::accessors::sender(related_ev)) {
+                        if (edit_rel.synthesized && original_relations.reply_to() &&
+                            !edit_rel.reply_to()) {
+                                edit_rel.relations.push_back(
+                                  {mtx::common::RelationType::InReplyTo,
+                                   original_relations.reply_to().value()});
+                                mtx::accessors::set_relations(related_ev, std::move(edit_rel));
+                        }
+                        edits.push_back(std::move(related_ev));
+                }
+        }
+
+        auto c = cache::client();
+        std::sort(edits.begin(),
+                  edits.end(),
+                  [this, c](const mtx::events::collections::TimelineEvents &a,
+                            const mtx::events::collections::TimelineEvents &b) {
+                          return c->getArrivalIndex(this->room_id_, mtx::accessors::event_id(a)) <
+                                 c->getArrivalIndex(this->room_id_, mtx::accessors::event_id(b));
+                  });
+
+        return edits;
+}
+
 QVariantList
 EventStore::reactions(const std::string &event_id)
 {
@@ -430,13 +473,14 @@ EventStore::reactions(const std::string &event_id)
 
                 if (auto reaction = std::get_if<mtx::events::RoomEvent<mtx::events::msg::Reaction>>(
                       related_event);
-                    reaction && reaction->content.relates_to.key) {
-                        auto &agg = aggregation[reaction->content.relates_to.key.value()];
+                    reaction && reaction->content.relations.annotates() &&
+                    reaction->content.relations.annotates()->key) {
+                        auto key  = reaction->content.relations.annotates()->key.value();
+                        auto &agg = aggregation[key];
 
                         if (agg.count == 0) {
                                 Reaction temp{};
-                                temp.key_ =
-                                  QString::fromStdString(reaction->content.relates_to.key.value());
+                                temp.key_ = QString::fromStdString(key);
                                 reactions.push_back(temp);
                         }
 
@@ -489,7 +533,13 @@ EventStore::get(int idx, bool decrypt)
                 if (!event_id)
                         return nullptr;
 
-                auto event = cache::client()->getEvent(room_id_, *event_id);
+                std::optional<mtx::events::collections::TimelineEvent> event;
+                auto edits_ = edits(*event_id);
+                if (edits_.empty())
+                        event = cache::client()->getEvent(room_id_, *event_id);
+                else
+                        event = {edits_.back()};
+
                 if (!event)
                         return nullptr;
                 else
@@ -691,8 +741,7 @@ EventStore::decryptEvent(const IdIndex &idx,
         body["unsigned"]         = e.unsigned_data;
 
         // relations are unencrypted in content...
-        if (json old_ev = e; old_ev["content"].count("m.relates_to") != 0)
-                body["content"]["m.relates_to"] = old_ev["content"]["m.relates_to"];
+        mtx::common::add_relations(body["content"], e.content.relations);
 
         json event_array = json::array();
         event_array.push_back(body);
@@ -717,7 +766,7 @@ EventStore::decryptEvent(const IdIndex &idx,
 }
 
 mtx::events::collections::TimelineEvents *
-EventStore::get(std::string_view id, std::string_view related_to, bool decrypt)
+EventStore::get(std::string_view id, std::string_view related_to, bool decrypt, bool resolve_edits)
 {
         if (this->thread() != QThread::currentThread())
                 nhlog::db()->warn("{} called from a different thread!", __func__);
@@ -725,7 +774,16 @@ EventStore::get(std::string_view id, std::string_view related_to, bool decrypt)
         if (id.empty())
                 return nullptr;
 
-        IdIndex index{room_id_, std::string(id.data(), id.size())};
+        IdIndex index{room_id_, std::string(id)};
+        if (resolve_edits) {
+                auto edits_ = edits(index.id);
+                if (!edits_.empty()) {
+                        index.id = mtx::accessors::event_id(edits_.back());
+                        auto event_ptr =
+                          new mtx::events::collections::TimelineEvents(std::move(edits_.back()));
+                        events_by_id_.insert(index, event_ptr);
+                }
+        }
 
         auto event_ptr = events_by_id_.object(index);
         if (!event_ptr) {

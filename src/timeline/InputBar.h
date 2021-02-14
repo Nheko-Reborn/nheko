@@ -41,6 +41,7 @@ public slots:
         QString text() const;
         QString previousText();
         QString nextText();
+        void setText(QString newText) { emit textChanged(newText); }
 
         void send();
         void paste(bool fromMouse);
@@ -58,6 +59,7 @@ private slots:
 
 signals:
         void insertText(QString text);
+        void textChanged(QString newText);
         void uploadingChanged(bool value);
 
 private:
