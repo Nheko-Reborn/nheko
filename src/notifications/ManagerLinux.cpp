@@ -9,12 +9,7 @@
 #include <QImage>
 #include <QTextDocumentFragment>
 
-#include "Cache.h"
-#include "EventAccessors.h"
-#include "MatrixClient.h"
 #include "Utils.h"
-#include <mtx/responses/notifications.hpp>
-#include <cmark.h>
 
 NotificationsManager::NotificationsManager(QObject *parent)
   : QObject(parent)
@@ -52,35 +47,24 @@ NotificationsManager::NotificationsManager(QObject *parent)
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 void
-NotificationsManager::postNotification(const mtx::responses::Notification &notification,
-                                       const QImage &icon)
+NotificationsManager::systemPostNotification(const QString &room_id,
+                                             const QString &event_id,
+                                             const QString &roomName,
+                                             const QString &sender,
+                                             const QString &text,
+                                             const QImage &icon)
 {
-        const auto room_id  = QString::fromStdString(notification.room_id);
-        const auto event_id = QString::fromStdString(mtx::accessors::event_id(notification.event));
-        const auto sender   = cache::displayName(
-          room_id, QString::fromStdString(mtx::accessors::sender(notification.event)));
-        const auto text = utils::event_body(notification.event);
-        auto formattedText = utils::markdownToHtml(text);
-
-        auto capabilites = dbus.call("GetCapabilites");
-        if (!capabilites.arguments().contains("body-markup"))
-                formattedText = QTextDocumentFragment::fromHtml(formattedText).toPlainText();
+        Q_UNUSED(sender)
 
         QVariantMap hints;
         hints["image-data"] = icon;
         hints["sound-name"] = "message-new-instant";
         QList<QVariant> argumentList;
-        argumentList << "nheko"; // app_name
-        argumentList << (uint)0; // replace_id
-        argumentList << "";      // app_icon
-        argumentList << QString::fromStdString(
-          cache::singleRoomInfo(notification.room_id).name); // summary
-
-        // body
-        if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
-                argumentList << "* " + sender + " " + formattedText;
-        else
-                argumentList << sender + ": " + formattedText;
+        argumentList << "nheko";  // app_name
+        argumentList << (uint)0;  // replace_id
+        argumentList << "";       // app_icon
+        argumentList << roomName; // summary
+        argumentList << text;     // body
 
         // The list of actions has always the action name and then a localized version of that
         // action. Currently we just use an empty string for that.
@@ -165,6 +149,16 @@ NotificationsManager::notificationClosed(uint id, uint reason)
 {
         Q_UNUSED(reason);
         notificationIds.remove(id);
+}
+
+QString
+NotificationsManager::formatNotification(const QString &text)
+{
+        static auto capabilites = dbus.call("GetCapabilites");
+        if (capabilites.arguments().contains("body-markup"))
+                return utils::markdownToHtml(text);
+        else
+                return QTextDocumentFragment::fromHtml(utils::markdownToHtml(text)).toPlainText();
 }
 
 /**

@@ -7,12 +7,7 @@
 
 #include <QTextDocumentFragment>
 
-#include "Cache.h"
-#include "EventAccessors.h"
-#include "MatrixClient.h"
 #include "Utils.h"
-#include <mtx/responses/notifications.hpp>
-#include <cmark.h>
 
 using namespace WinToastLib;
 
@@ -45,36 +40,27 @@ NotificationsManager::NotificationsManager(QObject *parent)
 {}
 
 void
-NotificationsManager::postNotification(const mtx::responses::Notification &notification,
-                                       const QImage &icon)
+NotificationsManager::systemPostNotification(const QString &room_id,
+                                             const QString &event_id,
+                                             const QString &roomName,
+                                             const QString &sender,
+                                             const QString &text,
+                                             const QImage &icon)
 {
+        Q_UNUSED(room_id)
+        Q_UNUSED(event_id)
         Q_UNUSED(icon)
-
-        const auto room_name =
-          QString::fromStdString(cache::singleRoomInfo(notification.room_id).name);
-        const auto sender =
-          cache::displayName(QString::fromStdString(notification.room_id),
-                             QString::fromStdString(mtx::accessors::sender(notification.event)));
-        const auto text = utils::event_body(notification.event);
-        const auto formattedText = QTextDocumentFragment::fromHtml(utils::markdownToHtml(text)).toPlainText();
 
         if (!isInitialized)
                 init();
 
         auto templ = WinToastTemplate(WinToastTemplate::ImageAndText02);
-        if (room_name != sender)
-                templ.setTextField(QString("%1 - %2").arg(sender).arg(room_name).toStdWString(),
+        if (roomName != sender)
+                templ.setTextField(QString("%1 - %2").arg(sender).arg(roomName).toStdWString(),
                                    WinToastTemplate::FirstLine);
         else
-                templ.setTextField(QString("%1").arg(sender).toStdWString(),
-                                   WinToastTemplate::FirstLine);
-        if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
-                templ.setTextField(
-                  QString("* ").append(sender).append(" ").append(formattedText).toStdWString(),
-                  WinToastTemplate::SecondLine);
-        else
-                templ.setTextField(QString("%1").arg(formattedText).toStdWString(),
-                                   WinToastTemplate::SecondLine);
+                templ.setTextField(sender.toStdWString(), WinToastTemplate::FirstLine);
+        templ.setTextField(text.toStdWString(), WinToastTemplate::SecondLine);
         // TODO: implement room or user avatar
         // templ.setImagePath(L"C:/example.png");
 
@@ -89,3 +75,9 @@ void NotificationsManager::notificationClosed(uint, uint) {}
 void
 NotificationsManager::removeNotification(const QString &, const QString &)
 {}
+
+QString
+NotificationsManager::formatNotification(const QString &text)
+{
+        return QTextDocumentFragment::fromHtml(utils::markdownToHtml(text)).toPlainText();
+}

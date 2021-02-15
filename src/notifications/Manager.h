@@ -42,6 +42,16 @@ signals:
 public slots:
         void removeNotification(const QString &roomId, const QString &eventId);
 
+private:
+        void systemPostNotification(const QString &room_id,
+                                    const QString &event_id,
+                                    const QString &roomName,
+                                    const QString &sender,
+                                    const QString &text,
+                                    const QImage &icon);
+
+        QString formatNotification(const QString &text);
+
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD) || defined(Q_OS_HAIKU)
 public:
         void closeNotifications(QString roomId);
