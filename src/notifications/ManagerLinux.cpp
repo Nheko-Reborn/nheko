@@ -62,10 +62,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         const auto text = utils::event_body(notification.event);
         auto formattedText = utils::markdownToHtml(text);
 
-        static QDBusInterface notifyApp("org.freedesktop.Notifications",
-                                        "/org/freedesktop/Notifications",
-                                        "org.freedesktop.Notifications");
-        auto capabilites = notifyApp.call("GetCapabilites");
+        auto capabilites = dbus.call("GetCapabilites");
         if (!capabilites.arguments().contains("body-markup"))
                 formattedText = QTextDocumentFragment::fromHtml(formattedText).toPlainText();
 
@@ -94,7 +91,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         argumentList << hints;                          // hints
         argumentList << (int)-1;                        // timeout in ms
 
-        QDBusPendingCall call = notifyApp.asyncCallWithArgumentList("Notify", argumentList);
+        QDBusPendingCall call = dbus.asyncCallWithArgumentList("Notify", argumentList);
         auto watcher          = new QDBusPendingCallWatcher{call, this};
         connect(
           watcher, &QDBusPendingCallWatcher::finished, this, [watcher, this, room_id, event_id]() {
@@ -110,10 +107,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
 void
 NotificationsManager::closeNotification(uint id)
 {
-        static QDBusInterface closeCall("org.freedesktop.Notifications",
-                                        "/org/freedesktop/Notifications",
-                                        "org.freedesktop.Notifications");
-        auto call    = closeCall.asyncCall("CloseNotification", (uint)id); // replace_id
+        auto call    = dbus.asyncCall("CloseNotification", (uint)id); // replace_id
         auto watcher = new QDBusPendingCallWatcher{call, this};
         connect(watcher, &QDBusPendingCallWatcher::finished, this, [watcher]() {
                 if (watcher->reply().type() == QDBusMessage::ErrorMessage) {
