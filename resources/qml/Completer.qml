@@ -154,6 +154,35 @@ Popup {
 
                 }
 
+                DelegateChoice {
+                    roleValue: "room"
+
+                    RowLayout {
+                        id: del
+
+                        anchors.centerIn: parent
+
+                        Avatar {
+                            height: 24
+                            width: 24
+                            url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                            onClicked: popup.completionClicked(completer.completionAt(model.index))
+                        }
+
+                        Label {
+                            text: model.roomName
+                            color: model.index == popup.currentIndex ? colors.highlightedText : colors.text
+                        }
+
+                        Label {
+                            text: "(" + model.roomAlias + ")"
+                            color: model.index == popup.currentIndex ? colors.highlightedText : colors.buttonText
+                        }
+
+                    }
+
+                }
+
             }
 
         }

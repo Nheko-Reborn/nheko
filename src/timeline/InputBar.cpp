@@ -23,6 +23,7 @@
 #include "TimelineViewManager.h"
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
+#include "RoomsModel.h"
 #include "Utils.h"
 #include "dialogs/PreviewUploadOverlay.h"
 #include "emoji/EmojiModel.h"
@@ -185,6 +186,11 @@ InputBar::completerFor(QString completerName)
                 auto emojiModel = new emoji::EmojiModel();
                 auto proxy      = new CompletionProxyModel(emojiModel);
                 emojiModel->setParent(proxy);
+                return proxy;
+        } else if (completerName == "room") {
+                auto roomModel = new RoomsModel();
+                auto proxy     = new CompletionProxyModel(roomModel);
+                roomModel->setParent(proxy);
                 return proxy;
         }
         return nullptr;
