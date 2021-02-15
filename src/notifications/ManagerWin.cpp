@@ -5,6 +5,8 @@
 #include "notifications/Manager.h"
 #include "wintoastlib.h"
 
+#include <QTextDocumentFragment>
+
 #include "Cache.h"
 #include "EventAccessors.h"
 #include "MatrixClient.h"
@@ -54,7 +56,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
           cache::displayName(QString::fromStdString(notification.room_id),
                              QString::fromStdString(mtx::accessors::sender(notification.event)));
         const auto text = utils::event_body(notification.event);
-        const auto formattedText = cmark_markdown_to_html(text.toStdString().c_str(), text.length(), CMARK_OPT_UNSAFE);
+        const auto formattedText = QTextDocumentFragment::fromHtml(utils::markdownToHtml(text)).toPlainText();
 
         if (!isInitialized)
                 init();
