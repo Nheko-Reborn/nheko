@@ -53,6 +53,7 @@ private:
                 return communities_.find(id) != communities_.end();
         }
 
+        QString selectedCommunity_;
         QVBoxLayout *topLayout_;
         QVBoxLayout *contentsLayout_;
         QScrollArea *scrollArea_;
