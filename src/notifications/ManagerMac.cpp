@@ -7,5 +7,5 @@
 QString
 NotificationsManager::formatNotification(const QString &text)
 {
-        return utils::markdownToHtml(text);
+        return QTextDocumentFragment::fromHtml(utils::markdownToHtml(text)).toPlainText();
 }
