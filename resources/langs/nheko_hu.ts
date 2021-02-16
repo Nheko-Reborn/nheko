@@ -982,7 +982,7 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location line="+209"/>
         <source>One or more fields have invalid inputs. Please correct those issues and try again.</source>
-        <translation>Egy vagy több mező nem tartalmaz megfelelő bevitelt. Kérlek, javítsd ki azokat a hibákat, és próbáld újra!</translation>
+        <translation>Egy vagy több mező tartalma nem helyes. Kérlek, javítsd ki azokat a hibákat, és próbáld újra!</translation>
     </message>
     <message>
         <location line="-26"/>
@@ -1194,6 +1194,7 @@ Példa: https://szerver.em:8787</translation>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
             <numerusform>%1%2 gépel.</numerusform>
+            <numerusform>%1 és %2 gépelnek.</numerusform>
         </translation>
     </message>
     <message>
@@ -2419,112 +2420,112 @@ Média mérete: %2
     <message>
         <location filename="../../src/Utils.h" line="+108"/>
         <source>You sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>Küldtél egy hangfájlt</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 küldött egy hangfájlt</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Küldtél egy képet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 küldött egy képet</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Küldtél egy fájlt</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 küldtél egy fájlt</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>Küldtél egy videót</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 küldött egy videót</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Küldtél egy matricát</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 küldött egy matricát</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Küldtél egy értesítést</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 küldött egy értesítést</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Te: %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>You sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>Küldtél egy titkosított üzenetet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 küldött egy titkosított üzenetet</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Hívást kezdeményeztél</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hívást kezdeményezett</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Fogadtál egy hívást</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hívást fogadott</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Befejeztél egy hívást</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 befejezett egy hívást</translation>
     </message>
 </context>
 <context>
@@ -2532,12 +2533,12 @@ Média mérete: %2
     <message>
         <location filename="../../src/popups/UserMentions.cpp" line="+64"/>
         <source>This Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Ez a szoba</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>All Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Az összes szoba</translation>
     </message>
 </context>
 <context>
@@ -2545,7 +2546,7 @@ Média mérete: %2
     <message>
         <location filename="../../src/Utils.h" line="+4"/>
         <source>Unknown Message Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Ismeretlen üzenettípus</translation>
     </message>
 </context>
 </TS>
