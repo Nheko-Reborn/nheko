@@ -156,9 +156,9 @@ NotificationsManager::formatNotification(const QString &text)
 {
         static auto capabilites = dbus.call("GetCapabilites");
         if (capabilites.arguments().contains("body-markup"))
-                return utils::markdownToHtml(text);
+                return text;
         else
-                return QTextDocumentFragment::fromHtml(utils::markdownToHtml(text)).toPlainText();
+                return QTextDocumentFragment::fromHtml(text).toPlainText();
 }
 
 /**
