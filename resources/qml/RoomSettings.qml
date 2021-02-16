@@ -113,8 +113,9 @@ ApplicationWindow {
                 wrapMode: TextEdit.WordWrap
                 readOnly: true
                 background: null
-                horizontalAlignment: TextEdit.AlignHCenter
                 selectByMouse: true
+                color: colors.text
+                horizontalAlignment: TextEdit.AlignHCenter
             }
         }
 

@@ -8,10 +8,11 @@ Switch {
 
 	indicator: Item {
         implicitWidth: 48
-        implicitHeight: 26
+        implicitHeight: 24
+        y: parent.height / 2 - height / 2
 
         Rectangle {
-            height: parent.height/2
+            height: 3 * parent.height/4
             radius: height/2
             width: parent.width - height
             x: radius
@@ -22,11 +23,12 @@ Switch {
         
         Rectangle {
             x: toggleButton.checked ? parent.width - width : 0
+            y: parent.height / 2 - height / 2
             width: parent.height
             height: width
             radius: width/2
             color: toggleButton.down ? "whitesmoke" : "whitesmoke"
-            border.color: "#999999"
+            border.color: "#ebebeb"
         }
     }
 }
