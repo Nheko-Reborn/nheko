@@ -5,8 +5,10 @@ import im.nheko 1.0
 
 Switch {
     id: toggleButton
+    implicitWidth: indicatorItem.width
 
 	indicator: Item {
+        id: indicatorItem
         implicitWidth: 48
         implicitHeight: 24
         y: parent.height / 2 - height / 2

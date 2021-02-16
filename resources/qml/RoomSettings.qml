@@ -121,9 +121,11 @@ ApplicationWindow {
 
         GridLayout {
             columns: 2
+            rowSpacing: 10
 
             MatrixText {
                 text: "SETTINGS"
+                font.bold: true
             }
 
             Item {
@@ -220,8 +222,19 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignRight
             }
 
+            Item {
+                // for adding extra space between sections
+                Layout.fillWidth: true
+            }
+
+            Item {
+                // for adding extra space between sections
+                Layout.fillWidth: true
+            }
+
             MatrixText {
                 text: "INFO"
+                font.bold: true
             }
 
             Item {
@@ -234,7 +247,7 @@ ApplicationWindow {
 
             MatrixText {
                 text: roomSettings.roomId
-                font.pixelSize: 12
+                font.pixelSize: 14
                 Layout.alignment: Qt.AlignRight
             }
 
@@ -244,7 +257,7 @@ ApplicationWindow {
 
             MatrixText {
                 text: roomSettings.roomVersion
-                font.pixelSize: 12
+                font.pixelSize: 14
                 Layout.alignment: Qt.AlignRight
             }
         }
