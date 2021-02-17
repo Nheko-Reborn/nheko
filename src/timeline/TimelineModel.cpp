@@ -753,11 +753,6 @@ TimelineModel::setCurrentIndex(int index)
                     (!oldReadIndex || *oldReadIndex < nextEventIndexAndId->first)) {
                         readEvent(nextEventIndexAndId->second);
                         currentReadId = QString::fromStdString(nextEventIndexAndId->second);
-
-                        nhlog::net()->info("Marked as read {}, index {}, oldReadIndex {}",
-                                           nextEventIndexAndId->second,
-                                           nextEventIndexAndId->first,
-                                           *oldReadIndex);
                 }
         }
 }
