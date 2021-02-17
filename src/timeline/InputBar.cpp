@@ -19,11 +19,11 @@
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "Olm.h"
+#include "RoomsModel.h"
 #include "TimelineModel.h"
 #include "TimelineViewManager.h"
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
-#include "RoomsModel.h"
 #include "Utils.h"
 #include "dialogs/PreviewUploadOverlay.h"
 #include "emoji/EmojiModel.h"
@@ -188,7 +188,7 @@ InputBar::completerFor(QString completerName)
                 emojiModel->setParent(proxy);
                 return proxy;
         } else if (completerName == "room") {
-                auto roomModel = new RoomsModel();
+                auto roomModel = new RoomsModel(true);
                 auto proxy     = new CompletionProxyModel(roomModel);
                 roomModel->setParent(proxy);
                 return proxy;

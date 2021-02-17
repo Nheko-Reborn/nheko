@@ -16,18 +16,18 @@ public:
                 RoomName,
         };
 
-        RoomsModel(QObject *parent = nullptr);
+        RoomsModel(bool showOnlyRoomWithAliases = false, QObject *parent = nullptr);
         QHash<int, QByteArray> roleNames() const override;
         int rowCount(const QModelIndex &parent = QModelIndex()) const override
         {
                 (void)parent;
-                return (int)roomAliases.size();
+                return (int)roomids.size();
         }
         QVariant data(const QModelIndex &index, int role) const override;
 
 private:
-        std::vector<std::string> rooms_;
         std::vector<QString> roomids;
         std::vector<QString> roomAliases;
         std::map<QString, RoomInfo> roomInfos;
+        bool showOnlyRoomWithAliases_;
 };

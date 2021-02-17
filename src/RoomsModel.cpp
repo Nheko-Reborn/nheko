@@ -3,18 +3,26 @@
 #include "Cache_p.h"
 #include "CompletionModelRoles.h"
 
-RoomsModel::RoomsModel(QObject *parent)
+RoomsModel::RoomsModel(bool showOnlyRoomWithAliases, QObject *parent)
   : QAbstractListModel(parent)
+  , showOnlyRoomWithAliases_(showOnlyRoomWithAliases)
 {
-        rooms_    = cache::joinedRooms();
-        roomInfos = cache::getRoomInfo(rooms_);
+        std::vector<std::string> rooms_ = cache::joinedRooms();
+        roomInfos                       = cache::getRoomInfo(rooms_);
 
         for (const auto &r : rooms_) {
                 auto roomAliasesList = cache::client()->getRoomAliases(r);
 
-                if (roomAliasesList) {
-                        roomAliases.push_back(QString::fromStdString(roomAliasesList->alias));
+                if (showOnlyRoomWithAliases_) {
+                        if (roomAliasesList) {
+                                roomids.push_back(QString::fromStdString(r));
+                                roomAliases.push_back(
+                                  QString::fromStdString(roomAliasesList->alias));
+                        }
+                } else {
                         roomids.push_back(QString::fromStdString(r));
+                        roomAliases.push_back(
+                          roomAliasesList ? QString::fromStdString(roomAliasesList->alias) : "");
                 }
         }
 }
@@ -43,14 +51,13 @@ RoomsModel::data(const QModelIndex &index, int role) const
                 case Roles::RoomAlias:
                         return roomAliases[index.row()];
                 case CompletionModel::SearchRole2:
-                        return roomAliases[index.row()];
+                case Roles::RoomName:
+                        return QString::fromStdString(roomInfos.at(roomids[index.row()]).name);
                 case Roles::AvatarUrl:
                         return QString::fromStdString(
                           roomInfos.at(roomids[index.row()]).avatar_url);
                 case Roles::RoomID:
                         return roomids[index.row()];
-                case Roles::RoomName:
-                        return QString::fromStdString(roomInfos.at(roomids[index.row()]).name);
                 }
         }
         return {};
