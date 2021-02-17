@@ -362,6 +362,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 const static QRegularExpression replyFallback(
                   "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption);
 
+                auto ascent = QFontMetrics(UserSettings::instance()->font()).ascent();
+
                 bool isReply = relations(event).reply_to().has_value();
 
                 auto formattedBody_ = QString::fromStdString(formatted_body(event));
@@ -380,8 +382,14 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                                 formattedBody_ = formattedBody_.remove(replyFallback);
                 }
 
-                formattedBody_.replace("<img src=\"mxc:&#47;&#47;", "<img src=\"image://mxcImage/");
-                formattedBody_.replace("<img src=\"mxc://", "<img src=\"image://mxcImage/");
+                // TODO(Nico): Don't parse html with a regex
+                const static QRegularExpression matchImgUri(
+                  "(<img [^>]*)src=\"mxc://([^\"]*)\"([^>]*>)");
+                formattedBody_.replace(matchImgUri, "\\1 src=\"image://mxcImage/\\2\"\\3");
+                const static QRegularExpression matchEmoticonHeight(
+                  "(<img data-mx-emoticon [^>]*)height=\"([^\"]*)\"([^>]*>)");
+                formattedBody_.replace(matchEmoticonHeight,
+                                       QString("\\1 height=\"%1\"\\3").arg(ascent));
 
                 return QVariant(utils::replaceEmoji(
                   utils::linkifyMessage(utils::escapeBlacklistedHtml(formattedBody_))));
