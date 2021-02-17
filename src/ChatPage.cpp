@@ -1326,14 +1326,14 @@ mxidFromSegments(QStringRef sigil, QStringRef mxid)
 
         auto mxid_ = QUrl::fromPercentEncoding(mxid.toUtf8());
 
-        if (sigil == "user") {
+        if (sigil == "u") {
                 return "@" + mxid_;
         } else if (sigil == "roomid") {
                 return "!" + mxid_;
-        } else if (sigil == "room") {
+        } else if (sigil == "r") {
                 return "#" + mxid_;
-        } else if (sigil == "group") {
-                return "+" + mxid_;
+                //} else if (sigil == "group") {
+                //        return "+" + mxid_;
         } else {
                 return "";
         }
@@ -1362,7 +1362,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                 return;
 
         QString mxid2;
-        if (segments.size() == 4 && segments[2] == "event") {
+        if (segments.size() == 4 && segments[2] == "e") {
                 if (segments[3].isEmpty())
                         return;
                 else
@@ -1383,7 +1383,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                 }
         }
 
-        if (sigil1 == "user") {
+        if (sigil1 == "u") {
                 if (action.isEmpty()) {
                         view_manager_->activeTimeline()->openUserProfile(mxid1);
                 } else if (action == "chat") {
@@ -1403,7 +1403,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                 if (action == "join") {
                         joinRoomVia(targetRoomId, vias);
                 }
-        } else if (sigil1 == "room") {
+        } else if (sigil1 == "r") {
                 auto joined_rooms    = cache::joinedRooms();
                 auto targetRoomAlias = mxid1.toStdString();
 
