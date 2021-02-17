@@ -37,7 +37,7 @@ RoomsModel::data(const QModelIndex &index, int role) const
         if (hasIndex(index.row(), index.column(), index.parent())) {
                 switch (role) {
                 case CompletionModel::CompletionRole:
-                        return QString("%1").arg(roomAliases[index.row()]);
+                        return QString("[%1](https://matrix.to/%1)").arg(roomAliases[index.row()]);
                 case CompletionModel::SearchRole:
                 case Qt::DisplayRole:
                 case Roles::RoomAlias:
