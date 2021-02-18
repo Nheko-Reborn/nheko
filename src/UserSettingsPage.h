@@ -90,6 +90,8 @@ class UserSettings : public QObject
                      NOTIFY screenShareFrameRateChanged)
         Q_PROPERTY(bool screenShareRemoteVideo READ screenShareRemoteVideo WRITE
                      setScreenShareRemoteVideo NOTIFY screenShareRemoteVideoChanged)
+        Q_PROPERTY(bool screenShareHideCursor READ screenShareHideCursor WRITE
+                     setScreenShareHideCursor NOTIFY screenShareHideCursorChanged)
         Q_PROPERTY(
           bool useStunServer READ useStunServer WRITE setUseStunServer NOTIFY useStunServerChanged)
         Q_PROPERTY(bool shareKeysWithTrustedUsers READ shareKeysWithTrustedUsers WRITE
@@ -149,6 +151,7 @@ public:
         void setCameraFrameRate(QString frameRate);
         void setScreenShareFrameRate(int frameRate);
         void setScreenShareRemoteVideo(bool state);
+        void setScreenShareHideCursor(bool state);
         void setUseStunServer(bool state);
         void setShareKeysWithTrustedUsers(bool state);
         void setProfile(QString profile);
@@ -199,6 +202,7 @@ public:
         QString cameraFrameRate() const { return cameraFrameRate_; }
         int screenShareFrameRate() const { return screenShareFrameRate_; }
         bool screenShareRemoteVideo() const { return screenShareRemoteVideo_; }
+        bool screenShareHideCursor() const { return screenShareHideCursor_; }
         bool useStunServer() const { return useStunServer_; }
         bool shareKeysWithTrustedUsers() const { return shareKeysWithTrustedUsers_; }
         QString profile() const { return profile_; }
@@ -239,6 +243,7 @@ signals:
         void cameraFrameRateChanged(QString frameRate);
         void screenShareFrameRateChanged(int frameRate);
         void screenShareRemoteVideoChanged(bool state);
+        void screenShareHideCursorChanged(bool state);
         void useStunServerChanged(bool state);
         void shareKeysWithTrustedUsersChanged(bool state);
         void profileChanged(QString profile);
@@ -284,6 +289,7 @@ private:
         QString cameraFrameRate_;
         int screenShareFrameRate_;
         bool screenShareRemoteVideo_;
+        bool screenShareHideCursor_;
         bool useStunServer_;
         QString profile_;
         QString userId_;

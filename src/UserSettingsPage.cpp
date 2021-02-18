@@ -115,6 +115,7 @@ UserSettings::load(std::optional<QString> profile)
         cameraFrameRate_        = settings.value("user/camera_frame_rate", QString()).toString();
         screenShareFrameRate_   = settings.value("user/screen_share_frame_rate", 5).toInt();
         screenShareRemoteVideo_ = settings.value("user/screen_share_remote_video", false).toBool();
+        screenShareHideCursor_  = settings.value("user/screen_share_hide_cursor", false).toBool();
         useStunServer_          = settings.value("user/use_stun_server", false).toBool();
 
         if (profile) // set to "" if it's the default to maintain compatibility
@@ -467,6 +468,16 @@ UserSettings::setScreenShareRemoteVideo(bool state)
 }
 
 void
+UserSettings::setScreenShareHideCursor(bool state)
+{
+        if (state == screenShareHideCursor_)
+                return;
+        screenShareHideCursor_ = state;
+        emit screenShareHideCursorChanged(state);
+        save();
+}
+
+void
 UserSettings::setProfile(QString profile)
 {
         if (profile == profile_)
@@ -617,6 +628,7 @@ UserSettings::save()
         settings.setValue("camera_frame_rate", cameraFrameRate_);
         settings.setValue("screen_share_frame_rate", screenShareFrameRate_);
         settings.setValue("screen_share_remote_video", screenShareRemoteVideo_);
+        settings.setValue("screen_share_hide_cursor", screenShareHideCursor_);
         settings.setValue("use_stun_server", useStunServer_);
         settings.setValue("currentProfile", profile_);
 

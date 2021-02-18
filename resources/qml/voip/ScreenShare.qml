@@ -14,6 +14,7 @@ Popup {
 
         frameRateCombo.currentIndex = frameRateCombo.find(Settings.screenShareFrameRate);
         remoteVideoCheckBox.checked = Settings.screenShareRemoteVideo;
+        hideCursorCheckBox.checked = Settings.screenShareHideCursor;
     }
     palette: colors
 
@@ -55,6 +56,15 @@ Popup {
             ToolTip.visible: hovered
         }
 
+        CheckBox {
+            id: hideCursorCheckBox
+
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: 8
+            Layout.rightMargin: 8
+            text: qsTr("Hide mouse cursor")
+        }
+
         RowLayout {
             Layout.margins: 8
 
@@ -70,6 +80,7 @@ Popup {
                         Settings.microphone = micCombo.currentText;
                         Settings.screenShareFrameRate = frameRateCombo.currentText;
                         Settings.screenShareRemoteVideo = remoteVideoCheckBox.checked;
+                        Settings.screenShareHideCursor = hideCursorCheckBox.checked;
                         CallManager.sendInvite(TimelineManager.timeline.roomId(), CallType.SCREEN);
                         close();
                     }

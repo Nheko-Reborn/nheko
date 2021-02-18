@@ -918,10 +918,13 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
                         nhlog::ui()->error("WebRTC: failed to create ximagesrc");
                         return false;
                 }
-                g_object_set(source, "use-damage", 0, nullptr);
+                g_object_set(source, "use-damage", FALSE, nullptr);
                 g_object_set(source, "xid", 0, nullptr);
-
-                int frameRate = ChatPage::instance()->userSettings()->screenShareFrameRate();
+                auto settings = ChatPage::instance()->userSettings();
+                g_object_set(source, "show-pointer", !settings->screenShareHideCursor(), nullptr);
+                nhlog::ui()->debug("WebRTC: screen share hide mouse cursor: {}",
+                                   settings->screenShareHideCursor());
+                int frameRate = settings->screenShareFrameRate();
                 caps          = gst_caps_new_simple(
                   "video/x-raw", "framerate", GST_TYPE_FRACTION, frameRate, 1, nullptr);
                 nhlog::ui()->debug("WebRTC: screen share frame rate: {} fps", frameRate);
