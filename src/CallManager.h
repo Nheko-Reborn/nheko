@@ -25,34 +25,39 @@ class CallManager : public QObject
         Q_OBJECT
         Q_PROPERTY(bool haveCallInvite READ haveCallInvite NOTIFY newInviteState)
         Q_PROPERTY(bool isOnCall READ isOnCall NOTIFY newCallState)
-        Q_PROPERTY(bool isVideo READ isVideo NOTIFY newInviteState)
-        Q_PROPERTY(bool haveLocalVideo READ haveLocalVideo NOTIFY newCallState)
+        Q_PROPERTY(webrtc::CallType callType READ callType NOTIFY newInviteState)
         Q_PROPERTY(webrtc::State callState READ callState NOTIFY newCallState)
         Q_PROPERTY(QString callParty READ callParty NOTIFY newInviteState)
         Q_PROPERTY(QString callPartyAvatarUrl READ callPartyAvatarUrl NOTIFY newInviteState)
         Q_PROPERTY(bool isMicMuted READ isMicMuted NOTIFY micMuteChanged)
-        Q_PROPERTY(bool callsSupported READ callsSupported CONSTANT)
+        Q_PROPERTY(bool haveLocalCamera READ haveLocalCamera NOTIFY newCallState)
+        Q_PROPERTY(bool haveVideo READ haveVideo NOTIFY newInviteState)
         Q_PROPERTY(QStringList mics READ mics NOTIFY devicesChanged)
         Q_PROPERTY(QStringList cameras READ cameras NOTIFY devicesChanged)
+        Q_PROPERTY(bool callsSupported READ callsSupported CONSTANT)
+        Q_PROPERTY(bool screenShareSupported READ screenShareSupported CONSTANT)
 
 public:
         CallManager(QObject *);
 
         bool haveCallInvite() const { return haveCallInvite_; }
         bool isOnCall() const { return session_.state() != webrtc::State::DISCONNECTED; }
-        bool isVideo() const { return isVideo_; }
-        bool haveLocalVideo() const { return session_.haveLocalVideo(); }
+        webrtc::CallType callType() const { return callType_; }
         webrtc::State callState() const { return session_.state(); }
         QString callParty() const { return callParty_; }
         QString callPartyAvatarUrl() const { return callPartyAvatarUrl_; }
         bool isMicMuted() const { return session_.isMicMuted(); }
-        bool callsSupported() const;
+        bool haveLocalCamera() const { return session_.haveLocalCamera(); }
+        bool haveVideo() const;
         QStringList mics() const { return devices(false); }
         QStringList cameras() const { return devices(true); }
         void refreshTurnServer();
 
+        static bool callsSupported();
+        static bool screenShareSupported();
+
 public slots:
-        void sendInvite(const QString &roomid, bool isVideo);
+        void sendInvite(const QString &roomid, webrtc::CallType);
         void syncEvent(const mtx::events::collections::TimelineEvents &event);
         void refreshDevices() { CallDevices::instance().refresh(); }
         void toggleMicMute();
@@ -81,9 +86,9 @@ private:
         QString callParty_;
         QString callPartyAvatarUrl_;
         std::string callid_;
-        const uint32_t timeoutms_ = 120000;
-        bool isVideo_             = false;
-        bool haveCallInvite_      = false;
+        const uint32_t timeoutms_  = 120000;
+        webrtc::CallType callType_ = webrtc::CallType::VOICE;
+        bool haveCallInvite_       = false;
         std::string inviteSDP_;
         std::vector<mtx::events::msg::CallCandidates::Candidate> remoteICECandidates_;
         std::vector<std::string> turnURIs_;

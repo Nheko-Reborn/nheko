@@ -53,7 +53,7 @@ Popup {
             Layout.bottomMargin: msgView.height / 25
 
             Image {
-                property string image: CallManager.isVideo ? ":/icons/icons/ui/video-call.png" : ":/icons/icons/ui/place-call.png"
+                property string image: CallManager.callType == CallType.VIDEO ? ":/icons/icons/ui/video-call.png" : ":/icons/icons/ui/place-call.png"
 
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: msgView.height / 10
@@ -63,7 +63,7 @@ Popup {
 
             Label {
                 Layout.alignment: Qt.AlignCenter
-                text: CallManager.isVideo ? qsTr("Video Call") : qsTr("Voice Call")
+                text: CallManager.callType == CallType.VIDEO ? qsTr("Video Call") : qsTr("Voice Call")
                 font.pointSize: fontMetrics.font.pointSize * 2
                 color: colors.windowText
             }
@@ -97,7 +97,7 @@ Popup {
             }
 
             RowLayout {
-                visible: CallManager.isVideo && CallManager.cameras.length > 0
+                visible: CallManager.callType == CallType.VIDEO && CallManager.cameras.length > 0
                 Layout.alignment: Qt.AlignCenter
 
                 Image {
@@ -159,7 +159,7 @@ Popup {
             RoundButton {
                 id: acceptButton
 
-                property string image: CallManager.isVideo ? ":/icons/icons/ui/video-call.png" : ":/icons/icons/ui/place-call.png"
+                property string image: CallManager.callType == CallType.VIDEO ? ":/icons/icons/ui/video-call.png" : ":/icons/icons/ui/place-call.png"
 
                 implicitWidth: buttonLayout.buttonSize
                 implicitHeight: buttonLayout.buttonSize

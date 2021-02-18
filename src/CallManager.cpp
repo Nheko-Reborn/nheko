@@ -2,6 +2,7 @@
 #include <cctype>
 #include <chrono>
 #include <cstdint>
+#include <cstdlib>
 
 #include <QMediaPlaylist>
 #include <QUrl>
@@ -23,6 +24,8 @@ Q_DECLARE_METATYPE(mtx::responses::TurnServer)
 
 using namespace mtx::events;
 using namespace mtx::events::msg;
+
+using webrtc::CallType;
 
 namespace {
 std::vector<std::string>
@@ -148,9 +151,11 @@ CallManager::CallManager(QObject *parent)
 }
 
 void
-CallManager::sendInvite(const QString &roomid, bool isVideo)
+CallManager::sendInvite(const QString &roomid, CallType callType)
 {
         if (isOnCall())
+                return;
+        if (callType == CallType::SCREEN && !screenShareSupported())
                 return;
 
         auto roomInfo = cache::singleRoomInfo(roomid.toStdString());
@@ -161,17 +166,20 @@ CallManager::sendInvite(const QString &roomid, bool isVideo)
 
         std::string errorMessage;
         if (!session_.havePlugins(false, &errorMessage) ||
-            (isVideo && !session_.havePlugins(true, &errorMessage))) {
+            ((callType == CallType::VIDEO || callType == CallType::SCREEN) &&
+             !session_.havePlugins(true, &errorMessage))) {
                 emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
                 return;
         }
 
-        isVideo_ = isVideo;
-        roomid_  = roomid;
+        callType_ = callType;
+        roomid_   = roomid;
         session_.setTurnServers(turnURIs_);
         generateCallID();
-        nhlog::ui()->debug(
-          "WebRTC: call id: {} - creating {} invite", callid_, isVideo ? "video" : "voice");
+        std::string strCallType = callType_ == CallType::VOICE
+                                    ? "voice"
+                                    : (callType_ == CallType::VIDEO ? "video" : "screen");
+        nhlog::ui()->debug("WebRTC: call id: {} - creating {} invite", callid_, strCallType);
         std::vector<RoomMember> members(cache::getMembers(roomid.toStdString()));
         const RoomMember &callee =
           members.front().user_id == utils::localUser() ? members.back() : members.front();
@@ -179,7 +187,7 @@ CallManager::sendInvite(const QString &roomid, bool isVideo)
         callPartyAvatarUrl_ = QString::fromStdString(roomInfo.avatar_url);
         emit newInviteState();
         playRingtone(QUrl("qrc:/media/media/ringback.ogg"), true);
-        if (!session_.createOffer(isVideo)) {
+        if (!session_.createOffer(callType)) {
                 emit ChatPage::instance()->showNotification("Problem setting up call.");
                 endCall();
         }
@@ -280,7 +288,7 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
         callPartyAvatarUrl_ = QString::fromStdString(roomInfo.avatar_url);
 
         haveCallInvite_ = true;
-        isVideo_        = isVideo;
+        callType_       = isVideo ? CallType::VIDEO : CallType::VOICE;
         inviteSDP_      = callInviteEvent.content.sdp;
         CallDevices::instance().refresh();
         emit newInviteState();
@@ -295,7 +303,7 @@ CallManager::acceptInvite()
         stopRingtone();
         std::string errorMessage;
         if (!session_.havePlugins(false, &errorMessage) ||
-            (isVideo_ && !session_.havePlugins(true, &errorMessage))) {
+            (callType_ == CallType::VIDEO && !session_.havePlugins(true, &errorMessage))) {
                 emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
                 hangUp();
                 return;
@@ -383,13 +391,28 @@ CallManager::toggleMicMute()
 }
 
 bool
-CallManager::callsSupported() const
+CallManager::callsSupported()
 {
 #ifdef GSTREAMER_AVAILABLE
         return true;
 #else
         return false;
 #endif
+}
+
+bool
+CallManager::screenShareSupported()
+{
+        return std::getenv("DISPLAY") != nullptr;
+}
+
+bool
+CallManager::haveVideo() const
+{
+        return callType() == CallType::VIDEO ||
+               (callType() == CallType::SCREEN &&
+                (ChatPage::instance()->userSettings()->screenShareRemoteVideo() &&
+                 !session_.isRemoteVideoRecvOnly()));
 }
 
 QStringList
@@ -424,7 +447,7 @@ CallManager::clear()
         callParty_.clear();
         callPartyAvatarUrl_.clear();
         callid_.clear();
-        isVideo_        = false;
+        callType_       = CallType::VOICE;
         haveCallInvite_ = false;
         emit newInviteState();
         inviteSDP_.clear();

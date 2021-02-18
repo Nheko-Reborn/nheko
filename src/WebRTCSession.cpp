@@ -10,6 +10,7 @@
 #include <thread>
 #include <utility>
 
+#include "CallDevices.h"
 #include "ChatPage.h"
 #include "Logging.h"
 #include "UserSettingsPage.h"
@@ -29,14 +30,20 @@ extern "C"
 // https://github.com/vector-im/riot-web/issues/10173
 #define STUN_SERVER "stun://turn.matrix.org:3478"
 
+Q_DECLARE_METATYPE(webrtc::CallType)
 Q_DECLARE_METATYPE(webrtc::State)
 
+using webrtc::CallType;
 using webrtc::State;
 
 WebRTCSession::WebRTCSession()
   : QObject()
   , devices_(CallDevices::instance())
 {
+        qRegisterMetaType<webrtc::CallType>();
+        qmlRegisterUncreatableMetaObject(
+          webrtc::staticMetaObject, "im.nheko", 1, 0, "CallType", "Can't instantiate enum");
+
         qRegisterMetaType<webrtc::State>();
         qmlRegisterUncreatableMetaObject(
           webrtc::staticMetaObject, "im.nheko", 1, 0, "WebRTCState", "Can't instantiate enum");
@@ -455,7 +462,8 @@ linkNewPad(GstElement *decodebin, GstPad *newpad, GstElement *pipe)
                 nhlog::ui()->info("WebRTC: incoming video resolution: {}x{}",
                                   videoCallSize.first,
                                   videoCallSize.second);
-                addCameraView(pipe, videoCallSize);
+                if (session->callType() == CallType::VIDEO)
+                        addCameraView(pipe, videoCallSize);
         } else {
                 g_free(mediaType);
                 nhlog::ui()->error("WebRTC: unknown pad type: {}", GST_PAD_NAME(newpad));
@@ -467,7 +475,7 @@ linkNewPad(GstElement *decodebin, GstPad *newpad, GstElement *pipe)
                 if (GST_PAD_LINK_FAILED(gst_pad_link(newpad, queuepad)))
                         nhlog::ui()->error("WebRTC: unable to link new pad");
                 else {
-                        if (!session->isVideo() ||
+                        if (session->callType() == CallType::VOICE ||
                             (haveAudioStream_ &&
                              (haveVideoStream_ || session->isRemoteVideoRecvOnly()))) {
                                 emit session->stateChanged(State::CONNECTED);
@@ -523,14 +531,17 @@ getMediaAttributes(const GstSDPMessage *sdp,
                    const char *mediaType,
                    const char *encoding,
                    int &payloadType,
-                   bool &recvOnly)
+                   bool &recvOnly,
+                   bool &sendOnly)
 {
         payloadType = -1;
         recvOnly    = false;
+        sendOnly    = false;
         for (guint mlineIndex = 0; mlineIndex < gst_sdp_message_medias_len(sdp); ++mlineIndex) {
                 const GstSDPMedia *media = gst_sdp_message_get_media(sdp, mlineIndex);
                 if (!std::strcmp(gst_sdp_media_get_media(media), mediaType)) {
                         recvOnly = gst_sdp_media_get_attribute_val(media, "recvonly") != nullptr;
+                        sendOnly = gst_sdp_media_get_attribute_val(media, "sendonly") != nullptr;
                         const gchar *rtpval = nullptr;
                         for (guint n = 0; n == 0 || rtpval; ++n) {
                                 rtpval = gst_sdp_media_get_attribute_val_n(media, "rtpmap", n);
@@ -603,11 +614,12 @@ WebRTCSession::havePlugins(bool isVideo, std::string *errorMessage)
 }
 
 bool
-WebRTCSession::createOffer(bool isVideo)
+WebRTCSession::createOffer(CallType callType)
 {
         isOffering_            = true;
-        isVideo_               = isVideo;
+        callType_              = callType;
         isRemoteVideoRecvOnly_ = false;
+        isRemoteVideoSendOnly_ = false;
         videoItem_             = nullptr;
         haveAudioStream_       = false;
         haveVideoStream_       = false;
@@ -630,8 +642,10 @@ WebRTCSession::acceptOffer(const std::string &sdp)
         if (state_ != State::DISCONNECTED)
                 return false;
 
+        callType_              = webrtc::CallType::VOICE;
         isOffering_            = false;
         isRemoteVideoRecvOnly_ = false;
+        isRemoteVideoSendOnly_ = false;
         videoItem_             = nullptr;
         haveAudioStream_       = false;
         haveVideoStream_       = false;
@@ -645,7 +659,8 @@ WebRTCSession::acceptOffer(const std::string &sdp)
 
         int opusPayloadType;
         bool recvOnly;
-        if (getMediaAttributes(offer->sdp, "audio", "opus", opusPayloadType, recvOnly)) {
+        bool sendOnly;
+        if (getMediaAttributes(offer->sdp, "audio", "opus", opusPayloadType, recvOnly, sendOnly)) {
                 if (opusPayloadType == -1) {
                         nhlog::ui()->error("WebRTC: remote audio offer - no opus encoding");
                         gst_webrtc_session_description_free(offer);
@@ -658,13 +673,18 @@ WebRTCSession::acceptOffer(const std::string &sdp)
         }
 
         int vp8PayloadType;
-        isVideo_ =
-          getMediaAttributes(offer->sdp, "video", "vp8", vp8PayloadType, isRemoteVideoRecvOnly_);
-        if (isVideo_ && vp8PayloadType == -1) {
+        bool isVideo = getMediaAttributes(offer->sdp,
+                                          "video",
+                                          "vp8",
+                                          vp8PayloadType,
+                                          isRemoteVideoRecvOnly_,
+                                          isRemoteVideoSendOnly_);
+        if (isVideo && vp8PayloadType == -1) {
                 nhlog::ui()->error("WebRTC: remote video offer - no vp8 encoding");
                 gst_webrtc_session_description_free(offer);
                 return false;
         }
+        callType_ = isVideo ? CallType::VIDEO : CallType::VOICE;
 
         if (!startPipeline(opusPayloadType, vp8PayloadType)) {
                 gst_webrtc_session_description_free(offer);
@@ -695,10 +715,14 @@ WebRTCSession::acceptAnswer(const std::string &sdp)
                 return false;
         }
 
-        if (isVideo_) {
+        if (callType_ != CallType::VOICE) {
                 int unused;
-                if (!getMediaAttributes(
-                      answer->sdp, "video", "vp8", unused, isRemoteVideoRecvOnly_))
+                if (!getMediaAttributes(answer->sdp,
+                                        "video",
+                                        "vp8",
+                                        unused,
+                                        isRemoteVideoRecvOnly_,
+                                        isRemoteVideoSendOnly_))
                         isRemoteVideoRecvOnly_ = true;
         }
 
@@ -855,39 +879,59 @@ WebRTCSession::createPipeline(int opusPayloadType, int vp8PayloadType)
                 return false;
         }
 
-        return isVideo_ ? addVideoPipeline(vp8PayloadType) : true;
+        return callType_ == CallType::VOICE || isRemoteVideoSendOnly_
+                 ? true
+                 : addVideoPipeline(vp8PayloadType);
 }
 
 bool
 WebRTCSession::addVideoPipeline(int vp8PayloadType)
 {
         // allow incoming video calls despite localUser having no webcam
-        if (!devices_.haveCamera())
+        if (callType_ == CallType::VIDEO && !devices_.haveCamera())
                 return !isOffering_;
 
-        std::pair<int, int> resolution;
-        std::pair<int, int> frameRate;
-        GstDevice *device = devices_.videoDevice(resolution, frameRate);
-        if (!device)
-                return false;
+        GstElement *source = nullptr;
+        GstCaps *caps      = nullptr;
+        if (callType_ == CallType::VIDEO) {
+                std::pair<int, int> resolution;
+                std::pair<int, int> frameRate;
+                GstDevice *device = devices_.videoDevice(resolution, frameRate);
+                if (!device)
+                        return false;
+                source = gst_device_create_element(device, nullptr);
+                caps   = gst_caps_new_simple("video/x-raw",
+                                           "width",
+                                           G_TYPE_INT,
+                                           resolution.first,
+                                           "height",
+                                           G_TYPE_INT,
+                                           resolution.second,
+                                           "framerate",
+                                           GST_TYPE_FRACTION,
+                                           frameRate.first,
+                                           frameRate.second,
+                                           nullptr);
+        } else {
+                source = gst_element_factory_make("ximagesrc", nullptr);
+                if (!source) {
+                        nhlog::ui()->error("WebRTC: failed to create ximagesrc");
+                        return false;
+                }
+                g_object_set(source, "use-damage", 0, nullptr);
+                g_object_set(source, "xid", 0, nullptr);
 
-        GstElement *source       = gst_device_create_element(device, nullptr);
+                int frameRate = ChatPage::instance()->userSettings()->screenShareFrameRate();
+                caps          = gst_caps_new_simple(
+                  "video/x-raw", "framerate", GST_TYPE_FRACTION, frameRate, 1, nullptr);
+                nhlog::ui()->debug("WebRTC: screen share frame rate: {} fps", frameRate);
+        }
+
         GstElement *videoconvert = gst_element_factory_make("videoconvert", nullptr);
         GstElement *capsfilter   = gst_element_factory_make("capsfilter", "camerafilter");
-        GstCaps *caps            = gst_caps_new_simple("video/x-raw",
-                                            "width",
-                                            G_TYPE_INT,
-                                            resolution.first,
-                                            "height",
-                                            G_TYPE_INT,
-                                            resolution.second,
-                                            "framerate",
-                                            GST_TYPE_FRACTION,
-                                            frameRate.first,
-                                            frameRate.second,
-                                            nullptr);
         g_object_set(capsfilter, "caps", caps, nullptr);
         gst_caps_unref(caps);
+
         GstElement *tee    = gst_element_factory_make("tee", "videosrctee");
         GstElement *queue  = gst_element_factory_make("queue", nullptr);
         GstElement *vp8enc = gst_element_factory_make("vp8enc", nullptr);
@@ -938,14 +982,25 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
                 gst_object_unref(webrtcbin);
                 return false;
         }
+
+        if (callType_ == CallType::SCREEN &&
+            !ChatPage::instance()->userSettings()->screenShareRemoteVideo()) {
+                GArray *transceivers;
+                g_signal_emit_by_name(webrtcbin, "get-transceivers", &transceivers);
+                GstWebRTCRTPTransceiver *transceiver =
+                  g_array_index(transceivers, GstWebRTCRTPTransceiver *, 1);
+                transceiver->direction = GST_WEBRTC_RTP_TRANSCEIVER_DIRECTION_SENDONLY;
+                g_array_unref(transceivers);
+        }
+
         gst_object_unref(webrtcbin);
         return true;
 }
 
 bool
-WebRTCSession::haveLocalVideo() const
+WebRTCSession::haveLocalCamera() const
 {
-        if (isVideo_ && state_ >= State::INITIATED) {
+        if (callType_ == CallType::VIDEO && state_ >= State::INITIATED) {
                 GstElement *tee = gst_bin_get_by_name(GST_BIN(pipe_), "videosrctee");
                 if (tee) {
                         gst_object_unref(tee);
@@ -1008,9 +1063,10 @@ WebRTCSession::end()
         }
 
         webrtc_                = nullptr;
-        isVideo_               = false;
+        callType_              = CallType::VOICE;
         isOffering_            = false;
         isRemoteVideoRecvOnly_ = false;
+        isRemoteVideoSendOnly_ = false;
         videoItem_             = nullptr;
         insetSinkPad_          = nullptr;
         if (state_ != State::DISCONNECTED)
@@ -1026,16 +1082,12 @@ WebRTCSession::havePlugins(bool, std::string *)
 }
 
 bool
-WebRTCSession::haveLocalVideo() const
+WebRTCSession::haveLocalCamera() const
 {
         return false;
 }
 
-bool
-WebRTCSession::createOffer(bool)
-{
-        return false;
-}
+bool WebRTCSession::createOffer(webrtc::CallType) { return false; }
 
 bool
 WebRTCSession::acceptOffer(const std::string &)

@@ -12,7 +12,7 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            if (CallManager.isVideo)
+            if (CallManager.haveVideo)
                 stackLayout.currentIndex = stackLayout.currentIndex ? 0 : 1;
 
         }
@@ -42,10 +42,46 @@ Rectangle {
         }
 
         Image {
+            id: callTypeIcon
+
             Layout.leftMargin: 4
             Layout.preferredWidth: 24
             Layout.preferredHeight: 24
-            source: CallManager.isVideo ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
+        }
+
+        Item {
+            states: [
+                State {
+                    name: "VOICE"
+                    when: CallManager.callType == CallType.VOICE
+
+                    PropertyChanges {
+                        target: callTypeIcon
+                        source: "qrc:/icons/icons/ui/place-call.png"
+                    }
+
+                },
+                State {
+                    name: "VIDEO"
+                    when: CallManager.callType == CallType.VIDEO
+
+                    PropertyChanges {
+                        target: callTypeIcon
+                        source: "qrc:/icons/icons/ui/video-call.png"
+                    }
+
+                },
+                State {
+                    name: "SCREEN"
+                    when: CallManager.callType == CallType.SCREEN
+
+                    PropertyChanges {
+                        target: callTypeIcon
+                        source: "qrc:/icons/icons/ui/screen-share.png"
+                    }
+
+                }
+            ]
         }
 
         Label {
@@ -103,7 +139,7 @@ Rectangle {
 
                     PropertyChanges {
                         target: stackLayout
-                        currentIndex: CallManager.isVideo ? 1 : 0
+                        currentIndex: CallManager.haveVideo ? 1 : 0
                     }
 
                 },
@@ -147,12 +183,20 @@ Rectangle {
             }
         }
 
+        Label {
+            Layout.leftMargin: 16
+            visible: CallManager.callType == CallType.SCREEN && CallManager.callState == WebRTCState.CONNECTED
+            text: qsTr("You are screen sharing")
+            font.pointSize: fontMetrics.font.pointSize * 1.1
+            color: "#000000"
+        }
+
         Item {
             Layout.fillWidth: true
         }
 
         ImageButton {
-            visible: CallManager.haveLocalVideo
+            visible: CallManager.haveLocalCamera
             width: 24
             height: 24
             buttonTextColor: "#000000"

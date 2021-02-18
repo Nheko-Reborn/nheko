@@ -86,6 +86,10 @@ class UserSettings : public QObject
                      cameraResolutionChanged)
         Q_PROPERTY(QString cameraFrameRate READ cameraFrameRate WRITE setCameraFrameRate NOTIFY
                      cameraFrameRateChanged)
+        Q_PROPERTY(int screenShareFrameRate READ screenShareFrameRate WRITE setScreenShareFrameRate
+                     NOTIFY screenShareFrameRateChanged)
+        Q_PROPERTY(bool screenShareRemoteVideo READ screenShareRemoteVideo WRITE
+                     setScreenShareRemoteVideo NOTIFY screenShareRemoteVideoChanged)
         Q_PROPERTY(
           bool useStunServer READ useStunServer WRITE setUseStunServer NOTIFY useStunServerChanged)
         Q_PROPERTY(bool shareKeysWithTrustedUsers READ shareKeysWithTrustedUsers WRITE
@@ -143,6 +147,8 @@ public:
         void setCamera(QString camera);
         void setCameraResolution(QString resolution);
         void setCameraFrameRate(QString frameRate);
+        void setScreenShareFrameRate(int frameRate);
+        void setScreenShareRemoteVideo(bool state);
         void setUseStunServer(bool state);
         void setShareKeysWithTrustedUsers(bool state);
         void setProfile(QString profile);
@@ -191,6 +197,8 @@ public:
         QString camera() const { return camera_; }
         QString cameraResolution() const { return cameraResolution_; }
         QString cameraFrameRate() const { return cameraFrameRate_; }
+        int screenShareFrameRate() const { return screenShareFrameRate_; }
+        bool screenShareRemoteVideo() const { return screenShareRemoteVideo_; }
         bool useStunServer() const { return useStunServer_; }
         bool shareKeysWithTrustedUsers() const { return shareKeysWithTrustedUsers_; }
         QString profile() const { return profile_; }
@@ -229,6 +237,8 @@ signals:
         void cameraChanged(QString camera);
         void cameraResolutionChanged(QString resolution);
         void cameraFrameRateChanged(QString frameRate);
+        void screenShareFrameRateChanged(int frameRate);
+        void screenShareRemoteVideoChanged(bool state);
         void useStunServerChanged(bool state);
         void shareKeysWithTrustedUsersChanged(bool state);
         void profileChanged(QString profile);
@@ -272,6 +282,8 @@ private:
         QString camera_;
         QString cameraResolution_;
         QString cameraFrameRate_;
+        int screenShareFrameRate_;
+        bool screenShareRemoteVideo_;
         bool useStunServer_;
         QString profile_;
         QString userId_;
