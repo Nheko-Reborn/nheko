@@ -326,6 +326,7 @@ set(SRC_FILES
 	src/UserInfoWidget.cpp
 	src/UserSettingsPage.cpp
 	src/UsersModel.cpp
+	src/RoomsModel.cpp
 	src/Utils.cpp
 	src/WebRTCSession.cpp
 	src/WelcomePage.cpp
@@ -537,6 +538,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/UserInfoWidget.h
 	src/UserSettingsPage.h
 	src/UsersModel.h
+	src/RoomsModel.h
 	src/WebRTCSession.h
 	src/WelcomePage.h
 	src/popups/PopupItem.h
