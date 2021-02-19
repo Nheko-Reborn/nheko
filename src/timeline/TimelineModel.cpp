@@ -837,6 +837,14 @@ TimelineModel::openUserProfile(QString userid, bool global)
 }
 
 void
+TimelineModel::openRoomSettings()
+{
+        RoomSettings *settings = new RoomSettings(roomId(), this);
+        connect(this, &TimelineModel::roomAvatarUrlChanged, settings, &RoomSettings::avatarChanged);
+        openRoomSettingsDialog(settings);
+}
+
+void
 TimelineModel::replyAction(QString id)
 {
         setReply(id);

@@ -118,7 +118,6 @@ ApplicationWindow {
                     }
                 }
             }
-
         }
 
         MatrixText {

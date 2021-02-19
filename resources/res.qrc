@@ -128,6 +128,7 @@
         <file>qml/EncryptionIndicator.qml</file>
         <file>qml/ImageButton.qml</file>
         <file>qml/MatrixText.qml</file>
+        <file>qml/ToggleButton.qml</file>
         <file>qml/MessageInput.qml</file>
         <file>qml/MessageView.qml</file>
         <file>qml/NhekoBusyIndicator.qml</file>
@@ -139,6 +140,7 @@
         <file>qml/TimelineRow.qml</file>
         <file>qml/TopBar.qml</file>
         <file>qml/TypingIndicator.qml</file>
+        <file>qml/RoomSettings.qml</file>
         <file>qml/emoji/EmojiButton.qml</file>
         <file>qml/emoji/EmojiPicker.qml</file>
         <file>qml/UserProfile.qml</file>
