@@ -147,16 +147,23 @@ LoginPage::LoginPage(QWidget *parent)
         error_matrixid_label_->hide();
 
         button_layout_ = new QHBoxLayout();
-        button_layout_->setSpacing(0);
+        button_layout_->setSpacing(20);
         button_layout_->setContentsMargins(0, 0, 0, 30);
 
         login_button_ = new RaisedButton(tr("LOGIN"), this);
-        login_button_->setMinimumSize(350, 65);
+        login_button_->setMinimumSize(150, 65);
         login_button_->setFontSize(20);
         login_button_->setCornerRadius(3);
 
+        sso_login_button_ = new RaisedButton(tr("SSO LOGIN"), this);
+        sso_login_button_->setMinimumSize(150, 65);
+        sso_login_button_->setFontSize(20);
+        sso_login_button_->setCornerRadius(3);
+        sso_login_button_->setVisible(false);
+
         button_layout_->addStretch(1);
         button_layout_->addWidget(login_button_);
+        button_layout_->addWidget(sso_login_button_);
         button_layout_->addStretch(1);
 
         error_label_ = new QLabel(this);
@@ -179,7 +186,12 @@ LoginPage::LoginPage(QWidget *parent)
           this, &LoginPage::versionErrorCb, this, &LoginPage::versionError, Qt::QueuedConnection);
 
         connect(back_button_, SIGNAL(clicked()), this, SLOT(onBackButtonClicked()));
-        connect(login_button_, SIGNAL(clicked()), this, SLOT(onLoginButtonClicked()));
+        connect(login_button_, &RaisedButton::clicked, this, [this]() {
+                onLoginButtonClicked(passwordSupported ? LoginMethod::Password : LoginMethod::SSO);
+        });
+        connect(sso_login_button_, &RaisedButton::clicked, this, [this]() {
+                onLoginButtonClicked(LoginMethod::SSO);
+        });
         connect(matrixid_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
         connect(password_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
         connect(deviceName_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
@@ -314,16 +326,19 @@ LoginPage::checkHomeserverVersion()
                   http::client()->get_login(
                     [this](mtx::responses::LoginFlows flows, mtx::http::RequestErr err) {
                             if (err || flows.flows.empty())
-                                    emit versionOkCb(LoginMethod::Password);
+                                    emit versionOkCb(true, false);
 
-                            LoginMethod loginMethod_ = LoginMethod::Password;
+                            bool ssoSupported_      = false;
+                            bool passwordSupported_ = false;
                             for (const auto &flow : flows.flows) {
                                     if (flow.type == mtx::user_interactive::auth_types::sso) {
-                                            loginMethod_ = LoginMethod::SSO;
-                                            break;
+                                            ssoSupported_ = true;
+                                    } else if (flow.type ==
+                                               mtx::user_interactive::auth_types::password) {
+                                            passwordSupported_ = true;
                                     }
                             }
-                            emit versionOkCb(loginMethod_);
+                            emit versionOkCb(passwordSupported_, ssoSupported_);
                     });
           });
 }
@@ -355,28 +370,24 @@ LoginPage::versionError(const QString &error)
 }
 
 void
-LoginPage::versionOk(LoginMethod loginMethod_)
+LoginPage::versionOk(bool passwordSupported_, bool ssoSupported_)
 {
-        this->loginMethod = loginMethod_;
+        passwordSupported = passwordSupported_;
+        ssoSupported      = ssoSupported_;
 
         serverLayout_->removeWidget(spinner_);
         matrixidLayout_->removeWidget(spinner_);
         spinner_->stop();
 
-        if (loginMethod == LoginMethod::SSO) {
-                password_input_->hide();
-                login_button_->setText(tr("SSO LOGIN"));
-        } else {
-                password_input_->show();
-                login_button_->setText(tr("LOGIN"));
-        }
+        sso_login_button_->setVisible(ssoSupported);
+        login_button_->setVisible(passwordSupported);
 
         if (serverInput_->isVisible())
                 serverInput_->hide();
 }
 
 void
-LoginPage::onLoginButtonClicked()
+LoginPage::onLoginButtonClicked(LoginMethod loginMethod)
 {
         error_label_->setText("");
 
