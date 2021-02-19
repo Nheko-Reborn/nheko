@@ -1,5 +1,7 @@
 #include "RoomsModel.h"
 
+#include <QUrl>
+
 #include "Cache_p.h"
 #include "CompletionModelRoles.h"
 
@@ -14,7 +16,7 @@ RoomsModel::RoomsModel(bool showOnlyRoomWithAliases, QObject *parent)
                 auto roomAliasesList = cache::client()->getRoomAliases(r);
 
                 if (showOnlyRoomWithAliases_) {
-                        if (roomAliasesList) {
+                        if (roomAliasesList && !roomAliasesList->alias.empty()) {
                                 roomids.push_back(QString::fromStdString(r));
                                 roomAliases.push_back(
                                   QString::fromStdString(roomAliasesList->alias));
@@ -44,8 +46,11 @@ RoomsModel::data(const QModelIndex &index, int role) const
 {
         if (hasIndex(index.row(), index.column(), index.parent())) {
                 switch (role) {
-                case CompletionModel::CompletionRole:
-                        return QString("[%1](https://matrix.to/%1)").arg(roomAliases[index.row()]);
+                case CompletionModel::CompletionRole: {
+                        QString percentEncoding = QUrl::toPercentEncoding(roomAliases[index.row()]);
+                        return QString("[%1](https://matrix.to/#/%2)")
+                          .arg(roomAliases[index.row()], percentEncoding);
+                }
                 case CompletionModel::SearchRole:
                 case Qt::DisplayRole:
                 case Roles::RoomAlias:
