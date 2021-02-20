@@ -16,14 +16,11 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         const auto sender = cache::displayName(
           room_id, QString::fromStdString(mtx::accessors::sender(notification.event)));
 
-        QString text;
-        if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
-                text =
-                  formatNotification("* " + sender + " " +
-                                     mtx::accessors::formattedBodyWithFallback(notification.event));
-        else
-                text = formatNotification(
-                  sender + ": " + mtx::accessors::formattedBodyWithFallback(notification.event));
+        QString text =
+          ((mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
+             ? "* " + sender + " "
+             : sender + ": ") +
+          formatNotification(mtx::accessors::formattedBodyWithFallback(notification.event));
 
         systemPostNotification(room_id, event_id, room_name, sender, text, icon);
 }
