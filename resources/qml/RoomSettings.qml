@@ -1,16 +1,16 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.3
+import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.3
-import QtQuick.Dialogs 1.2
 import im.nheko 1.0
 
 ApplicationWindow {
-	id: roomSettingsDialog
+    id: roomSettingsDialog
 
     property var roomSettings
 
-	x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
+    x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     minimumWidth: 420
     minimumHeight: 650
@@ -36,9 +36,9 @@ ApplicationWindow {
             width: 130
             Layout.alignment: Qt.AlignHCenter
             onClicked: {
-                if(roomSettings.canChangeAvatar) {
-                    roomSettings.updateAvatar();    
-                }
+                if (roomSettings.canChangeAvatar)
+                    roomSettings.updateAvatar();
+
             }
         }
 
@@ -50,6 +50,7 @@ ApplicationWindow {
 
         Text {
             id: errorText
+
             text: "Error Text"
             color: "red"
             visible: opacity > 0
@@ -59,24 +60,28 @@ ApplicationWindow {
 
         SequentialAnimation {
             id: hideErrorAnimation
+
             running: false
+
             PauseAnimation {
                 duration: 4000
             }
+
             NumberAnimation {
                 target: errorText
                 property: 'opacity'
                 to: 0
                 duration: 1000
             }
+
         }
 
-        Connections{
+        Connections {
             target: roomSettings
             onDisplayError: {
-                errorText.text = errorMessage
-                errorText.opacity = 1
-                hideErrorAnimation.restart()
+                errorText.text = errorMessage;
+                errorText.opacity = 1;
+                hideErrorAnimation.restart();
             }
         }
 
@@ -93,6 +98,7 @@ ApplicationWindow {
                 text: "%1 member(s)".arg(roomSettings.memberCount)
                 Layout.alignment: Qt.AlignHCenter
             }
+
         }
 
         ImageButton {
@@ -117,6 +123,7 @@ ApplicationWindow {
                 color: colors.text
                 horizontalAlignment: TextEdit.AlignHCenter
             }
+
         }
 
         GridLayout {
@@ -138,10 +145,10 @@ ApplicationWindow {
             }
 
             ComboBox {
-                model: [ "Muted", "Mentions only", "All messages" ]
+                model: ["Muted", "Mentions only", "All messages"]
                 currentIndex: roomSettings.notifications
                 onActivated: {
-                    roomSettings.changeNotifications(index)
+                    roomSettings.changeNotifications(index);
                 }
                 Layout.fillWidth: true
             }
@@ -153,10 +160,10 @@ ApplicationWindow {
 
             ComboBox {
                 enabled: roomSettings.canChangeJoinRules
-                model: [ "Anyone and guests", "Anyone", "Invited users" ]
+                model: ["Anyone and guests", "Anyone", "Invited users"]
                 currentIndex: roomSettings.accessJoinRules
                 onActivated: {
-                    roomSettings.changeAccessRules(index)
+                    roomSettings.changeAccessRules(index);
                 }
                 Layout.fillWidth: true
             }
@@ -170,11 +177,10 @@ ApplicationWindow {
 
                 checked: roomSettings.isEncryptionEnabled
                 onClicked: {
-                    if(roomSettings.isEncryptionEnabled) {
-                        checked=true;
-                        return;
+                    if (roomSettings.isEncryptionEnabled) {
+                        checked = true;
+                        return ;
                     }
-
                     confirmEncryptionDialog.open();
                 }
                 Layout.alignment: Qt.AlignRight
@@ -182,24 +188,21 @@ ApplicationWindow {
 
             MessageDialog {
                 id: confirmEncryptionDialog
+
                 title: qsTr("End-to-End Encryption")
-                text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br> 
+                text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br>
                             Please take note that it can't be disabled afterwards.")
                 modality: Qt.WindowModal
                 icon: StandardIcon.Question
-
                 onAccepted: {
-                    if(roomSettings.isEncryptionEnabled) {
-                        return;
-                    }
+                    if (roomSettings.isEncryptionEnabled)
+                        return ;
 
                     roomSettings.enableEncryption();
                 }
-
                 onRejected: {
-                    encryptionToggle.checked = false
+                    encryptionToggle.checked = false;
                 }
-
                 standardButtons: Dialog.Ok | Dialog.Cancel
             }
 
@@ -210,14 +213,12 @@ ApplicationWindow {
 
             ToggleButton {
                 visible: roomSettings.isEncryptionEnabled
-                ToolTip.text: qsTr("Whether or not the client should respond automatically with the session keys 
-                                upon request. Use with caution, this is a temporary measure to test the 
+                ToolTip.text: qsTr("Whether or not the client should respond automatically with the session keys
+                                upon request. Use with caution, this is a temporary measure to test the
                                 E2E implementation until device verification is completed.")
-
                 checked: roomSettings.respondsToKeyRequests
-
                 onClicked: {
-                    roomSettings.changeKeyRequestsPreference(checked)
+                    roomSettings.changeKeyRequestsPreference(checked);
                 }
                 Layout.alignment: Qt.AlignRight
             }
@@ -260,6 +261,7 @@ ApplicationWindow {
                 font.pixelSize: 14
                 Layout.alignment: Qt.AlignRight
             }
+
         }
 
         Button {
@@ -267,5 +269,7 @@ ApplicationWindow {
             text: "Ok"
             onClicked: close()
         }
+
     }
+
 }
