@@ -151,15 +151,26 @@ NotificationsManager::notificationClosed(uint id, uint reason)
         notificationIds.remove(id);
 }
 
+/**
+ * @param text This should be an HTML-formatted string.
+ *
+ * If D-Bus says that notifications can have body markup, this function will
+ * automatically format the notification to follow the supported HTML subset
+ * specified at https://www.freedesktop.org/wiki/Specifications/StatusNotifierItem/Markup/
+ */
 QString
 NotificationsManager::formatNotification(const QString &text)
 {
         static auto capabilites = dbus.call("GetCapabilities").arguments();
         for (auto x : capabilites)
                 if (x.toStringList().contains("body-markup"))
-                        return utils::markdownToHtml(text);
+                        return QString(text)
+                          .replace("<em>", "<i>")
+                          .replace("</em>", "</i>")
+                          .replace("<strong>", "<b>")
+                          .replace("</strong>", "</b>");
 
-        return QTextDocumentFragment::fromHtml(utils::markdownToHtml(text)).toPlainText();
+        return QTextDocumentFragment::fromHtml(text).toPlainText();
 }
 
 /**
