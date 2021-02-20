@@ -17,10 +17,10 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
           room_id, QString::fromStdString(mtx::accessors::sender(notification.event)));
 
         const QString reply = (utils::isReply(notification.event)
-                                 ? ""
-                                 : tr(" replied",
+                                 ? tr(" replied",
                                       "Used to denote that this message is a reply to another "
-                                      "message. Displayed as 'foo replied: message'."));
+                                      "message. Displayed as 'foo replied: message'.")
+                                 : "");
 
         // the "replied" is only added if this message is not an emote message
         QString text =
