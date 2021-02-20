@@ -1288,7 +1288,6 @@ UserSettingsPage::showEvent(QShowEvent *)
         timelineMaxWidthSpin_->setValue(settings_->timelineMaxWidth());
         privacyScreenTimeout_->setValue(settings_->privacyScreenTimeout());
 
-        CallDevices::instance().refresh();
         auto mics = CallDevices::instance().names(false, settings_->microphone().toStdString());
         microphoneCombo_->clear();
         for (const auto &m : mics)

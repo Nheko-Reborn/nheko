@@ -174,7 +174,6 @@ createAnswer(GstPromise *promise, gpointer webrtc)
         g_signal_emit_by_name(webrtc, "create-answer", nullptr, promise);
 }
 
-#if GST_CHECK_VERSION(1, 18, 0)
 void
 iceGatheringStateChanged(GstElement *webrtc,
                          GParamSpec *pspec G_GNUC_UNUSED,
@@ -194,23 +193,6 @@ iceGatheringStateChanged(GstElement *webrtc,
         }
 }
 
-#else
-
-gboolean
-onICEGatheringCompletion(gpointer timerid)
-{
-        *(guint *)(timerid) = 0;
-        if (WebRTCSession::instance().isOffering()) {
-                emit WebRTCSession::instance().offerCreated(localsdp_, localcandidates_);
-                emit WebRTCSession::instance().stateChanged(State::OFFERSENT);
-        } else {
-                emit WebRTCSession::instance().answerCreated(localsdp_, localcandidates_);
-                emit WebRTCSession::instance().stateChanged(State::ANSWERSENT);
-        }
-        return FALSE;
-}
-#endif
-
 void
 addLocalICECandidate(GstElement *webrtc G_GNUC_UNUSED,
                      guint mlineIndex,
@@ -218,28 +200,7 @@ addLocalICECandidate(GstElement *webrtc G_GNUC_UNUSED,
                      gpointer G_GNUC_UNUSED)
 {
         nhlog::ui()->debug("WebRTC: local candidate: (m-line:{}):{}", mlineIndex, candidate);
-
-#if GST_CHECK_VERSION(1, 18, 0)
         localcandidates_.push_back({std::string() /*max-bundle*/, (uint16_t)mlineIndex, candidate});
-        return;
-#else
-        if (WebRTCSession::instance().state() >= State::OFFERSENT) {
-                emit WebRTCSession::instance().newICECandidate(
-                  {std::string() /*max-bundle*/, (uint16_t)mlineIndex, candidate});
-                return;
-        }
-
-        localcandidates_.push_back({std::string() /*max-bundle*/, (uint16_t)mlineIndex, candidate});
-
-        // GStreamer v1.16: webrtcbin's notify::ice-gathering-state triggers
-        // GST_WEBRTC_ICE_GATHERING_STATE_COMPLETE too early. Fixed in v1.18.
-        // Use a 1s timeout in the meantime
-        static guint timerid = 0;
-        if (timerid)
-                g_source_remove(timerid);
-
-        timerid = g_timeout_add(1000, onICEGatheringCompletion, &timerid);
-#endif
 }
 
 void
@@ -328,7 +289,6 @@ testPacketLoss(gpointer G_GNUC_UNUSED)
         return FALSE;
 }
 
-#if GST_CHECK_VERSION(1, 18, 0)
 void
 setWaitForKeyFrame(GstBin *decodebin G_GNUC_UNUSED, GstElement *element, gpointer G_GNUC_UNUSED)
 {
@@ -337,7 +297,6 @@ setWaitForKeyFrame(GstBin *decodebin G_GNUC_UNUSED, GstElement *element, gpointe
               "rtpvp8depay"))
                 g_object_set(element, "wait-for-keyframe", TRUE, nullptr);
 }
-#endif
 
 GstElement *
 newAudioSinkChain(GstElement *pipe)
@@ -537,9 +496,7 @@ addDecodeBin(GstElement *webrtc G_GNUC_UNUSED, GstPad *newpad, GstElement *pipe)
         // hardware decoding needs investigation; eg rendering fails if vaapi plugin installed
         g_object_set(decodebin, "force-sw-decoders", TRUE, nullptr);
         g_signal_connect(decodebin, "pad-added", G_CALLBACK(linkNewPad), pipe);
-#if GST_CHECK_VERSION(1, 18, 0)
         g_signal_connect(decodebin, "element-added", G_CALLBACK(setWaitForKeyFrame), nullptr);
-#endif
         gst_bin_add(GST_BIN(pipe), decodebin);
         gst_element_sync_state_with_parent(decodebin);
         GstPad *sinkpad = gst_element_get_static_pad(decodebin, "sink");
@@ -810,11 +767,10 @@ WebRTCSession::startPipeline(int opusPayloadType, int vp8PayloadType)
         gst_element_set_state(pipe_, GST_STATE_READY);
         g_signal_connect(webrtc_, "pad-added", G_CALLBACK(addDecodeBin), pipe_);
 
-#if GST_CHECK_VERSION(1, 18, 0)
         // capture ICE gathering completion
         g_signal_connect(
           webrtc_, "notify::ice-gathering-state", G_CALLBACK(iceGatheringStateChanged), nullptr);
-#endif
+
         // webrtcbin lifetime is the same as that of the pipeline
         gst_object_unref(webrtc_);
 

@@ -75,7 +75,6 @@ Rectangle {
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Devices")
             onClicked: {
-                CallManager.refreshDevices();
                 var dialog = devicesDialog.createObject(timelineRoot);
                 dialog.open();
             }

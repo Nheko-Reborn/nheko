@@ -152,7 +152,6 @@ addDevice(GstDevice *device)
         setDefaultDevice(true);
 }
 
-#if GST_CHECK_VERSION(1, 18, 0)
 template<typename T>
 bool
 removeDevice(T &sources, GstDevice *device, bool changed)
@@ -212,7 +211,6 @@ newBusMessage(GstBus *bus G_GNUC_UNUSED, GstMessage *msg, gpointer user_data G_G
         }
         return TRUE;
 }
-#endif
 
 template<typename T>
 std::vector<std::string>
@@ -257,7 +255,6 @@ tokenise(std::string_view str, char delim)
 void
 CallDevices::init()
 {
-#if GST_CHECK_VERSION(1, 18, 0)
         static GstDeviceMonitor *monitor = nullptr;
         if (!monitor) {
                 monitor       = gst_device_monitor_new();
@@ -278,43 +275,6 @@ CallDevices::init()
                         return;
                 }
         }
-#endif
-}
-
-void
-CallDevices::refresh()
-{
-#if !GST_CHECK_VERSION(1, 18, 0)
-
-        static GstDeviceMonitor *monitor = nullptr;
-        if (!monitor) {
-                monitor       = gst_device_monitor_new();
-                GstCaps *caps = gst_caps_new_empty_simple("audio/x-raw");
-                gst_device_monitor_add_filter(monitor, "Audio/Source", caps);
-                gst_device_monitor_add_filter(monitor, "Audio/Duplex", caps);
-                gst_caps_unref(caps);
-                caps = gst_caps_new_empty_simple("video/x-raw");
-                gst_device_monitor_add_filter(monitor, "Video/Source", caps);
-                gst_device_monitor_add_filter(monitor, "Video/Duplex", caps);
-                gst_caps_unref(caps);
-        }
-
-        auto clearDevices = [](auto &sources) {
-                std::for_each(
-                  sources.begin(), sources.end(), [](auto &s) { gst_object_unref(s.device); });
-                sources.clear();
-        };
-        clearDevices(audioSources_);
-        clearDevices(videoSources_);
-
-        GList *devices = gst_device_monitor_get_devices(monitor);
-        if (devices) {
-                for (GList *l = devices; l != nullptr; l = l->next)
-                        addDevice(GST_DEVICE_CAST(l->data));
-                g_list_free(devices);
-        }
-        emit devicesChanged();
-#endif
 }
 
 bool
@@ -399,10 +359,6 @@ CallDevices::videoDevice(std::pair<int, int> &resolution, std::pair<int, int> &f
 }
 
 #else
-
-void
-CallDevices::refresh()
-{}
 
 bool
 CallDevices::haveMic() const

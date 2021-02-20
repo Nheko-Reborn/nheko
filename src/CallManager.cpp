@@ -290,7 +290,6 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
         haveCallInvite_ = true;
         callType_       = isVideo ? CallType::VIDEO : CallType::VOICE;
         inviteSDP_      = callInviteEvent.content.sdp;
-        CallDevices::instance().refresh();
         emit newInviteState();
 }
 

@@ -59,7 +59,6 @@ public:
 public slots:
         void sendInvite(const QString &roomid, webrtc::CallType);
         void syncEvent(const mtx::events::collections::TimelineEvents &event);
-        void refreshDevices() { CallDevices::instance().refresh(); }
         void toggleMicMute();
         void toggleCameraView() { session_.toggleCameraView(); }
         void acceptInvite();

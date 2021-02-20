@@ -19,7 +19,6 @@ public:
                 return instance;
         }
 
-        void refresh();
         bool haveMic() const;
         bool haveCamera() const;
         std::vector<std::string> names(bool isVideo, const std::string &defaultDevice) const;
