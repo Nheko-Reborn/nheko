@@ -21,7 +21,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
                 text =
                   "* " + sender + " " + formatNotification(utils::event_body(notification.event));
         else
-                text = sender + ":" + formatNotification(utils::event_body(notification.event));
+                text = sender + ": " + formatNotification(utils::event_body(notification.event));
 
         systemPostNotification(room_id, event_id, room_name, sender, text, icon);
 }
