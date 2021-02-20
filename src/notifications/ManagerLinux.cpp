@@ -154,11 +154,12 @@ NotificationsManager::notificationClosed(uint id, uint reason)
 QString
 NotificationsManager::formatNotification(const QString &text)
 {
-        static auto capabilites = dbus.call("GetCapabilites");
-        if (capabilites.arguments().contains("body-markup"))
-                return text;
-        else
-                return QTextDocumentFragment::fromHtml(text).toPlainText();
+        static auto capabilites = dbus.call("GetCapabilities").arguments();
+        for (auto x : capabilites)
+                if (x.toStringList().contains("body-markup"))
+                        return utils::markdownToHtml(text);
+
+        return QTextDocumentFragment::fromHtml(utils::markdownToHtml(text)).toPlainText();
 }
 
 /**
