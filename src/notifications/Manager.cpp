@@ -19,9 +19,11 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         QString text;
         if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
                 text =
-                  "* " + sender + " " + formatNotification(utils::event_body(notification.event));
+                  formatNotification("* " + sender + " " +
+                                     mtx::accessors::formattedBodyWithFallback(notification.event));
         else
-                text = sender + ": " + formatNotification(utils::event_body(notification.event));
+                text = formatNotification(
+                  sender + ": " + mtx::accessors::formattedBodyWithFallback(notification.event));
 
         systemPostNotification(room_id, event_id, room_name, sender, text, icon);
 }
