@@ -50,7 +50,7 @@ private:
                                     const QString &text,
                                     const QImage &icon);
 
-        QString formatNotification(const QString &text);
+        QString formatNotification(const mtx::events::collections::TimelineEvents &e);
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD) || defined(Q_OS_HAIKU)
 public:

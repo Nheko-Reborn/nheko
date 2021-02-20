@@ -11,6 +11,7 @@
 
 #include <functional>
 
+#include "EventAccessors.h"
 #include "Utils.h"
 
 NotificationsManager::NotificationsManager(QObject *parent)
@@ -161,7 +162,7 @@ NotificationsManager::notificationClosed(uint id, uint reason)
  * specified at https://www.freedesktop.org/wiki/Specifications/StatusNotifierItem/Markup/
  */
 QString
-NotificationsManager::formatNotification(const QString &text)
+NotificationsManager::formatNotification(const mtx::events::collections::TimelineEvents &e)
 {
         static const auto hasMarkup = std::invoke([this]() -> bool {
                 for (auto x : dbus.call("GetCapabilities").arguments())
@@ -169,14 +170,16 @@ NotificationsManager::formatNotification(const QString &text)
                                 return true;
                 return false;
         });
+
         if (hasMarkup)
-                return QString(text)
+                return mtx::accessors::formattedBodyWithFallback(e)
                   .replace("<em>", "<i>")
                   .replace("</em>", "</i>")
                   .replace("<strong>", "<b>")
                   .replace("</strong>", "</b>");
 
-        return QTextDocumentFragment::fromHtml(text).toPlainText();
+        return QTextDocumentFragment::fromHtml(mtx::accessors::formattedBodyWithFallback(e))
+          .toPlainText();
 }
 
 /**

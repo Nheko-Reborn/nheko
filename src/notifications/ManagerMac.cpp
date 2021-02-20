@@ -2,10 +2,11 @@
 
 #include <QTextDocumentFragment>
 
+#include "EventAccessors.h"
 #include "Utils.h"
 
 QString
-NotificationsManager::formatNotification(const QString &text)
+NotificationsManager::formatNotification(const mtx::events::collections::TimelineEvents &e)
 {
-        return QTextDocumentFragment::fromHtml(text).toPlainText();
+        return QTextDocumentFragment::fromHtml(mtx::accessors::formattedBodyWithFallback(e)).toPlainText();
 }
