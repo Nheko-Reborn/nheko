@@ -24,6 +24,7 @@
 
 #include "Cache.h"
 #include "Config.h"
+#include "EventAccessors.h"
 #include "MatrixClient.h"
 #include "UserSettingsPage.h"
 
@@ -695,4 +696,10 @@ utils::readImage(const QByteArray *data)
         QImageReader reader(&buf);
         reader.setAutoTransform(true);
         return reader.read();
+}
+
+bool
+utils::isReply(const mtx::events::collections::TimelineEvents &e)
+{
+        return mtx::accessors::relations(e).reply_to().has_value();
 }

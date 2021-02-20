@@ -369,7 +369,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
 
                 auto ascent = QFontMetrics(UserSettings::instance()->font()).ascent();
 
-                bool isReply = relations(event).reply_to().has_value();
+                bool isReply = utils::isReply(event);
 
                 auto formattedBody_ = QString::fromStdString(formatted_body(event));
                 if (formattedBody_.isEmpty()) {
