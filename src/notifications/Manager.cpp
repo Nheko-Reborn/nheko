@@ -16,10 +16,17 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         const auto sender = cache::displayName(
           room_id, QString::fromStdString(mtx::accessors::sender(notification.event)));
 
+        const QString reply = (utils::isReply(notification.event)
+                                 ? ""
+                                 : tr(" replied",
+                                      "Used to denote that this message is a reply to another "
+                                      "message. Displayed as 'foo replied: message'."));
+
+        // the "replied" is only added if this message is not an emote message
         QString text =
           ((mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
              ? "* " + sender + " "
-             : sender + ": ") +
+             : sender + reply + ": ") +
           formatNotification(mtx::accessors::formattedBodyWithFallback(notification.event));
 
         systemPostNotification(room_id, event_id, room_name, sender, text, icon);
