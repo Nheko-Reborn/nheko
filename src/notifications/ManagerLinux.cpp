@@ -7,6 +7,7 @@
 #include <QDBusPendingReply>
 #include <QDebug>
 #include <QImage>
+#include <QRegularExpression>
 #include <QTextDocumentFragment>
 
 #include <functional>
@@ -176,9 +177,12 @@ NotificationsManager::formatNotification(const mtx::events::collections::Timelin
                   .replace("<em>", "<i>")
                   .replace("</em>", "</i>")
                   .replace("<strong>", "<b>")
-                  .replace("</strong>", "</b>");
+                  .replace("</strong>", "</b>")
+                  .replace(QRegularExpression("(<mx-reply>.+\\<\\/mx-reply\\>)"), "");
 
-        return QTextDocumentFragment::fromHtml(mtx::accessors::formattedBodyWithFallback(e))
+        return QTextDocumentFragment::fromHtml(
+                 mtx::accessors::formattedBodyWithFallback(e).replace(
+                   QRegularExpression("(<mx-reply>.+\\<\\/mx-reply\\>)"), ""))
           .toPlainText();
 }
 

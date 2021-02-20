@@ -5,6 +5,7 @@
 #include "notifications/Manager.h"
 #include "wintoastlib.h"
 
+#include <QRegularExpression>
 #include <QTextDocumentFragment>
 
 #include "EventAccessors.h"
@@ -80,6 +81,8 @@ NotificationsManager::removeNotification(const QString &, const QString &)
 QString
 NotificationsManager::formatNotification(const mtx::events::collections::TimelineEvents &e)
 {
-        return QTextDocumentFragment::fromHtml(mtx::accessors::formattedBodyWithFallback(e)).toPlainText();
+        return QTextDocumentFragment::fromHtml(
+                 mtx::accessors::formattedBodyWithFallback(e).replace(
+                   QRegularExpression("(<mx-reply>.+\\<\\/mx-reply\\>)"), ""))
+          .toPlainText();
 }
-
