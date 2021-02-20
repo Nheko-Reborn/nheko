@@ -9,6 +9,8 @@
 #include <QImage>
 #include <QTextDocumentFragment>
 
+#include <functional>
+
 #include "Utils.h"
 
 NotificationsManager::NotificationsManager(QObject *parent)
@@ -161,14 +163,18 @@ NotificationsManager::notificationClosed(uint id, uint reason)
 QString
 NotificationsManager::formatNotification(const QString &text)
 {
-        static auto capabilites = dbus.call("GetCapabilities").arguments();
-        for (auto x : capabilites)
-                if (x.toStringList().contains("body-markup"))
-                        return QString(text)
-                          .replace("<em>", "<i>")
-                          .replace("</em>", "</i>")
-                          .replace("<strong>", "<b>")
-                          .replace("</strong>", "</b>");
+        static const auto hasMarkup = std::invoke([this]() -> bool {
+                for (auto x : dbus.call("GetCapabilities").arguments())
+                        if (x.toStringList().contains("body-markup"))
+                                return true;
+                return false;
+        });
+        if (hasMarkup)
+                return QString(text)
+                  .replace("<em>", "<i>")
+                  .replace("</em>", "</i>")
+                  .replace("<strong>", "<b>")
+                  .replace("</strong>", "</b>");
 
         return QTextDocumentFragment::fromHtml(text).toPlainText();
 }
