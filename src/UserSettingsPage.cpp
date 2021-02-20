@@ -114,6 +114,7 @@ UserSettings::load(std::optional<QString> profile)
         cameraResolution_       = settings.value("user/camera_resolution", QString()).toString();
         cameraFrameRate_        = settings.value("user/camera_frame_rate", QString()).toString();
         screenShareFrameRate_   = settings.value("user/screen_share_frame_rate", 5).toInt();
+        screenSharePiP_         = settings.value("user/screen_share_pip", true).toBool();
         screenShareRemoteVideo_ = settings.value("user/screen_share_remote_video", false).toBool();
         screenShareHideCursor_  = settings.value("user/screen_share_hide_cursor", false).toBool();
         useStunServer_          = settings.value("user/use_stun_server", false).toBool();
@@ -458,6 +459,16 @@ UserSettings::setScreenShareFrameRate(int frameRate)
 }
 
 void
+UserSettings::setScreenSharePiP(bool state)
+{
+        if (state == screenSharePiP_)
+                return;
+        screenSharePiP_ = state;
+        emit screenSharePiPChanged(state);
+        save();
+}
+
+void
 UserSettings::setScreenShareRemoteVideo(bool state)
 {
         if (state == screenShareRemoteVideo_)
@@ -627,6 +638,7 @@ UserSettings::save()
         settings.setValue("camera_resolution", cameraResolution_);
         settings.setValue("camera_frame_rate", cameraFrameRate_);
         settings.setValue("screen_share_frame_rate", screenShareFrameRate_);
+        settings.setValue("screen_share_pip", screenSharePiP_);
         settings.setValue("screen_share_remote_video", screenShareRemoteVideo_);
         settings.setValue("screen_share_hide_cursor", screenShareHideCursor_);
         settings.setValue("use_stun_server", useStunServer_);

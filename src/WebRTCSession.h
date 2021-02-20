@@ -105,6 +105,7 @@ private:
         bool startPipeline(int opusPayloadType, int vp8PayloadType);
         bool createPipeline(int opusPayloadType, int vp8PayloadType);
         bool addVideoPipeline(int vp8PayloadType);
+        void clear();
 
 public:
         WebRTCSession(WebRTCSession const &) = delete;

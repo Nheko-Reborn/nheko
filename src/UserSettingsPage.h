@@ -88,6 +88,8 @@ class UserSettings : public QObject
                      cameraFrameRateChanged)
         Q_PROPERTY(int screenShareFrameRate READ screenShareFrameRate WRITE setScreenShareFrameRate
                      NOTIFY screenShareFrameRateChanged)
+        Q_PROPERTY(bool screenSharePiP READ screenSharePiP WRITE setScreenSharePiP NOTIFY
+                     screenSharePiPChanged)
         Q_PROPERTY(bool screenShareRemoteVideo READ screenShareRemoteVideo WRITE
                      setScreenShareRemoteVideo NOTIFY screenShareRemoteVideoChanged)
         Q_PROPERTY(bool screenShareHideCursor READ screenShareHideCursor WRITE
@@ -150,6 +152,7 @@ public:
         void setCameraResolution(QString resolution);
         void setCameraFrameRate(QString frameRate);
         void setScreenShareFrameRate(int frameRate);
+        void setScreenSharePiP(bool state);
         void setScreenShareRemoteVideo(bool state);
         void setScreenShareHideCursor(bool state);
         void setUseStunServer(bool state);
@@ -201,6 +204,7 @@ public:
         QString cameraResolution() const { return cameraResolution_; }
         QString cameraFrameRate() const { return cameraFrameRate_; }
         int screenShareFrameRate() const { return screenShareFrameRate_; }
+        bool screenSharePiP() const { return screenSharePiP_; }
         bool screenShareRemoteVideo() const { return screenShareRemoteVideo_; }
         bool screenShareHideCursor() const { return screenShareHideCursor_; }
         bool useStunServer() const { return useStunServer_; }
@@ -242,6 +246,7 @@ signals:
         void cameraResolutionChanged(QString resolution);
         void cameraFrameRateChanged(QString frameRate);
         void screenShareFrameRateChanged(int frameRate);
+        void screenSharePiPChanged(bool state);
         void screenShareRemoteVideoChanged(bool state);
         void screenShareHideCursorChanged(bool state);
         void useStunServerChanged(bool state);
@@ -288,6 +293,7 @@ private:
         QString cameraResolution_;
         QString cameraFrameRate_;
         int screenShareFrameRate_;
+        bool screenSharePiP_;
         bool screenShareRemoteVideo_;
         bool screenShareHideCursor_;
         bool useStunServer_;

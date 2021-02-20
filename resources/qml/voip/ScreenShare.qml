@@ -13,6 +13,7 @@ Popup {
             anchors.centerIn = parent;
 
         frameRateCombo.currentIndex = frameRateCombo.find(Settings.screenShareFrameRate);
+        pipCheckBox.checked = Settings.screenSharePiP;
         remoteVideoCheckBox.checked = Settings.screenShareRemoteVideo;
         hideCursorCheckBox.checked = Settings.screenShareHideCursor;
     }
@@ -43,6 +44,16 @@ Popup {
                 model: ["25", "20", "15", "10", "5", "2", "1"]
             }
 
+        }
+
+        CheckBox {
+            id: pipCheckBox
+
+            visible: CallManager.cameras.length > 0
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: 8
+            Layout.rightMargin: 8
+            text: qsTr("Include your camera picture-in-picture")
         }
 
         CheckBox {
@@ -79,6 +90,7 @@ Popup {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;
                         Settings.screenShareFrameRate = frameRateCombo.currentText;
+                        Settings.screenSharePiP = pipCheckBox.checked;
                         Settings.screenShareRemoteVideo = remoteVideoCheckBox.checked;
                         Settings.screenShareHideCursor = hideCursorCheckBox.checked;
                         CallManager.sendInvite(TimelineManager.timeline.roomId(), CallType.SCREEN);
