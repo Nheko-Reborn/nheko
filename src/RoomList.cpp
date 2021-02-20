@@ -353,8 +353,8 @@ RoomList::updateRoomDescription(const QString &roomid, const DescInfo &info)
 
 struct room_sort
 {
-        bool operator()(const QSharedPointer<RoomInfoListItem> a,
-                        const QSharedPointer<RoomInfoListItem> b) const
+        bool operator()(const QSharedPointer<RoomInfoListItem> &a,
+                        const QSharedPointer<RoomInfoListItem> &b) const
         {
                 // Sort by "importance" (i.e. invites before mentions before
                 // notifs before new events before old events), then secondly
@@ -370,9 +370,9 @@ struct room_sort
                 // Now sort by recency
                 // Zero if empty, otherwise the time that the event occured
                 const uint64_t a_recency =
-                  a->lastMessageInfo().userid.isEmpty() ? 0 : a->lastMessageInfo().timestamp;
+                  a->lastMsgInfo_.userid.isEmpty() ? 0 : a->lastMsgInfo_.timestamp;
                 const uint64_t b_recency =
-                  b->lastMessageInfo().userid.isEmpty() ? 0 : b->lastMessageInfo().timestamp;
+                  b->lastMsgInfo_.userid.isEmpty() ? 0 : b->lastMsgInfo_.timestamp;
                 return a_recency > b_recency;
         }
 };
