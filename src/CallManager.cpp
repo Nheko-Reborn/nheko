@@ -402,7 +402,7 @@ CallManager::callsSupported()
 bool
 CallManager::screenShareSupported()
 {
-        return std::getenv("DISPLAY") != nullptr;
+        return std::getenv("DISPLAY") && !std::getenv("WAYLAND_DISPLAY");
 }
 
 bool
