@@ -1,14 +1,16 @@
 import "./voip"
-import QtQuick 2.9
+import QtQuick 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import im.nheko 1.0
 
 Rectangle {
+    id: inputBar
+
     color: colors.window
     Layout.fillWidth: true
-    Layout.preferredHeight: textInput.height + 16
+    Layout.preferredHeight: row.implicitHeight
     Layout.minimumHeight: 40
 
     Component {
@@ -20,11 +22,9 @@ Rectangle {
     }
 
     RowLayout {
-        id: inputBar
+        id: row
 
         anchors.fill: parent
-        anchors.margins: 8
-        spacing: 16
 
         ImageButton {
             visible: CallManager.callsSupported
@@ -36,7 +36,7 @@ Rectangle {
             image: CallManager.isOnCall ? ":/icons/icons/ui/end-call.png" : ":/icons/icons/ui/place-call.png"
             ToolTip.visible: hovered
             ToolTip.text: CallManager.isOnCall ? qsTr("Hang up") : qsTr("Place a call")
-            Layout.leftMargin: 8
+            Layout.margins: 8
             onClicked: {
                 if (TimelineManager.timeline) {
                     if (CallManager.haveCallInvite) {
@@ -58,7 +58,7 @@ Rectangle {
             width: 22
             height: 22
             image: ":/icons/icons/ui/paper-clip-outline.png"
-            Layout.leftMargin: CallManager.callsSupported ? 0 : 8
+            Layout.margins: 8
             onClicked: TimelineManager.timeline.input.openFileSelection()
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Send a file")
@@ -77,31 +77,13 @@ Rectangle {
 
         }
 
-        Flickable {
+        ScrollView {
             id: textInput
 
-            function ensureVisible(r) {
-                if (contentX >= r.x)
-                    contentX = r.x;
-                else if (contentX + width <= r.x + r.width)
-                    contentX = r.x + r.width - width;
-                if (contentY >= r.y)
-                    contentY = r.y;
-                else if (contentY + height <= r.y + r.height)
-                    contentY = r.y + r.height - height;
-            }
-
-            Layout.alignment: Qt.AlignBottom
+            Layout.alignment: Qt.AlignBottom // | Qt.AlignHCenter
             Layout.maximumHeight: Window.height / 4
             Layout.minimumHeight: Settings.fontSize
-            Layout.fillWidth: true
-            clip: true
-            boundsBehavior: Flickable.StopAtBounds
-            flickableDirection: Flickable.VerticalFlick
-            implicitWidth: messageInput.width
-            implicitHeight: messageInput.height
-            contentWidth: messageInput.width
-            contentHeight: messageInput.height
+            implicitWidth: inputBar.width - 4 * (22 + 16) - 24
 
             TextArea {
                 id: messageInput
@@ -122,18 +104,11 @@ Rectangle {
 
                 selectByMouse: true
                 placeholderText: qsTr("Write a message...")
-                //placeholderTextColor: colors.buttonText
-                // only set the anchors on Qt 5.12 or higher
-                // see https://doc.qt.io/qt-5/qml-qtquick-controls2-popup.html#anchors.centerIn-prop
-                Component.onCompleted: {
-                    if (placeholderTextColor !== undefined)
-                        placeholderTextColor = colors.buttonText;
-
-                }
+                placeholderTextColor: colors.buttonText
                 color: colors.text
                 width: textInput.width
                 wrapMode: TextEdit.Wrap
-                padding: 0
+                padding: 8
                 focus: true
                 onTextChanged: {
                     if (TimelineManager.timeline)
@@ -141,7 +116,6 @@ Rectangle {
 
                     forceActiveFocus();
                 }
-                onCursorRectangleChanged: textInput.ensureVisible(cursorRectangle)
                 onCursorPositionChanged: {
                     if (!TimelineManager.timeline)
                         return ;
@@ -296,15 +270,13 @@ Rectangle {
 
             }
 
-            ScrollBar.vertical: ScrollBar {
-            }
-
         }
 
         ImageButton {
             id: emojiButton
 
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+            Layout.margins: 8
             hoverEnabled: true
             width: 22
             height: 22
@@ -319,6 +291,7 @@ Rectangle {
 
         ImageButton {
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+            Layout.margins: 8
             hoverEnabled: true
             width: 22
             height: 22
