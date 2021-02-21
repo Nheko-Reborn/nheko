@@ -138,6 +138,7 @@ public slots:
         }
 
         void backToRooms() { emit showRoomList(); }
+        QObject *completerFor(QString completerName, QString roomId = "");
 
 private:
 #ifdef USE_QUICK_VIEW

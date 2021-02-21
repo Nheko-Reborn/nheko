@@ -52,7 +52,11 @@ Popup {
 
     onCompleterNameChanged: {
         if (completerName) {
-            completer = TimelineManager.timeline.input.completerFor(completerName);
+            if (completerName == "user") {
+                completer = TimelineManager.completerFor(completerName, TimelineManager.timeline.roomId());
+            } else {
+                completer = TimelineManager.completerFor(completerName);
+            }
             completer.setSearchString("");
         } else {
             completer = undefined;

@@ -139,6 +139,7 @@
         <file>qml/StatusIndicator.qml</file>
         <file>qml/TimelineRow.qml</file>
         <file>qml/TopBar.qml</file>
+        <file>qml/QuickSwitcher.qml</file>
         <file>qml/TypingIndicator.qml</file>
         <file>qml/RoomSettings.qml</file>
         <file>qml/emoji/EmojiButton.qml</file>

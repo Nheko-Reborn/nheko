@@ -68,6 +68,22 @@ Page {
 
     }
 
+    Component {
+        id: quickSwitcherComponent
+
+        QuickSwitcher {
+            id: quickSwitcher
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+L"
+        onActivated: {
+            var quickSwitch = quickSwitcherComponent.createObject(timelineRoot);
+            quickSwitch.open();
+        }
+    }
+
     Menu {
         id: messageContextMenu
 
