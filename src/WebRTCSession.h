@@ -52,7 +52,7 @@ public:
         bool havePlugins(bool isVideo, std::string *errorMessage = nullptr);
         webrtc::CallType callType() const { return callType_; }
         webrtc::State state() const { return state_; }
-        bool haveLocalCamera() const;
+        bool haveLocalPiP() const;
         bool isOffering() const { return isOffering_; }
         bool isRemoteVideoRecvOnly() const { return isRemoteVideoRecvOnly_; }
         bool isRemoteVideoSendOnly() const { return isRemoteVideoSendOnly_; }
@@ -64,7 +64,7 @@ public:
 
         bool isMicMuted() const;
         bool toggleMicMute();
-        void toggleCameraView();
+        void toggleLocalPiP();
         void end();
 
         void setTurnServers(const std::vector<std::string> &uris) { turnServers_ = uris; }

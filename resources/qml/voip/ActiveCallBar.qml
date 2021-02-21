@@ -12,7 +12,7 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            if (CallManager.haveVideo)
+            if (CallManager.callType != CallType.VOICE)
                 stackLayout.currentIndex = stackLayout.currentIndex ? 0 : 1;
 
         }
@@ -139,7 +139,7 @@ Rectangle {
 
                     PropertyChanges {
                         target: stackLayout
-                        currentIndex: CallManager.haveVideo ? 1 : 0
+                        currentIndex: CallManager.callType != CallType.VOICE ? 1 : 0
                     }
 
                 },
@@ -196,15 +196,15 @@ Rectangle {
         }
 
         ImageButton {
-            visible: CallManager.haveLocalCamera
+            visible: CallManager.haveLocalPiP
             width: 24
             height: 24
             buttonTextColor: "#000000"
             image: ":/icons/icons/ui/toggle-camera-view.png"
             hoverEnabled: true
             ToolTip.visible: hovered
-            ToolTip.text: qsTr("Toggle camera view")
-            onClicked: CallManager.toggleCameraView()
+            ToolTip.text: qsTr("Hide/Show Picture-in-Picture")
+            onClicked: CallManager.toggleLocalPiP()
         }
 
         ImageButton {

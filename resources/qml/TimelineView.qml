@@ -249,7 +249,7 @@ Page {
                         }
 
                         Loader {
-                            source: CallManager.isOnCall && CallManager.haveVideo ? "voip/VideoCall.qml" : ""
+                            source: CallManager.isOnCall && CallManager.callType != CallType.VOICE ? "voip/VideoCall.qml" : ""
                             onLoaded: TimelineManager.setVideoCallItem()
                         }
 

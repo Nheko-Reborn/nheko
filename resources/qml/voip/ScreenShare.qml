@@ -21,7 +21,10 @@ Popup {
 
     ColumnLayout {
         Label {
-            Layout.margins: 8
+            Layout.topMargin: 16
+            Layout.bottomMargin: 16
+            Layout.leftMargin: 8
+            Layout.rightMargin: 8
             Layout.alignment: Qt.AlignLeft
             text: qsTr("Share desktop with %1?").arg(TimelineManager.timeline.roomName)
             color: colors.windowText

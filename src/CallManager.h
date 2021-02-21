@@ -30,8 +30,7 @@ class CallManager : public QObject
         Q_PROPERTY(QString callParty READ callParty NOTIFY newInviteState)
         Q_PROPERTY(QString callPartyAvatarUrl READ callPartyAvatarUrl NOTIFY newInviteState)
         Q_PROPERTY(bool isMicMuted READ isMicMuted NOTIFY micMuteChanged)
-        Q_PROPERTY(bool haveLocalCamera READ haveLocalCamera NOTIFY newCallState)
-        Q_PROPERTY(bool haveVideo READ haveVideo NOTIFY newInviteState)
+        Q_PROPERTY(bool haveLocalPiP READ haveLocalPiP NOTIFY newCallState)
         Q_PROPERTY(QStringList mics READ mics NOTIFY devicesChanged)
         Q_PROPERTY(QStringList cameras READ cameras NOTIFY devicesChanged)
         Q_PROPERTY(bool callsSupported READ callsSupported CONSTANT)
@@ -47,8 +46,7 @@ public:
         QString callParty() const { return callParty_; }
         QString callPartyAvatarUrl() const { return callPartyAvatarUrl_; }
         bool isMicMuted() const { return session_.isMicMuted(); }
-        bool haveLocalCamera() const { return session_.haveLocalCamera(); }
-        bool haveVideo() const;
+        bool haveLocalPiP() const { return session_.haveLocalPiP(); }
         QStringList mics() const { return devices(false); }
         QStringList cameras() const { return devices(true); }
         void refreshTurnServer();
@@ -60,7 +58,7 @@ public slots:
         void sendInvite(const QString &roomid, webrtc::CallType);
         void syncEvent(const mtx::events::collections::TimelineEvents &event);
         void toggleMicMute();
-        void toggleCameraView() { session_.toggleCameraView(); }
+        void toggleLocalPiP() { session_.toggleLocalPiP(); }
         void acceptInvite();
         void hangUp(
           mtx::events::msg::CallHangUp::Reason = mtx::events::msg::CallHangUp::Reason::User);

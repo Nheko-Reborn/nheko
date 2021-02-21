@@ -405,15 +405,6 @@ CallManager::screenShareSupported()
         return std::getenv("DISPLAY") && !std::getenv("WAYLAND_DISPLAY");
 }
 
-bool
-CallManager::haveVideo() const
-{
-        return callType() == CallType::VIDEO ||
-               (callType() == CallType::SCREEN &&
-                (ChatPage::instance()->userSettings()->screenShareRemoteVideo() &&
-                 !session_.isRemoteVideoRecvOnly()));
-}
-
 QStringList
 CallManager::devices(bool isVideo) const
 {
