@@ -11,6 +11,7 @@ Popup {
     property string completerName
     property var completer
     property bool bottomToTop: true
+    property bool fullWidth: false
     property alias count: listView.count
 
     signal completionClicked(string completion)
@@ -75,14 +76,14 @@ Popup {
         id: listView
 
         anchors.fill: parent
-        implicitWidth: contentItem.childrenRect.width
+        implicitWidth: fullWidth ? parent.width : contentItem.childrenRect.width
         model: completer
         verticalLayoutDirection: popup.bottomToTop ? ListView.BottomToTop : ListView.TopToBottom
 
         delegate: Rectangle {
             color: model.index == popup.currentIndex ? colors.highlight : colors.base
             height: chooser.childrenRect.height + 4
-            implicitWidth: chooser.childrenRect.width + 4
+            implicitWidth: fullWidth ? popup.width : chooser.childrenRect.width + 4
 
             MouseArea {
                 id: mouseArea
@@ -160,6 +161,30 @@ Popup {
 
                 DelegateChoice {
                     roleValue: "room"
+
+                    RowLayout {
+                        id: del
+
+                        anchors.centerIn: parent
+
+                        Avatar {
+                            height: 24
+                            width: 24
+                            url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                            onClicked: popup.completionClicked(completer.completionAt(model.index))
+                        }
+
+                        Label {
+                            text: model.roomName
+                            color: model.index == popup.currentIndex ? colors.highlightedText : colors.text
+                        }
+
+                    }
+
+                }
+
+                DelegateChoice {
+                    roleValue: "roomAliases"
 
                     RowLayout {
                         id: del

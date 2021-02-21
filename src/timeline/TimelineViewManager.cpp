@@ -570,6 +570,11 @@ TimelineViewManager::completerFor(QString completerName, QString roomId)
                 emojiModel->setParent(proxy);
                 return proxy;
         } else if (completerName == "room") {
+                auto roomModel = new RoomsModel(false);
+                auto proxy     = new CompletionProxyModel(roomModel);
+                roomModel->setParent(proxy);
+                return proxy;
+        } else if (completerName == "roomAliases") {
                 auto roomModel = new RoomsModel(true);
                 auto proxy     = new CompletionProxyModel(roomModel);
                 roomModel->setParent(proxy);

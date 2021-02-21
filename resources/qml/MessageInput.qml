@@ -184,7 +184,7 @@ Rectangle {
                         messageInput.openCompleter(cursorPosition, "emoji");
                         popup.open();
                     } else if (event.key == Qt.Key_NumberSign) {
-                        messageInput.openCompleter(cursorPosition, "room");
+                        messageInput.openCompleter(cursorPosition, "roomAliases");
                         popup.open();
                     } else if (event.key == Qt.Key_Escape && popup.opened) {
                         completerTriggeredAt = -1;

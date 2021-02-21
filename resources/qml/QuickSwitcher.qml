@@ -6,17 +6,16 @@ Popup {
     x: parent.width / 2 - width / 2
     y: parent.height / 4 - height / 2
     width: parent.width / 2
-    height: 100
     modal: true
-    focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     parent: Overlay.overlay
 
     TextInput {
         id: roomTextInput
 
-        anchors.fill: parent
         focus: true
+        anchors.fill: parent
+        color: colors.text
 
         onTextEdited: {
             completerPopup.completer.setSearchString(text)
@@ -26,13 +25,22 @@ Popup {
     Completer {
         id: completerPopup
 
-        x: roomTextInput.x + 100
-        y: roomTextInput.y - 20
+        x: roomTextInput.x
+        y: roomTextInput.y + parent.height
+        width: parent.width
         completerName: "room"
         bottomToTop: true
+        fullWidth: true
+
+        closePolicy: Popup.NoAutoClose
     }
 
     onOpened: {
         completerPopup.open()
+        roomTextInput.forceActiveFocus()
+    }
+
+    onClosed: {
+        completerPopup.close()
     }
 }
