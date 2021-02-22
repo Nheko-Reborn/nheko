@@ -3,6 +3,7 @@ import QtQuick.Controls 2.3
 import im.nheko 1.0
 
 Popup {
+    id: quickSwitcher
     x: parent.width / 2 - width / 2
     y: parent.height / 4 - height / 2
     width: parent.width / 2
@@ -19,6 +20,16 @@ Popup {
 
         onTextEdited: {
             completerPopup.completer.setSearchString(text)
+        }
+
+        Keys.onPressed: {
+            if (event.key == Qt.Key_Up && completerPopup.opened) {
+                event.accepted = true;
+                completerPopup.up();
+            } else if (event.key == Qt.Key_Down && completerPopup.opened) {
+                event.accepted = true;
+                completerPopup.down();
+            }
         }
     }
 
@@ -42,5 +53,13 @@ Popup {
 
     onClosed: {
         completerPopup.close()
+    }
+
+    Connections {
+        onCompletionSelected: {
+            TimelineManager.setHistoryView(id)
+            quickSwitcher.close()
+        }
+        target: completerPopup
     }
 }

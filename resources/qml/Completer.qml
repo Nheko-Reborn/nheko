@@ -15,6 +15,7 @@ Popup {
     property alias count: listView.count
 
     signal completionClicked(string completion)
+    signal completionSelected(string id)
 
     function up() {
         if (bottomToTop)
@@ -91,7 +92,12 @@ Popup {
                 anchors.fill: parent
                 hoverEnabled: true
                 onPositionChanged: popup.currentIndex = model.index
-                onClicked: popup.completionClicked(completer.completionAt(model.index))
+                onClicked: {
+                    popup.completionClicked(completer.completionAt(model.index))
+                    if(popup.completerName == "room") {
+                        popup.completionSelected(model.roomid)
+                    }
+                }
 
                 Ripple {
                     rippleTarget: mouseArea
@@ -171,7 +177,10 @@ Popup {
                             height: 24
                             width: 24
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            onClicked: popup.completionClicked(completer.completionAt(model.index))
+                            onClicked: {
+                                popup.completionClicked(completer.completionAt(model.index))
+                                popup.completionSelected(model.roomid)
+                            }
                         }
 
                         Label {
