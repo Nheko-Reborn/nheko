@@ -229,7 +229,7 @@ RoomSettings::roomName() const
 QString
 RoomSettings::roomTopic() const
 {
-        return QString::fromStdString(info_.topic);
+        return utils::linkifyMessage(QString::fromStdString(info_.topic).toHtmlEscaped());
 }
 
 QString

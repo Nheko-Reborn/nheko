@@ -1,6 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.3
-import QtQuick.Dialogs 1.2
+import Qt.labs.platform 1.1 as Platform
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.3
 import im.nheko 1.0
@@ -110,18 +110,25 @@ ApplicationWindow {
 
         ScrollView {
             Layout.maximumHeight: 75
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
             Layout.alignment: Qt.AlignHCenter
-            Layout.fillWidth: true
+            width: parent.width
 
             TextArea {
-                text: roomSettings.roomTopic
-                wrapMode: TextEdit.WordWrap
+                text: TimelineManager.escapeEmoji(roomSettings.roomTopic)
+		wrapMode: TextEdit.WordWrap
+		textFormat: TextEdit.RichText
                 readOnly: true
                 background: null
                 selectByMouse: true
                 color: colors.text
-                horizontalAlignment: TextEdit.AlignHCenter
+		horizontalAlignment: TextEdit.AlignHCenter
+
+		onLinkActivated: TimelineManager.openLink(link);
+
+    CursorShape {
+        anchors.fill: parent
+        cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
+    }
             }
 
         }
@@ -186,14 +193,13 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignRight
             }
 
-            MessageDialog {
+            Platform.MessageDialog {
                 id: confirmEncryptionDialog
 
                 title: qsTr("End-to-End Encryption")
                 text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br>
                             Please take note that it can't be disabled afterwards.")
                 modality: Qt.WindowModal
-                icon: StandardIcon.Question
                 onAccepted: {
                     if (roomSettings.isEncryptionEnabled)
                         return ;
@@ -203,7 +209,7 @@ ApplicationWindow {
                 onRejected: {
                     encryptionToggle.checked = false;
                 }
-                standardButtons: Dialog.Ok | Dialog.Cancel
+                buttons: Dialog.Ok | Dialog.Cancel
             }
 
             MatrixText {
