@@ -11,6 +11,10 @@ Popup {
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     parent: Overlay.overlay
 
+    Overlay.modal: Rectangle {
+        color: "#aa1E1E1E"
+    }
+
     TextInput {
         id: roomTextInput
 
@@ -29,6 +33,9 @@ Popup {
             } else if (event.key == Qt.Key_Down && completerPopup.opened) {
                 event.accepted = true;
                 completerPopup.down();
+            } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
+                completerPopup.finishCompletion()
+                event.accepted = true;
             }
         }
     }
@@ -57,7 +64,9 @@ Popup {
 
     Connections {
         onCompletionSelected: {
+            console.log(id)
             TimelineManager.setHistoryView(id)
+            TimelineManager.highlightRoom(id)
             quickSwitcher.close()
         }
         target: completerPopup

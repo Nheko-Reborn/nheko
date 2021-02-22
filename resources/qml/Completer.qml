@@ -52,6 +52,12 @@ Popup {
             return null;
     }
 
+    function finishCompletion() {
+        if(popup.completerName == "room") {
+            popup.completionSelected(listView.itemAtIndex(currentIndex).modelData.roomid)
+        }
+    }
+
     onCompleterNameChanged: {
         if (completerName) {
             if (completerName == "user") {
@@ -85,6 +91,7 @@ Popup {
             color: model.index == popup.currentIndex ? colors.highlight : colors.base
             height: chooser.childrenRect.height + 4
             implicitWidth: fullWidth ? popup.width : chooser.childrenRect.width + 4
+            property variant modelData: model
 
             MouseArea {
                 id: mouseArea

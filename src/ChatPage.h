@@ -116,6 +116,7 @@ public slots:
         void startChat(QString userid);
         void leaveRoom(const QString &room_id);
         void createRoom(const mtx::requests::CreateRoom &req);
+        void highlightRoom(const QString &room_id);
         void joinRoom(const QString &room);
         void joinRoomVia(const std::string &room_id, const std::vector<std::string> &via);
 

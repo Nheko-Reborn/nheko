@@ -1429,3 +1429,9 @@ ChatPage::handleMatrixUri(const QUrl &uri)
 {
         handleMatrixUri(uri.toString(QUrl::ComponentFormattingOption::FullyEncoded).toUtf8());
 }
+
+void
+ChatPage::highlightRoom(const QString &room_id)
+{
+        room_list_->highlightSelectedRoom(room_id);
+}

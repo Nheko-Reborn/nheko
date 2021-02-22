@@ -333,6 +333,12 @@ TimelineViewManager::setHistoryView(const QString &room_id)
         }
 }
 
+void
+TimelineViewManager::highlightRoom(const QString &room_id)
+{
+        ChatPage::instance()->highlightRoom(room_id);
+}
+
 QString
 TimelineViewManager::escapeEmoji(QString str) const
 {

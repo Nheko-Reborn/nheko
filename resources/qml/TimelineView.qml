@@ -72,7 +72,6 @@ Page {
         id: quickSwitcherComponent
 
         QuickSwitcher {
-            id: quickSwitcher
         }
     }
 
