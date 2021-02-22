@@ -79,6 +79,7 @@ Page {
         sequence: "Ctrl+L"
         onActivated: {
             var quickSwitch = quickSwitcherComponent.createObject(timelineRoot);
+            TimelineManager.focusTimeline()
             quickSwitch.open();
         }
     }

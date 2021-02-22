@@ -588,3 +588,9 @@ TimelineViewManager::completerFor(QString completerName, QString roomId)
         }
         return nullptr;
 }
+
+void
+TimelineViewManager::focusTimeline()
+{
+        getWidget()->setFocus();
+}

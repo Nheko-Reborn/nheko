@@ -101,6 +101,7 @@ public slots:
 
         void setHistoryView(const QString &room_id);
         void highlightRoom(const QString &room_id);
+        void focusTimeline();
         TimelineModel *getHistoryView(const QString &room_id)
         {
                 auto room = models.find(room_id);
