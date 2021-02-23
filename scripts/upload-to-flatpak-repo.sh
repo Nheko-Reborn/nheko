@@ -18,6 +18,5 @@ fi
 
 BUILD_URL=${BUILD_URL/http:/https:}
 
-./flat-manager-client push --commit $BUILD_URL $1
-./flat-manager-client publish $BUILD_URL
+./flat-manager-client push --commit --publish $BUILD_URL $1
 
