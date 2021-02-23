@@ -109,7 +109,7 @@ NotificationsManager::closeNotification(uint id)
                                         "org.freedesktop.Notifications");
         auto call    = closeCall.asyncCall("CloseNotification", (uint)id); // replace_id
         auto watcher = new QDBusPendingCallWatcher{call, this};
-        connect(watcher, &QDBusPendingCallWatcher::finished, this, [watcher, this]() {
+        connect(watcher, &QDBusPendingCallWatcher::finished, this, [watcher]() {
                 if (watcher->reply().type() == QDBusMessage::ErrorMessage) {
                         qDebug() << "D-Bus Error:" << watcher->reply().errorMessage();
                 };
