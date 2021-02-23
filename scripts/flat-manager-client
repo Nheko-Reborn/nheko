@@ -51,7 +51,7 @@ class UsageException(Exception):
 
 class ApiError(Exception):
     def __init__(self, response, body):
-        self.url = response.url
+        self.url = str(response.url)
         self.status = response.status
 
         try:
@@ -69,7 +69,7 @@ class ApiError(Exception):
 
     def __str__(self):
         return "Api call to %s failed with status %d, details: %s" % (self.url, self.status, self.body)
-        return json.dumps(self.repr(), indent=4)
+
 
 # This is similar to the regular payload, but opens the file lazily
 class AsyncNamedFilePart(aiohttp.payload.Payload):
@@ -199,12 +199,6 @@ async def missing_objects(session, build_url, token, wanted):
             missing.extend(data["missing"])
     return missing
 
-@retry(
-    stop=stop_after_attempt(6),
-    wait=wait_fixed(20),
-    retry=retry_if_exception_type(ApiError),
-    reraise=True,
-)
 async def upload_files(session, build_url, token, files):
     if len(files) == 0:
         return
@@ -372,11 +366,15 @@ async def wait_for_job(session, job_url, token):
             sleep_time=60
         time.sleep(sleep_time)
 
-async def commit_build(session, build_url, eol, eol_rebase, wait, token):
+async def commit_build(session, build_url, eol, eol_rebase, token_type, wait, token):
     print("Committing build %s" % (build_url))
-    resp = await session.post(build_url + "/commit", headers={'Authorization': 'Bearer ' + token}, json= {
-        "endoflife": eol, "endoflife_rebase": eol_rebase
-    })
+    json = {
+        "endoflife": eol,
+        "endoflife_rebase": eol_rebase
+    }
+    if token_type != None:
+        json['token_type'] = token_type
+    resp = await session.post(build_url + "/commit", headers={'Authorization': 'Bearer ' + token}, json=json)
     async with resp:
         if resp.status != 200:
             raise ApiError(resp, await resp.text())
@@ -429,7 +427,7 @@ async def purge_build(session, build_url, token):
         return await resp.json()
 
 async def create_token(session, manager_url, token, name, subject, scope, duration):
-    token_url = urljoin(manager_url, "/api/v1/token_subset")
+    token_url = urljoin(manager_url, "api/v1/token_subset")
     resp = await session.post(token_url, headers={'Authorization': 'Bearer ' + token}, json = {
         "name": name,
         "sub": subject,
@@ -445,7 +443,7 @@ def get_object_multipart(repo_path, object):
     return AsyncNamedFilePart(repo_path + "/objects/" + object[:2] + "/" + object[2:], filename=object)
 
 async def create_command(session, args):
-    build_url = urljoin(args.manager_url, "/api/v1/build")
+    build_url = urljoin(args.manager_url, "api/v1/build")
     resp = await session.post(build_url, headers={'Authorization': 'Bearer ' + args.token}, json={
         "repo": args.repo
     })
@@ -476,6 +474,12 @@ def build_url_to_api(build_url):
     path = os.path.dirname(os.path.dirname(parts.path))
     return urlunparse((parts.scheme, parts.netloc, path, None, None, None))
 
+@retry(
+    stop=stop_after_attempt(6),
+    wait=wait_fixed(10),
+    retry=retry_if_exception_type(ApiError),
+    reraise=True,
+)
 async def push_command(session, args):
     local_repo = OSTree.Repo.new(Gio.File.new_for_path(args.repo_path))
     try:
@@ -542,7 +546,7 @@ async def push_command(session, args):
 
     # Note, this always uses the full token, as the minimal one only has upload permissions
     if args.commit or args.publish:
-        commit_job = await commit_build(session, args.build_url, args.end_of_life, args.end_of_life_rebase, args.publish or args.wait, args.token)
+        commit_job = await commit_build(session, args.build_url, args.end_of_life, args.end_of_life_rebase, args.token_type, args.publish or args.wait, args.token)
 
     if args.publish:
         publish_job = await publish_build(session, args.build_url, args.wait or args.wait_update, args.token)
@@ -568,7 +572,7 @@ async def push_command(session, args):
     return data
 
 async def commit_command(session, args):
-    job = await commit_build(session, args.build_url, args.end_of_life, args.end_of_life_rebase, args.wait, args.token)
+    job = await commit_build(session, args.build_url, args.end_of_life, args.end_of_life_rebase, args.token_type, args.wait, args.token)
     return job
 
 async def publish_command(session, args):
@@ -646,6 +650,7 @@ if __name__ == '__main__':
                              help='Create minimal token for the upload')
     push_parser.add_argument('--end-of-life', help='Set end of life')
     push_parser.add_argument('--end-of-life-rebase', help='Set new ID which will supercede the current one')
+    push_parser.add_argument('--token-type', help='Set token type', type=int)
     push_parser.set_defaults(func=push_command)
 
     commit_parser = subparsers.add_parser('commit', help='Commit build')
@@ -653,6 +658,7 @@ if __name__ == '__main__':
                              help='wait for commit to finish')
     commit_parser.add_argument('--end-of-life', help='Set end of life')
     commit_parser.add_argument('--end-of-life-rebase', help='Set new ID which will supercede the current one')
+    commit_parser.add_argument('--token-type', help='Set token type', type=int)
     commit_parser.add_argument('build_url', help='remote build url')
     commit_parser.set_defaults(func=commit_command)
 
