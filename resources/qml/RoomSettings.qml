@@ -1,6 +1,6 @@
+import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.9
 import QtQuick.Controls 2.3
-import Qt.labs.platform 1.1 as Platform
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.3
 import im.nheko 1.0
@@ -115,20 +115,20 @@ ApplicationWindow {
 
             TextArea {
                 text: TimelineManager.escapeEmoji(roomSettings.roomTopic)
-		wrapMode: TextEdit.WordWrap
-		textFormat: TextEdit.RichText
+                wrapMode: TextEdit.WordWrap
+                textFormat: TextEdit.RichText
                 readOnly: true
                 background: null
                 selectByMouse: true
                 color: colors.text
-		horizontalAlignment: TextEdit.AlignHCenter
+                horizontalAlignment: TextEdit.AlignHCenter
+                onLinkActivated: TimelineManager.openLink(link)
 
-		onLinkActivated: TimelineManager.openLink(link);
+                CursorShape {
+                    anchors.fill: parent
+                    cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
+                }
 
-    CursorShape {
-        anchors.fill: parent
-        cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
-    }
             }
 
         }
