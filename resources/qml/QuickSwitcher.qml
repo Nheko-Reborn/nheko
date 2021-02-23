@@ -4,9 +4,13 @@ import im.nheko 1.0
 
 Popup {
     id: quickSwitcher
+
+    property int textWidth: 48
+
     x: parent.width / 2 - width / 2
     y: parent.height / 4 - height / 2
     width: parent.width / 2
+    height: textWidth
     modal: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     parent: Overlay.overlay
@@ -15,12 +19,11 @@ Popup {
         color: "#aa1E1E1E"
     }
 
-    TextInput {
+    MatrixTextField {
         id: roomTextInput
 
-        focus: true
         anchors.fill: parent
-        color: colors.text
+        font.pixelSize: quickSwitcher.textWidth - 12
 
         onTextEdited: {
             completerPopup.completer.setSearchString(text)
@@ -43,19 +46,23 @@ Popup {
     Completer {
         id: completerPopup
 
-        x: roomTextInput.x
-        y: roomTextInput.y + parent.height
-        width: parent.width
+        x: roomTextInput.x - 5
+        y: roomTextInput.y + roomTextInput.height + 5
+        width: parent.width + 10
         completerName: "room"
         bottomToTop: true
         fullWidth: true
+        avatarHeight: textWidth
+        avatarWidth: textWidth
 
         closePolicy: Popup.NoAutoClose
     }
 
     onOpened: {
         completerPopup.open()
-        roomTextInput.forceActiveFocus()
+        delay(200, function() {
+            roomTextInput.forceActiveFocus()
+        })
     }
 
     onClosed: {
@@ -70,5 +77,16 @@ Popup {
             quickSwitcher.close()
         }
         target: completerPopup
+    }
+
+    Timer {
+        id: timer
+    }
+
+    function delay(delayTime, cb) {
+        timer.interval = delayTime;
+        timer.repeat = false;
+        timer.triggered.connect(cb);
+        timer.start();
     }
 }

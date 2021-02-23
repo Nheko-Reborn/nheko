@@ -12,6 +12,8 @@ Popup {
     property var completer
     property bool bottomToTop: true
     property bool fullWidth: false
+    property int avatarHeight: 24
+    property int avatarWidth: 24
     property alias count: listView.count
 
     signal completionClicked(string completion)
@@ -128,8 +130,8 @@ Popup {
                         anchors.centerIn: parent
 
                         Avatar {
-                            height: 24
-                            width: 24
+                            height: popup.avatarHeight
+                            width: popup.avatarWidth
                             displayName: model.displayName
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             onClicked: popup.completionClicked(completer.completionAt(model.index))
@@ -181,8 +183,8 @@ Popup {
                         anchors.centerIn: parent
 
                         Avatar {
-                            height: 24
-                            width: 24
+                            height: popup.avatarHeight
+                            width: popup.avatarWidth
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             onClicked: {
                                 popup.completionClicked(completer.completionAt(model.index))
@@ -208,8 +210,8 @@ Popup {
                         anchors.centerIn: parent
 
                         Avatar {
-                            height: 24
-                            width: 24
+                            height: popup.avatarHeight
+                            width: popup.avatarWidth
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             onClicked: popup.completionClicked(completer.completionAt(model.index))
                         }
