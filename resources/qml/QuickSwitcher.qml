@@ -10,10 +10,10 @@ Popup {
     x: parent.width / 2 - width / 2
     y: parent.height / 4 - height / 2
     width: parent.width / 2
-    height: textWidth
     modal: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     parent: Overlay.overlay
+    palette: colors
 
     Overlay.modal: Rectangle {
         color: "#aa1E1E1E"
@@ -23,7 +23,8 @@ Popup {
         id: roomTextInput
 
         anchors.fill: parent
-        font.pixelSize: quickSwitcher.textWidth - 12
+        font.pixelSize: quickSwitcher.textWidth - 24
+        color: colors.text
 
         onTextEdited: {
             completerPopup.completer.setSearchString(text)

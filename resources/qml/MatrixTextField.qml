@@ -11,7 +11,7 @@ TextInput {
         anchors.top: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
 
-        color: "blue"
+        color: colors.highlight
         height: 1
         width: parent.width
     
@@ -23,7 +23,7 @@ TextInput {
 
             height: parent.height+1
             width: 0
-            color: "#000000"
+            color: colors.text
         
             states: State {
                 name: "focused"; when: input.activeFocus == true
