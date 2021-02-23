@@ -79,6 +79,7 @@ AppDir:
     - libxv1
     - libxxf86vm1
     - libzstd1
+    - qml-module-qt-labs-platform
     - qml-module-qtgraphicaleffects
     - qml-module-qtmultimedia
     - qml-module-qtquick-controls2
