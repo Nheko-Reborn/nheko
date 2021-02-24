@@ -55,6 +55,7 @@ Popup {
         fullWidth: true
         avatarHeight: textWidth
         avatarWidth: textWidth
+        centerRowContent: false
 
         closePolicy: Popup.NoAutoClose
     }

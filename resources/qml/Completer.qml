@@ -12,6 +12,7 @@ Popup {
     property var completer
     property bool bottomToTop: true
     property bool fullWidth: false
+    property bool centerRowContent: true
     property int avatarHeight: 24
     property int avatarWidth: 24
     property alias count: listView.count
@@ -119,7 +120,11 @@ Popup {
                 id: chooser
 
                 roleValue: popup.completerName
-                anchors.centerIn: parent
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.right: centerRowContent ? parent : null
+                anchors.centerIn: centerRowContent ? parent : null
 
                 DelegateChoice {
                     roleValue: "user"
@@ -127,7 +132,7 @@ Popup {
                     RowLayout {
                         id: del
 
-                        anchors.centerIn: parent
+                        anchors.centerIn: centerRowContent ? parent : null
 
                         Avatar {
                             height: popup.avatarHeight
@@ -157,7 +162,7 @@ Popup {
                     RowLayout {
                         id: del
 
-                        anchors.centerIn: parent
+                        anchors.centerIn: centerRowContent ? parent : null
 
                         Label {
                             text: model.unicode
@@ -180,7 +185,7 @@ Popup {
                     RowLayout {
                         id: del
 
-                        anchors.centerIn: parent
+                        anchors.centerIn: centerRowContent ? parent : null
 
                         Avatar {
                             height: popup.avatarHeight
@@ -207,7 +212,7 @@ Popup {
                     RowLayout {
                         id: del
 
-                        anchors.centerIn: parent
+                        anchors.centerIn: centerRowContent ? parent : null
 
                         Avatar {
                             height: popup.avatarHeight
