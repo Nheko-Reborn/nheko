@@ -209,6 +209,39 @@ Rectangle {
                     } else if (event.key == Qt.Key_Down && popup.opened) {
                         event.accepted = true;
                         popup.down();
+                    } else if (event.key == Qt.Key_Up) {
+                        if (cursorPosition == 0) {
+                            event.accepted = true;
+                            var idx = TimelineManager.timeline.edit ? TimelineManager.timeline.idToIndex(TimelineManager.timeline.edit) + 1 : 0;
+                            while (true) {
+                                var id = TimelineManager.timeline.indexToId(idx);
+                                if (!id || TimelineManager.timeline.getDump(id, "").isEditable) {
+                                    TimelineManager.timeline.edit = id;
+                                    cursorPosition = 0;
+                                    break;
+                                }
+                                idx++;
+                            }
+                        } else if (cursorPosition == messageInput.length) {
+                            event.accepted = true;
+                            cursorPosition = 0;
+                        }
+                    } else if (event.key == Qt.Key_Down) {
+                        if (cursorPosition == 0) {
+                            event.accepted = true;
+                            cursorPosition = messageInput.length;
+                        } else if (cursorPosition == messageInput.length && TimelineManager.timeline.edit) {
+                            event.accepted = true;
+                            var idx = TimelineManager.timeline.idToIndex(TimelineManager.timeline.edit) - 1;
+                            while (true) {
+                                var id = TimelineManager.timeline.indexToId(idx);
+                                if (!id || TimelineManager.timeline.getDump(id, "").isEditable) {
+                                    TimelineManager.timeline.edit = id;
+                                    break;
+                                }
+                                idx--;
+                            }
+                        }
                     }
                 }
                 background: null

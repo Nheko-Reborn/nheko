@@ -337,6 +337,7 @@ private:
 
         QString currentId, currentReadId;
         QString reply_, edit_;
+        QString textBeforeEdit, replyBeforeEdit;
         std::vector<QString> typingUsers_;
 
         TimelineViewManager *manager_;

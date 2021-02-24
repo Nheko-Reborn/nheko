@@ -499,6 +499,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                          data(event, static_cast<int>(ProportionalHeight)));
                 m.insert(names[Id], data(event, static_cast<int>(Id)));
                 m.insert(names[State], data(event, static_cast<int>(State)));
+                m.insert(names[IsEdited], data(event, static_cast<int>(IsEdited)));
+                m.insert(names[IsEditable], data(event, static_cast<int>(IsEditable)));
                 m.insert(names[IsEncrypted], data(event, static_cast<int>(IsEncrypted)));
                 m.insert(names[IsRoomEncrypted], data(event, static_cast<int>(IsRoomEncrypted)));
                 m.insert(names[ReplyTo], data(event, static_cast<int>(ReplyTo)));
@@ -1550,6 +1552,17 @@ TimelineModel::setEdit(QString newEdit)
         if (edit_.startsWith('m'))
                 return;
 
+        if (newEdit.isEmpty()) {
+                resetEdit();
+                return;
+        }
+
+        if (edit_.isEmpty()) {
+                this->textBeforeEdit  = input()->text();
+                this->replyBeforeEdit = reply_;
+                nhlog::ui()->debug("Stored: {}", textBeforeEdit.toStdString());
+        }
+
         if (edit_ != newEdit) {
                 auto ev = events.get(newEdit.toStdString(), "");
                 if (ev && mtx::accessors::sender(*ev) == http::client()->user_id().to_string()) {
@@ -1584,8 +1597,14 @@ TimelineModel::resetEdit()
         if (!edit_.isEmpty()) {
                 edit_ = "";
                 emit editChanged(edit_);
-                input()->setText("");
-                resetReply();
+                nhlog::ui()->debug("Restoring: {}", textBeforeEdit.toStdString());
+                input()->setText(textBeforeEdit);
+                textBeforeEdit.clear();
+                if (replyBeforeEdit.isEmpty())
+                        resetReply();
+                else
+                        setReply(replyBeforeEdit);
+                replyBeforeEdit.clear();
         }
 }
 
