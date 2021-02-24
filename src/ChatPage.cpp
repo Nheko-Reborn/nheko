@@ -920,6 +920,13 @@ ChatPage::joinRoom(const QString &room)
 void
 ChatPage::joinRoomVia(const std::string &room_id, const std::vector<std::string> &via)
 {
+        if (QMessageBox::Yes !=
+            QMessageBox::question(
+              this,
+              tr("Confirm join"),
+              tr("Do you really want to join %1?").arg(QString::fromStdString(room_id))))
+                return;
+
         http::client()->join_room(
           room_id, via, [this, room_id](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
                   if (err) {
@@ -1308,6 +1315,13 @@ ChatPage::startChat(QString userid)
                 }
         }
 
+        if (QMessageBox::Yes !=
+            QMessageBox::question(
+              this,
+              tr("Confirm invite"),
+              tr("Do you really want to start a private chat with %1?").arg(userid)))
+                return;
+
         mtx::requests::CreateRoom req;
         req.preset     = mtx::requests::Preset::PrivateChat;
         req.visibility = mtx::common::RoomVisibility::Private;
@@ -1362,7 +1376,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                 return;
 
         QString mxid2;
-        if (segments.size() == 4 && segments[2] == "e") {
+        if (segments.size() == 4 && segments[2] == "event") {
                 if (segments[3].isEmpty())
                         return;
                 else
@@ -1400,7 +1414,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                         }
                 }
 
-                if (action == "join") {
+                if (action == "join" || action.isEmpty()) {
                         joinRoomVia(targetRoomId, vias);
                 }
         } else if (sigil1 == "r") {
@@ -1418,7 +1432,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                         }
                 }
 
-                if (action == "join") {
+                if (action == "join" || action.isEmpty()) {
                         joinRoomVia(mxid1.toStdString(), vias);
                 }
         }
