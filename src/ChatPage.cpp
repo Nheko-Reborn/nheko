@@ -35,7 +35,6 @@
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "Olm.h"
-#include "QuickSwitcher.h"
 #include "RoomList.h"
 #include "SideBarActions.h"
 #include "Splitter.h"
@@ -596,18 +595,6 @@ ChatPage::loadStateFromCache()
 
         // Start receiving events.
         emit trySyncCb();
-}
-
-void
-ChatPage::showQuickSwitcher()
-{
-        auto dialog = new QuickSwitcher(this);
-
-        connect(dialog, &QuickSwitcher::roomSelected, room_list_, &RoomList::highlightSelectedRoom);
-        connect(
-          dialog, &QuickSwitcher::closing, this, []() { MainWindow::instance()->hideOverlay(); });
-
-        MainWindow::instance()->showTransparentOverlayModal(dialog);
 }
 
 void

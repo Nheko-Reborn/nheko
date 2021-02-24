@@ -43,7 +43,6 @@
 #include "notifications/Manager.h"
 
 class OverlayModal;
-class QuickSwitcher;
 class RoomList;
 class SideBarActions;
 class Splitter;
@@ -84,7 +83,6 @@ public:
 
         // Initialize all the components of the UI.
         void bootstrap(QString userid, QString homeserver, QString token);
-        void showQuickSwitcher();
         QString currentRoom() const { return current_room_; }
 
         static ChatPage *instance() { return instance_; }

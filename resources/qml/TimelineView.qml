@@ -76,7 +76,7 @@ Page {
     }
 
     Shortcut {
-        sequence: "Ctrl+L"
+        sequence: "Ctrl+K"
         onActivated: {
             var quickSwitch = quickSwitcherComponent.createObject(timelineRoot);
             TimelineManager.focusTimeline()
