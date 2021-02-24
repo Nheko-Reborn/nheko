@@ -6,6 +6,7 @@ Popup {
     id: quickSwitcher
 
     property int textWidth: 48
+    property int textMargin: 8
 
     x: parent.width / 2 - width / 2
     y: parent.height / 4 - height / 2
@@ -23,7 +24,8 @@ Popup {
         id: roomTextInput
 
         anchors.fill: parent
-        font.pixelSize: quickSwitcher.textWidth - 24
+        font.pixelSize: quickSwitcher.textWidth - 18
+        padding: textMargin
         color: colors.text
 
         onTextEdited: {
@@ -56,6 +58,8 @@ Popup {
         avatarHeight: textWidth
         avatarWidth: textWidth
         centerRowContent: false
+        rowMargin: 8
+        rowSpacing: 6
 
         closePolicy: Popup.NoAutoClose
     }

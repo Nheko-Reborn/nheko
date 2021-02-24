@@ -15,6 +15,8 @@ Popup {
     property bool centerRowContent: true
     property int avatarHeight: 24
     property int avatarWidth: 24
+    property int rowMargin: 0
+    property int rowSpacing: 5
     property alias count: listView.count
 
     signal completionClicked(string completion)
@@ -89,10 +91,11 @@ Popup {
         implicitWidth: fullWidth ? parent.width : contentItem.childrenRect.width
         model: completer
         verticalLayoutDirection: popup.bottomToTop ? ListView.BottomToTop : ListView.TopToBottom
+        spacing: rowSpacing
 
         delegate: Rectangle {
             color: model.index == popup.currentIndex ? colors.highlight : colors.base
-            height: chooser.childrenRect.height + 4
+            height: chooser.childrenRect.height + 2 * popup.rowMargin
             implicitWidth: fullWidth ? popup.width : chooser.childrenRect.width + 4
             property variant modelData: model
 
@@ -120,11 +123,8 @@ Popup {
                 id: chooser
 
                 roleValue: popup.completerName
-                anchors.left: parent.left
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.right: centerRowContent ? parent : null
-                anchors.centerIn: centerRowContent ? parent : null
+                anchors.fill: parent
+                anchors.margins: popup.rowMargin
 
                 DelegateChoice {
                     roleValue: "user"
@@ -132,7 +132,8 @@ Popup {
                     RowLayout {
                         id: del
 
-                        anchors.centerIn: centerRowContent ? parent : null
+                        anchors.centerIn: parent
+                        spacing: rowSpacing
 
                         Avatar {
                             height: popup.avatarHeight
@@ -162,7 +163,8 @@ Popup {
                     RowLayout {
                         id: del
 
-                        anchors.centerIn: centerRowContent ? parent : null
+                        anchors.centerIn: parent
+                        spacing: rowSpacing
 
                         Label {
                             text: model.unicode
@@ -185,7 +187,8 @@ Popup {
                     RowLayout {
                         id: del
 
-                        anchors.centerIn: centerRowContent ? parent : null
+                        anchors.centerIn: centerRowContent ? parent : undefined
+                        spacing: rowSpacing
 
                         Avatar {
                             height: popup.avatarHeight
@@ -212,7 +215,8 @@ Popup {
                     RowLayout {
                         id: del
 
-                        anchors.centerIn: centerRowContent ? parent : null
+                        anchors.centerIn: parent
+                        spacing: rowSpacing
 
                         Avatar {
                             height: popup.avatarHeight
