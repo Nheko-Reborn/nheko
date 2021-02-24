@@ -3,6 +3,7 @@
 #include <chrono>
 #include <cstdint>
 #include <cstdlib>
+#include <memory>
 
 #include <QMediaPlaylist>
 #include <QUrl>
@@ -17,6 +18,11 @@
 #include "Utils.h"
 
 #include "mtx/responses/turn_server.hpp"
+
+#ifdef XCB_AVAILABLE
+#include <xcb/xcb.h>
+#include <xcb/xcb_ewmh.h>
+#endif
 
 Q_DECLARE_METATYPE(std::vector<mtx::events::msg::CallCandidates::Candidate>)
 Q_DECLARE_METATYPE(mtx::events::msg::CallCandidates::Candidate)
@@ -151,12 +157,18 @@ CallManager::CallManager(QObject *parent)
 }
 
 void
-CallManager::sendInvite(const QString &roomid, CallType callType)
+CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int windowIndex)
 {
         if (isOnCall())
                 return;
-        if (callType == CallType::SCREEN && !screenShareSupported())
-                return;
+        if (callType == CallType::SCREEN) {
+                if (!screenShareSupported())
+                        return;
+                if (windows_.empty() || windowIndex >= windows_.size()) {
+                        nhlog::ui()->error("WebRTC: window index out of range");
+                        return;
+                }
+        }
 
         auto roomInfo = cache::singleRoomInfo(roomid.toStdString());
         if (roomInfo.member_count != 2) {
@@ -187,7 +199,7 @@ CallManager::sendInvite(const QString &roomid, CallType callType)
         callPartyAvatarUrl_ = QString::fromStdString(roomInfo.avatar_url);
         emit newInviteState();
         playRingtone(QUrl("qrc:/media/media/ringback.ogg"), true);
-        if (!session_.createOffer(callType)) {
+        if (!session_.createOffer(callType, windows_[windowIndex].second)) {
                 emit ChatPage::instance()->showNotification("Problem setting up call.");
                 endCall();
         }
@@ -488,6 +500,69 @@ void
 CallManager::stopRingtone()
 {
         player_.setPlaylist(nullptr);
+}
+
+QStringList
+CallManager::windowList()
+{
+        windows_.clear();
+        windows_.push_back({"Entire screen", 0});
+
+#ifdef XCB_AVAILABLE
+        std::unique_ptr<xcb_connection_t, std::function<void(xcb_connection_t *)>> connection(
+          xcb_connect(nullptr, nullptr), [](xcb_connection_t *c) { xcb_disconnect(c); });
+        if (xcb_connection_has_error(connection.get())) {
+                nhlog::ui()->error("Failed to connect to X server");
+                return {};
+        }
+
+        xcb_ewmh_connection_t ewmh;
+        if (!xcb_ewmh_init_atoms_replies(
+              &ewmh, xcb_ewmh_init_atoms(connection.get(), &ewmh), nullptr)) {
+                nhlog::ui()->error("Failed to connect to EWMH server");
+                return {};
+        }
+        std::unique_ptr<xcb_ewmh_connection_t, std::function<void(xcb_ewmh_connection_t *)>>
+          ewmhconnection(&ewmh, [](xcb_ewmh_connection_t *c) { xcb_ewmh_connection_wipe(c); });
+
+        for (int i = 0; i < ewmh.nb_screens; i++) {
+                xcb_ewmh_get_windows_reply_t clients;
+                if (!xcb_ewmh_get_client_list_reply(
+                      &ewmh, xcb_ewmh_get_client_list(&ewmh, i), &clients, nullptr)) {
+                        nhlog::ui()->error("Failed to request window list");
+                        return {};
+                }
+
+                for (uint32_t w = 0; w < clients.windows_len; w++) {
+                        xcb_window_t window = clients.windows[w];
+
+                        std::string name;
+                        xcb_ewmh_get_utf8_strings_reply_t data;
+                        auto getName = [](xcb_ewmh_get_utf8_strings_reply_t *r) {
+                                std::string name(r->strings, r->strings_len);
+                                xcb_ewmh_get_utf8_strings_reply_wipe(r);
+                                return name;
+                        };
+
+                        xcb_get_property_cookie_t cookie = xcb_ewmh_get_wm_name(&ewmh, window);
+                        if (xcb_ewmh_get_wm_name_reply(&ewmh, cookie, &data, nullptr))
+                                name = getName(&data);
+
+                        cookie = xcb_ewmh_get_wm_visible_name(&ewmh, window);
+                        if (xcb_ewmh_get_wm_visible_name_reply(&ewmh, cookie, &data, nullptr))
+                                name = getName(&data);
+
+                        windows_.push_back({QString::fromStdString(name), window});
+                }
+                xcb_ewmh_get_windows_reply_wipe(&clients);
+        }
+#endif
+        QStringList ret;
+        ret.reserve(windows_.size());
+        for (const auto &w : windows_)
+                ret.append(w.first);
+
+        return ret;
 }
 
 namespace {

@@ -362,7 +362,7 @@ getResolution(GstElement *pipe, const gchar *elementName, const gchar *padName)
 }
 
 std::pair<int, int>
-getPiPDimensions(const std::pair<int, int> resolution, int fullWidth, double scaleFactor)
+getPiPDimensions(const std::pair<int, int> &resolution, int fullWidth, double scaleFactor)
 {
         int pipWidth  = fullWidth * scaleFactor;
         int pipHeight = static_cast<double>(resolution.second) / resolution.first * pipWidth;
@@ -629,11 +629,12 @@ WebRTCSession::havePlugins(bool isVideo, std::string *errorMessage)
 }
 
 bool
-WebRTCSession::createOffer(CallType callType)
+WebRTCSession::createOffer(CallType callType, uint32_t shareWindowId)
 {
         clear();
-        isOffering_ = true;
-        callType_   = callType;
+        isOffering_    = true;
+        callType_      = callType;
+        shareWindowId_ = shareWindowId;
 
         // opus and vp8 rtp payload types must be defined dynamically
         // therefore from the range [96-127]
@@ -888,15 +889,12 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
         if (callType_ == CallType::VIDEO && !devices_.haveCamera())
                 return !isOffering_;
 
-        auto settings = ChatPage::instance()->userSettings();
-        if (callType_ == CallType::SCREEN && settings->screenSharePiP() && !devices_.haveCamera())
-                return false;
-
+        auto settings            = ChatPage::instance()->userSettings();
         GstElement *camerafilter = nullptr;
         GstElement *videoconvert = gst_element_factory_make("videoconvert", nullptr);
         GstElement *tee          = gst_element_factory_make("tee", "videosrctee");
         gst_bin_add_many(GST_BIN(pipe_), videoconvert, tee, nullptr);
-        if (callType_ == CallType::VIDEO || settings->screenSharePiP()) {
+        if (callType_ == CallType::VIDEO || (settings->screenSharePiP() && devices_.haveCamera())) {
                 std::pair<int, int> resolution;
                 std::pair<int, int> frameRate;
                 GstDevice *device = devices_.videoDevice(resolution, frameRate);
@@ -947,7 +945,7 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
                         return false;
                 }
                 g_object_set(ximagesrc, "use-damage", FALSE, nullptr);
-                g_object_set(ximagesrc, "xid", 0, nullptr);
+                g_object_set(ximagesrc, "xid", shareWindowId_, nullptr);
                 g_object_set(
                   ximagesrc, "show-pointer", !settings->screenShareHideCursor(), nullptr);
 
@@ -962,7 +960,7 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
                 gst_caps_unref(caps);
                 gst_bin_add_many(GST_BIN(pipe_), ximagesrc, capsfilter, nullptr);
 
-                if (settings->screenSharePiP()) {
+                if (settings->screenSharePiP() && devices_.haveCamera()) {
                         GstElement *compositor = gst_element_factory_make("compositor", nullptr);
                         g_object_set(compositor, "background", 1, nullptr);
                         gst_bin_add(GST_BIN(pipe_), compositor);
@@ -1101,6 +1099,7 @@ WebRTCSession::clear()
         pipe_                  = nullptr;
         webrtc_                = nullptr;
         busWatchId_            = 0;
+        shareWindowId_         = 0;
         haveAudioStream_       = false;
         haveVideoStream_       = false;
         localPiPSinkPad_       = nullptr;
@@ -1143,7 +1142,7 @@ WebRTCSession::haveLocalPiP() const
         return false;
 }
 
-bool WebRTCSession::createOffer(webrtc::CallType) { return false; }
+bool WebRTCSession::createOffer(webrtc::CallType, uint32_t) { return false; }
 
 bool
 WebRTCSession::acceptOffer(const std::string &)

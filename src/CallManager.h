@@ -55,13 +55,14 @@ public:
         static bool screenShareSupported();
 
 public slots:
-        void sendInvite(const QString &roomid, webrtc::CallType);
+        void sendInvite(const QString &roomid, webrtc::CallType, unsigned int windowIndex = 0);
         void syncEvent(const mtx::events::collections::TimelineEvents &event);
         void toggleMicMute();
         void toggleLocalPiP() { session_.toggleLocalPiP(); }
         void acceptInvite();
         void hangUp(
           mtx::events::msg::CallHangUp::Reason = mtx::events::msg::CallHangUp::Reason::User);
+        QStringList windowList();
 
 signals:
         void newMessage(const QString &roomid, const mtx::events::msg::CallInvite &);
@@ -91,6 +92,7 @@ private:
         std::vector<std::string> turnURIs_;
         QTimer turnServerTimer_;
         QMediaPlayer player_;
+        std::vector<std::pair<QString, uint32_t>> windows_;
 
         template<typename T>
         bool handleEvent_(const mtx::events::collections::TimelineEvents &event);

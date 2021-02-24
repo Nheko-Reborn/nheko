@@ -13,9 +13,6 @@ Popup {
             anchors.centerIn = parent;
 
         frameRateCombo.currentIndex = frameRateCombo.find(Settings.screenShareFrameRate);
-        pipCheckBox.checked = Settings.screenSharePiP;
-        remoteVideoCheckBox.checked = Settings.screenShareRemoteVideo;
-        hideCursorCheckBox.checked = Settings.screenShareHideCursor;
     }
     palette: colors
 
@@ -33,6 +30,27 @@ Popup {
         RowLayout {
             Layout.leftMargin: 8
             Layout.rightMargin: 8
+            Layout.bottomMargin: 8
+
+            Label {
+                Layout.alignment: Qt.AlignLeft
+                text: qsTr("Window:")
+                color: colors.windowText
+            }
+
+            ComboBox {
+                id: windowCombo
+
+                Layout.fillWidth: true
+                model: CallManager.windowList()
+            }
+
+        }
+
+        RowLayout {
+            Layout.leftMargin: 8
+            Layout.rightMargin: 8
+            Layout.bottomMargin: 8
 
             Label {
                 Layout.alignment: Qt.AlignLeft
@@ -43,7 +61,7 @@ Popup {
             ComboBox {
                 id: frameRateCombo
 
-                Layout.alignment: Qt.AlignRight
+                Layout.fillWidth: true
                 model: ["25", "20", "15", "10", "5", "2", "1"]
             }
 
@@ -52,7 +70,8 @@ Popup {
         CheckBox {
             id: pipCheckBox
 
-            visible: CallManager.cameras.length > 0
+            enabled: CallManager.cameras.length > 0
+            checked: Settings.screenSharePiP
             Layout.alignment: Qt.AlignLeft
             Layout.leftMargin: 8
             Layout.rightMargin: 8
@@ -66,6 +85,7 @@ Popup {
             Layout.leftMargin: 8
             Layout.rightMargin: 8
             text: qsTr("Request remote camera")
+            checked: Settings.screenShareRemoteVideo
             ToolTip.text: qsTr("View your callee's camera like a regular video call")
             ToolTip.visible: hovered
         }
@@ -76,7 +96,9 @@ Popup {
             Layout.alignment: Qt.AlignLeft
             Layout.leftMargin: 8
             Layout.rightMargin: 8
+            Layout.bottomMargin: 8
             text: qsTr("Hide mouse cursor")
+            checked: Settings.screenShareHideCursor
         }
 
         RowLayout {
@@ -92,11 +114,14 @@ Popup {
                 onClicked: {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;
+                        if (pipCheckBox.checked)
+                            Settings.camera = cameraCombo.currentText;
+
                         Settings.screenShareFrameRate = frameRateCombo.currentText;
                         Settings.screenSharePiP = pipCheckBox.checked;
                         Settings.screenShareRemoteVideo = remoteVideoCheckBox.checked;
                         Settings.screenShareHideCursor = hideCursorCheckBox.checked;
-                        CallManager.sendInvite(TimelineManager.timeline.roomId(), CallType.SCREEN);
+                        CallManager.sendInvite(TimelineManager.timeline.roomId(), CallType.SCREEN, windowCombo.currentIndex);
                         close();
                     }
                 }
