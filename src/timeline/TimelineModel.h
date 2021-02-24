@@ -355,4 +355,6 @@ TimelineModel::sendMessageEvent(const T &content, mtx::events::EventType eventTy
         msgCopy.content                   = content;
         msgCopy.type                      = eventType;
         emit newMessageToSend(msgCopy);
+        resetReply();
+        resetEdit();
 }

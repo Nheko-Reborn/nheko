@@ -177,7 +177,6 @@ Rectangle {
                             }
                         }
                         TimelineManager.timeline.input.send();
-                        messageInput.clear();
                         event.accepted = true;
                     } else if (event.key == Qt.Key_Tab) {
                         event.accepted = true;
@@ -334,7 +333,6 @@ Rectangle {
             ToolTip.text: qsTr("Send")
             onClicked: {
                 TimelineManager.timeline.input.send();
-                messageInput.clear();
             }
         }
 
