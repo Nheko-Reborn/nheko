@@ -206,7 +206,8 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
         callPartyAvatarUrl_ = QString::fromStdString(roomInfo.avatar_url);
         emit newInviteState();
         playRingtone(QUrl("qrc:/media/media/ringback.ogg"), true);
-        if (!session_.createOffer(callType, windows_[windowIndex].second)) {
+        if (!session_.createOffer(
+              callType, callType == CallType::SCREEN ? windows_[windowIndex].second : 0)) {
                 emit ChatPage::instance()->showNotification("Problem setting up call.");
                 endCall();
         }
