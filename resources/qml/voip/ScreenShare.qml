@@ -67,38 +67,49 @@ Popup {
 
         }
 
-        CheckBox {
-            id: pipCheckBox
+        GridLayout {
+            columns: 2
+            rowSpacing: 10
+            Layout.margins: 8
 
-            enabled: CallManager.cameras.length > 0
-            checked: Settings.screenSharePiP
-            Layout.alignment: Qt.AlignLeft
-            Layout.leftMargin: 8
-            Layout.rightMargin: 8
-            text: qsTr("Include your camera picture-in-picture")
-        }
+            MatrixText {
+                text: qsTr("Include your camera picture-in-picture")
+            }
 
-        CheckBox {
-            id: remoteVideoCheckBox
+            ToggleButton {
+                id: pipCheckBox
 
-            Layout.alignment: Qt.AlignLeft
-            Layout.leftMargin: 8
-            Layout.rightMargin: 8
-            text: qsTr("Request remote camera")
-            checked: Settings.screenShareRemoteVideo
-            ToolTip.text: qsTr("View your callee's camera like a regular video call")
-            ToolTip.visible: hovered
-        }
+                enabled: CallManager.cameras.length > 0
+                checked: Settings.screenSharePiP
+                Layout.alignment: Qt.AlignRight
+            }
 
-        CheckBox {
-            id: hideCursorCheckBox
+            MatrixText {
+                text: qsTr("Request remote camera")
+                ToolTip.text: qsTr("View your callee's camera like a regular video call")
+                ToolTip.visible: hovered
+            }
 
-            Layout.alignment: Qt.AlignLeft
-            Layout.leftMargin: 8
-            Layout.rightMargin: 8
-            Layout.bottomMargin: 8
-            text: qsTr("Hide mouse cursor")
-            checked: Settings.screenShareHideCursor
+            ToggleButton {
+                id: remoteVideoCheckBox
+
+                Layout.alignment: Qt.AlignRight
+                checked: Settings.screenShareRemoteVideo
+                ToolTip.text: qsTr("View your callee's camera like a regular video call")
+                ToolTip.visible: hovered
+            }
+
+            MatrixText {
+                text: qsTr("Hide mouse cursor")
+            }
+
+            ToggleButton {
+                id: hideCursorCheckBox
+
+                Layout.alignment: Qt.AlignRight
+                checked: Settings.screenShareHideCursor
+            }
+
         }
 
         RowLayout {
