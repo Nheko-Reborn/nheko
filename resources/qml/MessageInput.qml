@@ -208,7 +208,7 @@ Rectangle {
                     } else if (event.key == Qt.Key_Down && popup.opened) {
                         event.accepted = true;
                         popup.down();
-                    } else if (event.key == Qt.Key_Up) {
+                    } else if (event.key == Qt.Key_Up && event.modifiers == Qt.NoModifier) {
                         if (cursorPosition == 0) {
                             event.accepted = true;
                             var idx = TimelineManager.timeline.edit ? TimelineManager.timeline.idToIndex(TimelineManager.timeline.edit) + 1 : 0;
@@ -225,7 +225,7 @@ Rectangle {
                             event.accepted = true;
                             cursorPosition = 0;
                         }
-                    } else if (event.key == Qt.Key_Down) {
+                    } else if (event.key == Qt.Key_Down && event.modifiers == Qt.NoModifier) {
                         if (cursorPosition == 0) {
                             event.accepted = true;
                             cursorPosition = messageInput.length;
