@@ -11,6 +11,7 @@
 #include "CacheCryptoStructs.h"
 #include "EventStore.h"
 #include "InputBar.h"
+#include "ui/RoomSettings.h"
 #include "ui/UserProfile.h"
 
 namespace mtx::http {
@@ -216,6 +217,7 @@ public:
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
         Q_INVOKABLE void openUserProfile(QString userid, bool global = false);
+        Q_INVOKABLE void openRoomSettings();
         Q_INVOKABLE void editAction(QString id);
         Q_INVOKABLE void replyAction(QString id);
         Q_INVOKABLE void readReceiptsAction(QString id) const;
@@ -307,6 +309,7 @@ signals:
         void newCallEvent(const mtx::events::collections::TimelineEvents &event);
 
         void openProfile(UserProfile *profile);
+        void openRoomSettingsDialog(RoomSettings *settings);
 
         void newMessageToSend(mtx::events::collections::TimelineEvents event);
         void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);
@@ -334,6 +337,7 @@ private:
 
         QString currentId, currentReadId;
         QString reply_, edit_;
+        QString textBeforeEdit, replyBeforeEdit;
         std::vector<QString> typingUsers_;
 
         TimelineViewManager *manager_;
@@ -351,4 +355,6 @@ TimelineModel::sendMessageEvent(const T &content, mtx::events::EventType eventTy
         msgCopy.content                   = content;
         msgCopy.type                      = eventType;
         emit newMessageToSend(msgCopy);
+        resetReply();
+        resetEdit();
 }

@@ -253,6 +253,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
           this, &ChatPage::updateGroupsInfo, communitiesList_, &CommunitiesList::setCommunities);
 
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
+        connect(this, &ChatPage::newRoom, this, &ChatPage::changeRoom, Qt::QueuedConnection);
         connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendNotifications);
         connect(this,
                 &ChatPage::highlightedNotifsRetrieved,
@@ -920,6 +921,13 @@ ChatPage::joinRoom(const QString &room)
 void
 ChatPage::joinRoomVia(const std::string &room_id, const std::vector<std::string> &via)
 {
+        if (QMessageBox::Yes !=
+            QMessageBox::question(
+              this,
+              tr("Confirm join"),
+              tr("Do you really want to join %1?").arg(QString::fromStdString(room_id))))
+                return;
+
         http::client()->join_room(
           room_id, via, [this, room_id](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
                   if (err) {
@@ -960,8 +968,9 @@ ChatPage::createRoom(const mtx::requests::CreateRoom &req)
                           return;
                   }
 
-                  emit showNotification(
-                    tr("Room %1 created.").arg(QString::fromStdString(res.room_id.to_string())));
+                  QString newRoomId = QString::fromStdString(res.room_id.to_string());
+                  emit showNotification(tr("Room %1 created.").arg(newRoomId));
+                  emit newRoom(newRoomId);
           });
 }
 
@@ -980,6 +989,13 @@ ChatPage::leaveRoom(const QString &room_id)
 
                   emit leftRoom(room_id);
           });
+}
+
+void
+ChatPage::changeRoom(const QString &room_id)
+{
+        view_manager_->setHistoryView(room_id);
+        room_list_->highlightSelectedRoom(room_id);
 }
 
 void
@@ -1308,6 +1324,13 @@ ChatPage::startChat(QString userid)
                 }
         }
 
+        if (QMessageBox::Yes !=
+            QMessageBox::question(
+              this,
+              tr("Confirm invite"),
+              tr("Do you really want to start a private chat with %1?").arg(userid)))
+                return;
+
         mtx::requests::CreateRoom req;
         req.preset     = mtx::requests::Preset::PrivateChat;
         req.visibility = mtx::common::RoomVisibility::Private;
@@ -1326,14 +1349,14 @@ mxidFromSegments(QStringRef sigil, QStringRef mxid)
 
         auto mxid_ = QUrl::fromPercentEncoding(mxid.toUtf8());
 
-        if (sigil == "user") {
+        if (sigil == "u") {
                 return "@" + mxid_;
         } else if (sigil == "roomid") {
                 return "!" + mxid_;
-        } else if (sigil == "room") {
+        } else if (sigil == "r") {
                 return "#" + mxid_;
-        } else if (sigil == "group") {
-                return "+" + mxid_;
+                //} else if (sigil == "group") {
+                //        return "+" + mxid_;
         } else {
                 return "";
         }
@@ -1383,7 +1406,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                 }
         }
 
-        if (sigil1 == "user") {
+        if (sigil1 == "u") {
                 if (action.isEmpty()) {
                         view_manager_->activeTimeline()->openUserProfile(mxid1);
                 } else if (action == "chat") {
@@ -1400,10 +1423,10 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                         }
                 }
 
-                if (action == "join") {
+                if (action == "join" || action.isEmpty()) {
                         joinRoomVia(targetRoomId, vias);
                 }
-        } else if (sigil1 == "room") {
+        } else if (sigil1 == "r") {
                 auto joined_rooms    = cache::joinedRooms();
                 auto targetRoomAlias = mxid1.toStdString();
 
@@ -1418,7 +1441,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                         }
                 }
 
-                if (action == "join") {
+                if (action == "join" || action.isEmpty()) {
                         joinRoomVia(mxid1.toStdString(), vias);
                 }
         }

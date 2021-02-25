@@ -53,6 +53,14 @@ Page {
     }
 
     Component {
+        id: roomSettingsComponent
+
+        RoomSettings {
+        }
+
+    }
+
+    Component {
         id: mobileCallInviteDialog
 
         CallInvite {
@@ -172,6 +180,16 @@ Page {
                     "profile": profile
                 });
                 userProfile.show();
+            }
+        }
+
+        Connections {
+            target: TimelineManager.timeline
+            onOpenRoomSettingsDialog: {
+                var roomSettings = roomSettingsComponent.createObject(timelineRoot, {
+                    "roomSettings": settings
+                });
+                roomSettings.show();
             }
         }
 

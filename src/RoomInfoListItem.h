@@ -217,4 +217,6 @@ private:
 
         QColor bubbleBgColor_;
         QColor bubbleFgColor_;
+
+        friend struct room_sort;
 };

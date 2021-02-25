@@ -15,7 +15,7 @@ Rectangle {
 
     MouseArea {
         anchors.fill: parent
-        onClicked: TimelineManager.openRoomSettings()
+        onClicked: TimelineManager.timeline.openRoomSettings()
     }
 
     GridLayout {
@@ -68,7 +68,7 @@ Rectangle {
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: TimelineManager.openRoomSettings()
+                onClicked: TimelineManager.timeline.openRoomSettings()
             }
 
         }
@@ -114,7 +114,7 @@ Rectangle {
 
                 MenuItem {
                     text: qsTr("Settings")
-                    onTriggered: TimelineManager.openRoomSettings()
+                    onTriggered: TimelineManager.timeline.openRoomSettings()
                 }
 
             }

@@ -362,6 +362,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 const static QRegularExpression replyFallback(
                   "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption);
 
+                auto ascent = QFontMetrics(UserSettings::instance()->font()).ascent();
+
                 bool isReply = relations(event).reply_to().has_value();
 
                 auto formattedBody_ = QString::fromStdString(formatted_body(event));
@@ -380,8 +382,14 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                                 formattedBody_ = formattedBody_.remove(replyFallback);
                 }
 
-                formattedBody_.replace("<img src=\"mxc:&#47;&#47;", "<img src=\"image://mxcImage/");
-                formattedBody_.replace("<img src=\"mxc://", "<img src=\"image://mxcImage/");
+                // TODO(Nico): Don't parse html with a regex
+                const static QRegularExpression matchImgUri(
+                  "(<img [^>]*)src=\"mxc://([^\"]*)\"([^>]*>)");
+                formattedBody_.replace(matchImgUri, "\\1 src=\"image://mxcImage/\\2\"\\3");
+                const static QRegularExpression matchEmoticonHeight(
+                  "(<img data-mx-emoticon [^>]*)height=\"([^\"]*)\"([^>]*>)");
+                formattedBody_.replace(matchEmoticonHeight,
+                                       QString("\\1 height=\"%1\"\\3").arg(ascent));
 
                 return QVariant(utils::replaceEmoji(
                   utils::linkifyMessage(utils::escapeBlacklistedHtml(formattedBody_))));
@@ -491,6 +499,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                          data(event, static_cast<int>(ProportionalHeight)));
                 m.insert(names[Id], data(event, static_cast<int>(Id)));
                 m.insert(names[State], data(event, static_cast<int>(State)));
+                m.insert(names[IsEdited], data(event, static_cast<int>(IsEdited)));
+                m.insert(names[IsEditable], data(event, static_cast<int>(IsEditable)));
                 m.insert(names[IsEncrypted], data(event, static_cast<int>(IsEncrypted)));
                 m.insert(names[IsRoomEncrypted], data(event, static_cast<int>(IsRoomEncrypted)));
                 m.insert(names[ReplyTo], data(event, static_cast<int>(ReplyTo)));
@@ -753,11 +763,6 @@ TimelineModel::setCurrentIndex(int index)
                     (!oldReadIndex || *oldReadIndex < nextEventIndexAndId->first)) {
                         readEvent(nextEventIndexAndId->second);
                         currentReadId = QString::fromStdString(nextEventIndexAndId->second);
-
-                        nhlog::net()->info("Marked as read {}, index {}, oldReadIndex {}",
-                                           nextEventIndexAndId->second,
-                                           nextEventIndexAndId->first,
-                                           *oldReadIndex);
                 }
         }
 }
@@ -831,6 +836,14 @@ TimelineModel::openUserProfile(QString userid, bool global)
         connect(
           this, &TimelineModel::roomAvatarUrlChanged, userProfile, &UserProfile::updateAvatarUrl);
         emit openProfile(userProfile);
+}
+
+void
+TimelineModel::openRoomSettings()
+{
+        RoomSettings *settings = new RoomSettings(roomId(), this);
+        connect(this, &TimelineModel::roomAvatarUrlChanged, settings, &RoomSettings::avatarChanged);
+        openRoomSettingsDialog(settings);
 }
 
 void
@@ -1539,6 +1552,17 @@ TimelineModel::setEdit(QString newEdit)
         if (edit_.startsWith('m'))
                 return;
 
+        if (newEdit.isEmpty()) {
+                resetEdit();
+                return;
+        }
+
+        if (edit_.isEmpty()) {
+                this->textBeforeEdit  = input()->text();
+                this->replyBeforeEdit = reply_;
+                nhlog::ui()->debug("Stored: {}", textBeforeEdit.toStdString());
+        }
+
         if (edit_ != newEdit) {
                 auto ev = events.get(newEdit.toStdString(), "");
                 if (ev && mtx::accessors::sender(*ev) == http::client()->user_id().to_string()) {
@@ -1573,8 +1597,14 @@ TimelineModel::resetEdit()
         if (!edit_.isEmpty()) {
                 edit_ = "";
                 emit editChanged(edit_);
-                input()->setText("");
-                resetReply();
+                nhlog::ui()->debug("Restoring: {}", textBeforeEdit.toStdString());
+                input()->setText(textBeforeEdit);
+                textBeforeEdit.clear();
+                if (replyBeforeEdit.isEmpty())
+                        resetReply();
+                else
+                        setReply(replyBeforeEdit);
+                replyBeforeEdit.clear();
         }
 }
 

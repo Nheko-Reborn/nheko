@@ -19,6 +19,7 @@
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "Olm.h"
+#include "RoomsModel.h"
 #include "TimelineModel.h"
 #include "TimelineViewManager.h"
 #include "UserSettingsPage.h"
@@ -122,6 +123,20 @@ InputBar::insertMimeData(const QMimeData *md)
 }
 
 void
+InputBar::setText(QString newText)
+{
+        if (history_.empty())
+                history_.push_front(newText);
+        else
+                history_.front() = newText;
+        history_index_ = 0;
+
+        if (history_.size() == INPUT_HISTORY_SIZE)
+                history_.pop_back();
+
+        emit textChanged(newText);
+}
+void
 InputBar::updateState(int selectionStart_, int selectionEnd_, int cursorPosition_, QString text_)
 {
         if (text_.isEmpty())
@@ -186,6 +201,11 @@ InputBar::completerFor(QString completerName)
                 auto proxy      = new CompletionProxyModel(emojiModel);
                 emojiModel->setParent(proxy);
                 return proxy;
+        } else if (completerName == "room") {
+                auto roomModel = new RoomsModel(true);
+                auto proxy     = new CompletionProxyModel(roomModel);
+                roomModel->setParent(proxy);
+                return proxy;
         }
         return nullptr;
 }
@@ -195,6 +215,10 @@ InputBar::send()
 {
         if (text().trimmed().isEmpty())
                 return;
+
+        nhlog::ui()->debug("Send: {}", text().toStdString());
+
+        auto wasEdit = !room->edit().isEmpty();
 
         if (text().startsWith('/')) {
                 int command_end = text().indexOf(' ');
@@ -211,12 +235,10 @@ InputBar::send()
                 message(text());
         }
 
-        nhlog::ui()->debug("Send: {}", text().toStdString());
-
-        if (history_.size() == INPUT_HISTORY_SIZE)
-                history_.pop_back();
-        history_.push_front("");
-        history_index_ = 0;
+        if (!wasEdit) {
+                history_.push_front("");
+                setText("");
+        }
 }
 
 void
@@ -272,12 +294,10 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown)
                 if (!room->reply().isEmpty()) {
                         text.relations.relations.push_back(
                           {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
-                        room->resetReply();
                 }
 
                 text.relations.relations.push_back(
                   {mtx::common::RelationType::Replace, room->edit().toStdString()});
-                room->resetEdit();
 
         } else if (!room->reply().isEmpty()) {
                 auto related = room->relatedInfo(room->reply());
@@ -307,7 +327,6 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown)
 
                 text.relations.relations.push_back(
                   {mtx::common::RelationType::InReplyTo, related.related_event});
-                room->resetReply();
         }
 
         room->sendMessageEvent(text, mtx::events::EventType::RoomMessage);
@@ -330,12 +349,10 @@ InputBar::emote(QString msg)
         if (!room->reply().isEmpty()) {
                 emote.relations.relations.push_back(
                   {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
-                room->resetReply();
         }
         if (!room->edit().isEmpty()) {
                 emote.relations.relations.push_back(
                   {mtx::common::RelationType::Replace, room->edit().toStdString()});
-                room->resetEdit();
         }
 
         room->sendMessageEvent(emote, mtx::events::EventType::RoomMessage);
@@ -366,12 +383,10 @@ InputBar::image(const QString &filename,
         if (!room->reply().isEmpty()) {
                 image.relations.relations.push_back(
                   {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
-                room->resetReply();
         }
         if (!room->edit().isEmpty()) {
                 image.relations.relations.push_back(
                   {mtx::common::RelationType::Replace, room->edit().toStdString()});
-                room->resetEdit();
         }
 
         room->sendMessageEvent(image, mtx::events::EventType::RoomMessage);
@@ -397,12 +412,10 @@ InputBar::file(const QString &filename,
         if (!room->reply().isEmpty()) {
                 file.relations.relations.push_back(
                   {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
-                room->resetReply();
         }
         if (!room->edit().isEmpty()) {
                 file.relations.relations.push_back(
                   {mtx::common::RelationType::Replace, room->edit().toStdString()});
-                room->resetEdit();
         }
 
         room->sendMessageEvent(file, mtx::events::EventType::RoomMessage);
@@ -429,12 +442,10 @@ InputBar::audio(const QString &filename,
         if (!room->reply().isEmpty()) {
                 audio.relations.relations.push_back(
                   {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
-                room->resetReply();
         }
         if (!room->edit().isEmpty()) {
                 audio.relations.relations.push_back(
                   {mtx::common::RelationType::Replace, room->edit().toStdString()});
-                room->resetEdit();
         }
 
         room->sendMessageEvent(audio, mtx::events::EventType::RoomMessage);
@@ -460,12 +471,10 @@ InputBar::video(const QString &filename,
         if (!room->reply().isEmpty()) {
                 video.relations.relations.push_back(
                   {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
-                room->resetReply();
         }
         if (!room->edit().isEmpty()) {
                 video.relations.relations.push_back(
                   {mtx::common::RelationType::Replace, room->edit().toStdString()});
-                room->resetEdit();
         }
 
         room->sendMessageEvent(video, mtx::events::EventType::RoomMessage);

@@ -54,7 +54,6 @@ class LeaveRoom;
 class Logout;
 class MemberList;
 class ReCaptcha;
-class RoomSettings;
 }
 
 class MainWindow : public QMainWindow
@@ -78,7 +77,6 @@ public:
           std::function<void(const mtx::requests::CreateRoom &request)> callback);
         void openJoinRoomDialog(std::function<void(const QString &room_id)> callback);
         void openLogoutDialog();
-        void openRoomSettings(const QString &room_id);
         void openMemberListDialog(const QString &room_id);
         void openReadReceiptsDialog(const QString &event_id);
 

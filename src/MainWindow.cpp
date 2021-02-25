@@ -51,7 +51,6 @@
 #include "dialogs/Logout.h"
 #include "dialogs/MemberList.h"
 #include "dialogs/ReadReceipts.h"
-#include "dialogs/RoomSettings.h"
 
 MainWindow *MainWindow::instance_ = nullptr;
 
@@ -361,14 +360,6 @@ MainWindow::hasActiveUser()
         return settings.contains(prefix + "auth/access_token") &&
                settings.contains(prefix + "auth/home_server") &&
                settings.contains(prefix + "auth/user_id");
-}
-
-void
-MainWindow::openRoomSettings(const QString &room_id)
-{
-        auto dialog = new dialogs::RoomSettings(room_id, this);
-
-        showDialog(dialog);
 }
 
 void

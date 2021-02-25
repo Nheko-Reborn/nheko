@@ -41,7 +41,7 @@ public slots:
         QString text() const;
         QString previousText();
         QString nextText();
-        void setText(QString newText) { emit textChanged(newText); }
+        void setText(QString newText);
 
         void send();
         void paste(bool fromMouse);

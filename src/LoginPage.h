@@ -56,9 +56,10 @@ signals:
 
         //! Used to trigger the corresponding slot outside of the main thread.
         void versionErrorCb(const QString &err);
-        void versionOkCb(LoginPage::LoginMethod method);
+        void versionOkCb(bool passwordSupported, bool ssoSupported);
 
         void loginOk(const mtx::responses::Login &res);
+        void showErrorMessage(QLabel *label, const QString &msg);
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -73,7 +74,7 @@ private slots:
         void onBackButtonClicked();
 
         // Callback for the login button.
-        void onLoginButtonClicked();
+        void onLoginButtonClicked(LoginMethod loginMethod);
 
         // Callback for probing the server found in the mxid
         void onMatrixIdEntered();
@@ -84,7 +85,7 @@ private slots:
         // Callback for errors produced during server probing
         void versionError(const QString &error_message);
         // Callback for successful server probing
-        void versionOk(LoginPage::LoginMethod method);
+        void versionOk(bool passwordSupported, bool ssoSupported);
 
 private:
         void checkHomeserverVersion();
@@ -120,7 +121,7 @@ private:
         QString inferredServerAddress_;
 
         FlatButton *back_button_;
-        RaisedButton *login_button_;
+        RaisedButton *login_button_, *sso_login_button_;
 
         QWidget *form_widget_;
         QHBoxLayout *form_wrapper_;
@@ -130,5 +131,6 @@ private:
         TextField *password_input_;
         TextField *deviceName_;
         TextField *serverInput_;
-        LoginMethod loginMethod = LoginMethod::Password;
+        bool passwordSupported = true;
+        bool ssoSupported      = false;
 };

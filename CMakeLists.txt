@@ -257,7 +257,6 @@ set(SRC_FILES
 	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
 	src/dialogs/ReadReceipts.cpp
-	src/dialogs/RoomSettings.cpp
 
 	# Emoji
 	src/emoji/EmojiModel.cpp
@@ -295,6 +294,7 @@ set(SRC_FILES
 	src/ui/ThemeManager.cpp
 	src/ui/ToggleButton.cpp
 	src/ui/UserProfile.cpp
+	src/ui/RoomSettings.cpp
 
 	src/AvatarProvider.cpp
 	src/BlurhashProvider.cpp
@@ -326,6 +326,7 @@ set(SRC_FILES
 	src/UserInfoWidget.cpp
 	src/UserSettingsPage.cpp
 	src/UsersModel.cpp
+	src/RoomsModel.cpp
 	src/Utils.cpp
 	src/WebRTCSession.cpp
 	src/WelcomePage.cpp
@@ -357,7 +358,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        fee5298f068394958c2de935836a2c145f273906
+		GIT_TAG        004d4203ceb441239aafb17e1340cd063139d029
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -474,7 +475,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/RawMessage.h
 	src/dialogs/ReCaptcha.h
 	src/dialogs/ReadReceipts.h
-	src/dialogs/RoomSettings.h
 
 	# Emoji
 	src/emoji/EmojiModel.h
@@ -510,6 +510,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/Theme.h
 	src/ui/ThemeManager.h
 	src/ui/UserProfile.h
+	src/ui/RoomSettings.h
 
 	src/notifications/Manager.h
 
@@ -538,6 +539,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/UserInfoWidget.h
 	src/UserSettingsPage.h
 	src/UsersModel.h
+	src/RoomsModel.h
 	src/WebRTCSession.h
 	src/WelcomePage.h
 	src/popups/PopupItem.h

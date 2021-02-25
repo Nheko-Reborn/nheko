@@ -154,6 +154,7 @@ signals:
         void tryInitialSyncCb();
         void newSyncResponse(const mtx::responses::Sync &res);
         void leftRoom(const QString &room_id);
+        void newRoom(const QString &room_id);
 
         void initializeRoomList(QMap<QString, RoomInfo>);
         void initializeViews(const mtx::responses::Rooms &rooms);
@@ -201,6 +202,7 @@ signals:
 private slots:
         void logout();
         void removeRoom(const QString &room_id);
+        void changeRoom(const QString &room_id);
         void dropToLoginPage(const QString &msg);
 
         void handleSyncResponse(const mtx::responses::Sync &res);
