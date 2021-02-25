@@ -59,6 +59,7 @@ signals:
         void versionOkCb(bool passwordSupported, bool ssoSupported);
 
         void loginOk(const mtx::responses::Login &res);
+        void showErrorMessage(QLabel *label, const QString &msg);
 
 protected:
         void paintEvent(QPaintEvent *event) override;

@@ -253,6 +253,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
           this, &ChatPage::updateGroupsInfo, communitiesList_, &CommunitiesList::setCommunities);
 
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
+        connect(this, &ChatPage::newRoom, this, &ChatPage::changeRoom, Qt::QueuedConnection);
         connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendNotifications);
         connect(this,
                 &ChatPage::highlightedNotifsRetrieved,
@@ -967,8 +968,9 @@ ChatPage::createRoom(const mtx::requests::CreateRoom &req)
                           return;
                   }
 
-                  emit showNotification(
-                    tr("Room %1 created.").arg(QString::fromStdString(res.room_id.to_string())));
+                  QString newRoomId = QString::fromStdString(res.room_id.to_string());
+                  emit showNotification(tr("Room %1 created.").arg(newRoomId));
+                  emit newRoom(newRoomId);
           });
 }
 
@@ -987,6 +989,13 @@ ChatPage::leaveRoom(const QString &room_id)
 
                   emit leftRoom(room_id);
           });
+}
+
+void
+ChatPage::changeRoom(const QString &room_id)
+{
+        view_manager_->setHistoryView(room_id);
+        room_list_->highlightSelectedRoom(room_id);
 }
 
 void
