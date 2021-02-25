@@ -102,6 +102,20 @@ namespace {
 std::unique_ptr<Cache> instance_ = nullptr;
 }
 
+template<class T>
+static T
+to(lmdb::val &value)
+{
+        static_assert(std::is_trivial_v<T>, "Can only convert to trivial types!");
+        T temp;
+
+        if (value.size() < sizeof(T))
+                throw lmdb::runtime_error(__func__, MDB_BAD_VALSIZE);
+
+        std::memcpy(&temp, value.data(), sizeof(T));
+        return temp;
+}
+
 bool
 Cache::isHiddenEvent(lmdb::txn &txn,
                      mtx::events::collections::TimelineEvents e,
@@ -1667,14 +1681,14 @@ Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id, uint64_t 
         auto cursor = lmdb::cursor::open(txn, orderDb);
         if (index == std::numeric_limits<uint64_t>::max()) {
                 if (cursor.get(indexVal, event_id, forward ? MDB_FIRST : MDB_LAST)) {
-                        index = *indexVal.data<uint64_t>();
+                        index = to<uint64_t>(indexVal);
                 } else {
                         messages.end_of_cache = true;
                         return messages;
                 }
         } else {
                 if (cursor.get(indexVal, event_id, MDB_SET)) {
-                        index = *indexVal.data<uint64_t>();
+                        index = to<uint64_t>(indexVal);
                 } else {
                         messages.end_of_cache = true;
                         return messages;
@@ -1708,7 +1722,7 @@ Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id, uint64_t 
         cursor.close();
 
         // std::reverse(timeline.events.begin(), timeline.events.end());
-        messages.next_index   = *indexVal.data<uint64_t>();
+        messages.next_index   = to<uint64_t>(indexVal);
         messages.end_of_cache = !ret;
 
         return messages;
@@ -1861,12 +1875,12 @@ Cache::getTimelineRange(const std::string &room_id)
         }
 
         TimelineRange range{};
-        range.last = *indexVal.data<uint64_t>();
+        range.last = to<uint64_t>(indexVal);
 
         if (!cursor.get(indexVal, val, MDB_FIRST)) {
                 return {};
         }
-        range.first = *indexVal.data<uint64_t>();
+        range.first = to<uint64_t>(indexVal);
 
         return range;
 }
@@ -1892,7 +1906,7 @@ Cache::getTimelineIndex(const std::string &room_id, std::string_view event_id)
                 return {};
         }
 
-        return *val.data<uint64_t>();
+        return to<uint64_t>(val);
 }
 
 std::optional<uint64_t>
@@ -1920,7 +1934,7 @@ Cache::getEventIndex(const std::string &room_id, std::string_view event_id)
                 return {};
         }
 
-        return *val.data<uint64_t>();
+        return to<uint64_t>(val);
 }
 
 std::optional<std::pair<uint64_t, std::string>>
@@ -1951,7 +1965,7 @@ Cache::lastInvisibleEventAfter(const std::string &room_id, std::string_view even
         if (!success) {
                 return {};
         }
-        uint64_t prevIdx = *indexVal.data<uint64_t>();
+        uint64_t prevIdx = to<uint64_t>(indexVal);
         std::string prevId{eventIdVal.data(), eventIdVal.size()};
 
         auto cursor = lmdb::cursor::open(txn, eventOrderDb);
@@ -1964,7 +1978,7 @@ Cache::lastInvisibleEventAfter(const std::string &room_id, std::string_view even
                 if (lmdb::dbi_get(txn, timelineDb, lmdb::val(evId.data(), evId.size()), temp)) {
                         return std::pair{prevIdx, std::string(prevId)};
                 } else {
-                        prevIdx = *indexVal.data<uint64_t>();
+                        prevIdx = to<uint64_t>(indexVal);
                         prevId  = std::move(evId);
                 }
         }
@@ -1994,7 +2008,7 @@ Cache::getArrivalIndex(const std::string &room_id, std::string_view event_id)
                 return {};
         }
 
-        return *val.data<uint64_t>();
+        return to<uint64_t>(val);
 }
 
 std::optional<std::string>
@@ -2775,13 +2789,13 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
         uint64_t index = std::numeric_limits<uint64_t>::max() / 2;
         auto cursor    = lmdb::cursor::open(txn, orderDb);
         if (cursor.get(indexVal, val, MDB_LAST)) {
-                index = *indexVal.data<int64_t>();
+                index = to<uint64_t>(indexVal);
         }
 
         uint64_t msgIndex = std::numeric_limits<uint64_t>::max() / 2;
         auto msgCursor    = lmdb::cursor::open(txn, order2msgDb);
         if (msgCursor.get(indexVal, val, MDB_LAST)) {
-                msgIndex = *indexVal.data<uint64_t>();
+                msgIndex = to<uint64_t>(indexVal);
         }
 
         bool first = true;
@@ -2942,7 +2956,7 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
         {
                 auto cursor = lmdb::cursor::open(txn, orderDb);
                 if (cursor.get(indexVal, val, MDB_FIRST)) {
-                        index = *indexVal.data<uint64_t>();
+                        index = to<uint64_t>(indexVal);
                 }
         }
 
@@ -2950,7 +2964,7 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
         {
                 auto msgCursor = lmdb::cursor::open(txn, order2msgDb);
                 if (msgCursor.get(indexVal, val, MDB_FIRST)) {
-                        msgIndex = *indexVal.data<uint64_t>();
+                        msgIndex = to<uint64_t>(indexVal);
                 }
         }
 
@@ -3258,12 +3272,12 @@ Cache::deleteOldMessages()
 
                 uint64_t first, last;
                 if (cursor.get(indexVal, val, MDB_LAST)) {
-                        last = *indexVal.data<uint64_t>();
+                        last = to<uint64_t>(indexVal);
                 } else {
                         continue;
                 }
                 if (cursor.get(indexVal, val, MDB_FIRST)) {
-                        first = *indexVal.data<uint64_t>();
+                        first = to<uint64_t>(indexVal);
                 } else {
                         continue;
                 }
