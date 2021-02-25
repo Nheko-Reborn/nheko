@@ -192,6 +192,11 @@ LoginPage::LoginPage(QWidget *parent)
         connect(sso_login_button_, &RaisedButton::clicked, this, [this]() {
                 onLoginButtonClicked(LoginMethod::SSO);
         });
+        connect(this,
+                &LoginPage::showErrorMessage,
+                this,
+                static_cast<void (LoginPage::*)(QLabel *, const QString &)>(&LoginPage::showError),
+                Qt::QueuedConnection);
         connect(matrixid_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
         connect(password_input_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
         connect(deviceName_, SIGNAL(returnPressed()), login_button_, SLOT(click()));
@@ -422,8 +427,8 @@ LoginPage::onLoginButtonClicked(LoginMethod loginMethod)
                                                           : deviceName_->text().toStdString(),
                   [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
                           if (err) {
-                                  showError(error_label_,
-                                            QString::fromStdString(err->matrix_error.error));
+                                  showErrorMessage(error_label_,
+                                                   QString::fromStdString(err->matrix_error.error));
                                   emit errorOccurred();
                                   return;
                           }
@@ -448,7 +453,7 @@ LoginPage::onLoginButtonClicked(LoginMethod loginMethod)
                         http::client()->login(
                           req, [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
                                   if (err) {
-                                          showError(
+                                          showErrorMessage(
                                             error_label_,
                                             QString::fromStdString(err->matrix_error.error));
                                           emit errorOccurred();
@@ -467,7 +472,7 @@ LoginPage::onLoginButtonClicked(LoginMethod loginMethod)
                         sso->deleteLater();
                 });
                 connect(sso, &SSOHandler::ssoFailed, this, [this, sso]() {
-                        showError(error_label_, tr("SSO login failed"));
+                        showErrorMessage(error_label_, tr("SSO login failed"));
                         emit errorOccurred();
                         sso->deleteLater();
                 });
