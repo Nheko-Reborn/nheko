@@ -220,7 +220,7 @@
       "name": "mtxclient",
       "sources": [
         {
-          "commit": "fee5298f068394958c2de935836a2c145f273906",
+          "commit": "004d4203ceb441239aafb17e1340cd063139d029",
           "type": "git",
           "url": "https://github.com/Nheko-Reborn/mtxclient.git"
         }

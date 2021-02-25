@@ -277,6 +277,7 @@ RegisterPage::RegisterPage(QWidget *parent)
                             if (!err) {
                                     http::client()->set_user(res.user_id);
                                     http::client()->set_access_token(res.access_token);
+                                    http::client()->set_device_id(res.device_id);
 
                                     emit registerOk();
                                     return;
