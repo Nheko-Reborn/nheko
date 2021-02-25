@@ -40,7 +40,7 @@ Popup {
             }
 
             RowLayout {
-                visible: CallManager.isVideo && CallManager.cameras.length > 0
+                visible: CallManager.callType == CallType.VIDEO && CallManager.cameras.length > 0
 
                 Image {
                     Layout.preferredWidth: 22

@@ -2,6 +2,8 @@
 #include <cctype>
 #include <chrono>
 #include <cstdint>
+#include <cstdlib>
+#include <memory>
 
 #include <QMediaPlaylist>
 #include <QUrl>
@@ -17,12 +19,26 @@
 
 #include "mtx/responses/turn_server.hpp"
 
+#ifdef XCB_AVAILABLE
+#include <xcb/xcb.h>
+#include <xcb/xcb_ewmh.h>
+#endif
+
+#ifdef GSTREAMER_AVAILABLE
+extern "C"
+{
+#include "gst/gst.h"
+}
+#endif
+
 Q_DECLARE_METATYPE(std::vector<mtx::events::msg::CallCandidates::Candidate>)
 Q_DECLARE_METATYPE(mtx::events::msg::CallCandidates::Candidate)
 Q_DECLARE_METATYPE(mtx::responses::TurnServer)
 
 using namespace mtx::events;
 using namespace mtx::events::msg;
+
+using webrtc::CallType;
 
 namespace {
 std::vector<std::string>
@@ -148,10 +164,18 @@ CallManager::CallManager(QObject *parent)
 }
 
 void
-CallManager::sendInvite(const QString &roomid, bool isVideo)
+CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int windowIndex)
 {
         if (isOnCall())
                 return;
+        if (callType == CallType::SCREEN) {
+                if (!screenShareSupported())
+                        return;
+                if (windows_.empty() || windowIndex >= windows_.size()) {
+                        nhlog::ui()->error("WebRTC: window index out of range");
+                        return;
+                }
+        }
 
         auto roomInfo = cache::singleRoomInfo(roomid.toStdString());
         if (roomInfo.member_count != 2) {
@@ -161,17 +185,20 @@ CallManager::sendInvite(const QString &roomid, bool isVideo)
 
         std::string errorMessage;
         if (!session_.havePlugins(false, &errorMessage) ||
-            (isVideo && !session_.havePlugins(true, &errorMessage))) {
+            ((callType == CallType::VIDEO || callType == CallType::SCREEN) &&
+             !session_.havePlugins(true, &errorMessage))) {
                 emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
                 return;
         }
 
-        isVideo_ = isVideo;
-        roomid_  = roomid;
+        callType_ = callType;
+        roomid_   = roomid;
         session_.setTurnServers(turnURIs_);
         generateCallID();
-        nhlog::ui()->debug(
-          "WebRTC: call id: {} - creating {} invite", callid_, isVideo ? "video" : "voice");
+        std::string strCallType = callType_ == CallType::VOICE
+                                    ? "voice"
+                                    : (callType_ == CallType::VIDEO ? "video" : "screen");
+        nhlog::ui()->debug("WebRTC: call id: {} - creating {} invite", callid_, strCallType);
         std::vector<RoomMember> members(cache::getMembers(roomid.toStdString()));
         const RoomMember &callee =
           members.front().user_id == utils::localUser() ? members.back() : members.front();
@@ -179,7 +206,8 @@ CallManager::sendInvite(const QString &roomid, bool isVideo)
         callPartyAvatarUrl_ = QString::fromStdString(roomInfo.avatar_url);
         emit newInviteState();
         playRingtone(QUrl("qrc:/media/media/ringback.ogg"), true);
-        if (!session_.createOffer(isVideo)) {
+        if (!session_.createOffer(
+              callType, callType == CallType::SCREEN ? windows_[windowIndex].second : 0)) {
                 emit ChatPage::instance()->showNotification("Problem setting up call.");
                 endCall();
         }
@@ -215,8 +243,8 @@ void
 CallManager::syncEvent(const mtx::events::collections::TimelineEvents &event)
 {
 #ifdef GSTREAMER_AVAILABLE
-        if (handleEvent_<CallInvite>(event) || handleEvent_<CallCandidates>(event) ||
-            handleEvent_<CallAnswer>(event) || handleEvent_<CallHangUp>(event))
+        if (handleEvent<CallInvite>(event) || handleEvent<CallCandidates>(event) ||
+            handleEvent<CallAnswer>(event) || handleEvent<CallHangUp>(event))
                 return;
 #else
         (void)event;
@@ -225,7 +253,7 @@ CallManager::syncEvent(const mtx::events::collections::TimelineEvents &event)
 
 template<typename T>
 bool
-CallManager::handleEvent_(const mtx::events::collections::TimelineEvents &event)
+CallManager::handleEvent(const mtx::events::collections::TimelineEvents &event)
 {
         if (std::holds_alternative<RoomEvent<T>>(event)) {
                 handleEvent(std::get<RoomEvent<T>>(event));
@@ -280,9 +308,8 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
         callPartyAvatarUrl_ = QString::fromStdString(roomInfo.avatar_url);
 
         haveCallInvite_ = true;
-        isVideo_        = isVideo;
+        callType_       = isVideo ? CallType::VIDEO : CallType::VOICE;
         inviteSDP_      = callInviteEvent.content.sdp;
-        CallDevices::instance().refresh();
         emit newInviteState();
 }
 
@@ -295,7 +322,7 @@ CallManager::acceptInvite()
         stopRingtone();
         std::string errorMessage;
         if (!session_.havePlugins(false, &errorMessage) ||
-            (isVideo_ && !session_.havePlugins(true, &errorMessage))) {
+            (callType_ == CallType::VIDEO && !session_.havePlugins(true, &errorMessage))) {
                 emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
                 hangUp();
                 return;
@@ -383,13 +410,19 @@ CallManager::toggleMicMute()
 }
 
 bool
-CallManager::callsSupported() const
+CallManager::callsSupported()
 {
 #ifdef GSTREAMER_AVAILABLE
         return true;
 #else
         return false;
 #endif
+}
+
+bool
+CallManager::screenShareSupported()
+{
+        return std::getenv("DISPLAY") && !std::getenv("WAYLAND_DISPLAY");
 }
 
 QStringList
@@ -424,7 +457,7 @@ CallManager::clear()
         callParty_.clear();
         callPartyAvatarUrl_.clear();
         callid_.clear();
-        isVideo_        = false;
+        callType_       = CallType::VOICE;
         haveCallInvite_ = false;
         emit newInviteState();
         inviteSDP_.clear();
@@ -475,6 +508,150 @@ void
 CallManager::stopRingtone()
 {
         player_.setPlaylist(nullptr);
+}
+
+QStringList
+CallManager::windowList()
+{
+        windows_.clear();
+        windows_.push_back({tr("Entire screen"), 0});
+
+#ifdef XCB_AVAILABLE
+        std::unique_ptr<xcb_connection_t, std::function<void(xcb_connection_t *)>> connection(
+          xcb_connect(nullptr, nullptr), [](xcb_connection_t *c) { xcb_disconnect(c); });
+        if (xcb_connection_has_error(connection.get())) {
+                nhlog::ui()->error("Failed to connect to X server");
+                return {};
+        }
+
+        xcb_ewmh_connection_t ewmh;
+        if (!xcb_ewmh_init_atoms_replies(
+              &ewmh, xcb_ewmh_init_atoms(connection.get(), &ewmh), nullptr)) {
+                nhlog::ui()->error("Failed to connect to EWMH server");
+                return {};
+        }
+        std::unique_ptr<xcb_ewmh_connection_t, std::function<void(xcb_ewmh_connection_t *)>>
+          ewmhconnection(&ewmh, [](xcb_ewmh_connection_t *c) { xcb_ewmh_connection_wipe(c); });
+
+        for (int i = 0; i < ewmh.nb_screens; i++) {
+                xcb_ewmh_get_windows_reply_t clients;
+                if (!xcb_ewmh_get_client_list_reply(
+                      &ewmh, xcb_ewmh_get_client_list(&ewmh, i), &clients, nullptr)) {
+                        nhlog::ui()->error("Failed to request window list");
+                        return {};
+                }
+
+                for (uint32_t w = 0; w < clients.windows_len; w++) {
+                        xcb_window_t window = clients.windows[w];
+
+                        std::string name;
+                        xcb_ewmh_get_utf8_strings_reply_t data;
+                        auto getName = [](xcb_ewmh_get_utf8_strings_reply_t *r) {
+                                std::string name(r->strings, r->strings_len);
+                                xcb_ewmh_get_utf8_strings_reply_wipe(r);
+                                return name;
+                        };
+
+                        xcb_get_property_cookie_t cookie = xcb_ewmh_get_wm_name(&ewmh, window);
+                        if (xcb_ewmh_get_wm_name_reply(&ewmh, cookie, &data, nullptr))
+                                name = getName(&data);
+
+                        cookie = xcb_ewmh_get_wm_visible_name(&ewmh, window);
+                        if (xcb_ewmh_get_wm_visible_name_reply(&ewmh, cookie, &data, nullptr))
+                                name = getName(&data);
+
+                        windows_.push_back({QString::fromStdString(name), window});
+                }
+                xcb_ewmh_get_windows_reply_wipe(&clients);
+        }
+#endif
+        QStringList ret;
+        ret.reserve(windows_.size());
+        for (const auto &w : windows_)
+                ret.append(w.first);
+
+        return ret;
+}
+
+#ifdef GSTREAMER_AVAILABLE
+namespace {
+
+GstElement *pipe_        = nullptr;
+unsigned int busWatchId_ = 0;
+
+gboolean
+newBusMessage(GstBus *bus G_GNUC_UNUSED, GstMessage *msg, gpointer G_GNUC_UNUSED)
+{
+        switch (GST_MESSAGE_TYPE(msg)) {
+        case GST_MESSAGE_EOS:
+                if (pipe_) {
+                        gst_element_set_state(GST_ELEMENT(pipe_), GST_STATE_NULL);
+                        gst_object_unref(pipe_);
+                        pipe_ = nullptr;
+                }
+                if (busWatchId_) {
+                        g_source_remove(busWatchId_);
+                        busWatchId_ = 0;
+                }
+                break;
+        default:
+                break;
+        }
+        return TRUE;
+}
+
+}
+#endif
+
+void
+CallManager::previewWindow(unsigned int index) const
+{
+#ifdef GSTREAMER_AVAILABLE
+        if (windows_.empty() || index >= windows_.size() || !gst_is_initialized())
+                return;
+
+        GstElement *ximagesrc = gst_element_factory_make("ximagesrc", nullptr);
+        if (!ximagesrc) {
+                nhlog::ui()->error("Failed to create ximagesrc");
+                return;
+        }
+        GstElement *videoconvert = gst_element_factory_make("videoconvert", nullptr);
+        GstElement *videoscale   = gst_element_factory_make("videoscale", nullptr);
+        GstElement *capsfilter   = gst_element_factory_make("capsfilter", nullptr);
+        GstElement *ximagesink   = gst_element_factory_make("ximagesink", nullptr);
+
+        g_object_set(ximagesrc, "use-damage", FALSE, nullptr);
+        g_object_set(ximagesrc, "show-pointer", FALSE, nullptr);
+        g_object_set(ximagesrc, "xid", windows_[index].second, nullptr);
+
+        GstCaps *caps = gst_caps_new_simple(
+          "video/x-raw", "width", G_TYPE_INT, 480, "height", G_TYPE_INT, 360, nullptr);
+        g_object_set(capsfilter, "caps", caps, nullptr);
+        gst_caps_unref(caps);
+
+        pipe_ = gst_pipeline_new(nullptr);
+        gst_bin_add_many(
+          GST_BIN(pipe_), ximagesrc, videoconvert, videoscale, capsfilter, ximagesink, nullptr);
+        if (!gst_element_link_many(
+              ximagesrc, videoconvert, videoscale, capsfilter, ximagesink, nullptr)) {
+                nhlog::ui()->error("Failed to link preview window elements");
+                gst_object_unref(pipe_);
+                pipe_ = nullptr;
+                return;
+        }
+        if (gst_element_set_state(pipe_, GST_STATE_PLAYING) == GST_STATE_CHANGE_FAILURE) {
+                nhlog::ui()->error("Unable to start preview pipeline");
+                gst_object_unref(pipe_);
+                pipe_ = nullptr;
+                return;
+        }
+
+        GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(pipe_));
+        busWatchId_ = gst_bus_add_watch(bus, newBusMessage, nullptr);
+        gst_object_unref(bus);
+#else
+        (void)index;
+#endif
 }
 
 namespace {

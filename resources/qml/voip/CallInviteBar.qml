@@ -52,12 +52,12 @@ Rectangle {
             Layout.leftMargin: 4
             Layout.preferredWidth: 24
             Layout.preferredHeight: 24
-            source: CallManager.isVideo ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
+            source: CallManager.callType == CallType.VIDEO ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
         }
 
         Label {
             font.pointSize: fontMetrics.font.pointSize * 1.1
-            text: CallManager.isVideo ? qsTr("Video Call") : qsTr("Voice Call")
+            text: CallManager.callType == CallType.VIDEO ? qsTr("Video Call") : qsTr("Voice Call")
             color: "#000000"
         }
 
@@ -75,7 +75,6 @@ Rectangle {
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Devices")
             onClicked: {
-                CallManager.refreshDevices();
                 var dialog = devicesDialog.createObject(timelineRoot);
                 dialog.open();
             }
@@ -83,7 +82,7 @@ Rectangle {
 
         Button {
             Layout.rightMargin: 4
-            icon.source: CallManager.isVideo ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
+            icon.source: CallManager.callType == CallType.VIDEO ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
             text: qsTr("Accept")
             palette: colors
             onClicked: {
@@ -102,7 +101,7 @@ Rectangle {
                     dialog.open();
                     return ;
                 }
-                if (CallManager.isVideo && CallManager.cameras.length > 0 && !CallManager.cameras.includes(Settings.camera)) {
+                if (CallManager.callType == CallType.VIDEO && CallManager.cameras.length > 0 && !CallManager.cameras.includes(Settings.camera)) {
                     var dialog = deviceError.createObject(timelineRoot, {
                         "errorString": qsTr("Unknown camera: %1").arg(Settings.camera),
                         "image": ":/icons/icons/ui/video-call.png"

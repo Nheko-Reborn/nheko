@@ -23,6 +23,14 @@ Popup {
 
     }
 
+    Component {
+        id: screenShareDialog
+
+        ScreenShare {
+        }
+
+    }
+
     ColumnLayout {
         id: columnLayout
 
@@ -76,7 +84,7 @@ Popup {
                 onClicked: {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;
-                        CallManager.sendInvite(TimelineManager.timeline.roomId(), false);
+                        CallManager.sendInvite(TimelineManager.timeline.roomId(), CallType.VOICE);
                         close();
                     }
                 }
@@ -90,9 +98,20 @@ Popup {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;
                         Settings.camera = cameraCombo.currentText;
-                        CallManager.sendInvite(TimelineManager.timeline.roomId(), true);
+                        CallManager.sendInvite(TimelineManager.timeline.roomId(), CallType.VIDEO);
                         close();
                     }
+                }
+            }
+
+            Button {
+                visible: CallManager.screenShareSupported
+                text: qsTr("Screen")
+                icon.source: "qrc:/icons/icons/ui/screen-share.png"
+                onClicked: {
+                    var dialog = screenShareDialog.createObject(timelineRoot);
+                    dialog.open();
+                    close();
                 }
             }
 

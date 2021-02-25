@@ -5,14 +5,22 @@
 
 #include <QObject>
 
-#include "CallDevices.h"
 #include "mtx/events/voip.hpp"
 
 typedef struct _GstElement GstElement;
+class CallDevices;
 class QQuickItem;
 
 namespace webrtc {
 Q_NAMESPACE
+
+enum class CallType
+{
+        VOICE,
+        VIDEO,
+        SCREEN // localUser is sharing screen
+};
+Q_ENUM_NS(CallType)
 
 enum class State
 {
@@ -42,20 +50,21 @@ public:
         }
 
         bool havePlugins(bool isVideo, std::string *errorMessage = nullptr);
+        webrtc::CallType callType() const { return callType_; }
         webrtc::State state() const { return state_; }
-        bool isVideo() const { return isVideo_; }
-        bool haveLocalVideo() const;
+        bool haveLocalPiP() const;
         bool isOffering() const { return isOffering_; }
         bool isRemoteVideoRecvOnly() const { return isRemoteVideoRecvOnly_; }
+        bool isRemoteVideoSendOnly() const { return isRemoteVideoSendOnly_; }
 
-        bool createOffer(bool isVideo);
+        bool createOffer(webrtc::CallType, uint32_t shareWindowId);
         bool acceptOffer(const std::string &sdp);
         bool acceptAnswer(const std::string &sdp);
         void acceptICECandidates(const std::vector<mtx::events::msg::CallCandidates::Candidate> &);
 
         bool isMicMuted() const;
         bool toggleMicMute();
-        void toggleCameraView();
+        void toggleLocalPiP();
         void end();
 
         void setTurnServers(const std::vector<std::string> &uris) { turnServers_ = uris; }
@@ -81,20 +90,23 @@ private:
         bool initialised_           = false;
         bool haveVoicePlugins_      = false;
         bool haveVideoPlugins_      = false;
+        webrtc::CallType callType_  = webrtc::CallType::VOICE;
         webrtc::State state_        = webrtc::State::DISCONNECTED;
-        bool isVideo_               = false;
         bool isOffering_            = false;
         bool isRemoteVideoRecvOnly_ = false;
+        bool isRemoteVideoSendOnly_ = false;
         QQuickItem *videoItem_      = nullptr;
         GstElement *pipe_           = nullptr;
         GstElement *webrtc_         = nullptr;
         unsigned int busWatchId_    = 0;
         std::vector<std::string> turnServers_;
+        uint32_t shareWindowId_ = 0;
 
         bool init(std::string *errorMessage = nullptr);
         bool startPipeline(int opusPayloadType, int vp8PayloadType);
         bool createPipeline(int opusPayloadType, int vp8PayloadType);
         bool addVideoPipeline(int vp8PayloadType);
+        void clear();
 
 public:
         WebRTCSession(WebRTCSession const &) = delete;

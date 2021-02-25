@@ -107,13 +107,17 @@ UserSettings::load(std::optional<QString> profile)
         auto presenceValue = QMetaEnum::fromType<Presence>().keyToValue(tempPresence.c_str());
         if (presenceValue < 0)
                 presenceValue = 0;
-        presence_         = static_cast<Presence>(presenceValue);
-        ringtone_         = settings.value("user/ringtone", "Default").toString();
-        microphone_       = settings.value("user/microphone", QString()).toString();
-        camera_           = settings.value("user/camera", QString()).toString();
-        cameraResolution_ = settings.value("user/camera_resolution", QString()).toString();
-        cameraFrameRate_  = settings.value("user/camera_frame_rate", QString()).toString();
-        useStunServer_    = settings.value("user/use_stun_server", false).toBool();
+        presence_               = static_cast<Presence>(presenceValue);
+        ringtone_               = settings.value("user/ringtone", "Default").toString();
+        microphone_             = settings.value("user/microphone", QString()).toString();
+        camera_                 = settings.value("user/camera", QString()).toString();
+        cameraResolution_       = settings.value("user/camera_resolution", QString()).toString();
+        cameraFrameRate_        = settings.value("user/camera_frame_rate", QString()).toString();
+        screenShareFrameRate_   = settings.value("user/screen_share_frame_rate", 5).toInt();
+        screenSharePiP_         = settings.value("user/screen_share_pip", true).toBool();
+        screenShareRemoteVideo_ = settings.value("user/screen_share_remote_video", false).toBool();
+        screenShareHideCursor_  = settings.value("user/screen_share_hide_cursor", false).toBool();
+        useStunServer_          = settings.value("user/use_stun_server", false).toBool();
 
         if (profile) // set to "" if it's the default to maintain compatibility
                 profile_ = (*profile == "default") ? "" : *profile;
@@ -445,6 +449,46 @@ UserSettings::setCameraFrameRate(QString frameRate)
 }
 
 void
+UserSettings::setScreenShareFrameRate(int frameRate)
+{
+        if (frameRate == screenShareFrameRate_)
+                return;
+        screenShareFrameRate_ = frameRate;
+        emit screenShareFrameRateChanged(frameRate);
+        save();
+}
+
+void
+UserSettings::setScreenSharePiP(bool state)
+{
+        if (state == screenSharePiP_)
+                return;
+        screenSharePiP_ = state;
+        emit screenSharePiPChanged(state);
+        save();
+}
+
+void
+UserSettings::setScreenShareRemoteVideo(bool state)
+{
+        if (state == screenShareRemoteVideo_)
+                return;
+        screenShareRemoteVideo_ = state;
+        emit screenShareRemoteVideoChanged(state);
+        save();
+}
+
+void
+UserSettings::setScreenShareHideCursor(bool state)
+{
+        if (state == screenShareHideCursor_)
+                return;
+        screenShareHideCursor_ = state;
+        emit screenShareHideCursorChanged(state);
+        save();
+}
+
+void
 UserSettings::setProfile(QString profile)
 {
         if (profile == profile_)
@@ -593,6 +637,10 @@ UserSettings::save()
         settings.setValue("camera", camera_);
         settings.setValue("camera_resolution", cameraResolution_);
         settings.setValue("camera_frame_rate", cameraFrameRate_);
+        settings.setValue("screen_share_frame_rate", screenShareFrameRate_);
+        settings.setValue("screen_share_pip", screenSharePiP_);
+        settings.setValue("screen_share_remote_video", screenShareRemoteVideo_);
+        settings.setValue("screen_share_hide_cursor", screenShareHideCursor_);
         settings.setValue("use_stun_server", useStunServer_);
         settings.setValue("currentProfile", profile_);
 
@@ -1240,7 +1288,6 @@ UserSettingsPage::showEvent(QShowEvent *)
         timelineMaxWidthSpin_->setValue(settings_->timelineMaxWidth());
         privacyScreenTimeout_->setValue(settings_->privacyScreenTimeout());
 
-        CallDevices::instance().refresh();
         auto mics = CallDevices::instance().names(false, settings_->microphone().toStdString());
         microphoneCombo_->clear();
         for (const auto &m : mics)

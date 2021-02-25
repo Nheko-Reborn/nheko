@@ -74,6 +74,7 @@
         <file>icons/ui/end-call.png</file>
         <file>icons/ui/microphone-mute.png</file>
         <file>icons/ui/microphone-unmute.png</file>
+        <file>icons/ui/screen-share.png</file>
         <file>icons/ui/toggle-camera-view.png</file>
         <file>icons/ui/video-call.png</file>
 
@@ -167,6 +168,7 @@
         <file>qml/voip/CallInviteBar.qml</file>
         <file>qml/voip/DeviceError.qml</file>
         <file>qml/voip/PlaceCall.qml</file>
+        <file>qml/voip/ScreenShare.qml</file>
         <file>qml/voip/VideoCall.qml</file>
     </qresource>
     <qresource prefix="/media">
