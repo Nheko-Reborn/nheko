@@ -63,6 +63,7 @@ public slots:
         void hangUp(
           mtx::events::msg::CallHangUp::Reason = mtx::events::msg::CallHangUp::Reason::User);
         QStringList windowList();
+        void previewWindow(unsigned int windowIndex) const;
 
 signals:
         void newMessage(const QString &roomid, const mtx::events::msg::CallInvite &);
@@ -95,7 +96,7 @@ private:
         std::vector<std::pair<QString, uint32_t>> windows_;
 
         template<typename T>
-        bool handleEvent_(const mtx::events::collections::TimelineEvents &event);
+        bool handleEvent(const mtx::events::collections::TimelineEvents &event);
         void handleEvent(const mtx::events::RoomEvent<mtx::events::msg::CallInvite> &);
         void handleEvent(const mtx::events::RoomEvent<mtx::events::msg::CallCandidates> &);
         void handleEvent(const mtx::events::RoomEvent<mtx::events::msg::CallAnswer> &);

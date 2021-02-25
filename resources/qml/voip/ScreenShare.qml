@@ -128,6 +128,13 @@ Popup {
             }
 
             Button {
+                text: qsTr("Preview")
+                onClicked: {
+                    CallManager.previewWindow(windowCombo.currentIndex);
+                }
+            }
+
+            Button {
                 text: qsTr("Cancel")
                 onClicked: {
                     close();

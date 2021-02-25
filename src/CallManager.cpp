@@ -24,6 +24,13 @@
 #include <xcb/xcb_ewmh.h>
 #endif
 
+#ifdef GSTREAMER_AVAILABLE
+extern "C"
+{
+#include "gst/gst.h"
+}
+#endif
+
 Q_DECLARE_METATYPE(std::vector<mtx::events::msg::CallCandidates::Candidate>)
 Q_DECLARE_METATYPE(mtx::events::msg::CallCandidates::Candidate)
 Q_DECLARE_METATYPE(mtx::responses::TurnServer)
@@ -235,8 +242,8 @@ void
 CallManager::syncEvent(const mtx::events::collections::TimelineEvents &event)
 {
 #ifdef GSTREAMER_AVAILABLE
-        if (handleEvent_<CallInvite>(event) || handleEvent_<CallCandidates>(event) ||
-            handleEvent_<CallAnswer>(event) || handleEvent_<CallHangUp>(event))
+        if (handleEvent<CallInvite>(event) || handleEvent<CallCandidates>(event) ||
+            handleEvent<CallAnswer>(event) || handleEvent<CallHangUp>(event))
                 return;
 #else
         (void)event;
@@ -245,7 +252,7 @@ CallManager::syncEvent(const mtx::events::collections::TimelineEvents &event)
 
 template<typename T>
 bool
-CallManager::handleEvent_(const mtx::events::collections::TimelineEvents &event)
+CallManager::handleEvent(const mtx::events::collections::TimelineEvents &event)
 {
         if (std::holds_alternative<RoomEvent<T>>(event)) {
                 handleEvent(std::get<RoomEvent<T>>(event));
@@ -563,6 +570,87 @@ CallManager::windowList()
                 ret.append(w.first);
 
         return ret;
+}
+
+#ifdef GSTREAMER_AVAILABLE
+namespace {
+
+GstElement *pipe_        = nullptr;
+unsigned int busWatchId_ = 0;
+
+gboolean
+newBusMessage(GstBus *bus G_GNUC_UNUSED, GstMessage *msg, gpointer G_GNUC_UNUSED)
+{
+        switch (GST_MESSAGE_TYPE(msg)) {
+        case GST_MESSAGE_EOS:
+                if (pipe_) {
+                        gst_element_set_state(GST_ELEMENT(pipe_), GST_STATE_NULL);
+                        gst_object_unref(pipe_);
+                        pipe_ = nullptr;
+                }
+                if (busWatchId_) {
+                        g_source_remove(busWatchId_);
+                        busWatchId_ = 0;
+                }
+                break;
+        default:
+                break;
+        }
+        return TRUE;
+}
+
+}
+#endif
+
+void
+CallManager::previewWindow(unsigned int index) const
+{
+#ifdef GSTREAMER_AVAILABLE
+        if (windows_.empty() || index >= windows_.size() || !gst_is_initialized())
+                return;
+
+        GstElement *ximagesrc = gst_element_factory_make("ximagesrc", nullptr);
+        if (!ximagesrc) {
+                nhlog::ui()->error("Failed to create ximagesrc");
+                return;
+        }
+        GstElement *videoconvert = gst_element_factory_make("videoconvert", nullptr);
+        GstElement *videoscale   = gst_element_factory_make("videoscale", nullptr);
+        GstElement *capsfilter   = gst_element_factory_make("capsfilter", nullptr);
+        GstElement *ximagesink   = gst_element_factory_make("ximagesink", nullptr);
+
+        g_object_set(ximagesrc, "use-damage", FALSE, nullptr);
+        g_object_set(ximagesrc, "show-pointer", FALSE, nullptr);
+        g_object_set(ximagesrc, "xid", windows_[index].second, nullptr);
+
+        GstCaps *caps = gst_caps_new_simple(
+          "video/x-raw", "width", G_TYPE_INT, 480, "height", G_TYPE_INT, 360, nullptr);
+        g_object_set(capsfilter, "caps", caps, nullptr);
+        gst_caps_unref(caps);
+
+        pipe_ = gst_pipeline_new(nullptr);
+        gst_bin_add_many(
+          GST_BIN(pipe_), ximagesrc, videoconvert, videoscale, capsfilter, ximagesink, nullptr);
+        if (!gst_element_link_many(
+              ximagesrc, videoconvert, videoscale, capsfilter, ximagesink, nullptr)) {
+                nhlog::ui()->error("Failed to link preview window elements");
+                gst_object_unref(pipe_);
+                pipe_ = nullptr;
+                return;
+        }
+        if (gst_element_set_state(pipe_, GST_STATE_PLAYING) == GST_STATE_CHANGE_FAILURE) {
+                nhlog::ui()->error("Unable to start preview pipeline");
+                gst_object_unref(pipe_);
+                pipe_ = nullptr;
+                return;
+        }
+
+        GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(pipe_));
+        busWatchId_ = gst_bus_add_watch(bus, newBusMessage, nullptr);
+        gst_object_unref(bus);
+#else
+        (void)index;
+#endif
 }
 
 namespace {
