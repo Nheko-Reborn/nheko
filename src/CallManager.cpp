@@ -513,7 +513,7 @@ QStringList
 CallManager::windowList()
 {
         windows_.clear();
-        windows_.push_back({"Entire screen", 0});
+        windows_.push_back({tr("Entire screen"), 0});
 
 #ifdef XCB_AVAILABLE
         std::unique_ptr<xcb_connection_t, std::function<void(xcb_connection_t *)>> connection(
