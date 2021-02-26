@@ -809,11 +809,11 @@ TimelineModel::formatDateSeparator(QDate date) const
 QString
 TimelineModel::getMessageFromId(QString id) const
 {
-    auto e = events.get(id.toStdString(), "", false);
-    if (!e)
-        return "";
-    std::string body = mtx::accessors::body(*e);
-    return QString::fromStdString(body);
+        auto e = events.get(id.toStdString(), "", false);
+        if (!e)
+                return "";
+        std::string body = mtx::accessors::body(*e);
+        return QString::fromStdString(body);
 }
 
 void
