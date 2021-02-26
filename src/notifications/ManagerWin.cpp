@@ -9,6 +9,8 @@
 #include <QStandardPaths>
 #include <QTextDocumentFragment>
 
+#include <variant>
+
 #include "Cache.h"
 #include "EventAccessors.h"
 #include "Utils.h"
@@ -52,7 +54,21 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         const auto sender =
           cache::displayName(QString::fromStdString(notification.room_id),
                              QString::fromStdString(mtx::accessors::sender(notification.event)));
-        const auto text = formatNotification(notification);
+
+        const auto isEncrypted =
+          std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+            &notification.event) != nullptr;
+        const auto isReply = utils::isReply(notification.event);
+
+        if (isEncrypted) {
+                // TODO: decrypt this message if the decryption setting is on in the UserSettings
+                const QString text = (isReply ? tr("%1 replied with an encrypted message")
+                                              : tr("%1 sent an encrypted message"))
+                                       .arg(sender);
+                systemPostNotification(room_name, sender, text, icon);
+        } else {
+                systemPostNotification(room_name, sender, formatNotification(notification), icon);
+        }
 
         systemPostNotification(room_name, sender, text, icon);
 }
@@ -98,11 +114,20 @@ NotificationsManager::formatNotification(const mtx::responses::Notification &not
           cache::displayName(QString::fromStdString(notification.room_id),
                              QString::fromStdString(mtx::accessors::sender(notification.event)));
 
+        const auto messageLeadIn =
+          ((mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
+             ? "* " + sender + " "
+             : sender +
+                 (utils::isReply(notification.event)
+                    ? tr(" replied",
+                         "Used to denote that this message is a reply to another "
+                         "message. Displayed as 'foo replied: message'.")
+                    : "") +
+                 ": ");
+
         return QTextDocumentFragment::fromHtml(
                  mtx::accessors::formattedBodyWithFallback(notification.event)
                    .replace(QRegularExpression("(<mx-reply>.+\\<\\/mx-reply\\>)"), ""))
           .toPlainText()
-          .prepend((mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
-                     ? "* " + sender + " "
-                     : "");
+          .prepend(messageLeadIn);
 }

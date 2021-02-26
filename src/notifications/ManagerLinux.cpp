@@ -11,6 +11,7 @@
 #include <QTextDocumentFragment>
 
 #include <functional>
+#include <variant>
 
 #include <mtx/responses/notifications.hpp>
 
@@ -194,6 +195,13 @@ NotificationsManager::formatNotification(const mtx::responses::Notification &not
         const auto sender =
           cache::displayName(QString::fromStdString(notification.room_id),
                              QString::fromStdString(mtx::accessors::sender(notification.event)));
+
+        // TODO: decrypt this message if the decryption setting is on in the UserSettings
+        if (auto msg = std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+              &notification.event);
+            msg != nullptr)
+                return tr("%1 sent an encrypted message").arg(sender);
+
         const auto messageLeadIn =
           ((mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
              ? "* " + sender + " "

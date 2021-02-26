@@ -9,6 +9,8 @@
 
 #include <mtx/responses/notifications.hpp>
 
+#include <variant>
+
 QString
 NotificationsManager::formatNotification(const mtx::responses::Notification &notification)
 {
@@ -37,22 +39,25 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
           cache::displayName(QString::fromStdString(notification.room_id),
                              QString::fromStdString(mtx::accessors::sender(notification.event)));
 
-        const QString messageInfo =
-          QString("%1 %2 a message")
-            .arg(sender)
-            .arg((utils::isReply(notification.event)
-                    ? tr("replied to",
-                         "Used to denote that this message is a reply to another "
-                         "message. Displayed as 'foo replied to a message'.")
-                    : tr("sent",
-                         "Used to denote that this message is a normal message. Displayed as 'foo "
-                         "sent a message'.")));
-
-        QString text = formatNotification(notification);
-
         QImage *image = nullptr;
         if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image)
                 image = new QImage{cacheImage(notification.event)};
 
-        objCxxPostNotification(room_name, messageInfo, text, image);
+        const auto isEncrypted =
+          std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+            &notification.event) != nullptr;
+        const auto isReply = utils::isReply(notification.event);
+
+        if (isEncrypted) {
+                // TODO: decrypt this message if the decryption setting is on in the UserSettings
+                const QString messageInfo = (isReply ? tr("%1 replied with an encrypted message")
+                                                     : tr("%1 sent an encrypted message"))
+                                              .arg(sender);
+                objCxxPostNotification(room_name, messageInfo, "", image);
+        } else {
+                const QString messageInfo =
+                  (isReply ? tr("%1 replied to a message") : tr("%1 sent a message")).arg(sender);
+                objCxxPostNotification(
+                  room_name, messageInfo, formatNotification(notification), image);
+        }
 }
