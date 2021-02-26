@@ -121,7 +121,7 @@ NotificationsManager::formatNotification(const mtx::responses::Notification &not
 
         return QTextDocumentFragment::fromHtml(
                  mtx::accessors::formattedBodyWithFallback(notification.event)
-                   .replace(QRegularExpression("(<mx-reply>.+\\<\\/mx-reply\\>)"), ""))
+                   .replace(QRegularExpression("<mx-reply>.+</mx-reply>"), ""))
           .toPlainText()
           .prepend(messageLeadIn);
 }
