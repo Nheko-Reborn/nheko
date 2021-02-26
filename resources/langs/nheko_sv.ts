@@ -84,7 +84,7 @@
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation>Videosamtal</translation>
+        <translation>Röstsamtal</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1553,22 +1553,22 @@ Exempel: https://server.my:8787</translation>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+296"/>
         <source>Select an avatar</source>
-        <translation type="unfinished">Välj en avatar</translation>
+        <translation>Välj en avatar</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Alla Filer (*)</translation>
+        <translation>Alla Filer (*)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished">Den valda filen är inte en bild</translation>
+        <translation>Den valda filen är inte en bild</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished">Kunde inte läsa filen: %1</translation>
+        <translation>Kunde inte läsa filen: %1</translation>
     </message>
 </context>
 <context>
