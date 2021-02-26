@@ -5,7 +5,7 @@ import im.nheko 1.0
 Popup {
     id: quickSwitcher
 
-    property int textWidth: 48
+    property int textHeight: 48
     property int textMargin: 8
 
     x: parent.width / 2 - width / 2
@@ -24,7 +24,7 @@ Popup {
         id: roomTextInput
 
         anchors.fill: parent
-        font.pixelSize: quickSwitcher.textWidth - 18
+        font.pixelSize: quickSwitcher.textHeight * 0.6
         padding: textMargin
         color: colors.text
 
@@ -53,10 +53,10 @@ Popup {
         y: roomTextInput.y + roomTextInput.height + 5
         width: parent.width + 10
         completerName: "room"
-        bottomToTop: true
+        bottomToTop: false
         fullWidth: true
-        avatarHeight: textWidth
-        avatarWidth: textWidth
+        avatarHeight: textHeight
+        avatarWidth: textHeight
         centerRowContent: false
         rowMargin: 8
         rowSpacing: 6
