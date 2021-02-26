@@ -84,10 +84,9 @@ private:
 
 #if defined(Q_OS_WINDOWS)
 private:
-        void systemPostNotification(const QString &roomName,
-                                    const QString &sender,
-                                    const QString &text,
-                                    const QImage &icon);
+        void systemPostNotification(const QString &line1,
+                                    const QString &line2,
+                                    const QString &iconPath);
 #endif
 
         // these slots are platform specific (D-Bus only)

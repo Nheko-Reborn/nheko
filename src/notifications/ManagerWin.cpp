@@ -60,39 +60,33 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
             &notification.event) != nullptr;
         const auto isReply = utils::isReply(notification.event);
 
-        if (isEncrypted) {
-                // TODO: decrypt this message if the decryption setting is on in the UserSettings
-                const QString text = (isReply ? tr("%1 replied with an encrypted message")
-                                              : tr("%1 sent an encrypted message"))
-                                       .arg(sender);
-                systemPostNotification(room_name, sender, text, icon);
-        } else {
-                systemPostNotification(room_name, sender, formatNotification(notification), icon);
-        }
+        const auto line1 =
+          (room_name == sender) ? sender : QString("%1 - %2").arg(sender).arg(room_name);
+        const auto line2 = (isEncrypted ? (isReply ? tr("%1 replied with an encrypted message")
+                                                   : tr("%1 sent an encrypted message"))
+                                        : formatNotification(notification));
 
-        systemPostNotification(room_name, sender, text, icon);
+        auto iconPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
+                        room_name + "-room-avatar.png";
+        if (!icon.save(iconPath))
+                iconPath.clear();
+
+        systemPostNotification(line1, line2, iconPath);
 }
 
 void
-NotificationsManager::systemPostNotification(const QString &roomName,
-                                             const QString &sender,
-                                             const QString &text,
-                                             const QImage &icon)
+NotificationsManager::systemPostNotification(const QString &line1,
+                                             const QString &line2,
+                                             const QString &iconPath)
 {
         if (!isInitialized)
                 init();
 
         auto templ = WinToastTemplate(WinToastTemplate::ImageAndText02);
-        if (roomName != sender)
-                templ.setTextField(QString("%1 - %2").arg(sender).arg(roomName).toStdWString(),
-                                   WinToastTemplate::FirstLine);
-        else
-                templ.setTextField(sender.toStdWString(), WinToastTemplate::FirstLine);
-        templ.setTextField(text.toStdWString(), WinToastTemplate::SecondLine);
+        templ.setTextField(line1.toStdWString(), WinToastTemplate::FirstLine);
+        templ.setTextField(line2.toStdWString(), WinToastTemplate::SecondLine);
 
-        auto iconPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + roomName +
-                        "-room-avatar.png";
-        if (icon.save(iconPath))
+        if (!iconPath.isNull())
                 templ.setImagePath(iconPath.toStdWString());
 
         WinToast::instance()->showToast(templ, new CustomHandler());
