@@ -1419,7 +1419,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                 for (auto roomid : joined_rooms) {
                         if (roomid == targetRoomId) {
                                 room_list_->highlightSelectedRoom(mxid1);
-                                break;
+                                return;
                         }
                 }
 
@@ -1436,7 +1436,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                                 if (aliases->alias == targetRoomAlias) {
                                         room_list_->highlightSelectedRoom(
                                           QString::fromStdString(roomid));
-                                        break;
+                                        return;
                                 }
                         }
                 }
