@@ -50,6 +50,7 @@
 static const std::string CURRENT_CACHE_FORMAT_VERSION("2020.10.20");
 static const std::string SECRET("secret");
 
+//! Keys used for the DB
 static const std::string_view NEXT_BATCH_KEY("next_batch");
 static const std::string_view OLM_ACCOUNT_KEY("olm_account");
 static const std::string_view CACHE_FORMAT_VERSION_KEY("cache_format_version");
