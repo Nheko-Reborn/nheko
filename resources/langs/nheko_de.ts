@@ -27,7 +27,7 @@
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation>Mikrofon stummschalten</translation>
+        <translation>Mikrophon stummschalten</translation>
     </message>
 </context>
 <context>
@@ -35,7 +35,7 @@
     <message>
         <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+7"/>
         <source>Awaiting Confirmation</source>
-        <translation>Warte auf Bestätigung</translation>
+        <translation>Auf Bestätigung warten</translation>
     </message>
     <message>
         <location line="+12"/>
