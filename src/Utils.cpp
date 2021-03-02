@@ -689,10 +689,10 @@ utils::restoreCombobox(QComboBox *combo, const QString &value)
 }
 
 QImage
-utils::readImage(const QByteArray *data)
+utils::readImage(const QByteArray &data)
 {
         QBuffer buf;
-        buf.setData(*data);
+        buf.setData(data);
         QImageReader reader(&buf);
         reader.setAutoTransform(true);
         return reader.read();

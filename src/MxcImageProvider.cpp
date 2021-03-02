@@ -22,7 +22,7 @@ MxcImageResponse::run()
 
                 auto data = cache::image(fileName);
                 if (!data.isNull()) {
-                        m_image = utils::readImage(&data);
+                        m_image = utils::readImage(data);
 
                         if (!m_image.isNull()) {
                                 m_image = m_image.scaled(
@@ -54,7 +54,7 @@ MxcImageResponse::run()
 
                           auto data = QByteArray(res.data(), (int)res.size());
                           cache::saveImage(fileName, data);
-                          m_image = utils::readImage(&data);
+                          m_image = utils::readImage(data);
                           if (!m_image.isNull()) {
                                   m_image = m_image.scaled(
                                     m_requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -67,7 +67,7 @@ MxcImageResponse::run()
                 auto data = cache::image(m_id);
 
                 if (!data.isNull()) {
-                        m_image = utils::readImage(&data);
+                        m_image = utils::readImage(data);
                         m_image.setText("mxc url", "mxc://" + m_id);
 
                         if (!m_image.isNull()) {
@@ -98,7 +98,7 @@ MxcImageResponse::run()
 
                           auto data = QByteArray(temp.data(), (int)temp.size());
                           cache::saveImage(m_id, data);
-                          m_image = utils::readImage(&data);
+                          m_image = utils::readImage(data);
                           m_image.setText("original filename",
                                           QString::fromStdString(originalFilename));
                           m_image.setText("mxc url", "mxc://" + m_id);

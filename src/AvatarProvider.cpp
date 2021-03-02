@@ -35,7 +35,7 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
 
         auto data = cache::image(cacheKey);
         if (!data.isNull()) {
-                pixmap = QPixmap::fromImage(utils::readImage(&data));
+                pixmap = QPixmap::fromImage(utils::readImage(data));
                 avatar_cache.insert(cacheKey, pixmap);
                 callback(pixmap);
                 return;
@@ -46,7 +46,7 @@ resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback ca
                          &AvatarProxy::avatarDownloaded,
                          receiver,
                          [callback, cacheKey](QByteArray data) {
-                                 QPixmap pm = QPixmap::fromImage(utils::readImage(&data));
+                                 QPixmap pm = QPixmap::fromImage(utils::readImage(data));
                                  avatar_cache.insert(cacheKey, pm);
                                  callback(pm);
                          });

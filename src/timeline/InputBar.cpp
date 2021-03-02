@@ -574,7 +574,7 @@ InputBar::showPreview(const QMimeData &source, QString path, const QStringList &
                   auto mimeClass = mime.split("/")[0];
                   nhlog::ui()->debug("Mime: {}", mime.toStdString());
                   if (mimeClass == "image") {
-                          QImage img = utils::readImage(&data);
+                          QImage img = utils::readImage(data);
 
                           dimensions = img.size();
                           if (img.height() > 200 && img.width() > 360)

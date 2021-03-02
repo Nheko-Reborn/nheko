@@ -309,7 +309,7 @@ restoreCombobox(QComboBox *combo, const QString &value);
 
 //! Read image respecting exif orientation
 QImage
-readImage(const QByteArray *data);
+readImage(const QByteArray &data);
 
 bool
 isReply(const mtx::events::collections::TimelineEvents &e);
