@@ -49,22 +49,22 @@ NotificationsManager::cacheImage(const mtx::events::collections::TimelineEvents 
 
                           // delete any existing file content
                           file.resize(0);
-                          file.write(QByteArray(temp.data(), (int)temp.size()));
 
-                          // resize the image (really inefficient, I know, but I can't find any
-                          // better way right off
-                          QImage img{path};
-
-                          // delete existing contents
-                          file.resize(0);
+                          // resize the image
+                          QImage img{utils::readImage(QByteArray{temp.data()})};
 
                           // make sure to save as PNG (because Plasma doesn't do JPEG in
                           // notifications)
                           //                          if (!file.fileName().endsWith(".png"))
                           //                                  file.rename(file.fileName() + ".png");
 
+#ifdef NHEKO_DBUS_SYS // the images in D-Bus notifications are to be 200x100 max
                           img.scaled(200, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation)
                             .save(&file);
+#else
+                          img.save(&file);
+#endif // NHEKO_DBUS_SYS
+
                           file.close();
 
                           return;
