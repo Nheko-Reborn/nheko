@@ -24,7 +24,7 @@ NotificationsManager::cacheImage(const mtx::events::collections::TimelineEvents 
 
         http::client()->download(
           url,
-          [path, url, encryptionInfo](const std::string &data,
+          [&path, url, encryptionInfo](const std::string &data,
                                       const std::string &,
                                       const std::string &,
                                       mtx::http::RequestErr err) {
@@ -53,10 +53,11 @@ NotificationsManager::cacheImage(const mtx::events::collections::TimelineEvents 
                           // resize the image
                           QImage img{utils::readImage(QByteArray{temp.data()})};
 
-                          // make sure to save as PNG (because Plasma doesn't do JPEG in
-                          // notifications)
-                          //                          if (!file.fileName().endsWith(".png"))
-                          //                                  file.rename(file.fileName() + ".png");
+                          if (img.isNull())
+                          {
+                              path.clear();
+                              return;
+                          }
 
 #ifdef NHEKO_DBUS_SYS // the images in D-Bus notifications are to be 200x100 max
                           img.scaled(200, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation)

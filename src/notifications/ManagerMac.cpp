@@ -58,6 +58,6 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
                 const QString messageInfo =
                   (isReply ? tr("%1 replied to a message") : tr("%1 sent a message")).arg(sender);
                 objCxxPostNotification(
-                  room_name, messageInfo, formatNotification(notification), image);
+                  room_name, messageInfo, formatNotification(notification), (image != nullptr && !image->isNull()) ? image : nullptr);
         }
 }
