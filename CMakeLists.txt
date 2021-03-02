@@ -417,8 +417,17 @@ set_package_properties(nlohmann_json PROPERTIES
 	)
 
 if(USE_BUNDLED_LMDBXX)
-	hunter_add_package(lmdbxx)
-	find_package(lmdbxx CONFIG REQUIRED)
+	FetchContent_Declare(
+		  lmdbxx
+			GIT_REPOSITORY https://github.com/hoytech/lmdbxx.git
+			GIT_TAG        1.0.0
+			)
+	if(NOT lmdbxx_POPULATED)
+		FetchContent_Populate(lmdbxx)
+	endif()
+	add_library(lmdbxx INTERFACE)
+	target_include_directories(lmdbxx INTERFACE ${lmdbxx_SOURCE_DIR})
+	add_library(lmdbxx::lmdbxx ALIAS lmdbxx)
 else()
 	if(NOT LMDBXX_INCLUDE_DIR)
 		find_path(LMDBXX_INCLUDE_DIR

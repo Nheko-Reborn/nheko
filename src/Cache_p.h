@@ -102,9 +102,9 @@ public:
                                            std::size_t len        = 30);
 
         void saveState(const mtx::responses::Sync &res);
-        bool isInitialized() const;
+        bool isInitialized();
 
-        std::string nextBatchToken() const;
+        std::string nextBatchToken();
 
         void deleteData();
 
@@ -149,8 +149,8 @@ public:
         using UserReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
         UserReceipts readReceipts(const QString &event_id, const QString &room_id);
 
-        QByteArray image(const QString &url) const;
-        QByteArray image(lmdb::txn &txn, const std::string &url) const;
+        QByteArray image(const QString &url);
+        QByteArray image(lmdb::txn &txn, const std::string &url);
         void saveImage(const std::string &url, const std::string &data);
         void saveImage(const QString &url, const QByteArray &data);
 
@@ -330,8 +330,8 @@ private:
         // void removeLeftRoom(lmdb::txn &txn, const std::string &room_id);
         template<class T>
         void saveStateEvents(lmdb::txn &txn,
-                             const lmdb::dbi &statesdb,
-                             const lmdb::dbi &membersdb,
+                             lmdb::dbi &statesdb,
+                             lmdb::dbi &membersdb,
                              const std::string &room_id,
                              const std::vector<T> &events)
         {
@@ -341,8 +341,8 @@ private:
 
         template<class T>
         void saveStateEvent(lmdb::txn &txn,
-                            const lmdb::dbi &statesdb,
-                            const lmdb::dbi &membersdb,
+                            lmdb::dbi &statesdb,
+                            lmdb::dbi &membersdb,
                             const std::string &room_id,
                             const T &event)
         {
@@ -363,17 +363,11 @@ private:
                                 // Lightweight representation of a member.
                                 MemberInfo tmp{display_name, e->content.avatar_url};
 
-                                lmdb::dbi_put(txn,
-                                              membersdb,
-                                              lmdb::val(e->state_key),
-                                              lmdb::val(json(tmp).dump()));
-
+                                membersdb.put(txn, e->state_key, json(tmp).dump());
                                 break;
                         }
                         default: {
-                                lmdb::dbi_del(
-                                  txn, membersdb, lmdb::val(e->state_key), lmdb::val(""));
-
+                                membersdb.del(txn, e->state_key, "");
                                 break;
                         }
                         }
@@ -387,12 +381,9 @@ private:
                 if (!isStateEvent(event))
                         return;
 
-                std::visit(
-                  [&txn, &statesdb](auto e) {
-                          lmdb::dbi_put(
-                            txn, statesdb, lmdb::val(to_string(e.type)), lmdb::val(json(e).dump()));
-                  },
-                  event);
+                std::visit([&txn, &statesdb](
+                             auto e) { statesdb.put(txn, to_string(e.type), json(e).dump()); },
+                           event);
         }
 
         template<class T>

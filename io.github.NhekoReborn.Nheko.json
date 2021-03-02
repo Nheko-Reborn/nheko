@@ -258,9 +258,9 @@
         },
         {
           "dest": ".deps/lmdbxx",
-          "sha256": "93721132bbf5045d38ad62de2997655e9984c48ea5c9886746d42128f4b26fbd",
+          "sha256": "5e12eb3aefe9050068af7df2c663edabc977ef34c9e7ba7b9d2c43e0ad47d8df",
           "type": "archive",
-          "url": "https://github.com/bendiken/lmdbxx/archive/0b43ca87d8cfabba392dfe884eb1edb83874de02.tar.gz"
+          "url": "https://github.com/hoytech/lmdbxx/archive/1.0.0.tar.gz"
         }
       ]
     }
