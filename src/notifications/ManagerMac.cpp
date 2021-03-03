@@ -65,10 +65,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
 QImage *
 NotificationsManager::getImgOrNullptr(const QString &path)
 {
-        auto img = new QImage{path};
-        if (img->isNull()) {
-                delete img;
+        if (QFile::exists(path))
                 return nullptr;
-        }
-        return img;
+        return new QImage{path};
 }
