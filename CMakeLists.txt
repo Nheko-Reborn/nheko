@@ -419,8 +419,8 @@ set_package_properties(nlohmann_json PROPERTIES
 if(USE_BUNDLED_LMDBXX)
 	FetchContent_Declare(
 		  lmdbxx
-			GIT_REPOSITORY https://github.com/hoytech/lmdbxx.git
-			GIT_TAG        1.0.0
+			URL "https://raw.githubusercontent.com/hoytech/lmdbxx/1.0.0/lmdb++.h"
+			DOWNLOAD_NO_EXTRACT TRUE
 			)
 	if(NOT lmdbxx_POPULATED)
 		FetchContent_Populate(lmdbxx)
