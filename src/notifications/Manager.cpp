@@ -22,17 +22,22 @@ NotificationsManager::cacheImage(const mtx::events::collections::TimelineEvents 
         QString path{QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/" +
                      filename};
 
+        bool downloadComplete = false;
+
         http::client()->download(
           url,
-          [&path, url, encryptionInfo](const std::string &data,
-                                      const std::string &,
-                                      const std::string &,
-                                      mtx::http::RequestErr err) {
+          [&downloadComplete, &path, url, encryptionInfo](const std::string &data,
+                                                          const std::string &,
+                                                          const std::string &,
+                                                          mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to retrieve image {}: {} {}",
                                              url,
                                              err->matrix_error.error,
                                              static_cast<int>(err->status_code));
+                          // the image doesn't exist, so delete the path
+                          path.clear();
+                          downloadComplete = true;
                           return;
                   }
 
@@ -44,8 +49,11 @@ NotificationsManager::cacheImage(const mtx::events::collections::TimelineEvents 
 
                           QFile file{path};
 
-                          if (!file.open(QIODevice::WriteOnly))
+                          if (!file.open(QIODevice::WriteOnly)) {
+                                  path.clear();
+                                  downloadComplete = true;
                                   return;
+                          }
 
                           // delete any existing file content
                           file.resize(0);
@@ -53,10 +61,10 @@ NotificationsManager::cacheImage(const mtx::events::collections::TimelineEvents 
                           // resize the image
                           QImage img{utils::readImage(QByteArray{temp.data()})};
 
-                          if (img.isNull())
-                          {
-                              path.clear();
-                              return;
+                          if (img.isNull()) {
+                                  path.clear();
+                                  downloadComplete = true;
+                                  return;
                           }
 
 #ifdef NHEKO_DBUS_SYS // the images in D-Bus notifications are to be 200x100 max
@@ -68,11 +76,15 @@ NotificationsManager::cacheImage(const mtx::events::collections::TimelineEvents 
 
                           file.close();
 
+                          downloadComplete = true;
                           return;
                   } catch (const std::exception &e) {
                           nhlog::ui()->warn("Error while caching file to: {}", e.what());
                   }
           });
+
+        while (!downloadComplete)
+                continue;
 
         return path.toHtmlEscaped();
 }
