@@ -50,9 +50,10 @@
 static const std::string CURRENT_CACHE_FORMAT_VERSION("2020.10.20");
 static const std::string SECRET("secret");
 
-static lmdb::val NEXT_BATCH_KEY("next_batch");
-static lmdb::val OLM_ACCOUNT_KEY("olm_account");
-static lmdb::val CACHE_FORMAT_VERSION_KEY("cache_format_version");
+//! Keys used for the DB
+static const std::string_view NEXT_BATCH_KEY("next_batch");
+static const std::string_view OLM_ACCOUNT_KEY("olm_account");
+static const std::string_view CACHE_FORMAT_VERSION_KEY("cache_format_version");
 
 constexpr size_t MAX_RESTORED_MESSAGES = 30'000;
 
@@ -100,20 +101,6 @@ Q_DECLARE_METATYPE(mtx::responses::QueryKeys)
 
 namespace {
 std::unique_ptr<Cache> instance_ = nullptr;
-}
-
-template<class T>
-static T
-to(lmdb::val &value)
-{
-        static_assert(std::is_trivial_v<T>, "Can only convert to trivial types!");
-        T temp;
-
-        if (value.size() < sizeof(T))
-                throw lmdb::runtime_error(__func__, MDB_BAD_VALSIZE);
-
-        std::memcpy(&temp, value.data(), sizeof(T));
-        return temp;
 }
 
 bool
@@ -165,16 +152,6 @@ Cache::isHiddenEvent(lmdb::txn &txn,
 Cache::Cache(const QString &userId, QObject *parent)
   : QObject{parent}
   , env_{nullptr}
-  , syncStateDb_{0}
-  , roomsDb_{0}
-  , invitesDb_{0}
-  , mediaDb_{0}
-  , readReceiptsDb_{0}
-  , notificationsDb_{0}
-  , devicesDb_{0}
-  , deviceKeysDb_{0}
-  , inboundMegolmSessionDb_{0}
-  , outboundMegolmSessionDb_{0}
   , localUserId_{userId}
 {
         setup();
@@ -280,17 +257,17 @@ Cache::setEncryptedRoom(lmdb::txn &txn, const std::string &room_id)
         nhlog::db()->info("mark room {} as encrypted", room_id);
 
         auto db = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
-        lmdb::dbi_put(txn, db, lmdb::val(room_id), lmdb::val("0"));
+        db.put(txn, room_id, "0");
 }
 
 bool
 Cache::isRoomEncrypted(const std::string &room_id)
 {
-        lmdb::val unused;
+        std::string_view unused;
 
         auto txn = lmdb::txn::begin(env_);
         auto db  = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
-        auto res = lmdb::dbi_get(txn, db, lmdb::val(room_id), unused);
+        auto res = db.get(txn, room_id, unused);
         txn.commit();
 
         return res;
@@ -306,12 +283,12 @@ Cache::exportSessionKeys()
         auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         auto cursor = lmdb::cursor::open(txn, inboundMegolmSessionDb_);
 
-        std::string key, value;
+        std::string_view key, value;
         while (cursor.get(key, value, MDB_NEXT)) {
                 ExportedSession exported;
                 MegolmSessionIndex index;
 
-                auto saved_session = unpickle<InboundSessionObject>(value, SECRET);
+                auto saved_session = unpickle<InboundSessionObject>(std::string(value), SECRET);
 
                 try {
                         index = nlohmann::json::parse(key).get<MegolmSessionIndex>();
@@ -363,7 +340,7 @@ Cache::saveInboundMegolmSession(const MegolmSessionIndex &index,
         const auto pickled = pickle<InboundSessionObject>(session.get(), SECRET);
 
         auto txn = lmdb::txn::begin(env_);
-        lmdb::dbi_put(txn, inboundMegolmSessionDb_, lmdb::val(key), lmdb::val(pickled));
+        inboundMegolmSessionDb_.put(txn, key, pickled);
         txn.commit();
 }
 
@@ -375,11 +352,10 @@ Cache::getInboundMegolmSession(const MegolmSessionIndex &index)
         try {
                 auto txn        = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
                 std::string key = json(index).dump();
-                lmdb::val value;
+                std::string_view value;
 
-                if (lmdb::dbi_get(txn, inboundMegolmSessionDb_, lmdb::val(key), value)) {
-                        auto session = unpickle<InboundSessionObject>(
-                          std::string(value.data(), value.size()), SECRET);
+                if (inboundMegolmSessionDb_.get(txn, key, value)) {
+                        auto session = unpickle<InboundSessionObject>(std::string(value), SECRET);
                         return session;
                 }
         } catch (std::exception &e) {
@@ -397,9 +373,9 @@ Cache::inboundMegolmSessionExists(const MegolmSessionIndex &index)
         try {
                 auto txn        = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
                 std::string key = json(index).dump();
-                lmdb::val value;
+                std::string_view value;
 
-                return lmdb::dbi_get(txn, inboundMegolmSessionDb_, lmdb::val(key), value);
+                return inboundMegolmSessionDb_.get(txn, key, value);
         } catch (std::exception &e) {
                 nhlog::db()->error("Failed to get inbound megolm session {}", e.what());
         }
@@ -428,7 +404,7 @@ Cache::updateOutboundMegolmSession(const std::string &room_id,
         j["session"] = pickle<OutboundSessionObject>(ptr.get(), SECRET);
 
         auto txn = lmdb::txn::begin(env_);
-        lmdb::dbi_put(txn, outboundMegolmSessionDb_, lmdb::val(room_id), lmdb::val(j.dump()));
+        outboundMegolmSessionDb_.put(txn, room_id, j.dump());
         txn.commit();
 }
 
@@ -442,7 +418,7 @@ Cache::dropOutboundMegolmSession(const std::string &room_id)
 
         {
                 auto txn = lmdb::txn::begin(env_);
-                lmdb::dbi_del(txn, outboundMegolmSessionDb_, lmdb::val(room_id), nullptr);
+                outboundMegolmSessionDb_.del(txn, room_id);
                 txn.commit();
         }
 }
@@ -460,7 +436,7 @@ Cache::saveOutboundMegolmSession(const std::string &room_id,
         j["session"] = pickled;
 
         auto txn = lmdb::txn::begin(env_);
-        lmdb::dbi_put(txn, outboundMegolmSessionDb_, lmdb::val(room_id), lmdb::val(j.dump()));
+        outboundMegolmSessionDb_.put(txn, room_id, j.dump());
         txn.commit();
 }
 
@@ -469,8 +445,8 @@ Cache::outboundMegolmSessionExists(const std::string &room_id) noexcept
 {
         try {
                 auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-                lmdb::val value;
-                return lmdb::dbi_get(txn, outboundMegolmSessionDb_, lmdb::val(room_id), value);
+                std::string_view value;
+                return outboundMegolmSessionDb_.get(txn, room_id, value);
         } catch (std::exception &e) {
                 nhlog::db()->error("Failed to retrieve outbound Megolm Session: {}", e.what());
                 return false;
@@ -484,9 +460,9 @@ Cache::getOutboundMegolmSession(const std::string &room_id)
                 using namespace mtx::crypto;
 
                 auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-                lmdb::val value;
-                lmdb::dbi_get(txn, outboundMegolmSessionDb_, lmdb::val(room_id), value);
-                auto obj = json::parse(std::string_view(value.data(), value.size()));
+                std::string_view value;
+                outboundMegolmSessionDb_.get(txn, room_id, value);
+                auto obj = json::parse(value);
 
                 OutboundGroupSessionDataRef ref{};
                 ref.data    = obj.at("data").get<OutboundGroupSessionData>();
@@ -519,7 +495,7 @@ Cache::saveOlmSession(const std::string &curve25519,
         stored_session.pickled_session = pickled;
         stored_session.last_message_ts = timestamp;
 
-        lmdb::dbi_put(txn, db, lmdb::val(session_id), lmdb::val(json(stored_session).dump()));
+        db.put(txn, session_id, json(stored_session).dump());
 
         txn.commit();
 }
@@ -532,14 +508,13 @@ Cache::getOlmSession(const std::string &curve25519, const std::string &session_i
         auto txn = lmdb::txn::begin(env_);
         auto db  = getOlmSessionsDb(txn, curve25519);
 
-        lmdb::val pickled;
-        bool found = lmdb::dbi_get(txn, db, lmdb::val(session_id), pickled);
+        std::string_view pickled;
+        bool found = db.get(txn, session_id, pickled);
 
         txn.commit();
 
         if (found) {
-                std::string_view raw(pickled.data(), pickled.size());
-                auto data = json::parse(raw).get<StoredOlmSession>();
+                auto data = json::parse(pickled).get<StoredOlmSession>();
                 return unpickle<SessionObject>(data.pickled_session, SECRET);
         }
 
@@ -554,15 +529,13 @@ Cache::getLatestOlmSession(const std::string &curve25519)
         auto txn = lmdb::txn::begin(env_);
         auto db  = getOlmSessionsDb(txn, curve25519);
 
-        std::string session_id, pickled_session;
+        std::string_view session_id, pickled_session;
 
         std::optional<StoredOlmSession> currentNewest;
 
         auto cursor = lmdb::cursor::open(txn, db);
         while (cursor.get(session_id, pickled_session, MDB_NEXT)) {
-                auto data =
-                  json::parse(std::string_view(pickled_session.data(), pickled_session.size()))
-                    .get<StoredOlmSession>();
+                auto data = json::parse(pickled_session).get<StoredOlmSession>();
                 if (!currentNewest || currentNewest->last_message_ts < data.last_message_ts)
                         currentNewest = data;
         }
@@ -583,7 +556,7 @@ Cache::getOlmSessions(const std::string &curve25519)
         auto txn = lmdb::txn::begin(env_);
         auto db  = getOlmSessionsDb(txn, curve25519);
 
-        std::string session_id, unused;
+        std::string_view session_id, unused;
         std::vector<std::string> res;
 
         auto cursor = lmdb::cursor::open(txn, db);
@@ -600,7 +573,7 @@ void
 Cache::saveOlmAccount(const std::string &data)
 {
         auto txn = lmdb::txn::begin(env_);
-        lmdb::dbi_put(txn, syncStateDb_, OLM_ACCOUNT_KEY, lmdb::val(data));
+        syncStateDb_.put(txn, OLM_ACCOUNT_KEY, data);
         txn.commit();
 }
 
@@ -608,8 +581,8 @@ std::string
 Cache::restoreOlmAccount()
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        lmdb::val pickled;
-        lmdb::dbi_get(txn, syncStateDb_, OLM_ACCOUNT_KEY, pickled);
+        std::string_view pickled;
+        syncStateDb_.get(txn, OLM_ACCOUNT_KEY, pickled);
         txn.commit();
 
         return std::string(pickled.data(), pickled.size());
@@ -702,10 +675,7 @@ Cache::saveImage(const std::string &url, const std::string &img_data)
         try {
                 auto txn = lmdb::txn::begin(env_);
 
-                lmdb::dbi_put(txn,
-                              mediaDb_,
-                              lmdb::val(url.data(), url.size()),
-                              lmdb::val(img_data.data(), img_data.size()));
+                mediaDb_.put(txn, url, img_data);
 
                 txn.commit();
         } catch (const lmdb::error &e) {
@@ -720,14 +690,14 @@ Cache::saveImage(const QString &url, const QByteArray &image)
 }
 
 QByteArray
-Cache::image(lmdb::txn &txn, const std::string &url) const
+Cache::image(lmdb::txn &txn, const std::string &url)
 {
         if (url.empty())
                 return QByteArray();
 
         try {
-                lmdb::val image;
-                bool res = lmdb::dbi_get(txn, mediaDb_, lmdb::val(url), image);
+                std::string_view image;
+                bool res = mediaDb_.get(txn, url, image);
 
                 if (!res)
                         return QByteArray();
@@ -741,19 +711,19 @@ Cache::image(lmdb::txn &txn, const std::string &url) const
 }
 
 QByteArray
-Cache::image(const QString &url) const
+Cache::image(const QString &url)
 {
         if (url.isEmpty())
                 return QByteArray();
 
-        auto key = url.toUtf8();
+        auto key = url.toStdString();
 
         try {
                 auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
-                lmdb::val image;
+                std::string_view image;
 
-                bool res = lmdb::dbi_get(txn, mediaDb_, lmdb::val(key.data(), key.size()), image);
+                bool res = mediaDb_.get(txn, key, image);
 
                 txn.commit();
 
@@ -771,9 +741,9 @@ Cache::image(const QString &url) const
 void
 Cache::removeInvite(lmdb::txn &txn, const std::string &room_id)
 {
-        lmdb::dbi_del(txn, invitesDb_, lmdb::val(room_id), nullptr);
-        lmdb::dbi_drop(txn, getInviteStatesDb(txn, room_id), true);
-        lmdb::dbi_drop(txn, getInviteMembersDb(txn, room_id), true);
+        invitesDb_.del(txn, room_id);
+        getInviteStatesDb(txn, room_id).drop(txn, true);
+        getInviteMembersDb(txn, room_id).drop(txn, true);
 }
 
 void
@@ -787,24 +757,24 @@ Cache::removeInvite(const std::string &room_id)
 void
 Cache::removeRoom(lmdb::txn &txn, const std::string &roomid)
 {
-        lmdb::dbi_del(txn, roomsDb_, lmdb::val(roomid), nullptr);
-        lmdb::dbi_drop(txn, getStatesDb(txn, roomid), true);
-        lmdb::dbi_drop(txn, getAccountDataDb(txn, roomid), true);
-        lmdb::dbi_drop(txn, getMembersDb(txn, roomid), true);
+        roomsDb_.del(txn, roomid);
+        getStatesDb(txn, roomid).drop(txn, true);
+        getAccountDataDb(txn, roomid).drop(txn, true);
+        getMembersDb(txn, roomid).drop(txn, true);
 }
 
 void
 Cache::removeRoom(const std::string &roomid)
 {
         auto txn = lmdb::txn::begin(env_, nullptr, 0);
-        lmdb::dbi_del(txn, roomsDb_, lmdb::val(roomid), nullptr);
+        roomsDb_.del(txn, roomid);
         txn.commit();
 }
 
 void
 Cache::setNextBatchToken(lmdb::txn &txn, const std::string &token)
 {
-        lmdb::dbi_put(txn, syncStateDb_, NEXT_BATCH_KEY, lmdb::val(token.data(), token.size()));
+        syncStateDb_.put(txn, NEXT_BATCH_KEY, token);
 }
 
 void
@@ -814,12 +784,12 @@ Cache::setNextBatchToken(lmdb::txn &txn, const QString &token)
 }
 
 bool
-Cache::isInitialized() const
+Cache::isInitialized()
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        lmdb::val token;
+        std::string_view token;
 
-        bool res = lmdb::dbi_get(txn, syncStateDb_, NEXT_BATCH_KEY, token);
+        bool res = syncStateDb_.get(txn, NEXT_BATCH_KEY, token);
 
         txn.commit();
 
@@ -827,12 +797,12 @@ Cache::isInitialized() const
 }
 
 std::string
-Cache::nextBatchToken() const
+Cache::nextBatchToken()
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        lmdb::val token;
+        std::string_view token;
 
-        auto result = lmdb::dbi_get(txn, syncStateDb_, NEXT_BATCH_KEY, token);
+        bool result = syncStateDb_.get(txn, NEXT_BATCH_KEY, token);
 
         txn.commit();
 
@@ -880,8 +850,8 @@ Cache::runMigrations()
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
-        lmdb::val current_version;
-        bool res = lmdb::dbi_get(txn, syncStateDb_, CACHE_FORMAT_VERSION_KEY, current_version);
+        std::string_view current_version;
+        bool res = syncStateDb_.get(txn, CACHE_FORMAT_VERSION_KEY, current_version);
 
         txn.commit();
 
@@ -923,7 +893,7 @@ Cache::runMigrations()
                                            {
                                                    auto roomsCursor =
                                                      lmdb::cursor::open(txn, messagesDb);
-                                                   lmdb::val ts, stored_message;
+                                                   std::string_view ts, stored_message;
                                                    bool start = true;
                                                    mtx::responses::Timeline oldMessages;
                                                    while (roomsCursor.get(ts,
@@ -985,7 +955,7 @@ Cache::runMigrations()
 
                            auto mainDb = lmdb::dbi::open(txn, nullptr);
 
-                           std::string dbName, ignored;
+                           std::string_view dbName, ignored;
                            auto olmDbCursor = lmdb::cursor::open(txn, mainDb);
                            while (olmDbCursor.get(dbName, ignored, MDB_NEXT)) {
                                    // skip every db but olm session dbs
@@ -995,9 +965,9 @@ Cache::runMigrations()
 
                                    nhlog::db()->debug("Migrating {}", dbName);
 
-                                   auto olmDb = lmdb::dbi::open(txn, dbName.c_str());
+                                   auto olmDb = lmdb::dbi::open(txn, std::string(dbName).c_str());
 
-                                   std::string session_id, session_value;
+                                   std::string_view session_id, session_value;
 
                                    std::vector<std::pair<std::string, StoredOlmSession>> sessions;
 
@@ -1025,18 +995,15 @@ Cache::runMigrations()
 
                                    olmDb.drop(txn, true);
 
-                                   auto newDbName = dbName;
+                                   auto newDbName = std::string(dbName);
                                    newDbName.erase(0, sizeof("olm_sessions") - 1);
                                    newDbName = "olm_sessions.v2" + newDbName;
 
                                    auto newDb = lmdb::dbi::open(txn, newDbName.c_str(), MDB_CREATE);
 
                                    for (const auto &[key, value] : sessions) {
-                                           nhlog::db()->debug("{}\n{}", key, json(value).dump());
-                                           lmdb::dbi_put(txn,
-                                                         newDb,
-                                                         lmdb::val(key),
-                                                         lmdb::val(json(value).dump()));
+                                           // nhlog::db()->debug("{}\n{}", key, json(value).dump());
+                                           newDb.put(txn, key, json(value).dump());
                                    }
                            }
                            olmDbCursor.close();
@@ -1071,8 +1038,8 @@ Cache::formatVersion()
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
-        lmdb::val current_version;
-        bool res = lmdb::dbi_get(txn, syncStateDb_, CACHE_FORMAT_VERSION_KEY, current_version);
+        std::string_view current_version;
+        bool res = syncStateDb_.get(txn, CACHE_FORMAT_VERSION_KEY, current_version);
 
         txn.commit();
 
@@ -1094,11 +1061,7 @@ Cache::setCurrentFormat()
 {
         auto txn = lmdb::txn::begin(env_);
 
-        lmdb::dbi_put(
-          txn,
-          syncStateDb_,
-          CACHE_FORMAT_VERSION_KEY,
-          lmdb::val(CURRENT_CACHE_FORMAT_VERSION.data(), CURRENT_CACHE_FORMAT_VERSION.size()));
+        syncStateDb_.put(txn, CACHE_FORMAT_VERSION_KEY, CURRENT_CACHE_FORMAT_VERSION);
 
         txn.commit();
 }
@@ -1115,10 +1078,9 @@ Cache::readReceipts(const QString &event_id, const QString &room_id)
                 auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
                 auto key = json_key.dump();
 
-                lmdb::val value;
+                std::string_view value;
 
-                bool res =
-                  lmdb::dbi_get(txn, readReceiptsDb_, lmdb::val(key.data(), key.size()), value);
+                bool res = readReceiptsDb_.get(txn, key, value);
 
                 txn.commit();
 
@@ -1153,10 +1115,9 @@ Cache::updateReadReceipt(lmdb::txn &txn, const std::string &room_id, const Recei
                 try {
                         const auto key = json_key.dump();
 
-                        lmdb::val prev_value;
+                        std::string_view prev_value;
 
-                        bool exists = lmdb::dbi_get(
-                          txn, readReceiptsDb_, lmdb::val(key.data(), key.size()), prev_value);
+                        bool exists = readReceiptsDb_.get(txn, key, prev_value);
 
                         std::map<std::string, uint64_t> saved_receipts;
 
@@ -1183,10 +1144,7 @@ Cache::updateReadReceipt(lmdb::txn &txn, const std::string &room_id, const Recei
                         nlohmann::json json_updated_value = saved_receipts;
                         std::string merged_receipts       = json_updated_value.dump();
 
-                        lmdb::dbi_put(txn,
-                                      readReceiptsDb_,
-                                      lmdb::val(key.data(), key.size()),
-                                      lmdb::val(merged_receipts.data(), merged_receipts.size()));
+                        readReceiptsDb_.put(txn, key, merged_receipts);
 
                 } catch (const lmdb::error &e) {
                         nhlog::db()->critical("updateReadReceipts: {}", e.what());
@@ -1254,10 +1212,7 @@ Cache::saveState(const mtx::responses::Sync &res)
                         std::visit(
                           [&txn, &accountDataDb](const auto &event) {
                                   auto j = json(event);
-                                  lmdb::dbi_put(txn,
-                                                accountDataDb,
-                                                lmdb::val(j["type"].get<std::string>()),
-                                                lmdb::val(j.dump()));
+                                  accountDataDb.put(txn, j["type"].get<std::string>(), j.dump());
                           },
                           ev);
         }
@@ -1289,10 +1244,8 @@ Cache::saveState(const mtx::responses::Sync &res)
                                 std::visit(
                                   [&txn, &accountDataDb](const auto &event) {
                                           auto j = json(event);
-                                          lmdb::dbi_put(txn,
-                                                        accountDataDb,
-                                                        lmdb::val(j["type"].get<std::string>()),
-                                                        lmdb::val(j.dump()));
+                                          accountDataDb.put(
+                                            txn, j["type"].get<std::string>(), j.dump());
                                   },
                                   evt);
 
@@ -1314,8 +1267,8 @@ Cache::saveState(const mtx::responses::Sync &res)
                 }
                 if (!has_new_tags) {
                         // retrieve the old tags, they haven't changed
-                        lmdb::val data;
-                        if (lmdb::dbi_get(txn, roomsDb_, lmdb::val(room.first), data)) {
+                        std::string_view data;
+                        if (roomsDb_.get(txn, room.first, data)) {
                                 try {
                                         RoomInfo tmp =
                                           json::parse(std::string_view(data.data(), data.size()));
@@ -1330,8 +1283,7 @@ Cache::saveState(const mtx::responses::Sync &res)
                         }
                 }
 
-                lmdb::dbi_put(
-                  txn, roomsDb_, lmdb::val(room.first), lmdb::val(json(updatedInfo).dump()));
+                roomsDb_.put(txn, room.first, json(updatedInfo).dump());
 
                 for (const auto &e : room.second.ephemeral.events) {
                         if (auto receiptsEv = std::get_if<
@@ -1411,8 +1363,7 @@ Cache::saveInvites(lmdb::txn &txn, const std::map<std::string, mtx::responses::I
                   getInviteRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
                 updatedInfo.is_invite = true;
 
-                lmdb::dbi_put(
-                  txn, invitesDb_, lmdb::val(room.first), lmdb::val(json(updatedInfo).dump()));
+                invitesDb_.put(txn, room.first, json(updatedInfo).dump());
         }
 }
 
@@ -1433,16 +1384,13 @@ Cache::saveInvite(lmdb::txn &txn,
 
                         MemberInfo tmp{display_name, msg->content.avatar_url};
 
-                        lmdb::dbi_put(
-                          txn, membersdb, lmdb::val(msg->state_key), lmdb::val(json(tmp).dump()));
+                        membersdb.put(txn, msg->state_key, json(tmp).dump());
                 } else {
                         std::visit(
                           [&txn, &statesdb](auto msg) {
-                                  auto j   = json(msg);
-                                  bool res = lmdb::dbi_put(txn,
-                                                           statesdb,
-                                                           lmdb::val(j["type"].get<std::string>()),
-                                                           lmdb::val(j.dump()));
+                                  auto j = json(msg);
+                                  bool res =
+                                    statesdb.put(txn, j["type"].get<std::string>(), j.dump());
 
                                   if (!res)
                                           nhlog::db()->warn("couldn't save data: {}",
@@ -1461,10 +1409,7 @@ Cache::savePresence(
         for (const auto &update : presenceUpdates) {
                 auto presenceDb = getPresenceDb(txn);
 
-                lmdb::dbi_put(txn,
-                              presenceDb,
-                              lmdb::val(update.sender),
-                              lmdb::val(json(update.content).dump()));
+                presenceDb.put(txn, update.sender, json(update.content).dump());
         }
 }
 
@@ -1531,12 +1476,12 @@ Cache::singleRoomInfo(const std::string &room_id)
         auto txn      = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         auto statesdb = getStatesDb(txn, room_id);
 
-        lmdb::val data;
+        std::string_view data;
 
         // Check if the room is joined.
-        if (lmdb::dbi_get(txn, roomsDb_, lmdb::val(room_id), data)) {
+        if (roomsDb_.get(txn, room_id, data)) {
                 try {
-                        RoomInfo tmp     = json::parse(std::string_view(data.data(), data.size()));
+                        RoomInfo tmp     = json::parse(data);
                         tmp.member_count = getMembersDb(txn, room_id).size(txn);
                         tmp.join_rule    = getRoomJoinRule(txn, statesdb);
                         tmp.guest_access = getRoomGuestAccess(txn, statesdb);
@@ -1566,14 +1511,13 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
         auto txn = lmdb::txn::begin(env_);
 
         for (const auto &room : rooms) {
-                lmdb::val data;
+                std::string_view data;
                 auto statesdb = getStatesDb(txn, room);
 
                 // Check if the room is joined.
-                if (lmdb::dbi_get(txn, roomsDb_, lmdb::val(room), data)) {
+                if (roomsDb_.get(txn, room, data)) {
                         try {
-                                RoomInfo tmp =
-                                  json::parse(std::string_view(data.data(), data.size()));
+                                RoomInfo tmp     = json::parse(data);
                                 tmp.member_count = getMembersDb(txn, room).size(txn);
                                 tmp.join_rule    = getRoomJoinRule(txn, statesdb);
                                 tmp.guest_access = getRoomGuestAccess(txn, statesdb);
@@ -1587,10 +1531,9 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
                         }
                 } else {
                         // Check if the room is an invite.
-                        if (lmdb::dbi_get(txn, invitesDb_, lmdb::val(room), data)) {
+                        if (invitesDb_.get(txn, room, data)) {
                                 try {
-                                        RoomInfo tmp =
-                                          json::parse(std::string_view(data.data(), data.size()));
+                                        RoomInfo tmp     = json::parse(std::string_view(data));
                                         tmp.member_count = getInviteMembersDb(txn, room).size(txn);
 
                                         room_info.emplace(QString::fromStdString(room),
@@ -1617,11 +1560,11 @@ Cache::roomIds()
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
         std::vector<QString> rooms;
-        std::string room_id, unused;
+        std::string_view room_id, unused;
 
         auto roomsCursor = lmdb::cursor::open(txn, roomsDb_);
         while (roomsCursor.get(room_id, unused, MDB_NEXT))
-                rooms.push_back(QString::fromStdString(room_id));
+                rooms.push_back(QString::fromStdString(std::string(room_id)));
 
         roomsCursor.close();
         txn.commit();
@@ -1657,12 +1600,12 @@ Cache::previousBatchToken(const std::string &room_id)
         auto orderDb = getEventOrderDb(txn, room_id);
 
         auto cursor = lmdb::cursor::open(txn, orderDb);
-        lmdb::val indexVal, val;
+        std::string_view indexVal, val;
         if (!cursor.get(indexVal, val, MDB_FIRST)) {
                 return "";
         }
 
-        auto j = json::parse(std::string_view(val.data(), val.size()));
+        auto j = json::parse(val);
 
         return j.value("prev_batch", "");
 }
@@ -1676,19 +1619,19 @@ Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id, uint64_t 
 
         Messages messages{};
 
-        lmdb::val indexVal, event_id;
+        std::string_view indexVal, event_id;
 
         auto cursor = lmdb::cursor::open(txn, orderDb);
         if (index == std::numeric_limits<uint64_t>::max()) {
                 if (cursor.get(indexVal, event_id, forward ? MDB_FIRST : MDB_LAST)) {
-                        index = to<uint64_t>(indexVal);
+                        index = lmdb::from_sv<uint64_t>(indexVal);
                 } else {
                         messages.end_of_cache = true;
                         return messages;
                 }
         } else {
                 if (cursor.get(indexVal, event_id, MDB_SET)) {
-                        index = to<uint64_t>(indexVal);
+                        index = lmdb::from_sv<uint64_t>(indexVal);
                 } else {
                         messages.end_of_cache = true;
                         return messages;
@@ -1703,15 +1646,14 @@ Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id, uint64_t 
                                  counter == 0 ? (forward ? MDB_FIRST : MDB_LAST)
                                               : (forward ? MDB_NEXT : MDB_PREV))) &&
                counter++ < BATCH_SIZE) {
-                lmdb::val event;
-                bool success = lmdb::dbi_get(txn, eventsDb, event_id, event);
+                std::string_view event;
+                bool success = eventsDb.get(txn, event_id, event);
                 if (!success)
                         continue;
 
                 mtx::events::collections::TimelineEvent te;
                 try {
-                        mtx::events::collections::from_json(
-                          json::parse(std::string_view(event.data(), event.size())), te);
+                        mtx::events::collections::from_json(json::parse(event), te);
                 } catch (std::exception &e) {
                         nhlog::db()->error("Failed to parse message from cache {}", e.what());
                         continue;
@@ -1722,7 +1664,7 @@ Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id, uint64_t 
         cursor.close();
 
         // std::reverse(timeline.events.begin(), timeline.events.end());
-        messages.next_index   = to<uint64_t>(indexVal);
+        messages.next_index   = lmdb::from_sv<uint64_t>(indexVal);
         messages.end_of_cache = !ret;
 
         return messages;
@@ -1734,15 +1676,14 @@ Cache::getEvent(const std::string &room_id, const std::string &event_id)
         auto txn      = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         auto eventsDb = getEventsDb(txn, room_id);
 
-        lmdb::val event{};
-        bool success = lmdb::dbi_get(txn, eventsDb, lmdb::val(event_id), event);
+        std::string_view event{};
+        bool success = eventsDb.get(txn, event_id, event);
         if (!success)
                 return {};
 
         mtx::events::collections::TimelineEvent te;
         try {
-                mtx::events::collections::from_json(
-                  json::parse(std::string_view(event.data(), event.size())), te);
+                mtx::events::collections::from_json(json::parse(event), te);
         } catch (std::exception &e) {
                 nhlog::db()->error("Failed to parse message from cache {}", e.what());
                 return std::nullopt;
@@ -1758,7 +1699,7 @@ Cache::storeEvent(const std::string &room_id,
         auto txn        = lmdb::txn::begin(env_);
         auto eventsDb   = getEventsDb(txn, room_id);
         auto event_json = mtx::accessors::serialize_event(event.data);
-        lmdb::dbi_put(txn, eventsDb, lmdb::val(event_id), lmdb::val(event_json.dump()));
+        eventsDb.put(txn, event_id, event_json.dump());
         txn.commit();
 }
 
@@ -1770,9 +1711,9 @@ Cache::relatedEvents(const std::string &room_id, const std::string &event_id)
 
         std::vector<std::string> related_ids;
 
-        auto related_cursor  = lmdb::cursor::open(txn, relationsDb);
-        lmdb::val related_to = event_id, related_event;
-        bool first           = true;
+        auto related_cursor         = lmdb::cursor::open(txn, relationsDb);
+        std::string_view related_to = event_id, related_event;
+        bool first                  = true;
 
         try {
                 if (!related_cursor.get(related_to, related_event, MDB_SET))
@@ -1800,17 +1741,17 @@ Cache::roomInfo(bool withInvites)
 
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
-        std::string room_id;
-        std::string room_data;
+        std::string_view room_id;
+        std::string_view room_data;
 
         // Gather info about the joined rooms.
         auto roomsCursor = lmdb::cursor::open(txn, roomsDb_);
         while (roomsCursor.get(room_id, room_data, MDB_NEXT)) {
                 RoomInfo tmp     = json::parse(std::move(room_data));
-                tmp.member_count = getMembersDb(txn, room_id).size(txn);
-                tmp.msgInfo      = getLastMessageInfo(txn, room_id);
+                tmp.member_count = getMembersDb(txn, std::string(room_id)).size(txn);
+                tmp.msgInfo      = getLastMessageInfo(txn, std::string(room_id));
 
-                result.insert(QString::fromStdString(std::move(room_id)), std::move(tmp));
+                result.insert(QString::fromStdString(std::string(room_id)), std::move(tmp));
         }
         roomsCursor.close();
 
@@ -1819,8 +1760,8 @@ Cache::roomInfo(bool withInvites)
                 auto invitesCursor = lmdb::cursor::open(txn, invitesDb_);
                 while (invitesCursor.get(room_id, room_data, MDB_NEXT)) {
                         RoomInfo tmp     = json::parse(room_data);
-                        tmp.member_count = getInviteMembersDb(txn, room_id).size(txn);
-                        result.insert(QString::fromStdString(std::move(room_id)), std::move(tmp));
+                        tmp.member_count = getInviteMembersDb(txn, std::string(room_id)).size(txn);
+                        result.insert(QString::fromStdString(std::string(room_id)), std::move(tmp));
                 }
                 invitesCursor.close();
         }
@@ -1833,7 +1774,7 @@ Cache::roomInfo(bool withInvites)
 std::string
 Cache::getLastEventId(lmdb::txn &txn, const std::string &room_id)
 {
-        lmdb::dbi orderDb{0};
+        lmdb::dbi orderDb;
         try {
                 orderDb = getOrderToMessageDb(txn, room_id);
         } catch (lmdb::runtime_error &e) {
@@ -1843,7 +1784,7 @@ Cache::getLastEventId(lmdb::txn &txn, const std::string &room_id)
                 return {};
         }
 
-        lmdb::val indexVal, val;
+        std::string_view indexVal, val;
 
         auto cursor = lmdb::cursor::open(txn, orderDb);
         if (!cursor.get(indexVal, val, MDB_LAST)) {
@@ -1857,7 +1798,7 @@ std::optional<Cache::TimelineRange>
 Cache::getTimelineRange(const std::string &room_id)
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        lmdb::dbi orderDb{0};
+        lmdb::dbi orderDb;
         try {
                 orderDb = getOrderToMessageDb(txn, room_id);
         } catch (lmdb::runtime_error &e) {
@@ -1867,7 +1808,7 @@ Cache::getTimelineRange(const std::string &room_id)
                 return {};
         }
 
-        lmdb::val indexVal, val;
+        std::string_view indexVal, val;
 
         auto cursor = lmdb::cursor::open(txn, orderDb);
         if (!cursor.get(indexVal, val, MDB_LAST)) {
@@ -1875,12 +1816,12 @@ Cache::getTimelineRange(const std::string &room_id)
         }
 
         TimelineRange range{};
-        range.last = to<uint64_t>(indexVal);
+        range.last = lmdb::from_sv<uint64_t>(indexVal);
 
         if (!cursor.get(indexVal, val, MDB_FIRST)) {
                 return {};
         }
-        range.first = to<uint64_t>(indexVal);
+        range.first = lmdb::from_sv<uint64_t>(indexVal);
 
         return range;
 }
@@ -1889,7 +1830,7 @@ Cache::getTimelineIndex(const std::string &room_id, std::string_view event_id)
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
-        lmdb::dbi orderDb{0};
+        lmdb::dbi orderDb;
         try {
                 orderDb = getMessageToOrderDb(txn, room_id);
         } catch (lmdb::runtime_error &e) {
@@ -1899,14 +1840,14 @@ Cache::getTimelineIndex(const std::string &room_id, std::string_view event_id)
                 return {};
         }
 
-        lmdb::val indexVal{event_id.data(), event_id.size()}, val;
+        std::string_view indexVal{event_id.data(), event_id.size()}, val;
 
-        bool success = lmdb::dbi_get(txn, orderDb, indexVal, val);
+        bool success = orderDb.get(txn, indexVal, val);
         if (!success) {
                 return {};
         }
 
-        return to<uint64_t>(val);
+        return lmdb::from_sv<uint64_t>(val);
 }
 
 std::optional<uint64_t>
@@ -1917,7 +1858,7 @@ Cache::getEventIndex(const std::string &room_id, std::string_view event_id)
 
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
-        lmdb::dbi orderDb{0};
+        lmdb::dbi orderDb;
         try {
                 orderDb = getEventToOrderDb(txn, room_id);
         } catch (lmdb::runtime_error &e) {
@@ -1927,14 +1868,14 @@ Cache::getEventIndex(const std::string &room_id, std::string_view event_id)
                 return {};
         }
 
-        lmdb::val indexVal{event_id.data(), event_id.size()}, val;
+        std::string_view val;
 
-        bool success = lmdb::dbi_get(txn, orderDb, indexVal, val);
+        bool success = orderDb.get(txn, event_id, val);
         if (!success) {
                 return {};
         }
 
-        return to<uint64_t>(val);
+        return lmdb::from_sv<uint64_t>(val);
 }
 
 std::optional<std::pair<uint64_t, std::string>>
@@ -1945,9 +1886,9 @@ Cache::lastInvisibleEventAfter(const std::string &room_id, std::string_view even
 
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
-        lmdb::dbi orderDb{0};
-        lmdb::dbi eventOrderDb{0};
-        lmdb::dbi timelineDb{0};
+        lmdb::dbi orderDb;
+        lmdb::dbi eventOrderDb;
+        lmdb::dbi timelineDb;
         try {
                 orderDb      = getEventToOrderDb(txn, room_id);
                 eventOrderDb = getEventOrderDb(txn, room_id);
@@ -1959,26 +1900,24 @@ Cache::lastInvisibleEventAfter(const std::string &room_id, std::string_view even
                 return {};
         }
 
-        lmdb::val eventIdVal{event_id.data(), event_id.size()}, indexVal;
+        std::string_view indexVal;
 
-        bool success = lmdb::dbi_get(txn, orderDb, eventIdVal, indexVal);
+        bool success = orderDb.get(txn, event_id, indexVal);
         if (!success) {
                 return {};
         }
-        uint64_t prevIdx = to<uint64_t>(indexVal);
-        std::string prevId{eventIdVal.data(), eventIdVal.size()};
+        uint64_t prevIdx = lmdb::from_sv<uint64_t>(indexVal);
+        std::string prevId{event_id};
 
         auto cursor = lmdb::cursor::open(txn, eventOrderDb);
         cursor.get(indexVal, MDB_SET);
-        while (cursor.get(indexVal, eventIdVal, MDB_NEXT)) {
-                std::string evId =
-                  json::parse(std::string_view(eventIdVal.data(), eventIdVal.size()))["event_id"]
-                    .get<std::string>();
-                lmdb::val temp;
-                if (lmdb::dbi_get(txn, timelineDb, lmdb::val(evId.data(), evId.size()), temp)) {
+        while (cursor.get(indexVal, event_id, MDB_NEXT)) {
+                std::string evId = json::parse(event_id)["event_id"].get<std::string>();
+                std::string_view temp;
+                if (timelineDb.get(txn, evId, temp)) {
                         return std::pair{prevIdx, std::string(prevId)};
                 } else {
-                        prevIdx = to<uint64_t>(indexVal);
+                        prevIdx = lmdb::from_sv<uint64_t>(indexVal);
                         prevId  = std::move(evId);
                 }
         }
@@ -1991,7 +1930,7 @@ Cache::getArrivalIndex(const std::string &room_id, std::string_view event_id)
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
-        lmdb::dbi orderDb{0};
+        lmdb::dbi orderDb;
         try {
                 orderDb = getEventToOrderDb(txn, room_id);
         } catch (lmdb::runtime_error &e) {
@@ -2001,21 +1940,21 @@ Cache::getArrivalIndex(const std::string &room_id, std::string_view event_id)
                 return {};
         }
 
-        lmdb::val indexVal{event_id.data(), event_id.size()}, val;
+        std::string_view val;
 
-        bool success = lmdb::dbi_get(txn, orderDb, indexVal, val);
+        bool success = orderDb.get(txn, event_id, val);
         if (!success) {
                 return {};
         }
 
-        return to<uint64_t>(val);
+        return lmdb::from_sv<uint64_t>(val);
 }
 
 std::optional<std::string>
 Cache::getTimelineEventId(const std::string &room_id, uint64_t index)
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        lmdb::dbi orderDb{0};
+        lmdb::dbi orderDb;
         try {
                 orderDb = getOrderToMessageDb(txn, room_id);
         } catch (lmdb::runtime_error &e) {
@@ -2025,20 +1964,20 @@ Cache::getTimelineEventId(const std::string &room_id, uint64_t index)
                 return {};
         }
 
-        lmdb::val indexVal{&index, sizeof(index)}, val;
+        std::string_view val;
 
-        bool success = lmdb::dbi_get(txn, orderDb, indexVal, val);
+        bool success = orderDb.get(txn, lmdb::to_sv(index), val);
         if (!success) {
                 return {};
         }
 
-        return std::string(val.data(), val.size());
+        return std::string(val);
 }
 
 DescInfo
 Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
 {
-        lmdb::dbi orderDb{0};
+        lmdb::dbi orderDb;
         try {
                 orderDb = getOrderToMessageDb(txn, room_id);
         } catch (lmdb::runtime_error &e) {
@@ -2047,7 +1986,8 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
                                    e.what());
                 return {};
         }
-        lmdb::dbi eventsDb{0};
+
+        lmdb::dbi eventsDb;
         try {
                 eventsDb = getEventsDb(txn, room_id);
         } catch (lmdb::runtime_error &e) {
@@ -2056,8 +1996,8 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
                                    e.what());
                 return {};
         }
-        auto membersdb{0};
 
+        lmdb::dbi membersdb;
         try {
                 membersdb = getMembersDb(txn, room_id);
         } catch (lmdb::runtime_error &e) {
@@ -2074,19 +2014,19 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
 
         DescInfo fallbackDesc{};
 
-        lmdb::val indexVal, event_id;
+        std::string_view indexVal, event_id;
 
         auto cursor = lmdb::cursor::open(txn, orderDb);
         bool first  = true;
         while (cursor.get(indexVal, event_id, first ? MDB_LAST : MDB_PREV)) {
                 first = false;
 
-                lmdb::val event;
-                bool success = lmdb::dbi_get(txn, eventsDb, event_id, event);
+                std::string_view event;
+                bool success = eventsDb.get(txn, event_id, event);
                 if (!success)
                         continue;
 
-                auto obj = json::parse(std::string_view(event.data(), event.size()));
+                auto obj = json::parse(event);
 
                 if (fallbackDesc.event_id.isEmpty() && obj["type"] == "m.room.member" &&
                     obj["state_key"] == local_user.toStdString() &&
@@ -2109,10 +2049,9 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
                 mtx::events::collections::TimelineEvent te;
                 mtx::events::collections::from_json(obj, te);
 
-                lmdb::val info;
+                std::string_view info;
                 MemberInfo m;
-                if (lmdb::dbi_get(
-                      txn, membersdb, lmdb::val(obj["sender"].get<std::string>()), info)) {
+                if (membersdb.get(txn, obj["sender"].get<std::string>(), info)) {
                         m = json::parse(std::string_view(info.data(), info.size()));
                 }
 
@@ -2133,10 +2072,10 @@ Cache::invites()
         auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         auto cursor = lmdb::cursor::open(txn, invitesDb_);
 
-        std::string room_id, unused;
+        std::string_view room_id, unused;
 
         while (cursor.get(room_id, unused, MDB_NEXT))
-                result.emplace(QString::fromStdString(std::move(room_id)), true);
+                result.emplace(QString::fromStdString(std::string(room_id)), true);
 
         cursor.close();
         txn.commit();
@@ -2150,9 +2089,8 @@ Cache::getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersd
         using namespace mtx::events;
         using namespace mtx::events::state;
 
-        lmdb::val event;
-        bool res = lmdb::dbi_get(
-          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomAvatar)), event);
+        std::string_view event;
+        bool res = statesdb.get(txn, to_string(mtx::events::EventType::RoomAvatar), event);
 
         if (res) {
                 try {
@@ -2171,8 +2109,8 @@ Cache::getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersd
                 return QString();
 
         auto cursor = lmdb::cursor::open(txn, membersdb);
-        std::string user_id;
-        std::string member_data;
+        std::string_view user_id;
+        std::string_view member_data;
         std::string fallback_url;
 
         // Resolve avatar for 1-1 chats.
@@ -2203,9 +2141,8 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
         using namespace mtx::events;
         using namespace mtx::events::state;
 
-        lmdb::val event;
-        bool res = lmdb::dbi_get(
-          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomName)), event);
+        std::string_view event;
+        bool res = statesdb.get(txn, to_string(mtx::events::EventType::RoomName), event);
 
         if (res) {
                 try {
@@ -2219,8 +2156,7 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
                 }
         }
 
-        res = lmdb::dbi_get(
-          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomCanonicalAlias)), event);
+        res = statesdb.get(txn, to_string(mtx::events::EventType::RoomCanonicalAlias), event);
 
         if (res) {
                 try {
@@ -2239,8 +2175,8 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
         const auto total = membersdb.size(txn);
 
         std::size_t ii = 0;
-        std::string user_id;
-        std::string member_data;
+        std::string_view user_id;
+        std::string_view member_data;
         std::map<std::string, MemberInfo> members;
 
         while (cursor.get(user_id, member_data, MDB_NEXT) && ii < 3) {
@@ -2281,14 +2217,12 @@ Cache::getRoomJoinRule(lmdb::txn &txn, lmdb::dbi &statesdb)
         using namespace mtx::events;
         using namespace mtx::events::state;
 
-        lmdb::val event;
-        bool res = lmdb::dbi_get(
-          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomJoinRules)), event);
+        std::string_view event;
+        bool res = statesdb.get(txn, to_string(mtx::events::EventType::RoomJoinRules), event);
 
         if (res) {
                 try {
-                        StateEvent<state::JoinRules> msg =
-                          json::parse(std::string_view(event.data(), event.size()));
+                        StateEvent<state::JoinRules> msg = json::parse(event);
                         return msg.content.join_rule;
                 } catch (const json::exception &e) {
                         nhlog::db()->warn("failed to parse m.room.join_rule event: {}", e.what());
@@ -2303,14 +2237,12 @@ Cache::getRoomGuestAccess(lmdb::txn &txn, lmdb::dbi &statesdb)
         using namespace mtx::events;
         using namespace mtx::events::state;
 
-        lmdb::val event;
-        bool res = lmdb::dbi_get(
-          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomGuestAccess)), event);
+        std::string_view event;
+        bool res = statesdb.get(txn, to_string(mtx::events::EventType::RoomGuestAccess), event);
 
         if (res) {
                 try {
-                        StateEvent<GuestAccess> msg =
-                          json::parse(std::string_view(event.data(), event.size()));
+                        StateEvent<GuestAccess> msg = json::parse(event);
                         return msg.content.guest_access == AccessState::CanJoin;
                 } catch (const json::exception &e) {
                         nhlog::db()->warn("failed to parse m.room.guest_access event: {}",
@@ -2326,14 +2258,12 @@ Cache::getRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb)
         using namespace mtx::events;
         using namespace mtx::events::state;
 
-        lmdb::val event;
-        bool res = lmdb::dbi_get(
-          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomTopic)), event);
+        std::string_view event;
+        bool res = statesdb.get(txn, to_string(mtx::events::EventType::RoomTopic), event);
 
         if (res) {
                 try {
-                        StateEvent<Topic> msg =
-                          json::parse(std::string_view(event.data(), event.size()));
+                        StateEvent<Topic> msg = json::parse(event);
 
                         if (!msg.content.topic.empty())
                                 return QString::fromStdString(msg.content.topic);
@@ -2351,14 +2281,12 @@ Cache::getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb)
         using namespace mtx::events;
         using namespace mtx::events::state;
 
-        lmdb::val event;
-        bool res = lmdb::dbi_get(
-          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomCreate)), event);
+        std::string_view event;
+        bool res = statesdb.get(txn, to_string(mtx::events::EventType::RoomCreate), event);
 
         if (res) {
                 try {
-                        StateEvent<Create> msg =
-                          json::parse(std::string_view(event.data(), event.size()));
+                        StateEvent<Create> msg = json::parse(event);
 
                         if (!msg.content.room_version.empty())
                                 return QString::fromStdString(msg.content.room_version);
@@ -2380,14 +2308,12 @@ Cache::getRoomAliases(const std::string &roomid)
         auto txn      = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         auto statesdb = getStatesDb(txn, roomid);
 
-        lmdb::val event;
-        bool res = lmdb::dbi_get(
-          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomCanonicalAlias)), event);
+        std::string_view event;
+        bool res = statesdb.get(txn, to_string(mtx::events::EventType::RoomCanonicalAlias), event);
 
         if (res) {
                 try {
-                        StateEvent<CanonicalAlias> msg =
-                          json::parse(std::string_view(event.data(), event.size()));
+                        StateEvent<CanonicalAlias> msg = json::parse(event);
 
                         return msg.content;
                 } catch (const json::exception &e) {
@@ -2405,14 +2331,12 @@ Cache::getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &members
         using namespace mtx::events;
         using namespace mtx::events::state;
 
-        lmdb::val event;
-        bool res = lmdb::dbi_get(
-          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomName)), event);
+        std::string_view event;
+        bool res = statesdb.get(txn, to_string(mtx::events::EventType::RoomName), event);
 
         if (res) {
                 try {
-                        StrippedEvent<state::Name> msg =
-                          json::parse(std::string_view(event.data(), event.size()));
+                        StrippedEvent<state::Name> msg = json::parse(event);
                         return QString::fromStdString(msg.content.name);
                 } catch (const json::exception &e) {
                         nhlog::db()->warn("failed to parse m.room.name event: {}", e.what());
@@ -2420,7 +2344,7 @@ Cache::getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &members
         }
 
         auto cursor = lmdb::cursor::open(txn, membersdb);
-        std::string user_id, member_data;
+        std::string_view user_id, member_data;
 
         while (cursor.get(user_id, member_data, MDB_NEXT)) {
                 if (user_id == localUserId_.toStdString())
@@ -2447,14 +2371,12 @@ Cache::getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &me
         using namespace mtx::events;
         using namespace mtx::events::state;
 
-        lmdb::val event;
-        bool res = lmdb::dbi_get(
-          txn, statesdb, lmdb::val(to_string(mtx::events::EventType::RoomAvatar)), event);
+        std::string_view event;
+        bool res = statesdb.get(txn, to_string(mtx::events::EventType::RoomAvatar), event);
 
         if (res) {
                 try {
-                        StrippedEvent<state::Avatar> msg =
-                          json::parse(std::string_view(event.data(), event.size()));
+                        StrippedEvent<state::Avatar> msg = json::parse(event);
                         return QString::fromStdString(msg.content.url);
                 } catch (const json::exception &e) {
                         nhlog::db()->warn("failed to parse m.room.avatar event: {}", e.what());
@@ -2462,7 +2384,7 @@ Cache::getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &me
         }
 
         auto cursor = lmdb::cursor::open(txn, membersdb);
-        std::string user_id, member_data;
+        std::string_view user_id, member_data;
 
         while (cursor.get(user_id, member_data, MDB_NEXT)) {
                 if (user_id == localUserId_.toStdString())
@@ -2489,14 +2411,12 @@ Cache::getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &db)
         using namespace mtx::events;
         using namespace mtx::events::state;
 
-        lmdb::val event;
-        bool res =
-          lmdb::dbi_get(txn, db, lmdb::val(to_string(mtx::events::EventType::RoomTopic)), event);
+        std::string_view event;
+        bool res = db.get(txn, to_string(mtx::events::EventType::RoomTopic), event);
 
         if (res) {
                 try {
-                        StrippedEvent<Topic> msg =
-                          json::parse(std::string_view(event.data(), event.size()));
+                        StrippedEvent<Topic> msg = json::parse(event);
                         return QString::fromStdString(msg.content.topic);
                 } catch (const json::exception &e) {
                         nhlog::db()->warn("failed to parse m.room.topic event: {}", e.what());
@@ -2517,9 +2437,9 @@ Cache::getRoomAvatar(const std::string &room_id)
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
-        lmdb::val response;
+        std::string_view response;
 
-        if (!lmdb::dbi_get(txn, roomsDb_, lmdb::val(room_id), response)) {
+        if (!roomsDb_.get(txn, room_id, response)) {
                 txn.commit();
                 return QImage();
         }
@@ -2527,7 +2447,7 @@ Cache::getRoomAvatar(const std::string &room_id)
         std::string media_url;
 
         try {
-                RoomInfo info = json::parse(std::string_view(response.data(), response.size()));
+                RoomInfo info = json::parse(response);
                 media_url     = std::move(info.avatar_url);
 
                 if (media_url.empty()) {
@@ -2540,7 +2460,7 @@ Cache::getRoomAvatar(const std::string &room_id)
                                   std::string(response.data(), response.size()));
         }
 
-        if (!lmdb::dbi_get(txn, mediaDb_, lmdb::val(media_url), response)) {
+        if (!mediaDb_.get(txn, media_url, response)) {
                 txn.commit();
                 return QImage();
         }
@@ -2556,7 +2476,7 @@ Cache::joinedRooms()
         auto txn         = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         auto roomsCursor = lmdb::cursor::open(txn, roomsDb_);
 
-        std::string id, data;
+        std::string_view id, data;
         std::vector<std::string> room_ids;
 
         // Gather the room ids for the joined rooms.
@@ -2577,9 +2497,9 @@ Cache::getMember(const std::string &room_id, const std::string &user_id)
 
                 auto membersdb = getMembersDb(txn, room_id);
 
-                lmdb::val info;
-                if (lmdb::dbi_get(txn, membersdb, lmdb::val(user_id), info)) {
-                        MemberInfo m = json::parse(std::string_view(info.data(), info.size()));
+                std::string_view info;
+                if (membersdb.get(txn, user_id, info)) {
+                        MemberInfo m = json::parse(info);
                         return m;
                 }
         } catch (std::exception &e) {
@@ -2596,9 +2516,9 @@ Cache::searchRooms(const std::string &query, std::uint8_t max_items)
         auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         auto cursor = lmdb::cursor::open(txn, roomsDb_);
 
-        std::string room_id, room_data;
+        std::string_view room_id, room_data;
         while (cursor.get(room_id, room_data, MDB_NEXT)) {
-                RoomInfo tmp = json::parse(std::move(room_data));
+                RoomInfo tmp = json::parse(room_data);
 
                 const int score = utils::levenshtein_distance(
                   query, QString::fromStdString(tmp.name).toLower().toStdString());
@@ -2637,7 +2557,7 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
 
         std::vector<RoomMember> members;
 
-        std::string user_id, user_data;
+        std::string_view user_id, user_data;
         while (cursor.get(user_id, user_data, MDB_NEXT)) {
                 if (currentIndex < startIndex) {
                         currentIndex += 1;
@@ -2650,7 +2570,7 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
                 try {
                         MemberInfo tmp = json::parse(user_data);
                         members.emplace_back(
-                          RoomMember{QString::fromStdString(user_id),
+                          RoomMember{QString::fromStdString(std::string(user_id)),
                                      QString::fromStdString(tmp.name),
                                      QImage::fromData(image(txn, tmp.avatar_url))});
                 } catch (const json::exception &e) {
@@ -2672,8 +2592,8 @@ Cache::isRoomMember(const std::string &user_id, const std::string &room_id)
         auto txn = lmdb::txn::begin(env_);
         auto db  = getMembersDb(txn, room_id);
 
-        lmdb::val value;
-        bool res = lmdb::dbi_get(txn, db, lmdb::val(user_id), value);
+        std::string_view value;
+        bool res = db.get(txn, user_id, value);
         txn.commit();
 
         return res;
@@ -2692,10 +2612,7 @@ Cache::savePendingMessage(const std::string &room_id,
         auto pending = getPendingMessagesDb(txn, room_id);
 
         int64_t now = QDateTime::currentMSecsSinceEpoch();
-        lmdb::dbi_put(txn,
-                      pending,
-                      lmdb::val(&now, sizeof(now)),
-                      lmdb::val(mtx::accessors::event_id(message.data)));
+        pending.put(txn, lmdb::to_sv(now), mtx::accessors::event_id(message.data));
 
         txn.commit();
 }
@@ -2708,19 +2625,18 @@ Cache::firstPendingMessage(const std::string &room_id)
 
         {
                 auto pendingCursor = lmdb::cursor::open(txn, pending);
-                lmdb::val tsIgnored, pendingTxn;
+                std::string_view tsIgnored, pendingTxn;
                 while (pendingCursor.get(tsIgnored, pendingTxn, MDB_NEXT)) {
                         auto eventsDb = getEventsDb(txn, room_id);
-                        lmdb::val event;
-                        if (!lmdb::dbi_get(txn, eventsDb, pendingTxn, event)) {
-                                lmdb::dbi_del(txn, pending, tsIgnored, pendingTxn);
+                        std::string_view event;
+                        if (!eventsDb.get(txn, pendingTxn, event)) {
+                                pending.del(txn, tsIgnored, pendingTxn);
                                 continue;
                         }
 
                         try {
                                 mtx::events::collections::TimelineEvent te;
-                                mtx::events::collections::from_json(
-                                  json::parse(std::string_view(event.data(), event.size())), te);
+                                mtx::events::collections::from_json(json::parse(event), te);
 
                                 pendingCursor.close();
                                 txn.commit();
@@ -2728,7 +2644,7 @@ Cache::firstPendingMessage(const std::string &room_id)
                         } catch (std::exception &e) {
                                 nhlog::db()->error("Failed to parse message from cache {}",
                                                    e.what());
-                                lmdb::dbi_del(txn, pending, tsIgnored, pendingTxn);
+                                pending.del(txn, tsIgnored, pendingTxn);
                                 continue;
                         }
                 }
@@ -2747,7 +2663,7 @@ Cache::removePendingStatus(const std::string &room_id, const std::string &txn_id
 
         {
                 auto pendingCursor = lmdb::cursor::open(txn, pending);
-                lmdb::val tsIgnored, pendingTxn;
+                std::string_view tsIgnored, pendingTxn;
                 while (pendingCursor.get(tsIgnored, pendingTxn, MDB_NEXT)) {
                         if (std::string_view(pendingTxn.data(), pendingTxn.size()) == txn_id)
                                 lmdb::cursor_del(pendingCursor);
@@ -2785,17 +2701,17 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
         using namespace mtx::events;
         using namespace mtx::events::state;
 
-        lmdb::val indexVal, val;
+        std::string_view indexVal, val;
         uint64_t index = std::numeric_limits<uint64_t>::max() / 2;
         auto cursor    = lmdb::cursor::open(txn, orderDb);
         if (cursor.get(indexVal, val, MDB_LAST)) {
-                index = to<uint64_t>(indexVal);
+                index = lmdb::from_sv<uint64_t>(indexVal);
         }
 
         uint64_t msgIndex = std::numeric_limits<uint64_t>::max() / 2;
         auto msgCursor    = lmdb::cursor::open(txn, order2msgDb);
         if (msgCursor.get(indexVal, val, MDB_LAST)) {
-                msgIndex = to<uint64_t>(indexVal);
+                msgIndex = lmdb::from_sv<uint64_t>(indexVal);
         }
 
         bool first = true;
@@ -2809,48 +2725,41 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                         continue;
                 }
 
-                lmdb::val event_id = event_id_val;
+                std::string_view event_id = event_id_val;
 
                 json orderEntry        = json::object();
                 orderEntry["event_id"] = event_id_val;
                 if (first && !res.prev_batch.empty())
                         orderEntry["prev_batch"] = res.prev_batch;
 
-                lmdb::val txn_order;
-                if (!txn_id.empty() &&
-                    lmdb::dbi_get(txn, evToOrderDb, lmdb::val(txn_id), txn_order)) {
-                        lmdb::dbi_put(txn, eventsDb, event_id, lmdb::val(event.dump()));
-                        lmdb::dbi_del(txn, eventsDb, lmdb::val(txn_id));
+                std::string_view txn_order;
+                if (!txn_id.empty() && evToOrderDb.get(txn, txn_id, txn_order)) {
+                        eventsDb.put(txn, event_id, event.dump());
+                        eventsDb.del(txn, txn_id);
 
-                        lmdb::val msg_txn_order;
-                        if (lmdb::dbi_get(txn, msg2orderDb, lmdb::val(txn_id), msg_txn_order)) {
-                                lmdb::dbi_put(txn, order2msgDb, msg_txn_order, event_id);
-                                lmdb::dbi_put(txn, msg2orderDb, event_id, msg_txn_order);
-                                lmdb::dbi_del(txn, msg2orderDb, lmdb::val(txn_id));
+                        std::string_view msg_txn_order;
+                        if (msg2orderDb.get(txn, txn_id, msg_txn_order)) {
+                                order2msgDb.put(txn, msg_txn_order, event_id);
+                                msg2orderDb.put(txn, event_id, msg_txn_order);
+                                msg2orderDb.del(txn, txn_id);
                         }
 
-                        lmdb::dbi_put(txn, orderDb, txn_order, lmdb::val(orderEntry.dump()));
-                        lmdb::dbi_put(txn, evToOrderDb, event_id, txn_order);
-                        lmdb::dbi_del(txn, evToOrderDb, lmdb::val(txn_id));
+                        orderDb.put(txn, txn_order, orderEntry.dump());
+                        evToOrderDb.put(txn, event_id, txn_order);
+                        evToOrderDb.del(txn, txn_id);
 
                         auto relations = mtx::accessors::relations(e);
                         if (!relations.relations.empty()) {
                                 for (const auto &r : relations.relations) {
                                         if (!r.event_id.empty()) {
-                                                lmdb::dbi_del(txn,
-                                                              relationsDb,
-                                                              lmdb::val(r.event_id),
-                                                              lmdb::val(txn_id));
-                                                lmdb::dbi_put(txn,
-                                                              relationsDb,
-                                                              lmdb::val(r.event_id),
-                                                              event_id);
+                                                relationsDb.del(txn, r.event_id, txn_id);
+                                                relationsDb.put(txn, r.event_id, event_id);
                                         }
                                 }
                         }
 
                         auto pendingCursor = lmdb::cursor::open(txn, pending);
-                        lmdb::val tsIgnored, pendingTxn;
+                        std::string_view tsIgnored, pendingTxn;
                         while (pendingCursor.get(tsIgnored, pendingTxn, MDB_NEXT)) {
                                 if (std::string_view(pendingTxn.data(), pendingTxn.size()) ==
                                     txn_id)
@@ -2862,9 +2771,8 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                         if (redaction->redacts.empty())
                                 continue;
 
-                        lmdb::val oldEvent;
-                        bool success =
-                          lmdb::dbi_get(txn, eventsDb, lmdb::val(redaction->redacts), oldEvent);
+                        std::string_view oldEvent;
+                        bool success = eventsDb.get(txn, redaction->redacts, oldEvent);
                         if (!success)
                                 continue;
 
@@ -2889,14 +2797,10 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                                 continue;
                         }
 
-                        lmdb::dbi_put(
-                          txn, eventsDb, lmdb::val(redaction->redacts), lmdb::val(event.dump()));
-                        lmdb::dbi_put(txn,
-                                      eventsDb,
-                                      lmdb::val(redaction->event_id),
-                                      lmdb::val(json(*redaction).dump()));
+                        eventsDb.put(txn, redaction->redacts, event.dump());
+                        eventsDb.put(txn, redaction->event_id, json(*redaction).dump());
                 } else {
-                        lmdb::dbi_put(txn, eventsDb, event_id, lmdb::val(event.dump()));
+                        eventsDb.put(txn, event_id, event.dump());
 
                         ++index;
 
@@ -2904,34 +2808,22 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
 
                         nhlog::db()->debug("saving '{}'", orderEntry.dump());
 
-                        lmdb::cursor_put(cursor.handle(),
-                                         lmdb::val(&index, sizeof(index)),
-                                         lmdb::val(orderEntry.dump()),
-                                         MDB_APPEND);
-                        lmdb::dbi_put(txn, evToOrderDb, event_id, lmdb::val(&index, sizeof(index)));
+                        cursor.put(lmdb::to_sv(index), orderEntry.dump(), MDB_APPEND);
+                        evToOrderDb.put(txn, event_id, lmdb::to_sv(index));
 
                         // TODO(Nico): Allow blacklisting more event types in UI
                         if (!isHiddenEvent(txn, e, room_id)) {
                                 ++msgIndex;
-                                lmdb::cursor_put(msgCursor.handle(),
-                                                 lmdb::val(&msgIndex, sizeof(msgIndex)),
-                                                 event_id,
-                                                 MDB_APPEND);
+                                msgCursor.put(lmdb::to_sv(msgIndex), event_id, MDB_APPEND);
 
-                                lmdb::dbi_put(txn,
-                                              msg2orderDb,
-                                              event_id,
-                                              lmdb::val(&msgIndex, sizeof(msgIndex)));
+                                msg2orderDb.put(txn, event_id, lmdb::to_sv(msgIndex));
                         }
 
                         auto relations = mtx::accessors::relations(e);
                         if (!relations.relations.empty()) {
                                 for (const auto &r : relations.relations) {
                                         if (!r.event_id.empty()) {
-                                                lmdb::dbi_put(txn,
-                                                              relationsDb,
-                                                              lmdb::val(r.event_id),
-                                                              event_id);
+                                                relationsDb.put(txn, r.event_id, event_id);
                                         }
                                 }
                         }
@@ -2951,12 +2843,12 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
         auto msg2orderDb = getMessageToOrderDb(txn, room_id);
         auto order2msgDb = getOrderToMessageDb(txn, room_id);
 
-        lmdb::val indexVal, val;
+        std::string_view indexVal, val;
         uint64_t index = std::numeric_limits<uint64_t>::max() / 2;
         {
                 auto cursor = lmdb::cursor::open(txn, orderDb);
                 if (cursor.get(indexVal, val, MDB_FIRST)) {
-                        index = to<uint64_t>(indexVal);
+                        index = lmdb::from_sv<uint64_t>(indexVal);
                 }
         }
 
@@ -2964,19 +2856,15 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
         {
                 auto msgCursor = lmdb::cursor::open(txn, order2msgDb);
                 if (msgCursor.get(indexVal, val, MDB_FIRST)) {
-                        msgIndex = to<uint64_t>(indexVal);
+                        msgIndex = lmdb::from_sv<uint64_t>(indexVal);
                 }
         }
 
         if (res.chunk.empty()) {
-                if (lmdb::dbi_get(txn, orderDb, lmdb::val(&index, sizeof(index)), val)) {
-                        auto orderEntry = json::parse(std::string_view(val.data(), val.size()));
+                if (orderDb.get(txn, lmdb::to_sv(index), val)) {
+                        auto orderEntry          = json::parse(val);
                         orderEntry["prev_batch"] = res.end;
-                        lmdb::dbi_put(txn,
-                                      orderDb,
-                                      lmdb::val(&index, sizeof(index)),
-                                      lmdb::val(orderEntry.dump()));
-                        nhlog::db()->debug("saving '{}'", orderEntry.dump());
+                        orderDb.put(txn, lmdb::to_sv(index), orderEntry.dump());
                         txn.commit();
                 }
                 return index;
@@ -2988,38 +2876,32 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
                       mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(e))
                         continue;
 
-                auto event         = mtx::accessors::serialize_event(e);
-                event_id_val       = event["event_id"].get<std::string>();
-                lmdb::val event_id = event_id_val;
-                lmdb::dbi_put(txn, eventsDb, event_id, lmdb::val(event.dump()));
+                auto event                = mtx::accessors::serialize_event(e);
+                event_id_val              = event["event_id"].get<std::string>();
+                std::string_view event_id = event_id_val;
+                eventsDb.put(txn, event_id, event.dump());
 
                 --index;
 
                 json orderEntry        = json::object();
                 orderEntry["event_id"] = event_id_val;
 
-                nhlog::db()->debug("saving '{}'", orderEntry.dump());
-
-                lmdb::dbi_put(
-                  txn, orderDb, lmdb::val(&index, sizeof(index)), lmdb::val(orderEntry.dump()));
-                lmdb::dbi_put(txn, evToOrderDb, event_id, lmdb::val(&index, sizeof(index)));
+                orderDb.put(txn, lmdb::to_sv(index), orderEntry.dump());
+                evToOrderDb.put(txn, event_id, lmdb::to_sv(index));
 
                 // TODO(Nico): Allow blacklisting more event types in UI
                 if (!isHiddenEvent(txn, e, room_id)) {
                         --msgIndex;
-                        lmdb::dbi_put(
-                          txn, order2msgDb, lmdb::val(&msgIndex, sizeof(msgIndex)), event_id);
+                        order2msgDb.put(txn, lmdb::to_sv(msgIndex), event_id);
 
-                        lmdb::dbi_put(
-                          txn, msg2orderDb, event_id, lmdb::val(&msgIndex, sizeof(msgIndex)));
+                        msg2orderDb.put(txn, event_id, lmdb::to_sv(msgIndex));
                 }
 
                 auto relations = mtx::accessors::relations(e);
                 if (!relations.relations.empty()) {
                         for (const auto &r : relations.relations) {
                                 if (!r.event_id.empty()) {
-                                        lmdb::dbi_put(
-                                          txn, relationsDb, lmdb::val(r.event_id), event_id);
+                                        relationsDb.put(txn, r.event_id, event_id);
                                 }
                         }
                 }
@@ -3028,8 +2910,7 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
         json orderEntry          = json::object();
         orderEntry["event_id"]   = event_id_val;
         orderEntry["prev_batch"] = res.end;
-        lmdb::dbi_put(txn, orderDb, lmdb::val(&index, sizeof(index)), lmdb::val(orderEntry.dump()));
-        nhlog::db()->debug("saving '{}'", orderEntry.dump());
+        orderDb.put(txn, lmdb::to_sv(index), orderEntry.dump());
 
         txn.commit();
 
@@ -3048,7 +2929,7 @@ Cache::clearTimeline(const std::string &room_id)
         auto msg2orderDb = getMessageToOrderDb(txn, room_id);
         auto order2msgDb = getOrderToMessageDb(txn, room_id);
 
-        lmdb::val indexVal, val;
+        std::string_view indexVal, val;
         auto cursor = lmdb::cursor::open(txn, orderDb);
 
         bool start                   = true;
@@ -3067,17 +2948,16 @@ Cache::clearTimeline(const std::string &room_id)
 
                 if (passed_pagination_token) {
                         if (obj.count("event_id") != 0) {
-                                lmdb::val event_id = obj["event_id"].get<std::string>();
-                                lmdb::dbi_del(txn, evToOrderDb, event_id);
-                                lmdb::dbi_del(txn, eventsDb, event_id);
+                                std::string event_id = obj["event_id"].get<std::string>();
+                                evToOrderDb.del(txn, event_id);
+                                eventsDb.del(txn, event_id);
+                                relationsDb.del(txn, event_id);
 
-                                lmdb::dbi_del(txn, relationsDb, event_id);
-
-                                lmdb::val order{};
-                                bool exists = lmdb::dbi_get(txn, msg2orderDb, event_id, order);
+                                std::string_view order{};
+                                bool exists = msg2orderDb.get(txn, event_id, order);
                                 if (exists) {
-                                        lmdb::dbi_del(txn, order2msgDb, order);
-                                        lmdb::dbi_del(txn, msg2orderDb, event_id);
+                                        order2msgDb.del(txn, order);
+                                        msg2orderDb.del(txn, event_id);
                                 }
                         }
                         lmdb::cursor_del(cursor);
@@ -3092,7 +2972,7 @@ Cache::clearTimeline(const std::string &room_id)
         while (msgCursor.get(indexVal, val, start ? MDB_LAST : MDB_PREV)) {
                 start = false;
 
-                lmdb::val eventId;
+                std::string_view eventId;
                 bool innerStart = true;
                 bool found      = false;
                 while (cursor.get(indexVal, eventId, innerStart ? MDB_LAST : MDB_PREV)) {
@@ -3134,7 +3014,7 @@ Cache::getTimelineMentionsForRoom(lmdb::txn &txn, const std::string &room_id)
         }
 
         mtx::responses::Notifications notif;
-        std::string event_id, msg;
+        std::string_view event_id, msg;
 
         auto cursor = lmdb::cursor::open(txn, db);
 
@@ -3202,7 +3082,7 @@ Cache::saveTimelineMentions(lmdb::txn &txn,
 
                 json obj = notif;
 
-                lmdb::dbi_put(txn, db, lmdb::val(event_id), lmdb::val(obj.dump()));
+                db.put(txn, event_id, obj.dump());
         }
 }
 
@@ -3210,7 +3090,7 @@ void
 Cache::markSentNotification(const std::string &event_id)
 {
         auto txn = lmdb::txn::begin(env_);
-        lmdb::dbi_put(txn, notificationsDb_, lmdb::val(event_id), lmdb::val(std::string("")));
+        notificationsDb_.put(txn, event_id, "");
         txn.commit();
 }
 
@@ -3219,7 +3099,7 @@ Cache::removeReadNotification(const std::string &event_id)
 {
         auto txn = lmdb::txn::begin(env_);
 
-        lmdb::dbi_del(txn, notificationsDb_, lmdb::val(event_id), nullptr);
+        notificationsDb_.del(txn, event_id);
 
         txn.commit();
 }
@@ -3229,8 +3109,8 @@ Cache::isNotificationSent(const std::string &event_id)
 {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
-        lmdb::val value;
-        bool res = lmdb::dbi_get(txn, notificationsDb_, lmdb::val(event_id), value);
+        std::string_view value;
+        bool res = notificationsDb_.get(txn, event_id, value);
         txn.commit();
 
         return res;
@@ -3244,7 +3124,7 @@ Cache::getRoomIds(lmdb::txn &txn)
 
         std::vector<std::string> rooms;
 
-        std::string room_id, _unused;
+        std::string_view room_id, _unused;
         while (cursor.get(room_id, _unused, MDB_NEXT))
                 rooms.emplace_back(room_id);
 
@@ -3256,7 +3136,7 @@ Cache::getRoomIds(lmdb::txn &txn)
 void
 Cache::deleteOldMessages()
 {
-        lmdb::val indexVal, val;
+        std::string_view indexVal, val;
 
         auto txn      = lmdb::txn::begin(env_);
         auto room_ids = getRoomIds(txn);
@@ -3272,12 +3152,12 @@ Cache::deleteOldMessages()
 
                 uint64_t first, last;
                 if (cursor.get(indexVal, val, MDB_LAST)) {
-                        last = to<uint64_t>(indexVal);
+                        last = lmdb::from_sv<uint64_t>(indexVal);
                 } else {
                         continue;
                 }
                 if (cursor.get(indexVal, val, MDB_FIRST)) {
-                        first = to<uint64_t>(indexVal);
+                        first = lmdb::from_sv<uint64_t>(indexVal);
                 } else {
                         continue;
                 }
@@ -3293,20 +3173,20 @@ Cache::deleteOldMessages()
                         auto obj = json::parse(std::string_view(val.data(), val.size()));
 
                         if (obj.count("event_id") != 0) {
-                                lmdb::val event_id = obj["event_id"].get<std::string>();
-                                lmdb::dbi_del(txn, evToOrderDb, event_id);
-                                lmdb::dbi_del(txn, eventsDb, event_id);
+                                std::string event_id = obj["event_id"].get<std::string>();
+                                evToOrderDb.del(txn, event_id);
+                                eventsDb.del(txn, event_id);
 
-                                lmdb::dbi_del(txn, relationsDb, event_id);
+                                relationsDb.del(txn, event_id);
 
-                                lmdb::val order{};
-                                bool exists = lmdb::dbi_get(txn, m2o, event_id, order);
+                                std::string_view order{};
+                                bool exists = m2o.get(txn, event_id, order);
                                 if (exists) {
-                                        lmdb::dbi_del(txn, o2m, order);
-                                        lmdb::dbi_del(txn, m2o, event_id);
+                                        o2m.del(txn, order);
+                                        m2o.del(txn, event_id);
                                 }
                         }
-                        lmdb::cursor_del(cursor);
+                        cursor.del();
                 }
                 cursor.close();
         }
@@ -3329,11 +3209,11 @@ Cache::getAccountData(lmdb::txn &txn, mtx::events::EventType type, const std::st
         try {
                 auto db = getAccountDataDb(txn, room_id);
 
-                lmdb::val data;
-                if (lmdb::dbi_get(txn, db, lmdb::val(to_string(type)), data)) {
+                std::string_view data;
+                if (db.get(txn, to_string(type), data)) {
                         mtx::responses::utils::RoomAccountDataEvents events;
                         json j = json::array({
-                          json::parse(std::string_view(data.data(), data.size())),
+                          json::parse(data),
                         });
                         mtx::responses::utils::parse_room_account_data_events(j, events);
                         if (events.size() == 1)
@@ -3355,11 +3235,11 @@ Cache::hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes
         auto txn = lmdb::txn::begin(env_);
         auto db  = getStatesDb(txn, room_id);
 
-        uint16_t min_event_level = std::numeric_limits<uint16_t>::max();
-        uint16_t user_level      = std::numeric_limits<uint16_t>::min();
+        int64_t min_event_level = std::numeric_limits<int64_t>::max();
+        int64_t user_level      = std::numeric_limits<int64_t>::min();
 
-        lmdb::val event;
-        bool res = lmdb::dbi_get(txn, db, lmdb::val(to_string(EventType::RoomPowerLevels)), event);
+        std::string_view event;
+        bool res = db.get(txn, to_string(EventType::RoomPowerLevels), event);
 
         if (res) {
                 try {
@@ -3370,8 +3250,7 @@ Cache::hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes
 
                         for (const auto &ty : eventTypes)
                                 min_event_level =
-                                  std::min(min_event_level,
-                                           (uint16_t)msg.content.state_level(to_string(ty)));
+                                  std::min(min_event_level, msg.content.state_level(to_string(ty)));
                 } catch (const json::exception &e) {
                         nhlog::db()->warn("failed to parse m.room.power_levels event: {}",
                                           e.what());
@@ -3389,13 +3268,13 @@ Cache::roomMembers(const std::string &room_id)
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
         std::vector<std::string> members;
-        std::string user_id, unused;
+        std::string_view user_id, unused;
 
         auto db = getMembersDb(txn, room_id);
 
         auto cursor = lmdb::cursor::open(txn, db);
         while (cursor.get(user_id, unused, MDB_NEXT))
-                members.emplace_back(std::move(user_id));
+                members.emplace_back(user_id);
         cursor.close();
 
         txn.commit();
@@ -3406,7 +3285,7 @@ Cache::roomMembers(const std::string &room_id)
 std::map<std::string, std::optional<UserKeyCache>>
 Cache::getMembersWithKeys(const std::string &room_id)
 {
-        lmdb::val keys;
+        std::string_view keys;
 
         try {
                 auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
@@ -3415,17 +3294,16 @@ Cache::getMembersWithKeys(const std::string &room_id)
                 auto db     = getMembersDb(txn, room_id);
                 auto keysDb = getUserKeysDb(txn);
 
-                std::string user_id, unused;
+                std::string_view user_id, unused;
                 auto cursor = lmdb::cursor::open(txn, db);
                 while (cursor.get(user_id, unused, MDB_NEXT)) {
-                        auto res = lmdb::dbi_get(txn, keysDb, lmdb::val(user_id), keys);
+                        auto res = keysDb.get(txn, user_id, keys);
 
                         if (res) {
-                                members[user_id] =
-                                  json::parse(std::string_view(keys.data(), keys.size()))
-                                    .get<UserKeyCache>();
+                                members[std::string(user_id)] =
+                                  json::parse(keys).get<UserKeyCache>();
                         } else {
-                                members[user_id] = {};
+                                members[std::string(user_id)] = {};
                         }
                 }
                 cursor.close();
@@ -3471,11 +3349,11 @@ Cache::presenceState(const std::string &user_id)
         if (user_id.empty())
                 return {};
 
-        lmdb::val presenceVal;
+        std::string_view presenceVal;
 
         auto txn = lmdb::txn::begin(env_);
         auto db  = getPresenceDb(txn);
-        auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), presenceVal);
+        auto res = db.get(txn, user_id, presenceVal);
 
         mtx::presence::PresenceState state = mtx::presence::offline;
 
@@ -3496,18 +3374,17 @@ Cache::statusMessage(const std::string &user_id)
         if (user_id.empty())
                 return {};
 
-        lmdb::val presenceVal;
+        std::string_view presenceVal;
 
         auto txn = lmdb::txn::begin(env_);
         auto db  = getPresenceDb(txn);
-        auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), presenceVal);
+        auto res = db.get(txn, user_id, presenceVal);
 
         std::string status_msg;
 
         if (res) {
-                mtx::events::presence::Presence presence =
-                  json::parse(std::string_view(presenceVal.data(), presenceVal.size()));
-                status_msg = presence.status_msg;
+                mtx::events::presence::Presence presence = json::parse(presenceVal);
+                status_msg                               = presence.status_msg;
         }
 
         txn.commit();
@@ -3540,16 +3417,15 @@ from_json(const json &j, UserKeyCache &info)
 std::optional<UserKeyCache>
 Cache::userKeys(const std::string &user_id)
 {
-        lmdb::val keys;
+        std::string_view keys;
 
         try {
                 auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
                 auto db  = getUserKeysDb(txn);
-                auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), keys);
+                auto res = db.get(txn, user_id, keys);
 
                 if (res) {
-                        return json::parse(std::string_view(keys.data(), keys.size()))
-                          .get<UserKeyCache>();
+                        return json::parse(keys).get<UserKeyCache>();
                 } else {
                         return {};
                 }
@@ -3578,20 +3454,17 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
         for (auto &[user, update] : updates) {
                 nhlog::db()->debug("Updated user keys: {}", user);
 
-                lmdb::val oldKeys;
-                auto res = lmdb::dbi_get(txn, db, lmdb::val(user), oldKeys);
+                std::string_view oldKeys;
+                auto res = db.get(txn, user, oldKeys);
 
                 if (res) {
-                        auto last_changed =
-                          json::parse(std::string_view(oldKeys.data(), oldKeys.size()))
-                            .get<UserKeyCache>()
-                            .last_changed;
+                        auto last_changed = json::parse(oldKeys).get<UserKeyCache>().last_changed;
                         // skip if we are tracking this and expect it to be up to date with the last
                         // sync token
                         if (!last_changed.empty() && last_changed != sync_token)
                                 continue;
                 }
-                lmdb::dbi_put(txn, db, lmdb::val(user), lmdb::val(json(update).dump()));
+                db.put(txn, user, json(update).dump());
         }
 
         txn.commit();
@@ -3627,7 +3500,7 @@ void
 Cache::deleteUserKeys(lmdb::txn &txn, lmdb::dbi &db, const std::vector<std::string> &user_ids)
 {
         for (const auto &user_id : user_ids)
-                lmdb::dbi_del(txn, db, lmdb::val(user_id), nullptr);
+                db.del(txn, user_id);
 }
 
 void
@@ -3642,8 +3515,8 @@ Cache::markUserKeysOutOfDate(lmdb::txn &txn,
         for (const auto &user : user_ids) {
                 nhlog::db()->debug("Marking user keys out of date: {}", user);
 
-                lmdb::val oldKeys;
-                auto res = lmdb::dbi_get(txn, db, lmdb::val(user), oldKeys);
+                std::string_view oldKeys;
+                auto res = db.get(txn, user, oldKeys);
 
                 if (!res)
                         continue;
@@ -3651,7 +3524,7 @@ Cache::markUserKeysOutOfDate(lmdb::txn &txn,
                 auto cacheEntry =
                   json::parse(std::string_view(oldKeys.data(), oldKeys.size())).get<UserKeyCache>();
                 cacheEntry.last_changed = sync_token;
-                lmdb::dbi_put(txn, db, lmdb::val(user), lmdb::val(json(cacheEntry).dump()));
+                db.put(txn, user, json(cacheEntry).dump());
 
                 query.device_keys[user] = {};
         }
@@ -3729,17 +3602,16 @@ from_json(const json &j, VerificationCache &info)
 std::optional<VerificationCache>
 Cache::verificationCache(const std::string &user_id)
 {
-        lmdb::val verifiedVal;
+        std::string_view verifiedVal;
 
         auto txn = lmdb::txn::begin(env_);
         auto db  = getVerificationDb(txn);
 
         try {
                 VerificationCache verified_state;
-                auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), verifiedVal);
+                auto res = db.get(txn, user_id, verifiedVal);
                 if (res) {
-                        verified_state =
-                          json::parse(std::string_view(verifiedVal.data(), verifiedVal.size()));
+                        verified_state = json::parse(verifiedVal);
                         return verified_state;
                 } else {
                         return {};
@@ -3752,16 +3624,16 @@ Cache::verificationCache(const std::string &user_id)
 void
 Cache::markDeviceVerified(const std::string &user_id, const std::string &key)
 {
-        lmdb::val val;
+        std::string_view val;
 
         auto txn = lmdb::txn::begin(env_);
         auto db  = getVerificationDb(txn);
 
         try {
                 VerificationCache verified_state;
-                auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), val);
+                auto res = db.get(txn, user_id, val);
                 if (res) {
-                        verified_state = json::parse(std::string_view(val.data(), val.size()));
+                        verified_state = json::parse(val);
                 }
 
                 for (const auto &device : verified_state.device_verified)
@@ -3769,7 +3641,7 @@ Cache::markDeviceVerified(const std::string &user_id, const std::string &key)
                                 return;
 
                 verified_state.device_verified.push_back(key);
-                lmdb::dbi_put(txn, db, lmdb::val(user_id), lmdb::val(json(verified_state).dump()));
+                db.put(txn, user_id, json(verified_state).dump());
                 txn.commit();
         } catch (std::exception &) {
         }
@@ -3797,16 +3669,16 @@ Cache::markDeviceVerified(const std::string &user_id, const std::string &key)
 void
 Cache::markDeviceUnverified(const std::string &user_id, const std::string &key)
 {
-        lmdb::val val;
+        std::string_view val;
 
         auto txn = lmdb::txn::begin(env_);
         auto db  = getVerificationDb(txn);
 
         try {
                 VerificationCache verified_state;
-                auto res = lmdb::dbi_get(txn, db, lmdb::val(user_id), val);
+                auto res = db.get(txn, user_id, val);
                 if (res) {
-                        verified_state = json::parse(std::string_view(val.data(), val.size()));
+                        verified_state = json::parse(val);
                 }
 
                 verified_state.device_verified.erase(
@@ -3815,7 +3687,7 @@ Cache::markDeviceUnverified(const std::string &user_id, const std::string &key)
                               key),
                   verified_state.device_verified.end());
 
-                lmdb::dbi_put(txn, db, lmdb::val(user_id), lmdb::val(json(verified_state).dump()));
+                db.put(txn, user_id, json(verified_state).dump());
                 txn.commit();
         } catch (std::exception &) {
         }

@@ -129,6 +129,9 @@ endif()
 if(USE_BUNDLED_LMDB)
 	hunter_add_package(lmdb)
 	find_package(liblmdb CONFIG REQUIRED)
+
+	target_include_directories(liblmdb::lmdb INTERFACE
+		"${HUNTER_INSTALL_PREFIX}/include/lmdb")
 else()
 	find_package(LMDB)
 endif()
@@ -417,8 +420,17 @@ set_package_properties(nlohmann_json PROPERTIES
 	)
 
 if(USE_BUNDLED_LMDBXX)
-	hunter_add_package(lmdbxx)
-	find_package(lmdbxx CONFIG REQUIRED)
+	FetchContent_Declare(
+		  lmdbxx
+			URL "https://raw.githubusercontent.com/hoytech/lmdbxx/1.0.0/lmdb++.h"
+			DOWNLOAD_NO_EXTRACT TRUE
+			)
+	if(NOT lmdbxx_POPULATED)
+		FetchContent_Populate(lmdbxx)
+	endif()
+	add_library(lmdbxx INTERFACE)
+	target_include_directories(lmdbxx INTERFACE ${lmdbxx_SOURCE_DIR})
+	add_library(lmdbxx::lmdbxx ALIAS lmdbxx)
 else()
 	if(NOT LMDBXX_INCLUDE_DIR)
 		find_path(LMDBXX_INCLUDE_DIR
