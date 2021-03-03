@@ -129,6 +129,9 @@ endif()
 if(USE_BUNDLED_LMDB)
 	hunter_add_package(lmdb)
 	find_package(liblmdb CONFIG REQUIRED)
+
+	target_include_directories(liblmdb::lmdb INTERFACE
+		"${HUNTER_INSTALL_PREFIX}/include/lmdb")
 else()
 	find_package(LMDB)
 endif()
