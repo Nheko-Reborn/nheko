@@ -203,7 +203,7 @@ ScrollView {
             TimelineRow {
                 id: timelinerow
 
-                y: section.active && section.visible ? section.y + section.height : 0
+                y: section.visible && section.active ? section.y + section.height : 0
             }
 
             Connections {

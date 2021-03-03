@@ -90,7 +90,7 @@ MouseArea {
         // Show the scrollbars
         flickable.flick(0, 0);
         flickable.contentY = newPos;
-        cancelFlickStateTimer.start();
+        cancelFlickStateTimer.restart();
     }
 
     Timer {
