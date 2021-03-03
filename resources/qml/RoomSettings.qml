@@ -32,6 +32,7 @@ ApplicationWindow {
 
         Avatar {
             url: roomSettings.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
+            displayName: roomSettings.roomName
             height: 130
             width: 130
             Layout.alignment: Qt.AlignHCenter
