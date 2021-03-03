@@ -80,6 +80,8 @@ private:
                                     const QString &subtitle,
                                     const QString &informativeText,
                                     const QImage *bodyImage);
+
+        QImage *getImgOrNullptr(const QString &path);
 #endif
 
 #if defined(Q_OS_WINDOWS)

@@ -41,7 +41,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
 
         QImage *image = nullptr;
         if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image)
-                image = new QImage{cacheImage(notification.event)};
+                image = getImgOrNullptr(cacheImage(notification.event));
 
         const auto isEncrypted =
           std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
@@ -58,6 +58,17 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
                 const QString messageInfo =
                   (isReply ? tr("%1 replied to a message") : tr("%1 sent a message")).arg(sender);
                 objCxxPostNotification(
-                  room_name, messageInfo, formatNotification(notification), (image != nullptr && !image->isNull()) ? image : nullptr);
+                  room_name, messageInfo, formatNotification(notification), image);
         }
+}
+
+QImage *
+NotificationsManager::getImgOrNullptr(const QString &path)
+{
+        auto img = new QImage{path};
+        if (img->isNull()) {
+                delete img;
+                return nullptr;
+        }
+        return img;
 }
