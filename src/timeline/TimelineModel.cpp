@@ -867,7 +867,7 @@ TimelineModel::relatedInfo(QString id)
 
         RelatedInfo related   = {};
         related.quoted_user   = QString::fromStdString(mtx::accessors::sender(*event));
-        related.related_event = mtx::accessors::event_id(*event);
+        related.related_event = id.toStdString();
         related.type          = mtx::accessors::msg_type(*event);
 
         // get body, strip reply fallback, then transform the event to text, if it is a media event
