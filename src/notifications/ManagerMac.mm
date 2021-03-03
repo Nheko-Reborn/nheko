@@ -19,7 +19,7 @@ void
 NotificationsManager::objCxxPostNotification(const QString &title,
                                              const QString &subtitle,
                                              const QString &informativeText,
-                                             const QImage *bodyImage)
+                                             const QImage &bodyImage)
 {
 
     NSUserNotification *notif = [[NSUserNotification alloc] init];
@@ -29,8 +29,8 @@ NotificationsManager::objCxxPostNotification(const QString &title,
     notif.informativeText = informativeText.toNSString();
     notif.soundName       = NSUserNotificationDefaultSoundName;
 
-    if (bodyImage != nullptr)
-        notif.contentImage = [[NSImage alloc] initWithCGImage: bodyImage->toCGImage() size: NSZeroSize];
+    if (!bodyImage.isNull())
+        notif.contentImage = [[NSImage alloc] initWithCGImage: bodyImage.toCGImage() size: NSZeroSize];
 
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification: notif];
     [notif autorelease];

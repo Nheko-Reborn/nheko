@@ -79,9 +79,7 @@ private:
         void objCxxPostNotification(const QString &title,
                                     const QString &subtitle,
                                     const QString &informativeText,
-                                    const QImage *bodyImage);
-
-        QImage *getImgOrNullptr(const QString &path);
+                                    const QImage &bodyImage);
 #endif
 
 #if defined(Q_OS_WINDOWS)

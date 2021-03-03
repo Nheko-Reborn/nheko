@@ -39,9 +39,9 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
           cache::displayName(QString::fromStdString(notification.room_id),
                              QString::fromStdString(mtx::accessors::sender(notification.event)));
 
-        QImage *image = nullptr;
+        QImage image;
         if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image)
-                image = getImgOrNullptr(cacheImage(notification.event));
+                image = QImage{cacheImage(notification.event)};
 
         const auto isEncrypted =
           std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
@@ -60,12 +60,4 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
                 objCxxPostNotification(
                   room_name, messageInfo, formatNotification(notification), image);
         }
-}
-
-QImage *
-NotificationsManager::getImgOrNullptr(const QString &path)
-{
-        if (QFile::exists(path))
-                return nullptr;
-        return new QImage{path};
 }
