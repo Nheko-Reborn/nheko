@@ -214,19 +214,18 @@ NotificationsManager::formatNotification(const mtx::responses::Notification &not
                  ": ");
 
         if (hasMarkup_) {
-                if (hasImages_ &&
-                    mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image)
-                {
-                    QString imgPath = cacheImage(notification.event);
-                    if (imgPath.isNull())
-                        return mtx::accessors::formattedBodyWithFallback(notification.event).prepend(messageLeadIn);
-                    else
-                        return QString(
-                                 "<img src=\"file:///" + imgPath +
-                                 "\" alt=\"" +
-                                 mtx::accessors::formattedBodyWithFallback(notification.event) +
-                                 "\">")
-                          .prepend(messageLeadIn);
+                if (hasImages_ && mtx::accessors::msg_type(notification.event) ==
+                                    mtx::events::MessageType::Image) {
+                        QString imgPath = cacheImage(notification.event);
+                        if (imgPath.isNull())
+                                return mtx::accessors::formattedBodyWithFallback(notification.event)
+                                  .prepend(messageLeadIn);
+                        else
+                                return QString("<img src=\"file:///" + imgPath + "\" alt=\"" +
+                                               mtx::accessors::formattedBodyWithFallback(
+                                                 notification.event) +
+                                               "\">")
+                                  .prepend(messageLeadIn);
                 }
 
                 return mtx::accessors::formattedBodyWithFallback(notification.event)
