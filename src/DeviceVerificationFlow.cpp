@@ -45,7 +45,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
           user_id, [user_id, this](const UserKeyCache &res, mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to query device keys: {},{}",
-                                             err->matrix_error.errcode,
+                                             mtx::errors::to_string(err->matrix_error.errcode),
                                              static_cast<int>(err->status_code));
                           return;
                   }
@@ -64,7 +64,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
           [this](const UserKeyCache &res, mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to query device keys: {},{}",
-                                             err->matrix_error.errcode,
+                                             mtx::errors::to_string(err->matrix_error.errcode),
                                              static_cast<int>(err->status_code));
                           return;
                   }
@@ -345,7 +345,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                             if (err) {
                                                     nhlog::net()->error(
                                                       "failed to upload signatures: {},{}",
-                                                      err->matrix_error.errcode,
+                                                      mtx::errors::to_string(err->matrix_error.errcode),
                                                       static_cast<int>(err->status_code));
                                             }
 
@@ -356,7 +356,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                                               "id {}: {}, {}",
                                                               user_id,
                                                               key_id,
-                                                              e.errcode,
+                                                              mtx::errors::to_string(e.errcode),
                                                               e.error);
                                     });
                           }

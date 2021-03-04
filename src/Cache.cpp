@@ -3572,7 +3572,7 @@ Cache::query_keys(const std::string &user_id,
                                            if (err) {
                                                    nhlog::net()->warn(
                                                      "failed to query device keys: {},{}",
-                                                     err->matrix_error.errcode,
+                                                     mtx::errors::to_string(err->matrix_error.errcode),
                                                      static_cast<int>(err->status_code));
                                                    cb({}, err);
                                                    return;
