@@ -41,6 +41,9 @@ macos-app-install:
 lint:
 	./.ci/format.sh
 
+license:
+	./.ci/licenses.sh
+
 image:
 	docker build -t nheko-app-image .
 

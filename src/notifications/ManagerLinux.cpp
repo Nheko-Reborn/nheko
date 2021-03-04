@@ -44,12 +44,11 @@ NotificationsManager::NotificationsManager(QObject *parent)
                                               SLOT(notificationReplied(uint, QString)));
 }
 
-/**
- * This function is based on code from
- * https://github.com/rohieb/StratumsphereTrayIcon
- * Copyright (C) 2012 Roland Hieber <rohieb@rohieb.name>
- * Licensed under the GNU General Public License, version 3
- */
+// SPDX-FileCopyrightText: 2012 Roland Hieber <rohieb@rohieb.name>
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 void
 NotificationsManager::postNotification(const mtx::responses::Notification &notification,
                                        const QImage &icon)
@@ -174,7 +173,7 @@ NotificationsManager::notificationClosed(uint id, uint reason)
  * http://www.clementine-player.org) and licensed under the GNU General Public
  * License, version 3 or later.
  *
- * Copyright 2010, David Sansome <me@davidsansome.com>
+ * SPDX-FileCopyrightText: 2010 David Sansome <me@davidsansome.com>
  */
 QDBusArgument &
 operator<<(QDBusArgument &arg, const QImage &image)

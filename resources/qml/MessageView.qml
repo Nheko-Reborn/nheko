@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import "./delegates"
 import QtGraphicalEffects 1.0
 import QtQuick 2.12
