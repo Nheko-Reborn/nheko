@@ -79,68 +79,26 @@ Item {
             encrypted: model.isEncrypted
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
             Layout.preferredHeight: 16
-            width: 16
+            Layout.preferredWidth: 16
         }
 
-        ImageButton {
-            id: editButton
-
-            visible: (Settings.buttonsInTimeline && model.isEditable) || model.isEdited
-            buttonTextColor: chat.model.edit == model.id ? colors.highlight : colors.buttonText
+        Image {
+            visible: model.isEdited
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
             Layout.preferredHeight: 16
+            Layout.preferredWidth: 16
+            height: 16
             width: 16
-            hoverEnabled: true
-            image: ":/icons/icons/ui/edit.png"
-            ToolTip.visible: hovered
-            ToolTip.text: model.isEditable ? qsTr("Edit") : qsTr("Edited")
-            onClicked: {
-                if (model.isEditable)
-                    chat.model.editAction(model.id);
+            sourceSize.width: 16
+            sourceSize.height: 16
+            source: "image://colorimage/:/icons/icons/ui/edit.png?" + colors.buttonText
+            ToolTip.visible: editHovered.hovered
+            ToolTip.text: qsTr("Edited")
 
+            HoverHandler {
+                id: editHovered
             }
-        }
 
-        EmojiButton {
-            id: reactButton
-
-            visible: Settings.buttonsInTimeline
-            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            Layout.preferredHeight: 16
-            width: 16
-            hoverEnabled: true
-            ToolTip.visible: hovered
-            ToolTip.text: qsTr("React")
-            emojiPicker: emojiPopup
-            event_id: model.id
-        }
-
-        ImageButton {
-            id: replyButton
-
-            visible: Settings.buttonsInTimeline
-            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            Layout.preferredHeight: 16
-            width: 16
-            hoverEnabled: true
-            image: ":/icons/icons/ui/mail-reply.png"
-            ToolTip.visible: hovered
-            ToolTip.text: qsTr("Reply")
-            onClicked: chat.model.replyAction(model.id)
-        }
-
-        ImageButton {
-            id: optionsButton
-
-            visible: Settings.buttonsInTimeline
-            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            Layout.preferredHeight: 16
-            width: 16
-            hoverEnabled: true
-            image: ":/icons/icons/ui/vertical-ellipsis.png"
-            ToolTip.visible: hovered
-            ToolTip.text: qsTr("Options")
-            onClicked: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, optionsButton)
         }
 
         Label {
