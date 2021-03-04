@@ -84,7 +84,7 @@
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation>Appel vidéo</translation>
+        <translation>Appel vocal</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -274,7 +274,7 @@
     <message>
         <location line="+54"/>
         <source>Failed to kick %1 from %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de l&apos;expulsion de %1 depuis %2  : %3</translation>
     </message>
 </context>
 <context>
@@ -282,7 +282,7 @@
     <message>
         <location filename="../../src/CommunitiesListItem.cpp" line="+26"/>
         <source>Hide rooms with this tag or from this community</source>
-        <translation type="unfinished"></translation>
+        <translation>Cacher les salons portant cette étiquette ou appartenant à cette communauté</translation>
     </message>
     <message>
         <location line="+153"/>
@@ -488,7 +488,7 @@
         <location line="+7"/>
         <source>-- Encrypted Event (Key not valid for this index) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted with this key since it is not valid for this index </comment>
-        <translation type="unfinished"></translation>
+        <translation>-- Événement chiffré (clé invalide pour cet index) --</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -612,7 +612,7 @@ Si Nheko n&apos;arrive pas à trouver votre serveur, il vous proposera de l&apos
     <message>
         <location line="+2"/>
         <source>Your password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Votre mot de passe.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -627,12 +627,12 @@ Si Nheko n&apos;arrive pas à trouver votre serveur, il vous proposera de l&apos
     <message>
         <location line="+4"/>
         <source>Homeserver address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse du serveur</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>mon.serveur.fr:8787</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -653,7 +653,7 @@ Exemple : https ://monserveur.example.com :8787</translation>
         <location line="+157"/>
         <location line="+11"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez entré un identifiant Matrix invalide (exemple correct : @moi :mon.serveur.fr)</translation>
     </message>
     <message>
         <location line="-132"/>
@@ -1010,7 +1010,7 @@ Exemple : https ://monserveur.example.com :8787</translation>
     <message>
         <location line="+13"/>
         <source>Cancel edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Abandonner la modification</translation>
     </message>
 </context>
 <context>
@@ -1339,12 +1339,12 @@ Exemple : https ://monserveur.example.com :8787</translation>
     <message>
         <location filename="../qml/TimelineRow.qml" line="+99"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifier</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Edited</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifié</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1377,7 +1377,7 @@ Exemple : https ://monserveur.example.com :8787</translation>
     <message>
         <location line="+7"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifier</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1412,7 +1412,7 @@ Exemple : https ://monserveur.example.com :8787</translation>
     <message>
         <location line="+7"/>
         <source>Open in external program</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir dans une application externe</translation>
     </message>
     <message>
         <location line="+51"/>
@@ -1505,7 +1505,7 @@ Exemple : https ://monserveur.example.com :8787</translation>
     <message>
         <location line="+8"/>
         <source>User Profile Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres du profil utilisateur</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1553,22 +1553,22 @@ Exemple : https ://monserveur.example.com :8787</translation>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+296"/>
         <source>Select an avatar</source>
-        <translation type="unfinished">Sélectionner un avatar</translation>
+        <translation>Sélectionner un avatar</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Tous les types de fichiers (*)</translation>
+        <translation>Tous les types de fichiers (*)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished">Le fichier sélectionné n&apos;est pas une image</translation>
+        <translation>Le fichier sélectionné n&apos;est pas une image</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished">Erreur lors de la lecture du fichier  : %1</translation>
+        <translation>Erreur lors de la lecture du fichier  : %1</translation>
     </message>
 </context>
 <context>
@@ -1577,7 +1577,7 @@ Exemple : https ://monserveur.example.com :8787</translation>
         <location filename="../../src/UserSettingsPage.cpp" line="+345"/>
         <location filename="../../src/UserSettingsPage.h" line="+183"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Défaut</translation>
     </message>
 </context>
 <context>
@@ -1610,7 +1610,7 @@ Exemple : https ://monserveur.example.com :8787</translation>
     <message>
         <location line="+96"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Défaut</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1669,25 +1669,29 @@ Cela n&apos;affecte que les messages des salons chiffrés.</translation>
     <message>
         <location line="+2"/>
         <source>Privacy Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Protection anti-indiscrétion</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lorsque la fenêtre n&apos;est plus active, la discussion
+sera floutée.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation type="unfinished"></translation>
+        <translation>Attente pour l&apos;activation de la protection anti-indiscrétion (en secondes, 0 à 3600)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation>Temps d&apos;attente (en secondes) avant le floutage des
+conversations lorsque la fenêtre n&apos;est plus active.
+Régler à 0 pour flouter immédiatement lorsque la fenêtre n&apos;est plus au premier plan.
+Valeur maximale de une heure (3600 secondes).</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1945,7 +1949,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location line="+5"/>
         <source>Master signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Clé de signature de l&apos;utilisateur</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2358,8 +2362,7 @@ Taille du média : %2
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation>Le chiffrement est actuellement expérimental, et des choses inattendues peuvent se produire.
-Veuillez noter qu&apos;il n&apos;est pas possible de le désactiver ultérieurement.</translation>
+        <translation>Le chiffrement est actuellement expérimental, et des choses inattendues peuvent se produire. &lt;br&gt;Veuillez noter qu&apos;il n&apos;est pas possible de le désactiver ultérieurement.</translation>
     </message>
     <message>
         <location line="-24"/>
