@@ -351,11 +351,15 @@ utils::humanReadableFingerprint(const std::string &ed25519)
 QString
 utils::humanReadableFingerprint(const QString &ed25519)
 {
-        QStringList fingerprintList;
+        QString fingerprint;
         for (int i = 0; i < ed25519.length(); i = i + 4) {
-                fingerprintList << ed25519.mid(i, 4);
+                fingerprint.append(ed25519.midRef(i, 4));
+                if (i > 0 && i % 16 == 12)
+                        fingerprint.append('\n');
+                else if (i < ed25519.length())
+                        fingerprint.append(' ');
         }
-        return fingerprintList.join(" ");
+        return fingerprint;
 }
 
 QString
