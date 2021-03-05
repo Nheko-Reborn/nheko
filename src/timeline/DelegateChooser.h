@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 // A DelegateChooser like the one, that was added to Qt5.12 (in labs), but compatible with older Qt
 // versions see KDE/kquickitemviews see qtdeclarative/qqmldelagatecomponent
 

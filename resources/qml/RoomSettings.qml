@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.9
 import QtQuick.Controls 2.3

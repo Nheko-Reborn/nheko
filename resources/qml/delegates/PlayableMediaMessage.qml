@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import QtMultimedia 5.6
 import QtQuick 2.12
 import QtQuick.Controls 2.1
