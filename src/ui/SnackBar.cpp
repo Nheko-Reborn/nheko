@@ -7,7 +7,6 @@
 #include "SnackBar.h"
 
 constexpr int STARTING_OFFSET         = 1;
-constexpr int ANIMATION_DURATION      = 6'000;
 constexpr int BOX_PADDING             = 10;
 constexpr double MIN_WIDTH            = 400.0;
 constexpr double MIN_WIDTH_PERCENTAGE = 0.3;
