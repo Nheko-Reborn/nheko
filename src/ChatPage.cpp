@@ -901,17 +901,20 @@ void
 ChatPage::joinRoom(const QString &room)
 {
         const auto room_id = room.toStdString();
-        joinRoomVia(room_id, {});
+        joinRoomVia(room_id, {}, false);
 }
 
 void
-ChatPage::joinRoomVia(const std::string &room_id, const std::vector<std::string> &via)
+ChatPage::joinRoomVia(const std::string &room_id,
+                      const std::vector<std::string> &via,
+                      bool promptForConfirmation)
 {
-        if (QMessageBox::Yes !=
-            QMessageBox::question(
-              this,
-              tr("Confirm join"),
-              tr("Do you really want to join %1?").arg(QString::fromStdString(room_id))))
+        if (promptForConfirmation &&
+            QMessageBox::Yes !=
+              QMessageBox::question(
+                this,
+                tr("Confirm join"),
+                tr("Do you really want to join %1?").arg(QString::fromStdString(room_id))))
                 return;
 
         http::client()->join_room(
