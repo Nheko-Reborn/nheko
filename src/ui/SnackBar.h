@@ -6,6 +6,7 @@
 
 #include <QCoreApplication>
 #include <QPaintEvent>
+#include <QPropertyAnimation>
 #include <QTimer>
 #include <deque>
 
@@ -23,6 +24,7 @@ class SnackBar : public OverlayWidget
 
         Q_PROPERTY(QColor bgColor READ backgroundColor WRITE setBackgroundColor)
         Q_PROPERTY(QColor textColor READ textColor WRITE setTextColor)
+        Q_PROPERTY(double offset READ offset WRITE setOffset NOTIFY offsetChanged)
 
 public:
         explicit SnackBar(QWidget *parent);
@@ -46,8 +48,20 @@ public:
                 update();
         }
 
+        double offset() { return offset_; }
+        void setOffset(double offset)
+        {
+                if (offset != offset_) {
+                        offset_ = offset;
+                        emit offsetChanged();
+                }
+        }
+
 public slots:
         void showMessage(const QString &msg);
+
+signals:
+        void offsetChanged();
 
 protected:
         void paintEvent(QPaintEvent *event) override;
@@ -68,10 +82,11 @@ private:
 
         std::deque<QString> messages_;
 
-        QTimer showTimer_;
         QTimer hideTimer_;
 
         double boxHeight_;
+
+        QPropertyAnimation offset_anim;
 
         SnackBarPosition position_;
 };

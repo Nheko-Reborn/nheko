@@ -39,8 +39,6 @@ option(USE_BUNDLED_LMDB "Use the bundled version of lmdb."
 	${HUNTER_ENABLED})
 option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdb++."
 	${HUNTER_ENABLED})
-option(USE_BUNDLED_TWEENY "Use the bundled version of tweeny."
-	${HUNTER_ENABLED})
 option(USE_BUNDLED_QTKEYCHAIN "Use the bundled version of Qt5Keychain."
 	${HUNTER_ENABLED})
 
@@ -446,18 +444,6 @@ else()
 	add_library(lmdbxx::lmdbxx ALIAS lmdbxx)
 endif()
 
-if(USE_BUNDLED_TWEENY)
-	include(FetchContent)
-	FetchContent_Declare(
-		Tweeny
-		GIT_REPOSITORY https://github.com/mobius3/tweeny.git
-		GIT_TAG        6a5033372fe53c4c731c66c8a2d56261746cd85c #v3 <- v3 has unfixed warnings
-		)
-	FetchContent_MakeAvailable(Tweeny)
-else()
-	find_package(Tweeny REQUIRED)
-endif()
-
 include(FindPkgConfig)
 pkg_check_modules(GSTREAMER IMPORTED_TARGET gstreamer-sdp-1.0>=1.18 gstreamer-webrtc-1.0>=1.18)
 if (TARGET PkgConfig::GSTREAMER)
@@ -643,7 +629,6 @@ target_link_libraries(nheko PRIVATE
 	nlohmann_json::nlohmann_json
 	lmdbxx::lmdbxx
 	liblmdb::lmdb
-	tweeny
 	SingleApplication::SingleApplication)
 
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
