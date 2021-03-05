@@ -599,7 +599,6 @@ newBusMessage(GstBus *bus G_GNUC_UNUSED, GstMessage *msg, gpointer G_GNUC_UNUSED
         }
         return TRUE;
 }
-
 }
 #endif
 

@@ -173,9 +173,10 @@ UserProfile::fetchDeviceList(const QString &userID)
                             std::string local_user_id = utils::localUser().toStdString();
 
                             if (err) {
-                                    nhlog::net()->warn("failed to query device keys: {},{}",
-                                                       mtx::errors::to_string(err->matrix_error.errcode),
-                                                       static_cast<int>(err->status_code));
+                                    nhlog::net()->warn(
+                                      "failed to query device keys: {},{}",
+                                      mtx::errors::to_string(err->matrix_error.errcode),
+                                      static_cast<int>(err->status_code));
                                     return;
                             }
 

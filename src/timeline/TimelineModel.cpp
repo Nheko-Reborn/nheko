@@ -205,12 +205,11 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
   , room_id_(room_id)
   , manager_(manager)
 {
-        connect(
-          this,
-          &TimelineModel::redactionFailed,
-          this,
-          [](const QString &msg) { emit ChatPage::instance()->showNotification(msg); },
-          Qt::QueuedConnection);
+        connect(this,
+                &TimelineModel::redactionFailed,
+                this,
+                [](const QString &msg) { emit ChatPage::instance()->showNotification(msg); },
+                Qt::QueuedConnection);
 
         connect(this,
                 &TimelineModel::newMessageToSend,
@@ -219,17 +218,17 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                 Qt::QueuedConnection);
         connect(this, &TimelineModel::addPendingMessageToStore, &events, &EventStore::addPending);
 
-        connect(
-          &events,
-          &EventStore::dataChanged,
-          this,
-          [this](int from, int to) {
-                  nhlog::ui()->debug(
-                    "data changed {} to {}", events.size() - to - 1, events.size() - from - 1);
-                  emit dataChanged(index(events.size() - to - 1, 0),
-                                   index(events.size() - from - 1, 0));
-          },
-          Qt::QueuedConnection);
+        connect(&events,
+                &EventStore::dataChanged,
+                this,
+                [this](int from, int to) {
+                        nhlog::ui()->debug("data changed {} to {}",
+                                           events.size() - to - 1,
+                                           events.size() - from - 1);
+                        emit dataChanged(index(events.size() - to - 1, 0),
+                                         index(events.size() - from - 1, 0));
+                },
+                Qt::QueuedConnection);
 
         connect(&events, &EventStore::beginInsertRows, this, [this](int from, int to) {
                 int first = events.size() - to;

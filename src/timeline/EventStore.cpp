@@ -35,60 +35,59 @@ EventStore::EventStore(std::string room_id, QObject *)
                 this->last  = range->last;
         }
 
-        connect(
-          this,
-          &EventStore::eventFetched,
-          this,
-          [this](std::string id,
-                 std::string relatedTo,
-                 mtx::events::collections::TimelineEvents timeline) {
-                  cache::client()->storeEvent(room_id_, id, {timeline});
+        connect(this,
+                &EventStore::eventFetched,
+                this,
+                [this](std::string id,
+                       std::string relatedTo,
+                       mtx::events::collections::TimelineEvents timeline) {
+                        cache::client()->storeEvent(room_id_, id, {timeline});
 
-                  if (!relatedTo.empty()) {
-                          auto idx = idToIndex(relatedTo);
-                          if (idx)
-                                  emit dataChanged(*idx, *idx);
-                  }
-          },
-          Qt::QueuedConnection);
+                        if (!relatedTo.empty()) {
+                                auto idx = idToIndex(relatedTo);
+                                if (idx)
+                                        emit dataChanged(*idx, *idx);
+                        }
+                },
+                Qt::QueuedConnection);
 
-        connect(
-          this,
-          &EventStore::oldMessagesRetrieved,
-          this,
-          [this](const mtx::responses::Messages &res) {
-                  if (cache::client()->previousBatchToken(room_id_) == res.end) {
-                          noMoreMessages = true;
-                          emit fetchedMore();
-                          return;
-                  }
+        connect(this,
+                &EventStore::oldMessagesRetrieved,
+                this,
+                [this](const mtx::responses::Messages &res) {
+                        if (cache::client()->previousBatchToken(room_id_) == res.end) {
+                                noMoreMessages = true;
+                                emit fetchedMore();
+                                return;
+                        }
 
-                  uint64_t newFirst = cache::client()->saveOldMessages(room_id_, res);
-                  if (newFirst == first)
-                          fetchMore();
-                  else {
-                          if (this->last != std::numeric_limits<uint64_t>::max()) {
-                                  emit beginInsertRows(toExternalIdx(newFirst),
-                                                       toExternalIdx(this->first - 1));
-                                  this->first = newFirst;
-                                  emit endInsertRows();
-                                  emit fetchedMore();
-                          } else {
-                                  auto range = cache::client()->getTimelineRange(room_id_);
+                        uint64_t newFirst = cache::client()->saveOldMessages(room_id_, res);
+                        if (newFirst == first)
+                                fetchMore();
+                        else {
+                                if (this->last != std::numeric_limits<uint64_t>::max()) {
+                                        emit beginInsertRows(toExternalIdx(newFirst),
+                                                             toExternalIdx(this->first - 1));
+                                        this->first = newFirst;
+                                        emit endInsertRows();
+                                        emit fetchedMore();
+                                } else {
+                                        auto range = cache::client()->getTimelineRange(room_id_);
 
-                                  if (range && range->last - range->first != 0) {
-                                          emit beginInsertRows(0, int(range->last - range->first));
-                                          this->first = range->first;
-                                          this->last  = range->last;
-                                          emit endInsertRows();
-                                          emit fetchedMore();
-                                  } else {
-                                          fetchMore();
-                                  }
-                          }
-                  }
-          },
-          Qt::QueuedConnection);
+                                        if (range && range->last - range->first != 0) {
+                                                emit beginInsertRows(
+                                                  0, int(range->last - range->first));
+                                                this->first = range->first;
+                                                this->last  = range->last;
+                                                emit endInsertRows();
+                                                emit fetchedMore();
+                                        } else {
+                                                fetchMore();
+                                        }
+                                }
+                        }
+                },
+                Qt::QueuedConnection);
 
         connect(this, &EventStore::processPending, this, [this]() {
                 if (!current_txn.empty()) {
@@ -153,48 +152,46 @@ EventStore::EventStore(std::string room_id, QObject *)
                   event->data);
         });
 
-        connect(
-          this,
-          &EventStore::messageFailed,
-          this,
-          [this](std::string txn_id) {
-                  if (current_txn == txn_id) {
-                          current_txn_error_count++;
-                          if (current_txn_error_count > 10) {
-                                  nhlog::ui()->debug("failing txn id '{}'", txn_id);
-                                  cache::client()->removePendingStatus(room_id_, txn_id);
-                                  current_txn_error_count = 0;
-                          }
-                  }
-                  QTimer::singleShot(1000, this, [this]() {
-                          nhlog::ui()->debug("timeout");
-                          this->current_txn = "";
-                          emit processPending();
-                  });
-          },
-          Qt::QueuedConnection);
+        connect(this,
+                &EventStore::messageFailed,
+                this,
+                [this](std::string txn_id) {
+                        if (current_txn == txn_id) {
+                                current_txn_error_count++;
+                                if (current_txn_error_count > 10) {
+                                        nhlog::ui()->debug("failing txn id '{}'", txn_id);
+                                        cache::client()->removePendingStatus(room_id_, txn_id);
+                                        current_txn_error_count = 0;
+                                }
+                        }
+                        QTimer::singleShot(1000, this, [this]() {
+                                nhlog::ui()->debug("timeout");
+                                this->current_txn = "";
+                                emit processPending();
+                        });
+                },
+                Qt::QueuedConnection);
 
-        connect(
-          this,
-          &EventStore::messageSent,
-          this,
-          [this](std::string txn_id, std::string event_id) {
-                  nhlog::ui()->debug("sent {}", txn_id);
+        connect(this,
+                &EventStore::messageSent,
+                this,
+                [this](std::string txn_id, std::string event_id) {
+                        nhlog::ui()->debug("sent {}", txn_id);
 
-                  http::client()->read_event(
-                    room_id_, event_id, [this, event_id](mtx::http::RequestErr err) {
-                            if (err) {
-                                    nhlog::net()->warn(
-                                      "failed to read_event ({}, {})", room_id_, event_id);
-                            }
-                    });
+                        http::client()->read_event(
+                          room_id_, event_id, [this, event_id](mtx::http::RequestErr err) {
+                                  if (err) {
+                                          nhlog::net()->warn(
+                                            "failed to read_event ({}, {})", room_id_, event_id);
+                                  }
+                          });
 
-                  cache::client()->removePendingStatus(room_id_, txn_id);
-                  this->current_txn             = "";
-                  this->current_txn_error_count = 0;
-                  emit processPending();
-          },
-          Qt::QueuedConnection);
+                        cache::client()->removePendingStatus(room_id_, txn_id);
+                        this->current_txn             = "";
+                        this->current_txn_error_count = 0;
+                        emit processPending();
+                },
+                Qt::QueuedConnection);
 }
 
 void
@@ -360,7 +357,7 @@ struct overloaded : Ts...
         using Ts::operator()...;
 };
 template<class... Ts>
-overloaded(Ts...) -> overloaded<Ts...>;
+overloaded(Ts...)->overloaded<Ts...>;
 }
 
 void

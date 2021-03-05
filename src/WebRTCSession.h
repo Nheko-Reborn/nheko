@@ -35,7 +35,6 @@ enum class State
 
 };
 Q_ENUM_NS(State)
-
 }
 
 class WebRTCSession : public QObject

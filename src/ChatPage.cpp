@@ -320,12 +320,11 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 &ChatPage::setGroupViewState);
 
         connect(this, &ChatPage::initializeRoomList, room_list_, &RoomList::initialize);
-        connect(
-          this,
-          &ChatPage::initializeViews,
-          view_manager_,
-          [this](const mtx::responses::Rooms &rooms) { view_manager_->sync(rooms); },
-          Qt::QueuedConnection);
+        connect(this,
+                &ChatPage::initializeViews,
+                view_manager_,
+                [this](const mtx::responses::Rooms &rooms) { view_manager_->sync(rooms); },
+                Qt::QueuedConnection);
         connect(this,
                 &ChatPage::initializeEmptyViews,
                 view_manager_,
@@ -390,12 +389,11 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(
           this, &ChatPage::tryInitialSyncCb, this, &ChatPage::tryInitialSync, Qt::QueuedConnection);
         connect(this, &ChatPage::trySyncCb, this, &ChatPage::trySync, Qt::QueuedConnection);
-        connect(
-          this,
-          &ChatPage::tryDelayedSyncCb,
-          this,
-          [this]() { QTimer::singleShot(RETRY_TIMEOUT, this, &ChatPage::trySync); },
-          Qt::QueuedConnection);
+        connect(this,
+                &ChatPage::tryDelayedSyncCb,
+                this,
+                [this]() { QTimer::singleShot(RETRY_TIMEOUT, this, &ChatPage::trySync); },
+                Qt::QueuedConnection);
 
         connect(this,
                 &ChatPage::newSyncResponse,

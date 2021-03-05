@@ -345,7 +345,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                             if (err) {
                                                     nhlog::net()->error(
                                                       "failed to upload signatures: {},{}",
-                                                      mtx::errors::to_string(err->matrix_error.errcode),
+                                                      mtx::errors::to_string(
+                                                        err->matrix_error.errcode),
                                                       static_cast<int>(err->status_code));
                                             }
 

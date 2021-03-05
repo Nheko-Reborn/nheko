@@ -3566,23 +3566,23 @@ Cache::query_keys(const std::string &user_id,
                 last_changed = cache_->last_changed;
         req.token = last_changed;
 
-        http::client()->query_keys(req,
-                                   [cb, user_id, last_changed](const mtx::responses::QueryKeys &res,
-                                                               mtx::http::RequestErr err) {
-                                           if (err) {
-                                                   nhlog::net()->warn(
-                                                     "failed to query device keys: {},{}",
-                                                     mtx::errors::to_string(err->matrix_error.errcode),
-                                                     static_cast<int>(err->status_code));
-                                                   cb({}, err);
-                                                   return;
-                                           }
+        http::client()->query_keys(
+          req,
+          [cb, user_id, last_changed](const mtx::responses::QueryKeys &res,
+                                      mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to query device keys: {},{}",
+                                             mtx::errors::to_string(err->matrix_error.errcode),
+                                             static_cast<int>(err->status_code));
+                          cb({}, err);
+                          return;
+                  }
 
-                                           cache::updateUserKeys(last_changed, res);
+                  cache::updateUserKeys(last_changed, res);
 
-                                           auto keys = cache::userKeys(user_id);
-                                           cb(keys.value_or(UserKeyCache{}), err);
-                                   });
+                  auto keys = cache::userKeys(user_id);
+                  cb(keys.value_or(UserKeyCache{}), err);
+          });
 }
 
 void

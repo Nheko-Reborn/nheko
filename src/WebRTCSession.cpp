@@ -570,7 +570,6 @@ getMediaAttributes(const GstSDPMessage *sdp,
         }
         return false;
 }
-
 }
 
 bool
