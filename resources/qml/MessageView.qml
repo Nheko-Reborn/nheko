@@ -54,6 +54,7 @@ ScrollView {
 
             HoverHandler {
                 id: messageActionHover
+
                 grabPermissions: PointerHandler.CanTakeOverFromAnything
             }
 
@@ -301,7 +302,6 @@ ScrollView {
                     id: hoverHandler
 
                     enabled: !Settings.mobileMode
-
                     onHoveredChanged: {
                         if (hovered) {
                             if (!messageActionHover.hovered) {

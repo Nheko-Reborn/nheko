@@ -35,6 +35,7 @@ Item {
     RowLayout {
         id: row
 
+        anchors.rightMargin: 1
         anchors.leftMargin: avatarSize + 16
         anchors.left: parent.left
         anchors.right: parent.right
@@ -43,6 +44,8 @@ Item {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignTop
             spacing: 4
+            Layout.topMargin: 1
+            Layout.bottomMargin: 1
 
             // fancy reply, if this is a reply
             Reply {
