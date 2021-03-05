@@ -106,7 +106,7 @@ Item {
 
         Label {
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            text: model.timestamp.toLocaleTimeString("HH:mm")
+            text: model.timestamp.toLocaleTimeString(Locale.ShortFormat)
             width: Math.max(implicitWidth, text.length * fontMetrics.maximumCharacterWidth)
             color: inactiveColors.text
             ToolTip.visible: ma.hovered
