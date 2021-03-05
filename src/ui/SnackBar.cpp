@@ -32,9 +32,7 @@ SnackBar::SnackBar(QWidget *parent)
         offset_anim.setDuration(100);
         offset_anim.setEasingCurve(QEasingCurve::OutCubic);
 
-        connect(this, &SnackBar::offsetChanged, this, [this]() mutable {
-                        repaint();
-        });
+        connect(this, &SnackBar::offsetChanged, this, [this]() mutable { repaint(); });
         connect(
           &offset_anim, &QPropertyAnimation::finished, this, [this]() { hideTimer_.start(10000); });
 

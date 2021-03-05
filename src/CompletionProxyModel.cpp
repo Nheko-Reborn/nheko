@@ -45,16 +45,17 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model, QObject *p
                 }
         }
 
-        connect(this,
-                &CompletionProxyModel::newSearchString,
-                this,
-                [this](QString s) {
-                        s.remove(":");
-                        s.remove("@");
-                        searchString = s.toLower();
-                        invalidate();
-                },
-                Qt::QueuedConnection);
+        connect(
+          this,
+          &CompletionProxyModel::newSearchString,
+          this,
+          [this](QString s) {
+                  s.remove(":");
+                  s.remove("@");
+                  searchString = s.toLower();
+                  invalidate();
+          },
+          Qt::QueuedConnection);
 }
 
 void
