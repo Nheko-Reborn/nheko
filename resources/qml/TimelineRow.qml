@@ -86,7 +86,7 @@ Item {
         }
 
         Image {
-            visible: model.isEdited
+            visible: model.isEdited || model.id == chat.model.edit
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
             Layout.preferredHeight: 16
             Layout.preferredWidth: 16
@@ -94,7 +94,7 @@ Item {
             width: 16
             sourceSize.width: 16
             sourceSize.height: 16
-            source: "image://colorimage/:/icons/icons/ui/edit.png?" + colors.buttonText
+            source: "image://colorimage/:/icons/icons/ui/edit.png?" + ((model.id == chat.model.edit) ? colors.highlight : colors.buttonText)
             ToolTip.visible: editHovered.hovered
             ToolTip.text: qsTr("Edited")
 
