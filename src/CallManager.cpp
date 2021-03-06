@@ -64,8 +64,8 @@ CallManager::CallManager(QObject *parent)
           this,
           [this](const std::string &sdp, const std::vector<CallCandidates::Candidate> &candidates) {
                   nhlog::ui()->debug("WebRTC: call id: {} - sending offer", callid_);
-                  emit newMessage(roomid_, CallInvite{callid_, sdp, 0, timeoutms_});
-                  emit newMessage(roomid_, CallCandidates{callid_, candidates, 0});
+                  emit newMessage(roomid_, CallInvite{callid_, sdp, "0", timeoutms_});
+                  emit newMessage(roomid_, CallCandidates{callid_, candidates, "0"});
                   std::string callid(callid_);
                   QTimer::singleShot(timeoutms_, this, [this, callid]() {
                           if (session_.state() == webrtc::State::OFFERSENT && callid == callid_) {
@@ -82,8 +82,8 @@ CallManager::CallManager(QObject *parent)
           this,
           [this](const std::string &sdp, const std::vector<CallCandidates::Candidate> &candidates) {
                   nhlog::ui()->debug("WebRTC: call id: {} - sending answer", callid_);
-                  emit newMessage(roomid_, CallAnswer{callid_, sdp, 0});
-                  emit newMessage(roomid_, CallCandidates{callid_, candidates, 0});
+                  emit newMessage(roomid_, CallAnswer{callid_, sdp, "0"});
+                  emit newMessage(roomid_, CallCandidates{callid_, candidates, "0"});
           });
 
         connect(&session_,
@@ -91,7 +91,7 @@ CallManager::CallManager(QObject *parent)
                 this,
                 [this](const CallCandidates::Candidate &candidate) {
                         nhlog::ui()->debug("WebRTC: call id: {} - sending ice candidate", callid_);
-                        emit newMessage(roomid_, CallCandidates{callid_, {candidate}, 0});
+                        emit newMessage(roomid_, CallCandidates{callid_, {candidate}, "0"});
                 });
 
         connect(&turnServerTimer_, &QTimer::timeout, this, &CallManager::retrieveTurnServer);
@@ -238,7 +238,7 @@ CallManager::hangUp(CallHangUp::Reason reason)
         if (!callid_.empty()) {
                 nhlog::ui()->debug(
                   "WebRTC: call id: {} - hanging up ({})", callid_, callHangUpReasonString(reason));
-                emit newMessage(roomid_, CallHangUp{callid_, 0, reason});
+                emit newMessage(roomid_, CallHangUp{callid_, "0", reason});
                 endCall();
         }
 }
@@ -291,7 +291,7 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
         if (isOnCall() || roomInfo.member_count != 2) {
                 emit newMessage(QString::fromStdString(callInviteEvent.room_id),
                                 CallHangUp{callInviteEvent.content.call_id,
-                                           0,
+                                           "0",
                                            CallHangUp::Reason::InviteTimeOut});
                 return;
         }
