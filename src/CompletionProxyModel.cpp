@@ -6,8 +6,11 @@
 #include "Logging.h"
 #include "Utils.h"
 
-CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model, QObject *parent)
+CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
+                                           int max_mistakes,
+                                           QObject *parent)
   : QAbstractProxyModel(parent)
+  , maxMistakes_(max_mistakes)
 {
         setSourceModel(model);
         QRegularExpression splitPoints("\\s+|-");
@@ -59,7 +62,7 @@ CompletionProxyModel::invalidate()
 {
         auto key = searchString.toUcs4();
         beginResetModel();
-        mapping = trie_.search(key, 7);
+        mapping = trie_.search(key, 7, maxMistakes_);
         endResetModel();
 
         std::string temp;

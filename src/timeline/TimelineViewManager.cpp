@@ -577,7 +577,7 @@ TimelineViewManager::completerFor(QString completerName, QString roomId)
                 return proxy;
         } else if (completerName == "room") {
                 auto roomModel = new RoomsModel(false);
-                auto proxy     = new CompletionProxyModel(roomModel);
+                auto proxy     = new CompletionProxyModel(roomModel, 4);
                 roomModel->setParent(proxy);
                 return proxy;
         } else if (completerName == "roomAliases") {

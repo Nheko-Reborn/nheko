@@ -92,6 +92,7 @@ Popup {
         model: completer
         verticalLayoutDirection: popup.bottomToTop ? ListView.BottomToTop : ListView.TopToBottom
         spacing: rowSpacing
+        pixelAligned: true
 
         delegate: Rectangle {
             color: model.index == popup.currentIndex ? colors.highlight : colors.base
@@ -202,6 +203,7 @@ Popup {
 
                         Label {
                             text: model.roomName
+                            font.pixelSize: popup.avatarHeight * 0.5
                             color: model.index == popup.currentIndex ? colors.highlightedText : colors.text
                         }
 

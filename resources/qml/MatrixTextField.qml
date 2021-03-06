@@ -2,8 +2,13 @@ import QtQuick 2.13
 import QtQuick.Layouts 1.13
 import QtQuick.Controls 2.13
 
-TextInput {
+TextField {
     id: input
+    palette: colors
+
+    background: Rectangle {
+        color: colors.base
+    }
 
     Rectangle {
         id: blueBar

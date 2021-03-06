@@ -5,7 +5,7 @@ import im.nheko 1.0
 Popup {
     id: quickSwitcher
 
-    property int textHeight: 48
+    property int textHeight: 32
     property int textMargin: 8
 
     x: parent.width / 2 - width / 2
@@ -49,9 +49,9 @@ Popup {
     Completer {
         id: completerPopup
 
-        x: roomTextInput.x - 5
-        y: roomTextInput.y + roomTextInput.height + 5
-        width: parent.width + 10
+        x: roomTextInput.x
+        y: roomTextInput.y + roomTextInput.height + textMargin
+        width: parent.width
         completerName: "room"
         bottomToTop: false
         fullWidth: true
@@ -77,7 +77,6 @@ Popup {
 
     Connections {
         onCompletionSelected: {
-            console.log(id)
             TimelineManager.setHistoryView(id)
             TimelineManager.highlightRoom(id)
             quickSwitcher.close()
