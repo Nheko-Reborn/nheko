@@ -119,6 +119,9 @@ UserSettings::load(std::optional<QString> profile)
         userId_      = settings.value(prefix + "auth/user_id", "").toString();
         deviceId_    = settings.value(prefix + "auth/device_id", "").toString();
 
+        disableCertificateValidation_ =
+          settings.value("disable_certificate_validation", false).toBool();
+
         applyTheme();
 }
 void
@@ -527,6 +530,17 @@ UserSettings::setHomeserver(QString homeserver)
 }
 
 void
+UserSettings::setDisableCertificateValidation(bool disabled)
+{
+        if (disabled == disableCertificateValidation_)
+                return;
+        disableCertificateValidation_ = disabled;
+        http::client()->verify_certificates(!disabled);
+        emit disableCertificateValidationChanged(disabled);
+        save();
+}
+
+void
 UserSettings::applyTheme()
 {
         QFile stylefile;
@@ -640,6 +654,8 @@ UserSettings::save()
         settings.setValue(prefix + "auth/home_server", homeserver_);
         settings.setValue(prefix + "auth/user_id", userId_);
         settings.setValue(prefix + "auth/device_id", deviceId_);
+
+        settings.setValue("disable_certificate_validation", disableCertificateValidation_);
 
         settings.sync();
 }

@@ -92,6 +92,8 @@ class UserSettings : public QObject
           QString accessToken READ accessToken WRITE setAccessToken NOTIFY accessTokenChanged)
         Q_PROPERTY(QString deviceId READ deviceId WRITE setDeviceId NOTIFY deviceIdChanged)
         Q_PROPERTY(QString homeserver READ homeserver WRITE setHomeserver NOTIFY homeserverChanged)
+        Q_PROPERTY(bool disableCertificateValidation READ disableCertificateValidation WRITE
+                     setDisableCertificateValidation NOTIFY disableCertificateValidationChanged)
 
         UserSettings();
 
@@ -150,6 +152,7 @@ public:
         void setAccessToken(QString accessToken);
         void setDeviceId(QString deviceId);
         void setHomeserver(QString homeserver);
+        void setDisableCertificateValidation(bool disabled);
         void setHiddenTags(QStringList hiddenTags);
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
@@ -202,6 +205,7 @@ public:
         QString accessToken() const { return accessToken_; }
         QString deviceId() const { return deviceId_; }
         QString homeserver() const { return homeserver_; }
+        bool disableCertificateValidation() const { return disableCertificateValidation_; }
         QStringList hiddenTags() const { return hiddenTags_; }
 
 signals:
@@ -244,6 +248,7 @@ signals:
         void accessTokenChanged(QString accessToken);
         void deviceIdChanged(QString deviceId);
         void homeserverChanged(QString homeserver);
+        void disableCertificateValidationChanged(bool disabled);
 
 private:
         // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
@@ -285,6 +290,7 @@ private:
         bool screenShareRemoteVideo_;
         bool screenShareHideCursor_;
         bool useStunServer_;
+        bool disableCertificateValidation_ = false;
         QString profile_;
         QString userId_;
         QString accessToken_;

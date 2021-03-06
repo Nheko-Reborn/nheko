@@ -404,6 +404,8 @@ RegisterPage::onRegisterButtonClicked()
                 auto server   = server_input_->text().toStdString();
 
                 http::client()->set_server(server);
+                http::client()->verify_certificates(
+                  !UserSettings::instance()->disableCertificateValidation());
                 http::client()->registration(
                   username,
                   password,

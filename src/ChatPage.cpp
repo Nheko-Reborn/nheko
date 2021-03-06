@@ -464,6 +464,8 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 
         http::client()->set_server(homeserver.toStdString());
         http::client()->set_access_token(token.toStdString());
+        http::client()->verify_certificates(
+          !UserSettings::instance()->disableCertificateValidation());
 
         // The Olm client needs the user_id & device_id that will be included
         // in the generated payloads & keys.
@@ -764,7 +766,11 @@ ChatPage::startInitialSync()
                           const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
                           const int status_code = static_cast<int>(err->status_code);
 
-                          nhlog::net()->error("initial sync error: {} {}", status_code, err_code);
+                          nhlog::net()->error("initial sync error: {} {} {} {}",
+                                              err->parse_error,
+                                              status_code,
+                                              err->error_code.message(),
+                                              err_code);
 
                           // non http related errors
                           if (status_code <= 0 || status_code >= 600) {
@@ -890,7 +896,11 @@ ChatPage::trySync()
                                   return;
                           }
 
-                          nhlog::net()->error("sync error: {} {}", status_code, err_code);
+                          nhlog::net()->error("initial sync error: {} {} {} {}",
+                                              err->parse_error,
+                                              status_code,
+                                              err->error_code.message(),
+                                              err_code);
                           emit tryDelayedSyncCb();
                           return;
                   }

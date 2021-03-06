@@ -19,6 +19,7 @@
 #include "LoginPage.h"
 #include "MatrixClient.h"
 #include "SSOHandler.h"
+#include "UserSettingsPage.h"
 #include "ui/FlatButton.h"
 #include "ui/LoadingIndicator.h"
 #include "ui/OverlayModal.h"
@@ -256,6 +257,7 @@ LoginPage::onMatrixIdEntered()
                 serverInput_->setText(homeServer);
 
                 http::client()->set_server(user.hostname());
+
                 http::client()->well_known([this](const mtx::responses::WellKnown &res,
                                                   mtx::http::RequestErr err) {
                         if (err) {
@@ -383,6 +385,8 @@ void
 LoginPage::onLoginButtonClicked(LoginMethod loginMethod)
 {
         error_label_->setText("");
+        http::client()->verify_certificates(
+          !UserSettings::instance()->disableCertificateValidation());
 
         User user;
 
