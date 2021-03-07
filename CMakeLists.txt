@@ -418,6 +418,7 @@ set_package_properties(nlohmann_json PROPERTIES
 	)
 
 if(USE_BUNDLED_LMDBXX)
+	include(FetchContent)
 	FetchContent_Declare(
 		  lmdbxx
 			URL "https://raw.githubusercontent.com/hoytech/lmdbxx/1.0.0/lmdb++.h"
