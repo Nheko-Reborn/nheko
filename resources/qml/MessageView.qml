@@ -1,5 +1,4 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "./delegates"
@@ -232,6 +231,13 @@ ScrollView {
                         displayName: modelData ? modelData.userName : ""
                         userid: modelData ? modelData.userId : ""
                         onClicked: chat.model.openUserProfile(modelData.userId)
+                        ToolTip.visible: avatarHover.hovered
+                        ToolTip.text: userid
+
+                        HoverHandler {
+                            id: avatarHover
+                        }
+
                     }
 
                     Connections {
@@ -247,16 +253,20 @@ ScrollView {
                         text: modelData ? TimelineManager.escapeEmoji(modelData.userName) : ""
                         color: TimelineManager.userColor(modelData ? modelData.userId : "", colors.window)
                         textFormat: Text.RichText
+                        ToolTip.visible: displayNameHover.hovered
+                        ToolTip.text: modelData ? modelData.userId : ""
 
                         TapHandler {
-                            //cursorShape: Qt.PointingHandCursor
-
                             onSingleTapped: chat.model.openUserProfile(modelData.userId)
                         }
 
                         CursorShape {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
+                        }
+
+                        HoverHandler {
+                            id: displayNameHover
                         }
 
                     }
