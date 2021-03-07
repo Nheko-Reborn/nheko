@@ -1,7 +1,9 @@
 // Copyright (C) 2016 Michael Bohlender, <michael.bohlender@kdemail.net>
 // Copyright (C) 2017 Christian Mollekopf, <mollekopf@kolabsystems.com>
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
 // SPDX-License-Identifier: GPL-3.0-or-later
+
 /*
 * Shamelessly stolen from:
 * https://cgit.kde.org/kube.git/tree/framework/qml/ScrollHelper.qml

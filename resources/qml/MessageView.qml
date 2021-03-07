@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "./delegates"
