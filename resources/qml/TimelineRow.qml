@@ -28,11 +28,11 @@ Item {
 
     TapHandler {
         acceptedButtons: Qt.RightButton
-        onSingleTapped: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, row, mapToItem(timelineRoot, eventPoint.position.x, eventPoint.position.y))
+        onSingleTapped: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, row)
     }
 
     TapHandler {
-        onLongPressed: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, row, mapToItem(timelineRoot, point.position.x, point.position.y))
+        onLongPressed: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, row)
         onDoubleTapped: chat.model.reply = model.id
     }
 
