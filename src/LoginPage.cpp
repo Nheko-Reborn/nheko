@@ -257,6 +257,8 @@ LoginPage::onMatrixIdEntered()
                 serverInput_->setText(homeServer);
 
                 http::client()->set_server(user.hostname());
+                http::client()->verify_certificates(
+                  !UserSettings::instance()->disableCertificateValidation());
 
                 http::client()->well_known([this](const mtx::responses::WellKnown &res,
                                                   mtx::http::RequestErr err) {
@@ -342,6 +344,8 @@ void
 LoginPage::onServerAddressEntered()
 {
         error_label_->setText("");
+        http::client()->verify_certificates(
+          !UserSettings::instance()->disableCertificateValidation());
         http::client()->set_server(serverInput_->text().toStdString());
         checkHomeserverVersion();
 
@@ -385,9 +389,6 @@ void
 LoginPage::onLoginButtonClicked(LoginMethod loginMethod)
 {
         error_label_->setText("");
-        http::client()->verify_certificates(
-          !UserSettings::instance()->disableCertificateValidation());
-
         User user;
 
         if (!matrixid_input_->isValid()) {
