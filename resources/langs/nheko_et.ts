@@ -17,12 +17,12 @@
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa jagad ekraani</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Peida/näita pilt-pildis vaade</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -127,7 +127,7 @@
     <message>
         <location filename="../../src/CallManager.cpp" line="+521"/>
         <source>Entire screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Terve ekraan</translation>
     </message>
 </context>
 <context>
@@ -151,12 +151,12 @@
     <message>
         <location line="+413"/>
         <source>Confirm join</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinnita liitumine</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to join %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa kindlasti soovid liituda %1 jututoaga?</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -237,7 +237,7 @@
     <message>
         <location line="+226"/>
         <source>Do you really want to start a private chat with %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa kindlasti soovid alustada otsevestlust kasutajaga %1?</translation>
     </message>
     <message>
         <location line="-818"/>
@@ -922,7 +922,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+14"/>
         <source>Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekraan</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1124,51 +1124,53 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/RoomSettings.qml" line="+204"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished">Läbiv krüptimine</translation>
+        <translation>Läbiv krüptimine</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                             Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimine on nhekos hetkel veel katseline ning nii mõndagi võib ootamatult katki minna. &lt;br&gt;Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Whether or not the client should respond automatically with the session keys
                                 upon request. Use with caution, this is a temporary measure to test the
                                 E2E implementation until device verification is completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas klient peaks automaatselt vastama või mitte vastama sessioonivõtmete päringule.
+Kasuta seda võimalust ettevaatlikult. Tegemist on ajutise lahendusega läbiva krüptimise
+testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.</translation>
     </message>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+267"/>
         <source>Failed to enable encryption: %1</source>
-        <translation type="unfinished">Krüptimise kasutuselevõtmine ei õnnestunud: %1</translation>
+        <translation>Krüptimise kasutuselevõtmine ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+228"/>
         <source>Select an avatar</source>
-        <translation type="unfinished">Vali tunnuspilt</translation>
+        <translation>Vali tunnuspilt</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Kõik failid (*)</translation>
+        <translation>Kõik failid (*)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished">Valitud fail ei ole pildifail</translation>
+        <translation>Valitud fail ei ole pildifail</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished">Viga faili lugemisel: %1</translation>
+        <translation>Viga faili lugemisel: %1</translation>
     </message>
     <message>
         <location line="+34"/>
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
-        <translation type="unfinished">Viga faili üleslaadimisel: %1</translation>
+        <translation>Viga faili üleslaadimisel: %1</translation>
     </message>
 </context>
 <context>
@@ -1176,53 +1178,53 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/voip/ScreenShare.qml" line="+30"/>
         <source>Share desktop with %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa soovid jagada oma töölauda kasutajaga %1?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Window:</source>
-        <translation type="unfinished"></translation>
+        <translation>Aken:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Frame rate:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaadrisagedus:</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Include your camera picture-in-picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita oma kaamerat pilt-pildis vaates</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Request remote camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Soovi teise osapoole kaameravaadet</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+9"/>
         <source>View your callee&apos;s camera like a regular video call</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaata teise osapoole kaamerat nii nagu tavalise videokõne puhul</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Hide mouse cursor</source>
-        <translation type="unfinished"></translation>
+        <translation>Peida hiirekursor</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaga</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Eelvaade</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Loobu</translation>
     </message>
 </context>
 <context>
