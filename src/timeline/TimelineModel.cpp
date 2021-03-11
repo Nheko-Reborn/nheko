@@ -883,11 +883,13 @@ TimelineModel::relatedInfo(QString id)
         if (related.quoted_body.startsWith("\n"))
                 related.quoted_body.remove(0, 1);
         related.quoted_body = utils::getQuoteBody(related);
+        related.quoted_body.replace("@room", QString::fromUtf8("@\u2060room"));
 
         // get quoted body and strip reply fallback
         related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(*event);
         related.quoted_formatted_body.remove(QRegularExpression(
           "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption));
+        related.quoted_formatted_body.replace("@room", "@\u2060aroom");
         related.room = room_id_;
 
         return related;
