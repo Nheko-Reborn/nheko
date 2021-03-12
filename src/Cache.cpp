@@ -787,6 +787,9 @@ Cache::isInitialized()
 std::string
 Cache::nextBatchToken()
 {
+        if (!env_.handle())
+                throw lmdb::error("Env already closed", MDB_INVALID);
+
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         std::string_view token;
 
@@ -1816,6 +1819,9 @@ Cache::getTimelineRange(const std::string &room_id)
 std::optional<uint64_t>
 Cache::getTimelineIndex(const std::string &room_id, std::string_view event_id)
 {
+        if (event_id.empty() || room_id.empty())
+                return {};
+
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
         lmdb::dbi orderDb;

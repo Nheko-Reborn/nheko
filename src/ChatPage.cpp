@@ -873,11 +873,14 @@ ChatPage::trySync()
 
         http::client()->sync(
           opts,
-          [this, since = cache::nextBatchToken()](const mtx::responses::Sync &res,
-                                                  mtx::http::RequestErr err) {
-                  if (since != cache::nextBatchToken()) {
-                          nhlog::net()->warn("Duplicate sync, dropping");
-                          return;
+          [this, since = opts.since](const mtx::responses::Sync &res, mtx::http::RequestErr err) {
+                  try {
+                          if (since != cache::nextBatchToken()) {
+                                  nhlog::net()->warn("Duplicate sync, dropping");
+                                  return;
+                          }
+                  } catch (const lmdb::error &e) {
+                          nhlog::db()->warn("Logged out in the mean time, dropping sync");
                   }
 
                   if (err) {
