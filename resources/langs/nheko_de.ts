@@ -1478,12 +1478,12 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../qml/TimelineRow.qml" line="+100"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Bearbeiten</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Edited</source>
-        <translation type="unfinished"></translation>
+        <translation>Bearbeitet</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1516,7 +1516,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+7"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Bearbeiten</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1644,7 +1644,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+8"/>
         <source>User Profile Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Profileinstellungen</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1692,22 +1692,22 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+301"/>
         <source>Select an avatar</source>
-        <translation type="unfinished">Wähle einen Avatar</translation>
+        <translation>Wähle einen Avatar</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Alle Dateien (*)</translation>
+        <translation>Alle Dateien (*)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished">Die ausgewählte Datei ist kein Bild</translation>
+        <translation>Die ausgewählte Datei ist kein Bild</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished">Fehler beim Lesen der DateI: %1</translation>
+        <translation>Fehler beim Lesen der Datei: %1</translation>
     </message>
 </context>
 <context>
@@ -1716,7 +1716,7 @@ Beispiel: https://mein.server:8787</translation>
         <location filename="../../src/UserSettingsPage.cpp" line="+337"/>
         <location filename="../../src/UserSettingsPage.h" line="+183"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Standard</translation>
     </message>
 </context>
 <context>
@@ -1749,7 +1749,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+96"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <location line="+31"/>
