@@ -667,7 +667,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
         <location line="+1"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
-        <translation>The address that can be used to contact you homeservers client API.
+        <translation>The address that can be used to contact your homeservers client API.
 Example: https://server.my:8787</translation>
     </message>
     <message>
