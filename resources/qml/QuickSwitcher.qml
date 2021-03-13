@@ -24,7 +24,7 @@ Popup {
         id: roomTextInput
 
         anchors.fill: parent
-        font.pixelSize: quickSwitcher.textHeight * 0.6
+        font.pixelSize: Math.ceil(quickSwitcher.textHeight * 0.6)
         padding: textMargin
         color: colors.text
 
