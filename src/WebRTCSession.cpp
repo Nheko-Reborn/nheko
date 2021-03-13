@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #include <QQmlEngine>
 #include <QQuickItem>
 #include <algorithm>
@@ -570,7 +574,6 @@ getMediaAttributes(const GstSDPMessage *sdp,
         }
         return false;
 }
-
 }
 
 bool

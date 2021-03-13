@@ -39,8 +39,6 @@ option(USE_BUNDLED_LMDB "Use the bundled version of lmdb."
 	${HUNTER_ENABLED})
 option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdb++."
 	${HUNTER_ENABLED})
-option(USE_BUNDLED_TWEENY "Use the bundled version of tweeny."
-	${HUNTER_ENABLED})
 option(USE_BUNDLED_QTKEYCHAIN "Use the bundled version of Qt5Keychain."
 	${HUNTER_ENABLED})
 
@@ -129,6 +127,9 @@ endif()
 if(USE_BUNDLED_LMDB)
 	hunter_add_package(lmdb)
 	find_package(liblmdb CONFIG REQUIRED)
+
+	target_include_directories(liblmdb::lmdb INTERFACE
+		"${HUNTER_INSTALL_PREFIX}/include/lmdb")
 else()
 	find_package(LMDB)
 endif()
@@ -358,7 +359,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        004d4203ceb441239aafb17e1340cd063139d029
+		GIT_TAG        ace7fa2d89a64de7b84c77d1fa1bc80486408831
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -417,8 +418,18 @@ set_package_properties(nlohmann_json PROPERTIES
 	)
 
 if(USE_BUNDLED_LMDBXX)
-	hunter_add_package(lmdbxx)
-	find_package(lmdbxx CONFIG REQUIRED)
+	include(FetchContent)
+	FetchContent_Declare(
+		  lmdbxx
+			URL "https://raw.githubusercontent.com/hoytech/lmdbxx/1.0.0/lmdb++.h"
+			DOWNLOAD_NO_EXTRACT TRUE
+			)
+	if(NOT lmdbxx_POPULATED)
+		FetchContent_Populate(lmdbxx)
+	endif()
+	add_library(lmdbxx INTERFACE)
+	target_include_directories(lmdbxx INTERFACE ${lmdbxx_SOURCE_DIR})
+	add_library(lmdbxx::lmdbxx ALIAS lmdbxx)
 else()
 	if(NOT LMDBXX_INCLUDE_DIR)
 		find_path(LMDBXX_INCLUDE_DIR
@@ -432,18 +443,6 @@ else()
 	add_library(lmdbxx INTERFACE)
 	target_include_directories(lmdbxx INTERFACE ${LMDBXX_INCLUDE_DIR})
 	add_library(lmdbxx::lmdbxx ALIAS lmdbxx)
-endif()
-
-if(USE_BUNDLED_TWEENY)
-	include(FetchContent)
-	FetchContent_Declare(
-		Tweeny
-		GIT_REPOSITORY https://github.com/mobius3/tweeny.git
-		GIT_TAG        6a5033372fe53c4c731c66c8a2d56261746cd85c #v3 <- v3 has unfixed warnings
-		)
-	FetchContent_MakeAvailable(Tweeny)
-else()
-	find_package(Tweeny REQUIRED)
 endif()
 
 include(FindPkgConfig)
@@ -603,6 +602,9 @@ if(APPLE)
 elseif(WIN32)
 	target_compile_definitions(nheko PRIVATE WIN32_LEAN_AND_MEAN)
 	target_link_libraries (nheko PRIVATE ${NTDLIB} Qt5::WinMain)
+	if(MSVC)
+		target_compile_options(nheko PUBLIC "/Zc:__cplusplus")
+	endif()
 else()
 	target_link_libraries (nheko PRIVATE Qt5::DBus)
 endif()
@@ -631,7 +633,6 @@ target_link_libraries(nheko PRIVATE
 	nlohmann_json::nlohmann_json
 	lmdbxx::lmdbxx
 	liblmdb::lmdb
-	tweeny
 	SingleApplication::SingleApplication)
 
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")

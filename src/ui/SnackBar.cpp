@@ -1,17 +1,19 @@
-#include <QPainter>
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
 
-#include <tweeny.h>
+#include <QPainter>
 
 #include "SnackBar.h"
 
 constexpr int STARTING_OFFSET         = 1;
-constexpr int ANIMATION_DURATION      = 6'000;
 constexpr int BOX_PADDING             = 10;
 constexpr double MIN_WIDTH            = 400.0;
 constexpr double MIN_WIDTH_PERCENTAGE = 0.3;
 
 SnackBar::SnackBar(QWidget *parent)
   : OverlayWidget(parent)
+  , offset_anim(this, "offset", this)
 {
         QFont font;
         font.setPointSizeF(font.pointSizeF() * 1.2);
@@ -24,17 +26,14 @@ SnackBar::SnackBar(QWidget *parent)
 
         hideTimer_.setSingleShot(true);
 
-        auto offset_anim = tweeny::from(1.0f).to(0.0f).during(100).via(tweeny::easing::cubicOut);
-        connect(&showTimer_, &QTimer::timeout, this, [this, offset_anim]() mutable {
-                if (offset_anim.progress() < 1.0f) {
-                        offset_ = offset_anim.step(0.07f);
-                        repaint();
-                } else {
-                        showTimer_.stop();
-                        hideTimer_.start(ANIMATION_DURATION);
-                        offset_anim.seek(0.0f);
-                }
-        });
+        offset_anim.setStartValue(1.0);
+        offset_anim.setEndValue(0.0);
+        offset_anim.setDuration(100);
+        offset_anim.setEasingCurve(QEasingCurve::OutCubic);
+
+        connect(this, &SnackBar::offsetChanged, this, [this]() mutable { repaint(); });
+        connect(
+          &offset_anim, &QPropertyAnimation::finished, this, [this]() { hideTimer_.start(10000); });
 
         connect(&hideTimer_, SIGNAL(timeout()), this, SLOT(hideMessage()));
 
@@ -50,7 +49,7 @@ SnackBar::start()
         show();
         raise();
 
-        showTimer_.start(10);
+        offset_anim.start();
 }
 
 void
@@ -73,7 +72,6 @@ SnackBar::hideMessage()
 void
 SnackBar::stopTimers()
 {
-        showTimer_.stop();
         hideTimer_.stop();
 }
 

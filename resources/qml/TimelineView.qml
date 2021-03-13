@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import "./delegates"
 import "./device-verification"
 import "./emoji"
@@ -76,15 +80,12 @@ Page {
         property bool isEncrypted
         property bool isEditable
 
-        function show(eventId_, eventType_, isEncrypted_, isEditable_, showAt_, position) {
+        function show(eventId_, eventType_, isEncrypted_, isEditable_, showAt_) {
             eventId = eventId_;
             eventType = eventType_;
             isEncrypted = isEncrypted_;
             isEditable = isEditable_;
-            if (position)
-                popup(position, showAt_);
-            else
-                popup(showAt_);
+            popup(showAt_);
         }
 
         modal: true

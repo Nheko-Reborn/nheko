@@ -121,6 +121,7 @@ brew install --cask nheko
 - CMake 3.15 or greater. (Lower version may work, but may break boost linking)
 - [mtxclient](https://github.com/Nheko-Reborn/mtxclient)
 - [LMDB](https://symas.com/lightning-memory-mapped-database/)
+- [lmdb++](https://github.com/hoytech/lmdbxx)
 - [cmark](https://github.com/commonmark/cmark) 0.29 or greater.
 - Boost 1.70 or greater.
 - [libolm](https://gitlab.matrix.org/matrix-org/olm)

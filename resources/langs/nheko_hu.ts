@@ -4,7 +4,7 @@
 <context>
     <name>ActiveCallBar</name>
     <message>
-        <location filename="../qml/voip/ActiveCallBar.qml" line="+66"/>
+        <location filename="../qml/voip/ActiveCallBar.qml" line="+106"/>
         <source>Calling...</source>
         <translation>Hívás...</translation>
     </message>
@@ -15,9 +15,14 @@
         <translation>Csatlakozás...</translation>
     </message>
     <message>
-        <location line="+76"/>
-        <source>Toggle camera view</source>
-        <translation>Kameranézet be-/kikapcsolása</translation>
+        <location line="+67"/>
+        <source>You are screen sharing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Hide/Show Picture-in-Picture</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+13"/>
@@ -33,7 +38,7 @@
 <context>
     <name>AwaitingVerificationConfirmation</name>
     <message>
-        <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+7"/>
+        <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+11"/>
         <source>Awaiting Confirmation</source>
         <translation>Várakozás megerősítésre</translation>
     </message>
@@ -51,7 +56,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2084"/>
+        <location filename="../../src/Cache.cpp" line="+2026"/>
         <source>You joined this room.</source>
         <translation>Csatlakoztál ehhez a szobához.</translation>
     </message>
@@ -59,7 +64,7 @@
 <context>
     <name>CallInvite</name>
     <message>
-        <location filename="../qml/voip/CallInvite.qml" line="+66"/>
+        <location filename="../qml/voip/CallInvite.qml" line="+70"/>
         <source>Video Call</source>
         <translation>Videóhívás</translation>
     </message>
@@ -77,7 +82,7 @@
 <context>
     <name>CallInviteBar</name>
     <message>
-        <location filename="../qml/voip/CallInviteBar.qml" line="+60"/>
+        <location filename="../qml/voip/CallInviteBar.qml" line="+64"/>
         <source>Video Call</source>
         <translation>Videóhívás</translation>
     </message>
@@ -92,7 +97,7 @@
         <translation>Eszközök</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+10"/>
         <source>Accept</source>
         <translation>Elfogadás</translation>
     </message>
@@ -118,35 +123,54 @@
     </message>
 </context>
 <context>
+    <name>CallManager</name>
+    <message>
+        <location filename="../../src/CallManager.cpp" line="+521"/>
+        <source>Entire screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+215"/>
+        <location filename="../../src/ChatPage.cpp" line="+203"/>
         <source>Failed to invite user: %1</source>
         <translation>Nem sikerült meghívni a felhasználót: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+797"/>
+        <location line="+806"/>
         <source>Invited user: %1</source>
         <translation>A felhasználó meg lett hívva: %1</translation>
     </message>
     <message>
-        <location line="-500"/>
+        <location line="-510"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>A gyorsítótár átvitele a jelenlegi verzióhoz nem sikerült. Ennek több oka is lehet. Kérlek, írj egy hibajelentést és egyelőre próbálj meg egy régebbi verziót használni! Alternatív megoldásként megprobálhatod eltávolítani a gyorsítótárat kézzel.</translation>
     </message>
     <message>
-        <location line="+456"/>
+        <location line="+413"/>
+        <source>Confirm join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to join %1?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+44"/>
         <source>Room %1 created.</source>
         <translation>A %1 nevű szoba létre lett hozva.</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+35"/>
+        <location line="+323"/>
         <source>Confirm invite</source>
         <translation>Meghívás megerősítése</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-322"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Biztos, hogy meg akarod hívni a következő felhasználót: %1 (%2)?</translation>
     </message>
@@ -211,7 +235,12 @@
         <translation>Kitiltás feloldva a felhasználónak: %1</translation>
     </message>
     <message>
-        <location line="-582"/>
+        <location line="+226"/>
+        <source>Do you really want to start a private chat with %1?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-818"/>
         <source>Cache migration failed!</source>
         <translation>Gyorsítótár migráció nem sikerült!</translation>
     </message>
@@ -236,7 +265,7 @@
         <translation>Nem sikerült visszaállítani a mentési adatot. Kérlek, jelentkezz be ismét!</translation>
     </message>
     <message>
-        <location line="+165"/>
+        <location line="+157"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Nem sikerült beállítani a titkosítási kulcsokat. Válasz a szervertől: %1 %2. Kérlek, próbáld újra később!</translation>
     </message>
@@ -247,7 +276,7 @@
         <translation>Kérlek, próbálj meg bejelentkezni újra: %1</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+47"/>
         <source>Failed to join room: %1</source>
         <translation>Nem sikerült csatlakozni a szobához: %1</translation>
     </message>
@@ -267,12 +296,12 @@
         <translation>Nem sikerült létrehozni a szobát: %1</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+18"/>
         <source>Failed to leave room: %1</source>
         <translation>Nem sikerült elhagyni a szobát: %1</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+61"/>
         <source>Failed to kick %1 from %2: %3</source>
         <translation>Nem sikerült kirúgni %1 felhasználót %2 szobából: %3</translation>
     </message>
@@ -280,7 +309,7 @@
 <context>
     <name>CommunitiesListItem</name>
     <message>
-        <location filename="../../src/CommunitiesListItem.cpp" line="+26"/>
+        <location filename="../../src/CommunitiesListItem.cpp" line="+30"/>
         <source>Hide rooms with this tag or from this community</source>
         <translation>Az ilyen címkével ellátott vagy közösséghez tartozó szobák elrejtése</translation>
     </message>
@@ -348,7 +377,7 @@
 <context>
     <name>DigitVerification</name>
     <message>
-        <location filename="../qml/device-verification/DigitVerification.qml" line="+7"/>
+        <location filename="../qml/device-verification/DigitVerification.qml" line="+11"/>
         <source>Verification Code</source>
         <translation>HItelesítési kód</translation>
     </message>
@@ -371,7 +400,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+73"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+42"/>
         <source>Apply</source>
         <translation>Alkalmaz</translation>
     </message>
@@ -394,7 +423,7 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+113"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+117"/>
         <location line="+181"/>
         <source>Search</source>
         <translation>Keresés</translation>
@@ -443,7 +472,7 @@
 <context>
     <name>EmojiVerification</name>
     <message>
-        <location filename="../qml/device-verification/EmojiVerification.qml" line="+7"/>
+        <location filename="../qml/device-verification/EmojiVerification.qml" line="+11"/>
         <source>Verification Code</source>
         <translation>Ellenőrzési kód</translation>
     </message>
@@ -466,7 +495,7 @@
 <context>
     <name>EncryptionIndicator</name>
     <message>
-        <location filename="../qml/EncryptionIndicator.qml" line="+19"/>
+        <location filename="../qml/EncryptionIndicator.qml" line="+23"/>
         <source>Encrypted</source>
         <translation>Titkosítva</translation>
     </message>
@@ -479,7 +508,7 @@
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+612"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+613"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation>-- Titkosított esemény (Nem találhatók kulcsok a titkosítás feloldásához) --</translation>
@@ -524,7 +553,7 @@
 <context>
     <name>Failed</name>
     <message>
-        <location filename="../qml/device-verification/Failed.qml" line="+7"/>
+        <location filename="../qml/device-verification/Failed.qml" line="+11"/>
         <source>Verification failed</source>
         <translation>A hitelesítés nem sikerült</translation>
     </message>
@@ -558,7 +587,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+227"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+253"/>
         <source>Select a file</source>
         <translation>Fájl kiválasztása</translation>
     </message>
@@ -568,7 +597,7 @@
         <translation>Minden fájl (*)</translation>
     </message>
     <message>
-        <location line="+384"/>
+        <location line="+371"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Nem sikerült feltölteni a médiafájlt. Kérlek, próbáld újra!</translation>
     </message>
@@ -576,7 +605,7 @@
 <context>
     <name>InviteeItem</name>
     <message>
-        <location filename="../../src/InviteeItem.cpp" line="+18"/>
+        <location filename="../../src/InviteeItem.cpp" line="+22"/>
         <source>Remove</source>
         <translation>Eltávolítás</translation>
     </message>
@@ -584,7 +613,7 @@
 <context>
     <name>LoginPage</name>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+92"/>
+        <location filename="../../src/LoginPage.cpp" line="+80"/>
         <source>Matrix ID</source>
         <translation>Matrixazonosító</translation>
     </message>
@@ -643,20 +672,19 @@ Példa: https://szerver.em:8787</translation>
     </message>
     <message>
         <location line="+19"/>
-        <location line="+218"/>
         <source>LOGIN</source>
         <translation>BEJELENTKEZÉS</translation>
     </message>
     <message>
-        <location line="-151"/>
+        <location line="+84"/>
         <location line="+11"/>
-        <location line="+157"/>
+        <location line="+156"/>
         <location line="+11"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
         <translation>Érvénytelen Matrixazonosítót adtál meg. Példa: @janos:matrix.org</translation>
     </message>
     <message>
-        <location line="-132"/>
+        <location line="-131"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Az automatikus felderítés nem sikerült. Helytelen válasz érkezett.</translation>
     </message>
@@ -681,12 +709,12 @@ Példa: https://szerver.em:8787</translation>
         <translation>Egy ismeretlen hiba történt. Ellenőrizd, hogy a homeszervered domainje helyes.</translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="-168"/>
         <source>SSO LOGIN</source>
         <translation>SSO BEJELENTKEZÉS</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+263"/>
         <source>Empty password</source>
         <translation>Üres jelszó</translation>
     </message>
@@ -699,7 +727,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>MemberList</name>
     <message>
-        <location filename="../../src/dialogs/MemberList.cpp" line="+90"/>
+        <location filename="../../src/dialogs/MemberList.cpp" line="+94"/>
         <source>Room members</source>
         <translation>Szobatagok</translation>
     </message>
@@ -712,7 +740,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+123"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+127"/>
         <source>Encryption enabled</source>
         <translation>Titkosítás bekapcsolva</translation>
     </message>
@@ -781,7 +809,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+38"/>
+        <location filename="../qml/MessageInput.qml" line="+42"/>
         <source>Hang up</source>
         <translation>Hívás befejezése</translation>
     </message>
@@ -791,22 +819,22 @@ Példa: https://szerver.em:8787</translation>
         <translation>Hívás kezdeményezése</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+25"/>
         <source>Send a file</source>
         <translation>Fájl küldése</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+42"/>
         <source>Write a message...</source>
         <translation>Írj egy üzenetet…</translation>
     </message>
     <message>
-        <location line="+186"/>
+        <location line="+211"/>
         <source>Emoji</source>
         <translation>Hangulatjelek</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+16"/>
         <source>Send</source>
         <translation>Küldés</translation>
     </message>
@@ -814,7 +842,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>NewVerificationRequest</name>
     <message>
-        <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+7"/>
+        <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+11"/>
         <source>Send Verification Request</source>
         <translation>Hitelesítési kérés küldése</translation>
     </message>
@@ -872,7 +900,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>PlaceCall</name>
     <message>
-        <location filename="../qml/voip/PlaceCall.qml" line="+36"/>
+        <location filename="../qml/voip/PlaceCall.qml" line="+48"/>
         <source>Place a call to %1?</source>
         <translation>Hívás indítása %1 felé?</translation>
     </message>
@@ -892,7 +920,12 @@ Példa: https://szerver.em:8787</translation>
         <translation>Videó</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
+        <source>Screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
@@ -900,7 +933,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>Placeholder</name>
     <message>
-        <location filename="../qml/delegates/Placeholder.qml" line="+4"/>
+        <location filename="../qml/delegates/Placeholder.qml" line="+8"/>
         <source>unimplemented event: </source>
         <translation>nem implementált esemény: </translation>
     </message>
@@ -908,7 +941,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+179"/>
+        <location filename="../../src/main.cpp" line="+167"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Egy egyedi profil létrehozása, amellyel be tudsz jelentkezni egyszerre több fiókon keresztül és a Nheko több példányát is tudod futtatni.</translation>
     </message>
@@ -926,7 +959,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>QuickSwitcher</name>
     <message>
-        <location filename="../../src/QuickSwitcher.cpp" line="+74"/>
+        <location filename="../../src/QuickSwitcher.cpp" line="+62"/>
         <source>Search for a room...</source>
         <translation>Szoba keresése…</translation>
     </message>
@@ -934,18 +967,18 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+89"/>
+        <location filename="../../src/RegisterPage.cpp" line="+77"/>
         <source>Username</source>
         <translation>Felhasználónév</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location line="+286"/>
+        <location line="+287"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
         <translation>A felhasználónév nem lehet üres és csak a következő karaktereket tartalmazhatja: a-z, 0-9, ., _, =, - és /.</translation>
     </message>
     <message>
-        <location line="-282"/>
+        <location line="-283"/>
         <source>Password</source>
         <translation>Jelszó</translation>
     </message>
@@ -980,7 +1013,7 @@ Példa: https://szerver.em:8787</translation>
         <translation>Nem támogatott regisztrációs folyamat!</translation>
     </message>
     <message>
-        <location line="+209"/>
+        <location line="+210"/>
         <source>One or more fields have invalid inputs. Please correct those issues and try again.</source>
         <translation>Egy vagy több mező tartalma nem helyes. Kérlek, javítsd ki azokat a hibákat, és próbáld újra!</translation>
     </message>
@@ -1003,7 +1036,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../qml/ReplyPopup.qml" line="+45"/>
+        <location filename="../qml/ReplyPopup.qml" line="+49"/>
         <source>Close</source>
         <translation>Bezárás</translation>
     </message>
@@ -1016,7 +1049,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1861"/>
+        <location filename="../../src/Cache.cpp" line="+1793"/>
         <source>no version stored</source>
         <translation>nincs tárolva verzió</translation>
     </message>
@@ -1024,7 +1057,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>RoomInfoListItem</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+102"/>
+        <location filename="../../src/RoomInfoListItem.cpp" line="+90"/>
         <source>Leave room</source>
         <translation>Szoba elhagyása</translation>
     </message>
@@ -1087,9 +1120,115 @@ Példa: https://szerver.em:8787</translation>
     </message>
 </context>
 <context>
+    <name>RoomSettings</name>
+    <message>
+        <location filename="../qml/RoomSettings.qml" line="+204"/>
+        <source>End-to-End Encryption</source>
+        <translation type="unfinished">Végponttól végpontig titkosítás</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
+                            Please take note that it can&apos;t be disabled afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Whether or not the client should respond automatically with the session keys
+                                upon request. Use with caution, this is a temporary measure to test the
+                                E2E implementation until device verification is completed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+267"/>
+        <source>Failed to enable encryption: %1</source>
+        <translation type="unfinished">Nem sikerült a titkosítás aktiválása: %1</translation>
+    </message>
+    <message>
+        <location line="+228"/>
+        <source>Select an avatar</source>
+        <translation type="unfinished">Profilkép kiválasztása</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>All Files (*)</source>
+        <translation type="unfinished">Minden fájl (*)</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>The selected file is not an image</source>
+        <translation type="unfinished">A kiválasztott fájl nem egy kép</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Error while reading file: %1</source>
+        <translation type="unfinished">Hiba a fájl olvasása közben: %1</translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <location line="+20"/>
+        <source>Failed to upload image: %s</source>
+        <translation type="unfinished">Nem sikerült a kép feltöltése: %s</translation>
+    </message>
+</context>
+<context>
+    <name>ScreenShare</name>
+    <message>
+        <location filename="../qml/voip/ScreenShare.qml" line="+30"/>
+        <source>Share desktop with %1?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Window:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Frame rate:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Include your camera picture-in-picture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Request remote camera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+9"/>
+        <source>View your callee&apos;s camera like a regular video call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Hide mouse cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Share</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Preview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Mégse</translation>
+    </message>
+</context>
+<context>
     <name>SideBarActions</name>
     <message>
-        <location filename="../../src/SideBarActions.cpp" line="+40"/>
+        <location filename="../../src/SideBarActions.cpp" line="+44"/>
         <source>User settings</source>
         <translation>Felhasználói beállítások</translation>
     </message>
@@ -1117,7 +1256,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>StatusIndicator</name>
     <message>
-        <location filename="../qml/StatusIndicator.qml" line="+17"/>
+        <location filename="../qml/StatusIndicator.qml" line="+21"/>
         <source>Failed</source>
         <translation>Sikertelen</translation>
     </message>
@@ -1140,7 +1279,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>Success</name>
     <message>
-        <location filename="../qml/device-verification/Success.qml" line="+6"/>
+        <location filename="../qml/device-verification/Success.qml" line="+10"/>
         <source>Successful Verification</source>
         <translation>Sikeres hitelesítés</translation>
     </message>
@@ -1158,7 +1297,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+895"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+911"/>
         <source>Message redaction failed: %1</source>
         <translation>Az üzenet visszavonása nem sikerült: %1</translation>
     </message>
@@ -1194,7 +1333,6 @@ Példa: https://szerver.em:8787</translation>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
             <numerusform>%1%2 gépel.</numerusform>
-            <numerusform>%1 és %2 gépelnek.</numerusform>
         </translation>
     </message>
     <message>
@@ -1308,12 +1446,12 @@ Példa: https://szerver.em:8787</translation>
         <translation>%1 visszavonta a kopogását.</translation>
     </message>
     <message>
-        <location line="-795"/>
+        <location line="-798"/>
         <source>You joined this room.</source>
         <translation>Csatlakoztál ehhez a szobához.</translation>
     </message>
     <message>
-        <location line="+797"/>
+        <location line="+800"/>
         <source>Rejected the knock from %1.</source>
         <translation>Kopogás elutasítva tőle: %1.</translation>
     </message>
@@ -1337,7 +1475,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+99"/>
+        <location filename="../qml/TimelineRow.qml" line="+100"/>
         <source>Edit</source>
         <translation>Szerkesztés</translation>
     </message>
@@ -1365,7 +1503,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+85"/>
+        <location filename="../qml/TimelineView.qml" line="+97"/>
         <source>React</source>
         <translation>Reakció</translation>
     </message>
@@ -1415,7 +1553,7 @@ Példa: https://szerver.em:8787</translation>
         <translation>Megnyitás külső programban</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+61"/>
         <source>No room open</source>
         <translation>Nincs nyitott szoba</translation>
     </message>
@@ -1423,7 +1561,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+423"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+430"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>Nem található titkosított privát csevegés ezzel a felhasználóval. Hozz létre egy titkosított privát csevegést vele, és próbáld újra!</translation>
     </message>
@@ -1431,7 +1569,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+43"/>
+        <location filename="../qml/TopBar.qml" line="+47"/>
         <source>Back to room list</source>
         <translation>Vissza a szobák listájára</translation>
     </message>
@@ -1470,7 +1608,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+122"/>
+        <location filename="../../src/TrayIcon.cpp" line="+110"/>
         <source>Show</source>
         <translation>Mutat</translation>
     </message>
@@ -1483,7 +1621,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>UserInfoWidget</name>
     <message>
-        <location filename="../../src/UserInfoWidget.cpp" line="+95"/>
+        <location filename="../../src/UserInfoWidget.cpp" line="+82"/>
         <source>Logout</source>
         <translation>Kijelentkezés</translation>
     </message>
@@ -1531,7 +1669,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+133"/>
+        <location filename="../qml/UserProfile.qml" line="+137"/>
         <source>Verify</source>
         <translation>Hitelesítés</translation>
     </message>
@@ -1551,7 +1689,7 @@ Példa: https://szerver.em:8787</translation>
         <translation>A felhasználó kirúgása</translation>
     </message>
     <message>
-        <location filename="../../src/ui/UserProfile.cpp" line="+296"/>
+        <location filename="../../src/ui/UserProfile.cpp" line="+301"/>
         <source>Select an avatar</source>
         <translation>Profilkép kiválasztása</translation>
     </message>
@@ -1574,7 +1712,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+345"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+337"/>
         <location filename="../../src/UserSettingsPage.h" line="+183"/>
         <source>Default</source>
         <translation>Alapértelmezett</translation>
@@ -1583,7 +1721,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location line="+496"/>
+        <location line="+540"/>
         <source>Minimize to tray</source>
         <translation>Kicsinyítés a tálcára</translation>
     </message>
@@ -1811,7 +1949,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
         <translation>Kulcsok megosztása hitelesített felhasználókkal és eszközökkel</translation>
     </message>
     <message>
-        <location line="+407"/>
+        <location line="+406"/>
         <source>CACHED</source>
         <translation>GYORSÍTÓTÁRAZVA</translation>
     </message>
@@ -1821,7 +1959,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
         <translation>NINCS GYORSÍTÓTÁRAZVA</translation>
     </message>
     <message>
-        <location line="-461"/>
+        <location line="-460"/>
         <source>Scale factor</source>
         <translation>Nagyítási tényező</translation>
     </message>
@@ -1996,7 +2134,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
         <translation>Minden fájl (*)</translation>
     </message>
     <message>
-        <location line="+237"/>
+        <location line="+236"/>
         <source>Open Sessions File</source>
         <translation>Munkameneti fájl megnyitása</translation>
     </message>
@@ -2041,7 +2179,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
 <context>
     <name>Waiting</name>
     <message>
-        <location filename="../qml/device-verification/Waiting.qml" line="+7"/>
+        <location filename="../qml/device-verification/Waiting.qml" line="+11"/>
         <source>Waiting for other party…</source>
         <translation>Várakozás a másik félre…</translation>
     </message>
@@ -2069,7 +2207,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
 <context>
     <name>WelcomePage</name>
     <message>
-        <location filename="../../src/WelcomePage.cpp" line="+46"/>
+        <location filename="../../src/WelcomePage.cpp" line="+34"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
         <translation>Üdvözöl a Nheko, egy asztali kliens a Matrix protokollhoz!</translation>
     </message>
@@ -2092,7 +2230,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+145"/>
+        <location filename="../../src/Utils.cpp" line="+149"/>
         <source>Yesterday</source>
         <translation>Tegnap</translation>
     </message>
@@ -2100,7 +2238,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
 <context>
     <name>dialogs::CreateRoom</name>
     <message>
-        <location filename="../../src/dialogs/CreateRoom.cpp" line="+36"/>
+        <location filename="../../src/dialogs/CreateRoom.cpp" line="+40"/>
         <source>Create room</source>
         <translation>Szoba létrehozása</translation>
     </message>
@@ -2143,7 +2281,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
 <context>
     <name>dialogs::FallbackAuth</name>
     <message>
-        <location filename="../../src/dialogs/FallbackAuth.cpp" line="+30"/>
+        <location filename="../../src/dialogs/FallbackAuth.cpp" line="+34"/>
         <source>Open Fallback in Browser</source>
         <translation>Fallback megnyitása böngészőben</translation>
     </message>
@@ -2166,7 +2304,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
 <context>
     <name>dialogs::InviteUsers</name>
     <message>
-        <location filename="../../src/dialogs/InviteUsers.cpp" line="+42"/>
+        <location filename="../../src/dialogs/InviteUsers.cpp" line="+46"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
@@ -2179,7 +2317,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
 <context>
     <name>dialogs::JoinRoom</name>
     <message>
-        <location filename="../../src/dialogs/JoinRoom.cpp" line="+30"/>
+        <location filename="../../src/dialogs/JoinRoom.cpp" line="+34"/>
         <source>Join</source>
         <translation>Csatlakozás</translation>
     </message>
@@ -2197,7 +2335,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
 <context>
     <name>dialogs::LeaveRoom</name>
     <message>
-        <location filename="../../src/dialogs/LeaveRoom.cpp" line="+31"/>
+        <location filename="../../src/dialogs/LeaveRoom.cpp" line="+35"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
@@ -2210,7 +2348,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
 <context>
     <name>dialogs::Logout</name>
     <message>
-        <location filename="../../src/dialogs/Logout.cpp" line="+47"/>
+        <location filename="../../src/dialogs/Logout.cpp" line="+35"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
@@ -2223,7 +2361,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
 <context>
     <name>dialogs::PreviewUploadOverlay</name>
     <message>
-        <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+41"/>
+        <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+29"/>
         <source>Upload</source>
         <translation>Feltöltés</translation>
     </message>
@@ -2245,7 +2383,7 @@ Média mérete: %2
 <context>
     <name>dialogs::ReCaptcha</name>
     <message>
-        <location filename="../../src/dialogs/ReCaptcha.cpp" line="+31"/>
+        <location filename="../../src/dialogs/ReCaptcha.cpp" line="+35"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
@@ -2263,7 +2401,7 @@ Média mérete: %2
 <context>
     <name>dialogs::ReadReceipts</name>
     <message>
-        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+120"/>
+        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+124"/>
         <source>Read receipts</source>
         <translation>Olvasási jegyek</translation>
     </message>
@@ -2287,138 +2425,9 @@ Média mérete: %2
     </message>
 </context>
 <context>
-    <name>dialogs::RoomSettings</name>
-    <message>
-        <location filename="../../src/dialogs/RoomSettings.cpp" line="+135"/>
-        <source>Settings</source>
-        <translation>Beállítások</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Info</source>
-        <translation>Infó</translation>
-    </message>
-    <message>
-        <location line="+11"/>
-        <source>Internal ID</source>
-        <translation>Belső azonosító</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Room Version</source>
-        <translation>Szoba verziója</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Notifications</source>
-        <translation>Értesítések</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Muted</source>
-        <translation>Némítva</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Mentions only</source>
-        <translation>Csak megemlítéskor</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>All messages</source>
-        <translation>Mindegyik üzenetnél</translation>
-    </message>
-    <message>
-        <location line="+97"/>
-        <source>Room access</source>
-        <translation>Szoba hozzáférhetősége</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Anyone and guests</source>
-        <translation>Bárkinek és vendégeknek</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Anyone</source>
-        <translation>Bárkinek, aki ismeri a szoba linkjét (vendégek nem)</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Invited users</source>
-        <translation>Meghívott felhasználók</translation>
-    </message>
-    <message>
-        <location line="+50"/>
-        <source>Encryption</source>
-        <translation>Titkosítás</translation>
-    </message>
-    <message>
-        <location line="+11"/>
-        <source>Whether or not the client should respond automatically with the session keys
- upon request. Use with caution, this is a temporary measure to test the
- E2E implementation until device verification is completed.</source>
-        <translation>Válaszoljon-e kérés esetén a kliens munkamenetkulcsokkal automatikusan. Óvatosan használandó, mivel ez csak egy átmeneti megoldás a végponttól végpontig (E2E) titkosítás teszteléséhez, amíg be nincs fejezve az eszközhitelesítés.</translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>End-to-End Encryption</source>
-        <translation>Végponttól végpontig titkosítás</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation>A titkosítás jelenleg kísérleti stádiumú és váratlan furcsaságok történhetnek. &lt;br# Kérlek, vedd vigyelembe, hogy ha egyszer aktiváltad, nem lehet utána kikapcsolni.</translation>
-    </message>
-    <message>
-        <location line="-24"/>
-        <source>Respond to key requests</source>
-        <translation>Válasz kulcskérelmekre</translation>
-    </message>
-    <message numerus="yes">
-        <location line="+83"/>
-        <source>%n member(s)</source>
-        <translation>
-            <numerusform>%n tag</numerusform>
-            <numerusform>%n tag</numerusform>
-        </translation>
-    </message>
-    <message>
-        <location line="+142"/>
-        <source>Failed to enable encryption: %1</source>
-        <translation>Nem sikerült a titkosítás aktiválása: %1</translation>
-    </message>
-    <message>
-        <location line="+147"/>
-        <source>Select an avatar</source>
-        <translation>Profilkép kiválasztása</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>All Files (*)</source>
-        <translation>Minden fájl (*)</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>The selected file is not an image</source>
-        <translation>A kiválasztott fájl nem egy kép</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Error while reading file: %1</source>
-        <translation>Hiba a fájl olvasása közben: %1</translation>
-    </message>
-    <message>
-        <location line="+35"/>
-        <location line="+20"/>
-        <source>Failed to upload image: %s</source>
-        <translation>Nem sikerült a kép feltöltése: %s</translation>
-    </message>
-</context>
-<context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+108"/>
+        <location filename="../../src/Utils.h" line="+112"/>
         <source>You sent an audio clip</source>
         <translation>Küldtél egy hangfájlt</translation>
     </message>
@@ -2531,7 +2540,7 @@ Média mérete: %2
 <context>
     <name>popups::UserMentions</name>
     <message>
-        <location filename="../../src/popups/UserMentions.cpp" line="+64"/>
+        <location filename="../../src/popups/UserMentions.cpp" line="+68"/>
         <source>This Room</source>
         <translation>Ez a szoba</translation>
     </message>

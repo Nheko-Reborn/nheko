@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import "./delegates"
 import "./emoji"
 import QtQuick 2.12
@@ -24,17 +28,18 @@ Item {
 
     TapHandler {
         acceptedButtons: Qt.RightButton
-        onSingleTapped: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, row, mapToItem(timelineRoot, eventPoint.position.x, eventPoint.position.y))
+        onSingleTapped: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, row)
     }
 
     TapHandler {
-        onLongPressed: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, row, mapToItem(timelineRoot, point.position.x, point.position.y))
+        onLongPressed: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, row)
         onDoubleTapped: chat.model.reply = model.id
     }
 
     RowLayout {
         id: row
 
+        anchors.rightMargin: 1
         anchors.leftMargin: avatarSize + 16
         anchors.left: parent.left
         anchors.right: parent.right
@@ -43,6 +48,8 @@ Item {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignTop
             spacing: 4
+            Layout.topMargin: 1
+            Layout.bottomMargin: 1
 
             // fancy reply, if this is a reply
             Reply {
@@ -79,73 +86,31 @@ Item {
             encrypted: model.isEncrypted
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
             Layout.preferredHeight: 16
-            width: 16
+            Layout.preferredWidth: 16
         }
 
-        ImageButton {
-            id: editButton
-
-            visible: (Settings.buttonsInTimeline && model.isEditable) || model.isEdited
-            buttonTextColor: chat.model.edit == model.id ? colors.highlight : colors.buttonText
+        Image {
+            visible: model.isEdited || model.id == chat.model.edit
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
             Layout.preferredHeight: 16
+            Layout.preferredWidth: 16
+            height: 16
             width: 16
-            hoverEnabled: true
-            image: ":/icons/icons/ui/edit.png"
-            ToolTip.visible: hovered
-            ToolTip.text: model.isEditable ? qsTr("Edit") : qsTr("Edited")
-            onClicked: {
-                if (model.isEditable)
-                    chat.model.editAction(model.id);
+            sourceSize.width: 16
+            sourceSize.height: 16
+            source: "image://colorimage/:/icons/icons/ui/edit.png?" + ((model.id == chat.model.edit) ? colors.highlight : colors.buttonText)
+            ToolTip.visible: editHovered.hovered
+            ToolTip.text: qsTr("Edited")
 
+            HoverHandler {
+                id: editHovered
             }
-        }
 
-        EmojiButton {
-            id: reactButton
-
-            visible: Settings.buttonsInTimeline
-            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            Layout.preferredHeight: 16
-            width: 16
-            hoverEnabled: true
-            ToolTip.visible: hovered
-            ToolTip.text: qsTr("React")
-            emojiPicker: emojiPopup
-            event_id: model.id
-        }
-
-        ImageButton {
-            id: replyButton
-
-            visible: Settings.buttonsInTimeline
-            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            Layout.preferredHeight: 16
-            width: 16
-            hoverEnabled: true
-            image: ":/icons/icons/ui/mail-reply.png"
-            ToolTip.visible: hovered
-            ToolTip.text: qsTr("Reply")
-            onClicked: chat.model.replyAction(model.id)
-        }
-
-        ImageButton {
-            id: optionsButton
-
-            visible: Settings.buttonsInTimeline
-            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            Layout.preferredHeight: 16
-            width: 16
-            hoverEnabled: true
-            image: ":/icons/icons/ui/vertical-ellipsis.png"
-            ToolTip.visible: hovered
-            ToolTip.text: qsTr("Options")
-            onClicked: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, optionsButton)
         }
 
         Label {
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            text: model.timestamp.toLocaleTimeString("HH:mm")
+            text: model.timestamp.toLocaleTimeString(Locale.ShortFormat)
             width: Math.max(implicitWidth, text.length * fontMetrics.maximumCharacterWidth)
             color: inactiveColors.text
             ToolTip.visible: ma.hovered

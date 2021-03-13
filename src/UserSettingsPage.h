@@ -1,19 +1,7 @@
-/*
- * nheko Copyright (C) 2017  Konstantinos Sideris <siderisk@auth.gr>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+// SPDX-FileCopyrightText: 2017 Konstantinos Sideris <siderisk@auth.gr>
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
 
 #pragma once
 
@@ -104,6 +92,8 @@ class UserSettings : public QObject
           QString accessToken READ accessToken WRITE setAccessToken NOTIFY accessTokenChanged)
         Q_PROPERTY(QString deviceId READ deviceId WRITE setDeviceId NOTIFY deviceIdChanged)
         Q_PROPERTY(QString homeserver READ homeserver WRITE setHomeserver NOTIFY homeserverChanged)
+        Q_PROPERTY(bool disableCertificateValidation READ disableCertificateValidation WRITE
+                     setDisableCertificateValidation NOTIFY disableCertificateValidationChanged)
 
         UserSettings();
 
@@ -162,6 +152,7 @@ public:
         void setAccessToken(QString accessToken);
         void setDeviceId(QString deviceId);
         void setHomeserver(QString homeserver);
+        void setDisableCertificateValidation(bool disabled);
         void setHiddenTags(QStringList hiddenTags);
 
         QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
@@ -214,6 +205,7 @@ public:
         QString accessToken() const { return accessToken_; }
         QString deviceId() const { return deviceId_; }
         QString homeserver() const { return homeserver_; }
+        bool disableCertificateValidation() const { return disableCertificateValidation_; }
         QStringList hiddenTags() const { return hiddenTags_; }
 
 signals:
@@ -256,6 +248,7 @@ signals:
         void accessTokenChanged(QString accessToken);
         void deviceIdChanged(QString deviceId);
         void homeserverChanged(QString homeserver);
+        void disableCertificateValidationChanged(bool disabled);
 
 private:
         // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
@@ -297,6 +290,7 @@ private:
         bool screenShareRemoteVideo_;
         bool screenShareHideCursor_;
         bool useStunServer_;
+        bool disableCertificateValidation_ = false;
         QString profile_;
         QString userId_;
         QString accessToken_;

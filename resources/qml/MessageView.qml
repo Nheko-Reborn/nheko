@@ -1,4 +1,9 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import "./delegates"
+import "./emoji"
 import QtGraphicalEffects 1.0
 import QtQuick 2.12
 import QtQuick.Controls 2.3
@@ -26,6 +31,96 @@ ScrollView {
             // Mark timeline as read
             if (atYEnd)
                 model.currentIndex = 0;
+
+        }
+
+        Rectangle {
+            //closePolicy: Popup.NoAutoClose
+
+            id: messageActions
+
+            property Item attached: null
+            property alias model: row.model
+            // use comma to update on scroll
+            property var attachedPos: chat.contentY, attached ? chat.mapFromItem(attached, attached ? attached.width - width : 0, -height) : null
+            property int padding: 4
+
+            visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || messageActionHover.hovered)
+            x: attached ? attachedPos.x : 0
+            y: attached ? attachedPos.y : 0
+            z: 10
+            height: row.implicitHeight + padding * 2
+            width: row.implicitWidth + padding * 2
+            color: colors.window
+            border.color: colors.buttonText
+            border.width: 1
+            radius: padding
+
+            HoverHandler {
+                id: messageActionHover
+
+                grabPermissions: PointerHandler.CanTakeOverFromAnything
+            }
+
+            Row {
+                id: row
+
+                property var model
+
+                anchors.centerIn: parent
+                spacing: messageActions.padding
+
+                ImageButton {
+                    id: editButton
+
+                    visible: !!row.model && row.model.isEditable
+                    buttonTextColor: colors.buttonText
+                    width: 16
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/edit.png"
+                    ToolTip.visible: hovered
+                    ToolTip.text: row.model && row.model.isEditable ? qsTr("Edit") : qsTr("Edited")
+                    onClicked: {
+                        if (row.model.isEditable)
+                            chat.model.editAction(row.model.id);
+
+                    }
+                }
+
+                EmojiButton {
+                    id: reactButton
+
+                    width: 16
+                    hoverEnabled: true
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("React")
+                    emojiPicker: emojiPopup
+                    event_id: row.model ? row.model.id : ""
+                }
+
+                ImageButton {
+                    id: replyButton
+
+                    width: 16
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/mail-reply.png"
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Reply")
+                    onClicked: chat.model.replyAction(row.model.id)
+                }
+
+                ImageButton {
+                    id: optionsButton
+
+                    width: 16
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/vertical-ellipsis.png"
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Options")
+                    onClicked: messageContextMenu.show(row.model.id, row.model.type, row.model.isEncrypted, row.model.isEditable, optionsButton)
+                }
+
+            }
 
         }
 
@@ -137,6 +232,13 @@ ScrollView {
                         displayName: modelData ? modelData.userName : ""
                         userid: modelData ? modelData.userId : ""
                         onClicked: chat.model.openUserProfile(modelData.userId)
+                        ToolTip.visible: avatarHover.hovered
+                        ToolTip.text: userid
+
+                        HoverHandler {
+                            id: avatarHover
+                        }
+
                     }
 
                     Connections {
@@ -152,16 +254,20 @@ ScrollView {
                         text: modelData ? TimelineManager.escapeEmoji(modelData.userName) : ""
                         color: TimelineManager.userColor(modelData ? modelData.userId : "", colors.window)
                         textFormat: Text.RichText
+                        ToolTip.visible: displayNameHover.hovered
+                        ToolTip.text: modelData ? modelData.userId : ""
 
                         TapHandler {
-                            //cursorShape: Qt.PointingHandCursor
-
                             onSingleTapped: chat.model.openUserProfile(modelData.userId)
                         }
 
                         CursorShape {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
+                        }
+
+                        HoverHandler {
+                            id: displayNameHover
                         }
 
                     }
@@ -203,7 +309,24 @@ ScrollView {
             TimelineRow {
                 id: timelinerow
 
-                y: section.active && section.visible ? section.y + section.height : 0
+                property alias hovered: hoverHandler.hovered
+
+                y: section.visible && section.active ? section.y + section.height : 0
+
+                HoverHandler {
+                    id: hoverHandler
+
+                    enabled: !Settings.mobileMode
+                    onHoveredChanged: {
+                        if (hovered) {
+                            if (!messageActionHover.hovered) {
+                                messageActions.attached = timelinerow;
+                                messageActions.model = model;
+                            }
+                        }
+                    }
+                }
+
             }
 
             Connections {

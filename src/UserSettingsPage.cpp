@@ -1,19 +1,7 @@
-/*
- * nheko Copyright (C) 2017  Konstantinos Sideris <siderisk@auth.gr>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+// SPDX-FileCopyrightText: 2017 Konstantinos Sideris <siderisk@auth.gr>
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
 
 #include <QApplication>
 #include <QComboBox>
@@ -130,6 +118,9 @@ UserSettings::load(std::optional<QString> profile)
         homeserver_  = settings.value(prefix + "auth/home_server", "").toString();
         userId_      = settings.value(prefix + "auth/user_id", "").toString();
         deviceId_    = settings.value(prefix + "auth/device_id", "").toString();
+
+        disableCertificateValidation_ =
+          settings.value("disable_certificate_validation", false).toBool();
 
         applyTheme();
 }
@@ -539,6 +530,17 @@ UserSettings::setHomeserver(QString homeserver)
 }
 
 void
+UserSettings::setDisableCertificateValidation(bool disabled)
+{
+        if (disabled == disableCertificateValidation_)
+                return;
+        disableCertificateValidation_ = disabled;
+        http::client()->verify_certificates(!disabled);
+        emit disableCertificateValidationChanged(disabled);
+        save();
+}
+
+void
 UserSettings::applyTheme()
 {
         QFile stylefile;
@@ -652,6 +654,8 @@ UserSettings::save()
         settings.setValue(prefix + "auth/home_server", homeserver_);
         settings.setValue(prefix + "auth/user_id", userId_);
         settings.setValue(prefix + "auth/device_id", deviceId_);
+
+        settings.setValue("disable_certificate_validation", disableCertificateValidation_);
 
         settings.sync();
 }

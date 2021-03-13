@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #include "TimelineModel.h"
 
 #include <algorithm>
@@ -867,7 +871,7 @@ TimelineModel::relatedInfo(QString id)
 
         RelatedInfo related   = {};
         related.quoted_user   = QString::fromStdString(mtx::accessors::sender(*event));
-        related.related_event = mtx::accessors::event_id(*event);
+        related.related_event = id.toStdString();
         related.type          = mtx::accessors::msg_type(*event);
 
         // get body, strip reply fallback, then transform the event to text, if it is a media event
@@ -879,11 +883,13 @@ TimelineModel::relatedInfo(QString id)
         if (related.quoted_body.startsWith("\n"))
                 related.quoted_body.remove(0, 1);
         related.quoted_body = utils::getQuoteBody(related);
+        related.quoted_body.replace("@room", QString::fromUtf8("@\u2060room"));
 
         // get quoted body and strip reply fallback
         related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(*event);
         related.quoted_formatted_body.remove(QRegularExpression(
           "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption));
+        related.quoted_formatted_body.replace("@room", "@\u2060aroom");
         related.room = room_id_;
 
         return related;

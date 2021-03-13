@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #include <cstring>
 #include <optional>
 #include <string_view>
@@ -249,7 +253,6 @@ tokenise(std::string_view str, char delim)
         ret.second = std::atoi(str.data() + pos + 1);
         return ret;
 }
-
 }
 
 void

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #pragma once
 
 #include <string>
@@ -35,7 +39,6 @@ enum class State
 
 };
 Q_ENUM_NS(State)
-
 }
 
 class WebRTCSession : public QObject

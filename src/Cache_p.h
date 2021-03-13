@@ -1,20 +1,8 @@
-/*
- * nheko Copyright (C) 2019  The nheko authors
- * nheko Copyright (C) 2017  Konstantinos Sideris <siderisk@auth.gr>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+// SPDX-FileCopyrightText: 2017 Konstantinos Sideris <siderisk@auth.gr>
+// SPDX-FileCopyrightText: 2019 The nheko authors
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
 
 #pragma once
 
@@ -102,9 +90,9 @@ public:
                                            std::size_t len        = 30);
 
         void saveState(const mtx::responses::Sync &res);
-        bool isInitialized() const;
+        bool isInitialized();
 
-        std::string nextBatchToken() const;
+        std::string nextBatchToken();
 
         void deleteData();
 
@@ -149,8 +137,8 @@ public:
         using UserReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
         UserReceipts readReceipts(const QString &event_id, const QString &room_id);
 
-        QByteArray image(const QString &url) const;
-        QByteArray image(lmdb::txn &txn, const std::string &url) const;
+        QByteArray image(const QString &url);
+        QByteArray image(lmdb::txn &txn, const std::string &url);
         void saveImage(const std::string &url, const std::string &data);
         void saveImage(const QString &url, const QByteArray &data);
 
@@ -330,8 +318,8 @@ private:
         // void removeLeftRoom(lmdb::txn &txn, const std::string &room_id);
         template<class T>
         void saveStateEvents(lmdb::txn &txn,
-                             const lmdb::dbi &statesdb,
-                             const lmdb::dbi &membersdb,
+                             lmdb::dbi &statesdb,
+                             lmdb::dbi &membersdb,
                              const std::string &room_id,
                              const std::vector<T> &events)
         {
@@ -341,8 +329,8 @@ private:
 
         template<class T>
         void saveStateEvent(lmdb::txn &txn,
-                            const lmdb::dbi &statesdb,
-                            const lmdb::dbi &membersdb,
+                            lmdb::dbi &statesdb,
+                            lmdb::dbi &membersdb,
                             const std::string &room_id,
                             const T &event)
         {
@@ -363,17 +351,11 @@ private:
                                 // Lightweight representation of a member.
                                 MemberInfo tmp{display_name, e->content.avatar_url};
 
-                                lmdb::dbi_put(txn,
-                                              membersdb,
-                                              lmdb::val(e->state_key),
-                                              lmdb::val(json(tmp).dump()));
-
+                                membersdb.put(txn, e->state_key, json(tmp).dump());
                                 break;
                         }
                         default: {
-                                lmdb::dbi_del(
-                                  txn, membersdb, lmdb::val(e->state_key), lmdb::val(""));
-
+                                membersdb.del(txn, e->state_key, "");
                                 break;
                         }
                         }
@@ -387,12 +369,9 @@ private:
                 if (!isStateEvent(event))
                         return;
 
-                std::visit(
-                  [&txn, &statesdb](auto e) {
-                          lmdb::dbi_put(
-                            txn, statesdb, lmdb::val(to_string(e.type)), lmdb::val(json(e).dump()));
-                  },
-                  event);
+                std::visit([&txn, &statesdb](
+                             auto e) { statesdb.put(txn, to_string(e.type), json(e).dump()); },
+                           event);
         }
 
         template<class T>

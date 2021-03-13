@@ -7,7 +7,7 @@
 
 set -eu
 
-FILES=$(find src -type f -type f \( -iname "*.cpp" -o -iname "*.h" \))
+FILES=$(find src -type f \( -iname "*.cpp" -o -iname "*.h" \))
 
 for f in $FILES
 do

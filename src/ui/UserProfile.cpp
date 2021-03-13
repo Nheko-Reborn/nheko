@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #include <QFileDialog>
 #include <QImageReader>
 #include <QMimeDatabase>
@@ -159,7 +163,7 @@ UserProfile::fetchDeviceList(const QString &userID)
                                                        mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to query device keys: {},{}",
-                                             err->matrix_error.errcode,
+                                             mtx::errors::to_string(err->matrix_error.errcode),
                                              static_cast<int>(err->status_code));
                           return;
                   }
@@ -173,9 +177,10 @@ UserProfile::fetchDeviceList(const QString &userID)
                             std::string local_user_id = utils::localUser().toStdString();
 
                             if (err) {
-                                    nhlog::net()->warn("failed to query device keys: {},{}",
-                                                       err->matrix_error.errcode,
-                                                       static_cast<int>(err->status_code));
+                                    nhlog::net()->warn(
+                                      "failed to query device keys: {},{}",
+                                      mtx::errors::to_string(err->matrix_error.errcode),
+                                      static_cast<int>(err->status_code));
                                     return;
                             }
 

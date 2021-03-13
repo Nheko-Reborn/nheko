@@ -1,19 +1,7 @@
-/*
- * nheko Copyright (C) 2017  Konstantinos Sideris <siderisk@auth.gr>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+// SPDX-FileCopyrightText: 2017 Konstantinos Sideris <siderisk@auth.gr>
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
 
 #include <QApplication>
 #include <QImageReader>
@@ -476,6 +464,8 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 
         http::client()->set_server(homeserver.toStdString());
         http::client()->set_access_token(token.toStdString());
+        http::client()->verify_certificates(
+          !UserSettings::instance()->disableCertificateValidation());
 
         // The Olm client needs the user_id & device_id that will be included
         // in the generated payloads & keys.
@@ -776,7 +766,11 @@ ChatPage::startInitialSync()
                           const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
                           const int status_code = static_cast<int>(err->status_code);
 
-                          nhlog::net()->error("initial sync error: {} {}", status_code, err_code);
+                          nhlog::net()->error("initial sync error: {} {} {} {}",
+                                              err->parse_error,
+                                              status_code,
+                                              err->error_code.message(),
+                                              err_code);
 
                           // non http related errors
                           if (status_code <= 0 || status_code >= 600) {
@@ -879,11 +873,14 @@ ChatPage::trySync()
 
         http::client()->sync(
           opts,
-          [this, since = cache::nextBatchToken()](const mtx::responses::Sync &res,
-                                                  mtx::http::RequestErr err) {
-                  if (since != cache::nextBatchToken()) {
-                          nhlog::net()->warn("Duplicate sync, dropping");
-                          return;
+          [this, since = opts.since](const mtx::responses::Sync &res, mtx::http::RequestErr err) {
+                  try {
+                          if (since != cache::nextBatchToken()) {
+                                  nhlog::net()->warn("Duplicate sync, dropping");
+                                  return;
+                          }
+                  } catch (const lmdb::error &e) {
+                          nhlog::db()->warn("Logged out in the mean time, dropping sync");
                   }
 
                   if (err) {
@@ -902,7 +899,11 @@ ChatPage::trySync()
                                   return;
                           }
 
-                          nhlog::net()->error("sync error: {} {}", status_code, err_code);
+                          nhlog::net()->error("initial sync error: {} {} {} {}",
+                                              err->parse_error,
+                                              status_code,
+                                              err->error_code.message(),
+                                              err_code);
                           emit tryDelayedSyncCb();
                           return;
                   }
@@ -915,17 +916,20 @@ void
 ChatPage::joinRoom(const QString &room)
 {
         const auto room_id = room.toStdString();
-        joinRoomVia(room_id, {});
+        joinRoomVia(room_id, {}, false);
 }
 
 void
-ChatPage::joinRoomVia(const std::string &room_id, const std::vector<std::string> &via)
+ChatPage::joinRoomVia(const std::string &room_id,
+                      const std::vector<std::string> &via,
+                      bool promptForConfirmation)
 {
-        if (QMessageBox::Yes !=
-            QMessageBox::question(
-              this,
-              tr("Confirm join"),
-              tr("Do you really want to join %1?").arg(QString::fromStdString(room_id))))
+        if (promptForConfirmation &&
+            QMessageBox::Yes !=
+              QMessageBox::question(
+                this,
+                tr("Confirm join"),
+                tr("Do you really want to join %1?").arg(QString::fromStdString(room_id))))
                 return;
 
         http::client()->join_room(
@@ -1419,7 +1423,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                 for (auto roomid : joined_rooms) {
                         if (roomid == targetRoomId) {
                                 room_list_->highlightSelectedRoom(mxid1);
-                                break;
+                                return;
                         }
                 }
 
@@ -1436,7 +1440,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                                 if (aliases->alias == targetRoomAlias) {
                                         room_list_->highlightSelectedRoom(
                                           QString::fromStdString(roomid));
-                                        break;
+                                        return;
                                 }
                         }
                 }
