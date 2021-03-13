@@ -33,7 +33,7 @@ option(USE_BUNDLED_CMARK "Use the bundled version of cmark."
 option(USE_BUNDLED_JSON "Use the bundled version of nlohmann json."
 	${HUNTER_ENABLED})
 option(USE_BUNDLED_OPENSSL "Use the bundled version of OpenSSL."
-	${HUNTER_ENABLED})
+	OFF)
 option(USE_BUNDLED_MTXCLIENT "Use the bundled version of the Matrix Client library." ${HUNTER_ENABLED})
 option(USE_BUNDLED_LMDB "Use the bundled version of lmdb."
 	${HUNTER_ENABLED})
@@ -359,7 +359,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        ace7fa2d89a64de7b84c77d1fa1bc80486408831
+		GIT_TAG        b1b1ef9ad088f9666582f46d81b75a80c6b2b1c0
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
