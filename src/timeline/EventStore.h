@@ -10,7 +10,6 @@
 #include <QCache>
 #include <QObject>
 #include <QVariant>
-#include <qhashfunctions.h>
 
 #include <mtx/events/collections.hpp>
 #include <mtx/responses/messages.hpp>
@@ -25,6 +24,11 @@ class EventStore : public QObject
 public:
         EventStore(std::string room_id, QObject *parent);
 
+        // taken from QtPrivate::QHashCombine
+        static uint hashCombine(uint hash, uint seed)
+        {
+                return seed ^ (hash + 0x9e3779b9 + (seed << 6) + (seed >> 2));
+        };
         struct Index
         {
                 std::string room;
@@ -32,10 +36,9 @@ public:
 
                 friend uint qHash(const Index &i, uint seed = 0) noexcept
                 {
-                        QtPrivate::QHashCombine hash;
                         seed =
-                          hash(seed, QByteArray::fromRawData(i.room.data(), (int)i.room.size()));
-                        seed = hash(seed, i.idx);
+                          hashCombine(qHashBits(i.room.data(), (int)i.room.size(), seed), seed);
+                        seed = hashCombine(qHash(i.idx, seed), seed);
                         return seed;
                 }
 
@@ -50,10 +53,9 @@ public:
 
                 friend uint qHash(const IdIndex &i, uint seed = 0) noexcept
                 {
-                        QtPrivate::QHashCombine hash;
                         seed =
-                          hash(seed, QByteArray::fromRawData(i.room.data(), (int)i.room.size()));
-                        seed = hash(seed, QByteArray::fromRawData(i.id.data(), (int)i.id.size()));
+                          hashCombine(qHashBits(i.room.data(), (int)i.room.size(), seed), seed);
+                        seed = hashCombine(qHashBits(i.id.data(), (int)i.id.size(), seed), seed);
                         return seed;
                 }
 

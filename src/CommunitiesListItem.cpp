@@ -182,7 +182,8 @@ CommunitiesListItem::updateTooltip()
         if (groupId_ == "world")
                 setToolTip(tr("All rooms"));
         else if (is_tag()) {
-                QString tag = groupId_.right(static_cast<int>(groupId_.size() - strlen("tag:")));
+                QStringRef tag =
+                  groupId_.rightRef(static_cast<int>(groupId_.size() - strlen("tag:")));
                 if (tag == "m.favourite")
                         setToolTip(tr("Favourite rooms"));
                 else if (tag == "m.lowpriority")
