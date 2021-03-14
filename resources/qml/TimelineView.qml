@@ -6,6 +6,7 @@ import "./delegates"
 import "./device-verification"
 import "./emoji"
 import "./voip"
+import Qt.labs.platform 1.1 as Platform
 import QtGraphicalEffects 1.0
 import QtQuick 2.9
 import QtQuick.Controls 2.3
@@ -89,7 +90,7 @@ Page {
         }
     }
 
-    Menu {
+    Platform.Menu {
         id: messageContextMenu
 
         property string eventId
@@ -102,67 +103,68 @@ Page {
             eventType = eventType_;
             isEncrypted = isEncrypted_;
             isEditable = isEditable_;
-            popup(showAt_);
+            if (showAt_)
+                open(showAt_);
+            else
+                open();
         }
 
-        modal: true
-
-        MenuItem {
+        Platform.MenuItem {
             text: qsTr("React")
-            onClicked: emojiPopup.show(messageContextMenu.parent, function(emoji) {
+            onTriggered: emojiPopup.show(messageContextMenu.parent, function(emoji) {
                 TimelineManager.queueReactionMessage(messageContextMenu.eventId, emoji);
             })
         }
 
-        MenuItem {
+        Platform.MenuItem {
             text: qsTr("Reply")
-            onClicked: TimelineManager.timeline.replyAction(messageContextMenu.eventId)
+            onTriggered: TimelineManager.timeline.replyAction(messageContextMenu.eventId)
         }
 
-        MenuItem {
+        Platform.MenuItem {
             visible: messageContextMenu.isEditable
-            height: visible ? implicitHeight : 0
+            enabled: visible
             text: qsTr("Edit")
-            onClicked: TimelineManager.timeline.editAction(messageContextMenu.eventId)
+            onTriggered: TimelineManager.timeline.editAction(messageContextMenu.eventId)
         }
 
-        MenuItem {
+        Platform.MenuItem {
             text: qsTr("Read receipts")
             onTriggered: TimelineManager.timeline.readReceiptsAction(messageContextMenu.eventId)
         }
 
-        MenuItem {
+        Platform.MenuItem {
             text: qsTr("Mark as read")
         }
 
-        MenuItem {
+        Platform.MenuItem {
             text: qsTr("View raw message")
             onTriggered: TimelineManager.timeline.viewRawMessage(messageContextMenu.eventId)
         }
 
-        MenuItem {
+        Platform.MenuItem {
             // TODO(Nico): Fix this still being iterated over, when using keyboard to select options
             visible: messageContextMenu.isEncrypted
-            height: visible ? implicitHeight : 0
+            enabled: visible
             text: qsTr("View decrypted raw message")
             onTriggered: TimelineManager.timeline.viewDecryptedRawMessage(messageContextMenu.eventId)
         }
 
-        MenuItem {
+        Platform.MenuItem {
             text: qsTr("Remove message")
             onTriggered: TimelineManager.timeline.redactEvent(messageContextMenu.eventId)
         }
 
-        MenuItem {
+        Platform.MenuItem {
             visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
-            height: visible ? implicitHeight : 0
+            enabled: visible
             text: qsTr("Save as")
             onTriggered: TimelineManager.timeline.saveMedia(messageContextMenu.eventId)
         }
 
-        MenuItem {
+        Platform.MenuItem {
             visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
-            height: visible ? implicitHeight : 0
+            enabled: visible
             text: qsTr("Open in external program")
             onTriggered: TimelineManager.timeline.openMedia(messageContextMenu.eventId)
         }
