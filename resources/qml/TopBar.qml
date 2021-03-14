@@ -2,8 +2,9 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtQuick 2.9
-import QtQuick.Controls 2.3
+import Qt.labs.platform 1.1 as Platform
+import QtQuick 2.12
+import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
@@ -17,9 +18,8 @@ Rectangle {
     z: 3
     color: colors.window
 
-    MouseArea {
-        anchors.fill: parent
-        onClicked: TimelineManager.timeline.openRoomSettings()
+    TapHandler {
+        onSingleTapped: TimelineManager.timeline.openRoomSettings()
     }
 
     GridLayout {
@@ -70,9 +70,8 @@ Rectangle {
             maximumLineCount: 1
             elide: Text.ElideRight
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: TimelineManager.timeline.openRoomSettings()
+            TapHandler {
+                onSingleTapped: TimelineManager.timeline.openRoomSettings()
             }
 
         }
@@ -96,27 +95,27 @@ Rectangle {
             image: ":/icons/icons/ui/vertical-ellipsis.png"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Room options")
-            onClicked: roomOptionsMenu.popup(roomOptionsButton)
+            onClicked: roomOptionsMenu.open(roomOptionsButton)
 
-            Menu {
+            Platform.Menu {
                 id: roomOptionsMenu
 
-                MenuItem {
+                Platform.MenuItem {
                     text: qsTr("Invite users")
                     onTriggered: TimelineManager.openInviteUsersDialog()
                 }
 
-                MenuItem {
+                Platform.MenuItem {
                     text: qsTr("Members")
                     onTriggered: TimelineManager.openMemberListDialog()
                 }
 
-                MenuItem {
+                Platform.MenuItem {
                     text: qsTr("Leave room")
                     onTriggered: TimelineManager.openLeaveRoomDialog()
                 }
 
-                MenuItem {
+                Platform.MenuItem {
                     text: qsTr("Settings")
                     onTriggered: TimelineManager.timeline.openRoomSettings()
                 }
