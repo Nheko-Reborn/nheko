@@ -135,7 +135,8 @@ struct trie
 class CompletionProxyModel : public QAbstractProxyModel
 {
         Q_OBJECT
-
+        Q_PROPERTY(
+          QString searchString READ searchString WRITE setSearchString NOTIFY newSearchString)
 public:
         CompletionProxyModel(QAbstractItemModel *model,
                              int max_mistakes = 2,
@@ -159,12 +160,13 @@ public slots:
         QVariant completionAt(int i) const;
 
         void setSearchString(QString s);
+        QString searchString() const { return searchString_; }
 
 signals:
         void newSearchString(QString);
 
 private:
-        QString searchString;
+        QString searchString_;
         trie<uint, int> trie_;
         std::vector<int> mapping;
         int maxMistakes_;

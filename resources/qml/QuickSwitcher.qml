@@ -5,19 +5,31 @@ import im.nheko 1.0
 Popup {
     id: quickSwitcher
 
-    property int textHeight: 32
-    property int textMargin: 8
+    property int textHeight: Math.round(Qt.application.font.pixelSize * 2.4)
+    property int textMargin: Math.round(textHeight / 8)
 
-    x: parent.width / 2 - width / 2
-    y: parent.height / 4 - height / 2
-    width: parent.width / 2
+    function delay(delayTime, cb) {
+        timer.interval = delayTime;
+        timer.repeat = false;
+        timer.triggered.connect(cb);
+        timer.start();
+    }
+
+    width: Math.round(parent.width / 2)
+    x: Math.round(parent.width / 2 - width / 2)
+    y: Math.round(parent.height / 4 - height / 2)
     modal: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     parent: Overlay.overlay
     palette: colors
-
-    Overlay.modal: Rectangle {
-        color: "#aa1E1E1E"
+    onOpened: {
+        completerPopup.open();
+        delay(200, function() {
+            roomTextInput.forceActiveFocus();
+        });
+    }
+    onClosed: {
+        completerPopup.close();
     }
 
     MatrixTextField {
@@ -27,11 +39,9 @@ Popup {
         font.pixelSize: Math.ceil(quickSwitcher.textHeight * 0.6)
         padding: textMargin
         color: colors.text
-
         onTextEdited: {
-            completerPopup.completer.setSearchString(text)
+            completerPopup.completer.searchString = text;
         }
-
         Keys.onPressed: {
             if (event.key == Qt.Key_Up && completerPopup.opened) {
                 event.accepted = true;
@@ -40,7 +50,7 @@ Popup {
                 event.accepted = true;
                 completerPopup.down();
             } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
-                completerPopup.finishCompletion()
+                completerPopup.finishCompletion();
                 event.accepted = true;
             }
         }
@@ -50,36 +60,30 @@ Popup {
         id: completerPopup
 
         x: roomTextInput.x
-        y: roomTextInput.y + roomTextInput.height + textMargin
+        y: roomTextInput.y + quickSwitcher.textHeight + quickSwitcher.textMargin
+        visible: roomTextInput.length > 0
         width: parent.width
         completerName: "room"
         bottomToTop: false
         fullWidth: true
-        avatarHeight: textHeight
-        avatarWidth: textHeight
+        avatarHeight: quickSwitcher.textHeight
+        avatarWidth: quickSwitcher.textHeight
         centerRowContent: false
-        rowMargin: 8
-        rowSpacing: 6
-
+        rowMargin: Math.round(quickSwitcher.textMargin / 2)
+        rowSpacing: quickSwitcher.textMargin
         closePolicy: Popup.NoAutoClose
-    }
-
-    onOpened: {
-        completerPopup.open()
-        delay(200, function() {
-            roomTextInput.forceActiveFocus()
-        })
-    }
-
-    onClosed: {
-        completerPopup.close()
     }
 
     Connections {
         onCompletionSelected: {
-            TimelineManager.setHistoryView(id)
-            TimelineManager.highlightRoom(id)
-            quickSwitcher.close()
+            TimelineManager.setHistoryView(id);
+            TimelineManager.highlightRoom(id);
+            quickSwitcher.close();
+        }
+        onCountChanged: {
+            if (completerPopup.count > 0 && (completerPopup.currentIndex < 0 || completerPopup.currentIndex >= completerPopup.count))
+                completerPopup.currentIndex = 0;
+
         }
         target: completerPopup
     }
@@ -88,10 +92,8 @@ Popup {
         id: timer
     }
 
-    function delay(delayTime, cb) {
-        timer.interval = delayTime;
-        timer.repeat = false;
-        timer.triggered.connect(cb);
-        timer.start();
+    Overlay.modal: Rectangle {
+        color: "#aa1E1E1E"
     }
+
 }

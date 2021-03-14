@@ -1,5 +1,4 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "./ui"
@@ -62,18 +61,17 @@ Popup {
     }
 
     function finishCompletion() {
-        if(popup.completerName == "room") {
-            popup.completionSelected(listView.itemAtIndex(currentIndex).modelData.roomid)
-        }
+        if (popup.completerName == "room")
+            popup.completionSelected(listView.itemAtIndex(currentIndex).modelData.roomid);
+
     }
 
     onCompleterNameChanged: {
         if (completerName) {
-            if (completerName == "user") {
+            if (completerName == "user")
                 completer = TimelineManager.completerFor(completerName, TimelineManager.timeline.roomId());
-            } else {
+            else
                 completer = TimelineManager.completerFor(completerName);
-            }
             completer.setSearchString("");
         } else {
             completer = undefined;
@@ -99,10 +97,11 @@ Popup {
         pixelAligned: true
 
         delegate: Rectangle {
+            property variant modelData: model
+
             color: model.index == popup.currentIndex ? colors.highlight : colors.base
             height: chooser.childrenRect.height + 2 * popup.rowMargin
             implicitWidth: fullWidth ? popup.width : chooser.childrenRect.width + 4
-            property variant modelData: model
 
             MouseArea {
                 id: mouseArea
@@ -111,10 +110,10 @@ Popup {
                 hoverEnabled: true
                 onPositionChanged: popup.currentIndex = model.index
                 onClicked: {
-                    popup.completionClicked(completer.completionAt(model.index))
-                    if(popup.completerName == "room") {
-                        popup.completionSelected(model.roomid)
-                    }
+                    popup.completionClicked(completer.completionAt(model.index));
+                    if (popup.completerName == "room")
+                        popup.completionSelected(model.roomid);
+
                 }
 
                 Ripple {
@@ -200,8 +199,8 @@ Popup {
                             width: popup.avatarWidth
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             onClicked: {
-                                popup.completionClicked(completer.completionAt(model.index))
-                                popup.completionSelected(model.roomid)
+                                popup.completionClicked(completer.completionAt(model.index));
+                                popup.completionSelected(model.roomid);
                             }
                         }
 
