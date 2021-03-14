@@ -198,6 +198,7 @@ Popup {
                         Avatar {
                             height: popup.avatarHeight
                             width: popup.avatarWidth
+                            displayName: model.roomName
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             onClicked: {
                                 popup.completionClicked(completer.completionAt(model.index));
@@ -227,6 +228,7 @@ Popup {
                         Avatar {
                             height: popup.avatarHeight
                             width: popup.avatarWidth
+                            displayName: model.roomName
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             onClicked: popup.completionClicked(completer.completionAt(model.index))
                         }
