@@ -114,6 +114,13 @@ with [homebrew](https://brew.sh/):
 ```sh
 brew install --cask nheko
 ```
+### FAQ
+
+##
+**Q:** Why don't videos run for me on Windows?
+
+**A:** You're probably missing the required video codecs, download [K-Lite Codec Pack](https://codecguide.com/download_kl.htm).
+##
 
 ### Build Requirements
 
