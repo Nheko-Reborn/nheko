@@ -72,6 +72,23 @@ Page {
 
     }
 
+    Component {
+        id: quickSwitcherComponent
+
+        QuickSwitcher {
+        }
+
+    }
+
+    Shortcut {
+        sequence: "Ctrl+K"
+        onActivated: {
+            var quickSwitch = quickSwitcherComponent.createObject(timelineRoot);
+            TimelineManager.focusTimeline();
+            quickSwitch.open();
+        }
+    }
+
     Menu {
         id: messageContextMenu
 

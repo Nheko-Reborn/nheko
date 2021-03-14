@@ -58,19 +58,19 @@ struct trie
         }
 
         std::vector<Value> search(const QVector<Key> &keys, //< TODO(Nico): replace this with a span
-                                  size_t limit,
-                                  size_t max_distance = 2) const
+                                  size_t result_count_limit,
+                                  size_t max_edit_distance = 2) const
         {
                 std::vector<Value> ret;
-                if (!limit)
+                if (!result_count_limit)
                         return ret;
 
                 if (keys.isEmpty())
-                        return valuesAndSubvalues(limit);
+                        return valuesAndSubvalues(result_count_limit);
 
-                auto append = [&ret, limit](std::vector<Value> &&in) {
+                auto append = [&ret, result_count_limit](std::vector<Value> &&in) {
                         for (auto &&v : in) {
-                                if (ret.size() >= limit)
+                                if (ret.size() >= result_count_limit)
                                         return;
 
                                 if (std::find(ret.begin(), ret.end(), v) == ret.end()) {
@@ -80,11 +80,12 @@ struct trie
                 };
 
                 if (auto e = this->next.find(keys[0]); e != this->next.end()) {
-                        append(e->second.search(keys.mid(1), limit, max_distance));
+                        append(
+                          e->second.search(keys.mid(1), result_count_limit, max_edit_distance));
                 }
 
-                if (max_distance && ret.size() < limit) {
-                        max_distance -= 1;
+                if (max_edit_distance && ret.size() < result_count_limit) {
+                        max_edit_distance -= 1;
 
                         // swap chars case
                         if (keys.size() >= 2) {
@@ -99,27 +100,31 @@ struct trie
                                 }
 
                                 if (t) {
-                                        append(t->search(
-                                          keys.mid(2), (limit - ret.size()) * 2, max_distance));
+                                        append(t->search(keys.mid(2),
+                                                         (result_count_limit - ret.size()) * 2,
+                                                         max_edit_distance));
                                 }
                         }
 
                         // delete character case
-                        append(this->search(keys.mid(1), (limit - ret.size()) * 2, max_distance));
+                        append(this->search(
+                          keys.mid(1), (result_count_limit - ret.size()) * 2, max_edit_distance));
 
                         // substitute and insert cases
                         for (const auto &[k, t] : this->next) {
-                                if (k == keys[0] || ret.size() >= limit)
+                                if (k == keys[0] || ret.size() >= result_count_limit)
                                         break;
 
                                 // substitute
-                                append(t.search(keys.mid(1), limit - ret.size(), max_distance));
+                                append(t.search(
+                                  keys.mid(1), result_count_limit - ret.size(), max_edit_distance));
 
-                                if (ret.size() >= limit)
+                                if (ret.size() >= result_count_limit)
                                         break;
 
                                 // insert
-                                append(t.search(keys, limit - ret.size(), max_distance));
+                                append(t.search(
+                                  keys, result_count_limit - ret.size(), max_edit_distance));
                         }
                 }
 
@@ -130,9 +135,12 @@ struct trie
 class CompletionProxyModel : public QAbstractProxyModel
 {
         Q_OBJECT
-
+        Q_PROPERTY(
+          QString searchString READ searchString WRITE setSearchString NOTIFY newSearchString)
 public:
-        CompletionProxyModel(QAbstractItemModel *model, QObject *parent = nullptr);
+        CompletionProxyModel(QAbstractItemModel *model,
+                             int max_mistakes = 2,
+                             QObject *parent  = nullptr);
 
         void invalidate();
 
@@ -152,12 +160,14 @@ public slots:
         QVariant completionAt(int i) const;
 
         void setSearchString(QString s);
+        QString searchString() const { return searchString_; }
 
 signals:
         void newSearchString(QString);
 
 private:
-        QString searchString;
+        QString searchString_;
         trie<uint, int> trie_;
         std::vector<int> mapping;
+        int maxMistakes_;
 };

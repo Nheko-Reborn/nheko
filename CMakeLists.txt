@@ -316,7 +316,6 @@ set(SRC_FILES
 	src/MatrixClient.cpp
 	src/MxcImageProvider.cpp
 	src/Olm.cpp
-	src/QuickSwitcher.cpp
 	src/RegisterPage.cpp
 	src/RoomInfoListItem.cpp
 	src/RoomList.cpp
@@ -532,7 +531,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/LoginPage.h
 	src/MainWindow.h
 	src/MxcImageProvider.h
-	src/QuickSwitcher.h
 	src/RegisterPage.h
 	src/RoomInfoListItem.h
 	src/RoomList.h

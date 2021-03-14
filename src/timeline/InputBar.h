@@ -55,8 +55,6 @@ public slots:
         bool uploading() const { return uploading_; }
         void message(QString body, MarkdownOverride useMarkdown = MarkdownOverride::NOT_SPECIFIED);
 
-        QObject *completerFor(QString completerName);
-
 private slots:
         void startTyping();
         void stopTyping();

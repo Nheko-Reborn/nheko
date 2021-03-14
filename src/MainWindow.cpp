@@ -135,12 +135,6 @@ MainWindow::MainWindow(QWidget *parent)
         QShortcut *quitShortcut = new QShortcut(QKeySequence::Quit, this);
         connect(quitShortcut, &QShortcut::activated, this, QApplication::quit);
 
-        QShortcut *quickSwitchShortcut = new QShortcut(QKeySequence("Ctrl+K"), this);
-        connect(quickSwitchShortcut, &QShortcut::activated, this, [this]() {
-                if (chat_page_->isVisible() && !hasActiveDialogs())
-                        chat_page_->showQuickSwitcher();
-        });
-
         trayIcon_->setVisible(userSettings_->tray());
 
         if (hasActiveUser()) {
