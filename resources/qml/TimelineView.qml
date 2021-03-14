@@ -20,7 +20,7 @@ Page {
     property var colors: currentActivePalette
     property var systemInactive
     property var inactiveColors: currentInactivePalette ? currentInactivePalette : systemInactive
-    property int avatarSize: 40
+    readonly property int avatarSize: 40
     property real highlightHue: colors.highlight.hslHue
     property real highlightSat: colors.highlight.hslSaturation
     property real highlightLight: colors.highlight.hslLightness
