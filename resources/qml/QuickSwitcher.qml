@@ -15,6 +15,7 @@ Popup {
         timer.start();
     }
 
+    background: null
     width: Math.round(parent.width / 2)
     x: Math.round(parent.width / 2 - width / 2)
     y: Math.round(parent.height / 4 - height / 2)
