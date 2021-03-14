@@ -32,7 +32,7 @@ Item {
     }
 
     Spinner {
-        visible: running
+        visible: TimelineManager.isInitialSync
         anchors.centerIn: parent
         foreground: timelineRoot.colors.mid
         running: TimelineManager.isInitialSync
