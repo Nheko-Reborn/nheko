@@ -13,6 +13,7 @@
 #include <QProcessEnvironment>
 #include <QScreen>
 #include <QSettings>
+#include <QStringBuilder>
 #include <QTextDocument>
 #include <QXmlStreamReader>
 
@@ -66,7 +67,8 @@ utils::codepointIsEmoji(uint code)
 QString
 utils::replaceEmoji(const QString &body)
 {
-        QString fmtBody = "";
+        QString fmtBody;
+        fmtBody.reserve(body.size());
 
         QVector<uint> utf32_string = body.toUcs4();
 
@@ -74,21 +76,28 @@ utils::replaceEmoji(const QString &body)
         for (auto &code : utf32_string) {
                 if (utils::codepointIsEmoji(code)) {
                         if (!insideFontBlock) {
-                                fmtBody += QString("<font face=\"" +
-                                                   UserSettings::instance()->emojiFont() + "\">");
+                                fmtBody += QStringLiteral("<font face=\"") %
+                                           UserSettings::instance()->emojiFont() %
+                                           QStringLiteral("\">");
                                 insideFontBlock = true;
                         }
 
                 } else {
                         if (insideFontBlock) {
-                                fmtBody += "</font>";
+                                fmtBody += QStringLiteral("</font>");
                                 insideFontBlock = false;
                         }
                 }
-                fmtBody += QString::fromUcs4(&code, 1);
+                if (QChar::requiresSurrogates(code)) {
+                        QChar emoji[] = {static_cast<ushort>(QChar::highSurrogate(code)),
+                                         static_cast<ushort>(QChar::lowSurrogate(code))};
+                        fmtBody.append(emoji, 2);
+                } else {
+                        fmtBody.append(QChar(static_cast<ushort>(code)));
+                }
         }
         if (insideFontBlock) {
-                fmtBody += "</font>";
+                fmtBody += QStringLiteral("</font>");
         }
 
         return fmtBody;
