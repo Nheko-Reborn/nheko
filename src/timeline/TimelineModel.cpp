@@ -17,6 +17,7 @@
 #include <QStandardPaths>
 
 #include "ChatPage.h"
+#include "Config.h"
 #include "EventAccessors.h"
 #include "Logging.h"
 #include "MainWindow.h"
@@ -1586,10 +1587,31 @@ TimelineModel::setEdit(QString newEdit)
 
                         auto msgType = mtx::accessors::msg_type(e);
                         if (msgType == mtx::events::MessageType::Text ||
-                            msgType == mtx::events::MessageType::Notice) {
-                                input()->setText(relatedInfo(newEdit).quoted_body);
-                        } else if (msgType == mtx::events::MessageType::Emote) {
-                                input()->setText("/me " + relatedInfo(newEdit).quoted_body);
+                            msgType == mtx::events::MessageType::Notice ||
+                            msgType == mtx::events::MessageType::Emote) {
+                                auto relInfo  = relatedInfo(newEdit);
+                                auto editText = relInfo.quoted_body;
+
+                                if (!relInfo.quoted_formatted_body.isEmpty()) {
+                                        auto matches = conf::strings::matrixToLink.globalMatch(
+                                          relInfo.quoted_formatted_body);
+                                        std::map<QString, QString> reverseNameMapping;
+                                        while (matches.hasNext()) {
+                                                auto m                            = matches.next();
+                                                reverseNameMapping[m.captured(2)] = m.captured(1);
+                                        }
+
+                                        for (const auto &[user, link] : reverseNameMapping) {
+                                                // TODO(Nico): html unescape the user name
+                                                editText.replace(
+                                                  user, QStringLiteral("[%1](%2)").arg(user, link));
+                                        }
+                                }
+
+                                if (msgType == mtx::events::MessageType::Emote)
+                                        input()->setText("/me " + editText);
+                                else
+                                        input()->setText(editText);
                         } else {
                                 input()->setText("");
                         }

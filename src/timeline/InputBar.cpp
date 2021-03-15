@@ -264,6 +264,9 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown)
              useMarkdown == MarkdownOverride::NOT_SPECIFIED) ||
             useMarkdown == MarkdownOverride::ON) {
                 text.formatted_body = utils::markdownToHtml(msg).toStdString();
+                // Remove markdown links by completer
+                text.body =
+                  msg.trimmed().replace(conf::strings::matrixToMarkdownLink, "\\1").toStdString();
 
                 // Don't send formatted_body, when we don't need to
                 if (text.formatted_body.find("<") == std::string::npos)
@@ -326,6 +329,9 @@ InputBar::emote(QString msg)
             ChatPage::instance()->userSettings()->markdown()) {
                 emote.formatted_body = html.toStdString();
                 emote.format         = "org.matrix.custom.html";
+                // Remove markdown links by completer
+                emote.body =
+                  msg.trimmed().replace(conf::strings::matrixToMarkdownLink, "\\1").toStdString();
         }
 
         if (!room->reply().isEmpty()) {
