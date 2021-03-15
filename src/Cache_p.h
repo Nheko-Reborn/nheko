@@ -221,6 +221,8 @@ public:
         //! Mark a room that uses e2e encryption.
         void setEncryptedRoom(lmdb::txn &txn, const std::string &room_id);
         bool isRoomEncrypted(const std::string &room_id);
+        std::optional<mtx::events::state::Encryption> roomEncryptionSettings(
+          const std::string &room_id);
 
         //! Check if a user is a member of the room.
         bool isRoomMember(const std::string &user_id, const std::string &room_id);

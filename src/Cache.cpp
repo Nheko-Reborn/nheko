@@ -261,6 +261,36 @@ Cache::isRoomEncrypted(const std::string &room_id)
         return res;
 }
 
+std::optional<mtx::events::state::Encryption>
+Cache::roomEncryptionSettings(const std::string &room_id)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        try {
+                auto txn      = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+                auto statesdb = getStatesDb(txn, room_id);
+                std::string_view event;
+                bool res =
+                  statesdb.get(txn, to_string(mtx::events::EventType::RoomEncryption), event);
+
+                if (res) {
+                        try {
+                                StateEvent<Encryption> msg = json::parse(event);
+
+                                return msg.content;
+                        } catch (const json::exception &e) {
+                                nhlog::db()->warn("failed to parse m.room.encryption event: {}",
+                                                  e.what());
+                                return Encryption{};
+                        }
+                }
+        } catch (lmdb::error &) {
+        }
+
+        return std::nullopt;
+}
+
 mtx::crypto::ExportedSessionKeys
 Cache::exportSessionKeys()
 {
@@ -3893,6 +3923,7 @@ to_json(nlohmann::json &obj, const OutboundGroupSessionData &msg)
         obj["session_id"]    = msg.session_id;
         obj["session_key"]   = msg.session_key;
         obj["message_index"] = msg.message_index;
+        obj["ts"]            = msg.timestamp;
 
         obj["initially"] = msg.initially;
         obj["currently"] = msg.currently;
@@ -3904,6 +3935,7 @@ from_json(const nlohmann::json &obj, OutboundGroupSessionData &msg)
         msg.session_id    = obj.at("session_id");
         msg.session_key   = obj.at("session_key");
         msg.message_index = obj.at("message_index");
+        msg.timestamp     = obj.value("ts", 0ULL);
 
         msg.initially = obj.value("initially", SharedWithUsers{});
         msg.currently = obj.value("currently", SharedWithUsers{});

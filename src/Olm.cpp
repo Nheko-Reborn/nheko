@@ -431,92 +431,107 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
 
         if (cache::outboundMegolmSessionExists(room_id)) {
                 auto res = cache::getOutboundMegolmSession(room_id);
+                auto encryptionSettings = cache::client()->roomEncryptionSettings(room_id);
+                mtx::events::state::Encryption defaultSettings;
 
-                auto member_it             = members.begin();
-                auto session_member_it     = res.data.currently.keys.begin();
-                auto session_member_it_end = res.data.currently.keys.end();
+                // rotate if we crossed the limits for this key
+                if (res.data.message_index <
+                      encryptionSettings.value_or(defaultSettings).rotation_period_msgs &&
+                    (QDateTime::currentMSecsSinceEpoch() - res.data.timestamp) <
+                      encryptionSettings.value_or(defaultSettings).rotation_period_ms) {
+                        auto member_it             = members.begin();
+                        auto session_member_it     = res.data.currently.keys.begin();
+                        auto session_member_it_end = res.data.currently.keys.end();
 
-                while (member_it != members.end() || session_member_it != session_member_it_end) {
-                        if (member_it == members.end()) {
-                                // a member left, purge session!
-                                nhlog::crypto()->debug(
-                                  "Rotating megolm session because of left member");
-                                break;
-                        }
+                        while (member_it != members.end() ||
+                               session_member_it != session_member_it_end) {
+                                if (member_it == members.end()) {
+                                        // a member left, purge session!
+                                        nhlog::crypto()->debug(
+                                          "Rotating megolm session because of left member");
+                                        break;
+                                }
 
-                        if (session_member_it == session_member_it_end) {
-                                // share with all remaining members
-                                while (member_it != members.end()) {
+                                if (session_member_it == session_member_it_end) {
+                                        // share with all remaining members
+                                        while (member_it != members.end()) {
+                                                sendSessionTo[member_it->first] = {};
+
+                                                if (member_it->second)
+                                                        for (const auto &dev :
+                                                             member_it->second->device_keys)
+                                                                if (member_it->first !=
+                                                                      own_user_id ||
+                                                                    dev.first != device_id)
+                                                                        sendSessionTo[member_it
+                                                                                        ->first]
+                                                                          .push_back(dev.first);
+
+                                                ++member_it;
+                                        }
+
+                                        session = std::move(res.session);
+                                        break;
+                                }
+
+                                if (member_it->first > session_member_it->first) {
+                                        // a member left, purge session
+                                        nhlog::crypto()->debug(
+                                          "Rotating megolm session because of left member");
+                                        break;
+                                } else if (member_it->first < session_member_it->first) {
+                                        // new member, send them the session at this index
                                         sendSessionTo[member_it->first] = {};
 
-                                        if (member_it->second)
+                                        if (member_it->second) {
                                                 for (const auto &dev :
                                                      member_it->second->device_keys)
                                                         if (member_it->first != own_user_id ||
                                                             dev.first != device_id)
                                                                 sendSessionTo[member_it->first]
                                                                   .push_back(dev.first);
+                                        }
 
                                         ++member_it;
-                                }
+                                } else {
+                                        // compare devices
+                                        bool device_removed = false;
+                                        for (const auto &dev : session_member_it->second.devices) {
+                                                if (!member_it->second ||
+                                                    !member_it->second->device_keys.count(
+                                                      dev.first)) {
+                                                        device_removed = true;
+                                                        break;
+                                                }
+                                        }
 
-                                session = std::move(res.session);
-                                break;
-                        }
-
-                        if (member_it->first > session_member_it->first) {
-                                // a member left, purge session
-                                nhlog::crypto()->debug(
-                                  "Rotating megolm session because of left member");
-                                break;
-                        } else if (member_it->first < session_member_it->first) {
-                                // new member, send them the session at this index
-                                sendSessionTo[member_it->first] = {};
-
-                                if (member_it->second) {
-                                        for (const auto &dev : member_it->second->device_keys)
-                                                if (member_it->first != own_user_id ||
-                                                    dev.first != device_id)
-                                                        sendSessionTo[member_it->first].push_back(
-                                                          dev.first);
-                                }
-
-                                ++member_it;
-                        } else {
-                                // compare devices
-                                bool device_removed = false;
-                                for (const auto &dev : session_member_it->second.devices) {
-                                        if (!member_it->second ||
-                                            !member_it->second->device_keys.count(dev.first)) {
-                                                device_removed = true;
+                                        if (device_removed) {
+                                                // device removed, rotate session!
+                                                nhlog::crypto()->debug(
+                                                  "Rotating megolm session because of removed "
+                                                  "device of {}",
+                                                  member_it->first);
                                                 break;
                                         }
-                                }
 
-                                if (device_removed) {
-                                        // device removed, rotate session!
-                                        nhlog::crypto()->debug(
-                                          "Rotating megolm session because of removed device of {}",
-                                          member_it->first);
-                                        break;
-                                }
+                                        // check for new devices to share with
+                                        if (member_it->second)
+                                                for (const auto &dev :
+                                                     member_it->second->device_keys)
+                                                        if (!session_member_it->second.devices
+                                                               .count(dev.first) &&
+                                                            (member_it->first != own_user_id ||
+                                                             dev.first != device_id))
+                                                                sendSessionTo[member_it->first]
+                                                                  .push_back(dev.first);
 
-                                // check for new devices to share with
-                                if (member_it->second)
-                                        for (const auto &dev : member_it->second->device_keys)
-                                                if (!session_member_it->second.devices.count(
-                                                      dev.first) &&
-                                                    (member_it->first != own_user_id ||
-                                                     dev.first != device_id))
-                                                        sendSessionTo[member_it->first].push_back(
-                                                          dev.first);
-
-                                ++member_it;
-                                ++session_member_it;
-                                if (member_it == members.end() &&
-                                    session_member_it == session_member_it_end) {
-                                        // all devices match or are newly added
-                                        session = std::move(res.session);
+                                        ++member_it;
+                                        ++session_member_it;
+                                        if (member_it == members.end() &&
+                                            session_member_it == session_member_it_end) {
+                                                // all devices match or are newly added
+                                                session = std::move(res.session);
+                                        }
                                 }
                         }
                 }
@@ -537,6 +552,7 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
                 session_data.session_id    = mtx::crypto::session_id(session.get());
                 session_data.session_key   = mtx::crypto::session_key(session.get());
                 session_data.message_index = 0;
+                session_data.timestamp     = QDateTime::currentMSecsSinceEpoch();
 
                 sendSessionTo.clear();
 
