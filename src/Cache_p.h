@@ -271,6 +271,17 @@ public:
         void deleteSecret(const std::string &name);
         std::optional<std::string> secret(const std::string &name);
 
+        template<class T>
+        static constexpr bool isStateEvent(const mtx::events::StateEvent<T> &)
+        {
+                return true;
+        }
+        template<class T>
+        static constexpr bool isStateEvent(const mtx::events::Event<T> &)
+        {
+                return false;
+        }
+
 signals:
         void newReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
         void roomReadStatus(const std::map<QString, bool> &status);
@@ -368,56 +379,12 @@ private:
                         return;
                 }
 
-                if (!isStateEvent(event))
-                        return;
-
-                std::visit([&txn, &statesdb](
-                             auto e) { statesdb.put(txn, to_string(e.type), json(e).dump()); },
-                           event);
-        }
-
-        template<class T>
-        bool isStateEvent(const T &e)
-        {
-                using namespace mtx::events;
-                using namespace mtx::events::state;
-
-                return std::holds_alternative<StateEvent<Aliases>>(e) ||
-                       std::holds_alternative<StateEvent<state::Avatar>>(e) ||
-                       std::holds_alternative<StateEvent<CanonicalAlias>>(e) ||
-                       std::holds_alternative<StateEvent<Create>>(e) ||
-                       std::holds_alternative<StateEvent<GuestAccess>>(e) ||
-                       std::holds_alternative<StateEvent<HistoryVisibility>>(e) ||
-                       std::holds_alternative<StateEvent<JoinRules>>(e) ||
-                       std::holds_alternative<StateEvent<Name>>(e) ||
-                       std::holds_alternative<StateEvent<Member>>(e) ||
-                       std::holds_alternative<StateEvent<PowerLevels>>(e) ||
-                       std::holds_alternative<StateEvent<Topic>>(e);
-        }
-
-        template<class T>
-        bool containsStateUpdates(const T &e)
-        {
-                using namespace mtx::events;
-                using namespace mtx::events::state;
-
-                return std::holds_alternative<StateEvent<state::Avatar>>(e) ||
-                       std::holds_alternative<StateEvent<CanonicalAlias>>(e) ||
-                       std::holds_alternative<StateEvent<Name>>(e) ||
-                       std::holds_alternative<StateEvent<Member>>(e) ||
-                       std::holds_alternative<StateEvent<Topic>>(e);
-        }
-
-        bool containsStateUpdates(const mtx::events::collections::StrippedEvents &e)
-        {
-                using namespace mtx::events;
-                using namespace mtx::events::state;
-
-                return std::holds_alternative<StrippedEvent<state::Avatar>>(e) ||
-                       std::holds_alternative<StrippedEvent<CanonicalAlias>>(e) ||
-                       std::holds_alternative<StrippedEvent<Name>>(e) ||
-                       std::holds_alternative<StrippedEvent<Member>>(e) ||
-                       std::holds_alternative<StrippedEvent<Topic>>(e);
+                std::visit(
+                  [&txn, &statesdb](auto e) {
+                          if constexpr (isStateEvent(e))
+                                  statesdb.put(txn, to_string(e.type), json(e).dump());
+                  },
+                  event);
         }
 
         void saveInvites(lmdb::txn &txn,

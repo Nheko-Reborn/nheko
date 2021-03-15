@@ -430,7 +430,7 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
         OutboundGroupSessionData group_session_data;
 
         if (cache::outboundMegolmSessionExists(room_id)) {
-                auto res = cache::getOutboundMegolmSession(room_id);
+                auto res                = cache::getOutboundMegolmSession(room_id);
                 auto encryptionSettings = cache::client()->roomEncryptionSettings(room_id);
                 mtx::events::state::Encryption defaultSettings;
 

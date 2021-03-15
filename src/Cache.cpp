@@ -91,6 +91,26 @@ namespace {
 std::unique_ptr<Cache> instance_ = nullptr;
 }
 
+template<class T>
+bool
+containsStateUpdates(const T &e)
+{
+        return std::visit([](const auto &ev) { return Cache::isStateEvent(ev); }, e);
+}
+
+bool
+containsStateUpdates(const mtx::events::collections::StrippedEvents &e)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        return std::holds_alternative<StrippedEvent<state::Avatar>>(e) ||
+               std::holds_alternative<StrippedEvent<CanonicalAlias>>(e) ||
+               std::holds_alternative<StrippedEvent<Name>>(e) ||
+               std::holds_alternative<StrippedEvent<Member>>(e) ||
+               std::holds_alternative<StrippedEvent<Topic>>(e);
+}
+
 bool
 Cache::isHiddenEvent(lmdb::txn &txn,
                      mtx::events::collections::TimelineEvents e,
