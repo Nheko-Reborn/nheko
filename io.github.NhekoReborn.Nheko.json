@@ -9,6 +9,7 @@
   "rename-appdata-file": "nheko.appdata.xml",
   "finish-args": [
     "--device=dri",
+    "--device=all",
     "--share=ipc",
     "--share=network",
     "--socket=pulseaudio",
