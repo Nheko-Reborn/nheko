@@ -185,7 +185,7 @@ Rectangle {
                     target: TimelineManager.timeline
                     onMediaCached: {
                         if (mxcUrl == model.data.url) {
-                            media.source = "file://" + cacheUrl;
+                            media.source = cacheUrl;
                             button.state = "stopped";
                             console.log("media loaded: " + mxcUrl + " at " + cacheUrl);
                         }
