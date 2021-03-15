@@ -1,0 +1,178 @@
+id: io.github.NhekoReborn.Nheko
+command: nheko
+runtime: org.kde.Platform
+runtime-version: '5.15'
+sdk: org.kde.Sdk
+rename-icon: nheko
+rename-desktop-file: nheko.desktop
+rename-appdata-file: nheko.appdata.xml
+finish-args:
+  - --device=dri
+  # needed for webcams, see #517
+  - --device=all
+  - --share=ipc
+  - --share=network
+  - --socket=pulseaudio
+  - --socket=wayland
+  - --socket=x11
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.kde.StatusNotifierWatcher
+cleanup:
+  - /include
+  - /bin/mdb*
+  - '*.a'
+build-options:
+  arch:
+    aarch64:
+      cxxflags: -DBOOST_ASIO_DISABLE_EPOLL
+modules:
+  - name: lmdb
+    sources:
+      - sha256: f3927859882eb608868c8c31586bb7eb84562a40a6bf5cc3e13b6b564641ea28
+        type: archive
+        url: https://github.com/LMDB/lmdb/archive/LMDB_0.9.22.tar.gz
+    make-install-args:
+      - prefix=/app
+    no-autogen: true
+    subdir: libraries/liblmdb
+  - name: cmark
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMARK_TESTS=OFF
+    sources:
+      - sha256: 2558ace3cbeff85610de3bda32858f722b359acdadf0c4691851865bb84924a6
+        type: archive
+        url: https://github.com/commonmark/cmark/archive/0.29.0.tar.gz
+  - name: spdlog
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DSPDLOG_BUILD_EXAMPLES=0
+      - -DSPDLOG_BUILD_BENCH=0
+      - -DSPDLOG_BUILD_TESTING=0
+    sources:
+      - sha256: 5197b3147cfcfaa67dd564db7b878e4a4b3d9f3443801722b3915cdeced656cb
+        type: archive
+        url: https://github.com/gabime/spdlog/archive/v1.8.1.tar.gz
+  - config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+    buildsystem: cmake-ninja
+    name: olm
+    sources:
+      - commit: 6753595300767dd70150831dbbe6f92d64e75038
+        disable-shallow-clone: true
+        tag: 3.1.4
+        type: git
+        url: https://gitlab.matrix.org/matrix-org/olm.git
+  - config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DBUILD_TEST_APPLICATION=OFF
+      - -DQTKEYCHAIN_STATIC=ON
+    buildsystem: cmake-ninja
+    name: QtKeychain
+    sources:
+      - commit: 815fe610353ff8ad7e2f1121c368a74df8db5eb7
+        tag: v0.12.0
+        type: git
+        url: https://github.com/frankosterfeld/qtkeychain.git
+  - config-opts:
+      - -DJSON_BuildTests=OFF
+    buildsystem: cmake
+    name: nlohmann
+    sources:
+      - sha256: d51a3a8d3efbb1139d7608e28782ea9efea7e7933157e8ff8184901efd8ee760
+        type: archive
+        url: https://github.com/nlohmann/json/archive/v3.7.0.tar.gz
+  - build-commands:
+      - ./bootstrap.sh --with-libraries=thread,system,iostreams --prefix=/app
+      - ./b2 -d0 variant=release link=static threading=multi --layout=system
+      - ./b2 -d0 install
+    buildsystem: simple
+    name: boost
+    sources:
+      - sha256: 59c9b274bc451cf91a9ba1dd2c7fdcaf5d60b1b3aa83f2c9fa143417cc660722
+        type: archive
+        url: https://sourceforge.net/projects/boost/files/boost/1.72.0/boost_1_72_0.tar.bz2
+  - buildsystem: meson
+    name: gstreamer
+    sources:
+      - commit: a42fe476d3ee5576921f67a331464065ec33b9a4
+        tag: 1.18.3
+        type: git
+        url: https://gitlab.freedesktop.org/gstreamer/gstreamer.git
+  - config-opts:
+      - -Dcompositor=enabled
+      - -Dgl=enabled
+    buildsystem: meson
+    name: gstreamer-plugins-base
+    sources:
+      - commit: 2cc319ee13f6b72df3d432b7c75aca81feb260e5
+        tag: 1.18.3
+        type: git
+        url: https://gitlab.freedesktop.org/gstreamer/gst-plugins-base.git
+  - config-opts:
+      - -Dpulse=enabled
+      - -Dqt5=enabled
+      - -Drtp=enabled
+      - -Drtpmanager=enabled
+      - -Dvpx=enabled
+    buildsystem: meson
+    name: gstreamer-plugins-good
+    sources:
+      - commit: e816c6cd73c9e0676828c9e227a049ebad3d019f
+        tag: 1.18.3
+        type: git
+        url: https://gitlab.freedesktop.org/gstreamer/gst-plugins-good.git
+  - config-opts:
+      - -Ddtls=enabled
+      - -Dgl=enabled
+      - -Dopenh264=enabled
+      - -Dopus=enabled
+      - -Dsrtp=enabled
+      - -Dwebrtc=enabled
+      - -Dflite=disabled
+    buildsystem: meson
+    name: gstreamer-plugins-bad
+    sources:
+      - commit: 382e373d9be363f1e21b12990a4d12f1ecb6df41
+        tag: 1.18.3
+        type: git
+        url: https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad.git
+  - config-opts:
+      - -DBUILD_LIB_TESTS=OFF
+      - -DBUILD_LIB_EXAMPLES=OFF
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DBUILD_SHARED_LIBS=OFF
+    buildsystem: cmake-ninja
+    name: mtxclient
+    sources:
+      - commit: 7194b4f058406b1c10d3741d83abcf2d8963d849
+        type: git
+        url: https://github.com/Nheko-Reborn/mtxclient.git
+  - config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DTWEENY_BUILD_DOCUMENTATION=OFF
+      - -DTWEENY_BUILD_EXAMPLES=OFF
+    buildsystem: cmake-ninja
+    name: tweeny
+    sources:
+      - sha256: 482857256a7235646004682912badb6521d361ed6987c8ebdae7986bf64ce694
+        type: archive
+        url: https://github.com/mobius3/tweeny/archive/43f4130f7e4a67c19d870b60864bc2862c19b81f.tar.gz
+  - config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DLMDBXX_INCLUDE_DIR=.deps/lmdbxx
+      - -DCOMPILE_QML=ON
+    buildsystem: cmake-ninja
+    name: nheko
+    sources:
+      - path: .
+        type: dir
+        skip:
+          - build-flatpak
+      - dest: .deps/lmdbxx
+        sha256: 5e12eb3aefe9050068af7df2c663edabc977ef34c9e7ba7b9d2c43e0ad47d8df
+        type: archive
+        url: https://github.com/hoytech/lmdbxx/archive/1.0.0.tar.gz
