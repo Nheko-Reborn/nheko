@@ -1246,7 +1246,11 @@ TimelineModel::cacheMedia(QString eventId, std::function<void(const QString)> ca
         QDir().mkpath(filename.path());
 
         if (filename.isReadable()) {
+#if defined(Q_OS_WIN)
                 emit mediaCached(mxcUrl, filename.filePath());
+#else
+                emit mediaCached(mxcUrl, "file://" + filename.filePath());
+#endif
                 if (callback) {
                         callback(filename.filePath());
                 }
@@ -1288,7 +1292,11 @@ TimelineModel::cacheMedia(QString eventId, std::function<void(const QString)> ca
                           nhlog::ui()->warn("Error while saving file to: {}", e.what());
                   }
 
+#if defined(Q_OS_WIN)
                   emit mediaCached(mxcUrl, filename.filePath());
+#else
+                  emit mediaCached(mxcUrl, "file://" + filename.filePath());
+#endif
           });
 }
 
