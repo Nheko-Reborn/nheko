@@ -48,6 +48,12 @@ PreviewUploadOverlay::PreviewUploadOverlay(QWidget *parent)
                 emit confirmUpload(data_, mediaType_, fileName_.text());
                 close();
         });
+
+        connect(&fileName_, &QLineEdit::returnPressed, this, [this]() {
+                emit confirmUpload(data_, mediaType_, fileName_.text());
+                close();
+        });
+
         connect(&cancel_, &QPushButton::clicked, this, [this]() {
                 emit aborted();
                 close();
