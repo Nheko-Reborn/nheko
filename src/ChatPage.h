@@ -141,7 +141,7 @@ signals:
         void trySyncCb();
         void tryDelayedSyncCb();
         void tryInitialSyncCb();
-        void newSyncResponse(const mtx::responses::Sync &res);
+        void newSyncResponse(const mtx::responses::Sync &res, const std::string &prev_batch_token);
         void leftRoom(const QString &room_id);
         void newRoom(const QString &room_id);
 
@@ -194,7 +194,8 @@ private slots:
         void changeRoom(const QString &room_id);
         void dropToLoginPage(const QString &msg);
 
-        void handleSyncResponse(const mtx::responses::Sync &res);
+        void handleSyncResponse(const mtx::responses::Sync &res,
+                                const std::string &prev_batch_token);
 
 private:
         static ChatPage *instance_;

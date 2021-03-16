@@ -805,8 +805,17 @@ ChatPage::startInitialSync()
 }
 
 void
-ChatPage::handleSyncResponse(const mtx::responses::Sync &res)
+ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string &prev_batch_token)
 {
+        try {
+                if (prev_batch_token != cache::nextBatchToken()) {
+                        nhlog::net()->warn("Duplicate sync, dropping");
+                        return;
+                }
+        } catch (const lmdb::error &e) {
+                nhlog::db()->warn("Logged out in the mean time, dropping sync");
+        }
+
         nhlog::net()->debug("sync completed: {}", res.next_batch);
 
         // Ensure that we have enough one-time keys available.
@@ -861,15 +870,6 @@ ChatPage::trySync()
         http::client()->sync(
           opts,
           [this, since = opts.since](const mtx::responses::Sync &res, mtx::http::RequestErr err) {
-                  try {
-                          if (since != cache::nextBatchToken()) {
-                                  nhlog::net()->warn("Duplicate sync, dropping");
-                                  return;
-                          }
-                  } catch (const lmdb::error &e) {
-                          nhlog::db()->warn("Logged out in the mean time, dropping sync");
-                  }
-
                   if (err) {
                           const auto error      = QString::fromStdString(err->matrix_error.error);
                           const auto msg        = tr("Please try to login again: %1").arg(error);
@@ -895,7 +895,7 @@ ChatPage::trySync()
                           return;
                   }
 
-                  emit newSyncResponse(res);
+                  emit newSyncResponse(res, since);
           });
 }
 
