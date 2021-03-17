@@ -381,7 +381,7 @@ private:
 
                 std::visit(
                   [&txn, &statesdb](auto e) {
-                          if constexpr (isStateEvent(e))
+                          if (isStateEvent(e) && e.type != EventType::Unsupported)
                                   statesdb.put(txn, to_string(e.type), json(e).dump());
                   },
                   event);
