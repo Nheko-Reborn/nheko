@@ -60,11 +60,23 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
             &notification.event) != nullptr;
         const auto isReply = utils::isReply(notification.event);
 
+        auto formatNotification = [this, notification, sender] {
+                const auto template_ = getMessageTemplate(notification);
+                if (std::holds_alternative<
+                      mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                      notification.event)) {
+                        return template_;
+                }
+
+                return template_.arg(
+                  utils::stripReplyFallbacks(notification.event, {}, {}).quoted_body);
+        };
+
         const auto line1 =
           (room_name == sender) ? sender : QString("%1 - %2").arg(sender).arg(room_name);
         const auto line2 = (isEncrypted ? (isReply ? tr("%1 replied with an encrypted message")
                                                    : tr("%1 sent an encrypted message"))
-                                        : formatNotification(notification));
+                                        : formatNotification());
 
         auto iconPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
                         room_name + "-room-avatar.png";
@@ -100,19 +112,3 @@ void NotificationsManager::notificationClosed(uint, uint) {}
 void
 NotificationsManager::removeNotification(const QString &, const QString &)
 {}
-
-QString
-NotificationsManager::formatNotification(const mtx::responses::Notification &notification)
-{
-        const auto sender =
-          cache::displayName(QString::fromStdString(notification.room_id),
-                             QString::fromStdString(mtx::accessors::sender(notification.event)));
-
-        const auto template_ = getMessageTemplate(notification);
-        if (std::holds_alternative<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
-              notification.event)) {
-                return template_;
-        }
-
-        return template_.arg(utils::stripReplyFallbacks(notification.event, {}, {}).quoted_body);
-}

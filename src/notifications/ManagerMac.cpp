@@ -16,8 +16,8 @@
 
 #include <variant>
 
-QString
-NotificationsManager::formatNotification(const mtx::responses::Notification &notification)
+static QString
+formatNotification(const mtx::responses::Notification &notification)
 {
         return utils::stripReplyFallbacks(notification.event, {}, {}).quoted_body;
 }
