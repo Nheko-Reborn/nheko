@@ -128,10 +128,11 @@ MxcImageProvider::download(const QString &id,
                                         f.open(QIODevice::ReadOnly);
 
                                         QByteArray fileData = f.readAll();
-                                        auto temp =
+                                        auto tempData =
                                           mtx::crypto::to_string(mtx::crypto::decrypt_file(
                                             fileData.toStdString(), encryptionInfo.value()));
-                                        auto data    = QByteArray(temp.data(), (int)temp.size());
+                                        auto data =
+                                          QByteArray(tempData.data(), (int)tempData.size());
                                         QImage image = utils::readImage(data);
                                         image.setText("mxc url", "mxc://" + id);
                                         if (!image.isNull()) {
@@ -165,19 +166,21 @@ MxcImageProvider::download(const QString &id,
                                           return;
                                   }
 
-                                  auto temp = res;
+                                  auto tempData = res;
                                   QFile f(fileInfo.absoluteFilePath());
                                   if (!f.open(QIODevice::Truncate | QIODevice::WriteOnly)) {
                                           then(id, QSize(), {}, "");
                                           return;
                                   }
-                                  f.write(temp.data(), temp.size());
+                                  f.write(tempData.data(), tempData.size());
                                   f.close();
 
                                   if (encryptionInfo) {
-                                          temp = mtx::crypto::to_string(mtx::crypto::decrypt_file(
-                                            temp, encryptionInfo.value()));
-                                          auto data    = QByteArray(temp.data(), (int)temp.size());
+                                          tempData =
+                                            mtx::crypto::to_string(mtx::crypto::decrypt_file(
+                                              tempData, encryptionInfo.value()));
+                                          auto data =
+                                            QByteArray(tempData.data(), (int)tempData.size());
                                           QImage image = utils::readImage(data);
                                           image.setText("original filename",
                                                         QString::fromStdString(originalFilename));
