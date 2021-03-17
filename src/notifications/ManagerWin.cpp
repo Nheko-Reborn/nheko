@@ -108,20 +108,11 @@ NotificationsManager::formatNotification(const mtx::responses::Notification &not
           cache::displayName(QString::fromStdString(notification.room_id),
                              QString::fromStdString(mtx::accessors::sender(notification.event)));
 
-        const auto messageLeadIn =
-          ((mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
-             ? "* " + sender + " "
-             : sender +
-                 (utils::isReply(notification.event)
-                    ? tr(" replied",
-                         "Used to denote that this message is a reply to another "
-                         "message. Displayed as 'foo replied: message'.")
-                    : "") +
-                 ": ");
+        const auto template_ = getMessageTemplate(notification);
+        if (std::holds_alternative<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+              notification.event)) {
+                return template_;
+        }
 
-        return QTextDocumentFragment::fromHtml(
-                 mtx::accessors::formattedBodyWithFallback(notification.event)
-                   .replace(QRegularExpression("<mx-reply>.+</mx-reply>"), ""))
-          .toPlainText()
-          .prepend(messageLeadIn);
+        return template_.arg(utils::stripReplyFallbacks(notification.event, {}, {}).quoted_body);
 }

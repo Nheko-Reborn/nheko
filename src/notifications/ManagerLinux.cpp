@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QImage>
 #include <QRegularExpression>
+#include <QStringBuilder>
 #include <QTextDocumentFragment>
 
 #include <functional>
@@ -17,6 +18,7 @@
 
 #include "Cache.h"
 #include "EventAccessors.h"
+#include "MxcImageProvider.h"
 #include "Utils.h"
 
 NotificationsManager::NotificationsManager(QObject *parent)
@@ -59,6 +61,12 @@ NotificationsManager::NotificationsManager(QObject *parent)
                                               "NotificationReplied",
                                               this,
                                               SLOT(notificationReplied(uint, QString)));
+
+        connect(this,
+                &NotificationsManager::systemPostNotificationCb,
+                this,
+                &NotificationsManager::systemPostNotification,
+                Qt::QueuedConnection);
 }
 
 void
@@ -69,9 +77,61 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         const auto event_id = QString::fromStdString(mtx::accessors::event_id(notification.event));
         const auto room_name =
           QString::fromStdString(cache::singleRoomInfo(notification.room_id).name);
-        const auto text = formatNotification(notification);
 
-        systemPostNotification(room_id, event_id, room_name, text, icon);
+        auto postNotif = [this, room_id, event_id, room_name, icon](QString text) {
+                emit systemPostNotificationCb(room_id, event_id, room_name, text, icon);
+        };
+
+        QString template_ = getMessageTemplate(notification);
+        // TODO: decrypt this message if the decryption setting is on in the UserSettings
+        if (std::holds_alternative<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+              notification.event)) {
+                postNotif(template_);
+                return;
+        }
+
+        if (hasMarkup_) {
+                if (hasImages_ && mtx::accessors::msg_type(notification.event) ==
+                                    mtx::events::MessageType::Image) {
+                        MxcImageProvider::download(
+                          QString::fromStdString(mtx::accessors::url(notification.event))
+                            .remove("mxc://"),
+                          QSize(200, 80),
+                          [postNotif, notification, template_](
+                            QString, QSize, QImage, QString imgPath) {
+                                  if (imgPath.isEmpty())
+                                          postNotif(template_
+                                                      .arg(utils::stripReplyFallbacks(
+                                                             notification.event, {}, {})
+                                                             .quoted_formatted_body)
+                                                      .replace("<em>", "<i>")
+                                                      .replace("</em>", "</i>")
+                                                      .replace("<strong>", "<b>")
+                                                      .replace("</strong>", "</b>"));
+                                  else
+                                          postNotif(template_.arg(
+                                            QStringLiteral("<br><img src=\"file:///") % imgPath %
+                                            "\" alt=\"" %
+                                            mtx::accessors::formattedBodyWithFallback(
+                                              notification.event) %
+                                            "\">"));
+                          });
+                        return;
+                }
+
+                postNotif(
+                  template_
+                    .arg(
+                      utils::stripReplyFallbacks(notification.event, {}, {}).quoted_formatted_body)
+                    .replace("<em>", "<i>")
+                    .replace("</em>", "</i>")
+                    .replace("<strong>", "<b>")
+                    .replace("</strong>", "</b>"));
+                return;
+        }
+
+        postNotif(
+          template_.arg(utils::stripReplyFallbacks(notification.event, {}, {}).quoted_body));
 }
 
 /**
@@ -180,68 +240,6 @@ NotificationsManager::notificationClosed(uint id, uint reason)
 {
         Q_UNUSED(reason);
         notificationIds.remove(id);
-}
-
-/**
- * @param text This should be an HTML-formatted string.
- *
- * If D-Bus says that notifications can have body markup, this function will
- * automatically format the notification to follow the supported HTML subset
- * specified at https://www.freedesktop.org/wiki/Specifications/StatusNotifierItem/Markup/
- */
-QString
-NotificationsManager::formatNotification(const mtx::responses::Notification &notification)
-{
-        const auto sender =
-          cache::displayName(QString::fromStdString(notification.room_id),
-                             QString::fromStdString(mtx::accessors::sender(notification.event)));
-
-        // TODO: decrypt this message if the decryption setting is on in the UserSettings
-        if (auto msg = std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
-              &notification.event);
-            msg != nullptr)
-                return tr("%1 sent an encrypted message").arg(sender);
-
-        const auto messageLeadIn =
-          ((mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
-             ? "* " + sender + " "
-             : sender +
-                 (utils::isReply(notification.event)
-                    ? tr(" replied",
-                         "Used to denote that this message is a reply to another "
-                         "message. Displayed as 'foo replied: message'.")
-                    : "") +
-                 ": ");
-
-        if (hasMarkup_) {
-                if (hasImages_ && mtx::accessors::msg_type(notification.event) ==
-                                    mtx::events::MessageType::Image) {
-                        QString imgPath = cacheImage(notification.event);
-                        if (imgPath.isNull())
-                                return mtx::accessors::formattedBodyWithFallback(notification.event)
-                                  .prepend(messageLeadIn);
-                        else
-                                return QString("<img src=\"file:///" + imgPath + "\" alt=\"" +
-                                               mtx::accessors::formattedBodyWithFallback(
-                                                 notification.event) +
-                                               "\">")
-                                  .prepend(messageLeadIn);
-                }
-
-                return mtx::accessors::formattedBodyWithFallback(notification.event)
-                  .prepend(messageLeadIn)
-                  .replace("<em>", "<i>")
-                  .replace("</em>", "</i>")
-                  .replace("<strong>", "<b>")
-                  .replace("</strong>", "</b>")
-                  .replace(QRegularExpression("(<mx-reply>.+\\<\\/mx-reply\\>)"), "");
-        }
-
-        return QTextDocumentFragment::fromHtml(
-                 mtx::accessors::formattedBodyWithFallback(notification.event)
-                   .replace(QRegularExpression("<mx-reply>.+</mx-reply>"), ""))
-          .toPlainText()
-          .prepend(messageLeadIn);
 }
 
 /**

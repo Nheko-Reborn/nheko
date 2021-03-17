@@ -9,10 +9,10 @@
 #include <mtxclient/crypto/client.hpp>
 
 #include <QByteArray>
+#include <QDir>
 #include <QFileInfo>
 #include <QStandardPaths>
 
-#include "Cache.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "Utils.h"
@@ -60,12 +60,13 @@ MxcImageProvider::download(const QString &id,
                 QString fileName =
                   QString("%1_%2x%3_crop")
                     .arg(QString::fromUtf8(id.toUtf8().toBase64(QByteArray::Base64UrlEncoding |
-                                                                QByteArray::OmitTrailingEquals)),
-                         requestedSize.width(),
-                         requestedSize.height());
+                                                                QByteArray::OmitTrailingEquals)))
+                    .arg(requestedSize.width())
+                    .arg(requestedSize.height());
                 QFileInfo fileInfo(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
                                      "/media_cache",
                                    fileName);
+                QDir().mkpath(fileInfo.absolutePath());
 
                 if (fileInfo.exists()) {
                         QImage image(fileInfo.absoluteFilePath());
@@ -102,7 +103,12 @@ MxcImageProvider::download(const QString &id,
                                     requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
                           }
                           image.setText("mxc url", "mxc://" + id);
-                          image.save(fileInfo.absoluteFilePath());
+                          if (image.save(fileInfo.absoluteFilePath(), "png"))
+                                  nhlog::ui()->debug("Wrote: {}",
+                                                     fileInfo.absoluteFilePath().toStdString());
+                          else
+                                  nhlog::ui()->debug("Failed to write: {}",
+                                                     fileInfo.absoluteFilePath().toStdString());
 
                           then(id, requestedSize, image, fileInfo.absoluteFilePath());
                   });
@@ -114,6 +120,7 @@ MxcImageProvider::download(const QString &id,
                           QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
                             "/media_cache",
                           fileName);
+                        QDir().mkpath(fileInfo.absolutePath());
 
                         if (fileInfo.exists()) {
                                 if (encryptionInfo) {
@@ -145,7 +152,6 @@ MxcImageProvider::download(const QString &id,
                                         }
                                 }
                         }
-                        auto data = cache::image(id);
 
                         http::client()->download(
                           "mxc://" + id.toStdString(),

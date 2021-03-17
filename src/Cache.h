@@ -6,8 +6,6 @@
 #pragma once
 
 #include <QDateTime>
-#include <QDir>
-#include <QImage>
 #include <QString>
 
 #if __has_include(<lmdbxx/lmdb++.h>)
@@ -135,12 +133,6 @@ hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes,
                     const std::string &room_id,
                     const std::string &user_id);
 
-//! Retrieves the saved room avatar.
-QImage
-getRoomAvatar(const QString &id);
-QImage
-getRoomAvatar(const std::string &id);
-
 //! Adds a user to the read list for the given event.
 //!
 //! There should be only one user id present in a receipt list per room.
@@ -161,20 +153,6 @@ std::optional<uint64_t>
 getEventIndex(const std::string &room_id, std::string_view event_id);
 std::optional<std::pair<uint64_t, std::string>>
 lastInvisibleEventAfter(const std::string &room_id, std::string_view event_id);
-
-QByteArray
-image(const QString &url);
-QByteArray
-image(lmdb::txn &txn, const std::string &url);
-inline QByteArray
-image(const std::string &url)
-{
-        return image(QString::fromStdString(url));
-}
-void
-saveImage(const std::string &url, const std::string &data);
-void
-saveImage(const QString &url, const QByteArray &data);
 
 RoomInfo
 singleRoomInfo(const std::string &room_id);

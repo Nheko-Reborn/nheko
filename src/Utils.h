@@ -40,6 +40,9 @@ namespace utils {
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
+RelatedInfo
+stripReplyFallbacks(const TimelineEvent &event, std::string id, QString room_id_);
+
 bool
 codepointIsEmoji(uint code);
 

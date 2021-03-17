@@ -43,13 +43,14 @@ public:
 signals:
         void notificationClicked(const QString roomId, const QString eventId);
         void sendNotificationReply(const QString roomId, const QString eventId, const QString body);
+        void systemPostNotificationCb(const QString &room_id,
+                                      const QString &event_id,
+                                      const QString &roomName,
+                                      const QString &text,
+                                      const QImage &icon);
 
 public slots:
         void removeNotification(const QString &roomId, const QString &eventId);
-
-private:
-        QString cacheImage(const mtx::events::collections::TimelineEvents &event);
-        QString formatNotification(const mtx::responses::Notification &notification);
 
 #if defined(NHEKO_DBUS_SYS)
 public:
@@ -95,6 +96,9 @@ private slots:
         void actionInvoked(uint id, QString action);
         void notificationClosed(uint id, uint reason);
         void notificationReplied(uint id, QString reply);
+
+private:
+        QString getMessageTemplate(const mtx::responses::Notification &notification);
 };
 
 #if defined(NHEKO_DBUS_SYS)

@@ -870,30 +870,7 @@ TimelineModel::relatedInfo(QString id)
         if (!event)
                 return {};
 
-        RelatedInfo related   = {};
-        related.quoted_user   = QString::fromStdString(mtx::accessors::sender(*event));
-        related.related_event = id.toStdString();
-        related.type          = mtx::accessors::msg_type(*event);
-
-        // get body, strip reply fallback, then transform the event to text, if it is a media event
-        // etc
-        related.quoted_body = QString::fromStdString(mtx::accessors::body(*event));
-        QRegularExpression plainQuote("^>.*?$\n?", QRegularExpression::MultilineOption);
-        while (related.quoted_body.startsWith(">"))
-                related.quoted_body.remove(plainQuote);
-        if (related.quoted_body.startsWith("\n"))
-                related.quoted_body.remove(0, 1);
-        related.quoted_body = utils::getQuoteBody(related);
-        related.quoted_body.replace("@room", QString::fromUtf8("@\u2060room"));
-
-        // get quoted body and strip reply fallback
-        related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(*event);
-        related.quoted_formatted_body.remove(QRegularExpression(
-          "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption));
-        related.quoted_formatted_body.replace("@room", "@\u2060aroom");
-        related.room = room_id_;
-
-        return related;
+        return utils::stripReplyFallbacks(*event, id.toStdString(), room_id_);
 }
 
 void

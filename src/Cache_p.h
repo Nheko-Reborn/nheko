@@ -118,10 +118,6 @@ public:
                                  const std::string &room_id,
                                  const std::string &user_id);
 
-        //! Retrieves the saved room avatar.
-        QImage getRoomAvatar(const QString &id);
-        QImage getRoomAvatar(const std::string &id);
-
         //! Adds a user to the read list for the given event.
         //!
         //! There should be only one user id present in a receipt list per room.
@@ -136,11 +132,6 @@ public:
         //! Returns a map of user ids and the time of the read receipt in milliseconds.
         using UserReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
         UserReceipts readReceipts(const QString &event_id, const QString &room_id);
-
-        QByteArray image(const QString &url);
-        QByteArray image(lmdb::txn &txn, const std::string &url);
-        void saveImage(const std::string &url, const std::string &data);
-        void saveImage(const QString &url, const QByteArray &data);
 
         RoomInfo singleRoomInfo(const std::string &room_id);
         std::vector<std::string> roomsWithStateUpdates(const mtx::responses::Sync &res);
@@ -528,7 +519,6 @@ private:
         lmdb::dbi syncStateDb_;
         lmdb::dbi roomsDb_;
         lmdb::dbi invitesDb_;
-        lmdb::dbi mediaDb_;
         lmdb::dbi readReceiptsDb_;
         lmdb::dbi notificationsDb_;
 
