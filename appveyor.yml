@@ -15,7 +15,7 @@ environment:
 
 
 cache:
-  - c:\h\
+  - c:\hunter\
   - build\_deps -> appveyor.yml
 
 build:
@@ -47,7 +47,7 @@ build_script:
 
     # Build nheko
     - cmake -G "Visual Studio 16 2019" -A x64 -H. -Bbuild
-      -DHUNTER_ROOT="C:\h"
+      -DHUNTER_ROOT="C:\hunter"
       -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON
       -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
 
