@@ -12,6 +12,9 @@
 
 #include <functional>
 
+#include <mtx/responses/notifications.hpp>
+
+#include "Cache.h"
 #include "EventAccessors.h"
 #include "Utils.h"
 
@@ -22,6 +25,18 @@ NotificationsManager::NotificationsManager(QObject *parent)
          "org.freedesktop.Notifications",
          QDBusConnection::sessionBus(),
          this)
+  , hasMarkup_{std::invoke([this]() -> bool {
+          for (auto x : dbus.call("GetCapabilities").arguments())
+                  if (x.toStringList().contains("body-markup"))
+                          return true;
+          return false;
+  })}
+  , hasImages_{std::invoke([this]() -> bool {
+          for (auto x : dbus.call("GetCapabilities").arguments())
+                  if (x.toStringList().contains("body-images"))
+                          return true;
+          return false;
+  })}
 {
         qDBusRegisterMetaType<QImage>();
 
@@ -45,21 +60,32 @@ NotificationsManager::NotificationsManager(QObject *parent)
                                               SLOT(notificationReplied(uint, QString)));
 }
 
-// SPDX-FileCopyrightText: 2012 Roland Hieber <rohieb@rohieb.name>
-// SPDX-FileCopyrightText: 2021 Nheko Contributors
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
+void
+NotificationsManager::postNotification(const mtx::responses::Notification &notification,
+                                       const QImage &icon)
+{
+        const auto room_id  = QString::fromStdString(notification.room_id);
+        const auto event_id = QString::fromStdString(mtx::accessors::event_id(notification.event));
+        const auto room_name =
+          QString::fromStdString(cache::singleRoomInfo(notification.room_id).name);
+        const auto text = formatNotification(notification);
 
+        systemPostNotification(room_id, event_id, room_name, text, icon);
+}
+
+/**
+ * This function is based on code from
+ * https://github.com/rohieb/StratumsphereTrayIcon
+ * Copyright (C) 2012 Roland Hieber <rohieb@rohieb.name>
+ * Licensed under the GNU General Public License, version 3
+ */
 void
 NotificationsManager::systemPostNotification(const QString &room_id,
                                              const QString &event_id,
                                              const QString &roomName,
-                                             const QString &sender,
                                              const QString &text,
                                              const QImage &icon)
 {
-        Q_UNUSED(sender)
-
         QVariantMap hints;
         hints["image-data"] = icon;
         hints["sound-name"] = "message-new-instant";
@@ -163,27 +189,46 @@ NotificationsManager::notificationClosed(uint id, uint reason)
  * specified at https://www.freedesktop.org/wiki/Specifications/StatusNotifierItem/Markup/
  */
 QString
-NotificationsManager::formatNotification(const mtx::events::collections::TimelineEvents &e)
+NotificationsManager::formatNotification(const mtx::responses::Notification &notification)
 {
-        static const auto hasMarkup = std::invoke([this]() -> bool {
-                for (auto x : dbus.call("GetCapabilities").arguments())
-                        if (x.toStringList().contains("body-markup"))
-                                return true;
-                return false;
-        });
+        const auto sender =
+          cache::displayName(QString::fromStdString(notification.room_id),
+                             QString::fromStdString(mtx::accessors::sender(notification.event)));
+        const auto messageLeadIn =
+          ((mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
+             ? "* " + sender + " "
+             : sender +
+                 (utils::isReply(notification.event)
+                    ? tr(" replied",
+                         "Used to denote that this message is a reply to another "
+                         "message. Displayed as 'foo replied: message'.")
+                    : "") +
+                 ": ");
 
-        if (hasMarkup)
-                return mtx::accessors::formattedBodyWithFallback(e)
+        if (hasMarkup_) {
+                if (hasImages_ &&
+                    mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image)
+                        return QString(
+                                 "<img src=\"file:///" + cacheImage(notification.event) +
+                                 "\" alt=\"" +
+                                 mtx::accessors::formattedBodyWithFallback(notification.event) +
+                                 "\">")
+                          .prepend(messageLeadIn);
+
+                return mtx::accessors::formattedBodyWithFallback(notification.event)
+                  .prepend(messageLeadIn)
                   .replace("<em>", "<i>")
                   .replace("</em>", "</i>")
                   .replace("<strong>", "<b>")
                   .replace("</strong>", "</b>")
                   .replace(QRegularExpression("(<mx-reply>.+\\<\\/mx-reply\\>)"), "");
+        }
 
         return QTextDocumentFragment::fromHtml(
-                 mtx::accessors::formattedBodyWithFallback(e).replace(
-                   QRegularExpression("(<mx-reply>.+\\<\\/mx-reply\\>)"), ""))
-          .toPlainText();
+                 mtx::accessors::formattedBodyWithFallback(notification.event)
+                   .replace(QRegularExpression("(<mx-reply>.+\\<\\/mx-reply\\>)"), ""))
+          .toPlainText()
+          .prepend(messageLeadIn);
 }
 
 /**

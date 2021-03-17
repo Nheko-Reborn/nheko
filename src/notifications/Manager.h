@@ -10,7 +10,12 @@
 
 #include <mtx/responses/notifications.hpp>
 
+// convenience definition
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD) || defined(Q_OS_HAIKU)
+#define NHEKO_DBUS_SYS
+#endif
+
+#if defined(NHEKO_DBUS_SYS)
 #include <QtDBus/QDBusArgument>
 #include <QtDBus/QDBusInterface>
 #endif
@@ -43,25 +48,46 @@ public slots:
         void removeNotification(const QString &roomId, const QString &eventId);
 
 private:
-        void systemPostNotification(const QString &room_id,
-                                    const QString &event_id,
-                                    const QString &roomName,
-                                    const QString &sender,
-                                    const QString &text,
-                                    const QImage &icon);
+        QString cacheImage(const mtx::events::collections::TimelineEvents &event);
+        QString formatNotification(const mtx::responses::Notification &notification);
 
-        QString formatNotification(const mtx::events::collections::TimelineEvents &e);
-
-#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD) || defined(Q_OS_HAIKU)
+#if defined(NHEKO_DBUS_SYS)
 public:
         void closeNotifications(QString roomId);
 
 private:
         QDBusInterface dbus;
+
+        void systemPostNotification(const QString &room_id,
+                                    const QString &event_id,
+                                    const QString &roomName,
+                                    const QString &text,
+                                    const QImage &icon);
         void closeNotification(uint id);
 
         // notification ID to (room ID, event ID)
         QMap<uint, roomEventId> notificationIds;
+
+        const bool hasMarkup_;
+        const bool hasImages_;
+#endif
+
+#if defined(Q_OS_MACOS)
+private:
+        // Objective-C(++) doesn't like to do lots of regular C++, so the actual notification
+        // posting is split out
+        void objCxxPostNotification(const QString &title,
+                                    const QString &subtitle,
+                                    const QString &informativeText,
+                                    const QImage *bodyImage);
+#endif
+
+#if defined(Q_OS_WINDOWS)
+private:
+        void systemPostNotification(const QString &roomName,
+                                    const QString &sender,
+                                    const QString &text,
+                                    const QImage &icon);
 #endif
 
         // these slots are platform specific (D-Bus only)
@@ -72,7 +98,7 @@ private slots:
         void notificationReplied(uint id, QString reply);
 };
 
-#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD) || defined(Q_OS_HAIKU)
+#if defined(NHEKO_DBUS_SYS)
 QDBusArgument &
 operator<<(QDBusArgument &arg, const QImage &image);
 const QDBusArgument &

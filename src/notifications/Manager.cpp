@@ -2,32 +2,76 @@
 
 #include "Cache.h"
 #include "EventAccessors.h"
+#include "Logging.h"
+#include "MatrixClient.h"
 #include "Utils.h"
-#include <mtx/responses/notifications.hpp>
 
-void
-NotificationsManager::postNotification(const mtx::responses::Notification &notification,
-                                       const QImage &icon)
+#include <QFile>
+#include <QImage>
+#include <QStandardPaths>
+
+#include <mtxclient/crypto/client.hpp>
+
+QString
+NotificationsManager::cacheImage(const mtx::events::collections::TimelineEvents &event)
 {
-        const auto room_id  = QString::fromStdString(notification.room_id);
-        const auto event_id = QString::fromStdString(mtx::accessors::event_id(notification.event));
-        const auto room_name =
-          QString::fromStdString(cache::singleRoomInfo(notification.room_id).name);
-        const auto sender = cache::displayName(
-          room_id, QString::fromStdString(mtx::accessors::sender(notification.event)));
+        const auto url      = mtx::accessors::url(event);
+        auto encryptionInfo = mtx::accessors::file(event);
 
-        const QString reply = (utils::isReply(notification.event)
-                                 ? tr(" replied",
-                                      "Used to denote that this message is a reply to another "
-                                      "message. Displayed as 'foo replied: message'.")
-                                 : "");
+        auto filename = QString::fromStdString(mtx::accessors::body(event));
+        QString path{QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/" +
+                     filename};
 
-        // the "replied" is only added if this message is not an emote message
-        QString text =
-          ((mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
-             ? "* " + sender + " "
-             : sender + reply + ": ") +
-          formatNotification(notification.event);
+        http::client()->download(
+          url,
+          [path, url, encryptionInfo](const std::string &data,
+                                      const std::string &,
+                                      const std::string &,
+                                      mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("failed to retrieve image {}: {} {}",
+                                             url,
+                                             err->matrix_error.error,
+                                             static_cast<int>(err->status_code));
+                          return;
+                  }
 
-        systemPostNotification(room_id, event_id, room_name, sender, text, icon);
+                  try {
+                          auto temp = data;
+                          if (encryptionInfo)
+                                  temp = mtx::crypto::to_string(
+                                    mtx::crypto::decrypt_file(temp, encryptionInfo.value()));
+
+                          QFile file{path};
+
+                          if (!file.open(QIODevice::WriteOnly))
+                                  return;
+
+                          // delete any existing file content
+                          file.resize(0);
+                          file.write(QByteArray(temp.data(), (int)temp.size()));
+
+                          // resize the image (really inefficient, I know, but I can't find any
+                          // better way right off
+                          QImage img{path};
+
+                          // delete existing contents
+                          file.resize(0);
+
+                          // make sure to save as PNG (because Plasma doesn't do JPEG in
+                          // notifications)
+                          //                          if (!file.fileName().endsWith(".png"))
+                          //                                  file.rename(file.fileName() + ".png");
+
+                          img.scaled(200, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation)
+                            .save(&file);
+                          file.close();
+
+                          return;
+                  } catch (const std::exception &e) {
+                          nhlog::ui()->warn("Error while caching file to: {}", e.what());
+                  }
+          });
+
+        return path.toHtmlEscaped();
 }

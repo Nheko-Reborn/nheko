@@ -1,7 +1,10 @@
 #include "notifications/Manager.h"
 
-#include <Foundation/Foundation.h>
+#import <Foundation/Foundation.h>
+#import <AppKit/NSImage.h>
+
 #include <QtMac>
+#include <QImage>
 
 @interface NSUserNotification (CFIPrivate)
 - (void)set_identityImage:(NSImage *)image;
@@ -13,23 +16,21 @@ NotificationsManager::NotificationsManager(QObject *parent): QObject(parent)
 }
 
 void
-NotificationsManager::systemPostNotification(const QString &room_id,
-                                             const QString &event_id,
-                                             const QString &roomName,
-                                             const QString &sender,
-                                             const QString &text,
-                                             const QImage &icon)
+NotificationsManager::objCxxPostNotification(const QString &title,
+                                             const QString &subtitle,
+                                             const QString &informativeText,
+                                             const QImage *bodyImage)
 {
-    Q_UNUSED(room_id)
-    Q_UNUSED(event_id)
-    Q_UNUSED(icon)
 
-    NSUserNotification * notif = [[NSUserNotification alloc] init];
+    NSUserNotification *notif = [[NSUserNotification alloc] init];
 
-    notif.title           = roomName.toNSString();
-    notif.subtitle        = QString("%1 sent a message").arg(sender).toNSString();
-    notif.informativeText = text.toNSString();
+    notif.title           = title.toNSString();
+    notif.subtitle        = subtitle.toNSString();
+    notif.informativeText = informativeText.toNSString();
     notif.soundName       = NSUserNotificationDefaultSoundName;
+
+    if (bodyImage != nullptr)
+        notif.contentImage = [[NSImage alloc] initWithCGImage: bodyImage->toCGImage() size: NSZeroSize];
 
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification: notif];
     [notif autorelease];
@@ -39,7 +40,7 @@ NotificationsManager::systemPostNotification(const QString &room_id,
 void
 NotificationsManager::actionInvoked(uint, QString)
 {
-    }
+}
 
 void
 NotificationsManager::notificationReplied(uint, QString)

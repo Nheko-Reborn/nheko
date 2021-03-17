@@ -6,8 +6,10 @@
 #include "wintoastlib.h"
 
 #include <QRegularExpression>
+#include <QStandardPaths>
 #include <QTextDocumentFragment>
 
+#include "Cache.h"
 #include "EventAccessors.h"
 #include "Utils.h"
 
@@ -42,17 +44,25 @@ NotificationsManager::NotificationsManager(QObject *parent)
 {}
 
 void
-NotificationsManager::systemPostNotification(const QString &room_id,
-                                             const QString &event_id,
-                                             const QString &roomName,
+NotificationsManager::postNotification(const mtx::responses::Notification &notification,
+                                       const QImage &icon)
+{
+        const auto room_name =
+          QString::fromStdString(cache::singleRoomInfo(notification.room_id).name);
+        const auto sender =
+          cache::displayName(QString::fromStdString(notification.room_id),
+                             QString::fromStdString(mtx::accessors::sender(notification.event)));
+        const auto text = formatNotification(notification);
+
+        systemPostNotification(room_name, sender, text, icon);
+}
+
+void
+NotificationsManager::systemPostNotification(const QString &roomName,
                                              const QString &sender,
                                              const QString &text,
                                              const QImage &icon)
 {
-        Q_UNUSED(room_id)
-        Q_UNUSED(event_id)
-        Q_UNUSED(icon)
-
         if (!isInitialized)
                 init();
 
@@ -63,8 +73,11 @@ NotificationsManager::systemPostNotification(const QString &room_id,
         else
                 templ.setTextField(sender.toStdWString(), WinToastTemplate::FirstLine);
         templ.setTextField(text.toStdWString(), WinToastTemplate::SecondLine);
-        // TODO: implement room or user avatar
-        // templ.setImagePath(L"C:/example.png");
+
+        auto iconPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + roomName +
+                        "-room-avatar.png";
+        if (icon.save(iconPath))
+                templ.setImagePath(iconPath.toStdWString());
 
         WinToast::instance()->showToast(templ, new CustomHandler());
 }
@@ -79,10 +92,17 @@ NotificationsManager::removeNotification(const QString &, const QString &)
 {}
 
 QString
-NotificationsManager::formatNotification(const mtx::events::collections::TimelineEvents &e)
+NotificationsManager::formatNotification(const mtx::responses::Notification &notification)
 {
+        const auto sender =
+          cache::displayName(QString::fromStdString(notification.room_id),
+                             QString::fromStdString(mtx::accessors::sender(notification.event)));
+
         return QTextDocumentFragment::fromHtml(
-                 mtx::accessors::formattedBodyWithFallback(e).replace(
-                   QRegularExpression("(<mx-reply>.+\\<\\/mx-reply\\>)"), ""))
-          .toPlainText();
+                 mtx::accessors::formattedBodyWithFallback(notification.event)
+                   .replace(QRegularExpression("(<mx-reply>.+\\<\\/mx-reply\\>)"), ""))
+          .toPlainText()
+          .prepend((mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
+                     ? "* " + sender + " "
+                     : "");
 }
