@@ -5,6 +5,7 @@
 
 #include <QBuffer>
 #include <QPixmapCache>
+#include <QPointer>
 #include <memory>
 #include <unordered_map>
 
