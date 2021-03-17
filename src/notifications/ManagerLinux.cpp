@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2012 Roland Hieber <rohieb@rohieb.name>
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #include "notifications/Manager.h"
 
 #include <QDBusConnection>
