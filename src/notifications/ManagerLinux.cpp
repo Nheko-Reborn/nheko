@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2012 Roland Hieber <rohieb@rohieb.name>
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #include "notifications/Manager.h"
 
 #include <QDBusConnection>
@@ -7,12 +12,19 @@
 #include <QDBusPendingReply>
 #include <QDebug>
 #include <QImage>
+#include <QRegularExpression>
+#include <QStringBuilder>
+#include <QTextDocumentFragment>
+
+#include <functional>
+#include <variant>
+
+#include <mtx/responses/notifications.hpp>
 
 #include "Cache.h"
 #include "EventAccessors.h"
-#include "MatrixClient.h"
+#include "MxcImageProvider.h"
 #include "Utils.h"
-#include <mtx/responses/notifications.hpp>
 
 NotificationsManager::NotificationsManager(QObject *parent)
   : QObject(parent)
@@ -21,6 +33,18 @@ NotificationsManager::NotificationsManager(QObject *parent)
          "org.freedesktop.Notifications",
          QDBusConnection::sessionBus(),
          this)
+  , hasMarkup_{std::invoke([this]() -> bool {
+          for (auto x : dbus.call("GetCapabilities").arguments())
+                  if (x.toStringList().contains("body-markup"))
+                          return true;
+          return false;
+  })}
+  , hasImages_{std::invoke([this]() -> bool {
+          for (auto x : dbus.call("GetCapabilities").arguments())
+                  if (x.toStringList().contains("body-images"))
+                          return true;
+          return false;
+  })}
 {
         qDBusRegisterMetaType<QImage>();
 
@@ -42,12 +66,13 @@ NotificationsManager::NotificationsManager(QObject *parent)
                                               "NotificationReplied",
                                               this,
                                               SLOT(notificationReplied(uint, QString)));
-}
 
-// SPDX-FileCopyrightText: 2012 Roland Hieber <rohieb@rohieb.name>
-// SPDX-FileCopyrightText: 2021 Nheko Contributors
-//
-// SPDX-License-Identifier: GPL-3.0-or-later
+        connect(this,
+                &NotificationsManager::systemPostNotificationCb,
+                this,
+                &NotificationsManager::systemPostNotification,
+                Qt::QueuedConnection);
+}
 
 void
 NotificationsManager::postNotification(const mtx::responses::Notification &notification,
@@ -55,25 +80,87 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
 {
         const auto room_id  = QString::fromStdString(notification.room_id);
         const auto event_id = QString::fromStdString(mtx::accessors::event_id(notification.event));
-        const auto sender   = cache::displayName(
-          room_id, QString::fromStdString(mtx::accessors::sender(notification.event)));
-        const auto text = utils::event_body(notification.event);
+        const auto room_name =
+          QString::fromStdString(cache::singleRoomInfo(notification.room_id).name);
 
+        auto postNotif = [this, room_id, event_id, room_name, icon](QString text) {
+                emit systemPostNotificationCb(room_id, event_id, room_name, text, icon);
+        };
+
+        QString template_ = getMessageTemplate(notification);
+        // TODO: decrypt this message if the decryption setting is on in the UserSettings
+        if (std::holds_alternative<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+              notification.event)) {
+                postNotif(template_);
+                return;
+        }
+
+        if (hasMarkup_) {
+                if (hasImages_ && mtx::accessors::msg_type(notification.event) ==
+                                    mtx::events::MessageType::Image) {
+                        MxcImageProvider::download(
+                          QString::fromStdString(mtx::accessors::url(notification.event))
+                            .remove("mxc://"),
+                          QSize(200, 80),
+                          [postNotif, notification, template_](
+                            QString, QSize, QImage, QString imgPath) {
+                                  if (imgPath.isEmpty())
+                                          postNotif(template_
+                                                      .arg(utils::stripReplyFallbacks(
+                                                             notification.event, {}, {})
+                                                             .quoted_formatted_body)
+                                                      .replace("<em>", "<i>")
+                                                      .replace("</em>", "</i>")
+                                                      .replace("<strong>", "<b>")
+                                                      .replace("</strong>", "</b>"));
+                                  else
+                                          postNotif(template_.arg(
+                                            QStringLiteral("<br><img src=\"file:///") % imgPath %
+                                            "\" alt=\"" %
+                                            mtx::accessors::formattedBodyWithFallback(
+                                              notification.event) %
+                                            "\">"));
+                          });
+                        return;
+                }
+
+                postNotif(
+                  template_
+                    .arg(
+                      utils::stripReplyFallbacks(notification.event, {}, {}).quoted_formatted_body)
+                    .replace("<em>", "<i>")
+                    .replace("</em>", "</i>")
+                    .replace("<strong>", "<b>")
+                    .replace("</strong>", "</b>"));
+                return;
+        }
+
+        postNotif(
+          template_.arg(utils::stripReplyFallbacks(notification.event, {}, {}).quoted_body));
+}
+
+/**
+ * This function is based on code from
+ * https://github.com/rohieb/StratumsphereTrayIcon
+ * Copyright (C) 2012 Roland Hieber <rohieb@rohieb.name>
+ * Licensed under the GNU General Public License, version 3
+ */
+void
+NotificationsManager::systemPostNotification(const QString &room_id,
+                                             const QString &event_id,
+                                             const QString &roomName,
+                                             const QString &text,
+                                             const QImage &icon)
+{
         QVariantMap hints;
         hints["image-data"] = icon;
         hints["sound-name"] = "message-new-instant";
         QList<QVariant> argumentList;
-        argumentList << "nheko"; // app_name
-        argumentList << (uint)0; // replace_id
-        argumentList << "";      // app_icon
-        argumentList << QString::fromStdString(
-          cache::singleRoomInfo(notification.room_id).name); // summary
-
-        // body
-        if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
-                argumentList << "* " + sender + " " + text;
-        else
-                argumentList << sender + ": " + text;
+        argumentList << "nheko";  // app_name
+        argumentList << (uint)0;  // replace_id
+        argumentList << "";       // app_icon
+        argumentList << roomName; // summary
+        argumentList << text;     // body
 
         // The list of actions has always the action name and then a localized version of that
         // action. Currently we just use an empty string for that.
@@ -84,10 +171,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         argumentList << hints;                          // hints
         argumentList << (int)-1;                        // timeout in ms
 
-        static QDBusInterface notifyApp("org.freedesktop.Notifications",
-                                        "/org/freedesktop/Notifications",
-                                        "org.freedesktop.Notifications");
-        QDBusPendingCall call = notifyApp.asyncCallWithArgumentList("Notify", argumentList);
+        QDBusPendingCall call = dbus.asyncCallWithArgumentList("Notify", argumentList);
         auto watcher          = new QDBusPendingCallWatcher{call, this};
         connect(
           watcher, &QDBusPendingCallWatcher::finished, this, [watcher, this, room_id, event_id]() {
@@ -103,10 +187,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
 void
 NotificationsManager::closeNotification(uint id)
 {
-        static QDBusInterface closeCall("org.freedesktop.Notifications",
-                                        "/org/freedesktop/Notifications",
-                                        "org.freedesktop.Notifications");
-        auto call    = closeCall.asyncCall("CloseNotification", (uint)id); // replace_id
+        auto call    = dbus.asyncCall("CloseNotification", (uint)id); // replace_id
         auto watcher = new QDBusPendingCallWatcher{call, this};
         connect(watcher, &QDBusPendingCallWatcher::finished, this, [watcher]() {
                 if (watcher->reply().type() == QDBusMessage::ErrorMessage) {

@@ -8,7 +8,6 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QPainter>
-#include <QSettings>
 #include <QtGlobal>
 
 #include "AvatarProvider.h"

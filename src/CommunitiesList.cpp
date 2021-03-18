@@ -6,6 +6,7 @@
 #include "Cache.h"
 #include "Logging.h"
 #include "MatrixClient.h"
+#include "MxcImageProvider.h"
 #include "Splitter.h"
 #include "UserSettingsPage.h"
 
@@ -253,37 +254,16 @@ CommunitiesList::highlightSelectedCommunity(const QString &community_id)
 void
 CommunitiesList::fetchCommunityAvatar(const QString &id, const QString &avatarUrl)
 {
-        auto savedImgData = cache::image(avatarUrl);
-        if (!savedImgData.isNull()) {
-                QPixmap pix;
-                pix.loadFromData(savedImgData);
-                emit avatarRetrieved(id, pix);
-                return;
-        }
-
-        if (avatarUrl.isEmpty())
-                return;
-
-        mtx::http::ThumbOpts opts;
-        opts.mxc_url = avatarUrl.toStdString();
-        http::client()->get_thumbnail(
-          opts, [this, opts, id](const std::string &res, mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->warn("failed to download avatar: {} - ({} {})",
-                                             opts.mxc_url,
-                                             mtx::errors::to_string(err->matrix_error.errcode),
-                                             err->matrix_error.error);
+        MxcImageProvider::download(
+          QString(avatarUrl).remove(QStringLiteral("mxc://")),
+          QSize(96, 96),
+          [this, id](QString, QSize, QImage img, QString) {
+                  if (img.isNull()) {
+                          nhlog::net()->warn("failed to download avatar: {})", id.toStdString());
                           return;
                   }
 
-                  cache::saveImage(opts.mxc_url, res);
-
-                  auto data = QByteArray(res.data(), (int)res.size());
-
-                  QPixmap pix;
-                  pix.loadFromData(data);
-
-                  emit avatarRetrieved(id, pix);
+                  emit avatarRetrieved(id, QPixmap::fromImage(img));
           });
 }
 

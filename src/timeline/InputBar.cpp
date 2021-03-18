@@ -302,7 +302,9 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown)
 
                 // NOTE(Nico): rich replies always need a formatted_body!
                 text.format = "org.matrix.custom.html";
-                if (ChatPage::instance()->userSettings()->markdown())
+                if ((ChatPage::instance()->userSettings()->markdown() &&
+                     useMarkdown == MarkdownOverride::NOT_SPECIFIED) ||
+                    useMarkdown == MarkdownOverride::ON)
                         text.formatted_body =
                           utils::getFormattedQuoteBody(related, utils::markdownToHtml(msg))
                             .toStdString();
@@ -572,7 +574,7 @@ InputBar::showPreview(const QMimeData &source, QString path, const QStringList &
                   auto mimeClass = mime.split("/")[0];
                   nhlog::ui()->debug("Mime: {}", mime.toStdString());
                   if (mimeClass == "image") {
-                          QImage img = utils::readImage(&data);
+                          QImage img = utils::readImage(data);
 
                           dimensions = img.size();
                           if (img.height() > 200 && img.width() > 360)

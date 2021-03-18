@@ -5,11 +5,15 @@
 #include "notifications/Manager.h"
 #include "wintoastlib.h"
 
+#include <QRegularExpression>
+#include <QStandardPaths>
+#include <QTextDocumentFragment>
+
+#include <variant>
+
 #include "Cache.h"
 #include "EventAccessors.h"
-#include "MatrixClient.h"
 #include "Utils.h"
-#include <mtx/responses/notifications.hpp>
 
 using namespace WinToastLib;
 
@@ -45,34 +49,57 @@ void
 NotificationsManager::postNotification(const mtx::responses::Notification &notification,
                                        const QImage &icon)
 {
-        Q_UNUSED(icon)
-
         const auto room_name =
           QString::fromStdString(cache::singleRoomInfo(notification.room_id).name);
         const auto sender =
           cache::displayName(QString::fromStdString(notification.room_id),
                              QString::fromStdString(mtx::accessors::sender(notification.event)));
-        const auto text = utils::event_body(notification.event);
 
+        const auto isEncrypted =
+          std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+            &notification.event) != nullptr;
+        const auto isReply = utils::isReply(notification.event);
+
+        auto formatNotification = [this, notification, sender] {
+                const auto template_ = getMessageTemplate(notification);
+                if (std::holds_alternative<
+                      mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                      notification.event)) {
+                        return template_;
+                }
+
+                return template_.arg(
+                  utils::stripReplyFallbacks(notification.event, {}, {}).quoted_body);
+        };
+
+        const auto line1 =
+          (room_name == sender) ? sender : QString("%1 - %2").arg(sender).arg(room_name);
+        const auto line2 = (isEncrypted ? (isReply ? tr("%1 replied with an encrypted message")
+                                                   : tr("%1 sent an encrypted message"))
+                                        : formatNotification());
+
+        auto iconPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
+                        room_name + "-room-avatar.png";
+        if (!icon.save(iconPath))
+                iconPath.clear();
+
+        systemPostNotification(line1, line2, iconPath);
+}
+
+void
+NotificationsManager::systemPostNotification(const QString &line1,
+                                             const QString &line2,
+                                             const QString &iconPath)
+{
         if (!isInitialized)
                 init();
 
         auto templ = WinToastTemplate(WinToastTemplate::ImageAndText02);
-        if (room_name != sender)
-                templ.setTextField(QString("%1 - %2").arg(sender).arg(room_name).toStdWString(),
-                                   WinToastTemplate::FirstLine);
-        else
-                templ.setTextField(QString("%1").arg(sender).toStdWString(),
-                                   WinToastTemplate::FirstLine);
-        if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
-                templ.setTextField(
-                  QString("* ").append(sender).append(" ").append(text).toStdWString(),
-                  WinToastTemplate::SecondLine);
-        else
-                templ.setTextField(QString("%1").arg(text).toStdWString(),
-                                   WinToastTemplate::SecondLine);
-        // TODO: implement room or user avatar
-        // templ.setImagePath(L"C:/example.png");
+        templ.setTextField(line1.toStdWString(), WinToastTemplate::FirstLine);
+        templ.setTextField(line2.toStdWString(), WinToastTemplate::SecondLine);
+
+        if (!iconPath.isNull())
+                templ.setImagePath(iconPath.toStdWString());
 
         WinToast::instance()->showToast(templ, new CustomHandler());
 }

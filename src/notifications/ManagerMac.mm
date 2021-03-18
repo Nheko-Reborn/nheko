@@ -1,13 +1,10 @@
 #include "notifications/Manager.h"
 
-#include <Foundation/Foundation.h>
-#include <QtMac>
+#import <Foundation/Foundation.h>
+#import <AppKit/NSImage.h>
 
-#include "Cache.h"
-#include "EventAccessors.h"
-#include "MatrixClient.h"
-#include "Utils.h"
-#include <mtx/responses/notifications.hpp>
+#include <QtMac>
+#include <QImage>
 
 @interface NSUserNotification (CFIPrivate)
 - (void)set_identityImage:(NSImage *)image;
@@ -19,23 +16,21 @@ NotificationsManager::NotificationsManager(QObject *parent): QObject(parent)
 }
 
 void
-NotificationsManager::postNotification(const mtx::responses::Notification &notification,
-                                       const QImage &icon)
+NotificationsManager::objCxxPostNotification(const QString &title,
+                                             const QString &subtitle,
+                                             const QString &informativeText,
+                                             const QImage &bodyImage)
 {
-    Q_UNUSED(icon);
 
-    const auto sender   = cache::displayName(QString::fromStdString(notification.room_id), QString::fromStdString(mtx::accessors::sender(notification.event)));
-    const auto text     = utils::event_body(notification.event);
+    NSUserNotification *notif = [[NSUserNotification alloc] init];
 
-    NSUserNotification * notif = [[NSUserNotification alloc] init];
-
-    notif.title           = QString::fromStdString(cache::singleRoomInfo(notification.room_id).name).toNSString();
-    notif.subtitle        = QString("%1 sent a message").arg(sender).toNSString();
-    if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote)
-            notif.informativeText = QString("* ").append(sender).append(" ").append(text).toNSString();
-    else
-            notif.informativeText = text.toNSString();
+    notif.title           = title.toNSString();
+    notif.subtitle        = subtitle.toNSString();
+    notif.informativeText = informativeText.toNSString();
     notif.soundName       = NSUserNotificationDefaultSoundName;
+
+    if (!bodyImage.isNull())
+        notif.contentImage = [[NSImage alloc] initWithCGImage: bodyImage.toCGImage() size: NSZeroSize];
 
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification: notif];
     [notif autorelease];
@@ -45,7 +40,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
 void
 NotificationsManager::actionInvoked(uint, QString)
 {
-    }
+}
 
 void
 NotificationsManager::notificationReplied(uint, QString)
