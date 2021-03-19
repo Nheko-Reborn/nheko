@@ -70,10 +70,6 @@ Rectangle {
             maximumLineCount: 1
             elide: Text.ElideRight
 
-            TapHandler {
-                onSingleTapped: TimelineManager.timeline.openRoomSettings()
-            }
-
         }
 
         MatrixText {
