@@ -203,3 +203,13 @@ PreviewUploadOverlay::setPreview(const QString &path)
         setLabels(split[1], mime.name(), data_.size());
         init();
 }
+
+void
+PreviewUploadOverlay::keyPressEvent(QKeyEvent *event)
+{
+        if( event->key() == Qt::Key_Escape )
+        {
+            emit aborted();
+            close();
+        }
+}

@@ -25,6 +25,7 @@ public:
         void setPreview(const QImage &src, const QString &mime);
         void setPreview(const QByteArray data, const QString &mime);
         void setPreview(const QString &path);
+        void keyPressEvent(QKeyEvent *event);
 
 signals:
         void confirmUpload(const QByteArray data, const QString &media, const QString &filename);
