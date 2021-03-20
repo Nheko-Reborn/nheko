@@ -114,6 +114,13 @@ with [homebrew](https://brew.sh/):
 ```sh
 brew install --cask nheko
 ```
+### FAQ
+
+##
+**Q:** Why don't videos run for me on Windows?
+
+**A:** You're probably missing the required video codecs, download [K-Lite Codec Pack](https://codecguide.com/download_kl.htm).
+##
 
 ### Build Requirements
 
@@ -142,7 +149,7 @@ brew install --cask nheko
 Nheko can use bundled version for most of those libraries automatically, if the versions in your distro are too old.
 To use them, you can enable the hunter integration by passing `-DHUNTER_ENABLED=ON`.
 It is probably wise to link those dependencies statically by passing `-DBUILD_SHARED_LIBS=OFF`
-You can select which bundled dependencies you want to use by passing various `-DUSE_BUNDLED_*` flags. By default all dependencies are bundled *if* you enable hunter.
+You can select which bundled dependencies you want to use by passing various `-DUSE_BUNDLED_*` flags. By default all dependencies are bundled *if* you enable hunter. (The exception to that is OpenSSL, which is always disabled by default.)
 If you experience build issues and you are trying to link `mtxclient` library without hunter, make sure the library version(commit) as mentioned in the `CMakeList.txt` is used. Sometimes we have to make breaking changes in `mtxclient` and for that period the master branch of both repos may not be compatible.
 
 The bundle flags are currently:
@@ -158,6 +165,8 @@ The bundle flags are currently:
 - USE_BUNDLED_LMDB
 - USE_BUNDLED_LMDBXX
 - USE_BUNDLED_TWEENY
+
+A note on bundled OpenSSL: You need to explicitly enable it and it will not be using your system certificate directory by default, if you enable it. You need to override that at runtime with the SSL_CERT_FILE variable. On Windows it will still be using your system certificates though, since it loads them from the system store instead of the OpenSSL directory.
 
 #### Linux
 

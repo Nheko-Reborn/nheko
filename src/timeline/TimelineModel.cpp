@@ -17,6 +17,7 @@
 #include <QStandardPaths>
 
 #include "ChatPage.h"
+#include "Config.h"
 #include "EventAccessors.h"
 #include "Logging.h"
 #include "MainWindow.h"
@@ -368,7 +369,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
 
                 auto ascent = QFontMetrics(UserSettings::instance()->font()).ascent();
 
-                bool isReply = relations(event).reply_to().has_value();
+                bool isReply = utils::isReply(event);
 
                 auto formattedBody_ = QString::fromStdString(formatted_body(event));
                 if (formattedBody_.isEmpty()) {
@@ -869,30 +870,7 @@ TimelineModel::relatedInfo(QString id)
         if (!event)
                 return {};
 
-        RelatedInfo related   = {};
-        related.quoted_user   = QString::fromStdString(mtx::accessors::sender(*event));
-        related.related_event = id.toStdString();
-        related.type          = mtx::accessors::msg_type(*event);
-
-        // get body, strip reply fallback, then transform the event to text, if it is a media event
-        // etc
-        related.quoted_body = QString::fromStdString(mtx::accessors::body(*event));
-        QRegularExpression plainQuote("^>.*?$\n?", QRegularExpression::MultilineOption);
-        while (related.quoted_body.startsWith(">"))
-                related.quoted_body.remove(plainQuote);
-        if (related.quoted_body.startsWith("\n"))
-                related.quoted_body.remove(0, 1);
-        related.quoted_body = utils::getQuoteBody(related);
-        related.quoted_body.replace("@room", QString::fromUtf8("@\u2060room"));
-
-        // get quoted body and strip reply fallback
-        related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(*event);
-        related.quoted_formatted_body.remove(QRegularExpression(
-          "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption));
-        related.quoted_formatted_body.replace("@room", "@\u2060aroom");
-        related.room = room_id_;
-
-        return related;
+        return utils::stripReplyFallbacks(*event, id.toStdString(), room_id_);
 }
 
 void
@@ -1246,7 +1224,11 @@ TimelineModel::cacheMedia(QString eventId, std::function<void(const QString)> ca
         QDir().mkpath(filename.path());
 
         if (filename.isReadable()) {
+#if defined(Q_OS_WIN)
                 emit mediaCached(mxcUrl, filename.filePath());
+#else
+                emit mediaCached(mxcUrl, "file://" + filename.filePath());
+#endif
                 if (callback) {
                         callback(filename.filePath());
                 }
@@ -1288,7 +1270,11 @@ TimelineModel::cacheMedia(QString eventId, std::function<void(const QString)> ca
                           nhlog::ui()->warn("Error while saving file to: {}", e.what());
                   }
 
+#if defined(Q_OS_WIN)
                   emit mediaCached(mxcUrl, filename.filePath());
+#else
+                  emit mediaCached(mxcUrl, "file://" + filename.filePath());
+#endif
           });
 }
 
@@ -1578,10 +1564,31 @@ TimelineModel::setEdit(QString newEdit)
 
                         auto msgType = mtx::accessors::msg_type(e);
                         if (msgType == mtx::events::MessageType::Text ||
-                            msgType == mtx::events::MessageType::Notice) {
-                                input()->setText(relatedInfo(newEdit).quoted_body);
-                        } else if (msgType == mtx::events::MessageType::Emote) {
-                                input()->setText("/me " + relatedInfo(newEdit).quoted_body);
+                            msgType == mtx::events::MessageType::Notice ||
+                            msgType == mtx::events::MessageType::Emote) {
+                                auto relInfo  = relatedInfo(newEdit);
+                                auto editText = relInfo.quoted_body;
+
+                                if (!relInfo.quoted_formatted_body.isEmpty()) {
+                                        auto matches = conf::strings::matrixToLink.globalMatch(
+                                          relInfo.quoted_formatted_body);
+                                        std::map<QString, QString> reverseNameMapping;
+                                        while (matches.hasNext()) {
+                                                auto m                            = matches.next();
+                                                reverseNameMapping[m.captured(2)] = m.captured(1);
+                                        }
+
+                                        for (const auto &[user, link] : reverseNameMapping) {
+                                                // TODO(Nico): html unescape the user name
+                                                editText.replace(
+                                                  user, QStringLiteral("[%1](%2)").arg(user, link));
+                                        }
+                                }
+
+                                if (msgType == mtx::events::MessageType::Emote)
+                                        input()->setText("/me " + editText);
+                                else
+                                        input()->setText(editText);
                         } else {
                                 input()->setText("");
                         }

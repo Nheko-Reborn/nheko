@@ -15,9 +15,16 @@ Popup {
     property string completerName
     property var completer
     property bool bottomToTop: true
+    property bool fullWidth: false
+    property bool centerRowContent: true
+    property int avatarHeight: 24
+    property int avatarWidth: 24
+    property int rowMargin: 0
+    property int rowSpacing: 5
     property alias count: listView.count
 
     signal completionClicked(string completion)
+    signal completionSelected(string id)
 
     function up() {
         if (bottomToTop)
@@ -54,9 +61,18 @@ Popup {
             return null;
     }
 
+    function finishCompletion() {
+        if (popup.completerName == "room")
+            popup.completionSelected(listView.itemAtIndex(currentIndex).modelData.roomid);
+
+    }
+
     onCompleterNameChanged: {
         if (completerName) {
-            completer = TimelineManager.timeline.input.completerFor(completerName);
+            if (completerName == "user")
+                completer = TimelineManager.completerFor(completerName, TimelineManager.timeline.roomId());
+            else
+                completer = TimelineManager.completerFor(completerName);
             completer.setSearchString("");
         } else {
             completer = undefined;
@@ -75,14 +91,18 @@ Popup {
         id: listView
 
         anchors.fill: parent
-        implicitWidth: contentItem.childrenRect.width
+        implicitWidth: fullWidth ? parent.width : contentItem.childrenRect.width
         model: completer
         verticalLayoutDirection: popup.bottomToTop ? ListView.BottomToTop : ListView.TopToBottom
+        spacing: rowSpacing
+        pixelAligned: true
 
         delegate: Rectangle {
+            property variant modelData: model
+
             color: model.index == popup.currentIndex ? colors.highlight : colors.base
-            height: chooser.childrenRect.height + 4
-            implicitWidth: chooser.childrenRect.width + 4
+            height: chooser.childrenRect.height + 2 * popup.rowMargin
+            implicitWidth: fullWidth ? popup.width : chooser.childrenRect.width + 4
 
             MouseArea {
                 id: mouseArea
@@ -90,7 +110,12 @@ Popup {
                 anchors.fill: parent
                 hoverEnabled: true
                 onPositionChanged: popup.currentIndex = model.index
-                onClicked: popup.completionClicked(completer.completionAt(model.index))
+                onClicked: {
+                    popup.completionClicked(completer.completionAt(model.index));
+                    if (popup.completerName == "room")
+                        popup.completionSelected(model.roomid);
+
+                }
 
                 Ripple {
                     rippleTarget: mouseArea
@@ -103,7 +128,8 @@ Popup {
                 id: chooser
 
                 roleValue: popup.completerName
-                anchors.centerIn: parent
+                anchors.fill: parent
+                anchors.margins: popup.rowMargin
 
                 DelegateChoice {
                     roleValue: "user"
@@ -112,10 +138,11 @@ Popup {
                         id: del
 
                         anchors.centerIn: parent
+                        spacing: rowSpacing
 
                         Avatar {
-                            height: 24
-                            width: 24
+                            height: popup.avatarHeight
+                            width: popup.avatarWidth
                             displayName: model.displayName
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             onClicked: popup.completionClicked(completer.completionAt(model.index))
@@ -142,6 +169,7 @@ Popup {
                         id: del
 
                         anchors.centerIn: parent
+                        spacing: rowSpacing
 
                         Label {
                             text: model.unicode
@@ -164,11 +192,43 @@ Popup {
                     RowLayout {
                         id: del
 
-                        anchors.centerIn: parent
+                        anchors.centerIn: centerRowContent ? parent : undefined
+                        spacing: rowSpacing
 
                         Avatar {
-                            height: 24
-                            width: 24
+                            height: popup.avatarHeight
+                            width: popup.avatarWidth
+                            displayName: model.roomName
+                            url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                            onClicked: {
+                                popup.completionClicked(completer.completionAt(model.index));
+                                popup.completionSelected(model.roomid);
+                            }
+                        }
+
+                        Label {
+                            text: model.roomName
+                            font.pixelSize: popup.avatarHeight * 0.5
+                            color: model.index == popup.currentIndex ? colors.highlightedText : colors.text
+                        }
+
+                    }
+
+                }
+
+                DelegateChoice {
+                    roleValue: "roomAliases"
+
+                    RowLayout {
+                        id: del
+
+                        anchors.centerIn: parent
+                        spacing: rowSpacing
+
+                        Avatar {
+                            height: popup.avatarHeight
+                            width: popup.avatarWidth
+                            displayName: model.roomName
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             onClicked: popup.completionClicked(completer.completionAt(model.index))
                         }

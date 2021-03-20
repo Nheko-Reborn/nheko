@@ -10,12 +10,16 @@
 #include "Logging.h"
 #include "Utils.h"
 
-CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model, QObject *parent)
+CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
+                                           int max_mistakes,
+                                           QObject *parent)
   : QAbstractProxyModel(parent)
+  , maxMistakes_(max_mistakes)
 {
         setSourceModel(model);
         QRegularExpression splitPoints("\\s+|-");
 
+        // insert all the full texts
         for (int i = 0; i < sourceModel()->rowCount(); i++) {
                 if (i < 7)
                         mapping.push_back(i);
@@ -25,6 +29,19 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model, QObject *p
                                  .toString()
                                  .toLower();
                 trie_.insert(string1.toUcs4(), i);
+
+                auto string2 = sourceModel()
+                                 ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole2)
+                                 .toString()
+                                 .toLower();
+        }
+
+        // insert the partial matches
+        for (int i = 0; i < sourceModel()->rowCount(); i++) {
+                auto string1 = sourceModel()
+                                 ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole)
+                                 .toString()
+                                 .toLower();
 
                 for (const auto &e : string1.split(splitPoints)) {
                         if (!e.isEmpty()) // NOTE(Nico): Use Qt::SkipEmptyParts in Qt 5.14
@@ -37,7 +54,6 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model, QObject *p
                                  .toLower();
 
                 if (!string2.isEmpty()) {
-                        trie_.insert(string2.toUcs4(), i);
                         for (const auto &e : string2.split(splitPoints)) {
                                 if (!e.isEmpty()) // NOTE(Nico): Use Qt::SkipEmptyParts in Qt 5.14
                                         trie_.insert(e.toUcs4(), i);
@@ -52,7 +68,7 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model, QObject *p
           [this](QString s) {
                   s.remove(":");
                   s.remove("@");
-                  searchString = s.toLower();
+                  searchString_ = s.toLower();
                   invalidate();
           },
           Qt::QueuedConnection);
@@ -61,9 +77,9 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model, QObject *p
 void
 CompletionProxyModel::invalidate()
 {
-        auto key = searchString.toUcs4();
+        auto key = searchString_.toUcs4();
         beginResetModel();
-        mapping = trie_.search(key, 7);
+        mapping = trie_.search(key, 7, maxMistakes_);
         endResetModel();
 
         std::string temp;

@@ -13,9 +13,9 @@ Item {
     property real radius: 0
     property color color: "#22000000"
     property real maxRadius: Math.max(width, height)
-    property real radiusAnimationRate: 0.05
-    property real radiusTailAnimationRate: 0.5
-    property real opacityAnimationDuration: 300
+    readonly property real radiusAnimationRate: 0.05
+    readonly property real radiusTailAnimationRate: 0.5
+    readonly property real opacityAnimationDuration: 300
     readonly property real diameter: radius * 2
     property real centerX
     property real centerY

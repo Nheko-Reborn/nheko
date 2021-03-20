@@ -15,6 +15,10 @@ RoomsModel::RoomsModel(bool showOnlyRoomWithAliases, QObject *parent)
 {
         std::vector<std::string> rooms_ = cache::joinedRooms();
         roomInfos                       = cache::getRoomInfo(rooms_);
+        if (!showOnlyRoomWithAliases_) {
+                roomids.reserve(rooms_.size());
+                roomAliases.reserve(rooms_.size());
+        }
 
         for (const auto &r : rooms_) {
                 auto roomAliasesList = cache::client()->getRoomAliases(r);

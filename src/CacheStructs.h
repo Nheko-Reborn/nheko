@@ -25,7 +25,6 @@ struct RoomMember
 {
         QString user_id;
         QString display_name;
-        QImage avatar;
 };
 
 //! Used to uniquely identify a list of read receipts.

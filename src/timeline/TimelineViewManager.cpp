@@ -15,13 +15,16 @@
 #include "BlurhashProvider.h"
 #include "ChatPage.h"
 #include "ColorImageProvider.h"
+#include "CompletionProxyModel.h"
 #include "DelegateChooser.h"
 #include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "MxcImageProvider.h"
+#include "RoomsModel.h"
 #include "UserSettingsPage.h"
+#include "UsersModel.h"
 #include "dialogs/ImageOverlay.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
@@ -334,6 +337,12 @@ TimelineViewManager::setHistoryView(const QString &room_id)
         }
 }
 
+void
+TimelineViewManager::highlightRoom(const QString &room_id)
+{
+        ChatPage::instance()->highlightRoom(room_id);
+}
+
 QString
 TimelineViewManager::escapeEmoji(QString str) const
 {
@@ -555,4 +564,37 @@ void
 TimelineViewManager::focusMessageInput()
 {
         emit focusInput();
+}
+
+QObject *
+TimelineViewManager::completerFor(QString completerName, QString roomId)
+{
+        if (completerName == "user") {
+                auto userModel = new UsersModel(roomId.toStdString());
+                auto proxy     = new CompletionProxyModel(userModel);
+                userModel->setParent(proxy);
+                return proxy;
+        } else if (completerName == "emoji") {
+                auto emojiModel = new emoji::EmojiModel();
+                auto proxy      = new CompletionProxyModel(emojiModel);
+                emojiModel->setParent(proxy);
+                return proxy;
+        } else if (completerName == "room") {
+                auto roomModel = new RoomsModel(false);
+                auto proxy     = new CompletionProxyModel(roomModel, 4);
+                roomModel->setParent(proxy);
+                return proxy;
+        } else if (completerName == "roomAliases") {
+                auto roomModel = new RoomsModel(true);
+                auto proxy     = new CompletionProxyModel(roomModel);
+                roomModel->setParent(proxy);
+                return proxy;
+        }
+        return nullptr;
+}
+
+void
+TimelineViewManager::focusTimeline()
+{
+        getWidget()->setFocus();
 }

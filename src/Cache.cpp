@@ -55,9 +55,6 @@ constexpr auto BATCH_SIZE = 100;
 //! Format: room_id -> RoomInfo
 constexpr auto ROOMS_DB("rooms");
 constexpr auto INVITES_DB("invites");
-//! Keeps already downloaded media for reuse.
-//! Format: matrix_url -> binary data.
-constexpr auto MEDIA_DB("media");
 //! Information that  must be kept between sync requests.
 constexpr auto SYNC_STATE_DB("sync_state");
 //! Read receipts per room/event.
@@ -89,6 +86,26 @@ Q_DECLARE_METATYPE(mtx::responses::QueryKeys)
 
 namespace {
 std::unique_ptr<Cache> instance_ = nullptr;
+}
+
+template<class T>
+bool
+containsStateUpdates(const T &e)
+{
+        return std::visit([](const auto &ev) { return Cache::isStateEvent(ev); }, e);
+}
+
+bool
+containsStateUpdates(const mtx::events::collections::StrippedEvents &e)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        return std::holds_alternative<StrippedEvent<state::Avatar>>(e) ||
+               std::holds_alternative<StrippedEvent<CanonicalAlias>>(e) ||
+               std::holds_alternative<StrippedEvent<Name>>(e) ||
+               std::holds_alternative<StrippedEvent<Member>>(e) ||
+               std::holds_alternative<StrippedEvent<Topic>>(e);
 }
 
 bool
@@ -224,7 +241,6 @@ Cache::setup()
         syncStateDb_     = lmdb::dbi::open(txn, SYNC_STATE_DB, MDB_CREATE);
         roomsDb_         = lmdb::dbi::open(txn, ROOMS_DB, MDB_CREATE);
         invitesDb_       = lmdb::dbi::open(txn, INVITES_DB, MDB_CREATE);
-        mediaDb_         = lmdb::dbi::open(txn, MEDIA_DB, MDB_CREATE);
         readReceiptsDb_  = lmdb::dbi::open(txn, READ_RECEIPTS_DB, MDB_CREATE);
         notificationsDb_ = lmdb::dbi::open(txn, NOTIFICATIONS_DB, MDB_CREATE);
 
@@ -259,6 +275,36 @@ Cache::isRoomEncrypted(const std::string &room_id)
         txn.commit();
 
         return res;
+}
+
+std::optional<mtx::events::state::Encryption>
+Cache::roomEncryptionSettings(const std::string &room_id)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        try {
+                auto txn      = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+                auto statesdb = getStatesDb(txn, room_id);
+                std::string_view event;
+                bool res =
+                  statesdb.get(txn, to_string(mtx::events::EventType::RoomEncryption), event);
+
+                if (res) {
+                        try {
+                                StateEvent<Encryption> msg = json::parse(event);
+
+                                return msg.content;
+                        } catch (const json::exception &e) {
+                                nhlog::db()->warn("failed to parse m.room.encryption event: {}",
+                                                  e.what());
+                                return Encryption{};
+                        }
+                }
+        } catch (lmdb::error &) {
+        }
+
+        return std::nullopt;
 }
 
 mtx::crypto::ExportedSessionKeys
@@ -650,82 +696,6 @@ Cache::secret(const std::string &name)
         return secret.toStdString();
 }
 
-//
-// Media Management
-//
-
-void
-Cache::saveImage(const std::string &url, const std::string &img_data)
-{
-        if (url.empty() || img_data.empty())
-                return;
-
-        try {
-                auto txn = lmdb::txn::begin(env_);
-
-                mediaDb_.put(txn, url, img_data);
-
-                txn.commit();
-        } catch (const lmdb::error &e) {
-                nhlog::db()->critical("saveImage: {}", e.what());
-        }
-}
-
-void
-Cache::saveImage(const QString &url, const QByteArray &image)
-{
-        saveImage(url.toStdString(), std::string(image.constData(), image.length()));
-}
-
-QByteArray
-Cache::image(lmdb::txn &txn, const std::string &url)
-{
-        if (url.empty())
-                return QByteArray();
-
-        try {
-                std::string_view image;
-                bool res = mediaDb_.get(txn, url, image);
-
-                if (!res)
-                        return QByteArray();
-
-                return QByteArray(image.data(), (int)image.size());
-        } catch (const lmdb::error &e) {
-                nhlog::db()->critical("image: {}, {}", e.what(), url);
-        }
-
-        return QByteArray();
-}
-
-QByteArray
-Cache::image(const QString &url)
-{
-        if (url.isEmpty())
-                return QByteArray();
-
-        auto key = url.toStdString();
-
-        try {
-                auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-
-                std::string_view image;
-
-                bool res = mediaDb_.get(txn, key, image);
-
-                txn.commit();
-
-                if (!res)
-                        return QByteArray();
-
-                return QByteArray(image.data(), (int)image.size());
-        } catch (const lmdb::error &e) {
-                nhlog::db()->critical("image: {} {}", e.what(), url.toStdString());
-        }
-
-        return QByteArray();
-}
-
 void
 Cache::removeInvite(lmdb::txn &txn, const std::string &room_id)
 {
@@ -810,7 +780,6 @@ Cache::deleteData()
         lmdb::dbi_close(env_, syncStateDb_);
         lmdb::dbi_close(env_, roomsDb_);
         lmdb::dbi_close(env_, invitesDb_);
-        lmdb::dbi_close(env_, mediaDb_);
         lmdb::dbi_close(env_, readReceiptsDb_);
         lmdb::dbi_close(env_, notificationsDb_);
 
@@ -2420,50 +2389,6 @@ Cache::getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &db)
         return QString();
 }
 
-QImage
-Cache::getRoomAvatar(const QString &room_id)
-{
-        return getRoomAvatar(room_id.toStdString());
-}
-
-QImage
-Cache::getRoomAvatar(const std::string &room_id)
-{
-        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-
-        std::string_view response;
-
-        if (!roomsDb_.get(txn, room_id, response)) {
-                txn.commit();
-                return QImage();
-        }
-
-        std::string media_url;
-
-        try {
-                RoomInfo info = json::parse(response);
-                media_url     = std::move(info.avatar_url);
-
-                if (media_url.empty()) {
-                        txn.commit();
-                        return QImage();
-                }
-        } catch (const json::exception &e) {
-                nhlog::db()->warn("failed to parse room info: {}, {}",
-                                  e.what(),
-                                  std::string(response.data(), response.size()));
-        }
-
-        if (!mediaDb_.get(txn, media_url, response)) {
-                txn.commit();
-                return QImage();
-        }
-
-        txn.commit();
-
-        return QImage::fromData(QByteArray(response.data(), (int)response.size()));
-}
-
 std::vector<std::string>
 Cache::joinedRooms()
 {
@@ -2565,8 +2490,7 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
                         MemberInfo tmp = json::parse(user_data);
                         members.emplace_back(
                           RoomMember{QString::fromStdString(std::string(user_id)),
-                                     QString::fromStdString(tmp.name),
-                                     QImage::fromData(image(txn, tmp.avatar_url))});
+                                     QString::fromStdString(tmp.name)});
                 } catch (const json::exception &e) {
                         nhlog::db()->warn("{}", e.what());
                 }
@@ -3893,6 +3817,7 @@ to_json(nlohmann::json &obj, const OutboundGroupSessionData &msg)
         obj["session_id"]    = msg.session_id;
         obj["session_key"]   = msg.session_key;
         obj["message_index"] = msg.message_index;
+        obj["ts"]            = msg.timestamp;
 
         obj["initially"] = msg.initially;
         obj["currently"] = msg.currently;
@@ -3904,6 +3829,7 @@ from_json(const nlohmann::json &obj, OutboundGroupSessionData &msg)
         msg.session_id    = obj.at("session_id");
         msg.session_key   = obj.at("session_key");
         msg.message_index = obj.at("message_index");
+        msg.timestamp     = obj.value("ts", 0ULL);
 
         msg.initially = obj.value("initially", SharedWithUsers{});
         msg.currently = obj.value("currently", SharedWithUsers{});
@@ -4188,18 +4114,6 @@ hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes,
         return instance_->hasEnoughPowerLevel(eventTypes, room_id, user_id);
 }
 
-//! Retrieves the saved room avatar.
-QImage
-getRoomAvatar(const QString &id)
-{
-        return instance_->getRoomAvatar(id);
-}
-QImage
-getRoomAvatar(const std::string &id)
-{
-        return instance_->getRoomAvatar(id);
-}
-
 void
 updateReadReceipt(lmdb::txn &txn, const std::string &room_id, const Receipts &receipts)
 {
@@ -4222,27 +4136,6 @@ std::optional<std::pair<uint64_t, std::string>>
 lastInvisibleEventAfter(const std::string &room_id, std::string_view event_id)
 {
         return instance_->lastInvisibleEventAfter(room_id, event_id);
-}
-
-QByteArray
-image(const QString &url)
-{
-        return instance_->image(url);
-}
-QByteArray
-image(lmdb::txn &txn, const std::string &url)
-{
-        return instance_->image(txn, url);
-}
-void
-saveImage(const std::string &url, const std::string &data)
-{
-        instance_->saveImage(url, data);
-}
-void
-saveImage(const QString &url, const QByteArray &data)
-{
-        instance_->saveImage(url, data);
 }
 
 RoomInfo

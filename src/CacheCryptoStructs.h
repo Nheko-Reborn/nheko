@@ -28,6 +28,7 @@ struct OutboundGroupSessionData
         std::string session_id;
         std::string session_key;
         uint64_t message_index = 0;
+        uint64_t timestamp     = 0;
 
         // who has access to this session.
         // Rotate, when a user leaves the room and share, when a user gets added.

@@ -192,28 +192,6 @@ InputBar::nextText()
         return text();
 }
 
-QObject *
-InputBar::completerFor(QString completerName)
-{
-        if (completerName == "user") {
-                auto userModel = new UsersModel(room->roomId().toStdString());
-                auto proxy     = new CompletionProxyModel(userModel);
-                userModel->setParent(proxy);
-                return proxy;
-        } else if (completerName == "emoji") {
-                auto emojiModel = new emoji::EmojiModel();
-                auto proxy      = new CompletionProxyModel(emojiModel);
-                emojiModel->setParent(proxy);
-                return proxy;
-        } else if (completerName == "room") {
-                auto roomModel = new RoomsModel(true);
-                auto proxy     = new CompletionProxyModel(roomModel);
-                roomModel->setParent(proxy);
-                return proxy;
-        }
-        return nullptr;
-}
-
 void
 InputBar::send()
 {
@@ -286,6 +264,9 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown)
              useMarkdown == MarkdownOverride::NOT_SPECIFIED) ||
             useMarkdown == MarkdownOverride::ON) {
                 text.formatted_body = utils::markdownToHtml(msg).toStdString();
+                // Remove markdown links by completer
+                text.body =
+                  msg.trimmed().replace(conf::strings::matrixToMarkdownLink, "\\1").toStdString();
 
                 // Don't send formatted_body, when we don't need to
                 if (text.formatted_body.find("<") == std::string::npos)
@@ -321,7 +302,9 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown)
 
                 // NOTE(Nico): rich replies always need a formatted_body!
                 text.format = "org.matrix.custom.html";
-                if (ChatPage::instance()->userSettings()->markdown())
+                if ((ChatPage::instance()->userSettings()->markdown() &&
+                     useMarkdown == MarkdownOverride::NOT_SPECIFIED) ||
+                    useMarkdown == MarkdownOverride::ON)
                         text.formatted_body =
                           utils::getFormattedQuoteBody(related, utils::markdownToHtml(msg))
                             .toStdString();
@@ -348,6 +331,9 @@ InputBar::emote(QString msg)
             ChatPage::instance()->userSettings()->markdown()) {
                 emote.formatted_body = html.toStdString();
                 emote.format         = "org.matrix.custom.html";
+                // Remove markdown links by completer
+                emote.body =
+                  msg.trimmed().replace(conf::strings::matrixToMarkdownLink, "\\1").toStdString();
         }
 
         if (!room->reply().isEmpty()) {
@@ -588,7 +574,7 @@ InputBar::showPreview(const QMimeData &source, QString path, const QStringList &
                   auto mimeClass = mime.split("/")[0];
                   nhlog::ui()->debug("Mime: {}", mime.toStdString());
                   if (mimeClass == "image") {
-                          QImage img = utils::readImage(&data);
+                          QImage img = utils::readImage(data);
 
                           dimensions = img.size();
                           if (img.height() > 200 && img.width() > 360)

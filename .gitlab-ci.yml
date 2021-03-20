@@ -37,7 +37,7 @@ build-gcc7:
     - cmake -GNinja -H. -Bbuild
         -DCMAKE_INSTALL_PREFIX=.deps/usr
         -DHUNTER_ROOT=".hunter"
-        -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF
+        -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON -DUSE_BUNDLED_LMDB=OFF
         -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
         -DCI_BUILD=ON
     - cmake --build build
@@ -96,7 +96,7 @@ build-flatpak-amd64:
     - export VERSION=$(git describe)
     - mkdir -p build-flatpak
     - cd build-flatpak
-    - flatpak-builder --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date`" app ../io.github.NhekoReborn.Nheko.json
+    - flatpak-builder --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date`" app ../io.github.NhekoReborn.Nheko.yaml
     - flatpak build-bundle repo nheko-amd64.flatpak io.github.NhekoReborn.Nheko ${CI_COMMIT_REF_NAME//\//_}
   after_script:
     - (cd ./scripts && ./upload-to-flatpak-repo.sh ../build-flatpak/repo) || true
@@ -124,7 +124,7 @@ build-flatpak-arm64:
     - export VERSION=$(git describe)
     - mkdir -p build-flatpak
     - cd build-flatpak
-    - flatpak-builder --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for arm64" app ../io.github.NhekoReborn.Nheko.json
+    - flatpak-builder --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for arm64" app ../io.github.NhekoReborn.Nheko.yaml
     - flatpak build-bundle repo nheko-arm64.flatpak io.github.NhekoReborn.Nheko ${CI_COMMIT_REF_NAME//\//_}
   after_script:
     - (cd ./scripts && ./upload-to-flatpak-repo.sh ../build-flatpak/repo) || true

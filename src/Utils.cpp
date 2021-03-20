@@ -13,6 +13,7 @@
 #include <QProcessEnvironment>
 #include <QScreen>
 #include <QSettings>
+#include <QStringBuilder>
 #include <QTextDocument>
 #include <QXmlStreamReader>
 
@@ -23,6 +24,7 @@
 
 #include "Cache.h"
 #include "Config.h"
+#include "EventAccessors.h"
 #include "MatrixClient.h"
 #include "UserSettingsPage.h"
 
@@ -49,6 +51,35 @@ createDescriptionInfo(const Event &event, const QString &localUser, const QStrin
                         ts};
 }
 
+RelatedInfo
+utils::stripReplyFallbacks(const TimelineEvent &event, std::string id, QString room_id_)
+{
+        RelatedInfo related   = {};
+        related.quoted_user   = QString::fromStdString(mtx::accessors::sender(event));
+        related.related_event = std::move(id);
+        related.type          = mtx::accessors::msg_type(event);
+
+        // get body, strip reply fallback, then transform the event to text, if it is a media event
+        // etc
+        related.quoted_body = QString::fromStdString(mtx::accessors::body(event));
+        QRegularExpression plainQuote("^>.*?$\n?", QRegularExpression::MultilineOption);
+        while (related.quoted_body.startsWith(">"))
+                related.quoted_body.remove(plainQuote);
+        if (related.quoted_body.startsWith("\n"))
+                related.quoted_body.remove(0, 1);
+        related.quoted_body = utils::getQuoteBody(related);
+        related.quoted_body.replace("@room", QString::fromUtf8("@\u2060room"));
+
+        // get quoted body and strip reply fallback
+        related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(event);
+        related.quoted_formatted_body.remove(QRegularExpression(
+          "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption));
+        related.quoted_formatted_body.replace("@room", "@\u2060aroom");
+        related.room = room_id_;
+
+        return related;
+}
+
 QString
 utils::localUser()
 {
@@ -66,7 +97,8 @@ utils::codepointIsEmoji(uint code)
 QString
 utils::replaceEmoji(const QString &body)
 {
-        QString fmtBody = "";
+        QString fmtBody;
+        fmtBody.reserve(body.size());
 
         QVector<uint> utf32_string = body.toUcs4();
 
@@ -74,21 +106,28 @@ utils::replaceEmoji(const QString &body)
         for (auto &code : utf32_string) {
                 if (utils::codepointIsEmoji(code)) {
                         if (!insideFontBlock) {
-                                fmtBody += QString("<font face=\"" +
-                                                   UserSettings::instance()->emojiFont() + "\">");
+                                fmtBody += QStringLiteral("<font face=\"") %
+                                           UserSettings::instance()->emojiFont() %
+                                           QStringLiteral("\">");
                                 insideFontBlock = true;
                         }
 
                 } else {
                         if (insideFontBlock) {
-                                fmtBody += "</font>";
+                                fmtBody += QStringLiteral("</font>");
                                 insideFontBlock = false;
                         }
                 }
-                fmtBody += QString::fromUcs4(&code, 1);
+                if (QChar::requiresSurrogates(code)) {
+                        QChar emoji[] = {static_cast<ushort>(QChar::highSurrogate(code)),
+                                         static_cast<ushort>(QChar::lowSurrogate(code))};
+                        fmtBody.append(emoji, 2);
+                } else {
+                        fmtBody.append(QChar(static_cast<ushort>(code)));
+                }
         }
         if (insideFontBlock) {
-                fmtBody += "</font>";
+                fmtBody += QStringLiteral("</font>");
         }
 
         return fmtBody;
@@ -679,11 +718,17 @@ utils::restoreCombobox(QComboBox *combo, const QString &value)
 }
 
 QImage
-utils::readImage(const QByteArray *data)
+utils::readImage(const QByteArray &data)
 {
         QBuffer buf;
-        buf.setData(*data);
+        buf.setData(data);
         QImageReader reader(&buf);
         reader.setAutoTransform(true);
         return reader.read();
+}
+
+bool
+utils::isReply(const mtx::events::collections::TimelineEvents &e)
+{
+        return mtx::accessors::relations(e).reply_to().has_value();
 }

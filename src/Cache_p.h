@@ -118,10 +118,6 @@ public:
                                  const std::string &room_id,
                                  const std::string &user_id);
 
-        //! Retrieves the saved room avatar.
-        QImage getRoomAvatar(const QString &id);
-        QImage getRoomAvatar(const std::string &id);
-
         //! Adds a user to the read list for the given event.
         //!
         //! There should be only one user id present in a receipt list per room.
@@ -136,11 +132,6 @@ public:
         //! Returns a map of user ids and the time of the read receipt in milliseconds.
         using UserReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
         UserReceipts readReceipts(const QString &event_id, const QString &room_id);
-
-        QByteArray image(const QString &url);
-        QByteArray image(lmdb::txn &txn, const std::string &url);
-        void saveImage(const std::string &url, const std::string &data);
-        void saveImage(const QString &url, const QByteArray &data);
 
         RoomInfo singleRoomInfo(const std::string &room_id);
         std::vector<std::string> roomsWithStateUpdates(const mtx::responses::Sync &res);
@@ -221,6 +212,8 @@ public:
         //! Mark a room that uses e2e encryption.
         void setEncryptedRoom(lmdb::txn &txn, const std::string &room_id);
         bool isRoomEncrypted(const std::string &room_id);
+        std::optional<mtx::events::state::Encryption> roomEncryptionSettings(
+          const std::string &room_id);
 
         //! Check if a user is a member of the room.
         bool isRoomMember(const std::string &user_id, const std::string &room_id);
@@ -268,6 +261,17 @@ public:
         void storeSecret(const std::string &name, const std::string &secret);
         void deleteSecret(const std::string &name);
         std::optional<std::string> secret(const std::string &name);
+
+        template<class T>
+        static constexpr bool isStateEvent(const mtx::events::StateEvent<T> &)
+        {
+                return true;
+        }
+        template<class T>
+        static constexpr bool isStateEvent(const mtx::events::Event<T> &)
+        {
+                return false;
+        }
 
 signals:
         void newReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
@@ -366,56 +370,12 @@ private:
                         return;
                 }
 
-                if (!isStateEvent(event))
-                        return;
-
-                std::visit([&txn, &statesdb](
-                             auto e) { statesdb.put(txn, to_string(e.type), json(e).dump()); },
-                           event);
-        }
-
-        template<class T>
-        bool isStateEvent(const T &e)
-        {
-                using namespace mtx::events;
-                using namespace mtx::events::state;
-
-                return std::holds_alternative<StateEvent<Aliases>>(e) ||
-                       std::holds_alternative<StateEvent<state::Avatar>>(e) ||
-                       std::holds_alternative<StateEvent<CanonicalAlias>>(e) ||
-                       std::holds_alternative<StateEvent<Create>>(e) ||
-                       std::holds_alternative<StateEvent<GuestAccess>>(e) ||
-                       std::holds_alternative<StateEvent<HistoryVisibility>>(e) ||
-                       std::holds_alternative<StateEvent<JoinRules>>(e) ||
-                       std::holds_alternative<StateEvent<Name>>(e) ||
-                       std::holds_alternative<StateEvent<Member>>(e) ||
-                       std::holds_alternative<StateEvent<PowerLevels>>(e) ||
-                       std::holds_alternative<StateEvent<Topic>>(e);
-        }
-
-        template<class T>
-        bool containsStateUpdates(const T &e)
-        {
-                using namespace mtx::events;
-                using namespace mtx::events::state;
-
-                return std::holds_alternative<StateEvent<state::Avatar>>(e) ||
-                       std::holds_alternative<StateEvent<CanonicalAlias>>(e) ||
-                       std::holds_alternative<StateEvent<Name>>(e) ||
-                       std::holds_alternative<StateEvent<Member>>(e) ||
-                       std::holds_alternative<StateEvent<Topic>>(e);
-        }
-
-        bool containsStateUpdates(const mtx::events::collections::StrippedEvents &e)
-        {
-                using namespace mtx::events;
-                using namespace mtx::events::state;
-
-                return std::holds_alternative<StrippedEvent<state::Avatar>>(e) ||
-                       std::holds_alternative<StrippedEvent<CanonicalAlias>>(e) ||
-                       std::holds_alternative<StrippedEvent<Name>>(e) ||
-                       std::holds_alternative<StrippedEvent<Member>>(e) ||
-                       std::holds_alternative<StrippedEvent<Topic>>(e);
+                std::visit(
+                  [&txn, &statesdb](auto e) {
+                          if (isStateEvent(e) && e.type != EventType::Unsupported)
+                                  statesdb.put(txn, to_string(e.type), json(e).dump());
+                  },
+                  event);
         }
 
         void saveInvites(lmdb::txn &txn,
@@ -559,7 +519,6 @@ private:
         lmdb::dbi syncStateDb_;
         lmdb::dbi roomsDb_;
         lmdb::dbi invitesDb_;
-        lmdb::dbi mediaDb_;
         lmdb::dbi readReceiptsDb_;
         lmdb::dbi notificationsDb_;
 

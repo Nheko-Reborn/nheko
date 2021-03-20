@@ -31,7 +31,6 @@
 #include "notifications/Manager.h"
 
 class OverlayModal;
-class QuickSwitcher;
 class RoomList;
 class SideBarActions;
 class Splitter;
@@ -72,7 +71,6 @@ public:
 
         // Initialize all the components of the UI.
         void bootstrap(QString userid, QString homeserver, QString token);
-        void showQuickSwitcher();
         QString currentRoom() const { return current_room_; }
 
         static ChatPage *instance() { return instance_; }
@@ -104,6 +102,7 @@ public slots:
         void startChat(QString userid);
         void leaveRoom(const QString &room_id);
         void createRoom(const mtx::requests::CreateRoom &req);
+        void highlightRoom(const QString &room_id);
         void joinRoom(const QString &room);
         void joinRoomVia(const std::string &room_id,
                          const std::vector<std::string> &via,
@@ -142,7 +141,7 @@ signals:
         void trySyncCb();
         void tryDelayedSyncCb();
         void tryInitialSyncCb();
-        void newSyncResponse(const mtx::responses::Sync &res);
+        void newSyncResponse(const mtx::responses::Sync &res, const std::string &prev_batch_token);
         void leftRoom(const QString &room_id);
         void newRoom(const QString &room_id);
 
@@ -195,7 +194,8 @@ private slots:
         void changeRoom(const QString &room_id);
         void dropToLoginPage(const QString &msg);
 
-        void handleSyncResponse(const mtx::responses::Sync &res);
+        void handleSyncResponse(const mtx::responses::Sync &res,
+                                const std::string &prev_batch_token);
 
 private:
         static ChatPage *instance_;

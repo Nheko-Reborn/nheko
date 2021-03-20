@@ -122,7 +122,7 @@ Avatar::setDevicePixelRatio(double ratio)
 void
 Avatar::paintEvent(QPaintEvent *)
 {
-        bool rounded = QSettings().value("user/avatar_circles", true).toBool();
+        bool rounded = QSettings().value(QStringLiteral("user/avatar_circles"), true).toBool();
 
         QPainter painter(this);
 

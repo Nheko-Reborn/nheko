@@ -8,19 +8,19 @@
 #include <QPixmap>
 #include <functional>
 
+using AvatarCallback = std::function<void(QPixmap)>;
+
 class AvatarProxy : public QObject
 {
         Q_OBJECT
 
 signals:
-        void avatarDownloaded(const QByteArray &data);
+        void avatarDownloaded(QPixmap pm);
 };
-
-using AvatarCallback = std::function<void(QPixmap)>;
 
 namespace AvatarProvider {
 void
-resolve(const QString &avatarUrl, int size, QObject *receiver, AvatarCallback cb);
+resolve(QString avatarUrl, int size, QObject *receiver, AvatarCallback cb);
 void
 resolve(const QString &room_id,
         const QString &user_id,

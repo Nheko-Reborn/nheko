@@ -43,7 +43,7 @@ ScrollView {
             property alias model: row.model
             // use comma to update on scroll
             property var attachedPos: chat.contentY, attached ? chat.mapFromItem(attached, attached ? attached.width - width : 0, -height) : null
-            property int padding: 4
+            readonly property int padding: 4
 
             visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || messageActionHover.hovered)
             x: attached ? attachedPos.x : 0

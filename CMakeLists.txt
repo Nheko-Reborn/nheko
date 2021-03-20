@@ -33,7 +33,7 @@ option(USE_BUNDLED_CMARK "Use the bundled version of cmark."
 option(USE_BUNDLED_JSON "Use the bundled version of nlohmann json."
 	${HUNTER_ENABLED})
 option(USE_BUNDLED_OPENSSL "Use the bundled version of OpenSSL."
-	${HUNTER_ENABLED})
+	OFF)
 option(USE_BUNDLED_MTXCLIENT "Use the bundled version of the Matrix Client library." ${HUNTER_ENABLED})
 option(USE_BUNDLED_LMDB "Use the bundled version of lmdb."
 	${HUNTER_ENABLED})
@@ -297,6 +297,9 @@ set(SRC_FILES
 	src/ui/UserProfile.cpp
 	src/ui/RoomSettings.cpp
 
+    # Generic notification stuff
+    src/notifications/Manager.cpp
+
 	src/AvatarProvider.cpp
 	src/BlurhashProvider.cpp
 	src/Cache.cpp
@@ -316,7 +319,6 @@ set(SRC_FILES
 	src/MatrixClient.cpp
 	src/MxcImageProvider.cpp
 	src/Olm.cpp
-	src/QuickSwitcher.cpp
 	src/RegisterPage.cpp
 	src/RoomInfoListItem.cpp
 	src/RoomList.cpp
@@ -359,7 +361,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        ace7fa2d89a64de7b84c77d1fa1bc80486408831
+		GIT_TAG        7194b4f058406b1c10d3741d83abcf2d8963d849
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -532,7 +534,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/LoginPage.h
 	src/MainWindow.h
 	src/MxcImageProvider.h
-	src/QuickSwitcher.h
 	src/RegisterPage.h
 	src/RoomInfoListItem.h
 	src/RoomList.h
@@ -559,7 +560,7 @@ set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
 
 if (APPLE)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation -framework Cocoa")
-	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerMac.mm src/emoji/MacHelper.mm)
+	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerMac.mm src/notifications/ManagerMac.cpp src/emoji/MacHelper.mm)
 	if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
 		set_source_files_properties( src/notifications/ManagerMac.mm src/emoji/MacHelper.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
 	endif()
