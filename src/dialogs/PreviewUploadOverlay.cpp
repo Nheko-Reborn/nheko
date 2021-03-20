@@ -207,9 +207,10 @@ PreviewUploadOverlay::setPreview(const QString &path)
 void
 PreviewUploadOverlay::keyPressEvent(QKeyEvent *event)
 {
-        if( event->key() == Qt::Key_Escape )
-        {
-            emit aborted();
-            close();
+        if (event->matches(QKeySequence::Cancel)) {
+                emit aborted();
+                close();
+        } else {
+                QWidget::keyPressEvent(event);
         }
 }
