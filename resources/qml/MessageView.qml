@@ -12,7 +12,6 @@ import QtQuick.Window 2.2
 import im.nheko 1.0
 
 ScrollView {
-    contentWidth: availableWidth
     clip: false
     palette: colors
     padding: 8
