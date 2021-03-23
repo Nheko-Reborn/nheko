@@ -10,7 +10,7 @@ import QtQuick.Layouts 1.3
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
 
-Popup {
+Menu {
     id: emojiPopup
 
     property var callback
@@ -24,13 +24,8 @@ Popup {
 
     function show(showAt, callback) {
         console.debug("Showing emojiPicker");
-        if (showAt) {
-            parent = showAt;
-            x = Math.round((showAt.width - width) / 2);
-            y = showAt.height;
-        }
         emojiPopup.callback = callback;
-        open();
+        popup(showAt ? showAt : null);
     }
 
     margins: 0
@@ -41,23 +36,25 @@ Popup {
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
+    height: columnView.implicitHeight + 4
+
     ColumnLayout {
         id: columnView
 
-        anchors.fill: parent
         spacing: 0
-        Layout.bottomMargin: 0
-        Layout.leftMargin: 3
-        Layout.rightMargin: 3
-        Layout.topMargin: 2
+        anchors.leftMargin: 3
+        anchors.rightMargin: 3
+	anchors.bottom: parent.bottom
+	anchors.left: parent.left
+	anchors.right: parent.right
+	anchors.topMargin: 2
 
         // emoji grid
         GridView {
             id: gridView
 
-            Layout.preferredHeight: emojiPopup.height
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+	    Layout.preferredHeight: cellHeight * 5
+	    Layout.preferredWidth: 7 * 52 + 20
             Layout.leftMargin: 4
             cellWidth: 52
             cellHeight: 52

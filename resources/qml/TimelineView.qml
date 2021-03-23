@@ -35,8 +35,6 @@ Page {
     EmojiPicker {
         id: emojiPopup
 
-        width: 7 * 52 + 20
-        height: 6 * 52
         colors: palette
 
         model: EmojiProxyModel {
@@ -96,22 +94,23 @@ Page {
         property string eventId
         property int eventType
         property bool isEncrypted
-        property bool isEditable
+	property bool isEditable
 
         function show(eventId_, eventType_, isEncrypted_, isEditable_, showAt_) {
             eventId = eventId_;
             eventType = eventType_;
             isEncrypted = isEncrypted_;
-            isEditable = isEditable_;
+	    isEditable = isEditable_;
             if (showAt_)
                 open(showAt_);
             else
                 open();
         }
 
-        Platform.MenuItem {
+	Platform.MenuItem {
+		id: reactionOption
             text: qsTr("React")
-            onTriggered: emojiPopup.show(messageContextMenu.parent, function(emoji) {
+            onTriggered: emojiPopup.show(null, function(emoji) {
                 TimelineManager.queueReactionMessage(messageContextMenu.eventId, emoji);
             })
         }
