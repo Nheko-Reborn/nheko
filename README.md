@@ -25,8 +25,7 @@ and media are encrypted, nheko doesn't verify who gets the messages.
 
 ## Features
 
-Most of the features you would expect from a chat application are missing right now
-but we are getting close to a more feature complete client.
+Most of the features you would expect from a chat application are missing but,we are trying our best to get close to a better feature complete client and hope to achieve it soon.
 Specifically there is support for:
 - E2E encryption.
 - VoIP calls (voice & video).
