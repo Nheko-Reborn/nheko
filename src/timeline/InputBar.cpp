@@ -255,7 +255,7 @@ InputBar::openFileSelection()
 }
 
 void
-InputBar::message(QString msg, MarkdownOverride useMarkdown)
+InputBar::message(QString msg, MarkdownOverride useMarkdown, bool rainbowify)
 {
         mtx::events::msg::Text text = {};
         text.body                   = msg.trimmed().toStdString();
@@ -263,7 +263,7 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown)
         if ((ChatPage::instance()->userSettings()->markdown() &&
              useMarkdown == MarkdownOverride::NOT_SPECIFIED) ||
             useMarkdown == MarkdownOverride::ON) {
-                text.formatted_body = utils::markdownToHtml(msg).toStdString();
+                text.formatted_body = utils::markdownToHtml(msg, rainbowify).toStdString();
                 // Remove markdown links by completer
                 text.body =
                   msg.trimmed().replace(conf::strings::matrixToMarkdownLink, "\\1").toStdString();
@@ -524,6 +524,8 @@ InputBar::command(QString command, QString args)
                 message(args, MarkdownOverride::ON);
         } else if (command == "plain") {
                 message(args, MarkdownOverride::OFF);
+        } else if (command == "rainbow") {
+                message(args, MarkdownOverride::NOT_SPECIFIED, true);
         }
 }
 

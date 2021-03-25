@@ -18,6 +18,7 @@
 #include <QXmlStreamReader>
 
 #include <cmath>
+#include <fmt/core.h>
 #include <variant>
 
 #include <cmark.h>
@@ -468,11 +469,81 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
 }
 
 QString
-utils::markdownToHtml(const QString &text)
+utils::markdownToHtml(const QString &text, bool rainbowify)
 {
-        const auto str      = text.toUtf8();
-        const char *tmp_buf = cmark_markdown_to_html(str.constData(), str.size(), CMARK_OPT_UNSAFE);
+        const auto str = text.toUtf8();
+        cmark_node *const node =
+          cmark_parse_document(str.constData(), str.size(), CMARK_OPT_UNSAFE);
 
+        if (rainbowify) {
+                // create iterator over node
+                cmark_iter *iter = cmark_iter_new(node);
+
+                cmark_event_type ev_type;
+
+                // First loop to get total text length
+                int textLen = 0;
+                while ((ev_type = cmark_iter_next(iter)) != CMARK_EVENT_DONE) {
+                        cmark_node *cur = cmark_iter_get_node(iter);
+                        // only text nodes (no code or semilar)
+                        if (cmark_node_get_type(cur) != CMARK_NODE_TEXT)
+                                continue;
+                        // count up by length of current node's text
+                        textLen += strlen(cmark_node_get_literal(cur));
+                }
+
+                // create new iter to start over
+                cmark_iter_free(iter);
+                iter = cmark_iter_new(node);
+
+                // Second loop to rainbowify
+                int charIdx = 0;
+                while ((ev_type = cmark_iter_next(iter)) != CMARK_EVENT_DONE) {
+                        cmark_node *cur = cmark_iter_get_node(iter);
+                        // only text nodes (no code or semilar)
+                        if (cmark_node_get_type(cur) != CMARK_NODE_TEXT)
+                                continue;
+
+                        // get text in current node
+                        const char *tmp_buf = cmark_node_get_literal(cur);
+                        std::string nodeText(tmp_buf);
+                        // create buffer to append rainbow text to
+                        std::string buf;
+                        for (int i = 0; i < nodeText.length(); i++) {
+                                // Don't rainbowify spaces
+                                if (nodeText.at(i) == ' ') {
+                                        buf.push_back(' ');
+                                        continue;
+                                }
+
+                                // get correct color for char index
+                                auto color = QColor::fromHsvF(1.0 / textLen * charIdx, 1.0, 1.0);
+                                // format color for HTML
+                                auto colorString = color.name(QColor::NameFormat::HexRgb);
+                                // create HTML element for current char
+                                auto curChar = fmt::format("<font color=\"{}\">{}</font>",
+                                                           colorString.toStdString(),
+                                                           nodeText.at(i));
+                                // append colored HTML element to buffer
+                                buf.append(curChar);
+
+                                charIdx++;
+                        }
+
+                        // create HTML_INLINE node to prevent HTML from being escaped
+                        auto htmlNode = cmark_node_new(CMARK_NODE_HTML_INLINE);
+                        // set content of HTML node to buffer contents
+                        cmark_node_set_literal(htmlNode, buf.c_str());
+                        // replace current node with HTML node
+                        cmark_node_replace(cur, htmlNode);
+                        // free memory of old node
+                        cmark_node_free(cur);
+                }
+
+                cmark_iter_free(iter);
+        }
+
+        const char *tmp_buf = cmark_render_html(node, CMARK_OPT_UNSAFE);
         // Copy the null terminated output buffer.
         std::string html(tmp_buf);
 
