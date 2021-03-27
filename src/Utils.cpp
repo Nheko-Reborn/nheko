@@ -17,6 +17,7 @@
 #include <QTextDocument>
 #include <QXmlStreamReader>
 
+#include <bits/c++config.h>
 #include <cmath>
 #include <fmt/core.h>
 #include <variant>
@@ -509,7 +510,7 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                         std::string nodeText(tmp_buf);
                         // create buffer to append rainbow text to
                         std::string buf;
-                        for (int i = 0; i < nodeText.length(); i++) {
+                        for (std::size_t i = 0; i < nodeText.length(); i++) {
                                 // Don't rainbowify spaces
                                 if (nodeText.at(i) == ' ') {
                                         buf.push_back(' ');
