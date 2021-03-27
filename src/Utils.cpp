@@ -492,7 +492,10 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                         if (cmark_node_get_type(cur) != CMARK_NODE_TEXT)
                                 continue;
                         // count up by length of current node's text
-                        textLen += strlen(cmark_node_get_literal(cur));
+                        QTextBoundaryFinder tbf(QTextBoundaryFinder::BoundaryType::Grapheme,
+                                                QString(cmark_node_get_literal(cur)));
+                        while (tbf.toNextBoundary() != -1)
+                                textLen++;
                 }
 
                 // create new iter to start over
@@ -510,14 +513,19 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                         // get text in current node
                         const char *tmp_buf = cmark_node_get_literal(cur);
                         std::string nodeText(tmp_buf);
+                        auto qNodeText = QString::fromStdString(nodeText);
                         // create buffer to append rainbow text to
                         std::string buf;
                         int boundaryStart = 0;
-                        int boundaryEnd = 0;
-                        QTextBoundaryFinder tbf(QTextBoundaryFinder::BoundaryType::Grapheme, QString::fromStdString(nodeText));
+                        int boundaryEnd   = 0;
+                        // use QTextBoundaryFinder to iterate ofer graphemes
+                        QTextBoundaryFinder tbf(QTextBoundaryFinder::BoundaryType::Grapheme,
+                                                qNodeText);
                         while ((boundaryEnd = tbf.toNextBoundary()) != -1) {
-                                nhlog::ui()->info("from {} to {}", boundaryStart, boundaryEnd);
-                                auto curChar = nodeText.substr(boundaryStart, boundaryEnd - boundaryEnd + 1);
+                                // Split text to get current char
+                                auto curChar =
+                                  qNodeText.mid(boundaryStart, boundaryEnd - boundaryStart)
+                                    .toStdString();
                                 boundaryStart = boundaryEnd;
                                 // Don't rainbowify spaces
                                 if (curChar == " ") {
@@ -531,8 +539,8 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                                 auto colorString = color.name(QColor::NameFormat::HexRgb);
                                 // create HTML element for current char
                                 auto curCharColored = fmt::format("<font color=\"{}\">{}</font>",
-                                                           colorString.toStdString(),
-                                                           curChar);
+                                                                  colorString.toStdString(),
+                                                                  curChar);
                                 // append colored HTML element to buffer
                                 buf.append(curCharColored);
 
