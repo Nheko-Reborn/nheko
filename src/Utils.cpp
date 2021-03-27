@@ -19,7 +19,6 @@
 
 #include <bits/c++config.h>
 #include <cmath>
-#include <fmt/core.h>
 #include <qtextboundaryfinder.h>
 #include <variant>
 
@@ -524,8 +523,7 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                         while ((boundaryEnd = tbf.toNextBoundary()) != -1) {
                                 // Split text to get current char
                                 auto curChar =
-                                  qNodeText.mid(boundaryStart, boundaryEnd - boundaryStart)
-                                    .toStdString();
+                                  qNodeText.mid(boundaryStart, boundaryEnd - boundaryStart);
                                 boundaryStart = boundaryEnd;
                                 // Don't rainbowify spaces
                                 if (curChar == " ") {
@@ -538,9 +536,10 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                                 // format color for HTML
                                 auto colorString = color.name(QColor::NameFormat::HexRgb);
                                 // create HTML element for current char
-                                auto curCharColored = fmt::format("<font color=\"{}\">{}</font>",
-                                                                  colorString.toStdString(),
-                                                                  curChar);
+                                auto curCharColored = QString("<font color=\"%0\">%1</font>")
+                                                        .arg(colorString)
+                                                        .arg(curChar)
+                                                        .toStdString();
                                 // append colored HTML element to buffer
                                 buf.append(curCharColored);
 
