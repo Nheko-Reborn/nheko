@@ -20,6 +20,7 @@
 #include <bits/c++config.h>
 #include <cmath>
 #include <fmt/core.h>
+#include <qtextboundaryfinder.h>
 #include <variant>
 
 #include <cmark.h>
@@ -27,6 +28,7 @@
 #include "Cache.h"
 #include "Config.h"
 #include "EventAccessors.h"
+#include "Logging.h"
 #include "MatrixClient.h"
 #include "UserSettingsPage.h"
 
@@ -510,9 +512,15 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                         std::string nodeText(tmp_buf);
                         // create buffer to append rainbow text to
                         std::string buf;
-                        for (std::size_t i = 0; i < nodeText.length(); i++) {
+                        int boundaryStart = 0;
+                        int boundaryEnd = 0;
+                        QTextBoundaryFinder tbf(QTextBoundaryFinder::BoundaryType::Grapheme, QString::fromStdString(nodeText));
+                        while ((boundaryEnd = tbf.toNextBoundary()) != -1) {
+                                nhlog::ui()->info("from {} to {}", boundaryStart, boundaryEnd);
+                                auto curChar = nodeText.substr(boundaryStart, boundaryEnd - boundaryEnd + 1);
+                                boundaryStart = boundaryEnd;
                                 // Don't rainbowify spaces
-                                if (nodeText.at(i) == ' ') {
+                                if (curChar == " ") {
                                         buf.push_back(' ');
                                         continue;
                                 }
@@ -522,11 +530,11 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                                 // format color for HTML
                                 auto colorString = color.name(QColor::NameFormat::HexRgb);
                                 // create HTML element for current char
-                                auto curChar = fmt::format("<font color=\"{}\">{}</font>",
+                                auto curCharColored = fmt::format("<font color=\"{}\">{}</font>",
                                                            colorString.toStdString(),
-                                                           nodeText.at(i));
+                                                           curChar);
                                 // append colored HTML element to buffer
-                                buf.append(curChar);
+                                buf.append(curCharColored);
 
                                 charIdx++;
                         }
