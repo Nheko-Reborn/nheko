@@ -211,7 +211,7 @@ set(SPDLOG_DEBUG_ON false)
 
 # Windows doesn't handle CMAKE_BUILD_TYPE.
 if(NOT WIN32)
-	if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 		set(SPDLOG_DEBUG_ON true)
 	else()
 		set(SPDLOG_DEBUG_ON false)
@@ -361,7 +361,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        7194b4f058406b1c10d3741d83abcf2d8963d849
+		GIT_TAG        808605299937203696a572c585a51509b1de28cf
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
