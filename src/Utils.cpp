@@ -17,7 +17,6 @@
 #include <QTextDocument>
 #include <QXmlStreamReader>
 
-#include <bits/c++config.h>
 #include <cmath>
 #include <qtextboundaryfinder.h>
 #include <variant>
