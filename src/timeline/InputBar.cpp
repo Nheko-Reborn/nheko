@@ -13,6 +13,7 @@
 #include <QStandardPaths>
 #include <QUrl>
 
+#include <QRegularExpression>
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/media.hpp>
 
@@ -203,7 +204,7 @@ InputBar::send()
         auto wasEdit = !room->edit().isEmpty();
 
         if (text().startsWith('/')) {
-                int command_end = text().indexOf(' ');
+                int command_end = text().indexOf(QRegularExpression("\\s"));
                 if (command_end == -1)
                         command_end = text().size();
                 auto name = text().mid(1, command_end - 1);
@@ -255,7 +256,7 @@ InputBar::openFileSelection()
 }
 
 void
-InputBar::message(QString msg, MarkdownOverride useMarkdown)
+InputBar::message(QString msg, MarkdownOverride useMarkdown, bool rainbowify)
 {
         mtx::events::msg::Text text = {};
         text.body                   = msg.trimmed().toStdString();
@@ -263,7 +264,7 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown)
         if ((ChatPage::instance()->userSettings()->markdown() &&
              useMarkdown == MarkdownOverride::NOT_SPECIFIED) ||
             useMarkdown == MarkdownOverride::ON) {
-                text.formatted_body = utils::markdownToHtml(msg).toStdString();
+                text.formatted_body = utils::markdownToHtml(msg, rainbowify).toStdString();
                 // Remove markdown links by completer
                 text.body =
                   msg.trimmed().replace(conf::strings::matrixToMarkdownLink, "\\1").toStdString();
@@ -526,6 +527,8 @@ InputBar::command(QString command, QString args)
                 message(args, MarkdownOverride::ON);
         } else if (command == "plain") {
                 message(args, MarkdownOverride::OFF);
+        } else if (command == "rainbow") {
+                message(args, MarkdownOverride::ON, true);
         }
 }
 
