@@ -111,8 +111,8 @@ addDevice(GstDevice *device)
         g_free(name);
         guint nCaps = gst_caps_get_size(gstcaps);
         for (guint i = 0; i < nCaps; ++i) {
-                GstStructure *structure = gst_caps_get_structure(gstcaps, i);
-                const gchar *struct_name       = gst_structure_get_name(structure);
+                GstStructure *structure  = gst_caps_get_structure(gstcaps, i);
+                const gchar *struct_name = gst_structure_get_name(structure);
                 if (!std::strcmp(struct_name, "video/x-raw")) {
                         gint widthpx, heightpx;
                         if (gst_structure_get(structure,
