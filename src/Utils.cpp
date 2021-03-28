@@ -510,7 +510,7 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                         // get text in current node
                         QString nodeText(cmark_node_get_literal(cur));
                         // create buffer to append rainbow text to
-                        std::string buf;
+                        QString buf;
                         int boundaryStart = 0;
                         int boundaryEnd   = 0;
                         // use QTextBoundaryFinder to iterate ofer graphemes
@@ -523,7 +523,7 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                                 boundaryStart = boundaryEnd;
                                 // Don't rainbowify whitespaces
                                 if (curChar.trimmed().isEmpty()) {
-                                        buf.append(curChar.toString().toStdString());
+                                        buf.append(curChar.toString());
                                         continue;
                                 }
 
@@ -534,8 +534,7 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                                 // create HTML element for current char
                                 auto curCharColored = QString("<font color=\"%0\">%1</font>")
                                                         .arg(colorString)
-                                                        .arg(curChar)
-                                                        .toStdString();
+                                                        .arg(curChar);
                                 // append colored HTML element to buffer
                                 buf.append(curCharColored);
 
@@ -545,7 +544,7 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                         // create HTML_INLINE node to prevent HTML from being escaped
                         auto htmlNode = cmark_node_new(CMARK_NODE_HTML_INLINE);
                         // set content of HTML node to buffer contents
-                        cmark_node_set_literal(htmlNode, buf.c_str());
+                        cmark_node_set_literal(htmlNode, buf.toUtf8().data());
                         // replace current node with HTML node
                         cmark_node_replace(cur, htmlNode);
                         // free memory of old node
