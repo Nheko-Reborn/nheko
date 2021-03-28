@@ -204,7 +204,7 @@ InputBar::send()
         auto wasEdit = !room->edit().isEmpty();
 
         if (text().startsWith('/')) {
-                int command_end = text().indexOf(QRegExp("\\s+"));
+                int command_end = text().indexOf(QRegularExpression("\\s"));
                 if (command_end == -1)
                         command_end = text().size();
                 auto name = text().mid(1, command_end - 1);
