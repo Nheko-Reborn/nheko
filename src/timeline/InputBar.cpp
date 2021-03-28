@@ -15,6 +15,7 @@
 
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/media.hpp>
+#include <QRegExp>
 
 #include "Cache.h"
 #include "ChatPage.h"
@@ -203,9 +204,7 @@ InputBar::send()
         auto wasEdit = !room->edit().isEmpty();
 
         if (text().startsWith('/')) {
-                int command_end = text().indexOf(' ');
-                if (command_end == -1)
-                        command_end = text().indexOf('\n');
+                int command_end = text().indexOf(QRegExp("\\s+"));
                 if (command_end == -1)
                         command_end = text().size();
                 auto name = text().mid(1, command_end - 1);
