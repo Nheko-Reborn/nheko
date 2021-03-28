@@ -15,7 +15,7 @@
 
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/media.hpp>
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include "Cache.h"
 #include "ChatPage.h"
