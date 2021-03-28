@@ -111,9 +111,9 @@ addDevice(GstDevice *device)
         g_free(name);
         guint nCaps = gst_caps_get_size(gstcaps);
         for (guint i = 0; i < nCaps; ++i) {
-                GstStructure *structure = gst_caps_get_structure(gstcaps, i);
-                const gchar *name       = gst_structure_get_name(structure);
-                if (!std::strcmp(name, "video/x-raw")) {
+                GstStructure *structure  = gst_caps_get_structure(gstcaps, i);
+                const gchar *struct_name = gst_structure_get_name(structure);
+                if (!std::strcmp(struct_name, "video/x-raw")) {
                         gint widthpx, heightpx;
                         if (gst_structure_get(structure,
                                               "width",
@@ -142,8 +142,8 @@ addDevice(GstDevice *device)
                                         for (guint j = 0; j < nRates; ++j) {
                                                 const GValue *rate =
                                                   gst_value_list_get_value(value, j);
-                                                if (auto fr = getFrameRate(rate); fr)
-                                                        addFrameRate(caps.frameRates, *fr);
+                                                if (auto frate = getFrameRate(rate); frate)
+                                                        addFrameRate(caps.frameRates, *frate);
                                         }
                                 }
                                 if (!caps.frameRates.empty())
