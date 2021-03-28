@@ -17,8 +17,8 @@
 #include <QTextDocument>
 #include <QXmlStreamReader>
 
-#include <cmath>
 #include <QTextBoundaryFinder>
+#include <cmath>
 #include <variant>
 
 #include <cmark.h>

@@ -13,9 +13,9 @@
 #include <QStandardPaths>
 #include <QUrl>
 
+#include <QRegularExpression>
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/media.hpp>
-#include <QRegularExpression>
 
 #include "Cache.h"
 #include "ChatPage.h"
