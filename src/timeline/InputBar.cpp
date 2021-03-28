@@ -525,7 +525,7 @@ InputBar::command(QString command, QString args)
         } else if (command == "plain") {
                 message(args, MarkdownOverride::OFF);
         } else if (command == "rainbow") {
-                message(args, MarkdownOverride::NOT_SPECIFIED, true);
+                message(args, MarkdownOverride::ON, true);
         }
 }
 

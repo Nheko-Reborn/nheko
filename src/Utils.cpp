@@ -18,7 +18,7 @@
 #include <QXmlStreamReader>
 
 #include <cmath>
-#include <qtextboundaryfinder.h>
+#include <QTextBoundaryFinder>
 #include <variant>
 
 #include <cmark.h>
@@ -26,7 +26,6 @@
 #include "Cache.h"
 #include "Config.h"
 #include "EventAccessors.h"
-#include "Logging.h"
 #include "MatrixClient.h"
 #include "UserSettingsPage.h"
 
@@ -509,24 +508,22 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                                 continue;
 
                         // get text in current node
-                        const char *tmp_buf = cmark_node_get_literal(cur);
-                        std::string nodeText(tmp_buf);
-                        auto qNodeText = QString::fromStdString(nodeText);
+                        QString nodeText(cmark_node_get_literal(cur));
                         // create buffer to append rainbow text to
                         std::string buf;
                         int boundaryStart = 0;
                         int boundaryEnd   = 0;
                         // use QTextBoundaryFinder to iterate ofer graphemes
                         QTextBoundaryFinder tbf(QTextBoundaryFinder::BoundaryType::Grapheme,
-                                                qNodeText);
+                                                nodeText);
                         while ((boundaryEnd = tbf.toNextBoundary()) != -1) {
                                 // Split text to get current char
                                 auto curChar =
-                                  qNodeText.mid(boundaryStart, boundaryEnd - boundaryStart);
+                                  nodeText.midRef(boundaryStart, boundaryEnd - boundaryStart);
                                 boundaryStart = boundaryEnd;
-                                // Don't rainbowify spaces
-                                if (curChar == " ") {
-                                        buf.push_back(' ');
+                                // Don't rainbowify whitespaces
+                                if (curChar.trimmed().isEmpty()) {
+                                        buf.append(curChar.toString().toStdString());
                                         continue;
                                 }
 
