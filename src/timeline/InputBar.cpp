@@ -205,6 +205,8 @@ InputBar::send()
         if (text().startsWith('/')) {
                 int command_end = text().indexOf(' ');
                 if (command_end == -1)
+                        command_end = text().indexOf('\n');
+                if (command_end == -1)
                         command_end = text().size();
                 auto name = text().mid(1, command_end - 1);
                 auto args = text().mid(command_end + 1);
