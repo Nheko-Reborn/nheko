@@ -530,7 +530,10 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                                 }
 
                                 // get correct color for char index
-                                auto color = QColor::fromHsvF((charIdx - 1.0) / textLen, 1.0, 1.0);
+                                // Use colors as described here:
+                                // https://shark.comfsm.fm/~dleeling/cis/hsl_rainbow.html
+                                auto color =
+                                  QColor::fromHslF((charIdx - 1.0) / textLen * (5. / 6.), 1.0, 0.5);
                                 // format color for HTML
                                 auto colorString = color.name(QColor::NameFormat::HexRgb);
                                 // create HTML element for current char
