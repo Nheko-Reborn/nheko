@@ -517,18 +517,20 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                         QTextBoundaryFinder tbf(QTextBoundaryFinder::BoundaryType::Grapheme,
                                                 nodeText);
                         while ((boundaryEnd = tbf.toNextBoundary()) != -1) {
+                                charIdx++;
                                 // Split text to get current char
                                 auto curChar =
                                   nodeText.midRef(boundaryStart, boundaryEnd - boundaryStart);
                                 boundaryStart = boundaryEnd;
                                 // Don't rainbowify whitespaces
-                                if (curChar.trimmed().isEmpty()) {
-                                        buf.append(curChar.toString());
+                                if (curChar.trimmed().isEmpty() ||
+                                    codepointIsEmoji(curChar.toUcs4().first())) {
+                                        buf.append(curChar);
                                         continue;
                                 }
 
                                 // get correct color for char index
-                                auto color = QColor::fromHsvF(1.0 / textLen * charIdx, 1.0, 1.0);
+                                auto color = QColor::fromHsvF((charIdx - 1.0) / textLen, 1.0, 1.0);
                                 // format color for HTML
                                 auto colorString = color.name(QColor::NameFormat::HexRgb);
                                 // create HTML element for current char
@@ -537,8 +539,6 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                                                         .arg(curChar);
                                 // append colored HTML element to buffer
                                 buf.append(curCharColored);
-
-                                charIdx++;
                         }
 
                         // create HTML_INLINE node to prevent HTML from being escaped
