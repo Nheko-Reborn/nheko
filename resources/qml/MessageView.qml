@@ -16,6 +16,8 @@ ScrollView {
     palette: colors
     padding: 8
 
+    ScrollBar.horizontal.visible: false
+
     ListView {
         id: chat
 

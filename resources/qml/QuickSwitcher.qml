@@ -12,13 +12,6 @@ Popup {
     property int textHeight: Math.round(Qt.application.font.pixelSize * 2.4)
     property int textMargin: Math.round(textHeight / 8)
 
-    function delay(delayTime, cb) {
-        timer.interval = delayTime;
-        timer.repeat = false;
-        timer.triggered.connect(cb);
-        timer.start();
-    }
-
     background: null
     width: Math.round(parent.width / 2)
     x: Math.round(parent.width / 2 - width / 2)
@@ -29,9 +22,7 @@ Popup {
     palette: colors
     onOpened: {
         completerPopup.open();
-        delay(200, function() {
-            roomTextInput.forceActiveFocus();
-        });
+	roomTextInput.forceActiveFocus();
     }
     onClosed: {
         completerPopup.close();
@@ -91,10 +82,6 @@ Popup {
 
         }
         target: completerPopup
-    }
-
-    Timer {
-        id: timer
     }
 
     Overlay.modal: Rectangle {

@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import "../"
 import QtMultimedia 5.6
 import QtQuick 2.12
 import QtQuick.Controls 2.1
@@ -107,20 +108,40 @@ Rectangle {
             width: parent.width
             spacing: 15
 
-            Rectangle {
+            ImageButton {
                 id: button
 
-                color: colors.window
-                radius: 22
-                height: 44
-                width: 44
+                Layout.alignment: Qt.verticalCenter
+                //color: colors.window
+                //radius: 22
+                height: 32
+                width: 32
+                z: 3
+                image: ":/icons/icons/ui/arrow-pointing-down.png"
+                onClicked: {
+                    switch (button.state) {
+                    case "":
+                        TimelineManager.timeline.cacheMedia(model.data.id);
+                        break;
+                    case "stopped":
+                        media.play();
+                        console.log("play");
+                        button.state = "playing";
+                        break;
+                    case "playing":
+                        media.pause();
+                        console.log("pause");
+                        button.state = "stopped";
+                        break;
+                    }
+                }
                 states: [
                     State {
                         name: "stopped"
 
                         PropertyChanges {
-                            target: img
-                            source: "image://colorimage/:/icons/icons/ui/play-sign.png?" + colors.text
+                            target: button
+                            image: ":/icons/icons/ui/play-sign.png"
                         }
 
                     },
@@ -128,41 +149,12 @@ Rectangle {
                         name: "playing"
 
                         PropertyChanges {
-                            target: img
-                            source: "image://colorimage/:/icons/icons/ui/pause-symbol.png?" + colors.text
+                            target: button
+                            image: ":/icons/icons/ui/pause-symbol.png"
                         }
 
                     }
                 ]
-
-                Image {
-                    id: img
-
-                    anchors.centerIn: parent
-                    z: 3
-                    source: "image://colorimage/:/icons/icons/ui/arrow-pointing-down.png?" + colors.text
-                    fillMode: Image.Pad
-                }
-
-                TapHandler {
-                    onSingleTapped: {
-                        switch (button.state) {
-                        case "":
-                            TimelineManager.timeline.cacheMedia(model.data.id);
-                            break;
-                        case "stopped":
-                            media.play();
-                            console.log("play");
-                            button.state = "playing";
-                            break;
-                        case "playing":
-                            media.pause();
-                            console.log("pause");
-                            button.state = "stopped";
-                            break;
-                        }
-                    }
-                }
 
                 CursorShape {
                     anchors.fill: parent

@@ -53,7 +53,9 @@ public slots:
         void updateState(int selectionStart, int selectionEnd, int cursorPosition, QString text);
         void openFileSelection();
         bool uploading() const { return uploading_; }
-        void message(QString body, MarkdownOverride useMarkdown = MarkdownOverride::NOT_SPECIFIED);
+        void message(QString body,
+                     MarkdownOverride useMarkdown = MarkdownOverride::NOT_SPECIFIED,
+                     bool rainbowify              = false);
 
 private slots:
         void startTyping();
