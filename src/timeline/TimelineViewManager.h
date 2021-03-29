@@ -92,6 +92,7 @@ signals:
         void narrowViewChanged();
         void focusChanged();
         void focusInput();
+        void showPublicRooms();
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
@@ -145,6 +146,7 @@ public slots:
 
         void backToRooms() { emit showRoomList(); }
         QObject *completerFor(QString completerName, QString roomId = "");
+        void showRoomDirectory();
 
 private:
 #ifdef USE_QUICK_VIEW

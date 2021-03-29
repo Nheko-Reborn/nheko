@@ -16,7 +16,6 @@
 #include "Splitter.h"
 #include "ui/FlatButton.h"
 #include "ui/Menu.h"
-#include "Logging.h"
 
 SideBarActions::SideBarActions(QWidget *parent)
   : QWidget{parent}
@@ -81,16 +80,13 @@ SideBarActions::SideBarActions(QWidget *parent)
         });
 
         roomDirectory_ = new FlatButton(this);
-        roomDirectory_->setToolTip(tr("Room directory"));
-        roomDirectory_->setEnabled(true);
+        roomDirectory_->setToolTip(tr("Public Rooms Directory"));
         roomDirectory_->setIcon(joinRoomIcon);
         roomDirectory_->setCornerRadius(conf::sidebarActions::iconSize / 2);
         roomDirectory_->setIconSize(
           QSize(conf::sidebarActions::iconSize, conf::sidebarActions::iconSize));
 
-        connect(roomDirectory_, &QPushButton::clicked, this, [this](){
-                nhlog::ui()->debug("Loading Room Directory Page");
-        });
+        connect(roomDirectory_, &QPushButton::clicked, this, &SideBarActions::showRoomDirectory);
 
         layout_->addWidget(createRoomBtn_);
         layout_->addWidget(roomDirectory_);

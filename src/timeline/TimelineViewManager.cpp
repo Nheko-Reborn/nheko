@@ -598,3 +598,10 @@ TimelineViewManager::focusTimeline()
 {
         getWidget()->setFocus();
 }
+
+void
+TimelineViewManager::showRoomDirectory()
+{
+        nhlog::ui()->debug("Plumbed");
+        emit showPublicRooms();
+}

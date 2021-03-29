@@ -32,10 +32,9 @@ public:
 
 signals:
         void showSettings();
-        // void showPublicRooms();
         void joinRoom(const QString &room);
         void createRoom(const mtx::requests::CreateRoom &request);
-        // void roomDirectoryRooms(const mtx::requests::PublicRooms &request);
+        void showRoomDirectory();
 
 protected:
         void resizeEvent(QResizeEvent *event) override;

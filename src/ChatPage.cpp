@@ -215,6 +215,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(room_list_, &RoomList::roomChanged, splitter, &Splitter::showChatView);
         connect(
           room_list_, &RoomList::roomChanged, view_manager_, &TimelineViewManager::setHistoryView);
+        
+        connect(sidebarActions_, &SideBarActions::showRoomDirectory, view_manager_, &TimelineViewManager::showRoomDirectory);
 
         connect(room_list_, &RoomList::acceptInvite, this, [this](const QString &room_id) {
                 joinRoom(room_id);
