@@ -222,6 +222,13 @@ Page {
             }
         }
 
+        Connections {
+            target: TimelineManager
+            onShowPublicRooms: {
+                console.debug("Roomdir from QML TimelineView");
+            }
+        }
+
         Label {
             visible: !TimelineManager.timeline && !TimelineManager.isInitialSync
             anchors.centerIn: parent
