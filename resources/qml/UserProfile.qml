@@ -21,7 +21,7 @@ ApplicationWindow {
     minimumHeight: 420
     palette: colors
     color: colors.window
-    title: profile.isGlobalUserProfile ? "Global User Profile" : "Room User Profile"
+    title: profile.isGlobalUserProfile ? qsTr("Global User Profile") : qsTr("Room User Profile")
 
     Shortcut {
         sequence: StandardKey.Cancel
@@ -54,7 +54,7 @@ ApplicationWindow {
         Text {
             id: errorText
 
-            text: "Error Text"
+            text: qsTr("Error Text")
             color: "red"
             visible: opacity > 0
             opacity: 0
@@ -238,7 +238,7 @@ ApplicationWindow {
                     id: verifyButton
 
                     visible: (!profile.userVerificationEnabled && !profile.isSelf) || (profile.isSelf && (model.verificationStatus != VerificationStatus.VERIFIED || !profile.userVerificationEnabled))
-                    text: (model.verificationStatus != VerificationStatus.VERIFIED) ? "Verify" : "Unverify"
+                    text: (model.verificationStatus != VerificationStatus.VERIFIED) ? qsTr("Verify") : qsTr("Unverify")
                     onClicked: {
                         if (model.verificationStatus == VerificationStatus.VERIFIED)
                             profile.unverify(model.deviceId);
