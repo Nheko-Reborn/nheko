@@ -183,6 +183,7 @@
         <file>qml/InviteDialog.qml</file>
         <file>qml/ReadReceipts.qml</file>
         <file>qml/RawMessageDialog.qml</file>
+        <file>qml/MobileMessageContextPopup.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>

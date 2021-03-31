@@ -65,7 +65,13 @@ Item {
     }
 
     TapHandler {
-        onLongPressed: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
+        onLongPressed: {
+            if (Settings.mobileMode)
+                mobileContextPopup.show(r, model);
+            else
+                messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
+
+        }
         onDoubleTapped: chat.model.reply = eventId
         gesturePolicy: TapHandler.ReleaseWithinBounds
     }
