@@ -13,6 +13,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QMessageBox>
+#include <QOperatingSystemVersion>
 #include <QPainter>
 #include <QProcessEnvironment>
 #include <QPushButton>
@@ -36,6 +37,15 @@
 #include "ui/ToggleButton.h"
 
 #include "config/nheko.h"
+
+namespace UserSettingsDefault {
+constexpr auto os = QOperatingSystemVersion::currentType();
+constexpr bool mobileOS =
+  (os == QOperatingSystemVersion::Android || os == QOperatingSystemVersion::IOS);
+constexpr bool mobileMode = mobileOS;
+// TODO: this should always be false; this is a temporary hack to get Android working
+constexpr bool disableCertificateValidation = mobileOS ? true : false;
+}
 
 QSharedPointer<UserSettings> UserSettings::instance_;
 
@@ -90,11 +100,11 @@ UserSettings::load(std::optional<QString> profile)
         decryptSidebar_       = settings.value("user/decrypt_sidebar", true).toBool();
         privacyScreen_        = settings.value("user/privacy_screen", false).toBool();
         privacyScreenTimeout_ = settings.value("user/privacy_screen_timeout", 0).toInt();
-        mobileMode_           = settings.value("user/mobile_mode", false).toBool();
-        emojiFont_            = settings.value("user/emoji_font_family", "default").toString();
-        baseFontSize_         = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
-        auto tempPresence     = settings.value("user/presence", "").toString().toStdString();
-        auto presenceValue    = QMetaEnum::fromType<Presence>().keyToValue(tempPresence.c_str());
+        mobileMode_ = settings.value("user/mobile_mode", UserSettingsDefault::mobileMode).toBool();
+        emojiFont_  = settings.value("user/emoji_font_family", "default").toString();
+        baseFontSize_      = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
+        auto tempPresence  = settings.value("user/presence", "").toString().toStdString();
+        auto presenceValue = QMetaEnum::fromType<Presence>().keyToValue(tempPresence.c_str());
         if (presenceValue < 0)
                 presenceValue = 0;
         presence_               = static_cast<Presence>(presenceValue);
@@ -128,8 +138,10 @@ UserSettings::load(std::optional<QString> profile)
           settings.value(prefix + "user/only_share_keys_with_verified_users", false).toBool();
         useOnlineKeyBackup_ = settings.value(prefix + "user/online_key_backup", false).toBool();
 
-        disableCertificateValidation_ =
-          settings.value("disable_certificate_validation", false).toBool();
+        disableCertificateValidation_ = settings
+                                          .value("disable_certificate_validation",
+                                                 UserSettingsDefault::disableCertificateValidation)
+                                          .toBool();
 
         applyTheme();
 }
