@@ -56,7 +56,7 @@ ApplicationWindow {
         Text {
             id: errorText
 
-            text: "Error Text"
+            text: qsTr("Error Text")
             color: "red"
             visible: opacity > 0
             opacity: 0
@@ -100,7 +100,7 @@ ApplicationWindow {
             }
 
             MatrixText {
-                text: "%1 member(s)".arg(roomSettings.memberCount)
+                text: qsTr("%1 member(s)").arg(roomSettings.memberCount)
                 Layout.alignment: Qt.AlignHCenter
             }
 
@@ -143,7 +143,7 @@ ApplicationWindow {
             rowSpacing: 10
 
             MatrixText {
-                text: "SETTINGS"
+                text: qsTr("SETTINGS")
                 font.bold: true
             }
 
@@ -152,12 +152,12 @@ ApplicationWindow {
             }
 
             MatrixText {
-                text: "Notifications"
+                text: qsTr("Notifications")
                 Layout.fillWidth: true
             }
 
             ComboBox {
-                model: ["Muted", "Mentions only", "All messages"]
+                model: [qsTr("Muted"), qsTr("Mentions only"), qsTr("All messages")]
                 currentIndex: roomSettings.notifications
                 onActivated: {
                     roomSettings.changeNotifications(index);
@@ -172,7 +172,7 @@ ApplicationWindow {
 
             ComboBox {
                 enabled: roomSettings.canChangeJoinRules
-                model: ["Anyone and guests", "Anyone", "Invited users"]
+                model: [qsTr("Anyone and guests"), qsTr("Anyone"), qsTr("Invited users")]
                 currentIndex: roomSettings.accessJoinRules
                 onActivated: {
                     roomSettings.changeAccessRules(index);
@@ -181,7 +181,7 @@ ApplicationWindow {
             }
 
             MatrixText {
-                text: "Encryption"
+                text: qsTr("Encryption")
             }
 
             ToggleButton {
@@ -219,7 +219,7 @@ ApplicationWindow {
 
             MatrixText {
                 visible: roomSettings.isEncryptionEnabled
-                text: "Respond to key requests"
+                text: qsTr("Respond to key requests")
             }
 
             ToggleButton {
@@ -245,7 +245,7 @@ ApplicationWindow {
             }
 
             MatrixText {
-                text: "INFO"
+                text: qsTr("INFO")
                 font.bold: true
             }
 
@@ -254,7 +254,7 @@ ApplicationWindow {
             }
 
             MatrixText {
-                text: "Internal ID"
+                text: qsTr("Internal ID")
             }
 
             MatrixText {
@@ -264,7 +264,7 @@ ApplicationWindow {
             }
 
             MatrixText {
-                text: "Room Version"
+                text: qsTr("Room Version")
             }
 
             MatrixText {
@@ -277,7 +277,7 @@ ApplicationWindow {
 
         Button {
             Layout.alignment: Qt.AlignRight
-            text: "Ok"
+            text: qsTr("OK")
             onClicked: close()
         }
 
