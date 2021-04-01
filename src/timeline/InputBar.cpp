@@ -306,9 +306,9 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown, bool rainbowify)
                 if ((ChatPage::instance()->userSettings()->markdown() &&
                      useMarkdown == MarkdownOverride::NOT_SPECIFIED) ||
                     useMarkdown == MarkdownOverride::ON)
-                        text.formatted_body =
-                          utils::getFormattedQuoteBody(related, utils::markdownToHtml(msg))
-                            .toStdString();
+                        text.formatted_body = utils::getFormattedQuoteBody(
+                                                related, utils::markdownToHtml(msg, rainbowify))
+                                                .toStdString();
                 else
                         text.formatted_body =
                           utils::getFormattedQuoteBody(related, msg.toHtmlEscaped()).toStdString();
@@ -321,9 +321,9 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown, bool rainbowify)
 }
 
 void
-InputBar::emote(QString msg)
+InputBar::emote(QString msg, bool rainbowify)
 {
-        auto html = utils::markdownToHtml(msg);
+        auto html = utils::markdownToHtml(msg, rainbowify);
 
         mtx::events::msg::Emote emote;
         emote.body = msg.trimmed().toStdString();
@@ -475,7 +475,7 @@ void
 InputBar::command(QString command, QString args)
 {
         if (command == "me") {
-                emote(args);
+                emote(args, false);
         } else if (command == "react") {
                 auto eventId = room->reply();
                 if (!eventId.isEmpty())
@@ -529,6 +529,8 @@ InputBar::command(QString command, QString args)
                 message(args, MarkdownOverride::OFF);
         } else if (command == "rainbow") {
                 message(args, MarkdownOverride::ON, true);
+        } else if (command == "rainbowme") {
+                emote(args, true);
         }
 }
 
