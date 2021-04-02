@@ -65,6 +65,7 @@ Item {
     }
 
     TapHandler {
+        enabled: !Settings.mobileMode
         onLongPressed: {
             if (Settings.mobileMode)
                 mobileContextPopup.show(r, model);
@@ -74,6 +75,11 @@ Item {
         }
         onDoubleTapped: chat.model.reply = eventId
         gesturePolicy: TapHandler.ReleaseWithinBounds
+    }
+
+    TapHandler {
+        enabled: Settings.mobileMode
+        onLongPressed: mobileContextPopup.show(timelineRowRoot, model);
     }
 
     RowLayout {
