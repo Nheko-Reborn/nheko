@@ -1181,11 +1181,14 @@ Cache::saveState(const mtx::responses::Sync &res)
 
         // Save joined rooms
         for (const auto &room : res.rooms.join) {
-                auto statesdb  = getStatesDb(txn, room.first);
-                auto membersdb = getMembersDb(txn, room.first);
+                auto statesdb    = getStatesDb(txn, room.first);
+                auto stateskeydb = getStatesKeyDb(txn, room.first);
+                auto membersdb   = getMembersDb(txn, room.first);
 
-                saveStateEvents(txn, statesdb, membersdb, room.first, room.second.state.events);
-                saveStateEvents(txn, statesdb, membersdb, room.first, room.second.timeline.events);
+                saveStateEvents(
+                  txn, statesdb, stateskeydb, membersdb, room.first, room.second.state.events);
+                saveStateEvents(
+                  txn, statesdb, stateskeydb, membersdb, room.first, room.second.timeline.events);
 
                 saveTimelineMessages(txn, room.first, room.second.timeline);
 
