@@ -69,7 +69,7 @@ MxcImageProvider::download(const QString &id,
                 QDir().mkpath(fileInfo.absolutePath());
 
                 if (fileInfo.exists()) {
-                        QImage image(fileInfo.absoluteFilePath());
+                        QImage image = utils::readImageFromFile(fileInfo.absoluteFilePath());
                         if (!image.isNull()) {
                                 image = image.scaled(
                                   requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -143,7 +143,8 @@ MxcImageProvider::download(const QString &id,
                                                 return;
                                         }
                                 } else {
-                                        QImage image(fileInfo.absoluteFilePath());
+                                        QImage image =
+                                          utils::readImageFromFile(fileInfo.absoluteFilePath());
                                         if (!image.isNull()) {
                                                 then(id,
                                                      requestedSize,
@@ -190,7 +191,8 @@ MxcImageProvider::download(const QString &id,
                                           return;
                                   }
 
-                                  QImage image(fileInfo.absoluteFilePath());
+                                  QImage image =
+                                    utils::readImageFromFile(fileInfo.absoluteFilePath());
                                   image.setText("original filename",
                                                 QString::fromStdString(originalFilename));
                                   image.setText("mxc url", "mxc://" + id);
