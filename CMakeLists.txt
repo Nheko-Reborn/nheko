@@ -131,7 +131,7 @@ if(USE_BUNDLED_LMDB)
 	target_include_directories(liblmdb::lmdb INTERFACE
 		"${HUNTER_INSTALL_PREFIX}/include/lmdb")
 else()
-	find_package(LMDB)
+	find_package(LMDB REQUIRED)
 endif()
 
 #
@@ -379,7 +379,7 @@ if(USE_BUNDLED_OLM)
 	set(OLM_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(Olm)
 else()
-	find_package(Olm 3)
+	find_package(Olm 3 REQUIRED)
 	set_package_properties(Olm PROPERTIES
 		DESCRIPTION "An implementation of the Double Ratchet cryptographic ratchet"
 		URL "https://git.matrix.org/git/olm/about/"
