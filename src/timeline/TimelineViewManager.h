@@ -61,7 +61,7 @@ public:
         Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
         bool isNarrowView() const { return isNarrowView_; }
         bool isWindowFocused() const { return isWindowFocused_; }
-        Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId) const;
+        Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId);
         Q_INVOKABLE QColor userColor(QString id, QColor background);
         Q_INVOKABLE QString escapeEmoji(QString str) const;
 
@@ -92,6 +92,7 @@ signals:
         void narrowViewChanged();
         void focusChanged();
         void focusInput();
+        void openImageOverlayInternalCb(QString eventId, QImage img);
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
@@ -145,6 +146,9 @@ public slots:
 
         void backToRooms() { emit showRoomList(); }
         QObject *completerFor(QString completerName, QString roomId = "");
+
+private slots:
+        void openImageOverlayInternal(QString eventId, QImage img);
 
 private:
 #ifdef USE_QUICK_VIEW

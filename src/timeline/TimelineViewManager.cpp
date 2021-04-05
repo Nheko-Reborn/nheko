@@ -256,6 +256,11 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                 isInitialSync_ = true;
                 emit initialSyncChanged(true);
         });
+
+        connect(this,
+                &TimelineViewManager::openImageOverlayInternalCb,
+                this,
+                &TimelineViewManager::openImageOverlayInternal);
 }
 
 void
@@ -350,37 +355,40 @@ TimelineViewManager::escapeEmoji(QString str) const
 }
 
 void
-TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId) const
+TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId)
 {
         if (mxcUrl.isEmpty()) {
                 return;
         }
-        QQuickImageResponse *imgResponse =
-          imgProvider->requestImageResponse(mxcUrl.remove("mxc://"), QSize());
-        connect(imgResponse, &QQuickImageResponse::finished, this, [this, eventId, imgResponse]() {
-                if (!imgResponse->errorString().isEmpty()) {
-                        nhlog::ui()->error("Error when retrieving image for overlay: {}",
-                                           imgResponse->errorString().toStdString());
-                        return;
+
+        MxcImageProvider::download(
+          mxcUrl.remove("mxc://"), QSize(), [this, eventId](QString, QSize, QImage img, QString) {
+                  if (img.isNull()) {
+                          nhlog::ui()->error("Error when retrieving image for overlay.");
+                          return;
+                  }
+
+                  emit openImageOverlayInternalCb(eventId, std::move(img));
+          });
+}
+
+void
+TimelineViewManager::openImageOverlayInternal(QString eventId, QImage img)
+{
+        auto pixmap = QPixmap::fromImage(img);
+
+        auto imgDialog = new dialogs::ImageOverlay(pixmap);
+        imgDialog->showFullScreen();
+        connect(imgDialog, &dialogs::ImageOverlay::saving, timeline_, [this, eventId, imgDialog]() {
+                // hide the overlay while presenting the save dialog for better
+                // cross platform support.
+                imgDialog->hide();
+
+                if (!timeline_->saveMedia(eventId)) {
+                        imgDialog->show();
+                } else {
+                        imgDialog->close();
                 }
-                auto pixmap = QPixmap::fromImage(imgResponse->textureFactory()->image());
-
-                auto imgDialog = new dialogs::ImageOverlay(pixmap);
-                imgDialog->showFullScreen();
-                connect(imgDialog,
-                        &dialogs::ImageOverlay::saving,
-                        timeline_,
-                        [this, eventId, imgDialog]() {
-                                // hide the overlay while presenting the save dialog for better
-                                // cross platform support.
-                                imgDialog->hide();
-
-                                if (!timeline_->saveMedia(eventId)) {
-                                        imgDialog->show();
-                                } else {
-                                        imgDialog->close();
-                                }
-                        });
         });
 }
 
