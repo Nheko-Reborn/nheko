@@ -145,19 +145,27 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         static auto self = this;
         qmlRegisterSingletonType<MainWindow>(
           "im.nheko", 1, 0, "MainWindow", [](QQmlEngine *, QJSEngine *) -> QObject * {
-                  return MainWindow::instance();
+                  auto ptr = MainWindow::instance();
+                  QQmlEngine::setObjectOwnership(ptr, QQmlEngine::CppOwnership);
+                  return ptr;
           });
         qmlRegisterSingletonType<TimelineViewManager>(
           "im.nheko", 1, 0, "TimelineManager", [](QQmlEngine *, QJSEngine *) -> QObject * {
-                  return self;
+                  auto ptr = self;
+                  QQmlEngine::setObjectOwnership(ptr, QQmlEngine::CppOwnership);
+                  return ptr;
           });
         qmlRegisterSingletonType<UserSettings>(
           "im.nheko", 1, 0, "Settings", [](QQmlEngine *, QJSEngine *) -> QObject * {
-                  return ChatPage::instance()->userSettings().data();
+                  auto ptr = ChatPage::instance()->userSettings().data();
+                  QQmlEngine::setObjectOwnership(ptr, QQmlEngine::CppOwnership);
+                  return ptr;
           });
         qmlRegisterSingletonType<CallManager>(
           "im.nheko", 1, 0, "CallManager", [](QQmlEngine *, QJSEngine *) -> QObject * {
-                  return ChatPage::instance()->callManager();
+                  auto ptr = ChatPage::instance()->callManager();
+                  QQmlEngine::setObjectOwnership(ptr, QQmlEngine::CppOwnership);
+                  return ptr;
           });
 
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();
