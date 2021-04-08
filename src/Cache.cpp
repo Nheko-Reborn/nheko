@@ -2867,15 +2867,18 @@ Cache::clearTimeline(const std::string &room_id)
                 if (passed_pagination_token) {
                         if (obj.count("event_id") != 0) {
                                 std::string event_id = obj["event_id"].get<std::string>();
-                                evToOrderDb.del(txn, event_id);
-                                eventsDb.del(txn, event_id);
-                                relationsDb.del(txn, event_id);
 
-                                std::string_view order{};
-                                bool exists = msg2orderDb.get(txn, event_id, order);
-                                if (exists) {
-                                        order2msgDb.del(txn, order);
-                                        msg2orderDb.del(txn, event_id);
+                                if (!event_id.empty()) {
+                                        evToOrderDb.del(txn, event_id);
+                                        eventsDb.del(txn, event_id);
+                                        relationsDb.del(txn, event_id);
+
+                                        std::string_view order{};
+                                        bool exists = msg2orderDb.get(txn, event_id, order);
+                                        if (exists) {
+                                                order2msgDb.del(txn, order);
+                                                msg2orderDb.del(txn, event_id);
+                                        }
                                 }
                         }
                         lmdb::cursor_del(cursor);
