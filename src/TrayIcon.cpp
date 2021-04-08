@@ -107,16 +107,16 @@ TrayIcon::TrayIcon(const QString &filename, QWidget *parent)
 #endif
 
         QMenu *menu = new QMenu(parent);
-        viewAction_ = new QAction(tr("Show"), parent);
-        quitAction_ = new QAction(tr("Quit"), parent);
+        setContextMenu(menu);
+
+        viewAction_ = new QAction(tr("Show"), this);
+        quitAction_ = new QAction(tr("Quit"), this);
 
         connect(viewAction_, SIGNAL(triggered()), parent, SLOT(show()));
         connect(quitAction_, &QAction::triggered, this, QApplication::quit);
 
         menu->addAction(viewAction_);
         menu->addAction(quitAction_);
-
-        setContextMenu(menu);
 }
 
 void
