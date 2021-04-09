@@ -59,7 +59,7 @@ struct trie
 
         std::vector<Value> search(const QVector<Key> &keys, //< TODO(Nico): replace this with a span
                                   size_t result_count_limit,
-                                  size_t max_edit_distance = 2) const
+                                  size_t max_edit_distance_ = 2) const
         {
                 std::vector<Value> ret;
                 if (!result_count_limit)
@@ -79,52 +79,66 @@ struct trie
                         }
                 };
 
-                if (auto e = this->next.find(keys[0]); e != this->next.end()) {
-                        append(
-                          e->second.search(keys.mid(1), result_count_limit, max_edit_distance));
-                }
+                auto limit = [&ret, result_count_limit] {
+                        return std::min(result_count_limit, (result_count_limit - ret.size()) * 2);
+                };
 
-                if (max_edit_distance && ret.size() < result_count_limit) {
-                        max_edit_distance -= 1;
+                // Try first exact matches, then with maximum errors
+                for (size_t max_edit_distance = 0;
+                     max_edit_distance <= max_edit_distance_ && ret.size() < result_count_limit;
+                     max_edit_distance += 1) {
+                        if (max_edit_distance && ret.size() < result_count_limit) {
+                                max_edit_distance -= 1;
 
-                        // swap chars case
-                        if (keys.size() >= 2) {
-                                auto t = this;
-                                for (int i = 1; i >= 0; i--) {
-                                        if (auto e = t->next.find(keys[i]); e != t->next.end()) {
-                                                t = &e->second;
-                                        } else {
-                                                t = nullptr;
-                                                break;
+                                // swap chars case
+                                if (keys.size() >= 2) {
+                                        auto t = this;
+                                        for (int i = 1; i >= 0; i--) {
+                                                if (auto e = t->next.find(keys[i]);
+                                                    e != t->next.end()) {
+                                                        t = &e->second;
+                                                } else {
+                                                        t = nullptr;
+                                                        break;
+                                                }
+                                        }
+
+                                        if (t) {
+                                                append(t->search(
+                                                  keys.mid(2), limit(), max_edit_distance));
                                         }
                                 }
 
-                                if (t) {
-                                        append(t->search(keys.mid(2),
-                                                         (result_count_limit - ret.size()) * 2,
-                                                         max_edit_distance));
+                                // insert case
+                                for (const auto &[k, t] : this->next) {
+                                        if (k == keys[0])
+                                                continue;
+                                        if (ret.size() >= limit())
+                                                break;
+
+                                        // insert
+                                        append(t.search(keys, limit(), max_edit_distance));
                                 }
+
+                                // delete character case
+                                append(this->search(keys.mid(1), limit(), max_edit_distance));
+
+                                // substitute case
+                                for (const auto &[k, t] : this->next) {
+                                        if (k == keys[0])
+                                                continue;
+                                        if (ret.size() >= limit())
+                                                break;
+
+                                        // substitute
+                                        append(t.search(keys.mid(1), limit(), max_edit_distance));
+                                }
+
+                                max_edit_distance += 1;
                         }
 
-                        // delete character case
-                        append(this->search(
-                          keys.mid(1), (result_count_limit - ret.size()) * 2, max_edit_distance));
-
-                        // substitute and insert cases
-                        for (const auto &[k, t] : this->next) {
-                                if (k == keys[0] || ret.size() >= result_count_limit)
-                                        break;
-
-                                // substitute
-                                append(t.search(
-                                  keys.mid(1), result_count_limit - ret.size(), max_edit_distance));
-
-                                if (ret.size() >= result_count_limit)
-                                        break;
-
-                                // insert
-                                append(t.search(
-                                  keys, result_count_limit - ret.size(), max_edit_distance));
+                        if (auto e = this->next.find(keys[0]); e != this->next.end()) {
+                                append(e->second.search(keys.mid(1), limit(), max_edit_distance));
                         }
                 }
 

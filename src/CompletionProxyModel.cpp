@@ -28,12 +28,15 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
                                  ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole)
                                  .toString()
                                  .toLower();
-                trie_.insert(string1.toUcs4(), i);
+                if (!string1.isEmpty())
+                        trie_.insert(string1.toUcs4(), i);
 
                 auto string2 = sourceModel()
                                  ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole2)
                                  .toString()
                                  .toLower();
+                if (!string2.isEmpty())
+                        trie_.insert(string2.toUcs4(), i);
         }
 
         // insert the partial matches
