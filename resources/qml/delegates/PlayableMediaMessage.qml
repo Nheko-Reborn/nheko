@@ -111,7 +111,7 @@ Rectangle {
             ImageButton {
                 id: button
 
-                Layout.alignment: Qt.verticalCenter
+                Layout.alignment: Qt.AlignVCenter
                 //color: colors.window
                 //radius: 22
                 height: 32
