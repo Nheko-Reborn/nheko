@@ -35,6 +35,7 @@ Item {
 
             TapHandler {
                 onSingleTapped: TimelineManager.timeline.saveMedia(model.data.id)
+                gesturePolicy: TapHandler.ReleaseWithinBounds
             }
 
             CursorShape {

@@ -19,6 +19,7 @@ Item {
 
     TapHandler {
         onSingleTapped: chat.positionViewAtIndex(chat.model.idToIndex(modelData.id), ListView.Contain)
+        gesturePolicy: TapHandler.ReleaseWithinBounds
     }
 
     CursorShape {
@@ -51,6 +52,7 @@ Item {
 
             TapHandler {
                 onSingleTapped: chat.model.openUserProfile(reply.modelData.userId)
+                gesturePolicy: TapHandler.ReleaseWithinBounds
             }
 
         }

@@ -38,7 +38,11 @@ Item {
 
         TapHandler {
             enabled: model.data.type == MtxEvent.ImageMessage && img.status == Image.Ready
-            onSingleTapped: TimelineManager.openImageOverlay(model.data.url, model.data.id)
+            onSingleTapped: {
+                TimelineManager.openImageOverlay(model.data.url, model.data.id);
+                eventPoint.accepted = true;
+            }
+            gesturePolicy: TapHandler.ReleaseWithinBounds
         }
 
         HoverHandler {

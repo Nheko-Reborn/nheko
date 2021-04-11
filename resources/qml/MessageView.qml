@@ -15,7 +15,6 @@ ScrollView {
     clip: false
     palette: colors
     padding: 8
-
     ScrollBar.horizontal.visible: false
 
     ListView {

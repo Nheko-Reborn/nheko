@@ -61,6 +61,7 @@ Rectangle {
         }
 
         layer.effect: OpacityMask {
+            cached: true
 
             maskSource: Rectangle {
                 anchors.fill: parent
