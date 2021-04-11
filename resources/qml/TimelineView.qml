@@ -79,6 +79,78 @@ Page {
 
     }
 
+    Component {
+        id: forwardCompleter
+
+        Popup {
+            id: forwardMessagePopup
+            x: 400
+            y: 400
+
+            property var mid
+
+            onOpened: {
+                completerPopup.open();
+                roomTextInput.forceActiveFocus();
+            }
+
+            background: Rectangle {
+                border.color: "#444"
+            }
+
+            function setMessageEventId(mid_in) {
+                mid = mid_in;
+            }
+
+            MatrixTextField {
+                id: roomTextInput
+
+                width: 100
+
+                color: colors.text
+                onTextEdited: {
+                    completerPopup.completer.searchString = text;
+                }
+                Keys.onPressed: {
+                    if (event.key == Qt.Key_Up && completerPopup.opened) {
+                        event.accepted = true;
+                        completerPopup.up();
+                    } else if (event.key == Qt.Key_Down && completerPopup.opened) {
+                        event.accepted = true;
+                        completerPopup.down();
+                    } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
+                        completerPopup.finishCompletion();
+                        event.accepted = true;
+                    }
+                }
+            }
+
+            Completer {
+                id: completerPopup
+
+                y: 50
+                width: 100
+                completerName: "room"
+                avatarHeight: 24
+                avatarWidth: 24
+                bottomToTop: false
+                closePolicy: Popup.NoAutoClose
+            }
+
+            Connections {
+                onCompletionSelected: {
+                    TimelineManager.timeline.forwardMessage(messageContextMenu.eventId, id);
+                    forwardMessagePopup.close();
+                }
+                onCountChanged: {
+                    if (completerPopup.count > 0 && (completerPopup.currentIndex < 0 || completerPopup.currentIndex >= completerPopup.count))
+                        completerPopup.currentIndex = 0;
+                }
+                target: completerPopup
+            }
+        }
+    }
+
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
@@ -131,6 +203,15 @@ Page {
         Platform.MenuItem {
             text: qsTr("Read receipts")
             onTriggered: TimelineManager.timeline.readReceiptsAction(messageContextMenu.eventId)
+        }
+
+        Platform.MenuItem {
+            text: qsTr("Forward")
+            onTriggered: {
+                var forwardMess = forwardCompleter.createObject(timelineRoot);
+                forwardMess.open();
+                forwardMess.setMessageEventId(messageContextMenu.eventId)
+            }
         }
 
         Platform.MenuItem {

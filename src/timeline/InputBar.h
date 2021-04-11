@@ -41,6 +41,14 @@ public:
                 connect(&typingTimeout_, &QTimer::timeout, this, &InputBar::stopTyping);
         }
 
+        void image(const QString &filename,
+            const std::optional<mtx::crypto::EncryptedFile> &file,
+            const QString &url,
+            const QString &mime,
+            uint64_t dsize,
+            const QSize &dimensions,
+            const QString &blurhash);
+
 public slots:
         QString text() const;
         QString previousText();
@@ -70,13 +78,6 @@ private:
         void emote(QString body, bool rainbowify);
         void notice(QString body, bool rainbowify);
         void command(QString name, QString args);
-        void image(const QString &filename,
-                   const std::optional<mtx::crypto::EncryptedFile> &file,
-                   const QString &url,
-                   const QString &mime,
-                   uint64_t dsize,
-                   const QSize &dimensions,
-                   const QString &blurhash);
         void file(const QString &filename,
                   const std::optional<mtx::crypto::EncryptedFile> &encryptedFile,
                   const QString &url,

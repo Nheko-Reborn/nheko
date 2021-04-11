@@ -4,6 +4,7 @@
 
 #include "TimelineViewManager.h"
 
+#include <QBuffer>
 #include <QDesktopServices>
 #include <QDropEvent>
 #include <QMetaType>
@@ -25,13 +26,12 @@
 #include "RoomsModel.h"
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
+#include "blurhash.hpp"
 #include "dialogs/ImageOverlay.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
 #include "ui/NhekoCursorShape.h"
 #include "ui/NhekoDropArea.h"
-
-#include <iostream> //only for debugging
 
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
@@ -332,6 +332,10 @@ TimelineViewManager::addRoom(const QString &room_id)
                         &TimelineModel::newEncryptedImage,
                         imgProvider,
                         &MxcImageProvider::addEncryptionInfo);
+                connect(newRoom.data(),
+                        &TimelineModel::forwardToRoom,
+                        this,
+                        &TimelineViewManager::forwardMessageToRoom);
                 models.insert(room_id, std::move(newRoom));
         }
 }
@@ -613,4 +617,99 @@ void
 TimelineViewManager::focusTimeline()
 {
         getWidget()->setFocus();
+}
+
+void
+TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEvents *e,
+                                          QString roomId,
+                                          bool sentFromEncrypted)
+{
+        auto elem        = *e;
+        auto room        = models.find(roomId);
+        auto messageType = mtx::accessors::msg_type(elem);
+
+        if (sentFromEncrypted && messageType == mtx::events::MessageType::Image) {
+                auto body        = mtx::accessors::body(elem);
+                auto mimetype    = mtx::accessors::mimetype(elem);
+                auto imageHeight = mtx::accessors::media_height(elem);
+                auto imageWidth  = mtx::accessors::media_height(elem);
+
+                QString mxcUrl = QString::fromStdString(mtx::accessors::url(elem));
+                MxcImageProvider::download(
+                  mxcUrl.remove("mxc://"),
+                  QSize(imageWidth, imageHeight),
+                  [this, roomId, body, mimetype](QString, QSize, QImage image, QString) {
+                          QByteArray data =
+                            QByteArray::fromRawData((const char *)image.bits(), image.byteCount());
+
+                          auto payload = std::string(data.data(), data.size());
+                          std::optional<mtx::crypto::EncryptedFile> encryptedFile;
+
+                          QSize dimensions;
+                          QString blurhash;
+                          auto mimeClass = QString::fromStdString(mimetype).split("/")[0];
+
+                          dimensions = image.size();
+                          if (image.height() > 200 && image.width() > 360)
+                                  image = image.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
+                          std::vector<unsigned char> data_;
+                          for (int y = 0; y < image.height(); y++) {
+                                  for (int x = 0; x < image.width(); x++) {
+                                          auto p = image.pixel(x, y);
+                                          data_.push_back(static_cast<unsigned char>(qRed(p)));
+                                          data_.push_back(static_cast<unsigned char>(qGreen(p)));
+                                          data_.push_back(static_cast<unsigned char>(qBlue(p)));
+                                  }
+                          }
+                          blurhash = QString::fromStdString(
+                            blurhash::encode(data_.data(), image.width(), image.height(), 4, 3));
+
+                          http::client()->upload(
+                            payload,
+                            encryptedFile ? "application/octet-stream" : mimetype,
+                            body,
+                            [this,
+                             roomId,
+                             filename      = body,
+                             encryptedFile = std::move(encryptedFile),
+                             mimeClass,
+                             mimetype,
+                             size = payload.size(),
+                             dimensions,
+                             blurhash](const mtx::responses::ContentURI &res,
+                                       mtx::http::RequestErr err) mutable {
+                                    if (err) {
+                                            nhlog::net()->warn("failed to upload media: {} {} ({})",
+                                                               err->matrix_error.error,
+                                                               to_string(err->matrix_error.errcode),
+                                                               static_cast<int>(err->status_code));
+                                            return;
+                                    }
+
+                                    auto url = QString::fromStdString(res.content_uri);
+                                    if (encryptedFile)
+                                            encryptedFile->url = res.content_uri;
+
+                                    auto r = models.find(roomId);
+                                    r.value()->input()->image(QString::fromStdString(filename),
+                                                              encryptedFile,
+                                                              url,
+                                                              QString::fromStdString(mimetype),
+                                                              size,
+                                                              dimensions,
+                                                              blurhash);
+                            });
+                  });
+                return;
+        };
+
+        std::visit(
+          [room](auto e) {
+                  if constexpr (mtx::events::message_content_to_type<decltype(e.content)> ==
+                                mtx::events::EventType::RoomMessage) {
+                          room.value()->sendMessageEvent(e.content,
+                                                         mtx::events::EventType::RoomMessage);
+                  }
+          },
+          elem);
 }

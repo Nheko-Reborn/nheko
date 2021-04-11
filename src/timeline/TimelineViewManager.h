@@ -16,6 +16,7 @@
 
 #include "Cache.h"
 #include "CallManager.h"
+#include "EventAccessors.h"
 #include "Logging.h"
 #include "TimelineModel.h"
 #include "Utils.h"
@@ -146,6 +147,9 @@ public slots:
 
         void backToRooms() { emit showRoomList(); }
         QObject *completerFor(QString completerName, QString roomId = "");
+        void forwardMessageToRoom(mtx::events::collections::TimelineEvents *e,
+                                  QString roomId,
+                                  bool sentFromEncrypted);
 
 private slots:
         void openImageOverlayInternal(QString eventId, QImage img);
