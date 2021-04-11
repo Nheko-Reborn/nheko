@@ -350,6 +350,35 @@ InputBar::emote(QString msg, bool rainbowify)
 }
 
 void
+InputBar::notice(QString msg, bool rainbowify)
+{
+        auto html = utils::markdownToHtml(msg, rainbowify);
+
+        mtx::events::msg::Notice notice;
+        notice.body = msg.trimmed().toStdString();
+
+        if (html != msg.trimmed().toHtmlEscaped() &&
+            ChatPage::instance()->userSettings()->markdown()) {
+                notice.formatted_body = html.toStdString();
+                notice.format         = "org.matrix.custom.html";
+                // Remove markdown links by completer
+                notice.body =
+                  msg.trimmed().replace(conf::strings::matrixToMarkdownLink, "\\1").toStdString();
+        }
+
+        if (!room->reply().isEmpty()) {
+                notice.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
+        }
+        if (!room->edit().isEmpty()) {
+                notice.relations.relations.push_back(
+                  {mtx::common::RelationType::Replace, room->edit().toStdString()});
+        }
+
+        room->sendMessageEvent(notice, mtx::events::EventType::RoomMessage);
+}
+
+void
 InputBar::image(const QString &filename,
                 const std::optional<mtx::crypto::EncryptedFile> &file,
                 const QString &url,
@@ -531,6 +560,10 @@ InputBar::command(QString command, QString args)
                 message(args, MarkdownOverride::ON, true);
         } else if (command == "rainbowme") {
                 emote(args, true);
+        } else if (command == "notice") {
+                notice(args, false);
+        } else if (command == "rainbownotice") {
+                notice(args, true);
         }
 }
 
