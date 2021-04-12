@@ -10,7 +10,7 @@ nheko
 <a href='https://flathub.org/apps/details/io.github.NhekoReborn.Nheko'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
 
 The motivation behind the project is to provide a native desktop app for [Matrix] that
-feels more like a mainstream chat app ([Element], Telegram etc) and less like an IRC client.
+feels more like a mainstream chat app ([Element], Telegram etc.) and less like an IRC client.
 
 ### Translations ###
 [![Translation status](http://weblate.nheko.im/widgets/nheko/-/nheko-master/svg-badge.svg)](http://weblate.nheko.im/engage/nheko/?utm_source=widget)
