@@ -359,6 +359,26 @@ handle_olm_message(const OlmMessage &msg)
                         return;
                 }
         }
+
+        try {
+                auto otherUserDeviceKeys = cache::userKeys(msg.sender);
+
+                if (!otherUserDeviceKeys)
+                        return;
+
+                std::map<std::string, std::vector<std::string>> targets;
+                for (auto [device_id, key] : otherUserDeviceKeys->device_keys) {
+                        if (key.keys.at("curve25519:" + device_id) == msg.sender_key)
+                                targets[msg.sender].push_back(device_id);
+                }
+
+                send_encrypted_to_device_messages(
+                  targets, mtx::events::DeviceEvent<mtx::events::msg::Dummy>{}, true);
+                nhlog::crypto()->info(
+                  "Recovering from broken olm channel with {}:{}", msg.sender, msg.sender_key);
+        } catch (std::exception &e) {
+                nhlog::crypto()->error("Failed to recover from broken olm sessions: {}", e.what());
+        }
 }
 
 nlohmann::json
