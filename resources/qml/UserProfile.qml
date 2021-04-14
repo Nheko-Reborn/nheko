@@ -22,6 +22,8 @@ ApplicationWindow {
     palette: colors
     color: colors.window
     title: profile.isGlobalUserProfile ? qsTr("Global User Profile") : qsTr("Room User Profile")
+    modality: Qt.WindowModal
+    flags: Qt.Dialog
 
     Shortcut {
         sequence: StandardKey.Cancel

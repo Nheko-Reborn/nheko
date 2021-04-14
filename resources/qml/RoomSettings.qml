@@ -21,6 +21,7 @@ ApplicationWindow {
     palette: colors
     color: colors.window
     modality: Qt.WindowModal
+    flags: Qt.Dialog
 
     Shortcut {
         sequence: StandardKey.Cancel
