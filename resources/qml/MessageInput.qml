@@ -274,6 +274,7 @@ Rectangle {
                 Connections {
                     ignoreUnknownSignals: true
                     onInsertText: {
+                        messageInput.remove(messageInput.selectionStart, messageInput.selectionEnd);
                         messageInput.insert(messageInput.cursorPosition, text);
                     }
                     onTextChanged: {
