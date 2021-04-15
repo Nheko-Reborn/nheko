@@ -832,17 +832,6 @@ TimelineModel::forwardMessage(QString eventId, QString roomId)
         emit forwardToRoom(e, roomId, cache::isRoomEncrypted(room_id_.toStdString()));
 }
 
-QString
-TimelineModel::messageContent(QString eventId)
-{
-        auto e = events.get(eventId.toStdString(), "");
-        if (!e)
-                return "";
-
-        auto content = mtx::accessors::body(*e);
-        return QString::fromStdString(content);
-}
-
 void
 TimelineModel::viewDecryptedRawMessage(QString id) const
 {

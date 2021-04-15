@@ -9,11 +9,12 @@ import im.nheko 1.0
 
 Popup {
     id: forwardMessagePopup
+
+    x: Math.round(parent.width / 2 - width / 2)
+    y: Math.round(parent.height / 2 - height / 2)
+    modal: true
     palette: colors
     parent: Overlay.overlay
-    modal: true
-    x: 400
-    y: 200
 
     width: implicitWidth >= 300 ? implicitWidth : 300
     height: implicitHeight + completerPopup.height + padding * 2
@@ -37,10 +38,12 @@ Popup {
 
     Column {
         id: forwardColumn
+
         spacing: 5
 
         Label {
             id: titleLabel
+
             text: qsTr("Forward Message")
             font.bold: true
             bottomPadding: 10
@@ -48,6 +51,7 @@ Popup {
 
         Reply {
             id: replyPreview
+
             modelData: TimelineManager.timeline ? TimelineManager.timeline.getDump(mid, "") : {
             }
             userColor: TimelineManager.userColor(modelData.userId, colors.window)
