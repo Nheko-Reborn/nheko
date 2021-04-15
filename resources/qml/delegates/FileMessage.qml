@@ -33,13 +33,9 @@ Item {
                 fillMode: Image.Pad
             }
 
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-            }
-
             TapHandler {
                 onSingleTapped: TimelineManager.timeline.saveMedia(model.data.id)
+                gesturePolicy: TapHandler.ReleaseWithinBounds
             }
 
             CursorShape {

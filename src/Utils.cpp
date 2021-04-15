@@ -803,6 +803,13 @@ utils::restoreCombobox(QComboBox *combo, const QString &value)
 }
 
 QImage
+utils::readImageFromFile(const QString &filename)
+{
+        QImageReader reader(filename);
+        reader.setAutoTransform(true);
+        return reader.read();
+}
+QImage
 utils::readImage(const QByteArray &data)
 {
         QBuffer buf;

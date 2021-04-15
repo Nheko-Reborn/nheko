@@ -306,9 +306,9 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown, bool rainbowify)
                 if ((ChatPage::instance()->userSettings()->markdown() &&
                      useMarkdown == MarkdownOverride::NOT_SPECIFIED) ||
                     useMarkdown == MarkdownOverride::ON)
-                        text.formatted_body =
-                          utils::getFormattedQuoteBody(related, utils::markdownToHtml(msg))
-                            .toStdString();
+                        text.formatted_body = utils::getFormattedQuoteBody(
+                                                related, utils::markdownToHtml(msg, rainbowify))
+                                                .toStdString();
                 else
                         text.formatted_body =
                           utils::getFormattedQuoteBody(related, msg.toHtmlEscaped()).toStdString();
@@ -321,9 +321,9 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown, bool rainbowify)
 }
 
 void
-InputBar::emote(QString msg)
+InputBar::emote(QString msg, bool rainbowify)
 {
-        auto html = utils::markdownToHtml(msg);
+        auto html = utils::markdownToHtml(msg, rainbowify);
 
         mtx::events::msg::Emote emote;
         emote.body = msg.trimmed().toStdString();
@@ -347,6 +347,35 @@ InputBar::emote(QString msg)
         }
 
         room->sendMessageEvent(emote, mtx::events::EventType::RoomMessage);
+}
+
+void
+InputBar::notice(QString msg, bool rainbowify)
+{
+        auto html = utils::markdownToHtml(msg, rainbowify);
+
+        mtx::events::msg::Notice notice;
+        notice.body = msg.trimmed().toStdString();
+
+        if (html != msg.trimmed().toHtmlEscaped() &&
+            ChatPage::instance()->userSettings()->markdown()) {
+                notice.formatted_body = html.toStdString();
+                notice.format         = "org.matrix.custom.html";
+                // Remove markdown links by completer
+                notice.body =
+                  msg.trimmed().replace(conf::strings::matrixToMarkdownLink, "\\1").toStdString();
+        }
+
+        if (!room->reply().isEmpty()) {
+                notice.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
+        }
+        if (!room->edit().isEmpty()) {
+                notice.relations.relations.push_back(
+                  {mtx::common::RelationType::Replace, room->edit().toStdString()});
+        }
+
+        room->sendMessageEvent(notice, mtx::events::EventType::RoomMessage);
 }
 
 void
@@ -475,7 +504,7 @@ void
 InputBar::command(QString command, QString args)
 {
         if (command == "me") {
-                emote(args);
+                emote(args, false);
         } else if (command == "react") {
                 auto eventId = room->reply();
                 if (!eventId.isEmpty())
@@ -529,6 +558,12 @@ InputBar::command(QString command, QString args)
                 message(args, MarkdownOverride::OFF);
         } else if (command == "rainbow") {
                 message(args, MarkdownOverride::ON, true);
+        } else if (command == "rainbowme") {
+                emote(args, true);
+        } else if (command == "notice") {
+                notice(args, false);
+        } else if (command == "rainbownotice") {
+                notice(args, true);
         }
 }
 

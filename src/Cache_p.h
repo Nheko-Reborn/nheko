@@ -273,6 +273,18 @@ public:
                 return false;
         }
 
+        static int compare_state_key(const MDB_val *a, const MDB_val *b)
+        {
+                auto get_skey = [](const MDB_val *v) {
+                        return nlohmann::json::parse(
+                                 std::string_view(static_cast<const char *>(v->mv_data),
+                                                  v->mv_size))
+                          .value("key", "");
+                };
+
+                return get_skey(a).compare(get_skey(b));
+        }
+
 signals:
         void newReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
         void roomReadStatus(const std::map<QString, bool> &status);
@@ -323,17 +335,19 @@ private:
         template<class T>
         void saveStateEvents(lmdb::txn &txn,
                              lmdb::dbi &statesdb,
+                             lmdb::dbi &stateskeydb,
                              lmdb::dbi &membersdb,
                              const std::string &room_id,
                              const std::vector<T> &events)
         {
                 for (const auto &e : events)
-                        saveStateEvent(txn, statesdb, membersdb, room_id, e);
+                        saveStateEvent(txn, statesdb, stateskeydb, membersdb, room_id, e);
         }
 
         template<class T>
         void saveStateEvent(lmdb::txn &txn,
                             lmdb::dbi &statesdb,
+                            lmdb::dbi &stateskeydb,
                             lmdb::dbi &membersdb,
                             const std::string &room_id,
                             const T &event)
@@ -371,9 +385,22 @@ private:
                 }
 
                 std::visit(
-                  [&txn, &statesdb](auto e) {
-                          if (isStateEvent(e) && e.type != EventType::Unsupported)
-                                  statesdb.put(txn, to_string(e.type), json(e).dump());
+                  [&txn, &statesdb, &stateskeydb](auto e) {
+                          if constexpr (isStateEvent(e))
+                                  if (e.type != EventType::Unsupported) {
+                                          if (e.state_key.empty())
+                                                  statesdb.put(
+                                                    txn, to_string(e.type), json(e).dump());
+                                          else
+                                                  stateskeydb.put(
+                                                    txn,
+                                                    to_string(e.type),
+                                                    json::object({
+                                                                   {"key", e.state_key},
+                                                                   {"id", e.event_id},
+                                                                 })
+                                                      .dump());
+                                  }
                   },
                   event);
         }
@@ -459,6 +486,14 @@ private:
         lmdb::dbi getStatesDb(lmdb::txn &txn, const std::string &room_id)
         {
                 return lmdb::dbi::open(txn, std::string(room_id + "/state").c_str(), MDB_CREATE);
+        }
+
+        lmdb::dbi getStatesKeyDb(lmdb::txn &txn, const std::string &room_id)
+        {
+                auto db =
+                  lmdb::dbi::open(txn, std::string(room_id + "/state_by_key").c_str(), MDB_CREATE);
+                lmdb::dbi_set_dupsort(txn, db, compare_state_key);
+                return db;
         }
 
         lmdb::dbi getAccountDataDb(lmdb::txn &txn, const std::string &room_id)

@@ -19,7 +19,11 @@ Rectangle {
     color: colors.window
 
     TapHandler {
-        onSingleTapped: TimelineManager.timeline.openRoomSettings()
+        onSingleTapped: {
+            TimelineManager.timeline.openRoomSettings();
+            eventPoint.accepted = true;
+        }
+        gesturePolicy: TapHandler.ReleaseWithinBounds
     }
 
     GridLayout {
@@ -57,7 +61,7 @@ Rectangle {
             height: avatarSize
             url: room ? room.roomAvatarUrl.replace("mxc://", "image://MxcImage/") : ""
             displayName: room ? room.roomName : qsTr("No room selected")
-            onClicked: TimelineManager.openRoomSettings()
+            onClicked: TimelineManager.timeline.openRoomSettings()
         }
 
         Label {
@@ -69,7 +73,6 @@ Rectangle {
             text: room ? room.roomName : qsTr("No room selected")
             maximumLineCount: 1
             elide: Text.ElideRight
-
         }
 
         MatrixText {

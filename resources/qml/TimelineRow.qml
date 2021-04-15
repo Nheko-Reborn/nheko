@@ -29,11 +29,13 @@ Item {
     TapHandler {
         acceptedButtons: Qt.RightButton
         onSingleTapped: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable)
+        gesturePolicy: TapHandler.ReleaseWithinBounds
     }
 
     TapHandler {
         onLongPressed: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable)
         onDoubleTapped: chat.model.reply = model.id
+        gesturePolicy: TapHandler.ReleaseWithinBounds
     }
 
     RowLayout {

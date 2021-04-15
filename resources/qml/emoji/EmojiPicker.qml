@@ -35,8 +35,8 @@ Menu {
     modal: true
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-
     height: columnView.implicitHeight + 4
+    width: columnView.implicitWidth
 
     ColumnLayout {
         id: columnView
@@ -44,17 +44,17 @@ Menu {
         spacing: 0
         anchors.leftMargin: 3
         anchors.rightMargin: 3
-	anchors.bottom: parent.bottom
-	anchors.left: parent.left
-	anchors.right: parent.right
-	anchors.topMargin: 2
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.topMargin: 2
 
         // emoji grid
         GridView {
             id: gridView
 
-	    Layout.preferredHeight: cellHeight * 5
-	    Layout.preferredWidth: 7 * 52 + 20
+            Layout.preferredHeight: cellHeight * 5
+            Layout.preferredWidth: 7 * 52 + 20
             Layout.leftMargin: 4
             cellWidth: 52
             cellHeight: 52

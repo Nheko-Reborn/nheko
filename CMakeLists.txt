@@ -131,7 +131,7 @@ if(USE_BUNDLED_LMDB)
 	target_include_directories(liblmdb::lmdb INTERFACE
 		"${HUNTER_INSTALL_PREFIX}/include/lmdb")
 else()
-	find_package(LMDB)
+	find_package(LMDB REQUIRED)
 endif()
 
 #
@@ -361,7 +361,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        808605299937203696a572c585a51509b1de28cf
+		GIT_TAG        5b7654c5d4512abc38806a0f44efc199029ceef4
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -379,7 +379,7 @@ if(USE_BUNDLED_OLM)
 	set(OLM_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(Olm)
 else()
-	find_package(Olm 3)
+	find_package(Olm 3 REQUIRED)
 	set_package_properties(Olm PROPERTIES
 		DESCRIPTION "An implementation of the Double Ratchet cryptographic ratchet"
 		URL "https://git.matrix.org/git/olm/about/"

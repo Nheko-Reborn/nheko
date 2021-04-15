@@ -312,6 +312,10 @@ restoreCombobox(QComboBox *combo, const QString &value);
 
 //! Read image respecting exif orientation
 QImage
+readImageFromFile(const QString &filename);
+
+//! Read image respecting exif orientation
+QImage
 readImage(const QByteArray &data);
 
 bool

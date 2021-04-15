@@ -22,7 +22,7 @@ Popup {
     palette: colors
     onOpened: {
         completerPopup.open();
-	roomTextInput.forceActiveFocus();
+        roomTextInput.forceActiveFocus();
     }
     onClosed: {
         completerPopup.close();

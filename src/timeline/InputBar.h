@@ -67,7 +67,8 @@ signals:
         void uploadingChanged(bool value);
 
 private:
-        void emote(QString body);
+        void emote(QString body, bool rainbowify);
+        void notice(QString body, bool rainbowify);
         void command(QString name, QString args);
         void image(const QString &filename,
                    const std::optional<mtx::crypto::EncryptedFile> &file,
