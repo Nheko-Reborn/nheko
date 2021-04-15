@@ -2,16 +2,19 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import "./delegates/"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import im.nheko 1.0
 
-Popup {
+Dialog {
     id: forwardMessagePopup
+    title: qsTr("Forward Message")
     x: 400
     y: 400
 
     width: 200
+    height: replyPreview.height + roomTextInput.height + completerPopup.height + implicitFooterHeight + implicitHeaderHeight
 
     property var mid
 
@@ -24,18 +27,26 @@ Popup {
         completerPopup.close();
     }
 
-    background: Rectangle {
-        border.color: "#444"
-    }
-
     function setMessageEventId(mid_in) {
         mid = mid_in;
+    }
+
+    Reply {
+        id: replyPreview
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        modelData: TimelineManager.timeline ? TimelineManager.timeline.getDump(mid, "") : {
+        }
+        userColor: TimelineManager.userColor(modelData.userId, colors.window)
     }
 
     MatrixTextField {
         id: roomTextInput
 
         width: forwardMessagePopup.width - forwardMessagePopup.leftPadding * 2
+
+        anchors.top: replyPreview.bottom
 
         color: colors.text
         onTextEdited: {
@@ -58,7 +69,8 @@ Popup {
     Completer {
         id: completerPopup
 
-        y: roomTextInput.height + roomTextInput.bottomPadding
+        y: replyPreview.height + roomTextInput.height + roomTextInput.bottomPadding
+
         width: forwardMessagePopup.width - forwardMessagePopup.leftPadding * 2
         completerName: "room"
         avatarHeight: 24
