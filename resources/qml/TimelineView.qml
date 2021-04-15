@@ -79,6 +79,14 @@ Page {
 
     }
 
+    Component {
+        id: roomDirectoryComponent
+
+        RoomDirectory {
+        }
+
+    }
+
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
@@ -226,6 +234,8 @@ Page {
             target: TimelineManager
             onShowPublicRooms: {
                 console.debug("Roomdir from QML TimelineView");
+                var dialog = roomDirectoryComponent.createObject(timelineRoot);
+                dialog.open();
             }
         }
 
