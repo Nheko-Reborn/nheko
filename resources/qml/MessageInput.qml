@@ -105,6 +105,14 @@ Rectangle {
                     popup.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition));
                 }
 
+                function positionCursorAtEnd() {
+                    cursorPosition = messageInput.length;
+                }
+
+                function positionCursorAtStart() {
+                    cursorPosition = 0;
+                }
+
                 selectByMouse: true
                 placeholderText: qsTr("Write a message...")
                 placeholderTextColor: colors.buttonText
@@ -220,29 +228,31 @@ Rectangle {
                                 if (!id || TimelineManager.timeline.getDump(id, "").isEditable) {
                                     TimelineManager.timeline.edit = id;
                                     cursorPosition = 0;
+                                    Qt.callLater(positionCursorAtEnd);
                                     break;
                                 }
                                 idx++;
                             }
-                        } else if (cursorPosition == messageInput.length) {
+                        } else if (positionAt(0, cursorRectangle.y) === 0) {
                             event.accepted = true;
-                            cursorPosition = 0;
+                            positionCursorAtStart();
                         }
                     } else if (event.key == Qt.Key_Down && event.modifiers == Qt.NoModifier) {
-                        if (cursorPosition == 0) {
-                            event.accepted = true;
-                            cursorPosition = messageInput.length;
-                        } else if (cursorPosition == messageInput.length && TimelineManager.timeline.edit) {
+                        if (cursorPosition == messageInput.length && TimelineManager.timeline.edit) {
                             event.accepted = true;
                             var idx = TimelineManager.timeline.idToIndex(TimelineManager.timeline.edit) - 1;
                             while (true) {
                                 var id = TimelineManager.timeline.indexToId(idx);
                                 if (!id || TimelineManager.timeline.getDump(id, "").isEditable) {
                                     TimelineManager.timeline.edit = id;
+                                    Qt.callLater(positionCursorAtStart);
                                     break;
                                 }
                                 idx--;
                             }
+                        } else if (positionAt(width, cursorRectangle.y + 2) === messageInput.length) {
+                            event.accepted = true;
+                            positionCursorAtEnd();
                         }
                     }
                 }
