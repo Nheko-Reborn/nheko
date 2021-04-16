@@ -80,8 +80,13 @@ signals:
         void inviteUsers(QStringList users);
         void focusChanged();
         void focusInput();
+<<<<<<< HEAD
         void openImageOverlayInternalCb(QString eventId, QImage img);
         void openProfile(UserProfile *profile);
+=======
+        void showPublicRooms();
+        void openImageOverlayInternalCb(QString eventId, QImage img);
+>>>>>>> bd2f6ccd... Add skeleton room directory model
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
