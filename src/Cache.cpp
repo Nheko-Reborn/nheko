@@ -2414,6 +2414,9 @@ Cache::joinedRooms()
 std::optional<MemberInfo>
 Cache::getMember(const std::string &room_id, const std::string &user_id)
 {
+        if (user_id.empty())
+                return std::nullopt;
+
         try {
                 auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
 
