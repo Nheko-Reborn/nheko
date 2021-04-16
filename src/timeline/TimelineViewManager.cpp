@@ -614,7 +614,6 @@ TimelineViewManager::focusTimeline()
 {
         getWidget()->setFocus();
 }
-<<<<<<< HEAD
 
 void
 TimelineViewManager::showRoomDirectory()
@@ -622,5 +621,3 @@ TimelineViewManager::showRoomDirectory()
         nhlog::ui()->debug("Plumbed");
         emit showPublicRooms();
 }
-=======
->>>>>>> upstream/master

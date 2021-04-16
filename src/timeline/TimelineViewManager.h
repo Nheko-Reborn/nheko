@@ -92,11 +92,8 @@ signals:
         void narrowViewChanged();
         void focusChanged();
         void focusInput();
-<<<<<<< HEAD
         void showPublicRooms();
-=======
         void openImageOverlayInternalCb(QString eventId, QImage img);
->>>>>>> upstream/master
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
