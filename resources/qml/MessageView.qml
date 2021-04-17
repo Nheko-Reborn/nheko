@@ -79,7 +79,7 @@ ScrollView {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/edit.png"
                     ToolTip.visible: hovered
-                    ToolTip.text: row.model && row.model.isEditable ? qsTr("Edit") : qsTr("Edited")
+                    ToolTip.text: qsTr("Edit")
                     onClicked: {
                         if (row.model.isEditable)
                             chat.model.editAction(row.model.id);

@@ -56,7 +56,6 @@ ApplicationWindow {
         Text {
             id: errorText
 
-            text: qsTr("Error Text")
             color: "red"
             visible: opacity > 0
             opacity: 0

@@ -56,7 +56,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2026"/>
+        <location filename="../../src/Cache.cpp" line="+2004"/>
         <source>You joined this room.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -133,23 +133,23 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+203"/>
+        <location filename="../../src/ChatPage.cpp" line="+202"/>
         <source>Failed to invite user: %1</source>
         <translation>ユーザーを招待できませんでした: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+806"/>
+        <location line="+809"/>
         <source>Invited user: %1</source>
         <translation>招待されたユーザー: %1</translation>
     </message>
     <message>
-        <location line="-510"/>
+        <location line="-509"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+413"/>
+        <location line="+412"/>
         <source>Confirm join</source>
         <translation type="unfinished"></translation>
     </message>
@@ -240,7 +240,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-818"/>
+        <location line="-817"/>
         <source>Cache migration failed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -265,18 +265,18 @@
         <translation>セーブデータを復元できませんでした。もう一度ログインして下さい。</translation>
     </message>
     <message>
-        <location line="+157"/>
+        <location line="+145"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>暗号化鍵を設定できませんでした。サーバーの応答: %1 %2. 後でやり直して下さい。</translation>
     </message>
     <message>
         <location line="+34"/>
-        <location line="+116"/>
+        <location line="+123"/>
         <source>Please try to login again: %1</source>
         <translation>もう一度ログインしてみて下さい: %1</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+51"/>
         <source>Failed to join room: %1</source>
         <translation>部屋に参加できませんでした: %1</translation>
     </message>
@@ -319,7 +319,7 @@
         <translation>全ての部屋</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Favourite rooms</source>
         <translation>お気に入りの部屋</translation>
     </message>
@@ -423,7 +423,7 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+117"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+114"/>
         <location line="+181"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
@@ -500,7 +500,7 @@
         <translation>暗号化されています</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+0"/>
         <source>This message is not encrypted!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -508,7 +508,7 @@
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+613"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+616"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation type="unfinished">-- 暗号化イベント (復号鍵が見つかりません) --</translation>
@@ -587,7 +587,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+253"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+232"/>
         <source>Select a file</source>
         <translation type="unfinished">ファイルを選択</translation>
     </message>
@@ -597,7 +597,7 @@
         <translation type="unfinished">全てのファイル (*)</translation>
     </message>
     <message>
-        <location line="+371"/>
+        <location line="+418"/>
         <source>Failed to upload media. Please try again.</source>
         <translation type="unfinished">メディアをアップロードできませんでした。やり直して下さい。</translation>
     </message>
@@ -613,7 +613,7 @@
 <context>
     <name>LoginPage</name>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+80"/>
+        <location filename="../../src/LoginPage.cpp" line="+81"/>
         <source>Matrix ID</source>
         <translation>Matrix ID</translation>
     </message>
@@ -674,13 +674,13 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+84"/>
         <location line="+11"/>
-        <location line="+156"/>
+        <location line="+160"/>
         <location line="+11"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-131"/>
+        <location line="-132"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>自動検出できませんでした。不正な形式の応答を受信しました。</translation>
     </message>
@@ -705,12 +705,12 @@ Example: https://server.my:8787</source>
         <translation>不明なエラーが発生しました。ホームサーバーのドメイン名が有効であるかを確認して下さい。</translation>
     </message>
     <message>
-        <location line="-168"/>
+        <location line="-171"/>
         <source>SSO LOGIN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+263"/>
+        <location line="+267"/>
         <source>Empty password</source>
         <translation>パスワードが入力されていません</translation>
     </message>
@@ -820,12 +820,12 @@ Example: https://server.my:8787</source>
         <translation type="unfinished">ファイルを送信</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+50"/>
         <source>Write a message...</source>
         <translation type="unfinished">メッセージを書く...</translation>
     </message>
     <message>
-        <location line="+211"/>
+        <location line="+214"/>
         <source>Emoji</source>
         <translation type="unfinished">絵文字</translation>
     </message>
@@ -833,6 +833,29 @@ Example: https://server.my:8787</source>
         <location line="+16"/>
         <source>Send</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MessageView</name>
+    <message>
+        <location filename="../qml/MessageView.qml" line="+82"/>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>React</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Reply</source>
+        <translation type="unfinished">返信</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Options</source>
+        <translation type="unfinished">オプション</translation>
     </message>
 </context>
 <context>
@@ -894,6 +917,50 @@ Example: https://server.my:8787</source>
     </message>
 </context>
 <context>
+    <name>NotificationsManager</name>
+    <message>
+        <location filename="../../src/notifications/Manager.cpp" line="+22"/>
+        <location filename="../../src/notifications/ManagerMac.cpp" line="+44"/>
+        <location filename="../../src/notifications/ManagerWin.cpp" line="+78"/>
+        <source>%1 sent an encrypted message</source>
+        <translation type="unfinished">%1が暗号化されたメッセージを送信しました</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>* %1 %2</source>
+        <comment>Format an emote message in a notification, %1 is the sender, %2 the message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>%1 replied: %2</source>
+        <comment>Format a reply in a notification. %1 is the sender, %2 the message</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>%1: %2</source>
+        <comment>Format a normal message in a notification. %1 is the sender, %2 the message</comment>
+        <translation type="unfinished">%1: %2</translation>
+    </message>
+    <message>
+        <location filename="../../src/notifications/ManagerMac.cpp" line="-1"/>
+        <location filename="../../src/notifications/ManagerWin.cpp" line="-1"/>
+        <source>%1 replied with an encrypted message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>%1 replied to a message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>%1 sent a message</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PlaceCall</name>
     <message>
         <location filename="../qml/voip/PlaceCall.qml" line="+48"/>
@@ -950,14 +1017,6 @@ Example: https://server.my:8787</source>
         <location line="+1"/>
         <source>profile name</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QuickSwitcher</name>
-    <message>
-        <location filename="../../src/QuickSwitcher.cpp" line="+62"/>
-        <source>Search for a room...</source>
-        <translation>部屋を探す...</translation>
     </message>
 </context>
 <context>
@@ -1045,7 +1104,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1793"/>
+        <location filename="../../src/Cache.cpp" line="+1751"/>
         <source>no version stored</source>
         <translation>バージョンが保存されていません</translation>
     </message>
@@ -1053,7 +1112,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomInfoListItem</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+90"/>
+        <location filename="../../src/RoomInfoListItem.cpp" line="+89"/>
         <source>Leave room</source>
         <translation>部屋を出る</translation>
     </message>
@@ -1118,7 +1177,57 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomSettings</name>
     <message>
-        <location filename="../qml/RoomSettings.qml" line="+204"/>
+        <location filename="../qml/RoomSettings.qml" line="+103"/>
+        <source>%1 member(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <source>SETTINGS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Muted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Mentions only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>All messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Anyone and guests</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Anyone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Invited users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>End-to-End Encryption</source>
         <translation type="unfinished">エンドツーエンド暗号化</translation>
     </message>
@@ -1129,11 +1238,36 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+17"/>
+        <source>Respond to key requests</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Whether or not the client should respond automatically with the session keys
                                 upon request. Use with caution, this is a temporary measure to test the
                                 E2E implementation until device verification is completed.</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>INFO</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Internal ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Room Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
     </message>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+267"/>
@@ -1293,7 +1427,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+911"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+892"/>
         <source>Message redaction failed: %1</source>
         <translation>メッセージを編集できませんでした: %1</translation>
     </message>
@@ -1324,7 +1458,7 @@ Example: https://server.my:8787</source>
         <translation>ファイルを保存</translation>
     </message>
     <message numerus="yes">
-        <location line="+143"/>
+        <location line="+151"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -1442,12 +1576,12 @@ Example: https://server.my:8787</source>
         <translation>%1がノックを編集しました。</translation>
     </message>
     <message>
-        <location line="-798"/>
+        <location line="-785"/>
         <source>You joined this room.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+800"/>
+        <location line="+787"/>
         <source>Rejected the knock from %1.</source>
         <translation>%1からのノックを拒否しました。</translation>
     </message>
@@ -1471,35 +1605,15 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+100"/>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+0"/>
+        <location filename="../qml/TimelineRow.qml" line="+105"/>
         <source>Edited</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+17"/>
-        <source>React</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>Reply</source>
-        <translation>返信</translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>Options</source>
-        <translation>オプション</translation>
     </message>
 </context>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+97"/>
+        <location filename="../qml/TimelineView.qml" line="+113"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1557,7 +1671,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+430"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+455"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1565,7 +1679,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+47"/>
+        <location filename="../qml/TopBar.qml" line="+51"/>
         <source>Back to room list</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1576,7 +1690,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+23"/>
         <source>Room options</source>
         <translation type="unfinished">部屋のオプション</translation>
     </message>
@@ -1604,7 +1718,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+110"/>
+        <location filename="../../src/TrayIcon.cpp" line="+112"/>
         <source>Show</source>
         <translation>表示</translation>
     </message>
@@ -1665,12 +1779,23 @@ Example: https://server.my:8787</source>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+137"/>
+        <location filename="../qml/UserProfile.qml" line="+24"/>
+        <source>Global User Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Room User Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+114"/>
+        <location line="+104"/>
         <source>Verify</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="-81"/>
         <source>Ban the user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1682,6 +1807,11 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+8"/>
         <source>Kick the user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <source>Unverify</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1708,8 +1838,8 @@ Example: https://server.my:8787</source>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+337"/>
-        <location filename="../../src/UserSettingsPage.h" line="+183"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+340"/>
+        <location filename="../../src/UserSettingsPage.h" line="+186"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1717,7 +1847,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location line="+540"/>
+        <location line="+553"/>
         <source>Minimize to tray</source>
         <translation>トレイへ最小化</translation>
     </message>
@@ -2214,7 +2344,7 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+149"/>
+        <location filename="../../src/Utils.cpp" line="+189"/>
         <source>Yesterday</source>
         <translation>昨日</translation>
     </message>
@@ -2355,7 +2485,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location line="+87"/>
+        <location line="+93"/>
         <source>Media type: %1
 Media size: %2
 </source>
@@ -2411,7 +2541,7 @@ Media size: %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+112"/>
+        <location filename="../../src/Utils.h" line="+115"/>
         <source>You sent an audio clip</source>
         <translation>音声データを送信しました</translation>
     </message>
