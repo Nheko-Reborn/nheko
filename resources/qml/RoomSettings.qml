@@ -22,6 +22,7 @@ ApplicationWindow {
     color: colors.window
     modality: Qt.WindowModal
     flags: Qt.Dialog
+    title: qsTr("Room Settings")
 
     Shortcut {
         sequence: StandardKey.Cancel

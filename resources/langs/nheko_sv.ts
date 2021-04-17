@@ -1181,7 +1181,12 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>RoomSettings</name>
     <message>
-        <location filename="../qml/RoomSettings.qml" line="+103"/>
+        <location filename="../qml/RoomSettings.qml" line="+25"/>
+        <source>Room Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+79"/>
         <source>%1 member(s)</source>
         <translation type="unfinished"></translation>
     </message>
