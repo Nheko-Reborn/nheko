@@ -829,7 +829,7 @@ TimelineModel::forwardMessage(QString eventId, QString roomId)
         if (!e)
                 return;
 
-        emit forwardToRoom(e, roomId, cache::isRoomEncrypted(room_id_.toStdString()));
+        emit forwardToRoom(e, roomId);
 }
 
 void

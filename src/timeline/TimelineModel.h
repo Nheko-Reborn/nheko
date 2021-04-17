@@ -323,9 +323,7 @@ signals:
         void roomNameChanged();
         void roomTopicChanged();
         void roomAvatarUrlChanged();
-        void forwardToRoom(mtx::events::collections::TimelineEvents *e,
-                           QString roomId,
-                           bool sentFromEncrypted);
+        void forwardToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 
 private:
         template<typename T>

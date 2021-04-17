@@ -621,68 +621,63 @@ TimelineViewManager::focusTimeline()
 
 void
 TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEvents *e,
-                                          QString roomId,
-                                          bool sentFromEncrypted)
+                                          QString roomId)
 {
-        auto elem        = *e;
-        auto room        = models.find(roomId);
-        auto messageType = mtx::accessors::msg_type(elem);
-        auto content     = mtx::accessors::url(elem);
+        auto elem                                                = *e;
+        auto room                                                = models.find(roomId);
+        auto content                                             = mtx::accessors::url(elem);
+        std::optional<mtx::crypto::EncryptedFile> encryptionInfo = mtx::accessors::file(elem);
 
-        if (sentFromEncrypted) {
-                std::optional<mtx::crypto::EncryptedFile> encryptionInfo =
-                  mtx::accessors::file(elem);
-
+        if (encryptionInfo) {
                 http::client()->download(
                   content,
                   [this, roomId, e, encryptionInfo](const std::string &res,
-                     const std::string &content_type,
-                     const std::string &originalFilename,
-                     mtx::http::RequestErr err) {
+                                                    const std::string &content_type,
+                                                    const std::string &originalFilename,
+                                                    mtx::http::RequestErr err) {
                           if (err) {
                                   return;
                           }
 
-                          assert(encryptionInfo);
+                          auto data = mtx::crypto::to_string(
+                            mtx::crypto::decrypt_file(res, encryptionInfo.value()));
 
-                        auto data = mtx::crypto::to_string(
-                        mtx::crypto::decrypt_file(res, encryptionInfo.value()));
+                          http::client()->upload(
+                            data,
+                            content_type,
+                            originalFilename,
+                            [this, roomId, e](const mtx::responses::ContentURI &res,
+                                              mtx::http::RequestErr err) mutable {
+                                    if (err) {
+                                            nhlog::net()->warn("failed to upload media: {} {} ({})",
+                                                               err->matrix_error.error,
+                                                               to_string(err->matrix_error.errcode),
+                                                               static_cast<int>(err->status_code));
+                                            return;
+                                    }
 
-                        http::client()->upload(
-                          data,
-                          content_type,
-                          originalFilename,
-                          [this, roomId, e](const mtx::responses::ContentURI &res,
-                                     mtx::http::RequestErr err) mutable {
-                                  if (err) {
-                                          nhlog::net()->warn("failed to upload media: {} {} ({})",
-                                                             err->matrix_error.error,
-                                                             to_string(err->matrix_error.errcode),
-                                                             static_cast<int>(err->status_code));
-                                          return;
-                                  }
+                                    std::visit(
+                                      [this, roomId, e, url = res.content_uri](auto ev) {
+                                              if constexpr (mtx::events::message_content_to_type<
+                                                              decltype(ev.content)> ==
+                                                            mtx::events::EventType::RoomMessage) {
+                                                      if constexpr (messageWithFileAndUrl(ev)) {
+                                                              ev.content.relations.relations
+                                                                .clear();
+                                                              ev.content.file.reset();
+                                                              ev.content.url = url;
+                                                      }
 
-                                  std::visit(
-                                    [this, roomId, e, url = res.content_uri](auto ev) {
-                                            if constexpr (mtx::events::message_content_to_type<
-                                                            decltype(ev.content)> ==
-                                                          mtx::events::EventType::RoomMessage) {
-                                                    if constexpr (messageWithFileAndUrl(ev)) {
-                                                            ev.content.relations.relations.clear();
-                                                            ev.content.file.reset();
-                                                            ev.content.url = url;
+                                                      auto room = models.find(roomId);
+                                                      room.value()->sendMessageEvent(
+                                                        ev.content,
+                                                        mtx::events::EventType::RoomMessage);
+                                              }
+                                      },
+                                      *e);
+                            });
 
-                                                            auto room = models.find(roomId);
-                                                            room.value()->sendMessageEvent(
-                                                              ev.content,
-                                                              mtx::events::EventType::RoomMessage);
-                                                    }
-                                            }
-                                    },
-                                    *e);
-                          });
-
-                        return;
+                          return;
                   });
 
                 return;

@@ -32,33 +32,6 @@ class UserSettings;
 class ChatPage;
 class DeviceVerificationFlow;
 
-struct nonesuch
-{
-        ~nonesuch()                = delete;
-        nonesuch(nonesuch const &) = delete;
-        void operator=(nonesuch const &) = delete;
-};
-
-namespace detail {
-template<class Default, class AlwaysVoid, template<class...> class Op, class... Args>
-struct detector
-{
-        using value_t = std::false_type;
-        using type    = Default;
-};
-
-template<class Default, template<class...> class Op, class... Args>
-struct detector<Default, std::void_t<Op<Args...>>, Op, Args...>
-{
-        using value_t = std::true_type;
-        using type    = Op<Args...>;
-};
-
-} // namespace detail
-
-template<template<class...> class Op, class... Args>
-using is_detected = typename detail::detector<nonesuch, void, Op, Args...>::value_t;
-
 class TimelineViewManager : public QObject
 {
         Q_OBJECT
@@ -175,15 +148,17 @@ public slots:
 
         void backToRooms() { emit showRoomList(); }
         QObject *completerFor(QString completerName, QString roomId = "");
-        void forwardMessageToRoom(mtx::events::collections::TimelineEvents *e,
-                                  QString roomId,
-                                  bool sentFromEncrypted);
+        void forwardMessageToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 
 private slots:
         void openImageOverlayInternal(QString eventId, QImage img);
 
 private:
-         template<class Content>
+        template<template<class...> class Op, class... Args>
+        using is_detected =
+          typename nheko::detail::detector<nheko::nonesuch, void, Op, Args...>::value_t;
+
+        template<class Content>
         using f_t = decltype(Content::file);
 
         template<class Content>
@@ -192,11 +167,7 @@ private:
         template<typename T>
         static constexpr bool messageWithFileAndUrl(const mtx::events::Event<T> &e)
         {
-                if constexpr (is_detected<f_t, T>::value && is_detected<u_t, T>::value) {
-                        return true;
-                }
-
-                return false;
+                return is_detected<f_t, T>::value && is_detected<u_t, T>::value;
         }
 
 private:
