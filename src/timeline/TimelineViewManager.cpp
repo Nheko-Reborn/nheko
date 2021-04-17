@@ -627,86 +627,72 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
         auto elem        = *e;
         auto room        = models.find(roomId);
         auto messageType = mtx::accessors::msg_type(elem);
+        auto content     = mtx::accessors::url(elem);
 
-        if (sentFromEncrypted && messageType == mtx::events::MessageType::Image) {
-                auto body        = mtx::accessors::body(elem);
-                auto mimetype    = mtx::accessors::mimetype(elem);
-                auto imageHeight = mtx::accessors::media_height(elem);
-                auto imageWidth  = mtx::accessors::media_height(elem);
+        if (sentFromEncrypted) {
+                std::optional<mtx::crypto::EncryptedFile> encryptionInfo =
+                  mtx::accessors::file(elem);
 
-                QString mxcUrl = QString::fromStdString(mtx::accessors::url(elem));
-                MxcImageProvider::download(
-                  mxcUrl.remove("mxc://"),
-                  QSize(imageWidth, imageHeight),
-                  [this, roomId, body, mimetype](QString, QSize, QImage image, QString) {
-                          QByteArray data =
-                            QByteArray::fromRawData((const char *)image.bits(), image.byteCount());
-
-                          auto payload = std::string(data.data(), data.size());
-                          std::optional<mtx::crypto::EncryptedFile> encryptedFile;
-
-                          QSize dimensions;
-                          QString blurhash;
-                          auto mimeClass = QString::fromStdString(mimetype).split("/")[0];
-
-                          dimensions = image.size();
-                          if (image.height() > 200 && image.width() > 360)
-                                  image = image.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
-                          std::vector<unsigned char> data_;
-                          for (int y = 0; y < image.height(); y++) {
-                                  for (int x = 0; x < image.width(); x++) {
-                                          auto p = image.pixel(x, y);
-                                          data_.push_back(static_cast<unsigned char>(qRed(p)));
-                                          data_.push_back(static_cast<unsigned char>(qGreen(p)));
-                                          data_.push_back(static_cast<unsigned char>(qBlue(p)));
-                                  }
+                http::client()->download(
+                  content,
+                  [this, roomId, e, encryptionInfo](const std::string &res,
+                     const std::string &content_type,
+                     const std::string &originalFilename,
+                     mtx::http::RequestErr err) {
+                          if (err) {
+                                  return;
                           }
-                          blurhash = QString::fromStdString(
-                            blurhash::encode(data_.data(), image.width(), image.height(), 4, 3));
 
-                          http::client()->upload(
-                            payload,
-                            encryptedFile ? "application/octet-stream" : mimetype,
-                            body,
-                            [this,
-                             roomId,
-                             filename      = body,
-                             encryptedFile = std::move(encryptedFile),
-                             mimeClass,
-                             mimetype,
-                             size = payload.size(),
-                             dimensions,
-                             blurhash](const mtx::responses::ContentURI &res,
-                                       mtx::http::RequestErr err) mutable {
-                                    if (err) {
-                                            nhlog::net()->warn("failed to upload media: {} {} ({})",
-                                                               err->matrix_error.error,
-                                                               to_string(err->matrix_error.errcode),
-                                                               static_cast<int>(err->status_code));
-                                            return;
-                                    }
+                          assert(encryptionInfo);
 
-                                    auto url = QString::fromStdString(res.content_uri);
-                                    if (encryptedFile)
-                                            encryptedFile->url = res.content_uri;
+                        auto data = mtx::crypto::to_string(
+                        mtx::crypto::decrypt_file(res, encryptionInfo.value()));
 
-                                    auto r = models.find(roomId);
-                                    r.value()->input()->image(QString::fromStdString(filename),
-                                                              encryptedFile,
-                                                              url,
-                                                              QString::fromStdString(mimetype),
-                                                              size,
-                                                              dimensions,
-                                                              blurhash);
-                            });
+                        http::client()->upload(
+                          data,
+                          content_type,
+                          originalFilename,
+                          [this, roomId, e](const mtx::responses::ContentURI &res,
+                                     mtx::http::RequestErr err) mutable {
+                                  if (err) {
+                                          nhlog::net()->warn("failed to upload media: {} {} ({})",
+                                                             err->matrix_error.error,
+                                                             to_string(err->matrix_error.errcode),
+                                                             static_cast<int>(err->status_code));
+                                          return;
+                                  }
+
+                                  std::visit(
+                                    [this, roomId, e, url = res.content_uri](auto ev) {
+                                            if constexpr (mtx::events::message_content_to_type<
+                                                            decltype(ev.content)> ==
+                                                          mtx::events::EventType::RoomMessage) {
+                                                    if constexpr (messageWithFileAndUrl(ev)) {
+                                                            ev.content.relations.relations.clear();
+                                                            ev.content.file.reset();
+                                                            ev.content.url = url;
+
+                                                            auto room = models.find(roomId);
+                                                            room.value()->sendMessageEvent(
+                                                              ev.content,
+                                                              mtx::events::EventType::RoomMessage);
+                                                    }
+                                            }
+                                    },
+                                    *e);
+                          });
+
+                        return;
                   });
+
                 return;
-        };
+        }
 
         std::visit(
           [room](auto e) {
                   if constexpr (mtx::events::message_content_to_type<decltype(e.content)> ==
                                 mtx::events::EventType::RoomMessage) {
+                          e.content.relations.relations.clear();
                           room.value()->sendMessageEvent(e.content,
                                                          mtx::events::EventType::RoomMessage);
                   }

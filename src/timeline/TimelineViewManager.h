@@ -13,6 +13,7 @@
 #include <mtx/common.hpp>
 #include <mtx/responses/messages.hpp>
 #include <mtx/responses/sync.hpp>
+#include <type_traits>
 
 #include "Cache.h"
 #include "CallManager.h"
@@ -30,6 +31,33 @@ class ColorImageProvider;
 class UserSettings;
 class ChatPage;
 class DeviceVerificationFlow;
+
+struct nonesuch
+{
+        ~nonesuch()                = delete;
+        nonesuch(nonesuch const &) = delete;
+        void operator=(nonesuch const &) = delete;
+};
+
+namespace detail {
+template<class Default, class AlwaysVoid, template<class...> class Op, class... Args>
+struct detector
+{
+        using value_t = std::false_type;
+        using type    = Default;
+};
+
+template<class Default, template<class...> class Op, class... Args>
+struct detector<Default, std::void_t<Op<Args...>>, Op, Args...>
+{
+        using value_t = std::true_type;
+        using type    = Op<Args...>;
+};
+
+} // namespace detail
+
+template<template<class...> class Op, class... Args>
+using is_detected = typename detail::detector<nonesuch, void, Op, Args...>::value_t;
 
 class TimelineViewManager : public QObject
 {
@@ -153,6 +181,23 @@ public slots:
 
 private slots:
         void openImageOverlayInternal(QString eventId, QImage img);
+
+private:
+         template<class Content>
+        using f_t = decltype(Content::file);
+
+        template<class Content>
+        using u_t = decltype(Content::url);
+
+        template<typename T>
+        static constexpr bool messageWithFileAndUrl(const mtx::events::Event<T> &e)
+        {
+                if constexpr (is_detected<f_t, T>::value && is_detected<u_t, T>::value) {
+                        return true;
+                }
+
+                return false;
+        }
 
 private:
 #ifdef USE_QUICK_VIEW
