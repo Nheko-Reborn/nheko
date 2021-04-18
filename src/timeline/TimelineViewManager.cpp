@@ -4,7 +4,6 @@
 
 #include "TimelineViewManager.h"
 
-#include <QBuffer>
 #include <QDesktopServices>
 #include <QDropEvent>
 #include <QMetaType>
@@ -26,7 +25,6 @@
 #include "RoomsModel.h"
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
-#include "blurhash.hpp"
 #include "dialogs/ImageOverlay.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
@@ -623,10 +621,9 @@ void
 TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEvents *e,
                                           QString roomId)
 {
-        auto elem                                                = *e;
         auto room                                                = models.find(roomId);
-        auto content                                             = mtx::accessors::url(elem);
-        std::optional<mtx::crypto::EncryptedFile> encryptionInfo = mtx::accessors::file(elem);
+        auto content                                             = mtx::accessors::url(*e);
+        std::optional<mtx::crypto::EncryptedFile> encryptionInfo = mtx::accessors::file(*e);
 
         if (encryptionInfo) {
                 http::client()->download(
@@ -669,6 +666,8 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
                                                       }
 
                                                       auto room = models.find(roomId);
+                                                      removeReplyFallback(ev);
+                                                      ev.content.relations.relations.clear();
                                                       room.value()->sendMessageEvent(
                                                         ev.content,
                                                         mtx::events::EventType::RoomMessage);
@@ -688,9 +687,10 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
                   if constexpr (mtx::events::message_content_to_type<decltype(e.content)> ==
                                 mtx::events::EventType::RoomMessage) {
                           e.content.relations.relations.clear();
+                          removeReplyFallback(e);
                           room.value()->sendMessageEvent(e.content,
                                                          mtx::events::EventType::RoomMessage);
                   }
           },
-          elem);
+          *e);
 }

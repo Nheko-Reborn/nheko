@@ -63,19 +63,13 @@ utils::stripReplyFallbacks(const TimelineEvent &event, std::string id, QString r
         // get body, strip reply fallback, then transform the event to text, if it is a media event
         // etc
         related.quoted_body = QString::fromStdString(mtx::accessors::body(event));
-        QRegularExpression plainQuote("^>.*?$\n?", QRegularExpression::MultilineOption);
-        while (related.quoted_body.startsWith(">"))
-                related.quoted_body.remove(plainQuote);
-        if (related.quoted_body.startsWith("\n"))
-                related.quoted_body.remove(0, 1);
+        stripReplyFromBody(related.quoted_body);
         related.quoted_body = utils::getQuoteBody(related);
         related.quoted_body.replace("@room", QString::fromUtf8("@\u2060room"));
 
         // get quoted body and strip reply fallback
         related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(event);
-        related.quoted_formatted_body.remove(QRegularExpression(
-          "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption));
-        related.quoted_formatted_body.replace("@room", "@\u2060aroom");
+        stripReplyFromFormattedBody(related.quoted_formatted_body);
         related.room = room_id_;
 
         return related;

@@ -9,6 +9,7 @@
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QPixmap>
+#include <QRegularExpression>
 #include <mtx/events/collections.hpp>
 #include <mtx/events/common.hpp>
 
@@ -39,6 +40,26 @@ struct RelatedInfo
 namespace utils {
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
+
+//! Helper function to remove reply fallback from body
+static void
+stripReplyFromBody(QString &body)
+{
+        QRegularExpression plainQuote("^>.*?$\n?", QRegularExpression::MultilineOption);
+        while (body.startsWith(">"))
+                body.remove(plainQuote);
+        if (body.startsWith("\n"))
+                body.remove(0, 1);
+}
+
+//! Helper function to remove reply fallback from formatted body
+static void
+stripReplyFromFormattedBody(QString &formatted_body)
+{
+        formatted_body.remove(QRegularExpression("<mx-reply>.*</mx-reply>",
+                                                 QRegularExpression::DotMatchesEverythingOption));
+        formatted_body.replace("@room", "@\u2060aroom");
+}
 
 RelatedInfo
 stripReplyFallbacks(const TimelineEvent &event, std::string id, QString room_id_);

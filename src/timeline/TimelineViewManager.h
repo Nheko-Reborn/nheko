@@ -13,7 +13,6 @@
 #include <mtx/common.hpp>
 #include <mtx/responses/messages.hpp>
 #include <mtx/responses/sync.hpp>
-#include <type_traits>
 
 #include "Cache.h"
 #include "CallManager.h"
@@ -159,15 +158,51 @@ private:
           typename nheko::detail::detector<nheko::nonesuch, void, Op, Args...>::value_t;
 
         template<class Content>
-        using f_t = decltype(Content::file);
+        using file_t = decltype(Content::file);
 
         template<class Content>
-        using u_t = decltype(Content::url);
+        using url_t = decltype(Content::url);
+
+        template<class Content>
+        using body_t = decltype(Content::body);
+
+        template<class Content>
+        using formatted_body_t = decltype(Content::formatted_body);
 
         template<typename T>
-        static constexpr bool messageWithFileAndUrl(const mtx::events::Event<T> &e)
+        static constexpr bool messageWithFileAndUrl(const mtx::events::Event<T> &)
         {
-                return is_detected<f_t, T>::value && is_detected<u_t, T>::value;
+                return is_detected<file_t, T>::value && is_detected<url_t, T>::value;
+        }
+
+        template<typename T>
+        static constexpr void removeReplyFallback(mtx::events::Event<T> &e)
+        {
+                if constexpr (is_detected<body_t, T>::value) {
+                        if constexpr (std::is_same_v<std::optional<std::string>,
+                                                     std::remove_cv_t<decltype(e.content.body)>>) {
+                                if (e.content.body) {
+                                        QString body = QString::fromStdString(e.content.body);
+                                        utils::stripReplyFromBody(body);
+                                        e.content.body = body.toStdString();
+                                }
+                        } else if constexpr (std::is_same_v<
+                                               std::string,
+                                               std::remove_cv_t<decltype(e.content.body)>>) {
+                                QString body = QString::fromStdString(e.content.body);
+                                utils::stripReplyFromBody(body);
+                                e.content.body = body.toStdString();
+                        }
+                }
+
+                if constexpr (is_detected<formatted_body_t, T>::value) {
+                        if (e.content.format == "org.matrix.custom.html") {
+                                QString formattedBody =
+                                  QString::fromStdString(e.content.formatted_body);
+                                utils::stripReplyFromFormattedBody(formattedBody);
+                                e.content.formatted_body = formattedBody.toStdString();
+                        }
+                }
         }
 
 private:
