@@ -35,7 +35,7 @@
 
 //! Should be changed when a breaking change occurs in the cache format.
 //! This will reset client's data.
-static const std::string CURRENT_CACHE_FORMAT_VERSION("2020.10.20");
+static const std::string CURRENT_CACHE_FORMAT_VERSION("2021.04.18");
 static const std::string SECRET("secret");
 
 //! Keys used for the DB
@@ -977,6 +977,45 @@ Cache::runMigrations()
                    nhlog::db()->info("Successfully migrated olm sessions.");
                    return true;
            }},
+          {"2021.04.18",
+           [this]() {
+                   try {
+                           using namespace mtx::events;
+                           using namespace mtx::events::state;
+                           auto txn      = lmdb::txn::begin(env_, nullptr);
+                           auto room_ids = getRoomIds(txn);
+
+                           for (const auto &room_id : room_ids) {
+                                   auto statesdb = getStatesDb(txn, room_id);
+
+                                   std::string_view event;
+                                   bool res = statesdb.get(
+                                     txn, to_string(mtx::events::EventType::RoomCreate), event);
+                                   if (res) {
+                                           try {
+                                                   StateEvent<Create> msg = json::parse(event);
+
+                                                   if (msg.content.room_version.empty()) {
+                                                           msg.content.room_version = "1";
+                                                           statesdb.put(txn,
+                                                                        to_string(msg.type),
+                                                                        json(msg).dump());
+                                                   }
+                                           } catch (const json::exception &e) {
+                                                   nhlog::db()->warn(
+                                                     "failed to parse m.room.create event: {}",
+                                                     e.what());
+                                           }
+                                   }
+                           }
+                   } catch (const lmdb::error &) {
+                           nhlog::db()->critical("Failed to migrate room versions");
+                           return false;
+                   }
+                   nhlog::db()->info("Successfully migrated room versions.");
+                   return true;
+           }},
+
         };
 
         nhlog::db()->info("Running migrations, this may take a while!");

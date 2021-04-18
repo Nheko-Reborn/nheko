@@ -1463,9 +1463,8 @@ TimelineModel::formatMemberEvent(QString id)
                 }
         }
 
-        QString user    = QString::fromStdString(event->state_key);
-        QString name    = utils::replaceEmoji(displayName(user));
-        QString oldName = QString::fromStdString(prevEvent->content.display_name);
+        QString user = QString::fromStdString(event->state_key);
+        QString name = utils::replaceEmoji(displayName(user));
         QString rendered;
 
         // see table https://matrix.org/docs/spec/client_server/latest#m-room-member
@@ -1476,6 +1475,8 @@ TimelineModel::formatMemberEvent(QString id)
                 break;
         case Membership::Join:
                 if (prevEvent && prevEvent->content.membership == Membership::Join) {
+                        QString oldName = QString::fromStdString(prevEvent->content.display_name);
+
                         bool displayNameChanged =
                           prevEvent->content.display_name != event->content.display_name;
                         bool avatarChanged =
