@@ -36,15 +36,7 @@ Page {
         id: emojiPopup
 
         colors: palette
-
-        model: EmojiProxyModel {
-            category: Emoji.Category.People
-
-            sourceModel: EmojiModel {
-            }
-
-        }
-
+        model: TimelineManager.completerFor("allemoji", "")
     }
 
     Component {

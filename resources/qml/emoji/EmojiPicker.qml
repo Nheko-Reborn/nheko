@@ -49,6 +49,54 @@ Menu {
         anchors.right: parent.right
         anchors.topMargin: 2
 
+        // Search field
+        TextField {
+            id: emojiSearch
+
+            //width: gridView.width - 6
+            Layout.topMargin: 3
+            Layout.preferredWidth: 7 * 52 + 20 - 6
+            placeholderText: qsTr("Search")
+            selectByMouse: true
+            rightPadding: clearSearch.width
+            onTextChanged: searchTimer.restart()
+            onVisibleChanged: {
+                if (visible)
+                    forceActiveFocus();
+
+            }
+
+            Timer {
+                id: searchTimer
+
+                interval: 350 // tweak as needed?
+                onTriggered: {
+                    emojiPopup.model.searchString = emojiSearch.text;
+                    emojiPopup.model.category = Emoji.Category.Search;
+                }
+            }
+
+            ToolButton {
+                id: clearSearch
+
+                visible: emojiSearch.text !== ''
+                icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.png?" + (clearSearch.hovered ? colors.highlight : colors.buttonText)
+                focusPolicy: Qt.NoFocus
+                onClicked: emojiSearch.clear()
+
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    right: parent.right
+                }
+                // clear the default hover effects.
+
+                background: Item {
+                }
+
+            }
+
+        }
+
         // emoji grid
         GridView {
             id: gridView
@@ -104,54 +152,6 @@ Menu {
 
             }
 
-            // Search field
-            header: TextField {
-                id: emojiSearch
-
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.rightMargin: emojiScroll.width + 4
-                placeholderText: qsTr("Search")
-                selectByMouse: true
-                rightPadding: clearSearch.width
-                onTextChanged: searchTimer.restart()
-                onVisibleChanged: {
-                    if (visible)
-                        forceActiveFocus();
-
-                }
-
-                Timer {
-                    id: searchTimer
-
-                    interval: 350 // tweak as needed?
-                    onTriggered: {
-                        emojiPopup.model.filter = emojiSearch.text;
-                        emojiPopup.model.category = Emoji.Category.Search;
-                    }
-                }
-
-                ToolButton {
-                    id: clearSearch
-
-                    visible: emojiSearch.text !== ''
-                    icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.png?" + (clearSearch.hovered ? colors.highlight : colors.buttonText)
-                    focusPolicy: Qt.NoFocus
-                    onClicked: emojiSearch.clear()
-
-                    anchors {
-                        verticalCenter: parent.verticalCenter
-                        right: parent.right
-                    }
-                    // clear the default hover effects.
-
-                    background: Item {
-                    }
-
-                }
-
-            }
-
             ScrollBar.vertical: ScrollBar {
                 id: emojiScroll
             }
@@ -160,6 +160,7 @@ Menu {
 
         // Separator
         Rectangle {
+            visible: emojiSearch.text === ''
             Layout.fillWidth: true
             Layout.preferredHeight: 1
             color: emojiPopup.colors.alternateBase
@@ -167,6 +168,7 @@ Menu {
 
         // Category picker row
         RowLayout {
+            visible: emojiSearch.text === ''
             Layout.bottomMargin: 0
             Layout.preferredHeight: 42
             implicitHeight: 42
@@ -245,7 +247,8 @@ Menu {
                     }
                     ToolTip.visible: hovered
                     onClicked: {
-                        emojiPopup.model.category = model.category;
+                        //emojiPopup.model.category = model.category;
+                        gridView.positionViewAtIndex(emojiPopup.model.sourceModel.categoryToIndex(model.category), GridView.Beginning);
                     }
 
                     MouseArea {
@@ -272,56 +275,6 @@ Menu {
                         border.color: emojiPopup.model.category === model.category ? colors.highlight : 'transparent'
                     }
 
-                }
-
-            }
-
-            // Separator
-            Rectangle {
-                Layout.fillHeight: true
-                Layout.preferredWidth: 1
-                implicitWidth: 1
-                height: parent.height
-                color: emojiPopup.colors.alternateBase
-            }
-
-            // Search Button is special
-            AbstractButton {
-                id: searchBtn
-
-                hoverEnabled: true
-                Layout.alignment: Qt.AlignRight
-                Layout.bottomMargin: 0
-                ToolTip.text: qsTr("Search")
-                ToolTip.visible: hovered
-                onClicked: {
-                    // clear any filters
-                    emojiPopup.model.category = Emoji.Category.Search;
-                    gridView.positionViewAtBeginning();
-                    emojiSearch.forceActiveFocus();
-                }
-                Layout.preferredWidth: 36
-                Layout.preferredHeight: 36
-                implicitWidth: 36
-                implicitHeight: 36
-
-                MouseArea {
-                    id: mouseArea
-
-                    anchors.fill: parent
-                    onPressed: mouse.accepted = false
-                    cursorShape: Qt.PointingHandCursor
-                }
-
-                contentItem: Image {
-                    anchors.right: parent.right
-                    horizontalAlignment: Image.AlignHCenter
-                    verticalAlignment: Image.AlignVCenter
-                    sourceSize.width: 32
-                    sourceSize.height: 32
-                    fillMode: Image.Pad
-                    smooth: true
-                    source: "image://colorimage/:/icons/icons/ui/search.png?" + (parent.hovered ? colors.highlight : colors.buttonText)
                 }
 
             }
