@@ -52,6 +52,24 @@ createDescriptionInfo(const Event &event, const QString &localUser, const QStrin
                         ts};
 }
 
+void
+utils::stripReplyFromBody(QString &body)
+{
+        QRegularExpression plainQuote("^>.*?$\n?", QRegularExpression::MultilineOption);
+        while (body.startsWith(">"))
+                body.remove(plainQuote);
+        if (body.startsWith("\n"))
+                body.remove(0, 1);
+}
+
+void
+utils::stripReplyFromFormattedBody(QString &formatted_body)
+{
+        formatted_body.remove(QRegularExpression("<mx-reply>.*</mx-reply>",
+                                                 QRegularExpression::DotMatchesEverythingOption));
+        formatted_body.replace("@room", "@\u2060aroom");
+}
+
 RelatedInfo
 utils::stripReplyFallbacks(const TimelineEvent &event, std::string id, QString room_id_)
 {
