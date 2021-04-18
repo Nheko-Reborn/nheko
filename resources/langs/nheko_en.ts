@@ -423,13 +423,12 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+114"/>
-        <location line="+181"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+59"/>
         <source>Search</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location line="-66"/>
+        <location line="+172"/>
         <source>People</source>
         <translation>People</translation>
     </message>
@@ -1108,7 +1107,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1751"/>
+        <location filename="../../src/Cache.cpp" line="+1754"/>
         <source>no version stored</source>
         <translation>no version stored</translation>
     </message>
@@ -1528,17 +1527,7 @@ E2E implementation until device verification is completed.</translation>
         <translation>%1 was invited.</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>%1 changed their display name and avatar.</source>
-        <translation>%1 changed their display name and avatar.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>%1 changed their display name.</source>
-        <translation>%1 changed their display name.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+19"/>
         <source>%1 changed their avatar.</source>
         <translation>%1 changed their avatar.</translation>
     </message>
@@ -1588,12 +1577,22 @@ E2E implementation until device verification is completed.</translation>
         <translation>%1 redacted their knock.</translation>
     </message>
     <message>
-        <location line="-785"/>
+        <location line="-789"/>
         <source>You joined this room.</source>
         <translation>You joined this room.</translation>
     </message>
     <message>
-        <location line="+787"/>
+        <location line="+755"/>
+        <source>%1 has changed their avatar and changed their display name to %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>%1 has changed their display name to %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
         <source>Rejected the knock from %1.</source>
         <translation>Rejected the knock from %1.</translation>
     </message>
@@ -1625,7 +1624,7 @@ E2E implementation until device verification is completed.</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+113"/>
+        <location filename="../qml/TimelineView.qml" line="+105"/>
         <source>React</source>
         <translation>React</translation>
     </message>
@@ -1683,7 +1682,7 @@ E2E implementation until device verification is completed.</translation>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+455"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+452"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</translation>
     </message>
