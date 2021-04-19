@@ -408,6 +408,8 @@ utils::linkifyMessage(const QString &body)
         // Convert to valid XML.
         auto doc = body;
         doc.replace(conf::strings::url_regex, conf::strings::url_html);
+        doc.replace(QRegularExpression("\\b(?<![\"'])(?>(matrix:[\\S]{5,}))(?![\"'])\\b"),
+                    conf::strings::url_html);
 
         return doc;
 }
