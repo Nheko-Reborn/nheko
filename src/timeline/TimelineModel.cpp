@@ -474,9 +474,13 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         case RoomId:
                 return QVariant(room_id_);
         case RoomName:
-                return QVariant(QString::fromStdString(room_name(event)));
+                return QVariant(
+                  utils::replaceEmoji(QString::fromStdString(room_name(event)).toHtmlEscaped()));
         case RoomTopic:
-                return QVariant(QString::fromStdString(room_topic(event)));
+                return QVariant(utils::replaceEmoji(
+                  utils::linkifyMessage(QString::fromStdString(room_topic(event))
+                                          .toHtmlEscaped()
+                                          .replace("\n", "<br>"))));
         case CallType:
                 return QVariant(QString::fromStdString(call_type(event)));
         case Dump: {
@@ -1633,7 +1637,8 @@ TimelineModel::roomName() const
         if (!info.count(room_id_))
                 return "";
         else
-                return QString::fromStdString(info[room_id_].name);
+                return utils::replaceEmoji(
+                  QString::fromStdString(info[room_id_].name).toHtmlEscaped());
 }
 
 QString
@@ -1656,5 +1661,5 @@ TimelineModel::roomTopic() const
                 return "";
         else
                 return utils::replaceEmoji(utils::linkifyMessage(
-                  utils::escapeBlacklistedHtml(QString::fromStdString(info[room_id_].topic))));
+                  QString::fromStdString(info[room_id_].topic).toHtmlEscaped()));
 }

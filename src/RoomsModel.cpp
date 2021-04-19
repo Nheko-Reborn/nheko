@@ -62,10 +62,11 @@ RoomsModel::data(const QModelIndex &index, int role) const
                 case CompletionModel::SearchRole:
                 case Qt::DisplayRole:
                 case Roles::RoomAlias:
-                        return roomAliases[index.row()];
+                        return roomAliases[index.row()].toHtmlEscaped();
                 case CompletionModel::SearchRole2:
                 case Roles::RoomName:
-                        return QString::fromStdString(roomInfos.at(roomids[index.row()]).name);
+                        return QString::fromStdString(roomInfos.at(roomids[index.row()]).name)
+                          .toHtmlEscaped();
                 case Roles::AvatarUrl:
                         return QString::fromStdString(
                           roomInfos.at(roomids[index.row()]).avatar_url);
