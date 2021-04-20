@@ -650,7 +650,7 @@ Wenn Nheko deinen Server nicht automatisch erkennen kann, wird es dich nach dem 
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation>Ein Name für dieses Gerät. Dieser wird der anderen Seite gezeigt, wenn das Gerät verifiziert wird. Wenn nichts angeben wird, wird einer generiert.</translation>
+        <translation>Ein Name für dieses Gerät. Dieser wird der anderen Seite gezeigt, wenn das Gerät verifiziert wird. Wenn nichts angeben wurde, wird einer generiert.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -767,7 +767,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+0"/>
         <source>removed topic</source>
-        <translation>Raumthema wurde entfernt.</translation>
+        <translation>Raumthema wurde entfernt</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -802,7 +802,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+9"/>
         <source>Negotiating call...</source>
-        <translation>Wählt...</translation>
+        <translation>Wählt…</translation>
     </message>
 </context>
 <context>
@@ -1152,7 +1152,7 @@ Beispiel: https://mein.server:8787</translation>
         <location line="+39"/>
         <source>New tag...</source>
         <comment>Add a new tag to the room</comment>
-        <translation>Neuer Tag...</translation>
+        <translation>Neuer Tag…</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1202,17 +1202,17 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+5"/>
         <source>Muted</source>
-        <translation type="unfinished"></translation>
+        <translation>Stumm</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mentions only</source>
-        <translation type="unfinished"></translation>
+        <translation>Nur Erwähnungen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Nachrichten</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1243,7 +1243,7 @@ Beispiel: https://mein.server:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                             Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschlüsselung ist aktuell experimentell und kann in verschiedenen Fällen zu Fehlern führen.&lt;br&gt;Verschlüsselung kann nachträglich nicht deaktiviert werden.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1255,7 +1255,9 @@ Beispiel: https://mein.server:8787</translation>
         <source>Whether or not the client should respond automatically with the session keys
                                 upon request. Use with caution, this is a temporary measure to test the
                                 E2E implementation until device verification is completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ob Nheko automatisch auf Schlüsselanfragen antwortet. Dies ist ein temporärer
+Workaround um, solange die Ende-zu-Ende Verschlüsselung unvollständig ist, um
+Schlüssel auszutauschen, wenn der normale Weg nicht zu funktionieren scheint.</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1329,23 +1331,23 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+19"/>
         <source>Include your camera picture-in-picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigene Kamera als Bild-im-Bild anzeigen</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Request remote camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamera der Gegenstelle anfragen</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+9"/>
         <source>View your callee&apos;s camera like a regular video call</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige die Kamera des Angerufen wie in einem normalen Videoanruf an</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Hide mouse cursor</source>
-        <translation type="unfinished"></translation>
+        <translation>Mauszeiger verstecken</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1470,8 +1472,8 @@ Beispiel: https://mein.server:8787</translation>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
-            <numerusform>%1%2 tippt</numerusform>
-            <numerusform>%1 und %2 tippen</numerusform>
+            <numerusform>%1%2 tippt.</numerusform>
+            <numerusform>%1 und %2 tippen.</numerusform>
         </translation>
     </message>
     <message>
@@ -1664,7 +1666,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+7"/>
         <source>Save as</source>
-        <translation>Speichern unter...</translation>
+        <translation>Speichern unter</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1790,12 +1792,12 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../qml/UserProfile.qml" line="+24"/>
         <source>Global User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Globales Nutzerprofil</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Room User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumspezifisches Nutzerprofil</translation>
     </message>
     <message>
         <location line="+114"/>
@@ -1821,7 +1823,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+53"/>
         <source>Unverify</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifizierung zurückziehen</translation>
     </message>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+301"/>
@@ -1942,25 +1944,28 @@ Betrifft nur Nachrichten in verschlüsselten Chats.</translation>
     <message>
         <location line="+2"/>
         <source>Privacy Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Blickschutz</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verliert das Fenster den Fokus, werden die Nachrichten
+verschwommen angezeigt.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeit bis Blickschutz aktiv wird (in Sekunden [0 - 3600])</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeitbegrenzung (in Sekunden) bis der Bildschirm verschwommen angezeigt wird, nachdem das Fenster den Fokus verliert.
+Bei 0 wird der Blickschutz sofort aktiv.
+Maximaler Wert ist eine Stunde (3600 Sekunden).</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2312,7 +2317,7 @@ Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</
     <message>
         <location filename="../qml/device-verification/Waiting.qml" line="+11"/>
         <source>Waiting for other party…</source>
-        <translation>Warten auf die andere Seite...</translation>
+        <translation>Auf Gegenseite warten…</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -2560,62 +2565,62 @@ Medien-Größe: %2
     <message>
         <location filename="../../src/Utils.h" line="+115"/>
         <source>You sent an audio clip</source>
-        <translation>Du hast eine Audiodatei gesendet.</translation>
+        <translation>Du hast eine Audiodatei gesendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an audio clip</source>
-        <translation>%1 hat eine Audiodatei gesendet.</translation>
+        <translation>%1 hat eine Audiodatei gesendet</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent an image</source>
-        <translation>Du hast ein Bild gesendet.</translation>
+        <translation>Du hast ein Bild gesendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an image</source>
-        <translation>%1 hat ein Bild gesendet.</translation>
+        <translation>%1 hat ein Bild gesendet</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a file</source>
-        <translation>Du hast eine Datei gesendet.</translation>
+        <translation>Du hast eine Datei gesendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a file</source>
-        <translation>%1 hat eine Datei gesendet.</translation>
+        <translation>%1 hat eine Datei gesendet</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a video</source>
-        <translation>Du hast ein Video gesendet.</translation>
+        <translation>Du hast ein Video gesendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a video</source>
-        <translation>%1 hat ein Video gesendet.</translation>
+        <translation>%1 hat ein Video gesendet</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a sticker</source>
-        <translation>Du hast einen Sticker gesendet.</translation>
+        <translation>Du hast einen Sticker gesendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a sticker</source>
-        <translation>%1 hat einen Sticker gesendet.</translation>
+        <translation>%1 hat einen Sticker gesendet</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a notification</source>
-        <translation>Du hast eine Benachrichtigung gesendet.</translation>
+        <translation>Du hast eine Benachrichtigung gesendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a notification</source>
-        <translation>%1 hat eine Benachrichtigung gesendet.</translation>
+        <translation>%1 hat eine Benachrichtigung gesendet</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2630,12 +2635,12 @@ Medien-Größe: %2
     <message>
         <location line="+7"/>
         <source>You sent an encrypted message</source>
-        <translation>Du hast eine verschlüsselte Nachricht gesendet.</translation>
+        <translation>Du hast eine verschlüsselte Nachricht gesendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
-        <translation>%1 hat eine verschlüsselte Nachricht gesendet.</translation>
+        <translation>%1 hat eine verschlüsselte Nachricht gesendet</translation>
     </message>
     <message>
         <location line="+5"/>

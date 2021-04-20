@@ -17,12 +17,12 @@
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation type="unfinished"></translation>
+        <translation>Képernyőmegosztás folyamatban</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Kép-a-képben megjelenítése/elrejtése</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -127,7 +127,7 @@
     <message>
         <location filename="../../src/CallManager.cpp" line="+521"/>
         <source>Entire screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Az egész képernyő</translation>
     </message>
 </context>
 <context>
@@ -151,12 +151,12 @@
     <message>
         <location line="+412"/>
         <source>Confirm join</source>
-        <translation type="unfinished"></translation>
+        <translation>Csatlakozás megerősítése</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to join %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Biztosan csatlakozni akarsz a(z) %1 szobához?</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -237,7 +237,7 @@
     <message>
         <location line="+226"/>
         <source>Do you really want to start a private chat with %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Biztosan privát csevegést akarsz indítani %1 felhasználóval?</translation>
     </message>
     <message>
         <location line="-817"/>
@@ -843,22 +843,22 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/MessageView.qml" line="+82"/>
         <source>Edit</source>
-        <translation type="unfinished">Szerkesztés</translation>
+        <translation>Szerkesztés</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>React</source>
-        <translation type="unfinished">Reakció</translation>
+        <translation>Reakció</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Reply</source>
-        <translation type="unfinished">Válasz</translation>
+        <translation>Válasz</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Options</source>
-        <translation type="unfinished">Műveletek</translation>
+        <translation>Műveletek</translation>
     </message>
 </context>
 <context>
@@ -926,41 +926,41 @@ Példa: https://szerver.em:8787</translation>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+44"/>
         <location filename="../../src/notifications/ManagerWin.cpp" line="+78"/>
         <source>%1 sent an encrypted message</source>
-        <translation type="unfinished">%1 küldött egy titkosított üzenetet</translation>
+        <translation>%1 küldött egy titkosított üzenetet</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>* %1 %2</source>
         <comment>Format an emote message in a notification, %1 is the sender, %2 the message</comment>
-        <translation type="unfinished"></translation>
+        <translation>* %1 %2</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 replied: %2</source>
         <comment>Format a reply in a notification. %1 is the sender, %2 the message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 válasza: %2</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1: %2</source>
         <comment>Format a normal message in a notification. %1 is the sender, %2 the message</comment>
-        <translation type="unfinished">%1: %2</translation>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-1"/>
         <location filename="../../src/notifications/ManagerWin.cpp" line="-1"/>
         <source>%1 replied with an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 egy titkosított üzenettel válaszolt</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 replied to a message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 válaszolt egy üzenetre</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 sent a message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 küldött egy üzenetet</translation>
     </message>
 </context>
 <context>
@@ -988,7 +988,7 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location line="+14"/>
         <source>Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Képernyő</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1182,57 +1182,57 @@ Példa: https://szerver.em:8787</translation>
     <message>
         <location filename="../qml/RoomSettings.qml" line="+25"/>
         <source>Room Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Szobabeállítások</translation>
     </message>
     <message>
         <location line="+79"/>
         <source>%1 member(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 tag</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>SETTINGS</source>
-        <translation type="unfinished"></translation>
+        <translation>BEÁLLÍTÁSOK</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Értesítések</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Muted</source>
-        <translation type="unfinished"></translation>
+        <translation>Némítva</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mentions only</source>
-        <translation type="unfinished"></translation>
+        <translation>Csak említések</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Az összes üzenet</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Anyone and guests</source>
-        <translation type="unfinished"></translation>
+        <translation>Bárki és vendégek</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Anyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Bárki</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Invited users</source>
-        <translation type="unfinished"></translation>
+        <translation>Meghívott felhasználók</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Titkosítás</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1243,7 +1243,7 @@ Példa: https://szerver.em:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                             Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>A titkosítás jelenleg kísérleti stádiumú és váratlan furcsaságok történhetnek.&lt;br&gt;Kérlek, vedd vigyelembe, hogy ha egyszer aktiváltad, nem lehet utána kikapcsolni.</translation>
     </message>
     <message>
         <location line="+17"/>
