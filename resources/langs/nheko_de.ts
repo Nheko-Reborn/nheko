@@ -1945,13 +1945,14 @@ Betrifft nur Nachrichten in verschlüsselten Chats.</translation>
     <message>
         <location line="+2"/>
         <source>Privacy Screen</source>
-        <translation>Sichtschutz</translation>
+        <translation>Blickschutz</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geht das Fenster aus dem Fokus wird die Zeitleiste 
+verschwommen angezeigt.</translation>
     </message>
     <message>
         <location line="+2"/>
