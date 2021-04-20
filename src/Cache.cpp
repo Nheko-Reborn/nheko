@@ -334,7 +334,7 @@ Cache::exportSessionKeys()
                 exported.room_id     = index.room_id;
                 exported.sender_key  = index.sender_key;
                 exported.session_id  = index.session_id;
-                exported.session_key = export_session(saved_session.get());
+                exported.session_key = export_session(saved_session.get(), -1);
 
                 keys.sessions.push_back(exported);
         }

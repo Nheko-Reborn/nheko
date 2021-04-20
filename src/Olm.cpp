@@ -823,10 +823,10 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
         }
 
         // Check if we have the keys for the requested session.
-        if (!cache::outboundMegolmSessionExists(req.content.room_id)) {
+        auto outboundSession = cache::getOutboundMegolmSession(req.content.room_id);
+        if (!outboundSession.session) {
                 nhlog::crypto()->warn("requested session not found in room: {}",
                                       req.content.room_id);
-
                 return;
         }
 
@@ -854,7 +854,9 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
         auto verificationStatus = cache::verificationStatus(req.sender);
         bool verifiedDevice     = false;
         if (verificationStatus &&
-            ChatPage::instance()->userSettings()->shareKeysWithTrustedUsers()) {
+            // Share keys, if the option to share with trusted users is enabled or with yourself
+            (ChatPage::instance()->userSettings()->shareKeysWithTrustedUsers() ||
+             req.sender == http::client()->user_id().to_string())) {
                 for (const auto &dev : verificationStatus->verified_devices) {
                         if (dev == req.content.requesting_device_id) {
                                 verifiedDevice = true;
@@ -864,28 +866,50 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
                 }
         }
 
-        if (!utils::respondsToKeyRequests(req.content.room_id) && !verifiedDevice) {
-                nhlog::crypto()->debug("ignoring all key requests for room {}",
-                                       req.content.room_id);
+        bool shouldSeeKeys    = false;
+        uint64_t minimumIndex = -1;
+        if (outboundSession.data.currently.keys.count(req.sender)) {
+                if (outboundSession.data.currently.keys.at(req.sender)
+                      .devices.count(req.content.requesting_device_id)) {
+                        shouldSeeKeys = true;
+                        minimumIndex  = outboundSession.data.currently.keys.at(req.sender)
+                                         .devices.at(req.content.requesting_device_id);
+                }
+        }
+
+        if (!verifiedDevice && !shouldSeeKeys &&
+            !utils::respondsToKeyRequests(req.content.room_id)) {
+                nhlog::crypto()->debug("ignoring key request for room {}", req.content.room_id);
                 return;
         }
 
-        auto session_key = mtx::crypto::export_session(session.get());
-        //
-        // Prepare the m.room_key event.
-        //
-        mtx::events::msg::ForwardedRoomKey forward_key{};
-        forward_key.algorithm   = MEGOLM_ALGO;
-        forward_key.room_id     = index.room_id;
-        forward_key.session_id  = index.session_id;
-        forward_key.session_key = session_key;
-        forward_key.sender_key  = index.sender_key;
+        if (verifiedDevice || utils::respondsToKeyRequests(req.content.room_id)) {
+                // share the minimum index we have
+                minimumIndex = -1;
+        }
 
-        // TODO(Nico): Figure out if this is correct
-        forward_key.sender_claimed_ed25519_key      = olm::client()->identity_keys().ed25519;
-        forward_key.forwarding_curve25519_key_chain = {};
+        try {
+                auto session_key = mtx::crypto::export_session(session.get(), minimumIndex);
 
-        send_megolm_key_to_device(req.sender, req.content.requesting_device_id, forward_key);
+                //
+                // Prepare the m.room_key event.
+                //
+                mtx::events::msg::ForwardedRoomKey forward_key{};
+                forward_key.algorithm   = MEGOLM_ALGO;
+                forward_key.room_id     = index.room_id;
+                forward_key.session_id  = index.session_id;
+                forward_key.session_key = session_key;
+                forward_key.sender_key  = index.sender_key;
+
+                // TODO(Nico): Figure out if this is correct
+                forward_key.sender_claimed_ed25519_key = olm::client()->identity_keys().ed25519;
+                forward_key.forwarding_curve25519_key_chain = {};
+
+                send_megolm_key_to_device(
+                  req.sender, req.content.requesting_device_id, forward_key);
+        } catch (std::exception &e) {
+                nhlog::crypto()->error("Failed to forward session key: {}", e.what());
+        }
 }
 
 void
