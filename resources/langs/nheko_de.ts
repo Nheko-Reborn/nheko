@@ -651,7 +651,7 @@ Wenn Nheko deinen Server nicht automatisch erkennen kann, wird es dich nach dem 
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation>Ein Name für dieses Gerät. Dieser wird der anderen Seite gezeigt, wenn das Gerät verifiziert wird. Wenn nichts angeben wird, wird einer generiert.</translation>
+        <translation>Ein Name für dieses Gerät. Dieser wird der anderen Seite gezeigt, wenn das Gerät verifiziert wird. Wenn nichts angeben wurde, wird einer generiert.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -768,7 +768,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+0"/>
         <source>removed topic</source>
-        <translation>Raumthema wurde entfernt.</translation>
+        <translation>Raumthema wurde entfernt</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -803,7 +803,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+9"/>
         <source>Negotiating call...</source>
-        <translation>Wählt...</translation>
+        <translation>Wählt…</translation>
     </message>
 </context>
 <context>
@@ -1153,7 +1153,7 @@ Beispiel: https://mein.server:8787</translation>
         <location line="+39"/>
         <source>New tag...</source>
         <comment>Add a new tag to the room</comment>
-        <translation>Neuer Tag...</translation>
+        <translation>Neuer Tag…</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1473,8 +1473,8 @@ Schlüssel auszutauschen, wenn der normale Weg nicht zu funktionieren scheint.</
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
-            <numerusform>%1%2 tippt</numerusform>
-            <numerusform>%1 und %2 tippen</numerusform>
+            <numerusform>%1%2 tippt.</numerusform>
+            <numerusform>%1 und %2 tippen.</numerusform>
         </translation>
     </message>
     <message>
@@ -1667,7 +1667,7 @@ Schlüssel auszutauschen, wenn der normale Weg nicht zu funktionieren scheint.</
     <message>
         <location line="+7"/>
         <source>Save as</source>
-        <translation>Speichern unter...</translation>
+        <translation>Speichern unter</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1965,7 +1965,8 @@ verschwommen angezeigt.</translation>
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
         <translation>Zeitbegrenzung (in Sekunden) bis der Bildschirm verschwommen angezeigt wird, nachdem das Fenster den Fokus verliert.
-Die Einstellung null bewirkt sofortiges Verschwimmen nach Fokusverlust. Maximaler Wert ist eine Stunde (3600 Sekunden).</translation>
+Bei 0 wird der Blickschutz sofort aktiv.
+Maximaler Wert ist eine Stunde (3600 Sekunden).</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2317,7 +2318,7 @@ Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</
     <message>
         <location filename="../qml/device-verification/Waiting.qml" line="+11"/>
         <source>Waiting for other party…</source>
-        <translation>Warten auf die andere Seite...</translation>
+        <translation>Auf Gegenseite warten…</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -2565,62 +2566,62 @@ Medien-Größe: %2
     <message>
         <location filename="../../src/Utils.h" line="+115"/>
         <source>You sent an audio clip</source>
-        <translation>Du hast eine Audiodatei gesendet.</translation>
+        <translation>Du hast eine Audiodatei gesendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an audio clip</source>
-        <translation>%1 hat eine Audiodatei gesendet.</translation>
+        <translation>%1 hat eine Audiodatei gesendet</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent an image</source>
-        <translation>Du hast ein Bild gesendet.</translation>
+        <translation>Du hast ein Bild gesendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an image</source>
-        <translation>%1 hat ein Bild gesendet.</translation>
+        <translation>%1 hat ein Bild gesendet</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a file</source>
-        <translation>Du hast eine Datei gesendet.</translation>
+        <translation>Du hast eine Datei gesendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a file</source>
-        <translation>%1 hat eine Datei gesendet.</translation>
+        <translation>%1 hat eine Datei gesendet</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a video</source>
-        <translation>Du hast ein Video gesendet.</translation>
+        <translation>Du hast ein Video gesendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a video</source>
-        <translation>%1 hat ein Video gesendet.</translation>
+        <translation>%1 hat ein Video gesendet</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a sticker</source>
-        <translation>Du hast einen Sticker gesendet.</translation>
+        <translation>Du hast einen Sticker gesendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a sticker</source>
-        <translation>%1 hat einen Sticker gesendet.</translation>
+        <translation>%1 hat einen Sticker gesendet</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a notification</source>
-        <translation>Du hast eine Benachrichtigung gesendet.</translation>
+        <translation>Du hast eine Benachrichtigung gesendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a notification</source>
-        <translation>%1 hat eine Benachrichtigung gesendet.</translation>
+        <translation>%1 hat eine Benachrichtigung gesendet</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2635,12 +2636,12 @@ Medien-Größe: %2
     <message>
         <location line="+7"/>
         <source>You sent an encrypted message</source>
-        <translation>Du hast eine verschlüsselte Nachricht gesendet.</translation>
+        <translation>Du hast eine verschlüsselte Nachricht gesendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
-        <translation>%1 hat eine verschlüsselte Nachricht gesendet.</translation>
+        <translation>%1 hat eine verschlüsselte Nachricht gesendet</translation>
     </message>
     <message>
         <location line="+5"/>
