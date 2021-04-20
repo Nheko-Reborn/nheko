@@ -374,6 +374,18 @@ Cache::saveInboundMegolmSession(const MegolmSessionIndex &index,
         const auto pickled = pickle<InboundSessionObject>(session.get(), SECRET);
 
         auto txn = lmdb::txn::begin(env_);
+
+        std::string_view value;
+        if (inboundMegolmSessionDb_.get(txn, key, value)) {
+                auto oldSession = unpickle<InboundSessionObject>(std::string(value), SECRET);
+                if (olm_inbound_group_session_first_known_index(session.get()) >
+                    olm_inbound_group_session_first_known_index(oldSession.get())) {
+                        nhlog::crypto()->warn(
+                          "Not storing inbound session with newer first known index");
+                        return;
+                }
+        }
+
         inboundMegolmSessionDb_.put(txn, key, pickled);
         txn.commit();
 }
