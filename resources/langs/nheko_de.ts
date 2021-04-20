@@ -1951,20 +1951,21 @@ Betrifft nur Nachrichten in verschlüsselten Chats.</translation>
         <location line="+2"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation>Geht das Fenster aus dem Fokus wird die Zeitleiste 
+        <translation>Verliert das Fenster den Fokus, werden die Nachrichten
 verschwommen angezeigt.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeit bis Blickschutz aktiv wird (in Sekunden [0 - 3600])</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeitbegrenzung (in Sekunden) bis der Bildschirm verschwommen angezeigt wird, nachdem das Fenster den Fokus verliert.
+Die Einstellung null bewirkt sofortiges Verschwimmen nach Fokusverlust. Maximaler Wert ist eine Stunde (3600 Sekunden).</translation>
     </message>
     <message>
         <location line="+3"/>
