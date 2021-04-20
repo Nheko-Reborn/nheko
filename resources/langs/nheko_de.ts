@@ -1203,17 +1203,17 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+5"/>
         <source>Muted</source>
-        <translation type="unfinished"></translation>
+        <translation>Stumm</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mentions only</source>
-        <translation type="unfinished"></translation>
+        <translation>Nur Erwähnungen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Nachrichten</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1244,7 +1244,7 @@ Beispiel: https://mein.server:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                             Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschlüsselung ist aktuell experimentell und kann in verschiedenen Fällen zu Fehlern führen.&lt;br&gt;Verschlüsselung kann nachträglich nicht deaktiviert werden.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1256,7 +1256,9 @@ Beispiel: https://mein.server:8787</translation>
         <source>Whether or not the client should respond automatically with the session keys
                                 upon request. Use with caution, this is a temporary measure to test the
                                 E2E implementation until device verification is completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ob Nheko automatisch auf Schlüsselanfragen antwortet. Dies ist ein temporärer
+Workaround um, solange die Ende-zu-Ende Verschlüsselung unvollständig ist, um
+Schlüssel auszutauschen, wenn der normale Weg nicht zu funktionieren scheint.</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1330,23 +1332,23 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+19"/>
         <source>Include your camera picture-in-picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigene Kamera als Bild-im-Bild anzeigen</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Request remote camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamera der Gegenstelle anfragen</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+9"/>
         <source>View your callee&apos;s camera like a regular video call</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige die Kamera des Angerufen wie in einem normalen Videoanruf an</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Hide mouse cursor</source>
-        <translation type="unfinished"></translation>
+        <translation>Mauszeiger verstecken</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1791,12 +1793,12 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../qml/UserProfile.qml" line="+24"/>
         <source>Global User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Globales Nutzerprofil</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Room User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumspezifisches Nutzerprofil</translation>
     </message>
     <message>
         <location line="+114"/>
@@ -1822,7 +1824,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+53"/>
         <source>Unverify</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifizierung zurückziehen</translation>
     </message>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+301"/>
@@ -1943,7 +1945,7 @@ Betrifft nur Nachrichten in verschlüsselten Chats.</translation>
     <message>
         <location line="+2"/>
         <source>Privacy Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Sichtschutz</translation>
     </message>
     <message>
         <location line="+2"/>
