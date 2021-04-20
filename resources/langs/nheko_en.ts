@@ -156,7 +156,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to join %1?</source>
-        <translation></translation>
+        <translation>Do you really want to join %1?</translation>
     </message>
     <message>
         <location line="+44"/>
