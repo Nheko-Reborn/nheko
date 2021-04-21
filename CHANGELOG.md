@@ -97,6 +97,8 @@
 - Remove unused qml plugins in the windows package.
 - Fix broken olm channels automatically when noticed.
 - Fix pasting not overwriting the selection.
+- Fix Nheko sometimes overwriting received keys with keys it requested, even if
+    they have a higher minimum index.
 
 ### Packaging changes
 - Added xcb dependency on X11 based platforms for screensharing (optional)
