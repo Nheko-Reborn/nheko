@@ -843,22 +843,22 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/MessageView.qml" line="+82"/>
         <source>Edit</source>
-        <translation type="unfinished">Muuda</translation>
+        <translation>Muuda</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>React</source>
-        <translation type="unfinished">Reageeri</translation>
+        <translation>Reageeri</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Reply</source>
-        <translation type="unfinished">Vasta</translation>
+        <translation>Vasta</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Options</source>
-        <translation type="unfinished">Valikud</translation>
+        <translation>Valikud</translation>
     </message>
 </context>
 <context>
@@ -926,41 +926,41 @@ Näiteks: https://server.minu:8787</translation>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+44"/>
         <location filename="../../src/notifications/ManagerWin.cpp" line="+78"/>
         <source>%1 sent an encrypted message</source>
-        <translation type="unfinished">%1 saatis krüptitud sõnumi</translation>
+        <translation>%1 saatis krüptitud sõnumi</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>* %1 %2</source>
         <comment>Format an emote message in a notification, %1 is the sender, %2 the message</comment>
-        <translation type="unfinished"></translation>
+        <translation>* %1 %2</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 replied: %2</source>
         <comment>Format a reply in a notification. %1 is the sender, %2 the message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 vastas: %2</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1: %2</source>
         <comment>Format a normal message in a notification. %1 is the sender, %2 the message</comment>
-        <translation type="unfinished">%1: %2</translation>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-1"/>
         <location filename="../../src/notifications/ManagerWin.cpp" line="-1"/>
         <source>%1 replied with an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 vastas krüptitud sõnumiga</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 replied to a message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 vastas sõnumile</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 sent a message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 saatis sõnumi</translation>
     </message>
 </context>
 <context>
@@ -1182,57 +1182,57 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/RoomSettings.qml" line="+25"/>
         <source>Room Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa seadistused</translation>
     </message>
     <message>
         <location line="+79"/>
         <source>%1 member(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 liige(t)</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>SETTINGS</source>
-        <translation type="unfinished"></translation>
+        <translation>SEADISTUSED</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Teavitused</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Muted</source>
-        <translation type="unfinished"></translation>
+        <translation>Summutatud</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mentions only</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaid mainimised</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõik sõnumid</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Anyone and guests</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõik (sealhulgas külalised)</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Anyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõik</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Invited users</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsutud kasutajad</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimine</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1248,7 +1248,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+17"/>
         <source>Respond to key requests</source>
-        <translation type="unfinished"></translation>
+        <translation>Vasta krüptovõtmete päringutele</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1262,22 +1262,22 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
     <message>
         <location line="+21"/>
         <source>INFO</source>
-        <translation type="unfinished"></translation>
+        <translation>TEAVE</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Internal ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisemine tunnus</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Room Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa versioon</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>OK</source>
-        <translation type="unfinished">Sobib</translation>
+        <translation>Sobib</translation>
     </message>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+267"/>
@@ -1792,12 +1792,12 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
     <message>
         <location filename="../qml/UserProfile.qml" line="+24"/>
         <source>Global User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Üldine kasutajaprofiil</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Room User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajaprofiil jututoas</translation>
     </message>
     <message>
         <location line="+114"/>
@@ -1823,7 +1823,7 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
     <message>
         <location line="+53"/>
         <source>Unverify</source>
-        <translation type="unfinished"></translation>
+        <translation>Võta verifitseerimine tagasi</translation>
     </message>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+301"/>
