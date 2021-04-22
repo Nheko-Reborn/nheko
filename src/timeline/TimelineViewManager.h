@@ -182,25 +182,19 @@ private:
                         if constexpr (std::is_same_v<std::optional<std::string>,
                                                      std::remove_cv_t<decltype(e.content.body)>>) {
                                 if (e.content.body) {
-                                        QString body = QString::fromStdString(e.content.body);
-                                        utils::stripReplyFromBody(body);
-                                        e.content.body = body.toStdString();
+                                        e.content.body = utils::stripReplyFromBody(e.content.body);
                                 }
                         } else if constexpr (std::is_same_v<
                                                std::string,
                                                std::remove_cv_t<decltype(e.content.body)>>) {
-                                QString body = QString::fromStdString(e.content.body);
-                                utils::stripReplyFromBody(body);
-                                e.content.body = body.toStdString();
+                                e.content.body = utils::stripReplyFromBody(e.content.body);
                         }
                 }
 
                 if constexpr (is_detected<formatted_body_t, T>::value) {
                         if (e.content.format == "org.matrix.custom.html") {
-                                QString formattedBody =
-                                  QString::fromStdString(e.content.formatted_body);
-                                utils::stripReplyFromFormattedBody(formattedBody);
-                                e.content.formatted_body = formattedBody.toStdString();
+                                e.content.formatted_body =
+                                  utils::stripReplyFromFormattedBody(e.content.formatted_body);
                         }
                 }
         }

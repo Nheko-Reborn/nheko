@@ -632,9 +632,8 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
                                                     const std::string &content_type,
                                                     const std::string &originalFilename,
                                                     mtx::http::RequestErr err) {
-                          if (err) {
+                          if (err)
                                   return;
-                          }
 
                           auto data = mtx::crypto::to_string(
                             mtx::crypto::decrypt_file(res, encryptionInfo.value()));
@@ -654,7 +653,7 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
                                     }
 
                                     std::visit(
-                                      [this, roomId, e, url = res.content_uri](auto ev) {
+                                      [this, roomId, url = res.content_uri](auto ev) {
                                               if constexpr (mtx::events::message_content_to_type<
                                                               decltype(ev.content)> ==
                                                             mtx::events::EventType::RoomMessage) {

@@ -52,22 +52,26 @@ createDescriptionInfo(const Event &event, const QString &localUser, const QStrin
                         ts};
 }
 
-void
-utils::stripReplyFromBody(QString &body)
+std::string
+utils::stripReplyFromBody(const std::string &bodyi)
 {
+        QString body = QString::fromStdString(bodyi);
         QRegularExpression plainQuote("^>.*?$\n?", QRegularExpression::MultilineOption);
         while (body.startsWith(">"))
                 body.remove(plainQuote);
         if (body.startsWith("\n"))
                 body.remove(0, 1);
+        return body.toStdString();
 }
 
-void
-utils::stripReplyFromFormattedBody(QString &formatted_body)
+std::string
+utils::stripReplyFromFormattedBody(const std::string &formatted_bodyi)
 {
+        QString formatted_body = QString::fromStdString(formatted_bodyi);
         formatted_body.remove(QRegularExpression("<mx-reply>.*</mx-reply>",
                                                  QRegularExpression::DotMatchesEverythingOption));
         formatted_body.replace("@room", "@\u2060aroom");
+        return formatted_body.toStdString();
 }
 
 RelatedInfo
@@ -81,13 +85,15 @@ utils::stripReplyFallbacks(const TimelineEvent &event, std::string id, QString r
         // get body, strip reply fallback, then transform the event to text, if it is a media event
         // etc
         related.quoted_body = QString::fromStdString(mtx::accessors::body(event));
-        stripReplyFromBody(related.quoted_body);
+        related.quoted_body =
+          QString::fromStdString(stripReplyFromBody(related.quoted_body.toStdString()));
         related.quoted_body = utils::getQuoteBody(related);
         related.quoted_body.replace("@room", QString::fromUtf8("@\u2060room"));
 
         // get quoted body and strip reply fallback
         related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(event);
-        stripReplyFromFormattedBody(related.quoted_formatted_body);
+        related.quoted_formatted_body = QString::fromStdString(
+          stripReplyFromFormattedBody(related.quoted_formatted_body.toStdString()));
         related.room = room_id_;
 
         return related;
