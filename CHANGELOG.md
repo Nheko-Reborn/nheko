@@ -46,7 +46,7 @@
 - Update Estonian translations. (contributed by Priit)
 - Update Russian translations. (contributed by Alexey Murz and Artem)
 - Update Swedish translations. (contributed by Emilie)
-- Update French translations. (contributed by MayeulC and Nicolas Guichard)
+- Update French translations. (contributed by MayeulC, Nicolas Guichard and Carl Schwan)
 - Allow drag and drop of files on the whole timeline. (contributed by lorendb)
 - Enable notifications on Haiku. (contributed by kallisti5)
 - Update scheme handler to the latest matrix: scheme proposal.
