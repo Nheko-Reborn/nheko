@@ -22,7 +22,7 @@
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation>Activer/désactiver le mode « Picture-in-Picture »</translation>
+        <translation>Cacher/Montrer l&apos;incrustation vidéo</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -950,7 +950,7 @@ Exemple : https ://monserveur.example.com :8787</translation>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-1"/>
         <location filename="../../src/notifications/ManagerWin.cpp" line="-1"/>
         <source>%1 replied with an encrypted message</source>
-        <translation>%1 a répondu avec un message crypté</translation>
+        <translation>%1 a répondu avec un message chiffré</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1182,7 +1182,7 @@ Exemple : https ://monserveur.example.com :8787</translation>
     <message>
         <location filename="../qml/RoomSettings.qml" line="+25"/>
         <source>Room Settings</source>
-        <translation>Configuration du channel</translation>
+        <translation>Configuration du salon</translation>
     </message>
     <message>
         <location line="+79"/>
@@ -1192,7 +1192,7 @@ Exemple : https ://monserveur.example.com :8787</translation>
     <message>
         <location line="+43"/>
         <source>SETTINGS</source>
-        <translation>CONFIGURATIONS</translation>
+        <translation>CONFIGURATION</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1222,7 +1222,7 @@ Exemple : https ://monserveur.example.com :8787</translation>
     <message>
         <location line="+0"/>
         <source>Anyone</source>
-        <translation>Tous le monde</translation>
+        <translation>Tout le monde</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -1243,54 +1243,56 @@ Exemple : https ://monserveur.example.com :8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                             Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le chiffrement actuellement expérimental et des comportements inattendus peuvent être rencontrés. &lt;br&gt;Veuillez noter qu&apos;il n&apos;est pas possible de le désactiver par la suite.</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Respond to key requests</source>
-        <translation type="unfinished"></translation>
+        <translation>Répondre aux demandes de clé</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Whether or not the client should respond automatically with the session keys
                                 upon request. Use with caution, this is a temporary measure to test the
                                 E2E implementation until device verification is completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si le client doit répondre automatiquement avec les clés de session lorsqu&apos;elles sont
+demandées. Utiliser précautionneusement, il s&apos;agit d&apos;une mesure temporaire afin de
+tester le chiffrement de bout en bout tant que la vérification des appareils n&apos;est pas au point.</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>INFO</source>
-        <translation type="unfinished"></translation>
+        <translation>INFO</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Internal ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifiant interne</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Room Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Version du salon</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+267"/>
         <source>Failed to enable encryption: %1</source>
-        <translation type="unfinished">Échec de l&apos;activation du chiffrement  : %1</translation>
+        <translation>Échec de l&apos;activation du chiffrement  : %1</translation>
     </message>
     <message>
         <location line="+228"/>
         <source>Select an avatar</source>
-        <translation type="unfinished">Sélectionner un avatar</translation>
+        <translation>Sélectionner un avatar</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Tous les types de fichiers (*)</translation>
+        <translation>Tous les types de fichiers (*)</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1314,48 +1316,48 @@ Exemple : https ://monserveur.example.com :8787</translation>
     <message>
         <location filename="../qml/voip/ScreenShare.qml" line="+30"/>
         <source>Share desktop with %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Partager le bureau avec %1  ?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Window:</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenêtre  :</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Frame rate:</source>
-        <translation type="unfinished"></translation>
+        <translation>Fréquence d&apos;images  :</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Include your camera picture-in-picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Incruster votre caméra dans la vidéo</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Request remote camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Demander la caméra distante</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+9"/>
         <source>View your callee&apos;s camera like a regular video call</source>
-        <translation type="unfinished"></translation>
+        <translation>Voir la caméra de votre destinataire comme pour un appel vidéo standard</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Hide mouse cursor</source>
-        <translation type="unfinished"></translation>
+        <translation>Cacher le pointeur de la souris</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation>Partager</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Prévisualiser</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1790,12 +1792,12 @@ Exemple : https ://monserveur.example.com :8787</translation>
     <message>
         <location filename="../qml/UserProfile.qml" line="+24"/>
         <source>Global User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Profil général de l&apos;utilisateur</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Room User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Profil utilisateur spécifique au salon</translation>
     </message>
     <message>
         <location line="+114"/>
@@ -1821,7 +1823,7 @@ Exemple : https ://monserveur.example.com :8787</translation>
     <message>
         <location line="+53"/>
         <source>Unverify</source>
-        <translation type="unfinished"></translation>
+        <translation>Dé-vérifier</translation>
     </message>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+301"/>
