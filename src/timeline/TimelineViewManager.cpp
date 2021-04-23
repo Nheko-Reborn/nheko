@@ -172,9 +172,6 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         qRegisterMetaType<std::vector<DeviceInfo>>();
 
         qmlRegisterType<emoji::EmojiModel>("im.nheko.EmojiModel", 1, 0, "EmojiModel");
-        qmlRegisterType<emoji::EmojiProxyModel>("im.nheko.EmojiModel", 1, 0, "EmojiProxyModel");
-        qmlRegisterUncreatableType<QAbstractItemModel>(
-          "im.nheko.EmojiModel", 1, 0, "QAbstractItemModel", "Used by proxy models");
         qmlRegisterUncreatableType<emoji::Emoji>(
           "im.nheko.EmojiModel", 1, 0, "Emoji", "Used by emoji models");
         qmlRegisterUncreatableMetaObject(emoji::staticMetaObject,
@@ -593,6 +590,11 @@ TimelineViewManager::completerFor(QString completerName, QString roomId)
         } else if (completerName == "emoji") {
                 auto emojiModel = new emoji::EmojiModel();
                 auto proxy      = new CompletionProxyModel(emojiModel);
+                emojiModel->setParent(proxy);
+                return proxy;
+        } else if (completerName == "allemoji") {
+                auto emojiModel = new emoji::EmojiModel();
+                auto proxy = new CompletionProxyModel(emojiModel, 1, static_cast<size_t>(-1) / 4);
                 emojiModel->setParent(proxy);
                 return proxy;
         } else if (completerName == "room") {

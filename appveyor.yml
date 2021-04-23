@@ -77,25 +77,19 @@ after_build:
     - mkdir installer\packages\io.github.nhekoreborn.nheko
     - mkdir installer\packages\io.github.nhekoreborn.nheko\data
     - mkdir installer\packages\io.github.nhekoreborn.nheko\meta
-    - mkdir installer\packages\io.github.nhekoreborn.nheko.cleanup\meta
     # Copy installer data
     - copy %BUILD%\resources\nheko.ico installer\config
     - copy %BUILD%\resources\nheko.png installer\config
     - copy %BUILD%\COPYING installer\packages\io.github.nhekoreborn.nheko\meta\license.txt
-    - copy %BUILD%\COPYING installer\packages\io.github.nhekoreborn.nheko.cleanup\meta\license.txt
     - copy %BUILD%\deploy\installer\config.xml installer\config
     - copy %BUILD%\deploy\installer\controlscript.qs installer\config
     - copy %BUILD%\deploy\installer\uninstall.qs installer\packages\io.github.nhekoreborn.nheko\data
     - copy %BUILD%\deploy\installer\gui\package.xml installer\packages\io.github.nhekoreborn.nheko\meta
     - copy %BUILD%\deploy\installer\gui\installscript.qs installer\packages\io.github.nhekoreborn.nheko\meta
-    - copy %BUILD%\deploy\installer\cleanup\package.xml installer\packages\io.github.nhekoreborn.nheko.cleanup\meta
-    - copy %BUILD%\deploy\installer\cleanup\installscript.qs installer\packages\io.github.nhekoreborn.nheko.cleanup\meta
     # Amend version and date
     - sed -i "s/__VERSION__/0.8.1/" installer\config\config.xml
     - sed -i "s/__VERSION__/0.8.1/" installer\packages\io.github.nhekoreborn.nheko\meta\package.xml
-    - sed -i "s/__VERSION__/0.8.1/" installer\packages\io.github.nhekoreborn.nheko.cleanup\meta\package.xml
     - sed -i "s/__DATE__/%DATE%/" installer\packages\io.github.nhekoreborn.nheko\meta\package.xml
-    - sed -i "s/__DATE__/%DATE%/" installer\packages\io.github.nhekoreborn.nheko.cleanup\meta\package.xml
     # Copy nheko data
     - xcopy NhekoData\*.* installer\packages\io.github.nhekoreborn.nheko\data\*.* /s /e /c /y
     - move NhekoRelease\nheko.exe installer\packages\io.github.nhekoreborn.nheko\data
@@ -107,7 +101,8 @@ after_build:
     - set PATH=%BUILD%\tools\bin;%PATH%
     - binarycreator.exe -f -c installer\config\config.xml -p installer\packages nheko-installer.exe
 
-    - mv nheko-installer.exe nheko-%APPVEYOR_REPO_TAG_NAME%-installer.exe
+    - copy nheko-installer.exe nheko-%APPVEYOR_REPO_TAG_NAME%-installer.exe
+    - copy nheko-installer.exe nheko-%APPVEYOR_PULL_REQUEST_HEAD_COMMIT%-installer.exe
     - ps: .\.ci\upload-nightly.ps1
 
 on_success:
@@ -127,3 +122,4 @@ deploy:
 artifacts:
     - path: nheko_win_64.zip
     - path: nheko-$(APPVEYOR_REPO_TAG_NAME)-installer.exe
+    - path: nheko-$(APPVEYOR_PULL_REQUEST_HEAD_COMMIT)-installer.exe

@@ -405,6 +405,50 @@ private:
                   event);
         }
 
+        template<typename T>
+        std::optional<mtx::events::StateEvent<T>> getStateEvent(lmdb::txn txn,
+                                                                const std::string &room_id,
+                                                                std::string_view state_key = "")
+        {
+                constexpr auto type = mtx::events::state_content_to_type<T>;
+                static_assert(type != mtx::events::EventType::Unsupported,
+                              "Not a supported type in state events.");
+
+                if (room_id.empty())
+                        return std::nullopt;
+
+                std::string_view value;
+                if (state_key.empty()) {
+                        auto db = getStatesDb(txn, room_id);
+                        if (!db.get(txn, to_string(type), value)) {
+                                return std::nullopt;
+                        }
+                } else {
+                        auto db               = getStatesKeyDb(txn, room_id);
+                        std::string d         = json::object({{"key", state_key}}).dump();
+                        std::string_view data = d;
+
+                        auto cursor = lmdb::cursor::open(txn, db);
+                        if (!cursor.get(state_key, data, MDB_GET_BOTH))
+                                return std::nullopt;
+
+                        try {
+                                auto eventsDb = getEventsDb(txn, room_id);
+                                if (!eventsDb.get(
+                                      txn, json::parse(data)["id"].get<std::string>(), value))
+                                        return std::nullopt;
+                        } catch (std::exception &e) {
+                                return std::nullopt;
+                        }
+                }
+
+                try {
+                        return json::parse(value).get<mtx::events::StateEvent<T>>();
+                } catch (std::exception &e) {
+                        return std::nullopt;
+                }
+        }
+
         void saveInvites(lmdb::txn &txn,
                          const std::map<std::string, mtx::responses::InvitedRoom> &rooms);
 

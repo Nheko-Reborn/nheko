@@ -153,8 +153,9 @@ class CompletionProxyModel : public QAbstractProxyModel
           QString searchString READ searchString WRITE setSearchString NOTIFY newSearchString)
 public:
         CompletionProxyModel(QAbstractItemModel *model,
-                             int max_mistakes = 2,
-                             QObject *parent  = nullptr);
+                             int max_mistakes       = 2,
+                             size_t max_completions = 7,
+                             QObject *parent        = nullptr);
 
         void invalidate();
 
@@ -184,4 +185,5 @@ private:
         trie<uint, int> trie_;
         std::vector<int> mapping;
         int maxMistakes_;
+        size_t max_completions_;
 };

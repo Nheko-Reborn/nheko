@@ -1475,16 +1475,20 @@ TimelineModel::formatMemberEvent(QString id)
                 break;
         case Membership::Join:
                 if (prevEvent && prevEvent->content.membership == Membership::Join) {
+                        QString oldName = QString::fromStdString(prevEvent->content.display_name);
+
                         bool displayNameChanged =
                           prevEvent->content.display_name != event->content.display_name;
                         bool avatarChanged =
                           prevEvent->content.avatar_url != event->content.avatar_url;
 
                         if (displayNameChanged && avatarChanged)
-                                rendered =
-                                  tr("%1 changed their display name and avatar.").arg(name);
+                                rendered = tr("%1 has changed their avatar and changed their "
+                                              "display name to %2.")
+                                             .arg(oldName, name);
                         else if (displayNameChanged)
-                                rendered = tr("%1 changed their display name.").arg(name);
+                                rendered =
+                                  tr("%1 has changed their display name to %2.").arg(oldName, name);
                         else if (avatarChanged)
                                 rendered = tr("%1 changed their avatar.").arg(name);
                         else

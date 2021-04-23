@@ -15,9 +15,12 @@ ApplicationWindow {
     onClosing: TimelineManager.removeVerificationFlow(flow)
     title: stack.currentItem.title
     flags: Qt.Dialog
+    modality: Qt.WindowModal
     palette: colors
     height: stack.implicitHeight
     width: stack.implicitWidth
+    x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
+    y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
 
     StackView {
         id: stack
