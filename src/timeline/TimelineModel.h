@@ -219,6 +219,7 @@ public:
         Q_INVOKABLE QString formatPowerLevelEvent(QString id);
 
         Q_INVOKABLE void viewRawMessage(QString id) const;
+        Q_INVOKABLE void forwardMessage(QString eventId, QString roomId);
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
         Q_INVOKABLE void openUserProfile(QString userid, bool global = false);
         Q_INVOKABLE void openRoomSettings();
@@ -322,6 +323,7 @@ signals:
         void roomNameChanged();
         void roomTopicChanged();
         void roomAvatarUrlChanged();
+        void forwardToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 
 private:
         template<typename T>

@@ -827,6 +827,16 @@ TimelineModel::viewRawMessage(QString id) const
 }
 
 void
+TimelineModel::forwardMessage(QString eventId, QString roomId)
+{
+        auto e = events.get(eventId.toStdString(), "");
+        if (!e)
+                return;
+
+        emit forwardToRoom(e, roomId);
+}
+
+void
 TimelineModel::viewDecryptedRawMessage(QString id) const
 {
         auto e = events.get(id.toStdString(), "");
