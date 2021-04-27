@@ -15,7 +15,7 @@ environment:
 
 
 cache:
-  - c:\hunter\
+  - c:\hunter\ -> appveyor.yml
   - build\_deps -> appveyor.yml
 
 build:
