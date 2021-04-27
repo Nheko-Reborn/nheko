@@ -18,6 +18,7 @@
 #include "CompletionProxyModel.h"
 #include "DelegateChooser.h"
 #include "DeviceVerificationFlow.h"
+#include "EventAccessors.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
@@ -31,12 +32,58 @@
 #include "ui/NhekoCursorShape.h"
 #include "ui/NhekoDropArea.h"
 
-#include <iostream> //only for debugging
-
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
 
 namespace msgs = mtx::events::msg;
+
+namespace {
+template<template<class...> class Op, class... Args>
+using is_detected = typename nheko::detail::detector<nheko::nonesuch, void, Op, Args...>::value_t;
+
+template<class Content>
+using file_t = decltype(Content::file);
+
+template<class Content>
+using url_t = decltype(Content::url);
+
+template<class Content>
+using body_t = decltype(Content::body);
+
+template<class Content>
+using formatted_body_t = decltype(Content::formatted_body);
+
+template<typename T>
+static constexpr bool
+messageWithFileAndUrl(const mtx::events::Event<T> &)
+{
+        return is_detected<file_t, T>::value && is_detected<url_t, T>::value;
+}
+
+template<typename T>
+static constexpr void
+removeReplyFallback(mtx::events::Event<T> &e)
+{
+        if constexpr (is_detected<body_t, T>::value) {
+                if constexpr (std::is_same_v<std::optional<std::string>,
+                                             std::remove_cv_t<decltype(e.content.body)>>) {
+                        if (e.content.body) {
+                                e.content.body = utils::stripReplyFromBody(e.content.body);
+                        }
+                } else if constexpr (std::is_same_v<std::string,
+                                                    std::remove_cv_t<decltype(e.content.body)>>) {
+                        e.content.body = utils::stripReplyFromBody(e.content.body);
+                }
+        }
+
+        if constexpr (is_detected<formatted_body_t, T>::value) {
+                if (e.content.format == "org.matrix.custom.html") {
+                        e.content.formatted_body =
+                          utils::stripReplyFromFormattedBody(e.content.formatted_body);
+                }
+        }
+}
+}
 
 void
 TimelineViewManager::updateEncryptedDescriptions()
@@ -329,6 +376,10 @@ TimelineViewManager::addRoom(const QString &room_id)
                         &TimelineModel::newEncryptedImage,
                         imgProvider,
                         &MxcImageProvider::addEncryptionInfo);
+                connect(newRoom.data(),
+                        &TimelineModel::forwardToRoom,
+                        this,
+                        &TimelineViewManager::forwardMessageToRoom);
                 models.insert(room_id, std::move(newRoom));
         }
 }
@@ -615,4 +666,81 @@ void
 TimelineViewManager::focusTimeline()
 {
         getWidget()->setFocus();
+}
+
+void
+TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEvents *e,
+                                          QString roomId)
+{
+        auto room                                                = models.find(roomId);
+        auto content                                             = mtx::accessors::url(*e);
+        std::optional<mtx::crypto::EncryptedFile> encryptionInfo = mtx::accessors::file(*e);
+
+        if (encryptionInfo) {
+                http::client()->download(
+                  content,
+                  [this, roomId, e, encryptionInfo](const std::string &res,
+                                                    const std::string &content_type,
+                                                    const std::string &originalFilename,
+                                                    mtx::http::RequestErr err) {
+                          if (err)
+                                  return;
+
+                          auto data = mtx::crypto::to_string(
+                            mtx::crypto::decrypt_file(res, encryptionInfo.value()));
+
+                          http::client()->upload(
+                            data,
+                            content_type,
+                            originalFilename,
+                            [this, roomId, e](const mtx::responses::ContentURI &res,
+                                              mtx::http::RequestErr err) mutable {
+                                    if (err) {
+                                            nhlog::net()->warn("failed to upload media: {} {} ({})",
+                                                               err->matrix_error.error,
+                                                               to_string(err->matrix_error.errcode),
+                                                               static_cast<int>(err->status_code));
+                                            return;
+                                    }
+
+                                    std::visit(
+                                      [this, roomId, url = res.content_uri](auto ev) {
+                                              if constexpr (mtx::events::message_content_to_type<
+                                                              decltype(ev.content)> ==
+                                                            mtx::events::EventType::RoomMessage) {
+                                                      if constexpr (messageWithFileAndUrl(ev)) {
+                                                              ev.content.relations.relations
+                                                                .clear();
+                                                              ev.content.file.reset();
+                                                              ev.content.url = url;
+                                                      }
+
+                                                      auto room = models.find(roomId);
+                                                      removeReplyFallback(ev);
+                                                      ev.content.relations.relations.clear();
+                                                      room.value()->sendMessageEvent(
+                                                        ev.content,
+                                                        mtx::events::EventType::RoomMessage);
+                                              }
+                                      },
+                                      *e);
+                            });
+
+                          return;
+                  });
+
+                return;
+        }
+
+        std::visit(
+          [room](auto e) {
+                  if constexpr (mtx::events::message_content_to_type<decltype(e.content)> ==
+                                mtx::events::EventType::RoomMessage) {
+                          e.content.relations.relations.clear();
+                          removeReplyFallback(e);
+                          room.value()->sendMessageEvent(e.content,
+                                                         mtx::events::EventType::RoomMessage);
+                  }
+          },
+          *e);
 }

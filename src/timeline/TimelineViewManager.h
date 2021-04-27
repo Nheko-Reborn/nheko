@@ -146,6 +146,7 @@ public slots:
 
         void backToRooms() { emit showRoomList(); }
         QObject *completerFor(QString completerName, QString roomId = "");
+        void forwardMessageToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 
 private slots:
         void openImageOverlayInternal(QString eventId, QImage img);
