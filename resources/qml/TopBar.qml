@@ -72,8 +72,8 @@ Rectangle {
             font.pointSize: fontMetrics.font.pointSize * 1.1
             text: room ? room.roomName : qsTr("No room selected")
             maximumLineCount: 1
-	    elide: Text.ElideRight
-	    textFormat: Text.RichText
+            elide: Text.ElideRight
+            textFormat: Text.RichText
         }
 
         MatrixText {

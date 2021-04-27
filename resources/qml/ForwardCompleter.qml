@@ -10,30 +10,28 @@ import im.nheko 1.0
 Popup {
     id: forwardMessagePopup
 
+    property var mid
+
+    function setMessageEventId(mid_in) {
+        mid = mid_in;
+    }
+
     x: Math.round(parent.width / 2 - width / 2)
     y: Math.round(parent.height / 2 - height / 2)
     modal: true
     palette: colors
     parent: Overlay.overlay
-
-    width: implicitWidth >= 300 ? implicitWidth : 300
+    width: implicitWidth >= (timelineRoot.width * 0.8) ? implicitWidth : (timelineRoot.width * 0.8)
     height: implicitHeight + completerPopup.height + padding * 2
     leftPadding: 10
     rightPadding: 10
-
-    property var mid
-
+    background: null
     onOpened: {
         completerPopup.open();
         roomTextInput.forceActiveFocus();
     }
-
     onClosed: {
         completerPopup.close();
-    }
-
-    function setMessageEventId(mid_in) {
-        mid = mid_in;
     }
 
     Column {
@@ -47,6 +45,7 @@ Popup {
             text: qsTr("Forward Message")
             font.bold: true
             bottomPadding: 10
+            color: colors.text
         }
 
         Reply {
@@ -78,6 +77,7 @@ Popup {
                 }
             }
         }
+
     }
 
     Completer {
@@ -102,11 +102,13 @@ Popup {
         onCountChanged: {
             if (completerPopup.count > 0 && (completerPopup.currentIndex < 0 || completerPopup.currentIndex >= completerPopup.count))
                 completerPopup.currentIndex = 0;
+
         }
         target: completerPopup
     }
 
     Overlay.modal: Rectangle {
-        color: "#aa1E1E1E"
+        color: Qt.rgba(colors.window.r, colors.window.g, colors.window.b, 0.75)
     }
+
 }
