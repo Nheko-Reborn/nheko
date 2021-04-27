@@ -165,7 +165,19 @@ ScrollView {
             sequence: "Alt+Down"
             onActivated: {
                 var idx = chat.model.reply ? chat.model.idToIndex(chat.model.reply) - 1 : -1;
-                chat.model.reply = idx >= 0 ? chat.model.indexToId(idx) : undefined;
+                chat.model.reply = idx >= 0 ? chat.model.indexToId(idx) : null;
+            }
+        }
+
+        Shortcut {
+            sequence: "Alt+F"
+            onActivated: {
+                if (chat.model.reply) {
+                    var forwardMess = forwardCompleterComponent.createObject(timelineRoot);
+                    forwardMess.setMessageEventId(chat.model.reply);
+                    forwardMess.open();
+                    chat.model.reply = null;
+                }
             }
         }
 
