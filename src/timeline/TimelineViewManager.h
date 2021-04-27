@@ -16,7 +16,6 @@
 
 #include "Cache.h"
 #include "CallManager.h"
-#include "EventAccessors.h"
 #include "Logging.h"
 #include "TimelineModel.h"
 #include "Utils.h"
@@ -151,53 +150,6 @@ public slots:
 
 private slots:
         void openImageOverlayInternal(QString eventId, QImage img);
-
-private:
-        template<template<class...> class Op, class... Args>
-        using is_detected =
-          typename nheko::detail::detector<nheko::nonesuch, void, Op, Args...>::value_t;
-
-        template<class Content>
-        using file_t = decltype(Content::file);
-
-        template<class Content>
-        using url_t = decltype(Content::url);
-
-        template<class Content>
-        using body_t = decltype(Content::body);
-
-        template<class Content>
-        using formatted_body_t = decltype(Content::formatted_body);
-
-        template<typename T>
-        static constexpr bool messageWithFileAndUrl(const mtx::events::Event<T> &)
-        {
-                return is_detected<file_t, T>::value && is_detected<url_t, T>::value;
-        }
-
-        template<typename T>
-        static constexpr void removeReplyFallback(mtx::events::Event<T> &e)
-        {
-                if constexpr (is_detected<body_t, T>::value) {
-                        if constexpr (std::is_same_v<std::optional<std::string>,
-                                                     std::remove_cv_t<decltype(e.content.body)>>) {
-                                if (e.content.body) {
-                                        e.content.body = utils::stripReplyFromBody(e.content.body);
-                                }
-                        } else if constexpr (std::is_same_v<
-                                               std::string,
-                                               std::remove_cv_t<decltype(e.content.body)>>) {
-                                e.content.body = utils::stripReplyFromBody(e.content.body);
-                        }
-                }
-
-                if constexpr (is_detected<formatted_body_t, T>::value) {
-                        if (e.content.format == "org.matrix.custom.html") {
-                                e.content.formatted_body =
-                                  utils::stripReplyFromFormattedBody(e.content.formatted_body);
-                        }
-                }
-        }
 
 private:
 #ifdef USE_QUICK_VIEW

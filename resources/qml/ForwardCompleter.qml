@@ -25,7 +25,10 @@ Popup {
     height: implicitHeight + completerPopup.height + padding * 2
     leftPadding: 10
     rightPadding: 10
-    background: null
+    background: Rectangle {
+	    color: colors.window
+    }
+
     onOpened: {
         completerPopup.open();
         roomTextInput.forceActiveFocus();
@@ -108,7 +111,7 @@ Popup {
     }
 
     Overlay.modal: Rectangle {
-        color: Qt.rgba(colors.window.r, colors.window.g, colors.window.b, 0.75)
+        color: Qt.rgba(colors.window.r, colors.window.g, colors.window.b, 0.7)
     }
 
 }
