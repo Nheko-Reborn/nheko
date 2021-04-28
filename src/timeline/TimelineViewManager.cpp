@@ -451,7 +451,53 @@ TimelineViewManager::openImageOverlayInternal(QString eventId, QImage img)
 void
 TimelineViewManager::openLink(QString link) const
 {
-        QDesktopServices::openUrl(link);
+        QUrl url(link);
+        if (url.scheme() == "https" && url.host() == "matrix.to") {
+                // handle matrix.to links internally
+                QString p = url.fragment(QUrl::FullyDecoded);
+                if (p.startsWith("/"))
+                        p.remove(0, 1);
+
+                auto temp = p.split("?");
+                QString query;
+                if (temp.size() >= 2)
+                        query = temp.takeAt(1);
+
+                temp            = temp.first().split("/");
+                auto identifier = temp.first();
+                QString eventId;
+                if (temp.size() >= 2)
+                        eventId = temp.takeAt(1);
+                if (!identifier.isEmpty()) {
+                        if (identifier.startsWith("@")) {
+                                QByteArray uri =
+                                  "matrix:u/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
+                                if (!query.isEmpty())
+                                        uri.append("?" + query.toUtf8());
+                                ChatPage::instance()->handleMatrixUri(QUrl::fromEncoded(uri));
+                        } else if (identifier.startsWith("#")) {
+                                QByteArray uri =
+                                  "matrix:r/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
+                                if (!eventId.isEmpty())
+                                        uri.append("/e/" +
+                                                   QUrl::toPercentEncoding(eventId.remove(0, 1)));
+                                if (!query.isEmpty())
+                                        uri.append("?" + query.toUtf8());
+                                ChatPage::instance()->handleMatrixUri(QUrl::fromEncoded(uri));
+                        } else if (identifier.startsWith("!")) {
+                                QByteArray uri = "matrix:roomid/" +
+                                                 QUrl::toPercentEncoding(identifier.remove(0, 1));
+                                if (!eventId.isEmpty())
+                                        uri.append("/e/" +
+                                                   QUrl::toPercentEncoding(eventId.remove(0, 1)));
+                                if (!query.isEmpty())
+                                        uri.append("?" + query.toUtf8());
+                                ChatPage::instance()->handleMatrixUri(QUrl::fromEncoded(uri));
+                        }
+                }
+        } else {
+                QDesktopServices::openUrl(url);
+        }
 }
 
 void
