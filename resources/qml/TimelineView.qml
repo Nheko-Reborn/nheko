@@ -127,7 +127,7 @@ Page {
         Platform.MenuItem {
             visible: messageContextMenu.link
             enabled: visible
-            text: qsTr("Copy address location")
+            text: qsTr("Copy link location")
             onTriggered: Clipboard.text = messageContextMenu.link
         }
 
@@ -206,7 +206,7 @@ Page {
         Platform.MenuItem {
             visible: messageContextMenu.eventId
             enabled: visible
-            text: qsTr("Copy link to event")
+            text: qsTr("Copy event link")
             onTriggered: TimelineManager.timeline.copyLinkToEvent(messageContextMenu.eventId)
         }
 
