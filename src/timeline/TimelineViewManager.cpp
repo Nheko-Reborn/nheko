@@ -404,6 +404,22 @@ TimelineViewManager::highlightRoom(const QString &room_id)
         ChatPage::instance()->highlightRoom(room_id);
 }
 
+void
+TimelineViewManager::showEvent(const QString &room_id, const QString &event_id)
+{
+        auto room = models.find(room_id);
+        if (room != models.end()) {
+                if (timeline_ != room.value().data()) {
+                        timeline_ = room.value().data();
+                        emit activeTimelineChanged(timeline_);
+                        container->setFocus();
+                        nhlog::ui()->info("Activated room {}", room_id.toStdString());
+                }
+
+                timeline_->showEvent(event_id);
+        }
+}
+
 QString
 TimelineViewManager::escapeEmoji(QString str) const
 {

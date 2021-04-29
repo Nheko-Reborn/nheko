@@ -258,6 +258,7 @@ ScrollView {
                         onRoomAvatarUrlChanged: {
                             messageUserAvatar.url = modelData ? chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/") : "";
                         }
+                        onScrollToIndex: chat.positionViewAtIndex(index, ListView.Visible)
                     }
 
                     Label {
@@ -302,9 +303,57 @@ ScrollView {
         delegate: Item {
             id: wrapper
 
+            property bool scrolledToThis: model.id === chat.model.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
+
             anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
             width: chat.delegateMaxWidth
             height: section ? section.height + timelinerow.height : timelinerow.height
+
+            Rectangle {
+                id: scrollHighlight
+
+                opacity: 0
+                visible: true
+                anchors.fill: timelinerow
+                color: colors.highlight
+
+                states: State {
+                    name: "revealed"
+                    when: wrapper.scrolledToThis
+                }
+
+                transitions: Transition {
+                    from: ""
+                    to: "revealed"
+
+                    SequentialAnimation {
+                        PropertyAnimation {
+                            target: scrollHighlight
+                            properties: "opacity"
+                            easing.type: Easing.InOutQuad
+                            from: 0
+                            to: 1
+                            duration: 500
+                        }
+
+                        PropertyAnimation {
+                            target: scrollHighlight
+                            properties: "opacity"
+                            easing.type: Easing.InOutQuad
+                            from: 1
+                            to: 0
+                            duration: 500
+                        }
+
+                        ScriptAction {
+                            script: chat.model.eventShown()
+                        }
+
+                    }
+
+                }
+
+            }
 
             Loader {
                 id: section

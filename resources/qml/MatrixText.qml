@@ -14,7 +14,7 @@ TextEdit {
     selectByMouse: !Settings.mobileMode
     enabled: selectByMouse
     color: colors.text
-    onLinkActivated: TimelineManager.openLink(link);
+    onLinkActivated: TimelineManager.openLink(link)
     ToolTip.visible: hoveredLink
     ToolTip.text: hoveredLink
 

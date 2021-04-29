@@ -265,6 +265,8 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         connect(&events, &EventStore::updateFlowEventId, this, [this](std::string event_id) {
                 this->updateFlowEventId(event_id);
         });
+
+        showEventTimer.callOnTimeout(this, &TimelineModel::scrollTimerEvent);
 }
 
 QHash<int, QByteArray>
@@ -1296,6 +1298,42 @@ void
 TimelineModel::cacheMedia(QString eventId)
 {
         cacheMedia(eventId, NULL);
+}
+
+void
+TimelineModel::showEvent(QString eventId)
+{
+        using namespace std::chrono_literals;
+        if (idToIndex(eventId) != -1) {
+                eventIdToShow = eventId;
+                emit scrollTargetChanged();
+                showEventTimer.start(50ms);
+        }
+}
+
+void
+TimelineModel::eventShown()
+{
+        eventIdToShow.clear();
+        emit scrollTargetChanged();
+}
+
+QString
+TimelineModel::scrollTarget() const
+{
+        return eventIdToShow;
+}
+
+void
+TimelineModel::scrollTimerEvent()
+{
+        if (eventIdToShow.isEmpty() || showEventTimerCounter > 3) {
+                showEventTimer.stop();
+                showEventTimerCounter = 0;
+        } else {
+                emit scrollToIndex(idToIndex(eventIdToShow));
+                showEventTimerCounter++;
+        }
 }
 
 QString

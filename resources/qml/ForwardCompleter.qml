@@ -25,10 +25,6 @@ Popup {
     height: implicitHeight + completerPopup.height + padding * 2
     leftPadding: 10
     rightPadding: 10
-    background: Rectangle {
-	    color: colors.window
-    }
-
     onOpened: {
         completerPopup.open();
         roomTextInput.forceActiveFocus();
@@ -108,6 +104,10 @@ Popup {
 
         }
         target: completerPopup
+    }
+
+    background: Rectangle {
+        color: colors.window
     }
 
     Overlay.modal: Rectangle {
