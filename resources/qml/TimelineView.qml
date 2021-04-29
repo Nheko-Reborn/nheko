@@ -127,7 +127,7 @@ Page {
         Platform.MenuItem {
             visible: messageContextMenu.link
             enabled: visible
-            text: qsTr("Copy address location")
+            text: qsTr("Copy link location")
             onTriggered: Clipboard.text = messageContextMenu.link
         }
 
