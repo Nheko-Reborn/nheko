@@ -93,15 +93,20 @@ Page {
 
         property string eventId
         property string link
+        property string text
         property int eventType
         property bool isEncrypted
         property bool isEditable
 
-        function show(eventId_, eventType_, isEncrypted_, isEditable_, link_, showAt_) {
+        function show(eventId_, eventType_, isEncrypted_, isEditable_, link_, text_, showAt_) {
             eventId = eventId_;
             eventType = eventType_;
             isEncrypted = isEncrypted_;
             isEditable = isEditable_;
+            if (text_)
+                text = text_;
+            else
+                text = "";
             if (link_)
                 link = link_;
             else
@@ -110,6 +115,13 @@ Page {
                 open(showAt_);
             else
                 open();
+        }
+
+        Platform.MenuItem {
+            visible: messageContextMenu.text
+            enabled: visible
+            text: qsTr("Copy")
+            onTriggered: Clipboard.text = messageContextMenu.text
         }
 
         Platform.MenuItem {

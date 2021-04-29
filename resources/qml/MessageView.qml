@@ -117,7 +117,7 @@ ScrollView {
                     image: ":/icons/icons/ui/vertical-ellipsis.png"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Options")
-                    onClicked: messageContextMenu.show(row.model.id, row.model.type, row.model.isEncrypted, row.model.isEditable, "", optionsButton)
+                    onClicked: messageContextMenu.show(row.model.id, row.model.type, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
                 }
 
             }
