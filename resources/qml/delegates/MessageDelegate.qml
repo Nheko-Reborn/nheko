@@ -8,6 +8,7 @@ import im.nheko 1.0
 Item {
     property alias modelData: model.data
     property alias isReply: model.isReply
+    property alias child: chooser.child
     property real implicitWidth: (chooser.child && chooser.child.implicitWidth) ? chooser.child.implicitWidth : width
 
     height: chooser.childrenRect.height

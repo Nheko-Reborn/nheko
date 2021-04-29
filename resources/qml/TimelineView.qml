@@ -92,19 +92,31 @@ Page {
         id: messageContextMenu
 
         property string eventId
+        property string link
         property int eventType
         property bool isEncrypted
         property bool isEditable
 
-        function show(eventId_, eventType_, isEncrypted_, isEditable_, showAt_) {
+        function show(eventId_, eventType_, isEncrypted_, isEditable_, link_, showAt_) {
             eventId = eventId_;
             eventType = eventType_;
             isEncrypted = isEncrypted_;
             isEditable = isEditable_;
+            if (link_)
+                link = link_;
+            else
+                link = "";
             if (showAt_)
                 open(showAt_);
             else
                 open();
+        }
+
+        Platform.MenuItem {
+            visible: messageContextMenu.link
+            enabled: visible
+            text: qsTr("Copy address location")
+            onTriggered: Clipboard.text = messageContextMenu.link
         }
 
         Platform.MenuItem {
@@ -177,7 +189,7 @@ Page {
             enabled: visible
             text: qsTr("Open in external program")
             onTriggered: TimelineManager.timeline.openMedia(messageContextMenu.eventId)
-    }
+        }
 
         Platform.MenuItem {
             visible: messageContextMenu.eventId
