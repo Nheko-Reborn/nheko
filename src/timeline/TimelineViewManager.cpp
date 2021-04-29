@@ -454,20 +454,18 @@ TimelineViewManager::openLink(QString link) const
         QUrl url(link);
         if (url.scheme() == "https" && url.host() == "matrix.to") {
                 // handle matrix.to links internally
-                QString p = url.fragment(QUrl::FullyDecoded);
+                QString p = url.fragment(QUrl::FullyEncoded);
                 if (p.startsWith("/"))
                         p.remove(0, 1);
 
                 auto temp = p.split("?");
                 QString query;
                 if (temp.size() >= 2)
-                        query = temp.takeAt(1);
+                        query = QUrl::fromPercentEncoding(temp.takeAt(1).toUtf8());
 
                 temp            = temp.first().split("/");
-                auto identifier = temp.first();
-                QString eventId;
-                if (temp.size() >= 2)
-                        eventId = temp.takeAt(1);
+                auto identifier = QUrl::fromPercentEncoding(temp.takeFirst().toUtf8());
+                QString eventId = QUrl::fromPercentEncoding(temp.join('/').toUtf8());
                 if (!identifier.isEmpty()) {
                         if (identifier.startsWith("@")) {
                                 QByteArray uri =
