@@ -61,7 +61,7 @@ EventStore::EventStore(std::string room_id, QObject *)
           &EventStore::oldMessagesRetrieved,
           this,
           [this](const mtx::responses::Messages &res) {
-                  if (cache::client()->previousBatchToken(room_id_) == res.end) {
+                  if (res.end.empty() || cache::client()->previousBatchToken(room_id_) == res.end) {
                           noMoreMessages = true;
                           emit fetchedMore();
                           return;
