@@ -9,13 +9,16 @@
 #include <type_traits>
 
 #include <QCache>
+#include <QClipboard>
 #include <QDesktopServices>
 #include <QFileDialog>
+#include <QGuiApplication>
 #include <QMimeDatabase>
 #include <QRegularExpression>
 #include <QSettings>
 #include <QStandardPaths>
 
+#include "Cache_p.h"
 #include "ChatPage.h"
 #include "Config.h"
 #include "EventAccessors.h"
@@ -1334,6 +1337,47 @@ TimelineModel::scrollTimerEvent()
                 emit scrollToIndex(idToIndex(eventIdToShow));
                 showEventTimerCounter++;
         }
+}
+
+void
+TimelineModel::copyLinkToEvent(QString eventId) const
+{
+        QStringList vias;
+
+        auto alias = cache::client()->getRoomAliases(room_id_.toStdString());
+        QString room;
+        if (alias) {
+                room = QString::fromStdString(alias->alias);
+                if (room.isEmpty() && !alias->alt_aliases.empty()) {
+                        room = QString::fromStdString(alias->alt_aliases.front());
+                }
+        }
+
+        if (room.isEmpty())
+                room = room_id_;
+
+        vias.push_back(QString("via=%1").arg(QString(
+          QUrl::toPercentEncoding(QString::fromStdString(http::client()->user_id().hostname())))));
+        auto members = cache::getMembers(room_id_.toStdString(), 0, 100);
+        for (const auto &m : members) {
+                if (vias.size() >= 4)
+                        break;
+
+                auto user_id =
+                  mtx::identifiers::parse<mtx::identifiers::User>(m.user_id.toStdString());
+                QString server = QString("via=%1").arg(
+                  QString(QUrl::toPercentEncoding(QString::fromStdString(user_id.hostname()))));
+
+                if (!vias.contains(server))
+                        vias.push_back(server);
+        }
+
+        auto link = QString("https://matrix.to/#/%1/%2?%3")
+                      .arg(QString(QUrl::toPercentEncoding(room)),
+                           QString(QUrl::toPercentEncoding(eventId)),
+                           vias.join('&'));
+
+        QGuiApplication::clipboard()->setText(link);
 }
 
 QString

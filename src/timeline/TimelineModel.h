@@ -235,6 +235,7 @@ public:
         Q_INVOKABLE void cacheMedia(QString eventId);
         Q_INVOKABLE bool saveMedia(QString eventId) const;
         Q_INVOKABLE void showEvent(QString eventId);
+        Q_INVOKABLE void copyLinkToEvent(QString eventId) const;
         void cacheMedia(QString eventId, std::function<void(const QString filename)> callback);
 
         std::vector<::Reaction> reactions(const std::string &event_id)

@@ -177,6 +177,13 @@ Page {
             enabled: visible
             text: qsTr("Open in external program")
             onTriggered: TimelineManager.timeline.openMedia(messageContextMenu.eventId)
+    }
+
+        Platform.MenuItem {
+            visible: messageContextMenu.eventId
+            enabled: visible
+            text: qsTr("Copy link to event")
+            onTriggered: TimelineManager.timeline.copyLinkToEvent(messageContextMenu.eventId)
         }
 
     }

@@ -306,6 +306,7 @@ set(SRC_FILES
 	src/CallDevices.cpp
 	src/CallManager.cpp
 	src/ChatPage.cpp
+	src/Clipboard.cpp
 	src/ColorImageProvider.cpp
 	src/CommunitiesList.cpp
 	src/CommunitiesListItem.cpp
@@ -526,6 +527,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/CallDevices.h
 	src/CallManager.h
 	src/ChatPage.h
+	src/Clipboard.h
 	src/CommunitiesList.h
 	src/CommunitiesListItem.h
 	src/CompletionProxyModel.h

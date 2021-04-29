@@ -14,6 +14,7 @@
 
 #include "BlurhashProvider.h"
 #include "ChatPage.h"
+#include "Clipboard.h"
 #include "ColorImageProvider.h"
 #include "CompletionProxyModel.h"
 #include "DelegateChooser.h"
@@ -213,6 +214,10 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                   auto ptr = ChatPage::instance()->callManager();
                   QQmlEngine::setObjectOwnership(ptr, QQmlEngine::CppOwnership);
                   return ptr;
+          });
+        qmlRegisterSingletonType<Clipboard>(
+          "im.nheko", 1, 0, "Clipboard", [](QQmlEngine *, QJSEngine *) -> QObject * {
+                  return new Clipboard();
           });
 
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();
