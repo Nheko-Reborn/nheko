@@ -8,6 +8,7 @@
 
 #include "Cache_p.h"
 #include "CompletionModelRoles.h"
+#include "UserSettingsPage.h"
 
 RoomsModel::RoomsModel(bool showOnlyRoomWithAliases, QObject *parent)
   : QAbstractListModel(parent)
@@ -55,17 +56,23 @@ RoomsModel::data(const QModelIndex &index, int role) const
         if (hasIndex(index.row(), index.column(), index.parent())) {
                 switch (role) {
                 case CompletionModel::CompletionRole: {
-                        QString percentEncoding = QUrl::toPercentEncoding(roomAliases[index.row()]);
-                        return QString("[%1](https://matrix.to/#/%2)")
-                          .arg(roomAliases[index.row()], percentEncoding);
+                        if (UserSettings::instance()->markdown()) {
+                                QString percentEncoding =
+                                  QUrl::toPercentEncoding(roomAliases[index.row()]);
+                                return QString("[%1](https://matrix.to/#/%2)")
+                                  .arg(roomAliases[index.row()], percentEncoding);
+                        } else {
+                                return roomAliases[index.row()];
+                        }
                 }
                 case CompletionModel::SearchRole:
                 case Qt::DisplayRole:
                 case Roles::RoomAlias:
-                        return roomAliases[index.row()];
+                        return roomAliases[index.row()].toHtmlEscaped();
                 case CompletionModel::SearchRole2:
                 case Roles::RoomName:
-                        return QString::fromStdString(roomInfos.at(roomids[index.row()]).name);
+                        return QString::fromStdString(roomInfos.at(roomids[index.row()]).name)
+                          .toHtmlEscaped();
                 case Roles::AvatarUrl:
                         return QString::fromStdString(
                           roomInfos.at(roomids[index.row()]).avatar_url);

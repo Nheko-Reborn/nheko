@@ -28,12 +28,12 @@ Item {
 
     TapHandler {
         acceptedButtons: Qt.RightButton
-        onSingleTapped: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable)
+        onSingleTapped: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
         gesturePolicy: TapHandler.ReleaseWithinBounds
     }
 
     TapHandler {
-        onLongPressed: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable)
+        onLongPressed: messageContextMenu.show(model.id, model.type, model.isEncrypted, model.isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
         onDoubleTapped: chat.model.reply = model.id
         gesturePolicy: TapHandler.ReleaseWithinBounds
     }

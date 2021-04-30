@@ -423,13 +423,12 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+114"/>
-        <location line="+181"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+59"/>
         <source>Search</source>
         <translation>Suche</translation>
     </message>
     <message>
-        <location line="-66"/>
+        <location line="+172"/>
         <source>People</source>
         <translation>Leute</translation>
     </message>
@@ -1108,7 +1107,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1751"/>
+        <location filename="../../src/Cache.cpp" line="+1754"/>
         <source>no version stored</source>
         <translation>keine Version gespeichert</translation>
     </message>
@@ -1528,17 +1527,7 @@ Schlüssel auszutauschen, wenn der normale Weg nicht zu funktionieren scheint.</
         <translation>%1 wurde eingeladen.</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>%1 changed their display name and avatar.</source>
-        <translation>%1 hat den Anzeigenamen und Avatar geändert.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>%1 changed their display name.</source>
-        <translation>%1 hat den Anzeigenamen geändert.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+19"/>
         <source>%1 changed their avatar.</source>
         <translation>%1 hat den Avatar geändert.</translation>
     </message>
@@ -1588,12 +1577,22 @@ Schlüssel auszutauschen, wenn der normale Weg nicht zu funktionieren scheint.</
         <translation>%1 hat das Anklopfen zurückgezogen.</translation>
     </message>
     <message>
-        <location line="-785"/>
+        <location line="-789"/>
         <source>You joined this room.</source>
         <translation>Du bist dem Raum beigetreten.</translation>
     </message>
     <message>
-        <location line="+787"/>
+        <location line="+755"/>
+        <source>%1 has changed their avatar and changed their display name to %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>%1 has changed their display name to %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
         <source>Rejected the knock from %1.</source>
         <translation>Hat das Anklopfen von %1 abgewiesen.</translation>
     </message>
@@ -1625,7 +1624,7 @@ Schlüssel auszutauschen, wenn der normale Weg nicht zu funktionieren scheint.</
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+113"/>
+        <location filename="../qml/TimelineView.qml" line="+105"/>
         <source>React</source>
         <translation>Reaktion senden</translation>
     </message>
@@ -1683,7 +1682,7 @@ Schlüssel auszutauschen, wenn der normale Weg nicht zu funktionieren scheint.</
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+455"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+452"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>Keinen verschlüsselten Chat mit diesem User gefunden. Erstelle einen verschlüsselten 1:1 Chat mit diesem Nutzer und versuche es erneut.</translation>
     </message>

@@ -227,13 +227,14 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
 QString
 RoomSettings::roomName() const
 {
-        return QString::fromStdString(info_.name);
+        return utils::replaceEmoji(QString::fromStdString(info_.name).toHtmlEscaped());
 }
 
 QString
 RoomSettings::roomTopic() const
 {
-        return utils::linkifyMessage(QString::fromStdString(info_.topic).toHtmlEscaped());
+        return utils::replaceEmoji(utils::linkifyMessage(
+          QString::fromStdString(info_.topic).toHtmlEscaped().replace("\n", "<br>")));
 }
 
 QString

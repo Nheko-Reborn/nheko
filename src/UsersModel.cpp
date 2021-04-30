@@ -4,8 +4,11 @@
 
 #include "UsersModel.h"
 
+#include <QUrl>
+
 #include "Cache.h"
 #include "CompletionModelRoles.h"
+#include "UserSettingsPage.h"
 
 UsersModel::UsersModel(const std::string &roomId, QObject *parent)
   : QAbstractListModel(parent)
@@ -37,9 +40,12 @@ UsersModel::data(const QModelIndex &index, int role) const
         if (hasIndex(index.row(), index.column(), index.parent())) {
                 switch (role) {
                 case CompletionModel::CompletionRole:
-                        return QString("[%1](https://matrix.to/#/%2)")
-                          .arg(displayNames[index.row()])
-                          .arg(userids[index.row()]);
+                        if (UserSettings::instance()->markdown())
+                                return QString("[%1](https://matrix.to/#/%2)")
+                                  .arg(displayNames[index.row()])
+                                  .arg(QString(QUrl::toPercentEncoding(userids[index.row()])));
+                        else
+                                return displayNames[index.row()];
                 case CompletionModel::SearchRole:
                 case Qt::DisplayRole:
                 case Roles::DisplayName:

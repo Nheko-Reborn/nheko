@@ -18,7 +18,7 @@ Item {
     height: replyContainer.height
 
     TapHandler {
-        onSingleTapped: chat.positionViewAtIndex(chat.model.idToIndex(modelData.id), ListView.Contain)
+        onSingleTapped: chat.model.showEvent(modelData.id)
         gesturePolicy: TapHandler.ReleaseWithinBounds
     }
 

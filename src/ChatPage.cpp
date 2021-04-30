@@ -1378,7 +1378,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                 return;
 
         QString mxid2;
-        if (segments.size() == 4 && segments[2] == "event") {
+        if (segments.size() == 4 && segments[2] == "e") {
                 if (segments[3].isEmpty())
                         return;
                 else
@@ -1412,6 +1412,8 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                 for (auto roomid : joined_rooms) {
                         if (roomid == targetRoomId) {
                                 room_list_->highlightSelectedRoom(mxid1);
+                                if (!mxid2.isEmpty())
+                                        view_manager_->showEvent(mxid1, mxid2);
                                 return;
                         }
                 }
@@ -1429,6 +1431,9 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                                 if (aliases->alias == targetRoomAlias) {
                                         room_list_->highlightSelectedRoom(
                                           QString::fromStdString(roomid));
+                                        if (!mxid2.isEmpty())
+                                                view_manager_->showEvent(
+                                                  QString::fromStdString(roomid), mxid2);
                                         return;
                                 }
                         }

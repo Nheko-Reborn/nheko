@@ -9,6 +9,7 @@
 #include <QDate>
 #include <QHash>
 #include <QSet>
+#include <QTimer>
 
 #include <mtxclient/http/errors.hpp>
 
@@ -149,6 +150,7 @@ class TimelineModel : public QAbstractListModel
           int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
         Q_PROPERTY(std::vector<QString> typingUsers READ typingUsers WRITE updateTypingUsers NOTIFY
                      typingUsersChanged)
+        Q_PROPERTY(QString scrollTarget READ scrollTarget NOTIFY scrollTargetChanged)
         Q_PROPERTY(QString reply READ reply WRITE setReply NOTIFY replyChanged RESET resetReply)
         Q_PROPERTY(QString edit READ edit WRITE setEdit NOTIFY editChanged RESET resetEdit)
         Q_PROPERTY(
@@ -219,6 +221,7 @@ public:
         Q_INVOKABLE QString formatPowerLevelEvent(QString id);
 
         Q_INVOKABLE void viewRawMessage(QString id) const;
+        Q_INVOKABLE void forwardMessage(QString eventId, QString roomId);
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
         Q_INVOKABLE void openUserProfile(QString userid, bool global = false);
         Q_INVOKABLE void openRoomSettings();
@@ -231,6 +234,8 @@ public:
         Q_INVOKABLE void openMedia(QString eventId);
         Q_INVOKABLE void cacheMedia(QString eventId);
         Q_INVOKABLE bool saveMedia(QString eventId) const;
+        Q_INVOKABLE void showEvent(QString eventId);
+        Q_INVOKABLE void copyLinkToEvent(QString eventId) const;
         void cacheMedia(QString eventId, std::function<void(const QString filename)> callback);
 
         std::vector<::Reaction> reactions(const std::string &event_id)
@@ -252,6 +257,7 @@ public:
 public slots:
         void setCurrentIndex(int index);
         int currentIndex() const { return idToIndex(currentId); }
+        void eventShown();
         void markEventsAsRead(const std::vector<QString> &event_ids);
         QVariantMap getDump(QString eventId, QString relatedTo) const;
         void updateTypingUsers(const std::vector<QString> &users)
@@ -297,8 +303,11 @@ public slots:
         QString roomAvatarUrl() const;
         QString roomId() const { return room_id_; }
 
+        QString scrollTarget() const;
+
 private slots:
         void addPendingMessage(mtx::events::collections::TimelineEvents event);
+        void scrollTimerEvent();
 
 signals:
         void currentIndexChanged(int index);
@@ -311,6 +320,7 @@ signals:
         void editChanged(QString reply);
         void paginationInProgressChanged(const bool);
         void newCallEvent(const mtx::events::collections::TimelineEvents &event);
+        void scrollToIndex(int index);
 
         void openProfile(UserProfile *profile);
         void openRoomSettingsDialog(RoomSettings *settings);
@@ -322,6 +332,9 @@ signals:
         void roomNameChanged();
         void roomTopicChanged();
         void roomAvatarUrlChanged();
+        void forwardToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
+
+        void scrollTargetChanged();
 
 private:
         template<typename T>
@@ -347,6 +360,10 @@ private:
         TimelineViewManager *manager_;
 
         InputBar input_{this};
+
+        QTimer showEventTimer{this};
+        QString eventIdToShow;
+        int showEventTimerCounter = 0;
 
         friend struct SendMessageVisitor;
 };

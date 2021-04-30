@@ -1,5 +1,113 @@
 # Changelog
 
+## [0.8.2] -- 2021-04-23
+
+### Highlights
+
+- Edits
+  - If you made a typo, just press the `Up` key and edit what you wrote.
+  - Messages other users edited will get updated automatically and have a small
+      pen symbol next to them.
+- Privacy Screen
+  - Blur your messages, when Nheko looses focus, which prevents others from
+    peeking at your messages.
+  - You can configure the timeout of when this happens.
+- Improved notifications (contributed by lorendb)
+  - No more breakage, because the message included a > on KDE based DEs.
+  - Render html and images where possible in the notification.
+  - Render if a message is a reply or someone sent an emote message more nicely
+      where possible.
+  - Encrypted notifications now show, that the content is encrypted instead of
+      being empty.
+- Screenshare support in calls on X11 (contributed by trilene)
+  - Share your screen in a call!
+  - Select if your mouse cursor should be shown or not and if your webcam should
+      be included.
+- SEND MESSAGES AS RAINBOWS! (contributed by LordMZTE)
+  - YES MESSAGES, EMOTES AND NOTICES!
+
+### Features
+
+- Set your displayname and avatar from Nheko either globally or per room.
+    (contributed by jedi18)
+- Show room topic in the room settings.
+- Double tap a message to reply to it.
+- Leave a room using `/part` or `/leave`. (contributed by lorendb)
+- Show mxid when hovering a username or avatar.
+- Allow opening matrix: uris on Windows.
+- Disable room pings caused by replies sent via Nheko (unless you are using
+    Element Web/Desktop).
+
+### Improvements
+- Userprofile can be closed via the Escape key. No more hotel california!
+    (contributed by lorendb)
+- Most dialogs are now centered on the Nheko window.  (contributed by lorendb)
+- Update Hungarian translations. (contributed by maxigaz)
+- Update Estonian translations. (contributed by Priit)
+- Update Russian translations. (contributed by Alexey Murz and Artem)
+- Update Swedish translations. (contributed by Emilie)
+- Update French translations. (contributed by MayeulC, Nicolas Guichard and Carl Schwan)
+- Allow drag and drop of files on the whole timeline. (contributed by lorendb)
+- Enable notifications on Haiku. (contributed by kallisti5)
+- Update scheme handler to the latest matrix: scheme proposal.
+- Close completers when typing a space after the colon. (contributed by jedi18)
+- Port room settings to Qml. (contributed by jedi18)
+- Improved read marker handling. Read marker should now get stuck less often.
+- Various changes around hover and tap handling in the timeline, which hopefully
+    now works more predicatably.
+- Buttons in the timeline are now rendered in a box on hover on desktop
+    platforms.
+- Complete room links in the timeline after typing a # character. (contributed
+    by jedi18)
+- An improved quick switcher with better rendering and search. (contributed by jedi18)
+- Some fixes around inline emoji and images.
+- Jump into new rooms, after you created them. (contrubuted by jedi18)
+- Improved search in the emoji picker.
+- Allow disabling certificate checks via the config file.
+- Use native menus where possible.
+- Fix video playback on Windows. (contrubuted by jedi18)
+- Send image messages by pressing Enter. (contributed by salahmak)
+- Escape closes the upload widget. (contributed by salahmak)
+- Improve session rotation and sharing in E2EE rooms.
+
+### Bugfixes
+- Emojis joined from separate emojis with a 0xfe0f in the middle should now
+    render correctly.
+- Fix a bug when logging out of a non default profile clearing the wrong
+    profile. (contrubuted by lorendb)
+- Various fixed around profile handling. (contributed by lorendb)
+- Focus message input after a reaction. (contributed by jedi18)
+- Disable native rendering to prevent kerning bugs on non integer scale factors.
+- Fix duplex call devices not showing up. (contributed by trilene)
+- Fix a few crashes when leaving a room. (contributed by jedi18)
+- Fix hidden tags not updating properly. (contributed by jedi18)
+- Fix some issues with login, when a server had SSO as well as password login
+    enabled (for example matrix.org).
+- Properly set the dialog flag for dialogs on most platforms. (Wayland does not
+    support that.)
+- Properly add license to source files.
+- Fix fingerprint increasing the minimum window size.
+- Don't send markdown links in the plain text body of events when autocompleting
+    user or room names.
+- Fix webcam not working in flatpaks.
+- Fix markdown override in replies.
+- Fix unsupported events causing errors when saving them. (contributed by
+    anjanik)
+- Fix exif rotation not being respected anymore in E2EE rooms.
+- Remove unused qml plugins in the windows package.
+- Fix broken olm channels automatically when noticed.
+- Fix pasting not overwriting the selection.
+- Fix Nheko sometimes overwriting received keys with keys it requested, even if
+    they have a higher minimum index.
+
+### Packaging changes
+- Added xcb dependency on X11 based platforms for screensharing (optional)
+- Bumped lmdbxx version from 0.9.14.0 to 1.0.0, which is a BREAKING change. You
+    can get the new version here: https://github.com/hoytech/lmdbxx/releases
+    (repo changed)
+- Removed tweeny as a dependency.
+
+
 ## [0.8.1] -- 2021-01-27
 
 ### Features

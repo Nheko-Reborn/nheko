@@ -79,7 +79,7 @@ include(GNUInstallDirs)
 
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
 set(CPACK_PACKAGE_VERSION_MINOR "8")
-set(CPACK_PACKAGE_VERSION_PATCH "1")
+set(CPACK_PACKAGE_VERSION_PATCH "2")
 set(PROJECT_VERSION_MAJOR ${CPACK_PACKAGE_VERSION_MAJOR})
 set(PROJECT_VERSION_MINOR ${CPACK_PACKAGE_VERSION_MINOR})
 set(PROJECT_VERSION_PATCH ${CPACK_PACKAGE_VERSION_PATCH})
@@ -306,6 +306,7 @@ set(SRC_FILES
 	src/CallDevices.cpp
 	src/CallManager.cpp
 	src/ChatPage.cpp
+	src/Clipboard.cpp
 	src/ColorImageProvider.cpp
 	src/CommunitiesList.cpp
 	src/CommunitiesListItem.cpp
@@ -361,13 +362,13 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        5b7654c5d4512abc38806a0f44efc199029ceef4
+		GIT_TAG        v0.5.1
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(MatrixClient)
 else()
-	find_package(MatrixClient 0.4.1 REQUIRED)
+	find_package(MatrixClient 0.5.1 REQUIRED)
 endif()
 if(USE_BUNDLED_OLM)
 	include(FetchContent)
@@ -526,6 +527,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/CallDevices.h
 	src/CallManager.h
 	src/ChatPage.h
+	src/Clipboard.h
 	src/CommunitiesList.h
 	src/CommunitiesListItem.h
 	src/CompletionProxyModel.h

@@ -13,13 +13,23 @@
   </description>
   <translation/>
   <languages>
+    <lang>cs</lang>
     <lang>de</lang>
     <lang>el</lang>
     <lang>en</lang>
+    <lang>eo</lang>
+    <lang>et</lang>
+    <lang>fi</lang>
     <lang>fr</lang>
+    <lang>hu</lang>
+    <lang>it</lang>
+    <lang>ja</lang>
+    <lang>ml</lang>
     <lang>nl</lang>
     <lang>pl</lang>
+    <lang>ro</lang>
     <lang>ru</lang>
+    <lang>sv</lang>
     <lang>zh_CN</lang>
   </languages>
   <content_rating type="oars-1.0">
@@ -43,6 +53,7 @@
   <url type="homepage">https://github.com/Nheko-Reborn/nheko</url>
   <update_contact>https://github.com/Nheko-Reborn</update_contact>
   <releases>
+    <release date="2021-04-23" version="0.8.2"/>
     <release date="2021-01-27" version="0.8.1"/>
     <release date="2021-01-21" version="0.8.0"/>
     <release date="2020-06-12" version="0.7.2"/>
@@ -58,12 +69,11 @@
     <release date="2018-08-12" version="0.5.3"/>
     <release date="2018-07-28" version="0.5.2"/>
   </releases>
-
   <developer_name>Nheko Reborn</developer_name>
-
   <url type="bugtracker">https://github.com/Nheko-Reborn/nheko/issues</url>
-
   <url type="help">https://github.com/Nheko-Reborn/nheko/</url>
-
   <url type="translate">https://weblate.nheko.im/projects/nheko/</url>
+
+  <!--FIXME: where to donate to the application-->
+  <url type="donation"/>
 </component>

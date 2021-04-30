@@ -73,6 +73,7 @@ Rectangle {
             text: room ? room.roomName : qsTr("No room selected")
             maximumLineCount: 1
             elide: Text.ElideRight
+            textFormat: Text.RichText
         }
 
         MatrixText {

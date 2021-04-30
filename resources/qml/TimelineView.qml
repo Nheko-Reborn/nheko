@@ -72,11 +72,18 @@ Page {
     }
 
     Component {
+        id: forwardCompleterComponent
+
+        ForwardCompleter {
+        }
+
+    }
+
+    Component {
         id: roomDirectoryComponent
 
         RoomDirectory {
         }
-
     }
 
     Shortcut {
@@ -92,19 +99,43 @@ Page {
         id: messageContextMenu
 
         property string eventId
+        property string link
+        property string text
         property int eventType
         property bool isEncrypted
         property bool isEditable
 
-        function show(eventId_, eventType_, isEncrypted_, isEditable_, showAt_) {
+        function show(eventId_, eventType_, isEncrypted_, isEditable_, link_, text_, showAt_) {
             eventId = eventId_;
             eventType = eventType_;
             isEncrypted = isEncrypted_;
             isEditable = isEditable_;
+            if (text_)
+                text = text_;
+            else
+                text = "";
+            if (link_)
+                link = link_;
+            else
+                link = "";
             if (showAt_)
                 open(showAt_);
             else
                 open();
+        }
+
+        Platform.MenuItem {
+            visible: messageContextMenu.text
+            enabled: visible
+            text: qsTr("Copy")
+            onTriggered: Clipboard.text = messageContextMenu.text
+        }
+
+        Platform.MenuItem {
+            visible: messageContextMenu.link
+            enabled: visible
+            text: qsTr("Copy link location")
+            onTriggered: Clipboard.text = messageContextMenu.link
         }
 
         Platform.MenuItem {
@@ -131,6 +162,16 @@ Page {
         Platform.MenuItem {
             text: qsTr("Read receipts")
             onTriggered: TimelineManager.timeline.readReceiptsAction(messageContextMenu.eventId)
+        }
+
+        Platform.MenuItem {
+            visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker || messageContextMenu.eventType == MtxEvent.TextMessage || messageContextMenu.eventType == MtxEvent.LocationMessage || messageContextMenu.eventType == MtxEvent.EmoteMessage || messageContextMenu.eventType == MtxEvent.NoticeMessage
+            text: qsTr("Forward")
+            onTriggered: {
+                var forwardMess = forwardCompleterComponent.createObject(timelineRoot);
+                forwardMess.setMessageEventId(messageContextMenu.eventId);
+                forwardMess.open();
+            }
         }
 
         Platform.MenuItem {
@@ -167,6 +208,13 @@ Page {
             enabled: visible
             text: qsTr("Open in external program")
             onTriggered: TimelineManager.timeline.openMedia(messageContextMenu.eventId)
+        }
+
+        Platform.MenuItem {
+            visible: messageContextMenu.eventId
+            enabled: visible
+            text: qsTr("Copy link to event")
+            onTriggered: TimelineManager.timeline.copyLinkToEvent(messageContextMenu.eventId)
         }
 
     }

@@ -9,13 +9,16 @@
 #include <type_traits>
 
 #include <QCache>
+#include <QClipboard>
 #include <QDesktopServices>
 #include <QFileDialog>
+#include <QGuiApplication>
 #include <QMimeDatabase>
 #include <QRegularExpression>
 #include <QSettings>
 #include <QStandardPaths>
 
+#include "Cache_p.h"
 #include "ChatPage.h"
 #include "Config.h"
 #include "EventAccessors.h"
@@ -265,6 +268,8 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         connect(&events, &EventStore::updateFlowEventId, this, [this](std::string event_id) {
                 this->updateFlowEventId(event_id);
         });
+
+        showEventTimer.callOnTimeout(this, &TimelineModel::scrollTimerEvent);
 }
 
 QHash<int, QByteArray>
@@ -474,9 +479,13 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         case RoomId:
                 return QVariant(room_id_);
         case RoomName:
-                return QVariant(QString::fromStdString(room_name(event)));
+                return QVariant(
+                  utils::replaceEmoji(QString::fromStdString(room_name(event)).toHtmlEscaped()));
         case RoomTopic:
-                return QVariant(QString::fromStdString(room_topic(event)));
+                return QVariant(utils::replaceEmoji(
+                  utils::linkifyMessage(QString::fromStdString(room_topic(event))
+                                          .toHtmlEscaped()
+                                          .replace("\n", "<br>"))));
         case CallType:
                 return QVariant(QString::fromStdString(call_type(event)));
         case Dump: {
@@ -820,6 +829,16 @@ TimelineModel::viewRawMessage(QString id) const
         std::string ev = mtx::accessors::serialize_event(*e).dump(4);
         auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
         Q_UNUSED(dialog);
+}
+
+void
+TimelineModel::forwardMessage(QString eventId, QString roomId)
+{
+        auto e = events.get(eventId.toStdString(), "");
+        if (!e)
+                return;
+
+        emit forwardToRoom(e, roomId);
 }
 
 void
@@ -1284,6 +1303,83 @@ TimelineModel::cacheMedia(QString eventId)
         cacheMedia(eventId, NULL);
 }
 
+void
+TimelineModel::showEvent(QString eventId)
+{
+        using namespace std::chrono_literals;
+        if (idToIndex(eventId) != -1) {
+                eventIdToShow = eventId;
+                emit scrollTargetChanged();
+                showEventTimer.start(50ms);
+        }
+}
+
+void
+TimelineModel::eventShown()
+{
+        eventIdToShow.clear();
+        emit scrollTargetChanged();
+}
+
+QString
+TimelineModel::scrollTarget() const
+{
+        return eventIdToShow;
+}
+
+void
+TimelineModel::scrollTimerEvent()
+{
+        if (eventIdToShow.isEmpty() || showEventTimerCounter > 3) {
+                showEventTimer.stop();
+                showEventTimerCounter = 0;
+        } else {
+                emit scrollToIndex(idToIndex(eventIdToShow));
+                showEventTimerCounter++;
+        }
+}
+
+void
+TimelineModel::copyLinkToEvent(QString eventId) const
+{
+        QStringList vias;
+
+        auto alias = cache::client()->getRoomAliases(room_id_.toStdString());
+        QString room;
+        if (alias) {
+                room = QString::fromStdString(alias->alias);
+                if (room.isEmpty() && !alias->alt_aliases.empty()) {
+                        room = QString::fromStdString(alias->alt_aliases.front());
+                }
+        }
+
+        if (room.isEmpty())
+                room = room_id_;
+
+        vias.push_back(QString("via=%1").arg(QString(
+          QUrl::toPercentEncoding(QString::fromStdString(http::client()->user_id().hostname())))));
+        auto members = cache::getMembers(room_id_.toStdString(), 0, 100);
+        for (const auto &m : members) {
+                if (vias.size() >= 4)
+                        break;
+
+                auto user_id =
+                  mtx::identifiers::parse<mtx::identifiers::User>(m.user_id.toStdString());
+                QString server = QString("via=%1").arg(
+                  QString(QUrl::toPercentEncoding(QString::fromStdString(user_id.hostname()))));
+
+                if (!vias.contains(server))
+                        vias.push_back(server);
+        }
+
+        auto link = QString("https://matrix.to/#/%1/%2?%3")
+                      .arg(QString(QUrl::toPercentEncoding(room)),
+                           QString(QUrl::toPercentEncoding(eventId)),
+                           vias.join('&'));
+
+        QGuiApplication::clipboard()->setText(link);
+}
+
 QString
 TimelineModel::formatTypingUsers(const std::vector<QString> &users, QColor bg)
 {
@@ -1633,7 +1729,8 @@ TimelineModel::roomName() const
         if (!info.count(room_id_))
                 return "";
         else
-                return QString::fromStdString(info[room_id_].name);
+                return utils::replaceEmoji(
+                  QString::fromStdString(info[room_id_].name).toHtmlEscaped());
 }
 
 QString
@@ -1656,5 +1753,5 @@ TimelineModel::roomTopic() const
                 return "";
         else
                 return utils::replaceEmoji(utils::linkifyMessage(
-                  utils::escapeBlacklistedHtml(QString::fromStdString(info[room_id_].topic))));
+                  QString::fromStdString(info[room_id_].topic).toHtmlEscaped()));
 }

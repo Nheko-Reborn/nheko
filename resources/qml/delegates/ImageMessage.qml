@@ -8,7 +8,7 @@ import im.nheko 1.0
 Item {
     property double tempWidth: Math.min(parent ? parent.width : undefined, model.data.width < 1 ? parent.width : model.data.width)
     property double tempHeight: tempWidth * model.data.proportionalHeight
-    property double divisor: model.isReply ? 4 : 2
+    property double divisor: model.isReply ? 5 : 3
     property bool tooHigh: tempHeight > timelineRoot.height / divisor
 
     height: Math.round(tooHigh ? timelineRoot.height / divisor : tempHeight)

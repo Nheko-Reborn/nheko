@@ -107,6 +107,7 @@ public slots:
 
         void setHistoryView(const QString &room_id);
         void highlightRoom(const QString &room_id);
+        void showEvent(const QString &room_id, const QString &event_id);
         void focusTimeline();
         TimelineModel *getHistoryView(const QString &room_id)
         {
@@ -148,6 +149,7 @@ public slots:
         void backToRooms() { emit showRoomList(); }
         QObject *completerFor(QString completerName, QString roomId = "");
         void showRoomDirectory();
+        void forwardMessageToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 
 private slots:
         void openImageOverlayInternal(QString eventId, QImage img);
