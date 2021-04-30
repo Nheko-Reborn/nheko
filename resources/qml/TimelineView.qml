@@ -232,10 +232,6 @@ Page {
                 });
                 dialog.show();
             }
-        }
-
-        Connections {
-            target: TimelineManager.timeline
             onOpenProfile: {
                 var userProfile = userProfileComponent.createObject(timelineRoot, {
                     "profile": profile
