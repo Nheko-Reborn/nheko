@@ -420,8 +420,11 @@ LoginPage::onLoginButtonClicked(LoginMethod loginMethod)
                                                           : deviceName_->text().toStdString(),
                   [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
                           if (err) {
-                                  showErrorMessage(error_label_,
-                                                   QString::fromStdString(err->matrix_error.error));
+                                  auto error = err->matrix_error.error;
+                                  if (error.empty())
+                                          error = err->parse_error;
+
+                                  showErrorMessage(error_label_, QString::fromStdString(error));
                                   emit errorOccurred();
                                   return;
                           }
