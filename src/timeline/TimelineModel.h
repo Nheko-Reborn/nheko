@@ -223,7 +223,7 @@ public:
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void forwardMessage(QString eventId, QString roomId);
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
-        Q_INVOKABLE void openUserProfile(QString userid, bool global = false);
+        Q_INVOKABLE void openUserProfile(QString userid);
         Q_INVOKABLE void openRoomSettings();
         Q_INVOKABLE void editAction(QString id);
         Q_INVOKABLE void replyAction(QString id);
@@ -322,7 +322,6 @@ signals:
         void newCallEvent(const mtx::events::collections::TimelineEvents &event);
         void scrollToIndex(int index);
 
-        void openProfile(UserProfile *profile);
         void openRoomSettingsDialog(RoomSettings *settings);
 
         void newMessageToSend(mtx::events::collections::TimelineEvents event);

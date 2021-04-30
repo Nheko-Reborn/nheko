@@ -31,6 +31,7 @@
 #include "Utils.h"
 #include "ui/OverlayModal.h"
 #include "ui/Theme.h"
+#include "ui/UserProfile.h"
 
 #include "notifications/Manager.h"
 
@@ -100,7 +101,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         user_info_widget_ = new UserInfoWidget(sideBar_);
         connect(user_info_widget_, &UserInfoWidget::openGlobalUserProfile, this, [this]() {
-                view_manager_->activeTimeline()->openUserProfile(utils::localUser(), true);
+                UserProfile *userProfile = new UserProfile("", utils::localUser(), view_manager_);
+                emit view_manager_->openProfile(userProfile);
         });
 
         user_mentions_popup_ = new popups::UserMentions();
@@ -1187,6 +1189,7 @@ ChatPage::getProfileInfo()
                           nhlog::net()->critical("failed to retrieve joined groups: {} {}",
                                                  static_cast<int>(err->status_code),
                                                  err->matrix_error.error);
+                          emit updateGroupsInfo({});
                           return;
                   }
 

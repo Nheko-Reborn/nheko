@@ -854,12 +854,12 @@ TimelineModel::viewDecryptedRawMessage(QString id) const
 }
 
 void
-TimelineModel::openUserProfile(QString userid, bool global)
+TimelineModel::openUserProfile(QString userid)
 {
-        UserProfile *userProfile = new UserProfile(global ? "" : room_id_, userid, manager_, this);
+        UserProfile *userProfile = new UserProfile(room_id_, userid, manager_, this);
         connect(
           this, &TimelineModel::roomAvatarUrlChanged, userProfile, &UserProfile::updateAvatarUrl);
-        emit openProfile(userProfile);
+        emit manager_->openProfile(userProfile);
 }
 
 void
