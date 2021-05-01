@@ -216,4 +216,17 @@ UserInfoWidget::paintEvent(QPaintEvent *event)
         opt.init(this);
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+  
+        Painter p(this);
+        PainterHighQualityEnabler hq(p);
+
+        if (isPressed_)
+                p.fillRect(rect(), highlightedBackgroundColor_);
+        else if (isDisabled_)
+                p.fillRect(rect(), disabledBackgroundColor_);
+        else if (underMouse())
+                p.fillRect(rect(), hoverBackgroundColor_);
+        else
+                p.fillRect(rect(), backgroundColor_);
+
 }
