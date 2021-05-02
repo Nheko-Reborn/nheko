@@ -97,12 +97,14 @@ Page {
         property int eventType
         property bool isEncrypted
         property bool isEditable
+        property bool isSender
 
-        function show(eventId_, eventType_, isEncrypted_, isEditable_, link_, text_, showAt_) {
+        function show(eventId_, eventType_, isSender_, isEncrypted_, isEditable_, link_, text_, showAt_) {
             eventId = eventId_;
             eventType = eventType_;
             isEncrypted = isEncrypted_;
             isEditable = isEditable_;
+            isSender = isSender_;
             if (text_)
                 text = text_;
             else
@@ -134,6 +136,7 @@ Page {
         Platform.MenuItem {
             id: reactionOption
 
+            visible: TimelineManager.timeline ? TimelineManager.timeline.permissions.canSend(MtxEvent.Reaction) : false
             text: qsTr("React")
             onTriggered: emojiPopup.show(null, function(emoji) {
                 TimelineManager.queueReactionMessage(messageContextMenu.eventId, emoji);
@@ -141,12 +144,13 @@ Page {
         }
 
         Platform.MenuItem {
+            visible: TimelineManager.timeline ? TimelineManager.timeline.permissions.canSend(MtxEvent.TextMessage) : false
             text: qsTr("Reply")
             onTriggered: TimelineManager.timeline.replyAction(messageContextMenu.eventId)
         }
 
         Platform.MenuItem {
-            visible: messageContextMenu.isEditable
+            visible: messageContextMenu.isEditable && (TimelineManager.timeline ? TimelineManager.timeline.permissions.canSend(MtxEvent.TextMessage) : false)
             enabled: visible
             text: qsTr("Edit")
             onTriggered: TimelineManager.timeline.editAction(messageContextMenu.eventId)
@@ -185,6 +189,7 @@ Page {
         }
 
         Platform.MenuItem {
+            visible: (TimelineManager.timeline ? TimelineManager.timeline.permissions.canRedact() : false) || messageContextMenu.isSender
             text: qsTr("Remove message")
             onTriggered: TimelineManager.timeline.redactEvent(messageContextMenu.eventId)
         }

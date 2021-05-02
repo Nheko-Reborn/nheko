@@ -207,6 +207,111 @@ toRoomEventTypeString(const mtx::events::collections::TimelineEvents &event)
                           event);
 }
 
+mtx::events::EventType
+qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
+{
+        switch (t) {
+        // Unsupported event
+        case qml_mtx_events::Unsupported:
+                return mtx::events::EventType::Unsupported;
+
+        /// m.room_key_request
+        case qml_mtx_events::KeyRequest:
+                return mtx::events::EventType::RoomKeyRequest;
+        /// m.reaction:
+        case qml_mtx_events::Reaction:
+                return mtx::events::EventType::Reaction;
+        /// m.room.aliases
+        case qml_mtx_events::Aliases:
+                return mtx::events::EventType::RoomAliases;
+        /// m.room.avatar
+        case qml_mtx_events::Avatar:
+                return mtx::events::EventType::RoomAvatar;
+        /// m.call.invite
+        case qml_mtx_events::CallInvite:
+                return mtx::events::EventType::CallInvite;
+        /// m.call.answer
+        case qml_mtx_events::CallAnswer:
+                return mtx::events::EventType::CallAnswer;
+        /// m.call.hangup
+        case qml_mtx_events::CallHangUp:
+                return mtx::events::EventType::CallHangUp;
+        /// m.call.candidates
+        case qml_mtx_events::CallCandidates:
+                return mtx::events::EventType::CallCandidates;
+        /// m.room.canonical_alias
+        case qml_mtx_events::CanonicalAlias:
+                return mtx::events::EventType::RoomCanonicalAlias;
+        /// m.room.create
+        case qml_mtx_events::RoomCreate:
+                return mtx::events::EventType::RoomCreate;
+        /// m.room.encrypted.
+        case qml_mtx_events::Encrypted:
+                return mtx::events::EventType::RoomEncrypted;
+        /// m.room.encryption.
+        case qml_mtx_events::Encryption:
+                return mtx::events::EventType::RoomEncryption;
+        /// m.room.guest_access
+        case qml_mtx_events::RoomGuestAccess:
+                return mtx::events::EventType::RoomGuestAccess;
+        /// m.room.history_visibility
+        case qml_mtx_events::RoomHistoryVisibility:
+                return mtx::events::EventType::RoomHistoryVisibility;
+        /// m.room.join_rules
+        case qml_mtx_events::RoomJoinRules:
+                return mtx::events::EventType::RoomJoinRules;
+        /// m.room.member
+        case qml_mtx_events::Member:
+                return mtx::events::EventType::RoomMember;
+        /// m.room.name
+        case qml_mtx_events::Name:
+                return mtx::events::EventType::RoomName;
+        /// m.room.power_levels
+        case qml_mtx_events::PowerLevels:
+                return mtx::events::EventType::RoomPowerLevels;
+        /// m.room.tombstone
+        case qml_mtx_events::Tombstone:
+                return mtx::events::EventType::RoomTombstone;
+        /// m.room.topic
+        case qml_mtx_events::Topic:
+                return mtx::events::EventType::RoomTopic;
+        /// m.room.redaction
+        case qml_mtx_events::Redaction:
+                return mtx::events::EventType::RoomRedaction;
+        /// m.room.pinned_events
+        case qml_mtx_events::PinnedEvents:
+                return mtx::events::EventType::RoomPinnedEvents;
+        // m.sticker
+        case qml_mtx_events::Sticker:
+                return mtx::events::EventType::Sticker;
+        // m.tag
+        case qml_mtx_events::Tag:
+                return mtx::events::EventType::Tag;
+        /// m.room.message
+        case qml_mtx_events::AudioMessage:
+        case qml_mtx_events::EmoteMessage:
+        case qml_mtx_events::FileMessage:
+        case qml_mtx_events::ImageMessage:
+        case qml_mtx_events::LocationMessage:
+        case qml_mtx_events::NoticeMessage:
+        case qml_mtx_events::TextMessage:
+        case qml_mtx_events::VideoMessage:
+        case qml_mtx_events::Redacted:
+        case qml_mtx_events::UnknownMessage:
+        case qml_mtx_events::KeyVerificationRequest:
+        case qml_mtx_events::KeyVerificationStart:
+        case qml_mtx_events::KeyVerificationMac:
+        case qml_mtx_events::KeyVerificationAccept:
+        case qml_mtx_events::KeyVerificationCancel:
+        case qml_mtx_events::KeyVerificationKey:
+        case qml_mtx_events::KeyVerificationDone:
+        case qml_mtx_events::KeyVerificationReady:
+                return mtx::events::EventType::RoomMessage;
+        default:
+                return mtx::events::EventType::Unsupported;
+        };
+}
+
 TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObject *parent)
   : QAbstractListModel(parent)
   , events(room_id.toStdString(), this)
@@ -282,6 +387,7 @@ TimelineModel::roleNames() const
           {Body, "body"},
           {FormattedBody, "formattedBody"},
           {PreviousMessageUserId, "previousMessageUserId"},
+          {IsSender, "isSender"},
           {UserId, "userId"},
           {UserName, "userName"},
           {PreviousMessageDay, "previousMessageDay"},
@@ -333,6 +439,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         namespace acc = mtx::accessors;
 
         switch (role) {
+        case IsSender:
+                return QVariant(acc::sender(event) == http::client()->user_id().to_string());
         case UserId:
                 return QVariant(QString::fromStdString(acc::sender(event)));
         case UserName:
@@ -497,6 +605,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 m.insert(names[IsOnlyEmoji], data(event, static_cast<int>(IsOnlyEmoji)));
                 m.insert(names[Body], data(event, static_cast<int>(Body)));
                 m.insert(names[FormattedBody], data(event, static_cast<int>(FormattedBody)));
+                m.insert(names[IsSender], data(event, static_cast<int>(IsSender)));
                 m.insert(names[UserId], data(event, static_cast<int>(UserId)));
                 m.insert(names[UserName], data(event, static_cast<int>(UserName)));
                 m.insert(names[Day], data(event, static_cast<int>(Day)));
@@ -608,7 +717,10 @@ TimelineModel::syncState(const mtx::responses::State &s)
                         emit roomNameChanged();
                 else if (std::holds_alternative<StateEvent<state::Topic>>(e))
                         emit roomTopicChanged();
-                else if (std::holds_alternative<StateEvent<state::Member>>(e)) {
+                else if (std::holds_alternative<StateEvent<state::Topic>>(e)) {
+                        permissions_.invalidate();
+                        emit permissionsChanged();
+                } else if (std::holds_alternative<StateEvent<state::Member>>(e)) {
                         emit roomAvatarUrlChanged();
                         emit roomNameChanged();
                 }
@@ -661,7 +773,10 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
                         emit roomNameChanged();
                 else if (std::holds_alternative<StateEvent<state::Topic>>(e))
                         emit roomTopicChanged();
-                else if (std::holds_alternative<StateEvent<state::Member>>(e)) {
+                else if (std::holds_alternative<StateEvent<state::PowerLevels>>(e)) {
+                        permissions_.invalidate();
+                        emit permissionsChanged();
+                } else if (std::holds_alternative<StateEvent<state::Member>>(e)) {
                         emit roomAvatarUrlChanged();
                         emit roomNameChanged();
                 }

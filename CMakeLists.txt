@@ -271,6 +271,7 @@ set(SRC_FILES
 	src/timeline/TimelineViewManager.cpp
 	src/timeline/TimelineModel.cpp
 	src/timeline/DelegateChooser.cpp
+	src/timeline/Permissions.cpp
 
 	# UI components
 	src/ui/Avatar.cpp
@@ -494,6 +495,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/timeline/TimelineViewManager.h
 	src/timeline/TimelineModel.h
 	src/timeline/DelegateChooser.h
+	src/timeline/Permissions.h
 
 	# UI components
 	src/ui/Avatar.h

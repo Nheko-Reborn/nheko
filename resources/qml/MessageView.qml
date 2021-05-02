@@ -90,6 +90,7 @@ ScrollView {
                 EmojiButton {
                     id: reactButton
 
+                    visible: chat.model ? chat.model.permissions.canSend(MtxEvent.Reaction) : false
                     width: 16
                     hoverEnabled: true
                     ToolTip.visible: hovered
@@ -101,6 +102,7 @@ ScrollView {
                 ImageButton {
                     id: replyButton
 
+                    visible: chat.model ? chat.model.permissions.canSend(MtxEvent.TextMessage) : false
                     width: 16
                     hoverEnabled: true
                     image: ":/icons/icons/ui/mail-reply.png"
@@ -117,7 +119,7 @@ ScrollView {
                     image: ":/icons/icons/ui/vertical-ellipsis.png"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Options")
-                    onClicked: messageContextMenu.show(row.model.id, row.model.type, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
+                    onClicked: messageContextMenu.show(row.model.id, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
                 }
 
             }

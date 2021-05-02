@@ -28,6 +28,7 @@ Rectangle {
     RowLayout {
         id: row
 
+        visible: (TimelineManager.timeline ? TimelineManager.timeline.permissions.canSend(MtxEvent.TextMessage) : false) || messageContextMenu.isSender
         anchors.fill: parent
 
         ImageButton {
@@ -350,6 +351,13 @@ Rectangle {
             }
         }
 
+    }
+
+    Text {
+        anchors.centerIn: parent
+        visible: TimelineManager.timeline ? (!TimelineManager.timeline.permissions.canSend(MtxEvent.TextMessage)) : false
+        text: qsTr("You don't have permission to send messages in this room")
+        color: colors.text
     }
 
 }

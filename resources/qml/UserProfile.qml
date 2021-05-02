@@ -44,7 +44,7 @@ ApplicationWindow {
             displayName: profile.displayName
             userid: profile.userid
             Layout.alignment: Qt.AlignHCenter
-            onClicked: profile.isSelf ? profile.changeAvatar() : TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
+            onClicked: profile.isSelf ? profile.changeAvatar() : TimelineManager.openImageOverlay(profile.avatarUrl, "")
         }
 
         BusyIndicator {
@@ -151,18 +151,7 @@ ApplicationWindow {
         }
 
         RowLayout {
-            Layout.alignment: Qt.AlignHCenter
-            spacing: 8
-
-            ImageButton {
-                image: ":/icons/icons/ui/do-not-disturb-rounded-sign.png"
-                hoverEnabled: true
-                ToolTip.visible: hovered
-                ToolTip.text: qsTr("Ban the user")
-                onClicked: profile.banUser()
-            }
             // ImageButton{
-
             //     image:":/icons/icons/ui/volume-off-indicator.png"
             //     Layout.margins: {
             //         left: 5
@@ -174,6 +163,10 @@ ApplicationWindow {
             //         profile.ignoreUser()
             //     }
             // }
+
+            Layout.alignment: Qt.AlignHCenter
+            spacing: 8
+
             ImageButton {
                 image: ":/icons/icons/ui/black-bubble-speech.png"
                 hoverEnabled: true
@@ -188,6 +181,16 @@ ApplicationWindow {
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Kick the user")
                 onClicked: profile.kickUser()
+                visible: profile.room ? profile.room.permissions.canKick() : false
+            }
+
+            ImageButton {
+                image: ":/icons/icons/ui/do-not-disturb-rounded-sign.png"
+                hoverEnabled: true
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Ban the user")
+                onClicked: profile.banUser()
+                visible: profile.room ? profile.room.permissions.canBan() : false
             }
 
         }

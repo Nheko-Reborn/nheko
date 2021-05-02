@@ -95,6 +95,7 @@ class UserProfile : public QObject
         Q_PROPERTY(
           bool userVerificationEnabled READ userVerificationEnabled NOTIFY userStatusChanged)
         Q_PROPERTY(bool isSelf READ isSelf CONSTANT)
+        Q_PROPERTY(TimelineModel *room READ room CONSTANT)
 public:
         UserProfile(QString roomid,
                     QString userid,
@@ -111,6 +112,7 @@ public:
         bool userVerificationEnabled() const;
         bool isSelf() const;
         bool isLoading() const;
+        TimelineModel *room() const { return model; }
 
         Q_INVOKABLE void verify(QString device = "");
         Q_INVOKABLE void unverify(QString device = "");
