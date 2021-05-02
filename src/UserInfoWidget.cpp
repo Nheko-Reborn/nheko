@@ -217,7 +217,7 @@ UserInfoWidget::paintEvent(QPaintEvent *event)
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
   
-        Painter p(this);
+        QPainter p(this);
         PainterHighQualityEnabler hq(p);
 
         if (isPressed_)
