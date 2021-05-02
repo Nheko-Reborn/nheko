@@ -39,6 +39,7 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
         logoutButtonSize_ = std::min(fontHeight, 20);
 
         setFixedHeight(contentHeight + widgetMargin);
+        setMouseTracking(true);
 
         topLayout_ = new QHBoxLayout(this);
         topLayout_->setSpacing(0);
