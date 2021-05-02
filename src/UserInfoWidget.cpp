@@ -22,6 +22,7 @@
 #include "ui/Avatar.h"
 #include "ui/FlatButton.h"
 #include "ui/OverlayModal.h"
+#include "ui/Painter.h"
 
 UserInfoWidget::UserInfoWidget(QWidget *parent)
   : QWidget(parent)
@@ -217,7 +218,7 @@ UserInfoWidget::paintEvent(QPaintEvent *event)
         QPainter p(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
   
-        QPainter p(this);
+        Painter p(this);
         PainterHighQualityEnabler hq(p);
 
         if (isPressed_)
