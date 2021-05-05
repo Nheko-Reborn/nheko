@@ -271,6 +271,7 @@ set(SRC_FILES
 	src/timeline/TimelineViewManager.cpp
 	src/timeline/TimelineModel.cpp
 	src/timeline/DelegateChooser.cpp
+	src/timeline/Permissions.cpp
 
 	# UI components
 	src/ui/Avatar.cpp
@@ -362,7 +363,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        v0.5.1
+		GIT_TAG        5d2f055ea9403770039ddf66b1900f890cd5cde7
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -494,6 +495,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/timeline/TimelineViewManager.h
 	src/timeline/TimelineModel.h
 	src/timeline/DelegateChooser.h
+	src/timeline/Permissions.h
 
 	# UI components
 	src/ui/Avatar.h

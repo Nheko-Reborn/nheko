@@ -84,6 +84,15 @@ public:
         //! Retrieve the version of the room if any.
         QString getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb);
 
+        //! Get a specific state event
+        template<typename T>
+        std::optional<mtx::events::StateEvent<T>> getStateEvent(const std::string &room_id,
+                                                                std::string_view state_key = "")
+        {
+                auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+                return getStateEvent<T>(txn, room_id, state_key);
+        }
+
         //! Retrieve member info from a room.
         std::vector<RoomMember> getMembers(const std::string &room_id,
                                            std::size_t startIndex = 0,
@@ -406,7 +415,7 @@ private:
         }
 
         template<typename T>
-        std::optional<mtx::events::StateEvent<T>> getStateEvent(lmdb::txn txn,
+        std::optional<mtx::events::StateEvent<T>> getStateEvent(lmdb::txn &txn,
                                                                 const std::string &room_id,
                                                                 std::string_view state_key = "")
         {

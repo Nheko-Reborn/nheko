@@ -94,6 +94,7 @@ signals:
         void focusInput();
         void showPublicRooms();
         void openImageOverlayInternalCb(QString eventId, QImage img);
+        void openProfile(UserProfile *profile);
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);

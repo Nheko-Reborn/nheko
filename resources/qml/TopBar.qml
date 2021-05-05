@@ -101,6 +101,7 @@ Rectangle {
                 id: roomOptionsMenu
 
                 Platform.MenuItem {
+                    visible: TimelineManager.timeline ? TimelineManager.timeline.permissions.canInvite() : false
                     text: qsTr("Invite users")
                     onTriggered: TimelineManager.openInviteUsersDialog()
                 }

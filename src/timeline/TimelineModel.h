@@ -16,6 +16,7 @@
 #include "CacheCryptoStructs.h"
 #include "EventStore.h"
 #include "InputBar.h"
+#include "Permissions.h"
 #include "ui/RoomSettings.h"
 #include "ui/UserProfile.h"
 
@@ -105,6 +106,7 @@ enum EventType
         KeyVerificationReady
 };
 Q_ENUM_NS(EventType)
+mtx::events::EventType fromRoomEventType(qml_mtx_events::EventType);
 
 enum EventState
 {
@@ -159,6 +161,7 @@ class TimelineModel : public QAbstractListModel
         Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY roomAvatarUrlChanged)
         Q_PROPERTY(QString roomTopic READ roomTopic NOTIFY roomTopicChanged)
         Q_PROPERTY(InputBar *input READ input CONSTANT)
+        Q_PROPERTY(Permissions *permissions READ permissions NOTIFY permissionsChanged)
 
 public:
         explicit TimelineModel(TimelineViewManager *manager,
@@ -173,6 +176,7 @@ public:
                 Body,
                 FormattedBody,
                 PreviousMessageUserId,
+                IsSender,
                 UserId,
                 UserName,
                 PreviousMessageDay,
@@ -223,7 +227,7 @@ public:
         Q_INVOKABLE void viewRawMessage(QString id) const;
         Q_INVOKABLE void forwardMessage(QString eventId, QString roomId);
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
-        Q_INVOKABLE void openUserProfile(QString userid, bool global = false);
+        Q_INVOKABLE void openUserProfile(QString userid);
         Q_INVOKABLE void openRoomSettings();
         Q_INVOKABLE void editAction(QString id);
         Q_INVOKABLE void replyAction(QString id);
@@ -300,6 +304,7 @@ public slots:
         QString roomName() const;
         QString roomTopic() const;
         InputBar *input() { return &input_; }
+        Permissions *permissions() { return &permissions_; }
         QString roomAvatarUrl() const;
         QString roomId() const { return room_id_; }
 
@@ -322,7 +327,6 @@ signals:
         void newCallEvent(const mtx::events::collections::TimelineEvents &event);
         void scrollToIndex(int index);
 
-        void openProfile(UserProfile *profile);
         void openRoomSettingsDialog(RoomSettings *settings);
 
         void newMessageToSend(mtx::events::collections::TimelineEvents event);
@@ -332,6 +336,7 @@ signals:
         void roomNameChanged();
         void roomTopicChanged();
         void roomAvatarUrlChanged();
+        void permissionsChanged();
         void forwardToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 
         void scrollTargetChanged();
@@ -360,6 +365,7 @@ private:
         TimelineViewManager *manager_;
 
         InputBar input_{this};
+        Permissions permissions_{this};
 
         QTimer showEventTimer{this};
         QString eventIdToShow;

@@ -59,7 +59,7 @@ const QRegularExpression url_regex(
   // match an URL, that is not quoted, i.e.
   // vvvvvv match quote via negative lookahead/lookbehind                              vv
   //          vvvv atomic match url -> fail if there is a " before or after        vvv
-  R"(\b(?<!["'])(?>((www\.(?!\.)|[a-z][a-z0-9+.-]*://)[^\s'"]+[^!,\.\s'"\]\)\:]))(?!["'])\b)");
+  R"((?<!["'])(?>((www\.(?!\.)|[a-z][a-z0-9+.-]*://)[^\s<>'"]+[^!,\.\s<>'"\]\)\:]))(?!["']))");
 // match any markdown matrix.to link. Capture group 1 is the link name, group 2 is the target.
 static const QRegularExpression matrixToMarkdownLink(
   R"(\[(.*?)(?<!\\)\]\((https://matrix.to/#/.*?\)))");
