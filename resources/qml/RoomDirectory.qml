@@ -6,58 +6,35 @@ import QtQuick 2.9
 import QtQuick.Controls 2.3
 import im.nheko 1.0
 
-Popup {
-    id: roomDirectory
+ApplicationWindow {
+    id: roomDirectoryWindow
+    visible: true
 
-    property int textHeight: Math.round(Qt.application.font.pixelSize * 2.4)
-    property int textMargin: Math.round(textHeight / 8)
-
-    background: null
     width: Math.round(parent.width / 2)
-    x: Math.round(parent.width / 2 - width / 2)
-    y: Math.round(parent.height / 4 - height / 2)
-    modal: true
-    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-    parent: Overlay.overlay
-    palette: colors
-    onOpened: {
-        console.log("Opened up room dir popup");
+    height: 0.75 * parent.height
+
+    menuBar: MenuBar {
     }
 
-    MatrixTextField {
-        id: roomTextInput
+    header: ToolBar {
 
+    }
+
+    footer: TabBar {
+
+    }
+
+    StackView {
+        
         anchors.fill: parent
-        font.pixelSize: Math.ceil(quickSwitcher.textHeight * 0.6)
-        padding: textMargin
-        color: colors.text
-        onTextEdited: {
-        }
-        Keys.onPressed: {
-        }
+        
     }
 
-    Rectangle {
-        anchors.fill: parent
-
-        ListModel {
-            id: publicRoomsListModel
-
-            ListElement {
-                name: "nheko"
-            }
-
-            ListElement {
-                name: "construct"
-            }
-        }   
+    function joinRoom(index) {
+        // body...
     }
-
-    onClosed: {
-        roomDirectory.close();
-    }
-
-    Overlay.modal: Rectangle {
-        color: "#aa1E1E1E"
+    
+    function previewRoon(index) {
+        // body...
     }
 }

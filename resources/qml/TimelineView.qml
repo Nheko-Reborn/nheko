@@ -276,6 +276,7 @@ Page {
             onShowPublicRooms: {
                 console.debug("Roomdir from QML TimelineView");
                 var dialog = roomDirectoryComponent.createObject(timelineRoot);
+                dialog.open();
             }
         }
 
