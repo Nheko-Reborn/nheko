@@ -6,33 +6,33 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+106"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>Llamando...</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectando...</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation type="unfinished"></translation>
+        <translation>Estás compartiendo tu pantalla</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocultar/Mostrar Picture-in-Picture</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Desilenciar micrófono</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Silenciar micrófono</translation>
     </message>
 </context>
 <context>
@@ -40,17 +40,17 @@
     <message>
         <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+11"/>
         <source>Awaiting Confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Esperando confirmación</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Waiting for other side to complete verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>Esperando a que la otra parte complete la verificación.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -58,7 +58,7 @@
     <message>
         <location filename="../../src/Cache.cpp" line="+2004"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Te has unido a esta sala.</translation>
     </message>
 </context>
 <context>
@@ -66,17 +66,17 @@
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+70"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Videollamada</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Llamada de voz</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>No se encontró micrófono.</translation>
     </message>
 </context>
 <context>
@@ -84,42 +84,42 @@
     <message>
         <location filename="../qml/voip/CallInviteBar.qml" line="+64"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Videollamada</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Llamada de voz</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Dispositivos</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Unknown microphone: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Micrófono desconocido: %1</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Unknown camera: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Cámara desconocida: %1</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechazar</translation>
     </message>
     <message>
         <location line="-28"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>No se encontró micrófono.</translation>
     </message>
 </context>
 <context>
@@ -127,7 +127,7 @@
     <message>
         <location filename="../../src/CallManager.cpp" line="+521"/>
         <source>Entire screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Pantalla completa</translation>
     </message>
 </context>
 <context>
@@ -135,13 +135,13 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+202"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>No se pudo invitar al usuario: %1</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+809"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuario invitado: %1</translation>
     </message>
     <message>
         <location line="-509"/>
