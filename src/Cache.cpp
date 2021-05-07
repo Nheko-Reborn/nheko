@@ -3666,8 +3666,11 @@ Cache::verificationStatus(const std::string &user_id)
 
         const auto local_user = utils::localUser().toStdString();
 
-        if (user_id == local_user)
+        crypto::Trust trustlevel = crypto::Trust::Unverified;
+        if (user_id == local_user) {
                 status.verified_devices.push_back(http::client()->device_id());
+                trustlevel = crypto::Trust::Verified;
+        }
 
         verification_storage.status[user_id] = status;
 
@@ -3723,16 +3726,24 @@ Cache::verificationStatus(const std::string &user_id)
                         master_keys = theirKeys->master_keys.keys;
                 }
 
-                status.user_verified = true;
+                trustlevel           = crypto::Trust::Verified;
+                status.user_verified = crypto::Trust::Verified;
 
                 if (!verifyAtLeastOneSig(theirKeys->self_signing_keys, master_keys, user_id))
                         return status;
 
                 for (const auto &[device, device_key] : theirKeys->device_keys) {
                         (void)device;
-                        if (verifyAtLeastOneSig(
-                              device_key, theirKeys->self_signing_keys.keys, user_id))
-                                status.verified_devices.push_back(device_key.device_id);
+                        try {
+                                auto identkey =
+                                  device_key.keys.at("curve25519:" + device_key.device_id);
+                                if (verifyAtLeastOneSig(
+                                      device_key, theirKeys->self_signing_keys.keys, user_id)) {
+                                        status.verified_devices.push_back(device_key.device_id);
+                                        status.verified_device_keys[identkey] = trustlevel;
+                                }
+                        } catch (...) {
+                        }
                 }
 
                 verification_storage.status[user_id] = status;

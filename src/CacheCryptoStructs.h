@@ -4,11 +4,27 @@
 
 #pragma once
 
+#include <QObject>
+
 #include <map>
 #include <mutex>
 
+#include <mtx/events/encrypted.hpp>
 #include <mtx/responses/crypto.hpp>
 #include <mtxclient/crypto/objects.hpp>
+
+namespace crypto {
+Q_NAMESPACE
+//! How much a participant is trusted.
+enum Trust
+{
+        Unverified, //! Device unverified or master key changed.
+        TOFU,       //! Device is signed by the sender, but the user is not verified, but they never
+                    //! changed the master key.
+        Verified,   //! User was verified and has crosssigned this device or device is verified.
+};
+Q_ENUM_NS(Trust)
+}
 
 struct DeviceAndMasterKeys
 {
@@ -87,9 +103,11 @@ from_json(const nlohmann::json &obj, StoredOlmSession &msg);
 struct VerificationStatus
 {
         //! True, if the users master key is verified
-        bool user_verified = false;
+        crypto::Trust user_verified = crypto::Trust::Unverified;
         //! List of all devices marked as verified
         std::vector<std::string> verified_devices;
+        //! Map from sender key/curve25519 to trust status
+        std::map<std::string, crypto::Trust> verified_device_keys;
 };
 
 //! In memory cache of verification status

@@ -939,7 +939,6 @@ decryptEvent(const MegolmSessionIndex &index,
         }
 
         // TODO: Lookup index,event_id,origin_server_ts tuple for replay attack errors
-        // TODO: Verify sender_key
 
         std::string msg_str;
         try {
@@ -974,6 +973,17 @@ decryptEvent(const MegolmSessionIndex &index,
         }
 
         return {std::nullopt, std::nullopt, std::move(te.data)};
+}
+
+crypto::Trust
+calculate_trust(const std::string &user_id, const std::string &curve25519)
+{
+        auto status              = cache::client()->verificationStatus(user_id);
+        crypto::Trust trustlevel = crypto::Trust::Unverified;
+        if (status.verified_device_keys.count(curve25519))
+                trustlevel = status.verified_device_keys.at(curve25519);
+
+        return trustlevel;
 }
 
 //! Send encrypted to device messages, targets is a map from userid to device ids or {} for all

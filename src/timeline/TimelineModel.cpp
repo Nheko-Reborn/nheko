@@ -407,6 +407,7 @@ TimelineModel::roleNames() const
           {IsEdited, "isEdited"},
           {IsEditable, "isEditable"},
           {IsEncrypted, "isEncrypted"},
+          {Trustlevel, "trustlevel"},
           {IsRoomEncrypted, "isRoomEncrypted"},
           {ReplyTo, "replyTo"},
           {Reactions, "reactions"},
@@ -575,6 +576,21 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                          mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
                          *encrypted_event);
         }
+
+        case Trustlevel: {
+                auto id              = event_id(event);
+                auto encrypted_event = events.get(id, id, false);
+                if (encrypted_event) {
+                        if (auto encrypted =
+                              std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                                &*encrypted_event)) {
+                                return olm::calculate_trust(encrypted->sender,
+                                                            encrypted->content.sender_key);
+                        }
+                }
+                return crypto::Trust::Unverified;
+        }
+
         case IsRoomEncrypted: {
                 return cache::isRoomEncrypted(room_id_.toStdString());
         }

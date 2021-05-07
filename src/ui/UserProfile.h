@@ -11,6 +11,8 @@
 #include <mtx/responses.hpp>
 #include <mtx/responses/common.hpp>
 
+#include "CacheCryptoStructs.h"
+
 namespace verification {
 Q_NAMESPACE
 
@@ -90,7 +92,7 @@ class UserProfile : public QObject
         Q_PROPERTY(QString avatarUrl READ avatarUrl NOTIFY avatarUrlChanged)
         Q_PROPERTY(DeviceInfoModel *deviceList READ deviceList CONSTANT)
         Q_PROPERTY(bool isGlobalUserProfile READ isGlobalUserProfile CONSTANT)
-        Q_PROPERTY(bool isUserVerified READ getUserStatus NOTIFY userStatusChanged)
+        Q_PROPERTY(int userVerified READ getUserStatus NOTIFY userStatusChanged)
         Q_PROPERTY(bool isLoading READ isLoading NOTIFY loadingChanged)
         Q_PROPERTY(
           bool userVerificationEnabled READ userVerificationEnabled NOTIFY userStatusChanged)
@@ -108,7 +110,7 @@ public:
         QString displayName();
         QString avatarUrl();
         bool isGlobalUserProfile() const;
-        bool getUserStatus();
+        crypto::Trust getUserStatus();
         bool userVerificationEnabled() const;
         bool isSelf() const;
         bool isLoading() const;
@@ -147,9 +149,9 @@ private:
         QString globalUsername;
         QString globalAvatarUrl;
         DeviceInfoModel deviceList_;
-        bool isUserVerified = false;
-        bool hasMasterKey   = false;
-        bool isLoading_     = false;
+        crypto::Trust isUserVerified = crypto::Trust::Unverified;
+        bool hasMasterKey            = false;
+        bool isLoading_              = false;
         TimelineViewManager *manager;
         TimelineModel *model;
 };

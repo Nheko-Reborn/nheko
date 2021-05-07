@@ -137,16 +137,16 @@ ApplicationWindow {
 
             text: qsTr("Verify")
             Layout.alignment: Qt.AlignHCenter
-            enabled: !profile.isUserVerified
-            visible: !profile.isUserVerified && !profile.isSelf && profile.userVerificationEnabled
+            enabled: profile.userVerified != Crypto.Verified
+            visible: profile.userVerified != Crypto.Verified && !profile.isSelf && profile.userVerificationEnabled
             onClicked: profile.verify()
         }
 
         Image {
             Layout.preferredHeight: 16
             Layout.preferredWidth: 16
-            source: "image://colorimage/:/icons/icons/ui/lock.png?green"
-            visible: profile.isUserVerified
+	    source: "image://colorimage/:/icons/icons/ui/lock.png?" + ((profile.userVerified == Crypto.Verified) ?  "green" : colors.buttonText)
+            visible: profile.userVerified != Crypto.Unverified
             Layout.alignment: Qt.AlignHCenter
         }
 

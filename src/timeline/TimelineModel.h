@@ -196,6 +196,7 @@ public:
                 IsEdited,
                 IsEditable,
                 IsEncrypted,
+                Trustlevel,
                 IsRoomEncrypted,
                 ReplyTo,
                 Reactions,
