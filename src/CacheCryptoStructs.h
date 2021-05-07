@@ -8,6 +8,7 @@
 
 #include <map>
 #include <mutex>
+#include <set>
 
 #include <mtx/events/encrypted.hpp>
 #include <mtx/responses/crypto.hpp>
@@ -123,12 +124,16 @@ struct UserKeyCache
 {
         //! Device id to device keys
         std::map<std::string, mtx::crypto::DeviceKeys> device_keys;
-        //! corss signing keys
+        //! cross signing keys
         mtx::crypto::CrossSigningKeys master_keys, user_signing_keys, self_signing_keys;
         //! Sync token when nheko last fetched the keys
         std::string updated_at;
         //! Sync token when the keys last changed. updated != last_changed means they are outdated.
         std::string last_changed;
+        //! if the master key has ever changed
+        bool master_key_changed = false;
+        //! Device keys that were already used at least once
+        std::set<std::string> seen_device_keys;
 };
 
 void
