@@ -566,8 +566,10 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         case IsEdited:
                 return QVariant(relations(event).replaces().has_value());
         case IsEditable:
-                return QVariant(!is_state_event(event) && mtx::accessors::sender(event) ==
-                                                            http::client()->user_id().to_string());
+                return QVariant(!is_state_event(event) &&
+                                mtx::accessors::sender(event) ==
+                                  http::client()->user_id().to_string() &&
+                                !event_id(event).empty() && event_id(event).front() == '$');
         case IsEncrypted: {
                 auto id              = event_id(event);
                 auto encrypted_event = events.get(id, id, false);
