@@ -56,7 +56,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2004"/>
+        <location filename="../../src/Cache.cpp" line="+2016"/>
         <source>You joined this room.</source>
         <translation>Sa liitusid selle jututoaga.</translation>
     </message>
@@ -133,7 +133,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+202"/>
+        <location filename="../../src/ChatPage.cpp" line="+204"/>
         <source>Failed to invite user: %1</source>
         <translation>Kutse saatmine kasutajale ei õnnestunud: %1</translation>
     </message>
@@ -165,12 +165,12 @@
     </message>
     <message>
         <location line="+35"/>
-        <location line="+323"/>
+        <location line="+324"/>
         <source>Confirm invite</source>
         <translation>Kinnita kutse</translation>
     </message>
     <message>
-        <location line="-322"/>
+        <location line="-323"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Kas sa tõesti soovid saata kutset kasutajale %1 (%2)?</translation>
     </message>
@@ -235,12 +235,12 @@
         <translation>Suhtluskeeld eemaldatud: %1</translation>
     </message>
     <message>
-        <location line="+226"/>
+        <location line="+227"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation>Kas sa kindlasti soovid alustada otsevestlust kasutajaga %1?</translation>
     </message>
     <message>
-        <location line="-817"/>
+        <location line="-818"/>
         <source>Cache migration failed!</source>
         <translation>Puhvri versiooniuuendus ebaõnnestus!</translation>
     </message>
@@ -349,7 +349,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+227"/>
+        <location filename="../../src/ChatPage.cpp" line="+228"/>
         <source>Decrypt secrets</source>
         <translation>Dekrüpti andmed</translation>
     </message>
@@ -494,14 +494,24 @@
 <context>
     <name>EncryptionIndicator</name>
     <message>
-        <location filename="../qml/EncryptionIndicator.qml" line="+23"/>
-        <source>Encrypted</source>
-        <translation>Krüptitud</translation>
-    </message>
-    <message>
-        <location line="+0"/>
+        <location filename="../qml/EncryptionIndicator.qml" line="+34"/>
         <source>This message is not encrypted!</source>
         <translation>See sõnum on krüptimata!</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Encrypted by a verified device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Encrypted by an unverified device</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -581,6 +591,14 @@
         <location line="+18"/>
         <source>Close</source>
         <translation>Sulge</translation>
+    </message>
+</context>
+<context>
+    <name>ForwardCompleter</name>
+    <message>
+        <location filename="../qml/ForwardCompleter.qml" line="+44"/>
+        <source>Forward Message</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -718,7 +736,7 @@ Näiteks: https://server.minu:8787</translation>
         <translation>Tühi salasõna</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+57"/>
         <source>SSO login failed</source>
         <translation>Ühekordne sisselogimine ei õnnestunud</translation>
     </message>
@@ -739,7 +757,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+127"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+128"/>
         <source>Encryption enabled</source>
         <translation>Krüptimine on kasutusel</translation>
     </message>
@@ -808,7 +826,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+42"/>
+        <location filename="../qml/MessageInput.qml" line="+43"/>
         <source>Hang up</source>
         <translation>Lõpeta kõne</translation>
     </message>
@@ -837,6 +855,11 @@ Näiteks: https://server.minu:8787</translation>
         <source>Send</source>
         <translation>Saada</translation>
     </message>
+    <message>
+        <location line="+11"/>
+        <source>You don&apos;t have permission to send messages in this room</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MessageView</name>
@@ -846,12 +869,12 @@ Näiteks: https://server.minu:8787</translation>
         <translation>Muuda</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>React</source>
         <translation>Reageeri</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Reply</source>
         <translation>Vasta</translation>
     </message>
@@ -1107,7 +1130,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1754"/>
+        <location filename="../../src/Cache.cpp" line="+1813"/>
         <source>no version stored</source>
         <translation>salvestatud versiooni ei leidu</translation>
     </message>
@@ -1280,7 +1303,7 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
         <translation>Sobib</translation>
     </message>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+267"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+268"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Krüptimise kasutuselevõtmine ei õnnestunud: %1</translation>
     </message>
@@ -1437,7 +1460,7 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+892"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1044"/>
         <source>Message redaction failed: %1</source>
         <translation>Sõnumi ümbersõnastamine ebaõnnestus: %1</translation>
     </message>
@@ -1468,7 +1491,7 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
         <translation>Salvesta fail</translation>
     </message>
     <message numerus="yes">
-        <location line="+151"/>
+        <location line="+228"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -1577,12 +1600,12 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
         <translation>%1 muutis oma koputust jututoa uksele.</translation>
     </message>
     <message>
-        <location line="-789"/>
+        <location line="-876"/>
         <source>You joined this room.</source>
         <translation>Sa liitusid jututoaga.</translation>
     </message>
     <message>
-        <location line="+755"/>
+        <location line="+842"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1616,7 +1639,7 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+105"/>
+        <location filename="../qml/TimelineRow.qml" line="+106"/>
         <source>Edited</source>
         <translation>Muudetud</translation>
     </message>
@@ -1624,12 +1647,22 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+105"/>
+        <location filename="../qml/TimelineView.qml" line="+125"/>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Copy link location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>React</source>
         <translation>Reageeri</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Reply</source>
         <translation>Vasta</translation>
     </message>
@@ -1644,7 +1677,12 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
         <translation>Lugemisteatised</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Mark as read</source>
         <translation>Märgi loetuks</translation>
     </message>
@@ -1659,7 +1697,7 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
         <translation>Näita sõnumi dekrüptitud lähtekoodi</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Remove message</source>
         <translation>Eemalda sõnum</translation>
     </message>
@@ -1674,7 +1712,12 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
         <translation>Ava välise rakendusega</translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+7"/>
+        <source>Copy link to event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>No room open</source>
         <translation>Ühtegi jututuba pole avatud</translation>
     </message>
@@ -1682,7 +1725,7 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+452"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+570"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>Ühtegi krüptitud vestlust selle kasutajaga ei leidunud. Palun loo temaga krüptitud vestlus ja proovi uuesti.</translation>
     </message>
@@ -1701,12 +1744,12 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
         <translation>Jututuba on valimata</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>Room options</source>
         <translation>Jututoa valikud</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Invite users</source>
         <translation>Kutsu kasutajaid</translation>
     </message>
@@ -1801,17 +1844,17 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
     </message>
     <message>
         <location line="+114"/>
-        <location line="+104"/>
+        <location line="+107"/>
         <source>Verify</source>
         <translation>Verifitseeri</translation>
     </message>
     <message>
-        <location line="-81"/>
+        <location line="-54"/>
         <source>Ban the user</source>
         <translation>Sea kasutajale suhtluskeeld</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="-17"/>
         <source>Start a private chat</source>
         <translation>Alusta privaatset vestlust</translation>
     </message>
@@ -1821,7 +1864,7 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
         <translation>Müksa kasutaja välja</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Unverify</source>
         <translation>Võta verifitseerimine tagasi</translation>
     </message>
@@ -2366,7 +2409,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+189"/>
+        <location filename="../../src/Utils.cpp" line="+207"/>
         <source>Yesterday</source>
         <translation>Eile</translation>
     </message>
@@ -2563,7 +2606,7 @@ Meedia suurus: %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+115"/>
+        <location filename="../../src/Utils.h" line="+124"/>
         <source>You sent an audio clip</source>
         <translation>Sa saatsid helifaili</translation>
     </message>

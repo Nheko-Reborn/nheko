@@ -56,7 +56,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2004"/>
+        <location filename="../../src/Cache.cpp" line="+2016"/>
         <source>You joined this room.</source>
         <translation>Du gick med i detta rum.</translation>
     </message>
@@ -133,7 +133,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+202"/>
+        <location filename="../../src/ChatPage.cpp" line="+204"/>
         <source>Failed to invite user: %1</source>
         <translation>Kunde inte bjuda in användare: %1</translation>
     </message>
@@ -165,12 +165,12 @@
     </message>
     <message>
         <location line="+35"/>
-        <location line="+323"/>
+        <location line="+324"/>
         <source>Confirm invite</source>
         <translation>Bekräfta inbjudan</translation>
     </message>
     <message>
-        <location line="-322"/>
+        <location line="-323"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Är du säker på att du vill bjuda in %1 (%2)?</translation>
     </message>
@@ -235,12 +235,12 @@
         <translation>Hävde bannlysningen av användare: %1</translation>
     </message>
     <message>
-        <location line="+226"/>
+        <location line="+227"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-817"/>
+        <location line="-818"/>
         <source>Cache migration failed!</source>
         <translation>Cache-migration misslyckades!</translation>
     </message>
@@ -349,7 +349,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+227"/>
+        <location filename="../../src/ChatPage.cpp" line="+228"/>
         <source>Decrypt secrets</source>
         <translation>Dekryptera hemliga nycklar</translation>
     </message>
@@ -494,14 +494,24 @@
 <context>
     <name>EncryptionIndicator</name>
     <message>
-        <location filename="../qml/EncryptionIndicator.qml" line="+23"/>
-        <source>Encrypted</source>
-        <translation>Krypterad</translation>
-    </message>
-    <message>
-        <location line="+0"/>
+        <location filename="../qml/EncryptionIndicator.qml" line="+34"/>
         <source>This message is not encrypted!</source>
         <translation>Detta meddelande är inte krypterat!</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Encrypted by a verified device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Encrypted by an unverified device</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -581,6 +591,14 @@
         <location line="+18"/>
         <source>Close</source>
         <translation>Stäng</translation>
+    </message>
+</context>
+<context>
+    <name>ForwardCompleter</name>
+    <message>
+        <location filename="../qml/ForwardCompleter.qml" line="+44"/>
+        <source>Forward Message</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -718,7 +736,7 @@ Exempel: https://server.my:8787</translation>
         <translation>Tomt lösenord</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+57"/>
         <source>SSO login failed</source>
         <translation>SSO-inloggning misslyckades</translation>
     </message>
@@ -739,7 +757,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+127"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+128"/>
         <source>Encryption enabled</source>
         <translation>Kryptering aktiverad</translation>
     </message>
@@ -808,7 +826,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+42"/>
+        <location filename="../qml/MessageInput.qml" line="+43"/>
         <source>Hang up</source>
         <translation>Lägg på</translation>
     </message>
@@ -837,6 +855,11 @@ Exempel: https://server.my:8787</translation>
         <source>Send</source>
         <translation>Skicka</translation>
     </message>
+    <message>
+        <location line="+11"/>
+        <source>You don&apos;t have permission to send messages in this room</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MessageView</name>
@@ -846,12 +869,12 @@ Exempel: https://server.my:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>React</source>
         <translation type="unfinished">Reagera</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Reply</source>
         <translation type="unfinished">Svara</translation>
     </message>
@@ -1107,7 +1130,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1754"/>
+        <location filename="../../src/Cache.cpp" line="+1813"/>
         <source>no version stored</source>
         <translation>ingen version lagrad</translation>
     </message>
@@ -1278,7 +1301,7 @@ Exempel: https://server.my:8787</translation>
         <translation type="unfinished">OK</translation>
     </message>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+267"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+268"/>
         <source>Failed to enable encryption: %1</source>
         <translation type="unfinished">Kunde inte aktivera kryptering: %1</translation>
     </message>
@@ -1435,7 +1458,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+892"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1044"/>
         <source>Message redaction failed: %1</source>
         <translation>Kunde inte maskera meddelande: %1</translation>
     </message>
@@ -1466,7 +1489,7 @@ Exempel: https://server.my:8787</translation>
         <translation>Spara fil</translation>
     </message>
     <message numerus="yes">
-        <location line="+151"/>
+        <location line="+228"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -1575,12 +1598,12 @@ Exempel: https://server.my:8787</translation>
         <translation>%1 maskerade sin knackning.</translation>
     </message>
     <message>
-        <location line="-789"/>
+        <location line="-876"/>
         <source>You joined this room.</source>
         <translation>Du gick med i detta rum.</translation>
     </message>
     <message>
-        <location line="+755"/>
+        <location line="+842"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1614,7 +1637,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+105"/>
+        <location filename="../qml/TimelineRow.qml" line="+106"/>
         <source>Edited</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1622,12 +1645,22 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+105"/>
+        <location filename="../qml/TimelineView.qml" line="+125"/>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Copy link location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>React</source>
         <translation>Reagera</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Reply</source>
         <translation>Svara</translation>
     </message>
@@ -1642,7 +1675,12 @@ Exempel: https://server.my:8787</translation>
         <translation>Läskvitton</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Mark as read</source>
         <translation>Markera som läst</translation>
     </message>
@@ -1657,7 +1695,7 @@ Exempel: https://server.my:8787</translation>
         <translation>Visa dekrypterad meddelandekälla</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Remove message</source>
         <translation>Ta bort meddelande</translation>
     </message>
@@ -1672,7 +1710,12 @@ Exempel: https://server.my:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+7"/>
+        <source>Copy link to event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>No room open</source>
         <translation>Inget rum öppet</translation>
     </message>
@@ -1680,7 +1723,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+452"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+570"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>Ingen krypterad privat chatt med denna användare kunde hittas. Skapa en krypterad privat chatt med användaren och försök igen.</translation>
     </message>
@@ -1699,12 +1742,12 @@ Exempel: https://server.my:8787</translation>
         <translation>Inget rum markerat</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>Room options</source>
         <translation>Alternativ för rum</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Invite users</source>
         <translation>Bjud in användare</translation>
     </message>
@@ -1799,17 +1842,17 @@ Exempel: https://server.my:8787</translation>
     </message>
     <message>
         <location line="+114"/>
-        <location line="+104"/>
+        <location line="+107"/>
         <source>Verify</source>
         <translation>Bekräfta</translation>
     </message>
     <message>
-        <location line="-81"/>
+        <location line="-54"/>
         <source>Ban the user</source>
         <translation>Bannlys användaren</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="-17"/>
         <source>Start a private chat</source>
         <translation>Starta en privat chatt</translation>
     </message>
@@ -1819,7 +1862,7 @@ Exempel: https://server.my:8787</translation>
         <translation>Sparka ut användaren</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Unverify</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2361,7 +2404,7 @@ Detta gör vanligtvis att ikonen i aktivitetsfältet animeras på något sätt.<
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+189"/>
+        <location filename="../../src/Utils.cpp" line="+207"/>
         <source>Yesterday</source>
         <translation>Igår</translation>
     </message>
@@ -2558,7 +2601,7 @@ Mediastorlek: %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+115"/>
+        <location filename="../../src/Utils.h" line="+124"/>
         <source>You sent an audio clip</source>
         <translation>Du skickade ett ljudklipp</translation>
     </message>
