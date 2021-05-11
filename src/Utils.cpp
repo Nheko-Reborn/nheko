@@ -70,7 +70,7 @@ utils::stripReplyFromFormattedBody(const std::string &formatted_bodyi)
         QString formatted_body = QString::fromStdString(formatted_bodyi);
         formatted_body.remove(QRegularExpression("<mx-reply>.*</mx-reply>",
                                                  QRegularExpression::DotMatchesEverythingOption));
-        formatted_body.replace("@room", "@\u2060aroom");
+        formatted_body.replace("@room", "@\u2060room");
         return formatted_body.toStdString();
 }
 
