@@ -2906,7 +2906,7 @@ inline ssize_t Stream::write(const std::string &s) {
 
 template <typename... Args>
 inline ssize_t Stream::write_format(const char *fmt, const Args &... args) {
-  std::array<char, 2048> buf;
+        std::array<char, 2048> buf{};
 
 #if defined(_MSC_VER) && _MSC_VER < 1900
   auto sn = _snprintf_s(buf, bufsiz, buf.size() - 1, fmt, args...);
