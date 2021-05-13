@@ -284,11 +284,13 @@ set(SRC_FILES
 	src/ui/LoadingIndicator.cpp
 	src/ui/NhekoCursorShape.cpp
 	src/ui/NhekoDropArea.cpp
+	src/ui/NhekoGlobalObject.cpp
 	src/ui/OverlayModal.cpp
 	src/ui/OverlayWidget.cpp
 	src/ui/RaisedButton.cpp
 	src/ui/Ripple.cpp
 	src/ui/RippleOverlay.cpp
+	src/ui/RoomSettings.cpp
 	src/ui/SnackBar.cpp
 	src/ui/TextField.cpp
 	src/ui/TextLabel.cpp
@@ -296,7 +298,6 @@ set(SRC_FILES
 	src/ui/ThemeManager.cpp
 	src/ui/ToggleButton.cpp
 	src/ui/UserProfile.cpp
-	src/ui/RoomSettings.cpp
 
     # Generic notification stuff
     src/notifications/Manager.cpp
@@ -500,26 +501,27 @@ qt5_wrap_cpp(MOC_HEADERS
 	# UI components
 	src/ui/Avatar.h
 	src/ui/Badge.h
-	src/ui/LoadingIndicator.h
-	src/ui/InfoMessage.h
 	src/ui/FlatButton.h
-	src/ui/Label.h
 	src/ui/FloatingButton.h
+	src/ui/InfoMessage.h
+	src/ui/Label.h
+	src/ui/LoadingIndicator.h
 	src/ui/Menu.h
 	src/ui/NhekoCursorShape.h
 	src/ui/NhekoDropArea.h
+	src/ui/NhekoGlobalObject.h
 	src/ui/OverlayWidget.h
-	src/ui/SnackBar.h
 	src/ui/RaisedButton.h
 	src/ui/Ripple.h
 	src/ui/RippleOverlay.h
+	src/ui/RoomSettings.h
+	src/ui/SnackBar.h
 	src/ui/TextField.h
 	src/ui/TextLabel.h
-	src/ui/ToggleButton.h
 	src/ui/Theme.h
 	src/ui/ThemeManager.h
+	src/ui/ToggleButton.h
 	src/ui/UserProfile.h
-	src/ui/RoomSettings.h
 
 	src/notifications/Manager.h
 

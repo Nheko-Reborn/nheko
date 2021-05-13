@@ -19,7 +19,7 @@ Item {
 
         anchors.fill: parent
         visible: img.status != Image.Ready
-        source: model.data.blurhash ? ("image://blurhash/" + model.data.blurhash) : ("image://colorimage/:/icons/icons/ui/do-not-disturb-rounded-sign@2x.png?" + colors.buttonText)
+        source: model.data.blurhash ? ("image://blurhash/" + model.data.blurhash) : ("image://colorimage/:/icons/icons/ui/do-not-disturb-rounded-sign@2x.png?" + Nheko.colors.buttonText)
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         sourceSize.width: parent.width
@@ -61,7 +61,7 @@ Item {
                 width: parent.width
                 implicitHeight: imgcaption.implicitHeight
                 anchors.bottom: overlay.bottom
-                color: colors.window
+                color: Nheko.colors.window
                 opacity: 0.75
             }
 
@@ -74,7 +74,7 @@ Item {
                 verticalAlignment: Text.AlignVCenter
                 // See this MSC: https://github.com/matrix-org/matrix-doc/pull/2530
                 text: model.data.filename ? model.data.filename : model.data.body
-                color: colors.text
+                color: Nheko.colors.text
             }
 
         }

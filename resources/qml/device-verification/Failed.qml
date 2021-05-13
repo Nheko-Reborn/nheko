@@ -38,7 +38,7 @@ Pane {
                     return "Unknown verification error.";
                 }
             }
-            color: colors.text
+            color: Nheko.colors.text
             verticalAlignment: Text.AlignVCenter
         }
 

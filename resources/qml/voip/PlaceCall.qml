@@ -17,7 +17,7 @@ Popup {
             anchors.centerIn = parent;
 
     }
-    palette: colors
+    palette: Nheko.colors
 
     Component {
         id: deviceError
@@ -46,7 +46,7 @@ Popup {
 
             Label {
                 text: qsTr("Place a call to %1?").arg(TimelineManager.timeline.roomName)
-                color: colors.windowText
+                color: Nheko.colors.windowText
             }
 
             Item {
@@ -139,7 +139,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.png?" + colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.png?" + Nheko.colors.windowText
                 }
 
                 ComboBox {
@@ -160,7 +160,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/video-call.png?" + colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/video-call.png?" + Nheko.colors.windowText
                 }
 
                 ComboBox {
@@ -177,8 +177,8 @@ Popup {
     }
 
     background: Rectangle {
-        color: colors.window
-        border.color: colors.windowText
+        color: Nheko.colors.window
+        border.color: Nheko.colors.windowText
     }
 
 }

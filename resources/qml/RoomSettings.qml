@@ -18,8 +18,8 @@ ApplicationWindow {
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     minimumWidth: 420
     minimumHeight: 650
-    palette: colors
-    color: colors.window
+    palette: Nheko.colors
+    color: Nheko.colors.window
     modality: Qt.WindowModal
     flags: Qt.Dialog
     title: qsTr("Room Settings")
@@ -126,7 +126,7 @@ ApplicationWindow {
                 readOnly: true
                 background: null
                 selectByMouse: true
-                color: colors.text
+                color: Nheko.colors.text
                 horizontalAlignment: TextEdit.AlignHCenter
                 onLinkActivated: TimelineManager.openLink(link)
 

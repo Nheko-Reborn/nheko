@@ -20,7 +20,7 @@ Image {
             case Crypto.Verified:
                 return "image://colorimage/:/icons/icons/ui/lock.png?green";
             case Crypto.TOFU:
-                return "image://colorimage/:/icons/icons/ui/lock.png?" + colors.buttonText;
+                return "image://colorimage/:/icons/icons/ui/lock.png?" + Nheko.colors.buttonText;
             default:
                 return "image://colorimage/:/icons/icons/ui/lock.png?#dd3d3d";
             }

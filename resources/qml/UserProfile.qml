@@ -19,8 +19,8 @@ ApplicationWindow {
     height: 650
     width: 420
     minimumHeight: 420
-    palette: colors
-    color: colors.window
+    palette: Nheko.colors
+    color: Nheko.colors.window
     title: profile.isGlobalUserProfile ? qsTr("Global User Profile") : qsTr("Room User Profile")
     modality: Qt.WindowModal
     flags: Qt.Dialog
@@ -97,7 +97,7 @@ ApplicationWindow {
             readOnly: !isUsernameEditingAllowed
             text: profile.displayName
             font.pixelSize: 20
-            color: TimelineManager.userColor(profile.userid, colors.window)
+            color: TimelineManager.userColor(profile.userid, Nheko.colors.window)
             font.bold: true
             Layout.alignment: Qt.AlignHCenter
             selectByMouse: true
@@ -145,7 +145,7 @@ ApplicationWindow {
         Image {
             Layout.preferredHeight: 16
             Layout.preferredWidth: 16
-	    source: "image://colorimage/:/icons/icons/ui/lock.png?" + ((profile.userVerified == Crypto.Verified) ?  "green" : colors.buttonText)
+            source: "image://colorimage/:/icons/icons/ui/lock.png?" + ((profile.userVerified == Crypto.Verified) ? "green" : Nheko.colors.buttonText)
             visible: profile.userVerified != Crypto.Unverified
             Layout.alignment: Qt.AlignHCenter
         }
@@ -218,7 +218,7 @@ ApplicationWindow {
                         Layout.alignment: Qt.AlignLeft
                         elide: Text.ElideRight
                         font.bold: true
-                        color: colors.text
+                        color: Nheko.colors.text
                         text: model.deviceId
                     }
 
@@ -226,7 +226,7 @@ ApplicationWindow {
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignRight
                         elide: Text.ElideRight
-                        color: colors.text
+                        color: Nheko.colors.text
                         text: model.deviceName
                     }
 

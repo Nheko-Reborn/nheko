@@ -13,7 +13,7 @@ Rectangle {
     id: bg
 
     radius: 10
-    color: colors.alternateBase
+    color: Nheko.colors.alternateBase
     height: Math.round(content.height + 24)
     width: parent ? parent.width : undefined
 
@@ -58,7 +58,7 @@ Rectangle {
                 id: positionText
 
                 text: "--:--:--"
-                color: colors.text
+                color: Nheko.colors.text
             }
 
             Slider {
@@ -92,14 +92,14 @@ Rectangle {
                 to: media.duration
                 onMoved: media.seek(value)
                 onValueChanged: updatePositionTexts()
-                palette: colors
+                palette: Nheko.colors
             }
 
             Text {
                 id: durationText
 
                 text: "--:--:--"
-                color: colors.text
+                color: Nheko.colors.text
             }
 
         }
@@ -112,7 +112,7 @@ Rectangle {
                 id: button
 
                 Layout.alignment: Qt.AlignVCenter
-                //color: colors.window
+                //color: Nheko.colors.window
                 //radius: 22
                 height: 32
                 width: 32
@@ -194,7 +194,7 @@ Rectangle {
                     Layout.fillWidth: true
                     text: model.data.body
                     elide: Text.ElideRight
-                    color: colors.text
+                    color: Nheko.colors.text
                 }
 
                 Text {
@@ -202,7 +202,7 @@ Rectangle {
                     text: model.data.filesize
                     textFormat: Text.PlainText
                     elide: Text.ElideRight
-                    color: colors.text
+                    color: Nheko.colors.text
                 }
 
             }

@@ -20,7 +20,7 @@ Item {
         Rectangle {
             id: button
 
-            color: colors.light
+            color: Nheko.colors.light
             radius: 22
             height: 44
             width: 44
@@ -55,7 +55,7 @@ Item {
                 text: model.data.filename
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
-                color: colors.text
+                color: Nheko.colors.text
             }
 
             Text {
@@ -65,7 +65,7 @@ Item {
                 text: model.data.filesize
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
-                color: colors.text
+                color: Nheko.colors.text
             }
 
         }
@@ -73,7 +73,7 @@ Item {
     }
 
     Rectangle {
-        color: colors.alternateBase
+        color: Nheko.colors.alternateBase
         z: -1
         radius: 10
         height: row.height + 24

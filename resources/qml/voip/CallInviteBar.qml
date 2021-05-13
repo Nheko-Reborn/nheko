@@ -88,7 +88,7 @@ Rectangle {
             Layout.rightMargin: 4
             icon.source: CallManager.callType == CallType.VIDEO ? "qrc:/icons/icons/ui/video-call.png" : "qrc:/icons/icons/ui/place-call.png"
             text: qsTr("Accept")
-            palette: colors
+            palette: Nheko.colors
             onClicked: {
                 if (CallManager.mics.length == 0) {
                     var dialog = deviceError.createObject(timelineRoot, {
@@ -121,7 +121,7 @@ Rectangle {
             Layout.rightMargin: 16
             icon.source: "qrc:/icons/icons/ui/end-call.png"
             text: qsTr("Decline")
-            palette: colors
+            palette: Nheko.colors
             onClicked: {
                 CallManager.hangUp();
             }

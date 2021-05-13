@@ -32,6 +32,7 @@
 #include "emoji/Provider.h"
 #include "ui/NhekoCursorShape.h"
 #include "ui/NhekoDropArea.h"
+#include "ui/NhekoGlobalObject.h"
 
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
@@ -220,6 +221,10 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         qmlRegisterSingletonType<Clipboard>(
           "im.nheko", 1, 0, "Clipboard", [](QQmlEngine *, QJSEngine *) -> QObject * {
                   return new Clipboard();
+          });
+        qmlRegisterSingletonType<Nheko>(
+          "im.nheko", 1, 0, "Nheko", [](QQmlEngine *, QJSEngine *) -> QObject * {
+                  return new Nheko();
           });
 
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();

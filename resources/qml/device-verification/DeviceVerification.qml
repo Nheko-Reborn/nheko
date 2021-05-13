@@ -16,7 +16,7 @@ ApplicationWindow {
     title: stack.currentItem.title
     flags: Qt.Dialog
     modality: Qt.WindowModal
-    palette: colors
+    palette: Nheko.colors
     height: stack.implicitHeight
     width: stack.implicitWidth
     x: MainWindow.x + (MainWindow.width / 2) - (width / 2)

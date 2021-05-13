@@ -13,7 +13,7 @@ TextEdit {
     wrapMode: Text.Wrap
     selectByMouse: !Settings.mobileMode
     enabled: selectByMouse
-    color: colors.text
+    color: Nheko.colors.text
     onLinkActivated: TimelineManager.openLink(link)
     ToolTip.visible: hoveredLink
     ToolTip.text: hoveredLink

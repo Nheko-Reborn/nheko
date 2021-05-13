@@ -17,7 +17,7 @@ Item {
         id: typingRect
 
         visible: (room && room.typingUsers.length > 0)
-        color: colors.base
+        color: Nheko.colors.base
         anchors.fill: parent
         z: 3
 
@@ -29,8 +29,8 @@ Item {
             anchors.right: parent.right
             anchors.rightMargin: 10
             anchors.bottom: parent.bottom
-            color: colors.text
-            text: room ? room.formatTypingUsers(room.typingUsers, colors.base) : ""
+            color: Nheko.colors.text
+            text: room ? room.formatTypingUsers(room.typingUsers, Nheko.colors.base) : ""
             textFormat: Text.RichText
         }
 

@@ -9,7 +9,7 @@ import im.nheko 1.0
 
 Popup {
     modal: true
-    palette: colors
+    palette: Nheko.colors
     // only set the anchors on Qt 5.12 or higher
     // see https://doc.qt.io/qt-5/qml-qtquick-controls2-popup.html#anchors.centerIn-prop
     Component.onCompleted: {
@@ -31,7 +31,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.png?" + colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.png?" + Nheko.colors.windowText
                 }
 
                 ComboBox {
@@ -49,7 +49,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/video-call.png?" + colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/video-call.png?" + Nheko.colors.windowText
                 }
 
                 ComboBox {
@@ -81,8 +81,8 @@ Popup {
     }
 
     background: Rectangle {
-        color: colors.window
-        border.color: colors.windowText
+        color: Nheko.colors.window
+        border.color: Nheko.colors.windowText
     }
 
 }

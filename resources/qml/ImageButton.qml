@@ -12,8 +12,8 @@ AbstractButton {
 
     property alias cursor: mouseArea.cursorShape
     property string image: undefined
-    property color highlightColor: colors.highlight
-    property color buttonTextColor: colors.buttonText
+    property color highlightColor: Nheko.colors.highlight
+    property color buttonTextColor: Nheko.colors.buttonText
     property bool changeColorOnHover: true
 
     focusPolicy: Qt.NoFocus

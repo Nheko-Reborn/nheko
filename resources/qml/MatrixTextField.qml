@@ -9,14 +9,14 @@ import QtQuick.Layouts 1.12
 TextField {
     id: input
 
-    palette: colors
+    palette: Nheko.colors
 
     Rectangle {
         id: blueBar
 
         anchors.top: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        color: colors.highlight
+        color: Nheko.colors.highlight
         height: 1
         width: parent.width
 
@@ -27,7 +27,7 @@ TextField {
             anchors.horizontalCenter: parent.horizontalCenter
             height: parent.height + 1
             width: 0
-            color: colors.text
+            color: Nheko.colors.text
 
             states: State {
                 name: "focused"
@@ -60,7 +60,7 @@ TextField {
     }
 
     background: Rectangle {
-        color: colors.base
+        color: Nheko.colors.base
     }
 
 }

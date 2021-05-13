@@ -20,7 +20,7 @@ Pane {
             Layout.fillWidth: true
             wrapMode: Text.Wrap
             text: qsTr("Verification successful! Both sides verified their devices!")
-            color: colors.text
+            color: Nheko.colors.text
             verticalAlignment: Text.AlignVCenter
         }
 

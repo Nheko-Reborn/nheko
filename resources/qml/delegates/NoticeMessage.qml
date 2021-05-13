@@ -2,7 +2,9 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import im.nheko 1.0
+
 TextMessage {
     font.italic: true
-    color: colors.buttonText
+    color: Nheko.colors.buttonText
 }

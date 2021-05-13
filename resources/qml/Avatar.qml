@@ -20,7 +20,7 @@ Rectangle {
     width: 48
     height: 48
     radius: Settings.avatarCircles ? height / 2 : 3
-    color: colors.alternateBase
+    color: Nheko.colors.alternateBase
     Component.onCompleted: {
         mouseArea.clicked.connect(clicked);
     }
@@ -33,7 +33,7 @@ Rectangle {
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         visible: img.status != Image.Ready
-        color: colors.text
+        color: Nheko.colors.text
     }
 
     Image {
@@ -55,7 +55,7 @@ Rectangle {
 
             Ripple {
                 rippleTarget: mouseArea
-                color: Qt.rgba(colors.alternateBase.r, colors.alternateBase.g, colors.alternateBase.b, 0.5)
+                color: Qt.rgba(Nheko.colors.alternateBase.r, Nheko.colors.alternateBase.g, Nheko.colors.alternateBase.b, 0.5)
             }
 
         }

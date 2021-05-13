@@ -13,7 +13,7 @@ import im.nheko 1.0
 
 ScrollView {
     clip: false
-    palette: colors
+    palette: Nheko.colors
     padding: 8
     ScrollBar.horizontal.visible: false
 
@@ -51,8 +51,8 @@ ScrollView {
             z: 10
             height: row.implicitHeight + padding * 2
             width: row.implicitWidth + padding * 2
-            color: colors.window
-            border.color: colors.buttonText
+            color: Nheko.colors.window
+            border.color: Nheko.colors.buttonText
             border.width: 1
             radius: padding
 
@@ -74,7 +74,7 @@ ScrollView {
                     id: editButton
 
                     visible: !!row.model && row.model.isEditable
-                    buttonTextColor: colors.buttonText
+                    buttonTextColor: Nheko.colors.buttonText
                     width: 16
                     hoverEnabled: true
                     image: ":/icons/icons/ui/edit.png"
@@ -220,7 +220,7 @@ ScrollView {
                     anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
                     visible: modelData && modelData.previousMessageDay !== modelData.day
                     text: modelData ? chat.model.formatDateSeparator(modelData.timestamp) : ""
-                    color: colors.text
+                    color: Nheko.colors.text
                     height: Math.round(fontMetrics.height * 1.4)
                     width: contentWidth * 1.2
                     horizontalAlignment: Text.AlignHCenter
@@ -228,7 +228,7 @@ ScrollView {
 
                     background: Rectangle {
                         radius: parent.height / 2
-                        color: colors.window
+                        color: Nheko.colors.window
                     }
 
                 }
@@ -267,7 +267,7 @@ ScrollView {
                         id: userName
 
                         text: modelData ? TimelineManager.escapeEmoji(modelData.userName) : ""
-                        color: TimelineManager.userColor(modelData ? modelData.userId : "", colors.window)
+                        color: TimelineManager.userColor(modelData ? modelData.userId : "", Nheko.colors.window)
                         textFormat: Text.RichText
                         ToolTip.visible: displayNameHover.hovered
                         ToolTip.text: modelData ? modelData.userId : ""
@@ -288,7 +288,7 @@ ScrollView {
                     }
 
                     Label {
-                        color: colors.buttonText
+                        color: Nheko.colors.buttonText
                         text: modelData ? TimelineManager.userStatus(modelData.userId) : ""
                         textFormat: Text.PlainText
                         elide: Text.ElideRight
@@ -317,7 +317,7 @@ ScrollView {
                 opacity: 0
                 visible: true
                 anchors.fill: timelinerow
-                color: colors.highlight
+                color: Nheko.colors.highlight
 
                 states: State {
                     name: "revealed"

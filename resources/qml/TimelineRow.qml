@@ -16,7 +16,7 @@ Item {
     height: row.height
 
     Rectangle {
-        color: (Settings.messageHoverHighlight && hoverHandler.hovered) ? colors.alternateBase : "transparent"
+        color: (Settings.messageHoverHighlight && hoverHandler.hovered) ? Nheko.colors.alternateBase : "transparent"
         anchors.fill: row
     }
 
@@ -57,7 +57,7 @@ Item {
             Reply {
                 visible: model.replyTo
                 modelData: chat.model.getDump(model.replyTo, model.id)
-                userColor: TimelineManager.userColor(modelData.userId, colors.base)
+                userColor: TimelineManager.userColor(modelData.userId, Nheko.colors.base)
             }
 
             // actual message content
@@ -101,7 +101,7 @@ Item {
             width: 16
             sourceSize.width: 16
             sourceSize.height: 16
-            source: "image://colorimage/:/icons/icons/ui/edit.png?" + ((model.id == chat.model.edit) ? colors.highlight : colors.buttonText)
+            source: "image://colorimage/:/icons/icons/ui/edit.png?" + ((model.id == chat.model.edit) ? Nheko.colors.highlight : Nheko.colors.buttonText)
             ToolTip.visible: editHovered.hovered
             ToolTip.text: qsTr("Edited")
 
@@ -115,7 +115,7 @@ Item {
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
             text: model.timestamp.toLocaleTimeString(Locale.ShortFormat)
             width: Math.max(implicitWidth, text.length * fontMetrics.maximumCharacterWidth)
-            color: inactiveColors.text
+            color: Nheko.inactiveColors.text
             ToolTip.visible: ma.hovered
             ToolTip.text: Qt.formatDateTime(model.timestamp, Qt.DefaultLocaleLongDate)
 

@@ -100,7 +100,7 @@ Popup {
         delegate: Rectangle {
             property variant modelData: model
 
-            color: model.index == popup.currentIndex ? colors.highlight : colors.base
+            color: model.index == popup.currentIndex ? Nheko.colors.highlight : Nheko.colors.base
             height: chooser.childrenRect.height + 2 * popup.rowMargin
             implicitWidth: fullWidth ? popup.width : chooser.childrenRect.width + 4
 
@@ -119,7 +119,7 @@ Popup {
 
                 Ripple {
                     rippleTarget: mouseArea
-                    color: Qt.rgba(colors.base.r, colors.base.g, colors.base.b, 0.5)
+                    color: Qt.rgba(Nheko.colors.base.r, Nheko.colors.base.g, Nheko.colors.base.b, 0.5)
                 }
 
             }
@@ -150,12 +150,12 @@ Popup {
 
                         Label {
                             text: model.displayName
-                            color: model.index == popup.currentIndex ? colors.highlightedText : colors.text
+                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
                         }
 
                         Label {
                             text: "(" + model.userid + ")"
-                            color: model.index == popup.currentIndex ? colors.highlightedText : colors.buttonText
+                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
                         }
 
                     }
@@ -173,13 +173,13 @@ Popup {
 
                         Label {
                             text: model.unicode
-                            color: model.index == popup.currentIndex ? colors.highlightedText : colors.text
+                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
                             font: Settings.emojiFont
                         }
 
                         Label {
                             text: model.shortName
-                            color: model.index == popup.currentIndex ? colors.highlightedText : colors.text
+                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
                         }
 
                     }
@@ -209,7 +209,7 @@ Popup {
                         Label {
                             text: model.roomName
                             font.pixelSize: popup.avatarHeight * 0.5
-                            color: model.index == popup.currentIndex ? colors.highlightedText : colors.text
+                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
                         }
 
                     }
@@ -235,12 +235,12 @@ Popup {
 
                         Label {
                             text: model.roomName
-                            color: model.index == popup.currentIndex ? colors.highlightedText : colors.text
+                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
                         }
 
                         Label {
                             text: "(" + model.roomAlias + ")"
-                            color: model.index == popup.currentIndex ? colors.highlightedText : colors.buttonText
+                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
                         }
 
                     }
@@ -274,10 +274,10 @@ Popup {
     }
 
     background: Rectangle {
-        color: colors.base
+        color: Nheko.colors.base
         implicitHeight: popup.contentHeight
         implicitWidth: popup.contentWidth
-        border.color: colors.mid
+        border.color: Nheko.colors.mid
     }
 
 }

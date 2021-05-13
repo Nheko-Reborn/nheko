@@ -5,6 +5,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
+import im.nheko 1.0
 
 BusyIndicator {
     id: control
@@ -38,7 +39,7 @@ BusyIndicator {
                     implicitWidth: radius * 2
                     implicitHeight: radius * 2
                     radius: item.height / 6
-                    color: colors.text
+                    color: Nheko.colors.text
                     opacity: (index + 2) / (repeater.count + 2)
                     transform: [
                         Translate {

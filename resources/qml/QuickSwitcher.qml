@@ -19,7 +19,7 @@ Popup {
     modal: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     parent: Overlay.overlay
-    palette: colors
+    palette: Nheko.colors
     onOpened: {
         completerPopup.open();
         roomTextInput.forceActiveFocus();
@@ -34,7 +34,7 @@ Popup {
         anchors.fill: parent
         font.pixelSize: Math.ceil(quickSwitcher.textHeight * 0.6)
         padding: textMargin
-        color: colors.text
+        color: Nheko.colors.text
         onTextEdited: {
             completerPopup.completer.searchString = text;
         }

@@ -18,15 +18,13 @@ import im.nheko.EmojiModel 1.0
 Page {
     id: timelineRoot
 
-    property var colors: currentActivePalette
     property var systemInactive
-    property var inactiveColors: currentInactivePalette ? currentInactivePalette : systemInactive
     readonly property int avatarSize: 40
-    property real highlightHue: colors.highlight.hslHue
-    property real highlightSat: colors.highlight.hslSaturation
-    property real highlightLight: colors.highlight.hslLightness
+    property real highlightHue: Nheko.colors.highlight.hslHue
+    property real highlightSat: Nheko.colors.highlight.hslSaturation
+    property real highlightLight: Nheko.colors.highlight.hslLightness
 
-    palette: colors
+    palette: Nheko.colors
 
     FontMetrics {
         id: fontMetrics
@@ -219,7 +217,7 @@ Page {
 
     Rectangle {
         anchors.fill: parent
-        color: colors.window
+        color: Nheko.colors.window
 
         Component {
             id: deviceVerificationDialog
@@ -270,7 +268,7 @@ Page {
             anchors.centerIn: parent
             text: qsTr("No room open")
             font.pointSize: 24
-            color: colors.text
+            color: Nheko.colors.text
         }
 
         BusyIndicator {
@@ -296,7 +294,7 @@ Page {
                 Layout.fillWidth: true
                 height: 1
                 z: 3
-                color: colors.mid
+                color: Nheko.colors.mid
             }
 
             Rectangle {
@@ -304,7 +302,7 @@ Page {
 
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                color: colors.base
+                color: Nheko.colors.base
 
                 ColumnLayout {
                     anchors.fill: parent
@@ -358,7 +356,7 @@ Page {
                 Layout.fillWidth: true
                 z: 3
                 height: 1
-                color: colors.mid
+                color: Nheko.colors.mid
             }
 
             ReplyPopup {
@@ -381,10 +379,6 @@ Page {
         visible: Settings.privacyScreen
         screenTimeout: Settings.privacyScreenTimeout
         timelineRoot: timelineLayout
-    }
-
-    systemInactive: SystemPalette {
-        colorGroup: SystemPalette.Disabled
     }
 
 }

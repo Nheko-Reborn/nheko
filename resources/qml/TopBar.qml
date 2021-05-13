@@ -16,7 +16,7 @@ Rectangle {
     Layout.fillWidth: true
     implicitHeight: topLayout.height + 16
     z: 3
-    color: colors.window
+    color: Nheko.colors.window
 
     TapHandler {
         onSingleTapped: {
@@ -68,7 +68,7 @@ Rectangle {
             Layout.fillWidth: true
             Layout.column: 2
             Layout.row: 0
-            color: colors.text
+            color: Nheko.colors.text
             font.pointSize: fontMetrics.font.pointSize * 1.1
             text: room ? room.roomName : qsTr("No room selected")
             maximumLineCount: 1

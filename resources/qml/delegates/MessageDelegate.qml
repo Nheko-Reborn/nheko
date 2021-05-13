@@ -58,7 +58,7 @@ Item {
 
             NoticeMessage {
                 formatted: TimelineManager.escapeEmoji(modelData.userName) + " " + model.data.formattedBody
-                color: TimelineManager.userColor(modelData.userId, colors.window)
+                color: TimelineManager.userColor(modelData.userId, Nheko.colors.window)
             }
 
         }

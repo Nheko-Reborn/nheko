@@ -30,13 +30,13 @@ Pane {
                     return qsTr("Waiting for other side to complete the verification process.");
                 }
             }
-            color: colors.text
+            color: Nheko.colors.text
             verticalAlignment: Text.AlignVCenter
         }
 
         BusyIndicator {
             Layout.alignment: Qt.AlignHCenter
-            palette: colors
+            palette: Nheko.colors
         }
 
         RowLayout {
