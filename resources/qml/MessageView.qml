@@ -240,8 +240,8 @@ ScrollView {
                     Avatar {
                         id: messageUserAvatar
 
-                        width: avatarSize
-                        height: avatarSize
+                        width: Nheko.avatarSize
+                        height: Nheko.avatarSize
                         url: modelData ? chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/") : ""
                         displayName: modelData ? modelData.userName : ""
                         userid: modelData ? modelData.userId : ""
@@ -292,7 +292,7 @@ ScrollView {
                         text: modelData ? TimelineManager.userStatus(modelData.userId) : ""
                         textFormat: Text.PlainText
                         elide: Text.ElideRight
-                        width: chat.delegateMaxWidth - parent.spacing * 2 - userName.implicitWidth - avatarSize
+                        width: chat.delegateMaxWidth - parent.spacing * 2 - userName.implicitWidth - Nheko.avatarSize
                         font.italic: true
                     }
 

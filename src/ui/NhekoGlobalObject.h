@@ -13,12 +13,15 @@ class Nheko : public QObject
 
         Q_PROPERTY(QPalette colors READ colors NOTIFY colorsChanged)
         Q_PROPERTY(QPalette inactiveColors READ inactiveColors NOTIFY colorsChanged)
+        Q_PROPERTY(int avatarSize READ avatarSize CONSTANT)
 
 public:
         Nheko();
 
         QPalette colors() const;
         QPalette inactiveColors() const;
+
+        int avatarSize() const { return 40; }
 
         Q_INVOKABLE void openLink(QString link) const;
 

@@ -31,8 +31,8 @@ Rectangle {
         anchors.leftMargin: 8
 
         Avatar {
-            width: avatarSize
-            height: avatarSize
+            width: Nheko.avatarSize
+            height: Nheko.avatarSize
             url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
             displayName: CallManager.callParty
             onClicked: TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)

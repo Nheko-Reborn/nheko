@@ -43,8 +43,8 @@ Rectangle {
             Layout.row: 0
             Layout.rowSpan: 2
             Layout.alignment: Qt.AlignVCenter
-            width: avatarSize
-            height: avatarSize
+            width: Nheko.avatarSize
+            height: Nheko.avatarSize
             visible: TimelineManager.isNarrowView
             image: ":/icons/icons/ui/angle-pointing-to-left.png"
             ToolTip.visible: hovered
@@ -57,8 +57,8 @@ Rectangle {
             Layout.row: 0
             Layout.rowSpan: 2
             Layout.alignment: Qt.AlignVCenter
-            width: avatarSize
-            height: avatarSize
+            width: Nheko.avatarSize
+            height: Nheko.avatarSize
             url: room ? room.roomAvatarUrl.replace("mxc://", "image://MxcImage/") : ""
             displayName: room ? room.roomName : qsTr("No room selected")
             onClicked: TimelineManager.timeline.openRoomSettings()

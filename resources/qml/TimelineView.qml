@@ -18,12 +18,6 @@ import im.nheko.EmojiModel 1.0
 Page {
     id: timelineRoot
 
-    property var systemInactive
-    readonly property int avatarSize: 40
-    property real highlightHue: Nheko.colors.highlight.hslHue
-    property real highlightSat: Nheko.colors.highlight.hslSaturation
-    property real highlightLight: Nheko.colors.highlight.hslLightness
-
     palette: Nheko.colors
 
     FontMetrics {

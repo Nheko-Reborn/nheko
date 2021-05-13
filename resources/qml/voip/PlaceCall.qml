@@ -75,8 +75,8 @@ Popup {
 
             Avatar {
                 Layout.rightMargin: cameraCombo.visible ? 16 : 64
-                width: avatarSize
-                height: avatarSize
+                width: Nheko.avatarSize
+                height: Nheko.avatarSize
                 url: TimelineManager.timeline.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
                 displayName: TimelineManager.timeline.roomName
                 onClicked: TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)

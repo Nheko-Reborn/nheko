@@ -42,7 +42,7 @@ Item {
         id: row
 
         anchors.rightMargin: 1
-        anchors.leftMargin: avatarSize + 16
+        anchors.leftMargin: Nheko.avatarSize + 16
         anchors.left: parent.left
         anchors.right: parent.right
 
