@@ -20,6 +20,9 @@ public:
         QPalette colors() const;
         QPalette inactiveColors() const;
 
+        Q_INVOKABLE void openLink(QString link) const;
+
 signals:
         void colorsChanged();
 };
+

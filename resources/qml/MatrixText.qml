@@ -14,7 +14,7 @@ TextEdit {
     selectByMouse: !Settings.mobileMode
     enabled: selectByMouse
     color: Nheko.colors.text
-    onLinkActivated: TimelineManager.openLink(link)
+    onLinkActivated: Nheko.openLink(link)
     ToolTip.visible: hoveredLink
     ToolTip.text: hoveredLink
 

@@ -128,7 +128,7 @@ ApplicationWindow {
                 selectByMouse: true
                 color: Nheko.colors.text
                 horizontalAlignment: TextEdit.AlignHCenter
-                onLinkActivated: TimelineManager.openLink(link)
+                onLinkActivated: Nheko.openLink(link)
 
                 CursorShape {
                     anchors.fill: parent
