@@ -257,7 +257,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         view->engine()->addImageProvider("MxcImage", imgProvider);
         view->engine()->addImageProvider("colorimage", colorImgProvider);
         view->engine()->addImageProvider("blurhash", blurhashProvider);
-        view->setSource(QUrl("qrc:///qml/TimelineView.qml"));
+        view->setSource(QUrl("qrc:///qml/Root.qml"));
 
         connect(parent, &ChatPage::themeChanged, this, &TimelineViewManager::updateColorPalette);
         connect(parent,

@@ -29,11 +29,11 @@ Rectangle {
             property double tempWidth: Math.min(parent ? parent.width : undefined, model.data.width < 1 ? 400 : model.data.width)
             property double tempHeight: tempWidth * model.data.proportionalHeight
             property double divisor: model.isReply ? 4 : 2
-            property bool tooHigh: tempHeight > timelineRoot.height / divisor
+            property bool tooHigh: tempHeight > timelineView.height / divisor
 
             visible: model.data.type == MtxEvent.VideoMessage
-            height: tooHigh ? timelineRoot.height / divisor : tempHeight
-            width: tooHigh ? (timelineRoot.height / divisor) / model.data.proportionalHeight : tempWidth
+            height: tooHigh ? timelineView.height / divisor : tempHeight
+            width: tooHigh ? (timelineView.height / divisor) / model.data.proportionalHeight : tempWidth
 
             Image {
                 anchors.fill: parent

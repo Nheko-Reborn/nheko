@@ -9,10 +9,10 @@ Item {
     property double tempWidth: Math.min(parent ? parent.width : undefined, model.data.width < 1 ? parent.width : model.data.width)
     property double tempHeight: tempWidth * model.data.proportionalHeight
     property double divisor: model.isReply ? 5 : 3
-    property bool tooHigh: tempHeight > timelineRoot.height / divisor
+    property bool tooHigh: tempHeight > timelineView.height / divisor
 
-    height: Math.round(tooHigh ? timelineRoot.height / divisor : tempHeight)
-    width: Math.round(tooHigh ? (timelineRoot.height / divisor) / model.data.proportionalHeight : tempWidth)
+    height: Math.round(tooHigh ? timelineView.height / divisor : tempHeight)
+    width: Math.round(tooHigh ? (timelineView.height / divisor) / model.data.proportionalHeight : tempWidth)
 
     Image {
         id: blurhash

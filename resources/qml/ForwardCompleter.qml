@@ -21,7 +21,7 @@ Popup {
     modal: true
     palette: Nheko.colors
     parent: Overlay.overlay
-    width: implicitWidth >= (timelineRoot.width * 0.8) ? implicitWidth : (timelineRoot.width * 0.8)
+    width: implicitWidth >= (timelineView.width * 0.8) ? implicitWidth : (timelineView.width * 0.8)
     height: implicitHeight + completerPopup.height + padding * 2
     leftPadding: 10
     rightPadding: 10
