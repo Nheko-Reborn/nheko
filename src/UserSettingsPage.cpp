@@ -545,49 +545,14 @@ UserSettings::applyTheme()
 {
         QFile stylefile;
 
-        static QPalette original;
         if (this->theme() == "light") {
                 stylefile.setFileName(":/styles/styles/nheko.qss");
-                QPalette lightActive(
-                  /*windowText*/ QColor("#333"),
-                  /*button*/ QColor("white"),
-                  /*light*/ QColor(0xef, 0xef, 0xef),
-                  /*dark*/ QColor(110, 110, 110),
-                  /*mid*/ QColor(220, 220, 220),
-                  /*text*/ QColor("#333"),
-                  /*bright_text*/ QColor("#333"),
-                  /*base*/ QColor("#fff"),
-                  /*window*/ QColor("white"));
-                lightActive.setColor(QPalette::AlternateBase, QColor("#eee"));
-                lightActive.setColor(QPalette::Highlight, QColor("#38a3d8"));
-                lightActive.setColor(QPalette::ToolTipBase, lightActive.base().color());
-                lightActive.setColor(QPalette::ToolTipText, lightActive.text().color());
-                lightActive.setColor(QPalette::Link, QColor("#0077b5"));
-                lightActive.setColor(QPalette::ButtonText, QColor("#333"));
-                QApplication::setPalette(lightActive);
         } else if (this->theme() == "dark") {
                 stylefile.setFileName(":/styles/styles/nheko-dark.qss");
-                QPalette darkActive(
-                  /*windowText*/ QColor("#caccd1"),
-                  /*button*/ QColor(0xff, 0xff, 0xff),
-                  /*light*/ QColor("#caccd1"),
-                  /*dark*/ QColor(110, 110, 110),
-                  /*mid*/ QColor("#202228"),
-                  /*text*/ QColor("#caccd1"),
-                  /*bright_text*/ QColor(0xff, 0xff, 0xff),
-                  /*base*/ QColor("#202228"),
-                  /*window*/ QColor("#2d3139"));
-                darkActive.setColor(QPalette::AlternateBase, QColor("#2d3139"));
-                darkActive.setColor(QPalette::Highlight, QColor("#38a3d8"));
-                darkActive.setColor(QPalette::ToolTipBase, darkActive.base().color());
-                darkActive.setColor(QPalette::ToolTipText, darkActive.text().color());
-                darkActive.setColor(QPalette::Link, QColor("#38a3d8"));
-                darkActive.setColor(QPalette::ButtonText, "#727274");
-                QApplication::setPalette(darkActive);
         } else {
                 stylefile.setFileName(":/styles/styles/system.qss");
-                QApplication::setPalette(original);
         }
+        QApplication::setPalette(Theme::paletteFromTheme(this->theme().toStdString()));
 
         stylefile.open(QFile::ReadOnly);
         QString stylesheet = QString(stylefile.readAll());

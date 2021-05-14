@@ -49,7 +49,7 @@ Item {
             Layout.fillWidth: true
             height: 1
             z: 3
-            color: Nheko.colors.mid
+            color: Nheko.theme.separator
         }
 
         Rectangle {
@@ -112,7 +112,7 @@ Item {
             Layout.fillWidth: true
             z: 3
             height: 1
-            color: Nheko.colors.mid
+            color: Nheko.theme.separator
         }
 
         ReplyPopup {

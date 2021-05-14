@@ -125,6 +125,7 @@
 
         <file>qml/Root.qml</file>
         <file>qml/ChatPage.qml</file>
+        <file>qml/RoomList.qml</file>
         <file>qml/TimelineView.qml</file>
         <file>qml/Avatar.qml</file>
         <file>qml/Completer.qml</file>

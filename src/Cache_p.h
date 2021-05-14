@@ -100,6 +100,7 @@ public:
 
         void saveState(const mtx::responses::Sync &res);
         bool isInitialized();
+        bool isDatabaseReady() { return databaseReady_ && isInitialized(); }
 
         std::string nextBatchToken();
 
@@ -620,6 +621,8 @@ private:
         QString cacheDirectory_;
 
         VerificationStorage verification_storage;
+
+        bool databaseReady_ = false;
 };
 
 namespace cache {

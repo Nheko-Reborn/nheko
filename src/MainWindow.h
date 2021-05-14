@@ -109,6 +109,7 @@ private slots:
 
 signals:
         void focusChanged(const bool focused);
+        void reload();
 
 private:
         bool loadJdenticonPlugin();

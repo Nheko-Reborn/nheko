@@ -5,8 +5,7 @@
 #pragma once
 
 #include <QColor>
-#include <QHash>
-#include <QObject>
+#include <QPalette>
 
 namespace ui {
 enum class AvatarType
@@ -60,36 +59,21 @@ enum class ProgressType
         IndeterminateProgress
 };
 
-enum class Color
-{
-        Black,
-        BrightWhite,
-        FadedWhite,
-        MediumWhite,
-        DarkGreen,
-        LightGreen,
-        BrightGreen,
-        Gray,
-        Red,
-        Blue,
-        Transparent
-};
-
 } // namespace ui
 
-class Theme : public QObject
+class Theme : public QPalette
 {
-        Q_OBJECT
+        Q_GADGET
+        Q_PROPERTY(QColor sidebarBackground READ sidebarBackground CONSTANT)
+        Q_PROPERTY(QColor separator READ separator CONSTANT)
 public:
-        explicit Theme(QObject *parent = nullptr);
+        Theme() {}
+        explicit Theme(std::string_view theme);
+        static QPalette paletteFromTheme(std::string_view theme);
 
-        QColor getColor(const QString &key) const;
-
-        void setColor(const QString &key, const QColor &color);
-        void setColor(const QString &key, ui::Color color);
+        QColor sidebarBackground() const { return sidebarBackground_; }
+        QColor separator() const { return separator_; }
 
 private:
-        QColor rgba(int r, int g, int b, qreal a) const;
-
-        QHash<QString, QColor> colors_;
+        QColor sidebarBackground_, separator_;
 };

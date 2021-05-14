@@ -14,7 +14,7 @@ Rectangle {
     property var room: TimelineManager.timeline
 
     Layout.fillWidth: true
-    implicitHeight: topLayout.height + 16
+    implicitHeight: topLayout.height + Nheko.paddingMedium * 2
     z: 3
     color: Nheko.colors.window
 
@@ -33,7 +33,7 @@ Rectangle {
 
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.margins: 8
+        anchors.margins: Nheko.paddingMedium
         anchors.verticalCenter: parent.verticalCenter
 
         ImageButton {

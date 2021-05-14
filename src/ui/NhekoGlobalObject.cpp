@@ -7,27 +7,48 @@
 #include <QDesktopServices>
 #include <QUrl>
 
+#include "Cache_p.h"
 #include "ChatPage.h"
+#include "Logging.h"
 #include "UserSettingsPage.h"
+#include "Utils.h"
 
 Nheko::Nheko()
 {
         connect(
           UserSettings::instance().get(), &UserSettings::themeChanged, this, &Nheko::colorsChanged);
+        connect(ChatPage::instance(), &ChatPage::contentLoaded, this, &Nheko::updateUserProfile);
+}
+
+void
+Nheko::updateUserProfile()
+{
+        if (cache::client() && cache::client()->isInitialized())
+                currentUser_.reset(
+                  new UserProfile("", utils::localUser(), ChatPage::instance()->timelineManager()));
+        else
+                currentUser_.reset();
+        emit profileChanged();
 }
 
 QPalette
 Nheko::colors() const
 {
-        return QPalette();
+        return Theme::paletteFromTheme(UserSettings::instance()->theme().toStdString());
 }
 
 QPalette
 Nheko::inactiveColors() const
 {
-        QPalette p;
+        auto p = colors();
         p.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
         return p;
+}
+
+Theme
+Nheko::theme() const
+{
+        return Theme(UserSettings::instance()->theme().toStdString());
 }
 
 void
@@ -78,4 +99,12 @@ Nheko::openLink(QString link) const
         } else {
                 QDesktopServices::openUrl(url);
         }
+}
+
+UserProfile *
+Nheko::currentUser() const
+{
+        nhlog::ui()->debug("Profile requested");
+
+        return currentUser_.get();
 }

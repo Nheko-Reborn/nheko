@@ -10,7 +10,6 @@
 
 #include "CacheStructs.h"
 #include "CommunitiesListItem.h"
-#include "ui/Theme.h"
 
 namespace mtx::responses {
 struct GroupProfile;

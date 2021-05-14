@@ -2,76 +2,65 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include <QDebug>
-
 #include "Theme.h"
 
-Theme::Theme(QObject *parent)
-  : QObject(parent)
+Q_DECLARE_METATYPE(Theme)
+
+QPalette
+Theme::paletteFromTheme(std::string_view theme)
 {
-        setColor("Black", ui::Color::Black);
-
-        setColor("BrightWhite", ui::Color::BrightWhite);
-        setColor("FadedWhite", ui::Color::FadedWhite);
-        setColor("MediumWhite", ui::Color::MediumWhite);
-
-        setColor("BrightGreen", ui::Color::BrightGreen);
-        setColor("DarkGreen", ui::Color::DarkGreen);
-        setColor("LightGreen", ui::Color::LightGreen);
-
-        setColor("Gray", ui::Color::Gray);
-        setColor("Red", ui::Color::Red);
-        setColor("Blue", ui::Color::Blue);
-
-        setColor("Transparent", ui::Color::Transparent);
-}
-
-QColor
-Theme::rgba(int r, int g, int b, qreal a) const
-{
-        QColor color(r, g, b);
-        color.setAlphaF(a);
-
-        return color;
-}
-
-QColor
-Theme::getColor(const QString &key) const
-{
-        if (!colors_.contains(key)) {
-                qWarning() << "Color with key" << key << "could not be found";
-                return QColor();
+        [[maybe_unused]] static auto meta = qRegisterMetaType<Theme>("Theme");
+        static QPalette original;
+        if (theme == "light") {
+                QPalette lightActive(
+                  /*windowText*/ QColor("#333"),
+                  /*button*/ QColor("white"),
+                  /*light*/ QColor(0xef, 0xef, 0xef),
+                  /*dark*/ QColor(110, 110, 110),
+                  /*mid*/ QColor(220, 220, 220),
+                  /*text*/ QColor("#333"),
+                  /*bright_text*/ QColor("#333"),
+                  /*base*/ QColor("#fff"),
+                  /*window*/ QColor("white"));
+                lightActive.setColor(QPalette::AlternateBase, QColor("#eee"));
+                lightActive.setColor(QPalette::Highlight, QColor("#38a3d8"));
+                lightActive.setColor(QPalette::ToolTipBase, lightActive.base().color());
+                lightActive.setColor(QPalette::ToolTipText, lightActive.text().color());
+                lightActive.setColor(QPalette::Link, QColor("#0077b5"));
+                lightActive.setColor(QPalette::ButtonText, QColor("#555459"));
+                return lightActive;
+        } else if (theme == "dark") {
+                QPalette darkActive(
+                  /*windowText*/ QColor("#caccd1"),
+                  /*button*/ QColor(0xff, 0xff, 0xff),
+                  /*light*/ QColor("#caccd1"),
+                  /*dark*/ QColor(110, 110, 110),
+                  /*mid*/ QColor("#202228"),
+                  /*text*/ QColor("#caccd1"),
+                  /*bright_text*/ QColor(0xff, 0xff, 0xff),
+                  /*base*/ QColor("#202228"),
+                  /*window*/ QColor("#2d3139"));
+                darkActive.setColor(QPalette::AlternateBase, QColor("#2d3139"));
+                darkActive.setColor(QPalette::Highlight, QColor("#38a3d8"));
+                darkActive.setColor(QPalette::ToolTipBase, darkActive.base().color());
+                darkActive.setColor(QPalette::ToolTipText, darkActive.text().color());
+                darkActive.setColor(QPalette::Link, QColor("#38a3d8"));
+                darkActive.setColor(QPalette::ButtonText, "#727274");
+                return darkActive;
+        } else {
+                return original;
         }
-
-        return colors_.value(key);
 }
 
-void
-Theme::setColor(const QString &key, const QColor &color)
+Theme::Theme(std::string_view theme)
 {
-        colors_.insert(key, color);
-}
-
-void
-Theme::setColor(const QString &key, ui::Color color)
-{
-        static const QColor palette[] = {
-          QColor("#171919"),
-
-          QColor("#EBEBEB"),
-          QColor("#C9C9C9"),
-          QColor("#929292"),
-
-          QColor("#1C3133"),
-          QColor("#577275"),
-          QColor("#46A451"),
-
-          QColor("#5D6565"),
-          QColor("#E22826"),
-          QColor("#81B3A9"),
-
-          rgba(0, 0, 0, 0),
-        };
-
-        colors_.insert(key, palette[static_cast<int>(color)]);
+        auto p     = paletteFromTheme(theme);
+        separator_ = p.mid().color();
+        if (theme == "light") {
+                sidebarBackground_ = QColor("#233649");
+        } else if (theme == "dark") {
+                sidebarBackground_ = QColor("#2d3139");
+        } else {
+                sidebarBackground_ = p.window().color();
+        }
 }

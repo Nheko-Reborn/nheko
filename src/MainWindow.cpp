@@ -295,6 +295,7 @@ MainWindow::showChatPage()
                 &Cache::secretChanged,
                 userSettingsPage_,
                 &UserSettingsPage::updateSecretStatus);
+        emit reload();
 }
 
 void

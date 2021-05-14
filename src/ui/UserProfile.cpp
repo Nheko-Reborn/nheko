@@ -27,9 +27,22 @@ UserProfile::UserProfile(QString roomid,
   , manager(manager_)
   , model(parent)
 {
-        fetchDeviceList(this->userid_);
         globalAvatarUrl = "";
 
+        connect(this,
+                &UserProfile::globalUsernameRetrieved,
+                this,
+                &UserProfile::setGlobalUsername,
+                Qt::QueuedConnection);
+
+        if (isGlobalUserProfile()) {
+                getGlobalProfileData();
+        }
+
+        if (!cache::client() || !cache::client()->isDatabaseReady())
+                return;
+
+        fetchDeviceList(this->userid_);
         connect(cache::client(),
                 &Cache::verificationStatusChanged,
                 this,
@@ -54,16 +67,6 @@ UserProfile::UserProfile(QString roomid,
                         }
                         deviceList_.reset(deviceList_.deviceList_);
                 });
-
-        connect(this,
-                &UserProfile::globalUsernameRetrieved,
-                this,
-                &UserProfile::setGlobalUsername,
-                Qt::QueuedConnection);
-
-        if (isGlobalUserProfile()) {
-                getGlobalProfileData();
-        }
 }
 
 QHash<int, QByteArray>
@@ -156,6 +159,9 @@ void
 UserProfile::fetchDeviceList(const QString &userID)
 {
         auto localUser = utils::localUser();
+
+        if (!cache::client() || !cache::client()->isDatabaseReady())
+                return;
 
         cache::client()->query_keys(
           userID.toStdString(),

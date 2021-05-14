@@ -19,14 +19,14 @@ Rectangle {
             SplitView.minimumWidth: Nheko.avatarSize + Nheko.paddingSmall * 2
             SplitView.preferredWidth: Nheko.avatarSize + Nheko.paddingSmall * 2
             SplitView.maximumWidth: Nheko.avatarSize + Nheko.paddingSmall * 2
-            color: "blue"
+            color: Nheko.theme.sidebarBackground
         }
 
-        Rectangle {
-            SplitView.minimumWidth: Nheko.avatarSize * 3 + Nheko.paddingSmall * 2
-            SplitView.preferredWidth: Nheko.avatarSize * 3 + Nheko.paddingSmall * 2
-            SplitView.maximumWidth: Nheko.avatarSize * 7 + Nheko.paddingSmall * 2
-            color: "red"
+        RoomList {
+            //SplitView.maximumWidth: Nheko.avatarSize * 7 + Nheko.paddingSmall * 2
+
+            SplitView.minimumWidth: Nheko.avatarSize * 5 + Nheko.paddingSmall * 2
+            SplitView.preferredWidth: Nheko.avatarSize * 5 + Nheko.paddingSmall * 2
         }
 
         TimelineView {
@@ -34,6 +34,11 @@ Rectangle {
 
             SplitView.fillWidth: true
             SplitView.minimumWidth: 400
+        }
+
+        handle: Rectangle {
+            implicitWidth: 2
+            color: SplitHandle.pressed ? Nheko.colors.highlight : (SplitHandle.hovered ? Nheko.colors.light : Nheko.theme.separator)
         }
 
     }

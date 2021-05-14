@@ -10,7 +10,6 @@
 #include <set>
 
 #include "Config.h"
-#include "ui/Theme.h"
 
 class RippleOverlay;
 class QMouseEvent;

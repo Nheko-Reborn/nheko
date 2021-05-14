@@ -253,6 +253,8 @@ Cache::setup()
         outboundMegolmSessionDb_ = lmdb::dbi::open(txn, OUTBOUND_MEGOLM_SESSIONS_DB, MDB_CREATE);
 
         txn.commit();
+
+        databaseReady_ = true;
 }
 
 void
@@ -788,6 +790,7 @@ Cache::nextBatchToken()
 void
 Cache::deleteData()
 {
+        this->databaseReady_ = false;
         // TODO: We need to remove the env_ while not accepting new requests.
         lmdb::dbi_close(env_, syncStateDb_);
         lmdb::dbi_close(env_, roomsDb_);
@@ -2426,7 +2429,7 @@ Cache::joinedRooms()
 std::optional<MemberInfo>
 Cache::getMember(const std::string &room_id, const std::string &user_id)
 {
-        if (user_id.empty())
+        if (user_id.empty() || !env_.handle())
                 return std::nullopt;
 
         try {
@@ -3551,8 +3554,8 @@ Cache::query_keys(const std::string &user_id,
 
         http::client()->query_keys(
           req,
-          [cb, user_id, last_changed](const mtx::responses::QueryKeys &res,
-                                      mtx::http::RequestErr err) {
+          [cb, user_id, last_changed, this](const mtx::responses::QueryKeys &res,
+                                            mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to query device keys: {},{}",
                                              mtx::errors::to_string(err->matrix_error.errcode),
@@ -3561,10 +3564,22 @@ Cache::query_keys(const std::string &user_id,
                           return;
                   }
 
-                  cache::updateUserKeys(last_changed, res);
+                  emit userKeysUpdate(last_changed, res);
 
-                  auto keys = cache::userKeys(user_id);
-                  cb(keys.value_or(UserKeyCache{}), err);
+                  // use context object so that we can disconnect again
+                  std::unique_ptr<QObject> context{new QObject};
+                  QObject *pcontext = context.get();
+                  QObject::connect(
+                    this,
+                    &Cache::verificationStatusChanged,
+                    pcontext,
+                    [cb, user_id, context_ = std::move(context)](std::string updated_user) mutable {
+                            if (user_id == updated_user) {
+                                    context_.release();
+                                    auto keys = cache::userKeys(user_id);
+                                    cb(keys.value_or(UserKeyCache{}), {});
+                            }
+                    });
           });
 }
 
@@ -3999,6 +4014,8 @@ avatarUrl(const QString &room_id, const QString &user_id)
 mtx::presence::PresenceState
 presenceState(const std::string &user_id)
 {
+        if (!instance_)
+                return {};
         return instance_->presenceState(user_id);
 }
 std::string
