@@ -78,7 +78,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
 
                   if (auto status =
                         cache::verificationStatus(http::client()->user_id().to_string());
-                      status && status->user_verified)
+                      status && status->user_verified == crypto::Trust::Verified)
                           this->our_trusted_master_key = res.master_keys.keys.begin()->second;
           });
 

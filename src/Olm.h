@@ -34,6 +34,7 @@ struct DecryptionResult
 {
         std::optional<DecryptionErrorCode> error;
         std::optional<std::string> error_message;
+
         std::optional<mtx::events::collections::TimelineEvents> event;
 };
 
@@ -83,6 +84,8 @@ encrypt_group_message(const std::string &room_id,
 DecryptionResult
 decryptEvent(const MegolmSessionIndex &index,
              const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &event);
+crypto::Trust
+calculate_trust(const std::string &user_id, const std::string &curve25519);
 
 void
 mark_keys_as_published();

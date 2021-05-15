@@ -4,11 +4,28 @@
 
 #pragma once
 
+#include <QObject>
+
 #include <map>
 #include <mutex>
+#include <set>
 
+#include <mtx/events/encrypted.hpp>
 #include <mtx/responses/crypto.hpp>
 #include <mtxclient/crypto/objects.hpp>
+
+namespace crypto {
+Q_NAMESPACE
+//! How much a participant is trusted.
+enum Trust
+{
+        Unverified, //! Device unverified or master key changed.
+        TOFU,       //! Device is signed by the sender, but the user is not verified, but they never
+                    //! changed the master key.
+        Verified,   //! User was verified and has crosssigned this device or device is verified.
+};
+Q_ENUM_NS(Trust)
+}
 
 struct DeviceAndMasterKeys
 {
@@ -87,9 +104,11 @@ from_json(const nlohmann::json &obj, StoredOlmSession &msg);
 struct VerificationStatus
 {
         //! True, if the users master key is verified
-        bool user_verified = false;
+        crypto::Trust user_verified = crypto::Trust::Unverified;
         //! List of all devices marked as verified
         std::vector<std::string> verified_devices;
+        //! Map from sender key/curve25519 to trust status
+        std::map<std::string, crypto::Trust> verified_device_keys;
 };
 
 //! In memory cache of verification status
@@ -105,12 +124,16 @@ struct UserKeyCache
 {
         //! Device id to device keys
         std::map<std::string, mtx::crypto::DeviceKeys> device_keys;
-        //! corss signing keys
+        //! cross signing keys
         mtx::crypto::CrossSigningKeys master_keys, user_signing_keys, self_signing_keys;
         //! Sync token when nheko last fetched the keys
         std::string updated_at;
         //! Sync token when the keys last changed. updated != last_changed means they are outdated.
         std::string last_changed;
+        //! if the master key has ever changed
+        bool master_key_changed = false;
+        //! Device keys that were already used at least once
+        std::set<std::string> seen_device_keys;
 };
 
 void

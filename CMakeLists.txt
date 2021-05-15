@@ -526,6 +526,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/AvatarProvider.h
 	src/BlurhashProvider.h
 	src/Cache_p.h
+	src/CacheCryptoStructs.h
 	src/CallDevices.h
 	src/CallManager.h
 	src/ChatPage.h

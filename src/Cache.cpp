@@ -3334,23 +3334,27 @@ Cache::statusMessage(const std::string &user_id)
 void
 to_json(json &j, const UserKeyCache &info)
 {
-        j["device_keys"]       = info.device_keys;
-        j["master_keys"]       = info.master_keys;
-        j["user_signing_keys"] = info.user_signing_keys;
-        j["self_signing_keys"] = info.self_signing_keys;
-        j["updated_at"]        = info.updated_at;
-        j["last_changed"]      = info.last_changed;
+        j["device_keys"]        = info.device_keys;
+        j["seen_device_keys"]   = info.seen_device_keys;
+        j["master_keys"]        = info.master_keys;
+        j["master_key_changed"] = info.master_key_changed;
+        j["user_signing_keys"]  = info.user_signing_keys;
+        j["self_signing_keys"]  = info.self_signing_keys;
+        j["updated_at"]         = info.updated_at;
+        j["last_changed"]       = info.last_changed;
 }
 
 void
 from_json(const json &j, UserKeyCache &info)
 {
         info.device_keys = j.value("device_keys", std::map<std::string, mtx::crypto::DeviceKeys>{});
-        info.master_keys = j.value("master_keys", mtx::crypto::CrossSigningKeys{});
-        info.user_signing_keys = j.value("user_signing_keys", mtx::crypto::CrossSigningKeys{});
-        info.self_signing_keys = j.value("self_signing_keys", mtx::crypto::CrossSigningKeys{});
-        info.updated_at        = j.value("updated_at", "");
-        info.last_changed      = j.value("last_changed", "");
+        info.seen_device_keys   = j.value("seen_device_keys", std::set<std::string>{});
+        info.master_keys        = j.value("master_keys", mtx::crypto::CrossSigningKeys{});
+        info.master_key_changed = j.value("master_key_changed", false);
+        info.user_signing_keys  = j.value("user_signing_keys", mtx::crypto::CrossSigningKeys{});
+        info.self_signing_keys  = j.value("self_signing_keys", mtx::crypto::CrossSigningKeys{});
+        info.updated_at         = j.value("updated_at", "");
+        info.last_changed       = j.value("last_changed", "");
 }
 
 std::optional<UserKeyCache>
@@ -3393,17 +3397,57 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
         for (auto &[user, update] : updates) {
                 nhlog::db()->debug("Updated user keys: {}", user);
 
+                auto updateToWrite = update;
+
                 std::string_view oldKeys;
                 auto res = db.get(txn, user, oldKeys);
 
                 if (res) {
-                        auto last_changed = json::parse(oldKeys).get<UserKeyCache>().last_changed;
+                        updateToWrite     = json::parse(oldKeys).get<UserKeyCache>();
+                        auto last_changed = updateToWrite.last_changed;
                         // skip if we are tracking this and expect it to be up to date with the last
                         // sync token
                         if (!last_changed.empty() && last_changed != sync_token)
                                 continue;
+
+                        if (!updateToWrite.master_keys.keys.empty() &&
+                            update.master_keys.keys != updateToWrite.master_keys.keys) {
+                                updateToWrite.master_key_changed = true;
+                        }
+
+                        updateToWrite.master_keys       = update.master_keys;
+                        updateToWrite.self_signing_keys = update.self_signing_keys;
+                        updateToWrite.user_signing_keys = update.user_signing_keys;
+
+                        // If we have keys for the device already, only update the signatures.
+                        for (const auto &[device_id, device_keys] : update.device_keys) {
+                                if (updateToWrite.device_keys.count(device_id) &&
+                                    updateToWrite.device_keys.at(device_id).keys ==
+                                      device_keys.keys) {
+                                        updateToWrite.device_keys.at(device_id).signatures =
+                                          device_keys.signatures;
+                                } else {
+                                        bool keyReused = false;
+                                        for (const auto &[key_id, key] : device_keys.keys) {
+                                                (void)key_id;
+                                                if (updateToWrite.seen_device_keys.count(key)) {
+                                                        keyReused = true;
+                                                        break;
+                                                }
+                                        }
+
+                                        if (!updateToWrite.device_keys.count(device_id) &&
+                                            !keyReused)
+                                                updateToWrite.device_keys[device_id] = device_keys;
+                                }
+
+                                for (const auto &[key_id, key] : device_keys.keys) {
+                                        (void)key_id;
+                                        updateToWrite.seen_device_keys.insert(key);
+                                }
+                        }
                 }
-                db.put(txn, user, json(update).dump());
+                db.put(txn, user, json(updateToWrite).dump());
         }
 
         txn.commit();
@@ -3666,8 +3710,11 @@ Cache::verificationStatus(const std::string &user_id)
 
         const auto local_user = utils::localUser().toStdString();
 
-        if (user_id == local_user)
+        crypto::Trust trustlevel = crypto::Trust::Unverified;
+        if (user_id == local_user) {
                 status.verified_devices.push_back(http::client()->device_id());
+                trustlevel = crypto::Trust::Verified;
+        }
 
         verification_storage.status[user_id] = status;
 
@@ -3712,27 +3759,39 @@ Cache::verificationStatus(const std::string &user_id)
                 auto master_keys = ourKeys->master_keys.keys;
 
                 if (user_id != local_user) {
-                        if (!verifyAtLeastOneSig(
-                              ourKeys->user_signing_keys, master_keys, local_user))
-                                return status;
+                        bool theirMasterKeyVerified =
+                          verifyAtLeastOneSig(
+                            ourKeys->user_signing_keys, master_keys, local_user) &&
+                          verifyAtLeastOneSig(
+                            theirKeys->master_keys, ourKeys->user_signing_keys.keys, local_user);
 
-                        if (!verifyAtLeastOneSig(
-                              theirKeys->master_keys, ourKeys->user_signing_keys.keys, local_user))
+                        if (theirMasterKeyVerified)
+                                trustlevel = crypto::Trust::Verified;
+                        else if (!theirKeys->master_key_changed)
+                                trustlevel = crypto::Trust::TOFU;
+                        else
                                 return status;
 
                         master_keys = theirKeys->master_keys.keys;
                 }
 
-                status.user_verified = true;
+                status.user_verified = trustlevel;
 
                 if (!verifyAtLeastOneSig(theirKeys->self_signing_keys, master_keys, user_id))
                         return status;
 
                 for (const auto &[device, device_key] : theirKeys->device_keys) {
                         (void)device;
-                        if (verifyAtLeastOneSig(
-                              device_key, theirKeys->self_signing_keys.keys, user_id))
-                                status.verified_devices.push_back(device_key.device_id);
+                        try {
+                                auto identkey =
+                                  device_key.keys.at("curve25519:" + device_key.device_id);
+                                if (verifyAtLeastOneSig(
+                                      device_key, theirKeys->self_signing_keys.keys, user_id)) {
+                                        status.verified_devices.push_back(device_key.device_id);
+                                        status.verified_device_keys[identkey] = trustlevel;
+                                }
+                        } catch (...) {
+                        }
                 }
 
                 verification_storage.status[user_id] = status;

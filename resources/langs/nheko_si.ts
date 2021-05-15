@@ -56,7 +56,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2004"/>
+        <location filename="../../src/Cache.cpp" line="+2016"/>
         <source>You joined this room.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -133,7 +133,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+202"/>
+        <location filename="../../src/ChatPage.cpp" line="+204"/>
         <source>Failed to invite user: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -165,12 +165,12 @@
     </message>
     <message>
         <location line="+35"/>
-        <location line="+323"/>
+        <location line="+324"/>
         <source>Confirm invite</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-322"/>
+        <location line="-323"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -235,12 +235,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+226"/>
+        <location line="+227"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-817"/>
+        <location line="-818"/>
         <source>Cache migration failed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -349,7 +349,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+227"/>
+        <location filename="../../src/ChatPage.cpp" line="+228"/>
         <source>Decrypt secrets</source>
         <translation type="unfinished"></translation>
     </message>
@@ -494,13 +494,23 @@
 <context>
     <name>EncryptionIndicator</name>
     <message>
-        <location filename="../qml/EncryptionIndicator.qml" line="+23"/>
-        <source>Encrypted</source>
+        <location filename="../qml/EncryptionIndicator.qml" line="+34"/>
+        <source>This message is not encrypted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+0"/>
-        <source>This message is not encrypted!</source>
+        <location line="+4"/>
+        <source>Encrypted by a verified device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Encrypted by an unverified device</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -580,6 +590,14 @@
     <message>
         <location line="+18"/>
         <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ForwardCompleter</name>
+    <message>
+        <location filename="../qml/ForwardCompleter.qml" line="+44"/>
+        <source>Forward Message</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -714,7 +732,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+57"/>
         <source>SSO login failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -735,7 +753,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+109"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+110"/>
         <location line="+9"/>
         <source>removed</source>
         <translation type="unfinished"></translation>
@@ -804,7 +822,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+42"/>
+        <location filename="../qml/MessageInput.qml" line="+43"/>
         <source>Hang up</source>
         <translation type="unfinished"></translation>
     </message>
@@ -833,6 +851,11 @@ Example: https://server.my:8787</source>
         <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="+11"/>
+        <source>You don&apos;t have permission to send messages in this room</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MessageView</name>
@@ -842,12 +865,12 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>React</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1103,7 +1126,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1754"/>
+        <location filename="../../src/Cache.cpp" line="+1813"/>
         <source>no version stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1274,7 +1297,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+267"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+268"/>
         <source>Failed to enable encryption: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1431,7 +1454,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+892"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1044"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1462,7 +1485,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+151"/>
+        <location line="+228"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation type="unfinished">
@@ -1571,12 +1594,12 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-789"/>
+        <location line="-876"/>
         <source>You joined this room.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+755"/>
+        <location line="+842"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1610,7 +1633,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+105"/>
+        <location filename="../qml/TimelineRow.qml" line="+106"/>
         <source>Edited</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1618,12 +1641,22 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+105"/>
-        <source>React</source>
+        <location filename="../qml/TimelineView.qml" line="+125"/>
+        <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
+        <source>Copy link location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>React</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1638,7 +1671,12 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Mark as read</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1653,7 +1691,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Remove message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1668,7 +1706,12 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+7"/>
+        <source>Copy link to event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>No room open</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1676,7 +1719,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+452"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+570"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1695,12 +1738,12 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>Room options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Invite users</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1795,17 +1838,17 @@ Example: https://server.my:8787</source>
     </message>
     <message>
         <location line="+114"/>
-        <location line="+104"/>
+        <location line="+107"/>
         <source>Verify</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-81"/>
+        <location line="-54"/>
         <source>Ban the user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="-17"/>
         <source>Start a private chat</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1815,7 +1858,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Unverify</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2349,7 +2392,7 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+189"/>
+        <location filename="../../src/Utils.cpp" line="+207"/>
         <source>Yesterday</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2544,7 +2587,7 @@ Media size: %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+115"/>
+        <location filename="../../src/Utils.h" line="+124"/>
         <source>You sent an audio clip</source>
         <translation type="unfinished"></translation>
     </message>

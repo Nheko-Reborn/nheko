@@ -135,7 +135,7 @@ UserProfile::isGlobalUserProfile() const
         return roomid_ == "";
 }
 
-bool
+crypto::Trust
 UserProfile::getUserStatus()
 {
         return isUserVerified;
