@@ -131,6 +131,7 @@
         <file>qml/Completer.qml</file>
         <file>qml/EncryptionIndicator.qml</file>
         <file>qml/ImageButton.qml</file>
+        <file>qml/ElidedLabel.qml</file>
         <file>qml/MatrixText.qml</file>
         <file>qml/MatrixTextField.qml</file>
         <file>qml/ToggleButton.qml</file>

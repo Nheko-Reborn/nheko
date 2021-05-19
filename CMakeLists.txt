@@ -272,6 +272,7 @@ set(SRC_FILES
 	src/timeline/TimelineModel.cpp
 	src/timeline/DelegateChooser.cpp
 	src/timeline/Permissions.cpp
+	src/timeline/RoomlistModel.cpp
 
 	# UI components
 	src/ui/Avatar.cpp
@@ -497,6 +498,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/timeline/TimelineModel.h
 	src/timeline/DelegateChooser.h
 	src/timeline/Permissions.h
+	src/timeline/RoomlistModel.h
 
 	# UI components
 	src/ui/Avatar.h

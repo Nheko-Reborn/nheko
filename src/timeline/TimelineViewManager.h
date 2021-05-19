@@ -22,6 +22,7 @@
 #include "WebRTCSession.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
+#include "timeline/RoomlistModel.h"
 
 class MxcImageProvider;
 class BlurhashProvider;
@@ -48,13 +49,15 @@ public:
         QWidget *getWidget() const { return container; }
 
         void sync(const mtx::responses::Rooms &rooms);
-        void addRoom(const QString &room_id);
+
+        MxcImageProvider *imageProvider() { return imgProvider; }
+        CallManager *callManager() { return callManager_; }
 
         void clearAll()
         {
                 timeline_ = nullptr;
                 emit activeTimelineChanged(nullptr);
-                models.clear();
+                rooms->clear();
         }
 
         Q_INVOKABLE TimelineModel *activeTimeline() const { return timeline_; }
@@ -109,11 +112,7 @@ public slots:
         void focusTimeline();
         TimelineModel *getHistoryView(const QString &room_id)
         {
-                auto room = models.find(room_id);
-                if (room != models.end())
-                        return room.value().data();
-                else
-                        return nullptr;
+                return rooms->getRoomById(room_id).get();
         }
 
         void updateColorPalette();
@@ -126,7 +125,6 @@ public slots:
         void queueCallMessage(const QString &roomid, const mtx::events::msg::CallAnswer &);
         void queueCallMessage(const QString &roomid, const mtx::events::msg::CallHangUp &);
 
-        void updateEncryptedDescriptions();
         void setVideoCallItem();
 
         void enableBackButton()
@@ -163,13 +161,14 @@ private:
         ColorImageProvider *colorImgProvider;
         BlurhashProvider *blurhashProvider;
 
-        QHash<QString, QSharedPointer<TimelineModel>> models;
         TimelineModel *timeline_  = nullptr;
         CallManager *callManager_ = nullptr;
 
         bool isInitialSync_   = true;
         bool isNarrowView_    = false;
         bool isWindowFocused_ = false;
+
+        RoomlistModel *rooms = nullptr;
 
         QHash<QString, QColor> userColors;
 
