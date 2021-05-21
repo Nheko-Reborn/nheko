@@ -114,6 +114,15 @@ with [homebrew](https://brew.sh/):
 ```sh
 brew install --cask nheko
 ```
+
+#### Windows
+
+with [Chocolatey](https://chocolatey.org/):
+
+```posh
+choco install nheko-reborn
+```
+
 ### FAQ
 
 ##
