@@ -22,8 +22,11 @@ public:
         {
                 AvatarUrl = Qt::UserRole,
                 RoomName,
+                RoomId,
                 LastMessage,
+                Timestamp,
                 HasUnreadMessages,
+                HasLoudNotification,
                 NotificationCount,
         };
 
@@ -47,6 +50,21 @@ public slots:
         void initializeRooms(const std::vector<QString> &roomids);
         void sync(const mtx::responses::Rooms &rooms);
         void clear();
+        int roomidToIndex(QString roomid)
+        {
+                for (int i = 0; i < (int)roomids.size(); i++) {
+                        if (roomids[i] == roomid)
+                                return i;
+                }
+
+                return -1;
+        }
+
+private slots:
+        void updateReadStatus(const std::map<QString, bool> roomReadStatus_);
+
+signals:
+        void totalUnreadMessageCountUpdated(int unreadMessages);
 
 private:
         void addRoom(const QString &room_id, bool suppressInsertNotification = false);
@@ -54,5 +72,5 @@ private:
         TimelineViewManager *manager = nullptr;
         std::vector<QString> roomids;
         QHash<QString, QSharedPointer<TimelineModel>> models;
+        std::map<QString, bool> roomReadStatus;
 };
-

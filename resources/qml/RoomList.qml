@@ -2,13 +2,15 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtQuick 2.9
+import QtQuick 2.13
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.3
 import im.nheko 1.0
 
 Page {
     ListView {
+        id: roomlist
+
         anchors.left: parent.left
         anchors.right: parent.right
         height: parent.height
@@ -20,26 +22,80 @@ Page {
             enabled: !Settings.mobileMode
         }
 
+        Connections {
+            onActiveTimelineChanged: {
+                roomlist.positionViewAtIndex(Rooms.roomidToIndex(TimelineManager.timeline.roomId()), ListView.Contain);
+                console.log("Test" + TimelineManager.timeline.roomId() + " " + Rooms.roomidToIndex(TimelineManager.timeline.roomId));
+            }
+            target: TimelineManager
+        }
+
         delegate: Rectangle {
-            color: Nheko.colors.window
-            height: fontMetrics.lineSpacing * 2.5 + Nheko.paddingMedium * 2
+            id: roomItem
+
+            property color background: Nheko.colors.window
+            property color importantText: Nheko.colors.text
+            property color unimportantText: Nheko.colors.buttonText
+            property color bubbleBackground: Nheko.colors.highlight
+            property color bubbleText: Nheko.colors.highlightedText
+
+            color: background
+            height: Math.ceil(fontMetrics.lineSpacing * 2.3 + Nheko.paddingMedium * 2)
             width: ListView.view.width
+            state: "normal"
+            states: [
+                State {
+                    name: "highlight"
+                    when: hovered.hovered
+
+                    PropertyChanges {
+                        target: roomItem
+                        background: Nheko.colors.dark
+                        importantText: Nheko.colors.brightText
+                        unimportantText: Nheko.colors.brightText
+                        bubbleBackground: Nheko.colors.highlight
+                        bubbleText: Nheko.colors.highlightedText
+                    }
+
+                },
+                State {
+                    name: "selected"
+                    when: TimelineManager.timeline && model.roomId == TimelineManager.timeline.roomId()
+
+                    PropertyChanges {
+                        target: roomItem
+                        background: Nheko.colors.highlight
+                        importantText: Nheko.colors.highlightedText
+                        unimportantText: Nheko.colors.highlightedText
+                        bubbleBackground: Nheko.colors.highlightedText
+                        bubbleText: Nheko.colors.highlight
+                    }
+
+                }
+            ]
+
+            HoverHandler {
+                id: hovered
+            }
+
+            TapHandler {
+                onSingleTapped: TimelineManager.setHistoryView(model.roomId)
+            }
 
             RowLayout {
-                //id: userInfoGrid
-
                 spacing: Nheko.paddingMedium
                 anchors.fill: parent
                 anchors.margins: Nheko.paddingMedium
 
                 Avatar {
+                    // In the future we could show an online indicator by setting the userid for the avatar
                     //userid: Nheko.currentUser.userid
 
                     id: avatar
 
                     Layout.alignment: Qt.AlignVCenter
-                    Layout.preferredWidth: fontMetrics.lineSpacing * 2.5
-                    Layout.preferredHeight: fontMetrics.lineSpacing * 2.5
+                    height: Math.ceil(fontMetrics.lineSpacing * 2.3)
+                    width: Math.ceil(fontMetrics.lineSpacing * 2.3)
                     url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                     displayName: model.roomName
                 }
@@ -52,7 +108,7 @@ Page {
                     Layout.minimumWidth: 100
                     width: parent.width - avatar.width
                     Layout.preferredWidth: parent.width - avatar.width
-                    spacing: 0
+                    spacing: Nheko.paddingSmall
 
                     RowLayout {
                         Layout.fillWidth: true
@@ -60,9 +116,9 @@ Page {
 
                         ElidedLabel {
                             Layout.alignment: Qt.AlignBottom
-                            color: Nheko.colors.text
+                            color: roomItem.importantText
                             elideWidth: textContent.width - timestamp.width - Nheko.paddingMedium
-                            fullText: model.roomName + ": " + model.notificationCount
+                            fullText: model.roomName
                         }
 
                         Item {
@@ -74,8 +130,8 @@ Page {
 
                             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
-                            color: Nheko.colors.buttonText
-                            text: "14:32"
+                            color: roomItem.unimportantText
+                            text: model.timestamp
                         }
 
                     }
@@ -85,10 +141,10 @@ Page {
                         spacing: 0
 
                         ElidedLabel {
-                            color: Nheko.colors.buttonText
+                            color: roomItem.unimportantText
                             font.weight: Font.Thin
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
-                            elideWidth: textContent.width - notificationBubble.width
+                            elideWidth: textContent.width - (notificationBubble.visible ? notificationBubble.width : 0) - Nheko.paddingSmall
                             fullText: model.lastMessage
                         }
 
@@ -99,19 +155,24 @@ Page {
                         Rectangle {
                             id: notificationBubble
 
+                            visible: model.notificationCount > 0
                             Layout.alignment: Qt.AlignRight
-                            height: fontMetrics.font.pixelSize * 1.3
+                            height: fontMetrics.averageCharacterWidth * 3
                             width: height
                             radius: height / 2
-                            color: Nheko.colors.highlight
+                            color: model.hasLoudNotification ? Nheko.theme.red : roomItem.bubbleBackground
 
                             Label {
-                                anchors.fill: parent
+                                anchors.centerIn: parent
+                                width: parent.width * 0.8
+                                height: parent.height * 0.8
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
                                 fontSizeMode: Text.Fit
-                                color: Nheko.colors.highlightedText
-                                text: model.notificationCount
+                                font.bold: true
+                                font.pixelSize: fontMetrics.font.pixelSize * 0.8
+                                color: model.hasLoudNotification ? "white" : roomItem.bubbleText
+                                text: model.notificationCount > 99 ? "99+" : model.notificationCount
                             }
 
                         }

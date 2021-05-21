@@ -233,11 +233,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 room_list_,
                 &RoomList::updateRoomDescription);
 
-        connect(room_list_,
-                SIGNAL(totalUnreadMessageCountUpdated(int)),
-                this,
-                SIGNAL(unreadMessages(int)));
-
         connect(
           this, &ChatPage::updateGroupsInfo, communitiesList_, &CommunitiesList::setCommunities);
 

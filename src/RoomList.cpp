@@ -305,8 +305,6 @@ void
 RoomList::updateRoomAvatar(const QString &roomid, const QString &img)
 {
         if (!roomExists(roomid)) {
-                nhlog::ui()->warn("avatar update on non-existent room_id: {}",
-                                  roomid.toStdString());
                 return;
         }
 
@@ -320,9 +318,6 @@ void
 RoomList::updateRoomDescription(const QString &roomid, const DescInfo &info)
 {
         if (!roomExists(roomid)) {
-                nhlog::ui()->warn("description update on non-existent room_id: {}, {}",
-                                  roomid.toStdString(),
-                                  info.body.toStdString());
                 return;
         }
 

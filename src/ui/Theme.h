@@ -66,6 +66,7 @@ class Theme : public QPalette
         Q_GADGET
         Q_PROPERTY(QColor sidebarBackground READ sidebarBackground CONSTANT)
         Q_PROPERTY(QColor separator READ separator CONSTANT)
+        Q_PROPERTY(QColor red READ red CONSTANT)
 public:
         Theme() {}
         explicit Theme(std::string_view theme);
@@ -73,7 +74,8 @@ public:
 
         QColor sidebarBackground() const { return sidebarBackground_; }
         QColor separator() const { return separator_; }
+        QColor red() const { return red_; }
 
 private:
-        QColor sidebarBackground_, separator_;
+        QColor sidebarBackground_, separator_, red_;
 };
