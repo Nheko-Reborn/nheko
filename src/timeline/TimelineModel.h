@@ -382,7 +382,7 @@ private:
         QString eventIdToShow;
         int showEventTimerCounter = 0;
 
-        DescInfo lastMessage_;
+        DescInfo lastMessage_{};
 
         friend struct SendMessageVisitor;
 

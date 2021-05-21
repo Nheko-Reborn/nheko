@@ -318,6 +318,8 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
   , room_id_(room_id)
   , manager_(manager)
 {
+        lastMessage_.timestamp = 0;
+
         connect(
           this,
           &TimelineModel::redactionFailed,

@@ -42,10 +42,13 @@ RoomlistModel::roleNames() const
           {RoomName, "roomName"},
           {RoomId, "roomId"},
           {LastMessage, "lastMessage"},
+          {Time, "time"},
           {Timestamp, "timestamp"},
           {HasUnreadMessages, "hasUnreadMessages"},
           {HasLoudNotification, "hasLoudNotification"},
           {NotificationCount, "notificationCount"},
+          {IsInvite, "isInvite"},
+          {IsSpace, "isSpace"},
         };
 }
 
@@ -64,8 +67,10 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                         return room->roomId();
                 case Roles::LastMessage:
                         return room->lastMessage().body;
-                case Roles::Timestamp:
+                case Roles::Time:
                         return room->lastMessage().descriptiveTime;
+                case Roles::Timestamp:
+                        return QVariant(static_cast<quint64>(room->lastMessage().timestamp));
                 case Roles::HasUnreadMessages:
                         return this->roomReadStatus.count(roomid) &&
                                this->roomReadStatus.at(roomid);
@@ -73,6 +78,9 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                         return room->hasMentions();
                 case Roles::NotificationCount:
                         return room->notificationCount();
+                case Roles::IsInvite:
+                case Roles::IsSpace:
+                        return false;
                 default:
                         return {};
                 }
@@ -90,9 +98,9 @@ RoomlistModel::updateReadStatus(const std::map<QString, bool> roomReadStatus_)
                 if (roomUnread != roomReadStatus[roomid]) {
                         roomsToUpdate.push_back(this->roomidToIndex(roomid));
                 }
-        }
 
-        this->roomReadStatus = roomReadStatus_;
+                this->roomReadStatus[roomid] = roomUnread;
+        }
 
         for (auto idx : roomsToUpdate) {
                 emit dataChanged(index(idx),
@@ -135,6 +143,7 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
                                              Roles::LastMessage,
                                              Roles::Timestamp,
                                              Roles::NotificationCount,
+                                             Qt::DisplayRole,
                                            });
                   });
                 connect(
@@ -162,6 +171,7 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
                                            {
                                              Roles::HasLoudNotification,
                                              Roles::NotificationCount,
+                                             Qt::DisplayRole,
                                            });
 
                           int total_unread_msgs = 0;
@@ -225,7 +235,6 @@ RoomlistModel::initializeRooms(const std::vector<QString> &roomIds_)
         beginResetModel();
         models.clear();
         roomids.clear();
-        roomids = roomIds_;
         for (const auto &id : roomIds_)
                 addRoom(id, true);
         endResetModel();
@@ -238,4 +247,80 @@ RoomlistModel::clear()
         models.clear();
         roomids.clear();
         endResetModel();
+}
+
+namespace {
+enum NotificationImportance : short
+{
+        ImportanceDisabled = -1,
+        AllEventsRead      = 0,
+        NewMessage         = 1,
+        NewMentions        = 2,
+        Invite             = 3
+};
+}
+
+short int
+FilteredRoomlistModel::calculateImportance(const QModelIndex &idx) const
+{
+        // Returns the degree of importance of the unread messages in the room.
+        // If sorting by importance is disabled in settings, this only ever
+        // returns ImportanceDisabled or Invite
+        if (sourceModel()->data(idx, RoomlistModel::IsInvite).toBool()) {
+                return Invite;
+        } else if (!this->sortByImportance) {
+                return ImportanceDisabled;
+        } else if (sourceModel()->data(idx, RoomlistModel::HasLoudNotification).toBool()) {
+                return NewMentions;
+        } else if (sourceModel()->data(idx, RoomlistModel::NotificationCount).toInt() > 0) {
+                return NewMessage;
+        } else {
+                return AllEventsRead;
+        }
+}
+bool
+FilteredRoomlistModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+        QModelIndex const left_idx  = sourceModel()->index(left.row(), 0, QModelIndex());
+        QModelIndex const right_idx = sourceModel()->index(right.row(), 0, QModelIndex());
+
+        // Sort by "importance" (i.e. invites before mentions before
+        // notifs before new events before old events), then secondly
+        // by recency.
+
+        // Checking importance first
+        const auto a_importance = calculateImportance(left_idx);
+        const auto b_importance = calculateImportance(right_idx);
+        if (a_importance != b_importance) {
+                return a_importance > b_importance;
+        }
+
+        // Now sort by recency
+        // Zero if empty, otherwise the time that the event occured
+        uint64_t a_recency = sourceModel()->data(left_idx, RoomlistModel::Timestamp).toULongLong();
+        uint64_t b_recency = sourceModel()->data(right_idx, RoomlistModel::Timestamp).toULongLong();
+
+        if (a_recency != b_recency)
+                return a_recency > b_recency;
+        else
+                return left.row() < right.row();
+}
+
+FilteredRoomlistModel::FilteredRoomlistModel(RoomlistModel *model, QObject *parent)
+  : QSortFilterProxyModel(parent)
+  , roomlistmodel(model)
+{
+        this->sortByImportance = UserSettings::instance()->sortByImportance();
+        setSourceModel(model);
+        setDynamicSortFilter(true);
+
+        QObject::connect(UserSettings::instance().get(),
+                         &UserSettings::roomSortingChanged,
+                         this,
+                         [this](bool sortByImportance_) {
+                                 this->sortByImportance = sortByImportance_;
+                                 invalidate();
+                         });
+
+        sort(0);
 }

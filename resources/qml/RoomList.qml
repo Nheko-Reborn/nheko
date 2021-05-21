@@ -131,7 +131,7 @@ Page {
                             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             color: roomItem.unimportantText
-                            text: model.timestamp
+                            text: model.time
                         }
 
                     }

@@ -193,9 +193,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           });
         qmlRegisterSingletonType<RoomlistModel>(
           "im.nheko", 1, 0, "Rooms", [](QQmlEngine *, QJSEngine *) -> QObject * {
-                  auto ptr = self->rooms;
-                  QQmlEngine::setObjectOwnership(ptr, QQmlEngine::CppOwnership);
-                  return ptr;
+                  return new FilteredRoomlistModel(self->rooms);
           });
         qmlRegisterSingletonType<UserSettings>(
           "im.nheko", 1, 0, "Settings", [](QQmlEngine *, QJSEngine *) -> QObject * {
