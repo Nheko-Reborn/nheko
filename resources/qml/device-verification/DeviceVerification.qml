@@ -15,7 +15,7 @@ ApplicationWindow {
     onClosing: TimelineManager.removeVerificationFlow(flow)
     title: stack.currentItem.title
     flags: Qt.Dialog
-    modality: Qt.WindowModal
+    modality: Qt.NonModal
     palette: Nheko.colors
     height: stack.implicitHeight
     width: stack.implicitWidth

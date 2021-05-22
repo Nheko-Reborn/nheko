@@ -20,7 +20,7 @@ ApplicationWindow {
     minimumHeight: 650
     palette: Nheko.colors
     color: Nheko.colors.window
-    modality: Qt.WindowModal
+    modality: Qt.NonModal
     flags: Qt.Dialog
     title: qsTr("Room Settings")
 
@@ -205,7 +205,7 @@ ApplicationWindow {
                 title: qsTr("End-to-End Encryption")
                 text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br>
                             Please take note that it can't be disabled afterwards.")
-                modality: Qt.WindowModal
+                modality: Qt.NonModal
                 onAccepted: {
                     if (roomSettings.isEncryptionEnabled)
                         return ;

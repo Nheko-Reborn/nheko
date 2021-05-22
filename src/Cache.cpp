@@ -3469,6 +3469,7 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                         }
                 }
         }
+
         for (auto &[user_id, update] : updates) {
                 (void)update;
                 if (user_id == local_user) {
@@ -3476,9 +3477,8 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                                 (void)status;
                                 emit verificationStatusChanged(user);
                         }
-                } else {
-                        emit verificationStatusChanged(user_id);
                 }
+                emit verificationStatusChanged(user_id);
         }
 }
 
@@ -3552,6 +3552,19 @@ Cache::query_keys(const std::string &user_id,
                 last_changed = cache_->last_changed;
         req.token = last_changed;
 
+        // use context object so that we can disconnect again
+        QObject *context{new QObject(this)};
+        QObject::connect(this,
+                         &Cache::verificationStatusChanged,
+                         context,
+                         [cb, user_id, context_ = context](std::string updated_user) mutable {
+                                 if (user_id == updated_user) {
+                                         context_->deleteLater();
+                                         auto keys = cache::userKeys(user_id);
+                                         cb(keys.value_or(UserKeyCache{}), {});
+                                 }
+                         });
+
         http::client()->query_keys(
           req,
           [cb, user_id, last_changed, this](const mtx::responses::QueryKeys &res,
@@ -3565,21 +3578,6 @@ Cache::query_keys(const std::string &user_id,
                   }
 
                   emit userKeysUpdate(last_changed, res);
-
-                  // use context object so that we can disconnect again
-                  std::unique_ptr<QObject> context{new QObject};
-                  QObject *pcontext = context.get();
-                  QObject::connect(
-                    this,
-                    &Cache::verificationStatusChanged,
-                    pcontext,
-                    [cb, user_id, context_ = std::move(context)](std::string updated_user) mutable {
-                            if (user_id == updated_user) {
-                                    context_.release();
-                                    auto keys = cache::userKeys(user_id);
-                                    cb(keys.value_or(UserKeyCache{}), {});
-                            }
-                    });
           });
 }
 

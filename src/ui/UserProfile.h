@@ -90,7 +90,7 @@ class UserProfile : public QObject
         Q_PROPERTY(QString displayName READ displayName NOTIFY displayNameChanged)
         Q_PROPERTY(QString userid READ userid CONSTANT)
         Q_PROPERTY(QString avatarUrl READ avatarUrl NOTIFY avatarUrlChanged)
-        Q_PROPERTY(DeviceInfoModel *deviceList READ deviceList CONSTANT)
+        Q_PROPERTY(DeviceInfoModel *deviceList READ deviceList NOTIFY devicesChanged)
         Q_PROPERTY(bool isGlobalUserProfile READ isGlobalUserProfile CONSTANT)
         Q_PROPERTY(int userVerified READ getUserStatus NOTIFY userStatusChanged)
         Q_PROPERTY(bool isLoading READ isLoading NOTIFY loadingChanged)
@@ -133,6 +133,7 @@ signals:
         void avatarUrlChanged();
         void displayError(const QString &errorMessage);
         void globalUsernameRetrieved(const QString &globalUser);
+        void devicesChanged();
 
 public slots:
         void updateAvatarUrl();

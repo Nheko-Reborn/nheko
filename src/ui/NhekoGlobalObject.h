@@ -40,7 +40,7 @@ public:
 
         Q_INVOKABLE void openLink(QString link) const;
 
-private slots:
+public slots:
         void updateUserProfile();
 
 signals:

@@ -42,7 +42,6 @@ UserProfile::UserProfile(QString roomid,
         if (!cache::client() || !cache::client()->isDatabaseReady())
                 return;
 
-        fetchDeviceList(this->userid_);
         connect(cache::client(),
                 &Cache::verificationStatusChanged,
                 this,
@@ -66,7 +65,9 @@ UserProfile::UserProfile(QString roomid,
                                     : verification::VERIFIED;
                         }
                         deviceList_.reset(deviceList_.deviceList_);
+                        emit devicesChanged();
                 });
+        fetchDeviceList(this->userid_);
 }
 
 QHash<int, QByteArray>
@@ -223,6 +224,7 @@ UserProfile::fetchDeviceList(const QString &userID)
                             }
 
                             this->deviceList_.queueReset(std::move(deviceInfo));
+                            emit devicesChanged();
                     });
           });
 }

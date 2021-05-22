@@ -212,6 +212,16 @@ Page {
             Layout.preferredHeight: userInfoGrid.implicitHeight + 2 * Nheko.paddingMedium
             Layout.minimumHeight: 40
 
+            TapHandler {
+                onSingleTapped: {
+                    Nheko.updateUserProfile();
+                    var userProfile = userProfileComponent.createObject(timelineRoot, {
+                        "profile": Nheko.currentUser
+                    });
+                    userProfile.show();
+                }
+            }
+
             RowLayout {
                 id: userInfoGrid
 

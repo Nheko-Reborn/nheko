@@ -22,7 +22,7 @@ ApplicationWindow {
     palette: Nheko.colors
     color: Nheko.colors.window
     title: profile.isGlobalUserProfile ? qsTr("Global User Profile") : qsTr("Room User Profile")
-    modality: Qt.WindowModal
+    modality: Qt.NonModal
     flags: Qt.Dialog
 
     Shortcut {
