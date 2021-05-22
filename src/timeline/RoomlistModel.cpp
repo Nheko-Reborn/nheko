@@ -62,7 +62,7 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                 case Roles::AvatarUrl:
                         return room->roomAvatarUrl();
                 case Roles::RoomName:
-                        return room->roomName();
+                        return room->plainRoomName();
                 case Roles::RoomId:
                         return room->roomId();
                 case Roles::LastMessage:

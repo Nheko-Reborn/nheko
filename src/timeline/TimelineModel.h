@@ -307,6 +307,7 @@ public slots:
         }
 
         QString roomName() const;
+        QString plainRoomName() const;
         QString roomTopic() const;
         InputBar *input() { return &input_; }
         Permissions *permissions() { return &permissions_; }

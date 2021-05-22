@@ -119,6 +119,7 @@ Page {
                             color: roomItem.importantText
                             elideWidth: textContent.width - timestamp.width - Nheko.paddingMedium
                             fullText: model.roomName
+                            textFormat: Text.RichText
                         }
 
                         Item {
@@ -146,6 +147,7 @@ Page {
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             elideWidth: textContent.width - (notificationBubble.visible ? notificationBubble.width : 0) - Nheko.paddingSmall
                             fullText: model.lastMessage
+                            textFormat: Text.RichText
                         }
 
                         Item {

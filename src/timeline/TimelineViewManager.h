@@ -67,6 +67,7 @@ public:
         Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId);
         Q_INVOKABLE QColor userColor(QString id, QColor background);
         Q_INVOKABLE QString escapeEmoji(QString str) const;
+        Q_INVOKABLE QString htmlEscape(QString str) const { return str.toHtmlEscaped(); }
 
         Q_INVOKABLE QString userPresence(QString id) const;
         Q_INVOKABLE QString userStatus(QString id) const;

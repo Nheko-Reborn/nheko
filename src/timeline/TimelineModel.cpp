@@ -1891,6 +1891,17 @@ TimelineModel::roomName() const
 }
 
 QString
+TimelineModel::plainRoomName() const
+{
+        auto info = cache::getRoomInfo({room_id_.toStdString()});
+
+        if (!info.count(room_id_))
+                return "";
+        else
+                return QString::fromStdString(info[room_id_].name);
+}
+
+QString
 TimelineModel::roomAvatarUrl() const
 {
         auto info = cache::getRoomInfo({room_id_.toStdString()});

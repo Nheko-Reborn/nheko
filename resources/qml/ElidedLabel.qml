@@ -13,7 +13,7 @@ Label {
     property alias elideWidth: metrics.elideWidth
 
     color: Nheko.colors.text
-    text: metrics.elidedText
+    text: (textFormat == Text.PlainText) ? metrics.elidedText : TimelineManager.escapeEmoji(TimelineManager.htmlEscape(metrics.elidedText))
     maximumLineCount: 1
     elide: Text.ElideRight
     textFormat: Text.PlainText
