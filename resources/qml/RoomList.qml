@@ -46,7 +46,7 @@ Page {
             states: [
                 State {
                     name: "highlight"
-                    when: hovered.hovered
+                    when: hovered.hovered && !(TimelineManager.timeline && model.roomId == TimelineManager.timeline.roomId())
 
                     PropertyChanges {
                         target: roomItem

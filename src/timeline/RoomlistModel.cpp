@@ -227,6 +227,17 @@ RoomlistModel::sync(const mtx::responses::Rooms &rooms)
                         }
                 }
         }
+
+        for (const auto &[room_id, room] : rooms.leave) {
+                (void)room;
+                auto idx = this->roomidToIndex(QString::fromStdString(room_id));
+                if (idx != -1) {
+                        beginRemoveRows(QModelIndex(), idx, idx);
+                        roomids.erase(roomids.begin() + idx);
+                        models.remove(QString::fromStdString(room_id));
+                        endRemoveRows();
+                }
+        }
 }
 
 void
