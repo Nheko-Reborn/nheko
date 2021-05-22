@@ -100,6 +100,11 @@ Nheko::openLink(QString link) const
                 QDesktopServices::openUrl(url);
         }
 }
+void
+Nheko::setStatusMessage(QString msg) const
+{
+        ChatPage::instance()->setStatus(msg);
+}
 
 UserProfile *
 Nheko::currentUser() const

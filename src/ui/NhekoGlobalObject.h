@@ -39,6 +39,7 @@ public:
         UserProfile *currentUser() const;
 
         Q_INVOKABLE void openLink(QString link) const;
+        Q_INVOKABLE void setStatusMessage(QString msg) const;
 
 public slots:
         void updateUserProfile();

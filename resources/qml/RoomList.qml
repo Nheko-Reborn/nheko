@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.13
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.3
@@ -206,20 +207,87 @@ Page {
         spacing: 0
 
         Rectangle {
+            id: userInfoPanel
+
+            function openUserProfile() {
+                Nheko.updateUserProfile();
+                var userProfile = userProfileComponent.createObject(timelineRoot, {
+                    "profile": Nheko.currentUser
+                });
+                userProfile.show();
+            }
+
             color: Nheko.colors.window
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBottom
             Layout.preferredHeight: userInfoGrid.implicitHeight + 2 * Nheko.paddingMedium
             Layout.minimumHeight: 40
 
-            TapHandler {
-                onSingleTapped: {
-                    Nheko.updateUserProfile();
-                    var userProfile = userProfileComponent.createObject(timelineRoot, {
-                        "profile": Nheko.currentUser
-                    });
-                    userProfile.show();
+            ApplicationWindow {
+                id: statusDialog
+
+                modality: Qt.NonModal
+                flags: Qt.Dialog
+                title: qsTr("Status Message")
+                width: 350
+                height: fontMetrics.lineSpacing * 7
+
+                ColumnLayout {
+                    anchors.margins: Nheko.paddingLarge
+                    anchors.fill: parent
+
+                    Label {
+                        color: Nheko.colors.text
+                        text: qsTr("Enter your status message:")
+                    }
+
+                    MatrixTextField {
+                        id: statusInput
+
+                        Layout.fillWidth: true
+                    }
+
                 }
+
+                footer: DialogButtonBox {
+                    standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
+                    onAccepted: {
+                        Nheko.setStatusMessage(statusInput.text);
+                        statusDialog.close();
+                    }
+                    onRejected: {
+                        statusDialog.close();
+                    }
+                }
+
+            }
+
+            Platform.Menu {
+                id: userInfoMenu
+
+                Platform.MenuItem {
+                    text: qsTr("Profile settings")
+                    onTriggered: userInfoPanel.openUserProfile()
+                }
+
+                Platform.MenuItem {
+                    text: qsTr("Set status message")
+                    onTriggered: statusDialog.show()
+                }
+
+            }
+
+            TapHandler {
+                acceptedButtons: Qt.LeftButton
+                onSingleTapped: userInfoPanel.openUserProfile()
+                onLongPressed: userInfoMenu.open()
+                gesturePolicy: TapHandler.ReleaseWithinBounds
+            }
+
+            TapHandler {
+                acceptedButtons: Qt.RightButton
+                onSingleTapped: userInfoMenu.open()
+                gesturePolicy: TapHandler.ReleaseWithinBounds
             }
 
             RowLayout {

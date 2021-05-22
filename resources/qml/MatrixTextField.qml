@@ -11,6 +11,7 @@ TextField {
     id: input
 
     palette: Nheko.colors
+    color: Nheko.colors.text
 
     Rectangle {
         id: blueBar
