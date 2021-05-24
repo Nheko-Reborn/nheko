@@ -122,14 +122,14 @@ Page {
         Platform.MenuItem {
             visible: messageContextMenu.text
             enabled: visible
-            text: qsTr("Copy")
+            text: qsTr("&Copy")
             onTriggered: Clipboard.text = messageContextMenu.text
         }
 
         Platform.MenuItem {
             visible: messageContextMenu.link
             enabled: visible
-            text: qsTr("Copy link location")
+            text: qsTr("Copy &link location")
             onTriggered: Clipboard.text = messageContextMenu.link
         }
 
@@ -137,7 +137,7 @@ Page {
             id: reactionOption
 
             visible: TimelineManager.timeline ? TimelineManager.timeline.permissions.canSend(MtxEvent.Reaction) : false
-            text: qsTr("React")
+            text: qsTr("Re&act")
             onTriggered: emojiPopup.show(null, function(emoji) {
                 TimelineManager.queueReactionMessage(messageContextMenu.eventId, emoji);
             })
@@ -145,25 +145,25 @@ Page {
 
         Platform.MenuItem {
             visible: TimelineManager.timeline ? TimelineManager.timeline.permissions.canSend(MtxEvent.TextMessage) : false
-            text: qsTr("Reply")
+            text: qsTr("Repl&y")
             onTriggered: TimelineManager.timeline.replyAction(messageContextMenu.eventId)
         }
 
         Platform.MenuItem {
             visible: messageContextMenu.isEditable && (TimelineManager.timeline ? TimelineManager.timeline.permissions.canSend(MtxEvent.TextMessage) : false)
             enabled: visible
-            text: qsTr("Edit")
+            text: qsTr("&Edit")
             onTriggered: TimelineManager.timeline.editAction(messageContextMenu.eventId)
         }
 
         Platform.MenuItem {
-            text: qsTr("Read receipts")
+            text: qsTr("Read receip&ts")
             onTriggered: TimelineManager.timeline.readReceiptsAction(messageContextMenu.eventId)
         }
 
         Platform.MenuItem {
             visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker || messageContextMenu.eventType == MtxEvent.TextMessage || messageContextMenu.eventType == MtxEvent.LocationMessage || messageContextMenu.eventType == MtxEvent.EmoteMessage || messageContextMenu.eventType == MtxEvent.NoticeMessage
-            text: qsTr("Forward")
+            text: qsTr("&Forward")
             onTriggered: {
                 var forwardMess = forwardCompleterComponent.createObject(timelineRoot);
                 forwardMess.setMessageEventId(messageContextMenu.eventId);
@@ -172,7 +172,7 @@ Page {
         }
 
         Platform.MenuItem {
-            text: qsTr("Mark as read")
+            text: qsTr("&Mark as read")
         }
 
         Platform.MenuItem {
@@ -190,28 +190,28 @@ Page {
 
         Platform.MenuItem {
             visible: (TimelineManager.timeline ? TimelineManager.timeline.permissions.canRedact() : false) || messageContextMenu.isSender
-            text: qsTr("Remove message")
+            text: qsTr("Remo&ve message")
             onTriggered: TimelineManager.timeline.redactEvent(messageContextMenu.eventId)
         }
 
         Platform.MenuItem {
             visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
             enabled: visible
-            text: qsTr("Save as")
+            text: qsTr("&Save as")
             onTriggered: TimelineManager.timeline.saveMedia(messageContextMenu.eventId)
         }
 
         Platform.MenuItem {
             visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
             enabled: visible
-            text: qsTr("Open in external program")
+            text: qsTr("&Open in external program")
             onTriggered: TimelineManager.timeline.openMedia(messageContextMenu.eventId)
         }
 
         Platform.MenuItem {
             visible: messageContextMenu.eventId
             enabled: visible
-            text: qsTr("Copy link to event")
+            text: qsTr("Copy link to eve&nt")
             onTriggered: TimelineManager.timeline.copyLinkToEvent(messageContextMenu.eventId)
         }
 
