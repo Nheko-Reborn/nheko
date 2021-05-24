@@ -57,31 +57,64 @@ RoomlistModel::data(const QModelIndex &index, int role) const
 {
         if (index.row() >= 0 && static_cast<size_t>(index.row()) < roomids.size()) {
                 auto roomid = roomids.at(index.row());
-                auto room   = models.value(roomid);
-                switch (role) {
-                case Roles::AvatarUrl:
-                        return room->roomAvatarUrl();
-                case Roles::RoomName:
-                        return room->plainRoomName();
-                case Roles::RoomId:
-                        return room->roomId();
-                case Roles::LastMessage:
-                        return room->lastMessage().body;
-                case Roles::Time:
-                        return room->lastMessage().descriptiveTime;
-                case Roles::Timestamp:
-                        return QVariant(static_cast<quint64>(room->lastMessage().timestamp));
-                case Roles::HasUnreadMessages:
-                        return this->roomReadStatus.count(roomid) &&
-                               this->roomReadStatus.at(roomid);
-                case Roles::HasLoudNotification:
-                        return room->hasMentions();
-                case Roles::NotificationCount:
-                        return room->notificationCount();
-                case Roles::IsInvite:
-                case Roles::IsSpace:
-                        return false;
-                default:
+
+                if (models.contains(roomid)) {
+                        auto room = models.value(roomid);
+                        switch (role) {
+                        case Roles::AvatarUrl:
+                                return room->roomAvatarUrl();
+                        case Roles::RoomName:
+                                return room->plainRoomName();
+                        case Roles::RoomId:
+                                return room->roomId();
+                        case Roles::LastMessage:
+                                return room->lastMessage().body;
+                        case Roles::Time:
+                                return room->lastMessage().descriptiveTime;
+                        case Roles::Timestamp:
+                                return QVariant(
+                                  static_cast<quint64>(room->lastMessage().timestamp));
+                        case Roles::HasUnreadMessages:
+                                return this->roomReadStatus.count(roomid) &&
+                                       this->roomReadStatus.at(roomid);
+                        case Roles::HasLoudNotification:
+                                return room->hasMentions();
+                        case Roles::NotificationCount:
+                                return room->notificationCount();
+                        case Roles::IsInvite:
+                        case Roles::IsSpace:
+                                return false;
+                        default:
+                                return {};
+                        }
+                } else if (invites.contains(roomid)) {
+                        auto room = invites.value(roomid);
+                        switch (role) {
+                        case Roles::AvatarUrl:
+                                return QString::fromStdString(room.avatar_url);
+                        case Roles::RoomName:
+                                return QString::fromStdString(room.name);
+                        case Roles::RoomId:
+                                return roomid;
+                        case Roles::LastMessage:
+                                return room.msgInfo.body;
+                        case Roles::Time:
+                                return room.msgInfo.descriptiveTime;
+                        case Roles::Timestamp:
+                                return QVariant(static_cast<quint64>(room.msgInfo.timestamp));
+                        case Roles::HasUnreadMessages:
+                        case Roles::HasLoudNotification:
+                                return false;
+                        case Roles::NotificationCount:
+                                return 0;
+                        case Roles::IsInvite:
+                                return true;
+                        case Roles::IsSpace:
+                                return false;
+                        default:
+                                return {};
+                        }
+                } else {
                         return {};
                 }
         } else {
@@ -109,7 +142,7 @@ RoomlistModel::updateReadStatus(const std::map<QString, bool> roomReadStatus_)
                                    Roles::HasUnreadMessages,
                                  });
         }
-};
+}
 void
 RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
 {
@@ -186,11 +219,21 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
 
                 newRoom->updateLastMessage();
 
-                if (!suppressInsertNotification)
+                bool wasInvite = invites.contains(room_id);
+                if (!suppressInsertNotification && !wasInvite)
                         beginInsertRows(QModelIndex(), (int)roomids.size(), (int)roomids.size());
+
                 models.insert(room_id, std::move(newRoom));
-                roomids.push_back(room_id);
-                if (!suppressInsertNotification)
+
+                if (wasInvite) {
+                        auto idx = roomidToIndex(room_id);
+                        invites.remove(room_id);
+                        emit dataChanged(index(idx), index(idx));
+                } else {
+                        roomids.push_back(room_id);
+                }
+
+                if (!suppressInsertNotification && !wasInvite)
                         endInsertRows();
         }
 }
@@ -234,20 +277,50 @@ RoomlistModel::sync(const mtx::responses::Rooms &rooms)
                 if (idx != -1) {
                         beginRemoveRows(QModelIndex(), idx, idx);
                         roomids.erase(roomids.begin() + idx);
-                        models.remove(QString::fromStdString(room_id));
+                        if (models.contains(QString::fromStdString(room_id)))
+                                models.remove(QString::fromStdString(room_id));
+                        else if (invites.contains(QString::fromStdString(room_id)))
+                                invites.remove(QString::fromStdString(room_id));
                         endRemoveRows();
+                }
+        }
+
+        for (const auto &[room_id, room] : rooms.invite) {
+                (void)room_id;
+                auto qroomid = QString::fromStdString(room_id);
+
+                auto invite = cache::client()->invite(room_id);
+                if (!invite)
+                        continue;
+
+                if (invites.contains(qroomid)) {
+                        invites[qroomid] = *invite;
+                        auto idx         = roomidToIndex(qroomid);
+                        emit dataChanged(index(idx), index(idx));
+                } else {
+                        beginInsertRows(QModelIndex(), (int)roomids.size(), (int)roomids.size());
+                        invites.insert(qroomid, *invite);
+                        roomids.push_back(std::move(qroomid));
+                        endInsertRows();
                 }
         }
 }
 
 void
-RoomlistModel::initializeRooms(const std::vector<QString> &roomIds_)
+RoomlistModel::initializeRooms()
 {
         beginResetModel();
         models.clear();
         roomids.clear();
-        for (const auto &id : roomIds_)
+        invites.clear();
+
+        invites = cache::client()->invites();
+        for (const auto &id : invites.keys())
+                roomids.push_back(id);
+
+        for (const auto &id : cache::client()->roomIds())
                 addRoom(id, true);
+
         endResetModel();
 }
 
@@ -256,8 +329,40 @@ RoomlistModel::clear()
 {
         beginResetModel();
         models.clear();
+        invites.clear();
         roomids.clear();
         endResetModel();
+}
+
+void
+RoomlistModel::acceptInvite(QString roomid)
+{
+        if (invites.contains(roomid)) {
+                auto idx = roomidToIndex(roomid);
+
+                if (idx != -1) {
+                        beginRemoveRows(QModelIndex(), idx, idx);
+                        roomids.erase(roomids.begin() + idx);
+                        invites.remove(roomid);
+                        endRemoveRows();
+                        ChatPage::instance()->joinRoom(roomid);
+                }
+        }
+}
+void
+RoomlistModel::declineInvite(QString roomid)
+{
+        if (invites.contains(roomid)) {
+                auto idx = roomidToIndex(roomid);
+
+                if (idx != -1) {
+                        beginRemoveRows(QModelIndex(), idx, idx);
+                        roomids.erase(roomids.begin() + idx);
+                        invites.remove(roomid);
+                        endRemoveRows();
+                        ChatPage::instance()->leaveRoom(roomid);
+                }
+        }
 }
 
 namespace {

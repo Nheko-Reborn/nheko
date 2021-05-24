@@ -2045,21 +2045,57 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
         return fallbackDesc;
 }
 
-std::map<QString, bool>
+QHash<QString, RoomInfo>
 Cache::invites()
 {
-        std::map<QString, bool> result;
+        QHash<QString, RoomInfo> result;
 
         auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         auto cursor = lmdb::cursor::open(txn, invitesDb_);
 
-        std::string_view room_id, unused;
+        std::string_view room_id, room_data;
 
-        while (cursor.get(room_id, unused, MDB_NEXT))
-                result.emplace(QString::fromStdString(std::string(room_id)), true);
+        while (cursor.get(room_id, room_data, MDB_NEXT)) {
+                try {
+                        RoomInfo tmp     = json::parse(room_data);
+                        tmp.member_count = getInviteMembersDb(txn, std::string(room_id)).size(txn);
+                        result.insert(QString::fromStdString(std::string(room_id)), std::move(tmp));
+                } catch (const json::exception &e) {
+                        nhlog::db()->warn("failed to parse room info for invite: "
+                                          "room_id ({}), {}: {}",
+                                          room_id,
+                                          std::string(room_data),
+                                          e.what());
+                }
+        }
 
         cursor.close();
-        txn.commit();
+
+        return result;
+}
+
+std::optional<RoomInfo>
+Cache::invite(std::string_view roomid)
+{
+        std::optional<RoomInfo> result;
+
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        std::string_view room_data;
+
+        if (invitesDb_.get(txn, roomid, room_data)) {
+                try {
+                        RoomInfo tmp     = json::parse(room_data);
+                        tmp.member_count = getInviteMembersDb(txn, std::string(roomid)).size(txn);
+                        result           = std::move(tmp);
+                } catch (const json::exception &e) {
+                        nhlog::db()->warn("failed to parse room info for invite: "
+                                          "room_id ({}), {}: {}",
+                                          roomid,
+                                          std::string(room_data),
+                                          e.what());
+                }
+        }
 
         return result;
 }
@@ -4064,7 +4100,7 @@ roomInfo(bool withInvites)
 {
         return instance_->roomInfo(withInvites);
 }
-std::map<QString, bool>
+QHash<QString, RoomInfo>
 invites()
 {
         return instance_->invites();

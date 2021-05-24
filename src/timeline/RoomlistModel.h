@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <CacheStructs.h>
 #include <QAbstractListModel>
 #include <QHash>
 #include <QSharedPointer>
@@ -51,7 +52,7 @@ public:
         }
 
 public slots:
-        void initializeRooms(const std::vector<QString> &roomids);
+        void initializeRooms();
         void sync(const mtx::responses::Rooms &rooms);
         void clear();
         int roomidToIndex(QString roomid)
@@ -63,6 +64,8 @@ public slots:
 
                 return -1;
         }
+        void acceptInvite(QString roomid);
+        void declineInvite(QString roomid);
 
 private slots:
         void updateReadStatus(const std::map<QString, bool> roomReadStatus_);
@@ -75,6 +78,7 @@ private:
 
         TimelineViewManager *manager = nullptr;
         std::vector<QString> roomids;
+        QHash<QString, RoomInfo> invites;
         QHash<QString, QSharedPointer<TimelineModel>> models;
         std::map<QString, bool> roomReadStatus;
 
@@ -94,6 +98,8 @@ public slots:
                 return mapFromSource(roomlistmodel->index(roomlistmodel->roomidToIndex(roomid)))
                   .row();
         }
+        void acceptInvite(QString roomid) { roomlistmodel->acceptInvite(roomid); }
+        void declineInvite(QString roomid) { roomlistmodel->declineInvite(roomid); }
 
 private:
         short int calculateImportance(const QModelIndex &idx) const;

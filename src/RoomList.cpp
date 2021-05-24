@@ -183,7 +183,7 @@ RoomList::initialize(const QMap<QString, RoomInfo> &info)
 }
 
 void
-RoomList::cleanupInvites(const std::map<QString, bool> &invites)
+RoomList::cleanupInvites(const QHash<QString, RoomInfo> &invites)
 {
         if (invites.size() == 0)
                 return;

@@ -100,7 +100,7 @@ signals:
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
         void receivedSessionKey(const std::string &room_id, const std::string &session_id);
-        void initWithMessages(const std::vector<QString> &roomIds);
+        void initializeRoomlist();
         void chatFocusChanged(bool focused)
         {
                 isWindowFocused_ = focused;

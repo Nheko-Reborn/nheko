@@ -60,12 +60,15 @@ Theme::Theme(std::string_view theme)
         separator_ = p.mid().color();
         if (theme == "light") {
                 sidebarBackground_ = QColor("#233649");
+                alternateButton_   = QColor("#ccc");
                 red_               = QColor("#a82353");
         } else if (theme == "dark") {
                 sidebarBackground_ = QColor("#2d3139");
+                alternateButton_   = QColor("#414A59");
                 red_               = QColor("#a82353");
         } else {
                 sidebarBackground_ = p.window().color();
+                alternateButton_   = p.dark().color();
                 red_               = QColor("red");
         }
 }

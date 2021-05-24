@@ -499,9 +499,9 @@ TimelineViewManager::receivedSessionKey(const std::string &room_id, const std::s
 }
 
 void
-TimelineViewManager::initWithMessages(const std::vector<QString> &roomIds)
+TimelineViewManager::initializeRoomlist()
 {
-        rooms->initializeRooms(roomIds);
+        rooms->initializeRooms();
 }
 
 void

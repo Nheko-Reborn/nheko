@@ -48,7 +48,7 @@ public:
         //! Show all the available rooms.
         void removeFilter(const std::set<QString> &roomsToHide);
         void updateRoom(const QString &room_id, const RoomInfo &info);
-        void cleanupInvites(const std::map<QString, bool> &invites);
+        void cleanupInvites(const QHash<QString, RoomInfo> &invites);
 
 signals:
         void roomChanged(const QString &room_id);

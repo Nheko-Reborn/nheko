@@ -313,7 +313,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(this,
                 &ChatPage::initializeEmptyViews,
                 view_manager_,
-                &TimelineViewManager::initWithMessages);
+                &TimelineViewManager::initializeRoomlist);
         connect(this,
                 &ChatPage::initializeMentions,
                 user_mentions_popup_,
@@ -554,7 +554,7 @@ ChatPage::loadStateFromCache()
         try {
                 olm::client()->load(cache::restoreOlmAccount(), STORAGE_SECRET_KEY);
 
-                emit initializeEmptyViews(cache::client()->roomIds());
+                emit initializeEmptyViews();
                 emit initializeRoomList(cache::roomInfo());
                 emit initializeMentions(cache::getTimelineMentions());
                 emit syncTags(cache::roomInfo().toStdMap());

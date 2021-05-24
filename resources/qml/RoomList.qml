@@ -141,6 +141,8 @@ Page {
                     RowLayout {
                         Layout.fillWidth: true
                         spacing: 0
+                        visible: !model.isInvite
+                        height: visible ? 0 : undefined
 
                         ElidedLabel {
                             color: roomItem.unimportantText
@@ -178,6 +180,60 @@ Page {
                                 text: model.notificationCount > 99 ? "99+" : model.notificationCount
                             }
 
+                        }
+
+                    }
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: Nheko.paddingMedium
+                        visible: model.isInvite
+                        enabled: visible
+                        height: visible ? 0 : undefined
+
+                        ElidedLabel {
+                            elideWidth: textContent.width / 2 - 2 * Nheko.paddingMedium
+                            fullText: qsTr("Accept")
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            leftPadding: Nheko.paddingMedium
+                            rightPadding: Nheko.paddingMedium
+                            color: Nheko.colors.brightText
+
+                            TapHandler {
+                                onSingleTapped: Rooms.acceptInvite(model.roomId)
+                            }
+
+                            background: Rectangle {
+                                color: Nheko.theme.alternateButton
+                                radius: height / 2
+                            }
+
+                        }
+
+                        ElidedLabel {
+                            Layout.alignment: Qt.AlignRight
+                            elideWidth: textContent.width / 2 - 2 * Nheko.paddingMedium
+                            fullText: qsTr("Decline")
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            leftPadding: Nheko.paddingMedium
+                            rightPadding: Nheko.paddingMedium
+                            color: Nheko.colors.brightText
+
+                            TapHandler {
+                                onSingleTapped: Rooms.declineInvite(model.roomId)
+                            }
+
+                            background: Rectangle {
+                                color: Nheko.theme.alternateButton
+                                radius: height / 2
+                            }
+
+                        }
+
+                        Item {
+                            Layout.fillWidth: true
                         }
 
                     }
