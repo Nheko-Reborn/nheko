@@ -17,7 +17,7 @@
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>Du hast deinen Bildschirm freigegeben</translation>
+        <translation>Du teilst deinen Bildschirm</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -32,7 +32,7 @@
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation>Mikrophon stummschalten</translation>
+        <translation>Mikrofon stumm schalten</translation>
     </message>
 </context>
 <context>
@@ -222,7 +222,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to unban %1 (%2)?</source>
-        <translation>Willst du wirklich den Bann von %1 (%2) zurückziehen?</translation>
+        <translation>Bann des Nutzers %1 (%2) wirklich aufheben?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -506,12 +506,12 @@
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
-        <translation type="unfinished"></translation>
+        <translation>Von einem unverifizierten Gerät verschlüsselt, Sie haben dem Nutzer jedoch früher schon vertraut.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device</source>
-        <translation type="unfinished"></translation>
+        <translation>Von einem unverifizierten Gerät verschlüsselt</translation>
     </message>
 </context>
 <context>
@@ -598,7 +598,7 @@
     <message>
         <location filename="../qml/ForwardCompleter.qml" line="+44"/>
         <source>Forward Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachricht weiterleiten</translation>
     </message>
 </context>
 <context>
@@ -1124,7 +1124,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+13"/>
         <source>Cancel edit</source>
-        <translation>Bearbeitung abbrechen</translation>
+        <translation>Bearbeiten abbrechen</translation>
     </message>
 </context>
 <context>
@@ -1266,7 +1266,7 @@ Beispiel: https://mein.server:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                             Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation>Verschlüsselung ist aktuell experimentell und kann in verschiedenen Fällen zu Fehlern führen.&lt;br&gt;Verschlüsselung kann nachträglich nicht deaktiviert werden.</translation>
+        <translation>Verschlüsselung ist derzeit experimentell und könnte unerwartete Probleme verursachen.&lt;br&gt;Bitte beachte, dass dies später nicht mehr deaktiviert werden kann.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1647,12 +1647,12 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../qml/TimelineView.qml" line="+125"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopieren</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Copy link location</source>
-        <translation type="unfinished"></translation>
+        <translation>Link kopieren</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1677,7 +1677,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+6"/>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>Weiterleiten</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1712,7 +1712,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+7"/>
         <source>Copy link to event</source>
-        <translation type="unfinished"></translation>
+        <translation>Link zu Event kopieren</translation>
     </message>
     <message>
         <location line="+57"/>
