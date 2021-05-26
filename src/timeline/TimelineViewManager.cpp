@@ -29,6 +29,7 @@
 #include "dialogs/ImageOverlay.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
+#include "RoomDirectoryModel.h"
 #include "ui/NhekoCursorShape.h"
 #include "ui/NhekoDropArea.h"
 #include "ui/NhekoGlobalObject.h"
@@ -245,6 +246,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                                          0,
                                          "EmojiCategory",
                                          "Error: Only enums");
+        qmlRegisterType<RoomDirectoryModel>("im.nheko.RoomDirectoryModel", 1, 0, "RoomDirectoryModel");
 
 #ifdef USE_QUICK_VIEW
         view      = new QQuickView(parent);
