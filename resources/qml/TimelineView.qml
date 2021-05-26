@@ -14,6 +14,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
+import im.nheko.RoomDirectoryModel 1.0
 
 Page {
     id: timelineRoot
@@ -276,8 +277,8 @@ Page {
             target: TimelineManager
             onShowPublicRooms: {
                 console.debug("Roomdir from QML TimelineView");
-                var dialog = roomDirectoryComponent.createObject(timelineRoot);
-                dialog.open();
+                var win = roomDirectoryComponent.createObject(timelineRoot);
+                win.show();
             }
         }
 
