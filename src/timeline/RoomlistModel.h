@@ -10,6 +10,7 @@
 #include <QSharedPointer>
 #include <QSortFilterProxyModel>
 #include <QString>
+#include <set>
 
 #include <mtx/responses/sync.hpp>
 
@@ -33,6 +34,7 @@ public:
                 NotificationCount,
                 IsInvite,
                 IsSpace,
+                Tags,
         };
 
         RoomlistModel(TimelineViewManager *parent = nullptr);
@@ -66,6 +68,7 @@ public slots:
         }
         void acceptInvite(QString roomid);
         void declineInvite(QString roomid);
+        void leave(QString roomid);
 
 private slots:
         void updateReadStatus(const std::map<QString, bool> roomReadStatus_);
@@ -100,6 +103,9 @@ public slots:
         }
         void acceptInvite(QString roomid) { roomlistmodel->acceptInvite(roomid); }
         void declineInvite(QString roomid) { roomlistmodel->declineInvite(roomid); }
+        void leave(QString roomid) { roomlistmodel->leave(roomid); }
+        QStringList tags();
+        void toggleTag(QString roomid, QString tag, bool on);
 
 private:
         short int calculateImportance(const QModelIndex &idx) const;

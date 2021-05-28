@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import "./dialogs"
 import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.13
 import QtQuick.Controls 2.13
@@ -29,6 +30,93 @@ Page {
                 console.log("Test" + TimelineManager.timeline.roomId() + " " + Rooms.roomidToIndex(TimelineManager.timeline.roomId));
             }
             target: TimelineManager
+        }
+
+        Platform.Menu {
+            id: roomContextMenu
+
+            property string roomid
+            property var tags
+
+            function show(roomid_, tags_) {
+                roomid = roomid_;
+                tags = tags_;
+                roomContextMenu.clear();
+                roomContextMenu.addItem(leaveOpt.createObject(roomContextMenu));
+                roomContextMenu.addItem(separatorOpt.createObject(roomContextMenu));
+                for (let tag of Rooms.tags()) {
+                    roomContextMenu.addItem(tagDelegate.createObject(roomContextMenu, {
+                        "t": tag
+                    }));
+                }
+                roomContextMenu.addItem(newTagOpt.createObject(roomContextMenu));
+                open();
+            }
+
+            InputDialog {
+                id: newTag
+
+                title: qsTr("New tag")
+                prompt: qsTr("Enter the tag you want to use:")
+                onAccepted: function(text) {
+                    Rooms.toggleTag(roomContextMenu.roomid, "u." + text, true);
+                }
+            }
+
+            Component {
+                id: leaveOpt
+
+                Platform.MenuItem {
+                    text: qsTr("Leave room")
+                    onTriggered: Rooms.leave(roomContextMenu.roomid)
+                }
+
+            }
+
+            Component {
+                id: separatorOpt
+
+                Platform.MenuSeparator {
+                    text: qsTr("Tag room as:")
+                }
+
+            }
+
+            Component {
+                id: tagDelegate
+
+                Platform.MenuItem {
+                    property string t
+
+                    text: {
+                        switch (t) {
+                        case "m.favourite":
+                            return qsTr("Favourite");
+                        case "m.lowpriority":
+                            return qsTr("Low priority");
+                        case "m.server_notice":
+                            return qsTr("Server notice");
+                        default:
+                            return t.substring(2);
+                        }
+                    }
+                    checkable: true
+                    checked: roomContextMenu.tags.includes(t)
+                    onTriggered: Rooms.toggleTag(roomContextMenu.roomid, t, checked)
+                }
+
+            }
+
+            Component {
+                id: newTagOpt
+
+                Platform.MenuItem {
+                    text: qsTr("Create new tag...")
+                    onTriggered: newTag.show()
+                }
+
+            }
+
         }
 
         delegate: Rectangle {
@@ -75,6 +163,12 @@ Page {
                 }
             ]
 
+            TapHandler {
+                acceptedButtons: Qt.RightButton
+                onSingleTapped: roomContextMenu.show(model.roomId, model.tags)
+                gesturePolicy: TapHandler.ReleaseWithinBounds
+            }
+
             HoverHandler {
                 id: hovered
             }
@@ -94,6 +188,7 @@ Page {
 
                     id: avatar
 
+                    enabled: false
                     Layout.alignment: Qt.AlignVCenter
                     height: Math.ceil(fontMetrics.lineSpacing * 2.3)
                     width: Math.ceil(fontMetrics.lineSpacing * 2.3)
@@ -279,43 +374,14 @@ Page {
             Layout.preferredHeight: userInfoGrid.implicitHeight + 2 * Nheko.paddingMedium
             Layout.minimumHeight: 40
 
-            ApplicationWindow {
+            InputDialog {
                 id: statusDialog
 
-                modality: Qt.NonModal
-                flags: Qt.Dialog
                 title: qsTr("Status Message")
-                width: 350
-                height: fontMetrics.lineSpacing * 7
-
-                ColumnLayout {
-                    anchors.margins: Nheko.paddingLarge
-                    anchors.fill: parent
-
-                    Label {
-                        color: Nheko.colors.text
-                        text: qsTr("Enter your status message:")
-                    }
-
-                    MatrixTextField {
-                        id: statusInput
-
-                        Layout.fillWidth: true
-                    }
-
+                prompt: qsTr("Enter your status message:")
+                onAccepted: function(text) {
+                    Nheko.setStatusMessage(text);
                 }
-
-                footer: DialogButtonBox {
-                    standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
-                    onAccepted: {
-                        Nheko.setStatusMessage(statusInput.text);
-                        statusDialog.close();
-                    }
-                    onRejected: {
-                        statusDialog.close();
-                    }
-                }
-
             }
 
             Platform.Menu {

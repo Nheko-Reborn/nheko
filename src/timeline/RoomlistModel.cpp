@@ -49,6 +49,7 @@ RoomlistModel::roleNames() const
           {NotificationCount, "notificationCount"},
           {IsInvite, "isInvite"},
           {IsSpace, "isSpace"},
+          {Tags, "tags"},
         };
 }
 
@@ -84,6 +85,13 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                         case Roles::IsInvite:
                         case Roles::IsSpace:
                                 return false;
+                        case Roles::Tags: {
+                                auto info = cache::singleRoomInfo(roomid.toStdString());
+                                QStringList list;
+                                for (const auto &t : info.tags)
+                                        list.push_back(QString::fromStdString(t));
+                                return list;
+                        }
                         default:
                                 return {};
                         }
@@ -111,6 +119,8 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                                 return true;
                         case Roles::IsSpace:
                                 return false;
+                        case Roles::Tags:
+                                return QStringList();
                         default:
                                 return {};
                         }
@@ -364,6 +374,21 @@ RoomlistModel::declineInvite(QString roomid)
                 }
         }
 }
+void
+RoomlistModel::leave(QString roomid)
+{
+        if (models.contains(roomid)) {
+                auto idx = roomidToIndex(roomid);
+
+                if (idx != -1) {
+                        beginRemoveRows(QModelIndex(), idx, idx);
+                        roomids.erase(roomids.begin() + idx);
+                        models.remove(roomid);
+                        endRemoveRows();
+                        ChatPage::instance()->leaveRoom(roomid);
+                }
+        }
+}
 
 namespace {
 enum NotificationImportance : short
@@ -439,4 +464,51 @@ FilteredRoomlistModel::FilteredRoomlistModel(RoomlistModel *model, QObject *pare
                          });
 
         sort(0);
+}
+
+QStringList
+FilteredRoomlistModel::tags()
+{
+        std::set<std::string> ts;
+        for (const auto &e : cache::roomInfo()) {
+                for (const auto &t : e.tags) {
+                        if (t.find("u.") == 0) {
+                                ts.insert(t);
+                        }
+                }
+        }
+
+        QStringList ret{{
+          "m.favourite",
+          "m.lowpriority",
+        }};
+
+        for (const auto &t : ts)
+                ret.push_back(QString::fromStdString(t));
+
+        return ret;
+}
+
+void
+FilteredRoomlistModel::toggleTag(QString roomid, QString tag, bool on)
+{
+        if (on) {
+                http::client()->put_tag(
+                  roomid.toStdString(), tag.toStdString(), {}, [tag](mtx::http::RequestErr err) {
+                          if (err) {
+                                  nhlog::ui()->error("Failed to add tag: {}, {}",
+                                                     tag.toStdString(),
+                                                     err->matrix_error.error);
+                          }
+                  });
+        } else {
+                http::client()->delete_tag(
+                  roomid.toStdString(), tag.toStdString(), [tag](mtx::http::RequestErr err) {
+                          if (err) {
+                                  nhlog::ui()->error("Failed to delete tag: {}, {}",
+                                                     tag.toStdString(),
+                                                     err->matrix_error.error);
+                          }
+                  });
+        }
 }
