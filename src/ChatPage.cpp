@@ -1197,6 +1197,12 @@ ChatPage::getProfileInfo()
           });
 }
 
+bool
+ChatPage::isRoomActive(const QString &room_id)
+{
+        return isActiveWindow() && content_->isVisible() && currentRoom() == room_id;
+}
+
 void
 ChatPage::hideSideBars()
 {
