@@ -20,6 +20,7 @@
 #include "Cache.h"
 #include "ChatPage.h"
 #include "CompletionProxyModel.h"
+#include "Config.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"

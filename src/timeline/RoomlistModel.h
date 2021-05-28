@@ -118,6 +118,9 @@ public slots:
         TimelineModel *currentRoom() const { return roomlistmodel->currentRoom(); }
         void setCurrentRoom(QString roomid) { roomlistmodel->setCurrentRoom(std::move(roomid)); }
 
+        void nextRoom();
+        void previousRoom();
+
 signals:
         void currentRoomChanged();
 

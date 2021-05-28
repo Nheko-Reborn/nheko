@@ -72,6 +72,15 @@ Page {
         }
     }
 
+    Shortcut {
+        sequence: "Ctrl+Down"
+        onActivated: Rooms.nextRoom();
+    }
+    Shortcut {
+        sequence: "Ctrl+Up"
+        onActivated: Rooms.previousRoom();
+    }
+
     Component {
         id: deviceVerificationDialog
 

@@ -530,3 +530,33 @@ FilteredRoomlistModel::toggleTag(QString roomid, QString tag, bool on)
                   });
         }
 }
+
+void
+FilteredRoomlistModel::nextRoom()
+{
+        auto r = currentRoom();
+
+        if (r) {
+                int idx = roomidToIndex(r->roomId());
+                idx++;
+                if (idx < rowCount()) {
+                        setCurrentRoom(
+                          data(index(idx, 0), RoomlistModel::Roles::RoomId).toString());
+                }
+        }
+}
+
+void
+FilteredRoomlistModel::previousRoom()
+{
+        auto r = currentRoom();
+
+        if (r) {
+                int idx = roomidToIndex(r->roomId());
+                idx--;
+                if (idx > 0) {
+                        setCurrentRoom(
+                          data(index(idx, 0), RoomlistModel::Roles::RoomId).toString());
+                }
+        }
+}

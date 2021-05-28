@@ -311,8 +311,6 @@ set(SRC_FILES
 	src/ChatPage.cpp
 	src/Clipboard.cpp
 	src/ColorImageProvider.cpp
-	src/CommunitiesList.cpp
-	src/CommunitiesListItem.cpp
 	src/CompletionProxyModel.cpp
 	src/DeviceVerificationFlow.cpp
 	src/EventAccessors.cpp
@@ -324,22 +322,14 @@ set(SRC_FILES
 	src/MxcImageProvider.cpp
 	src/Olm.cpp
 	src/RegisterPage.cpp
-	src/RoomInfoListItem.cpp
-	src/RoomList.cpp
 	src/SSOHandler.cpp
-	src/SideBarActions.cpp
-	src/Splitter.cpp
 	src/TrayIcon.cpp
-	src/UserInfoWidget.cpp
 	src/UserSettingsPage.cpp
 	src/UsersModel.cpp
 	src/RoomsModel.cpp
 	src/Utils.cpp
 	src/WebRTCSession.cpp
 	src/WelcomePage.cpp
-	src/popups/PopupItem.cpp
-	src/popups/SuggestionsPopup.cpp
-	src/popups/UserMentions.cpp
 	src/main.cpp
 
 	third_party/blurhash/blurhash.cpp
@@ -535,8 +525,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/CallManager.h
 	src/ChatPage.h
 	src/Clipboard.h
-	src/CommunitiesList.h
-	src/CommunitiesListItem.h
 	src/CompletionProxyModel.h
 	src/DeviceVerificationFlow.h
 	src/InviteeItem.h
@@ -544,21 +532,13 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/MainWindow.h
 	src/MxcImageProvider.h
 	src/RegisterPage.h
-	src/RoomInfoListItem.h
-	src/RoomList.h
 	src/SSOHandler.h
-	src/SideBarActions.h
-	src/Splitter.h
 	src/TrayIcon.h
-	src/UserInfoWidget.h
 	src/UserSettingsPage.h
 	src/UsersModel.h
 	src/RoomsModel.h
 	src/WebRTCSession.h
 	src/WelcomePage.h
-	src/popups/PopupItem.h
-	src/popups/SuggestionsPopup.h
-	src/popups/UserMentions.h
 	)
 
 #
