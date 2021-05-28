@@ -11,8 +11,6 @@ import im.nheko 1.0
 Rectangle {
     id: replyPopup
 
-    property var room: TimelineManager.timeline
-
     Layout.fillWidth: true
     visible: room && (room.reply || room.edit)
     // Height of child, plus margins, plus border

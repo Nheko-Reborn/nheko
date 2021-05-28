@@ -72,8 +72,7 @@ Popup {
 
     Connections {
         onCompletionSelected: {
-            TimelineManager.setHistoryView(id);
-            TimelineManager.highlightRoom(id);
+            Rooms.setCurrentRoom(id);
             quickSwitcher.close();
         }
         onCountChanged: {

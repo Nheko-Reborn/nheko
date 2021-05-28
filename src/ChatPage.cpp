@@ -215,8 +215,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 this->current_room_ = room_id;
         });
         connect(room_list_, &RoomList::roomChanged, splitter, &Splitter::showChatView);
-        connect(
-          room_list_, &RoomList::roomChanged, view_manager_, &TimelineViewManager::setHistoryView);
 
         connect(room_list_, &RoomList::acceptInvite, this, [this](const QString &room_id) {
                 joinRoom(room_id);
@@ -982,7 +980,7 @@ ChatPage::leaveRoom(const QString &room_id)
 void
 ChatPage::changeRoom(const QString &room_id)
 {
-        view_manager_->setHistoryView(room_id);
+        view_manager_->rooms()->setCurrentRoom(room_id);
         room_list_->highlightSelectedRoom(room_id);
 }
 
@@ -1397,7 +1395,8 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
 
         if (sigil1 == "u") {
                 if (action.isEmpty()) {
-                        view_manager_->activeTimeline()->openUserProfile(mxid1);
+                        if (auto t = view_manager_->rooms()->currentRoom())
+                                t->openUserProfile(mxid1);
                 } else if (action == "chat") {
                         this->startChat(mxid1);
                 }

@@ -149,7 +149,7 @@ Page {
                 },
                 State {
                     name: "selected"
-                    when: TimelineManager.timeline && model.roomId == TimelineManager.timeline.roomId()
+                    when: Rooms.currentRoom && model.roomId == Rooms.currentRoom.roomId()
 
                     PropertyChanges {
                         target: roomItem
@@ -165,16 +165,25 @@ Page {
 
             TapHandler {
                 acceptedButtons: Qt.RightButton
-                onSingleTapped: roomContextMenu.show(model.roomId, model.tags)
+                onSingleTapped: {
+                    if (!TimelineManager.isInvite) {
+                        roomContextMenu.show(model.roomId, model.tags);
+                    }
+                }
                 gesturePolicy: TapHandler.ReleaseWithinBounds
+            }
+
+            TapHandler {
+                onSingleTapped: Rooms.setCurrentRoom(model.roomId)
+                onLongPressed: {
+                    if (!TimelineManager.isInvite) {
+                        roomContextMenu.show(model.roomId, model.tags);
+                    }
+                }
             }
 
             HoverHandler {
                 id: hovered
-            }
-
-            TapHandler {
-                onSingleTapped: TimelineManager.setHistoryView(model.roomId)
             }
 
             RowLayout {

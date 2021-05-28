@@ -31,6 +31,7 @@ Rectangle {
 
         TimelineView {
             id: timeline
+            room: Rooms.currentRoom
 
             SplitView.fillWidth: true
             SplitView.minimumWidth: 400

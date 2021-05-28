@@ -14,12 +14,14 @@
 
 #include <mtx/responses/sync.hpp>
 
-class TimelineModel;
+#include "TimelineModel.h"
+
 class TimelineViewManager;
 
 class RoomlistModel : public QAbstractListModel
 {
         Q_OBJECT
+        Q_PROPERTY(TimelineModel *currentRoom READ currentRoom NOTIFY currentRoomChanged)
 public:
         enum Roles
         {
@@ -69,12 +71,15 @@ public slots:
         void acceptInvite(QString roomid);
         void declineInvite(QString roomid);
         void leave(QString roomid);
+        TimelineModel *currentRoom() const { return currentRoom_.get(); }
+        void setCurrentRoom(QString roomid);
 
 private slots:
         void updateReadStatus(const std::map<QString, bool> roomReadStatus_);
 
 signals:
         void totalUnreadMessageCountUpdated(int unreadMessages);
+        void currentRoomChanged();
 
 private:
         void addRoom(const QString &room_id, bool suppressInsertNotification = false);
@@ -85,12 +90,15 @@ private:
         QHash<QString, QSharedPointer<TimelineModel>> models;
         std::map<QString, bool> roomReadStatus;
 
+        QSharedPointer<TimelineModel> currentRoom_;
+
         friend class FilteredRoomlistModel;
 };
 
 class FilteredRoomlistModel : public QSortFilterProxyModel
 {
         Q_OBJECT
+        Q_PROPERTY(TimelineModel *currentRoom READ currentRoom NOTIFY currentRoomChanged)
 public:
         FilteredRoomlistModel(RoomlistModel *model, QObject *parent = nullptr);
         bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
@@ -106,6 +114,12 @@ public slots:
         void leave(QString roomid) { roomlistmodel->leave(roomid); }
         QStringList tags();
         void toggleTag(QString roomid, QString tag, bool on);
+
+        TimelineModel *currentRoom() const { return roomlistmodel->currentRoom(); }
+        void setCurrentRoom(QString roomid) { roomlistmodel->setCurrentRoom(std::move(roomid)); }
+
+signals:
+        void currentRoomChanged();
 
 private:
         short int calculateImportance(const QModelIndex &idx) const;

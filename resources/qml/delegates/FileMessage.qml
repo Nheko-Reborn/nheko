@@ -34,7 +34,7 @@ Item {
             }
 
             TapHandler {
-                onSingleTapped: TimelineManager.timeline.saveMedia(model.data.id)
+                onSingleTapped: room.saveMedia(model.data.id)
                 gesturePolicy: TapHandler.ReleaseWithinBounds
             }
 

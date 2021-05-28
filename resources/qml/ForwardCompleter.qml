@@ -50,7 +50,7 @@ Popup {
         Reply {
             id: replyPreview
 
-            modelData: TimelineManager.timeline ? TimelineManager.timeline.getDump(mid, "") : {
+            modelData: room ? room.getDump(mid, "") : {
             }
             userColor: TimelineManager.userColor(modelData.userId, Nheko.colors.window)
         }
@@ -95,7 +95,7 @@ Popup {
 
     Connections {
         onCompletionSelected: {
-            TimelineManager.timeline.forwardMessage(messageContextMenu.eventId, id);
+            room.forwardMessage(messageContextMenu.eventId, id);
             forwardMessagePopup.close();
         }
         onCountChanged: {

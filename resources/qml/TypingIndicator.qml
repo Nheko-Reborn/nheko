@@ -8,8 +8,6 @@ import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
 Item {
-    property var room: TimelineManager.timeline
-
     implicitHeight: Math.max(fontMetrics.height * 1.2, typingDisplay.height)
     Layout.fillWidth: true
 

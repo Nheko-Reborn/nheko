@@ -11,8 +11,6 @@ import im.nheko 1.0
 Rectangle {
     id: topBar
 
-    property var room: TimelineManager.timeline
-
     Layout.fillWidth: true
     implicitHeight: topLayout.height + Nheko.paddingMedium * 2
     z: 3
@@ -20,7 +18,7 @@ Rectangle {
 
     TapHandler {
         onSingleTapped: {
-            TimelineManager.timeline.openRoomSettings();
+            room.openRoomSettings();
             eventPoint.accepted = true;
         }
         gesturePolicy: TapHandler.ReleaseWithinBounds
@@ -61,7 +59,7 @@ Rectangle {
             height: Nheko.avatarSize
             url: room ? room.roomAvatarUrl.replace("mxc://", "image://MxcImage/") : ""
             displayName: room ? room.roomName : qsTr("No room selected")
-            onClicked: TimelineManager.timeline.openRoomSettings()
+            onClicked: room.openRoomSettings()
         }
 
         Label {
@@ -101,24 +99,24 @@ Rectangle {
                 id: roomOptionsMenu
 
                 Platform.MenuItem {
-                    visible: TimelineManager.timeline ? TimelineManager.timeline.permissions.canInvite() : false
+                    visible: room ? room.permissions.canInvite() : false
                     text: qsTr("Invite users")
                     onTriggered: TimelineManager.openInviteUsersDialog()
                 }
 
                 Platform.MenuItem {
                     text: qsTr("Members")
-                    onTriggered: TimelineManager.openMemberListDialog()
+                    onTriggered: TimelineManager.openMemberListDialog(room.roomId())
                 }
 
                 Platform.MenuItem {
                     text: qsTr("Leave room")
-                    onTriggered: TimelineManager.openLeaveRoomDialog()
+                    onTriggered: TimelineManager.openLeaveRoomDialog(room.roomId())
                 }
 
                 Platform.MenuItem {
                     text: qsTr("Settings")
-                    onTriggered: TimelineManager.timeline.openRoomSettings()
+                    onTriggered: room.openRoomSettings()
                 }
 
             }

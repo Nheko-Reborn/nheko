@@ -56,6 +56,7 @@ public slots:
         void message(QString body,
                      MarkdownOverride useMarkdown = MarkdownOverride::NOT_SPECIFIED,
                      bool rainbowify              = false);
+        void reaction(const QString &reactedEvent, const QString &reactionKey);
 
 private slots:
         void startTyping();

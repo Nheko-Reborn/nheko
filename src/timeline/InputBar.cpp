@@ -508,8 +508,7 @@ InputBar::command(QString command, QString args)
         } else if (command == "react") {
                 auto eventId = room->reply();
                 if (!eventId.isEmpty())
-                        ChatPage::instance()->timelineManager()->queueReactionMessage(
-                          eventId, args.trimmed());
+                        reaction(eventId, args.trimmed());
         } else if (command == "join") {
                 ChatPage::instance()->joinRoom(args);
         } else if (command == "part" || command == "leave") {
@@ -714,4 +713,36 @@ InputBar::stopTyping()
                                            err->matrix_error.error);
                 }
         });
+}
+
+void
+InputBar::reaction(const QString &reactedEvent, const QString &reactionKey)
+{
+        auto reactions = room->reactions(reactedEvent.toStdString());
+
+        QString selfReactedEvent;
+        for (const auto &reaction : reactions) {
+                if (reactionKey == reaction.key_) {
+                        selfReactedEvent = reaction.selfReactedEvent_;
+                        break;
+                }
+        }
+
+        if (selfReactedEvent.startsWith("m"))
+                return;
+
+        // If selfReactedEvent is empty, that means we haven't previously reacted
+        if (selfReactedEvent.isEmpty()) {
+                mtx::events::msg::Reaction reaction;
+                mtx::common::Relation rel;
+                rel.rel_type = mtx::common::RelationType::Annotation;
+                rel.event_id = reactedEvent.toStdString();
+                rel.key      = reactionKey.toStdString();
+                reaction.relations.relations.push_back(rel);
+
+                room->sendMessageEvent(reaction, mtx::events::EventType::Reaction);
+                // Otherwise, we have previously reacted and the reaction should be redacted
+        } else {
+                room->redactEvent(selfReactedEvent);
+        }
 }

@@ -70,7 +70,7 @@ Popup {
     onCompleterNameChanged: {
         if (completerName) {
             if (completerName == "user")
-                completer = TimelineManager.completerFor(completerName, TimelineManager.timeline.roomId());
+                completer = TimelineManager.completerFor(completerName, room.roomId());
             else
                 completer = TimelineManager.completerFor(completerName);
             completer.setSearchString("");
@@ -83,8 +83,8 @@ Popup {
     height: listView.contentHeight + 2 // + 2 for the padding on top and bottom
 
     Connections {
-        onTimelineChanged: completer = null
-        target: TimelineManager
+        onRoomChanged: completer = null
+        target: timelineView
     }
 
     ListView {

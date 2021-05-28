@@ -36,8 +36,6 @@ class TimelineViewManager : public QObject
         Q_OBJECT
 
         Q_PROPERTY(
-          TimelineModel *timeline MEMBER timeline_ READ activeTimeline NOTIFY activeTimelineChanged)
-        Q_PROPERTY(
           bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
         Q_PROPERTY(
           bool isNarrowView MEMBER isNarrowView_ READ isNarrowView NOTIFY narrowViewChanged)
@@ -53,14 +51,8 @@ public:
         MxcImageProvider *imageProvider() { return imgProvider; }
         CallManager *callManager() { return callManager_; }
 
-        void clearAll()
-        {
-                timeline_ = nullptr;
-                emit activeTimelineChanged(nullptr);
-                rooms->clear();
-        }
+        void clearAll() { rooms_->clear(); }
 
-        Q_INVOKABLE TimelineModel *activeTimeline() const { return timeline_; }
         Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
         bool isNarrowView() const { return isNarrowView_; }
         bool isWindowFocused() const { return isWindowFocused_; }
@@ -74,8 +66,8 @@ public:
 
         Q_INVOKABLE void focusMessageInput();
         Q_INVOKABLE void openInviteUsersDialog();
-        Q_INVOKABLE void openMemberListDialog() const;
-        Q_INVOKABLE void openLeaveRoomDialog() const;
+        Q_INVOKABLE void openMemberListDialog(QString roomid) const;
+        Q_INVOKABLE void openLeaveRoomDialog(QString roomid) const;
         Q_INVOKABLE void removeVerificationFlow(DeviceVerificationFlow *flow);
 
         void verifyUser(QString userid);
@@ -107,20 +99,13 @@ public slots:
                 emit focusChanged();
         }
 
-        void setHistoryView(const QString &room_id);
-        void highlightRoom(const QString &room_id);
         void showEvent(const QString &room_id, const QString &event_id);
         void focusTimeline();
-        TimelineModel *getHistoryView(const QString &room_id)
-        {
-                return rooms->getRoomById(room_id).get();
-        }
 
         void updateColorPalette();
         void queueReply(const QString &roomid,
                         const QString &repliedToEvent,
                         const QString &replyBody);
-        void queueReactionMessage(const QString &reactedEvent, const QString &reactionKey);
         void queueCallMessage(const QString &roomid, const mtx::events::msg::CallInvite &);
         void queueCallMessage(const QString &roomid, const mtx::events::msg::CallCandidates &);
         void queueCallMessage(const QString &roomid, const mtx::events::msg::CallAnswer &);
@@ -147,6 +132,8 @@ public slots:
         QObject *completerFor(QString completerName, QString roomId = "");
         void forwardMessageToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 
+        RoomlistModel *rooms() { return rooms_; }
+
 private slots:
         void openImageOverlayInternal(QString eventId, QImage img);
 
@@ -162,14 +149,13 @@ private:
         ColorImageProvider *colorImgProvider;
         BlurhashProvider *blurhashProvider;
 
-        TimelineModel *timeline_  = nullptr;
         CallManager *callManager_ = nullptr;
 
         bool isInitialSync_   = true;
         bool isNarrowView_    = false;
         bool isWindowFocused_ = false;
 
-        RoomlistModel *rooms = nullptr;
+        RoomlistModel *rooms_ = nullptr;
 
         QHash<QString, QColor> userColors;
 

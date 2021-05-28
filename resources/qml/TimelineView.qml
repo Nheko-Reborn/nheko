@@ -18,8 +18,10 @@ import im.nheko.EmojiModel 1.0
 Item {
     id: timelineView
 
+    property var room: null
+
     Label {
-        visible: !TimelineManager.timeline && !TimelineManager.isInitialSync
+        visible: !room && !TimelineManager.isInitialSync
         anchors.centerIn: parent
         text: qsTr("No room open")
         font.pointSize: 24
@@ -38,7 +40,7 @@ Item {
     ColumnLayout {
         id: timelineLayout
 
-        visible: TimelineManager.timeline != null
+        visible: room != null
         anchors.fill: parent
         spacing: 0
 
@@ -69,11 +71,11 @@ Item {
                     currentIndex: 0
 
                     Connections {
-                        function onActiveTimelineChanged() {
+                        function onRoomChanged() {
                             stackLayout.currentIndex = 0;
                         }
 
-                        target: TimelineManager
+                        target: timelineView
                     }
 
                     MessageView {
@@ -125,7 +127,17 @@ Item {
 
     NhekoDropArea {
         anchors.fill: parent
-        roomid: TimelineManager.timeline ? TimelineManager.timeline.roomId() : ""
+        roomid: room ? room.roomId() : ""
+    }
+
+    Connections {
+        target: room
+        onOpenRoomSettingsDialog: {
+            var roomSettings = roomSettingsComponent.createObject(timelineRoot, {
+                "roomSettings": settings
+            });
+            roomSettings.show();
+        }
     }
 
 }

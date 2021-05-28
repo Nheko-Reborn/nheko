@@ -341,6 +341,8 @@ RoomlistModel::clear()
         models.clear();
         invites.clear();
         roomids.clear();
+        currentRoom_ = nullptr;
+        emit currentRoomChanged();
         endResetModel();
 }
 
@@ -387,6 +389,17 @@ RoomlistModel::leave(QString roomid)
                         endRemoveRows();
                         ChatPage::instance()->leaveRoom(roomid);
                 }
+        }
+}
+
+void
+RoomlistModel::setCurrentRoom(QString roomid)
+{
+        nhlog::ui()->debug("Trying to switch to: {}", roomid.toStdString());
+        if (models.contains(roomid)) {
+                currentRoom_ = models.value(roomid);
+                emit currentRoomChanged();
+                nhlog::ui()->debug("Switched to: {}", roomid.toStdString());
         }
 }
 
@@ -462,6 +475,11 @@ FilteredRoomlistModel::FilteredRoomlistModel(RoomlistModel *model, QObject *pare
                                  this->sortByImportance = sortByImportance_;
                                  invalidate();
                          });
+
+        connect(roomlistmodel,
+                &RoomlistModel::currentRoomChanged,
+                this,
+                &FilteredRoomlistModel::currentRoomChanged);
 
         sort(0);
 }

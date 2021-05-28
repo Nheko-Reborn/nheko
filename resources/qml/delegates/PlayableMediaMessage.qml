@@ -121,7 +121,7 @@ Rectangle {
                 onClicked: {
                     switch (button.state) {
                     case "":
-                        TimelineManager.timeline.cacheMedia(model.data.id);
+                        room.cacheMedia(model.data.id);
                         break;
                     case "stopped":
                         media.play();
@@ -174,7 +174,7 @@ Rectangle {
                 }
 
                 Connections {
-                    target: TimelineManager.timeline
+                    target: room
                     onMediaCached: {
                         if (mxcUrl == model.data.url) {
                             media.source = cacheUrl;

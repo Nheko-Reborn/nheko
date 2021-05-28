@@ -28,7 +28,7 @@ Rectangle {
     RowLayout {
         id: row
 
-        visible: (TimelineManager.timeline ? TimelineManager.timeline.permissions.canSend(MtxEvent.TextMessage) : false) || messageContextMenu.isSender
+        visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
         anchors.fill: parent
 
         ImageButton {
@@ -43,7 +43,7 @@ Rectangle {
             ToolTip.text: CallManager.isOnCall ? qsTr("Hang up") : qsTr("Place a call")
             Layout.margins: 8
             onClicked: {
-                if (TimelineManager.timeline) {
+                if (room) {
                     if (CallManager.haveCallInvite) {
                         return ;
                     } else if (CallManager.isOnCall) {
@@ -63,14 +63,14 @@ Rectangle {
             height: 22
             image: ":/icons/icons/ui/paper-clip-outline.png"
             Layout.margins: 8
-            onClicked: TimelineManager.timeline.input.openFileSelection()
+            onClicked: room.input.openFileSelection()
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Send a file")
 
             Rectangle {
                 anchors.fill: parent
                 color: Nheko.colors.window
-                visible: TimelineManager.timeline && TimelineManager.timeline.input.uploading
+                visible: room && room.input.uploading
 
                 NhekoBusyIndicator {
                     anchors.fill: parent
@@ -123,16 +123,16 @@ Rectangle {
                 padding: 8
                 focus: true
                 onTextChanged: {
-                    if (TimelineManager.timeline)
-                        TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
+                    if (room)
+                        room.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
 
                     forceActiveFocus();
                 }
                 onCursorPositionChanged: {
-                    if (!TimelineManager.timeline)
+                    if (!room)
                         return ;
 
-                    TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
+                    room.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
                     if (cursorPosition <= completerTriggeredAt) {
                         completerTriggeredAt = -1;
                         popup.close();
@@ -141,13 +141,13 @@ Rectangle {
                         popup.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition));
 
                 }
-                onSelectionStartChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
-                onSelectionEndChanged: TimelineManager.timeline.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
+                onSelectionStartChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
+                onSelectionEndChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 // Ensure that we get escape key press events first.
                 Keys.onShortcutOverride: event.accepted = (completerTriggeredAt != -1 && (event.key === Qt.Key_Escape || event.key === Qt.Key_Tab || event.key === Qt.Key_Enter))
                 Keys.onPressed: {
                     if (event.matches(StandardKey.Paste)) {
-                        TimelineManager.timeline.input.paste(false);
+                        room.input.paste(false);
                         event.accepted = true;
                     } else if (event.key == Qt.Key_Space) {
                         // close popup if user enters space after colon
@@ -160,9 +160,9 @@ Rectangle {
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_U) {
                         messageInput.clear();
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_P) {
-                        messageInput.text = TimelineManager.timeline.input.previousText();
+                        messageInput.text = room.input.previousText();
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_N) {
-                        messageInput.text = TimelineManager.timeline.input.nextText();
+                        messageInput.text = room.input.nextText();
                     } else if (event.key == Qt.Key_At) {
                         messageInput.openCompleter(cursorPosition, "user");
                         popup.open();
@@ -188,7 +188,7 @@ Rectangle {
                                 return ;
                             }
                         }
-                        TimelineManager.timeline.input.send();
+                        room.input.send();
                         event.accepted = true;
                     } else if (event.key == Qt.Key_Tab) {
                         event.accepted = true;
@@ -223,11 +223,11 @@ Rectangle {
                     } else if (event.key == Qt.Key_Up && event.modifiers == Qt.NoModifier) {
                         if (cursorPosition == 0) {
                             event.accepted = true;
-                            var idx = TimelineManager.timeline.edit ? TimelineManager.timeline.idToIndex(TimelineManager.timeline.edit) + 1 : 0;
+                            var idx = room.edit ? room.idToIndex(room.edit) + 1 : 0;
                             while (true) {
-                                var id = TimelineManager.timeline.indexToId(idx);
-                                if (!id || TimelineManager.timeline.getDump(id, "").isEditable) {
-                                    TimelineManager.timeline.edit = id;
+                                var id = room.indexToId(idx);
+                                if (!id || room.getDump(id, "").isEditable) {
+                                    room.edit = id;
                                     cursorPosition = 0;
                                     Qt.callLater(positionCursorAtEnd);
                                     break;
@@ -239,13 +239,13 @@ Rectangle {
                             positionCursorAtStart();
                         }
                     } else if (event.key == Qt.Key_Down && event.modifiers == Qt.NoModifier) {
-                        if (cursorPosition == messageInput.length && TimelineManager.timeline.edit) {
+                        if (cursorPosition == messageInput.length && room.edit) {
                             event.accepted = true;
-                            var idx = TimelineManager.timeline.idToIndex(TimelineManager.timeline.edit) - 1;
+                            var idx = room.idToIndex(room.edit) - 1;
                             while (true) {
-                                var id = TimelineManager.timeline.indexToId(idx);
-                                if (!id || TimelineManager.timeline.getDump(id, "").isEditable) {
-                                    TimelineManager.timeline.edit = id;
+                                var id = room.indexToId(idx);
+                                if (!id || room.getDump(id, "").isEditable) {
+                                    room.edit = id;
                                     Qt.callLater(positionCursorAtStart);
                                     break;
                                 }
@@ -260,14 +260,14 @@ Rectangle {
                 background: null
 
                 Connections {
-                    onActiveTimelineChanged: {
+                    onRoomChanged: {
                         messageInput.clear();
-                        messageInput.append(TimelineManager.timeline.input.text());
+                        messageInput.append(room.input.text());
                         messageInput.completerTriggeredAt = -1;
                         popup.completerName = "";
                         messageInput.forceActiveFocus();
                     }
-                    target: TimelineManager
+                    target: timelineView
                 }
 
                 Connections {
@@ -292,14 +292,14 @@ Rectangle {
                         messageInput.text = newText;
                         messageInput.cursorPosition = newText.length;
                     }
-                    target: TimelineManager.timeline ? TimelineManager.timeline.input : null
+                    target: room ? room.input : null
                 }
 
                 Connections {
                     ignoreUnknownSignals: true
                     onReplyChanged: messageInput.forceActiveFocus()
                     onEditChanged: messageInput.forceActiveFocus()
-                    target: TimelineManager.timeline
+                    target: room
                 }
 
                 Connections {
@@ -312,7 +312,7 @@ Rectangle {
                     anchors.fill: parent
                     acceptedButtons: Qt.MiddleButton
                     cursorShape: Qt.IBeamCursor
-                    onClicked: TimelineManager.timeline.input.paste(true)
+                    onClicked: room.input.paste(true)
                 }
 
             }
@@ -347,7 +347,7 @@ Rectangle {
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Send")
             onClicked: {
-                TimelineManager.timeline.input.send();
+                room.input.send();
             }
         }
 
@@ -355,7 +355,7 @@ Rectangle {
 
     Text {
         anchors.centerIn: parent
-        visible: TimelineManager.timeline ? (!TimelineManager.timeline.permissions.canSend(MtxEvent.TextMessage)) : false
+        visible: room ? (!room.permissions.canSend(MtxEvent.TextMessage)) : false
         text: qsTr("You don't have permission to send messages in this room")
         color: Nheko.colors.text
     }

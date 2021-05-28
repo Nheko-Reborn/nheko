@@ -45,7 +45,7 @@ Popup {
             Layout.leftMargin: 8
 
             Label {
-                text: qsTr("Place a call to %1?").arg(TimelineManager.timeline.roomName)
+                text: qsTr("Place a call to %1?").arg(room.roomName)
                 color: Nheko.colors.windowText
             }
 
@@ -77,9 +77,9 @@ Popup {
                 Layout.rightMargin: cameraCombo.visible ? 16 : 64
                 width: Nheko.avatarSize
                 height: Nheko.avatarSize
-                url: TimelineManager.timeline.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
-                displayName: TimelineManager.timeline.roomName
-                onClicked: TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
+                url: room.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
+                displayName: room.roomName
+                onClicked: TimelineManager.openImageOverlay(room.avatarUrl(userid), room.data.id)
             }
 
             Button {
@@ -88,7 +88,7 @@ Popup {
                 onClicked: {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;
-                        CallManager.sendInvite(TimelineManager.timeline.roomId(), CallType.VOICE);
+                        CallManager.sendInvite(room.roomId(), CallType.VOICE);
                         close();
                     }
                 }
@@ -102,7 +102,7 @@ Popup {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;
                         Settings.camera = cameraCombo.currentText;
-                        CallManager.sendInvite(TimelineManager.timeline.roomId(), CallType.VIDEO);
+                        CallManager.sendInvite(room.roomId(), CallType.VIDEO);
                         close();
                     }
                 }

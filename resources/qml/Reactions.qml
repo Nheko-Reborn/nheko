@@ -35,7 +35,7 @@ Flow {
             ToolTip.text: modelData.users
             onClicked: {
                 console.debug("Picked " + modelData.key + "in response to " + reactionFlow.eventId + ". selfReactedEvent: " + modelData.selfReactedEvent);
-                TimelineManager.queueReactionMessage(reactionFlow.eventId, modelData.key);
+                room.input.reaction(reactionFlow.eventId, modelData.key);
             }
 
             contentItem: Row {

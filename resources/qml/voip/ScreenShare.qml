@@ -27,7 +27,7 @@ Popup {
             Layout.leftMargin: 8
             Layout.rightMargin: 8
             Layout.alignment: Qt.AlignLeft
-            text: qsTr("Share desktop with %1?").arg(TimelineManager.timeline.roomName)
+            text: qsTr("Share desktop with %1?").arg(room.roomName)
             color: Nheko.colors.windowText
         }
 
@@ -136,7 +136,7 @@ Popup {
                         Settings.screenSharePiP = pipCheckBox.checked;
                         Settings.screenShareRemoteVideo = remoteVideoCheckBox.checked;
                         Settings.screenShareHideCursor = hideCursorCheckBox.checked;
-                        CallManager.sendInvite(TimelineManager.timeline.roomId(), CallType.SCREEN, windowCombo.currentIndex);
+                        CallManager.sendInvite(room.roomId(), CallType.SCREEN, windowCombo.currentIndex);
                         close();
                     }
                 }
