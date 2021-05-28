@@ -296,7 +296,7 @@ RoomlistModel::sync(const mtx::responses::Rooms &rooms)
         }
 
         for (const auto &[room_id, room] : rooms.invite) {
-                (void)room_id;
+                (void)room;
                 auto qroomid = QString::fromStdString(room_id);
 
                 auto invite = cache::client()->invite(room_id);
