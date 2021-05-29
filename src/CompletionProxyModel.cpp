@@ -19,7 +19,7 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
   , max_completions_(max_completions)
 {
         setSourceModel(model);
-        QRegularExpression splitPoints("\\s+|-");
+        QChar splitPoints(' ');
 
         // insert all the full texts
         for (int i = 0; i < sourceModel()->rowCount(); i++) {
@@ -48,7 +48,7 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
                                  .toString()
                                  .toLower();
 
-                for (const auto &e : string1.split(splitPoints)) {
+                for (const auto &e : string1.splitRef(splitPoints)) {
                         if (!e.isEmpty()) // NOTE(Nico): Use Qt::SkipEmptyParts in Qt 5.14
                                 trie_.insert(e.toUcs4(), i);
                 }
@@ -59,7 +59,7 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
                                  .toLower();
 
                 if (!string2.isEmpty()) {
-                        for (const auto &e : string2.split(splitPoints)) {
+                        for (const auto &e : string2.splitRef(splitPoints)) {
                                 if (!e.isEmpty()) // NOTE(Nico): Use Qt::SkipEmptyParts in Qt 5.14
                                         trie_.insert(e.toUcs4(), i);
                         }
