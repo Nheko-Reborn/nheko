@@ -207,10 +207,7 @@ private:
         void getProfileInfo();
 
         //! Check if the given room is currently open.
-        bool isRoomActive(const QString &room_id)
-        {
-                return isActiveWindow() && currentRoom() == room_id;
-        }
+        bool isRoomActive(const QString &room_id);
 
         using UserID      = QString;
         using Membership  = mtx::events::StateEvent<mtx::events::state::Member>;
