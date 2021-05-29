@@ -770,7 +770,7 @@ EventStore::decryptEvent(const IdIndex &idx,
 }
 
 mtx::events::collections::TimelineEvents *
-EventStore::get(std::string_view id, std::string_view related_to, bool decrypt, bool resolve_edits)
+EventStore::get(std::string id, std::string_view related_to, bool decrypt, bool resolve_edits)
 {
         if (this->thread() != QThread::currentThread())
                 nhlog::db()->warn("{} called from a different thread!", __func__);
@@ -778,7 +778,7 @@ EventStore::get(std::string_view id, std::string_view related_to, bool decrypt, 
         if (id.empty())
                 return nullptr;
 
-        IdIndex index{room_id_, std::string(id)};
+        IdIndex index{room_id_, std::move(id)};
         if (resolve_edits) {
                 auto edits_ = edits(index.id);
                 if (!edits_.empty()) {
@@ -796,14 +796,12 @@ EventStore::get(std::string_view id, std::string_view related_to, bool decrypt, 
                         http::client()->get_event(
                           room_id_,
                           index.id,
-                          [this,
-                           relatedTo = std::string(related_to.data(), related_to.size()),
-                           id = index.id](const mtx::events::collections::TimelineEvents &timeline,
-                                          mtx::http::RequestErr err) {
+                          [this, relatedTo = std::string(related_to), id = index.id](
+                            const mtx::events::collections::TimelineEvents &timeline,
+                            mtx::http::RequestErr err) {
                                   if (err) {
                                           nhlog::net()->error(
-                                            "Failed to retrieve event with id {}, which "
-                                            "was "
+                                            "Failed to retrieve event with id {}, which was "
                                             "requested to show the replyTo for event {}",
                                             relatedTo,
                                             id);
