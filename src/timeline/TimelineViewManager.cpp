@@ -129,7 +129,8 @@ TimelineViewManager::userStatus(QString id) const
 }
 
 TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *parent)
-  : imgProvider(new MxcImageProvider())
+  : QObject(parent)
+  , imgProvider(new MxcImageProvider())
   , colorImgProvider(new ColorImageProvider())
   , blurhashProvider(new BlurhashProvider())
   , callManager_(callManager)
@@ -230,7 +231,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                                          "Error: Only enums");
 
 #ifdef USE_QUICK_VIEW
-        view      = new QQuickView();
+        view      = new QQuickView(parent);
         container = QWidget::createWindowContainer(view, parent);
 #else
         view      = new QQuickWidget(parent);

@@ -171,6 +171,14 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                         activateWindow();
                 });
 
+        connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, [this]() {
+                // ensure the qml context is shutdown before we destroy all other singletons
+                // Otherwise Qml will try to access the room list or settings, after they have been
+                // destroyed
+                topLayout_->removeWidget(view_manager_->getWidget());
+                delete view_manager_->getWidget();
+        });
+
         connect(
           this,
           &ChatPage::initializeViews,
