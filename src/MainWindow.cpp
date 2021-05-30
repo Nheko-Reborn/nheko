@@ -311,14 +311,6 @@ MainWindow::hasActiveUser()
 }
 
 void
-MainWindow::openMemberListDialog(const QString &room_id)
-{
-        auto dialog = new dialogs::MemberList(room_id, this);
-
-        showDialog(dialog);
-}
-
-void
 MainWindow::openLeaveRoomDialog(const QString &room_id)
 {
         auto dialog = new dialogs::LeaveRoom(this);

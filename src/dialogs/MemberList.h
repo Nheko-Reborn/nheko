@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "CacheStructs.h"
 #include <QFrame>
 #include <QListWidget>
 
@@ -13,45 +14,69 @@ class QHBoxLayout;
 class QLabel;
 class QVBoxLayout;
 
-struct RoomMember;
+class MemberListModel : public QAbstractListModel
+{
+        Q_OBJECT
+
+public:
+        enum Roles
+        {
+                Mxid,
+                DisplayName,
+                AvatarUrl,
+        };
+
+        QHash<int, QByteArray> roleNames() const override;
+        int rowCount(const QModelIndex &parent = QModelIndex()) const override
+        {
+                Q_UNUSED(parent)
+                return static_cast<int>(m_memberList.size());
+        }
+        QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+private:
+        // TODO: probably should move the avatar url into RoomMember at some point
+        QVector<QPair<RoomMember, QString>> m_memberList;
+
+        friend class MemberList;
+};
 
 template<class T>
 class QSharedPointer;
 
-namespace dialogs {
-
-class MemberItem : public QWidget
+class MemberList : public QObject
 {
         Q_OBJECT
 
-public:
-        MemberItem(const RoomMember &member, QWidget *parent);
+        Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
+        Q_PROPERTY(MemberListModel *model READ model NOTIFY modelChanged)
+        Q_PROPERTY(size_t memberCount READ memberCount NOTIFY memberCountChanged)
+        Q_PROPERTY(QString avatarUrl READ avatarUrl NOTIFY avatarUrlChanged)
+        Q_PROPERTY(QString roomId READ roomId NOTIFY roomIdChanged)
 
-protected:
-        void paintEvent(QPaintEvent *) override;
-
-private:
-        QHBoxLayout *topLayout_;
-        QVBoxLayout *textLayout_;
-
-        Avatar *avatar_;
-
-        QLabel *userName_;
-        QLabel *userId_;
-};
-
-class MemberList : public QFrame
-{
-        Q_OBJECT
 public:
         MemberList(const QString &room_id, QWidget *parent = nullptr);
+
+        Q_INVOKABLE void loadMoreMembers();
+
+        QString roomName() const { return QString::fromStdString(info_.name); }
+        MemberListModel *model() { return &this->m_model; }
+        size_t memberCount() const { return info_.member_count; }
+        QString avatarUrl() const { return QString::fromStdString(info_.avatar_url); }
+        QString roomId() const { return room_id_; }
+
+signals:
+        void roomNameChanged();
+        void modelChanged();
+        void memberCountChanged();
+        void avatarUrlChanged();
+        void roomIdChanged();
 
 public slots:
         void addUsers(const std::vector<RoomMember> &users);
 
 private:
+        MemberListModel m_model;
         QString room_id_;
-        QLabel *topLabel_;
-        QListWidget *list_;
+        RoomInfo info_;
 };
-} // dialogs

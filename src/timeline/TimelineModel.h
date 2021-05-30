@@ -18,6 +18,7 @@
 #include "EventStore.h"
 #include "InputBar.h"
 #include "Permissions.h"
+#include "dialogs/MemberList.h"
 #include "ui/RoomSettings.h"
 #include "ui/UserProfile.h"
 
@@ -234,7 +235,8 @@ public:
         Q_INVOKABLE void forwardMessage(QString eventId, QString roomId);
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
         Q_INVOKABLE void openUserProfile(QString userid);
-        Q_INVOKABLE void openRoomSettings();
+        Q_INVOKABLE void openRoomMembers();
+        Q_INVOKABLE void openRoomSettings(QString room_id = QString());
         Q_INVOKABLE void editAction(QString id);
         Q_INVOKABLE void replyAction(QString id);
         Q_INVOKABLE void readReceiptsAction(QString id) const;
@@ -351,6 +353,7 @@ signals:
         void lastMessageChanged();
         void notificationsChanged();
 
+        void openRoomMembersDialog(MemberList *members);
         void openRoomSettingsDialog(RoomSettings *settings);
 
         void newMessageToSend(mtx::events::collections::TimelineEvents event);

@@ -29,6 +29,7 @@
 #include "Olm.h"
 #include "TimelineViewManager.h"
 #include "Utils.h"
+#include "dialogs/MemberList.h"
 #include "dialogs/RawMessage.h"
 
 Q_DECLARE_METATYPE(QModelIndex)
@@ -1057,9 +1058,16 @@ TimelineModel::openUserProfile(QString userid)
 }
 
 void
-TimelineModel::openRoomSettings()
+TimelineModel::openRoomMembers()
 {
-        RoomSettings *settings = new RoomSettings(roomId(), this);
+        MemberList *memberList = new MemberList(roomId());
+        emit openRoomMembersDialog(memberList);
+}
+
+void
+TimelineModel::openRoomSettings(QString room_id)
+{
+        RoomSettings *settings = new RoomSettings(room_id == QString() ? roomId() : room_id, this);
         connect(this, &TimelineModel::roomAvatarUrlChanged, settings, &RoomSettings::avatarChanged);
         openRoomSettingsDialog(settings);
 }

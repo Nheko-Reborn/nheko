@@ -66,7 +66,6 @@ public:
 
         Q_INVOKABLE void focusMessageInput();
         Q_INVOKABLE void openInviteUsersDialog();
-        Q_INVOKABLE void openMemberListDialog(QString roomid) const;
         Q_INVOKABLE void openLeaveRoomDialog(QString roomid) const;
         Q_INVOKABLE void removeVerificationFlow(DeviceVerificationFlow *flow);
 

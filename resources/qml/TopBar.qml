@@ -116,7 +116,7 @@ Rectangle {
 
                 Platform.MenuItem {
                     text: qsTr("Members")
-                    onTriggered: TimelineManager.openMemberListDialog(room.roomId())
+                    onTriggered: Rooms.currentRoom.openRoomMembers(room.roomId())
                 }
 
                 Platform.MenuItem {
