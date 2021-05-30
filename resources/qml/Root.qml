@@ -74,11 +74,12 @@ Page {
 
     Shortcut {
         sequence: "Ctrl+Down"
-        onActivated: Rooms.nextRoom();
+        onActivated: Rooms.nextRoom()
     }
+
     Shortcut {
         sequence: "Ctrl+Up"
-        onActivated: Rooms.previousRoom();
+        onActivated: Rooms.previousRoom()
     }
 
     Component {

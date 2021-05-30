@@ -4,6 +4,7 @@
 
 import "./dialogs"
 import Qt.labs.platform 1.1 as Platform
+import QtQml 2.13
 import QtQuick 2.13
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.3
@@ -37,19 +38,12 @@ Page {
 
             property string roomid
             property var tags
+            property var allTags
 
             function show(roomid_, tags_) {
                 roomid = roomid_;
                 tags = tags_;
-                roomContextMenu.clear();
-                roomContextMenu.addItem(leaveOpt.createObject(roomContextMenu));
-                roomContextMenu.addItem(separatorOpt.createObject(roomContextMenu));
-                for (let tag of Rooms.tags()) {
-                    roomContextMenu.addItem(tagDelegate.createObject(roomContextMenu, {
-                        "t": tag
-                    }));
-                }
-                roomContextMenu.addItem(newTagOpt.createObject(roomContextMenu));
+                allTags = Rooms.tags();
                 open();
             }
 
@@ -63,30 +57,22 @@ Page {
                 }
             }
 
-            Component {
-                id: leaveOpt
-
-                Platform.MenuItem {
-                    text: qsTr("Leave room")
-                    onTriggered: Rooms.leave(roomContextMenu.roomid)
-                }
-
+            Platform.MenuItem {
+                text: qsTr("Leave room")
+                onTriggered: Rooms.leave(roomContextMenu.roomid)
             }
 
-            Component {
-                id: separatorOpt
-
-                Platform.MenuSeparator {
-                    text: qsTr("Tag room as:")
-                }
-
+            Platform.MenuSeparator {
+                text: qsTr("Tag room as:")
             }
 
-            Component {
-                id: tagDelegate
+            Instantiator {
+                model: roomContextMenu.allTags
+                onObjectAdded: roomContextMenu.insertItem(index + 2, object)
+                onObjectRemoved: roomContextMenu.removeItem(object)
 
-                Platform.MenuItem {
-                    property string t
+                delegate: Platform.MenuItem {
+                    property string t: modelData
 
                     text: {
                         switch (t) {
@@ -107,14 +93,9 @@ Page {
 
             }
 
-            Component {
-                id: newTagOpt
-
-                Platform.MenuItem {
-                    text: qsTr("Create new tag...")
-                    onTriggered: newTag.show()
-                }
-
+            Platform.MenuItem {
+                text: qsTr("Create new tag...")
+                onTriggered: newTag.show()
             }
 
         }
@@ -166,9 +147,9 @@ Page {
             TapHandler {
                 acceptedButtons: Qt.RightButton
                 onSingleTapped: {
-                    if (!TimelineManager.isInvite) {
+                    if (!TimelineManager.isInvite)
                         roomContextMenu.show(model.roomId, model.tags);
-                    }
+
                 }
                 gesturePolicy: TapHandler.ReleaseWithinBounds
             }
@@ -176,9 +157,9 @@ Page {
             TapHandler {
                 onSingleTapped: Rooms.setCurrentRoom(model.roomId)
                 onLongPressed: {
-                    if (!TimelineManager.isInvite) {
+                    if (!TimelineManager.isInvite)
                         roomContextMenu.show(model.roomId, model.tags);
-                    }
+
                 }
             }
 
@@ -524,7 +505,6 @@ Page {
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Start a new chat")
                     Layout.margins: Nheko.paddingMedium
-
                     onClicked: roomJoinCreateMenu.open(parent)
 
                     Platform.Menu {
@@ -541,6 +521,7 @@ Page {
                         }
 
                     }
+
                 }
 
                 ImageButton {
