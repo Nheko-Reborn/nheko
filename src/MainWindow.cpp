@@ -22,7 +22,6 @@
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "RegisterPage.h"
-#include "Splitter.h"
 #include "TrayIcon.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"

@@ -10,6 +10,7 @@
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"
+#include "MainWindow.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
 
@@ -112,4 +113,30 @@ Nheko::currentUser() const
         nhlog::ui()->debug("Profile requested");
 
         return currentUser_.get();
+}
+
+void
+Nheko::showUserSettingsPage() const
+{
+        ChatPage::instance()->showUserSettingsPage();
+}
+
+void
+Nheko::openLogoutDialog() const
+{
+        MainWindow::instance()->openLogoutDialog();
+}
+
+void
+Nheko::openCreateRoomDialog() const
+{
+        MainWindow::instance()->openCreateRoomDialog(
+          [](const mtx::requests::CreateRoom &req) { ChatPage::instance()->createRoom(req); });
+}
+
+void
+Nheko::openJoinRoomDialog() const
+{
+        MainWindow::instance()->openJoinRoomDialog(
+          [](const QString &room_id) { ChatPage::instance()->joinRoom(room_id); });
 }

@@ -40,6 +40,10 @@ public:
 
         Q_INVOKABLE void openLink(QString link) const;
         Q_INVOKABLE void setStatusMessage(QString msg) const;
+        Q_INVOKABLE void showUserSettingsPage() const;
+        Q_INVOKABLE void openLogoutDialog() const;
+        Q_INVOKABLE void openCreateRoomDialog() const;
+        Q_INVOKABLE void openJoinRoomDialog() const;
 
 public slots:
         void updateUserProfile();

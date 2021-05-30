@@ -477,6 +477,7 @@ Page {
                     image: ":/icons/icons/ui/power-button-off.png"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Logout")
+                    onClicked: Nheko.openLogoutDialog()
                 }
 
             }
@@ -523,6 +524,23 @@ Page {
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Start a new chat")
                     Layout.margins: Nheko.paddingMedium
+
+                    onClicked: roomJoinCreateMenu.open(parent)
+
+                    Platform.Menu {
+                        id: roomJoinCreateMenu
+
+                        Platform.MenuItem {
+                            text: qsTr("Join a room")
+                            onTriggered: Nheko.openJoinRoomDialog()
+                        }
+
+                        Platform.MenuItem {
+                            text: qsTr("Create a new room")
+                            onTriggered: Nheko.openCreateRoomDialog()
+                        }
+
+                    }
                 }
 
                 ImageButton {
@@ -545,6 +563,7 @@ Page {
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("User settings")
                     Layout.margins: Nheko.paddingMedium
+                    onClicked: Nheko.showUserSettingsPage()
                 }
 
             }
