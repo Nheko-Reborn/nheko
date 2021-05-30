@@ -285,7 +285,6 @@ set(SRC_FILES
 	src/dialogs/JoinRoom.cpp
 	src/dialogs/LeaveRoom.cpp
 	src/dialogs/Logout.cpp
-	src/dialogs/MemberList.cpp
 	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
 	src/dialogs/ReadReceipts.cpp
@@ -351,6 +350,7 @@ set(SRC_FILES
 	src/LoginPage.cpp
 	src/MainWindow.cpp
 	src/MatrixClient.cpp
+	src/MemberList.cpp
 	src/MxcImageProvider.cpp
 	src/Olm.cpp
 	src/RegisterPage.cpp
@@ -496,7 +496,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/JoinRoom.h
 	src/dialogs/LeaveRoom.h
 	src/dialogs/Logout.h
-	src/dialogs/MemberList.h
 	src/dialogs/PreviewUploadOverlay.h
 	src/dialogs/RawMessage.h
 	src/dialogs/ReCaptcha.h
@@ -557,6 +556,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/InviteeItem.h
 	src/LoginPage.h
 	src/MainWindow.h
+	src/MemberList.h
 	src/MxcImageProvider.h
 	src/RegisterPage.h
 	src/SSOHandler.h

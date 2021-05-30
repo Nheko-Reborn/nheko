@@ -21,6 +21,7 @@
 #include "LoginPage.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
+#include "MemberList.h"
 #include "RegisterPage.h"
 #include "TrayIcon.h"
 #include "UserSettingsPage.h"
@@ -36,7 +37,6 @@
 #include "dialogs/JoinRoom.h"
 #include "dialogs/LeaveRoom.h"
 #include "dialogs/Logout.h"
-#include "dialogs/MemberList.h"
 #include "dialogs/ReadReceipts.h"
 
 MainWindow *MainWindow::instance_ = nullptr;
@@ -308,14 +308,6 @@ MainWindow::hasActiveUser()
         return settings.contains(prefix + "auth/access_token") &&
                settings.contains(prefix + "auth/home_server") &&
                settings.contains(prefix + "auth/user_id");
-}
-
-void
-MainWindow::openMemberListDialog(const QString &room_id)
-{
-        auto dialog = new dialogs::MemberList(room_id, this);
-
-        showDialog(dialog);
 }
 
 void

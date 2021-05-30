@@ -174,6 +174,8 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           0,
           "UserProfileModel",
           "UserProfile needs to be instantiated on the C++ side");
+        qmlRegisterUncreatableType<MemberList>(
+          "im.nheko", 1, 0, "MemberList", "MemberList needs to be instantiated on the C++ side");
         qmlRegisterUncreatableType<RoomSettings>(
           "im.nheko",
           1,
@@ -426,11 +428,6 @@ TimelineViewManager::openInviteUsersDialog()
 {
         MainWindow::instance()->openInviteUsersDialog(
           [this](const QStringList &invitees) { emit inviteUsers(invitees); });
-}
-void
-TimelineViewManager::openMemberListDialog(QString roomid) const
-{
-        MainWindow::instance()->openMemberListDialog(roomid);
 }
 void
 TimelineViewManager::openLeaveRoomDialog(QString roomid) const

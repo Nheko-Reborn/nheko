@@ -205,6 +205,9 @@ main(int argc, char *argv[])
 
         parser.process(app);
 
+        // make sure that size_t properties will work
+        qRegisterMetaType<size_t>("size_t");
+
         app.setWindowIcon(QIcon::fromTheme("nheko", QIcon{":/logos/nheko.png"}));
 
         http::init();
