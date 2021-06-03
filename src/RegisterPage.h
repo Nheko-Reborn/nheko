@@ -63,6 +63,7 @@ private:
         QLabel *error_username_label_;
         QLabel *error_password_label_;
         QLabel *error_password_confirmation_label_;
+        QLabel *error_server_label_;
 
         FlatButton *back_button_;
         RaisedButton *register_button_;

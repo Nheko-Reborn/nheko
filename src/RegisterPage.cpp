@@ -108,6 +108,10 @@ RegisterPage::RegisterPage(QWidget *parent)
         error_password_confirmation_label_->setWordWrap(true);
         error_password_confirmation_label_->hide();
 
+        error_server_label_ = new QLabel(this);
+        error_server_label_->setWordWrap(true);
+        error_server_label_->hide();
+
         form_layout_->addWidget(username_input_, Qt::AlignHCenter);
         form_layout_->addWidget(error_username_label_, Qt::AlignHCenter);
         form_layout_->addWidget(password_input_, Qt::AlignHCenter);
@@ -115,6 +119,7 @@ RegisterPage::RegisterPage(QWidget *parent)
         form_layout_->addWidget(password_confirmation_, Qt::AlignHCenter);
         form_layout_->addWidget(error_password_confirmation_label_, Qt::AlignHCenter);
         form_layout_->addWidget(server_input_, Qt::AlignHCenter);
+        form_layout_->addWidget(error_server_label_, Qt::AlignHCenter);
 
         button_layout_ = new QHBoxLayout();
         button_layout_->setSpacing(0);
@@ -351,10 +356,12 @@ RegisterPage::checkFields()
         error_username_label_->setText("");
         error_password_label_->setText("");
         error_password_confirmation_label_->setText("");
+        error_server_label_->setText("");
 
         error_username_label_->hide();
         error_password_label_->hide();
         error_password_confirmation_label_->hide();
+        error_server_label_->hide();
 
         password_confirmation_->setValid(true);
         server_input_->setValid(true);
@@ -379,7 +386,8 @@ RegisterPage::checkFields()
                 all_fields_good = false;
         } else if (server_input_->isModified() &&
                    (!server_input_->hasAcceptableInput() || server_input_->text().isEmpty())) {
-                showError(tr("Invalid server name"));
+                error_server_label_->show();
+                showError(error_server_label_, tr("Invalid server name"));
                 server_input_->setValid(false);
                 all_fields_good = false;
         }
