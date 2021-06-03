@@ -6,23 +6,23 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+106"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ligando...</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectando...</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation type="unfinished"></translation>
+        <translation>Você está compartilhando sua tela</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Esconder/Mostrar Picture-in-Picture</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -45,12 +45,12 @@
     <message>
         <location line="+12"/>
         <source>Waiting for other side to complete verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>Esperando o outro lado completar a verificação.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -58,7 +58,7 @@
     <message>
         <location filename="../../src/Cache.cpp" line="+2016"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Você entrou nessa sala.</translation>
     </message>
 </context>
 <context>
@@ -66,17 +66,17 @@
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+70"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Chamada de Vídeo</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Chamada de Voz</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenhum microfone encontrado.</translation>
     </message>
 </context>
 <context>
@@ -84,42 +84,42 @@
     <message>
         <location filename="../qml/voip/CallInviteBar.qml" line="+64"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Chamada de Vídeo</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Chamada de Voz</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Dispositivos</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Aceitar</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Unknown microphone: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Microfone desconhecido: %1</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Unknown camera: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Câmera desconhecida: %1</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Rejeitar</translation>
     </message>
     <message>
         <location line="-28"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenhum microfone encontrado.</translation>
     </message>
 </context>
 <context>
@@ -127,7 +127,7 @@
     <message>
         <location filename="../../src/CallManager.cpp" line="+521"/>
         <source>Entire screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Tela Inteira</translation>
     </message>
 </context>
 <context>
@@ -135,13 +135,13 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+204"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao convidar usuário: %1</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+809"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuário convidado: %1</translation>
     </message>
     <message>
         <location line="-509"/>
@@ -151,7 +151,7 @@
     <message>
         <location line="+412"/>
         <source>Confirm join</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar entrada</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -161,13 +161,13 @@
     <message>
         <location line="+44"/>
         <source>Room %1 created.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sala %1 criada.</translation>
     </message>
     <message>
         <location line="+35"/>
         <location line="+324"/>
         <source>Confirm invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar convite</translation>
     </message>
     <message>
         <location line="-323"/>
@@ -177,12 +177,12 @@
     <message>
         <location line="+11"/>
         <source>Failed to invite %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao convidar %1 para %2: %3</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Confirm kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar expulsão</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -192,12 +192,12 @@
     <message>
         <location line="+16"/>
         <source>Kicked user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuário expulso: %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Confirm ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar banimento</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -207,17 +207,17 @@
     <message>
         <location line="+11"/>
         <source>Failed to ban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao banir %1 em %2: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Banned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuário banido: %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Confirm unban</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar desbanimento</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -227,12 +227,12 @@
     <message>
         <location line="+11"/>
         <source>Failed to unban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao desbanir %1 em %2: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unbanned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuário desbanido: %1</translation>
     </message>
     <message>
         <location line="+227"/>
@@ -242,7 +242,7 @@
     <message>
         <location line="-818"/>
         <source>Cache migration failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Migração do cache falhou!</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -257,12 +257,12 @@
     <message>
         <location line="+50"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao restaurar conta OLM. Por favor faça login novamente.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao restaurar dados salvos. Por favor faça login novamente.</translation>
     </message>
     <message>
         <location line="+145"/>
