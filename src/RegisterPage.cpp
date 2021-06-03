@@ -11,6 +11,7 @@
 #include <QtMath>
 
 #include <mtx/responses/register.hpp>
+#include <mtx/responses/well-known.hpp>
 
 #include "Config.h"
 #include "Logging.h"
@@ -144,6 +145,17 @@ RegisterPage::RegisterPage(QWidget *parent)
         top_layout_->addLayout(button_layout_);
         top_layout_->addWidget(error_label_, 0, Qt::AlignHCenter);
         top_layout_->addStretch(1);
+
+        connect(
+          this,
+          &RegisterPage::versionErrorCb,
+          this,
+          [this](const QString &msg) {
+                  error_server_label_->show();
+                  server_input_->setValid(false);
+                  showError(error_server_label_, msg);
+          },
+          Qt::QueuedConnection);
 
         connect(back_button_, SIGNAL(clicked()), this, SLOT(onBackButtonClicked()));
         connect(register_button_, SIGNAL(clicked()), this, SLOT(onRegisterButtonClicked()));
@@ -414,49 +426,111 @@ RegisterPage::onRegisterButtonClicked()
                 http::client()->set_server(server);
                 http::client()->verify_certificates(
                   !UserSettings::instance()->disableCertificateValidation());
-                http::client()->registration(
-                  username,
-                  password,
-                  [this, username, password](const mtx::responses::Register &res,
+
+                http::client()->well_known(
+                  [this, username, password](const mtx::responses::WellKnown &res,
                                              mtx::http::RequestErr err) {
-                          if (!err) {
-                                  http::client()->set_user(res.user_id);
-                                  http::client()->set_access_token(res.access_token);
+                          if (err) {
+                                  using namespace boost::beast::http;
 
-                                  emit registerOk();
-                                  return;
-                          }
-
-                          // The server requires registration flows.
-                          if (err->status_code == boost::beast::http::status::unauthorized) {
-                                  if (err->matrix_error.unauthorized.flows.empty()) {
-                                          nhlog::net()->warn(
-                                            "failed to retrieve registration flows1: ({}) "
-                                            "{}",
-                                            static_cast<int>(err->status_code),
-                                            err->matrix_error.error);
-                                          emit errorOccurred();
-                                          emit registerErrorCb(
-                                            QString::fromStdString(err->matrix_error.error));
+                                  if (err->status_code == status::not_found) {
+                                          nhlog::net()->info("Autodiscovery: No .well-known.");
+                                          checkVersionAndRegister(username, password);
                                           return;
                                   }
 
-                                  emit registrationFlow(
-                                    username, password, err->matrix_error.unauthorized);
+                                  if (!err->parse_error.empty()) {
+                                          emit versionErrorCb(tr(
+                                            "Autodiscovery failed. Received malformed response."));
+                                          nhlog::net()->error(
+                                            "Autodiscovery failed. Received malformed response.");
+                                          return;
+                                  }
+
+                                  emit versionErrorCb(tr("Autodiscovery failed. Unknown error when "
+                                                         "requesting .well-known."));
+                                  nhlog::net()->error("Autodiscovery failed. Unknown error when "
+                                                      "requesting .well-known. {}",
+                                                      err->error_code.message());
                                   return;
                           }
 
-                          nhlog::net()->error(
-                            "failed to register: status_code ({}), matrix_error({})",
-                            static_cast<int>(err->status_code),
-                            err->matrix_error.error);
-
-                          emit registerErrorCb(QString::fromStdString(err->matrix_error.error));
-                          emit errorOccurred();
+                          nhlog::net()->info("Autodiscovery: Discovered '" +
+                                             res.homeserver.base_url + "'");
+                          http::client()->set_server(res.homeserver.base_url);
+                          checkVersionAndRegister(username, password);
                   });
 
                 emit registering();
         }
+}
+
+void
+RegisterPage::checkVersionAndRegister(const std::string &username, const std::string &password)
+{
+        http::client()->versions(
+          [this, username, password](const mtx::responses::Versions &, mtx::http::RequestErr err) {
+                  if (err) {
+                          using namespace boost::beast::http;
+
+                          if (err->status_code == status::not_found) {
+                                  emit versionErrorCb(tr("The required endpoints were not found. "
+                                                         "Possibly not a Matrix server."));
+                                  return;
+                          }
+
+                          if (!err->parse_error.empty()) {
+                                  emit versionErrorCb(tr("Received malformed response. Make sure "
+                                                         "the homeserver domain is valid."));
+                                  return;
+                          }
+
+                          emit versionErrorCb(tr(
+                            "An unknown error occured. Make sure the homeserver domain is valid."));
+                          return;
+                  }
+
+                  http::client()->registration(
+                    username,
+                    password,
+                    [this, username, password](const mtx::responses::Register &res,
+                                               mtx::http::RequestErr err) {
+                            if (!err) {
+                                    http::client()->set_user(res.user_id);
+                                    http::client()->set_access_token(res.access_token);
+
+                                    emit registerOk();
+                                    return;
+                            }
+
+                            // The server requires registration flows.
+                            if (err->status_code == boost::beast::http::status::unauthorized) {
+                                    if (err->matrix_error.unauthorized.flows.empty()) {
+                                            nhlog::net()->warn(
+                                              "failed to retrieve registration flows1: ({}) "
+                                              "{}",
+                                              static_cast<int>(err->status_code),
+                                              err->matrix_error.error);
+                                            emit errorOccurred();
+                                            emit registerErrorCb(
+                                              QString::fromStdString(err->matrix_error.error));
+                                            return;
+                                    }
+
+                                    emit registrationFlow(
+                                      username, password, err->matrix_error.unauthorized);
+                                    return;
+                            }
+
+                            nhlog::net()->error(
+                              "failed to register: status_code ({}), matrix_error({})",
+                              static_cast<int>(err->status_code),
+                              err->matrix_error.error);
+
+                            emit registerErrorCb(QString::fromStdString(err->matrix_error.error));
+                            emit errorOccurred();
+                    });
+          });
 }
 
 void
