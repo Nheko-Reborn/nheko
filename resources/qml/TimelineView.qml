@@ -14,7 +14,6 @@ import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
-import im.nheko.RoomDirectoryModel 1.0
 
 Item {
     id: timelineView

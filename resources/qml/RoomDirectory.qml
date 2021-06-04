@@ -20,33 +20,101 @@ ApplicationWindow {
     color: colors.window
     modality: Qt.WindowModal
     flags: Qt.Dialog
-
-    Component {
-        id: roomDirDelegate
-
-        Column {
-            width: parent.width
-            height: roomDirView.view.height
-            Text {
-                Component.onCompleted: console.log(model.name)
-                text: model.name
-            }
-            Text {
-                text: 'Repeated: ' + model.name
-            }
-        }
-        
-    }
+    title: qsTr("Explore Public Rooms")
 
     ListView {
         id: roomDirView
         anchors.left: parent.left
         anchors.right: parent.right
         height: parent.height
-        // model: DummyModel {}
         model: RoomDirectoryModel {}
-        delegate: roomDirDelegate
-    }   
+        delegate: Rectangle {
+            id: roomDirDelegate
+
+            property color background: Nheko.colors.window
+            property color importantText: Nheko.colors.text
+            property color unimportantText: Nheko.colors.buttonText
+            property color bubbleBackground: Nheko.colors.highlight
+            property color bubbleText: Nheko.colors.highlightedText
+            property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.5)
+
+            color: background
+            
+            width: parent.width
+            height: parent.height
+
+            ColumnLayout {
+                Avatar {
+                    id: avatar
+
+                    // Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredWidth: avatarSize
+                    Layout.preferredHeight: avatarSize
+                    url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                    displayName: model.name
+                }
+            }
+
+            RowLayout {
+
+                spacing: Nheko.paddingMedium
+                anchors.fill: parent
+                anchors.margins: Nheko.paddingMedium
+
+                Avatar {
+                    id: avatar
+
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredWidth: avatarSize
+                    Layout.preferredHeight: avatarSize
+                    url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                    displayName: model.name
+                }
+
+                // ColumnLayout {
+                //     id: descriptionLines
+
+                //     Layout.alignment: Qt.AlignLeft
+                //     Layout.fillWidth: true
+                //     Layout.minimumWidth: 100
+                //     width: parent.width - avatar.width
+                //     Layout.preferredWidth: parent.width - avatar.width
+                //     spacing: Nheko.paddingSmall
+
+                //     RowLayout {
+                //         Layout.fillWidth: true
+                //         spacing: 0
+
+                //         ElidedLabel {
+                //             Layout.alignment: Qt.AlignBottom
+                //             color: roomDirDelegate.importantText
+                //             elideWidth: descriptionLines.width - Nheko.paddingMedium
+                //             fullText: model.name
+                //         }
+
+                //         Item {
+                //             Layout.fillWidth: true
+                //         }
+                //     }
+
+                //     RowLayout {
+                //         Layout.fillWidth: true
+                //         spacing: 0
+
+                //         Label {
+                //             Layout.alignment: Qt.AlignBottom
+                //             color: roomDirDelegate.unimportantText
+                //             contentWidth: parent.width * 0.4
+                //             contentHeight: parent.height
+                //             elide: Text.ElideRight
+                //             text: model.topic
+                //         }
+                //     }
+
+                // }
+            }
+        }
+    }  
 
     // function joinRoom(index) {
     //     // body...
