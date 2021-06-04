@@ -32,7 +32,7 @@
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation>Silentigi Mikrofonon</translation>
+        <translation>Silentigi mikrofonon</translation>
     </message>
 </context>
 <context>
@@ -66,12 +66,12 @@
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+70"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Vidvoko</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Voĉvoko</translation>
     </message>
     <message>
         <location line="+62"/>
@@ -84,22 +84,22 @@
     <message>
         <location filename="../qml/voip/CallInviteBar.qml" line="+64"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Vidvoko</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Voĉvoko</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Aparatoj</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Akcepti</translation>
     </message>
     <message>
         <location line="+12"/>
