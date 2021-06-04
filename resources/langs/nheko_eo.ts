@@ -6,7 +6,7 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+106"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>Vokante…</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -17,7 +17,7 @@
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation type="unfinished"></translation>
+        <translation>Vi vidigas vian ekranon</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -27,7 +27,7 @@
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsilentigi Mikrofonon</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -426,7 +426,7 @@
     <message>
         <location filename="../qml/emoji/EmojiPicker.qml" line="+59"/>
         <source>Search</source>
-        <translation>Trovu</translation>
+        <translation>Serĉu</translation>
     </message>
     <message>
         <location line="+172"/>
@@ -667,7 +667,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
         <translatorcomment>Wow, I had to use dictionaries a lot to get this, so there may be a number of mistakes :P</translatorcomment>
-        <translation>Nomo por ĉi tiu aparato, montrot al aliaj, kiam kontrolant viajn aparatojn. Se neniom provizitis, defaŭlto uzit.</translation>
+        <translation>Nomo por ĉi tiu aparato, montrota al aliuloj, kiam oni kontrolos viajn aparatojn. Se vi neniun donos, uziĝos nomo implicita.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -854,7 +854,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <message>
         <location line="+16"/>
         <source>Send</source>
-        <translation>Sendu</translation>
+        <translation>Sendi</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -1141,7 +1141,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <message>
         <location filename="../../src/RoomInfoListItem.cpp" line="+89"/>
         <source>Leave room</source>
-        <translation>Eliru ĉambro</translation>
+        <translation>Eliri el ĉambro</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1176,7 +1176,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
         <location line="+39"/>
         <source>New tag...</source>
         <comment>Add a new tag to the room</comment>
-        <translation>Nova etikedo...</translation>
+        <translation>Nova etikedo…</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1392,22 +1392,22 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <message>
         <location filename="../../src/SideBarActions.cpp" line="+44"/>
         <source>User settings</source>
-        <translation>Uzanta agordoj</translation>
+        <translation>Agordoj de uzanto</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Create new room</source>
-        <translation>Faru novan ĉambron</translation>
+        <translation>Fari novan ĉambron</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Join a room</source>
-        <translation>Aliĝu ĉambron</translation>
+        <translation>Aliĝi ĉambron</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Start a new chat</source>
-        <translation>Komencu novan babilon</translation>
+        <translation>Komenci novan babilon</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1437,7 +1437,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
         <location line="+2"/>
         <source>Read</source>
         <translatorcomment>Could this simply be &quot;lega&quot;?</translatorcomment>
-        <translation>Estas lega</translation>
+        <translation>Estas legita</translation>
     </message>
 </context>
 <context>
@@ -1549,13 +1549,13 @@ Ekzemplo: https://servisto.mia:8787</translation>
         <location line="+33"/>
         <source>%1 was invited.</source>
         <translatorcomment>%1 estis invitata.</translatorcomment>
-        <translation></translation>
+        <translation>%1 estis invitita.</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>%1 changed their avatar.</source>
         <translatorcomment>%1 ŝanĝis sian avataron.</translatorcomment>
-        <translation></translation>
+        <translation>%1 ŝanĝis sian profilbildon.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1580,7 +1580,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <message>
         <location line="+3"/>
         <source>%1 left the room.</source>
-        <translation>%1 eliris la ĉambro.</translation>
+        <translation>%1 eliris el la ĉambro.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1626,7 +1626,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
         <location line="+2"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation>%1 eliris post ili jam eliris!</translation>
+        <translation>%1 eliris jam elirinte!</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1662,12 +1662,12 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <message>
         <location line="+8"/>
         <source>React</source>
-        <translation>Reagu</translation>
+        <translation>Reagi</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Reply</source>
-        <translation>Respondu</translation>
+        <translation>Respondi</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1764,7 +1764,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation>Eliru ĉambro</translation>
+        <translation>Eliri el ĉambro</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1777,7 +1777,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <message>
         <location filename="../../src/TrayIcon.cpp" line="+112"/>
         <source>Show</source>
-        <translation>Montru</translation>
+        <translation>Montri</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2412,7 +2412,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/CreateRoom.cpp" line="+40"/>
         <source>Create room</source>
-        <translation>Faru ĉambron</translation>
+        <translation>Fari ĉambron</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2491,7 +2491,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/JoinRoom.cpp" line="+34"/>
         <source>Join</source>
-        <translation>Aliĝu</translation>
+        <translation>Aliĝi</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2639,12 +2639,12 @@ Media size: %2
     <message>
         <location line="+5"/>
         <source>You sent a sticker</source>
-        <translation>Vi sendis pegatinan</translation>
+        <translation>Vi sendis glumarkon</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a sticker</source>
-        <translation>%1 sendis pegatinan</translation>
+        <translation>%1 sendis glumarkon</translation>
     </message>
     <message>
         <location line="+5"/>
