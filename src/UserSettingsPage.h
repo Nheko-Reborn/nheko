@@ -39,6 +39,8 @@ class UserSettings : public QObject
         Q_PROPERTY(bool startInTray READ startInTray WRITE setStartInTray NOTIFY startInTrayChanged)
         Q_PROPERTY(bool groupView READ groupView WRITE setGroupView NOTIFY groupViewStateChanged)
         Q_PROPERTY(bool markdown READ markdown WRITE setMarkdown NOTIFY markdownChanged)
+        Q_PROPERTY(bool quickReactions READ quickReactions WRITE setQuickReactions NOTIFY
+                     quickReactionsChanged)
         Q_PROPERTY(bool typingNotifications READ typingNotifications WRITE setTypingNotifications
                      NOTIFY typingNotificationsChanged)
         Q_PROPERTY(bool sortByImportance READ sortByImportance WRITE setSortByImportance NOTIFY
@@ -124,6 +126,7 @@ public:
         void setEmojiFontFamily(QString family);
         void setGroupView(bool state);
         void setMarkdown(bool state);
+        void setQuickReactions(bool state);
         void setReadReceipts(bool state);
         void setTypingNotifications(bool state);
         void setSortByImportance(bool state);
@@ -166,6 +169,7 @@ public:
         bool privacyScreen() const { return privacyScreen_; }
         int privacyScreenTimeout() const { return privacyScreenTimeout_; }
         bool markdown() const { return markdown_; }
+        bool quickReactions() const { return quickReactions_; }
         bool typingNotifications() const { return typingNotifications_; }
         bool sortByImportance() const { return sortByImportance_; }
         bool buttonsInTimeline() const { return buttonsInTimeline_; }
@@ -217,6 +221,7 @@ signals:
         void trayChanged(bool state);
         void startInTrayChanged(bool state);
         void markdownChanged(bool state);
+        void quickReactionsChanged(bool state);
         void typingNotificationsChanged(bool state);
         void buttonInTimelineChanged(bool state);
         void readReceiptsChanged(bool state);
@@ -263,6 +268,7 @@ private:
         bool startInTray_;
         bool groupView_;
         bool markdown_;
+        bool quickReactions_;
         bool typingNotifications_;
         bool sortByImportance_;
         bool buttonsInTimeline_;
@@ -352,6 +358,7 @@ private:
         Toggle *sortByImportance_;
         Toggle *readReceipts_;
         Toggle *markdown_;
+        Toggle *quickReactions_;
         Toggle *desktopNotifications_;
         Toggle *alertOnNotification_;
         Toggle *avatarCircles_;
