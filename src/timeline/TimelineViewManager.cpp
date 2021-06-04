@@ -36,6 +36,7 @@
 
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
+Q_DECLARE_METATYPE(std::vector<mtx::responses::PublicRoomsChunk>)
 
 namespace msgs = mtx::events::msg;
 
@@ -158,6 +159,8 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         qRegisterMetaType<mtx::events::msg::KeyVerificationReady>();
         qRegisterMetaType<mtx::events::msg::KeyVerificationRequest>();
         qRegisterMetaType<mtx::events::msg::KeyVerificationStart>();
+
+        qRegisterMetaType<std::vector<mtx::responses::PublicRoomsChunk>>();
 
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                          "im.nheko",

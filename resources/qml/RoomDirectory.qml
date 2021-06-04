@@ -28,11 +28,10 @@ ApplicationWindow {
             width: parent.width
             height: roomDirView.view.height
             Text {
-                Component.onCompleted: console.log(model.name)
-                text: model.name
+                text: model.name + '(' + model.roomid + ')' + ': ' + model.numMembers
             }
             Text {
-                text: 'Repeated: ' + model.name
+                text: model.topic
             }
         }
         
@@ -43,7 +42,6 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.right: parent.right
         height: parent.height
-        // model: DummyModel {}
         model: RoomDirectoryModel {}
         delegate: roomDirDelegate
     }   
