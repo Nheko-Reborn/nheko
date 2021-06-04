@@ -9,7 +9,24 @@ MatrixText {
     property string formatted: model.data.formattedBody
     property string copyText: selectedText ? getText(selectionStart, selectionEnd) : model.data.body
 
-    text: "<style type=\"text/css\">a { color:" + Nheko.colors.link + ";}\ncode { background-color: " + Nheko.colors.alternateBase + ";}</style>" + formatted.replace("<pre>", "<pre style='white-space: pre-wrap; background-color: " + Nheko.colors.alternateBase + "'>").replace("<del>", "<s>").replace("</del>", "</s>").replace("<strike>", "<s>").replace("</strike>", "</s>")
+    // table border-collapse doesn't seem to work
+    text: "
+    <style type=\"text/css\">
+    a { color:" + Nheko.colors.link + ";}
+    code { background-color: " + Nheko.colors.alternateBase + ";}
+    table {
+        border-width: 1px;
+        border-collapse: collapse;
+        border-style: solid;
+    }
+    table th,
+    table td {
+        bgcolor: " + Nheko.colors.alternateBase + ";
+        border-collapse: collapse;
+        border: 1px solid " + Nheko.colors.text + ";
+    }
+    </style>
+    " + formatted.replace("<pre>", "<pre style='white-space: pre-wrap; background-color: " + Nheko.colors.alternateBase + "'>").replace("<del>", "<s>").replace("</del>", "</s>").replace("<strike>", "<s>").replace("</strike>", "</s>")
     width: parent ? parent.width : undefined
     height: isReply ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : undefined
     clip: isReply
