@@ -27,12 +27,12 @@
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation>Malsilentigi Mikrofonon</translation>
+        <translation>Malsilentigi mikrofonon</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Silentigi Mikrofonon</translation>
     </message>
 </context>
 <context>
