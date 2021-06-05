@@ -210,6 +210,7 @@ Popup {
                             text: model.roomName
                             font.pixelSize: popup.avatarHeight * 0.5
                             color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            textFormat: Text.RichText
                         }
 
                     }
@@ -236,11 +237,13 @@ Popup {
                         Label {
                             text: model.roomName
                             color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            textFormat: Text.RichText
                         }
 
                         Label {
                             text: "(" + model.roomAlias + ")"
                             color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
+                            textFormat: Text.RichText
                         }
 
                     }
