@@ -11,6 +11,9 @@ import QtQuick.Layouts 1.3
 import im.nheko 1.0
 
 Page {
+    //leftPadding: Nheko.paddingSmall
+    //rightPadding: Nheko.paddingSmall
+
     ListView {
         id: roomlist
 
@@ -145,6 +148,7 @@ Page {
             ]
 
             TapHandler {
+                margin: -2
                 acceptedButtons: Qt.RightButton
                 onSingleTapped: {
                     if (!TimelineManager.isInvite)
@@ -155,6 +159,7 @@ Page {
             }
 
             TapHandler {
+                margin: -2
                 onSingleTapped: Rooms.setCurrentRoom(model.roomId)
                 onLongPressed: {
                     if (!TimelineManager.isInvite)
@@ -164,6 +169,7 @@ Page {
             }
 
             HoverHandler {
+                margin: -2
                 id: hovered
             }
 
@@ -390,6 +396,7 @@ Page {
             }
 
             TapHandler {
+                margin: -2
                 acceptedButtons: Qt.LeftButton
                 onSingleTapped: userInfoPanel.openUserProfile()
                 onLongPressed: userInfoMenu.open()
@@ -397,6 +404,7 @@ Page {
             }
 
             TapHandler {
+                margin: -2
                 acceptedButtons: Qt.RightButton
                 onSingleTapped: userInfoMenu.open()
                 gesturePolicy: TapHandler.ReleaseWithinBounds

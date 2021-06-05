@@ -5,6 +5,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.3
+import "components"
 import im.nheko 1.0
 
 Rectangle {
@@ -12,34 +13,48 @@ Rectangle {
 
     color: Nheko.colors.window
 
-    SplitView {
+    AdaptiveLayout {
         anchors.fill: parent
+        singlePageMode: width < communityListC.maximumWidth + roomListC.maximumWidth + timlineViewC.minimumWidth
 
-        Rectangle {
-            SplitView.minimumWidth: Nheko.avatarSize + Nheko.paddingSmall * 2
-            SplitView.preferredWidth: Nheko.avatarSize + Nheko.paddingSmall * 2
-            SplitView.maximumWidth: Nheko.avatarSize + Nheko.paddingSmall * 2
-            color: Nheko.theme.sidebarBackground
+        AdaptiveLayoutElement {
+            id: communityListC
+
+            minimumWidth: Nheko.avatarSize * 2 + Nheko.paddingSmall * 2
+            collapsedWidth: Nheko.avatarSize + Nheko.paddingSmall * 2
+            preferredWidth: Nheko.avatarSize + Nheko.paddingSmall * 2
+            maximumWidth: Nheko.avatarSize * 7 + Nheko.paddingSmall * 2
+
+            Rectangle {
+                color: Nheko.theme.sidebarBackground
+            }
+
         }
 
-        RoomList {
-            //SplitView.maximumWidth: Nheko.avatarSize * 7 + Nheko.paddingSmall * 2
+        AdaptiveLayoutElement {
+            id: roomListC
 
-            SplitView.minimumWidth: Nheko.avatarSize * 5 + Nheko.paddingSmall * 2
-            SplitView.preferredWidth: Nheko.avatarSize * 5 + Nheko.paddingSmall * 2
+            minimumWidth: Nheko.avatarSize * 5 + Nheko.paddingSmall * 2
+            preferredWidth: Nheko.avatarSize * 5 + Nheko.paddingSmall * 2
+            maximumWidth: Nheko.avatarSize * 10 + Nheko.paddingSmall * 2
+            collapsedWidth: Nheko.avatarSize + Nheko.paddingSmall * 2
+
+            RoomList {
+            }
+
         }
 
-        TimelineView {
-            id: timeline
+        AdaptiveLayoutElement {
+            id: timlineViewC
 
-            room: Rooms.currentRoom
-            SplitView.fillWidth: true
-            SplitView.minimumWidth: 400
-        }
+            minimumWidth: 400
 
-        handle: Rectangle {
-            implicitWidth: 2
-            color: SplitHandle.pressed ? Nheko.colors.highlight : (SplitHandle.hovered ? Nheko.colors.light : Nheko.theme.separator)
+            TimelineView {
+                id: timeline
+
+                room: Rooms.currentRoom
+            }
+
         }
 
     }
