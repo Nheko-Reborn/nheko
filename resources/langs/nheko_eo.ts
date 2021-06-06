@@ -109,12 +109,12 @@
     <message>
         <location line="+8"/>
         <source>Unknown camera: %1</source>
-        <translation>Nekonata fotilo: %1</translation>
+        <translation>Nekonata filmilo: %1</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Rifuzi</translation>
     </message>
     <message>
         <location line="-28"/>
@@ -135,13 +135,13 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+204"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis inviti uzanton: %1</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+809"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Invitita uzanto: %1</translation>
     </message>
     <message>
         <location line="-509"/>
