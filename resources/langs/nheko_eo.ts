@@ -12,7 +12,7 @@
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Konektas...</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -141,7 +141,7 @@
         <location line="+4"/>
         <location line="+809"/>
         <source>Invited user: %1</source>
-        <translation>Invitita uzanto: %1</translation>
+        <translation type="unfinished">Invitita uzanto: %1</translation>
     </message>
     <message>
         <location line="-509"/>
@@ -156,7 +156,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to join %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉu vi certe volas aliĝi al %1?</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -274,12 +274,12 @@
         <location line="+34"/>
         <location line="+123"/>
         <source>Please try to login again: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Bonvolu provi resaluti: %1</translation>
     </message>
     <message>
         <location line="+51"/>
         <source>Failed to join room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis aliĝi al ĉambro: %1</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -289,17 +289,17 @@
     <message>
         <location line="+6"/>
         <source>Failed to remove invite: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis forigi inviton: %1</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Room creation failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis krei ĉambron: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to leave room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis eliri el ĉambro: %1</translation>
     </message>
     <message>
         <location line="+61"/>
@@ -312,7 +312,7 @@
     <message>
         <location filename="../../src/CommunitiesListItem.cpp" line="+30"/>
         <source>Hide rooms with this tag or from this community</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaŝi ĉambrojn kun ĉi tiu etikedo aŭ de ĉi tiu komunumo</translation>
     </message>
     <message>
         <location line="+153"/>
@@ -339,12 +339,12 @@
         <location line="+2"/>
         <location line="+2"/>
         <source> (tag)</source>
-        <translation type="unfinished"></translation>
+        <translation> (etikedo)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source> (community)</source>
-        <translation type="unfinished"></translation>
+        <translation> (komunumo)</translation>
     </message>
 </context>
 <context>
@@ -352,12 +352,12 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+228"/>
         <source>Decrypt secrets</source>
-        <translation type="unfinished"></translation>
+        <translation>Malĉifri sekretojn</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase to decrypt your secrets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Enigu vian rehavan ŝlosilon aŭ pasfrazon por malĉifri viajn sekretojn:</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -367,12 +367,12 @@
     <message>
         <location line="+17"/>
         <source>Decryption failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis malĉifrado</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Failed to decrypt secrets with the provided recovery key or passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis malĉifri sekretojn per la donitaj rehava ŝlosilo aŭ pasfrazo</translation>
     </message>
 </context>
 <context>
@@ -380,22 +380,22 @@
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+11"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrolkodo</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Bonvolu kontroli la sekvantajn ciferojn.  Vi devus vidi la samajn numerojn ambaŭflanke.  Se ili malsamas, bonvolu premi «Ili ne akordas!» por nuligi la kontrolon!</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ili ne akordas!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ili akordas!</translation>
     </message>
 </context>
 <context>
@@ -403,12 +403,12 @@
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+42"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Apliki</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuligi</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -418,7 +418,7 @@
     <message>
         <location line="+2"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Temo</translation>
     </message>
 </context>
 <context>
@@ -474,22 +474,22 @@
     <message>
         <location filename="../qml/device-verification/EmojiVerification.qml" line="+11"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrolkodo</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Bonvolu kontroli per la jenaj bildosignoj. Vi devus vidi la samajn bildosignojn ambaŭflanke. Se ili malsamas, bonvolu premi «Ili ne akordas!» por nuligi la kontrolon!</translation>
     </message>
     <message>
         <location line="+376"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ili ne akordas!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ili akordas!</translation>
     </message>
 </context>
 <context>
@@ -497,12 +497,12 @@
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+34"/>
         <source>This message is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉi tiu mesaĝo ne estas ĉifrita!</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Encrypted by a verified device</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉifrita de kontrolita aparato</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -512,7 +512,7 @@
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉifrita de nekontrolita aparato</translation>
     </message>
 </context>
 <context>
@@ -591,7 +591,7 @@
     <message>
         <location line="+18"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermi</translation>
     </message>
 </context>
 <context>
