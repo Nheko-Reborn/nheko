@@ -12,7 +12,7 @@
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation>Konektas...</translation>
+        <translation>Konektante…</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -50,7 +50,7 @@
     <message>
         <location line="+12"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuligi</translation>
     </message>
 </context>
 <context>
@@ -127,7 +127,7 @@
     <message>
         <location filename="../../src/CallManager.cpp" line="+521"/>
         <source>Entire screen</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tuta ekrano</translation>
     </message>
 </context>
 <context>
@@ -612,7 +612,7 @@
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Ĉiuj dosieroj (*)</translation>
+        <translation>Ĉiuj dosieroj (*)</translation>
     </message>
     <message>
         <location line="+418"/>
@@ -651,7 +651,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+25"/>
         <source>Password</source>
-        <translation type="unfinished">Pasvorto</translation>
+        <translation>Pasvorto</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1087,7 +1087,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <message>
         <location line="+30"/>
         <source>REGISTER</source>
-        <translation>REGISTRU</translation>
+        <translation>REGISTRIĜI</translation>
     </message>
     <message>
         <location line="+62"/>
@@ -1769,7 +1769,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished">Agordoj</translation>
+        <translation>Agordoj</translation>
     </message>
 </context>
 <context>
@@ -2302,7 +2302,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Ĉiuj dosieroj (*)</translation>
+        <translation>Ĉiuj dosieroj (*)</translation>
     </message>
     <message>
         <location line="+236"/>
