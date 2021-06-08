@@ -14,8 +14,11 @@ Rectangle {
     color: Nheko.colors.window
 
     AdaptiveLayout {
+        id: adaptiveView
+
         anchors.fill: parent
         singlePageMode: width < communityListC.maximumWidth + roomListC.maximumWidth + timlineViewC.minimumWidth
+        pageIndex: Rooms.currentRoom ? 2 : 1
 
         AdaptiveLayoutElement {
             id: communityListC
@@ -37,9 +40,12 @@ Rectangle {
             minimumWidth: Nheko.avatarSize * 5 + Nheko.paddingSmall * 2
             preferredWidth: Nheko.avatarSize * 5 + Nheko.paddingSmall * 2
             maximumWidth: Nheko.avatarSize * 10 + Nheko.paddingSmall * 2
-            collapsedWidth: Nheko.avatarSize + Nheko.paddingSmall * 2
+            collapsedWidth: roomlist.avatarSize + 2 * Nheko.paddingMedium
 
             RoomList {
+                id: roomlist
+
+                collapsed: parent.collapsed
             }
 
         }
@@ -52,6 +58,7 @@ Rectangle {
             TimelineView {
                 id: timeline
 
+                showBackButton: adaptiveView.singlePageMode
                 room: Rooms.currentRoom
             }
 

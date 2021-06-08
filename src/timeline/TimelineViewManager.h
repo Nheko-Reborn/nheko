@@ -38,8 +38,6 @@ class TimelineViewManager : public QObject
         Q_PROPERTY(
           bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
         Q_PROPERTY(
-          bool isNarrowView MEMBER isNarrowView_ READ isNarrowView NOTIFY narrowViewChanged)
-        Q_PROPERTY(
           bool isWindowFocused MEMBER isWindowFocused_ READ isWindowFocused NOTIFY focusChanged)
 
 public:
@@ -54,7 +52,6 @@ public:
         void clearAll() { rooms_->clear(); }
 
         Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
-        bool isNarrowView() const { return isNarrowView_; }
         bool isWindowFocused() const { return isWindowFocused_; }
         Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId);
         Q_INVOKABLE QColor userColor(QString id, QColor background);
@@ -74,16 +71,12 @@ public:
         void verifyDevice(QString userid, QString deviceid);
 
 signals:
-        void clearRoomMessageCount(QString roomid);
-        void updateRoomsLastMessage(QString roomid, const DescInfo &info);
         void activeTimelineChanged(TimelineModel *timeline);
         void initialSyncChanged(bool isInitialSync);
         void replyingEventChanged(QString replyingEvent);
         void replyClosed();
         void newDeviceVerificationRequest(DeviceVerificationFlow *flow);
         void inviteUsers(QStringList users);
-        void showRoomList();
-        void narrowViewChanged();
         void focusChanged();
         void focusInput();
         void openImageOverlayInternalCb(QString eventId, QImage img);
@@ -113,22 +106,6 @@ public slots:
 
         void setVideoCallItem();
 
-        void enableBackButton()
-        {
-                if (isNarrowView_)
-                        return;
-                isNarrowView_ = true;
-                emit narrowViewChanged();
-        }
-        void disableBackButton()
-        {
-                if (!isNarrowView_)
-                        return;
-                isNarrowView_ = false;
-                emit narrowViewChanged();
-        }
-
-        void backToRooms() { emit showRoomList(); }
         QObject *completerFor(QString completerName, QString roomId = "");
         void forwardMessageToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 
@@ -152,7 +129,6 @@ private:
         CallManager *callManager_ = nullptr;
 
         bool isInitialSync_   = true;
-        bool isNarrowView_    = false;
         bool isWindowFocused_ = false;
 
         RoomlistModel *rooms_ = nullptr;

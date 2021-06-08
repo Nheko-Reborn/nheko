@@ -891,7 +891,6 @@ TimelineModel::updateLastMessage()
                                    time};
                         if (description != lastMessage_) {
                                 lastMessage_ = description;
-                                emit manager_->updateRoomsLastMessage(room_id_, lastMessage_);
                                 emit lastMessageChanged();
                         }
                         return;
@@ -906,7 +905,6 @@ TimelineModel::updateLastMessage()
                                      QString::fromStdString(mtx::accessors::sender(*event))));
                 if (description != lastMessage_) {
                         lastMessage_ = description;
-                        emit manager_->updateRoomsLastMessage(room_id_, description);
                         emit lastMessageChanged();
                 }
                 return;

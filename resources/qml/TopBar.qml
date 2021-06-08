@@ -11,6 +11,8 @@ import im.nheko 1.0
 Rectangle {
     id: topBar
 
+    property bool showBackButton: false
+
     Layout.fillWidth: true
     implicitHeight: topLayout.height + Nheko.paddingMedium * 2
     z: 3
@@ -43,11 +45,11 @@ Rectangle {
             Layout.alignment: Qt.AlignVCenter
             width: Nheko.avatarSize
             height: Nheko.avatarSize
-            visible: TimelineManager.isNarrowView
+            visible: showBackButton
             image: ":/icons/icons/ui/angle-pointing-to-left.png"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Back to room list")
-            onClicked: TimelineManager.backToRooms()
+            onClicked: Rooms.resetCurrentRoom()
         }
 
         Avatar {

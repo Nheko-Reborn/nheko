@@ -21,7 +21,8 @@ class TimelineViewManager;
 class RoomlistModel : public QAbstractListModel
 {
         Q_OBJECT
-        Q_PROPERTY(TimelineModel *currentRoom READ currentRoom NOTIFY currentRoomChanged)
+        Q_PROPERTY(TimelineModel *currentRoom READ currentRoom NOTIFY currentRoomChanged RESET
+                     resetCurrentRoom)
 public:
         enum Roles
         {
@@ -73,6 +74,11 @@ public slots:
         void leave(QString roomid);
         TimelineModel *currentRoom() const { return currentRoom_.get(); }
         void setCurrentRoom(QString roomid);
+        void resetCurrentRoom()
+        {
+                currentRoom_ = nullptr;
+                emit currentRoomChanged();
+        }
 
 private slots:
         void updateReadStatus(const std::map<QString, bool> roomReadStatus_);
@@ -98,7 +104,8 @@ private:
 class FilteredRoomlistModel : public QSortFilterProxyModel
 {
         Q_OBJECT
-        Q_PROPERTY(TimelineModel *currentRoom READ currentRoom NOTIFY currentRoomChanged)
+        Q_PROPERTY(TimelineModel *currentRoom READ currentRoom NOTIFY currentRoomChanged RESET
+                     resetCurrentRoom)
 public:
         FilteredRoomlistModel(RoomlistModel *model, QObject *parent = nullptr);
         bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
@@ -117,6 +124,7 @@ public slots:
 
         TimelineModel *currentRoom() const { return roomlistmodel->currentRoom(); }
         void setCurrentRoom(QString roomid) { roomlistmodel->setCurrentRoom(std::move(roomid)); }
+        void resetCurrentRoom() { roomlistmodel->resetCurrentRoom(); }
 
         void nextRoom();
         void previousRoom();

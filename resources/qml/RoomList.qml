@@ -13,6 +13,8 @@ import im.nheko 1.0
 Page {
     //leftPadding: Nheko.paddingSmall
     //rightPadding: Nheko.paddingSmall
+    property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.3)
+    property bool collapsed: false
 
     ListView {
         id: roomlist
@@ -113,9 +115,11 @@ Page {
             property color bubbleText: Nheko.colors.highlightedText
 
             color: background
-            height: Math.ceil(fontMetrics.lineSpacing * 2.3 + Nheko.paddingMedium * 2)
+            height: avatarSize + 2 * Nheko.paddingMedium
             width: ListView.view.width
             state: "normal"
+            ToolTip.visible: hovered.hovered && collapsed
+            ToolTip.text: model.roomName
             states: [
                 State {
                     name: "highlight"
@@ -148,7 +152,7 @@ Page {
             ]
 
             TapHandler {
-                margin: -2
+                margin: -Nheko.paddingSmall
                 acceptedButtons: Qt.RightButton
                 onSingleTapped: {
                     if (!TimelineManager.isInvite)
@@ -159,7 +163,7 @@ Page {
             }
 
             TapHandler {
-                margin: -2
+                margin: -Nheko.paddingSmall
                 onSingleTapped: Rooms.setCurrentRoom(model.roomId)
                 onLongPressed: {
                     if (!TimelineManager.isInvite)
@@ -169,8 +173,9 @@ Page {
             }
 
             HoverHandler {
-                margin: -2
                 id: hovered
+
+                margin: -Nheko.paddingSmall
             }
 
             RowLayout {
@@ -186,15 +191,46 @@ Page {
 
                     enabled: false
                     Layout.alignment: Qt.AlignVCenter
-                    height: Math.ceil(fontMetrics.lineSpacing * 2.3)
-                    width: Math.ceil(fontMetrics.lineSpacing * 2.3)
+                    height: avatarSize
+                    width: avatarSize
                     url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                     displayName: model.roomName
+
+                    Rectangle {
+                        id: collapsedNotificationBubble
+
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+                        anchors.margins: -Nheko.paddingSmall
+                        visible: collapsed && model.notificationCount > 0
+                        enabled: false
+                        Layout.alignment: Qt.AlignRight
+                        height: fontMetrics.averageCharacterWidth * 3
+                        width: height
+                        radius: height / 2
+                        color: model.hasLoudNotification ? Nheko.theme.red : roomItem.bubbleBackground
+
+                        Label {
+                            anchors.centerIn: parent
+                            width: parent.width * 0.8
+                            height: parent.height * 0.8
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            fontSizeMode: Text.Fit
+                            font.bold: true
+                            font.pixelSize: fontMetrics.font.pixelSize * 0.8
+                            color: model.hasLoudNotification ? "white" : roomItem.bubbleText
+                            text: model.notificationCount > 99 ? "99+" : model.notificationCount
+                        }
+
+                    }
+
                 }
 
                 ColumnLayout {
                     id: textContent
 
+                    visible: !collapsed
                     Layout.alignment: Qt.AlignLeft
                     Layout.fillWidth: true
                     Layout.minimumWidth: 100
@@ -396,7 +432,7 @@ Page {
             }
 
             TapHandler {
-                margin: -2
+                margin: -Nheko.paddingSmall
                 acceptedButtons: Qt.LeftButton
                 onSingleTapped: userInfoPanel.openUserProfile()
                 onLongPressed: userInfoMenu.open()
@@ -404,7 +440,7 @@ Page {
             }
 
             TapHandler {
-                margin: -2
+                margin: -Nheko.paddingSmall
                 acceptedButtons: Qt.RightButton
                 onSingleTapped: userInfoMenu.open()
                 gesturePolicy: TapHandler.ReleaseWithinBounds
@@ -431,6 +467,7 @@ Page {
                 ColumnLayout {
                     id: col
 
+                    visible: !collapsed
                     Layout.alignment: Qt.AlignLeft
                     Layout.fillWidth: true
                     width: parent.width - avatar.width - logoutButton.width - Nheko.paddingMedium * 2
@@ -462,6 +499,7 @@ Page {
                 ImageButton {
                     id: logoutButton
 
+                    visible: !collapsed
                     Layout.alignment: Qt.AlignVCenter
                     image: ":/icons/icons/ui/power-button-off.png"
                     ToolTip.visible: hovered
@@ -533,6 +571,7 @@ Page {
                 }
 
                 ImageButton {
+                    visible: !collapsed
                     Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
                     hoverEnabled: true
                     width: 22
@@ -544,6 +583,7 @@ Page {
                 }
 
                 ImageButton {
+                    visible: !collapsed
                     Layout.alignment: Qt.AlignBottom | Qt.AlignRight
                     hoverEnabled: true
                     width: 22

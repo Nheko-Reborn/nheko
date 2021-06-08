@@ -19,6 +19,7 @@ Item {
     id: timelineView
 
     property var room: null
+    property bool showBackButton: false
 
     Label {
         visible: !room && !TimelineManager.isInitialSync
@@ -45,6 +46,7 @@ Item {
         spacing: 0
 
         TopBar {
+            showBackButton: timelineView.showBackButton
         }
 
         Rectangle {
