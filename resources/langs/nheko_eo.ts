@@ -40,12 +40,12 @@
     <message>
         <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+11"/>
         <source>Awaiting Confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Atendante konfirmon</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Waiting for other side to complete verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>Atendante kontrolon vene de la alia flanko.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -151,7 +151,7 @@
     <message>
         <location line="+412"/>
         <source>Confirm join</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfirmu aliĝon</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -168,77 +168,77 @@
         <location line="+35"/>
         <location line="+324"/>
         <source>Confirm invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfirmu inviton</translation>
     </message>
     <message>
         <location line="-323"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉu vi certe volas inviti uzanton %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Failed to invite %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis inviti uzanton %1 al %2: %3</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Confirm kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfirmu forpelon</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to kick %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉu vi certe volas forpeli uzanton %1 (%2)?</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Kicked user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Forpelis uzanton: %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Confirm ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfirmu forbaron</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to ban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉu vi certe volas forbari uzanton %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Failed to ban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis forbari uzanton %1 en %2: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Banned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Forbaris uzanton: %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Confirm unban</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfirmu malforbaron</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to unban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉu vi certe volas malforbari uzanton %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Failed to unban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis malforbari uzanton %1 en %2: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unbanned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Malforbaris uzanton: %1</translation>
     </message>
     <message>
         <location line="+227"/>
         <source>Do you really want to start a private chat with %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉu vi certe volas komenci privatan babilon kun %1?</translation>
     </message>
     <message>
         <location line="-818"/>
@@ -304,7 +304,7 @@
     <message>
         <location line="+61"/>
         <source>Failed to kick %1 from %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis forpeli uzanton %1 de %2: %3</translation>
     </message>
 </context>
 <context>
@@ -565,28 +565,28 @@
     <message>
         <location filename="../qml/device-verification/Failed.qml" line="+11"/>
         <source>Verification failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis kontrolo</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Other client does not support our verification protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alia kliento ne subtenas nian kontrolan protokolon.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Key mismatch detected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Troviĝis malakordo de ŝlosiloj!</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+4"/>
         <source>Device verification timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Trafiĝis tempolimo de aparata kontrolo.</translation>
     </message>
     <message>
         <location line="-2"/>
         <source>Other party canceled the verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliulo nuligis la kontrolon.</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -625,7 +625,7 @@
     <message>
         <location filename="../../src/InviteeItem.cpp" line="+22"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Forigi</translation>
     </message>
 </context>
 <context>
@@ -633,12 +633,12 @@
     <message>
         <location filename="../../src/LoginPage.cpp" line="+81"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Identigilo de Matrikso</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>ekz. @tacuo:matrix.org</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -646,7 +646,9 @@
 You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished">Via ensaluta nomo.</translation>
+        <translation type="unfinished">Via saluta nomo. Identigilo de Matrikso devus komenciĝi per @ sekvata de la identigilo de uzanto. Post la identigilo, vi devas meti retnomon post :. Vi ankaŭ povas enmeti adreson de via hejmservilo, se via servilo ne subtenas bone-konatan trovmanieron.
+Ekzemplo: @uzanto:servilo.mia
+Se Nheko malsukcesas trovi vian hejmservilon, ĝi montros kampon por ĝia permana aldono.</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -656,7 +658,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>Your password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Via pasvorto.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -672,26 +674,26 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+4"/>
         <source>Homeserver address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adreso de hejmservilo</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>servilo.mia:8787</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translatorcomment>API should be valid for the EO translation of application programming interface.</translatorcomment>
-        <translation>La adreso tiu uzeblas kontakti la klienta API de via hejmservisto.
-Ekzemplo: https://servisto.mia:8787</translation>
+        <translation>La adreso per kiu kontakteblas la klienta API de via hejmservilo.
+Ekzemplo: https://servilo.mia:8787</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>LOGIN</source>
         <translatorcomment>Maybe shouldn&apos;t be imperative?</translatorcomment>
-        <translation>ENSALUTU</translation>
+        <translation>SALUTI</translation>
     </message>
     <message>
         <location line="+84"/>
@@ -699,7 +701,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
         <location line="+160"/>
         <location line="+11"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>Vi enigis nevalidan identigilon de Matrikso  ekz. @tacuo:matrix.org</translation>
     </message>
     <message>
         <location line="-132"/>
@@ -729,7 +731,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <message>
         <location line="-171"/>
         <source>SSO LOGIN</source>
-        <translation>SSO ENSALUTU</translation>
+        <translation>UNUNURA SALUTO</translation>
     </message>
     <message>
         <location line="+267"/>
@@ -801,7 +803,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <message>
         <location line="+2"/>
         <source>%1 placed a video call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 metis vidvokon.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1051,7 +1053,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <message>
         <location filename="../../src/RegisterPage.cpp" line="+77"/>
         <source>Username</source>
-        <translation>Uzantnomo</translation>
+        <translation>Uzantonomo</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1479,7 +1481,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <message>
         <location line="+2"/>
         <source>Save video</source>
-        <translation type="unfinished"></translation>
+        <translation>Konservi filmon</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1790,7 +1792,7 @@ Ekzemplo: https://servisto.mia:8787</translation>
     <message>
         <location filename="../../src/UserInfoWidget.cpp" line="+82"/>
         <source>Logout</source>
-        <translation>Elsalutu</translation>
+        <translation>Adiaŭi</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -2381,7 +2383,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <location filename="../../src/WelcomePage.cpp" line="+34"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
         <translatorcomment>Should &quot;Matrico&quot; be &quot;Matrica&quot;? (I don&apos;t think so)</translatorcomment>
-        <translation>Bonvenon al nheko! La labortabla kliento por la Matrico protokolo.</translation>
+        <translation>Bonvenon al nheko! La labortabla kliento por la protokolo Matrikso.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2396,7 +2398,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+5"/>
         <source>LOGIN</source>
-        <translation>ENSALUTU</translation>
+        <translation>SALUTI</translation>
     </message>
 </context>
 <context>
@@ -2527,7 +2529,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+8"/>
         <source>Logout. Are you sure?</source>
-        <translation>Elsalutu. Ĉu vi certas?</translation>
+        <translation>Adiaŭi. Ĉu vi certas?</translation>
     </message>
 </context>
 <context>
@@ -2629,12 +2631,12 @@ Media size: %2
     <message>
         <location line="+5"/>
         <source>You sent a video</source>
-        <translation>Vi sendis videon</translation>
+        <translation>Vi sendis filmon</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a video</source>
-        <translation>%1 sendis videon</translation>
+        <translation>%1 sendis filmon</translation>
     </message>
     <message>
         <location line="+5"/>
