@@ -34,7 +34,7 @@ Item {
     Spinner {
         visible: TimelineManager.isInitialSync
         anchors.centerIn: parent
-        foreground: timelineRoot.colors.mid
+        foreground: Nheko.colors.mid
         running: TimelineManager.isInitialSync
         // height is somewhat arbitrary here... don't set width because width scales w/ height
         height: parent.height / 16

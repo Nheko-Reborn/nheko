@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "./device-verification"
+import "./ui"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
@@ -47,10 +48,11 @@ ApplicationWindow {
             onClicked: profile.isSelf ? profile.changeAvatar() : TimelineManager.openImageOverlay(profile.avatarUrl, "")
         }
 
-        BusyIndicator {
+        Spinner {
             Layout.alignment: Qt.AlignHCenter
             running: profile.isLoading
             visible: profile.isLoading
+            foreground: Nheko.colors.mid
         }
 
         Text {
