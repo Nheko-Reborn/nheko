@@ -21,6 +21,7 @@
 #include "LoginPage.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
+#include "MemberList.h"
 #include "RegisterPage.h"
 #include "TrayIcon.h"
 #include "UserSettingsPage.h"
@@ -36,7 +37,6 @@
 #include "dialogs/JoinRoom.h"
 #include "dialogs/LeaveRoom.h"
 #include "dialogs/Logout.h"
-#include "dialogs/MemberList.h"
 #include "dialogs/ReadReceipts.h"
 
 MainWindow *MainWindow::instance_ = nullptr;

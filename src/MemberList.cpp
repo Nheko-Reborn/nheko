@@ -12,7 +12,7 @@
 #include <QStyleOption>
 #include <QVBoxLayout>
 
-#include "dialogs/MemberList.h"
+#include "MemberList.h"
 
 #include "Cache.h"
 #include "ChatPage.h"
@@ -44,7 +44,6 @@ void
 MemberList::loadMoreMembers()
 {
         const size_t numMembers = m_model.rowCount() - 1;
-
         if (numMembers > 0)
                 addUsers(cache::getMembers(room_id_.toStdString(), numMembers));
 
@@ -59,8 +58,6 @@ MemberList::addUsers(const std::vector<RoomMember> &members)
                   {member,
                    ChatPage::instance()->timelineManager()->rooms()->currentRoom()->avatarUrl(
                      member.user_id)});
-
-        emit modelChanged();
 }
 
 QHash<int, QByteArray>

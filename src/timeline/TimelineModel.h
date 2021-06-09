@@ -17,8 +17,8 @@
 #include "CacheStructs.h"
 #include "EventStore.h"
 #include "InputBar.h"
+#include "MemberList.h"
 #include "Permissions.h"
-#include "dialogs/MemberList.h"
 #include "ui/RoomSettings.h"
 #include "ui/UserProfile.h"
 

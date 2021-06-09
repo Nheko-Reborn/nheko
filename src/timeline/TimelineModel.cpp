@@ -25,11 +25,11 @@
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
+#include "MemberList.h"
 #include "MxcImageProvider.h"
 #include "Olm.h"
 #include "TimelineViewManager.h"
 #include "Utils.h"
-#include "dialogs/MemberList.h"
 #include "dialogs/RawMessage.h"
 
 Q_DECLARE_METATYPE(QModelIndex)
