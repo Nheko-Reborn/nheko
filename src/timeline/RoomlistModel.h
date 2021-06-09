@@ -119,7 +119,6 @@ public slots:
         void acceptInvite(QString roomid) { roomlistmodel->acceptInvite(roomid); }
         void declineInvite(QString roomid) { roomlistmodel->declineInvite(roomid); }
         void leave(QString roomid) { roomlistmodel->leave(roomid); }
-        QStringList tags();
         void toggleTag(QString roomid, QString tag, bool on);
 
         TimelineModel *currentRoom() const { return roomlistmodel->currentRoom(); }

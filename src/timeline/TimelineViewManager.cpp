@@ -135,6 +135,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
   , blurhashProvider(new BlurhashProvider())
   , callManager_(callManager)
   , rooms_(new RoomlistModel(this))
+  , communities_(new CommunitiesModel(this))
 {
         qRegisterMetaType<mtx::events::msg::KeyVerificationAccept>();
         qRegisterMetaType<mtx::events::msg::KeyVerificationCancel>();
@@ -195,6 +196,12 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         qmlRegisterSingletonType<RoomlistModel>(
           "im.nheko", 1, 0, "Rooms", [](QQmlEngine *, QJSEngine *) -> QObject * {
                   return new FilteredRoomlistModel(self->rooms_);
+          });
+        qmlRegisterSingletonType<RoomlistModel>(
+          "im.nheko", 1, 0, "Communities", [](QQmlEngine *, QJSEngine *) -> QObject * {
+                  auto ptr = self->communities_;
+                  QQmlEngine::setObjectOwnership(ptr, QQmlEngine::CppOwnership);
+                  return ptr;
           });
         qmlRegisterSingletonType<UserSettings>(
           "im.nheko", 1, 0, "Settings", [](QQmlEngine *, QJSEngine *) -> QObject * {
@@ -324,6 +331,7 @@ void
 TimelineViewManager::sync(const mtx::responses::Rooms &rooms_res)
 {
         this->rooms_->sync(rooms_res);
+        this->communities_->sync(rooms_res);
 
         if (isInitialSync_) {
                 this->isInitialSync_ = false;
@@ -486,6 +494,7 @@ void
 TimelineViewManager::initializeRoomlist()
 {
         rooms_->initializeRooms();
+        communities_->initializeSidebar();
 }
 
 void

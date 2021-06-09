@@ -265,6 +265,7 @@ set(SRC_FILES
 
 
 	# Timeline
+	src/timeline/CommunitiesModel.cpp
 	src/timeline/EventStore.cpp
 	src/timeline/InputBar.cpp
 	src/timeline/Reaction.cpp
@@ -481,6 +482,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/emoji/Provider.h
 
 	# Timeline
+	src/timeline/CommunitiesModel.h
 	src/timeline/EventStore.h
 	src/timeline/InputBar.h
 	src/timeline/Reaction.h

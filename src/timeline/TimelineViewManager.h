@@ -22,6 +22,7 @@
 #include "WebRTCSession.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
+#include "timeline/CommunitiesModel.h"
 #include "timeline/RoomlistModel.h"
 
 class MxcImageProvider;
@@ -131,7 +132,8 @@ private:
         bool isInitialSync_   = true;
         bool isWindowFocused_ = false;
 
-        RoomlistModel *rooms_ = nullptr;
+        RoomlistModel *rooms_          = nullptr;
+        CommunitiesModel *communities_ = nullptr;
 
         QHash<QString, QColor> userColors;
 

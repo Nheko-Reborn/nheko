@@ -43,12 +43,10 @@ Page {
 
             property string roomid
             property var tags
-            property var allTags
 
             function show(roomid_, tags_) {
                 roomid = roomid_;
                 tags = tags_;
-                allTags = Rooms.tags();
                 open();
             }
 
@@ -72,7 +70,7 @@ Page {
             }
 
             Instantiator {
-                model: roomContextMenu.allTags
+                model: Communities.tags
                 onObjectAdded: roomContextMenu.insertItem(index + 2, object)
                 onObjectRemoved: roomContextMenu.removeItem(object)
 
@@ -92,7 +90,7 @@ Page {
                         }
                     }
                     checkable: true
-                    checked: roomContextMenu.tags.includes(t)
+                    checked: roomContextMenu.tags !== undefined && roomContextMenu.tags.includes(t)
                     onTriggered: Rooms.toggleTag(roomContextMenu.roomid, t, checked)
                 }
 

@@ -485,29 +485,6 @@ FilteredRoomlistModel::FilteredRoomlistModel(RoomlistModel *model, QObject *pare
         sort(0);
 }
 
-QStringList
-FilteredRoomlistModel::tags()
-{
-        std::set<std::string> ts;
-        for (const auto &e : cache::roomInfo()) {
-                for (const auto &t : e.tags) {
-                        if (t.find("u.") == 0) {
-                                ts.insert(t);
-                        }
-                }
-        }
-
-        QStringList ret{{
-          "m.favourite",
-          "m.lowpriority",
-        }};
-
-        for (const auto &t : ts)
-                ret.push_back(QString::fromStdString(t));
-
-        return ret;
-}
-
 void
 FilteredRoomlistModel::toggleTag(QString roomid, QString tag, bool on)
 {
