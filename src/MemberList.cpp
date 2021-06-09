@@ -46,18 +46,20 @@ MemberList::loadMoreMembers()
         const size_t numMembers = m_model.rowCount() - 1;
         if (numMembers > 0)
                 addUsers(cache::getMembers(room_id_.toStdString(), numMembers));
-
-        emit modelChanged();
 }
 
 void
 MemberList::addUsers(const std::vector<RoomMember> &members)
 {
+        m_model.beginInsertRows(QModelIndex{}, m_model.m_memberList.count(), m_model.m_memberList.count() + members.size());
+
         for (const auto &member : members)
                 m_model.m_memberList.push_back(
                   {member,
                    ChatPage::instance()->timelineManager()->rooms()->currentRoom()->avatarUrl(
                      member.user_id)});
+
+        m_model.endInsertRows();
 }
 
 QHash<int, QByteArray>
