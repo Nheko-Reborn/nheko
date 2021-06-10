@@ -59,18 +59,7 @@ ApplicationWindow {
                 clip: true
                 spacing: 8
                 boundsBehavior: Flickable.StopAtBounds
-                model: members.model
-                onAtYEndChanged: if (atYEnd && !loadMoreTimer.running) loadMoreTimer.start()
-
-                Timer {
-                    id: loadMoreTimer
-
-                    interval: 10
-                    running: false
-                    repeat: false
-
-                    onTriggered: members.loadMoreMembers()
-                }
+                model: members
 
                 ScrollHelper {
                     flickable: parent

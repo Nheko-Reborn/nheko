@@ -23,7 +23,7 @@
 #include "ui/Avatar.h"
 
 MemberList::MemberList(const QString &room_id, QWidget *parent)
-  : QObject{parent}
+  : QAbstractListModel{parent}
   , room_id_{room_id}
 {
         try {
@@ -41,35 +41,27 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
 }
 
 void
-MemberList::loadMoreMembers()
-{
-        const size_t numMembers = m_model.rowCount() - 1;
-        if (numMembers > 0 && numMembers < info_.member_count - 1)
-                addUsers(cache::getMembers(room_id_.toStdString(), numMembers));
-}
-
-void
 MemberList::addUsers(const std::vector<RoomMember> &members)
 {
-        m_model.beginInsertRows(QModelIndex{}, m_model.m_memberList.count(), m_model.m_memberList.count() + members.size() - 1);
+        beginInsertRows(QModelIndex{}, m_memberList.count(), m_memberList.count() + members.size() - 1);
 
         for (const auto &member : members)
-                m_model.m_memberList.push_back(
+                m_memberList.push_back(
                   {member,
                    ChatPage::instance()->timelineManager()->rooms()->currentRoom()->avatarUrl(
                      member.user_id)});
 
-        m_model.endInsertRows();
+        endInsertRows();
 }
 
 QHash<int, QByteArray>
-MemberListModel::roleNames() const
+MemberList::roleNames() const
 {
         return {{Mxid, "mxid"}, {DisplayName, "displayName"}, {AvatarUrl, "avatarUrl"}};
 }
 
 QVariant
-MemberListModel::data(const QModelIndex &index, int role) const
+MemberList::data(const QModelIndex &index, int role) const
 {
         if (!index.isValid() || index.row() >= (int)m_memberList.size() || index.row() < 0)
                 return {};
@@ -84,4 +76,16 @@ MemberListModel::data(const QModelIndex &index, int role) const
         default:
                 return {};
         }
+}
+
+bool MemberList::canFetchMore(const QModelIndex &) const
+{
+    const size_t numMembers = rowCount();
+    return (numMembers > 1 && numMembers < info_.member_count);
+}
+
+void
+MemberList::fetchMore(const QModelIndex &)
+{
+        addUsers(cache::getMembers(room_id_.toStdString(), rowCount()));
 }
