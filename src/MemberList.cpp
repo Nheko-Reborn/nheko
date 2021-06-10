@@ -44,7 +44,7 @@ void
 MemberList::loadMoreMembers()
 {
         const size_t numMembers = m_model.rowCount() - 1;
-        if (numMembers > 0)
+        if (numMembers > 0 && numMembers < info_.member_count - 1)
                 addUsers(cache::getMembers(room_id_.toStdString(), numMembers));
 }
 
