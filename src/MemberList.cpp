@@ -51,7 +51,7 @@ MemberList::loadMoreMembers()
 void
 MemberList::addUsers(const std::vector<RoomMember> &members)
 {
-        m_model.beginInsertRows(QModelIndex{}, m_model.m_memberList.count(), m_model.m_memberList.count() + members.size());
+        m_model.beginInsertRows(QModelIndex{}, m_model.m_memberList.count(), m_model.m_memberList.count() + members.size() - 1);
 
         for (const auto &member : members)
                 m_model.m_memberList.push_back(
