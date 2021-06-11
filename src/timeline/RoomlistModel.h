@@ -142,6 +142,8 @@ public slots:
                 invalidateFilter();
         }
 
+        void updateHiddenTagsAndSpaces();
+
 signals:
         void currentRoomChanged();
 
@@ -158,4 +160,5 @@ private:
         };
         QString filterStr   = "";
         FilterBy filterType = FilterBy::Nothing;
+        QStringList hiddenTags, hiddenSpaces;
 };

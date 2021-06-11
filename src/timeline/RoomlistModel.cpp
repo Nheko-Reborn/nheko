@@ -462,22 +462,6 @@ FilteredRoomlistModel::lessThan(const QModelIndex &left, const QModelIndex &righ
                 return left.row() < right.row();
 }
 
-bool
-FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) const
-{
-        if (filterType == FilterBy::Nothing)
-                return true;
-        else if (filterType == FilterBy::Tag) {
-                auto tags = sourceModel()
-                              ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
-                              .toStringList();
-
-                return tags.contains(filterStr);
-        } else {
-                return true;
-        }
-}
-
 FilteredRoomlistModel::FilteredRoomlistModel(RoomlistModel *model, QObject *parent)
   : QSortFilterProxyModel(parent)
   , roomlistmodel(model)
@@ -500,6 +484,55 @@ FilteredRoomlistModel::FilteredRoomlistModel(RoomlistModel *model, QObject *pare
                 &FilteredRoomlistModel::currentRoomChanged);
 
         sort(0);
+}
+
+void
+FilteredRoomlistModel::updateHiddenTagsAndSpaces()
+{
+        hiddenTags.clear();
+        hiddenSpaces.clear();
+        for (const auto &t : UserSettings::instance()->hiddenTags()) {
+                if (t.startsWith("tag:"))
+                        hiddenTags.push_back(t.mid(4));
+                else if (t.startsWith("space:"))
+                        hiddenSpaces.push_back(t.mid(6));
+        }
+
+        invalidateFilter();
+}
+
+bool
+FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) const
+{
+        if (filterType == FilterBy::Nothing) {
+                if (!hiddenTags.empty()) {
+                        auto tags =
+                          sourceModel()
+                            ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
+                            .toStringList();
+
+                        for (const auto &t : tags)
+                                if (hiddenTags.contains(t))
+                                        return false;
+                }
+
+                return true;
+        } else if (filterType == FilterBy::Tag) {
+                auto tags = sourceModel()
+                              ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
+                              .toStringList();
+
+                if (!tags.contains(filterStr))
+                        return false;
+                else if (!hiddenTags.empty()) {
+                        for (const auto &t : tags)
+                                if (t != filterStr && hiddenTags.contains(t))
+                                        return false;
+                }
+                return true;
+        } else {
+                return true;
+        }
 }
 
 void

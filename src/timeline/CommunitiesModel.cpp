@@ -21,6 +21,7 @@ CommunitiesModel::roleNames() const
           {DisplayName, "displayName"},
           {Tooltip, "tooltip"},
           {ChildrenHidden, "childrenHidden"},
+          {Hidden, "hidden"},
           {Id, "id"},
         };
 }
@@ -37,6 +38,8 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
                 case CommunitiesModel::Roles::Tooltip:
                         return tr("Shows all rooms without filtering.");
                 case CommunitiesModel::Roles::ChildrenHidden:
+                        return false;
+                case CommunitiesModel::Roles::Hidden:
                         return false;
                 case CommunitiesModel::Roles::Id:
                         return "";
@@ -82,8 +85,10 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
                 }
 
                 switch (role) {
+                case CommunitiesModel::Roles::Hidden:
+                        return hiddentTagIds_.contains("tag:" + tag);
                 case CommunitiesModel::Roles::ChildrenHidden:
-                        return UserSettings::instance()->hiddenTags().contains("tag:" + tag);
+                        return true;
                 case CommunitiesModel::Roles::Id:
                         return "tag:" + tag;
                 }
@@ -107,9 +112,12 @@ CommunitiesModel::initializeSidebar()
         tags_.clear();
         for (const auto &t : ts)
                 tags_.push_back(QString::fromStdString(t));
+
+        hiddentTagIds_ = UserSettings::instance()->hiddenTags();
         endResetModel();
 
         emit tagsChanged();
+        emit hiddenTagsChanged();
 }
 
 void
@@ -157,4 +165,24 @@ CommunitiesModel::setCurrentTagId(QString tagId)
 
         this->currentTagId_ = "";
         emit currentTagIdChanged(currentTagId_);
+}
+
+void
+CommunitiesModel::toggleTagId(QString tagId)
+{
+        if (hiddentTagIds_.contains(tagId)) {
+                hiddentTagIds_.removeOne(tagId);
+                UserSettings::instance()->setHiddenTags(hiddentTagIds_);
+        } else {
+                hiddentTagIds_.push_back(tagId);
+                UserSettings::instance()->setHiddenTags(hiddentTagIds_);
+        }
+
+        if (tagId.startsWith("tag:")) {
+                auto idx = tags_.indexOf(tagId.mid(4));
+                if (idx != -1)
+                        emit dataChanged(index(idx), index(idx), {Hidden});
+        }
+
+        emit hiddenTagsChanged();
 }

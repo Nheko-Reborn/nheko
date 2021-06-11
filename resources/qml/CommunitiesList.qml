@@ -33,16 +33,16 @@ Page {
         Platform.Menu {
             id: communityContextMenu
 
-            property string id
+            property string tagId
 
             function show(id_, tags_) {
-                id = id_;
+                tagId = id_;
                 open();
             }
 
             Platform.MenuItem {
-                text: qsTr("Leave room")
-                onTriggered: Rooms.leave(roomContextMenu.roomid)
+                text: qsTr("Hide rooms with this tag or from this space by default.")
+                onTriggered: Communities.toggleTagId(communityContextMenu.tagId)
             }
 
         }
@@ -65,7 +65,7 @@ Page {
             states: [
                 State {
                     name: "highlight"
-                    when: hovered.hovered && !(Communities.currentTagId == model.id)
+                    when: (hovered.hovered || model.hidden) && !(Communities.currentTagId == model.id)
 
                     PropertyChanges {
                         target: communityItem

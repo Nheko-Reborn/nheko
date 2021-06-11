@@ -25,6 +25,7 @@ public:
                 DisplayName,
                 Tooltip,
                 ChildrenHidden,
+                Hidden,
                 Id,
         };
 
@@ -49,12 +50,15 @@ public slots:
                 emit currentTagIdChanged(currentTagId_);
         }
         QStringList tags() const { return tags_; }
+        void toggleTagId(QString tagId);
 
 signals:
         void currentTagIdChanged(QString tagId);
+        void hiddenTagsChanged();
         void tagsChanged();
 
 private:
         QStringList tags_;
         QString currentTagId_;
+        QStringList hiddentTagIds_;
 };

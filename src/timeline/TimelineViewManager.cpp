@@ -201,6 +201,10 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                           &CommunitiesModel::currentTagIdChanged,
                           ptr,
                           &FilteredRoomlistModel::updateFilterTag);
+                  connect(self->communities_,
+                          &CommunitiesModel::hiddenTagsChanged,
+                          ptr,
+                          &FilteredRoomlistModel::updateHiddenTagsAndSpaces);
                   return ptr;
           });
         qmlRegisterSingletonType<RoomlistModel>(
