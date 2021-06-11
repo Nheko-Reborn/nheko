@@ -20,6 +20,7 @@
 #include "DeviceVerificationFlow.h"
 #include "EventAccessors.h"
 #include "ImagePackModel.h"
+#include "InviteesModel.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
@@ -184,6 +185,12 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           "Room Settings needs to be instantiated on the C++ side");
         qmlRegisterUncreatableType<TimelineModel>(
           "im.nheko", 1, 0, "Room", "Room needs to be instantiated on the C++ side");
+        qmlRegisterUncreatableType<InviteesModel>(
+          "im.nheko",
+          1,
+          0,
+          "InviteesModel",
+          "InviteesModel needs to be instantiated on the C++ side");
 
         static auto self = this;
         qmlRegisterSingletonType<MainWindow>(
@@ -423,62 +430,13 @@ TimelineViewManager::openImageOverlayInternal(QString eventId, QImage img)
         });
 }
 
-void
-TimelineViewManager::openInviteUsersDialog()
-{
-        MainWindow::instance()->openInviteUsersDialog(
-          [this](const QStringList &invitees) { emit inviteUsers(invitees); });
-}
-
-void
-TimelineViewManager::openLink(QString link) const
-{
-        QUrl url(link);
-        if (url.scheme() == "https" && url.host() == "matrix.to") {
-                // handle matrix.to links internally
-                QString p = url.fragment(QUrl::FullyEncoded);
-                if (p.startsWith("/"))
-                        p.remove(0, 1);
-
-                auto temp = p.split("?");
-                QString query;
-                if (temp.size() >= 2)
-                        query = QUrl::fromPercentEncoding(temp.takeAt(1).toUtf8());
-
-                temp            = temp.first().split("/");
-                auto identifier = QUrl::fromPercentEncoding(temp.takeFirst().toUtf8());
-                QString eventId = QUrl::fromPercentEncoding(temp.join('/').toUtf8());
-                if (!identifier.isEmpty()) {
-                        if (identifier.startsWith("@")) {
-                                QByteArray uri =
-                                  "matrix:u/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                                if (!query.isEmpty())
-                                        uri.append("?" + query.toUtf8());
-                                ChatPage::instance()->handleMatrixUri(QUrl::fromEncoded(uri));
-                        } else if (identifier.startsWith("#")) {
-                                QByteArray uri =
-                                  "matrix:r/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                                if (!eventId.isEmpty())
-                                        uri.append("/e/" +
-                                                   QUrl::toPercentEncoding(eventId.remove(0, 1)));
-                                if (!query.isEmpty())
-                                        uri.append("?" + query.toUtf8());
-                                ChatPage::instance()->handleMatrixUri(QUrl::fromEncoded(uri));
-                        } else if (identifier.startsWith("!")) {
-                                QByteArray uri = "matrix:roomid/" +
-                                                 QUrl::toPercentEncoding(identifier.remove(0, 1));
-                                if (!eventId.isEmpty())
-                                        uri.append("/e/" +
-                                                   QUrl::toPercentEncoding(eventId.remove(0, 1)));
-                                if (!query.isEmpty())
-                                        uri.append("?" + query.toUtf8());
-                                ChatPage::instance()->handleMatrixUri(QUrl::fromEncoded(uri));
-                        }
-                }
-        } else {
-                QDesktopServices::openUrl(url);
-        }
-}
+//void
+//TimelineViewManager::openInviteUsersDialog()
+//{
+    // TODO: move this somewhere where it will actually work (probably Rooms)
+//        MainWindow::instance()->openInviteUsersDialog(
+//          [this](const QStringList &invitees) { emit inviteUsers(invitees); });
+//}
 
 void
 TimelineViewManager::openLeaveRoomDialog(QString roomid) const

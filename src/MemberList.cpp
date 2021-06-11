@@ -43,7 +43,8 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
 void
 MemberList::addUsers(const std::vector<RoomMember> &members)
 {
-        beginInsertRows(QModelIndex{}, m_memberList.count(), m_memberList.count() + members.size() - 1);
+        beginInsertRows(
+          QModelIndex{}, m_memberList.count(), m_memberList.count() + members.size() - 1);
 
         for (const auto &member : members)
                 m_memberList.push_back(
@@ -78,10 +79,11 @@ MemberList::data(const QModelIndex &index, int role) const
         }
 }
 
-bool MemberList::canFetchMore(const QModelIndex &) const
+bool
+MemberList::canFetchMore(const QModelIndex &) const
 {
-    const size_t numMembers = rowCount();
-    return (numMembers > 1 && numMembers < info_.member_count);
+        const size_t numMembers = rowCount();
+        return (numMembers > 1 && numMembers < info_.member_count);
 }
 
 void

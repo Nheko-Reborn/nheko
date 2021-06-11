@@ -116,32 +116,31 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::loggedOut, this, &ChatPage::logout);
 
-        connect(view_manager_, &TimelineViewManager::inviteUsers, this, [this](QStringList users) {
-                const auto room_id = currentRoom().toStdString();
+        // TODO: once this signal is moved, reenable this
+//        connect(view_manager_, &TimelineViewManager::inviteUsers, this, [this](QStringList users) {
+//                const auto room_id = currentRoom().toStdString();
 
-                for (int ii = 0; ii < users.size(); ++ii) {
-                        QTimer::singleShot(ii * 500, this, [this, room_id, ii, users]() {
-                                const auto user = users.at(ii);
+//                for (int ii = 0; ii < users.size(); ++ii) {
+//                        QTimer::singleShot(ii * 500, this, [this, room_id, ii, users]() {
+//                                const auto user = users.at(ii);
 
-                                http::client()->invite_user(
-                                  room_id,
-                                  user.toStdString(),
-                                  [this, user](const mtx::responses::RoomInvite &,
-                                               mtx::http::RequestErr err) {
-                                          if (err) {
-                                                  emit showNotification(
-                                                    tr("Failed to invite user: %1").arg(user));
-                                                  return;
-                                          }
+//                                http::client()->invite_user(
+//                                  room_id,
+//                                  user.toStdString(),
+//                                  [this, user](const mtx::responses::RoomInvite &,
+//                                               mtx::http::RequestErr err) {
+//                                          if (err) {
+//                                                  emit showNotification(
+//                                                    tr("Failed to invite user: %1").arg(user));
+//                                                  return;
+//                                          }
 
-                                          emit showNotification(tr("Invited user: %1").arg(user));
-                                  });
-                        });
-                }
-        });
+//                                          emit showNotification(tr("Invited user: %1").arg(user));
+//                                  });
+//                        });
+//                }
+//        });
 
-        connect(
-          view_manager_, &TimelineViewManager::showRoomList, splitter, &Splitter::showFullRoomList);
         connect(
           view_manager_,
           &TimelineViewManager::inviteUsers,

@@ -1077,6 +1077,16 @@ TimelineModel::openRoomSettings(QString room_id)
 }
 
 void
+TimelineModel::openInviteUsers(QString room_id)
+{
+        InviteesModel *model = new InviteesModel{this};
+        connect(model, &InviteesModel::accept, this, [this, model, room_id]() {
+                manager_->inviteUsers(room_id, model->mxids());
+        });
+        openInviteUsersDialog(model);
+}
+
+void
 TimelineModel::replyAction(QString id)
 {
         setReply(id);

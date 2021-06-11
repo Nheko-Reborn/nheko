@@ -176,7 +176,6 @@
         <file>qml/components/FlatButton.qml</file>
         <file>qml/RoomMembers.qml</file>
         <file>qml/InviteDialog.qml</file>
-        <file>qml/types/Invitee.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>

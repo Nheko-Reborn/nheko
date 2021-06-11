@@ -89,6 +89,12 @@ Page {
         }
 
     }
+    Component {
+        id: inviteDialog
+
+        InviteDialog {
+        }
+    }
 
     Connections {
         target: TimelineManager
@@ -113,6 +119,38 @@ Page {
                 var dialog = mobileCallInviteDialog.createObject(msgView);
                 dialog.open();
             }
+        }
+    }
+
+    Connections {
+        target: TimelineManager.timeline
+        onOpenRoomMembersDialog: {
+            var membersDialog = roomMembersComponent.createObject(timelineRoot, {
+                "members": members,
+                "roomName": TimelineManager.timeline.roomName
+            });
+            membersDialog.show();
+        }
+    }
+
+    Connections {
+        target: TimelineManager.timeline
+        onOpenRoomSettingsDialog: {
+            var roomSettings = roomSettingsComponent.createObject(timelineRoot, {
+                "roomSettings": settings
+            });
+            roomSettings.show();
+        }
+    }
+
+    Connections {
+        target: TimelineManager.timeline
+        onOpenInviteUsersDialog: {
+            var dialog = inviteDialog.createObject(timelineRoot, {
+                                          "roomId": TimelineManager.timeline.roomId,
+                                          "roomName": TimelineManager.timeline.roomName
+                                      });
+            dialog.show();
         }
     }
 
