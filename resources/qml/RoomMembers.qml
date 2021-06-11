@@ -109,6 +109,13 @@ ApplicationWindow {
                         }
                     }
                 }
+
+                footer: BusyIndicator {
+                    // This is not a wonderful solution, but it is the best way to calculate whether
+                    // all users are loaded while keeping canFetchMore() const
+                    running: members.numUsersLoaded < members.memberCount
+                    anchors.centerIn: parent
+                }
             }
         }
     }

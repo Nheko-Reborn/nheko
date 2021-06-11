@@ -34,7 +34,10 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
         }
 
         try {
-                addUsers(cache::getMembers(room_id_.toStdString()));
+                auto members = cache::getMembers(room_id_.toStdString());
+                addUsers(members);
+                numUsersLoaded_ = members.size();
+                emit numUsersLoadedChanged();
         } catch (const lmdb::error &e) {
                 nhlog::db()->critical("Failed to retrieve members from cache: {}", e.what());
         }
@@ -83,11 +86,17 @@ bool
 MemberList::canFetchMore(const QModelIndex &) const
 {
         const size_t numMembers = rowCount();
-        return (numMembers > 1 && numMembers < info_.member_count);
+        if (numMembers > 1 && numMembers < info_.member_count)
+                return true;
+        else
+                return false;
 }
 
 void
 MemberList::fetchMore(const QModelIndex &)
 {
-        addUsers(cache::getMembers(room_id_.toStdString(), rowCount()));
+        auto members = cache::getMembers(room_id_.toStdString(), rowCount());
+        addUsers(members);
+        numUsersLoaded_ = members.size();
+        emit numUsersLoadedChanged();
 }

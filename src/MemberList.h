@@ -15,6 +15,7 @@ class MemberList : public QAbstractListModel
         Q_PROPERTY(size_t memberCount READ memberCount NOTIFY memberCountChanged)
         Q_PROPERTY(QString avatarUrl READ avatarUrl NOTIFY avatarUrlChanged)
         Q_PROPERTY(QString roomId READ roomId NOTIFY roomIdChanged)
+        Q_PROPERTY(int numUsersLoaded READ numUsersLoaded NOTIFY numUsersLoadedChanged)
 
 public:
         enum Roles
@@ -37,12 +38,14 @@ public:
         size_t memberCount() const { return info_.member_count; }
         QString avatarUrl() const { return QString::fromStdString(info_.avatar_url); }
         QString roomId() const { return room_id_; }
+        int numUsersLoaded() const { return numUsersLoaded_; }
 
 signals:
         void roomNameChanged();
         void memberCountChanged();
         void avatarUrlChanged();
         void roomIdChanged();
+        void numUsersLoadedChanged();
 
 public slots:
         void addUsers(const std::vector<RoomMember> &users);
@@ -55,4 +58,5 @@ private:
         QVector<QPair<RoomMember, QString>> m_memberList;
         QString room_id_;
         RoomInfo info_;
+        int numUsersLoaded_;
 };
