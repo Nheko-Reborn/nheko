@@ -72,7 +72,7 @@ Rectangle {
         anchors.fill: parent
         visible: Settings.privacyScreen
         screenTimeout: Settings.privacyScreenTimeout
-        timelineRoot: timeline
+        timelineRoot: adaptiveView
     }
 
 }
