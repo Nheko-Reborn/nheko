@@ -140,6 +140,34 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 }
         });
 
+        connect(
+          view_manager_, &TimelineViewManager::showRoomList, splitter, &Splitter::showFullRoomList);
+        connect(
+          view_manager_,
+          &TimelineViewManager::inviteUsers,
+          this,
+          [this](QString roomId, QStringList users) {
+                  for (int ii = 0; ii < users.size(); ++ii) {
+                          QTimer::singleShot(ii * 500, this, [this, roomId, ii, users]() {
+                                  const auto user = users.at(ii);
+
+                                  http::client()->invite_user(
+                                    roomId.toStdString(),
+                                    user.toStdString(),
+                                    [this, user](const mtx::responses::RoomInvite &,
+                                                 mtx::http::RequestErr err) {
+                                            if (err) {
+                                                    emit showNotification(
+                                                      tr("Failed to invite user: %1").arg(user));
+                                                    return;
+                                            }
+
+                                            emit showNotification(tr("Invited user: %1").arg(user));
+                                    });
+                          });
+                  }
+          });
+
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
         connect(this, &ChatPage::newRoom, this, &ChatPage::changeRoom, Qt::QueuedConnection);
         connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendNotifications);
