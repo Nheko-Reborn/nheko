@@ -10,7 +10,6 @@ import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.3
 import im.nheko 1.0
 
-
 Page {
     //leftPadding: Nheko.paddingSmall
     //rightPadding: Nheko.paddingSmall
@@ -97,8 +96,7 @@ Page {
             TapHandler {
                 margin: -Nheko.paddingSmall
                 acceptedButtons: Qt.RightButton
-                onSingleTapped: communityContextMenu.show(model.id);
-
+                onSingleTapped: communityContextMenu.show(model.id)
                 gesturePolicy: TapHandler.ReleaseWithinBounds
             }
 
@@ -127,15 +125,26 @@ Page {
                     height: avatarSize
                     width: avatarSize
                     url: {
-                        if (model.avatarUrl.startsWith("mxc://"))  {
-                            return model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                        } else {
-                            return "image://colorimage/"+model.avatarUrl+"?" + communityItem.unimportantText
-                        }
+                        if (model.avatarUrl.startsWith("mxc://"))
+                            return model.avatarUrl.replace("mxc://", "image://MxcImage/");
+                        else
+                            return "image://colorimage/" + model.avatarUrl + "?" + communityItem.unimportantText;
                     }
                     displayName: model.displayName
                     color: communityItem.background
+                }
 
+                ElidedLabel {
+                    visible: !collapsed
+                    Layout.alignment: Qt.AlignVCenter
+                    color: communityItem.importantText
+                    elideWidth: parent.width - avatar.width - Nheko.paddingMedium
+                    fullText: model.displayName
+                    textFormat: Text.PlainText
+                }
+
+                Item {
+                    Layout.fillWidth: true
                 }
 
             }

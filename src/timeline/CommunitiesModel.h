@@ -46,12 +46,12 @@ public slots:
         void resetCurrentTagId()
         {
                 currentTagId_.clear();
-                emit currentTagIdChanged();
+                emit currentTagIdChanged(currentTagId_);
         }
         QStringList tags() const { return tags_; }
 
 signals:
-        void currentTagIdChanged();
+        void currentTagIdChanged(QString tagId);
         void tagsChanged();
 
 private:

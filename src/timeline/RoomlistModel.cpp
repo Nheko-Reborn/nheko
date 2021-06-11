@@ -324,6 +324,7 @@ RoomlistModel::initializeRooms()
         models.clear();
         roomids.clear();
         invites.clear();
+        currentRoom_ = nullptr;
 
         invites = cache::client()->invites();
         for (const auto &id : invites.keys())
@@ -459,6 +460,22 @@ FilteredRoomlistModel::lessThan(const QModelIndex &left, const QModelIndex &righ
                 return a_recency > b_recency;
         else
                 return left.row() < right.row();
+}
+
+bool
+FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) const
+{
+        if (filterType == FilterBy::Nothing)
+                return true;
+        else if (filterType == FilterBy::Tag) {
+                auto tags = sourceModel()
+                              ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
+                              .toStringList();
+
+                return tags.contains(filterStr);
+        } else {
+                return true;
+        }
 }
 
 FilteredRoomlistModel::FilteredRoomlistModel(RoomlistModel *model, QObject *parent)

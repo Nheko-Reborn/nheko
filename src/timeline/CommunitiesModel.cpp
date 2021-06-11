@@ -118,6 +118,7 @@ CommunitiesModel::clear()
         beginResetModel();
         tags_.clear();
         endResetModel();
+        resetCurrentTagId();
 
         emit tagsChanged();
 }
@@ -148,12 +149,12 @@ CommunitiesModel::setCurrentTagId(QString tagId)
                 for (const auto &t : tags_) {
                         if (t == tag) {
                                 this->currentTagId_ = tagId;
-                                emit currentTagIdChanged();
+                                emit currentTagIdChanged(currentTagId_);
                                 return;
                         }
                 }
         }
 
         this->currentTagId_ = "";
-        emit currentTagIdChanged();
+        emit currentTagIdChanged(currentTagId_);
 }

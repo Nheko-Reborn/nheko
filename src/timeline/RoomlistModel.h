@@ -109,6 +109,7 @@ class FilteredRoomlistModel : public QSortFilterProxyModel
 public:
         FilteredRoomlistModel(RoomlistModel *model, QObject *parent = nullptr);
         bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
+        bool filterAcceptsRow(int sourceRow, const QModelIndex &) const override;
 
 public slots:
         int roomidToIndex(QString roomid)
@@ -128,6 +129,19 @@ public slots:
         void nextRoom();
         void previousRoom();
 
+        void updateFilterTag(QString tagId)
+        {
+                if (tagId.startsWith("tag:")) {
+                        filterType = FilterBy::Tag;
+                        filterStr  = tagId.mid(4);
+                } else {
+                        filterType = FilterBy::Nothing;
+                        filterStr.clear();
+                }
+
+                invalidateFilter();
+        }
+
 signals:
         void currentRoomChanged();
 
@@ -135,4 +149,13 @@ private:
         short int calculateImportance(const QModelIndex &idx) const;
         RoomlistModel *roomlistmodel;
         bool sortByImportance = true;
+
+        enum class FilterBy
+        {
+                Tag,
+                Space,
+                Nothing,
+        };
+        QString filterStr   = "";
+        FilterBy filterType = FilterBy::Nothing;
 };

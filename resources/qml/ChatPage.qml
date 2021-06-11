@@ -24,12 +24,13 @@ Rectangle {
             id: communityListC
 
             minimumWidth: communitiesList.avatarSize * 4 + Nheko.paddingMedium * 2
-            collapsedWidth: communitiesList.avatarSize + 2* Nheko.paddingMedium
+            collapsedWidth: communitiesList.avatarSize + 2 * Nheko.paddingMedium
             preferredWidth: collapsedWidth
-            maximumWidth: communitiesList.avatarSize * 10 + 2* Nheko.paddingMedium
+            maximumWidth: communitiesList.avatarSize * 10 + 2 * Nheko.paddingMedium
 
             CommunitiesList {
                 id: communitiesList
+
                 collapsed: parent.collapsed
             }
 

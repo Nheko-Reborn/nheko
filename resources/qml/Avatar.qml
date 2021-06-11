@@ -28,6 +28,7 @@ Rectangle {
 
     Label {
         id: label
+
         anchors.fill: parent
         text: TimelineManager.escapeEmoji(displayName ? String.fromCodePoint(displayName.codePointAt(0)) : "")
         textFormat: Text.RichText
