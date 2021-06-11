@@ -32,8 +32,8 @@ Page {
 
         Connections {
             onActiveTimelineChanged: {
-                roomlist.positionViewAtIndex(Rooms.roomidToIndex(TimelineManager.timeline.roomId()), ListView.Contain);
-                console.log("Test" + TimelineManager.timeline.roomId() + " " + Rooms.roomidToIndex(TimelineManager.timeline.roomId));
+                roomlist.positionViewAtIndex(Rooms.roomidToIndex(Rooms.currentRoom.roomId()), ListView.Contain);
+                console.log("Test" + Rooms.currentRoom.roomId() + " " + Rooms.roomidToIndex(Rooms.currentRoom.roomId()));
             }
             target: TimelineManager
         }
@@ -121,7 +121,7 @@ Page {
             states: [
                 State {
                     name: "highlight"
-                    when: hovered.hovered && !(TimelineManager.timeline && model.roomId == TimelineManager.timeline.roomId())
+                    when: hovered.hovered && !(Rooms.currentRoom && model.roomId == Rooms.currentRoom.roomId())
 
                     PropertyChanges {
                         target: roomItem

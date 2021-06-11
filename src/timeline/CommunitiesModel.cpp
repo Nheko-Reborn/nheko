@@ -21,6 +21,7 @@ CommunitiesModel::roleNames() const
           {DisplayName, "displayName"},
           {Tooltip, "tooltip"},
           {ChildrenHidden, "childrenHidden"},
+          {Id, "id"},
         };
 }
 
@@ -74,9 +75,9 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
                         case CommunitiesModel::Roles::AvatarUrl:
                                 return QString(":/icons/icons/ui/tag.png");
                         case CommunitiesModel::Roles::DisplayName:
-                                return tag.right(2);
+                                return tag.mid(2);
                         case CommunitiesModel::Roles::Tooltip:
-                                return tag.right(2);
+                                return tag.mid(2);
                         }
                 }
 
@@ -143,7 +144,7 @@ void
 CommunitiesModel::setCurrentTagId(QString tagId)
 {
         if (tagId.startsWith("tag:")) {
-                auto tag = tagId.remove(0, 4);
+                auto tag = tagId.mid(4);
                 for (const auto &t : tags_) {
                         if (t == tag) {
                                 this->currentTagId_ = tagId;

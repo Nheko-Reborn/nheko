@@ -3451,6 +3451,10 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
 
                         if (!updateToWrite.master_keys.keys.empty() &&
                             update.master_keys.keys != updateToWrite.master_keys.keys) {
+                                nhlog::db()->debug("Master key of {} changed:\nold: {}\nnew: {}",
+                                                   user,
+                                                   updateToWrite.master_keys.keys.size(),
+                                                   update.master_keys.keys.size());
                                 updateToWrite.master_key_changed = true;
                         }
 

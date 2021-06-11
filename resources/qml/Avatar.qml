@@ -14,6 +14,7 @@ Rectangle {
     property alias url: img.source
     property string userid
     property string displayName
+    property alias textColor: label.color
 
     signal clicked(var mouse)
 
@@ -26,6 +27,7 @@ Rectangle {
     }
 
     Label {
+        id: label
         anchors.fill: parent
         text: TimelineManager.escapeEmoji(displayName ? String.fromCodePoint(displayName.codePointAt(0)) : "")
         textFormat: Text.RichText

@@ -23,13 +23,14 @@ Rectangle {
         AdaptiveLayoutElement {
             id: communityListC
 
-            minimumWidth: Nheko.avatarSize * 2 + Nheko.paddingSmall * 2
-            collapsedWidth: Nheko.avatarSize + Nheko.paddingSmall * 2
-            preferredWidth: Nheko.avatarSize + Nheko.paddingSmall * 2
-            maximumWidth: Nheko.avatarSize * 7 + Nheko.paddingSmall * 2
+            minimumWidth: communitiesList.avatarSize * 4 + Nheko.paddingMedium * 2
+            collapsedWidth: communitiesList.avatarSize + 2* Nheko.paddingMedium
+            preferredWidth: collapsedWidth
+            maximumWidth: communitiesList.avatarSize * 10 + 2* Nheko.paddingMedium
 
-            Rectangle {
-                color: Nheko.theme.sidebarBackground
+            CommunitiesList {
+                id: communitiesList
+                collapsed: parent.collapsed
             }
 
         }

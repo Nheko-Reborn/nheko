@@ -206,8 +206,11 @@ handle_olm_message(const OlmMessage &msg)
 
         for (const auto &cipher : msg.ciphertext) {
                 // We skip messages not meant for the current device.
-                if (cipher.first != my_key)
+                if (cipher.first != my_key) {
+                        nhlog::crypto()->debug(
+                          "Skipping message for {} since we are {}.", cipher.first, my_key);
                         continue;
+                }
 
                 const auto type = cipher.second.type;
                 nhlog::crypto()->info("type: {}", type == 0 ? "OLM_PRE_KEY" : "OLM_MESSAGE");
@@ -661,8 +664,10 @@ try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCip
         for (const auto &id : session_ids) {
                 auto session = cache::getOlmSession(sender_key, id);
 
-                if (!session)
+                if (!session) {
+                        nhlog::crypto()->warn("Unknown olm session: {}:{}", sender_key, id);
                         continue;
+                }
 
                 mtx::crypto::BinaryBuf text;
 
