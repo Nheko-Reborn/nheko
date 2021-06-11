@@ -16,12 +16,10 @@ InviteesModel::addUser(QString mxid)
 
         auto invitee = new Invitee{mxid, this};
         connect(invitee, &Invitee::userInfoLoaded, this, [this]() {
-                emit dataChanged(QModelIndex{}, QModelIndex{});
+            endInsertRows();
         });
 
         invitees_.push_back(invitee);
-
-        endInsertRows();
 }
 
 QHash<int, QByteArray>
