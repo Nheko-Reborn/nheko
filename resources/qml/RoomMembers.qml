@@ -44,6 +44,15 @@ ApplicationWindow {
             Layout.alignment: Qt.AlignHCenter
         }
 
+        ImageButton {
+            Layout.alignment: Qt.AlignHCenter
+            image: ":/icons/icons/ui/add-square-button.png"
+            hoverEnabled: true
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Invite more people")
+            onClicked: TimelineManager.timeline.openInviteUsersDialog()
+        }
+
         ScrollView {
             clip: false
             palette: colors

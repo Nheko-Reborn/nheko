@@ -2,36 +2,20 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 import im.nheko 1.0
-import "./types"
 
 ApplicationWindow {
     id: inviteDialogRoot
 
     property string roomId
     property string roomName
-    property list<Invitee> invitees
+    property InviteesModel invitees
 
     function addInvite() {
         if (inviteeEntry.text.match("@.+?:.{3,}"))
         {
-            invitees.push(inviteeComponent.createObject(
-                              inviteDialogRoot, {
-                                  "invitee": inviteeEntry.text
-                              }));
+            invitees.addUser(inviteeEntry.text);
             inviteeEntry.clear();
         }
-    }
-
-    function accept() {
-        if (inviteeEntry.text !== "")
-            addInvite();
-
-        var inviteeStringList = ["temp"]; // the "temp" element exists to declare this as a string array
-        for (var i = 0; i < invitees.length; ++i)
-            inviteeStringList.push(invitees[i].invitee);
-        inviteeStringList.shift(); // remove the first item
-
-        TimelineManager.inviteUsers(inviteDialogRoot.roomId, inviteeStringList);
     }
 
     title: qsTr("Invite users to ") + roomName
@@ -39,12 +23,6 @@ ApplicationWindow {
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     height: 380
     width: 340
-
-    Component {
-        id: inviteeComponent
-
-        Invitee {}
-    }
 
     // TODO: make this work in the TextField
     Shortcut {
@@ -74,7 +52,7 @@ ApplicationWindow {
             }
 
             Button {
-                text: qsTr("Invite")
+                text: qsTr("Add")
                 onClicked: if (inviteeEntry.text !== "") addInvite()
             }
         }
@@ -85,9 +63,53 @@ ApplicationWindow {
             Layout.fillWidth: true
             Layout.fillHeight: true
             model: invitees
-            delegate: Label {
-                text: model.invitee
+
+            delegate: RowLayout {
+                spacing: 10
+
+                Avatar {
+                    width: avatarSize
+                    height: avatarSize
+                    userid: model.mxid
+                    url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                    displayName: model.displayName
+                    onClicked: TimelineManager.timeline.openUserProfile(model.mxid)
+                }
+
+                ColumnLayout {
+                    spacing: 5
+
+                    Label {
+                        text: model.displayName
+                        color: TimelineManager.userColor(model ? model.mxid : "", colors.window)
+                        font.pointSize: 12
+                    }
+
+                    Label {
+                        text: model.mxid
+                        color: colors.buttonText
+                        font.pointSize: 10
+                    }
+
+                    Item {
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                    }
+                }
             }
+//            delegate: RowLayout {
+//                spacing: 10
+
+//                Avatar {
+//                    url: model.avatarUrl
+//                    width: 20
+//                    height: width
+//                }
+
+//                Label {
+//                    text: model.displayName + " (" + model.mxid + ")"
+//                }
+//            }
         }
     }
 
@@ -98,7 +120,7 @@ ApplicationWindow {
             text: qsTr("Invite")
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
             onClicked: {
-                inviteDialogRoot.accept();
+                invitees.accept();
                 inviteDialogRoot.close();
             }
         }

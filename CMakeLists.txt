@@ -344,6 +344,7 @@ set(SRC_FILES
 	src/CompletionProxyModel.cpp
 	src/DeviceVerificationFlow.cpp
 	src/EventAccessors.cpp
+	src/InviteesModel.cpp
 	src/Logging.cpp
 	src/LoginPage.cpp
 	src/MainWindow.cpp
@@ -550,6 +551,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/Clipboard.h
 	src/CompletionProxyModel.h
 	src/DeviceVerificationFlow.h
+	src/InviteesModel.h
 	src/LoginPage.h
 	src/MainWindow.h
 	src/MemberList.h
