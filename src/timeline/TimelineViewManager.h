@@ -65,7 +65,6 @@ public:
         Q_INVOKABLE QString userStatus(QString id) const;
 
         Q_INVOKABLE void focusMessageInput();
-        Q_INVOKABLE void openInviteUsersDialog();
         Q_INVOKABLE void openLeaveRoomDialog(QString roomid) const;
         Q_INVOKABLE void removeVerificationFlow(DeviceVerificationFlow *flow);
 
@@ -80,7 +79,9 @@ signals:
         void replyingEventChanged(QString replyingEvent);
         void replyClosed();
         void newDeviceVerificationRequest(DeviceVerificationFlow *flow);
-        void inviteUsers(QStringList users);
+        void inviteUsers(QString roomId, QStringList users);
+        void showRoomList();
+        void narrowViewChanged();
         void focusChanged();
         void focusInput();
         void openImageOverlayInternalCb(QString eventId, QImage img);

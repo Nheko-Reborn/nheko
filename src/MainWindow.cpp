@@ -33,7 +33,6 @@
 #include "ui/SnackBar.h"
 
 #include "dialogs/CreateRoom.h"
-#include "dialogs/InviteUsers.h"
 #include "dialogs/JoinRoom.h"
 #include "dialogs/LeaveRoom.h"
 #include "dialogs/Logout.h"
@@ -331,18 +330,6 @@ MainWindow::showOverlayProgressBar()
         spinner_->start();
 
         showSolidOverlayModal(spinner_);
-}
-
-void
-MainWindow::openInviteUsersDialog(std::function<void(const QStringList &invitees)> callback)
-{
-        auto dialog = new dialogs::InviteUsers(this);
-        connect(dialog, &dialogs::InviteUsers::sendInvites, this, [callback](QStringList invitees) {
-                if (!invitees.isEmpty())
-                        callback(invitees);
-        });
-
-        showDialog(dialog);
 }
 
 void

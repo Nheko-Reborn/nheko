@@ -21,6 +21,12 @@ Rectangle {
     z: 3
     color: Nheko.colors.window
 
+    Component {
+        id: inviteDialog
+
+        InviteDialog {}
+    }
+
     TapHandler {
         onSingleTapped: {
             if (room)
@@ -111,7 +117,13 @@ Rectangle {
                 Platform.MenuItem {
                     visible: room ? room.permissions.canInvite() : false
                     text: qsTr("Invite users")
-                    onTriggered: TimelineManager.openInviteUsersDialog()
+                    onTriggered: {
+                        var dialog = inviteDialog.createObject(topBar, {
+                                                      "roomId": room.roomId,
+                                                      "roomName": room.roomName
+                                                  });
+                        dialog.show();
+                    }
                 }
 
                 Platform.MenuItem {
