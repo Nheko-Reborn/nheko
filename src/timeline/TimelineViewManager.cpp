@@ -396,18 +396,17 @@ TimelineViewManager::openImageOverlayInternal(QString eventId, QImage img)
         imgDialog->showFullScreen();
 
         auto room = rooms_->currentRoom();
-        connect(
-          imgDialog, &dialogs::ImageOverlay::saving, room, [this, eventId, imgDialog, room]() {
-                  // hide the overlay while presenting the save dialog for better
-                  // cross platform support.
-                  imgDialog->hide();
+        connect(imgDialog, &dialogs::ImageOverlay::saving, room, [eventId, imgDialog, room]() {
+                // hide the overlay while presenting the save dialog for better
+                // cross platform support.
+                imgDialog->hide();
 
-                  if (!room->saveMedia(eventId)) {
-                          imgDialog->show();
-                  } else {
-                          imgDialog->close();
-                  }
-          });
+                if (!room->saveMedia(eventId)) {
+                        imgDialog->show();
+                } else {
+                        imgDialog->close();
+                }
+        });
 }
 
 void
