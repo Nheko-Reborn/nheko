@@ -679,11 +679,10 @@ utils::hashQString(const QString &input)
         return hash;
 }
 
-QString
-utils::generateContrastingHexColor(const QString &input, const QString &background)
+QColor
+utils::generateContrastingHexColor(const QString &input, const QColor &backgroundCol)
 {
-        const QColor backgroundCol(background);
-        const qreal backgroundLum = luminance(background);
+        const qreal backgroundLum = luminance(backgroundCol);
 
         // Create a color for the input
         auto hash = hashQString(input);

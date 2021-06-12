@@ -501,17 +501,17 @@
     <message>
         <location line="+4"/>
         <source>Encrypted by a verified device</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptitud verifitseeritud seadmes</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptitud verifitseerimata seadmes, aga sa oled selle kasutajat seni usaldanud.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptitud verifitseerimata seadmes</translation>
     </message>
 </context>
 <context>
@@ -598,7 +598,7 @@
     <message>
         <location filename="../qml/ForwardCompleter.qml" line="+44"/>
         <source>Forward Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Suuna sõnum edasi</translation>
     </message>
 </context>
 <context>
@@ -858,7 +858,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+11"/>
         <source>You don&apos;t have permission to send messages in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Sul puuduvad selles jututoas õigused sõnumite saatmiseks</translation>
     </message>
 </context>
 <context>
@@ -1607,12 +1607,12 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
     <message>
         <location line="+842"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis oma tunnuspilti ja seadistas uueks kuvatavaks nimeks %2.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 has changed their display name to %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 seadistas uueks kuvatavaks nimeks %2.</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1649,12 +1649,12 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
     <message>
         <location filename="../qml/TimelineView.qml" line="+125"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopeeri</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Copy link location</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopeeri lingi asukoht</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1679,7 +1679,7 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
     <message>
         <location line="+6"/>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>Edasta</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1714,7 +1714,7 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
     <message>
         <location line="+7"/>
         <source>Copy link to event</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopeeri sündmuse link</translation>
     </message>
     <message>
         <location line="+57"/>

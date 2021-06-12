@@ -16,7 +16,9 @@ finish-args:
   - --socket=wayland
   - --socket=x11
   - --talk-name=org.freedesktop.Notifications
-  - --talk-name=org.kde.StatusNotifierWatcher
+  - --talk-name=org.freedesktop.secrets
+  - --talk-name=org.freedesktop.StatusNotifierItem
+  - --talk-name=org.kde.*
 cleanup:
   - /include
   - /bin/mdb*

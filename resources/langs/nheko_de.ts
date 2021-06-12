@@ -17,22 +17,22 @@
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>Du hast deinen Bildschirm freigegeben</translation>
+        <translation>Du teilst deinen Bildschirm</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation>Bild in Bild anzeigen/verstecken</translation>
+        <translation>Bild-in-Bild Teilen/Verstecken</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation>Stummschaltung aufheben</translation>
+        <translation>Stummschaltung Aufheben</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation>Mikrophon stummschalten</translation>
+        <translation>Mikrofon stumm schalten</translation>
     </message>
 </context>
 <context>
@@ -151,12 +151,12 @@
     <message>
         <location line="+412"/>
         <source>Confirm join</source>
-        <translation>Beitreten bestätigen</translation>
+        <translation>Beitritt bestätigen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to join %1?</source>
-        <translation>Willst du wirklich %1 betreten?</translation>
+        <translation>Möchtest du wirklich %1 beitreten?</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -172,7 +172,7 @@
     <message>
         <location line="-323"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation>Willst du wirklich %1 (%2) einladen?</translation>
+        <translation>Nutzer %1 (%2) wirklich einladen?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -187,12 +187,12 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to kick %1 (%2)?</source>
-        <translation>Willst du wirklich %1 (%2) kicken?</translation>
+        <translation>Nutzer %1 (%2) wirklich kicken?</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Kicked user: %1</source>
-        <translation>%1 wurde gekickt.</translation>
+        <translation>Gekickter Benutzer: %1</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -202,7 +202,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to ban %1 (%2)?</source>
-        <translation>Willst du wirklich %1 (%2) aus dem Raum verbannen?</translation>
+        <translation>Nutzer %1 (%2) wirklich bannen?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -212,7 +212,7 @@
     <message>
         <location line="+5"/>
         <source>Banned user: %1</source>
-        <translation>%1 wurde gebannt.</translation>
+        <translation>Gebannter Nutzer: %1</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -222,7 +222,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to unban %1 (%2)?</source>
-        <translation>Willst du wirklich den Bann von %1 (%2) zurückziehen?</translation>
+        <translation>Bann des Nutzers %1 (%2) wirklich aufheben?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -232,7 +232,7 @@
     <message>
         <location line="+5"/>
         <source>Unbanned user: %1</source>
-        <translation>Verbannung von %1 wurde aufgehoben.</translation>
+        <translation>Verbannung aufgehoben: %1</translation>
     </message>
     <message>
         <location line="+227"/>
@@ -247,7 +247,7 @@
     <message>
         <location line="+13"/>
         <source>Incompatible cache version</source>
-        <translation>Inkompatible Cacheversion</translation>
+        <translation>Inkompatible Version des Caches</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -283,7 +283,7 @@
     <message>
         <location line="+5"/>
         <source>You joined the room</source>
-        <translation>Du bist dem Raum beigetreten.</translation>
+        <translation>Du hast den Raum betreten</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -506,12 +506,12 @@
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
-        <translation type="unfinished"></translation>
+        <translation>Von einem unverifizierten Gerät verschlüsselt, Sie haben dem Nutzer jedoch früher schon vertraut.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device</source>
-        <translation type="unfinished"></translation>
+        <translation>Von einem unverifizierten Gerät verschlüsselt</translation>
     </message>
 </context>
 <context>
@@ -598,7 +598,7 @@
     <message>
         <location filename="../qml/ForwardCompleter.qml" line="+44"/>
         <source>Forward Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachricht weiterleiten</translation>
     </message>
 </context>
 <context>
@@ -645,10 +645,10 @@
 You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation>Dein Anmeldename. Eine mxid sollte mit einem @ anfangen, gefolgt von dem Benutzernamen. Nach dem Benutzernamen sollten ein Doppelpunkt (:) under der Servername folgen.
-Nach dem Doppelpunkt kann alternativ die Serveradresse (mit oder ohne Port) angegeben werden, wenn der Server nicht per .well-known auffindbar ist.
+        <translation>Dein Anmeldename sollte mit einem @ anfangen, gefolgt von deinem Benutzernamen. Nach deinem Benutzernamen sollte ein Doppelpunkt (:) und der Servername folgen.
+Nach dem Doppelpunkt kann alternativ die Serveradresse (mit oder ohne Port) angegeben werden, wenn der Server nicht via .well-known auffindbar ist.
 Beispiel: @benutzer:dein.server
-Wenn Nheko deinen Server nicht automatisch erkennen kann, wird es dich nach dem Server fragen.</translation>
+Wenn Nheko deinen Server nicht automatisch erkennen kann, bekommst du eine Eingabemaske gezeigt in die du die Serverdaten manuell eintragen kannst.</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -668,7 +668,7 @@ Wenn Nheko deinen Server nicht automatisch erkennen kann, wird es dich nach dem 
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation>Ein Name für dieses Gerät. Dieser wird der anderen Seite gezeigt, wenn das Gerät verifiziert wird. Wenn nichts angeben wurde, wird einer generiert.</translation>
+        <translation>Ein Name für dieses Gerät, das der anderen Seite gezeigt wird, wenn das Gerät verifiziert wird. Wird nichts angegeben, wird einer generiert.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -785,7 +785,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+0"/>
         <source>removed topic</source>
-        <translation>Raumthema wurde entfernt</translation>
+        <translation>Thema wurde entfernt</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1124,7 +1124,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+13"/>
         <source>Cancel edit</source>
-        <translation>Editieren abbrechen</translation>
+        <translation>Bearbeiten abbrechen</translation>
     </message>
 </context>
 <context>
@@ -1266,7 +1266,7 @@ Beispiel: https://mein.server:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                             Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation>Verschlüsselung ist aktuell experimentell und kann in verschiedenen Fällen zu Fehlern führen.&lt;br&gt;Verschlüsselung kann nachträglich nicht deaktiviert werden.</translation>
+        <translation>Verschlüsselung ist derzeit experimentell und könnte unerwartete Probleme verursachen.&lt;br&gt;Bitte beachte, dass dies später nicht mehr deaktiviert werden kann.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1278,9 +1278,7 @@ Beispiel: https://mein.server:8787</translation>
         <source>Whether or not the client should respond automatically with the session keys
                                 upon request. Use with caution, this is a temporary measure to test the
                                 E2E implementation until device verification is completed.</source>
-        <translation>Ob Nheko automatisch auf Schlüsselanfragen antwortet. Dies ist ein temporärer
-Workaround um, solange die Ende-zu-Ende Verschlüsselung unvollständig ist, um
-Schlüssel auszutauschen, wenn der normale Weg nicht zu funktionieren scheint.</translation>
+        <translation>Soll der Client automatisch mit den Sitzungsschlüsseln auf Anfragen antworten oder nicht? Bitte mit Vorsicht benutzen, dies ist eine vorübergehende Maßnahme, um die Ende-zu-Ende-Implementierung zu testen, bis die Geräteverifizierung abgeschlossen ist.</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1325,13 +1323,13 @@ Schlüssel auszutauschen, wenn der normale Weg nicht zu funktionieren scheint.</
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation>Fehler beim Lesen der DateI: %1</translation>
+        <translation>Fehler beim Lesen der Datei: %1</translation>
     </message>
     <message>
         <location line="+34"/>
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
-        <translation>Hochladen der Bilddatei fehlgeschlagen: %s</translation>
+        <translation>Hochladen des Bildes fehlgeschlagen: %s</translation>
     </message>
 </context>
 <context>
@@ -1349,23 +1347,23 @@ Schlüssel auszutauschen, wenn der normale Weg nicht zu funktionieren scheint.</
     <message>
         <location line="+20"/>
         <source>Frame rate:</source>
-        <translation>Wiederholungsrate:</translation>
+        <translation>Bildrate:</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Include your camera picture-in-picture</source>
-        <translation>Eigene Kamera als Bild-im-Bild anzeigen</translation>
+        <translation>Deine Kamera Bild-in-Bild anzeigen</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Request remote camera</source>
-        <translation>Kamera der Gegenstelle anfragen</translation>
+        <translation>Entfernte Kamera anfragen</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+9"/>
         <source>View your callee&apos;s camera like a regular video call</source>
-        <translation>Zeige die Kamera des Angerufen wie in einem normalen Videoanruf an</translation>
+        <translation>Die Kamera Ihres Gesprächspartners wie bei einem normalen Videoanruf betrachten</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1649,12 +1647,12 @@ Schlüssel auszutauschen, wenn der normale Weg nicht zu funktionieren scheint.</
     <message>
         <location filename="../qml/TimelineView.qml" line="+125"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopieren</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Copy link location</source>
-        <translation type="unfinished"></translation>
+        <translation>Link kopieren</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1679,7 +1677,7 @@ Schlüssel auszutauschen, wenn der normale Weg nicht zu funktionieren scheint.</
     <message>
         <location line="+6"/>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>Weiterleiten</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1714,7 +1712,7 @@ Schlüssel auszutauschen, wenn der normale Weg nicht zu funktionieren scheint.</
     <message>
         <location line="+7"/>
         <source>Copy link to event</source>
-        <translation type="unfinished"></translation>
+        <translation>Link zu Event kopieren</translation>
     </message>
     <message>
         <location line="+57"/>
@@ -1871,7 +1869,7 @@ Schlüssel auszutauschen, wenn der normale Weg nicht zu funktionieren scheint.</
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+301"/>
         <source>Select an avatar</source>
-        <translation>Wähle einen Avatar</translation>
+        <translation>Avatar wählen</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -1993,13 +1991,12 @@ Betrifft nur Nachrichten in verschlüsselten Chats.</translation>
         <location line="+2"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation>Verliert das Fenster den Fokus, werden die Nachrichten
-verschwommen angezeigt.</translation>
+        <translation>Die Zeitliste wird unscharf, wenn das Fenster den Fokus verliert.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation>Zeit bis Blickschutz aktiv wird (in Sekunden [0 - 3600])</translation>
+        <translation>Sichtschutz-Zeitbegrenzung (in Sekunden [0 - 3600])</translation>
     </message>
     <message>
         <location line="+2"/>

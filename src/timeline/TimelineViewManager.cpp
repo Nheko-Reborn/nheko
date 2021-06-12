@@ -107,8 +107,7 @@ QColor
 TimelineViewManager::userColor(QString id, QColor background)
 {
         if (!userColors.contains(id))
-                userColors.insert(
-                  id, QColor(utils::generateContrastingHexColor(id, background.name())));
+                userColors.insert(id, QColor(utils::generateContrastingHexColor(id, background)));
         return userColors.value(id);
 }
 
