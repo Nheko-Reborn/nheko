@@ -34,6 +34,11 @@ ApplicationWindow {
         onActivated: inviteDialogRoot.accept()
     }
 
+    Shortcut {
+        sequence: StandardKey.Cancel
+        onActivated: inviteDialogRoot.close()
+    }
+
     ColumnLayout {
         anchors.fill: parent
         anchors.margins: 10
