@@ -31,7 +31,7 @@ ApplicationWindow {
     // TODO: make this work in the TextField
     Shortcut {
         sequence: "Ctrl+Enter"
-        onActivated: inviteDialogRoot.accept()
+        onActivated: invitees.accept()
     }
 
     Shortcut {
@@ -63,7 +63,7 @@ ApplicationWindow {
 
                 Shortcut {
                     sequence: "Ctrl+Enter"
-                    onActivated: inviteDialogRoot.accept()
+                    onActivated: invitees.accept()
                 }
             }
 
