@@ -137,7 +137,7 @@ endif()
 #
 # Discover Qt dependencies.
 #
-find_package(Qt5 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia Qml QuickControls2 QuickWidgets REQUIRED)
+find_package(Qt5 5.12 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia Qml QuickControls2 QuickWidgets REQUIRED)
 find_package(Qt5QuickCompiler)
 find_package(Qt5DBus)
 
