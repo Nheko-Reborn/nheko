@@ -25,7 +25,7 @@ Rectangle {
 
             minimumWidth: communitiesList.avatarSize * 4 + Nheko.paddingMedium * 2
             collapsedWidth: communitiesList.avatarSize + 2 * Nheko.paddingMedium
-            preferredWidth: collapsedWidth
+            preferredWidth: Settings.communityListWidth >= minimumWidth ? Settings.communityListWidth : collapsedWidth
             maximumWidth: communitiesList.avatarSize * 10 + 2 * Nheko.paddingMedium
 
             CommunitiesList {
@@ -34,20 +34,36 @@ Rectangle {
                 collapsed: parent.collapsed
             }
 
+            Binding {
+                target: Settings
+                property: 'communityListWidth'
+                value: communityListC.preferredWidth
+                when: !adaptiveView.singlePageMode
+                delayed: true
+            }
+
         }
 
         AdaptiveLayoutElement {
             id: roomListC
 
-            minimumWidth: Nheko.avatarSize * 5 + Nheko.paddingSmall * 2
-            preferredWidth: Nheko.avatarSize * 5 + Nheko.paddingSmall * 2
-            maximumWidth: Nheko.avatarSize * 10 + Nheko.paddingSmall * 2
+            minimumWidth: roomlist.avatarSize * 4 + Nheko.paddingSmall * 2
+            preferredWidth: Settings.roomListWidth >= minimumWidth ? Settings.roomListWidth : roomlist.avatarSize * 5 + Nheko.paddingSmall * 2
+            maximumWidth: roomlist.avatarSize * 10 + Nheko.paddingSmall * 2
             collapsedWidth: roomlist.avatarSize + 2 * Nheko.paddingMedium
 
             RoomList {
                 id: roomlist
 
                 collapsed: parent.collapsed
+            }
+
+            Binding {
+                target: Settings
+                property: 'roomListWidth'
+                value: roomListC.preferredWidth
+                when: !adaptiveView.singlePageMode
+                delayed: true
             }
 
         }

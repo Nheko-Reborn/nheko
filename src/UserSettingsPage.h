@@ -61,6 +61,10 @@ class UserSettings : public QObject
                      NOTIFY privacyScreenTimeoutChanged)
         Q_PROPERTY(int timelineMaxWidth READ timelineMaxWidth WRITE setTimelineMaxWidth NOTIFY
                      timelineMaxWidthChanged)
+        Q_PROPERTY(
+          int roomListWidth READ roomListWidth WRITE setRoomListWidth NOTIFY roomListWidthChanged)
+        Q_PROPERTY(int communityListWidth READ communityListWidth WRITE setCommunityListWidth NOTIFY
+                     communityListWidthChanged)
         Q_PROPERTY(bool mobileMode READ mobileMode WRITE setMobileMode NOTIFY mobileModeChanged)
         Q_PROPERTY(double fontSize READ fontSize WRITE setFontSize NOTIFY fontSizeChanged)
         Q_PROPERTY(QString font READ font WRITE setFontFamily NOTIFY fontChanged)
@@ -129,6 +133,8 @@ public:
         void setSortByImportance(bool state);
         void setButtonsInTimeline(bool state);
         void setTimelineMaxWidth(int state);
+        void setCommunityListWidth(int state);
+        void setRoomListWidth(int state);
         void setDesktopNotifications(bool state);
         void setAlertOnNotification(bool state);
         void setAvatarCircles(bool state);
@@ -178,6 +184,8 @@ public:
                 return hasDesktopNotifications() || hasAlertOnNotification();
         }
         int timelineMaxWidth() const { return timelineMaxWidth_; }
+        int communityListWidth() const { return communityListWidth_; }
+        int roomListWidth() const { return roomListWidth_; }
         double fontSize() const { return baseFontSize_; }
         QString font() const { return font_; }
         QString emojiFont() const
@@ -227,6 +235,8 @@ signals:
         void privacyScreenChanged(bool state);
         void privacyScreenTimeoutChanged(int state);
         void timelineMaxWidthChanged(int state);
+        void roomListWidthChanged(int state);
+        void communityListWidthChanged(int state);
         void mobileModeChanged(bool mode);
         void fontSizeChanged(double state);
         void fontChanged(QString state);
@@ -276,6 +286,8 @@ private:
         bool shareKeysWithTrustedUsers_;
         bool mobileMode_;
         int timelineMaxWidth_;
+        int roomListWidth_;
+        int communityListWidth_;
         double baseFontSize_;
         QString font_;
         QString emojiFont_;
