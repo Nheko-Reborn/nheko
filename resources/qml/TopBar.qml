@@ -111,12 +111,12 @@ Rectangle {
                 Platform.MenuItem {
                     visible: room ? room.permissions.canInvite() : false
                     text: qsTr("Invite users")
-                    onTriggered: TimelineManager.timeline.openInviteUsers()
+                    onTriggered: Rooms.currentRoom.openInviteUsers()
                 }
 
                 Platform.MenuItem {
                     text: qsTr("Members")
-                    onTriggered: Rooms.currentRoom.openRoomMembers(room.roomId())
+                    onTriggered: Rooms.currentRoom.openRoomMembers()
                 }
 
                 Platform.MenuItem {
