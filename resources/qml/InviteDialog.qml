@@ -172,19 +172,6 @@ ApplicationWindow {
                     }
                 }
             }
-//            delegate: RowLayout {
-//                spacing: 10
-
-//                Avatar {
-//                    url: model.avatarUrl
-//                    width: 20
-//                    height: width
-//                }
-
-//                Label {
-//                    text: model.displayName + " (" + model.mxid + ")"
-//                }
-//            }
         }
     }
 
