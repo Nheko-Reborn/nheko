@@ -1077,11 +1077,11 @@ TimelineModel::openRoomSettings(QString room_id)
 }
 
 void
-TimelineModel::openInviteUsers(QString room_id)
+TimelineModel::openInviteUsers(QString roomId)
 {
         InviteesModel *model = new InviteesModel{this};
-        connect(model, &InviteesModel::accept, this, [this, model, room_id]() {
-                manager_->inviteUsers(room_id, model->mxids());
+        connect(model, &InviteesModel::accept, this, [this, model, roomId]() {
+                manager_->inviteUsers(roomId == QString() ? room_id_ : roomId, model->mxids());
         });
         openInviteUsersDialog(model);
 }
