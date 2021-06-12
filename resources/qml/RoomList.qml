@@ -447,6 +447,8 @@ Page {
             RowLayout {
                 id: userInfoGrid
 
+                property var profile: Nheko.currentUser
+
                 spacing: Nheko.paddingMedium
                 anchors.fill: parent
                 anchors.margins: Nheko.paddingMedium
@@ -457,9 +459,9 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     Layout.preferredWidth: fontMetrics.lineSpacing * 2
                     Layout.preferredHeight: fontMetrics.lineSpacing * 2
-                    url: Nheko.currentUser.avatarUrl.replace("mxc://", "image://MxcImage/")
-                    displayName: Nheko.currentUser.displayName
-                    userid: Nheko.currentUser.userid
+                    url: (userInfoGrid.profile ? userInfoGrid.profile.avatarUrl : "").replace("mxc://", "image://MxcImage/")
+                    displayName: userInfoGrid.profile ? userInfoGrid.profile.displayName : ""
+                    userid: userInfoGrid.profile ? userInfoGrid.profile.userid : ""
                 }
 
                 ColumnLayout {
@@ -476,7 +478,7 @@ Page {
                         Layout.alignment: Qt.AlignBottom
                         font.pointSize: fontMetrics.font.pointSize * 1.1
                         font.weight: Font.DemiBold
-                        fullText: Nheko.currentUser.displayName
+                        fullText: userInfoGrid.profile ? userInfoGrid.profile.displayName : ""
                         elideWidth: col.width
                     }
 
@@ -486,7 +488,7 @@ Page {
                         font.weight: Font.Thin
                         font.pointSize: fontMetrics.font.pointSize * 0.9
                         elideWidth: col.width
-                        fullText: Nheko.currentUser.userid
+                        fullText: userInfoGrid.profile ? userInfoGrid.profile.userid : ""
                     }
 
                 }

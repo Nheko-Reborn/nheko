@@ -2479,7 +2479,8 @@ Cache::getMember(const std::string &room_id, const std::string &user_id)
                         return m;
                 }
         } catch (std::exception &e) {
-                nhlog::db()->warn("Failed to read member ({}): {}", user_id, e.what());
+                nhlog::db()->warn(
+                  "Failed to read member ({}) in room ({}): {}", user_id, room_id, e.what());
         }
         return std::nullopt;
 }
