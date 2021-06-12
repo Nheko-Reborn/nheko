@@ -43,10 +43,11 @@ ApplicationWindow {
         RowLayout {
             spacing: 10
 
-            TextField {
+            MatrixTextField {
                 id: inviteeEntry
 
                 placeholderText: qsTr("@joe:matrix.org", "Example user id. The name 'joe' can be localized however you want.")
+                backgroundColor: colors.window
                 Layout.fillWidth: true
                 onAccepted: if (text !== "") addInvite()
             }
