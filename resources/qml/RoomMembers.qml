@@ -7,10 +7,9 @@ import im.nheko 1.0
 ApplicationWindow {
     id: roomMembersRoot
 
-    property string roomName: Rooms.currentRoom.roomName
     property MemberList members
 
-    title: qsTr("Members of ") + roomName
+    title: qsTr("Members of ") + members.roomName
     x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     height: 650
@@ -40,7 +39,7 @@ ApplicationWindow {
 
         Label {
             font.pixelSize: 24
-            text: members.memberCount + (members.memberCount === 1 ? qsTr(" person in ") : qsTr(" people in ")) + roomName
+            text: members.memberCount + (members.memberCount === 1 ? qsTr(" person in ") : qsTr(" people in ")) + members.roomName
             Layout.alignment: Qt.AlignHCenter
         }
 
