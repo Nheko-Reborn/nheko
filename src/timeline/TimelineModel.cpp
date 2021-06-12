@@ -318,6 +318,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
   , events(room_id.toStdString(), this)
   , room_id_(room_id)
   , manager_(manager)
+  , permissions_{room_id}
 {
         lastMessage_.timestamp = 0;
 

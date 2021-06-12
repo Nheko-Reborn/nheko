@@ -15,7 +15,7 @@ class Permissions : public QObject
         Q_OBJECT
 
 public:
-        Permissions(TimelineModel *parent);
+        Permissions(QString roomId, QObject *parent = nullptr);
 
         Q_INVOKABLE bool canInvite();
         Q_INVOKABLE bool canBan();
@@ -28,6 +28,6 @@ public:
         void invalidate();
 
 private:
-        TimelineModel *room;
+        QString roomId_;
         mtx::events::state::PowerLevels pl;
 };

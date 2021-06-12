@@ -395,7 +395,7 @@ private:
         TimelineViewManager *manager_;
 
         InputBar input_{this};
-        Permissions permissions_{this};
+        Permissions permissions_;
 
         QTimer showEventTimer{this};
         QString eventIdToShow;
