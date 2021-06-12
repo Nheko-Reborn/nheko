@@ -50,6 +50,7 @@ ApplicationWindow {
                 backgroundColor: colors.window
                 Layout.fillWidth: true
                 onAccepted: if (text !== "") addInvite()
+                Component.onCompleted: forceActiveFocus()
             }
 
             Button {
