@@ -607,7 +607,7 @@
     <message>
         <location filename="../../src/timeline/InputBar.cpp" line="+232"/>
         <source>Select a file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elektu dosieron</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -617,7 +617,7 @@
     <message>
         <location line="+418"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis alŝuti vidaŭdaĵojn. Bonvolu reprovi.</translation>
     </message>
 </context>
 <context>
