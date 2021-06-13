@@ -17,7 +17,7 @@ Popup {
             anchors.centerIn = parent;
 
     }
-    palette: colors
+    palette: Nheko.colors
 
     Component {
         id: deviceError
@@ -45,8 +45,8 @@ Popup {
             Layout.leftMargin: 8
 
             Label {
-                text: qsTr("Place a call to %1?").arg(TimelineManager.timeline.roomName)
-                color: colors.windowText
+                text: qsTr("Place a call to %1?").arg(room.roomName)
+                color: Nheko.colors.windowText
             }
 
             Item {
@@ -75,11 +75,11 @@ Popup {
 
             Avatar {
                 Layout.rightMargin: cameraCombo.visible ? 16 : 64
-                width: avatarSize
-                height: avatarSize
-                url: TimelineManager.timeline.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
-                displayName: TimelineManager.timeline.roomName
-                onClicked: TimelineManager.openImageOverlay(TimelineManager.timeline.avatarUrl(userid), TimelineManager.timeline.data.id)
+                width: Nheko.avatarSize
+                height: Nheko.avatarSize
+                url: room.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
+                displayName: room.roomName
+                onClicked: TimelineManager.openImageOverlay(room.avatarUrl(userid), room.data.id)
             }
 
             Button {
@@ -88,7 +88,7 @@ Popup {
                 onClicked: {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;
-                        CallManager.sendInvite(TimelineManager.timeline.roomId(), CallType.VOICE);
+                        CallManager.sendInvite(room.roomId(), CallType.VOICE);
                         close();
                     }
                 }
@@ -102,7 +102,7 @@ Popup {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;
                         Settings.camera = cameraCombo.currentText;
-                        CallManager.sendInvite(TimelineManager.timeline.roomId(), CallType.VIDEO);
+                        CallManager.sendInvite(room.roomId(), CallType.VIDEO);
                         close();
                     }
                 }
@@ -139,7 +139,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.png?" + colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.png?" + Nheko.colors.windowText
                 }
 
                 ComboBox {
@@ -160,7 +160,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/video-call.png?" + colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/video-call.png?" + Nheko.colors.windowText
                 }
 
                 ComboBox {
@@ -177,8 +177,8 @@ Popup {
     }
 
     background: Rectangle {
-        color: colors.window
-        border.color: colors.windowText
+        color: Nheko.colors.window
+        border.color: Nheko.colors.windowText
     }
 
 }

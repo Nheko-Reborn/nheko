@@ -12,9 +12,9 @@ Flow {
     id: reactionFlow
 
     // highlight colors for selfReactedEvent background
-    property real highlightHue: colors.highlight.hslHue
-    property real highlightSat: colors.highlight.hslSaturation
-    property real highlightLight: colors.highlight.hslLightness
+    property real highlightHue: Nheko.colors.highlight.hslHue
+    property real highlightSat: Nheko.colors.highlight.hslSaturation
+    property real highlightLight: Nheko.colors.highlight.hslLightness
     property string eventId
     property alias reactions: repeater.model
 
@@ -35,7 +35,7 @@ Flow {
             ToolTip.text: modelData.users
             onClicked: {
                 console.debug("Picked " + modelData.key + "in response to " + reactionFlow.eventId + ". selfReactedEvent: " + modelData.selfReactedEvent);
-                TimelineManager.queueReactionMessage(reactionFlow.eventId, modelData.key);
+                room.input.reaction(reactionFlow.eventId, modelData.key);
             }
 
             contentItem: Row {
@@ -59,7 +59,7 @@ Flow {
                     anchors.baseline: reactionCounter.baseline
                     text: textMetrics.elidedText + (textMetrics.elidedText == modelData.key ? "" : "…")
                     font.family: Settings.emojiFont
-                    color: reaction.hovered ? colors.highlight : colors.text
+                    color: reaction.hovered ? Nheko.colors.highlight : Nheko.colors.text
                     maximumLineCount: 1
                 }
 
@@ -68,7 +68,7 @@ Flow {
 
                     height: Math.floor(reactionCounter.implicitHeight * 1.4)
                     width: 1
-                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? colors.highlight : colors.text
+                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? Nheko.colors.highlight : Nheko.colors.text
                 }
 
                 Text {
@@ -77,7 +77,7 @@ Flow {
                     anchors.verticalCenter: divider.verticalCenter
                     text: modelData.count
                     font: reaction.font
-                    color: reaction.hovered ? colors.highlight : colors.text
+                    color: reaction.hovered ? Nheko.colors.highlight : Nheko.colors.text
                 }
 
             }
@@ -86,8 +86,8 @@ Flow {
                 anchors.centerIn: parent
                 implicitWidth: reaction.implicitWidth
                 implicitHeight: reaction.implicitHeight
-                border.color: (reaction.hovered || modelData.selfReactedEvent !== '') ? colors.highlight : colors.text
-                color: modelData.selfReactedEvent !== '' ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.2) : colors.window
+                border.color: (reaction.hovered || modelData.selfReactedEvent !== '') ? Nheko.colors.highlight : Nheko.colors.text
+                color: modelData.selfReactedEvent !== '' ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.2) : Nheko.colors.window
                 border.width: 1
                 radius: reaction.height / 2
             }

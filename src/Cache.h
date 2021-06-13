@@ -62,7 +62,7 @@ joinedRooms();
 
 QMap<QString, RoomInfo>
 roomInfo(bool withInvites = true);
-std::map<QString, bool>
+QHash<QString, RoomInfo>
 invites();
 
 //! Calculate & return the name of the room.

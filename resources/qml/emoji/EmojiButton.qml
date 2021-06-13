@@ -17,7 +17,7 @@ ImageButton {
 
     image: ":/icons/icons/ui/smile.png"
     onClicked: emojiPicker.visible ? emojiPicker.close() : emojiPicker.show(emojiButton, function(emoji) {
-        TimelineManager.queueReactionMessage(event_id, emoji);
+        room.input.reaction(event_id, emoji);
         TimelineManager.focusMessageInput();
     })
 }

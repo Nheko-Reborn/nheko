@@ -33,7 +33,7 @@ Item {
         anchors.top: replyContainer.top
         anchors.bottom: replyContainer.bottom
         width: 4
-        color: TimelineManager.userColor(reply.modelData.userId, colors.window)
+        color: TimelineManager.userColor(reply.modelData.userId, Nheko.colors.window)
     }
 
     Column {

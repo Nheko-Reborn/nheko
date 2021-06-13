@@ -137,7 +137,7 @@ endif()
 #
 # Discover Qt dependencies.
 #
-find_package(Qt5 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia Qml QuickControls2 QuickWidgets REQUIRED)
+find_package(Qt5 5.12 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia Qml QuickControls2 QuickWidgets REQUIRED)
 find_package(Qt5QuickCompiler)
 find_package(Qt5DBus)
 
@@ -265,6 +265,7 @@ set(SRC_FILES
 
 
 	# Timeline
+	src/timeline/CommunitiesModel.cpp
 	src/timeline/EventStore.cpp
 	src/timeline/InputBar.cpp
 	src/timeline/Reaction.cpp
@@ -272,6 +273,7 @@ set(SRC_FILES
 	src/timeline/TimelineModel.cpp
 	src/timeline/DelegateChooser.cpp
 	src/timeline/Permissions.cpp
+	src/timeline/RoomlistModel.cpp
 
 	# UI components
 	src/ui/Avatar.cpp
@@ -284,11 +286,13 @@ set(SRC_FILES
 	src/ui/LoadingIndicator.cpp
 	src/ui/NhekoCursorShape.cpp
 	src/ui/NhekoDropArea.cpp
+	src/ui/NhekoGlobalObject.cpp
 	src/ui/OverlayModal.cpp
 	src/ui/OverlayWidget.cpp
 	src/ui/RaisedButton.cpp
 	src/ui/Ripple.cpp
 	src/ui/RippleOverlay.cpp
+	src/ui/RoomSettings.cpp
 	src/ui/SnackBar.cpp
 	src/ui/TextField.cpp
 	src/ui/TextLabel.cpp
@@ -296,7 +300,6 @@ set(SRC_FILES
 	src/ui/ThemeManager.cpp
 	src/ui/ToggleButton.cpp
 	src/ui/UserProfile.cpp
-	src/ui/RoomSettings.cpp
 
     # Generic notification stuff
     src/notifications/Manager.cpp
@@ -309,8 +312,6 @@ set(SRC_FILES
 	src/ChatPage.cpp
 	src/Clipboard.cpp
 	src/ColorImageProvider.cpp
-	src/CommunitiesList.cpp
-	src/CommunitiesListItem.cpp
 	src/CompletionProxyModel.cpp
 	src/DeviceVerificationFlow.cpp
 	src/EventAccessors.cpp
@@ -322,22 +323,14 @@ set(SRC_FILES
 	src/MxcImageProvider.cpp
 	src/Olm.cpp
 	src/RegisterPage.cpp
-	src/RoomInfoListItem.cpp
-	src/RoomList.cpp
 	src/SSOHandler.cpp
-	src/SideBarActions.cpp
-	src/Splitter.cpp
 	src/TrayIcon.cpp
-	src/UserInfoWidget.cpp
 	src/UserSettingsPage.cpp
 	src/UsersModel.cpp
 	src/RoomsModel.cpp
 	src/Utils.cpp
 	src/WebRTCSession.cpp
 	src/WelcomePage.cpp
-	src/popups/PopupItem.cpp
-	src/popups/SuggestionsPopup.cpp
-	src/popups/UserMentions.cpp
 	src/main.cpp
 
 	third_party/blurhash/blurhash.cpp
@@ -489,6 +482,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/emoji/Provider.h
 
 	# Timeline
+	src/timeline/CommunitiesModel.h
 	src/timeline/EventStore.h
 	src/timeline/InputBar.h
 	src/timeline/Reaction.h
@@ -496,30 +490,32 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/timeline/TimelineModel.h
 	src/timeline/DelegateChooser.h
 	src/timeline/Permissions.h
+	src/timeline/RoomlistModel.h
 
 	# UI components
 	src/ui/Avatar.h
 	src/ui/Badge.h
-	src/ui/LoadingIndicator.h
-	src/ui/InfoMessage.h
 	src/ui/FlatButton.h
-	src/ui/Label.h
 	src/ui/FloatingButton.h
+	src/ui/InfoMessage.h
+	src/ui/Label.h
+	src/ui/LoadingIndicator.h
 	src/ui/Menu.h
 	src/ui/NhekoCursorShape.h
 	src/ui/NhekoDropArea.h
+	src/ui/NhekoGlobalObject.h
 	src/ui/OverlayWidget.h
-	src/ui/SnackBar.h
 	src/ui/RaisedButton.h
 	src/ui/Ripple.h
 	src/ui/RippleOverlay.h
+	src/ui/RoomSettings.h
+	src/ui/SnackBar.h
 	src/ui/TextField.h
 	src/ui/TextLabel.h
-	src/ui/ToggleButton.h
 	src/ui/Theme.h
 	src/ui/ThemeManager.h
+	src/ui/ToggleButton.h
 	src/ui/UserProfile.h
-	src/ui/RoomSettings.h
 
 	src/notifications/Manager.h
 
@@ -531,8 +527,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/CallManager.h
 	src/ChatPage.h
 	src/Clipboard.h
-	src/CommunitiesList.h
-	src/CommunitiesListItem.h
 	src/CompletionProxyModel.h
 	src/DeviceVerificationFlow.h
 	src/InviteeItem.h
@@ -540,21 +534,13 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/MainWindow.h
 	src/MxcImageProvider.h
 	src/RegisterPage.h
-	src/RoomInfoListItem.h
-	src/RoomList.h
 	src/SSOHandler.h
-	src/SideBarActions.h
-	src/Splitter.h
 	src/TrayIcon.h
-	src/UserInfoWidget.h
 	src/UserSettingsPage.h
 	src/UsersModel.h
 	src/RoomsModel.h
 	src/WebRTCSession.h
 	src/WelcomePage.h
-	src/popups/PopupItem.h
-	src/popups/SuggestionsPopup.h
-	src/popups/UserMentions.h
 	)
 
 #

@@ -77,13 +77,9 @@ public:
 
 protected:
         void closeEvent(QCloseEvent *event) override;
-        void resizeEvent(QResizeEvent *event) override;
-        void showEvent(QShowEvent *event) override;
         bool event(QEvent *event) override;
 
 private slots:
-        //! Show or hide the sidebars based on window's size.
-        void adjustSideBars();
         //! Handle interaction with the tray icon.
         void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
@@ -109,6 +105,7 @@ private slots:
 
 signals:
         void focusChanged(const bool focused);
+        void reload();
 
 private:
         bool loadJdenticonPlugin();

@@ -4,6 +4,7 @@
 
 import "./delegates"
 import "./emoji"
+import Qt.labs.platform 1.1 as Platform
 import QtGraphicalEffects 1.0
 import QtQuick 2.12
 import QtQuick.Controls 2.3
@@ -13,7 +14,7 @@ import im.nheko 1.0
 
 ScrollView {
     clip: false
-    palette: colors
+    palette: Nheko.colors
     padding: 8
     ScrollBar.horizontal.visible: false
 
@@ -22,7 +23,7 @@ ScrollView {
 
         property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < parent.availableWidth) ? Settings.timelineMaxWidth : parent.availableWidth) - parent.padding * 2
 
-        model: TimelineManager.timeline
+        model: room
         boundsBehavior: Flickable.StopAtBounds
         pixelAligned: true
         spacing: 4
@@ -51,8 +52,8 @@ ScrollView {
             z: 10
             height: row.implicitHeight + padding * 2
             width: row.implicitWidth + padding * 2
-            color: colors.window
-            border.color: colors.buttonText
+            color: Nheko.colors.window
+            border.color: Nheko.colors.buttonText
             border.width: 1
             radius: padding
 
@@ -74,7 +75,7 @@ ScrollView {
                     id: editButton
 
                     visible: !!row.model && row.model.isEditable
-                    buttonTextColor: colors.buttonText
+                    buttonTextColor: Nheko.colors.buttonText
                     width: 16
                     hoverEnabled: true
                     image: ":/icons/icons/ui/edit.png"
@@ -220,7 +221,7 @@ ScrollView {
                     anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
                     visible: modelData && modelData.previousMessageDay !== modelData.day
                     text: modelData ? chat.model.formatDateSeparator(modelData.timestamp) : ""
-                    color: colors.text
+                    color: Nheko.colors.text
                     height: Math.round(fontMetrics.height * 1.4)
                     width: contentWidth * 1.2
                     horizontalAlignment: Text.AlignHCenter
@@ -228,7 +229,7 @@ ScrollView {
 
                     background: Rectangle {
                         radius: parent.height / 2
-                        color: colors.window
+                        color: Nheko.colors.window
                     }
 
                 }
@@ -240,8 +241,8 @@ ScrollView {
                     Avatar {
                         id: messageUserAvatar
 
-                        width: avatarSize
-                        height: avatarSize
+                        width: Nheko.avatarSize
+                        height: Nheko.avatarSize
                         url: modelData ? chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/") : ""
                         displayName: modelData ? modelData.userName : ""
                         userid: modelData ? modelData.userId : ""
@@ -267,7 +268,7 @@ ScrollView {
                         id: userName
 
                         text: modelData ? TimelineManager.escapeEmoji(modelData.userName) : ""
-                        color: TimelineManager.userColor(modelData ? modelData.userId : "", colors.window)
+                        color: TimelineManager.userColor(modelData ? modelData.userId : "", Nheko.colors.window)
                         textFormat: Text.RichText
                         ToolTip.visible: displayNameHover.hovered
                         ToolTip.text: modelData ? modelData.userId : ""
@@ -288,11 +289,11 @@ ScrollView {
                     }
 
                     Label {
-                        color: colors.buttonText
+                        color: Nheko.colors.buttonText
                         text: modelData ? TimelineManager.userStatus(modelData.userId) : ""
                         textFormat: Text.PlainText
                         elide: Text.ElideRight
-                        width: chat.delegateMaxWidth - parent.spacing * 2 - userName.implicitWidth - avatarSize
+                        width: chat.delegateMaxWidth - parent.spacing * 2 - userName.implicitWidth - Nheko.avatarSize
                         font.italic: true
                     }
 
@@ -317,7 +318,7 @@ ScrollView {
                 opacity: 0
                 visible: true
                 anchors.fill: timelinerow
-                color: colors.highlight
+                color: Nheko.colors.highlight
 
                 states: State {
                     name: "revealed"
@@ -409,6 +410,143 @@ ScrollView {
             height: 50
             width: 50
             z: 3
+        }
+
+    }
+
+    Platform.Menu {
+        id: messageContextMenu
+
+        property string eventId
+        property string link
+        property string text
+        property int eventType
+        property bool isEncrypted
+        property bool isEditable
+        property bool isSender
+
+        function show(eventId_, eventType_, isSender_, isEncrypted_, isEditable_, link_, text_, showAt_) {
+            eventId = eventId_;
+            eventType = eventType_;
+            isEncrypted = isEncrypted_;
+            isEditable = isEditable_;
+            isSender = isSender_;
+            if (text_)
+                text = text_;
+            else
+                text = "";
+            if (link_)
+                link = link_;
+            else
+                link = "";
+            if (showAt_)
+                open(showAt_);
+            else
+                open();
+        }
+
+        Platform.MenuItem {
+            visible: messageContextMenu.text
+            enabled: visible
+            text: qsTr("&Copy")
+            onTriggered: Clipboard.text = messageContextMenu.text
+        }
+
+        Platform.MenuItem {
+            visible: messageContextMenu.link
+            enabled: visible
+            text: qsTr("Copy &link location")
+            onTriggered: Clipboard.text = messageContextMenu.link
+        }
+
+        Platform.MenuItem {
+            id: reactionOption
+
+            visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
+            text: qsTr("Re&act")
+            onTriggered: emojiPopup.show(null, function(emoji) {
+                room.input.reaction(messageContextMenu.eventId, emoji);
+            })
+        }
+
+        Platform.MenuItem {
+            visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
+            text: qsTr("Repl&y")
+            onTriggered: room.replyAction(messageContextMenu.eventId)
+        }
+
+        Platform.MenuItem {
+            visible: messageContextMenu.isEditable && (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
+            enabled: visible
+            text: qsTr("&Edit")
+            onTriggered: room.editAction(messageContextMenu.eventId)
+        }
+
+        Platform.MenuItem {
+            text: qsTr("Read receip&ts")
+            onTriggered: room.readReceiptsAction(messageContextMenu.eventId)
+        }
+
+        Platform.MenuItem {
+            visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker || messageContextMenu.eventType == MtxEvent.TextMessage || messageContextMenu.eventType == MtxEvent.LocationMessage || messageContextMenu.eventType == MtxEvent.EmoteMessage || messageContextMenu.eventType == MtxEvent.NoticeMessage
+            text: qsTr("&Forward")
+            onTriggered: {
+                var forwardMess = forwardCompleterComponent.createObject(timelineRoot);
+                forwardMess.setMessageEventId(messageContextMenu.eventId);
+                forwardMess.open();
+            }
+        }
+
+        Platform.MenuItem {
+            text: qsTr("&Mark as read")
+        }
+
+        Platform.MenuItem {
+            text: qsTr("View raw message")
+            onTriggered: room.viewRawMessage(messageContextMenu.eventId)
+        }
+
+        Platform.MenuItem {
+            // TODO(Nico): Fix this still being iterated over, when using keyboard to select options
+            visible: messageContextMenu.isEncrypted
+            enabled: visible
+            text: qsTr("View decrypted raw message")
+            onTriggered: room.viewDecryptedRawMessage(messageContextMenu.eventId)
+        }
+
+        Platform.MenuItem {
+            visible: (room ? room.permissions.canRedact() : false) || messageContextMenu.isSender
+            text: qsTr("Remo&ve message")
+            onTriggered: room.redactEvent(messageContextMenu.eventId)
+        }
+
+        Platform.MenuItem {
+            visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
+            enabled: visible
+            text: qsTr("&Save as")
+            onTriggered: room.saveMedia(messageContextMenu.eventId)
+        }
+
+        Platform.MenuItem {
+            visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
+            enabled: visible
+            text: qsTr("&Open in external program")
+            onTriggered: room.openMedia(messageContextMenu.eventId)
+        }
+
+        Platform.MenuItem {
+            visible: messageContextMenu.eventId
+            enabled: visible
+            text: qsTr("Copy link to eve&nt")
+            onTriggered: room.copyLinkToEvent(messageContextMenu.eventId)
+        }
+
+    }
+
+    Component {
+        id: forwardCompleterComponent
+
+        ForwardCompleter {
         }
 
     }

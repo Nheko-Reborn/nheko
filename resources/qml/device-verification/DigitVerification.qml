@@ -19,7 +19,7 @@ Pane {
             Layout.fillWidth: true
             wrapMode: Text.Wrap
             text: qsTr("Please verify the following digits. You should see the same numbers on both sides. If they differ, please press 'They do not match!' to abort verification!")
-            color: colors.text
+            color: Nheko.colors.text
             verticalAlignment: Text.AlignVCenter
         }
 
@@ -29,19 +29,19 @@ Pane {
             Label {
                 font.pixelSize: Qt.application.font.pixelSize * 2
                 text: flow.sasList[0]
-                color: colors.text
+                color: Nheko.colors.text
             }
 
             Label {
                 font.pixelSize: Qt.application.font.pixelSize * 2
                 text: flow.sasList[1]
-                color: colors.text
+                color: Nheko.colors.text
             }
 
             Label {
                 font.pixelSize: Qt.application.font.pixelSize * 2
                 text: flow.sasList[2]
-                color: colors.text
+                color: Nheko.colors.text
             }
 
         }

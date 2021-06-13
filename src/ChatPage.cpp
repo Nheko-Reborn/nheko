@@ -23,10 +23,6 @@
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "Olm.h"
-#include "RoomList.h"
-#include "SideBarActions.h"
-#include "Splitter.h"
-#include "UserInfoWidget.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
 #include "ui/OverlayModal.h"
@@ -36,7 +32,6 @@
 #include "notifications/Manager.h"
 
 #include "dialogs/ReadReceipts.h"
-#include "popups/UserMentions.h"
 #include "timeline/TimelineViewManager.h"
 
 #include "blurhash.hpp"
@@ -76,62 +71,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         topLayout_->setSpacing(0);
         topLayout_->setMargin(0);
 
-        communitiesList_ = new CommunitiesList(this);
-        topLayout_->addWidget(communitiesList_);
-
-        splitter = new Splitter(this);
-        splitter->setHandleWidth(0);
-
-        topLayout_->addWidget(splitter);
-
-        // SideBar
-        sideBar_ = new QFrame(this);
-        sideBar_->setObjectName("sideBar");
-        sideBar_->setMinimumWidth(::splitter::calculateSidebarSizes(QFont{}).normal);
-        sideBarLayout_ = new QVBoxLayout(sideBar_);
-        sideBarLayout_->setSpacing(0);
-        sideBarLayout_->setMargin(0);
-
-        sideBarTopWidget_ = new QWidget(sideBar_);
-        sidebarActions_   = new SideBarActions(this);
-        connect(
-          sidebarActions_, &SideBarActions::showSettings, this, &ChatPage::showUserSettingsPage);
-        connect(sidebarActions_, &SideBarActions::joinRoom, this, &ChatPage::joinRoom);
-        connect(sidebarActions_, &SideBarActions::createRoom, this, &ChatPage::createRoom);
-
-        user_info_widget_ = new UserInfoWidget(sideBar_);
-        connect(user_info_widget_, &UserInfoWidget::openGlobalUserProfile, this, [this]() {
-                UserProfile *userProfile = new UserProfile("", utils::localUser(), view_manager_);
-                emit view_manager_->openProfile(userProfile);
-        });
-
-        user_mentions_popup_ = new popups::UserMentions();
-        room_list_           = new RoomList(userSettings, sideBar_);
-        connect(room_list_, &RoomList::joinRoom, this, &ChatPage::joinRoom);
-
-        sideBarLayout_->addWidget(user_info_widget_);
-        sideBarLayout_->addWidget(room_list_);
-        sideBarLayout_->addWidget(sidebarActions_);
-
-        sideBarTopWidgetLayout_ = new QVBoxLayout(sideBarTopWidget_);
-        sideBarTopWidgetLayout_->setSpacing(0);
-        sideBarTopWidgetLayout_->setMargin(0);
-
-        // Content
-        content_ = new QFrame(this);
-        content_->setObjectName("mainContent");
-        contentLayout_ = new QVBoxLayout(content_);
-        contentLayout_->setSpacing(0);
-        contentLayout_->setMargin(0);
-
         view_manager_ = new TimelineViewManager(callManager_, this);
 
-        contentLayout_->addWidget(view_manager_->getWidget());
-
-        // Splitter
-        splitter->addWidget(sideBar_);
-        splitter->addWidget(content_);
-        splitter->restoreSizes(parent->width());
+        topLayout_->addWidget(view_manager_->getWidget());
 
         connect(this,
                 &ChatPage::downloadedSecrets,
@@ -152,17 +94,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 http::client()->shutdown();
                 trySync();
         });
-
-        connect(
-          new QShortcut(QKeySequence("Ctrl+Down"), this), &QShortcut::activated, this, [this]() {
-                  if (isVisible())
-                          room_list_->nextRoom();
-          });
-        connect(
-          new QShortcut(QKeySequence("Ctrl+Up"), this), &QShortcut::activated, this, [this]() {
-                  if (isVisible())
-                          room_list_->previousRoom();
-          });
 
         connectivityTimer_.setInterval(CHECK_CONNECTIVITY_INTERVAL);
         connect(&connectivityTimer_, &QTimer::timeout, this, [=]() {
@@ -185,10 +116,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::loggedOut, this, &ChatPage::logout);
 
-        connect(
-          view_manager_, &TimelineViewManager::showRoomList, splitter, &Splitter::showFullRoomList);
         connect(view_manager_, &TimelineViewManager::inviteUsers, this, [this](QStringList users) {
-                const auto room_id = current_room_.toStdString();
+                const auto room_id = currentRoom().toStdString();
 
                 for (int ii = 0; ii < users.size(); ++ii) {
                         QTimer::singleShot(ii * 500, this, [this, room_id, ii, users]() {
@@ -211,36 +140,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 }
         });
 
-        connect(room_list_, &RoomList::roomChanged, this, [this](QString room_id) {
-                this->current_room_ = room_id;
-        });
-        connect(room_list_, &RoomList::roomChanged, splitter, &Splitter::showChatView);
-        connect(
-          room_list_, &RoomList::roomChanged, view_manager_, &TimelineViewManager::setHistoryView);
-
-        connect(room_list_, &RoomList::acceptInvite, this, [this](const QString &room_id) {
-                joinRoom(room_id);
-                room_list_->removeRoom(room_id, currentRoom() == room_id);
-        });
-
-        connect(room_list_, &RoomList::declineInvite, this, [this](const QString &room_id) {
-                leaveRoom(room_id);
-                room_list_->removeRoom(room_id, currentRoom() == room_id);
-        });
-
-        connect(view_manager_,
-                &TimelineViewManager::updateRoomsLastMessage,
-                room_list_,
-                &RoomList::updateRoomDescription);
-
-        connect(room_list_,
-                SIGNAL(totalUnreadMessageCountUpdated(int)),
-                this,
-                SIGNAL(unreadMessages(int)));
-
-        connect(
-          this, &ChatPage::updateGroupsInfo, communitiesList_, &CommunitiesList::setCommunities);
-
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
         connect(this, &ChatPage::newRoom, this, &ChatPage::changeRoom, Qt::QueuedConnection);
         connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendNotifications);
@@ -255,60 +154,31 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                         }
                 });
 
-        connect(communitiesList_,
-                &CommunitiesList::communityChanged,
-                this,
-                [this](const QString &groupId) {
-                        current_community_ = groupId;
-
-                        if (groupId == "world") {
-                                auto hidden = communitiesList_->hiddenTagsAndCommunities();
-                                std::set<QString> roomsToHide = communitiesList_->roomList(groupId);
-                                for (const auto &hiddenTag : hidden) {
-                                        auto temp = communitiesList_->roomList(hiddenTag);
-                                        roomsToHide.insert(temp.begin(), temp.end());
-                                }
-
-                                room_list_->removeFilter(roomsToHide);
-                        } else {
-                                auto hidden = communitiesList_->hiddenTagsAndCommunities();
-                                hidden.erase(current_community_);
-
-                                auto roomsToShow = communitiesList_->roomList(groupId);
-                                for (const auto &hiddenTag : hidden) {
-                                        for (const auto &r : communitiesList_->roomList(hiddenTag))
-                                                roomsToShow.erase(r);
-                                }
-
-                                room_list_->applyFilter(roomsToShow);
-                        }
-                });
-
         connect(&notificationsManager,
                 &NotificationsManager::notificationClicked,
                 this,
                 [this](const QString &roomid, const QString &eventid) {
                         Q_UNUSED(eventid)
-                        room_list_->highlightSelectedRoom(roomid);
+                        view_manager_->rooms()->setCurrentRoom(roomid);
                         activateWindow();
                 });
         connect(&notificationsManager,
                 &NotificationsManager::sendNotificationReply,
                 this,
                 [this](const QString &roomid, const QString &eventid, const QString &body) {
+                        view_manager_->rooms()->setCurrentRoom(roomid);
                         view_manager_->queueReply(roomid, eventid, body);
-                        room_list_->highlightSelectedRoom(roomid);
                         activateWindow();
                 });
 
-        setGroupViewState(userSettings_->groupView());
+        connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, [this]() {
+                // ensure the qml context is shutdown before we destroy all other singletons
+                // Otherwise Qml will try to access the room list or settings, after they have been
+                // destroyed
+                topLayout_->removeWidget(view_manager_->getWidget());
+                delete view_manager_->getWidget();
+        });
 
-        connect(userSettings_.data(),
-                &UserSettings::groupViewStateChanged,
-                this,
-                &ChatPage::setGroupViewState);
-
-        connect(this, &ChatPage::initializeRoomList, room_list_, &RoomList::initialize);
         connect(
           this,
           &ChatPage::initializeViews,
@@ -318,31 +188,14 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(this,
                 &ChatPage::initializeEmptyViews,
                 view_manager_,
-                &TimelineViewManager::initWithMessages);
-        connect(this,
-                &ChatPage::initializeMentions,
-                user_mentions_popup_,
-                &popups::UserMentions::initializeMentions);
+                &TimelineViewManager::initializeRoomlist);
         connect(
           this, &ChatPage::chatFocusChanged, view_manager_, &TimelineViewManager::chatFocusChanged);
         connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Rooms &rooms) {
-                try {
-                        room_list_->cleanupInvites(cache::invites());
-                } catch (const lmdb::error &e) {
-                        nhlog::db()->error("failed to retrieve invites: {}", e.what());
-                }
-
                 view_manager_->sync(rooms);
-                removeLeftRooms(rooms.leave);
 
                 bool hasNotifications = false;
                 for (const auto &room : rooms.join) {
-                        auto room_id = QString::fromStdString(room.first);
-                        updateRoomNotificationCount(
-                          room_id,
-                          room.second.unread_notifications.notification_count,
-                          room.second.unread_notifications.highlight_count);
-
                         if (room.second.unread_notifications.notification_count > 0)
                                 hasNotifications = true;
                 }
@@ -364,16 +217,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
                                   emit notificationsRetrieved(std::move(res));
                           });
-        });
-        connect(this, &ChatPage::syncRoomlist, room_list_, &RoomList::sync);
-        connect(this, &ChatPage::syncTags, communitiesList_, &CommunitiesList::syncTags);
-
-        // Callbacks to update the user info (top left corner of the page).
-        connect(this, &ChatPage::setUserAvatar, user_info_widget_, &UserInfoWidget::setAvatar);
-        connect(this, &ChatPage::setUserDisplayName, this, [this](const QString &name) {
-                auto userid = utils::localUser();
-                user_info_widget_->setUserId(userid);
-                user_info_widget_->setDisplayName(name);
         });
 
         connect(
@@ -427,8 +270,6 @@ ChatPage::dropToLoginPage(const QString &msg)
 void
 ChatPage::resetUI()
 {
-        room_list_->clear();
-        user_info_widget_->reset();
         view_manager_->clearAll();
 
         emit unreadMessages(0);
@@ -480,9 +321,6 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                         &Cache::newReadReceipts,
                         view_manager_,
                         &TimelineViewManager::updateReadReceipts);
-
-                connect(
-                  cache::client(), &Cache::roomReadStatus, room_list_, &RoomList::updateReadStatus);
 
                 connect(cache::client(),
                         &Cache::removeNotification,
@@ -559,10 +397,8 @@ ChatPage::loadStateFromCache()
         try {
                 olm::client()->load(cache::restoreOlmAccount(), STORAGE_SECRET_KEY);
 
-                emit initializeEmptyViews(cache::client()->roomIds());
-                emit initializeRoomList(cache::roomInfo());
+                emit initializeEmptyViews();
                 emit initializeMentions(cache::getTimelineMentions());
-                emit syncTags(cache::roomInfo().toStdMap());
 
                 cache::calculateRoomReadStatus();
 
@@ -600,38 +436,6 @@ ChatPage::removeRoom(const QString &room_id)
                 nhlog::db()->critical("failure while removing room: {}", e.what());
                 // TODO: Notify the user.
         }
-
-        room_list_->removeRoom(room_id, room_id == current_room_);
-}
-
-void
-ChatPage::removeLeftRooms(const std::map<std::string, mtx::responses::LeftRoom> &rooms)
-{
-        for (auto it = rooms.cbegin(); it != rooms.cend(); ++it) {
-                const auto room_id = QString::fromStdString(it->first);
-                room_list_->removeRoom(room_id, room_id == current_room_);
-        }
-}
-
-void
-ChatPage::setGroupViewState(bool isEnabled)
-{
-        if (!isEnabled) {
-                communitiesList_->communityChanged("world");
-                communitiesList_->hide();
-
-                return;
-        }
-
-        communitiesList_->show();
-}
-
-void
-ChatPage::updateRoomNotificationCount(const QString &room_id,
-                                      uint16_t notification_count,
-                                      uint16_t highlight_count)
-{
-        room_list_->updateUnreadMessageCount(room_id, notification_count, highlight_count);
 }
 
 void
@@ -677,18 +481,6 @@ ChatPage::sendNotifications(const mtx::responses::Notifications &res)
                         nhlog::db()->warn("error while sending notification: {}", e.what());
                 }
         }
-}
-
-void
-ChatPage::showNotificationsDialog(const QPoint &widgetPos)
-{
-        auto notifDialog = user_mentions_popup_;
-
-        notifDialog->setGeometry(
-          widgetPos.x() - (width() / 10), widgetPos.y() + 25, width() / 5, height() / 2);
-
-        notifDialog->raise();
-        notifDialog->showPopup();
 }
 
 void
@@ -789,11 +581,9 @@ ChatPage::startInitialSync()
                           olm::handle_to_device_messages(res.to_device.events);
 
                           emit initializeViews(std::move(res.rooms));
-                          emit initializeRoomList(cache::roomInfo());
                           emit initializeMentions(cache::getTimelineMentions());
 
                           cache::calculateRoomReadStatus();
-                          emit syncTags(cache::roomInfo().toStdMap());
                   } catch (const lmdb::error &e) {
                           nhlog::db()->error("failed to save state after initial sync: {}",
                                              e.what());
@@ -830,11 +620,7 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
 
                 auto updates = cache::getRoomInfo(cache::client()->roomsWithStateUpdates(res));
 
-                emit syncRoomlist(updates);
-
                 emit syncUI(res.rooms);
-
-                emit syncTags(cache::getRoomInfo(cache::client()->roomsWithTagUpdates(res)));
 
                 // if we process a lot of syncs (1 every 200ms), this means we clean the
                 // db every 100s
@@ -939,7 +725,7 @@ ChatPage::joinRoomVia(const std::string &room_id,
                           emit showNotification(tr("Failed to remove invite: %1").arg(e.what()));
                   }
 
-                  room_list_->highlightSelectedRoom(QString::fromStdString(room_id));
+                  view_manager_->rooms()->setCurrentRoom(QString::fromStdString(room_id));
           });
 }
 
@@ -987,19 +773,18 @@ ChatPage::leaveRoom(const QString &room_id)
 void
 ChatPage::changeRoom(const QString &room_id)
 {
-        view_manager_->setHistoryView(room_id);
-        room_list_->highlightSelectedRoom(room_id);
+        view_manager_->rooms()->setCurrentRoom(room_id);
 }
 
 void
 ChatPage::inviteUser(QString userid, QString reason)
 {
-        auto room = current_room_;
+        auto room = currentRoom();
 
         if (QMessageBox::question(this,
                                   tr("Confirm invite"),
                                   tr("Do you really want to invite %1 (%2)?")
-                                    .arg(cache::displayName(current_room_, userid))
+                                    .arg(cache::displayName(room, userid))
                                     .arg(userid)) != QMessageBox::Yes)
                 return;
 
@@ -1021,12 +806,12 @@ ChatPage::inviteUser(QString userid, QString reason)
 void
 ChatPage::kickUser(QString userid, QString reason)
 {
-        auto room = current_room_;
+        auto room = currentRoom();
 
         if (QMessageBox::question(this,
                                   tr("Confirm kick"),
                                   tr("Do you really want to kick %1 (%2)?")
-                                    .arg(cache::displayName(current_room_, userid))
+                                    .arg(cache::displayName(room, userid))
                                     .arg(userid)) != QMessageBox::Yes)
                 return;
 
@@ -1048,12 +833,12 @@ ChatPage::kickUser(QString userid, QString reason)
 void
 ChatPage::banUser(QString userid, QString reason)
 {
-        auto room = current_room_;
+        auto room = currentRoom();
 
         if (QMessageBox::question(this,
                                   tr("Confirm ban"),
                                   tr("Do you really want to ban %1 (%2)?")
-                                    .arg(cache::displayName(current_room_, userid))
+                                    .arg(cache::displayName(room, userid))
                                     .arg(userid)) != QMessageBox::Yes)
                 return;
 
@@ -1075,12 +860,12 @@ ChatPage::banUser(QString userid, QString reason)
 void
 ChatPage::unbanUser(QString userid, QString reason)
 {
-        auto room = current_room_;
+        auto room = currentRoom();
 
         if (QMessageBox::question(this,
                                   tr("Confirm unban"),
                                   tr("Do you really want to unban %1 (%2)?")
-                                    .arg(cache::displayName(current_room_, userid))
+                                    .arg(cache::displayName(room, userid))
                                     .arg(userid)) != QMessageBox::Yes)
                 return;
 
@@ -1182,57 +967,6 @@ ChatPage::getProfileInfo()
 
                   emit setUserAvatar(QString::fromStdString(res.avatar_url));
           });
-
-        http::client()->joined_groups(
-          [this](const mtx::responses::JoinedGroups &res, mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->critical("failed to retrieve joined groups: {} {}",
-                                                 static_cast<int>(err->status_code),
-                                                 err->matrix_error.error);
-                          emit updateGroupsInfo({});
-                          return;
-                  }
-
-                  emit updateGroupsInfo(res);
-          });
-}
-
-bool
-ChatPage::isRoomActive(const QString &room_id)
-{
-        return isActiveWindow() && content_->isVisible() && currentRoom() == room_id;
-}
-
-void
-ChatPage::hideSideBars()
-{
-        // Don't hide side bar, if we are currently only showing the side bar!
-        if (view_manager_->getWidget()->isVisible()) {
-                communitiesList_->hide();
-                sideBar_->hide();
-        }
-        view_manager_->enableBackButton();
-}
-
-void
-ChatPage::showSideBars()
-{
-        if (userSettings_->groupView())
-                communitiesList_->show();
-
-        sideBar_->show();
-        view_manager_->disableBackButton();
-        content_->show();
-}
-
-uint64_t
-ChatPage::timelineWidth()
-{
-        int sidebarWidth = sideBar_->minimumSize().width();
-        sidebarWidth += communitiesList_->minimumSize().width();
-        nhlog::ui()->info("timelineWidth: {}", size().width() - sidebarWidth);
-
-        return size().width() - sidebarWidth;
 }
 
 void
@@ -1318,7 +1052,8 @@ ChatPage::startChat(QString userid)
                         if (std::find(room_members.begin(),
                                       room_members.end(),
                                       (userid).toStdString()) != room_members.end()) {
-                                room_list_->highlightSelectedRoom(QString::fromStdString(room_id));
+                                view_manager_->rooms()->setCurrentRoom(
+                                  QString::fromStdString(room_id));
                                 return;
                         }
                 }
@@ -1408,7 +1143,8 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
 
         if (sigil1 == "u") {
                 if (action.isEmpty()) {
-                        view_manager_->activeTimeline()->openUserProfile(mxid1);
+                        if (auto t = view_manager_->rooms()->currentRoom())
+                                t->openUserProfile(mxid1);
                 } else if (action == "chat") {
                         this->startChat(mxid1);
                 }
@@ -1418,7 +1154,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
 
                 for (auto roomid : joined_rooms) {
                         if (roomid == targetRoomId) {
-                                room_list_->highlightSelectedRoom(mxid1);
+                                view_manager_->rooms()->setCurrentRoom(mxid1);
                                 if (!mxid2.isEmpty())
                                         view_manager_->showEvent(mxid1, mxid2);
                                 return;
@@ -1436,7 +1172,7 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                         auto aliases = cache::client()->getRoomAliases(roomid);
                         if (aliases) {
                                 if (aliases->alias == targetRoomAlias) {
-                                        room_list_->highlightSelectedRoom(
+                                        view_manager_->rooms()->setCurrentRoom(
                                           QString::fromStdString(roomid));
                                         if (!mxid2.isEmpty())
                                                 view_manager_->showEvent(
@@ -1458,8 +1194,17 @@ ChatPage::handleMatrixUri(const QUrl &uri)
         handleMatrixUri(uri.toString(QUrl::ComponentFormattingOption::FullyEncoded).toUtf8());
 }
 
-void
-ChatPage::highlightRoom(const QString &room_id)
+bool
+ChatPage::isRoomActive(const QString &room_id)
 {
-        room_list_->highlightSelectedRoom(room_id);
+        return isActiveWindow() && currentRoom() == room_id;
+}
+
+QString
+ChatPage::currentRoom() const
+{
+        if (view_manager_->rooms()->currentRoom())
+                return view_manager_->rooms()->currentRoom()->roomId();
+        else
+                return "";
 }

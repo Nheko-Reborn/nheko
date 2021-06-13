@@ -35,7 +35,7 @@ Pane {
                         return qsTr("Your device (%1) has requested to be verified.").arg(flow.deviceId);
                 }
             }
-            color: colors.text
+            color: Nheko.colors.text
             verticalAlignment: Text.AlignVCenter
         }
 

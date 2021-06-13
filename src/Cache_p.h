@@ -70,7 +70,8 @@ public:
 
         QMap<QString, RoomInfo> roomInfo(bool withInvites = true);
         std::optional<mtx::events::state::CanonicalAlias> getRoomAliases(const std::string &roomid);
-        std::map<QString, bool> invites();
+        QHash<QString, RoomInfo> invites();
+        std::optional<RoomInfo> invite(std::string_view roomid);
 
         //! Calculate & return the name of the room.
         QString getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
@@ -100,6 +101,7 @@ public:
 
         void saveState(const mtx::responses::Sync &res);
         bool isInitialized();
+        bool isDatabaseReady() { return databaseReady_ && isInitialized(); }
 
         std::string nextBatchToken();
 
@@ -620,6 +622,8 @@ private:
         QString cacheDirectory_;
 
         VerificationStorage verification_storage;
+
+        bool databaseReady_ = false;
 };
 
 namespace cache {

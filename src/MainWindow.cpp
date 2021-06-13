@@ -22,7 +22,6 @@
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "RegisterPage.h"
-#include "Splitter.h"
 #include "TrayIcon.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
@@ -109,10 +108,6 @@ MainWindow::MainWindow(QWidget *parent)
           userSettingsPage_, SIGNAL(trayOptionChanged(bool)), trayIcon_, SLOT(setVisible(bool)));
         connect(
           userSettingsPage_, &UserSettingsPage::themeChanged, chat_page_, &ChatPage::themeChanged);
-        connect(userSettingsPage_,
-                &UserSettingsPage::decryptSidebarChanged,
-                chat_page_,
-                &ChatPage::decryptSidebarChanged);
         connect(trayIcon_,
                 SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
                 this,
@@ -176,20 +171,6 @@ MainWindow::setWindowTitle(int notificationCount)
         QMainWindow::setWindowTitle(name);
 }
 
-void
-MainWindow::showEvent(QShowEvent *event)
-{
-        adjustSideBars();
-        QMainWindow::showEvent(event);
-}
-
-void
-MainWindow::resizeEvent(QResizeEvent *event)
-{
-        adjustSideBars();
-        QMainWindow::resizeEvent(event);
-}
-
 bool
 MainWindow::event(QEvent *event)
 {
@@ -201,22 +182,6 @@ MainWindow::event(QEvent *event)
         }
 
         return QMainWindow::event(event);
-}
-
-void
-MainWindow::adjustSideBars()
-{
-        const auto sz = splitter::calculateSidebarSizes(QFont{});
-
-        const uint64_t timelineWidth     = chat_page_->timelineWidth();
-        const uint64_t minAvailableWidth = sz.collapsePoint + sz.groups;
-
-        nhlog::ui()->info("timelineWidth: {}, min {}", timelineWidth, minAvailableWidth);
-        if (timelineWidth < minAvailableWidth) {
-                chat_page_->hideSideBars();
-        } else {
-                chat_page_->showSideBars();
-        }
 }
 
 void
@@ -295,6 +260,7 @@ MainWindow::showChatPage()
                 &Cache::secretChanged,
                 userSettingsPage_,
                 &UserSettingsPage::updateSecretStatus);
+        emit reload();
 }
 
 void

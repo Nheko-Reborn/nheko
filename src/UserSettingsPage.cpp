@@ -64,10 +64,14 @@ void
 UserSettings::load(std::optional<QString> profile)
 {
         QSettings settings;
-        tray_                    = settings.value("user/window/tray", false).toBool();
+        tray_        = settings.value("user/window/tray", false).toBool();
+        startInTray_ = settings.value("user/window/start_in_tray", false).toBool();
+
+        roomListWidth_      = settings.value("user/sidebar/room_list_width", -1).toInt();
+        communityListWidth_ = settings.value("user/sidebar/community_list_width", -1).toInt();
+
         hasDesktopNotifications_ = settings.value("user/desktop_notifications", true).toBool();
         hasAlertOnNotification_  = settings.value("user/alert_on_notification", false).toBool();
-        startInTray_             = settings.value("user/window/start_in_tray", false).toBool();
         groupView_               = settings.value("user/group_view", true).toBool();
         hiddenTags_              = settings.value("user/hidden_tags", QStringList{}).toStringList();
         buttonsInTimeline_       = settings.value("user/timeline/buttons", true).toBool();
@@ -246,6 +250,24 @@ UserSettings::setTimelineMaxWidth(int state)
                 return;
         timelineMaxWidth_ = state;
         emit timelineMaxWidthChanged(state);
+        save();
+}
+void
+UserSettings::setCommunityListWidth(int state)
+{
+        if (state == communityListWidth_)
+                return;
+        communityListWidth_ = state;
+        emit communityListWidthChanged(state);
+        save();
+}
+void
+UserSettings::setRoomListWidth(int state)
+{
+        if (state == roomListWidth_)
+                return;
+        roomListWidth_ = state;
+        emit roomListWidthChanged(state);
         save();
 }
 
@@ -545,49 +567,14 @@ UserSettings::applyTheme()
 {
         QFile stylefile;
 
-        static QPalette original;
         if (this->theme() == "light") {
                 stylefile.setFileName(":/styles/styles/nheko.qss");
-                QPalette lightActive(
-                  /*windowText*/ QColor("#333"),
-                  /*button*/ QColor("white"),
-                  /*light*/ QColor(0xef, 0xef, 0xef),
-                  /*dark*/ QColor(110, 110, 110),
-                  /*mid*/ QColor(220, 220, 220),
-                  /*text*/ QColor("#333"),
-                  /*bright_text*/ QColor("#333"),
-                  /*base*/ QColor("#fff"),
-                  /*window*/ QColor("white"));
-                lightActive.setColor(QPalette::AlternateBase, QColor("#eee"));
-                lightActive.setColor(QPalette::Highlight, QColor("#38a3d8"));
-                lightActive.setColor(QPalette::ToolTipBase, lightActive.base().color());
-                lightActive.setColor(QPalette::ToolTipText, lightActive.text().color());
-                lightActive.setColor(QPalette::Link, QColor("#0077b5"));
-                lightActive.setColor(QPalette::ButtonText, QColor("#333"));
-                QApplication::setPalette(lightActive);
         } else if (this->theme() == "dark") {
                 stylefile.setFileName(":/styles/styles/nheko-dark.qss");
-                QPalette darkActive(
-                  /*windowText*/ QColor("#caccd1"),
-                  /*button*/ QColor(0xff, 0xff, 0xff),
-                  /*light*/ QColor("#caccd1"),
-                  /*dark*/ QColor(110, 110, 110),
-                  /*mid*/ QColor("#202228"),
-                  /*text*/ QColor("#caccd1"),
-                  /*bright_text*/ QColor(0xff, 0xff, 0xff),
-                  /*base*/ QColor("#202228"),
-                  /*window*/ QColor("#2d3139"));
-                darkActive.setColor(QPalette::AlternateBase, QColor("#2d3139"));
-                darkActive.setColor(QPalette::Highlight, QColor("#38a3d8"));
-                darkActive.setColor(QPalette::ToolTipBase, darkActive.base().color());
-                darkActive.setColor(QPalette::ToolTipText, darkActive.text().color());
-                darkActive.setColor(QPalette::Link, QColor("#38a3d8"));
-                darkActive.setColor(QPalette::ButtonText, "#727274");
-                QApplication::setPalette(darkActive);
         } else {
                 stylefile.setFileName(":/styles/styles/system.qss");
-                QApplication::setPalette(original);
         }
+        QApplication::setPalette(Theme::paletteFromTheme(this->theme().toStdString()));
 
         stylefile.open(QFile::ReadOnly);
         QString stylesheet = QString(stylefile.readAll());
@@ -604,6 +591,11 @@ UserSettings::save()
         settings.beginGroup("window");
         settings.setValue("tray", tray_);
         settings.setValue("start_in_tray", startInTray_);
+        settings.endGroup(); // window
+
+        settings.beginGroup("sidebar");
+        settings.setValue("community_list_width", communityListWidth_);
+        settings.setValue("room_list_width", roomListWidth_);
         settings.endGroup(); // window
 
         settings.beginGroup("timeline");

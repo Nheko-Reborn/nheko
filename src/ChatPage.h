@@ -27,15 +27,10 @@
 
 #include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
-#include "CommunitiesList.h"
 #include "notifications/Manager.h"
 
 class OverlayModal;
-class RoomList;
-class SideBarActions;
-class Splitter;
 class TimelineViewManager;
-class UserInfoWidget;
 class UserSettings;
 class NotificationsManager;
 class TimelineModel;
@@ -53,11 +48,6 @@ struct Notifications;
 struct Sync;
 struct Timeline;
 struct Rooms;
-struct LeftRoom;
-}
-
-namespace popups {
-class UserMentions;
 }
 
 using SecretsToDecrypt = std::map<std::string, mtx::secret_storage::AesHmacSha2EncryptedData>;
@@ -71,7 +61,6 @@ public:
 
         // Initialize all the components of the UI.
         void bootstrap(QString userid, QString homeserver, QString token);
-        QString currentRoom() const { return current_room_; }
 
         static ChatPage *instance() { return instance_; }
 
@@ -80,20 +69,15 @@ public:
         TimelineViewManager *timelineManager() { return view_manager_; }
         void deleteConfigs();
 
-        CommunitiesList *communitiesList() { return communitiesList_; }
-
-        //! Calculate the width of the message timeline.
-        uint64_t timelineWidth();
-        //! Hide the room & group list (if it was visible).
-        void hideSideBars();
-        //! Show the room/group list (if it was visible).
-        void showSideBars();
         void initiateLogout();
 
         QString status() const;
         void setStatus(const QString &status);
 
         mtx::presence::PresenceState currentPresence() const;
+
+        // TODO(Nico): Get rid of this!
+        QString currentRoom() const;
 
 public slots:
         void handleMatrixUri(const QByteArray &uri);
@@ -102,7 +86,6 @@ public slots:
         void startChat(QString userid);
         void leaveRoom(const QString &room_id);
         void createRoom(const mtx::requests::CreateRoom &req);
-        void highlightRoom(const QString &room_id);
         void joinRoom(const QString &room);
         void joinRoomVia(const std::string &room_id,
                          const std::vector<std::string> &via,
@@ -145,13 +128,10 @@ signals:
         void leftRoom(const QString &room_id);
         void newRoom(const QString &room_id);
 
-        void initializeRoomList(QMap<QString, RoomInfo>);
         void initializeViews(const mtx::responses::Rooms &rooms);
-        void initializeEmptyViews(const std::vector<QString> &roomIds);
+        void initializeEmptyViews();
         void initializeMentions(const QMap<QString, mtx::responses::Notifications> &notifs);
         void syncUI(const mtx::responses::Rooms &rooms);
-        void syncRoomlist(const std::map<QString, RoomInfo> &updates);
-        void syncTags(const std::map<QString, RoomInfo> &updates);
         void dropToLoginPageCb(const QString &msg);
 
         void notifyMessage(const QString &roomid,
@@ -161,7 +141,6 @@ signals:
                            const QString &message,
                            const QImage &icon);
 
-        void updateGroupsInfo(const mtx::responses::JoinedGroups &groups);
         void retrievedPresence(const QString &statusMsg, mtx::presence::PresenceState state);
         void themeChanged();
         void decryptSidebarChanged();
@@ -213,55 +192,24 @@ private:
         using Membership  = mtx::events::StateEvent<mtx::events::state::Member>;
         using Memberships = std::map<std::string, Membership>;
 
-        using LeftRooms = std::map<std::string, mtx::responses::LeftRoom>;
-        void removeLeftRooms(const LeftRooms &rooms);
-
         void loadStateFromCache();
         void resetUI();
-        //! Decides whether or not to hide the group's sidebar.
-        void setGroupViewState(bool isEnabled);
 
         template<class Collection>
         Memberships getMemberships(const std::vector<Collection> &events) const;
 
-        //! Update the room with the new notification count.
-        void updateRoomNotificationCount(const QString &room_id,
-                                         uint16_t notification_count,
-                                         uint16_t highlight_count);
         //! Send desktop notification for the received messages.
         void sendNotifications(const mtx::responses::Notifications &);
-
-        void showNotificationsDialog(const QPoint &point);
 
         template<typename T>
         void connectCallMessage();
 
         QHBoxLayout *topLayout_;
-        Splitter *splitter;
-
-        QWidget *sideBar_;
-        QVBoxLayout *sideBarLayout_;
-        QWidget *sideBarTopWidget_;
-        QVBoxLayout *sideBarTopWidgetLayout_;
-
-        QFrame *content_;
-        QVBoxLayout *contentLayout_;
-
-        CommunitiesList *communitiesList_;
-        RoomList *room_list_;
 
         TimelineViewManager *view_manager_;
-        SideBarActions *sidebarActions_;
 
         QTimer connectivityTimer_;
         std::atomic_bool isConnected_;
-
-        QString current_room_;
-        QString current_community_;
-
-        UserInfoWidget *user_info_widget_;
-
-        popups::UserMentions *user_mentions_popup_;
 
         // Global user settings.
         QSharedPointer<UserSettings> userSettings_;

@@ -9,17 +9,17 @@ Item {
     property double tempWidth: Math.min(parent ? parent.width : undefined, model.data.width < 1 ? parent.width : model.data.width)
     property double tempHeight: tempWidth * model.data.proportionalHeight
     property double divisor: model.isReply ? 5 : 3
-    property bool tooHigh: tempHeight > timelineRoot.height / divisor
+    property bool tooHigh: tempHeight > timelineView.height / divisor
 
-    height: Math.round(tooHigh ? timelineRoot.height / divisor : tempHeight)
-    width: Math.round(tooHigh ? (timelineRoot.height / divisor) / model.data.proportionalHeight : tempWidth)
+    height: Math.round(tooHigh ? timelineView.height / divisor : tempHeight)
+    width: Math.round(tooHigh ? (timelineView.height / divisor) / model.data.proportionalHeight : tempWidth)
 
     Image {
         id: blurhash
 
         anchors.fill: parent
         visible: img.status != Image.Ready
-        source: model.data.blurhash ? ("image://blurhash/" + model.data.blurhash) : ("image://colorimage/:/icons/icons/ui/do-not-disturb-rounded-sign@2x.png?" + colors.buttonText)
+        source: model.data.blurhash ? ("image://blurhash/" + model.data.blurhash) : ("image://colorimage/:/icons/icons/ui/do-not-disturb-rounded-sign@2x.png?" + Nheko.colors.buttonText)
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         sourceSize.width: parent.width
@@ -61,7 +61,7 @@ Item {
                 width: parent.width
                 implicitHeight: imgcaption.implicitHeight
                 anchors.bottom: overlay.bottom
-                color: colors.window
+                color: Nheko.colors.window
                 opacity: 0.75
             }
 
@@ -74,7 +74,7 @@ Item {
                 verticalAlignment: Text.AlignVCenter
                 // See this MSC: https://github.com/matrix-org/matrix-doc/pull/2530
                 text: model.data.filename ? model.data.filename : model.data.body
-                color: colors.text
+                color: Nheko.colors.text
             }
 
         }

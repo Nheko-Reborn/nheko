@@ -123,11 +123,16 @@
     <qresource prefix="/">
         <file>qtquickcontrols2.conf</file>
 
+        <file>qml/Root.qml</file>
+        <file>qml/ChatPage.qml</file>
+        <file>qml/CommunitiesList.qml</file>
+        <file>qml/RoomList.qml</file>
         <file>qml/TimelineView.qml</file>
         <file>qml/Avatar.qml</file>
         <file>qml/Completer.qml</file>
         <file>qml/EncryptionIndicator.qml</file>
         <file>qml/ImageButton.qml</file>
+        <file>qml/ElidedLabel.qml</file>
         <file>qml/MatrixText.qml</file>
         <file>qml/MatrixTextField.qml</file>
         <file>qml/ToggleButton.qml</file>
@@ -164,6 +169,7 @@
         <file>qml/device-verification/NewVerificationRequest.qml</file>
         <file>qml/device-verification/Failed.qml</file>
         <file>qml/device-verification/Success.qml</file>
+        <file>qml/dialogs/InputDialog.qml</file>
         <file>qml/ui/Ripple.qml</file>
         <file>qml/voip/ActiveCallBar.qml</file>
         <file>qml/voip/CallDevices.qml</file>
@@ -173,6 +179,8 @@
         <file>qml/voip/PlaceCall.qml</file>
         <file>qml/voip/ScreenShare.qml</file>
         <file>qml/voip/VideoCall.qml</file>
+        <file>qml/components/AdaptiveLayout.qml</file>
+        <file>qml/components/AdaptiveLayoutElement.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>

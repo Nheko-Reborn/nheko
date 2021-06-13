@@ -35,7 +35,7 @@ void
 NhekoDropArea::dropEvent(QDropEvent *event)
 {
         if (event) {
-                auto model = ChatPage::instance()->timelineManager()->getHistoryView(roomid_);
+                auto model = ChatPage::instance()->timelineManager()->rooms()->getRoomById(roomid_);
                 if (model) {
                         model->input()->insertMimeData(event->mimeData());
                 }

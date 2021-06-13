@@ -253,6 +253,8 @@ Cache::setup()
         outboundMegolmSessionDb_ = lmdb::dbi::open(txn, OUTBOUND_MEGOLM_SESSIONS_DB, MDB_CREATE);
 
         txn.commit();
+
+        databaseReady_ = true;
 }
 
 void
@@ -788,6 +790,7 @@ Cache::nextBatchToken()
 void
 Cache::deleteData()
 {
+        this->databaseReady_ = false;
         // TODO: We need to remove the env_ while not accepting new requests.
         lmdb::dbi_close(env_, syncStateDb_);
         lmdb::dbi_close(env_, roomsDb_);
@@ -2042,21 +2045,57 @@ Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
         return fallbackDesc;
 }
 
-std::map<QString, bool>
+QHash<QString, RoomInfo>
 Cache::invites()
 {
-        std::map<QString, bool> result;
+        QHash<QString, RoomInfo> result;
 
         auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         auto cursor = lmdb::cursor::open(txn, invitesDb_);
 
-        std::string_view room_id, unused;
+        std::string_view room_id, room_data;
 
-        while (cursor.get(room_id, unused, MDB_NEXT))
-                result.emplace(QString::fromStdString(std::string(room_id)), true);
+        while (cursor.get(room_id, room_data, MDB_NEXT)) {
+                try {
+                        RoomInfo tmp     = json::parse(room_data);
+                        tmp.member_count = getInviteMembersDb(txn, std::string(room_id)).size(txn);
+                        result.insert(QString::fromStdString(std::string(room_id)), std::move(tmp));
+                } catch (const json::exception &e) {
+                        nhlog::db()->warn("failed to parse room info for invite: "
+                                          "room_id ({}), {}: {}",
+                                          room_id,
+                                          std::string(room_data),
+                                          e.what());
+                }
+        }
 
         cursor.close();
-        txn.commit();
+
+        return result;
+}
+
+std::optional<RoomInfo>
+Cache::invite(std::string_view roomid)
+{
+        std::optional<RoomInfo> result;
+
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        std::string_view room_data;
+
+        if (invitesDb_.get(txn, roomid, room_data)) {
+                try {
+                        RoomInfo tmp     = json::parse(room_data);
+                        tmp.member_count = getInviteMembersDb(txn, std::string(roomid)).size(txn);
+                        result           = std::move(tmp);
+                } catch (const json::exception &e) {
+                        nhlog::db()->warn("failed to parse room info for invite: "
+                                          "room_id ({}), {}: {}",
+                                          roomid,
+                                          std::string(room_data),
+                                          e.what());
+                }
+        }
 
         return result;
 }
@@ -2426,7 +2465,7 @@ Cache::joinedRooms()
 std::optional<MemberInfo>
 Cache::getMember(const std::string &room_id, const std::string &user_id)
 {
-        if (user_id.empty())
+        if (user_id.empty() || !env_.handle())
                 return std::nullopt;
 
         try {
@@ -2440,7 +2479,8 @@ Cache::getMember(const std::string &room_id, const std::string &user_id)
                         return m;
                 }
         } catch (std::exception &e) {
-                nhlog::db()->warn("Failed to read member ({}): {}", user_id, e.what());
+                nhlog::db()->warn(
+                  "Failed to read member ({}) in room ({}): {}", user_id, room_id, e.what());
         }
         return std::nullopt;
 }
@@ -3412,6 +3452,10 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
 
                         if (!updateToWrite.master_keys.keys.empty() &&
                             update.master_keys.keys != updateToWrite.master_keys.keys) {
+                                nhlog::db()->debug("Master key of {} changed:\nold: {}\nnew: {}",
+                                                   user,
+                                                   updateToWrite.master_keys.keys.size(),
+                                                   update.master_keys.keys.size());
                                 updateToWrite.master_key_changed = true;
                         }
 
@@ -3466,6 +3510,7 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                         }
                 }
         }
+
         for (auto &[user_id, update] : updates) {
                 (void)update;
                 if (user_id == local_user) {
@@ -3473,9 +3518,8 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                                 (void)status;
                                 emit verificationStatusChanged(user);
                         }
-                } else {
-                        emit verificationStatusChanged(user_id);
                 }
+                emit verificationStatusChanged(user_id);
         }
 }
 
@@ -3549,10 +3593,23 @@ Cache::query_keys(const std::string &user_id,
                 last_changed = cache_->last_changed;
         req.token = last_changed;
 
+        // use context object so that we can disconnect again
+        QObject *context{new QObject(this)};
+        QObject::connect(this,
+                         &Cache::verificationStatusChanged,
+                         context,
+                         [cb, user_id, context_ = context](std::string updated_user) mutable {
+                                 if (user_id == updated_user) {
+                                         context_->deleteLater();
+                                         auto keys = cache::userKeys(user_id);
+                                         cb(keys.value_or(UserKeyCache{}), {});
+                                 }
+                         });
+
         http::client()->query_keys(
           req,
-          [cb, user_id, last_changed](const mtx::responses::QueryKeys &res,
-                                      mtx::http::RequestErr err) {
+          [cb, user_id, last_changed, this](const mtx::responses::QueryKeys &res,
+                                            mtx::http::RequestErr err) {
                   if (err) {
                           nhlog::net()->warn("failed to query device keys: {},{}",
                                              mtx::errors::to_string(err->matrix_error.errcode),
@@ -3561,10 +3618,7 @@ Cache::query_keys(const std::string &user_id,
                           return;
                   }
 
-                  cache::updateUserKeys(last_changed, res);
-
-                  auto keys = cache::userKeys(user_id);
-                  cb(keys.value_or(UserKeyCache{}), err);
+                  emit userKeysUpdate(last_changed, res);
           });
 }
 
@@ -3999,6 +4053,8 @@ avatarUrl(const QString &room_id, const QString &user_id)
 mtx::presence::PresenceState
 presenceState(const std::string &user_id)
 {
+        if (!instance_)
+                return {};
         return instance_->presenceState(user_id);
 }
 std::string
@@ -4049,7 +4105,7 @@ roomInfo(bool withInvites)
 {
         return instance_->roomInfo(withInvites);
 }
-std::map<QString, bool>
+QHash<QString, RoomInfo>
 invites()
 {
         return instance_->invites();

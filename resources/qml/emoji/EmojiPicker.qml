@@ -18,9 +18,9 @@ Menu {
     property alias model: gridView.model
     property var textArea
     property string emojiCategory: "people"
-    property real highlightHue: colors.highlight.hslHue
-    property real highlightSat: colors.highlight.hslSaturation
-    property real highlightLight: colors.highlight.hslLightness
+    property real highlightHue: Nheko.colors.highlight.hslHue
+    property real highlightSat: Nheko.colors.highlight.hslSaturation
+    property real highlightLight: Nheko.colors.highlight.hslLightness
 
     function show(showAt, callback) {
         console.debug("Showing emojiPicker");
@@ -80,7 +80,7 @@ Menu {
                 id: clearSearch
 
                 visible: emojiSearch.text !== ''
-                icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.png?" + (clearSearch.hovered ? colors.highlight : colors.buttonText)
+                icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.png?" + (clearSearch.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
                 focusPolicy: Qt.NoFocus
                 onClicked: emojiSearch.clear()
 
@@ -146,7 +146,7 @@ Menu {
 
                 background: Rectangle {
                     anchors.fill: parent
-                    color: hovered ? colors.highlight : 'transparent'
+                    color: hovered ? Nheko.colors.highlight : 'transparent'
                     radius: 5
                 }
 
@@ -163,7 +163,7 @@ Menu {
             visible: emojiSearch.text === ''
             Layout.fillWidth: true
             Layout.preferredHeight: 1
-            color: emojiPopup.colors.alternateBase
+            color: emojiPopup.Nheko.colors.alternateBase
         }
 
         // Category picker row
@@ -265,14 +265,14 @@ Menu {
                         fillMode: Image.Pad
                         sourceSize.width: 32
                         sourceSize.height: 32
-                        source: "image://colorimage/" + model.image + "?" + (hovered ? colors.highlight : colors.buttonText)
+                        source: "image://colorimage/" + model.image + "?" + (hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
                     }
 
                     background: Rectangle {
                         anchors.fill: parent
                         color: emojiPopup.model.category === model.category ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.2) : 'transparent'
                         radius: 5
-                        border.color: emojiPopup.model.category === model.category ? colors.highlight : 'transparent'
+                        border.color: emojiPopup.model.category === model.category ? Nheko.colors.highlight : 'transparent'
                     }
 
                 }
