@@ -543,7 +543,7 @@ Page {
                 anchors.margins: Nheko.paddingMedium
 
                 ImageButton {
-                    Layout.alignment: Qt.AlignBottom | Qt.AlignLeft
+                    Layout.fillWidth: true
                     hoverEnabled: true
                     width: 22
                     height: 22
@@ -572,7 +572,7 @@ Page {
 
                 ImageButton {
                     visible: !collapsed
-                    Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
+                    Layout.fillWidth: true
                     hoverEnabled: true
                     width: 22
                     height: 22
@@ -584,7 +584,7 @@ Page {
 
                 ImageButton {
                     visible: !collapsed
-                    Layout.alignment: Qt.AlignBottom | Qt.AlignRight
+                    Layout.fillWidth: true
                     hoverEnabled: true
                     width: 22
                     height: 22

@@ -26,6 +26,7 @@ AbstractButton {
         // Workaround, can't get icon.source working for now...
         anchors.fill: parent
         source: image != "" ? ("image://colorimage/" + image + "?" + ((button.hovered && changeColorOnHover) ? highlightColor : buttonTextColor)) : ""
+        fillMode: Image.PreserveAspectFit
     }
 
     CursorShape {
