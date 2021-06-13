@@ -37,7 +37,6 @@ MemberList::MemberList(const QString &room_id, QWidget *parent)
                 auto members = cache::getMembers(room_id_.toStdString());
                 addUsers(members);
                 numUsersLoaded_ = members.size();
-                emit numUsersLoadedChanged();
         } catch (const lmdb::error &e) {
                 nhlog::db()->critical("Failed to retrieve members from cache: {}", e.what());
         }
