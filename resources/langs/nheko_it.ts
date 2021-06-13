@@ -6,7 +6,7 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+106"/>
         <source>Calling...</source>
-        <translation>Sto chiamando</translation>
+        <translation>Chiamata in corso...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -17,7 +17,7 @@
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>Stai condividendo il tuo schermo</translation>
+        <translation>Stai condividendo lo schermo</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -27,12 +27,12 @@
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation>Attiva Microfono</translation>
+        <translation>Riattiva Microfono</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation>Silenzia Microfono</translation>
+        <translation>Silenzia microfono</translation>
     </message>
 </context>
 <context>
@@ -127,7 +127,7 @@
     <message>
         <location filename="../../src/CallManager.cpp" line="+521"/>
         <source>Entire screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Schermo completo</translation>
     </message>
 </context>
 <context>
@@ -237,7 +237,7 @@
     <message>
         <location line="+227"/>
         <source>Do you really want to start a private chat with %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sei sicuro di voler avviare una chat privata con %1?</translation>
     </message>
     <message>
         <location line="-818"/>
@@ -430,7 +430,7 @@
     <message>
         <location line="+172"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>Membri</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -440,7 +440,7 @@
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished"></translation>
+        <translation>Cibo</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -478,7 +478,7 @@
     <message>
         <location line="+10"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Prego verificare le seguenti emoji. Dovresti vedere le stesse emoji su ambo i lati. Se sono diverse, premi &apos;Non Corrispondono!&apos; per annullare la verifica!</translation>
     </message>
     <message>
         <location line="+376"/>
@@ -533,20 +533,20 @@
         <location line="+63"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation type="unfinished">-- Errore di Decrittazione (impossibile recuperare le chiavi megolm dal DB) --</translation>
+        <translation>-- Errore di Decrittazione (impossibile recuperare le chiavi megolm dal DB) --</translation>
     </message>
     <message>
         <location line="-49"/>
         <location line="+62"/>
         <source>-- Decryption Error (%1) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
-        <translation type="unfinished">-- Errore di Decrittazione (%1) --</translation>
+        <translation>-- Errore di Decrittazione (%1) --</translation>
     </message>
     <message>
         <location line="-52"/>
         <source>-- Encrypted Event (Unknown event type) --</source>
         <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
-        <translation type="unfinished">-- Evento Criptato (Tipo di evento ignoto) --</translation>
+        <translation>-- Evento Criptato (Tipo di evento ignoto) --</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -564,7 +564,7 @@
     <message>
         <location filename="../qml/device-verification/Failed.qml" line="+11"/>
         <source>Verification failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifica fallita</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -580,12 +580,12 @@
         <location line="+2"/>
         <location line="+4"/>
         <source>Device verification timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo di verifica del dispositivo scaduto.</translation>
     </message>
     <message>
         <location line="-2"/>
         <source>Other party canceled the verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;altra parte ha annullato la verifica.</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -598,7 +598,7 @@
     <message>
         <location filename="../qml/ForwardCompleter.qml" line="+44"/>
         <source>Forward Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Inoltra Messaggio</translation>
     </message>
 </context>
 <context>
@@ -658,7 +658,7 @@ Se Nheko non conclude la ricerca del tuo homeserver, ti mostrerà un campo in cu
     <message>
         <location line="+2"/>
         <source>Your password.</source>
-        <translation type="unfinished"></translation>
+        <translation>La tua password.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -673,12 +673,12 @@ Se Nheko non conclude la ricerca del tuo homeserver, ti mostrerà un campo in cu
     <message>
         <location line="+4"/>
         <source>Homeserver address</source>
-        <translation type="unfinished"></translation>
+        <translation>Indirizzo Homeserver</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>server.my:8787</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -698,7 +698,7 @@ Esempio: https://server.mio:8787</translation>
         <location line="+160"/>
         <location line="+11"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>Hai inserito un ID Matrix non valido, es @joe:matrix.org</translation>
     </message>
     <message>
         <location line="-132"/>
@@ -760,7 +760,7 @@ Esempio: https://server.mio:8787</translation>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+110"/>
         <location line="+9"/>
         <source>removed</source>
-        <translation type="unfinished"></translation>
+        <translation>rimosso</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -795,7 +795,7 @@ Esempio: https://server.mio:8787</translation>
     <message>
         <location line="+12"/>
         <source>%1 placed a voice call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ha avviato una chiamata audio.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -810,12 +810,12 @@ Esempio: https://server.mio:8787</translation>
     <message>
         <location line="+11"/>
         <source>%1 answered the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ha risposto alla chiamata.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 ended the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ha terminato la chiamata.</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -828,12 +828,12 @@ Esempio: https://server.mio:8787</translation>
     <message>
         <location filename="../qml/MessageInput.qml" line="+43"/>
         <source>Hang up</source>
-        <translation type="unfinished"></translation>
+        <translation>Termina</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Place a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Avvia una chiamata</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -853,12 +853,12 @@ Esempio: https://server.mio:8787</translation>
     <message>
         <location line="+16"/>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>Invia</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>You don&apos;t have permission to send messages in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Non hai i permessi per inviare messaggi in questa stanza</translation>
     </message>
 </context>
 <context>
@@ -866,12 +866,12 @@ Esempio: https://server.mio:8787</translation>
     <message>
         <location filename="../qml/MessageView.qml" line="+82"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifica</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Reagisci</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -889,27 +889,28 @@ Esempio: https://server.mio:8787</translation>
     <message>
         <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+11"/>
         <source>Send Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Invia richiesta di verifica</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Received Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Richiesta di verifica ricevuta</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Per permettere agli altri utenti di vedere che dispositivi ti appartengono, puoi verificarli. Questo inoltre permette alle chiavi di recupero di funzionare automaticamente.
+Verificare %1 adesso?</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To ensure that no malicious user can eavesdrop on your encrypted communications you can verify the other party.</source>
-        <translation type="unfinished"></translation>
+        <translation>Per assicurati che nessun malintenzionato intercetti le tue telefonate crittate, puoi verificare l&apos;altra parte.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has requested to verify their device %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ha richiesto di verificare il dispositivo %2.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -919,7 +920,7 @@ Esempio: https://server.mio:8787</translation>
     <message>
         <location line="+2"/>
         <source>Your device (%1) has requested to be verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il tuo dispositivo (%1) ha richiesto di essere verificato.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -929,12 +930,12 @@ Esempio: https://server.mio:8787</translation>
     <message>
         <location line="+0"/>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>Nega</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Start verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Inizia verifica</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -955,13 +956,13 @@ Esempio: https://server.mio:8787</translation>
         <location line="+4"/>
         <source>* %1 %2</source>
         <comment>Format an emote message in a notification, %1 is the sender, %2 the message</comment>
-        <translation type="unfinished"></translation>
+        <translation>* %1 %2</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 replied: %2</source>
         <comment>Format a reply in a notification. %1 is the sender, %2 the message</comment>
-        <translation type="unfinished"></translation>
+        <translation>Risposta di %1: %2</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -973,7 +974,7 @@ Esempio: https://server.mio:8787</translation>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-1"/>
         <location filename="../../src/notifications/ManagerWin.cpp" line="-1"/>
         <source>%1 replied with an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ha risposto con un messaggio criptato</translation>
     </message>
     <message>
         <location line="+6"/>
