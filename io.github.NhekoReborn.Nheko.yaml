@@ -63,9 +63,9 @@ modules:
     buildsystem: cmake-ninja
     name: olm
     sources:
-      - commit: 6753595300767dd70150831dbbe6f92d64e75038
+      - commit: 64afab93645957846d936a19b8501dbd3f2cc4a1
         disable-shallow-clone: true
-        tag: 3.1.4
+        tag: 3.2.4
         type: git
         url: https://gitlab.matrix.org/matrix-org/olm.git
   - config-opts:

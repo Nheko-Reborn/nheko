@@ -369,7 +369,7 @@ if(USE_BUNDLED_OLM)
 	FetchContent_Declare(
 		Olm
 		GIT_REPOSITORY https://gitlab.matrix.org/matrix-org/olm.git
-		GIT_TAG        3.1.4
+		GIT_TAG        3.2.4
 		)
 	set(OLM_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(Olm)
