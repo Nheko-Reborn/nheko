@@ -17,6 +17,7 @@ class CommunitiesModel : public QAbstractListModel
         Q_PROPERTY(QString currentTagId READ currentTagId WRITE setCurrentTagId NOTIFY
                      currentTagIdChanged RESET resetCurrentTagId)
         Q_PROPERTY(QStringList tags READ tags NOTIFY tagsChanged)
+        Q_PROPERTY(QStringList tagsWithDefault READ tagsWithDefault NOTIFY tagsChanged)
 
 public:
         enum Roles
@@ -50,6 +51,15 @@ public slots:
                 emit currentTagIdChanged(currentTagId_);
         }
         QStringList tags() const { return tags_; }
+        QStringList tagsWithDefault() const
+        {
+                QStringList tagsWD = tags_;
+                tagsWD.prepend("m.lowpriority");
+                tagsWD.prepend("m.favourite");
+                tagsWD.removeOne("m.server_notice");
+                tagsWD.removeDuplicates();
+                return tagsWD;
+        }
         void toggleTagId(QString tagId);
 
 signals:

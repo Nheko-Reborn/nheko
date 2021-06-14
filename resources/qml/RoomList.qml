@@ -70,7 +70,7 @@ Page {
             }
 
             Instantiator {
-                model: Communities.tags
+                model: Communities.tagsWithDefault
                 onObjectAdded: roomContextMenu.insertItem(index + 2, object)
                 onObjectRemoved: roomContextMenu.removeItem(object)
 
