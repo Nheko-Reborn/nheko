@@ -17,7 +17,7 @@ Rectangle {
         id: adaptiveView
 
         anchors.fill: parent
-        singlePageMode: width < communityListC.maximumWidth + roomListC.maximumWidth + timlineViewC.minimumWidth
+        singlePageMode: communityListC.preferredWidth + roomListC.preferredWidth + timlineViewC.minimumWidth > width
         pageIndex: Rooms.currentRoom ? 2 : 1
 
         AdaptiveLayoutElement {
@@ -71,7 +71,7 @@ Rectangle {
         AdaptiveLayoutElement {
             id: timlineViewC
 
-            minimumWidth: 400
+            minimumWidth: fontMetrics.averageCharacterWidth * 40 + Nheko.avatarSize + 2* Nheko.paddingMedium
 
             TimelineView {
                 id: timeline
