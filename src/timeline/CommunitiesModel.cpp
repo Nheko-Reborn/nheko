@@ -58,7 +58,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
                 } else if (tag == "m.lowpriority") {
                         switch (role) {
                         case CommunitiesModel::Roles::AvatarUrl:
-                                return QString(":/icons/icons/ui/star.png");
+                                return QString(":/icons/icons/ui/lowprio.png");
                         case CommunitiesModel::Roles::DisplayName:
                                 return tr("Low Priority");
                         case CommunitiesModel::Roles::Tooltip:
