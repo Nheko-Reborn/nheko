@@ -22,7 +22,7 @@
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kaŝi/Montri bildon en bildo</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -76,7 +76,7 @@
     <message>
         <location line="+62"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Neniu mikrofono troviĝis.</translation>
     </message>
 </context>
 <context>
@@ -119,7 +119,7 @@
     <message>
         <location line="-28"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Neniu mikrofono troviĝis.</translation>
     </message>
 </context>
 <context>
@@ -146,7 +146,7 @@
     <message>
         <location line="-509"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis migrado de kaŝmemoro al nuna versio. Tio povas havi diversajn kialojn. Bonvolu raporti eraron kaj dume provi malpli novan version. Alternative, vi povas provi forigi la kaŝmemoron permane.</translation>
     </message>
     <message>
         <location line="+412"/>
@@ -243,17 +243,17 @@
     <message>
         <location line="-818"/>
         <source>Cache migration failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis migrado de kaŝmemoro!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Incompatible cache version</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neakorda versio de kaŝmemoro</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>La kaŝmemoro sur via disko estas pli nova ol kiom ĉi tiu versio de Nheko subtenas. Bonvolu ĝisdatigi, aŭ vakigi vian kaŝmemoron.</translation>
     </message>
     <message>
         <location line="+50"/>
