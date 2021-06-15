@@ -44,8 +44,23 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
                 case CommunitiesModel::Roles::Id:
                         return "";
                 }
-        } else if (index.row() - 1 < tags_.size()) {
-                auto tag = tags_.at(index.row() - 1);
+        } else if (index.row() - 1 < spaceOrder_.size()) {
+                auto id = spaceOrder_.at(index.row() - 1);
+                switch (role) {
+                case CommunitiesModel::Roles::AvatarUrl:
+                        return QString::fromStdString(spaces_.at(id).avatar_url);
+                case CommunitiesModel::Roles::DisplayName:
+                case CommunitiesModel::Roles::Tooltip:
+                        return QString::fromStdString(spaces_.at(id).name);
+                case CommunitiesModel::Roles::ChildrenHidden:
+                        return true;
+                case CommunitiesModel::Roles::Hidden:
+                        return hiddentTagIds_.contains("space:" + id);
+                case CommunitiesModel::Roles::Id:
+                        return "space:" + id;
+                }
+        } else if (index.row() - 1 < tags_.size() + spaceOrder_.size()) {
+                auto tag = tags_.at(index.row() - 1 - spaceOrder_.size());
                 if (tag == "m.favourite") {
                         switch (role) {
                         case CommunitiesModel::Roles::AvatarUrl:
@@ -78,7 +93,6 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
                         case CommunitiesModel::Roles::AvatarUrl:
                                 return QString(":/icons/icons/ui/tag.png");
                         case CommunitiesModel::Roles::DisplayName:
-                                return tag.mid(2);
                         case CommunitiesModel::Roles::Tooltip:
                                 return tag.mid(2);
                         }
@@ -99,17 +113,27 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
 void
 CommunitiesModel::initializeSidebar()
 {
+        beginResetModel();
+        tags_.clear();
+        spaceOrder_.clear();
+        spaces_.clear();
+
         std::set<std::string> ts;
-        for (const auto &e : cache::roomInfo()) {
-                for (const auto &t : e.tags) {
-                        if (t.find("u.") == 0 || t.find("m." == 0)) {
-                                ts.insert(t);
+        std::vector<RoomInfo> tempSpaces;
+        auto infos = cache::roomInfo();
+        for (auto it = infos.begin(); it != infos.end(); it++) {
+                if (it.value().is_space) {
+                        spaceOrder_.push_back(it.key());
+                        spaces_[it.key()] = it.value();
+                } else {
+                        for (const auto &t : it.value().tags) {
+                                if (t.find("u.") == 0 || t.find("m." == 0)) {
+                                        ts.insert(t);
+                                }
                         }
                 }
         }
 
-        beginResetModel();
-        tags_.clear();
         for (const auto &t : ts)
                 tags_.push_back(QString::fromStdString(t));
 

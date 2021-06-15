@@ -76,6 +76,8 @@ struct RoomInfo
         std::string version;
         //! Whether or not the room is an invite.
         bool is_invite = false;
+        //! Wheter or not the room is a space
+        bool is_space = false;
         //! Total number of members in the room.
         size_t member_count = 0;
         //! Who can access to the room.

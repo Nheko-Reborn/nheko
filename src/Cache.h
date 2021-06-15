@@ -79,9 +79,6 @@ getRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb);
 //! Retrieve the room avatar's url if any.
 QString
 getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
-//! Retrieve the version of the room if any.
-QString
-getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb);
 
 //! Retrieve member info from a room.
 std::vector<RoomMember>
@@ -165,9 +162,6 @@ bool
 calculateRoomReadStatus(const std::string &room_id);
 void
 calculateRoomReadStatus();
-
-std::vector<RoomSearchResult>
-searchRooms(const std::string &query, std::uint8_t max_items = 5);
 
 void
 markSentNotification(const std::string &event_id);

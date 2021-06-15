@@ -11,6 +11,8 @@
 
 #include <mtx/responses/sync.hpp>
 
+#include "CacheStructs.h"
+
 class CommunitiesModel : public QAbstractListModel
 {
         Q_OBJECT
@@ -71,4 +73,6 @@ private:
         QStringList tags_;
         QString currentTagId_;
         QStringList hiddentTagIds_;
+        QStringList spaceOrder_;
+        std::map<QString, RoomInfo> spaces_;
 };
