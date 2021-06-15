@@ -280,10 +280,10 @@ ApplicationWindow {
 
         }
 
-        Button {
-            Layout.alignment: Qt.AlignRight
-            text: qsTr("OK")
-            onClicked: close()
+        DialogButtonBox {
+            Layout.fillWidth: true
+            standardButtons: DialogButtonBox.Ok
+            onAccepted: close()
         }
 
     }
