@@ -71,7 +71,7 @@ Rectangle {
         AdaptiveLayoutElement {
             id: timlineViewC
 
-            minimumWidth: fontMetrics.averageCharacterWidth * 40 + Nheko.avatarSize + 2* Nheko.paddingMedium
+            minimumWidth: fontMetrics.averageCharacterWidth * 40 + Nheko.avatarSize + 2 * Nheko.paddingMedium
 
             TimelineView {
                 id: timeline
