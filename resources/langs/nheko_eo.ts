@@ -253,7 +253,7 @@
     <message>
         <location line="+1"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation>La kaŝmemoro sur via disko estas pli nova ol kiom ĉi tiu versio de Nheko subtenas. Bonvolu ĝisdatigi, aŭ vakigi vian kaŝmemoron.</translation>
+        <translation>La kaŝmemoro sur via disko estas pli nova ol kiom ĉi tiu versio de Nheko subtenas. Bonvolu ĝisdatigi la programon aŭ vakigi vian kaŝmemoron.</translation>
     </message>
     <message>
         <location line="+50"/>
@@ -268,7 +268,7 @@
     <message>
         <location line="+145"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis agordi ĉifrajn ŝlosilojn. Respondo de servilo: %1 %2. Bonvolu reprovi poste.</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -507,7 +507,7 @@
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉifrita de nekontrolita aparato, sed vi fidis je tiu uzanto ĝis nun.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -736,12 +736,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+267"/>
         <source>Empty password</source>
-        <translation type="unfinished"></translation>
+        <translation>Malplena pasvorto</translation>
     </message>
     <message>
         <location line="+57"/>
         <source>SSO login failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis ununura saluto</translation>
     </message>
 </context>
 <context>
