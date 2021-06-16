@@ -530,6 +530,30 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                                         return false;
                 }
                 return true;
+        } else if (filterType == FilterBy::Space) {
+                auto roomid = sourceModel()
+                                ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::RoomId)
+                                .toString();
+                auto tags = sourceModel()
+                              ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
+                              .toStringList();
+
+                auto contains = [](const std::vector<std::string> &v, const std::string &str) {
+                        for (const auto &e : v)
+                                if (e == str)
+                                        return true;
+                        return false;
+                };
+                auto parents = cache::client()->getParentRoomIds(roomid.toStdString());
+
+                if (!contains(parents, filterStr.toStdString()))
+                        return false;
+                else if (!hiddenTags.empty()) {
+                        for (const auto &t : tags)
+                                if (hiddenTags.contains(t))
+                                        return false;
+                }
+                return true;
         } else {
                 return true;
         }

@@ -905,7 +905,9 @@ Cache::runMigrations()
                                                    std::reverse(oldMessages.events.begin(),
                                                                 oldMessages.events.end());
                                                    // save messages using the new method
-                                                   saveTimelineMessages(txn, room_id, oldMessages);
+                                                   auto eventsDb = getEventsDb(txn, room_id);
+                                                   saveTimelineMessages(
+                                                     txn, eventsDb, room_id, oldMessages);
                                            }
 
                                            // delete old messages db
@@ -1208,13 +1210,24 @@ Cache::saveState(const mtx::responses::Sync &res)
                 auto statesdb    = getStatesDb(txn, room.first);
                 auto stateskeydb = getStatesKeyDb(txn, room.first);
                 auto membersdb   = getMembersDb(txn, room.first);
+                auto eventsDb    = getEventsDb(txn, room.first);
 
-                saveStateEvents(
-                  txn, statesdb, stateskeydb, membersdb, room.first, room.second.state.events);
-                saveStateEvents(
-                  txn, statesdb, stateskeydb, membersdb, room.first, room.second.timeline.events);
+                saveStateEvents(txn,
+                                statesdb,
+                                stateskeydb,
+                                membersdb,
+                                eventsDb,
+                                room.first,
+                                room.second.state.events);
+                saveStateEvents(txn,
+                                statesdb,
+                                stateskeydb,
+                                membersdb,
+                                eventsDb,
+                                room.first,
+                                room.second.timeline.events);
 
-                saveTimelineMessages(txn, room.first, room.second.timeline);
+                saveTimelineMessages(txn, eventsDb, room.first, room.second.timeline);
 
                 RoomInfo updatedInfo;
                 updatedInfo.name       = getRoomName(txn, statesdb, membersdb).toStdString();
@@ -2634,11 +2647,12 @@ void
 Cache::savePendingMessage(const std::string &room_id,
                           const mtx::events::collections::TimelineEvent &message)
 {
-        auto txn = lmdb::txn::begin(env_);
+        auto txn      = lmdb::txn::begin(env_);
+        auto eventsDb = getEventsDb(txn, room_id);
 
         mtx::responses::Timeline timeline;
         timeline.events.push_back(message.data);
-        saveTimelineMessages(txn, room_id, timeline);
+        saveTimelineMessages(txn, eventsDb, room_id, timeline);
 
         auto pending = getPendingMessagesDb(txn, room_id);
 
@@ -2706,13 +2720,13 @@ Cache::removePendingStatus(const std::string &room_id, const std::string &txn_id
 
 void
 Cache::saveTimelineMessages(lmdb::txn &txn,
+                            lmdb::dbi &eventsDb,
                             const std::string &room_id,
                             const mtx::responses::Timeline &res)
 {
         if (res.events.empty())
                 return;
 
-        auto eventsDb    = getEventsDb(txn, room_id);
         auto relationsDb = getRelationsDb(txn, room_id);
 
         auto orderDb     = getEventOrderDb(txn, room_id);

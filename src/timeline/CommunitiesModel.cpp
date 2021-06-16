@@ -185,6 +185,15 @@ CommunitiesModel::setCurrentTagId(QString tagId)
                                 return;
                         }
                 }
+        } else if (tagId.startsWith("space:")) {
+                auto tag = tagId.mid(6);
+                for (const auto &t : spaceOrder_) {
+                        if (t == tag) {
+                                this->currentTagId_ = tagId;
+                                emit currentTagIdChanged(currentTagId_);
+                                return;
+                        }
+                }
         }
 
         this->currentTagId_ = "";

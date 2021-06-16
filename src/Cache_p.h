@@ -335,6 +335,7 @@ private:
         std::string getLastEventId(lmdb::txn &txn, const std::string &room_id);
         DescInfo getLastMessageInfo(lmdb::txn &txn, const std::string &room_id);
         void saveTimelineMessages(lmdb::txn &txn,
+                                  lmdb::dbi &eventsDb,
                                   const std::string &room_id,
                                   const mtx::responses::Timeline &res);
 
@@ -353,11 +354,12 @@ private:
                              lmdb::dbi &statesdb,
                              lmdb::dbi &stateskeydb,
                              lmdb::dbi &membersdb,
+                             lmdb::dbi &eventsDb,
                              const std::string &room_id,
                              const std::vector<T> &events)
         {
                 for (const auto &e : events)
-                        saveStateEvent(txn, statesdb, stateskeydb, membersdb, room_id, e);
+                        saveStateEvent(txn, statesdb, stateskeydb, membersdb, eventsDb, room_id, e);
         }
 
         template<class T>
@@ -365,6 +367,7 @@ private:
                             lmdb::dbi &statesdb,
                             lmdb::dbi &stateskeydb,
                             lmdb::dbi &membersdb,
+                            lmdb::dbi &eventsDb,
                             const std::string &room_id,
                             const T &event)
         {
@@ -401,8 +404,10 @@ private:
                 }
 
                 std::visit(
-                  [&txn, &statesdb, &stateskeydb](auto e) {
-                          if constexpr (isStateEvent(e))
+                  [&txn, &statesdb, &stateskeydb, &eventsDb](auto e) {
+                          if constexpr (isStateEvent(e)) {
+                                  eventsDb.put(txn, e.event_id, json(e).dump());
+
                                   if (e.type != EventType::Unsupported) {
                                           if (e.state_key.empty())
                                                   statesdb.put(
@@ -417,6 +422,7 @@ private:
                                                                  })
                                                       .dump());
                                   }
+                          }
                   },
                   event);
         }

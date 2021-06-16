@@ -134,6 +134,9 @@ public slots:
                 if (tagId.startsWith("tag:")) {
                         filterType = FilterBy::Tag;
                         filterStr  = tagId.mid(4);
+                } else if (tagId.startsWith("space:")) {
+                        filterType = FilterBy::Space;
+                        filterStr  = tagId.mid(6);
                 } else {
                         filterType = FilterBy::Nothing;
                         filterStr.clear();
