@@ -458,7 +458,7 @@ endif()
 
 # single instance functionality
 set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
-add_subdirectory(third_party/SingleApplication-3.2.0-dc8042b/)
+add_subdirectory(third_party/SingleApplication-3.3.0/)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 

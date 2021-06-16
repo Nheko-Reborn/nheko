@@ -263,20 +263,46 @@ bool SingleApplicationPrivate::connectToPrimary( int msecs, ConnectionType conne
 #endif
     writeStream << checksum;
 
-    // The header indicates the message length that follows
+    return writeConfirmedMessage( static_cast<int>(msecs - time.elapsed()), initMsg );
+}
+
+void SingleApplicationPrivate::writeAck( QLocalSocket *sock ) {
+    sock->putChar('\n');
+}
+
+bool SingleApplicationPrivate::writeConfirmedMessage (int msecs, const QByteArray &msg)
+{
+    QElapsedTimer time;
+    time.start();
+
+    // Frame 1: The header indicates the message length that follows
     QByteArray header;
     QDataStream headerStream(&header, QIODevice::WriteOnly);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
     headerStream.setVersion(QDataStream::Qt_5_6);
 #endif
-    headerStream << static_cast <quint64>( initMsg.length() );
+    headerStream << static_cast <quint64>( msg.length() );
 
-    socket->write( header );
-    socket->write( initMsg );
-    bool result = socket->waitForBytesWritten( static_cast<int>(msecs - time.elapsed()) );
+    if( ! writeConfirmedFrame( static_cast<int>(msecs - time.elapsed()), header ))
+        return false;
+
+    // Frame 2: The message
+    return writeConfirmedFrame( static_cast<int>(msecs - time.elapsed()), msg );
+}
+
+bool SingleApplicationPrivate::writeConfirmedFrame( int msecs, const QByteArray &msg )
+{
+    socket->write( msg );
     socket->flush();
-    return result;
+
+    bool result = socket->waitForReadyRead( msecs ); // await ack byte
+    if (result) {
+        socket->read( 1 );
+        return true;
+    }
+
+    return false;
 }
 
 quint16 SingleApplicationPrivate::blockChecksum() const
@@ -321,32 +347,36 @@ void SingleApplicationPrivate::slotConnectionEstablished()
     QLocalSocket *nextConnSocket = server->nextPendingConnection();
     connectionMap.insert(nextConnSocket, ConnectionInfo());
 
-    QObject::connect(nextConnSocket, &QLocalSocket::aboutToClose,
+    QObject::connect(nextConnSocket, &QLocalSocket::aboutToClose, this,
         [nextConnSocket, this](){
             auto &info = connectionMap[nextConnSocket];
-            Q_EMIT this->slotClientConnectionClosed( nextConnSocket, info.instanceId );
+            this->slotClientConnectionClosed( nextConnSocket, info.instanceId );
         }
     );
 
-    QObject::connect(nextConnSocket, &QLocalSocket::disconnected,
+    QObject::connect(nextConnSocket, &QLocalSocket::disconnected, nextConnSocket, &QLocalSocket::deleteLater);
+
+    QObject::connect(nextConnSocket, &QLocalSocket::destroyed, this,
         [nextConnSocket, this](){
             connectionMap.remove(nextConnSocket);
-            nextConnSocket->deleteLater();
         }
     );
 
-    QObject::connect(nextConnSocket, &QLocalSocket::readyRead,
+    QObject::connect(nextConnSocket, &QLocalSocket::readyRead, this,
         [nextConnSocket, this](){
             auto &info = connectionMap[nextConnSocket];
             switch(info.stage){
-            case StageHeader:
-                readInitMessageHeader(nextConnSocket);
+            case StageInitHeader:
+                readMessageHeader( nextConnSocket, StageInitBody );
                 break;
-            case StageBody:
+            case StageInitBody:
                 readInitMessageBody(nextConnSocket);
                 break;
-            case StageConnected:
-                Q_EMIT this->slotDataAvailable( nextConnSocket, info.instanceId );
+            case StageConnectedHeader:
+                readMessageHeader( nextConnSocket, StageConnectedBody );
+                break;
+            case StageConnectedBody:
+                this->slotDataAvailable( nextConnSocket, info.instanceId );
                 break;
             default:
                 break;
@@ -355,7 +385,7 @@ void SingleApplicationPrivate::slotConnectionEstablished()
     );
 }
 
-void SingleApplicationPrivate::readInitMessageHeader( QLocalSocket *sock )
+void SingleApplicationPrivate::readMessageHeader( QLocalSocket *sock, SingleApplicationPrivate::ConnectionStage nextStage )
 {
     if (!connectionMap.contains( sock )){
         return;
@@ -375,29 +405,35 @@ void SingleApplicationPrivate::readInitMessageHeader( QLocalSocket *sock )
     quint64 msgLen = 0;
     headerStream >> msgLen;
     ConnectionInfo &info = connectionMap[sock];
-    info.stage = StageBody;
+    info.stage = nextStage;
     info.msgLen = msgLen;
 
-    if ( sock->bytesAvailable() >= (qint64) msgLen ){
-        readInitMessageBody( sock );
+    writeAck( sock );
+}
+
+bool SingleApplicationPrivate::isFrameComplete( QLocalSocket *sock )
+{
+    if (!connectionMap.contains( sock )){
+        return false;
     }
+
+    ConnectionInfo &info = connectionMap[sock];
+    if( sock->bytesAvailable() < ( qint64 )info.msgLen ){
+        return false;
+    }
+
+    return true;
 }
 
 void SingleApplicationPrivate::readInitMessageBody( QLocalSocket *sock )
 {
     Q_Q(SingleApplication);
 
-    if (!connectionMap.contains( sock )){
+    if( !isFrameComplete( sock ) )
         return;
-    }
-
-    ConnectionInfo &info = connectionMap[sock];
-    if( sock->bytesAvailable() < ( qint64 )info.msgLen ){
-        return;
-    }
 
     // Read the message body
-    QByteArray msgBytes = sock->read(info.msgLen);
+    QByteArray msgBytes = sock->readAll();
     QDataStream readStream(msgBytes);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
@@ -437,8 +473,9 @@ void SingleApplicationPrivate::readInitMessageBody( QLocalSocket *sock )
         return;
     }
 
+    ConnectionInfo &info = connectionMap[sock];
     info.instanceId = instanceId;
-    info.stage = StageConnected;
+    info.stage = StageConnectedHeader;
 
     if( connectionType == NewInstance ||
         ( connectionType == SecondaryInstance &&
@@ -447,21 +484,28 @@ void SingleApplicationPrivate::readInitMessageBody( QLocalSocket *sock )
         Q_EMIT q->instanceStarted();
     }
 
-    if (sock->bytesAvailable() > 0){
-        Q_EMIT this->slotDataAvailable( sock, instanceId );
-    }
+    writeAck( sock );
 }
 
 void SingleApplicationPrivate::slotDataAvailable( QLocalSocket *dataSocket, quint32 instanceId )
 {
     Q_Q(SingleApplication);
+
+    if ( !isFrameComplete( dataSocket ) )
+        return;
+
     Q_EMIT q->receivedMessage( instanceId, dataSocket->readAll() );
+
+    writeAck( dataSocket );
+
+    ConnectionInfo &info = connectionMap[dataSocket];
+    info.stage = StageConnectedHeader;
 }
 
 void SingleApplicationPrivate::slotClientConnectionClosed( QLocalSocket *closedSocket, quint32 instanceId )
 {
     if( closedSocket->bytesAvailable() > 0 )
-        Q_EMIT slotDataAvailable( closedSocket, instanceId  );
+        slotDataAvailable( closedSocket, instanceId  );
 }
 
 void SingleApplicationPrivate::randomSleep()
@@ -470,7 +514,7 @@ void SingleApplicationPrivate::randomSleep()
     QThread::msleep( QRandomGenerator::global()->bounded( 8u, 18u ));
 #else
     qsrand( QDateTime::currentMSecsSinceEpoch() % std::numeric_limits<uint>::max() );
-    QThread::msleep( 8 + static_cast <unsigned long>( static_cast <float>( qrand() ) / RAND_MAX * 10 ));
+    QThread::msleep( qrand() % 11 + 8);
 #endif
 }
 
