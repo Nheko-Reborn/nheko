@@ -185,6 +185,33 @@ EventStore::EventStore(std::string room_id, QObject *)
           [this](std::string txn_id, std::string event_id) {
                   nhlog::ui()->debug("sent {}", txn_id);
 
+                  // Replace the event_id in pending edits/replies/redactions with the actual
+                  // event_id of this event
+                  for (auto related_event_id : cache::client()->relatedEvents(room_id_, txn_id)) {
+                          if (cache::client()->getEvent(room_id_, related_event_id)) {
+                                  auto related_event =
+                                    cache::client()->getEvent(room_id_, related_event_id).value();
+                                  auto relations = mtx::accessors::relations(related_event.data);
+
+                                  for (mtx::common::Relation &rel : relations.relations) {
+                                          if (rel.event_id == txn_id)
+                                                  rel.event_id = event_id;
+                                  }
+
+                                  mtx::accessors::set_relations(related_event.data, relations);
+
+                                  cache::client()->replaceEvent(
+                                    room_id_, related_event_id, related_event);
+
+                                  auto id = idToIndex(event_id);
+
+                                  events_by_id_.remove({room_id_, related_event_id});
+                                  events_.remove({room_id_, toInternalIdx(*id)});
+
+                                  emit dataChanged(*id, *id);
+                          }
+                  }
+
                   http::client()->read_event(
                     room_id_, event_id, [this, event_id](mtx::http::RequestErr err) {
                             if (err) {
@@ -192,6 +219,11 @@ EventStore::EventStore(std::string room_id, QObject *)
                                       "failed to read_event ({}, {})", room_id_, event_id);
                             }
                     });
+
+                  auto id = idToIndex(event_id);
+
+                  if (id)
+                          emit dataChanged(id.value(), id.value());
 
                   cache::client()->removePendingStatus(room_id_, txn_id);
                   this->current_txn             = "";

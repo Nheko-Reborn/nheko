@@ -375,6 +375,15 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         connect(&events, &EventStore::updateFlowEventId, this, [this](std::string event_id) {
                 this->updateFlowEventId(event_id);
         });
+        connect(&events,
+                &EventStore::messageSent,
+                this,
+                [this](std::string txn_id, std::string event_id) {
+                        if (edit_.toStdString() == txn_id) {
+                                edit_ = QString::fromStdString(event_id);
+                                emit editChanged(edit_);
+                        }
+                });
 
         showEventTimer.callOnTimeout(this, &TimelineModel::scrollTimerEvent);
 }
@@ -568,10 +577,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         case IsEdited:
                 return QVariant(relations(event).replaces().has_value());
         case IsEditable:
-                return QVariant(!is_state_event(event) &&
-                                mtx::accessors::sender(event) ==
-                                  http::client()->user_id().to_string() &&
-                                !event_id(event).empty() && event_id(event).front() == '$');
+                return QVariant(!is_state_event(event) && mtx::accessors::sender(event) ==
+                                                            http::client()->user_id().to_string());
         case IsEncrypted: {
                 auto id              = event_id(event);
                 auto encrypted_event = events.get(id, "", false);
@@ -1796,9 +1803,6 @@ TimelineModel::formatMemberEvent(QString id)
 void
 TimelineModel::setEdit(QString newEdit)
 {
-        if (edit_.startsWith('m'))
-                return;
-
         if (newEdit.isEmpty()) {
                 resetEdit();
                 return;
