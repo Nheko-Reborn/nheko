@@ -129,8 +129,6 @@ Item {
     }
 
     ColumnLayout {
-        id: contentLayout1
-
         visible: room != null && room.isSpace
         enabled: visible
         anchors.fill: parent
@@ -158,9 +156,8 @@ Item {
         }
 
         ScrollView {
-            //Layout.maximumHeight: 75
             Layout.alignment: Qt.AlignHCenter
-            width: parent.width
+            width: timelineView.width - Nheko.paddingLarge * 2
 
             TextArea {
                 text: TimelineManager.escapeEmoji(room ? room.roomTopic : "")
@@ -186,6 +183,22 @@ Item {
             Layout.fillHeight: true
         }
 
+    }
+
+    ImageButton {
+        id: backToRoomsButton
+
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.margins: Nheko.paddingMedium
+        width: Nheko.avatarSize
+        height: Nheko.avatarSize
+        visible: room != null && room.isSpace && showBackButton
+        enabled: visible
+        image: ":/icons/icons/ui/angle-pointing-to-left.png"
+        ToolTip.visible: hovered
+        ToolTip.text: qsTr("Back to room list")
+        onClicked: Rooms.resetCurrentRoom()
     }
 
     NhekoDropArea {
