@@ -254,6 +254,8 @@ Page {
 
                         Label {
                             id: timestamp
+                            visible: !model.isInvite && !model.isSpace
+                            width: visible ? 0 : undefined
 
                             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
@@ -266,7 +268,7 @@ Page {
                     RowLayout {
                         Layout.fillWidth: true
                         spacing: 0
-                        visible: !model.isInvite
+                        visible: !model.isInvite && !model.isSpace
                         height: visible ? 0 : undefined
 
                         ElidedLabel {
