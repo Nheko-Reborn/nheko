@@ -320,6 +320,10 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
 {
         lastMessage_.timestamp = 0;
 
+        if (auto create =
+              cache::client()->getStateEvent<mtx::events::state::Create>(room_id.toStdString()))
+                this->isSpace_ = create->content.type == mtx::events::state::room_type::space;
+
         connect(
           this,
           &TimelineModel::redactionFailed,

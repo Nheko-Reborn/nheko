@@ -85,8 +85,9 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                         case Roles::NotificationCount:
                                 return room->notificationCount();
                         case Roles::IsInvite:
-                        case Roles::IsSpace:
                                 return false;
+                        case Roles::IsSpace:
+                                return room->isSpace();
                         case Roles::Tags: {
                                 auto info = cache::singleRoomInfo(roomid.toStdString());
                                 QStringList list;
@@ -429,7 +430,9 @@ enum NotificationImportance : short
         AllEventsRead      = 0,
         NewMessage         = 1,
         NewMentions        = 2,
-        Invite             = 3
+        Invite             = 3,
+        SubSpace           = 4,
+        CurrentSpace       = 5,
 };
 }
 
@@ -439,7 +442,13 @@ FilteredRoomlistModel::calculateImportance(const QModelIndex &idx) const
         // Returns the degree of importance of the unread messages in the room.
         // If sorting by importance is disabled in settings, this only ever
         // returns ImportanceDisabled or Invite
-        if (sourceModel()->data(idx, RoomlistModel::IsInvite).toBool()) {
+        if (sourceModel()->data(idx, RoomlistModel::IsSpace).toBool()) {
+                if (filterType == FilterBy::Space &&
+                    filterStr == sourceModel()->data(idx, RoomlistModel::RoomId).toString())
+                        return CurrentSpace;
+                else
+                        return SubSpace;
+        } else if (sourceModel()->data(idx, RoomlistModel::IsInvite).toBool()) {
                 return Invite;
         } else if (!this->sortByImportance) {
                 return ImportanceDisabled;
@@ -539,6 +548,10 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                         for (const auto &t : parents)
                                 if (hiddenSpaces.contains(t))
                                         return false;
+                } else if (sourceModel()
+                             ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
+                             .toBool()) {
+                        return false;
                 }
 
                 return true;
@@ -561,6 +574,10 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                         for (const auto &t : parents)
                                 if (hiddenSpaces.contains(t))
                                         return false;
+                } else if (sourceModel()
+                             ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
+                             .toBool()) {
+                        return false;
                 }
                 return true;
         } else if (filterType == FilterBy::Space) {
@@ -572,7 +589,11 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                               ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
                               .toStringList();
 
-                if (!parents.contains(filterStr))
+                if (filterStr == sourceModel()
+                                   ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::RoomId)
+                                   .toString())
+                        return true;
+                else if (!parents.contains(filterStr))
                         return false;
                 else if (!hiddenTags.empty()) {
                         for (const auto &t : tags)
@@ -582,6 +603,11 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                         for (const auto &t : parents)
                                 if (hiddenSpaces.contains(t))
                                         return false;
+                } else if (sourceModel()
+                             ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
+                             .toBool() &&
+                           !parents.contains(filterStr)) {
+                        return false;
                 }
                 return true;
         } else {

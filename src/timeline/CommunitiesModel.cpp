@@ -167,6 +167,25 @@ CommunitiesModel::sync(const mtx::responses::Rooms &rooms)
                               mtx::events::AccountDataEvent<mtx::events::account_data::Tags>>(e)) {
                                 tagsUpdated = true;
                         }
+                for (const auto &e : room.state.events)
+                        if (std::holds_alternative<
+                              mtx::events::StateEvent<mtx::events::state::space::Child>>(e) ||
+                            std::holds_alternative<
+                              mtx::events::StateEvent<mtx::events::state::space::Parent>>(e)) {
+                                tagsUpdated = true;
+                        }
+                for (const auto &e : room.timeline.events)
+                        if (std::holds_alternative<
+                              mtx::events::StateEvent<mtx::events::state::space::Child>>(e) ||
+                            std::holds_alternative<
+                              mtx::events::StateEvent<mtx::events::state::space::Parent>>(e)) {
+                                tagsUpdated = true;
+                        }
+        }
+        for (const auto &[roomid, room] : rooms.leave) {
+                (void)room;
+                if (spaceOrder_.contains(QString::fromStdString(roomid)))
+                        tagsUpdated = true;
         }
 
         if (tagsUpdated)
