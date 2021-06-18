@@ -138,7 +138,7 @@ Item {
         spacing: Nheko.paddingLarge
 
         Avatar {
-            url: room.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
+            url: room ? room.roomAvatarUrl.replace("mxc://", "image://MxcImage/") : ""
             displayName: room ? room.roomName : ""
             height: 130
             width: 130
