@@ -662,7 +662,7 @@ FilteredRoomlistModel::previousRoom()
         if (r) {
                 int idx = roomidToIndex(r->roomId());
                 idx--;
-                if (idx > 0) {
+                if (idx >= 0) {
                         setCurrentRoom(
                           data(index(idx, 0), RoomlistModel::Roles::RoomId).toString());
                 }
