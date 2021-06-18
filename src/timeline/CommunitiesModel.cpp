@@ -214,7 +214,13 @@ CommunitiesModel::toggleTagId(QString tagId)
         if (tagId.startsWith("tag:")) {
                 auto idx = tags_.indexOf(tagId.mid(4));
                 if (idx != -1)
-                        emit dataChanged(index(idx), index(idx), {Hidden});
+                        emit dataChanged(index(idx + 1 + spaceOrder_.size()),
+                                         index(idx + 1 + spaceOrder_.size()),
+                                         {Hidden});
+        } else if (tagId.startsWith("space:")) {
+                auto idx = spaceOrder_.indexOf(tagId.mid(6));
+                if (idx != -1)
+                        emit dataChanged(index(idx + 1), index(idx + 1), {Hidden});
         }
 
         emit hiddenTagsChanged();

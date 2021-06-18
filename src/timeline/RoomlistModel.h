@@ -38,6 +38,7 @@ public:
                 IsInvite,
                 IsSpace,
                 Tags,
+                ParentSpaces,
         };
 
         RoomlistModel(TimelineViewManager *parent = nullptr);

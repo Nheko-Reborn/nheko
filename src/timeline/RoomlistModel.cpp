@@ -51,6 +51,7 @@ RoomlistModel::roleNames() const
           {IsInvite, "isInvite"},
           {IsSpace, "isSpace"},
           {Tags, "tags"},
+          {ParentSpaces, "parentSpaces"},
         };
 }
 
@@ -93,6 +94,14 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                                         list.push_back(QString::fromStdString(t));
                                 return list;
                         }
+                        case Roles::ParentSpaces: {
+                                auto parents =
+                                  cache::client()->getParentRoomIds(roomid.toStdString());
+                                QStringList list;
+                                for (const auto &t : parents)
+                                        list.push_back(QString::fromStdString(t));
+                                return list;
+                        }
                         default:
                                 return {};
                         }
@@ -122,6 +131,14 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                                 return false;
                         case Roles::Tags:
                                 return QStringList();
+                        case Roles::ParentSpaces: {
+                                auto parents =
+                                  cache::client()->getParentRoomIds(roomid.toStdString());
+                                QStringList list;
+                                for (const auto &t : parents)
+                                        list.push_back(QString::fromStdString(t));
+                                return list;
+                        }
                         default:
                                 return {};
                         }
@@ -514,6 +531,14 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                         for (const auto &t : tags)
                                 if (hiddenTags.contains(t))
                                         return false;
+                } else if (!hiddenSpaces.empty()) {
+                        auto parents =
+                          sourceModel()
+                            ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
+                            .toStringList();
+                        for (const auto &t : parents)
+                                if (hiddenSpaces.contains(t))
+                                        return false;
                 }
 
                 return true;
@@ -528,29 +553,34 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                         for (const auto &t : tags)
                                 if (t != filterStr && hiddenTags.contains(t))
                                         return false;
+                } else if (!hiddenSpaces.empty()) {
+                        auto parents =
+                          sourceModel()
+                            ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
+                            .toStringList();
+                        for (const auto &t : parents)
+                                if (hiddenSpaces.contains(t))
+                                        return false;
                 }
                 return true;
         } else if (filterType == FilterBy::Space) {
-                auto roomid = sourceModel()
-                                ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::RoomId)
-                                .toString();
+                auto parents =
+                  sourceModel()
+                    ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
+                    .toStringList();
                 auto tags = sourceModel()
                               ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
                               .toStringList();
 
-                auto contains = [](const std::vector<std::string> &v, const std::string &str) {
-                        for (const auto &e : v)
-                                if (e == str)
-                                        return true;
-                        return false;
-                };
-                auto parents = cache::client()->getParentRoomIds(roomid.toStdString());
-
-                if (!contains(parents, filterStr.toStdString()))
+                if (!parents.contains(filterStr))
                         return false;
                 else if (!hiddenTags.empty()) {
                         for (const auto &t : tags)
                                 if (hiddenTags.contains(t))
+                                        return false;
+                } else if (!hiddenSpaces.empty()) {
+                        for (const auto &t : parents)
+                                if (hiddenSpaces.contains(t))
                                         return false;
                 }
                 return true;
