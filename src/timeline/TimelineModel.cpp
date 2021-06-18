@@ -383,6 +383,9 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                                 edit_ = QString::fromStdString(event_id);
                                 emit editChanged(edit_);
                         }
+                        if (reply_.toStdString() == txn_id) {
+                                reply_ = QString::fromStdString(event_id);
+                        }
                 });
 
         showEventTimer.callOnTimeout(this, &TimelineModel::scrollTimerEvent);

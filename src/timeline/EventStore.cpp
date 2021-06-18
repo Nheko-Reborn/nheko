@@ -193,6 +193,19 @@ EventStore::EventStore(std::string room_id, QObject *)
                                     cache::client()->getEvent(room_id_, related_event_id).value();
                                   auto relations = mtx::accessors::relations(related_event.data);
 
+                                  // Replace the blockquote in fallback reply
+                                  auto related_text =
+                                    std::get_if<mtx::events::RoomEvent<mtx::events::msg::Text>>(
+                                      &related_event.data);
+                                  if (related_text && relations.reply_to() == txn_id) {
+                                          size_t index =
+                                            related_text->content.formatted_body.find(txn_id);
+                                          if (index != std::string::npos) {
+                                                  related_text->content.formatted_body.replace(
+                                                    index, event_id.length(), event_id);
+                                          }
+                                  }
+
                                   for (mtx::common::Relation &rel : relations.relations) {
                                           if (rel.event_id == txn_id)
                                                   rel.event_id = event_id;
@@ -203,12 +216,10 @@ EventStore::EventStore(std::string room_id, QObject *)
                                   cache::client()->replaceEvent(
                                     room_id_, related_event_id, related_event);
 
-                                  auto id = idToIndex(event_id);
+                                  auto idx = idToIndex(related_event_id);
 
                                   events_by_id_.remove({room_id_, related_event_id});
-                                  events_.remove({room_id_, toInternalIdx(*id)});
-
-                                  emit dataChanged(*id, *id);
+                                  events_.remove({room_id_, toInternalIdx(*idx)});
                           }
                   }
 
@@ -220,10 +231,10 @@ EventStore::EventStore(std::string room_id, QObject *)
                             }
                     });
 
-                  auto id = idToIndex(event_id);
+                  auto idx = idToIndex(event_id);
 
-                  if (id)
-                          emit dataChanged(id.value(), id.value());
+                  if (idx)
+                          emit dataChanged(*idx, *idx);
 
                   cache::client()->removePendingStatus(room_id_, txn_id);
                   this->current_txn             = "";
