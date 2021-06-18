@@ -1772,6 +1772,13 @@ Cache::relatedEvents(const std::string &room_id, const std::string &event_id)
         return related_ids;
 }
 
+size_t
+Cache::memberCount(const std::string &room_id)
+{
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        return getMembersDb(txn, room_id).size(txn);
+}
+
 QMap<QString, RoomInfo>
 Cache::roomInfo(bool withInvites)
 {

@@ -161,6 +161,7 @@ class TimelineModel : public QAbstractListModel
         Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
         Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY roomAvatarUrlChanged)
         Q_PROPERTY(QString roomTopic READ roomTopic NOTIFY roomTopicChanged)
+        Q_PROPERTY(int roomMemberCount READ roomMemberCount NOTIFY roomMemberCountChanged)
         Q_PROPERTY(bool isSpace READ isSpace CONSTANT)
         Q_PROPERTY(InputBar *input READ input CONSTANT)
         Q_PROPERTY(Permissions *permissions READ permissions NOTIFY permissionsChanged)
@@ -264,6 +265,7 @@ public:
 
         DescInfo lastMessage() const { return lastMessage_; }
         bool isSpace() const { return isSpace_; }
+        int roomMemberCount() const;
 
 public slots:
         void setCurrentIndex(int index);
@@ -350,6 +352,7 @@ signals:
         void roomNameChanged();
         void roomTopicChanged();
         void roomAvatarUrlChanged();
+        void roomMemberCountChanged();
         void permissionsChanged();
         void forwardToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 

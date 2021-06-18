@@ -254,9 +254,9 @@ Page {
 
                         Label {
                             id: timestamp
+
                             visible: !model.isInvite && !model.isSpace
                             width: visible ? 0 : undefined
-
                             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             color: roomItem.unimportantText

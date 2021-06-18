@@ -41,7 +41,8 @@ Item {
     ColumnLayout {
         id: timelineLayout
 
-        visible: room != null
+        visible: room != null && !room.isSpace
+        enabled: visible
         anchors.fill: parent
         spacing: 0
 
@@ -123,6 +124,66 @@ Item {
         }
 
         MessageInput {
+        }
+
+    }
+
+    ColumnLayout {
+        id: contentLayout1
+
+        visible: room != null && room.isSpace
+        enabled: visible
+        anchors.fill: parent
+        anchors.margins: Nheko.paddingLarge
+        spacing: Nheko.paddingLarge
+
+        Avatar {
+            url: room.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
+            displayName: room ? room.roomName : ""
+            height: 130
+            width: 130
+            Layout.alignment: Qt.AlignHCenter
+            enabled: false
+        }
+
+        MatrixText {
+            text: room ? room.roomName : ""
+            font.pixelSize: 24
+            Layout.alignment: Qt.AlignHCenter
+        }
+
+        MatrixText {
+            text: qsTr("%1 member(s)").arg(room ? room.roomMemberCount : 0)
+            Layout.alignment: Qt.AlignHCenter
+        }
+
+        ScrollView {
+            //Layout.maximumHeight: 75
+            Layout.alignment: Qt.AlignHCenter
+            width: parent.width
+
+            TextArea {
+                text: TimelineManager.escapeEmoji(room ? room.roomTopic : "")
+                wrapMode: TextEdit.WordWrap
+                textFormat: TextEdit.RichText
+                readOnly: true
+                background: null
+                selectByMouse: true
+                color: Nheko.colors.text
+                horizontalAlignment: TextEdit.AlignHCenter
+                onLinkActivated: Nheko.openLink(link)
+
+                CursorShape {
+                    anchors.fill: parent
+                    cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
+                }
+
+            }
+
+        }
+
+        Item {
+            Layout.fillHeight: true
         }
 
     }
