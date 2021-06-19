@@ -149,6 +149,14 @@ Item {
         }
 
         DelegateChoice {
+            roleValue: MtxEvent.Avatar
+
+            NoticeMessage {
+                text: qsTr("%1 changed the room avatar").arg(model.data.userName)
+            }
+        }
+
+        DelegateChoice {
             roleValue: MtxEvent.RoomCreate
 
             NoticeMessage {
