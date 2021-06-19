@@ -385,6 +385,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                         }
                         if (reply_.toStdString() == txn_id) {
                                 reply_ = QString::fromStdString(event_id);
+                                emit replyChanged(reply_);
                         }
                 });
 
