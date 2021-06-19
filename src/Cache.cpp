@@ -1681,6 +1681,27 @@ Cache::storeEvent(const std::string &room_id,
         txn.commit();
 }
 
+void
+Cache::replaceEvent(const std::string &room_id,
+                    const std::string &event_id,
+                    const mtx::events::collections::TimelineEvent &event)
+{
+        auto txn         = lmdb::txn::begin(env_);
+        auto eventsDb    = getEventsDb(txn, room_id);
+        auto relationsDb = getRelationsDb(txn, room_id);
+        auto event_json  = mtx::accessors::serialize_event(event.data).dump();
+
+        {
+                eventsDb.del(txn, event_id);
+                eventsDb.put(txn, event_id, event_json);
+                for (auto relation : mtx::accessors::relations(event.data).relations) {
+                        relationsDb.put(txn, relation.event_id, event_id);
+                }
+        }
+
+        txn.commit();
+}
+
 std::vector<std::string>
 Cache::relatedEvents(const std::string &room_id, const std::string &event_id)
 {
