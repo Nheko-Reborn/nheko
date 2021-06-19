@@ -9,77 +9,37 @@ import "./voip"
 import Qt.labs.platform 1.1 as Platform
 import QtGraphicalEffects 1.0
 import QtQuick 2.9
-import QtQuick.Controls 2.3
+import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
 import im.nheko.RoomDirectoryModel 1.0
 
-Page {
-    id: timelineRoot
+Item {
+    id: timelineView
 
-    property var colors: currentActivePalette
-    property var systemInactive
-    property var inactiveColors: currentInactivePalette ? currentInactivePalette : systemInactive
-    readonly property int avatarSize: 40
-    property real highlightHue: colors.highlight.hslHue
-    property real highlightSat: colors.highlight.hslSaturation
-    property real highlightLight: colors.highlight.hslLightness
+    property var room: null
+    property bool showBackButton: false
 
-    palette: colors
-
-    FontMetrics {
-        id: fontMetrics
+    Label {
+        visible: !room && !TimelineManager.isInitialSync
+        anchors.centerIn: parent
+        text: qsTr("No room open")
+        font.pointSize: 24
+        color: Nheko.colors.text
     }
 
-    EmojiPicker {
-        id: emojiPopup
-
-        colors: palette
-        model: TimelineManager.completerFor("allemoji", "")
+    BusyIndicator {
+        visible: running
+        anchors.centerIn: parent
+        running: TimelineManager.isInitialSync
+        height: 200
+        width: 200
+        z: 3
     }
 
-    Component {
-        id: userProfileComponent
-
-        UserProfile {
-        }
-
-    }
-
-    Component {
-        id: roomSettingsComponent
-
-        RoomSettings {
-        }
-
-    }
-
-    Component {
-        id: mobileCallInviteDialog
-
-        CallInvite {
-        }
-
-    }
-
-    Component {
-        id: quickSwitcherComponent
-
-        QuickSwitcher {
-        }
-
-    }
-
-    Component {
-        id: forwardCompleterComponent
-
-        ForwardCompleter {
-        }
-
-    }
-
+<<<<<<< HEAD
     Component {
         id: roomDirectoryComponent
 
@@ -224,19 +184,20 @@ Page {
         }
 
     }
+=======
+    ColumnLayout {
+        id: timelineLayout
+>>>>>>> upstream/master
 
-    Rectangle {
+        visible: room != null
         anchors.fill: parent
-        color: colors.window
+        spacing: 0
 
-        Component {
-            id: deviceVerificationDialog
-
-            DeviceVerification {
-            }
-
+        TopBar {
+            showBackButton: timelineView.showBackButton
         }
 
+<<<<<<< HEAD
         Connections {
             target: TimelineManager
             onNewDeviceVerificationRequest: {
@@ -296,112 +257,99 @@ Page {
             running: TimelineManager.isInitialSync
             height: 200
             width: 200
+=======
+        Rectangle {
+            Layout.fillWidth: true
+            height: 1
+>>>>>>> upstream/master
             z: 3
+            color: Nheko.theme.separator
         }
 
-        ColumnLayout {
-            id: timelineLayout
+        Rectangle {
+            id: msgView
 
-            visible: TimelineManager.timeline != null
-            anchors.fill: parent
-            spacing: 0
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            color: Nheko.colors.base
 
-            TopBar {
-            }
+            ColumnLayout {
+                anchors.fill: parent
+                spacing: 0
 
-            Rectangle {
-                Layout.fillWidth: true
-                height: 1
-                z: 3
-                color: colors.mid
-            }
+                StackLayout {
+                    id: stackLayout
 
-            Rectangle {
-                id: msgView
+                    currentIndex: 0
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                color: colors.base
-
-                ColumnLayout {
-                    anchors.fill: parent
-                    spacing: 0
-
-                    StackLayout {
-                        id: stackLayout
-
-                        currentIndex: 0
-
-                        Connections {
-                            function onActiveTimelineChanged() {
-                                stackLayout.currentIndex = 0;
-                            }
-
-                            target: TimelineManager
+                    Connections {
+                        function onRoomChanged() {
+                            stackLayout.currentIndex = 0;
                         }
 
-                        MessageView {
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                        }
-
-                        Loader {
-                            source: CallManager.isOnCall && CallManager.callType != CallType.VOICE ? "voip/VideoCall.qml" : ""
-                            onLoaded: TimelineManager.setVideoCallItem()
-                        }
-
+                        target: timelineView
                     }
 
-                    TypingIndicator {
+                    MessageView {
+                        Layout.fillWidth: true
+                        implicitHeight: msgView.height - typingIndicator.height
+                    }
+
+                    Loader {
+                        source: CallManager.isOnCall && CallManager.callType != CallType.VOICE ? "voip/VideoCall.qml" : ""
+                        onLoaded: TimelineManager.setVideoCallItem()
                     }
 
                 }
 
-            }
+                TypingIndicator {
+                    id: typingIndicator
+                }
 
-            CallInviteBar {
-                id: callInviteBar
-
-                Layout.fillWidth: true
-                z: 3
-            }
-
-            ActiveCallBar {
-                Layout.fillWidth: true
-                z: 3
-            }
-
-            Rectangle {
-                Layout.fillWidth: true
-                z: 3
-                height: 1
-                color: colors.mid
-            }
-
-            ReplyPopup {
-            }
-
-            MessageInput {
             }
 
         }
 
-        NhekoDropArea {
-            anchors.fill: parent
-            roomid: TimelineManager.timeline ? TimelineManager.timeline.roomId() : ""
+        CallInviteBar {
+            id: callInviteBar
+
+            Layout.fillWidth: true
+            z: 3
+        }
+
+        ActiveCallBar {
+            Layout.fillWidth: true
+            z: 3
+        }
+
+        Rectangle {
+            Layout.fillWidth: true
+            z: 3
+            height: 1
+            color: Nheko.theme.separator
+        }
+
+        ReplyPopup {
+        }
+
+        MessageInput {
         }
 
     }
 
-    PrivacyScreen {
+    NhekoDropArea {
         anchors.fill: parent
-        visible: Settings.privacyScreen
-        screenTimeout: Settings.privacyScreenTimeout
-        timelineRoot: timelineLayout
+        roomid: room ? room.roomId() : ""
     }
 
-    systemInactive: SystemPalette {
-        colorGroup: SystemPalette.Disabled
+    Connections {
+        target: room
+        onOpenRoomSettingsDialog: {
+            var roomSettings = roomSettingsComponent.createObject(timelineRoot, {
+                "roomSettings": settings
+            });
+            roomSettings.show();
+        }
     }
 
 }

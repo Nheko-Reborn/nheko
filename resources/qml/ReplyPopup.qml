@@ -11,13 +11,11 @@ import im.nheko 1.0
 Rectangle {
     id: replyPopup
 
-    property var room: TimelineManager.timeline
-
     Layout.fillWidth: true
     visible: room && (room.reply || room.edit)
     // Height of child, plus margins, plus border
     implicitHeight: (room && room.reply ? replyPreview.height : closeEditButton.height) + 10
-    color: colors.window
+    color: Nheko.colors.window
     z: 3
 
     Reply {
@@ -31,7 +29,7 @@ Rectangle {
         anchors.bottom: parent.bottom
         modelData: room ? room.getDump(room.reply, room.id) : {
         }
-        userColor: TimelineManager.userColor(modelData.userId, colors.window)
+        userColor: TimelineManager.userColor(modelData.userId, Nheko.colors.window)
     }
 
     ImageButton {

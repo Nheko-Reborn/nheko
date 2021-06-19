@@ -18,9 +18,9 @@ ApplicationWindow {
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     minimumWidth: 420
     minimumHeight: 650
-    palette: colors
-    color: colors.window
-    modality: Qt.WindowModal
+    palette: Nheko.colors
+    color: Nheko.colors.window
+    modality: Qt.NonModal
     flags: Qt.Dialog
     title: qsTr("Room Settings")
 
@@ -126,9 +126,9 @@ ApplicationWindow {
                 readOnly: true
                 background: null
                 selectByMouse: true
-                color: colors.text
+                color: Nheko.colors.text
                 horizontalAlignment: TextEdit.AlignHCenter
-                onLinkActivated: TimelineManager.openLink(link)
+                onLinkActivated: Nheko.openLink(link)
 
                 CursorShape {
                     anchors.fill: parent
@@ -205,7 +205,7 @@ ApplicationWindow {
                 title: qsTr("End-to-End Encryption")
                 text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br>
                             Please take note that it can't be disabled afterwards.")
-                modality: Qt.WindowModal
+                modality: Qt.NonModal
                 onAccepted: {
                     if (roomSettings.isEncryptionEnabled)
                         return ;

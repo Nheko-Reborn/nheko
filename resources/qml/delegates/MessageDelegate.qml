@@ -58,7 +58,7 @@ Item {
 
             NoticeMessage {
                 formatted: TimelineManager.escapeEmoji(modelData.userName) + " " + model.data.formattedBody
-                color: TimelineManager.userColor(modelData.userId, colors.window)
+                color: TimelineManager.userColor(modelData.userId, Nheko.colors.window)
             }
 
         }
@@ -149,6 +149,14 @@ Item {
         }
 
         DelegateChoice {
+            roleValue: MtxEvent.Avatar
+
+            NoticeMessage {
+                text: qsTr("%1 changed the room avatar").arg(model.data.userName)
+            }
+        }
+
+        DelegateChoice {
             roleValue: MtxEvent.RoomCreate
 
             NoticeMessage {
@@ -207,7 +215,7 @@ Item {
             roleValue: MtxEvent.PowerLevels
 
             NoticeMessage {
-                text: TimelineManager.timeline.formatPowerLevelEvent(model.data.id)
+                text: room.formatPowerLevelEvent(model.data.id)
             }
 
         }
@@ -216,7 +224,7 @@ Item {
             roleValue: MtxEvent.RoomJoinRules
 
             NoticeMessage {
-                text: TimelineManager.timeline.formatJoinRuleEvent(model.data.id)
+                text: room.formatJoinRuleEvent(model.data.id)
             }
 
         }
@@ -225,7 +233,7 @@ Item {
             roleValue: MtxEvent.RoomHistoryVisibility
 
             NoticeMessage {
-                text: TimelineManager.timeline.formatHistoryVisibilityEvent(model.data.id)
+                text: room.formatHistoryVisibilityEvent(model.data.id)
             }
 
         }
@@ -234,7 +242,7 @@ Item {
             roleValue: MtxEvent.RoomGuestAccess
 
             NoticeMessage {
-                text: TimelineManager.timeline.formatGuestAccessEvent(model.data.id)
+                text: room.formatGuestAccessEvent(model.data.id)
             }
 
         }
@@ -243,7 +251,7 @@ Item {
             roleValue: MtxEvent.Member
 
             NoticeMessage {
-                text: TimelineManager.timeline.formatMemberEvent(model.data.id)
+                text: room.formatMemberEvent(model.data.id)
             }
 
         }

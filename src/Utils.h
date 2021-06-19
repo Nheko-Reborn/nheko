@@ -301,8 +301,8 @@ hashQString(const QString &input);
 
 //! Generate a color (matching #RRGGBB) that has an acceptable contrast to background that is based
 //! on the input string.
-QString
-generateContrastingHexColor(const QString &input, const QString &background);
+QColor
+generateContrastingHexColor(const QString &input, const QColor &background);
 
 //! Given two luminance values, compute the contrast ratio between them.
 qreal

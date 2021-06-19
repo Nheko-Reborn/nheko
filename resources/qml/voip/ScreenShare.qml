@@ -18,7 +18,7 @@ Popup {
 
         frameRateCombo.currentIndex = frameRateCombo.find(Settings.screenShareFrameRate);
     }
-    palette: colors
+    palette: Nheko.colors
 
     ColumnLayout {
         Label {
@@ -27,8 +27,8 @@ Popup {
             Layout.leftMargin: 8
             Layout.rightMargin: 8
             Layout.alignment: Qt.AlignLeft
-            text: qsTr("Share desktop with %1?").arg(TimelineManager.timeline.roomName)
-            color: colors.windowText
+            text: qsTr("Share desktop with %1?").arg(room.roomName)
+            color: Nheko.colors.windowText
         }
 
         RowLayout {
@@ -39,7 +39,7 @@ Popup {
             Label {
                 Layout.alignment: Qt.AlignLeft
                 text: qsTr("Window:")
-                color: colors.windowText
+                color: Nheko.colors.windowText
             }
 
             ComboBox {
@@ -59,7 +59,7 @@ Popup {
             Label {
                 Layout.alignment: Qt.AlignLeft
                 text: qsTr("Frame rate:")
-                color: colors.windowText
+                color: Nheko.colors.windowText
             }
 
             ComboBox {
@@ -136,7 +136,7 @@ Popup {
                         Settings.screenSharePiP = pipCheckBox.checked;
                         Settings.screenShareRemoteVideo = remoteVideoCheckBox.checked;
                         Settings.screenShareHideCursor = hideCursorCheckBox.checked;
-                        CallManager.sendInvite(TimelineManager.timeline.roomId(), CallType.SCREEN, windowCombo.currentIndex);
+                        CallManager.sendInvite(room.roomId(), CallType.SCREEN, windowCombo.currentIndex);
                         close();
                     }
                 }
@@ -161,8 +161,8 @@ Popup {
     }
 
     background: Rectangle {
-        color: colors.window
-        border.color: colors.windowText
+        color: Nheko.colors.window
+        border.color: Nheko.colors.windowText
     }
 
 }

@@ -146,7 +146,7 @@
     <message>
         <location line="-509"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>La migración de la caché a la versión actual ha fallado. Esto puede deberse a distintos motivos. Por favor, reporte el incidente y mientras tanto intente usar una versión anterior. También puede probar a borrar la caché manualmente.</translation>
     </message>
     <message>
         <location line="+412"/>
@@ -161,13 +161,13 @@
     <message>
         <location line="+44"/>
         <source>Room %1 created.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sala %1 creada.</translation>
     </message>
     <message>
         <location line="+35"/>
         <location line="+324"/>
         <source>Confirm invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar invitación</translation>
     </message>
     <message>
         <location line="-323"/>
@@ -182,7 +182,7 @@
     <message>
         <location line="+15"/>
         <source>Confirm kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar expulsión</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -192,7 +192,7 @@
     <message>
         <location line="+16"/>
         <source>Kicked user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Se ha expulsado a %1</translation>
     </message>
     <message>
         <location line="+10"/>

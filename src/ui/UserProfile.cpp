@@ -27,8 +27,21 @@ UserProfile::UserProfile(QString roomid,
   , manager(manager_)
   , model(parent)
 {
-        fetchDeviceList(this->userid_);
         globalAvatarUrl = "";
+
+        connect(this,
+                &UserProfile::globalUsernameRetrieved,
+                this,
+                &UserProfile::setGlobalUsername,
+                Qt::QueuedConnection);
+
+        if (isGlobalUserProfile()) {
+                getGlobalProfileData();
+        }
+
+        if (!cache::client() || !cache::client()->isDatabaseReady() ||
+            !ChatPage::instance()->timelineManager())
+                return;
 
         connect(cache::client(),
                 &Cache::verificationStatusChanged,
@@ -53,17 +66,9 @@ UserProfile::UserProfile(QString roomid,
                                     : verification::VERIFIED;
                         }
                         deviceList_.reset(deviceList_.deviceList_);
+                        emit devicesChanged();
                 });
-
-        connect(this,
-                &UserProfile::globalUsernameRetrieved,
-                this,
-                &UserProfile::setGlobalUsername,
-                Qt::QueuedConnection);
-
-        if (isGlobalUserProfile()) {
-                getGlobalProfileData();
-        }
+        fetchDeviceList(this->userid_);
 }
 
 QHash<int, QByteArray>
@@ -123,10 +128,7 @@ UserProfile::displayName()
 QString
 UserProfile::avatarUrl()
 {
-        return (isGlobalUserProfile() && globalAvatarUrl != "")
-                 ? globalAvatarUrl
-                 : cache::avatarUrl(roomid_, userid_);
-        ;
+        return isGlobalUserProfile() ? globalAvatarUrl : cache::avatarUrl(roomid_, userid_);
 }
 
 bool
@@ -156,6 +158,9 @@ void
 UserProfile::fetchDeviceList(const QString &userID)
 {
         auto localUser = utils::localUser();
+
+        if (!cache::client() || !cache::client()->isDatabaseReady())
+                return;
 
         cache::client()->query_keys(
           userID.toStdString(),
@@ -217,6 +222,7 @@ UserProfile::fetchDeviceList(const QString &userID)
                             }
 
                             this->deviceList_.queueReset(std::move(deviceInfo));
+                            emit devicesChanged();
                     });
           });
 }

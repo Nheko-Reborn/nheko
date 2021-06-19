@@ -12,7 +12,7 @@ Popup {
     closePolicy: Popup.NoAutoClose
     width: parent.width
     height: parent.height
-    palette: colors
+    palette: Nheko.colors
 
     Component {
         id: deviceError
@@ -41,7 +41,7 @@ Popup {
             Layout.topMargin: msgView.height / 25
             text: CallManager.callParty
             font.pointSize: fontMetrics.font.pointSize * 2
-            color: colors.windowText
+            color: Nheko.colors.windowText
         }
 
         Avatar {
@@ -62,14 +62,14 @@ Popup {
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: msgView.height / 10
                 Layout.preferredHeight: msgView.height / 10
-                source: "image://colorimage/" + image + "?" + colors.windowText
+                source: "image://colorimage/" + image + "?" + Nheko.colors.windowText
             }
 
             Label {
                 Layout.alignment: Qt.AlignCenter
                 text: CallManager.callType == CallType.VIDEO ? qsTr("Video Call") : qsTr("Voice Call")
                 font.pointSize: fontMetrics.font.pointSize * 2
-                color: colors.windowText
+                color: Nheko.colors.windowText
             }
 
         }
@@ -88,7 +88,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: deviceCombos.imageSize
                     Layout.preferredHeight: deviceCombos.imageSize
-                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.png?" + colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.png?" + Nheko.colors.windowText
                 }
 
                 ComboBox {
@@ -107,7 +107,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: deviceCombos.imageSize
                     Layout.preferredHeight: deviceCombos.imageSize
-                    source: "image://colorimage/:/icons/icons/ui/video-call.png?" + colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/video-call.png?" + Nheko.colors.windowText
                 }
 
                 ComboBox {
@@ -194,8 +194,8 @@ Popup {
     }
 
     background: Rectangle {
-        color: colors.window
-        border.color: colors.windowText
+        color: Nheko.colors.window
+        border.color: Nheko.colors.windowText
     }
 
 }

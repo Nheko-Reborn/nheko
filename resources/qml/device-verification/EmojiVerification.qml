@@ -19,7 +19,7 @@ Pane {
             Layout.fillWidth: true
             wrapMode: Text.Wrap
             text: qsTr("Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press 'They do not match!' to abort verification!")
-            color: colors.text
+            color: Nheko.colors.text
             verticalAlignment: Text.AlignVCenter
         }
 
@@ -374,13 +374,13 @@ Pane {
                             text: col.emoji.emoji
                             font.pixelSize: Qt.application.font.pixelSize * 2
                             font.family: Settings.emojiFont
-                            color: colors.text
+                            color: Nheko.colors.text
                         }
 
                         Label {
                             Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
                             text: col.emoji.description
-                            color: colors.text
+                            color: Nheko.colors.text
                         }
 
                     }

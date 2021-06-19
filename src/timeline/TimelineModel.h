@@ -14,6 +14,7 @@
 #include <mtxclient/http/errors.hpp>
 
 #include "CacheCryptoStructs.h"
+#include "CacheStructs.h"
 #include "EventStore.h"
 #include "InputBar.h"
 #include "Permissions.h"
@@ -253,11 +254,14 @@ public:
         }
 
         void updateLastMessage();
+        void sync(const mtx::responses::JoinedRoom &room);
         void addEvents(const mtx::responses::Timeline &events);
         void syncState(const mtx::responses::State &state);
         template<class T>
         void sendMessageEvent(const T &content, mtx::events::EventType eventType);
         RelatedInfo relatedInfo(QString id);
+
+        DescInfo lastMessage() const { return lastMessage_; }
 
 public slots:
         void setCurrentIndex(int index);
@@ -303,11 +307,15 @@ public slots:
         }
 
         QString roomName() const;
+        QString plainRoomName() const;
         QString roomTopic() const;
         InputBar *input() { return &input_; }
         Permissions *permissions() { return &permissions_; }
         QString roomAvatarUrl() const;
         QString roomId() const { return room_id_; }
+
+        bool hasMentions() { return highlight_count > 0; }
+        int notificationCount() { return notification_count; }
 
         QString scrollTarget() const;
 
@@ -327,6 +335,9 @@ signals:
         void paginationInProgressChanged(const bool);
         void newCallEvent(const mtx::events::collections::TimelineEvents &event);
         void scrollToIndex(int index);
+
+        void lastMessageChanged();
+        void notificationsChanged();
 
         void openRoomSettingsDialog(RoomSettings *settings);
 
@@ -372,7 +383,11 @@ private:
         QString eventIdToShow;
         int showEventTimerCounter = 0;
 
+        DescInfo lastMessage_{};
+
         friend struct SendMessageVisitor;
+
+        int notification_count = 0, highlight_count = 0;
 };
 
 template<class T>

@@ -4,7 +4,6 @@
 
 #include "TimelineViewManager.h"
 
-#include <QDesktopServices>
 #include <QDropEvent>
 #include <QMetaType>
 #include <QPalette>
@@ -33,6 +32,7 @@
 #include "RoomDirectoryModel.h"
 #include "ui/NhekoCursorShape.h"
 #include "ui/NhekoDropArea.h"
+#include "ui/NhekoGlobalObject.h"
 
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
@@ -89,21 +89,6 @@ removeReplyFallback(mtx::events::Event<T> &e)
 }
 
 void
-TimelineViewManager::updateEncryptedDescriptions()
-{
-        auto decrypt = ChatPage::instance()->userSettings()->decryptSidebar();
-        QHash<QString, QSharedPointer<TimelineModel>>::iterator i;
-        for (i = models.begin(); i != models.end(); ++i) {
-                auto ptr = i.value();
-
-                if (!ptr.isNull()) {
-                        ptr->setDecryptDescription(decrypt);
-                        ptr->updateLastMessage();
-                }
-        }
-}
-
-void
 TimelineViewManager::updateColorPalette()
 {
         userColors.clear();
@@ -124,8 +109,7 @@ QColor
 TimelineViewManager::userColor(QString id, QColor background)
 {
         if (!userColors.contains(id))
-                userColors.insert(
-                  id, QColor(utils::generateContrastingHexColor(id, background.name())));
+                userColors.insert(id, QColor(utils::generateContrastingHexColor(id, background)));
         return userColors.value(id);
 }
 
@@ -146,10 +130,13 @@ TimelineViewManager::userStatus(QString id) const
 }
 
 TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *parent)
-  : imgProvider(new MxcImageProvider())
+  : QObject(parent)
+  , imgProvider(new MxcImageProvider())
   , colorImgProvider(new ColorImageProvider())
   , blurhashProvider(new BlurhashProvider())
   , callManager_(callManager)
+  , rooms_(new RoomlistModel(this))
+  , communities_(new CommunitiesModel(this))
 {
         qRegisterMetaType<mtx::events::msg::KeyVerificationAccept>();
         qRegisterMetaType<mtx::events::msg::KeyVerificationCancel>();
@@ -209,6 +196,26 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                   QQmlEngine::setObjectOwnership(ptr, QQmlEngine::CppOwnership);
                   return ptr;
           });
+        qmlRegisterSingletonType<RoomlistModel>(
+          "im.nheko", 1, 0, "Rooms", [](QQmlEngine *, QJSEngine *) -> QObject * {
+                  auto ptr = new FilteredRoomlistModel(self->rooms_);
+
+                  connect(self->communities_,
+                          &CommunitiesModel::currentTagIdChanged,
+                          ptr,
+                          &FilteredRoomlistModel::updateFilterTag);
+                  connect(self->communities_,
+                          &CommunitiesModel::hiddenTagsChanged,
+                          ptr,
+                          &FilteredRoomlistModel::updateHiddenTagsAndSpaces);
+                  return ptr;
+          });
+        qmlRegisterSingletonType<RoomlistModel>(
+          "im.nheko", 1, 0, "Communities", [](QQmlEngine *, QJSEngine *) -> QObject * {
+                  auto ptr = self->communities_;
+                  QQmlEngine::setObjectOwnership(ptr, QQmlEngine::CppOwnership);
+                  return ptr;
+          });
         qmlRegisterSingletonType<UserSettings>(
           "im.nheko", 1, 0, "Settings", [](QQmlEngine *, QJSEngine *) -> QObject * {
                   auto ptr = ChatPage::instance()->userSettings().data();
@@ -224,6 +231,10 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         qmlRegisterSingletonType<Clipboard>(
           "im.nheko", 1, 0, "Clipboard", [](QQmlEngine *, QJSEngine *) -> QObject * {
                   return new Clipboard();
+          });
+        qmlRegisterSingletonType<Nheko>(
+          "im.nheko", 1, 0, "Nheko", [](QQmlEngine *, QJSEngine *) -> QObject * {
+                  return new Nheko();
           });
 
         qRegisterMetaType<mtx::events::collections::TimelineEvents>();
@@ -241,7 +252,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         qmlRegisterType<RoomDirectoryModel>("im.nheko.RoomDirectoryModel", 1, 0, "RoomDirectoryModel");
 
 #ifdef USE_QUICK_VIEW
-        view      = new QQuickView();
+        view      = new QQuickView(parent);
         container = QWidget::createWindowContainer(view, parent);
 #else
         view      = new QQuickWidget(parent);
@@ -258,13 +269,9 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         view->engine()->addImageProvider("MxcImage", imgProvider);
         view->engine()->addImageProvider("colorimage", colorImgProvider);
         view->engine()->addImageProvider("blurhash", blurhashProvider);
-        view->setSource(QUrl("qrc:///qml/TimelineView.qml"));
+        view->setSource(QUrl("qrc:///qml/Root.qml"));
 
         connect(parent, &ChatPage::themeChanged, this, &TimelineViewManager::updateColorPalette);
-        connect(parent,
-                &ChatPage::decryptSidebarChanged,
-                this,
-                &TimelineViewManager::updateEncryptedDescriptions);
         connect(
           dynamic_cast<ChatPage *>(parent),
           &ChatPage::receivedRoomDeviceVerificationRequest,
@@ -335,100 +342,28 @@ TimelineViewManager::setVideoCallItem()
 }
 
 void
-TimelineViewManager::sync(const mtx::responses::Rooms &rooms)
+TimelineViewManager::sync(const mtx::responses::Rooms &rooms_res)
 {
-        for (const auto &[room_id, room] : rooms.join) {
-                // addRoom will only add the room, if it doesn't exist
-                addRoom(QString::fromStdString(room_id));
-                const auto &room_model = models.value(QString::fromStdString(room_id));
-                if (!isInitialSync_)
-                        connect(room_model.data(),
-                                &TimelineModel::newCallEvent,
-                                callManager_,
-                                &CallManager::syncEvent);
-                room_model->syncState(room.state);
-                room_model->addEvents(room.timeline);
-                if (!isInitialSync_)
-                        disconnect(room_model.data(),
-                                   &TimelineModel::newCallEvent,
-                                   callManager_,
-                                   &CallManager::syncEvent);
+        this->rooms_->sync(rooms_res);
+        this->communities_->sync(rooms_res);
 
-                if (ChatPage::instance()->userSettings()->typingNotifications()) {
-                        for (const auto &ev : room.ephemeral.events) {
-                                if (auto t = std::get_if<
-                                      mtx::events::EphemeralEvent<mtx::events::ephemeral::Typing>>(
-                                      &ev)) {
-                                        std::vector<QString> typing;
-                                        typing.reserve(t->content.user_ids.size());
-                                        for (const auto &user : t->content.user_ids) {
-                                                if (user != http::client()->user_id().to_string())
-                                                        typing.push_back(
-                                                          QString::fromStdString(user));
-                                        }
-                                        room_model->updateTypingUsers(typing);
-                                }
-                        }
-                }
+        if (isInitialSync_) {
+                this->isInitialSync_ = false;
+                emit initialSyncChanged(false);
         }
-
-        this->isInitialSync_ = false;
-        emit initialSyncChanged(false);
-}
-
-void
-TimelineViewManager::addRoom(const QString &room_id)
-{
-        if (!models.contains(room_id)) {
-                QSharedPointer<TimelineModel> newRoom(new TimelineModel(this, room_id));
-                newRoom->setDecryptDescription(
-                  ChatPage::instance()->userSettings()->decryptSidebar());
-
-                connect(newRoom.data(),
-                        &TimelineModel::newEncryptedImage,
-                        imgProvider,
-                        &MxcImageProvider::addEncryptionInfo);
-                connect(newRoom.data(),
-                        &TimelineModel::forwardToRoom,
-                        this,
-                        &TimelineViewManager::forwardMessageToRoom);
-                models.insert(room_id, std::move(newRoom));
-        }
-}
-
-void
-TimelineViewManager::setHistoryView(const QString &room_id)
-{
-        nhlog::ui()->info("Trying to activate room {}", room_id.toStdString());
-
-        auto room = models.find(room_id);
-        if (room != models.end()) {
-                timeline_ = room.value().data();
-                emit activeTimelineChanged(timeline_);
-                container->setFocus();
-                nhlog::ui()->info("Activated room {}", room_id.toStdString());
-        }
-}
-
-void
-TimelineViewManager::highlightRoom(const QString &room_id)
-{
-        ChatPage::instance()->highlightRoom(room_id);
 }
 
 void
 TimelineViewManager::showEvent(const QString &room_id, const QString &event_id)
 {
-        auto room = models.find(room_id);
-        if (room != models.end()) {
-                if (timeline_ != room.value().data()) {
-                        timeline_ = room.value().data();
-                        emit activeTimelineChanged(timeline_);
+        if (auto room = rooms_->getRoomById(room_id)) {
+                if (rooms_->currentRoom() != room) {
+                        rooms_->setCurrentRoom(room_id);
                         container->setFocus();
                         nhlog::ui()->info("Activated room {}", room_id.toStdString());
                 }
 
-                timeline_->showEvent(event_id);
+                room->showEvent(event_id);
         }
 }
 
@@ -463,67 +398,19 @@ TimelineViewManager::openImageOverlayInternal(QString eventId, QImage img)
 
         auto imgDialog = new dialogs::ImageOverlay(pixmap);
         imgDialog->showFullScreen();
-        connect(imgDialog, &dialogs::ImageOverlay::saving, timeline_, [this, eventId, imgDialog]() {
+
+        auto room = rooms_->currentRoom();
+        connect(imgDialog, &dialogs::ImageOverlay::saving, room, [eventId, imgDialog, room]() {
                 // hide the overlay while presenting the save dialog for better
                 // cross platform support.
                 imgDialog->hide();
 
-                if (!timeline_->saveMedia(eventId)) {
+                if (!room->saveMedia(eventId)) {
                         imgDialog->show();
                 } else {
                         imgDialog->close();
                 }
         });
-}
-
-void
-TimelineViewManager::openLink(QString link) const
-{
-        QUrl url(link);
-        if (url.scheme() == "https" && url.host() == "matrix.to") {
-                // handle matrix.to links internally
-                QString p = url.fragment(QUrl::FullyEncoded);
-                if (p.startsWith("/"))
-                        p.remove(0, 1);
-
-                auto temp = p.split("?");
-                QString query;
-                if (temp.size() >= 2)
-                        query = QUrl::fromPercentEncoding(temp.takeAt(1).toUtf8());
-
-                temp            = temp.first().split("/");
-                auto identifier = QUrl::fromPercentEncoding(temp.takeFirst().toUtf8());
-                QString eventId = QUrl::fromPercentEncoding(temp.join('/').toUtf8());
-                if (!identifier.isEmpty()) {
-                        if (identifier.startsWith("@")) {
-                                QByteArray uri =
-                                  "matrix:u/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                                if (!query.isEmpty())
-                                        uri.append("?" + query.toUtf8());
-                                ChatPage::instance()->handleMatrixUri(QUrl::fromEncoded(uri));
-                        } else if (identifier.startsWith("#")) {
-                                QByteArray uri =
-                                  "matrix:r/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                                if (!eventId.isEmpty())
-                                        uri.append("/e/" +
-                                                   QUrl::toPercentEncoding(eventId.remove(0, 1)));
-                                if (!query.isEmpty())
-                                        uri.append("?" + query.toUtf8());
-                                ChatPage::instance()->handleMatrixUri(QUrl::fromEncoded(uri));
-                        } else if (identifier.startsWith("!")) {
-                                QByteArray uri = "matrix:roomid/" +
-                                                 QUrl::toPercentEncoding(identifier.remove(0, 1));
-                                if (!eventId.isEmpty())
-                                        uri.append("/e/" +
-                                                   QUrl::toPercentEncoding(eventId.remove(0, 1)));
-                                if (!query.isEmpty())
-                                        uri.append("?" + query.toUtf8());
-                                ChatPage::instance()->handleMatrixUri(QUrl::fromEncoded(uri));
-                        }
-                }
-        } else {
-                QDesktopServices::openUrl(url);
-        }
 }
 
 void
@@ -533,14 +420,14 @@ TimelineViewManager::openInviteUsersDialog()
           [this](const QStringList &invitees) { emit inviteUsers(invitees); });
 }
 void
-TimelineViewManager::openMemberListDialog() const
+TimelineViewManager::openMemberListDialog(QString roomid) const
 {
-        MainWindow::instance()->openMemberListDialog(timeline_->roomId());
+        MainWindow::instance()->openMemberListDialog(roomid);
 }
 void
-TimelineViewManager::openLeaveRoomDialog() const
+TimelineViewManager::openLeaveRoomDialog(QString roomid) const
 {
-        MainWindow::instance()->openLeaveRoomDialog(timeline_->roomId());
+        MainWindow::instance()->openLeaveRoomDialog(roomid);
 }
 
 void
@@ -556,17 +443,21 @@ TimelineViewManager::verifyUser(QString userid)
                         if (std::find(room_members.begin(),
                                       room_members.end(),
                                       (userid).toStdString()) != room_members.end()) {
-                                auto model = models.value(QString::fromStdString(room_id));
-                                auto flow  = DeviceVerificationFlow::InitiateUserVerification(
-                                  this, model.data(), userid);
-                                connect(model.data(),
-                                        &TimelineModel::updateFlowEventId,
-                                        this,
-                                        [this, flow](std::string eventId) {
-                                                dvList[QString::fromStdString(eventId)] = flow;
-                                        });
-                                emit newDeviceVerificationRequest(flow.data());
-                                return;
+                                if (auto model =
+                                      rooms_->getRoomById(QString::fromStdString(room_id))) {
+                                        auto flow =
+                                          DeviceVerificationFlow::InitiateUserVerification(
+                                            this, model.data(), userid);
+                                        connect(model.data(),
+                                                &TimelineModel::updateFlowEventId,
+                                                this,
+                                                [this, flow](std::string eventId) {
+                                                        dvList[QString::fromStdString(eventId)] =
+                                                          flow;
+                                                });
+                                        emit newDeviceVerificationRequest(flow.data());
+                                        return;
+                                }
                         }
                 }
         }
@@ -599,26 +490,24 @@ void
 TimelineViewManager::updateReadReceipts(const QString &room_id,
                                         const std::vector<QString> &event_ids)
 {
-        auto room = models.find(room_id);
-        if (room != models.end()) {
-                room.value()->markEventsAsRead(event_ids);
+        if (auto room = rooms_->getRoomById(room_id)) {
+                room->markEventsAsRead(event_ids);
         }
 }
 
 void
 TimelineViewManager::receivedSessionKey(const std::string &room_id, const std::string &session_id)
 {
-        auto room = models.find(QString::fromStdString(room_id));
-        if (room != models.end()) {
-                room.value()->receivedSessionKey(session_id);
+        if (auto room = rooms_->getRoomById(QString::fromStdString(room_id))) {
+                room->receivedSessionKey(session_id);
         }
 }
 
 void
-TimelineViewManager::initWithMessages(const std::vector<QString> &roomIds)
+TimelineViewManager::initializeRoomlist()
 {
-        for (const auto &roomId : roomIds)
-                addRoom(roomId);
+        rooms_->initializeRooms();
+        communities_->initializeSidebar();
 }
 
 void
@@ -626,74 +515,42 @@ TimelineViewManager::queueReply(const QString &roomid,
                                 const QString &repliedToEvent,
                                 const QString &replyBody)
 {
-        auto room = models.find(roomid);
-        if (room != models.end()) {
-                room.value()->setReply(repliedToEvent);
-                room.value()->input()->message(replyBody);
+        if (auto room = rooms_->getRoomById(roomid)) {
+                room->setReply(repliedToEvent);
+                room->input()->message(replyBody);
         }
 }
 
-void
-TimelineViewManager::queueReactionMessage(const QString &reactedEvent, const QString &reactionKey)
-{
-        if (!timeline_)
-                return;
-
-        auto reactions = timeline_->reactions(reactedEvent.toStdString());
-
-        QString selfReactedEvent;
-        for (const auto &reaction : reactions) {
-                if (reactionKey == reaction.key_) {
-                        selfReactedEvent = reaction.selfReactedEvent_;
-                        break;
-                }
-        }
-
-        if (selfReactedEvent.startsWith("m"))
-                return;
-
-        // If selfReactedEvent is empty, that means we haven't previously reacted
-        if (selfReactedEvent.isEmpty()) {
-                mtx::events::msg::Reaction reaction;
-                mtx::common::Relation rel;
-                rel.rel_type = mtx::common::RelationType::Annotation;
-                rel.event_id = reactedEvent.toStdString();
-                rel.key      = reactionKey.toStdString();
-                reaction.relations.relations.push_back(rel);
-
-                timeline_->sendMessageEvent(reaction, mtx::events::EventType::Reaction);
-                // Otherwise, we have previously reacted and the reaction should be redacted
-        } else {
-                timeline_->redactEvent(selfReactedEvent);
-        }
-}
 void
 TimelineViewManager::queueCallMessage(const QString &roomid,
                                       const mtx::events::msg::CallInvite &callInvite)
 {
-        models.value(roomid)->sendMessageEvent(callInvite, mtx::events::EventType::CallInvite);
+        if (auto room = rooms_->getRoomById(roomid))
+                room->sendMessageEvent(callInvite, mtx::events::EventType::CallInvite);
 }
 
 void
 TimelineViewManager::queueCallMessage(const QString &roomid,
                                       const mtx::events::msg::CallCandidates &callCandidates)
 {
-        models.value(roomid)->sendMessageEvent(callCandidates,
-                                               mtx::events::EventType::CallCandidates);
+        if (auto room = rooms_->getRoomById(roomid))
+                room->sendMessageEvent(callCandidates, mtx::events::EventType::CallCandidates);
 }
 
 void
 TimelineViewManager::queueCallMessage(const QString &roomid,
                                       const mtx::events::msg::CallAnswer &callAnswer)
 {
-        models.value(roomid)->sendMessageEvent(callAnswer, mtx::events::EventType::CallAnswer);
+        if (auto room = rooms_->getRoomById(roomid))
+                room->sendMessageEvent(callAnswer, mtx::events::EventType::CallAnswer);
 }
 
 void
 TimelineViewManager::queueCallMessage(const QString &roomid,
                                       const mtx::events::msg::CallHangUp &callHangUp)
 {
-        models.value(roomid)->sendMessageEvent(callHangUp, mtx::events::EventType::CallHangUp);
+        if (auto room = rooms_->getRoomById(roomid))
+                room->sendMessageEvent(callHangUp, mtx::events::EventType::CallHangUp);
 }
 
 void
@@ -751,7 +608,7 @@ void
 TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEvents *e,
                                           QString roomId)
 {
-        auto room                                                = models.find(roomId);
+        auto room                                                = rooms_->getRoomById(roomId);
         auto content                                             = mtx::accessors::url(*e);
         std::optional<mtx::crypto::EncryptedFile> encryptionInfo = mtx::accessors::file(*e);
 
@@ -794,12 +651,15 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
                                                               ev.content.url = url;
                                                       }
 
-                                                      auto room = models.find(roomId);
-                                                      removeReplyFallback(ev);
-                                                      ev.content.relations.relations.clear();
-                                                      room.value()->sendMessageEvent(
-                                                        ev.content,
-                                                        mtx::events::EventType::RoomMessage);
+                                                      if (auto room = rooms_->getRoomById(roomId)) {
+                                                              removeReplyFallback(ev);
+                                                              ev.content.relations.relations
+                                                                .clear();
+                                                              room->sendMessageEvent(
+                                                                ev.content,
+                                                                mtx::events::EventType::
+                                                                  RoomMessage);
+                                                      }
                                               }
                                       },
                                       *e);
@@ -817,8 +677,7 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
                                 mtx::events::EventType::RoomMessage) {
                           e.content.relations.relations.clear();
                           removeReplyFallback(e);
-                          room.value()->sendMessageEvent(e.content,
-                                                         mtx::events::EventType::RoomMessage);
+                          room->sendMessageEvent(e.content, mtx::events::EventType::RoomMessage);
                   }
           },
           *e);

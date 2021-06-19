@@ -11,16 +11,16 @@ import im.nheko 1.0
 Rectangle {
     id: topBar
 
-    property var room: TimelineManager.timeline
+    property bool showBackButton: false
 
     Layout.fillWidth: true
-    implicitHeight: topLayout.height + 16
+    implicitHeight: topLayout.height + Nheko.paddingMedium * 2
     z: 3
-    color: colors.window
+    color: Nheko.colors.window
 
     TapHandler {
         onSingleTapped: {
-            TimelineManager.timeline.openRoomSettings();
+            room.openRoomSettings();
             eventPoint.accepted = true;
         }
         gesturePolicy: TapHandler.ReleaseWithinBounds
@@ -33,7 +33,7 @@ Rectangle {
 
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.margins: 8
+        anchors.margins: Nheko.paddingMedium
         anchors.verticalCenter: parent.verticalCenter
 
         ImageButton {
@@ -43,13 +43,13 @@ Rectangle {
             Layout.row: 0
             Layout.rowSpan: 2
             Layout.alignment: Qt.AlignVCenter
-            width: avatarSize
-            height: avatarSize
-            visible: TimelineManager.isNarrowView
+            width: Nheko.avatarSize
+            height: Nheko.avatarSize
+            visible: showBackButton
             image: ":/icons/icons/ui/angle-pointing-to-left.png"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Back to room list")
-            onClicked: TimelineManager.backToRooms()
+            onClicked: Rooms.resetCurrentRoom()
         }
 
         Avatar {
@@ -57,18 +57,18 @@ Rectangle {
             Layout.row: 0
             Layout.rowSpan: 2
             Layout.alignment: Qt.AlignVCenter
-            width: avatarSize
-            height: avatarSize
+            width: Nheko.avatarSize
+            height: Nheko.avatarSize
             url: room ? room.roomAvatarUrl.replace("mxc://", "image://MxcImage/") : ""
             displayName: room ? room.roomName : qsTr("No room selected")
-            onClicked: TimelineManager.timeline.openRoomSettings()
+            onClicked: room.openRoomSettings()
         }
 
         Label {
             Layout.fillWidth: true
             Layout.column: 2
             Layout.row: 0
-            color: colors.text
+            color: Nheko.colors.text
             font.pointSize: fontMetrics.font.pointSize * 1.1
             text: room ? room.roomName : qsTr("No room selected")
             maximumLineCount: 1
@@ -101,24 +101,24 @@ Rectangle {
                 id: roomOptionsMenu
 
                 Platform.MenuItem {
-                    visible: TimelineManager.timeline ? TimelineManager.timeline.permissions.canInvite() : false
+                    visible: room ? room.permissions.canInvite() : false
                     text: qsTr("Invite users")
                     onTriggered: TimelineManager.openInviteUsersDialog()
                 }
 
                 Platform.MenuItem {
                     text: qsTr("Members")
-                    onTriggered: TimelineManager.openMemberListDialog()
+                    onTriggered: TimelineManager.openMemberListDialog(room.roomId())
                 }
 
                 Platform.MenuItem {
                     text: qsTr("Leave room")
-                    onTriggered: TimelineManager.openLeaveRoomDialog()
+                    onTriggered: TimelineManager.openLeaveRoomDialog(room.roomId())
                 }
 
                 Platform.MenuItem {
                     text: qsTr("Settings")
-                    onTriggered: TimelineManager.timeline.openRoomSettings()
+                    onTriggered: room.openRoomSettings()
                 }
 
             }

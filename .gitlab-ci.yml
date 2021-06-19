@@ -143,7 +143,7 @@ linting:
   image: alpine:latest
   tags: [docker]
   before_script:
-    - apk update && apk add clang make git python3 py3-pip
+    - apk update && apk add clang-extra-tools make git python3 py3-pip
     - export PATH="$PATH:/root/.local/bin"
     - pip3 install --user reuse
   script:

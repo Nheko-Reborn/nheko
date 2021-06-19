@@ -318,6 +318,8 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
   , room_id_(room_id)
   , manager_(manager)
 {
+        lastMessage_.timestamp = 0;
+
         connect(
           this,
           &TimelineModel::redactionFailed,
@@ -373,6 +375,21 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         connect(&events, &EventStore::updateFlowEventId, this, [this](std::string event_id) {
                 this->updateFlowEventId(event_id);
         });
+        // When a message is sent, check if the current edit/reply relates to that message,
+        // and update the event_id so that it points to the sent message and not the pending one.
+        connect(&events,
+                &EventStore::messageSent,
+                this,
+                [this](std::string txn_id, std::string event_id) {
+                        if (edit_.toStdString() == txn_id) {
+                                edit_ = QString::fromStdString(event_id);
+                                emit editChanged(edit_);
+                        }
+                        if (reply_.toStdString() == txn_id) {
+                                reply_ = QString::fromStdString(event_id);
+                                emit replyChanged(reply_);
+                        }
+                });
 
         showEventTimer.callOnTimeout(this, &TimelineModel::scrollTimerEvent);
 }
@@ -566,13 +583,11 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         case IsEdited:
                 return QVariant(relations(event).replaces().has_value());
         case IsEditable:
-                return QVariant(!is_state_event(event) &&
-                                mtx::accessors::sender(event) ==
-                                  http::client()->user_id().to_string() &&
-                                !event_id(event).empty() && event_id(event).front() == '$');
+                return QVariant(!is_state_event(event) && mtx::accessors::sender(event) ==
+                                                            http::client()->user_id().to_string());
         case IsEncrypted: {
                 auto id              = event_id(event);
-                auto encrypted_event = events.get(id, id, false);
+                auto encrypted_event = events.get(id, "", false);
                 return encrypted_event &&
                        std::holds_alternative<
                          mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
@@ -581,7 +596,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
 
         case Trustlevel: {
                 auto id              = event_id(event);
-                auto encrypted_event = events.get(id, id, false);
+                auto encrypted_event = events.get(id, "", false);
                 if (encrypted_event) {
                         if (auto encrypted =
                               std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
@@ -721,6 +736,20 @@ TimelineModel::fetchMore(const QModelIndex &)
         setPaginationInProgress(true);
 
         events.fetchMore();
+}
+
+void
+TimelineModel::sync(const mtx::responses::JoinedRoom &room)
+{
+        this->syncState(room.state);
+        this->addEvents(room.timeline);
+
+        if (room.unread_notifications.highlight_count != highlight_count ||
+            room.unread_notifications.notification_count != notification_count) {
+                notification_count = room.unread_notifications.notification_count;
+                highlight_count    = room.unread_notifications.highlight_count;
+                emit notificationsChanged();
+        }
 }
 
 void
@@ -866,14 +895,17 @@ TimelineModel::updateLastMessage()
                 if (std::visit([](const auto &e) -> bool { return isYourJoin(e); }, *event)) {
                         auto time   = mtx::accessors::origin_server_ts(*event);
                         uint64_t ts = time.toMSecsSinceEpoch();
-                        emit manager_->updateRoomsLastMessage(
-                          room_id_,
+                        auto description =
                           DescInfo{QString::fromStdString(mtx::accessors::event_id(*event)),
                                    QString::fromStdString(http::client()->user_id().to_string()),
                                    tr("You joined this room."),
                                    utils::descriptiveTime(time),
                                    ts,
-                                   time});
+                                   time};
+                        if (description != lastMessage_) {
+                                lastMessage_ = description;
+                                emit lastMessageChanged();
+                        }
                         return;
                 }
                 if (!std::visit([](const auto &e) -> bool { return isMessage(e); }, *event))
@@ -884,7 +916,10 @@ TimelineModel::updateLastMessage()
                   QString::fromStdString(http::client()->user_id().to_string()),
                   cache::displayName(room_id_,
                                      QString::fromStdString(mtx::accessors::sender(*event))));
-                emit manager_->updateRoomsLastMessage(room_id_, description);
+                if (description != lastMessage_) {
+                        lastMessage_ = description;
+                        emit lastMessageChanged();
+                }
                 return;
         }
 }
@@ -1774,9 +1809,6 @@ TimelineModel::formatMemberEvent(QString id)
 void
 TimelineModel::setEdit(QString newEdit)
 {
-        if (edit_.startsWith('m'))
-                return;
-
         if (newEdit.isEmpty()) {
                 resetEdit();
                 return;
@@ -1864,6 +1896,17 @@ TimelineModel::roomName() const
         else
                 return utils::replaceEmoji(
                   QString::fromStdString(info[room_id_].name).toHtmlEscaped());
+}
+
+QString
+TimelineModel::plainRoomName() const
+{
+        auto info = cache::getRoomInfo({room_id_.toStdString()});
+
+        if (!info.count(room_id_))
+                return "";
+        else
+                return QString::fromStdString(info[room_id_].name);
 }
 
 QString

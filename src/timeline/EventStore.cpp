@@ -185,6 +185,48 @@ EventStore::EventStore(std::string room_id, QObject *)
           [this](std::string txn_id, std::string event_id) {
                   nhlog::ui()->debug("sent {}", txn_id);
 
+                  // Replace the event_id in pending edits/replies/redactions with the actual
+                  // event_id of this event. This allows one to edit and reply to events that are
+                  // currently pending.
+
+                  // FIXME (introduced by balsoft): this doesn't work for encrypted events, but
+                  // allegedly it's hard to fix so I'll leave my first contribution at that
+                  for (auto related_event_id : cache::client()->relatedEvents(room_id_, txn_id)) {
+                          if (cache::client()->getEvent(room_id_, related_event_id)) {
+                                  auto related_event =
+                                    cache::client()->getEvent(room_id_, related_event_id).value();
+                                  auto relations = mtx::accessors::relations(related_event.data);
+
+                                  // Replace the blockquote in fallback reply
+                                  auto related_text =
+                                    std::get_if<mtx::events::RoomEvent<mtx::events::msg::Text>>(
+                                      &related_event.data);
+                                  if (related_text && relations.reply_to() == txn_id) {
+                                          size_t index =
+                                            related_text->content.formatted_body.find(txn_id);
+                                          if (index != std::string::npos) {
+                                                  related_text->content.formatted_body.replace(
+                                                    index, event_id.length(), event_id);
+                                          }
+                                  }
+
+                                  for (mtx::common::Relation &rel : relations.relations) {
+                                          if (rel.event_id == txn_id)
+                                                  rel.event_id = event_id;
+                                  }
+
+                                  mtx::accessors::set_relations(related_event.data, relations);
+
+                                  cache::client()->replaceEvent(
+                                    room_id_, related_event_id, related_event);
+
+                                  auto idx = idToIndex(related_event_id);
+
+                                  events_by_id_.remove({room_id_, related_event_id});
+                                  events_.remove({room_id_, toInternalIdx(*idx)});
+                          }
+                  }
+
                   http::client()->read_event(
                     room_id_, event_id, [this, event_id](mtx::http::RequestErr err) {
                             if (err) {
@@ -192,6 +234,11 @@ EventStore::EventStore(std::string room_id, QObject *)
                                       "failed to read_event ({}, {})", room_id_, event_id);
                             }
                     });
+
+                  auto idx = idToIndex(event_id);
+
+                  if (idx)
+                          emit dataChanged(*idx, *idx);
 
                   cache::client()->removePendingStatus(room_id_, txn_id);
                   this->current_txn             = "";
@@ -770,7 +817,7 @@ EventStore::decryptEvent(const IdIndex &idx,
 }
 
 mtx::events::collections::TimelineEvents *
-EventStore::get(std::string_view id, std::string_view related_to, bool decrypt, bool resolve_edits)
+EventStore::get(std::string id, std::string_view related_to, bool decrypt, bool resolve_edits)
 {
         if (this->thread() != QThread::currentThread())
                 nhlog::db()->warn("{} called from a different thread!", __func__);
@@ -778,7 +825,7 @@ EventStore::get(std::string_view id, std::string_view related_to, bool decrypt, 
         if (id.empty())
                 return nullptr;
 
-        IdIndex index{room_id_, std::string(id)};
+        IdIndex index{room_id_, std::move(id)};
         if (resolve_edits) {
                 auto edits_ = edits(index.id);
                 if (!edits_.empty()) {
@@ -796,14 +843,12 @@ EventStore::get(std::string_view id, std::string_view related_to, bool decrypt, 
                         http::client()->get_event(
                           room_id_,
                           index.id,
-                          [this,
-                           relatedTo = std::string(related_to.data(), related_to.size()),
-                           id = index.id](const mtx::events::collections::TimelineEvents &timeline,
-                                          mtx::http::RequestErr err) {
+                          [this, relatedTo = std::string(related_to), id = index.id](
+                            const mtx::events::collections::TimelineEvents &timeline,
+                            mtx::http::RequestErr err) {
                                   if (err) {
                                           nhlog::net()->error(
-                                            "Failed to retrieve event with id {}, which "
-                                            "was "
+                                            "Failed to retrieve event with id {}, which was "
                                             "requested to show the replyTo for event {}",
                                             relatedTo,
                                             id);

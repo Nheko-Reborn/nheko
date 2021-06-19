@@ -31,7 +31,7 @@ ImageButton {
     }
     onClicked: {
         if (model.state == MtxEvent.Read)
-            TimelineManager.timeline.readReceiptsAction(model.id);
+            room.readReceiptsAction(model.id);
 
     }
     image: {

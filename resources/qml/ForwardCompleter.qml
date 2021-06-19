@@ -19,7 +19,7 @@ Popup {
     x: Math.round(parent.width / 2 - width / 2)
     y: Math.round(parent.height / 2 - height / 2)
     modal: true
-    palette: colors
+    palette: Nheko.colors
     parent: Overlay.overlay
     width: implicitWidth >= (timelineRoot.width * 0.8) ? implicitWidth : (timelineRoot.width * 0.8)
     height: implicitHeight + completerPopup.height + padding * 2
@@ -44,22 +44,22 @@ Popup {
             text: qsTr("Forward Message")
             font.bold: true
             bottomPadding: 10
-            color: colors.text
+            color: Nheko.colors.text
         }
 
         Reply {
             id: replyPreview
 
-            modelData: TimelineManager.timeline ? TimelineManager.timeline.getDump(mid, "") : {
+            modelData: room ? room.getDump(mid, "") : {
             }
-            userColor: TimelineManager.userColor(modelData.userId, colors.window)
+            userColor: TimelineManager.userColor(modelData.userId, Nheko.colors.window)
         }
 
         MatrixTextField {
             id: roomTextInput
 
             width: forwardMessagePopup.width - forwardMessagePopup.leftPadding * 2
-            color: colors.text
+            color: Nheko.colors.text
             onTextEdited: {
                 completerPopup.completer.searchString = text;
             }
@@ -95,7 +95,7 @@ Popup {
 
     Connections {
         onCompletionSelected: {
-            TimelineManager.timeline.forwardMessage(messageContextMenu.eventId, id);
+            room.forwardMessage(messageContextMenu.eventId, id);
             forwardMessagePopup.close();
         }
         onCountChanged: {
@@ -107,11 +107,11 @@ Popup {
     }
 
     background: Rectangle {
-        color: colors.window
+        color: Nheko.colors.window
     }
 
     Overlay.modal: Rectangle {
-        color: Qt.rgba(colors.window.r, colors.window.g, colors.window.b, 0.7)
+        color: Qt.rgba(Nheko.colors.window.r, Nheko.colors.window.g, Nheko.colors.window.b, 0.7)
     }
 
 }
