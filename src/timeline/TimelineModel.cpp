@@ -375,6 +375,8 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         connect(&events, &EventStore::updateFlowEventId, this, [this](std::string event_id) {
                 this->updateFlowEventId(event_id);
         });
+        // When a message is sent, check if the current edit/reply relates to that message,
+        // and update the event_id so that it points to the sent message and not the pending one.
         connect(&events,
                 &EventStore::messageSent,
                 this,

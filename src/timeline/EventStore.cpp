@@ -186,7 +186,11 @@ EventStore::EventStore(std::string room_id, QObject *)
                   nhlog::ui()->debug("sent {}", txn_id);
 
                   // Replace the event_id in pending edits/replies/redactions with the actual
-                  // event_id of this event
+                  // event_id of this event. This allows one to edit and reply to events that are
+                  // currently pending.
+
+                  // FIXME (introduced by balsoft): this doesn't work for encrypted events, but
+                  // allegedly it's hard to fix so I'll leave my first contribution at that
                   for (auto related_event_id : cache::client()->relatedEvents(room_id_, txn_id)) {
                           if (cache::client()->getEvent(room_id_, related_event_id)) {
                                   auto related_event =
