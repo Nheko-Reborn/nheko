@@ -273,7 +273,6 @@ Page {
 
                         ElidedLabel {
                             color: roomItem.unimportantText
-                            font.weight: Font.Thin
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             elideWidth: textContent.width - (notificationBubble.visible ? notificationBubble.width : 0) - Nheko.paddingSmall
                             fullText: model.lastMessage
@@ -487,7 +486,6 @@ Page {
                     ElidedLabel {
                         Layout.alignment: Qt.AlignTop
                         color: Nheko.colors.buttonText
-                        font.weight: Font.Thin
                         font.pointSize: fontMetrics.font.pointSize * 0.9
                         elideWidth: col.width
                         fullText: userInfoGrid.profile ? userInfoGrid.profile.userid : ""
