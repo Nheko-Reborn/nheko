@@ -531,6 +531,12 @@ bool
 FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) const
 {
         if (filterType == FilterBy::Nothing) {
+                if (sourceModel()
+                      ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
+                      .toBool()) {
+                        return false;
+                }
+
                 if (!hiddenTags.empty()) {
                         auto tags =
                           sourceModel()
@@ -540,7 +546,9 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                         for (const auto &t : tags)
                                 if (hiddenTags.contains(t))
                                         return false;
-                } else if (!hiddenSpaces.empty()) {
+                }
+
+                if (!hiddenSpaces.empty()) {
                         auto parents =
                           sourceModel()
                             ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
@@ -548,25 +556,30 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                         for (const auto &t : parents)
                                 if (hiddenSpaces.contains(t))
                                         return false;
-                } else if (sourceModel()
-                             ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
-                             .toBool()) {
-                        return false;
                 }
 
                 return true;
         } else if (filterType == FilterBy::Tag) {
+                if (sourceModel()
+                      ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
+                      .toBool()) {
+                        return false;
+                }
+
                 auto tags = sourceModel()
                               ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
                               .toStringList();
 
                 if (!tags.contains(filterStr))
                         return false;
-                else if (!hiddenTags.empty()) {
+
+                if (!hiddenTags.empty()) {
                         for (const auto &t : tags)
                                 if (t != filterStr && hiddenTags.contains(t))
                                         return false;
-                } else if (!hiddenSpaces.empty()) {
+                }
+
+                if (!hiddenSpaces.empty()) {
                         auto parents =
                           sourceModel()
                             ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
@@ -574,41 +587,47 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                         for (const auto &t : parents)
                                 if (hiddenSpaces.contains(t))
                                         return false;
-                } else if (sourceModel()
-                             ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
-                             .toBool()) {
-                        return false;
                 }
+
                 return true;
         } else if (filterType == FilterBy::Space) {
-                auto parents =
-                  sourceModel()
-                    ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
-                    .toStringList();
-                auto tags = sourceModel()
-                              ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
-                              .toStringList();
-
                 if (filterStr == sourceModel()
                                    ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::RoomId)
                                    .toString())
                         return true;
-                else if (!parents.contains(filterStr))
+
+                auto parents =
+                  sourceModel()
+                    ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
+                    .toStringList();
+
+                if (!parents.contains(filterStr))
                         return false;
-                else if (!hiddenTags.empty()) {
+
+                if (!hiddenTags.empty()) {
+                        auto tags =
+                          sourceModel()
+                            ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
+                            .toStringList();
+
                         for (const auto &t : tags)
                                 if (hiddenTags.contains(t))
                                         return false;
-                } else if (!hiddenSpaces.empty()) {
+                }
+
+                if (!hiddenSpaces.empty()) {
                         for (const auto &t : parents)
                                 if (hiddenSpaces.contains(t))
                                         return false;
-                } else if (sourceModel()
-                             ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
-                             .toBool() &&
-                           !parents.contains(filterStr)) {
+                }
+
+                if (sourceModel()
+                      ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
+                      .toBool() &&
+                    !parents.contains(filterStr)) {
                         return false;
                 }
+
                 return true;
         } else {
                 return true;
