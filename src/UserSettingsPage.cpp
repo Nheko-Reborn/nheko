@@ -613,6 +613,7 @@ UserSettings::save()
         settings.setValue("mobile_mode", mobileMode_);
         settings.setValue("font_size", baseFontSize_);
         settings.setValue("typing_notifications", typingNotifications_);
+        settings.setValue("sort_by_unread", sortByImportance_);
         settings.setValue("minor_events", sortByImportance_);
         settings.setValue("read_receipts", readReceipts_);
         settings.setValue("group_view", groupView_);
