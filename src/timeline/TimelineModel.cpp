@@ -320,6 +320,10 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
 {
         lastMessage_.timestamp = 0;
 
+        if (auto create =
+              cache::client()->getStateEvent<mtx::events::state::Create>(room_id.toStdString()))
+                this->isSpace_ = create->content.type == mtx::events::state::room_type::space;
+
         connect(
           this,
           &TimelineModel::redactionFailed,
@@ -375,6 +379,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         connect(&events, &EventStore::updateFlowEventId, this, [this](std::string event_id) {
                 this->updateFlowEventId(event_id);
         });
+
         // When a message is sent, check if the current edit/reply relates to that message,
         // and update the event_id so that it points to the sent message and not the pending one.
         connect(&events,
@@ -390,6 +395,11 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                                 emit replyChanged(reply_);
                         }
                 });
+
+        connect(manager_,
+                &TimelineViewManager::initialSyncChanged,
+                &events,
+                &EventStore::enableKeyRequests);
 
         showEventTimer.callOnTimeout(this, &TimelineModel::scrollTimerEvent);
 }
@@ -770,6 +780,7 @@ TimelineModel::syncState(const mtx::responses::State &s)
                 } else if (std::holds_alternative<StateEvent<state::Member>>(e)) {
                         emit roomAvatarUrlChanged();
                         emit roomNameChanged();
+                        emit roomMemberCountChanged();
                 }
         }
 }
@@ -826,6 +837,7 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
                 } else if (std::holds_alternative<StateEvent<state::Member>>(e)) {
                         emit roomAvatarUrlChanged();
                         emit roomNameChanged();
+                        emit roomMemberCountChanged();
                 }
         }
         updateLastMessage();
@@ -1930,4 +1942,10 @@ TimelineModel::roomTopic() const
         else
                 return utils::replaceEmoji(utils::linkifyMessage(
                   QString::fromStdString(info[room_id_].topic).toHtmlEscaped()));
+}
+
+int
+TimelineModel::roomMemberCount() const
+{
+        return (int)cache::client()->memberCount(room_id_.toStdString());
 }

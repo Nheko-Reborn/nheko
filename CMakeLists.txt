@@ -356,7 +356,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        5d2f055ea9403770039ddf66b1900f890cd5cde7
+		GIT_TAG        fdb2016eff4f2e91f17c343e9fcb0bfab5e78b63
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -458,7 +458,7 @@ endif()
 
 # single instance functionality
 set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
-add_subdirectory(third_party/SingleApplication-3.2.0-dc8042b/)
+add_subdirectory(third_party/SingleApplication-3.3.0/)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 

@@ -675,6 +675,9 @@ EventStore::decryptEvent(const IdIndex &idx,
                                               index.room_id,
                                               index.session_id,
                                               e.sender);
+                        // we may not want to request keys during initial sync and such
+                        if (suppressKeyRequests)
+                                break;
                         // TODO: Check if this actually works and look in key backup
                         auto copy    = e;
                         copy.room_id = room_id_;
@@ -814,6 +817,18 @@ EventStore::decryptEvent(const IdIndex &idx,
                 emit newEncryptedImage(encInfo.value());
 
         return asCacheEntry(std::move(decryptionResult.event.value()));
+}
+
+void
+EventStore::enableKeyRequests(bool suppressKeyRequests_)
+{
+        if (!suppressKeyRequests_) {
+                for (const auto &key : decryptedEvents_.keys())
+                        if (key.room == this->room_id_)
+                                decryptedEvents_.remove(key);
+                suppressKeyRequests = false;
+        } else
+                suppressKeyRequests = true;
 }
 
 mtx::events::collections::TimelineEvents *

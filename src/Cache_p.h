@@ -72,6 +72,7 @@ public:
         std::optional<mtx::events::state::CanonicalAlias> getRoomAliases(const std::string &roomid);
         QHash<QString, RoomInfo> invites();
         std::optional<RoomInfo> invite(std::string_view roomid);
+        QMap<QString, std::optional<RoomInfo>> spaces();
 
         //! Calculate & return the name of the room.
         QString getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
@@ -84,6 +85,8 @@ public:
         QString getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
         //! Retrieve the version of the room if any.
         QString getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb);
+        //! Retrieve if the room is a space
+        bool getRoomIsSpace(lmdb::txn &txn, lmdb::dbi &statesdb);
 
         //! Get a specific state event
         template<typename T>
@@ -98,6 +101,7 @@ public:
         std::vector<RoomMember> getMembers(const std::string &room_id,
                                            std::size_t startIndex = 0,
                                            std::size_t len        = 30);
+        size_t memberCount(const std::string &room_id);
 
         void saveState(const mtx::responses::Sync &res);
         bool isInitialized();
@@ -146,16 +150,12 @@ public:
 
         RoomInfo singleRoomInfo(const std::string &room_id);
         std::vector<std::string> roomsWithStateUpdates(const mtx::responses::Sync &res);
-        std::vector<std::string> roomsWithTagUpdates(const mtx::responses::Sync &res);
         std::map<QString, RoomInfo> getRoomInfo(const std::vector<std::string> &rooms);
 
         //! Calculates which the read status of a room.
         //! Whether all the events in the timeline have been read.
         bool calculateRoomReadStatus(const std::string &room_id);
         void calculateRoomReadStatus();
-
-        std::vector<RoomSearchResult> searchRooms(const std::string &query,
-                                                  std::uint8_t max_items = 5);
 
         void markSentNotification(const std::string &event_id);
         //! Removes an event from the sent notifications.
@@ -222,6 +222,8 @@ public:
         void deleteOldData() noexcept;
         //! Retrieve all saved room ids.
         std::vector<std::string> getRoomIds(lmdb::txn &txn);
+        std::vector<std::string> getParentRoomIds(const std::string &room_id);
+        std::vector<std::string> getChildRoomIds(const std::string &room_id);
 
         //! Mark a room that uses e2e encryption.
         void setEncryptedRoom(lmdb::txn &txn, const std::string &room_id);
@@ -327,12 +329,14 @@ private:
         QString getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
         QString getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb);
         QString getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
+        bool getInviteRoomIsSpace(lmdb::txn &txn, lmdb::dbi &db);
 
         std::optional<MemberInfo> getMember(const std::string &room_id, const std::string &user_id);
 
         std::string getLastEventId(lmdb::txn &txn, const std::string &room_id);
         DescInfo getLastMessageInfo(lmdb::txn &txn, const std::string &room_id);
         void saveTimelineMessages(lmdb::txn &txn,
+                                  lmdb::dbi &eventsDb,
                                   const std::string &room_id,
                                   const mtx::responses::Timeline &res);
 
@@ -351,11 +355,12 @@ private:
                              lmdb::dbi &statesdb,
                              lmdb::dbi &stateskeydb,
                              lmdb::dbi &membersdb,
+                             lmdb::dbi &eventsDb,
                              const std::string &room_id,
                              const std::vector<T> &events)
         {
                 for (const auto &e : events)
-                        saveStateEvent(txn, statesdb, stateskeydb, membersdb, room_id, e);
+                        saveStateEvent(txn, statesdb, stateskeydb, membersdb, eventsDb, room_id, e);
         }
 
         template<class T>
@@ -363,6 +368,7 @@ private:
                             lmdb::dbi &statesdb,
                             lmdb::dbi &stateskeydb,
                             lmdb::dbi &membersdb,
+                            lmdb::dbi &eventsDb,
                             const std::string &room_id,
                             const T &event)
         {
@@ -399,8 +405,10 @@ private:
                 }
 
                 std::visit(
-                  [&txn, &statesdb, &stateskeydb](auto e) {
-                          if constexpr (isStateEvent(e))
+                  [&txn, &statesdb, &stateskeydb, &eventsDb](auto e) {
+                          if constexpr (isStateEvent(e)) {
+                                  eventsDb.put(txn, e.event_id, json(e).dump());
+
                                   if (e.type != EventType::Unsupported) {
                                           if (e.state_key.empty())
                                                   statesdb.put(
@@ -415,6 +423,7 @@ private:
                                                                  })
                                                       .dump());
                                   }
+                          }
                   },
                   event);
         }
@@ -430,20 +439,22 @@ private:
 
                 if (room_id.empty())
                         return std::nullopt;
+                const auto typeStr = to_string(type);
 
                 std::string_view value;
                 if (state_key.empty()) {
                         auto db = getStatesDb(txn, room_id);
-                        if (!db.get(txn, to_string(type), value)) {
+                        if (!db.get(txn, typeStr, value)) {
                                 return std::nullopt;
                         }
                 } else {
-                        auto db               = getStatesKeyDb(txn, room_id);
-                        std::string d         = json::object({{"key", state_key}}).dump();
-                        std::string_view data = d;
+                        auto db                   = getStatesKeyDb(txn, room_id);
+                        std::string d             = json::object({{"key", state_key}}).dump();
+                        std::string_view data     = d;
+                        std::string_view typeStrV = typeStr;
 
                         auto cursor = lmdb::cursor::open(txn, db);
-                        if (!cursor.get(state_key, data, MDB_GET_BOTH))
+                        if (!cursor.get(typeStrV, data, MDB_GET_BOTH))
                                 return std::nullopt;
 
                         try {
@@ -463,6 +474,47 @@ private:
                 }
         }
 
+        template<typename T>
+        std::vector<mtx::events::StateEvent<T>> getStateEventsWithType(lmdb::txn &txn,
+                                                                       const std::string &room_id)
+
+        {
+                constexpr auto type = mtx::events::state_content_to_type<T>;
+                static_assert(type != mtx::events::EventType::Unsupported,
+                              "Not a supported type in state events.");
+
+                if (room_id.empty())
+                        return {};
+
+                std::vector<mtx::events::StateEvent<T>> events;
+
+                {
+                        auto db                   = getStatesKeyDb(txn, room_id);
+                        auto eventsDb             = getEventsDb(txn, room_id);
+                        const auto typeStr        = to_string(type);
+                        std::string_view typeStrV = typeStr;
+                        std::string_view data;
+                        std::string_view value;
+
+                        auto cursor = lmdb::cursor::open(txn, db);
+                        bool first  = true;
+                        if (cursor.get(typeStrV, data, MDB_SET)) {
+                                while (cursor.get(
+                                  typeStrV, data, first ? MDB_FIRST_DUP : MDB_NEXT_DUP)) {
+                                        first = false;
+
+                                        if (eventsDb.get(txn,
+                                                         json::parse(data)["id"].get<std::string>(),
+                                                         value))
+                                                events.push_back(
+                                                  json::parse(value)
+                                                    .get<mtx::events::StateEvent<T>>());
+                                }
+                        }
+                }
+
+                return events;
+        }
         void saveInvites(lmdb::txn &txn,
                          const std::map<std::string, mtx::responses::InvitedRoom> &rooms);
 
@@ -481,6 +533,10 @@ private:
                         removeInvite(txn, room.first);
                 }
         }
+
+        void updateSpaces(lmdb::txn &txn,
+                          const std::set<std::string> &spaces_with_updates,
+                          std::set<std::string> rooms_with_updates);
 
         lmdb::dbi getPendingReceiptsDb(lmdb::txn &txn)
         {
@@ -548,8 +604,8 @@ private:
 
         lmdb::dbi getStatesKeyDb(lmdb::txn &txn, const std::string &room_id)
         {
-                auto db =
-                  lmdb::dbi::open(txn, std::string(room_id + "/state_by_key").c_str(), MDB_CREATE);
+                auto db = lmdb::dbi::open(
+                  txn, std::string(room_id + "/state_by_key").c_str(), MDB_CREATE | MDB_DUPSORT);
                 lmdb::dbi_set_dupsort(txn, db, compare_state_key);
                 return db;
         }
@@ -611,6 +667,7 @@ private:
         lmdb::env env_;
         lmdb::dbi syncStateDb_;
         lmdb::dbi roomsDb_;
+        lmdb::dbi spacesChildrenDb_, spacesParentsDb_;
         lmdb::dbi invitesDb_;
         lmdb::dbi readReceiptsDb_;
         lmdb::dbi notificationsDb_;

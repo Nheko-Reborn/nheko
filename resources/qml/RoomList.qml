@@ -255,6 +255,8 @@ Page {
                         Label {
                             id: timestamp
 
+                            visible: !model.isInvite && !model.isSpace
+                            width: visible ? 0 : undefined
                             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             color: roomItem.unimportantText
@@ -266,12 +268,11 @@ Page {
                     RowLayout {
                         Layout.fillWidth: true
                         spacing: 0
-                        visible: !model.isInvite
+                        visible: !model.isInvite && !model.isSpace
                         height: visible ? 0 : undefined
 
                         ElidedLabel {
                             color: roomItem.unimportantText
-                            font.weight: Font.Thin
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             elideWidth: textContent.width - (notificationBubble.visible ? notificationBubble.width : 0) - Nheko.paddingSmall
                             fullText: model.lastMessage
@@ -485,7 +486,6 @@ Page {
                     ElidedLabel {
                         Layout.alignment: Qt.AlignTop
                         color: Nheko.colors.buttonText
-                        font.weight: Font.Thin
                         font.pointSize: fontMetrics.font.pointSize * 0.9
                         elideWidth: col.width
                         fullText: userInfoGrid.profile ? userInfoGrid.profile.userid : ""

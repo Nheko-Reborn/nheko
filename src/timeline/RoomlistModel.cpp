@@ -51,6 +51,7 @@ RoomlistModel::roleNames() const
           {IsInvite, "isInvite"},
           {IsSpace, "isSpace"},
           {Tags, "tags"},
+          {ParentSpaces, "parentSpaces"},
         };
 }
 
@@ -84,12 +85,21 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                         case Roles::NotificationCount:
                                 return room->notificationCount();
                         case Roles::IsInvite:
-                        case Roles::IsSpace:
                                 return false;
+                        case Roles::IsSpace:
+                                return room->isSpace();
                         case Roles::Tags: {
                                 auto info = cache::singleRoomInfo(roomid.toStdString());
                                 QStringList list;
                                 for (const auto &t : info.tags)
+                                        list.push_back(QString::fromStdString(t));
+                                return list;
+                        }
+                        case Roles::ParentSpaces: {
+                                auto parents =
+                                  cache::client()->getParentRoomIds(roomid.toStdString());
+                                QStringList list;
+                                for (const auto &t : parents)
                                         list.push_back(QString::fromStdString(t));
                                 return list;
                         }
@@ -122,6 +132,14 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                                 return false;
                         case Roles::Tags:
                                 return QStringList();
+                        case Roles::ParentSpaces: {
+                                auto parents =
+                                  cache::client()->getParentRoomIds(roomid.toStdString());
+                                QStringList list;
+                                for (const auto &t : parents)
+                                        list.push_back(QString::fromStdString(t));
+                                return list;
+                        }
                         default:
                                 return {};
                         }
@@ -412,7 +430,9 @@ enum NotificationImportance : short
         AllEventsRead      = 0,
         NewMessage         = 1,
         NewMentions        = 2,
-        Invite             = 3
+        Invite             = 3,
+        SubSpace           = 4,
+        CurrentSpace       = 5,
 };
 }
 
@@ -422,7 +442,13 @@ FilteredRoomlistModel::calculateImportance(const QModelIndex &idx) const
         // Returns the degree of importance of the unread messages in the room.
         // If sorting by importance is disabled in settings, this only ever
         // returns ImportanceDisabled or Invite
-        if (sourceModel()->data(idx, RoomlistModel::IsInvite).toBool()) {
+        if (sourceModel()->data(idx, RoomlistModel::IsSpace).toBool()) {
+                if (filterType == FilterBy::Space &&
+                    filterStr == sourceModel()->data(idx, RoomlistModel::RoomId).toString())
+                        return CurrentSpace;
+                else
+                        return SubSpace;
+        } else if (sourceModel()->data(idx, RoomlistModel::IsInvite).toBool()) {
                 return Invite;
         } else if (!this->sortByImportance) {
                 return ImportanceDisabled;
@@ -505,6 +531,12 @@ bool
 FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) const
 {
         if (filterType == FilterBy::Nothing) {
+                if (sourceModel()
+                      ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
+                      .toBool()) {
+                        return false;
+                }
+
                 if (!hiddenTags.empty()) {
                         auto tags =
                           sourceModel()
@@ -516,19 +548,86 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                                         return false;
                 }
 
+                if (!hiddenSpaces.empty()) {
+                        auto parents =
+                          sourceModel()
+                            ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
+                            .toStringList();
+                        for (const auto &t : parents)
+                                if (hiddenSpaces.contains(t))
+                                        return false;
+                }
+
                 return true;
         } else if (filterType == FilterBy::Tag) {
+                if (sourceModel()
+                      ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
+                      .toBool()) {
+                        return false;
+                }
+
                 auto tags = sourceModel()
                               ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
                               .toStringList();
 
                 if (!tags.contains(filterStr))
                         return false;
-                else if (!hiddenTags.empty()) {
+
+                if (!hiddenTags.empty()) {
                         for (const auto &t : tags)
                                 if (t != filterStr && hiddenTags.contains(t))
                                         return false;
                 }
+
+                if (!hiddenSpaces.empty()) {
+                        auto parents =
+                          sourceModel()
+                            ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
+                            .toStringList();
+                        for (const auto &t : parents)
+                                if (hiddenSpaces.contains(t))
+                                        return false;
+                }
+
+                return true;
+        } else if (filterType == FilterBy::Space) {
+                if (filterStr == sourceModel()
+                                   ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::RoomId)
+                                   .toString())
+                        return true;
+
+                auto parents =
+                  sourceModel()
+                    ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
+                    .toStringList();
+
+                if (!parents.contains(filterStr))
+                        return false;
+
+                if (!hiddenTags.empty()) {
+                        auto tags =
+                          sourceModel()
+                            ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
+                            .toStringList();
+
+                        for (const auto &t : tags)
+                                if (hiddenTags.contains(t))
+                                        return false;
+                }
+
+                if (!hiddenSpaces.empty()) {
+                        for (const auto &t : parents)
+                                if (hiddenSpaces.contains(t))
+                                        return false;
+                }
+
+                if (sourceModel()
+                      ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
+                      .toBool() &&
+                    !parents.contains(filterStr)) {
+                        return false;
+                }
+
                 return true;
         } else {
                 return true;
@@ -582,7 +681,7 @@ FilteredRoomlistModel::previousRoom()
         if (r) {
                 int idx = roomidToIndex(r->roomId());
                 idx--;
-                if (idx > 0) {
+                if (idx >= 0) {
                         setCurrentRoom(
                           data(index(idx, 0), RoomlistModel::Roles::RoomId).toString());
                 }
