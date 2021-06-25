@@ -532,6 +532,10 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 const static QRegularExpression matchImgUri(
                   "(<img [^>]*)src=\"mxc://([^\"]*)\"([^>]*>)");
                 formattedBody_.replace(matchImgUri, "\\1 src=\"image://mxcImage/\\2\"\\3");
+                // Same regex but for single quotes around the src
+                const static QRegularExpression matchImgUri2(
+                                                            "(<img [^>]*)src=\'mxc://([^\"]*)\'([^>]*>)");
+                formattedBody_.replace(matchImgUri2, "\\1 src=\"image://mxcImage/\\2\"\\3");
                 const static QRegularExpression matchEmoticonHeight(
                   "(<img data-mx-emoticon [^>]*)height=\"([^\"]*)\"([^>]*>)");
                 formattedBody_.replace(matchEmoticonHeight,
