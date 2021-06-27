@@ -14,7 +14,6 @@ import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
-import im.nheko.RoomDirectoryModel 1.0
 
 Item {
     id: timelineView
@@ -37,14 +36,6 @@ Item {
         height: 200
         width: 200
         z: 3
-    }
-
-<<<<<<< HEAD
-    Component {
-        id: roomDirectoryComponent
-
-        RoomDirectory {
-        }
     }
 
     Shortcut {
@@ -184,10 +175,8 @@ Item {
         }
 
     }
-=======
     ColumnLayout {
         id: timelineLayout
->>>>>>> upstream/master
 
         visible: room != null
         anchors.fill: parent
@@ -197,71 +186,9 @@ Item {
             showBackButton: timelineView.showBackButton
         }
 
-<<<<<<< HEAD
-        Connections {
-            target: TimelineManager
-            onNewDeviceVerificationRequest: {
-                var dialog = deviceVerificationDialog.createObject(timelineRoot, {
-                    "flow": flow
-                });
-                dialog.show();
-            }
-            onOpenProfile: {
-                var userProfile = userProfileComponent.createObject(timelineRoot, {
-                    "profile": profile
-                });
-                userProfile.show();
-            }
-        }
-
-        Connections {
-            target: TimelineManager.timeline
-            onOpenRoomSettingsDialog: {
-                var roomSettings = roomSettingsComponent.createObject(timelineRoot, {
-                    "roomSettings": settings
-                });
-                roomSettings.show();
-            }
-        }
-
-        Connections {
-            target: CallManager
-            onNewInviteState: {
-                if (CallManager.haveCallInvite && Settings.mobileMode) {
-                    var dialog = mobileCallInviteDialog.createObject(msgView);
-                    dialog.open();
-                }
-            }
-        }
-
-        Connections {
-            target: TimelineManager
-            onShowPublicRooms: {
-                console.debug("Roomdir from QML TimelineView");
-                var win = roomDirectoryComponent.createObject(timelineRoot);
-                win.show();
-            }
-        }
-
-        Label {
-            visible: !TimelineManager.timeline && !TimelineManager.isInitialSync
-            anchors.centerIn: parent
-            text: qsTr("No room open")
-            font.pointSize: 24
-            color: colors.text
-        }
-
-        BusyIndicator {
-            visible: running
-            anchors.centerIn: parent
-            running: TimelineManager.isInitialSync
-            height: 200
-            width: 200
-=======
         Rectangle {
             Layout.fillWidth: true
             height: 1
->>>>>>> upstream/master
             z: 3
             color: Nheko.theme.separator
         }

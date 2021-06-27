@@ -140,8 +140,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
                 }
         });
 
-        connect(sidebarActions_, &SideBarActions::showRoomDirectory, view_manager_, &TimelineViewManager::showRoomDirectory);
-
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
         connect(this, &ChatPage::newRoom, this, &ChatPage::changeRoom, Qt::QueuedConnection);
         connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendNotifications);

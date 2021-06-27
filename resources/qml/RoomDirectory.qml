@@ -23,123 +23,99 @@ ApplicationWindow {
     flags: Qt.Dialog
     title: qsTr("Explore Public Rooms")
 
-    Rectangle {
-        id: roomDirDelegateV2
-
-        color: Nheko.colors.window
-        
-        anchors.fill: parent
-        
-        RowLayout {
-
-            spacing: Nheko.paddingMedium
-            anchors.fill: parent
-            anchors.margins: Nheko.paddingMedium
-
-            Avatar {
-                id: avatar
-
-                Layout.alignment: Qt.AlignVCenter
-                Layout.preferredWidth: fontMetrics.lineSpacing * 2.5
-                Layout.preferredHeight: fontMetrics.lineSpacing * 2.5
-                url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                displayName: model.name
-            }
-
-            ColumnLayout {
-                id: descriptionLines
-
-                Layout.alignment: Qt.AlignLeft
-                Layout.fillWidth: true
-                Layout.minimumWidth: 100
-                width: parent.width - avatar.width
-                Layout.preferredWidth: parent.width - avatar.width
-                spacing: 0
-
-                RowLayout {
-                    Layout.fillWidth: true
-                    spacing: 0
-
-                    ElidedLabel {
-                        Layout.alignment: Qt.AlignBottom
-                        color: roomItem.importantText
-                        elideWidth: textContent.width - timestamp.width - Nheko.paddingMedium
-                        fullText: model.name
-                    }
-
-                }
-
-            }
-
-
-        }
-
-    }
-
-    Component {
-        id: roomDirDelegate
-
-        Column {
-            width: parent.width
-            height: roomDirView.view.height
-
-            GridLayout {
-                id: roomDisplay
-
-                columns: 4 // avatar, title/topic, member count, preview/join
-
-                rowSpacing: 10
-
-                Text {
-                    text: "Tmp"
-                }
-
-                Text {
-                    text: model.name
-                }
-
-                Text {
-                    text: ""
-                }
-
-                Text {
-                    text: ""
-                }
-
-                Text {
-                    text: ""
-                }
-
-                Text {
-                    text: model.topic.substr(0, 72) + "..."
-                }
-
-                Text {
-                    text: ""
-                }
-
-                Text {
-                    text: ""
-                }
-            }
-
-            // Text {
-            //     text: model.name + '(' + model.roomid + ')' + ': ' + model.numMembers
-            // }
-            // Text {
-            //     text: model.topic
-            // }
-        }
-    }
-
     ListView {
         id: roomDirView
         anchors.left: parent.left
         anchors.right: parent.right
         height: parent.height
         model: RoomDirectoryModel {}
-        delegate: roomDirDelegateV2
-    }   
+        delegate: Rectangle {
+            id: roomDirDelegate
+
+            property color background: Nheko.colors.window
+            property color importantText: Nheko.colors.text
+            property color unimportantText: Nheko.colors.buttonText
+            property color bubbleBackground: Nheko.colors.highlight
+            property color bubbleText: Nheko.colors.highlightedText
+            property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.5)
+
+            color: background
+            
+            width: parent.width
+            height: parent.height
+
+            ColumnLayout {
+                Avatar {
+                    id: avatar
+
+                    // Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredWidth: avatarSize
+                    Layout.preferredHeight: avatarSize
+                    url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                    displayName: model.name
+                }
+            }
+
+            RowLayout {
+
+                spacing: Nheko.paddingMedium
+                anchors.fill: parent
+                anchors.margins: Nheko.paddingMedium
+
+                Avatar {
+                    id: avatar
+
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredWidth: avatarSize
+                    Layout.preferredHeight: avatarSize
+                    url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                    displayName: model.name
+                }
+
+                // ColumnLayout {
+                //     id: descriptionLines
+
+                //     Layout.alignment: Qt.AlignLeft
+                //     Layout.fillWidth: true
+                //     Layout.minimumWidth: 100
+                //     width: parent.width - avatar.width
+                //     Layout.preferredWidth: parent.width - avatar.width
+                //     spacing: Nheko.paddingSmall
+
+                //     RowLayout {
+                //         Layout.fillWidth: true
+                //         spacing: 0
+
+                //         ElidedLabel {
+                //             Layout.alignment: Qt.AlignBottom
+                //             color: roomDirDelegate.importantText
+                //             elideWidth: descriptionLines.width - Nheko.paddingMedium
+                //             fullText: model.name
+                //         }
+
+                //         Item {
+                //             Layout.fillWidth: true
+                //         }
+                //     }
+
+                //     RowLayout {
+                //         Layout.fillWidth: true
+                //         spacing: 0
+
+                //         Label {
+                //             Layout.alignment: Qt.AlignBottom
+                //             color: roomDirDelegate.unimportantText
+                //             contentWidth: parent.width * 0.4
+                //             contentHeight: parent.height
+                //             elide: Text.ElideRight
+                //             text: model.topic
+                //         }
+                //     }
+
+                // }
+            }
+        }
+    }  
 
     // function joinRoom(index) {
     //     // body...
