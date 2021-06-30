@@ -263,9 +263,7 @@ LoginPage::onMatrixIdEntered()
                 http::client()->well_known([this](const mtx::responses::WellKnown &res,
                                                   mtx::http::RequestErr err) {
                         if (err) {
-                                using namespace boost::beast::http;
-
-                                if (err->status_code == status::not_found) {
+                                if (err->status_code == 404) {
                                         nhlog::net()->info("Autodiscovery: No .well-known.");
                                         checkHomeserverVersion();
                                         return;
@@ -282,8 +280,9 @@ LoginPage::onMatrixIdEntered()
                                 emit versionErrorCb(tr("Autodiscovery failed. Unknown error when "
                                                        "requesting .well-known."));
                                 nhlog::net()->error("Autodiscovery failed. Unknown error when "
-                                                    "requesting .well-known. {}",
-                                                    err->error_code.message());
+                                                    "requesting .well-known. {} {}",
+                                                    err->status_code,
+                                                    err->error_code);
                                 return;
                         }
 
@@ -301,9 +300,7 @@ LoginPage::checkHomeserverVersion()
         http::client()->versions(
           [this](const mtx::responses::Versions &, mtx::http::RequestErr err) {
                   if (err) {
-                          using namespace boost::beast::http;
-
-                          if (err->status_code == status::not_found) {
+                          if (err->status_code == 404) {
                                   emit versionErrorCb(tr("The required endpoints were not found. "
                                                          "Possibly not a Matrix server."));
                                   return;
