@@ -289,7 +289,7 @@ RegisterPage::RegisterPage(QWidget *parent)
                             }
 
                             // The server requires registration flows.
-                            if (err->status_code == boost::beast::http::status::unauthorized) {
+                            if (err->status_code == 401) {
                                     if (err->matrix_error.unauthorized.flows.empty()) {
                                             nhlog::net()->warn(
                                               "failed to retrieve registration flows: ({}) "
@@ -431,9 +431,7 @@ RegisterPage::onRegisterButtonClicked()
                   [this, username, password](const mtx::responses::WellKnown &res,
                                              mtx::http::RequestErr err) {
                           if (err) {
-                                  using namespace boost::beast::http;
-
-                                  if (err->status_code == status::not_found) {
+                                  if (err->status_code == 404) {
                                           nhlog::net()->info("Autodiscovery: No .well-known.");
                                           checkVersionAndRegister(username, password);
                                           return;
@@ -450,8 +448,9 @@ RegisterPage::onRegisterButtonClicked()
                                   emit versionErrorCb(tr("Autodiscovery failed. Unknown error when "
                                                          "requesting .well-known."));
                                   nhlog::net()->error("Autodiscovery failed. Unknown error when "
-                                                      "requesting .well-known. {}",
-                                                      err->error_code.message());
+                                                      "requesting .well-known. {} {}",
+                                                      err->status_code,
+                                                      err->error_code);
                                   return;
                           }
 
@@ -471,9 +470,7 @@ RegisterPage::checkVersionAndRegister(const std::string &username, const std::st
         http::client()->versions(
           [this, username, password](const mtx::responses::Versions &, mtx::http::RequestErr err) {
                   if (err) {
-                          using namespace boost::beast::http;
-
-                          if (err->status_code == status::not_found) {
+                          if (err->status_code == 404) {
                                   emit versionErrorCb(tr("The required endpoints were not found. "
                                                          "Possibly not a Matrix server."));
                                   return;
@@ -504,7 +501,7 @@ RegisterPage::checkVersionAndRegister(const std::string &username, const std::st
                             }
 
                             // The server requires registration flows.
-                            if (err->status_code == boost::beast::http::status::unauthorized) {
+                            if (err->status_code == 401) {
                                     if (err->matrix_error.unauthorized.flows.empty()) {
                                             nhlog::net()->warn(
                                               "failed to retrieve registration flows1: ({}) "

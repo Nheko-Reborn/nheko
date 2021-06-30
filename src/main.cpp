@@ -40,15 +40,48 @@
 QQmlDebuggingEnabler enabler;
 #endif
 
-#if defined(Q_OS_LINUX)
-#include <boost/stacktrace.hpp>
+#if HAVE_BACKTRACE_SYMBOLS_FD
 #include <csignal>
+#include <execinfo.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 void
 stacktraceHandler(int signum)
 {
         std::signal(signum, SIG_DFL);
-        boost::stacktrace::safe_dump_to("./nheko-backtrace.dump");
+
+        // boost::stacktrace::safe_dump_to("./nheko-backtrace.dump");
+
+        // see
+        // https://stackoverflow.com/questions/77005/how-to-automatically-generate-a-stacktrace-when-my-program-crashes/77336#77336
+        void *array[50];
+        size_t size;
+
+        // get void*'s for all entries on the stack
+        size = backtrace(array, 50);
+
+        // print out all the frames to stderr
+        fprintf(stderr, "Error: signal %d:\n", signum);
+        backtrace_symbols_fd(array, size, STDERR_FILENO);
+
+        int file = ::open("/tmp/nheko-crash.dump",
+                          O_CREAT | O_WRONLY | O_TRUNC
+#if defined(S_IWUSR) && defined(S_IRUSR)
+                          ,
+                          S_IWUSR | S_IRUSR
+#elif defined(S_IWRITE) && defined(S_IREAD)
+                          ,
+                          S_IWRITE | S_IREAD
+#endif
+        );
+        if (file != -1) {
+                constexpr char header[]   = "Error: signal\n";
+                [[maybe_unused]] auto ret = write(file, header, std::size(header) - 1);
+                backtrace_symbols_fd(array, size, file);
+                close(file);
+        }
+
         std::raise(SIGABRT);
 }
 
