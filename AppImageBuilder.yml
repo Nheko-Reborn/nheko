@@ -38,8 +38,11 @@ AppDir:
     - kimageformat-plugins
     - libbs2b0
     - libbz2-1.0
+    - libcurl4
     - libelf1
     - libexpat1
+    - libevent-core-2.1-6
+    - libevent-pthreads-2.1-6
     - libhogweed4
     - libjpeg-turbo8
     - libkf5archive5
