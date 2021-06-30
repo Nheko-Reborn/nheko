@@ -76,8 +76,8 @@ stacktraceHandler(int signum)
 #endif
         );
         if (file != -1) {
-                constexpr char header[] = "Error: signal\n";
-                write(file, header, std::size(header) - 1);
+                constexpr char header[]   = "Error: signal\n";
+                [[maybe_unused]] auto ret = write(file, header, std::size(header) - 1);
                 backtrace_symbols_fd(array, size, file);
                 close(file);
         }
