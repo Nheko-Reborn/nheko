@@ -167,7 +167,7 @@ appimage-amd64:
     # update appimage-builder (optional)
     - pip3 install --upgrade git+https://www.opencode.net/azubieta/appimagecraft.git
 
-    - apt-get install -y qt5-default qtdeclarative5-dev qttools5-dev qtscript5-dev qtquickcontrols2-5-dev qtmultimedia5-dev libqt5svg5-dev liblmdb-dev libssl-dev git ninja-build qt5keychain-dev libgtest-dev ccache libevent-pthreads-2.1-6 libcurl4-openssl-dev
+    - apt-get install -y qt5-default qtdeclarative5-dev qttools5-dev qtscript5-dev qtquickcontrols2-5-dev qtmultimedia5-dev libqt5svg5-dev liblmdb-dev libssl-dev git ninja-build qt5keychain-dev libgtest-dev ccache libevent-dev libcurl4-openssl-dev
     - wget https://github.com/Kitware/CMake/releases/download/v3.19.0/cmake-3.19.0-Linux-x86_64.sh && sh cmake-3.19.0-Linux-x86_64.sh  --skip-license  --prefix=/usr/local
     - /usr/sbin/update-ccache-symlinks
   script:
