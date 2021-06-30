@@ -265,7 +265,10 @@ set(PROJECT_VERSION ${CPACK_PACKAGE_VERSION})
 message(STATUS "Version: ${PROJECT_VERSION}")
 
 cmake_host_system_information(RESULT BUILD_HOST QUERY HOSTNAME)
-set(BUILD_USER $ENV{USER})
+
+include(CheckSymbolExists)
+check_symbol_exists(backtrace_symbols_fd "execinfo.h" HAVE_BACKTRACE_SYMBOLS_FD)
+
 configure_file(cmake/nheko.h config/nheko.h)
 
 
@@ -607,6 +610,10 @@ if(WIN32)
 	target_compile_definitions(nheko PRIVATE _WIN32_WINNT=0x0601)
 else()
 	add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
+
+	if (HAVE_BACKTRACE_SYMBOLS_FD AND NOT CMAKE_BUILD_TYPE STREQUAL "Release")
+		set_target_properties(nheko PROPERTIES ENABLE_EXPORTS ON)
+	endif()
 endif()
 
 if(APPLE)
