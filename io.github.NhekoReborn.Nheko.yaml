@@ -37,6 +37,19 @@ modules:
       - prefix=/app
     no-autogen: true
     subdir: libraries/liblmdb
+  - name: libevent
+    buildsystem: autotools
+    config-opts:
+      - --disable-shared
+      - --prefix=/app
+      - --disable-openssl
+    sources:
+      - sha256: 92e6de1be9ec176428fd2367677e61ceffc2ee1cb119035037a27d346b0403bb
+        type: archive
+        url: https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz
+    make-install-args:
+      - prefix=/app
+    no-autogen: true
   - name: cmark
     buildsystem: cmake-ninja
     builddir: true
@@ -87,16 +100,6 @@ modules:
       - sha256: d51a3a8d3efbb1139d7608e28782ea9efea7e7933157e8ff8184901efd8ee760
         type: archive
         url: https://github.com/nlohmann/json/archive/v3.7.0.tar.gz
-  - build-commands:
-      - ./bootstrap.sh --with-libraries=thread,system,iostreams --prefix=/app
-      - ./b2 -d0 variant=release link=static threading=multi --layout=system
-      - ./b2 -d0 install
-    buildsystem: simple
-    name: boost
-    sources:
-      - sha256: 59c9b274bc451cf91a9ba1dd2c7fdcaf5d60b1b3aa83f2c9fa143417cc660722
-        type: archive
-        url: https://sourceforge.net/projects/boost/files/boost/1.72.0/boost_1_72_0.tar.bz2
   - buildsystem: meson
     name: gstreamer
     sources:
@@ -143,6 +146,8 @@ modules:
         type: git
         url: https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad.git
   - buildsystem: meson
+    config-opts:
+      - -Ddefault_library=static
     name: coeurl
     sources:
       - commit: 417821a07cfe4429b08a2efed5e480a498087afd
