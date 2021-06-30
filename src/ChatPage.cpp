@@ -674,7 +674,7 @@ ChatPage::trySync()
                                   return;
                           }
 
-                          nhlog::net()->error("initial sync error: {} {} {} {}",
+                          nhlog::net()->error("sync error: {} {} {} {}",
                                               err->parse_error,
                                               status_code,
                                               err->error_code,
