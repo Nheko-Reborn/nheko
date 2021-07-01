@@ -14,10 +14,10 @@ ApplicationWindow {
 
     x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
-    minimumWidth: 420
-    minimumHeight: 650
-    palette: colors
-    color: colors.window
+    minimumWidth: 650
+    minimumHeight: 420
+    palette: Nheko.colors
+    color: Nheko.colors.window
     modality: Qt.WindowModal
     flags: Qt.Dialog
     title: qsTr("Explore Public Rooms")
@@ -40,20 +40,8 @@ ApplicationWindow {
 
             color: background
             
-            width: parent.width
-            height: parent.height
-
-            ColumnLayout {
-                Avatar {
-                    id: avatar
-
-                    // Layout.alignment: Qt.AlignVCenter
-                    Layout.preferredWidth: avatarSize
-                    Layout.preferredHeight: avatarSize
-                    url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                    displayName: model.name
-                }
-            }
+            height: avatarSize + 2 * Nheko.paddingMedium
+            width: ListView.view.width
 
             RowLayout {
 
@@ -62,65 +50,66 @@ ApplicationWindow {
                 anchors.margins: Nheko.paddingMedium
 
                 Avatar {
-                    id: avatar
+                    id: roomAvatar
 
                     Layout.alignment: Qt.AlignVCenter
-                    Layout.preferredWidth: avatarSize
-                    Layout.preferredHeight: avatarSize
+                    width: avatarSize
+                    height: avatarSize
                     url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                     displayName: model.name
                 }
 
-                // ColumnLayout {
-                //     id: descriptionLines
+                ColumnLayout {
+                    id: textContent
 
-                //     Layout.alignment: Qt.AlignLeft
-                //     Layout.fillWidth: true
-                //     Layout.minimumWidth: 100
-                //     width: parent.width - avatar.width
-                //     Layout.preferredWidth: parent.width - avatar.width
-                //     spacing: Nheko.paddingSmall
+                    Layout.alignment: Qt.AlignLeft
+                    Layout.fillWidth: true
+                    width: parent.width - avatar.width
+                    Layout.preferredWidth: parent.width - avatar.width
+                    spacing: Nheko.paddingSmall
 
-                //     RowLayout {
-                //         Layout.fillWidth: true
-                //         spacing: 0
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 0
 
-                //         ElidedLabel {
-                //             Layout.alignment: Qt.AlignBottom
-                //             color: roomDirDelegate.importantText
-                //             elideWidth: descriptionLines.width - Nheko.paddingMedium
-                //             fullText: model.name
-                //         }
+                        ElidedLabel {
+                            Layout.alignment: Qt.AlignBottom
+                            color: roomDirDelegate.importantText
+                            elideWidth: textContent.width * 0.5 - Nheko.paddingMedium
+                            fullText: model.name
+                        }
+                    }
 
-                //         Item {
-                //             Layout.fillWidth: true
-                //         }
-                //     }
+                    RowLayout {
+                        id: roomDescriptionRow
+                        Layout.fillWidth: true
+                        Layout.preferredWidth: parent.width
+                        spacing: Nheko.paddingSmall
+                        Layout.alignment: Qt.AlignLeft
 
-                //     RowLayout {
-                //         Layout.fillWidth: true
-                //         spacing: 0
+                        Label {
+                            color: roomDirDelegate.unimportantText
+                            font.weight: Font.Thin
+                            font.pixelSize: fontMetrics.font.pixelSize * 0.9
+                            elide: Text.ElideRight
+                            maximumLineCount: 2
+                            Layout.fillWidth: true
+                            text: model.topic
+                            verticalAlignment: Text.AlignVCenter
+                            wrapMode: Text.WordWrap
+                        }
 
-                //         Label {
-                //             Layout.alignment: Qt.AlignBottom
-                //             color: roomDirDelegate.unimportantText
-                //             contentWidth: parent.width * 0.4
-                //             contentHeight: parent.height
-                //             elide: Text.ElideRight
-                //             text: model.topic
-                //         }
-                //     }
+                        Label {
+                            color: roomDirDelegate.unimportantText
+                            Layout.fillWidth: false
+                            font.weight: Font.Thin
+                            font.pixelSize: fontMetrics.font.pixelSize * 0.9
+                            text: model.numMembers.toString()
+                        }
+                    }
 
-                // }
+                }
             }
-        }
-    }  
-
-    // function joinRoom(index) {
-    //     // body...
-    // }
-    
-    // function previewRoon(index) {
-    //     // body...
-    // }
+        } 
+    }
 }
