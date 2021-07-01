@@ -334,7 +334,6 @@ private:
         std::optional<MemberInfo> getMember(const std::string &room_id, const std::string &user_id);
 
         std::string getLastEventId(lmdb::txn &txn, const std::string &room_id);
-        DescInfo getLastMessageInfo(lmdb::txn &txn, const std::string &room_id);
         void saveTimelineMessages(lmdb::txn &txn,
                                   lmdb::dbi &eventsDb,
                                   const std::string &room_id,

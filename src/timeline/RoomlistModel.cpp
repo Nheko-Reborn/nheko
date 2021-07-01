@@ -116,11 +116,11 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                         case Roles::RoomId:
                                 return roomid;
                         case Roles::LastMessage:
-                                return room.msgInfo.body;
+                                return QString();
                         case Roles::Time:
-                                return room.msgInfo.descriptiveTime;
+                                return QString();
                         case Roles::Timestamp:
-                                return QVariant(static_cast<quint64>(room.msgInfo.timestamp));
+                                return QVariant(static_cast<quint64>(0));
                         case Roles::HasUnreadMessages:
                         case Roles::HasLoudNotification:
                                 return false;

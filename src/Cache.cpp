@@ -1794,8 +1794,6 @@ Cache::roomInfo(bool withInvites)
         while (roomsCursor.get(room_id, room_data, MDB_NEXT)) {
                 RoomInfo tmp     = json::parse(std::move(room_data));
                 tmp.member_count = getMembersDb(txn, std::string(room_id)).size(txn);
-                tmp.msgInfo      = getLastMessageInfo(txn, std::string(room_id));
-
                 result.insert(QString::fromStdString(std::string(room_id)), std::move(tmp));
         }
         roomsCursor.close();
@@ -2020,96 +2018,6 @@ Cache::getTimelineEventId(const std::string &room_id, uint64_t index)
         }
 
         return std::string(val);
-}
-
-DescInfo
-Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
-{
-        lmdb::dbi orderDb;
-        try {
-                orderDb = getOrderToMessageDb(txn, room_id);
-        } catch (lmdb::runtime_error &e) {
-                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
-                                   room_id,
-                                   e.what());
-                return {};
-        }
-
-        lmdb::dbi eventsDb;
-        try {
-                eventsDb = getEventsDb(txn, room_id);
-        } catch (lmdb::runtime_error &e) {
-                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
-                                   room_id,
-                                   e.what());
-                return {};
-        }
-
-        lmdb::dbi membersdb;
-        try {
-                membersdb = getMembersDb(txn, room_id);
-        } catch (lmdb::runtime_error &e) {
-                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
-                                   room_id,
-                                   e.what());
-                return {};
-        }
-
-        if (orderDb.size(txn) == 0)
-                return DescInfo{};
-
-        const auto local_user = utils::localUser();
-
-        DescInfo fallbackDesc{};
-
-        std::string_view indexVal, event_id;
-
-        auto cursor = lmdb::cursor::open(txn, orderDb);
-        bool first  = true;
-        while (cursor.get(indexVal, event_id, first ? MDB_LAST : MDB_PREV)) {
-                first = false;
-
-                std::string_view event;
-                bool success = eventsDb.get(txn, event_id, event);
-                if (!success)
-                        continue;
-
-                auto obj = json::parse(event);
-
-                if (fallbackDesc.event_id.isEmpty() && obj["type"] == "m.room.member" &&
-                    obj["state_key"] == local_user.toStdString() &&
-                    obj["content"]["membership"] == "join") {
-                        uint64_t ts  = obj["origin_server_ts"];
-                        auto time    = QDateTime::fromMSecsSinceEpoch(ts);
-                        fallbackDesc = DescInfo{QString::fromStdString(obj["event_id"]),
-                                                local_user,
-                                                tr("You joined this room."),
-                                                utils::descriptiveTime(time),
-                                                ts,
-                                                time};
-                }
-
-                if (!(obj["type"] == "m.room.message" || obj["type"] == "m.sticker" ||
-                      obj["type"] == "m.call.invite" || obj["type"] == "m.call.answer" ||
-                      obj["type"] == "m.call.hangup" || obj["type"] == "m.room.encrypted"))
-                        continue;
-
-                mtx::events::collections::TimelineEvent te;
-                mtx::events::collections::from_json(obj, te);
-
-                std::string_view info;
-                MemberInfo m;
-                if (membersdb.get(txn, obj["sender"].get<std::string>(), info)) {
-                        m = json::parse(std::string_view(info.data(), info.size()));
-                }
-
-                cursor.close();
-                return utils::getMessageDescription(
-                  te.data, local_user, QString::fromStdString(m.name));
-        }
-        cursor.close();
-
-        return fallbackDesc;
 }
 
 QHash<QString, RoomInfo>
