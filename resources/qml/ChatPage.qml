@@ -23,6 +23,8 @@ Rectangle {
         AdaptiveLayoutElement {
             id: communityListC
 
+            visible: Settings.groupView
+
             minimumWidth: communitiesList.avatarSize * 4 + Nheko.paddingMedium * 2
             collapsedWidth: communitiesList.avatarSize + 2 * Nheko.paddingMedium
             preferredWidth: Settings.communityListWidth >= minimumWidth ? Settings.communityListWidth : collapsedWidth

@@ -179,10 +179,11 @@ UserSettings::setMobileMode(bool state)
 void
 UserSettings::setGroupView(bool state)
 {
-        if (groupView_ != state)
-                emit groupViewStateChanged(state);
+        if (groupView_ == state)
+                return;
 
         groupView_ = state;
+        emit groupViewStateChanged(state);
         save();
 }
 
