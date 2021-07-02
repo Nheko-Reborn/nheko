@@ -1816,7 +1816,8 @@ TimelineModel::formatMemberEvent(QString id)
         }
 
         if (event->content.reason != "") {
-                rendered += tr(" Reason: %1").arg(QString::fromStdString(event->content.reason));
+                rendered +=
+                  " " + tr("Reason: %1").arg(QString::fromStdString(event->content.reason));
         }
 
         return rendered;

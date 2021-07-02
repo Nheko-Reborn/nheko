@@ -54,14 +54,6 @@
     </message>
 </context>
 <context>
-    <name>Cache</name>
-    <message>
-        <location filename="../../src/Cache.cpp" line="+2016"/>
-        <source>You joined this room.</source>
-        <translation>Vi aliĝis ĉi tiun ĉambron.</translation>
-    </message>
-</context>
-<context>
     <name>CallInvite</name>
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+70"/>
@@ -133,23 +125,23 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+204"/>
+        <location filename="../../src/ChatPage.cpp" line="+133"/>
         <source>Failed to invite user: %1</source>
         <translation>Malsukcesis inviti uzanton: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+809"/>
+        <location line="+665"/>
         <source>Invited user: %1</source>
         <translation type="unfinished">Invitita uzanto: %1</translation>
     </message>
     <message>
-        <location line="-509"/>
+        <location line="-456"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Malsukcesis migrado de kaŝmemoro al nuna versio. Tio povas havi diversajn kialojn. Bonvolu raporti eraron kaj dume provi malpli novan version. Alternative, vi povas provi forigi la kaŝmemoron permane.</translation>
     </message>
     <message>
-        <location line="+412"/>
+        <location line="+360"/>
         <source>Confirm join</source>
         <translation>Konfirmu aliĝon</translation>
     </message>
@@ -165,13 +157,13 @@
         <translation>Ĉambro %1 farit.</translation>
     </message>
     <message>
-        <location line="+35"/>
-        <location line="+324"/>
+        <location line="+34"/>
+        <location line="+280"/>
         <source>Confirm invite</source>
         <translation>Konfirmu inviton</translation>
     </message>
     <message>
-        <location line="-323"/>
+        <location line="-279"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Ĉu vi certe volas inviti uzanton %1 (%2)?</translation>
     </message>
@@ -236,12 +228,12 @@
         <translation>Malforbaris uzanton: %1</translation>
     </message>
     <message>
-        <location line="+227"/>
+        <location line="+183"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation>Ĉu vi certe volas komenci privatan babilon kun %1?</translation>
     </message>
     <message>
-        <location line="-818"/>
+        <location line="-721"/>
         <source>Cache migration failed!</source>
         <translation>Malsukcesis migrado de kaŝmemoro!</translation>
     </message>
@@ -256,7 +248,7 @@
         <translation>La kaŝmemoro sur via disko estas pli nova ol kiom ĉi tiu versio de Nheko subtenas. Bonvolu ĝisdatigi la programon aŭ vakigi vian kaŝmemoron.</translation>
     </message>
     <message>
-        <location line="+50"/>
+        <location line="+48"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -266,13 +258,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+145"/>
+        <location line="+101"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Malsukcesis agordi ĉifrajn ŝlosilojn. Respondo de servilo: %1 %2. Bonvolu reprovi poste.</translation>
     </message>
     <message>
         <location line="+34"/>
-        <location line="+123"/>
+        <location line="+117"/>
         <source>Please try to login again: %1</source>
         <translation>Bonvolu provi resaluti: %1</translation>
     </message>
@@ -302,55 +294,66 @@
         <translation>Malsukcesis eliri el ĉambro: %1</translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+60"/>
         <source>Failed to kick %1 from %2: %3</source>
         <translation>Malsukcesis forpeli uzanton %1 de %2: %3</translation>
     </message>
 </context>
 <context>
-    <name>CommunitiesListItem</name>
+    <name>CommunitiesList</name>
     <message>
-        <location filename="../../src/CommunitiesListItem.cpp" line="+30"/>
-        <source>Hide rooms with this tag or from this community</source>
-        <translation>Kaŝi ĉambrojn kun ĉi tiu etikedo aŭ de ĉi tiu komunumo</translation>
+        <location filename="../qml/CommunitiesList.qml" line="+44"/>
+        <source>Hide rooms with this tag or from this space by default.</source>
+        <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>CommunitiesModel</name>
     <message>
-        <location line="+153"/>
+        <location filename="../../src/timeline/CommunitiesModel.cpp" line="+37"/>
         <source>All rooms</source>
-        <translation>Ĉiuj ĉambroj</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Favourite rooms</source>
-        <translation>Preferaj ĉambroj</translation>
+        <translation type="unfinished">Ĉiuj ĉambroj</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Low priority rooms</source>
+        <source>Shows all rooms without filtering.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>Favourites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Rooms you have favourited.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Low Priority</source>
+        <translation type="unfinished">Malalta prioritato</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Rooms with low priority.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Server Notices</source>
-        <comment>Tag translation for m.server_notice</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location line="+2"/>
-        <source> (tag)</source>
-        <translation> (etikedo)</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source> (community)</source>
-        <translation> (komunumo)</translation>
+        <source>Messages from your server or administrator.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+228"/>
+        <location filename="../../src/ChatPage.cpp" line="+183"/>
         <source>Decrypt secrets</source>
         <translation>Malĉifri sekretojn</translation>
     </message>
@@ -518,7 +521,7 @@
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+616"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+663"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation type="unfinished"></translation>
@@ -530,7 +533,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+35"/>
         <location line="+63"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
@@ -605,7 +608,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+232"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+233"/>
         <source>Select a file</source>
         <translation type="unfinished">Elektu dosieron</translation>
     </message>
@@ -615,7 +618,7 @@
         <translation>Ĉiuj dosieroj (*)</translation>
     </message>
     <message>
-        <location line="+418"/>
+        <location line="+417"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Malsukcesis alŝuti vidaŭdaĵojn. Bonvolu reprovi.</translation>
     </message>
@@ -698,13 +701,13 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+84"/>
         <location line="+11"/>
-        <location line="+160"/>
+        <location line="+157"/>
         <location line="+11"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
         <translation>Vi enigis nevalidan identigilon de Matrikso  ekz. @tacuo:matrix.org</translation>
     </message>
     <message>
-        <location line="-132"/>
+        <location line="-131"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -714,7 +717,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+24"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -729,12 +732,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-171"/>
+        <location line="-168"/>
         <source>SSO LOGIN</source>
         <translation>UNUNURA SALUTO</translation>
     </message>
     <message>
-        <location line="+267"/>
+        <location line="+264"/>
         <source>Empty password</source>
         <translation>Malplena pasvorto</translation>
     </message>
@@ -792,6 +795,11 @@ Ekzemplo: https://servilo.mia:8787</translation>
     </message>
     <message>
         <location line="+9"/>
+        <source>%1 changed the room avatar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>%1 created and configured room: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -867,7 +875,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+82"/>
+        <location filename="../qml/MessageView.qml" line="+83"/>
         <source>Edit</source>
         <translation>Redakti</translation>
     </message>
@@ -885,6 +893,76 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <location line="+11"/>
         <source>Options</source>
         <translation>Elektebloj</translation>
+    </message>
+    <message>
+        <location line="+329"/>
+        <source>&amp;Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Copy &amp;link location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Re&amp;act</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Repl&amp;y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>&amp;Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Read receip&amp;ts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&amp;Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>&amp;Mark as read</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>View raw message</source>
+        <translation type="unfinished">Vidi krudan mesaĝon</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>View decrypted raw message</source>
+        <translation type="unfinished">Vidi malĉifritan krudan mesaĝon</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Remo&amp;ve message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>&amp;Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>&amp;Open in external program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Copy link to eve&amp;nt</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -999,7 +1077,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+16"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neniu mikrofono troviĝis.</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -1025,7 +1103,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>Placeholder</name>
     <message>
-        <location filename="../qml/delegates/Placeholder.qml" line="+8"/>
+        <location filename="../qml/delegates/Placeholder.qml" line="+9"/>
         <source>unimplemented event: </source>
         <translation>neprogramita okazo: </translation>
     </message>
@@ -1033,7 +1111,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+167"/>
+        <location filename="../../src/main.cpp" line="+200"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1051,18 +1129,18 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+77"/>
+        <location filename="../../src/RegisterPage.cpp" line="+78"/>
         <source>Username</source>
         <translation>Uzantonomo</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location line="+287"/>
+        <location line="+305"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
         <translation>La uzantonomo devas ne esti malplena, kaj devas enhavi nur la signojn a–z, 0–9, ., _, =, -, kaj /.</translation>
     </message>
     <message>
-        <location line="-283"/>
+        <location line="-301"/>
         <source>Password</source>
         <translation>Pasvorto</translation>
     </message>
@@ -1087,22 +1165,47 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Servilo, kiu permesas registriĝon. Ĉar Matrikso estas federa, vi bezonas unue trovi servilon, kie vi povus registriĝi, aŭ gastigi vian propran.</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+35"/>
         <source>REGISTER</source>
         <translation>REGISTRIĜI</translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+73"/>
         <source>No supported registration flows!</source>
         <translation>Neniuj subtenataj manieroj de registriĝo!</translation>
     </message>
     <message>
-        <location line="+210"/>
+        <location line="+213"/>
         <source>One or more fields have invalid inputs. Please correct those issues and try again.</source>
         <translation>Unu aŭ pliaj kampoj havas nevalidajn enigojn. Bonvolu korekti la problemojn kaj reprovi.</translation>
     </message>
     <message>
-        <location line="-26"/>
+        <location line="+23"/>
+        <source>Autodiscovery failed. Received malformed response.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>The required endpoints were not found. Possibly not a Matrix server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Received malformed response. Make sure the homeserver domain is valid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-94"/>
         <source>Password is not long enough (min 8 chars)</source>
         <translation>Pasvorto nesufiĉe longas (almenaŭ 8 signoj)</translation>
     </message>
@@ -1112,7 +1215,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Pasvortoj ne akordas</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Invalid server name</source>
         <translation>Nevalida nomo de servilo</translation>
     </message>
@@ -1120,7 +1223,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../qml/ReplyPopup.qml" line="+49"/>
+        <location filename="../qml/ReplyPopup.qml" line="+47"/>
         <source>Close</source>
         <translation>Fermi</translation>
     </message>
@@ -1133,74 +1236,112 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1813"/>
+        <location filename="../../src/Cache.cpp" line="+4009"/>
         <source>no version stored</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>RoomInfoListItem</name>
+    <name>RoomList</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+89"/>
-        <source>Leave room</source>
-        <translation>Eliri el ĉambro</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Tag room as:</source>
-        <translation>Etikedi ĉambron:</translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>Favourite</source>
-        <comment>Standard matrix tag for favourites</comment>
-        <translation>Preferata</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Low Priority</source>
-        <comment>Standard matrix tag for low priority rooms</comment>
-        <translation>Malalta prioritato</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Server Notice</source>
-        <comment>Standard matrix tag for server notices</comment>
-        <translation>Servila avizo</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Adds or removes the specified tag.</source>
-        <comment>WhatsThis hint for tag menu actions</comment>
-        <translation>Aldonas aŭ forigas la donitan etikedon.</translation>
-    </message>
-    <message>
-        <location line="+39"/>
-        <source>New tag...</source>
-        <comment>Add a new tag to the room</comment>
-        <translation>Nova etikedo…</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>New Tag</source>
-        <comment>Tag name prompt title</comment>
-        <translation>Nova etikedo</translation>
+        <location filename="../qml/RoomList.qml" line="+56"/>
+        <source>New tag</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Tag:</source>
-        <comment>Tag name prompt</comment>
-        <translation>Etikedo:</translation>
+        <source>Enter the tag you want to use:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+169"/>
+        <location line="+7"/>
+        <source>Leave room</source>
+        <translation type="unfinished">Eliri el ĉambro</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Tag room as:</source>
+        <translation type="unfinished">Etikedi ĉambron:</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Favourite</source>
+        <translation type="unfinished">Preferata</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Low priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Server notice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Create new tag...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+222"/>
         <source>Accept</source>
-        <translation>Akcepti</translation>
+        <translation type="unfinished">Akcepti</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+21"/>
         <source>Decline</source>
-        <translation>Rifuzi</translation>
+        <translation type="unfinished">Rifuzi</translation>
+    </message>
+    <message>
+        <location line="+68"/>
+        <source>Status Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter your status message:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Profile settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Set status message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+79"/>
+        <source>Logout</source>
+        <translation type="unfinished">Adiaŭi</translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <source>Start a new chat</source>
+        <translation type="unfinished">Komenci novan babilon</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Join a room</source>
+        <translation type="unfinished">Aliĝi ĉambron</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Create a new room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Room directory</source>
+        <translation type="unfinished">Ĉambra dosierujo</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>User settings</source>
+        <translation type="unfinished">Agordoj de uzanto</translation>
     </message>
 </context>
 <context>
@@ -1390,35 +1531,6 @@ Ekzemplo: https://servilo.mia:8787</translation>
     </message>
 </context>
 <context>
-    <name>SideBarActions</name>
-    <message>
-        <location filename="../../src/SideBarActions.cpp" line="+44"/>
-        <source>User settings</source>
-        <translation>Agordoj de uzanto</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Create new room</source>
-        <translation>Fari novan ĉambron</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Join a room</source>
-        <translation>Aliĝi ĉambron</translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>Start a new chat</source>
-        <translation>Komenci novan babilon</translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>Room directory</source>
-        <translatorcomment>Is it correct to use the adjective form in this way or should I use Dosierujo de ĉambro? Or da ĉambro?</translatorcomment>
-        <translation>Ĉambra dosierujo</translation>
-    </message>
-</context>
-<context>
     <name>StatusIndicator</name>
     <message>
         <location filename="../qml/StatusIndicator.qml" line="+21"/>
@@ -1445,7 +1557,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>Success</name>
     <message>
-        <location filename="../qml/device-verification/Success.qml" line="+10"/>
+        <location filename="../qml/device-verification/Success.qml" line="+11"/>
         <source>Successful Verification</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1457,13 +1569,13 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+12"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fermi</translation>
     </message>
 </context>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1044"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1095"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1600,17 +1712,22 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-11"/>
+        <location line="+9"/>
+        <source>Reason: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-20"/>
         <source>%1 redacted their knock.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-876"/>
+        <location line="-883"/>
         <source>You joined this room.</source>
         <translation>Vi aliĝis ĉi tiun ĉambron.</translation>
     </message>
     <message>
-        <location line="+842"/>
+        <location line="+849"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1631,12 +1748,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>%1 eliris jam elirinte!</translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source> Reason: %1</source>
-        <translation> Kialo: %1</translation>
-    </message>
-    <message>
-        <location line="-5"/>
+        <location line="+10"/>
         <source>%1 knocked.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1652,85 +1764,25 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+125"/>
-        <source>Copy</source>
-        <translation>Kopii</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Copy link location</source>
-        <translation>Kopii celon de ligilo</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>React</source>
-        <translation>Reagi</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Reply</source>
-        <translation>Respondi</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Edit</source>
-        <translation>Redakti</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Read receipts</source>
-        <translation>Kvitancoj</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Forward</source>
-        <translation>Plusendi</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Mark as read</source>
-        <translation>Marki legita</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>View raw message</source>
-        <translation>Vidi krudan mesaĝon</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>View decrypted raw message</source>
-        <translation>Vidi malĉifritan krudan mesaĝon</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Remove message</source>
-        <translation>Forigi mesaĝon</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Save as</source>
-        <translation>Konservi kiel</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Open in external program</source>
-        <translation>Malfermi per ekstera programo</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Copy link to event</source>
-        <translation>Kopii ligilon al okazo</translation>
-    </message>
-    <message>
-        <location line="+57"/>
+        <location filename="../qml/TimelineView.qml" line="+27"/>
         <source>No room open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+127"/>
+        <source>%1 member(s)</source>
+        <translation type="unfinished">%1 ĉambrano(j)</translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <source>Back to room list</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+570"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+461"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1788,54 +1840,6 @@ Ekzemplo: https://servilo.mia:8787</translation>
     </message>
 </context>
 <context>
-    <name>UserInfoWidget</name>
-    <message>
-        <location filename="../../src/UserInfoWidget.cpp" line="+82"/>
-        <source>Logout</source>
-        <translation>Adiaŭi</translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>Set custom status message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Custom status message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Status:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>User Profile Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Set presence automatically</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Online</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Unavailable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Offline</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>UserProfile</name>
     <message>
         <location filename="../qml/UserProfile.qml" line="+24"/>
@@ -1874,7 +1878,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/UserProfile.cpp" line="+301"/>
+        <location filename="../../src/ui/UserProfile.cpp" line="+307"/>
         <source>Select an avatar</source>
         <translation>Elektu profilbildon</translation>
     </message>
@@ -1897,8 +1901,8 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+340"/>
-        <location filename="../../src/UserSettingsPage.h" line="+186"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+362"/>
+        <location filename="../../src/UserSettingsPage.h" line="+194"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1906,7 +1910,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location line="+553"/>
+        <location line="+524"/>
         <source>Minimize to tray</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2316,7 +2320,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+54"/>
         <source>Select a file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elektu dosieron</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2391,7 +2395,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+15"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nuligi</translation>
     </message>
 </context>
 <context>
@@ -2436,7 +2440,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nuligi</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2446,7 +2450,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+3"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Temo</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2479,7 +2483,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nuligi</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2497,7 +2501,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/InviteUsers.cpp" line="+46"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nuligi</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2515,7 +2519,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nuligi</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2528,7 +2532,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/LeaveRoom.cpp" line="+35"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nuligi</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2541,7 +2545,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/Logout.cpp" line="+35"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nuligi</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2559,7 +2563,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nuligi</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -2574,7 +2578,7 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+35"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nuligi</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2592,12 +2596,12 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReadReceipts.cpp" line="+124"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kvitancoj</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fermi</translation>
     </message>
 </context>
 <context>
@@ -2693,7 +2697,7 @@ Media size: %2
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 sendis ĉifritan mesaĝon</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2727,22 +2731,9 @@ Media size: %2
     </message>
 </context>
 <context>
-    <name>popups::UserMentions</name>
-    <message>
-        <location filename="../../src/popups/UserMentions.cpp" line="+68"/>
-        <source>This Room</source>
-        <translation>Ĉi tiu ĉambro</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>All Rooms</source>
-        <translation>Ĉiuj ĉambroj</translation>
-    </message>
-</context>
-<context>
     <name>utils</name>
     <message>
-        <location filename="../../src/Utils.h" line="+4"/>
+        <location line="+4"/>
         <source>Unknown Message Type</source>
         <translation type="unfinished"></translation>
     </message>
