@@ -21,7 +21,8 @@ Help us with translations so as many people as possible will be able to use nhek
 
 The current implementation works in most cases, but you may need to bootstrap
 your cross-signing keys in a different client. The implementation may also still
-have bugs, so don't rely on it for security. Most cases should be fine though.
+have bugs, so don't rely on it for security. Online keybackup isn't supported,
+but you can use offline keybackup. Most other cases should be fine though.
 
 ## Features
 
