@@ -19,9 +19,9 @@ Help us with translations so as many people as possible will be able to use nhek
 
 ### Note regarding End-to-End encryption
 
-Currently the implementation is at best a **proof of concept** and it should only be used for
-testing purposes. Most importantly, it is missing device verification, so while your messages
-and media are encrypted, nheko doesn't verify who gets the messages.
+The current implementation works in most cases, but you may need to bootstrap
+your cross-signing keys in a different client. The implementation may also still
+have bugs, so don't rely on it for security. Most cases should be fine though.
 
 ## Features
 
