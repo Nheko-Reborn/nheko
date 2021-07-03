@@ -154,6 +154,7 @@ Item {
             NoticeMessage {
                 text: qsTr("%1 changed the room avatar").arg(model.data.userName)
             }
+
         }
 
         DelegateChoice {

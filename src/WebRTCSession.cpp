@@ -41,8 +41,7 @@ using webrtc::CallType;
 using webrtc::State;
 
 WebRTCSession::WebRTCSession()
-  : QObject()
-  , devices_(CallDevices::instance())
+  : devices_(CallDevices::instance())
 {
         qRegisterMetaType<webrtc::CallType>();
         qmlRegisterUncreatableMetaObject(

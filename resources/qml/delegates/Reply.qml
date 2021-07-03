@@ -59,8 +59,8 @@ Item {
 
         MessageDelegate {
             id: reply
-            enabled: false
 
+            enabled: false
             width: parent.width
             isReply: true
         }
