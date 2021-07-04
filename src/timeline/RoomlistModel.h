@@ -37,6 +37,8 @@ public:
                 NotificationCount,
                 IsInvite,
                 IsSpace,
+                IsPreview,
+                IsPreviewFetched,
                 Tags,
                 ParentSpaces,
         };
@@ -87,15 +89,18 @@ private slots:
 signals:
         void totalUnreadMessageCountUpdated(int unreadMessages);
         void currentRoomChanged();
+        void fetchedPreview(QString roomid, RoomInfo info);
 
 private:
         void addRoom(const QString &room_id, bool suppressInsertNotification = false);
+        void fetchPreview(QString roomid) const;
 
         TimelineViewManager *manager = nullptr;
         std::vector<QString> roomids;
         QHash<QString, RoomInfo> invites;
         QHash<QString, QSharedPointer<TimelineModel>> models;
         std::map<QString, bool> roomReadStatus;
+        QHash<QString, std::optional<RoomInfo>> previewedRooms;
 
         QSharedPointer<TimelineModel> currentRoom_;
 
