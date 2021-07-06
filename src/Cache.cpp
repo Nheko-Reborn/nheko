@@ -3588,25 +3588,31 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                         updateToWrite.self_signing_keys = update.self_signing_keys;
                         updateToWrite.user_signing_keys = update.user_signing_keys;
 
-                        // If we have keys for the device already, only update the signatures.
+                        auto oldDeviceKeys = std::move(updateToWrite.device_keys);
+                        updateToWrite.device_keys.clear();
+
+                        // Don't insert keys, which we have seen once already
                         for (const auto &[device_id, device_keys] : update.device_keys) {
-                                if (updateToWrite.device_keys.count(device_id) &&
-                                    updateToWrite.device_keys.at(device_id).keys ==
-                                      device_keys.keys) {
-                                        updateToWrite.device_keys.at(device_id).signatures =
-                                          device_keys.signatures;
+                                if (oldDeviceKeys.count(device_id) &&
+                                    oldDeviceKeys.at(device_id).keys == device_keys.keys) {
+                                        // this is safe, since the keys are the same
+                                        updateToWrite.device_keys[device_id] = device_keys;
                                 } else {
                                         bool keyReused = false;
                                         for (const auto &[key_id, key] : device_keys.keys) {
                                                 (void)key_id;
                                                 if (updateToWrite.seen_device_keys.count(key)) {
+                                                        nhlog::crypto()->warn(
+                                                          "Key '{}' reused by ({}: {})",
+                                                          key,
+                                                          user,
+                                                          device_id);
                                                         keyReused = true;
                                                         break;
                                                 }
                                         }
 
-                                        if (!updateToWrite.device_keys.count(device_id) &&
-                                            !keyReused)
+                                        if (!keyReused && !oldDeviceKeys.count(device_id))
                                                 updateToWrite.device_keys[device_id] = device_keys;
                                 }
 
