@@ -303,7 +303,7 @@
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+44"/>
         <source>Hide rooms with this tag or from this space by default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaikimisi peida selle sildiga jututoad.</translation>
     </message>
 </context>
 <context>
@@ -311,42 +311,42 @@
     <message>
         <location filename="../../src/timeline/CommunitiesModel.cpp" line="+37"/>
         <source>All rooms</source>
-        <translation type="unfinished">Kõik jututoad</translation>
+        <translation>Kõik jututoad</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Shows all rooms without filtering.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita kõiki jututubasid nii, et filter pole kasutusel.</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Favourites</source>
-        <translation type="unfinished"></translation>
+        <translation>Lemmikud</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rooms you have favourited.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoad, mis sa oled märkinud lemmikuteks.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Low Priority</source>
-        <translation type="unfinished">Vähetähtis</translation>
+        <translation>Vähetähtis</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rooms with low priority.</source>
-        <translation type="unfinished"></translation>
+        <translation>Väheolulised jututoad.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Server Notices</source>
-        <translation type="unfinished">Serveriteated</translation>
+        <translation>Serveriteated</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Messages from your server or administrator.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sõnumid sinu serverilt või selle haldajalt.</translation>
     </message>
 </context>
 <context>
@@ -787,7 +787,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+9"/>
         <source>%1 changed the room avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis jututoa tunnuspilti</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -894,72 +894,72 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+329"/>
         <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Kopeeri</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Copy &amp;link location</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopeeri &amp;lingi asukoht</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Re&amp;act</source>
-        <translation type="unfinished"></translation>
+        <translation>Re&amp;ageeri</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Repl&amp;y</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vasta</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Muuda</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Read receip&amp;ts</source>
-        <translation type="unfinished"></translation>
+        <translation>Lugemis&amp;teatised</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>&amp;Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Edasta</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>&amp;Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Märgi loetuks</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>View raw message</source>
-        <translation type="unfinished">Näita sõnumi lähtekoodi</translation>
+        <translation>Näita sõnumi lähtekoodi</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>View decrypted raw message</source>
-        <translation type="unfinished">Näita sõnumi dekrüptitud lähtekoodi</translation>
+        <translation>Näita sõnumi dekrüptitud lähtekoodi</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Remo&amp;ve message</source>
-        <translation type="unfinished"></translation>
+        <translation>Eemal&amp;da sõnum</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>&amp;Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Salvesta kui</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>&amp;Open in external program</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ava välise rakendusega</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Copy link to eve&amp;nt</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopeeri sündmuse li&amp;nk</translation>
     </message>
 </context>
 <context>
@@ -1179,27 +1179,27 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+23"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished">Koduserveri automaatne tuvastamine ei õnnestunud: päringuvastus oli vigane.</translation>
+        <translation>Koduserveri automaatne tuvastamine ei õnnestunud: päringuvastus oli vigane.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished">Koduserveri automaatne tuvastamine ei õnnestunud: tundmatu viga .well-known päringu tegemisel.</translation>
+        <translation>Koduserveri automaatne tuvastamine ei õnnestunud: tundmatu viga .well-known päringu tegemisel.</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation type="unfinished">Protokolli järgi nõutavaid lõpppunkte ei leidunud. Ilmselt pole tegemist Matrix&apos;i serveriga.</translation>
+        <translation>Protokolli järgi nõutavaid lõpppunkte ei leidunud. Ilmselt pole tegemist Matrix&apos;i serveriga.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished">Päringule sain tagasi vigase vastuse. Palun kontrolli, et koduserveri domeen oleks õige.</translation>
+        <translation>Päringule sain tagasi vigase vastuse. Palun kontrolli, et koduserveri domeen oleks õige.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished">Tekkis teadmata viga. Palun kontrolli, et koduserveri domeen on õige.</translation>
+        <translation>Tekkis teadmata viga. Palun kontrolli, et koduserveri domeen on õige.</translation>
     </message>
     <message>
         <location line="-94"/>
@@ -1243,102 +1243,102 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/RoomList.qml" line="+56"/>
         <source>New tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Uus silt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter the tag you want to use:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjuta silt, mida soovid kasutada:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Leave room</source>
-        <translation type="unfinished">Lahku jututoast</translation>
+        <translation>Lahku jututoast</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Tag room as:</source>
-        <translation type="unfinished">Lisa jututoale silt:</translation>
+        <translation>Lisa jututoale silt:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Favourite</source>
-        <translation type="unfinished">Lemmik</translation>
+        <translation>Lemmik</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Low priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Vähetähtis</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Server notice</source>
-        <translation type="unfinished"></translation>
+        <translation>Serveriteade</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Create new tag...</source>
-        <translation type="unfinished"></translation>
+        <translation>Loo uus silt...</translation>
     </message>
     <message>
         <location line="+222"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Nõustu</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Keeldu</translation>
     </message>
     <message>
         <location line="+68"/>
         <source>Status Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Olekuteade</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter your status message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisesta oma olekuteade:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Profile settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Profiili seadistused</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Set status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisesta olekuteade</translation>
     </message>
     <message>
         <location line="+79"/>
         <source>Logout</source>
-        <translation type="unfinished">Logi välja</translation>
+        <translation>Logi välja</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>Start a new chat</source>
-        <translation type="unfinished">Alusta uut vestlust</translation>
+        <translation>Alusta uut vestlust</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Join a room</source>
-        <translation type="unfinished">Liitu jututoaga</translation>
+        <translation>Liitu jututoaga</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Create a new room</source>
-        <translation type="unfinished"></translation>
+        <translation>Loo uus jututuba</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Room directory</source>
-        <translation type="unfinished">Jututubade loend</translation>
+        <translation>Jututubade loend</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>User settings</source>
-        <translation type="unfinished">Kasutaja seadistused</translation>
+        <translation>Kasutaja seadistused</translation>
     </message>
 </context>
 <context>
@@ -1710,7 +1710,7 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
     <message>
         <location line="+9"/>
         <source>Reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Põhjus: %1</translation>
     </message>
     <message>
         <location line="-20"/>
@@ -1767,12 +1767,12 @@ testimiseks seni, kuni terviklik seadmete verifitseerimine on implementeeritud.<
     <message>
         <location line="+127"/>
         <source>%1 member(s)</source>
-        <translation type="unfinished">%1 liige(t)</translation>
+        <translation>%1 liige(t)</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>Back to room list</source>
-        <translation type="unfinished">Tagasi jututubade loendisse</translation>
+        <translation>Tagasi jututubade loendisse</translation>
     </message>
 </context>
 <context>
