@@ -311,7 +311,7 @@
     <message>
         <location filename="../../src/timeline/CommunitiesModel.cpp" line="+37"/>
         <source>All rooms</source>
-        <translation type="unfinished">Kaikki huoneet</translation>
+        <translation>Kaikki huoneet</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1175,27 +1175,27 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+23"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished">Palvelimen tietojen hakeminen epäonnistui: virheellinen vastaus.</translation>
+        <translation>Palvelimen tietojen hakeminen epäonnistui: virheellinen vastaus.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished">Palvelimen tietojen hakeminen epäonnistui: tuntematon virhe hakiessa .well-known -tiedostoa.</translation>
+        <translation>Palvelimen tietojen hakeminen epäonnistui: tuntematon virhe hakiessa .well-known -tiedostoa.</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation type="unfinished">Vaadittuja päätepisteitä ei löydetty. Mahdollisesti ei Matrix-palvelin.</translation>
+        <translation>Vaadittuja päätepisteitä ei löydetty. Mahdollisesti ei Matrix-palvelin.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished">Vastaanotettiin virheellinen vastaus. Varmista, että kotipalvelimen osoite on pätevä.</translation>
+        <translation>Vastaanotettiin virheellinen vastaus. Varmista, että kotipalvelimen osoite on pätevä.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished">Tapahtui tuntematon virhe. Varmista, että kotipalvelimen osoite on pätevä.</translation>
+        <translation>Tapahtui tuntematon virhe. Varmista, että kotipalvelimen osoite on pätevä.</translation>
     </message>
     <message>
         <location line="-94"/>
@@ -1249,7 +1249,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>Leave room</source>
-        <translation type="unfinished">Poistu huoneesta</translation>
+        <translation>Poistu huoneesta</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1279,12 +1279,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+222"/>
         <source>Accept</source>
-        <translation type="unfinished">Hyväksy</translation>
+        <translation>Hyväksy</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Decline</source>
-        <translation type="unfinished">Hylkää</translation>
+        <translation>Hylkää</translation>
     </message>
     <message>
         <location line="+68"/>
@@ -1309,17 +1309,17 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+79"/>
         <source>Logout</source>
-        <translation type="unfinished">Kirjaudu ulos</translation>
+        <translation>Kirjaudu ulos</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>Start a new chat</source>
-        <translation type="unfinished">Aloita uusi keskustelu</translation>
+        <translation>Aloita uusi keskustelu</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Join a room</source>
-        <translation type="unfinished">Liity huoneeseen</translation>
+        <translation>Liity huoneeseen</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1329,12 +1329,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>Room directory</source>
-        <translation type="unfinished">Huoneluettelo</translation>
+        <translation>Huoneluettelo</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>User settings</source>
-        <translation type="unfinished">Käyttäjäasetukset</translation>
+        <translation>Käyttäjäasetukset</translation>
     </message>
 </context>
 <context>
