@@ -3,60 +3,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "RoomDirectoryModel.h"
-
-// static void dummyRoomTest() {
-//     mtx::responses::PublicRoomsChunk room1;
-//     room1.name = "Nheko";
-//     room1.room_id = "#44343";
-//     room1.topic = "THE GREATEST AND ONLY CLIENT WORTH USING";
-//     // room1.avatar_url = "";
-//     for (int i = 0; i < 1000; i++) {
-//         room1.num_joined_members = static_cast<size_t> (i);
-//         publicRoomsData.push_back(room1);
-//     }
-// }
-
-// QVariant
-// RoomDirectoryModel::data(const QModelIndex &index, int role) const
-// {
-//     if (index.row() >= 0 && static_cast<size_t>(index.row()) < dummyData_.size()) 
-//     {
-//         const auto &room_chunk = dummyData_[index.row()]; 
-//         switch (role)
-//         {
-//             case Roles::RoomName: 
-//             case Roles::RoomId:
-//             case Roles::RoomAvatarUrl:
-//             case Roles::RoomTopic:
-//             case Roles::MemberCount:
-//             case Roles::Previewable:
-//                 return QString::fromStdString(room_chunk);
-//         }
-//     }
-//     return {};
-// }
-
-// void
-// RoomDirectoryModel::getPublicRooms() 
-// {
-//     http::client()->get_public_rooms(
-//                             [this](
-//                                 const mtx::responses::PublicRooms &res,
-//                                 RequestErr err)
-//                                 {
-//                                     if (err) {
-//                                         nhlog::net()->error("Failed to GET public rooms batch - {} - {} - {}",
-//                                         mtx::errors::to_string(err->matrix_error.errcode),
-//                                         err->matrix_error.error,
-//                                         err->parse_error);
-//                                     } else {
-//                                         updateListedRooms(res.chunk);
-//                                     }
-//                                 },
-//                             server_,
-//                             limit_,
-//                             next_batch_,);
-// }
+#include "ChatPage.h"
+#include <algorithm>
 
 RoomDirectoryModel::RoomDirectoryModel(QObject *parent, const std::string &s)
                     : QAbstractListModel(parent)
@@ -69,10 +17,10 @@ QHash<int, QByteArray>
 RoomDirectoryModel::roleNames() const
 {
     return {
-        {Roles::RoomName, "name"},
-        {Roles::RoomId, "roomid"},
-        {Roles::RoomAvatarUrl, "avatarUrl"},
-        {Roles::RoomTopic, "topic"},
+        {Roles::Name, "name"},
+        {Roles::Id, "roomid"},
+        {Roles::AvatarUrl, "avatarUrl"},
+        {Roles::Topic, "topic"},
         {Roles::MemberCount, "numMembers"},
         {Roles::Previewable, "canPreview"}
     };
@@ -94,6 +42,31 @@ RoomDirectoryModel::setFilter(const QString &f)
     nhlog::ui()->debug("Received user query: {}", filter_);
 }
 
+std::vector<std::string>
+RoomDirectoryModel::getViasForRoom(const std::vector<std::string> &aliases)
+{
+    std::vector<std::string> vias;
+    
+    vias.reserve(aliases.size());
+
+    std::transform(aliases.begin(), aliases.end(), 
+                   std::back_inserter(vias), [](const auto &alias) {
+                       // https://matrix.org/docs/spec/#room-aliases
+                        return alias.substr(alias.find(":") + 1);
+                   });
+
+    return vias;
+}
+
+void
+RoomDirectoryModel::joinRoom(const int &index)
+{
+    if (index == -1) return; // delegate item no longer valid
+
+    const auto &chunk = publicRoomsData[index];
+    nhlog::ui()->debug("'Joining room {}", chunk.room_id);
+    ChatPage::instance()->joinRoomVia(chunk.room_id, getViasForRoom(chunk.aliases));
+}
 
 QVariant
 RoomDirectoryModel::data(const QModelIndex &index, int role) const
@@ -103,13 +76,13 @@ RoomDirectoryModel::data(const QModelIndex &index, int role) const
         const auto &room_chunk = publicRoomsData[index.row()]; 
         switch (role)
         {
-            case Roles::RoomName:
+            case Roles::Name:
                 return QString::fromStdString(room_chunk.name); 
-            case Roles::RoomId:
+            case Roles::Id:
                 return QString::fromStdString(room_chunk.room_id);
-            case Roles::RoomAvatarUrl:
+            case Roles::AvatarUrl:
                 return QString::fromStdString(room_chunk.avatar_url);
-            case Roles::RoomTopic:
+            case Roles::Topic:
                 return QString::fromStdString(room_chunk.topic);
             case Roles::MemberCount:
                 return QVariant::fromValue(room_chunk.num_joined_members);
@@ -158,7 +131,6 @@ RoomDirectoryModel::displayRooms(std::vector<mtx::responses::PublicRoomsChunk> f
     nhlog::net()->debug("NP batch: {} | NN batch: {}", prev_batch, next_batch);
 
     if (fetched_rooms.empty()) {
-        // we couldn't get a chunk, something went wrong -
         // canFetchMore already checks if we've reached the end of the pagination
         nhlog::net()->error("mtxclient helper thread yielded empty chunk!");
         return;
@@ -168,7 +140,6 @@ RoomDirectoryModel::displayRooms(std::vector<mtx::responses::PublicRoomsChunk> f
     this->publicRoomsData.insert(this->publicRoomsData.end(), fetched_rooms.begin(), fetched_rooms.end());
     endInsertRows();
 
-    printPublicRoomsData();
     if (next_batch.empty()) {
         canFetchMore_ = false;
     }

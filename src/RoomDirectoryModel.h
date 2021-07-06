@@ -8,6 +8,7 @@
 #include <QHash>
 #include <QString>
 #include <vector>
+#include <string>
 
 #include "MatrixClient.h"
 #include <mtxclient/http/errors.hpp>
@@ -31,10 +32,10 @@ public:
     (QObject *parent = nullptr, const std::string &s = "");
 
     enum Roles {
-        RoomName = Qt::UserRole, // does this matter? Should this be Qt::DisplayRole?
-        RoomId,
-        RoomAvatarUrl,
-        RoomTopic,
+        Name = Qt::UserRole,
+        Id,
+        AvatarUrl,
+        Topic,
         MemberCount,
         Previewable
     };
@@ -54,6 +55,8 @@ public:
     }
     virtual void fetchMore([[maybe_unused]] const QModelIndex &parent) override;
 
+    Q_INVOKABLE void joinRoom(const int &index = -1);
+
 signals:
     void fetchedRoomsBatchFromMtxClient(std::vector<mtx::responses::PublicRoomsChunk> rooms, 
                                         const std::string prev_batch, const std::string next_batch
@@ -70,7 +73,7 @@ public slots:
 
 private:
     using PublicRoomsChunk = mtx::responses::PublicRoomsChunk;
-    static constexpr size_t limit_ = 50; // # rooms requested from mtxclient at once
+    static constexpr size_t limit_ = 50; // number of rooms requested from mtxclient at once
     
     std::string server_;
     std::string filter_;
@@ -86,5 +89,5 @@ private:
         }
     }
 
-    // static constexpr std::vector<std::string> dummyData_ = {"Element1", "Eleme1", "EleMent4", "NewElement1", "Element77"};
+    std::vector<std::string> getViasForRoom(const std::vector<std::string> &room);
 };
