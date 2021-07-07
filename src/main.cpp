@@ -40,7 +40,6 @@
 QQmlDebuggingEnabler enabler;
 #endif
 
-#if !defined(Q_OS_WINDOWS)
 #if HAVE_BACKTRACE_SYMBOLS_FD
 #include <csignal>
 #include <execinfo.h>
@@ -93,7 +92,6 @@ registerSignalHandlers()
         std::signal(SIGABRT, &stacktraceHandler);
 }
 
-#endif
 #else
 
 // No implementation for systems with no stacktrace support.
