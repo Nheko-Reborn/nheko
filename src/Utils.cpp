@@ -16,8 +16,9 @@
 #include <QStringBuilder>
 #include <QTextDocument>
 #include <QXmlStreamReader>
-
 #include <QTextBoundaryFinder>
+
+#include <array>
 #include <cmath>
 #include <variant>
 
