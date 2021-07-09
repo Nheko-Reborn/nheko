@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import "./ui"
 import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.9
 import QtQuick.Controls 2.3
@@ -49,10 +50,11 @@ ApplicationWindow {
             }
         }
 
-        BusyIndicator {
+        Spinner {
             Layout.alignment: Qt.AlignHCenter
-            running: roomSettings.isLoading
             visible: roomSettings.isLoading
+            foreground: Nheko.colors.mid
+            running: roomSettings.isLoading
         }
 
         Text {

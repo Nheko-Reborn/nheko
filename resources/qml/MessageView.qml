@@ -4,6 +4,8 @@
 
 import "./delegates"
 import "./emoji"
+import "./ui"
+
 import Qt.labs.platform 1.1 as Platform
 import QtGraphicalEffects 1.0
 import QtQuick 2.12
@@ -404,14 +406,13 @@ ScrollView {
 
         }
 
-        footer: BusyIndicator {
+        footer: Spinner {
             anchors.horizontalCenter: parent.horizontalCenter
             running: chat.model && chat.model.paginationInProgress
-            height: 50
-            width: 50
+            foreground: Nheko.colors.mid
+            visible: chat.model && chat.model.paginationInProgress
             z: 3
         }
-
     }
 
     Platform.Menu {

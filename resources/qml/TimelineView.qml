@@ -6,6 +6,8 @@ import "./delegates"
 import "./device-verification"
 import "./emoji"
 import "./voip"
+import "./ui"
+
 import Qt.labs.platform 1.1 as Platform
 import QtGraphicalEffects 1.0
 import QtQuick 2.9
@@ -29,12 +31,13 @@ Item {
         color: Nheko.colors.text
     }
 
-    BusyIndicator {
-        visible: running
+    Spinner {
+        visible: TimelineManager.isInitialSync
         anchors.centerIn: parent
+        foreground: Nheko.colors.mid
         running: TimelineManager.isInitialSync
-        height: 200
-        width: 200
+        // height is somewhat arbitrary here... don't set width because width scales w/ height
+        height: parent.height / 16
         z: 3
     }
 

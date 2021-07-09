@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import "../ui"
 import QtQuick 2.3
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.10
@@ -34,9 +35,9 @@ Pane {
             verticalAlignment: Text.AlignVCenter
         }
 
-        BusyIndicator {
+        Spinner {
             Layout.alignment: Qt.AlignHCenter
-            palette: Nheko.colors
+            foreground: Nheko.colors.mid
         }
 
         RowLayout {
