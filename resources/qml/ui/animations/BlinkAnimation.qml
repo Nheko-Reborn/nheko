@@ -17,12 +17,10 @@ SequentialAnimation {
         property: "opacity"
         from: 0
         to: 1
-        // /duration: 300
     }
 
     PauseAnimation {
         id: pauseAnimation
-        // duration: spinner.barCount * 150
     }
 
 }
