@@ -16,6 +16,8 @@ RoomlistModel::RoomlistModel(TimelineViewManager *parent)
   : QAbstractListModel(parent)
   , manager(parent)
 {
+        [[maybe_unused]] static auto id = qRegisterMetaType<RoomPreview>();
+
         connect(ChatPage::instance(), &ChatPage::decryptSidebarChanged, this, [this]() {
                 auto decrypt = ChatPage::instance()->userSettings()->decryptSidebar();
                 QHash<QString, QSharedPointer<TimelineModel>>::iterator i;
@@ -137,7 +139,7 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                         case Roles::RoomName:
                                 return QString::fromStdString(room.name);
                         case Roles::LastMessage:
-                                return QString();
+                                return tr("Pending invite.");
                         case Roles::Time:
                                 return QString();
                         case Roles::Timestamp:
@@ -434,9 +436,11 @@ void
 RoomlistModel::sync(const mtx::responses::Rooms &rooms)
 {
         for (const auto &[room_id, room] : rooms.join) {
+                auto qroomid = QString::fromStdString(room_id);
+
                 // addRoom will only add the room, if it doesn't exist
-                addRoom(QString::fromStdString(room_id));
-                const auto &room_model = models.value(QString::fromStdString(room_id));
+                addRoom(qroomid);
+                const auto &room_model = models.value(qroomid);
                 room_model->sync(room);
                 // room_model->addEvents(room.timeline);
                 connect(room_model.data(),
@@ -465,14 +469,20 @@ RoomlistModel::sync(const mtx::responses::Rooms &rooms)
 
         for (const auto &[room_id, room] : rooms.leave) {
                 (void)room;
-                auto idx = this->roomidToIndex(QString::fromStdString(room_id));
+                auto qroomid = QString::fromStdString(room_id);
+
+                if ((currentRoom_ && currentRoom_->roomId() == qroomid) ||
+                    (currentRoomPreview_ && currentRoomPreview_->roomid() == qroomid))
+                        resetCurrentRoom();
+
+                auto idx = this->roomidToIndex(qroomid);
                 if (idx != -1) {
                         beginRemoveRows(QModelIndex(), idx, idx);
                         roomids.erase(roomids.begin() + idx);
-                        if (models.contains(QString::fromStdString(room_id)))
-                                models.remove(QString::fromStdString(room_id));
-                        else if (invites.contains(QString::fromStdString(room_id)))
-                                invites.remove(QString::fromStdString(room_id));
+                        if (models.contains(qroomid))
+                                models.remove(qroomid);
+                        else if (invites.contains(qroomid))
+                                invites.remove(qroomid);
                         endRemoveRows();
                 }
         }
@@ -530,6 +540,19 @@ RoomlistModel::clear()
 }
 
 void
+RoomlistModel::joinPreview(QString roomid, QString parentSpace)
+{
+        if (previewedRooms.contains(roomid)) {
+                auto child = cache::client()->getStateEvent<mtx::events::state::space::Child>(
+                  parentSpace.toStdString(), roomid.toStdString());
+                ChatPage::instance()->joinRoomVia(roomid.toStdString(),
+                                                  (child && child->content.via)
+                                                    ? child->content.via.value()
+                                                    : std::vector<std::string>{},
+                                                  false);
+        }
+}
+void
 RoomlistModel::acceptInvite(QString roomid)
 {
         if (invites.contains(roomid)) {
@@ -581,6 +604,31 @@ RoomlistModel::setCurrentRoom(QString roomid)
         nhlog::ui()->debug("Trying to switch to: {}", roomid.toStdString());
         if (models.contains(roomid)) {
                 currentRoom_ = models.value(roomid);
+                currentRoomPreview_.reset();
+                emit currentRoomChanged();
+                nhlog::ui()->debug("Switched to: {}", roomid.toStdString());
+        } else if (invites.contains(roomid) || previewedRooms.contains(roomid)) {
+                currentRoom_ = nullptr;
+                std::optional<RoomInfo> i;
+
+                RoomPreview p;
+
+                if (invites.contains(roomid)) {
+                        i           = invites.value(roomid);
+                        p.isInvite_ = true;
+                } else {
+                        i           = previewedRooms.value(roomid);
+                        p.isInvite_ = false;
+                }
+
+                if (i) {
+                        p.roomid_           = roomid;
+                        p.roomName_         = QString::fromStdString(i->name);
+                        p.roomTopic_        = QString::fromStdString(i->topic);
+                        p.roomAvatarUrl_    = QString::fromStdString(i->avatar_url);
+                        currentRoomPreview_ = std::move(p);
+                }
+
                 emit currentRoomChanged();
                 nhlog::ui()->debug("Switched to: {}", roomid.toStdString());
         }

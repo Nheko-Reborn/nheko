@@ -183,6 +183,7 @@
         <file>qml/voip/VideoCall.qml</file>
         <file>qml/components/AdaptiveLayout.qml</file>
         <file>qml/components/AdaptiveLayoutElement.qml</file>
+        <file>qml/components/FlatButton.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>

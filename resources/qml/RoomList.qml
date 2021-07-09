@@ -121,7 +121,7 @@ Page {
             states: [
                 State {
                     name: "highlight"
-                    when: hovered.hovered && !(Rooms.currentRoom && model.roomId == Rooms.currentRoom.roomId())
+                    when: hovered.hovered && !((Rooms.currentRoom && model.roomId == Rooms.currentRoom.roomId()) || Rooms.currentRoomPreview.roomid == model.roomId)
 
                     PropertyChanges {
                         target: roomItem
@@ -135,7 +135,7 @@ Page {
                 },
                 State {
                     name: "selected"
-                    when: Rooms.currentRoom && model.roomId == Rooms.currentRoom.roomId()
+                    when: (Rooms.currentRoom && model.roomId == Rooms.currentRoom.roomId()) || Rooms.currentRoomPreview.roomid == model.roomId
 
                     PropertyChanges {
                         target: roomItem
@@ -268,7 +268,7 @@ Page {
                     RowLayout {
                         Layout.fillWidth: true
                         spacing: 0
-                        visible: !model.isInvite && !model.isSpace
+                        visible: !model.isSpace
                         height: visible ? 0 : undefined
 
                         ElidedLabel {
@@ -306,60 +306,6 @@ Page {
                                 text: model.notificationCount > 99 ? "99+" : model.notificationCount
                             }
 
-                        }
-
-                    }
-
-                    RowLayout {
-                        Layout.fillWidth: true
-                        spacing: Nheko.paddingMedium
-                        visible: model.isInvite
-                        enabled: visible
-                        height: visible ? 0 : undefined
-
-                        ElidedLabel {
-                            elideWidth: textContent.width / 2 - 2 * Nheko.paddingMedium
-                            fullText: qsTr("Accept")
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            leftPadding: Nheko.paddingMedium
-                            rightPadding: Nheko.paddingMedium
-                            color: Nheko.colors.brightText
-
-                            TapHandler {
-                                onSingleTapped: Rooms.acceptInvite(model.roomId)
-                            }
-
-                            background: Rectangle {
-                                color: Nheko.theme.alternateButton
-                                radius: height / 2
-                            }
-
-                        }
-
-                        ElidedLabel {
-                            Layout.alignment: Qt.AlignRight
-                            elideWidth: textContent.width / 2 - 2 * Nheko.paddingMedium
-                            fullText: qsTr("Decline")
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            leftPadding: Nheko.paddingMedium
-                            rightPadding: Nheko.paddingMedium
-                            color: Nheko.colors.brightText
-
-                            TapHandler {
-                                onSingleTapped: Rooms.declineInvite(model.roomId)
-                            }
-
-                            background: Rectangle {
-                                color: Nheko.theme.alternateButton
-                                radius: height / 2
-                            }
-
-                        }
-
-                        Item {
-                            Layout.fillWidth: true
                         }
 
                     }

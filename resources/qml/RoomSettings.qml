@@ -117,9 +117,11 @@ ApplicationWindow {
         }
 
         ScrollView {
-            Layout.maximumHeight: 75
+            Layout.fillHeight: true
             Layout.alignment: Qt.AlignHCenter
-            width: parent.width
+            Layout.fillWidth: true
+            Layout.leftMargin: Nheko.paddingLarge
+            Layout.rightMargin: Nheko.paddingLarge
 
             TextArea {
                 text: TimelineManager.escapeEmoji(roomSettings.roomTopic)

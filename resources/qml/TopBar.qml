@@ -12,6 +12,9 @@ Rectangle {
     id: topBar
 
     property bool showBackButton: false
+    property string roomName: room ? room.roomName : qsTr("No room selected")
+    property string avatarUrl: room ? room.roomAvatarUrl : ""
+    property string roomTopic: room ? room.roomTopic : ""
 
     Layout.fillWidth: true
     implicitHeight: topLayout.height + Nheko.paddingMedium * 2
@@ -20,15 +23,15 @@ Rectangle {
 
     TapHandler {
         onSingleTapped: {
-            room.openRoomSettings();
+            if (room)
+                room.openRoomSettings();
+
             eventPoint.accepted = true;
         }
         gesturePolicy: TapHandler.ReleaseWithinBounds
     }
 
     GridLayout {
-        //Layout.margins: 8
-
         id: topLayout
 
         anchors.left: parent.left
@@ -59,9 +62,13 @@ Rectangle {
             Layout.alignment: Qt.AlignVCenter
             width: Nheko.avatarSize
             height: Nheko.avatarSize
-            url: room ? room.roomAvatarUrl.replace("mxc://", "image://MxcImage/") : ""
-            displayName: room ? room.roomName : qsTr("No room selected")
-            onClicked: room.openRoomSettings()
+            url: avatarUrl.replace("mxc://", "image://MxcImage/")
+            displayName: roomName
+            onClicked: {
+                if (room) {
+                    room.openRoomSettings();
+                }
+            }
         }
 
         Label {
@@ -70,7 +77,7 @@ Rectangle {
             Layout.row: 0
             color: Nheko.colors.text
             font.pointSize: fontMetrics.font.pointSize * 1.1
-            text: room ? room.roomName : qsTr("No room selected")
+            text: roomName
             maximumLineCount: 1
             elide: Text.ElideRight
             textFormat: Text.RichText
@@ -82,12 +89,13 @@ Rectangle {
             Layout.row: 1
             Layout.maximumHeight: fontMetrics.lineSpacing * 2 // show 2 lines
             clip: true
-            text: room ? room.roomTopic : ""
+            text: roomTopic
         }
 
         ImageButton {
             id: roomOptionsButton
 
+            visible: !!room
             Layout.column: 3
             Layout.row: 0
             Layout.rowSpan: 2

@@ -79,6 +79,7 @@ Rectangle {
 
                 showBackButton: adaptiveView.singlePageMode
                 room: Rooms.currentRoom
+                roomPreview: Rooms.currentRoomPreview.roomid ? Rooms.currentRoomPreview : null
             }
 
         }

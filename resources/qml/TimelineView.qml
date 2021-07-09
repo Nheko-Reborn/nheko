@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import "./components"
 import "./delegates"
 import "./device-verification"
 import "./emoji"
@@ -21,10 +22,11 @@ Item {
     id: timelineView
 
     property var room: null
+    property var roomPreview: null
     property bool showBackButton: false
 
     Label {
-        visible: !room && !TimelineManager.isInitialSync
+        visible: !room && !TimelineManager.isInitialSync && !roomPreview
         anchors.centerIn: parent
         text: qsTr("No room open")
         font.pointSize: 24
@@ -132,15 +134,25 @@ Item {
     }
 
     ColumnLayout {
-        visible: room != null && room.isSpace
+        id: preview
+
+        property string roomName: room ? room.roomName : (roomPreview ? roomPreview.roomName : "")
+        property string roomTopic: room ? room.roomTopic : (roomPreview ? roomPreview.roomTopic : "")
+        property string avatarUrl: room ? room.roomAvatarUrl : (roomPreview ? roomPreview.roomAvatarUrl : "")
+
+        visible: room != null && room.isSpace || roomPreview != null
         enabled: visible
         anchors.fill: parent
         anchors.margins: Nheko.paddingLarge
         spacing: Nheko.paddingLarge
 
+        Item {
+            Layout.fillHeight: true
+        }
+
         Avatar {
-            url: room ? room.roomAvatarUrl.replace("mxc://", "image://MxcImage/") : ""
-            displayName: room ? room.roomName : ""
+            url: parent.avatarUrl.replace("mxc://", "image://MxcImage/")
+            displayName: parent.roomName
             height: 130
             width: 130
             Layout.alignment: Qt.AlignHCenter
@@ -148,22 +160,25 @@ Item {
         }
 
         MatrixText {
-            text: room ? room.roomName : ""
+            text: parent.roomName
             font.pixelSize: 24
             Layout.alignment: Qt.AlignHCenter
         }
 
         MatrixText {
+            visible: !!room
             text: qsTr("%1 member(s)").arg(room ? room.roomMemberCount : 0)
             Layout.alignment: Qt.AlignHCenter
         }
 
         ScrollView {
             Layout.alignment: Qt.AlignHCenter
-            width: timelineView.width - Nheko.paddingLarge * 2
+            Layout.fillWidth: true
+            Layout.leftMargin: Nheko.paddingLarge
+            Layout.rightMargin: Nheko.paddingLarge
 
             TextArea {
-                text: TimelineManager.escapeEmoji(room ? room.roomTopic : "")
+                text: TimelineManager.escapeEmoji(preview.roomTopic)
                 wrapMode: TextEdit.WordWrap
                 textFormat: TextEdit.RichText
                 readOnly: true
@@ -180,6 +195,32 @@ Item {
 
             }
 
+        }
+
+        FlatButton {
+            visible: roomPreview && !roomPreview.isInvite
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("join the conversation")
+            onClicked: Rooms.joinPreview(roomPreview.roomid)
+        }
+
+        FlatButton {
+            visible: roomPreview && roomPreview.isInvite
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("accept invite")
+            onClicked: Rooms.acceptInvite(roomPreview.roomid)
+        }
+
+        FlatButton {
+            visible: roomPreview && roomPreview.isInvite
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("decline invite")
+            onClicked: Rooms.declineInvite(roomPreview.roomid)
+        }
+
+        Item {
+            visible: room != null
+            Layout.preferredHeight: Math.ceil(fontMetrics.lineSpacing * 2)
         }
 
         Item {

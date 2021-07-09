@@ -18,11 +18,35 @@
 
 class TimelineViewManager;
 
+class RoomPreview
+{
+        Q_GADGET
+        Q_PROPERTY(QString roomid READ roomid CONSTANT)
+        Q_PROPERTY(QString roomName READ roomName CONSTANT)
+        Q_PROPERTY(QString roomTopic READ roomTopic CONSTANT)
+        Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl CONSTANT)
+        Q_PROPERTY(bool isInvite READ isInvite CONSTANT)
+
+public:
+        RoomPreview() {}
+
+        QString roomid() const { return roomid_; }
+        QString roomName() const { return roomName_; }
+        QString roomTopic() const { return roomTopic_; }
+        QString roomAvatarUrl() const { return roomAvatarUrl_; }
+        bool isInvite() const { return isInvite_; }
+
+        QString roomid_, roomName_, roomAvatarUrl_, roomTopic_;
+        bool isInvite_ = false;
+};
+
 class RoomlistModel : public QAbstractListModel
 {
         Q_OBJECT
         Q_PROPERTY(TimelineModel *currentRoom READ currentRoom NOTIFY currentRoomChanged RESET
                      resetCurrentRoom)
+        Q_PROPERTY(RoomPreview currentRoomPreview READ currentRoomPreview NOTIFY currentRoomChanged
+                     RESET resetCurrentRoom)
 public:
         enum Roles
         {
@@ -72,14 +96,20 @@ public slots:
 
                 return -1;
         }
+        void joinPreview(QString roomid, QString parentSpace);
         void acceptInvite(QString roomid);
         void declineInvite(QString roomid);
         void leave(QString roomid);
         TimelineModel *currentRoom() const { return currentRoom_.get(); }
+        RoomPreview currentRoomPreview() const
+        {
+                return currentRoomPreview_.value_or(RoomPreview{});
+        }
         void setCurrentRoom(QString roomid);
         void resetCurrentRoom()
         {
                 currentRoom_ = nullptr;
+                currentRoomPreview_.reset();
                 emit currentRoomChanged();
         }
 
@@ -103,6 +133,7 @@ private:
         QHash<QString, std::optional<RoomInfo>> previewedRooms;
 
         QSharedPointer<TimelineModel> currentRoom_;
+        std::optional<RoomPreview> currentRoomPreview_;
 
         friend class FilteredRoomlistModel;
 };
@@ -112,6 +143,8 @@ class FilteredRoomlistModel : public QSortFilterProxyModel
         Q_OBJECT
         Q_PROPERTY(TimelineModel *currentRoom READ currentRoom NOTIFY currentRoomChanged RESET
                      resetCurrentRoom)
+        Q_PROPERTY(RoomPreview currentRoomPreview READ currentRoomPreview NOTIFY currentRoomChanged
+                     RESET resetCurrentRoom)
 public:
         FilteredRoomlistModel(RoomlistModel *model, QObject *parent = nullptr);
         bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
@@ -123,12 +156,17 @@ public slots:
                 return mapFromSource(roomlistmodel->index(roomlistmodel->roomidToIndex(roomid)))
                   .row();
         }
+        void joinPreview(QString roomid)
+        {
+                roomlistmodel->joinPreview(roomid, filterType == FilterBy::Space ? filterStr : "");
+        }
         void acceptInvite(QString roomid) { roomlistmodel->acceptInvite(roomid); }
         void declineInvite(QString roomid) { roomlistmodel->declineInvite(roomid); }
         void leave(QString roomid) { roomlistmodel->leave(roomid); }
         void toggleTag(QString roomid, QString tag, bool on);
 
         TimelineModel *currentRoom() const { return roomlistmodel->currentRoom(); }
+        RoomPreview currentRoomPreview() const { return roomlistmodel->currentRoomPreview(); }
         void setCurrentRoom(QString roomid) { roomlistmodel->setCurrentRoom(std::move(roomid)); }
         void resetCurrentRoom() { roomlistmodel->resetCurrentRoom(); }
 
