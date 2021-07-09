@@ -54,14 +54,6 @@
     </message>
 </context>
 <context>
-    <name>Cache</name>
-    <message>
-        <location filename="../../src/Cache.cpp" line="+2016"/>
-        <source>You joined this room.</source>
-        <translation>Du gick med i detta rum.</translation>
-    </message>
-</context>
-<context>
     <name>CallInvite</name>
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+70"/>
@@ -133,23 +125,23 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+204"/>
+        <location filename="../../src/ChatPage.cpp" line="+133"/>
         <source>Failed to invite user: %1</source>
         <translation>Kunde inte bjuda in användare: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+809"/>
+        <location line="+665"/>
         <source>Invited user: %1</source>
         <translation>Bjöd in användare: %1</translation>
     </message>
     <message>
-        <location line="-509"/>
+        <location line="-456"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Kunde inte migrera cachen till den nuvarande versionen. Detta kan bero på flera anledningar, vänligen rapportera problemet och prova en äldre version under tiden. Du kan också försöka att manuellt radera cachen.</translation>
     </message>
     <message>
-        <location line="+412"/>
+        <location line="+360"/>
         <source>Confirm join</source>
         <translation type="unfinished"></translation>
     </message>
@@ -164,13 +156,13 @@
         <translation>Rum %1 skapat.</translation>
     </message>
     <message>
-        <location line="+35"/>
-        <location line="+324"/>
+        <location line="+34"/>
+        <location line="+280"/>
         <source>Confirm invite</source>
         <translation>Bekräfta inbjudan</translation>
     </message>
     <message>
-        <location line="-323"/>
+        <location line="-279"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Är du säker på att du vill bjuda in %1 (%2)?</translation>
     </message>
@@ -235,12 +227,12 @@
         <translation>Hävde bannlysningen av användare: %1</translation>
     </message>
     <message>
-        <location line="+227"/>
+        <location line="+183"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-818"/>
+        <location line="-721"/>
         <source>Cache migration failed!</source>
         <translation>Cache-migration misslyckades!</translation>
     </message>
@@ -255,7 +247,7 @@
         <translation>Cachen på ditt lagringsmedia är nyare än vad denna version av Nheko stödjer. Vänligen uppdatera eller rensa din cache.</translation>
     </message>
     <message>
-        <location line="+50"/>
+        <location line="+48"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Kunde inte återställa OLM-konto. Vänligen logga in på nytt.</translation>
     </message>
@@ -265,13 +257,13 @@
         <translation>Kunde inte återställa sparad data. Vänligen logga in på nytt.</translation>
     </message>
     <message>
-        <location line="+145"/>
+        <location line="+101"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Kunde inte sätta upp krypteringsnycklar. Svar från servern: %1 %2. Vänligen försök igen senare.</translation>
     </message>
     <message>
         <location line="+34"/>
-        <location line="+123"/>
+        <location line="+117"/>
         <source>Please try to login again: %1</source>
         <translation>Vänligen försök logga in på nytt: %1</translation>
     </message>
@@ -301,55 +293,66 @@
         <translation>Kunde inte lämna rum: %1</translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+60"/>
         <source>Failed to kick %1 from %2: %3</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>CommunitiesListItem</name>
+    <name>CommunitiesList</name>
     <message>
-        <location filename="../../src/CommunitiesListItem.cpp" line="+30"/>
-        <source>Hide rooms with this tag or from this community</source>
+        <location filename="../qml/CommunitiesList.qml" line="+44"/>
+        <source>Hide rooms with this tag or from this space by default.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CommunitiesModel</name>
+    <message>
+        <location filename="../../src/timeline/CommunitiesModel.cpp" line="+37"/>
+        <source>All rooms</source>
+        <translation type="unfinished">Alla rum</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Shows all rooms without filtering.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+153"/>
-        <source>All rooms</source>
-        <translation>Alla rum</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Favourite rooms</source>
-        <translation>Favoritrum</translation>
+        <location line="+30"/>
+        <source>Favourites</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Low priority rooms</source>
-        <translation>Lågprioritetsrum</translation>
+        <source>Rooms you have favourited.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Low Priority</source>
+        <translation type="unfinished">Låg prioritet</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Rooms with low priority.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Server Notices</source>
-        <comment>Tag translation for m.server_notice</comment>
-        <translation>Servernotiser</translation>
+        <translation type="unfinished">Servernotiser</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location line="+2"/>
-        <source> (tag)</source>
-        <translation> (tagg)</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source> (community)</source>
-        <translation> (community)</translation>
+        <source>Messages from your server or administrator.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+228"/>
+        <location filename="../../src/ChatPage.cpp" line="+183"/>
         <source>Decrypt secrets</source>
         <translation>Dekryptera hemliga nycklar</translation>
     </message>
@@ -517,7 +520,7 @@
 <context>
     <name>EventStore</name>
     <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+616"/>
+        <location filename="../../src/timeline/EventStore.cpp" line="+663"/>
         <source>-- Encrypted Event (No keys found for decryption) --</source>
         <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
         <translation>-- Krypterat Event (Inga nycklar kunde hittas för dekryptering) --</translation>
@@ -529,7 +532,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+35"/>
         <location line="+63"/>
         <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
         <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
@@ -604,7 +607,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+232"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+233"/>
         <source>Select a file</source>
         <translation>Välj en fil</translation>
     </message>
@@ -614,7 +617,7 @@
         <translation>Alla Filer (*)</translation>
     </message>
     <message>
-        <location line="+418"/>
+        <location line="+417"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Kunde inte ladda upp media. Vänligen försök igen.</translation>
     </message>
@@ -695,13 +698,13 @@ Exempel: https://server.my:8787</translation>
     <message>
         <location line="+84"/>
         <location line="+11"/>
-        <location line="+160"/>
+        <location line="+157"/>
         <location line="+11"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-132"/>
+        <location line="-131"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Autouppslag misslyckades. Mottog felkonstruerat svar.</translation>
     </message>
@@ -711,7 +714,7 @@ Exempel: https://server.my:8787</translation>
         <translation>Autouppslag misslyckades. Okänt fel uppstod vid begäran av .well-known.</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+24"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
         <translation>Kunde inte hitta de nödvändiga ändpunkterna. Möjligtvis inte en Matrix-server.</translation>
     </message>
@@ -726,12 +729,12 @@ Exempel: https://server.my:8787</translation>
         <translation>Ett okänt fel uppstod. Se till att hemserver-domänen är giltig.</translation>
     </message>
     <message>
-        <location line="-171"/>
+        <location line="-168"/>
         <source>SSO LOGIN</source>
         <translation>SSO INLOGGNING</translation>
     </message>
     <message>
-        <location line="+267"/>
+        <location line="+264"/>
         <source>Empty password</source>
         <translation>Tomt lösenord</translation>
     </message>
@@ -783,6 +786,11 @@ Exempel: https://server.my:8787</translation>
     </message>
     <message>
         <location line="+9"/>
+        <source>%1 changed the room avatar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>%1 created and configured room: %2</source>
         <translation>%1 skapade och konfigurerade rum: %2</translation>
     </message>
@@ -812,13 +820,13 @@ Exempel: https://server.my:8787</translation>
         <translation>%1 besvarade samtalet.</translation>
     </message>
     <message>
-        <location line="-72"/>
+        <location line="-80"/>
         <location line="+9"/>
         <source>removed</source>
         <translation>borttagen</translation>
     </message>
     <message>
-        <location line="+72"/>
+        <location line="+80"/>
         <source>%1 ended the call.</source>
         <translation>%1 avslutade samtalet.</translation>
     </message>
@@ -864,7 +872,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+82"/>
+        <location filename="../qml/MessageView.qml" line="+83"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -882,6 +890,76 @@ Exempel: https://server.my:8787</translation>
         <location line="+11"/>
         <source>Options</source>
         <translation type="unfinished">Alternativ</translation>
+    </message>
+    <message>
+        <location line="+329"/>
+        <source>&amp;Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Copy &amp;link location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Re&amp;act</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Repl&amp;y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>&amp;Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Read receip&amp;ts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>&amp;Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>&amp;Mark as read</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>View raw message</source>
+        <translation type="unfinished">Visa meddelandekälla</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>View decrypted raw message</source>
+        <translation type="unfinished">Visa dekrypterad meddelandekälla</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Remo&amp;ve message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>&amp;Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>&amp;Open in external program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Copy link to eve&amp;nt</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1022,7 +1100,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>Placeholder</name>
     <message>
-        <location filename="../qml/delegates/Placeholder.qml" line="+8"/>
+        <location filename="../qml/delegates/Placeholder.qml" line="+9"/>
         <source>unimplemented event: </source>
         <translation>ej implementerat event: </translation>
     </message>
@@ -1030,7 +1108,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+167"/>
+        <location filename="../../src/main.cpp" line="+200"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Skapa en unik profil, vilket tillåter dig att logga in på flera konton samtidigt och starta flera instanser av Nheko.</translation>
     </message>
@@ -1048,18 +1126,18 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+77"/>
+        <location filename="../../src/RegisterPage.cpp" line="+78"/>
         <source>Username</source>
         <translation>Användarnamn</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location line="+287"/>
+        <location line="+305"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
         <translation>Användarnamnet kan inte vara tomt, och måste enbart innehålla tecknen a-z, 0-9, ., _, =, -, och /.</translation>
     </message>
     <message>
-        <location line="-283"/>
+        <location line="-301"/>
         <source>Password</source>
         <translation>Lösenord</translation>
     </message>
@@ -1084,22 +1162,47 @@ Exempel: https://server.my:8787</translation>
         <translation>En server som tillåter registrering. Eftersom matrix är decentraliserat behöver du först hitta en server du kan registrera dig på, eller upprätta en på egen hand.</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+35"/>
         <source>REGISTER</source>
         <translation>REGISTRERA</translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+73"/>
         <source>No supported registration flows!</source>
         <translation>Inga stödda registreringsflöden!</translation>
     </message>
     <message>
-        <location line="+210"/>
+        <location line="+213"/>
         <source>One or more fields have invalid inputs. Please correct those issues and try again.</source>
         <translation>Ett eller flera fält har ogiltigt innehåll. Vänligen korrigera problemen och försök igen.</translation>
     </message>
     <message>
-        <location line="-26"/>
+        <location line="+23"/>
+        <source>Autodiscovery failed. Received malformed response.</source>
+        <translation type="unfinished">Autouppslag misslyckades. Mottog felkonstruerat svar.</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
+        <translation type="unfinished">Autouppslag misslyckades. Okänt fel uppstod vid begäran av .well-known.</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>The required endpoints were not found. Possibly not a Matrix server.</source>
+        <translation type="unfinished">Kunde inte hitta de nödvändiga ändpunkterna. Möjligtvis inte en Matrix-server.</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Received malformed response. Make sure the homeserver domain is valid.</source>
+        <translation type="unfinished">Mottog felkonstruerat svar. Se till att hemserver-domänen är giltig.</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
+        <translation type="unfinished">Ett okänt fel uppstod. Se till att hemserver-domänen är giltig.</translation>
+    </message>
+    <message>
+        <location line="-94"/>
         <source>Password is not long enough (min 8 chars)</source>
         <translation>Lösenordet är inte långt nog (minst 8 tecken)</translation>
     </message>
@@ -1109,7 +1212,7 @@ Exempel: https://server.my:8787</translation>
         <translation>Lösenorden stämmer inte överens</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Invalid server name</source>
         <translation>Ogiltigt servernamn</translation>
     </message>
@@ -1117,7 +1220,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../qml/ReplyPopup.qml" line="+49"/>
+        <location filename="../qml/ReplyPopup.qml" line="+47"/>
         <source>Close</source>
         <translation>Stäng</translation>
     </message>
@@ -1130,74 +1233,112 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1813"/>
+        <location filename="../../src/Cache.cpp" line="+4009"/>
         <source>no version stored</source>
         <translation>ingen version lagrad</translation>
     </message>
 </context>
 <context>
-    <name>RoomInfoListItem</name>
+    <name>RoomList</name>
     <message>
-        <location filename="../../src/RoomInfoListItem.cpp" line="+89"/>
-        <source>Leave room</source>
-        <translation>Lämna rum</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Tag room as:</source>
-        <translation>Tagga rum som:</translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>Favourite</source>
-        <comment>Standard matrix tag for favourites</comment>
-        <translation>Favorit</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Low Priority</source>
-        <comment>Standard matrix tag for low priority rooms</comment>
-        <translation>Låg prioritet</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Server Notice</source>
-        <comment>Standard matrix tag for server notices</comment>
-        <translation>Servernotis</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Adds or removes the specified tag.</source>
-        <comment>WhatsThis hint for tag menu actions</comment>
-        <translation>Lägger till eller tar bort den angivna taggen.</translation>
-    </message>
-    <message>
-        <location line="+39"/>
-        <source>New tag...</source>
-        <comment>Add a new tag to the room</comment>
-        <translation>Ny tagg…</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>New Tag</source>
-        <comment>Tag name prompt title</comment>
-        <translation>Ny tagg</translation>
+        <location filename="../qml/RoomList.qml" line="+56"/>
+        <source>New tag</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Tag:</source>
-        <comment>Tag name prompt</comment>
-        <translation>Tagg:</translation>
+        <source>Enter the tag you want to use:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+169"/>
+        <location line="+7"/>
+        <source>Leave room</source>
+        <translation type="unfinished">Lämna rum</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Tag room as:</source>
+        <translation type="unfinished">Tagga rum som:</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Favourite</source>
+        <translation type="unfinished">Favorit</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Low priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Server notice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Create new tag...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+222"/>
         <source>Accept</source>
-        <translation>Godkänn</translation>
+        <translation type="unfinished">Godkänn</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+21"/>
         <source>Decline</source>
-        <translation>Avvisa</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+68"/>
+        <source>Status Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter your status message:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Profile settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Set status message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+79"/>
+        <source>Logout</source>
+        <translation type="unfinished">Logga ut</translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <source>Start a new chat</source>
+        <translation type="unfinished">Starta en ny chatt</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Join a room</source>
+        <translation type="unfinished">Gå med i ett rum</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Create a new room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Room directory</source>
+        <translation type="unfinished">Rumkatalog</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>User settings</source>
+        <translation type="unfinished">Användarinställningar</translation>
     </message>
 </context>
 <context>
@@ -1387,34 +1528,6 @@ Exempel: https://server.my:8787</translation>
     </message>
 </context>
 <context>
-    <name>SideBarActions</name>
-    <message>
-        <location filename="../../src/SideBarActions.cpp" line="+44"/>
-        <source>User settings</source>
-        <translation>Användarinställningar</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Create new room</source>
-        <translation>Skapa nytt rum</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Join a room</source>
-        <translation>Gå med i ett rum</translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>Start a new chat</source>
-        <translation>Starta en ny chatt</translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>Room directory</source>
-        <translation>Rumkatalog</translation>
-    </message>
-</context>
-<context>
     <name>StatusIndicator</name>
     <message>
         <location filename="../qml/StatusIndicator.qml" line="+21"/>
@@ -1440,7 +1553,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>Success</name>
     <message>
-        <location filename="../qml/device-verification/Success.qml" line="+10"/>
+        <location filename="../qml/device-verification/Success.qml" line="+11"/>
         <source>Successful Verification</source>
         <translation>Lyckad verifikation</translation>
     </message>
@@ -1458,7 +1571,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1044"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1095"/>
         <source>Message redaction failed: %1</source>
         <translation>Kunde inte maskera meddelande: %1</translation>
     </message>
@@ -1593,17 +1706,22 @@ Exempel: https://server.my:8787</translation>
         <translation>%1 blev bannlyst.</translation>
     </message>
     <message>
-        <location line="-11"/>
+        <location line="+9"/>
+        <source>Reason: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-20"/>
         <source>%1 redacted their knock.</source>
         <translation>%1 maskerade sin knackning.</translation>
     </message>
     <message>
-        <location line="-876"/>
+        <location line="-883"/>
         <source>You joined this room.</source>
         <translation>Du gick med i detta rum.</translation>
     </message>
     <message>
-        <location line="+842"/>
+        <location line="+849"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1624,12 +1742,7 @@ Exempel: https://server.my:8787</translation>
         <translation>%1 lämnade efter att redan ha lämnat!</translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source> Reason: %1</source>
-        <translation>Anledning: %1</translation>
-    </message>
-    <message>
-        <location line="-5"/>
+        <location line="+10"/>
         <source>%1 knocked.</source>
         <translation>%1 knackade.</translation>
     </message>
@@ -1645,85 +1758,25 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+125"/>
-        <source>Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Copy link location</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>React</source>
-        <translation>Reagera</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Reply</source>
-        <translation>Svara</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Read receipts</source>
-        <translation>Läskvitton</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Forward</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Mark as read</source>
-        <translation>Markera som läst</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>View raw message</source>
-        <translation>Visa meddelandekälla</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>View decrypted raw message</source>
-        <translation>Visa dekrypterad meddelandekälla</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Remove message</source>
-        <translation>Ta bort meddelande</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Save as</source>
-        <translation>Spara som</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Open in external program</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Copy link to event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+57"/>
+        <location filename="../qml/TimelineView.qml" line="+27"/>
         <source>No room open</source>
         <translation>Inget rum öppet</translation>
+    </message>
+    <message>
+        <location line="+127"/>
+        <source>%1 member(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <source>Back to room list</source>
+        <translation type="unfinished">Tillbaka till rumlista</translation>
     </message>
 </context>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+570"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+461"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>Ingen krypterad privat chatt med denna användare kunde hittas. Skapa en krypterad privat chatt med användaren och försök igen.</translation>
     </message>
@@ -1781,54 +1834,6 @@ Exempel: https://server.my:8787</translation>
     </message>
 </context>
 <context>
-    <name>UserInfoWidget</name>
-    <message>
-        <location filename="../../src/UserInfoWidget.cpp" line="+82"/>
-        <source>Logout</source>
-        <translation>Logga ut</translation>
-    </message>
-    <message>
-        <location line="+20"/>
-        <source>Set custom status message</source>
-        <translation>Sätt statusmeddelande</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Custom status message</source>
-        <translation>Statusmeddelande</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Status:</source>
-        <translation>Status:</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>User Profile Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Set presence automatically</source>
-        <translation>Sätt närvaro automatiskt</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Online</source>
-        <translation>Online</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Unavailable</source>
-        <translation>Otillgänglig</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Offline</source>
-        <translation>Offline</translation>
-    </message>
-</context>
-<context>
     <name>UserProfile</name>
     <message>
         <location filename="../qml/UserProfile.qml" line="+24"/>
@@ -1867,7 +1872,7 @@ Exempel: https://server.my:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/UserProfile.cpp" line="+301"/>
+        <location filename="../../src/ui/UserProfile.cpp" line="+307"/>
         <source>Select an avatar</source>
         <translation>Välj en avatar</translation>
     </message>
@@ -1890,8 +1895,8 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+340"/>
-        <location filename="../../src/UserSettingsPage.h" line="+186"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+362"/>
+        <location filename="../../src/UserSettingsPage.h" line="+194"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1899,7 +1904,7 @@ Exempel: https://server.my:8787</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location line="+553"/>
+        <location line="+524"/>
         <source>Minimize to tray</source>
         <translation>Minimera till systemtråg</translation>
     </message>
@@ -2712,22 +2717,9 @@ Mediastorlek: %2
     </message>
 </context>
 <context>
-    <name>popups::UserMentions</name>
-    <message>
-        <location filename="../../src/popups/UserMentions.cpp" line="+68"/>
-        <source>This Room</source>
-        <translation>Detta Rum</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>All Rooms</source>
-        <translation>Alla Rum</translation>
-    </message>
-</context>
-<context>
     <name>utils</name>
     <message>
-        <location filename="../../src/Utils.h" line="+4"/>
+        <location line="+4"/>
         <source>Unknown Message Type</source>
         <translation>Okänd meddelandetyp</translation>
     </message>

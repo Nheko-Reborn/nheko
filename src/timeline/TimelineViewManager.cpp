@@ -107,8 +107,7 @@ QColor
 TimelineViewManager::userColor(QString id, QColor background)
 {
         if (!userColors.contains(id))
-                userColors.insert(
-                  id, QColor(utils::generateContrastingHexColor(id, background.name())));
+                userColors.insert(id, QColor(utils::generateContrastingHexColor(id, background)));
         return userColors.value(id);
 }
 
@@ -195,7 +194,17 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           });
         qmlRegisterSingletonType<RoomlistModel>(
           "im.nheko", 1, 0, "Rooms", [](QQmlEngine *, QJSEngine *) -> QObject * {
-                  return new FilteredRoomlistModel(self->rooms_);
+                  auto ptr = new FilteredRoomlistModel(self->rooms_);
+
+                  connect(self->communities_,
+                          &CommunitiesModel::currentTagIdChanged,
+                          ptr,
+                          &FilteredRoomlistModel::updateFilterTag);
+                  connect(self->communities_,
+                          &CommunitiesModel::hiddenTagsChanged,
+                          ptr,
+                          &FilteredRoomlistModel::updateHiddenTagsAndSpaces);
+                  return ptr;
           });
         qmlRegisterSingletonType<RoomlistModel>(
           "im.nheko", 1, 0, "Communities", [](QQmlEngine *, QJSEngine *) -> QObject * {
@@ -386,18 +395,17 @@ TimelineViewManager::openImageOverlayInternal(QString eventId, QImage img)
         imgDialog->showFullScreen();
 
         auto room = rooms_->currentRoom();
-        connect(
-          imgDialog, &dialogs::ImageOverlay::saving, room, [this, eventId, imgDialog, room]() {
-                  // hide the overlay while presenting the save dialog for better
-                  // cross platform support.
-                  imgDialog->hide();
+        connect(imgDialog, &dialogs::ImageOverlay::saving, room, [eventId, imgDialog, room]() {
+                // hide the overlay while presenting the save dialog for better
+                // cross platform support.
+                imgDialog->hide();
 
-                  if (!room->saveMedia(eventId)) {
-                          imgDialog->show();
-                  } else {
-                          imgDialog->close();
-                  }
-          });
+                if (!room->saveMedia(eventId)) {
+                        imgDialog->show();
+                } else {
+                        imgDialog->close();
+                }
+        });
 }
 
 void

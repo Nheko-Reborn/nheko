@@ -296,7 +296,7 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown, bool rainbowify)
                                 firstLine = false;
                                 body = QString("> <%1> %2\n").arg(related.quoted_user).arg(line);
                         } else {
-                                body = QString("%1\n> %2\n").arg(body).arg(line);
+                                body += QString("> %1\n").arg(line);
                         }
                 }
 

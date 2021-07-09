@@ -47,7 +47,7 @@ Theme::paletteFromTheme(std::string_view theme)
                 darkActive.setColor(QPalette::ToolTipBase, darkActive.base().color());
                 darkActive.setColor(QPalette::ToolTipText, darkActive.text().color());
                 darkActive.setColor(QPalette::Link, QColor("#38a3d8"));
-                darkActive.setColor(QPalette::ButtonText, "#727274");
+                darkActive.setColor(QPalette::ButtonText, "#828284");
                 return darkActive;
         } else {
                 return original;

@@ -64,10 +64,14 @@ void
 UserSettings::load(std::optional<QString> profile)
 {
         QSettings settings;
-        tray_                    = settings.value("user/window/tray", false).toBool();
+        tray_        = settings.value("user/window/tray", false).toBool();
+        startInTray_ = settings.value("user/window/start_in_tray", false).toBool();
+
+        roomListWidth_      = settings.value("user/sidebar/room_list_width", -1).toInt();
+        communityListWidth_ = settings.value("user/sidebar/community_list_width", -1).toInt();
+
         hasDesktopNotifications_ = settings.value("user/desktop_notifications", true).toBool();
         hasAlertOnNotification_  = settings.value("user/alert_on_notification", false).toBool();
-        startInTray_             = settings.value("user/window/start_in_tray", false).toBool();
         groupView_               = settings.value("user/group_view", true).toBool();
         hiddenTags_              = settings.value("user/hidden_tags", QStringList{}).toStringList();
         buttonsInTimeline_       = settings.value("user/timeline/buttons", true).toBool();
@@ -175,10 +179,11 @@ UserSettings::setMobileMode(bool state)
 void
 UserSettings::setGroupView(bool state)
 {
-        if (groupView_ != state)
-                emit groupViewStateChanged(state);
+        if (groupView_ == state)
+                return;
 
         groupView_ = state;
+        emit groupViewStateChanged(state);
         save();
 }
 
@@ -246,6 +251,24 @@ UserSettings::setTimelineMaxWidth(int state)
                 return;
         timelineMaxWidth_ = state;
         emit timelineMaxWidthChanged(state);
+        save();
+}
+void
+UserSettings::setCommunityListWidth(int state)
+{
+        if (state == communityListWidth_)
+                return;
+        communityListWidth_ = state;
+        emit communityListWidthChanged(state);
+        save();
+}
+void
+UserSettings::setRoomListWidth(int state)
+{
+        if (state == roomListWidth_)
+                return;
+        roomListWidth_ = state;
+        emit roomListWidthChanged(state);
         save();
 }
 
@@ -571,6 +594,11 @@ UserSettings::save()
         settings.setValue("start_in_tray", startInTray_);
         settings.endGroup(); // window
 
+        settings.beginGroup("sidebar");
+        settings.setValue("community_list_width", communityListWidth_);
+        settings.setValue("room_list_width", roomListWidth_);
+        settings.endGroup(); // window
+
         settings.beginGroup("timeline");
         settings.setValue("buttons", buttonsInTimeline_);
         settings.setValue("message_hover_highlight", messageHoverHighlight_);
@@ -586,6 +614,7 @@ UserSettings::save()
         settings.setValue("mobile_mode", mobileMode_);
         settings.setValue("font_size", baseFontSize_);
         settings.setValue("typing_notifications", typingNotifications_);
+        settings.setValue("sort_by_unread", sortByImportance_);
         settings.setValue("minor_events", sortByImportance_);
         settings.setValue("read_receipts", readReceipts_);
         settings.setValue("group_view", groupView_);

@@ -11,12 +11,15 @@
 
 #include <mtx/responses/sync.hpp>
 
+#include "CacheStructs.h"
+
 class CommunitiesModel : public QAbstractListModel
 {
         Q_OBJECT
         Q_PROPERTY(QString currentTagId READ currentTagId WRITE setCurrentTagId NOTIFY
                      currentTagIdChanged RESET resetCurrentTagId)
         Q_PROPERTY(QStringList tags READ tags NOTIFY tagsChanged)
+        Q_PROPERTY(QStringList tagsWithDefault READ tagsWithDefault NOTIFY tagsChanged)
 
 public:
         enum Roles
@@ -25,6 +28,7 @@ public:
                 DisplayName,
                 Tooltip,
                 ChildrenHidden,
+                Hidden,
                 Id,
         };
 
@@ -33,7 +37,7 @@ public:
         int rowCount(const QModelIndex &parent = QModelIndex()) const override
         {
                 (void)parent;
-                return 1 + tags_.size();
+                return 1 + tags_.size() + spaceOrder_.size();
         }
         QVariant data(const QModelIndex &index, int role) const override;
 
@@ -46,15 +50,29 @@ public slots:
         void resetCurrentTagId()
         {
                 currentTagId_.clear();
-                emit currentTagIdChanged();
+                emit currentTagIdChanged(currentTagId_);
         }
         QStringList tags() const { return tags_; }
+        QStringList tagsWithDefault() const
+        {
+                QStringList tagsWD = tags_;
+                tagsWD.prepend("m.lowpriority");
+                tagsWD.prepend("m.favourite");
+                tagsWD.removeOne("m.server_notice");
+                tagsWD.removeDuplicates();
+                return tagsWD;
+        }
+        void toggleTagId(QString tagId);
 
 signals:
-        void currentTagIdChanged();
+        void currentTagIdChanged(QString tagId);
+        void hiddenTagsChanged();
         void tagsChanged();
 
 private:
         QStringList tags_;
         QString currentTagId_;
+        QStringList hiddentTagIds_;
+        QStringList spaceOrder_;
+        std::map<QString, RoomInfo> spaces_;
 };

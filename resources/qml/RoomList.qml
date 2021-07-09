@@ -4,9 +4,9 @@
 
 import "./dialogs"
 import Qt.labs.platform 1.1 as Platform
-import QtQml 2.13
-import QtQuick 2.13
-import QtQuick.Controls 2.13
+import QtQml 2.12
+import QtQuick 2.12
+import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import im.nheko 1.0
 
@@ -32,8 +32,8 @@ Page {
 
         Connections {
             onActiveTimelineChanged: {
-                roomlist.positionViewAtIndex(Rooms.roomidToIndex(TimelineManager.timeline.roomId()), ListView.Contain);
-                console.log("Test" + TimelineManager.timeline.roomId() + " " + Rooms.roomidToIndex(TimelineManager.timeline.roomId));
+                roomlist.positionViewAtIndex(Rooms.roomidToIndex(Rooms.currentRoom.roomId()), ListView.Contain);
+                console.log("Test" + Rooms.currentRoom.roomId() + " " + Rooms.roomidToIndex(Rooms.currentRoom.roomId()));
             }
             target: TimelineManager
         }
@@ -70,7 +70,7 @@ Page {
             }
 
             Instantiator {
-                model: Communities.tags
+                model: Communities.tagsWithDefault
                 onObjectAdded: roomContextMenu.insertItem(index + 2, object)
                 onObjectRemoved: roomContextMenu.removeItem(object)
 
@@ -121,7 +121,7 @@ Page {
             states: [
                 State {
                     name: "highlight"
-                    when: hovered.hovered && !(TimelineManager.timeline && model.roomId == TimelineManager.timeline.roomId())
+                    when: hovered.hovered && !(Rooms.currentRoom && model.roomId == Rooms.currentRoom.roomId())
 
                     PropertyChanges {
                         target: roomItem
@@ -255,6 +255,8 @@ Page {
                         Label {
                             id: timestamp
 
+                            visible: !model.isInvite && !model.isSpace
+                            width: visible ? 0 : undefined
                             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             color: roomItem.unimportantText
@@ -266,12 +268,11 @@ Page {
                     RowLayout {
                         Layout.fillWidth: true
                         spacing: 0
-                        visible: !model.isInvite
+                        visible: !model.isInvite && !model.isSpace
                         height: visible ? 0 : undefined
 
                         ElidedLabel {
                             color: roomItem.unimportantText
-                            font.weight: Font.Thin
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             elideWidth: textContent.width - (notificationBubble.visible ? notificationBubble.width : 0) - Nheko.paddingSmall
                             fullText: model.lastMessage
@@ -447,6 +448,8 @@ Page {
             RowLayout {
                 id: userInfoGrid
 
+                property var profile: Nheko.currentUser
+
                 spacing: Nheko.paddingMedium
                 anchors.fill: parent
                 anchors.margins: Nheko.paddingMedium
@@ -457,9 +460,9 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     Layout.preferredWidth: fontMetrics.lineSpacing * 2
                     Layout.preferredHeight: fontMetrics.lineSpacing * 2
-                    url: Nheko.currentUser.avatarUrl.replace("mxc://", "image://MxcImage/")
-                    displayName: Nheko.currentUser.displayName
-                    userid: Nheko.currentUser.userid
+                    url: (userInfoGrid.profile ? userInfoGrid.profile.avatarUrl : "").replace("mxc://", "image://MxcImage/")
+                    displayName: userInfoGrid.profile ? userInfoGrid.profile.displayName : ""
+                    userid: userInfoGrid.profile ? userInfoGrid.profile.userid : ""
                 }
 
                 ColumnLayout {
@@ -476,17 +479,16 @@ Page {
                         Layout.alignment: Qt.AlignBottom
                         font.pointSize: fontMetrics.font.pointSize * 1.1
                         font.weight: Font.DemiBold
-                        fullText: Nheko.currentUser.displayName
+                        fullText: userInfoGrid.profile ? userInfoGrid.profile.displayName : ""
                         elideWidth: col.width
                     }
 
                     ElidedLabel {
                         Layout.alignment: Qt.AlignTop
                         color: Nheko.colors.buttonText
-                        font.weight: Font.Thin
                         font.pointSize: fontMetrics.font.pointSize * 0.9
                         elideWidth: col.width
-                        fullText: Nheko.currentUser.userid
+                        fullText: userInfoGrid.profile ? userInfoGrid.profile.userid : ""
                     }
 
                 }
@@ -541,7 +543,7 @@ Page {
                 anchors.margins: Nheko.paddingMedium
 
                 ImageButton {
-                    Layout.alignment: Qt.AlignBottom | Qt.AlignLeft
+                    Layout.fillWidth: true
                     hoverEnabled: true
                     width: 22
                     height: 22
@@ -570,7 +572,7 @@ Page {
 
                 ImageButton {
                     visible: !collapsed
-                    Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
+                    Layout.fillWidth: true
                     hoverEnabled: true
                     width: 22
                     height: 22
@@ -582,7 +584,7 @@ Page {
 
                 ImageButton {
                     visible: !collapsed
-                    Layout.alignment: Qt.AlignBottom | Qt.AlignRight
+                    Layout.fillWidth: true
                     hoverEnabled: true
                     width: 22
                     height: 22

@@ -115,6 +115,7 @@ public slots:
         void addPending(mtx::events::collections::TimelineEvents event);
         void receivedSessionKey(const std::string &session_id);
         void clearTimeline();
+        void enableKeyRequests(bool suppressKeyRequests_);
 
 private:
         std::vector<mtx::events::collections::TimelineEvents> edits(const std::string &event_id);
@@ -142,4 +143,5 @@ private:
         std::string current_txn;
         int current_txn_error_count = 0;
         bool noMoreMessages         = false;
+        bool suppressKeyRequests    = true;
 };

@@ -39,7 +39,8 @@ UserProfile::UserProfile(QString roomid,
                 getGlobalProfileData();
         }
 
-        if (!cache::client() || !cache::client()->isDatabaseReady())
+        if (!cache::client() || !cache::client()->isDatabaseReady() ||
+            !ChatPage::instance()->timelineManager())
                 return;
 
         connect(cache::client(),
@@ -127,10 +128,7 @@ UserProfile::displayName()
 QString
 UserProfile::avatarUrl()
 {
-        return (isGlobalUserProfile() && globalAvatarUrl != "")
-                 ? globalAvatarUrl
-                 : cache::avatarUrl(roomid_, userid_);
-        ;
+        return isGlobalUserProfile() ? globalAvatarUrl : cache::avatarUrl(roomid_, userid_);
 }
 
 bool

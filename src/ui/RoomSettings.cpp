@@ -181,7 +181,7 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
           roomid_.toStdString(),
           [this](const mtx::pushrules::PushRule &rule, mtx::http::RequestErr &err) {
                   if (err) {
-                          if (err->status_code == boost::beast::http::status::not_found)
+                          if (err->status_code == 404)
                                   http::client()->get_pushrules(
                                     "global",
                                     "room",

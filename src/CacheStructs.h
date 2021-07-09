@@ -76,13 +76,13 @@ struct RoomInfo
         std::string version;
         //! Whether or not the room is an invite.
         bool is_invite = false;
+        //! Wheter or not the room is a space
+        bool is_space = false;
         //! Total number of members in the room.
         size_t member_count = 0;
         //! Who can access to the room.
         mtx::events::state::JoinRule join_rule = mtx::events::state::JoinRule::Public;
         bool guest_access                      = false;
-        //! Metadata describing the last message in the timeline.
-        DescInfo msgInfo;
         //! The list of tags associated with this room
         std::vector<std::string> tags;
 };

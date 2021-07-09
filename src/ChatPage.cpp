@@ -550,7 +550,7 @@ ChatPage::startInitialSync()
                           nhlog::net()->error("initial sync error: {} {} {} {}",
                                               err->parse_error,
                                               status_code,
-                                              err->error_code.message(),
+                                              err->error_code,
                                               err_code);
 
                           // non http related errors
@@ -674,10 +674,10 @@ ChatPage::trySync()
                                   return;
                           }
 
-                          nhlog::net()->error("initial sync error: {} {} {} {}",
+                          nhlog::net()->error("sync error: {} {} {} {}",
                                               err->parse_error,
                                               status_code,
-                                              err->error_code.message(),
+                                              err->error_code,
                                               err_code);
                           emit tryDelayedSyncCb();
                           return;

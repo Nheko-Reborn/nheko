@@ -18,29 +18,24 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "compile as PIC by default")
 option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
 include("cmake/HunterGate.cmake")
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.23.288.tar.gz"
-    SHA1 "6c9b2bc606d86ae31f96a62fc68f0a593024815b"
-)
+	URL "https://github.com/cpp-pm/hunter/archive/v0.23.305.tar.gz"
+	SHA1 "fc8d7a6dac2fa23681847b3872d88d3839b657b0"
+	)
 
-option(USE_BUNDLED_BOOST "Use the bundled version of Boost." ${HUNTER_ENABLED})
-option(USE_BUNDLED_SPDLOG "Use the bundled version of spdlog."
-	${HUNTER_ENABLED})
+option(USE_BUNDLED_SPDLOG "Use the bundled version of spdlog." ${HUNTER_ENABLED})
 option(USE_BUNDLED_OLM "Use the bundled version of libolm." ${HUNTER_ENABLED})
-option(USE_BUNDLED_GTEST "Use the bundled version of Google Test."
-	${HUNTER_ENABLED})
-option(USE_BUNDLED_CMARK "Use the bundled version of cmark."
-	${HUNTER_ENABLED})
-option(USE_BUNDLED_JSON "Use the bundled version of nlohmann json."
-	${HUNTER_ENABLED})
-option(USE_BUNDLED_OPENSSL "Use the bundled version of OpenSSL."
-	OFF)
+option(USE_BUNDLED_GTEST "Use the bundled version of Google Test." ${HUNTER_ENABLED})
+option(USE_BUNDLED_CMARK "Use the bundled version of cmark." ${HUNTER_ENABLED})
+option(USE_BUNDLED_JSON "Use the bundled version of nlohmann json." ${HUNTER_ENABLED})
+option(USE_BUNDLED_OPENSSL "Use the bundled version of OpenSSL." OFF)
 option(USE_BUNDLED_MTXCLIENT "Use the bundled version of the Matrix Client library." ${HUNTER_ENABLED})
-option(USE_BUNDLED_LMDB "Use the bundled version of lmdb."
+option(USE_BUNDLED_LMDB "Use the bundled version of lmdb." ${HUNTER_ENABLED})
+option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdb++." ${HUNTER_ENABLED})
+option(USE_BUNDLED_QTKEYCHAIN "Use the bundled version of Qt5Keychain." ${HUNTER_ENABLED})
+option(USE_BUNDLED_COEURL "Use a bundled version of the Curl wrapper"
 	${HUNTER_ENABLED})
-option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdb++."
-	${HUNTER_ENABLED})
-option(USE_BUNDLED_QTKEYCHAIN "Use the bundled version of Qt5Keychain."
-	${HUNTER_ENABLED})
+option(USE_BUNDLED_LIBEVENT "Use the bundled version of spdlog." ${HUNTER_ENABLED})
+option(USE_BUNDLED_LIBCURL "Use the bundled version of spdlog." ${HUNTER_ENABLED})
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
@@ -119,6 +114,38 @@ if (BUILD_DOCS)
 	endif (DOXYGEN_FOUND)
 endif()
 
+#
+## coeurl
+#
+## Need to repeat all libevent deps?!?
+if (USE_BUNDLED_LIBEVENT)
+	hunter_add_package(Libevent)
+	find_package(Libevent CONFIG REQUIRED)
+else()
+	find_package(PkgConfig REQUIRED) 
+	pkg_check_modules(libevent_core REQUIRED IMPORTED_TARGET libevent_core)
+	if (WIN32)
+		pkg_check_modules(libevent_windows REQUIRED IMPORTED_TARGET libevent_windows)
+	else()
+		pkg_check_modules(libevent_pthreads REQUIRED IMPORTED_TARGET
+			libevent_pthreads)
+	endif()
+endif()
+
+# curl
+if (USE_BUNDLED_LIBCURL)
+	hunter_add_package(CURL)
+	find_package(CURL CONFIG REQUIRED)
+else()
+	find_package(PkgConfig REQUIRED) 
+	pkg_check_modules(libcurl REQUIRED IMPORTED_TARGET libcurl)
+endif()
+
+# spdlog
+if(USE_BUNDLED_SPDLOG)
+	hunter_add_package(spdlog)
+endif()
+find_package(spdlog 1.0.0 CONFIG REQUIRED)
 
 #
 # LMDB
@@ -137,7 +164,7 @@ endif()
 #
 # Discover Qt dependencies.
 #
-find_package(Qt5 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia Qml QuickControls2 QuickWidgets REQUIRED)
+find_package(Qt5 5.12 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia Qml QuickControls2 QuickWidgets REQUIRED)
 find_package(Qt5QuickCompiler)
 find_package(Qt5DBus)
 
@@ -156,7 +183,7 @@ if (USE_BUNDLED_QTKEYCHAIN)
 	set(BUILD_TEST_APPLICATION OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(qt5keychain)
 else()
-find_package(Qt5Keychain REQUIRED)
+	find_package(Qt5Keychain REQUIRED)
 endif()
 
 if (APPLE)
@@ -238,7 +265,10 @@ set(PROJECT_VERSION ${CPACK_PACKAGE_VERSION})
 message(STATUS "Version: ${PROJECT_VERSION}")
 
 cmake_host_system_information(RESULT BUILD_HOST QUERY HOSTNAME)
-set(BUILD_USER $ENV{USER})
+
+include(CheckSymbolExists)
+check_symbol_exists(backtrace_symbols_fd "execinfo.h" HAVE_BACKTRACE_SYMBOLS_FD)
+
 configure_file(cmake/nheko.h config/nheko.h)
 
 
@@ -261,7 +291,7 @@ set(SRC_FILES
 
 	# Emoji
 	src/emoji/EmojiModel.cpp
-    src/emoji/Provider.cpp
+	src/emoji/Provider.cpp
 
 
 	# Timeline
@@ -301,8 +331,8 @@ set(SRC_FILES
 	src/ui/ToggleButton.cpp
 	src/ui/UserProfile.cpp
 
-    # Generic notification stuff
-    src/notifications/Manager.cpp
+	# Generic notification stuff
+	src/notifications/Manager.cpp
 
 	src/AvatarProvider.cpp
 	src/BlurhashProvider.cpp
@@ -339,13 +369,6 @@ set(SRC_FILES
 
 include(FeatureSummary)
 
-if(USE_BUNDLED_BOOST)
-	hunter_add_package(Boost COMPONENTS iostreams system thread)
-endif()
-find_package(Boost 1.70 REQUIRED
-	COMPONENTS iostreams
-	system
-	thread)
 
 if(USE_BUNDLED_OPENSSL)
 	hunter_add_package(OpenSSL)
@@ -356,7 +379,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        5d2f055ea9403770039ddf66b1900f890cd5cde7
+		GIT_TAG        9ecaefe377d4dab688caee186e4a263cb7f105e8
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -369,7 +392,7 @@ if(USE_BUNDLED_OLM)
 	FetchContent_Declare(
 		Olm
 		GIT_REPOSITORY https://gitlab.matrix.org/matrix-org/olm.git
-		GIT_TAG        3.1.4
+		GIT_TAG        3.2.4
 		)
 	set(OLM_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(Olm)
@@ -417,10 +440,10 @@ set_package_properties(nlohmann_json PROPERTIES
 if(USE_BUNDLED_LMDBXX)
 	include(FetchContent)
 	FetchContent_Declare(
-		  lmdbxx
-			URL "https://raw.githubusercontent.com/hoytech/lmdbxx/1.0.0/lmdb++.h"
-			DOWNLOAD_NO_EXTRACT TRUE
-			)
+		lmdbxx
+		URL "https://raw.githubusercontent.com/hoytech/lmdbxx/1.0.0/lmdb++.h"
+		DOWNLOAD_NO_EXTRACT TRUE
+		)
 	if(NOT lmdbxx_POPULATED)
 		FetchContent_Populate(lmdbxx)
 	endif()
@@ -458,7 +481,7 @@ endif()
 
 # single instance functionality
 set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
-add_subdirectory(third_party/SingleApplication-3.2.0-dc8042b/)
+add_subdirectory(third_party/SingleApplication-3.3.0/)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
@@ -587,6 +610,10 @@ if(WIN32)
 	target_compile_definitions(nheko PRIVATE _WIN32_WINNT=0x0601)
 else()
 	add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
+
+	if (HAVE_BACKTRACE_SYMBOLS_FD AND NOT CMAKE_BUILD_TYPE STREQUAL "Release")
+		set_target_properties(nheko PROPERTIES ENABLE_EXPORTS ON)
+	endif()
 endif()
 
 if(APPLE)
@@ -604,14 +631,11 @@ target_include_directories(nheko PRIVATE src includes third_party/blurhash third
 
 # Fixup bundled keychain include dirs
 if (USE_BUNDLED_QTKEYCHAIN)
-target_include_directories(nheko PRIVATE ${qt5keychain_SOURCE_DIR} ${qt5keychain_BINARY_DIR})
+	target_include_directories(nheko PRIVATE ${qt5keychain_SOURCE_DIR} ${qt5keychain_BINARY_DIR})
 endif()
 
 target_link_libraries(nheko PRIVATE
 	MatrixClient::MatrixClient
-	Boost::iostreams
-	Boost::system
-	Boost::thread
 	cmark::cmark
 	spdlog::spdlog
 	Qt5::Widgets
@@ -628,11 +652,11 @@ target_link_libraries(nheko PRIVATE
 	SingleApplication::SingleApplication)
 
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
-target_precompile_headers(nheko
-	PRIVATE
-	  <string>
-	  <algorithm>
-	)
+	target_precompile_headers(nheko
+		PRIVATE
+		<string>
+		<algorithm>
+		)
 endif()
 
 if (TARGET PkgConfig::GSTREAMER)
@@ -642,6 +666,24 @@ if (TARGET PkgConfig::GSTREAMER)
 		target_link_libraries(nheko PRIVATE PkgConfig::XCB)
 		target_compile_definitions(nheko PRIVATE XCB_AVAILABLE)
 	endif()
+endif()
+
+if(USE_BUNDLED_COEURL)
+	include(FetchContent)
+	FetchContent_Declare(
+		coeurl
+		GIT_REPOSITORY https://nheko.im/Nheko-Reborn/coeurl.git
+		GIT_TAG        417821a07cfe4429b08a2efed5e480a498087afd
+		)
+	FetchContent_MakeAvailable(coeurl)
+	target_link_libraries(nheko PUBLIC coeurl::coeurl)
+elseif(coeurl_DIR)
+	find_package(coeurl CONFIG REQUIRED)
+	target_link_libraries(nheko PUBLIC coeurl::coeurl)
+else()
+	find_package(PkgConfig REQUIRED)
+	pkg_check_modules(coeurl REQUIRED IMPORTED_TARGET coeurl)
+	target_link_libraries(nheko PUBLIC PkgConfig::coeurl)
 endif()
 
 if(MSVC)

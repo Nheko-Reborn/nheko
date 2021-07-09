@@ -2,9 +2,9 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick 2.12
+import QtQuick.Controls 2.5
+import QtQuick.Layouts 1.12
 import im.nheko 1.0
 
 Container {
@@ -87,6 +87,13 @@ Container {
         x: parent.preferredWidth
         z: 3
 
+        CursorShape {
+            height: parent.height
+            width: container.splitterGrabMargin * 2
+            x: -container.splitterGrabMargin
+            cursorShape: Qt.SizeHorCursor
+        }
+
         DragHandler {
             id: dragHandler
 
@@ -96,9 +103,9 @@ Container {
             xAxis.minimum: splitter.minimumWidth - 1
             xAxis.maximum: splitter.maximumWidth
             margin: container.splitterGrabMargin
-            dragThreshold: 0
+            //dragThreshold: 0
             grabPermissions: PointerHandler.CanTakeOverFromAnything | PointerHandler.ApprovesTakeOverByHandlersOfSameType
-            cursorShape: Qt.SizeHorCursor
+            //cursorShape: Qt.SizeHorCursor
             onActiveChanged: {
                 if (!active)
                     splitter.parent.preferredWidth = splitter.x;
@@ -107,9 +114,10 @@ Container {
         }
 
         HoverHandler {
+            //cursorShape: Qt.SizeHorCursor
+
             enabled: !container.singlePageMode
             margin: container.splitterGrabMargin
-            cursorShape: Qt.SizeHorCursor
         }
 
     }

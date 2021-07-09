@@ -60,6 +60,7 @@ Item {
         MessageDelegate {
             id: reply
 
+            enabled: false
             width: parent.width
             isReply: true
         }

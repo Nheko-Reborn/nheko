@@ -33,6 +33,27 @@ RoomlistModel::RoomlistModel(TimelineViewManager *parent)
                 &RoomlistModel::totalUnreadMessageCountUpdated,
                 ChatPage::instance(),
                 &ChatPage::unreadMessages);
+
+        connect(
+          this,
+          &RoomlistModel::fetchedPreview,
+          this,
+          [this](QString roomid, RoomInfo info) {
+                  if (this->previewedRooms.contains(roomid)) {
+                          this->previewedRooms.insert(roomid, std::move(info));
+                          auto idx = this->roomidToIndex(roomid);
+                          emit dataChanged(index(idx),
+                                           index(idx),
+                                           {
+                                             Roles::RoomName,
+                                             Roles::AvatarUrl,
+                                             Roles::IsSpace,
+                                             Roles::IsPreviewFetched,
+                                             Qt::DisplayRole,
+                                           });
+                  }
+          },
+          Qt::QueuedConnection);
 }
 
 QHash<int, QByteArray>
@@ -51,6 +72,7 @@ RoomlistModel::roleNames() const
           {IsInvite, "isInvite"},
           {IsSpace, "isSpace"},
           {Tags, "tags"},
+          {ParentSpaces, "parentSpaces"},
         };
 }
 
@@ -60,6 +82,16 @@ RoomlistModel::data(const QModelIndex &index, int role) const
         if (index.row() >= 0 && static_cast<size_t>(index.row()) < roomids.size()) {
                 auto roomid = roomids.at(index.row());
 
+                if (role == Roles::ParentSpaces) {
+                        auto parents = cache::client()->getParentRoomIds(roomid.toStdString());
+                        QStringList list;
+                        for (const auto &t : parents)
+                                list.push_back(QString::fromStdString(t));
+                        return list;
+                } else if (role == Roles::RoomId) {
+                        return roomid;
+                }
+
                 if (models.contains(roomid)) {
                         auto room = models.value(roomid);
                         switch (role) {
@@ -67,8 +99,6 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                                 return room->roomAvatarUrl();
                         case Roles::RoomName:
                                 return room->plainRoomName();
-                        case Roles::RoomId:
-                                return room->roomId();
                         case Roles::LastMessage:
                                 return room->lastMessage().body;
                         case Roles::Time:
@@ -84,7 +114,10 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                         case Roles::NotificationCount:
                                 return room->notificationCount();
                         case Roles::IsInvite:
+                                return false;
                         case Roles::IsSpace:
+                                return room->isSpace();
+                        case Roles::IsPreview:
                                 return false;
                         case Roles::Tags: {
                                 auto info = cache::singleRoomInfo(roomid.toStdString());
@@ -103,14 +136,12 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                                 return QString::fromStdString(room.avatar_url);
                         case Roles::RoomName:
                                 return QString::fromStdString(room.name);
-                        case Roles::RoomId:
-                                return roomid;
                         case Roles::LastMessage:
-                                return room.msgInfo.body;
+                                return QString();
                         case Roles::Time:
-                                return room.msgInfo.descriptiveTime;
+                                return QString();
                         case Roles::Timestamp:
-                                return QVariant(static_cast<quint64>(room.msgInfo.timestamp));
+                                return QVariant(static_cast<quint64>(0));
                         case Roles::HasUnreadMessages:
                         case Roles::HasLoudNotification:
                                 return false;
@@ -120,13 +151,77 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                                 return true;
                         case Roles::IsSpace:
                                 return false;
+                        case Roles::IsPreview:
+                                return false;
+                        case Roles::Tags:
+                                return QStringList();
+                        default:
+                                return {};
+                        }
+                } else if (previewedRooms.contains(roomid) &&
+                           previewedRooms.value(roomid).has_value()) {
+                        auto room = previewedRooms.value(roomid).value();
+                        switch (role) {
+                        case Roles::AvatarUrl:
+                                return QString::fromStdString(room.avatar_url);
+                        case Roles::RoomName:
+                                return QString::fromStdString(room.name);
+                        case Roles::LastMessage:
+                                return tr("Previewing this room");
+                        case Roles::Time:
+                                return QString();
+                        case Roles::Timestamp:
+                                return QVariant(static_cast<quint64>(0));
+                        case Roles::HasUnreadMessages:
+                        case Roles::HasLoudNotification:
+                                return false;
+                        case Roles::NotificationCount:
+                                return 0;
+                        case Roles::IsInvite:
+                                return false;
+                        case Roles::IsSpace:
+                                return room.is_space;
+                        case Roles::IsPreview:
+                                return true;
+                        case Roles::IsPreviewFetched:
+                                return true;
                         case Roles::Tags:
                                 return QStringList();
                         default:
                                 return {};
                         }
                 } else {
-                        return {};
+                        if (role == Roles::IsPreview)
+                                return true;
+                        else if (role == Roles::IsPreviewFetched)
+                                return false;
+
+                        fetchPreview(roomid);
+                        switch (role) {
+                        case Roles::AvatarUrl:
+                                return QString();
+                        case Roles::RoomName:
+                                return tr("No preview available");
+                        case Roles::LastMessage:
+                                return QString();
+                        case Roles::Time:
+                                return QString();
+                        case Roles::Timestamp:
+                                return QVariant(static_cast<quint64>(0));
+                        case Roles::HasUnreadMessages:
+                        case Roles::HasLoudNotification:
+                                return false;
+                        case Roles::NotificationCount:
+                                return 0;
+                        case Roles::IsInvite:
+                                return false;
+                        case Roles::IsSpace:
+                                return false;
+                        case Roles::Tags:
+                                return QStringList();
+                        default:
+                                return {};
+                        }
                 }
         } else {
                 return {};
@@ -230,23 +325,109 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
 
                 newRoom->updateLastMessage();
 
-                bool wasInvite = invites.contains(room_id);
-                if (!suppressInsertNotification && !wasInvite)
-                        beginInsertRows(QModelIndex(), (int)roomids.size(), (int)roomids.size());
+                std::vector<QString> previewsToAdd;
+                if (newRoom->isSpace()) {
+                        auto childs = cache::client()->getChildRoomIds(room_id.toStdString());
+                        for (const auto &c : childs) {
+                                auto id = QString::fromStdString(c);
+                                if (!(models.contains(id) || invites.contains(id) ||
+                                      previewedRooms.contains(id))) {
+                                        previewsToAdd.push_back(std::move(id));
+                                }
+                        }
+                }
+
+                bool wasInvite  = invites.contains(room_id);
+                bool wasPreview = previewedRooms.contains(room_id);
+                if (!suppressInsertNotification &&
+                    ((!wasInvite && !wasPreview) || !previewedRooms.empty()))
+                        // if the old room was already in the list, don't add it. Also add all
+                        // previews at the same time.
+                        beginInsertRows(QModelIndex(),
+                                        (int)roomids.size(),
+                                        (int)(roomids.size() + previewsToAdd.size() -
+                                              ((wasInvite || wasPreview) ? 0 : 1)));
 
                 models.insert(room_id, std::move(newRoom));
-
                 if (wasInvite) {
                         auto idx = roomidToIndex(room_id);
                         invites.remove(room_id);
+                        emit dataChanged(index(idx), index(idx));
+                } else if (wasPreview) {
+                        auto idx = roomidToIndex(room_id);
+                        previewedRooms.remove(room_id);
                         emit dataChanged(index(idx), index(idx));
                 } else {
                         roomids.push_back(room_id);
                 }
 
+                for (auto p : previewsToAdd) {
+                        previewedRooms.insert(p, std::nullopt);
+                        roomids.push_back(std::move(p));
+                }
+
                 if (!suppressInsertNotification && !wasInvite)
                         endInsertRows();
         }
+}
+
+void
+RoomlistModel::fetchPreview(QString roomid_) const
+{
+        std::string roomid = roomid_.toStdString();
+        http::client()->get_state_event<mtx::events::state::Create>(
+          roomid,
+          "",
+          [this, roomid](const mtx::events::state::Create &c, mtx::http::RequestErr err) {
+                  bool is_space = false;
+                  if (!err) {
+                          is_space = c.type == mtx::events::state::room_type::space;
+                  }
+
+                  http::client()->get_state_event<mtx::events::state::Avatar>(
+                    roomid,
+                    "",
+                    [this, roomid, is_space](const mtx::events::state::Avatar &a,
+                                             mtx::http::RequestErr) {
+                            auto avatar_url = a.url;
+
+                            http::client()->get_state_event<mtx::events::state::Topic>(
+                              roomid,
+                              "",
+                              [this, roomid, avatar_url, is_space](
+                                const mtx::events::state::Topic &t, mtx::http::RequestErr) {
+                                      auto topic = t.topic;
+                                      http::client()->get_state_event<mtx::events::state::Name>(
+                                        roomid,
+                                        "",
+                                        [this, roomid, topic, avatar_url, is_space](
+                                          const mtx::events::state::Name &n,
+                                          mtx::http::RequestErr err) {
+                                                if (err) {
+                                                        nhlog::net()->warn(
+                                                          "Failed to fetch name event to "
+                                                          "create preview for {}",
+                                                          roomid);
+                                                }
+
+                                                // don't even add a preview, if we got not a single
+                                                // response
+                                                if (n.name.empty() && avatar_url.empty() &&
+                                                    topic.empty())
+                                                        return;
+
+                                                RoomInfo info{};
+                                                info.name       = n.name;
+                                                info.is_space   = is_space;
+                                                info.avatar_url = avatar_url;
+                                                info.topic      = topic;
+
+                                                const_cast<RoomlistModel *>(this)->fetchedPreview(
+                                                  QString::fromStdString(roomid), info);
+                                        });
+                              });
+                    });
+          });
 }
 
 void
@@ -324,6 +505,7 @@ RoomlistModel::initializeRooms()
         models.clear();
         roomids.clear();
         invites.clear();
+        currentRoom_ = nullptr;
 
         invites = cache::client()->invites();
         for (const auto &id : invites.keys())
@@ -407,11 +589,15 @@ RoomlistModel::setCurrentRoom(QString roomid)
 namespace {
 enum NotificationImportance : short
 {
-        ImportanceDisabled = -1,
+        ImportanceDisabled = -3,
+        NoPreview          = -2,
+        Preview            = -1,
         AllEventsRead      = 0,
         NewMessage         = 1,
         NewMentions        = 2,
-        Invite             = 3
+        Invite             = 3,
+        SubSpace           = 4,
+        CurrentSpace       = 5,
 };
 }
 
@@ -421,7 +607,18 @@ FilteredRoomlistModel::calculateImportance(const QModelIndex &idx) const
         // Returns the degree of importance of the unread messages in the room.
         // If sorting by importance is disabled in settings, this only ever
         // returns ImportanceDisabled or Invite
-        if (sourceModel()->data(idx, RoomlistModel::IsInvite).toBool()) {
+        if (sourceModel()->data(idx, RoomlistModel::IsSpace).toBool()) {
+                if (filterType == FilterBy::Space &&
+                    filterStr == sourceModel()->data(idx, RoomlistModel::RoomId).toString())
+                        return CurrentSpace;
+                else
+                        return SubSpace;
+        } else if (sourceModel()->data(idx, RoomlistModel::IsPreview).toBool()) {
+                if (sourceModel()->data(idx, RoomlistModel::IsPreviewFetched).toBool())
+                        return Preview;
+                else
+                        return NoPreview;
+        } else if (sourceModel()->data(idx, RoomlistModel::IsInvite).toBool()) {
                 return Invite;
         } else if (!this->sortByImportance) {
                 return ImportanceDisabled;
@@ -433,6 +630,7 @@ FilteredRoomlistModel::calculateImportance(const QModelIndex &idx) const
                 return AllEventsRead;
         }
 }
+
 bool
 FilteredRoomlistModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
@@ -486,6 +684,140 @@ FilteredRoomlistModel::FilteredRoomlistModel(RoomlistModel *model, QObject *pare
 }
 
 void
+FilteredRoomlistModel::updateHiddenTagsAndSpaces()
+{
+        hiddenTags.clear();
+        hiddenSpaces.clear();
+        for (const auto &t : UserSettings::instance()->hiddenTags()) {
+                if (t.startsWith("tag:"))
+                        hiddenTags.push_back(t.mid(4));
+                else if (t.startsWith("space:"))
+                        hiddenSpaces.push_back(t.mid(6));
+        }
+
+        invalidateFilter();
+}
+
+bool
+FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) const
+{
+        if (filterType == FilterBy::Nothing) {
+                if (sourceModel()
+                      ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsPreview)
+                      .toBool()) {
+                        return false;
+                }
+
+                if (sourceModel()
+                      ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
+                      .toBool()) {
+                        return false;
+                }
+
+                if (!hiddenTags.empty()) {
+                        auto tags =
+                          sourceModel()
+                            ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
+                            .toStringList();
+
+                        for (const auto &t : tags)
+                                if (hiddenTags.contains(t))
+                                        return false;
+                }
+
+                if (!hiddenSpaces.empty()) {
+                        auto parents =
+                          sourceModel()
+                            ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
+                            .toStringList();
+                        for (const auto &t : parents)
+                                if (hiddenSpaces.contains(t))
+                                        return false;
+                }
+
+                return true;
+        } else if (filterType == FilterBy::Tag) {
+                if (sourceModel()
+                      ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsPreview)
+                      .toBool()) {
+                        return false;
+                }
+
+                if (sourceModel()
+                      ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
+                      .toBool()) {
+                        return false;
+                }
+
+                auto tags = sourceModel()
+                              ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
+                              .toStringList();
+
+                if (!tags.contains(filterStr))
+                        return false;
+
+                if (!hiddenTags.empty()) {
+                        for (const auto &t : tags)
+                                if (t != filterStr && hiddenTags.contains(t))
+                                        return false;
+                }
+
+                if (!hiddenSpaces.empty()) {
+                        auto parents =
+                          sourceModel()
+                            ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
+                            .toStringList();
+                        for (const auto &t : parents)
+                                if (hiddenSpaces.contains(t))
+                                        return false;
+                }
+
+                return true;
+        } else if (filterType == FilterBy::Space) {
+                if (filterStr == sourceModel()
+                                   ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::RoomId)
+                                   .toString())
+                        return true;
+
+                auto parents =
+                  sourceModel()
+                    ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
+                    .toStringList();
+
+                if (!parents.contains(filterStr))
+                        return false;
+
+                if (!hiddenTags.empty()) {
+                        auto tags =
+                          sourceModel()
+                            ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
+                            .toStringList();
+
+                        for (const auto &t : tags)
+                                if (hiddenTags.contains(t))
+                                        return false;
+                }
+
+                if (!hiddenSpaces.empty()) {
+                        for (const auto &t : parents)
+                                if (hiddenSpaces.contains(t))
+                                        return false;
+                }
+
+                if (sourceModel()
+                      ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
+                      .toBool() &&
+                    !parents.contains(filterStr)) {
+                        return false;
+                }
+
+                return true;
+        } else {
+                return true;
+        }
+}
+
+void
 FilteredRoomlistModel::toggleTag(QString roomid, QString tag, bool on)
 {
         if (on) {
@@ -532,7 +864,7 @@ FilteredRoomlistModel::previousRoom()
         if (r) {
                 int idx = roomidToIndex(r->roomId());
                 idx--;
-                if (idx > 0) {
+                if (idx >= 0) {
                         setCurrentRoom(
                           data(index(idx, 0), RoomlistModel::Roles::RoomId).toString());
                 }

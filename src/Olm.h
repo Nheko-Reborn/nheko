@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include <boost/optional.hpp>
-
 #include <memory>
 #include <mtx/events.hpp>
 #include <mtx/events/encrypted.hpp>

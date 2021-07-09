@@ -15,8 +15,8 @@ environment:
 
 
 cache:
-  - c:\hunter\ -> appveyor.yml
-  - build\_deps -> appveyor.yml
+  - c:\hunter\ -> appveyor.yml, CMakeLists.txt
+  - build\_deps -> appveyor.yml, CMakeLists.txt
 
 build:
     verbosity: minimal

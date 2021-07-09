@@ -9,7 +9,7 @@ import "./voip"
 import Qt.labs.platform 1.1 as Platform
 import QtGraphicalEffects 1.0
 import QtQuick 2.9
-import QtQuick.Controls 2.13
+import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 import im.nheko 1.0

@@ -11,7 +11,7 @@ import "./ui"
 import Qt.labs.platform 1.1 as Platform
 import QtGraphicalEffects 1.0
 import QtQuick 2.9
-import QtQuick.Controls 2.13
+import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 import im.nheko 1.0
@@ -44,7 +44,8 @@ Item {
     ColumnLayout {
         id: timelineLayout
 
-        visible: room != null
+        visible: room != null && !room.isSpace
+        enabled: visible
         anchors.fill: parent
         spacing: 0
 
@@ -128,6 +129,79 @@ Item {
         MessageInput {
         }
 
+    }
+
+    ColumnLayout {
+        visible: room != null && room.isSpace
+        enabled: visible
+        anchors.fill: parent
+        anchors.margins: Nheko.paddingLarge
+        spacing: Nheko.paddingLarge
+
+        Avatar {
+            url: room ? room.roomAvatarUrl.replace("mxc://", "image://MxcImage/") : ""
+            displayName: room ? room.roomName : ""
+            height: 130
+            width: 130
+            Layout.alignment: Qt.AlignHCenter
+            enabled: false
+        }
+
+        MatrixText {
+            text: room ? room.roomName : ""
+            font.pixelSize: 24
+            Layout.alignment: Qt.AlignHCenter
+        }
+
+        MatrixText {
+            text: qsTr("%1 member(s)").arg(room ? room.roomMemberCount : 0)
+            Layout.alignment: Qt.AlignHCenter
+        }
+
+        ScrollView {
+            Layout.alignment: Qt.AlignHCenter
+            width: timelineView.width - Nheko.paddingLarge * 2
+
+            TextArea {
+                text: TimelineManager.escapeEmoji(room ? room.roomTopic : "")
+                wrapMode: TextEdit.WordWrap
+                textFormat: TextEdit.RichText
+                readOnly: true
+                background: null
+                selectByMouse: true
+                color: Nheko.colors.text
+                horizontalAlignment: TextEdit.AlignHCenter
+                onLinkActivated: Nheko.openLink(link)
+
+                CursorShape {
+                    anchors.fill: parent
+                    cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
+                }
+
+            }
+
+        }
+
+        Item {
+            Layout.fillHeight: true
+        }
+
+    }
+
+    ImageButton {
+        id: backToRoomsButton
+
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.margins: Nheko.paddingMedium
+        width: Nheko.avatarSize
+        height: Nheko.avatarSize
+        visible: room != null && room.isSpace && showBackButton
+        enabled: visible
+        image: ":/icons/icons/ui/angle-pointing-to-left.png"
+        ToolTip.visible: hovered
+        ToolTip.text: qsTr("Back to room list")
+        onClicked: Rooms.resetCurrentRoom()
     }
 
     NhekoDropArea {

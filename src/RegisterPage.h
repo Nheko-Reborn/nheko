@@ -31,6 +31,10 @@ protected:
 signals:
         void backButtonClicked();
         void errorOccurred();
+
+        //! Used to trigger the corresponding slot outside of the main thread.
+        void versionErrorCb(const QString &err);
+
         void registering();
         void registerOk();
         void registerErrorCb(const QString &msg);
@@ -52,6 +56,7 @@ private:
         bool checkOneField(QLabel *label, const TextField *t_field, const QString &msg);
         bool checkFields();
         void showError(QLabel *label, const QString &msg);
+        void checkVersionAndRegister(const std::string &username, const std::string &password);
         QVBoxLayout *top_layout_;
 
         QHBoxLayout *back_layout_;
@@ -63,6 +68,7 @@ private:
         QLabel *error_username_label_;
         QLabel *error_password_label_;
         QLabel *error_password_confirmation_label_;
+        QLabel *error_server_label_;
 
         FlatButton *back_button_;
         RaisedButton *register_button_;

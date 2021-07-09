@@ -55,6 +55,10 @@ constexpr auto BATCH_SIZE = 100;
 //! Format: room_id -> RoomInfo
 constexpr auto ROOMS_DB("rooms");
 constexpr auto INVITES_DB("invites");
+//! maps each room to its parent space (id->id)
+constexpr auto SPACES_PARENTS_DB("space_parents");
+//! maps each space to its current children (id->id)
+constexpr auto SPACES_CHILDREN_DB("space_children");
 //! Information that  must be kept between sync requests.
 constexpr auto SYNC_STATE_DB("sync_state");
 //! Read receipts per room/event.
@@ -237,12 +241,14 @@ Cache::setup()
                 env_.open(cacheDirectory_.toStdString().c_str());
         }
 
-        auto txn         = lmdb::txn::begin(env_);
-        syncStateDb_     = lmdb::dbi::open(txn, SYNC_STATE_DB, MDB_CREATE);
-        roomsDb_         = lmdb::dbi::open(txn, ROOMS_DB, MDB_CREATE);
-        invitesDb_       = lmdb::dbi::open(txn, INVITES_DB, MDB_CREATE);
-        readReceiptsDb_  = lmdb::dbi::open(txn, READ_RECEIPTS_DB, MDB_CREATE);
-        notificationsDb_ = lmdb::dbi::open(txn, NOTIFICATIONS_DB, MDB_CREATE);
+        auto txn          = lmdb::txn::begin(env_);
+        syncStateDb_      = lmdb::dbi::open(txn, SYNC_STATE_DB, MDB_CREATE);
+        roomsDb_          = lmdb::dbi::open(txn, ROOMS_DB, MDB_CREATE);
+        spacesChildrenDb_ = lmdb::dbi::open(txn, SPACES_CHILDREN_DB, MDB_CREATE | MDB_DUPSORT);
+        spacesParentsDb_  = lmdb::dbi::open(txn, SPACES_PARENTS_DB, MDB_CREATE | MDB_DUPSORT);
+        invitesDb_        = lmdb::dbi::open(txn, INVITES_DB, MDB_CREATE);
+        readReceiptsDb_   = lmdb::dbi::open(txn, READ_RECEIPTS_DB, MDB_CREATE);
+        notificationsDb_  = lmdb::dbi::open(txn, NOTIFICATIONS_DB, MDB_CREATE);
 
         // Device management
         devicesDb_    = lmdb::dbi::open(txn, DEVICES_DB, MDB_CREATE);
@@ -899,7 +905,9 @@ Cache::runMigrations()
                                                    std::reverse(oldMessages.events.begin(),
                                                                 oldMessages.events.end());
                                                    // save messages using the new method
-                                                   saveTimelineMessages(txn, room_id, oldMessages);
+                                                   auto eventsDb = getEventsDb(txn, room_id);
+                                                   saveTimelineMessages(
+                                                     txn, eventsDb, room_id, oldMessages);
                                            }
 
                                            // delete old messages db
@@ -1194,24 +1202,73 @@ Cache::saveState(const mtx::responses::Sync &res)
 
         auto userKeyCacheDb = getUserKeysDb(txn);
 
+        std::set<std::string> spaces_with_updates;
+        std::set<std::string> rooms_with_space_updates;
+
         // Save joined rooms
         for (const auto &room : res.rooms.join) {
                 auto statesdb    = getStatesDb(txn, room.first);
                 auto stateskeydb = getStatesKeyDb(txn, room.first);
                 auto membersdb   = getMembersDb(txn, room.first);
+                auto eventsDb    = getEventsDb(txn, room.first);
 
-                saveStateEvents(
-                  txn, statesdb, stateskeydb, membersdb, room.first, room.second.state.events);
-                saveStateEvents(
-                  txn, statesdb, stateskeydb, membersdb, room.first, room.second.timeline.events);
+                saveStateEvents(txn,
+                                statesdb,
+                                stateskeydb,
+                                membersdb,
+                                eventsDb,
+                                room.first,
+                                room.second.state.events);
+                saveStateEvents(txn,
+                                statesdb,
+                                stateskeydb,
+                                membersdb,
+                                eventsDb,
+                                room.first,
+                                room.second.timeline.events);
 
-                saveTimelineMessages(txn, room.first, room.second.timeline);
+                saveTimelineMessages(txn, eventsDb, room.first, room.second.timeline);
 
                 RoomInfo updatedInfo;
                 updatedInfo.name       = getRoomName(txn, statesdb, membersdb).toStdString();
                 updatedInfo.topic      = getRoomTopic(txn, statesdb).toStdString();
                 updatedInfo.avatar_url = getRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
                 updatedInfo.version    = getRoomVersion(txn, statesdb).toStdString();
+                updatedInfo.is_space   = getRoomIsSpace(txn, statesdb);
+
+                if (updatedInfo.is_space) {
+                        bool space_updates = false;
+                        for (const auto &e : room.second.state.events)
+                                if (std::holds_alternative<StateEvent<state::space::Child>>(e) ||
+                                    std::holds_alternative<StateEvent<state::PowerLevels>>(e))
+                                        space_updates = true;
+                        for (const auto &e : room.second.timeline.events)
+                                if (std::holds_alternative<StateEvent<state::space::Child>>(e) ||
+                                    std::holds_alternative<StateEvent<state::PowerLevels>>(e))
+                                        space_updates = true;
+
+                        if (space_updates)
+                                spaces_with_updates.insert(room.first);
+                }
+
+                {
+                        bool room_has_space_update = false;
+                        for (const auto &e : room.second.state.events) {
+                                if (auto se = std::get_if<StateEvent<state::space::Parent>>(&e)) {
+                                        spaces_with_updates.insert(se->state_key);
+                                        room_has_space_update = true;
+                                }
+                        }
+                        for (const auto &e : room.second.timeline.events) {
+                                if (auto se = std::get_if<StateEvent<state::space::Parent>>(&e)) {
+                                        spaces_with_updates.insert(se->state_key);
+                                        room_has_space_update = true;
+                                }
+                        }
+
+                        if (room_has_space_update)
+                                rooms_with_space_updates.insert(room.first);
+                }
 
                 bool has_new_tags = false;
                 // Process the account_data associated with this room
@@ -1291,6 +1348,8 @@ Cache::saveState(const mtx::responses::Sync &res)
 
         removeLeftRooms(txn, res.rooms.leave);
 
+        updateSpaces(txn, spaces_with_updates, std::move(rooms_with_space_updates));
+
         txn.commit();
 
         std::map<QString, bool> readStatus;
@@ -1339,6 +1398,7 @@ Cache::saveInvites(lmdb::txn &txn, const std::map<std::string, mtx::responses::I
                 updatedInfo.topic = getInviteRoomTopic(txn, statesdb).toStdString();
                 updatedInfo.avatar_url =
                   getInviteRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
+                updatedInfo.is_space  = getInviteRoomIsSpace(txn, statesdb);
                 updatedInfo.is_invite = true;
 
                 invitesDb_.put(txn, room.first, json(updatedInfo).dump());
@@ -1422,27 +1482,6 @@ Cache::roomsWithStateUpdates(const mtx::responses::Sync &res)
                                 break;
                         }
                 }
-        }
-
-        return rooms;
-}
-
-std::vector<std::string>
-Cache::roomsWithTagUpdates(const mtx::responses::Sync &res)
-{
-        using namespace mtx::events;
-
-        std::vector<std::string> rooms;
-        for (const auto &room : res.rooms.join) {
-                bool hasUpdates = false;
-                for (const auto &evt : room.second.account_data.events) {
-                        if (std::holds_alternative<AccountDataEvent<account_data::Tags>>(evt)) {
-                                hasUpdates = true;
-                        }
-                }
-
-                if (hasUpdates)
-                        rooms.emplace_back(room.first);
         }
 
         return rooms;
@@ -1681,6 +1720,27 @@ Cache::storeEvent(const std::string &room_id,
         txn.commit();
 }
 
+void
+Cache::replaceEvent(const std::string &room_id,
+                    const std::string &event_id,
+                    const mtx::events::collections::TimelineEvent &event)
+{
+        auto txn         = lmdb::txn::begin(env_);
+        auto eventsDb    = getEventsDb(txn, room_id);
+        auto relationsDb = getRelationsDb(txn, room_id);
+        auto event_json  = mtx::accessors::serialize_event(event.data).dump();
+
+        {
+                eventsDb.del(txn, event_id);
+                eventsDb.put(txn, event_id, event_json);
+                for (auto relation : mtx::accessors::relations(event.data).relations) {
+                        relationsDb.put(txn, relation.event_id, event_id);
+                }
+        }
+
+        txn.commit();
+}
+
 std::vector<std::string>
 Cache::relatedEvents(const std::string &room_id, const std::string &event_id)
 {
@@ -1712,6 +1772,13 @@ Cache::relatedEvents(const std::string &room_id, const std::string &event_id)
         return related_ids;
 }
 
+size_t
+Cache::memberCount(const std::string &room_id)
+{
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        return getMembersDb(txn, room_id).size(txn);
+}
+
 QMap<QString, RoomInfo>
 Cache::roomInfo(bool withInvites)
 {
@@ -1727,8 +1794,6 @@ Cache::roomInfo(bool withInvites)
         while (roomsCursor.get(room_id, room_data, MDB_NEXT)) {
                 RoomInfo tmp     = json::parse(std::move(room_data));
                 tmp.member_count = getMembersDb(txn, std::string(room_id)).size(txn);
-                tmp.msgInfo      = getLastMessageInfo(txn, std::string(room_id));
-
                 result.insert(QString::fromStdString(std::string(room_id)), std::move(tmp));
         }
         roomsCursor.close();
@@ -1953,96 +2018,6 @@ Cache::getTimelineEventId(const std::string &room_id, uint64_t index)
         }
 
         return std::string(val);
-}
-
-DescInfo
-Cache::getLastMessageInfo(lmdb::txn &txn, const std::string &room_id)
-{
-        lmdb::dbi orderDb;
-        try {
-                orderDb = getOrderToMessageDb(txn, room_id);
-        } catch (lmdb::runtime_error &e) {
-                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
-                                   room_id,
-                                   e.what());
-                return {};
-        }
-
-        lmdb::dbi eventsDb;
-        try {
-                eventsDb = getEventsDb(txn, room_id);
-        } catch (lmdb::runtime_error &e) {
-                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
-                                   room_id,
-                                   e.what());
-                return {};
-        }
-
-        lmdb::dbi membersdb;
-        try {
-                membersdb = getMembersDb(txn, room_id);
-        } catch (lmdb::runtime_error &e) {
-                nhlog::db()->error("Can't open db for room '{}', probably doesn't exist yet. ({})",
-                                   room_id,
-                                   e.what());
-                return {};
-        }
-
-        if (orderDb.size(txn) == 0)
-                return DescInfo{};
-
-        const auto local_user = utils::localUser();
-
-        DescInfo fallbackDesc{};
-
-        std::string_view indexVal, event_id;
-
-        auto cursor = lmdb::cursor::open(txn, orderDb);
-        bool first  = true;
-        while (cursor.get(indexVal, event_id, first ? MDB_LAST : MDB_PREV)) {
-                first = false;
-
-                std::string_view event;
-                bool success = eventsDb.get(txn, event_id, event);
-                if (!success)
-                        continue;
-
-                auto obj = json::parse(event);
-
-                if (fallbackDesc.event_id.isEmpty() && obj["type"] == "m.room.member" &&
-                    obj["state_key"] == local_user.toStdString() &&
-                    obj["content"]["membership"] == "join") {
-                        uint64_t ts  = obj["origin_server_ts"];
-                        auto time    = QDateTime::fromMSecsSinceEpoch(ts);
-                        fallbackDesc = DescInfo{QString::fromStdString(obj["event_id"]),
-                                                local_user,
-                                                tr("You joined this room."),
-                                                utils::descriptiveTime(time),
-                                                ts,
-                                                time};
-                }
-
-                if (!(obj["type"] == "m.room.message" || obj["type"] == "m.sticker" ||
-                      obj["type"] == "m.call.invite" || obj["type"] == "m.call.answer" ||
-                      obj["type"] == "m.call.hangup" || obj["type"] == "m.room.encrypted"))
-                        continue;
-
-                mtx::events::collections::TimelineEvent te;
-                mtx::events::collections::from_json(obj, te);
-
-                std::string_view info;
-                MemberInfo m;
-                if (membersdb.get(txn, obj["sender"].get<std::string>(), info)) {
-                        m = json::parse(std::string_view(info.data(), info.size()));
-                }
-
-                cursor.close();
-                return utils::getMessageDescription(
-                  te.data, local_user, QString::fromStdString(m.name));
-        }
-        cursor.close();
-
-        return fallbackDesc;
 }
 
 QHash<QString, RoomInfo>
@@ -2316,6 +2291,29 @@ Cache::getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb)
         return QString("1");
 }
 
+bool
+Cache::getRoomIsSpace(lmdb::txn &txn, lmdb::dbi &statesdb)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        std::string_view event;
+        bool res = statesdb.get(txn, to_string(mtx::events::EventType::RoomCreate), event);
+
+        if (res) {
+                try {
+                        StateEvent<Create> msg = json::parse(event);
+
+                        return msg.content.type == mtx::events::state::room_type::space;
+                } catch (const json::exception &e) {
+                        nhlog::db()->warn("failed to parse m.room.create event: {}", e.what());
+                }
+        }
+
+        nhlog::db()->warn("m.room.create event is missing room version, assuming version \"1\"");
+        return false;
+}
+
 std::optional<mtx::events::state::CanonicalAlias>
 Cache::getRoomAliases(const std::string &roomid)
 {
@@ -2443,6 +2441,27 @@ Cache::getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &db)
         return QString();
 }
 
+bool
+Cache::getInviteRoomIsSpace(lmdb::txn &txn, lmdb::dbi &db)
+{
+        using namespace mtx::events;
+        using namespace mtx::events::state;
+
+        std::string_view event;
+        bool res = db.get(txn, to_string(mtx::events::EventType::RoomCreate), event);
+
+        if (res) {
+                try {
+                        StrippedEvent<Create> msg = json::parse(event);
+                        return msg.content.type == mtx::events::state::room_type::space;
+                } catch (const json::exception &e) {
+                        nhlog::db()->warn("failed to parse m.room.topic event: {}", e.what());
+                }
+        }
+
+        return false;
+}
+
 std::vector<std::string>
 Cache::joinedRooms()
 {
@@ -2479,45 +2498,10 @@ Cache::getMember(const std::string &room_id, const std::string &user_id)
                         return m;
                 }
         } catch (std::exception &e) {
-                nhlog::db()->warn("Failed to read member ({}): {}", user_id, e.what());
+                nhlog::db()->warn(
+                  "Failed to read member ({}) in room ({}): {}", user_id, room_id, e.what());
         }
         return std::nullopt;
-}
-
-std::vector<RoomSearchResult>
-Cache::searchRooms(const std::string &query, std::uint8_t max_items)
-{
-        std::multimap<int, std::pair<std::string, RoomInfo>> items;
-
-        auto txn    = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        auto cursor = lmdb::cursor::open(txn, roomsDb_);
-
-        std::string_view room_id, room_data;
-        while (cursor.get(room_id, room_data, MDB_NEXT)) {
-                RoomInfo tmp = json::parse(room_data);
-
-                const int score = utils::levenshtein_distance(
-                  query, QString::fromStdString(tmp.name).toLower().toStdString());
-                items.emplace(score, std::make_pair(room_id, tmp));
-        }
-
-        cursor.close();
-
-        auto end = items.begin();
-
-        if (items.size() >= max_items)
-                std::advance(end, max_items);
-        else if (items.size() > 0)
-                std::advance(end, items.size());
-
-        std::vector<RoomSearchResult> results;
-        for (auto it = items.begin(); it != end; it++) {
-                results.push_back(RoomSearchResult{it->second.first, it->second.second});
-        }
-
-        txn.commit();
-
-        return results;
 }
 
 std::vector<RoomMember>
@@ -2578,11 +2562,12 @@ void
 Cache::savePendingMessage(const std::string &room_id,
                           const mtx::events::collections::TimelineEvent &message)
 {
-        auto txn = lmdb::txn::begin(env_);
+        auto txn      = lmdb::txn::begin(env_);
+        auto eventsDb = getEventsDb(txn, room_id);
 
         mtx::responses::Timeline timeline;
         timeline.events.push_back(message.data);
-        saveTimelineMessages(txn, room_id, timeline);
+        saveTimelineMessages(txn, eventsDb, room_id, timeline);
 
         auto pending = getPendingMessagesDb(txn, room_id);
 
@@ -2650,13 +2635,13 @@ Cache::removePendingStatus(const std::string &room_id, const std::string &txn_id
 
 void
 Cache::saveTimelineMessages(lmdb::txn &txn,
+                            lmdb::dbi &eventsDb,
                             const std::string &room_id,
                             const mtx::responses::Timeline &res)
 {
         if (res.events.empty())
                 return;
 
-        auto eventsDb    = getEventsDb(txn, room_id);
         auto relationsDb = getRelationsDb(txn, room_id);
 
         auto orderDb     = getEventOrderDb(txn, room_id);
@@ -3181,6 +3166,147 @@ Cache::deleteOldData() noexcept
         }
 }
 
+void
+Cache::updateSpaces(lmdb::txn &txn,
+                    const std::set<std::string> &spaces_with_updates,
+                    std::set<std::string> rooms_with_updates)
+{
+        if (spaces_with_updates.empty() && rooms_with_updates.empty())
+                return;
+
+        for (const auto &space : spaces_with_updates) {
+                // delete old entries
+                {
+                        auto cursor         = lmdb::cursor::open(txn, spacesChildrenDb_);
+                        bool first          = true;
+                        std::string_view sp = space, space_child = "";
+
+                        if (cursor.get(sp, space_child, MDB_SET)) {
+                                while (cursor.get(
+                                  sp, space_child, first ? MDB_FIRST_DUP : MDB_NEXT_DUP)) {
+                                        first = false;
+                                        spacesParentsDb_.del(txn, space_child, space);
+                                }
+                        }
+                        cursor.close();
+                        spacesChildrenDb_.del(txn, space);
+                }
+
+                for (const auto &event :
+                     getStateEventsWithType<mtx::events::state::space::Child>(txn, space)) {
+                        if (event.content.via.has_value() && event.state_key.size() > 3 &&
+                            event.state_key.at(0) == '!') {
+                                spacesChildrenDb_.put(txn, space, event.state_key);
+                                spacesParentsDb_.put(txn, event.state_key, space);
+                        }
+                }
+        }
+
+        const auto space_event_type = to_string(mtx::events::EventType::RoomPowerLevels);
+
+        for (const auto &room : rooms_with_updates) {
+                for (const auto &event :
+                     getStateEventsWithType<mtx::events::state::space::Parent>(txn, room)) {
+                        if (event.content.via.has_value() && event.state_key.size() > 3 &&
+                            event.state_key.at(0) == '!') {
+                                const std::string &space = event.state_key;
+
+                                auto pls =
+                                  getStateEvent<mtx::events::state::PowerLevels>(txn, space);
+
+                                if (!pls)
+                                        continue;
+
+                                if (pls->content.user_level(event.sender) >=
+                                    pls->content.state_level(space_event_type)) {
+                                        spacesChildrenDb_.put(txn, space, room);
+                                        spacesParentsDb_.put(txn, room, space);
+                                }
+                        }
+                }
+        }
+}
+
+QMap<QString, std::optional<RoomInfo>>
+Cache::spaces()
+{
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        QMap<QString, std::optional<RoomInfo>> ret;
+        {
+                auto cursor = lmdb::cursor::open(txn, spacesChildrenDb_);
+                bool first  = true;
+                std::string_view space_id, space_child;
+                while (cursor.get(space_id, space_child, first ? MDB_FIRST : MDB_NEXT)) {
+                        first = false;
+
+                        if (!space_child.empty()) {
+                                std::string_view room_data;
+                                if (roomsDb_.get(txn, space_id, room_data)) {
+                                        RoomInfo tmp = json::parse(std::move(room_data));
+                                        ret.insert(
+                                          QString::fromUtf8(space_id.data(), space_id.size()), tmp);
+                                } else {
+                                        ret.insert(
+                                          QString::fromUtf8(space_id.data(), space_id.size()),
+                                          std::nullopt);
+                                }
+                        }
+                }
+                cursor.close();
+        }
+
+        return ret;
+}
+
+std::vector<std::string>
+Cache::getParentRoomIds(const std::string &room_id)
+{
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        std::vector<std::string> roomids;
+        {
+                auto cursor         = lmdb::cursor::open(txn, spacesParentsDb_);
+                bool first          = true;
+                std::string_view sp = room_id, space_parent;
+                if (cursor.get(sp, space_parent, MDB_SET)) {
+                        while (cursor.get(sp, space_parent, first ? MDB_FIRST_DUP : MDB_NEXT_DUP)) {
+                                first = false;
+
+                                if (!space_parent.empty())
+                                        roomids.emplace_back(space_parent);
+                        }
+                }
+                cursor.close();
+        }
+
+        return roomids;
+}
+
+std::vector<std::string>
+Cache::getChildRoomIds(const std::string &room_id)
+{
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+
+        std::vector<std::string> roomids;
+        {
+                auto cursor         = lmdb::cursor::open(txn, spacesChildrenDb_);
+                bool first          = true;
+                std::string_view sp = room_id, space_child;
+                if (cursor.get(sp, space_child, MDB_SET)) {
+                        while (cursor.get(sp, space_child, first ? MDB_FIRST_DUP : MDB_NEXT_DUP)) {
+                                first = false;
+
+                                if (!space_child.empty())
+                                        roomids.emplace_back(space_child);
+                        }
+                }
+                cursor.close();
+        }
+
+        return roomids;
+}
+
 std::optional<mtx::events::collections::RoomAccountDataEvents>
 Cache::getAccountData(lmdb::txn &txn, mtx::events::EventType type, const std::string &room_id)
 {
@@ -3451,6 +3577,10 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
 
                         if (!updateToWrite.master_keys.keys.empty() &&
                             update.master_keys.keys != updateToWrite.master_keys.keys) {
+                                nhlog::db()->debug("Master key of {} changed:\nold: {}\nnew: {}",
+                                                   user,
+                                                   updateToWrite.master_keys.keys.size(),
+                                                   update.master_keys.keys.size());
                                 updateToWrite.master_key_changed = true;
                         }
 
@@ -3458,25 +3588,31 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                         updateToWrite.self_signing_keys = update.self_signing_keys;
                         updateToWrite.user_signing_keys = update.user_signing_keys;
 
-                        // If we have keys for the device already, only update the signatures.
+                        auto oldDeviceKeys = std::move(updateToWrite.device_keys);
+                        updateToWrite.device_keys.clear();
+
+                        // Don't insert keys, which we have seen once already
                         for (const auto &[device_id, device_keys] : update.device_keys) {
-                                if (updateToWrite.device_keys.count(device_id) &&
-                                    updateToWrite.device_keys.at(device_id).keys ==
-                                      device_keys.keys) {
-                                        updateToWrite.device_keys.at(device_id).signatures =
-                                          device_keys.signatures;
+                                if (oldDeviceKeys.count(device_id) &&
+                                    oldDeviceKeys.at(device_id).keys == device_keys.keys) {
+                                        // this is safe, since the keys are the same
+                                        updateToWrite.device_keys[device_id] = device_keys;
                                 } else {
                                         bool keyReused = false;
                                         for (const auto &[key_id, key] : device_keys.keys) {
                                                 (void)key_id;
                                                 if (updateToWrite.seen_device_keys.count(key)) {
+                                                        nhlog::crypto()->warn(
+                                                          "Key '{}' reused by ({}: {})",
+                                                          key,
+                                                          user,
+                                                          device_id);
                                                         keyReused = true;
                                                         break;
                                                 }
                                         }
 
-                                        if (!updateToWrite.device_keys.count(device_id) &&
-                                            !keyReused)
+                                        if (!keyReused && !oldDeviceKeys.count(device_id))
                                                 updateToWrite.device_keys[device_id] = device_keys;
                                 }
 
@@ -3858,6 +3994,7 @@ to_json(json &j, const RoomInfo &info)
         j["avatar_url"]   = info.avatar_url;
         j["version"]      = info.version;
         j["is_invite"]    = info.is_invite;
+        j["is_space"]     = info.is_space;
         j["join_rule"]    = info.join_rule;
         j["guest_access"] = info.guest_access;
 
@@ -3877,6 +4014,7 @@ from_json(const json &j, RoomInfo &info)
         info.version    = j.value(
           "version", QCoreApplication::translate("RoomInfo", "no version stored").toStdString());
         info.is_invite    = j.at("is_invite");
+        info.is_space     = j.value("is_space", false);
         info.join_rule    = j.at("join_rule");
         info.guest_access = j.at("guest_access");
 
@@ -4132,12 +4270,6 @@ getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
         return instance_->getRoomAvatarUrl(txn, statesdb, membersdb);
 }
 
-QString
-getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb)
-{
-        return instance_->getRoomVersion(txn, statesdb);
-}
-
 std::vector<RoomMember>
 getMembers(const std::string &room_id, std::size_t startIndex, std::size_t len)
 {
@@ -4279,11 +4411,7 @@ roomsWithStateUpdates(const mtx::responses::Sync &res)
 {
         return instance_->roomsWithStateUpdates(res);
 }
-std::vector<std::string>
-roomsWithTagUpdates(const mtx::responses::Sync &res)
-{
-        return instance_->roomsWithTagUpdates(res);
-}
+
 std::map<QString, RoomInfo>
 getRoomInfo(const std::vector<std::string> &rooms)
 {
@@ -4301,12 +4429,6 @@ void
 calculateRoomReadStatus()
 {
         instance_->calculateRoomReadStatus();
-}
-
-std::vector<RoomSearchResult>
-searchRooms(const std::string &query, std::uint8_t max_items)
-{
-        return instance_->searchRooms(query, max_items);
 }
 
 void

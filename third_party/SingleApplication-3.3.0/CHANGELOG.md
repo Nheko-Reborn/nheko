@@ -3,6 +3,12 @@ Changelog
 
 If by accident I have forgotten to credit someone in the CHANGELOG, email me and I will fix it.
 
+
+__3.3.0__
+---------
+
+* Fixed message fragmentation issue causing crashes and incorrectly and inconsistently received messages. - _Nils Jeisecke_
+
 __3.2.0__
 ---------
 

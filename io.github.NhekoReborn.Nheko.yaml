@@ -16,7 +16,9 @@ finish-args:
   - --socket=wayland
   - --socket=x11
   - --talk-name=org.freedesktop.Notifications
-  - --talk-name=org.kde.StatusNotifierWatcher
+  - --talk-name=org.freedesktop.secrets
+  - --talk-name=org.freedesktop.StatusNotifierItem
+  - --talk-name=org.kde.*
 cleanup:
   - /include
   - /bin/mdb*
@@ -35,6 +37,19 @@ modules:
       - prefix=/app
     no-autogen: true
     subdir: libraries/liblmdb
+  - name: libevent
+    buildsystem: autotools
+    config-opts:
+      - --disable-shared
+      - --prefix=/app
+      - --disable-openssl
+    sources:
+      - sha256: 92e6de1be9ec176428fd2367677e61ceffc2ee1cb119035037a27d346b0403bb
+        type: archive
+        url: https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz
+    make-install-args:
+      - prefix=/app
+    no-autogen: true
   - name: cmark
     buildsystem: cmake-ninja
     builddir: true
@@ -61,9 +76,9 @@ modules:
     buildsystem: cmake-ninja
     name: olm
     sources:
-      - commit: 6753595300767dd70150831dbbe6f92d64e75038
+      - commit: 64afab93645957846d936a19b8501dbd3f2cc4a1
         disable-shallow-clone: true
-        tag: 3.1.4
+        tag: 3.2.4
         type: git
         url: https://gitlab.matrix.org/matrix-org/olm.git
   - config-opts:
@@ -85,16 +100,6 @@ modules:
       - sha256: d51a3a8d3efbb1139d7608e28782ea9efea7e7933157e8ff8184901efd8ee760
         type: archive
         url: https://github.com/nlohmann/json/archive/v3.7.0.tar.gz
-  - build-commands:
-      - ./bootstrap.sh --with-libraries=thread,system,iostreams --prefix=/app
-      - ./b2 -d0 variant=release link=static threading=multi --layout=system
-      - ./b2 -d0 install
-    buildsystem: simple
-    name: boost
-    sources:
-      - sha256: 59c9b274bc451cf91a9ba1dd2c7fdcaf5d60b1b3aa83f2c9fa143417cc660722
-        type: archive
-        url: https://sourceforge.net/projects/boost/files/boost/1.72.0/boost_1_72_0.tar.bz2
   - buildsystem: meson
     name: gstreamer
     sources:
@@ -140,6 +145,14 @@ modules:
         tag: 1.18.3
         type: git
         url: https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad.git
+  - buildsystem: meson
+    config-opts:
+      - -Ddefault_library=static
+    name: coeurl
+    sources:
+      - commit: 417821a07cfe4429b08a2efed5e480a498087afd
+        type: git
+        url: https://nheko.im/nheko-reborn/coeurl.git
   - config-opts:
       - -DBUILD_LIB_TESTS=OFF
       - -DBUILD_LIB_EXAMPLES=OFF
@@ -148,19 +161,9 @@ modules:
     buildsystem: cmake-ninja
     name: mtxclient
     sources:
-      - commit: 5d2f055ea9403770039ddf66b1900f890cd5cde7
+      - commit: 9ecaefe377d4dab688caee186e4a263cb7f105e8
         type: git
         url: https://github.com/Nheko-Reborn/mtxclient.git
-  - config-opts:
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DTWEENY_BUILD_DOCUMENTATION=OFF
-      - -DTWEENY_BUILD_EXAMPLES=OFF
-    buildsystem: cmake-ninja
-    name: tweeny
-    sources:
-      - sha256: 482857256a7235646004682912badb6521d361ed6987c8ebdae7986bf64ce694
-        type: archive
-        url: https://github.com/mobius3/tweeny/archive/43f4130f7e4a67c19d870b60864bc2862c19b81f.tar.gz
   - config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DLMDBXX_INCLUDE_DIR=.deps/lmdbxx

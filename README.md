@@ -19,9 +19,10 @@ Help us with translations so as many people as possible will be able to use nhek
 
 ### Note regarding End-to-End encryption
 
-Currently the implementation is at best a **proof of concept** and it should only be used for
-testing purposes. Most importantly, it is missing device verification, so while your messages
-and media are encrypted, nheko doesn't verify who gets the messages.
+The current implementation works in most cases, but you may need to bootstrap
+your cross-signing keys in a different client. The implementation may also still
+have bugs, so don't rely on it for security. Online keybackup isn't supported,
+but you can use offline keybackup. Most other cases should be fine though.
 
 ## Features
 
@@ -114,6 +115,15 @@ with [homebrew](https://brew.sh/):
 ```sh
 brew install --cask nheko
 ```
+
+#### Windows
+
+with [Chocolatey](https://chocolatey.org/):
+
+```posh
+choco install nheko-reborn
+```
+
 ### FAQ
 
 ##
@@ -127,10 +137,10 @@ brew install --cask nheko
 - Qt5 (5.12 or greater). Required for overlapping hover handlers in Qml.
 - CMake 3.15 or greater. (Lower version may work, but may break boost linking)
 - [mtxclient](https://github.com/Nheko-Reborn/mtxclient)
+- [coeurl](https://nheko.im/nheko-reborn/coeurl)
 - [LMDB](https://symas.com/lightning-memory-mapped-database/)
 - [lmdb++](https://github.com/hoytech/lmdbxx)
 - [cmark](https://github.com/commonmark/cmark) 0.29 or greater.
-- Boost 1.70 or greater.
 - [libolm](https://gitlab.matrix.org/matrix-org/olm)
 - [spdlog](https://github.com/gabime/spdlog)
 - [GStreamer](https://gitlab.freedesktop.org/gstreamer) 1.18.0 or greater (optional, needed for VoIP support).
@@ -154,7 +164,6 @@ If you experience build issues and you are trying to link `mtxclient` library wi
 
 The bundle flags are currently:
 
-- USE_BUNDLED_BOOST
 - USE_BUNDLED_SPDLOG
 - USE_BUNDLED_OLM
 - USE_BUNDLED_GTEST
@@ -164,7 +173,9 @@ The bundle flags are currently:
 - USE_BUNDLED_MTXCLIENT
 - USE_BUNDLED_LMDB
 - USE_BUNDLED_LMDBXX
-- USE_BUNDLED_TWEENY
+- USE_BUNDLED_COEURL
+- USE_BUNDLED_LIBCURL
+- USE_BUNDLED_LIBEVENT
 
 A note on bundled OpenSSL: You need to explicitly enable it and it will not be using your system certificate directory by default, if you enable it. You need to override that at runtime with the SSL_CERT_FILE variable. On Windows it will still be using your system certificates though, since it loads them from the system store instead of the OpenSSL directory.
 

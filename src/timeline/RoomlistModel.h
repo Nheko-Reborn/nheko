@@ -37,7 +37,10 @@ public:
                 NotificationCount,
                 IsInvite,
                 IsSpace,
+                IsPreview,
+                IsPreviewFetched,
                 Tags,
+                ParentSpaces,
         };
 
         RoomlistModel(TimelineViewManager *parent = nullptr);
@@ -86,15 +89,18 @@ private slots:
 signals:
         void totalUnreadMessageCountUpdated(int unreadMessages);
         void currentRoomChanged();
+        void fetchedPreview(QString roomid, RoomInfo info);
 
 private:
         void addRoom(const QString &room_id, bool suppressInsertNotification = false);
+        void fetchPreview(QString roomid) const;
 
         TimelineViewManager *manager = nullptr;
         std::vector<QString> roomids;
         QHash<QString, RoomInfo> invites;
         QHash<QString, QSharedPointer<TimelineModel>> models;
         std::map<QString, bool> roomReadStatus;
+        QHash<QString, std::optional<RoomInfo>> previewedRooms;
 
         QSharedPointer<TimelineModel> currentRoom_;
 
@@ -109,6 +115,7 @@ class FilteredRoomlistModel : public QSortFilterProxyModel
 public:
         FilteredRoomlistModel(RoomlistModel *model, QObject *parent = nullptr);
         bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
+        bool filterAcceptsRow(int sourceRow, const QModelIndex &) const override;
 
 public slots:
         int roomidToIndex(QString roomid)
@@ -128,6 +135,24 @@ public slots:
         void nextRoom();
         void previousRoom();
 
+        void updateFilterTag(QString tagId)
+        {
+                if (tagId.startsWith("tag:")) {
+                        filterType = FilterBy::Tag;
+                        filterStr  = tagId.mid(4);
+                } else if (tagId.startsWith("space:")) {
+                        filterType = FilterBy::Space;
+                        filterStr  = tagId.mid(6);
+                } else {
+                        filterType = FilterBy::Nothing;
+                        filterStr.clear();
+                }
+
+                invalidateFilter();
+        }
+
+        void updateHiddenTagsAndSpaces();
+
 signals:
         void currentRoomChanged();
 
@@ -135,4 +160,14 @@ private:
         short int calculateImportance(const QModelIndex &idx) const;
         RoomlistModel *roomlistmodel;
         bool sortByImportance = true;
+
+        enum class FilterBy
+        {
+                Tag,
+                Space,
+                Nothing,
+        };
+        QString filterStr   = "";
+        FilterBy filterType = FilterBy::Nothing;
+        QStringList hiddenTags, hiddenSpaces;
 };
