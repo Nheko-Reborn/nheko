@@ -50,12 +50,6 @@ ApplicationWindow {
             }
         }
 
-        // BusyIndicator {
-        //     Layout.alignment: Qt.AlignHCenter
-        //     running: roomSettings.isLoading
-        //     visible: roomSettings.isLoading
-        // }
-
         Spinner {
             Layout.alignment: Qt.AlignHCenter
             visible: roomSettings.isLoading

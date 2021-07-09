@@ -1,0 +1,2 @@
+module im.nheko.UI.Animations
+BlinkAnimation 1.0 BlinkAnimation.qml

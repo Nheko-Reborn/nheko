@@ -5,6 +5,8 @@
 import QtQuick 2.12
 import QtGraphicalEffects 1.12
 
+import "./animations"
+
 Item {
     id: spinner
 
@@ -15,6 +17,8 @@ Item {
     readonly property real a: Math.PI / 6
     readonly property var colors: ["#c0def5", "#87aade", "white"]
     readonly property var anims: [anim1, anim2, anim3, anim4, anim5, anim6]
+    readonly property int pauseDuration: barCount * 150
+    readonly property int glowDuration: 300
 
     height: 40
     width: barCount * (height * 0.375)
@@ -70,118 +74,50 @@ Item {
             color: "white"
         }
 
-        SequentialAnimation {
+        BlinkAnimation {
             id: anim1
+            target: rect1
+            pauseDuration: spinner.pauseDuration
+            glowDuration: spinner.glowDuration
 
             loops: Animation.Infinite
-
-            NumberAnimation {
-                target: rect1
-                property: "opacity"
-                from: 0
-                to: 1
-                duration: 300
-            }
-
-            PauseAnimation {
-                duration: spinner.barCount * 150
-            }
-
         }
 
-        SequentialAnimation {
+        BlinkAnimation {
             id: anim2
-
-            loops: Animation.Infinite
-
-            NumberAnimation {
-                target: rect2
-                property: "opacity"
-                from: 0
-                to: 1
-                duration: 300
-            }
-
-            PauseAnimation {
-                duration: spinner.barCount * 150
-            }
-
+            target: rect2
+            pauseDuration: spinner.pauseDuration
+            glowDuration: spinner.glowDuration
         }
 
-        SequentialAnimation {
+        BlinkAnimation {
             id: anim3
-
-            loops: Animation.Infinite
-
-            NumberAnimation {
-                target: rect3
-                property: "opacity"
-                from: 0
-                to: 1
-                duration: 300
-            }
-
-            PauseAnimation {
-                duration: spinner.barCount * 150
-            }
+            target: rect3
+            pauseDuration: spinner.pauseDuration
+            glowDuration: spinner.glowDuration
 
         }
 
-        SequentialAnimation {
+        BlinkAnimation {
             id: anim4
-
-            loops: Animation.Infinite
-
-            NumberAnimation {
-                target: rect4
-                property: "opacity"
-                from: 0
-                to: 1
-                duration: 300
-            }
-
-            PauseAnimation {
-                duration: spinner.barCount * 150
-            }
+            target: rect4
+            pauseDuration: spinner.pauseDuration
+            glowDuration: spinner.glowDuration
 
         }
 
-        SequentialAnimation {
+        BlinkAnimation {
             id: anim5
-
-            loops: Animation.Infinite
-
-            NumberAnimation {
-                target: rect5
-                property: "opacity"
-                from: 0
-                to: 1
-                duration: 300
-            }
-
-            PauseAnimation {
-                duration: spinner.barCount * 150
-            }
-
+            target: rect5
+            pauseDuration: spinner.pauseDuration
+            glowDuration: spinner.glowDuration
         }
 
-        SequentialAnimation {
+        BlinkAnimation {
             id: anim6
-
-            loops: Animation.Infinite
-
-            NumberAnimation {
-                target: rect6
-                property: "opacity"
-                from: 0
-                to: 1
-                duration: 300
-            }
-
-            PauseAnimation {
-                duration: spinner.barCount * 150
-            }
-
+            target: rect6
+            pauseDuration: spinner.pauseDuration
+            glowDuration: spinner.glowDuration
         }
 
         transform: Matrix4x4 {
