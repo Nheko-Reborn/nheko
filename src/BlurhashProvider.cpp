@@ -27,16 +27,18 @@ BlurhashResponse::run()
 
         auto decoded = blurhash::decode(QUrl::fromPercentEncoding(m_id.toUtf8()).toStdString(),
                                         m_requestedSize.width(),
-                                        m_requestedSize.height(),
-                                        4);
+                                        m_requestedSize.height());
         if (decoded.image.empty()) {
                 m_error = QStringLiteral("Failed decode!");
                 emit finished();
                 return;
         }
 
-        QImage image(
-          decoded.image.data(), (int)decoded.width, (int)decoded.height, QImage::Format_RGB32);
+        QImage image(decoded.image.data(),
+                     (int)decoded.width,
+                     (int)decoded.height,
+                     (int)decoded.width * 3,
+                     QImage::Format_RGB888);
 
         m_image = image.copy();
         emit finished();
