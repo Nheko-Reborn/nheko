@@ -94,6 +94,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
         }
 
         connect(timeout, &QTimer::timeout, this, [this]() {
+                nhlog::crypto()->info("verification: timeout");
                 if (state_ != Success && state_ != Failed)
                         this->cancelVerification(DeviceVerificationFlow::Error::Timeout);
         });
@@ -106,6 +107,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                 &ChatPage::receivedDeviceVerificationAccept,
                 this,
                 [this](const mtx::events::msg::KeyVerificationAccept &msg) {
+                        nhlog::crypto()->info("verification: received accept");
                         if (msg.transaction_id.has_value()) {
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
@@ -137,6 +139,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                 &ChatPage::receivedDeviceVerificationCancel,
                 this,
                 [this](const mtx::events::msg::KeyVerificationCancel &msg) {
+                        nhlog::crypto()->info("verification: received cancel");
                         if (msg.transaction_id.has_value()) {
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
@@ -153,6 +156,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                 &ChatPage::receivedDeviceVerificationKey,
                 this,
                 [this](const mtx::events::msg::KeyVerificationKey &msg) {
+                        nhlog::crypto()->info("verification: received key");
                         if (msg.transaction_id.has_value()) {
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
@@ -218,6 +222,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
           &ChatPage::receivedDeviceVerificationMac,
           this,
           [this](const mtx::events::msg::KeyVerificationMac &msg) {
+                  nhlog::crypto()->info("verification: received mac");
                   if (msg.transaction_id.has_value()) {
                           if (msg.transaction_id.value() != this->transaction_id)
                                   return;
@@ -377,6 +382,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                 &ChatPage::receivedDeviceVerificationReady,
                 this,
                 [this](const mtx::events::msg::KeyVerificationReady &msg) {
+                        nhlog::crypto()->info("verification: received ready");
                         if (!sender) {
                                 if (msg.from_device != http::client()->device_id()) {
                                         error_ = User;
@@ -404,6 +410,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                 &ChatPage::receivedDeviceVerificationDone,
                 this,
                 [this](const mtx::events::msg::KeyVerificationDone &msg) {
+                        nhlog::crypto()->info("verification: receoved done");
                         if (msg.transaction_id.has_value()) {
                                 if (msg.transaction_id.value() != this->transaction_id)
                                         return;
@@ -667,6 +674,9 @@ DeviceVerificationFlow::sendVerificationRequest()
 void
 DeviceVerificationFlow::cancelVerification(DeviceVerificationFlow::Error error_code)
 {
+        if (state_ == State::Success || state_ == State::Failed)
+                return;
+
         mtx::events::msg::KeyVerificationCancel req;
 
         if (error_code == DeviceVerificationFlow::Error::UnknownMethod) {
