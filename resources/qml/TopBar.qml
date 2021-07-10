@@ -65,9 +65,9 @@ Rectangle {
             url: avatarUrl.replace("mxc://", "image://MxcImage/")
             displayName: roomName
             onClicked: {
-                if (room) {
+                if (room)
                     room.openRoomSettings();
-                }
+
             }
         }
 

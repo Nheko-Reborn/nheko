@@ -6,9 +6,8 @@ import "./components"
 import "./delegates"
 import "./device-verification"
 import "./emoji"
-import "./voip"
 import "./ui"
-
+import "./voip"
 import Qt.labs.platform 1.1 as Platform
 import QtGraphicalEffects 1.0
 import QtQuick 2.9

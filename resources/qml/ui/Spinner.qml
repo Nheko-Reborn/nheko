@@ -2,10 +2,9 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtQuick 2.12
-import QtGraphicalEffects 1.12
-
 import "./animations"
+import QtGraphicalEffects 1.12
+import QtQuick 2.12
 
 Item {
     id: spinner
@@ -76,73 +75,68 @@ Item {
 
         BlinkAnimation {
             id: anim1
+
             target: rect1
+            running: spinner.running
             pauseDuration: spinner.pauseDuration
             glowDuration: spinner.glowDuration
-
-            loops: Animation.Infinite
+            offset: 0 / spinner.barCount
         }
 
         BlinkAnimation {
             id: anim2
+
             target: rect2
+            running: spinner.running
             pauseDuration: spinner.pauseDuration
             glowDuration: spinner.glowDuration
+            offset: 1 / spinner.barCount
         }
 
         BlinkAnimation {
             id: anim3
+
             target: rect3
+            running: spinner.running
             pauseDuration: spinner.pauseDuration
             glowDuration: spinner.glowDuration
-
+            offset: 2 / spinner.barCount
         }
 
         BlinkAnimation {
             id: anim4
+
             target: rect4
+            running: spinner.running
             pauseDuration: spinner.pauseDuration
             glowDuration: spinner.glowDuration
-
+            offset: 3 / spinner.barCount
         }
 
         BlinkAnimation {
             id: anim5
+
             target: rect5
+            running: spinner.running
             pauseDuration: spinner.pauseDuration
             glowDuration: spinner.glowDuration
+            offset: 4 / spinner.barCount
         }
 
         BlinkAnimation {
             id: anim6
+
             target: rect6
+            running: spinner.running
             pauseDuration: spinner.pauseDuration
             glowDuration: spinner.glowDuration
+            offset: 5 / spinner.barCount
         }
 
         transform: Matrix4x4 {
             matrix: Qt.matrix4x4(Math.cos(spinner.a), -Math.sin(spinner.a), 0, 0, 0, Math.cos(spinner.a), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
         }
 
-    }
-
-    Timer {
-        // ----- Private Properties ----- //
-        property int _barIndex: 0
-
-        interval: 80
-        repeat: true
-        running: spinner.running
-        onTriggered: {
-            if (_barIndex === spinner.barCount) {
-                _barIndex = 0;
-                stop();
-            } else {
-                anims[_barIndex].start();
-                _barIndex++;
-            }
-        }
-        Component.onCompleted: start()
     }
 
     Glow {

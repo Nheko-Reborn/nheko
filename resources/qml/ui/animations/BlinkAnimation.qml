@@ -2,25 +2,31 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtQuick 2.12
 import QtGraphicalEffects 1.12
+import QtQuick 2.12
 
 SequentialAnimation {
     property alias target: numberAnimation.target
     property alias glowDuration: numberAnimation.duration
-    property alias pauseDuration: pauseAnimation.duration
+    property int pauseDuration: 150
+    property double offset: 0
 
     loops: Animation.Infinite
 
+    PauseAnimation {
+        duration: pauseDuration * offset
+    }
+
     NumberAnimation {
         id: numberAnimation
+
         property: "opacity"
         from: 0
         to: 1
     }
 
     PauseAnimation {
-        id: pauseAnimation
+        duration: pauseDuration * (1 - offset)
     }
 
 }
