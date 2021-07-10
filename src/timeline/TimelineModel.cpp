@@ -323,6 +323,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         if (auto create =
               cache::client()->getStateEvent<mtx::events::state::Create>(room_id.toStdString()))
                 this->isSpace_ = create->content.type == mtx::events::state::room_type::space;
+        this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
 
         connect(
           this,
@@ -435,7 +436,6 @@ TimelineModel::roleNames() const
           {IsEditable, "isEditable"},
           {IsEncrypted, "isEncrypted"},
           {Trustlevel, "trustlevel"},
-          {IsRoomEncrypted, "isRoomEncrypted"},
           {ReplyTo, "replyTo"},
           {Reactions, "reactions"},
           {RoomId, "roomId"},
@@ -622,9 +622,6 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 return crypto::Trust::Unverified;
         }
 
-        case IsRoomEncrypted: {
-                return cache::isRoomEncrypted(room_id_.toStdString());
-        }
         case ReplyTo:
                 return QVariant(QString::fromStdString(relations(event).reply_to().value_or("")));
         case Reactions: {
@@ -672,7 +669,6 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 m.insert(names[IsEdited], data(event, static_cast<int>(IsEdited)));
                 m.insert(names[IsEditable], data(event, static_cast<int>(IsEditable)));
                 m.insert(names[IsEncrypted], data(event, static_cast<int>(IsEncrypted)));
-                m.insert(names[IsRoomEncrypted], data(event, static_cast<int>(IsRoomEncrypted)));
                 m.insert(names[ReplyTo], data(event, static_cast<int>(ReplyTo)));
                 m.insert(names[RoomName], data(event, static_cast<int>(RoomName)));
                 m.insert(names[RoomTopic], data(event, static_cast<int>(RoomTopic)));
@@ -785,6 +781,9 @@ TimelineModel::syncState(const mtx::responses::State &s)
                         emit roomAvatarUrlChanged();
                         emit roomNameChanged();
                         emit roomMemberCountChanged();
+                } else if (std::holds_alternative<StateEvent<state::Encryption>>(e)) {
+                        this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
+                        emit encryptionChanged();
                 }
         }
 }
@@ -842,6 +841,9 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
                         emit roomAvatarUrlChanged();
                         emit roomNameChanged();
                         emit roomMemberCountChanged();
+                } else if (std::holds_alternative<StateEvent<state::Encryption>>(e)) {
+                        this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
+                        emit encryptionChanged();
                 }
         }
         updateLastMessage();

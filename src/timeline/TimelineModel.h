@@ -162,6 +162,7 @@ class TimelineModel : public QAbstractListModel
         Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY roomAvatarUrlChanged)
         Q_PROPERTY(QString roomTopic READ roomTopic NOTIFY roomTopicChanged)
         Q_PROPERTY(int roomMemberCount READ roomMemberCount NOTIFY roomMemberCountChanged)
+        Q_PROPERTY(bool isEncrypted READ isEncrypted NOTIFY encryptionChanged)
         Q_PROPERTY(bool isSpace READ isSpace CONSTANT)
         Q_PROPERTY(InputBar *input READ input CONSTANT)
         Q_PROPERTY(Permissions *permissions READ permissions NOTIFY permissionsChanged)
@@ -200,7 +201,6 @@ public:
                 IsEditable,
                 IsEncrypted,
                 Trustlevel,
-                IsRoomEncrypted,
                 ReplyTo,
                 Reactions,
                 RoomId,
@@ -265,6 +265,7 @@ public:
 
         DescInfo lastMessage() const { return lastMessage_; }
         bool isSpace() const { return isSpace_; }
+        bool isEncrypted() const { return isEncrypted_; }
         int roomMemberCount() const;
 
 public slots:
@@ -349,6 +350,7 @@ signals:
         void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);
         void updateFlowEventId(std::string event_id);
 
+        void encryptionChanged();
         void roomNameChanged();
         void roomTopicChanged();
         void roomAvatarUrlChanged();
@@ -394,6 +396,7 @@ private:
         bool decryptDescription     = true;
         bool m_paginationInProgress = false;
         bool isSpace_               = false;
+        bool isEncrypted_           = false;
 };
 
 template<class T>

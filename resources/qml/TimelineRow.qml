@@ -84,7 +84,7 @@ Item {
         }
 
         EncryptionIndicator {
-            visible: model.isRoomEncrypted
+            visible: room.isEncrypted
             encrypted: model.isEncrypted
             trust: model.trustlevel
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
