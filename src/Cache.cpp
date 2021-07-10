@@ -793,7 +793,6 @@ Cache::isInitialized()
 
         bool res = syncStateDb_.get(txn, NEXT_BATCH_KEY, token);
 
-
         return res;
 }
 
@@ -807,7 +806,6 @@ Cache::nextBatchToken()
         std::string_view token;
 
         bool result = syncStateDb_.get(txn, NEXT_BATCH_KEY, token);
-
 
         if (result)
                 return std::string(token.data(), token.size());
@@ -1187,14 +1185,14 @@ Cache::calculateRoomReadStatus(const std::string &room_id)
                         }
                 }
 
-        if (last_event_id.empty() || fullyReadEventId.empty())
-                return true;
+                if (last_event_id.empty() || fullyReadEventId.empty())
+                        return true;
 
-        if (last_event_id == fullyReadEventId)
-                return false;
+                if (last_event_id == fullyReadEventId)
+                        return false;
 
-        last_event_id_    = std::string(last_event_id);
-        fullyReadEventId_ = std::string(fullyReadEventId);
+                last_event_id_    = std::string(last_event_id);
+                fullyReadEventId_ = std::string(fullyReadEventId);
         }
 
         // Retrieve all read receipts for that event.
@@ -1527,7 +1525,6 @@ Cache::singleRoomInfo(const std::string &room_id)
                         tmp.join_rule    = getRoomJoinRule(txn, statesdb);
                         tmp.guest_access = getRoomGuestAccess(txn, statesdb);
 
-
                         return tmp;
                 } catch (const json::exception &e) {
                         nhlog::db()->warn("failed to parse room info: room_id ({}), {}: {}",
@@ -1536,7 +1533,6 @@ Cache::singleRoomInfo(const std::string &room_id)
                                           e.what());
                 }
         }
-
 
         return RoomInfo();
 }
