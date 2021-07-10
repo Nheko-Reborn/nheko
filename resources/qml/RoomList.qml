@@ -5,8 +5,8 @@
 import "./dialogs"
 import Qt.labs.platform 1.1 as Platform
 import QtQml 2.12
-import QtQuick 2.12
-import QtQuick.Controls 2.5
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import im.nheko 1.0
 
@@ -23,6 +23,7 @@ Page {
         anchors.right: parent.right
         height: parent.height
         model: Rooms
+        reuseItems: true
 
         ScrollHelper {
             flickable: parent
@@ -111,17 +112,28 @@ Page {
             property color unimportantText: Nheko.colors.buttonText
             property color bubbleBackground: Nheko.colors.highlight
             property color bubbleText: Nheko.colors.highlightedText
+            required property string roomName
+            required property string roomId
+            required property string avatarUrl
+            required property string time
+            required property string lastMessage
+            required property var tags
+            required property bool isInvite
+            required property bool isSpace
+            required property int notificationCount
+            required property bool hasLoudNotification
+            required property bool hasUnreadMessages
 
             color: background
             height: avatarSize + 2 * Nheko.paddingMedium
             width: ListView.view.width
             state: "normal"
             ToolTip.visible: hovered.hovered && collapsed
-            ToolTip.text: model.roomName
+            ToolTip.text: roomName
             states: [
                 State {
                     name: "highlight"
-                    when: hovered.hovered && !((Rooms.currentRoom && model.roomId == Rooms.currentRoom.roomId()) || Rooms.currentRoomPreview.roomid == model.roomId)
+                    when: hovered.hovered && !((Rooms.currentRoom && roomId == Rooms.currentRoom.roomId()) || Rooms.currentRoomPreview.roomid == roomId)
 
                     PropertyChanges {
                         target: roomItem
@@ -135,7 +147,7 @@ Page {
                 },
                 State {
                     name: "selected"
-                    when: (Rooms.currentRoom && model.roomId == Rooms.currentRoom.roomId()) || Rooms.currentRoomPreview.roomid == model.roomId
+                    when: (Rooms.currentRoom && roomId == Rooms.currentRoom.roomId()) || Rooms.currentRoomPreview.roomid == roomId
 
                     PropertyChanges {
                         target: roomItem
@@ -154,7 +166,7 @@ Page {
                 acceptedButtons: Qt.RightButton
                 onSingleTapped: {
                     if (!TimelineManager.isInvite)
-                        roomContextMenu.show(model.roomId, model.tags);
+                        roomContextMenu.show(roomId, tags);
 
                 }
                 gesturePolicy: TapHandler.ReleaseWithinBounds
@@ -162,10 +174,10 @@ Page {
 
             TapHandler {
                 margin: -Nheko.paddingSmall
-                onSingleTapped: Rooms.setCurrentRoom(model.roomId)
+                onSingleTapped: Rooms.setCurrentRoom(roomId)
                 onLongPressed: {
-                    if (!TimelineManager.isInvite)
-                        roomContextMenu.show(model.roomId, model.tags);
+                    if (!isInvite)
+                        roomContextMenu.show(roomId, tags);
 
                 }
             }
@@ -191,8 +203,8 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     height: avatarSize
                     width: avatarSize
-                    url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                    displayName: model.roomName
+                    url: avatarUrl.replace("mxc://", "image://MxcImage/")
+                    displayName: roomName
 
                     Rectangle {
                         id: collapsedNotificationBubble
@@ -200,13 +212,13 @@ Page {
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
                         anchors.margins: -Nheko.paddingSmall
-                        visible: collapsed && model.notificationCount > 0
+                        visible: collapsed && notificationCount > 0
                         enabled: false
                         Layout.alignment: Qt.AlignRight
                         height: fontMetrics.averageCharacterWidth * 3
                         width: height
                         radius: height / 2
-                        color: model.hasLoudNotification ? Nheko.theme.red : roomItem.bubbleBackground
+                        color: hasLoudNotification ? Nheko.theme.red : roomItem.bubbleBackground
 
                         Label {
                             anchors.centerIn: parent
@@ -217,8 +229,8 @@ Page {
                             fontSizeMode: Text.Fit
                             font.bold: true
                             font.pixelSize: fontMetrics.font.pixelSize * 0.8
-                            color: model.hasLoudNotification ? "white" : roomItem.bubbleText
-                            text: model.notificationCount > 99 ? "99+" : model.notificationCount
+                            color: hasLoudNotification ? "white" : roomItem.bubbleText
+                            text: notificationCount > 99 ? "99+" : notificationCount
                         }
 
                     }
@@ -244,7 +256,7 @@ Page {
                             Layout.alignment: Qt.AlignBottom
                             color: roomItem.importantText
                             elideWidth: textContent.width - timestamp.width - Nheko.paddingMedium
-                            fullText: model.roomName
+                            fullText: roomName
                             textFormat: Text.RichText
                         }
 
@@ -255,12 +267,12 @@ Page {
                         Label {
                             id: timestamp
 
-                            visible: !model.isInvite && !model.isSpace
+                            visible: !isInvite && !isSpace
                             width: visible ? 0 : undefined
                             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             color: roomItem.unimportantText
-                            text: model.time
+                            text: time
                         }
 
                     }
@@ -268,14 +280,14 @@ Page {
                     RowLayout {
                         Layout.fillWidth: true
                         spacing: 0
-                        visible: !model.isSpace
+                        visible: !isSpace
                         height: visible ? 0 : undefined
 
                         ElidedLabel {
                             color: roomItem.unimportantText
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             elideWidth: textContent.width - (notificationBubble.visible ? notificationBubble.width : 0) - Nheko.paddingSmall
-                            fullText: model.lastMessage
+                            fullText: lastMessage
                             textFormat: Text.RichText
                         }
 
@@ -286,12 +298,12 @@ Page {
                         Rectangle {
                             id: notificationBubble
 
-                            visible: model.notificationCount > 0
+                            visible: notificationCount > 0
                             Layout.alignment: Qt.AlignRight
                             height: fontMetrics.averageCharacterWidth * 3
                             width: height
                             radius: height / 2
-                            color: model.hasLoudNotification ? Nheko.theme.red : roomItem.bubbleBackground
+                            color: hasLoudNotification ? Nheko.theme.red : roomItem.bubbleBackground
 
                             Label {
                                 anchors.centerIn: parent
@@ -302,8 +314,8 @@ Page {
                                 fontSizeMode: Text.Fit
                                 font.bold: true
                                 font.pixelSize: fontMetrics.font.pixelSize * 0.8
-                                color: model.hasLoudNotification ? "white" : roomItem.bubbleText
-                                text: model.notificationCount > 99 ? "99+" : model.notificationCount
+                                color: hasLoudNotification ? "white" : roomItem.bubbleText
+                                text: notificationCount > 99 ? "99+" : notificationCount
                             }
 
                         }
@@ -320,7 +332,7 @@ Page {
                 height: parent.height - Nheko.paddingSmall * 2
                 width: 3
                 color: Nheko.colors.highlight
-                visible: model.hasUnreadMessages
+                visible: hasUnreadMessages
             }
 
         }
