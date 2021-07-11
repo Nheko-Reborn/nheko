@@ -27,7 +27,7 @@ AppDir:
     - sourceline: deb http://security.ubuntu.com/ubuntu bionic-security main restricted
     - sourceline: deb http://security.ubuntu.com/ubuntu bionic-security universe
     - sourceline: deb http://security.ubuntu.com/ubuntu bionic-security multiverse
-    - sourceline: deb http://archive.neon.kde.org/user/ bionic main
+    - sourceline: deb http://ppa.launchpad.net/beineri/opt-qt-5.15.2-bionic/ubuntu bionic main 
     include:
     - gstreamer1.0-libav
     - gstreamer1.0-plugins-bad
@@ -54,13 +54,13 @@ AppDir:
     - libopenexr22
     - libpcre3
     - libqt5keychain1
-    - libqt5multimedia5-plugins
-    - libqt5multimediagsttools5
-    - libqt5multimediawidgets5
-    - libqt5quickcontrols2-5
-    - libqt5quicktemplates2-5
-    - libqt5quickwidgets5
-    - libqt5svg5
+    - qt515base
+    - qt515declarative
+    - qt515tools
+    - qt515multimedia
+    - qt515script
+    - qt515quickcontrols2
+    - qt515svg
     - librubberband2
     - libsensors4
     - libsm6
@@ -82,15 +82,7 @@ AppDir:
     - libxv1
     - libxxf86vm1
     - libzstd1
-    - qml-module-qt-labs-platform
-    - qml-module-qtgraphicaleffects
-    - qml-module-qtmultimedia
-    - qml-module-qtquick-controls2
-    - qml-module-qtquick-layouts
-    - qml-module-qtquick-templates2
-    - qml-module-qtquick-window2
-    - qml-module-qtquick2
-    - qt5-image-formats-plugins
+    - qt515imageformats
     exclude: []
   files:
     exclude:
