@@ -33,6 +33,9 @@ Item {
     required property string replyTo
     required property string userId
     required property string userName
+    required property string roomTopic
+    required property string roomName
+    required property string callType
     required property var reactions
     required property int trustlevel
     required property var timestamp
@@ -101,6 +104,9 @@ Item {
                 userId: row.replyData.userId ?? ""
                 userName: row.replyData.userName ?? ""
                 thumbnailUrl: row.replyData.thumbnailUrl ?? ""
+                roomTopic: row.replyData.roomTopic ?? ""
+                roomName: row.replyData.roomName ?? ""
+                callType: row.replyData.callType ?? ""
             }
 
             // actual message content
@@ -123,6 +129,9 @@ Item {
                 isOnlyEmoji: r.isOnlyEmoji
                 userId: r.userId
                 userName: r.userName
+                roomTopic: r.roomTopic
+                roomName: r.roomName
+                callType: r.callType
                 isReply: false
             }
 

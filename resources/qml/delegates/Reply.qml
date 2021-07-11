@@ -27,6 +27,9 @@ Item {
     property string userId
     property string userName
     property string thumbnailUrl
+    property string roomTopic
+    property string roomName
+    property string callType
 
     width: parent.width
     height: replyContainer.height
@@ -89,6 +92,9 @@ Item {
             isOnlyEmoji: r.isOnlyEmoji
             userId: r.userId
             userName: r.userName
+            roomTopic: r.roomTopic
+            roomName: r.roomName
+            callType: r.callType
             enabled: false
             width: parent.width
             isReply: true

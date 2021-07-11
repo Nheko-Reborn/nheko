@@ -329,6 +329,9 @@ ScrollView {
             required property bool isEdited
             required property string replyTo
             required property string userId
+            required property string roomTopic
+            required property string roomName
+            required property string callType
             required property var reactions
             required property int trustlevel
             required property var timestamp
@@ -432,6 +435,9 @@ ScrollView {
                 replyTo: wrapper.replyTo
                 userId: wrapper.userId
                 userName: wrapper.userName
+                roomTopic: wrapper.roomTopic
+                roomName: wrapper.roomName
+                callType: wrapper.callType
                 reactions: wrapper.reactions
                 trustlevel: wrapper.trustlevel
                 timestamp: wrapper.timestamp

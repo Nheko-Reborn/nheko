@@ -26,6 +26,9 @@ Item {
     required property bool isOnlyEmoji
     required property string userId
     required property string userName
+    required property string roomTopic
+    required property string roomName
+    required property string callType
 
     height: chooser.childrenRect.height
 
@@ -192,7 +195,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: model.data.roomName ? qsTr("room name changed to: %1").arg(model.data.roomName) : qsTr("removed room name")
+                formatted: d.roomName ? qsTr("room name changed to: %1").arg(d.roomName) : qsTr("removed room name")
             }
 
         }
@@ -204,7 +207,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: model.data.roomTopic ? qsTr("topic changed to: %1").arg(model.data.roomTopic) : qsTr("removed topic")
+                formatted: d.roomTopic ? qsTr("topic changed to: %1").arg(d.roomTopic) : qsTr("removed topic")
             }
 
         }
@@ -228,7 +231,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: qsTr("%1 created and configured room: %2").arg(d.userName).arg(model.data.roomId)
+                formatted: qsTr("%1 created and configured room: %2").arg(d.userName).arg(room.roomId())
             }
 
         }
@@ -241,7 +244,7 @@ Item {
                 isOnlyEmoji: false
                 isReply: d.isReply
                 formatted: {
-                    switch (model.data.callType) {
+                    switch (d.callType) {
                     case "voice":
                         return qsTr("%1 placed a voice call.").arg(d.userName);
                     case "video":
