@@ -161,6 +161,7 @@ appimage-amd64:
     QT_PKG: 515
   before_script:
     # app build requirements
+    - apt-get update && apt-get install -y software-properties-common
     - add-apt-repository ppa:beineri/opt-qt-5.15.2-xenial -y
     - apt-get update
     - apt-get install -y git wget curl
