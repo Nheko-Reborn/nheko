@@ -134,7 +134,7 @@ choco install nheko-reborn
 
 ### Build Requirements
 
-- Qt5 (5.12 or greater). Required for overlapping hover handlers in Qml.
+- Qt5 (5.15 or greater). Required for overlapping hover handlers in Qml.
 - CMake 3.15 or greater. (Lower version may work, but may break boost linking)
 - [mtxclient](https://github.com/Nheko-Reborn/mtxclient)
 - [coeurl](https://nheko.im/nheko-reborn/coeurl)
