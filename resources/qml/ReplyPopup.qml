@@ -21,15 +21,30 @@ Rectangle {
     Reply {
         id: replyPreview
 
+        property var modelData: room ? room.getDump(room.reply, room.id) : {
+        }
+
         visible: room && room.reply
         anchors.left: parent.left
         anchors.leftMargin: 2 * 22 + 3 * 16
         anchors.right: closeReplyButton.left
         anchors.rightMargin: 2 * 22 + 3 * 16
         anchors.bottom: parent.bottom
-        modelData: room ? room.getDump(room.reply, room.id) : {
-        }
         userColor: TimelineManager.userColor(modelData.userId, Nheko.colors.window)
+        blurhash: modelData.blurhash ?? ""
+        body: modelData.body ?? ""
+        formattedBody: modelData.formattedBody ?? ""
+        eventId: modelData.eventId ?? ""
+        filename: modelData.filename ?? ""
+        filesize: modelData.filesize ?? ""
+        proportionalHeight: modelData.proportionalHeight ?? 1
+        type: modelData.type ?? MtxEvent.UnknownMessage
+        typeString: modelData.typeString ?? ""
+        url: modelData.url ?? ""
+        originalWidth: modelData.originalWidth ?? 0
+        isOnlyEmoji: modelData.isOnlyEmoji ?? false
+        userId: modelData.userId ?? ""
+        userName: modelData.userName ?? ""
     }
 
     ImageButton {

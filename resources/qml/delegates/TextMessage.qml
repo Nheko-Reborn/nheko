@@ -6,8 +6,11 @@ import ".."
 import im.nheko 1.0
 
 MatrixText {
-    property string formatted: model.data.formattedBody
-    property string copyText: selectedText ? getText(selectionStart, selectionEnd) : model.data.body
+    required property string body
+    required property bool isOnlyEmoji
+    required property bool isReply
+    required property string formatted
+    property string copyText: selectedText ? getText(selectionStart, selectionEnd) : body
 
     // table border-collapse doesn't seem to work
     text: "
@@ -31,5 +34,5 @@ MatrixText {
     height: isReply ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : undefined
     clip: isReply
     selectByMouse: !Settings.mobileMode && !isReply
-    font.pointSize: (Settings.enlargeEmojiOnlyMessages && model.data.isOnlyEmoji > 0 && model.data.isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize
+    font.pointSize: (Settings.enlargeEmojiOnlyMessages && isOnlyEmoji > 0 && isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize
 }

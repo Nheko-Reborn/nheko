@@ -12,10 +12,21 @@ import im.nheko 1.0
 Rectangle {
     id: bg
 
+    required property double proportionalHeight
+    required property int type
+    required property int originalWidth
+    required property string thumbnailUrl
+    required property string eventId
+    required property string url
+    required property string body
+    required property string filesize
+
     radius: 10
     color: Nheko.colors.alternateBase
     height: Math.round(content.height + 24)
     width: parent ? parent.width : undefined
+    ListView.onPooled: height = 4
+    ListView.onReused: height = Math.round(content.height + 24)
 
     Column {
         id: content
@@ -26,18 +37,18 @@ Rectangle {
         Rectangle {
             id: videoContainer
 
-            property double tempWidth: Math.min(parent ? parent.width : undefined, model.data.width < 1 ? 400 : model.data.width)
-            property double tempHeight: tempWidth * model.data.proportionalHeight
-            property double divisor: model.isReply ? 4 : 2
+            property double tempWidth: Math.min(parent ? parent.width : undefined, originalWidth < 1 ? 400 : originalWidth)
+            property double tempHeight: tempWidth * proportionalHeight
+            property double divisor: isReply ? 4 : 2
             property bool tooHigh: tempHeight > timelineView.height / divisor
 
-            visible: model.data.type == MtxEvent.VideoMessage
+            visible: type == MtxEvent.VideoMessage
             height: tooHigh ? timelineView.height / divisor : tempHeight
-            width: tooHigh ? (timelineView.height / divisor) / model.data.proportionalHeight : tempWidth
+            width: tooHigh ? (timelineView.height / divisor) / proportionalHeight : tempWidth
 
             Image {
                 anchors.fill: parent
-                source: model.data.thumbnailUrl.replace("mxc://", "image://MxcImage/")
+                source: thumbnailUrl.replace("mxc://", "image://MxcImage/")
                 asynchronous: true
                 fillMode: Image.PreserveAspectFit
 
@@ -121,7 +132,7 @@ Rectangle {
                 onClicked: {
                     switch (button.state) {
                     case "":
-                        room.cacheMedia(model.data.id);
+                        room.cacheMedia(eventId);
                         break;
                     case "stopped":
                         media.play();
@@ -176,7 +187,7 @@ Rectangle {
                 Connections {
                     target: room
                     onMediaCached: {
-                        if (mxcUrl == model.data.url) {
+                        if (mxcUrl == url) {
                             media.source = cacheUrl;
                             button.state = "stopped";
                             console.log("media loaded: " + mxcUrl + " at " + cacheUrl);
@@ -192,14 +203,14 @@ Rectangle {
 
                 Text {
                     Layout.fillWidth: true
-                    text: model.data.body
+                    text: body
                     elide: Text.ElideRight
                     color: Nheko.colors.text
                 }
 
                 Text {
                     Layout.fillWidth: true
-                    text: model.data.filesize
+                    text: filesize
                     textFormat: Text.PlainText
                     elide: Text.ElideRight
                     color: Nheko.colors.text

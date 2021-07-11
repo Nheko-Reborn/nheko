@@ -192,10 +192,10 @@ public:
                 Filename,
                 Filesize,
                 MimeType,
-                Height,
-                Width,
+                OriginalHeight,
+                OriginalWidth,
                 ProportionalHeight,
-                Id,
+                EventId,
                 State,
                 IsEdited,
                 IsEditable,
@@ -245,6 +245,11 @@ public:
         Q_INVOKABLE void showEvent(QString eventId);
         Q_INVOKABLE void copyLinkToEvent(QString eventId) const;
         void cacheMedia(QString eventId, std::function<void(const QString filename)> callback);
+        Q_INVOKABLE void sendReset()
+        {
+                beginResetModel();
+                endResetModel();
+        }
 
         std::vector<::Reaction> reactions(const std::string &event_id)
         {

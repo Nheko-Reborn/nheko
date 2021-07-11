@@ -50,9 +50,24 @@ Popup {
         Reply {
             id: replyPreview
 
-            modelData: room ? room.getDump(mid, "") : {
+            property var modelData: room ? room.getDump(mid, "") : {
             }
+
             userColor: TimelineManager.userColor(modelData.userId, Nheko.colors.window)
+            blurhash: modelData.blurhash ?? ""
+            body: modelData.body ?? ""
+            formattedBody: modelData.formattedBody ?? ""
+            eventId: modelData.eventId ?? ""
+            filename: modelData.filename ?? ""
+            filesize: modelData.filesize ?? ""
+            proportionalHeight: modelData.proportionalHeight ?? 1
+            type: modelData.type ?? MtxEvent.UnknownMessage
+            typeString: modelData.typeString ?? ""
+            url: modelData.url ?? ""
+            originalWidth: modelData.originalWidth ?? 0
+            isOnlyEmoji: modelData.isOnlyEmoji ?? false
+            userId: modelData.userId ?? ""
+            userName: modelData.userName ?? ""
         }
 
         MatrixTextField {

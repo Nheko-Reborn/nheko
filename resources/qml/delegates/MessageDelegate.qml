@@ -6,32 +6,41 @@ import QtQuick 2.6
 import im.nheko 1.0
 
 Item {
-    property alias modelData: model.data
-    property alias isReply: model.isReply
+    id: d
+
+    required property bool isReply
     property alias child: chooser.child
     property real implicitWidth: (chooser.child && chooser.child.implicitWidth) ? chooser.child.implicitWidth : width
+    required property double proportionalHeight
+    required property int type
+    required property string typeString
+    required property int originalWidth
+    required property string blurhash
+    required property string body
+    required property string formattedBody
+    required property string eventId
+    required property string filename
+    required property string filesize
+    required property string url
+    required property string thumbnailUrl
+    required property bool isOnlyEmoji
+    required property string userId
+    required property string userName
 
     height: chooser.childrenRect.height
-
-    // Workaround to have an assignable global property
-    Item {
-        id: model
-
-        property var data
-        property bool isReply: false
-    }
 
     DelegateChooser {
         id: chooser
 
         //role: "type" //< not supported in our custom implementation, have to use roleValue
-        roleValue: model.data.type
+        roleValue: type
         anchors.fill: parent
 
         DelegateChoice {
             roleValue: MtxEvent.UnknownMessage
 
             Placeholder {
+                typeString: d.typeString
                 text: "Unretrieved event"
             }
 
@@ -41,6 +50,10 @@ Item {
             roleValue: MtxEvent.TextMessage
 
             TextMessage {
+                formatted: d.formattedBody
+                body: d.body
+                isOnlyEmoji: d.isOnlyEmoji
+                isReply: d.isReply
             }
 
         }
@@ -49,6 +62,10 @@ Item {
             roleValue: MtxEvent.NoticeMessage
 
             NoticeMessage {
+                formatted: d.formattedBody
+                body: d.body
+                isOnlyEmoji: d.isOnlyEmoji
+                isReply: d.isReply
             }
 
         }
@@ -57,8 +74,11 @@ Item {
             roleValue: MtxEvent.EmoteMessage
 
             NoticeMessage {
-                formatted: TimelineManager.escapeEmoji(modelData.userName) + " " + model.data.formattedBody
-                color: TimelineManager.userColor(modelData.userId, Nheko.colors.window)
+                formatted: TimelineManager.escapeEmoji(d.userName) + " " + d.formattedBody
+                color: TimelineManager.userColor(d.userId, Nheko.colors.window)
+                body: d.body
+                isOnlyEmoji: d.isOnlyEmoji
+                isReply: d.isReply
             }
 
         }
@@ -67,6 +87,14 @@ Item {
             roleValue: MtxEvent.ImageMessage
 
             ImageMessage {
+                type: d.type
+                originalWidth: d.originalWidth
+                proportionalHeight: d.proportionalHeight
+                url: d.url
+                blurhash: d.blurhash
+                body: d.body
+                filename: d.filename
+                isReply: d.isReply
             }
 
         }
@@ -75,6 +103,14 @@ Item {
             roleValue: MtxEvent.Sticker
 
             ImageMessage {
+                type: d.type
+                originalWidth: d.originalWidth
+                proportionalHeight: d.proportionalHeight
+                url: d.url
+                blurhash: d.blurhash
+                body: d.body
+                filename: d.filename
+                isReply: d.isReply
             }
 
         }
@@ -83,6 +119,9 @@ Item {
             roleValue: MtxEvent.FileMessage
 
             FileMessage {
+                eventId: d.eventId
+                filename: d.filename
+                filesize: d.filesize
             }
 
         }
@@ -91,6 +130,14 @@ Item {
             roleValue: MtxEvent.VideoMessage
 
             PlayableMediaMessage {
+                proportionalHeight: d.proportionalHeight
+                type: d.type
+                originalWidth: d.originalWidth
+                thumbnailUrl: d.thumbnailUrl
+                eventId: d.eventId
+                url: d.url
+                body: d.body
+                filesize: d.filesize
             }
 
         }
@@ -99,6 +146,14 @@ Item {
             roleValue: MtxEvent.AudioMessage
 
             PlayableMediaMessage {
+                proportionalHeight: d.proportionalHeight
+                type: d.type
+                originalWidth: d.originalWidth
+                thumbnailUrl: d.thumbnailUrl
+                eventId: d.eventId
+                url: d.url
+                body: d.body
+                filesize: d.filesize
             }
 
         }
@@ -134,7 +189,10 @@ Item {
             roleValue: MtxEvent.Name
 
             NoticeMessage {
-                text: model.data.roomName ? qsTr("room name changed to: %1").arg(model.data.roomName) : qsTr("removed room name")
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: model.data.roomName ? qsTr("room name changed to: %1").arg(model.data.roomName) : qsTr("removed room name")
             }
 
         }
@@ -143,7 +201,10 @@ Item {
             roleValue: MtxEvent.Topic
 
             NoticeMessage {
-                text: model.data.roomTopic ? qsTr("topic changed to: %1").arg(model.data.roomTopic) : qsTr("removed topic")
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: model.data.roomTopic ? qsTr("topic changed to: %1").arg(model.data.roomTopic) : qsTr("removed topic")
             }
 
         }
@@ -152,7 +213,10 @@ Item {
             roleValue: MtxEvent.Avatar
 
             NoticeMessage {
-                text: qsTr("%1 changed the room avatar").arg(model.data.userName)
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: qsTr("%1 changed the room avatar").arg(d.userName)
             }
 
         }
@@ -161,7 +225,10 @@ Item {
             roleValue: MtxEvent.RoomCreate
 
             NoticeMessage {
-                text: qsTr("%1 created and configured room: %2").arg(model.data.userName).arg(model.data.roomId)
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: qsTr("%1 created and configured room: %2").arg(d.userName).arg(model.data.roomId)
             }
 
         }
@@ -170,14 +237,17 @@ Item {
             roleValue: MtxEvent.CallInvite
 
             NoticeMessage {
-                text: {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: {
                     switch (model.data.callType) {
                     case "voice":
-                        return qsTr("%1 placed a voice call.").arg(model.data.userName);
+                        return qsTr("%1 placed a voice call.").arg(d.userName);
                     case "video":
-                        return qsTr("%1 placed a video call.").arg(model.data.userName);
+                        return qsTr("%1 placed a video call.").arg(d.userName);
                     default:
-                        return qsTr("%1 placed a call.").arg(model.data.userName);
+                        return qsTr("%1 placed a call.").arg(d.userName);
                     }
                 }
             }
@@ -188,7 +258,10 @@ Item {
             roleValue: MtxEvent.CallAnswer
 
             NoticeMessage {
-                text: qsTr("%1 answered the call.").arg(model.data.userName)
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: qsTr("%1 answered the call.").arg(d.userName)
             }
 
         }
@@ -197,7 +270,10 @@ Item {
             roleValue: MtxEvent.CallHangUp
 
             NoticeMessage {
-                text: qsTr("%1 ended the call.").arg(model.data.userName)
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: qsTr("%1 ended the call.").arg(d.userName)
             }
 
         }
@@ -206,7 +282,10 @@ Item {
             roleValue: MtxEvent.CallCandidates
 
             NoticeMessage {
-                text: qsTr("Negotiating call...")
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: qsTr("Negotiating call...")
             }
 
         }
@@ -216,7 +295,10 @@ Item {
             roleValue: MtxEvent.PowerLevels
 
             NoticeMessage {
-                text: room.formatPowerLevelEvent(model.data.id)
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: room.formatPowerLevelEvent(d.eventId)
             }
 
         }
@@ -225,7 +307,10 @@ Item {
             roleValue: MtxEvent.RoomJoinRules
 
             NoticeMessage {
-                text: room.formatJoinRuleEvent(model.data.id)
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: room.formatJoinRuleEvent(d.eventId)
             }
 
         }
@@ -234,7 +319,10 @@ Item {
             roleValue: MtxEvent.RoomHistoryVisibility
 
             NoticeMessage {
-                text: room.formatHistoryVisibilityEvent(model.data.id)
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: room.formatHistoryVisibilityEvent(d.eventId)
             }
 
         }
@@ -243,7 +331,10 @@ Item {
             roleValue: MtxEvent.RoomGuestAccess
 
             NoticeMessage {
-                text: room.formatGuestAccessEvent(model.data.id)
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: room.formatGuestAccessEvent(d.eventId)
             }
 
         }
@@ -252,7 +343,10 @@ Item {
             roleValue: MtxEvent.Member
 
             NoticeMessage {
-                text: room.formatMemberEvent(model.data.id)
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: room.formatMemberEvent(d.eventId)
             }
 
         }
@@ -261,7 +355,10 @@ Item {
             roleValue: MtxEvent.KeyVerificationRequest
 
             NoticeMessage {
-                text: "KeyVerificationRequest"
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: "KeyVerificationRequest"
             }
 
         }
@@ -270,7 +367,10 @@ Item {
             roleValue: MtxEvent.KeyVerificationStart
 
             NoticeMessage {
-                text: "KeyVerificationStart"
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: "KeyVerificationStart"
             }
 
         }
@@ -279,7 +379,10 @@ Item {
             roleValue: MtxEvent.KeyVerificationReady
 
             NoticeMessage {
-                text: "KeyVerificationReady"
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: "KeyVerificationReady"
             }
 
         }
@@ -288,7 +391,10 @@ Item {
             roleValue: MtxEvent.KeyVerificationCancel
 
             NoticeMessage {
-                text: "KeyVerificationCancel"
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: "KeyVerificationCancel"
             }
 
         }
@@ -297,7 +403,10 @@ Item {
             roleValue: MtxEvent.KeyVerificationKey
 
             NoticeMessage {
-                text: "KeyVerificationKey"
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: "KeyVerificationKey"
             }
 
         }
@@ -306,7 +415,10 @@ Item {
             roleValue: MtxEvent.KeyVerificationMac
 
             NoticeMessage {
-                text: "KeyVerificationMac"
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: "KeyVerificationMac"
             }
 
         }
@@ -315,7 +427,10 @@ Item {
             roleValue: MtxEvent.KeyVerificationDone
 
             NoticeMessage {
-                text: "KeyVerificationDone"
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: "KeyVerificationDone"
             }
 
         }
@@ -324,7 +439,10 @@ Item {
             roleValue: MtxEvent.KeyVerificationDone
 
             NoticeMessage {
-                text: "KeyVerificationDone"
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: "KeyVerificationDone"
             }
 
         }
@@ -333,13 +451,17 @@ Item {
             roleValue: MtxEvent.KeyVerificationAccept
 
             NoticeMessage {
-                text: "KeyVerificationAccept"
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: "KeyVerificationAccept"
             }
 
         }
 
         DelegateChoice {
             Placeholder {
+                typeString: d.typeString
             }
 
         }

@@ -79,7 +79,7 @@ Popup {
                 height: Nheko.avatarSize
                 url: room.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
                 displayName: room.roomName
-                onClicked: TimelineManager.openImageOverlay(room.avatarUrl(userid), room.data.id)
+                onClicked: TimelineManager.openImageOverlay(room.avatarUrl(userid), room.data.eventId)
             }
 
             Button {

@@ -9,16 +9,30 @@ import QtQuick.Window 2.2
 import im.nheko 1.0
 
 Item {
-    id: replyComponent
+    id: r
 
-    property alias modelData: reply.modelData
     property color userColor: "red"
+    property double proportionalHeight
+    property int type
+    property string typeString
+    property int originalWidth
+    property string blurhash
+    property string body
+    property string formattedBody
+    property string eventId
+    property string filename
+    property string filesize
+    property string url
+    property bool isOnlyEmoji
+    property string userId
+    property string userName
+    property string thumbnailUrl
 
     width: parent.width
     height: replyContainer.height
 
     TapHandler {
-        onSingleTapped: chat.model.showEvent(modelData.id)
+        onSingleTapped: chat.model.showEvent(eventId)
         gesturePolicy: TapHandler.ReleaseWithinBounds
     }
 
@@ -33,7 +47,7 @@ Item {
         anchors.top: replyContainer.top
         anchors.bottom: replyContainer.bottom
         width: 4
-        color: TimelineManager.userColor(reply.modelData.userId, Nheko.colors.window)
+        color: TimelineManager.userColor(userId, Nheko.colors.window)
     }
 
     Column {
@@ -44,14 +58,14 @@ Item {
         width: parent.width - 8
 
         Text {
-            id: userName
+            id: userName_
 
-            text: TimelineManager.escapeEmoji(reply.modelData.userName)
-            color: replyComponent.userColor
+            text: TimelineManager.escapeEmoji(userName)
+            color: r.userColor
             textFormat: Text.RichText
 
             TapHandler {
-                onSingleTapped: chat.model.openUserProfile(reply.modelData.userId)
+                onSingleTapped: chat.model.openUserProfile(userId)
                 gesturePolicy: TapHandler.ReleaseWithinBounds
             }
 
@@ -60,6 +74,21 @@ Item {
         MessageDelegate {
             id: reply
 
+            blurhash: r.blurhash
+            body: r.body
+            formattedBody: r.formattedBody
+            eventId: r.eventId
+            filename: r.filename
+            filesize: r.filesize
+            proportionalHeight: r.proportionalHeight
+            type: r.type
+            typeString: r.typeString ?? ""
+            url: r.url
+            thumbnailUrl: r.thumbnailUrl
+            originalWidth: r.originalWidth
+            isOnlyEmoji: r.isOnlyEmoji
+            userId: r.userId
+            userName: r.userName
             enabled: false
             width: parent.width
             isReply: true
@@ -72,7 +101,7 @@ Item {
 
         z: -1
         height: replyContainer.height
-        width: Math.min(Math.max(reply.implicitWidth, userName.implicitWidth) + 8 + 4, parent.width)
+        width: Math.min(Math.max(reply.implicitWidth, userName_.implicitWidth) + 8 + 4, parent.width)
         color: Qt.rgba(userColor.r, userColor.g, userColor.b, 0.1)
     }
 

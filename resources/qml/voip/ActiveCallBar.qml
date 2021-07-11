@@ -35,7 +35,7 @@ Rectangle {
             height: Nheko.avatarSize
             url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
             displayName: CallManager.callParty
-            onClicked: TimelineManager.openImageOverlay(room.avatarUrl(userid), room.data.id)
+            onClicked: TimelineManager.openImageOverlay(room.avatarUrl(userid), room.data.eventId)
         }
 
         Label {

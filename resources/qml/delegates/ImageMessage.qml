@@ -6,20 +6,28 @@ import QtQuick 2.12
 import im.nheko 1.0
 
 Item {
-    property double tempWidth: Math.min(parent ? parent.width : undefined, model.data.width < 1 ? parent.width : model.data.width)
-    property double tempHeight: tempWidth * model.data.proportionalHeight
-    property double divisor: model.isReply ? 5 : 3
+    required property int type
+    required property int originalWidth
+    required property double proportionalHeight
+    required property string url
+    required property string blurhash
+    required property string body
+    required property string filename
+    required property bool isReply
+    property double tempWidth: Math.min(parent ? parent.width : undefined, originalWidth < 1 ? 200 : originalWidth)
+    property double tempHeight: tempWidth * proportionalHeight
+    property double divisor: isReply ? 5 : 3
     property bool tooHigh: tempHeight > timelineView.height / divisor
 
     height: Math.round(tooHigh ? timelineView.height / divisor : tempHeight)
-    width: Math.round(tooHigh ? (timelineView.height / divisor) / model.data.proportionalHeight : tempWidth)
+    width: Math.round(tooHigh ? (timelineView.height / divisor) / proportionalHeight : tempWidth)
 
     Image {
-        id: blurhash
+        id: blurhash_
 
         anchors.fill: parent
         visible: img.status != Image.Ready
-        source: model.data.blurhash ? ("image://blurhash/" + model.data.blurhash) : ("image://colorimage/:/icons/icons/ui/do-not-disturb-rounded-sign@2x.png?" + Nheko.colors.buttonText)
+        source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/do-not-disturb-rounded-sign@2x.png?" + Nheko.colors.buttonText)
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         sourceSize.width: parent.width
@@ -30,16 +38,16 @@ Item {
         id: img
 
         anchors.fill: parent
-        source: model.data.url.replace("mxc://", "image://MxcImage/")
+        source: url.replace("mxc://", "image://MxcImage/")
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         smooth: true
         mipmap: true
 
         TapHandler {
-            enabled: model.data.type == MtxEvent.ImageMessage && img.status == Image.Ready
+            enabled: type == MtxEvent.ImageMessage && img.status == Image.Ready
             onSingleTapped: {
-                TimelineManager.openImageOverlay(model.data.url, model.data.id);
+                TimelineManager.openImageOverlay(url, room.data.eventId);
                 eventPoint.accepted = true;
             }
             gesturePolicy: TapHandler.ReleaseWithinBounds
@@ -73,7 +81,7 @@ Item {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 // See this MSC: https://github.com/matrix-org/matrix-doc/pull/2530
-                text: model.data.filename ? model.data.filename : model.data.body
+                text: filename ? filename : body
                 color: Nheko.colors.text
             }
 

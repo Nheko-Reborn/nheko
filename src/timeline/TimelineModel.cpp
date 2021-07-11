@@ -427,11 +427,11 @@ TimelineModel::roleNames() const
           {Filename, "filename"},
           {Filesize, "filesize"},
           {MimeType, "mimetype"},
-          {Height, "height"},
-          {Width, "width"},
+          {OriginalHeight, "originalHeight"},
+          {OriginalWidth, "originalWidth"},
           {ProportionalHeight, "proportionalHeight"},
-          {Id, "id"},
-          {State, "state"},
+          {EventId, "eventId"},
+          {State, "status"},
           {IsEdited, "isEdited"},
           {IsEditable, "isEditable"},
           {IsEncrypted, "isEncrypted"},
@@ -556,9 +556,9 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 return QVariant(utils::humanReadableFileSize(filesize(event)));
         case MimeType:
                 return QVariant(QString::fromStdString(mimetype(event)));
-        case Height:
+        case OriginalHeight:
                 return QVariant(qulonglong{media_height(event)});
-        case Width:
+        case OriginalWidth:
                 return QVariant(qulonglong{media_width(event)});
         case ProportionalHeight: {
                 auto w = media_width(event);
@@ -569,7 +569,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
 
                 return QVariant(prop > 0 ? prop : 1.);
         }
-        case Id: {
+        case EventId: {
                 if (auto replaces = relations(event).replaces())
                         return QVariant(QString::fromStdString(replaces.value()));
                 else
@@ -660,11 +660,11 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 m.insert(names[Filename], data(event, static_cast<int>(Filename)));
                 m.insert(names[Filesize], data(event, static_cast<int>(Filesize)));
                 m.insert(names[MimeType], data(event, static_cast<int>(MimeType)));
-                m.insert(names[Height], data(event, static_cast<int>(Height)));
-                m.insert(names[Width], data(event, static_cast<int>(Width)));
+                m.insert(names[OriginalHeight], data(event, static_cast<int>(OriginalHeight)));
+                m.insert(names[OriginalWidth], data(event, static_cast<int>(OriginalWidth)));
                 m.insert(names[ProportionalHeight],
                          data(event, static_cast<int>(ProportionalHeight)));
-                m.insert(names[Id], data(event, static_cast<int>(Id)));
+                m.insert(names[EventId], data(event, static_cast<int>(EventId)));
                 m.insert(names[State], data(event, static_cast<int>(State)));
                 m.insert(names[IsEdited], data(event, static_cast<int>(IsEdited)));
                 m.insert(names[IsEditable], data(event, static_cast<int>(IsEditable)));

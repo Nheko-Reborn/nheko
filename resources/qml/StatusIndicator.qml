@@ -9,14 +9,17 @@ import im.nheko 1.0
 ImageButton {
     id: indicator
 
+    required property int status
+    required property string eventId
+
     width: 16
     height: 16
     hoverEnabled: true
-    changeColorOnHover: (model.state == MtxEvent.Read)
-    cursor: (model.state == MtxEvent.Read) ? Qt.PointingHandCursor : Qt.ArrowCursor
-    ToolTip.visible: hovered && model.state != MtxEvent.Empty
+    changeColorOnHover: (status == MtxEvent.Read)
+    cursor: (status == MtxEvent.Read) ? Qt.PointingHandCursor : Qt.ArrowCursor
+    ToolTip.visible: hovered && status != MtxEvent.Empty
     ToolTip.text: {
-        switch (model.state) {
+        switch (status) {
         case MtxEvent.Failed:
             return qsTr("Failed");
         case MtxEvent.Sent:
@@ -30,12 +33,12 @@ ImageButton {
         }
     }
     onClicked: {
-        if (model.state == MtxEvent.Read)
-            room.readReceiptsAction(model.id);
+        if (status == MtxEvent.Read)
+            room.readReceiptsAction(eventId);
 
     }
     image: {
-        switch (model.state) {
+        switch (status) {
         case MtxEvent.Failed:
             return ":/icons/icons/ui/remove-symbol.png";
         case MtxEvent.Sent:

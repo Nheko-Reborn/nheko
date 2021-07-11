@@ -7,6 +7,10 @@ import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
 Item {
+    required property string eventId
+    required property string filename
+    required property string filesize
+
     height: row.height + 24
     width: parent ? parent.width : undefined
 
@@ -34,7 +38,7 @@ Item {
             }
 
             TapHandler {
-                onSingleTapped: room.saveMedia(model.data.id)
+                onSingleTapped: room.saveMedia(eventId)
                 gesturePolicy: TapHandler.ReleaseWithinBounds
             }
 
@@ -49,20 +53,20 @@ Item {
             id: col
 
             Text {
-                id: filename
+                id: filename_
 
                 Layout.fillWidth: true
-                text: model.data.filename
+                text: filename
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
                 color: Nheko.colors.text
             }
 
             Text {
-                id: filesize
+                id: filesize_
 
                 Layout.fillWidth: true
-                text: model.data.filesize
+                text: filesize
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
                 color: Nheko.colors.text
@@ -77,7 +81,7 @@ Item {
         z: -1
         radius: 10
         height: row.height + 24
-        width: 44 + 24 + 24 + Math.max(Math.min(filesize.width, filesize.implicitWidth), Math.min(filename.width, filename.implicitWidth))
+        width: 44 + 24 + 24 + Math.max(Math.min(filesize_.width, filesize_.implicitWidth), Math.min(filename_.width, filename_.implicitWidth))
     }
 
 }

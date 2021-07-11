@@ -7,8 +7,8 @@ import "./emoji"
 import "./ui"
 import Qt.labs.platform 1.1 as Platform
 import QtGraphicalEffects 1.0
-import QtQuick 2.12
-import QtQuick.Controls 2.3
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import im.nheko 1.0
@@ -25,6 +25,9 @@ ScrollView {
         property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < parent.availableWidth) ? Settings.timelineMaxWidth : parent.availableWidth) - parent.padding * 2
 
         model: room
+        // reuseItems still has a few bugs, see https://bugreports.qt.io/browse/QTBUG-95105 https://bugreports.qt.io/browse/QTBUG-95107
+        //onModelChanged: if (room) room.sendReset()
+        //reuseItems: true
         boundsBehavior: Flickable.StopAtBounds
         pixelAligned: true
         spacing: 4
@@ -84,7 +87,7 @@ ScrollView {
                     ToolTip.text: qsTr("Edit")
                     onClicked: {
                         if (row.model.isEditable)
-                            chat.model.editAction(row.model.id);
+                            chat.model.editAction(row.model.eventId);
 
                     }
                 }
@@ -98,7 +101,7 @@ ScrollView {
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("React")
                     emojiPicker: emojiPopup
-                    event_id: row.model ? row.model.id : ""
+                    event_id: row.model ? row.model.eventId : ""
                 }
 
                 ImageButton {
@@ -110,7 +113,7 @@ ScrollView {
                     image: ":/icons/icons/ui/mail-reply.png"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Reply")
-                    onClicked: chat.model.replyAction(row.model.id)
+                    onClicked: chat.model.replyAction(row.model.eventId)
                 }
 
                 ImageButton {
@@ -121,7 +124,7 @@ ScrollView {
                     image: ":/icons/icons/ui/vertical-ellipsis.png"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Options")
-                    onClicked: messageContextMenu.show(row.model.id, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
+                    onClicked: messageContextMenu.show(row.model.eventId, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
                 }
 
             }
@@ -212,16 +215,16 @@ ScrollView {
                 topPadding: 4
                 bottomPadding: 4
                 spacing: 8
-                visible: modelData && (modelData.previousMessageUserId !== modelData.userId || modelData.previousMessageDay !== modelData.day)
+                visible: (previousMessageUserId !== userId || previousMessageDay !== day)
                 width: parentWidth
-                height: ((modelData && modelData.previousMessageDay !== modelData.day) ? dateBubble.height + 8 + userName.height : userName.height) + 8
+                height: ((previousMessageDay !== day) ? dateBubble.height + 8 + userName.height : userName.height) + 8
 
                 Label {
                     id: dateBubble
 
                     anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
-                    visible: modelData && modelData.previousMessageDay !== modelData.day
-                    text: modelData ? chat.model.formatDateSeparator(modelData.timestamp) : ""
+                    visible: previousMessageDay !== day
+                    text: chat.model.formatDateSeparator(timestamp)
                     color: Nheko.colors.text
                     height: Math.round(fontMetrics.height * 1.4)
                     width: contentWidth * 1.2
@@ -236,7 +239,7 @@ ScrollView {
                 }
 
                 Row {
-                    height: userName.height
+                    height: userName_.height
                     spacing: 8
 
                     Avatar {
@@ -244,10 +247,10 @@ ScrollView {
 
                         width: Nheko.avatarSize
                         height: Nheko.avatarSize
-                        url: modelData ? chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/") : ""
-                        displayName: modelData ? modelData.userName : ""
-                        userid: modelData ? modelData.userId : ""
-                        onClicked: chat.model.openUserProfile(modelData.userId)
+                        url: chat.model.avatarUrl(userId).replace("mxc://", "image://MxcImage/")
+                        displayName: userName
+                        userid: userId
+                        onClicked: chat.model.openUserProfile(userId)
                         ToolTip.visible: avatarHover.hovered
                         ToolTip.text: userid
 
@@ -260,22 +263,22 @@ ScrollView {
                     Connections {
                         target: chat.model
                         onRoomAvatarUrlChanged: {
-                            messageUserAvatar.url = modelData ? chat.model.avatarUrl(modelData.userId).replace("mxc://", "image://MxcImage/") : "";
+                            messageUserAvatar.url = chat.model.avatarUrl(userId).replace("mxc://", "image://MxcImage/");
                         }
                         onScrollToIndex: chat.positionViewAtIndex(index, ListView.Visible)
                     }
 
                     Label {
-                        id: userName
+                        id: userName_
 
-                        text: modelData ? TimelineManager.escapeEmoji(modelData.userName) : ""
-                        color: TimelineManager.userColor(modelData ? modelData.userId : "", Nheko.colors.window)
+                        text: TimelineManager.escapeEmoji(userName)
+                        color: TimelineManager.userColor(userId, Nheko.colors.window)
                         textFormat: Text.RichText
                         ToolTip.visible: displayNameHover.hovered
-                        ToolTip.text: modelData ? modelData.userId : ""
+                        ToolTip.text: userId
 
                         TapHandler {
-                            onSingleTapped: chat.model.openUserProfile(modelData.userId)
+                            onSingleTapped: chat.model.openUserProfile(userId)
                         }
 
                         CursorShape {
@@ -291,7 +294,7 @@ ScrollView {
 
                     Label {
                         color: Nheko.colors.buttonText
-                        text: modelData ? TimelineManager.userStatus(modelData.userId) : ""
+                        text: TimelineManager.userStatus(userId)
                         textFormat: Text.PlainText
                         elide: Text.ElideRight
                         width: chat.delegateMaxWidth - parent.spacing * 2 - userName.implicitWidth - Nheko.avatarSize
@@ -307,7 +310,35 @@ ScrollView {
         delegate: Item {
             id: wrapper
 
-            property bool scrolledToThis: model.id === chat.model.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
+            required property double proportionalHeight
+            required property int type
+            required property string typeString
+            required property int originalWidth
+            required property string blurhash
+            required property string body
+            required property string formattedBody
+            required property string eventId
+            required property string filename
+            required property string filesize
+            required property string url
+            required property string thumbnailUrl
+            required property bool isOnlyEmoji
+            required property bool isSender
+            required property bool isEncrypted
+            required property bool isEditable
+            required property bool isEdited
+            required property string replyTo
+            required property string userId
+            required property var reactions
+            required property int trustlevel
+            required property var timestamp
+            required property int status
+            required property int index
+            required property string previousMessageUserId
+            required property string day
+            required property string previousMessageDay
+            required property string userName
+            property bool scrolledToThis: eventId === chat.model.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
 
             anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
             width: chat.delegateMaxWidth
@@ -362,10 +393,15 @@ ScrollView {
             Loader {
                 id: section
 
-                property var modelData: model
                 property int parentWidth: parent.width
+                property string userId: wrapper.userId
+                property string previousMessageUserId: wrapper.previousMessageUserId
+                property string day: wrapper.day
+                property string previousMessageDay: wrapper.previousMessageDay
+                property string userName: wrapper.userName
+                property var timestamp: wrapper.timestamp
 
-                active: model.previousMessageUserId !== undefined && model.previousMessageUserId !== model.userId || model.previousMessageDay !== model.day
+                active: previousMessageUserId !== undefined && previousMessageUserId !== userId || previousMessageDay !== day
                 //asynchronous: true
                 sourceComponent: sectionHeader
                 visible: status == Loader.Ready
@@ -376,6 +412,30 @@ ScrollView {
 
                 property alias hovered: hoverHandler.hovered
 
+                proportionalHeight: wrapper.proportionalHeight
+                type: chat.model, wrapper.type
+                typeString: wrapper.typeString
+                originalWidth: wrapper.originalWidth
+                blurhash: wrapper.blurhash
+                body: wrapper.body
+                formattedBody: wrapper.formattedBody
+                eventId: chat.model, wrapper.eventId
+                filename: wrapper.filename
+                filesize: wrapper.filesize
+                url: wrapper.url
+                thumbnailUrl: wrapper.thumbnailUrl
+                isOnlyEmoji: wrapper.isOnlyEmoji
+                isSender: wrapper.isSender
+                isEncrypted: wrapper.isEncrypted
+                isEditable: wrapper.isEditable
+                isEdited: wrapper.isEdited
+                replyTo: wrapper.replyTo
+                userId: wrapper.userId
+                userName: wrapper.userName
+                reactions: wrapper.reactions
+                trustlevel: wrapper.trustlevel
+                timestamp: wrapper.timestamp
+                status: wrapper.status
                 y: section.visible && section.active ? section.y + section.height : 0
 
                 HoverHandler {
@@ -386,7 +446,7 @@ ScrollView {
                         if (hovered) {
                             if (!messageActionHover.hovered) {
                                 messageActions.attached = timelinerow;
-                                messageActions.model = model;
+                                messageActions.model = timelinerow;
                             }
                         }
                     }

@@ -6,7 +6,9 @@ import ".."
 import im.nheko 1.0
 
 MatrixText {
-    text: qsTr("unimplemented event: ") + model.data.typeString
+    required property string typeString
+
+    text: qsTr("unimplemented event: ") + typeString
     width: parent ? parent.width : undefined
     color: Nheko.inactiveColors.text
 }
