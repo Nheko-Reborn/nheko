@@ -348,7 +348,7 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
                         beginInsertRows(QModelIndex(),
                                         (int)roomids.size(),
                                         (int)(roomids.size() + previewsToAdd.size() -
-                                              ((wasInvite || wasPreview) ? 0 : 1)));
+                                              ((wasInvite || wasPreview) ? 1 : 0)));
 
                 models.insert(room_id, std::move(newRoom));
                 if (wasInvite) {
@@ -368,7 +368,8 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
                         roomids.push_back(std::move(p));
                 }
 
-                if (!suppressInsertNotification && !wasInvite)
+                if (!suppressInsertNotification &&
+                    ((!wasInvite && !wasPreview) || !previewedRooms.empty()))
                         endInsertRows();
         }
 }

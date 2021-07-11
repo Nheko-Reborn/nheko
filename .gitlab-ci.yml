@@ -162,7 +162,7 @@ appimage-amd64:
   before_script:
     # app build requirements
     - apt-get update && apt-get install -y software-properties-common
-    - add-apt-repository ppa:beineri/opt-qt-5.15.2-xenial -y
+    - add-apt-repository ppa:beineri/opt-qt-5.15.2-bionic -y
     - apt-get update
     - apt-get install -y git wget curl
 
