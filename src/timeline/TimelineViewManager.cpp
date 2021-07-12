@@ -275,6 +275,9 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           this,
           [this](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &message,
                  TimelineModel *model) {
+                  if (this->isInitialSync_)
+                          return;
+
                   auto event_id = QString::fromStdString(message.event_id);
                   if (!this->dvList.contains(event_id)) {
                           if (auto flow = DeviceVerificationFlow::NewInRoomVerification(
@@ -292,6 +295,9 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                 &ChatPage::receivedDeviceVerificationRequest,
                 this,
                 [this](const mtx::events::msg::KeyVerificationRequest &msg, std::string sender) {
+                        if (this->isInitialSync_)
+                                return;
+
                         if (!msg.transaction_id)
                                 return;
 
@@ -308,6 +314,9 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                 &ChatPage::receivedDeviceVerificationStart,
                 this,
                 [this](const mtx::events::msg::KeyVerificationStart &msg, std::string sender) {
+                        if (this->isInitialSync_)
+                                return;
+
                         if (!msg.transaction_id)
                                 return;
 
