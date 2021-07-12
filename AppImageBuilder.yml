@@ -90,6 +90,8 @@ AppDir:
     - usr/share/doc
     - opt/qt515/examples
     - opt/qt515/bin
+    - opt/qt515/include
+    - opt/qt515/mkspecs
   test:
     fedora:
       image: appimagecrafters/tests-env:fedora-30
