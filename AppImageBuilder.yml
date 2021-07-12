@@ -87,10 +87,9 @@ AppDir:
   files:
     exclude:
     - usr/share/man
-    - usr/share/doc/*/README.*
-    - usr/share/doc/*/changelog.*
-    - usr/share/doc/*/NEWS.*
-    - usr/share/doc/*/TODO.*
+    - usr/share/doc
+    - opt/qt515/examples
+    - opt/qt515/bin
   test:
     fedora:
       image: appimagecrafters/tests-env:fedora-30
