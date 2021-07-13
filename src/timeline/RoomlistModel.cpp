@@ -602,6 +602,10 @@ RoomlistModel::leave(QString roomid)
 void
 RoomlistModel::setCurrentRoom(QString roomid)
 {
+        if ((currentRoom_ && currentRoom_->roomId() == roomid) ||
+            (currentRoomPreview_ && currentRoomPreview_->roomid() == roomid))
+                return;
+
         nhlog::ui()->debug("Trying to switch to: {}", roomid.toStdString());
         if (models.contains(roomid)) {
                 currentRoom_ = models.value(roomid);
