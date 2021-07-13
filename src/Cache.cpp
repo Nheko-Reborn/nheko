@@ -1914,7 +1914,7 @@ Cache::getTimelineIndex(const std::string &room_id, std::string_view event_id)
 std::optional<uint64_t>
 Cache::getEventIndex(const std::string &room_id, std::string_view event_id)
 {
-        if (event_id.empty())
+        if (room_id.empty() || event_id.empty())
                 return {};
 
         auto txn = ro_txn(env_);
@@ -1942,7 +1942,7 @@ Cache::getEventIndex(const std::string &room_id, std::string_view event_id)
 std::optional<std::pair<uint64_t, std::string>>
 Cache::lastInvisibleEventAfter(const std::string &room_id, std::string_view event_id)
 {
-        if (event_id.empty())
+        if (room_id.empty() || event_id.empty())
                 return {};
 
         auto txn = ro_txn(env_);
@@ -1967,23 +1967,30 @@ Cache::lastInvisibleEventAfter(const std::string &room_id, std::string_view even
         if (!success) {
                 return {};
         }
-        uint64_t prevIdx = lmdb::from_sv<uint64_t>(indexVal);
-        std::string prevId{event_id};
 
-        auto cursor = lmdb::cursor::open(txn, eventOrderDb);
-        cursor.get(indexVal, MDB_SET);
-        while (cursor.get(indexVal, event_id, MDB_NEXT)) {
-                std::string evId = json::parse(event_id)["event_id"].get<std::string>();
-                std::string_view temp;
-                if (timelineDb.get(txn, evId, temp)) {
-                        return std::pair{prevIdx, std::string(prevId)};
-                } else {
-                        prevIdx = lmdb::from_sv<uint64_t>(indexVal);
-                        prevId  = std::move(evId);
+        try {
+                uint64_t prevIdx = lmdb::from_sv<uint64_t>(indexVal);
+                std::string prevId{event_id};
+
+                auto cursor = lmdb::cursor::open(txn, eventOrderDb);
+                cursor.get(indexVal, MDB_SET);
+                while (cursor.get(indexVal, event_id, MDB_NEXT)) {
+                        std::string evId = json::parse(event_id)["event_id"].get<std::string>();
+                        std::string_view temp;
+                        if (timelineDb.get(txn, evId, temp)) {
+                                return std::pair{prevIdx, std::string(prevId)};
+                        } else {
+                                prevIdx = lmdb::from_sv<uint64_t>(indexVal);
+                                prevId  = std::move(evId);
+                        }
                 }
-        }
 
-        return std::pair{prevIdx, std::string(prevId)};
+                return std::pair{prevIdx, std::string(prevId)};
+        } catch (lmdb::runtime_error &e) {
+                nhlog::db()->error(
+                  "Failed to get last invisible event after {}", event_id, e.what());
+                return {};
+        }
 }
 
 std::optional<uint64_t>
