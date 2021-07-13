@@ -6,6 +6,7 @@
 
 #include "Cache_p.h"
 #include "ChatPage.h"
+#include "Logging.h"
 #include "MatrixClient.h"
 #include "MxcImageProvider.h"
 #include "TimelineModel.h"
@@ -363,6 +364,13 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
                         roomids.push_back(room_id);
                 }
 
+                if ((wasInvite || wasPreview) && currentRoomPreview_ &&
+                    currentRoomPreview_->roomid() == room_id) {
+                        currentRoom_ = models.value(room_id);
+                        currentRoomPreview_.reset();
+                        emit currentRoomChanged();
+                }
+
                 for (auto p : previewsToAdd) {
                         previewedRooms.insert(p, std::nullopt);
                         roomids.push_back(std::move(p));
@@ -557,15 +565,8 @@ void
 RoomlistModel::acceptInvite(QString roomid)
 {
         if (invites.contains(roomid)) {
-                auto idx = roomidToIndex(roomid);
-
-                if (idx != -1) {
-                        beginRemoveRows(QModelIndex(), idx, idx);
-                        roomids.erase(roomids.begin() + idx);
-                        invites.remove(roomid);
-                        endRemoveRows();
-                        ChatPage::instance()->joinRoom(roomid);
-                }
+                // Don't remove invite yet, so that we can switch to it
+                ChatPage::instance()->joinRoom(roomid);
         }
 }
 void
