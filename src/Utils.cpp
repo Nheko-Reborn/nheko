@@ -43,11 +43,13 @@ createDescriptionInfo(const Event &event, const QString &localUser, const QStrin
 
         const auto username = displayName;
         const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
+        auto body           = utils::event_body(event).trimmed();
+        if (mtx::accessors::relations(event).reply_to())
+                body = QString::fromStdString(utils::stripReplyFromBody(body.toStdString()));
 
         return DescInfo{QString::fromStdString(msg.event_id),
                         sender,
-                        utils::messageDescription<T>(
-                          username, utils::event_body(event).trimmed(), sender == localUser),
+                        utils::messageDescription<T>(username, body, sender == localUser),
                         utils::descriptiveTime(ts),
                         msg.origin_server_ts,
                         ts};
