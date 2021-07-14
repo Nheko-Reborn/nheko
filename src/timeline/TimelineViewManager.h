@@ -5,6 +5,8 @@
 #pragma once
 
 #include <QHash>
+#include <QQuickItem>
+#include <QQuickTextDocument>
 #include <QQuickView>
 #include <QQuickWidget>
 #include <QSharedPointer>
@@ -67,6 +69,8 @@ public:
         Q_INVOKABLE void openMemberListDialog(QString roomid) const;
         Q_INVOKABLE void openLeaveRoomDialog(QString roomid) const;
         Q_INVOKABLE void removeVerificationFlow(DeviceVerificationFlow *flow);
+
+        Q_INVOKABLE void fixImageRendering(QQuickTextDocument *t, QQuickItem *i);
 
         void verifyUser(QString userid);
         void verifyDevice(QString userid, QString deviceid);

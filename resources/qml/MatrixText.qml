@@ -7,6 +7,7 @@ import QtQuick.Controls 2.3
 import im.nheko 1.0
 
 TextEdit {
+    id: r
     textFormat: TextEdit.RichText
     readOnly: true
     focus: false
@@ -22,6 +23,10 @@ TextEdit {
     CursorShape {
         anchors.fill: parent
         cursorShape: hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
+    }
+
+    Component.onCompleted: {
+        TimelineManager.fixImageRendering(r.textDocument, r)
     }
 
 }

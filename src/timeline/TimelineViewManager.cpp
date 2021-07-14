@@ -681,3 +681,13 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
           },
           *e);
 }
+
+//! WORKAROUND(Nico): for https://bugreports.qt.io/browse/QTBUG-93281
+void
+TimelineViewManager::fixImageRendering(QQuickTextDocument *t, QQuickItem *i)
+{
+        if (t) {
+                QObject::connect(
+                  t->textDocument(), SIGNAL(imagesLoaded()), i, SLOT(updateWholeDocument()));
+        }
+}
