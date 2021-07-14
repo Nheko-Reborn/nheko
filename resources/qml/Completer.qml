@@ -82,11 +82,6 @@ Popup {
     onAboutToShow: currentIndex = -1
     height: listView.contentHeight + 2 // + 2 for the padding on top and bottom
 
-    Connections {
-        onRoomChanged: completer = null
-        target: timelineView
-    }
-
     ListView {
         id: listView
 
