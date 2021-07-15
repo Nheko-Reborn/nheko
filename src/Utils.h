@@ -67,12 +67,6 @@ scaleFactor();
 void
 setScaleFactor(float factor);
 
-//! Whether or not we should respond to key requests for the given room.
-bool
-respondsToKeyRequests(const QString &roomId);
-bool
-respondsToKeyRequests(const std::string &roomId);
-
 void
 setKeyRequestsPreference(QString roomId, bool value);
 

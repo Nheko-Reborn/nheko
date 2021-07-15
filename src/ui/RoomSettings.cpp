@@ -291,12 +291,6 @@ RoomSettings::accessJoinRules()
         return accessRules_;
 }
 
-bool
-RoomSettings::respondsToKeyRequests()
-{
-        return usesEncryption_ && utils::respondsToKeyRequests(roomid_);
-}
-
 void
 RoomSettings::changeKeyRequestsPreference(bool isOn)
 {
