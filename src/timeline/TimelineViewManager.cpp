@@ -19,6 +19,7 @@
 #include "DelegateChooser.h"
 #include "DeviceVerificationFlow.h"
 #include "EventAccessors.h"
+#include "ImagePackModel.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
@@ -144,6 +145,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         qRegisterMetaType<mtx::events::msg::KeyVerificationReady>();
         qRegisterMetaType<mtx::events::msg::KeyVerificationRequest>();
         qRegisterMetaType<mtx::events::msg::KeyVerificationStart>();
+        qRegisterMetaType<ImagePackModel *>();
 
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                          "im.nheko",
@@ -592,6 +594,11 @@ TimelineViewManager::completerFor(QString completerName, QString roomId)
                 auto roomModel = new RoomsModel(true);
                 auto proxy     = new CompletionProxyModel(roomModel);
                 roomModel->setParent(proxy);
+                return proxy;
+        } else if (completerName == "stickers") {
+                auto stickerModel = new ImagePackModel(roomId.toStdString(), true);
+                auto proxy        = new CompletionProxyModel(stickerModel);
+                stickerModel->setParent(proxy);
                 return proxy;
         }
         return nullptr;

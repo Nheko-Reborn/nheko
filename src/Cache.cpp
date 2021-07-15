@@ -3383,6 +3383,13 @@ Cache::getChildRoomIds(const std::string &room_id)
 }
 
 std::optional<mtx::events::collections::RoomAccountDataEvents>
+Cache::getAccountData(mtx::events::EventType type, const std::string &room_id)
+{
+        auto txn = ro_txn(env_);
+        return getAccountData(txn, type, room_id);
+}
+
+std::optional<mtx::events::collections::RoomAccountDataEvents>
 Cache::getAccountData(lmdb::txn &txn, mtx::events::EventType type, const std::string &room_id)
 {
         try {

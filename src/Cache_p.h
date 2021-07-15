@@ -88,6 +88,12 @@ public:
         //! Retrieve if the room is a space
         bool getRoomIsSpace(lmdb::txn &txn, lmdb::dbi &statesdb);
 
+        //! retrieve a specific event from account data
+        //! pass empty room_id for global account data
+        std::optional<mtx::events::collections::RoomAccountDataEvents> getAccountData(
+          mtx::events::EventType type,
+          const std::string &room_id = "");
+
         //! Get a specific state event
         template<typename T>
         std::optional<mtx::events::StateEvent<T>> getStateEvent(const std::string &room_id,

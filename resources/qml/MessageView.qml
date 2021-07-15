@@ -92,16 +92,20 @@ ScrollView {
                     }
                 }
 
-                EmojiButton {
+                ImageButton {
                     id: reactButton
 
                     visible: chat.model ? chat.model.permissions.canSend(MtxEvent.Reaction) : false
                     width: 16
                     hoverEnabled: true
+                    image: ":/icons/icons/ui/smile.png"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("React")
-                    emojiPicker: emojiPopup
-                    event_id: row.model ? row.model.eventId : ""
+                    onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
+                        var event_id = row.model ? row.model.eventId : "";
+                        room.input.reaction(event_id, emoji);
+                        TimelineManager.focusMessageInput();
+                    })
                 }
 
                 ImageButton {
