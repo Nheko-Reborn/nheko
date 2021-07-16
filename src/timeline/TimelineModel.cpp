@@ -710,6 +710,14 @@ TimelineModel::data(const QModelIndex &index, int role) const
         return data(*event, role);
 }
 
+QVariant
+TimelineModel::dataById(QString id, int role, QString relatedTo)
+{
+        if (auto event = events.get(id.toStdString(), relatedTo.toStdString()))
+                return data(*event, role);
+        return QVariant();
+}
+
 bool
 TimelineModel::canFetchMore(const QModelIndex &) const
 {

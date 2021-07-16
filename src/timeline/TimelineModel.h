@@ -215,10 +215,7 @@ public:
         int rowCount(const QModelIndex &parent = QModelIndex()) const override;
         QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
         QVariant data(const mtx::events::collections::TimelineEvents &event, int role) const;
-        Q_INVOKABLE QVariant dataById(QString id, int role)
-        {
-                return data(index(idToIndex(id)), role);
-        }
+        Q_INVOKABLE QVariant dataById(QString id, int role, QString relatedTo);
 
         bool canFetchMore(const QModelIndex &) const override;
         void fetchMore(const QModelIndex &) override;

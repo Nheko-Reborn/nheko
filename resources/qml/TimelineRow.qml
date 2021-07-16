@@ -86,29 +86,29 @@ Item {
             // fancy reply, if this is a reply
             Reply {
                 function fromModel(role) {
-                    return replyTo != "" ? room.dataById(replyTo, role) : null;
+                    return replyTo != "" ? room.dataById(replyTo, role, r.eventId) : null;
                 }
 
                 visible: replyTo
-                userColor: TimelineManager.userColor(userId, Nheko.colors.base)
-                blurhash: fromModel(Room.Blurhash) ?? ""
-                body: fromModel(Room.Body) ?? ""
-                formattedBody: fromModel(Room.FormattedBody) ?? ""
+                userColor: replyTo, TimelineManager.userColor(userId, Nheko.colors.base)
+                blurhash: replyTo, fromModel(Room.Blurhash) ?? ""
+                body: replyTo, fromModel(Room.Body) ?? ""
+                formattedBody: replyTo, fromModel(Room.FormattedBody) ?? ""
                 eventId: fromModel(Room.EventId) ?? ""
-                filename: fromModel(Room.Filename) ?? ""
-                filesize: fromModel(Room.Filesize) ?? ""
-                proportionalHeight: fromModel(Room.ProportionalHeight) ?? 1
-                type: fromModel(Room.Type) ?? MtxEvent.UnknownMessage
-                typeString: fromModel(Room.TypeString) ?? ""
-                url: fromModel(Room.Url) ?? ""
-                originalWidth: fromModel(Room.OriginalWidth) ?? 0
-                isOnlyEmoji: fromModel(Room.IsOnlyEmoji) ?? false
-                userId: fromModel(Room.UserId) ?? ""
-                userName: fromModel(Room.UserName) ?? ""
-                thumbnailUrl: fromModel(Room.ThumbnailUrl) ?? ""
-                roomTopic: fromModel(Room.RoomTopic) ?? ""
-                roomName: fromModel(Room.RoomName) ?? ""
-                callType: fromModel(Room.CallType) ?? ""
+                filename: replyTo, fromModel(Room.Filename) ?? ""
+                filesize: replyTo, fromModel(Room.Filesize) ?? ""
+                proportionalHeight: replyTo, fromModel(Room.ProportionalHeight) ?? 1
+                type: replyTo, fromModel(Room.Type) ?? MtxEvent.UnknownMessage
+                typeString: replyTo, fromModel(Room.TypeString) ?? ""
+                url: replyTo, fromModel(Room.Url) ?? ""
+                originalWidth: replyTo, fromModel(Room.OriginalWidth) ?? 0
+                isOnlyEmoji: replyTo, fromModel(Room.IsOnlyEmoji) ?? false
+                userId: replyTo, fromModel(Room.UserId) ?? ""
+                userName: replyTo, fromModel(Room.UserName) ?? ""
+                thumbnailUrl: replyTo, fromModel(Room.ThumbnailUrl) ?? ""
+                roomTopic: replyTo, fromModel(Room.RoomTopic) ?? ""
+                roomName: replyTo, fromModel(Room.RoomName) ?? ""
+                callType: replyTo, fromModel(Room.CallType) ?? ""
             }
 
             // actual message content
