@@ -123,7 +123,17 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
                 if (msg_type == to_string(mtx::events::EventType::RoomEncrypted)) {
                         try {
                                 olm::OlmMessage olm_msg = j_msg;
-                                handle_olm_message(std::move(olm_msg));
+                                cache::client()->query_keys(
+                                  olm_msg.sender,
+                                  [olm_msg](const UserKeyCache &userKeys, mtx::http::RequestErr e) {
+                                          if (e) {
+                                                  nhlog::crypto()->error(
+                                                    "Failed to query user keys, dropping olm "
+                                                    "message");
+                                                  return;
+                                          }
+                                          handle_olm_message(std::move(olm_msg), userKeys);
+                                  });
                         } catch (const nlohmann::json::exception &e) {
                                 nhlog::crypto()->warn(
                                   "parsing error for olm message: {} {}", e.what(), j_msg.dump(2));
@@ -197,7 +207,7 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
 }
 
 void
-handle_olm_message(const OlmMessage &msg)
+handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKeys)
 {
         nhlog::crypto()->info("sender    : {}", msg.sender);
         nhlog::crypto()->info("sender_key: {}", msg.sender_key);
@@ -209,7 +219,7 @@ handle_olm_message(const OlmMessage &msg)
                 if (cipher.first != my_key) {
                         nhlog::crypto()->debug(
                           "Skipping message for {} since we are {}.", cipher.first, my_key);
-                        continue;
+                        return;
                 }
 
                 const auto type = cipher.second.type;
@@ -231,6 +241,57 @@ handle_olm_message(const OlmMessage &msg)
                 if (!payload.is_null()) {
                         mtx::events::collections::DeviceEvents device_event;
 
+                        // Other properties are included in order to prevent an attacker from
+                        // publishing someone else's curve25519 keys as their own and subsequently
+                        // claiming to have sent messages which they didn't. sender must correspond
+                        // to the user who sent the event, recipient to the local user, and
+                        // recipient_keys to the local ed25519 key.
+                        std::string receiver_ed25519 = payload["recipient_keys"]["ed25519"];
+                        if (receiver_ed25519.empty() ||
+                            receiver_ed25519 != olm::client()->identity_keys().ed25519) {
+                                nhlog::crypto()->warn(
+                                  "Decrypted event doesn't include our ed25519: {}",
+                                  payload.dump());
+                                return;
+                        }
+                        std::string receiver = payload["recipient"];
+                        if (receiver.empty() || receiver != http::client()->user_id().to_string()) {
+                                nhlog::crypto()->warn(
+                                  "Decrypted event doesn't include our user_id: {}",
+                                  payload.dump());
+                                return;
+                        }
+
+                        // Clients must confirm that the sender_key and the ed25519 field value
+                        // under the keys property match the keys returned by /keys/query for the
+                        // given user, and must also verify the signature of the payload. Without
+                        // this check, a client cannot be sure that the sender device owns the
+                        // private part of the ed25519 key it claims to have in the Olm payload.
+                        // This is crucial when the ed25519 key corresponds to a verified device.
+                        std::string sender_ed25519 = payload["keys"]["ed25519"];
+                        if (sender_ed25519.empty()) {
+                                nhlog::crypto()->warn(
+                                  "Decrypted event doesn't include sender ed25519: {}",
+                                  payload.dump());
+                                return;
+                        }
+
+                        bool from_their_device = false;
+                        for (auto [device_id, key] : otherUserDeviceKeys.device_keys) {
+                                if (key.keys.at("curve25519:" + device_id) == msg.sender_key) {
+                                        if (key.keys.at("ed25519:" + device_id) == sender_ed25519) {
+                                                from_their_device = true;
+                                                break;
+                                        }
+                                }
+                        }
+                        if (!from_their_device) {
+                                nhlog::crypto()->warn("Decrypted event isn't sent from a device "
+                                                      "listed by that user! {}",
+                                                      payload.dump());
+                                return;
+                        }
+
                         {
                                 std::string msg_type = payload["type"];
                                 json event_array     = json::array();
@@ -242,7 +303,7 @@ handle_olm_message(const OlmMessage &msg)
                                 if (temp_events.empty()) {
                                         nhlog::crypto()->warn("Decrypted unknown event: {}",
                                                               payload.dump());
-                                        continue;
+                                        return;
                                 }
                                 device_event = temp_events.at(0);
                         }
@@ -276,17 +337,20 @@ handle_olm_message(const OlmMessage &msg)
                                 ChatPage::instance()->receivedDeviceVerificationDone(e8->content);
                         } else if (auto roomKey =
                                      std::get_if<DeviceEvent<msg::RoomKey>>(&device_event)) {
-                                create_inbound_megolm_session(*roomKey, msg.sender_key);
+                                create_inbound_megolm_session(
+                                  *roomKey, msg.sender_key, sender_ed25519);
                         } else if (auto forwardedRoomKey =
                                      std::get_if<DeviceEvent<msg::ForwardedRoomKey>>(
                                        &device_event)) {
+                                forwardedRoomKey->content.forwarding_curve25519_key_chain.push_back(
+                                  msg.sender_key);
                                 import_inbound_megolm_session(*forwardedRoomKey);
                         } else if (auto e =
                                      std::get_if<DeviceEvent<msg::SecretSend>>(&device_event)) {
                                 auto local_user = http::client()->user_id();
 
                                 if (msg.sender != local_user.to_string())
-                                        continue;
+                                        return;
 
                                 auto secret_name =
                                   request_id_to_secret_name.find(e->content.request_id);
@@ -306,7 +370,7 @@ handle_olm_message(const OlmMessage &msg)
                                           cache::verificationStatus(local_user.to_string());
 
                                         if (!verificationStatus)
-                                                continue;
+                                                return;
 
                                         auto deviceKeys = cache::userKeys(local_user.to_string());
                                         std::string sender_device_id;
@@ -344,7 +408,6 @@ handle_olm_message(const OlmMessage &msg)
                                                               "for secrect "
                                                               "'{}'",
                                                               name);
-                                                            return;
                                                     }
                                             });
 
@@ -364,13 +427,8 @@ handle_olm_message(const OlmMessage &msg)
         }
 
         try {
-                auto otherUserDeviceKeys = cache::userKeys(msg.sender);
-
-                if (!otherUserDeviceKeys)
-                        return;
-
                 std::map<std::string, std::vector<std::string>> targets;
-                for (auto [device_id, key] : otherUserDeviceKeys->device_keys) {
+                for (auto [device_id, key] : otherUserDeviceKeys.device_keys) {
                         if (key.keys.at("curve25519:" + device_id) == msg.sender_key)
                                 targets[msg.sender].push_back(device_id);
                 }
@@ -450,7 +508,7 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
 
         std::map<std::string, std::vector<std::string>> sendSessionTo;
         mtx::crypto::OutboundGroupSessionPtr session = nullptr;
-        OutboundGroupSessionData group_session_data;
+        GroupSessionData group_session_data;
 
         if (cache::outboundMegolmSessionExists(room_id)) {
                 auto res                = cache::getOutboundMegolmSession(room_id);
@@ -519,7 +577,8 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
                                 } else {
                                         // compare devices
                                         bool device_removed = false;
-                                        for (const auto &dev : session_member_it->second.devices) {
+                                        for (const auto &dev :
+                                             session_member_it->second.deviceids) {
                                                 if (!member_it->second ||
                                                     !member_it->second->device_keys.count(
                                                       dev.first)) {
@@ -541,7 +600,7 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
                                         if (member_it->second)
                                                 for (const auto &dev :
                                                      member_it->second->device_keys)
-                                                        if (!session_member_it->second.devices
+                                                        if (!session_member_it->second.deviceids
                                                                .count(dev.first) &&
                                                             (member_it->first != own_user_id ||
                                                              dev.first != device_id))
@@ -571,9 +630,7 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
                 const auto session_key = mtx::crypto::session_key(session.get());
 
                 // Saving the new megolm session.
-                OutboundGroupSessionData session_data{};
-                session_data.session_id    = mtx::crypto::session_id(session.get());
-                session_data.session_key   = mtx::crypto::session_key(session.get());
+                GroupSessionData session_data{};
                 session_data.message_index = 0;
                 session_data.timestamp     = QDateTime::currentMSecsSinceEpoch();
 
@@ -581,21 +638,18 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
 
                 for (const auto &[user, devices] : members) {
                         sendSessionTo[user]               = {};
-                        session_data.initially.keys[user] = {};
+                        session_data.currently.keys[user] = {};
                         if (devices) {
                                 for (const auto &[device_id_, key] : devices->device_keys) {
                                         (void)key;
                                         if (device_id != device_id_ || user != own_user_id) {
                                                 sendSessionTo[user].push_back(device_id_);
-                                                session_data.initially.keys[user]
-                                                  .devices[device_id_] = 0;
+                                                session_data.currently.keys[user]
+                                                  .deviceids[device_id_] = 0;
                                         }
                                 }
                         }
                 }
-
-                cache::saveOutboundMegolmSession(room_id, session_data, session);
-                group_session_data = std::move(session_data);
 
                 {
                         MegolmSessionIndex index;
@@ -604,8 +658,12 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
                         index.sender_key = olm::client()->identity_keys().curve25519;
                         auto megolm_session =
                           olm::client()->init_inbound_group_session(session_key);
-                        cache::saveInboundMegolmSession(index, std::move(megolm_session));
+                        cache::saveInboundMegolmSession(
+                          index, std::move(megolm_session), session_data);
                 }
+
+                cache::saveOutboundMegolmSession(room_id, session_data, session);
+                group_session_data = std::move(session_data);
         }
 
         mtx::events::DeviceEvent<mtx::events::msg::RoomKey> megolm_payload{};
@@ -641,8 +699,8 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
                         group_session_data.currently.keys[user] = {};
 
                 for (const auto &device_id_ : devices) {
-                        if (!group_session_data.currently.keys[user].devices.count(device_id_))
-                                group_session_data.currently.keys[user].devices[device_id_] =
+                        if (!group_session_data.currently.keys[user].deviceids.count(device_id_))
+                                group_session_data.currently.keys[user].deviceids[device_id_] =
                                   group_session_data.message_index;
                 }
         }
@@ -704,7 +762,8 @@ try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCip
 
 void
 create_inbound_megolm_session(const mtx::events::DeviceEvent<mtx::events::msg::RoomKey> &roomKey,
-                              const std::string &sender_key)
+                              const std::string &sender_key,
+                              const std::string &sender_ed25519)
 {
         MegolmSessionIndex index;
         index.room_id    = roomKey.content.room_id;
@@ -712,9 +771,13 @@ create_inbound_megolm_session(const mtx::events::DeviceEvent<mtx::events::msg::R
         index.sender_key = sender_key;
 
         try {
+                GroupSessionData data{};
+                data.forwarding_curve25519_key_chain = {sender_key};
+                data.sender_claimed_ed25519_key      = sender_ed25519;
+
                 auto megolm_session =
                   olm::client()->init_inbound_group_session(roomKey.content.session_key);
-                cache::saveInboundMegolmSession(index, std::move(megolm_session));
+                cache::saveInboundMegolmSession(index, std::move(megolm_session), data);
         } catch (const lmdb::error &e) {
                 nhlog::crypto()->critical("failed to save inbound megolm session: {}", e.what());
                 return;
@@ -741,7 +804,13 @@ import_inbound_megolm_session(
         try {
                 auto megolm_session =
                   olm::client()->import_inbound_group_session(roomKey.content.session_key);
-                cache::saveInboundMegolmSession(index, std::move(megolm_session));
+
+                GroupSessionData data{};
+                data.forwarding_curve25519_key_chain =
+                  roomKey.content.forwarding_curve25519_key_chain;
+                data.sender_claimed_ed25519_key = roomKey.content.sender_claimed_ed25519_key;
+
+                cache::saveInboundMegolmSession(index, std::move(megolm_session), data);
         } catch (const lmdb::error &e) {
                 nhlog::crypto()->critical("failed to save inbound megolm session: {}", e.what());
                 return;
@@ -875,10 +944,10 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
         uint64_t minimumIndex = -1;
         if (outboundSession.data.currently.keys.count(req.sender)) {
                 if (outboundSession.data.currently.keys.at(req.sender)
-                      .devices.count(req.content.requesting_device_id)) {
+                      .deviceids.count(req.content.requesting_device_id)) {
                         shouldSeeKeys = true;
                         minimumIndex  = outboundSession.data.currently.keys.at(req.sender)
-                                         .devices.at(req.content.requesting_device_id);
+                                         .deviceids.at(req.content.requesting_device_id);
                 }
         }
 

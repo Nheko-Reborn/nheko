@@ -238,12 +238,12 @@ public:
         // Outbound Megolm Sessions
         //
         void saveOutboundMegolmSession(const std::string &room_id,
-                                       const OutboundGroupSessionData &data,
+                                       const GroupSessionData &data,
                                        mtx::crypto::OutboundGroupSessionPtr &session);
         OutboundGroupSessionDataRef getOutboundMegolmSession(const std::string &room_id);
         bool outboundMegolmSessionExists(const std::string &room_id) noexcept;
         void updateOutboundMegolmSession(const std::string &room_id,
-                                         const OutboundGroupSessionData &data,
+                                         const GroupSessionData &data,
                                          mtx::crypto::OutboundGroupSessionPtr &session);
         void dropOutboundMegolmSession(const std::string &room_id);
 
@@ -254,7 +254,8 @@ public:
         // Inbound Megolm Sessions
         //
         void saveInboundMegolmSession(const MegolmSessionIndex &index,
-                                      mtx::crypto::InboundGroupSessionPtr session);
+                                      mtx::crypto::InboundGroupSessionPtr session,
+                                      const GroupSessionData &data);
         mtx::crypto::InboundGroupSessionPtr getInboundMegolmSession(
           const MegolmSessionIndex &index);
         bool inboundMegolmSessionExists(const MegolmSessionIndex &index);
@@ -676,6 +677,7 @@ private:
 
         lmdb::dbi inboundMegolmSessionDb_;
         lmdb::dbi outboundMegolmSessionDb_;
+        lmdb::dbi megolmSessionDataDb_;
 
         QString localUserId_;
         QString cacheDirectory_;
