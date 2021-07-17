@@ -51,8 +51,8 @@ public slots:
         void addUsers(const std::vector<RoomMember> &users);
 
 protected:
-        bool canFetchMore(const QModelIndex &) const;
-        void fetchMore(const QModelIndex &);
+        bool canFetchMore(const QModelIndex &) const override;
+        void fetchMore(const QModelIndex &) override;
 
 private:
         QVector<QPair<RoomMember, QString>> m_memberList;
