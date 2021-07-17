@@ -29,11 +29,8 @@ ApplicationWindow {
     height: 380
     width: 340
 
-    // TODO: make this work in the TextField
-    Shortcut {
-        sequence: "Ctrl+Enter"
-        onActivated: invitees.accept()
-    }
+    Keys.onShortcutOverride: event.accepted = (event.key === Qt.Key_Escape && event.modifiers & Qt.ControlModifier)
+    Keys.onEnterPressed: if (event.modifiers & Qt.ControlModifier) invitees.accept()
 
     Shortcut {
         sequence: StandardKey.Cancel
