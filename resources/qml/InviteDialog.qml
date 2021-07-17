@@ -29,11 +29,9 @@ ApplicationWindow {
     height: 380
     width: 340
 
-    // TODO: make this work in the TextField
-    Shortcut {
-        sequence: "Ctrl+Enter"
-        onActivated: invitees.accept()
-    }
+    Keys.onShortcutOverride: event.accepted = ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && event.modifiers & Qt.ControlModifier)
+    Keys.onEnterPressed: if (event.modifiers & Qt.ControlModifier) invitees.accept()
+    Keys.onReturnPressed: if (event.modifiers & Qt.ControlModifier) invitees.accept()
 
     Shortcut {
         sequence: StandardKey.Cancel
@@ -66,10 +64,14 @@ ApplicationWindow {
                 }
                 Component.onCompleted: forceActiveFocus()
 
-                Shortcut {
-                    sequence: "Ctrl+Enter"
-                    onActivated: invitees.accept()
-                }
+//                Shortcut {
+//                    sequence: "Ctrl+Enter"
+//                    onActivated: invitees.accept()
+//                }
+
+                Keys.onShortcutOverride: event.accepted = ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && event.modifiers & Qt.ControlModifier)
+                Keys.onEnterPressed: if (event.modifiers & Qt.ControlModifier) invitees.accept()
+                Keys.onReturnPressed: if (event.modifiers & Qt.ControlModifier) invitees.accept()
 
             }
 
