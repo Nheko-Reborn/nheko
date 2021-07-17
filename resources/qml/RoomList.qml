@@ -33,8 +33,8 @@ Page {
 
         Connections {
             onActiveTimelineChanged: {
-                roomlist.positionViewAtIndex(Rooms.roomidToIndex(Rooms.currentRoom.roomId()), ListView.Contain);
-                console.log("Test" + Rooms.currentRoom.roomId() + " " + Rooms.roomidToIndex(Rooms.currentRoom.roomId()));
+                roomlist.positionViewAtIndex(Rooms.roomidToIndex(Rooms.currentRoom.roomId), ListView.Contain);
+                console.log("Test" + Rooms.currentRoom.roomId + " " + Rooms.roomidToIndex(Rooms.currentRoom.roomId));
             }
             target: TimelineManager
         }
