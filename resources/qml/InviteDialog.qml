@@ -29,10 +29,6 @@ ApplicationWindow {
     height: 380
     width: 340
 
-    Keys.onShortcutOverride: event.accepted = ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && event.modifiers & Qt.ControlModifier)
-    Keys.onEnterPressed: if (event.modifiers & Qt.ControlModifier) invitees.accept()
-    Keys.onReturnPressed: if (event.modifiers & Qt.ControlModifier) invitees.accept()
-
     Shortcut {
         sequence: StandardKey.Cancel
         onActivated: inviteDialogRoot.close()
@@ -42,6 +38,10 @@ ApplicationWindow {
         anchors.fill: parent
         anchors.margins: 10
         spacing: 10
+
+        Keys.onShortcutOverride: event.accepted = ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers & Qt.ControlModifier))
+        Keys.onEnterPressed: if (event.modifiers & Qt.ControlModifier) invitees.accept()
+        Keys.onReturnPressed: if (event.modifiers & Qt.ControlModifier) invitees.accept()
 
         Label {
             text: qsTr("User ID to invite")
@@ -69,7 +69,7 @@ ApplicationWindow {
 //                    onActivated: invitees.accept()
 //                }
 
-                Keys.onShortcutOverride: event.accepted = ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && event.modifiers & Qt.ControlModifier)
+                Keys.onShortcutOverride: event.accepted = ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers & Qt.ControlModifier))
                 Keys.onEnterPressed: if (event.modifiers & Qt.ControlModifier) invitees.accept()
                 Keys.onReturnPressed: if (event.modifiers & Qt.ControlModifier) invitees.accept()
 
