@@ -157,6 +157,7 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             enabled: false
         }
+
         MatrixText {
             text: parent.roomName
             font.pixelSize: 24

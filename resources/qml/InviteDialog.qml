@@ -11,14 +11,11 @@ ApplicationWindow {
     property InviteesModel invitees
 
     function addInvite() {
-        if (inviteeEntry.text.match("@.+?:.{3,}"))
-        {
+        if (inviteeEntry.text.match("@.+?:.{3,}")) {
             invitees.addUser(inviteeEntry.text);
             inviteeEntry.clear();
-        }
-        else
-        {
-            warningLabel.show()
+        } else {
+            warningLabel.show();
         }
     }
 
@@ -57,19 +54,29 @@ ApplicationWindow {
 
                 placeholderText: qsTr("@joe:matrix.org", "Example user id. The name 'joe' can be localized however you want.")
                 Layout.fillWidth: true
-                onAccepted: if (text !== "") addInvite()
+                onAccepted: {
+                    if (text !== "") {
+                        addInvite();
+                    }
+                }
                 Component.onCompleted: forceActiveFocus()
 
                 Shortcut {
                     sequence: "Ctrl+Enter"
                     onActivated: invitees.accept()
                 }
+
             }
 
             Button {
                 text: qsTr("Add")
-                onClicked: if (inviteeEntry.text !== "") addInvite()
+                onClicked: {
+                    if (inviteeEntry.text !== "") {
+                        addInvite();
+                    }
+                }
             }
+
         }
 
         Label {
@@ -85,26 +92,28 @@ ApplicationWindow {
             visible: false
             opacity: 0
             state: "hidden"
-
             states: [
                 State {
                     name: "shown"
+
                     PropertyChanges {
                         target: warningLabel
                         opacity: 1
                         visible: true
                     }
+
                 },
                 State {
                     name: "hidden"
+
                     PropertyChanges {
                         target: warningLabel
                         opacity: 0
                         visible: false
                     }
+
                 }
             ]
-
             transitions: [
                 Transition {
                     from: "shown"
@@ -122,7 +131,9 @@ ApplicationWindow {
                             target: warningLabel
                             property: "visible"
                         }
+
                     }
+
                 }
             ]
 
@@ -134,6 +145,7 @@ ApplicationWindow {
                 running: false
                 onTriggered: warningLabel.state = "hidden"
             }
+
         }
 
         ListView {
@@ -174,9 +186,13 @@ ApplicationWindow {
                         Layout.fillHeight: true
                         Layout.fillWidth: true
                     }
+
                 }
+
             }
+
         }
+
     }
 
     footer: DialogButtonBox {
@@ -194,7 +210,9 @@ ApplicationWindow {
         Button {
             text: qsTr("Cancel")
             DialogButtonBox.buttonRole: DialogButtonBox.DestructiveRole
-            onClicked: inviteDialogRoot.close();
+            onClicked: inviteDialogRoot.close()
         }
+
     }
+
 }
