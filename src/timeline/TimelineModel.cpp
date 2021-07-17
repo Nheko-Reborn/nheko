@@ -1074,7 +1074,7 @@ TimelineModel::openRoomSettings(QString room_id)
 {
         RoomSettings *settings = new RoomSettings(room_id == QString() ? roomId() : room_id, this);
         connect(this, &TimelineModel::roomAvatarUrlChanged, settings, &RoomSettings::avatarChanged);
-        openRoomSettingsDialog(settings);
+        emit openRoomSettingsDialog(settings);
 }
 
 void
@@ -1082,9 +1082,9 @@ TimelineModel::openInviteUsers(QString roomId)
 {
         InviteesModel *model = new InviteesModel{this};
         connect(model, &InviteesModel::accept, this, [this, model, roomId]() {
-                manager_->inviteUsers(roomId == QString() ? room_id_ : roomId, model->mxids());
+                emit manager_->inviteUsers(roomId == QString() ? room_id_ : roomId, model->mxids());
         });
-        openInviteUsersDialog(model);
+        emit openInviteUsersDialog(model);
 }
 
 void
