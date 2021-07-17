@@ -117,7 +117,10 @@ ApplicationWindow {
                 footer: Spinner {
                     // This is not a wonderful solution, but it is the best way to calculate whether
                     // all users are loaded while keeping canFetchMore() const
-                    running: members.numUsersLoaded < members.memberCount
+
+                    // TODO: just toggling the visiblity leaves some large empty space at the bottom
+                    // of the list. This should be fixed.
+                    visible: members.numUsersLoaded < members.memberCount
                     anchors.centerIn: parent
                 }
             }
