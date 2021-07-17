@@ -164,8 +164,8 @@ ApplicationWindow {
                 spacing: 10
 
                 Avatar {
-                    width: avatarSize
-                    height: avatarSize
+                    width: Nheko.avatarsize
+                    height: Nheko.avatarsize
                     userid: model.mxid
                     url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                     displayName: model.displayName
@@ -177,13 +177,13 @@ ApplicationWindow {
 
                     Label {
                         text: model.displayName
-                        color: TimelineManager.userColor(model ? model.mxid : "", colors.window)
+                        color: TimelineManager.userColor(model ? model.mxid : "", Nheko.colors.window)
                         font.pointSize: 12
                     }
 
                     Label {
                         text: model.mxid
-                        color: colors.buttonText
+                        color: Nheko.colors.buttonText
                         font.pointSize: 10
                     }
 
