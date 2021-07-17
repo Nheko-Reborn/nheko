@@ -231,7 +231,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: qsTr("%1 created and configured room: %2").arg(d.userName).arg(room.roomId())
+                formatted: qsTr("%1 created and configured room: %2").arg(d.userName).arg(room.roomId)
             }
 
         }

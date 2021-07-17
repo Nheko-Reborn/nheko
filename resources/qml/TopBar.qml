@@ -121,7 +121,7 @@ Rectangle {
 
                 Platform.MenuItem {
                     text: qsTr("Leave room")
-                    onTriggered: TimelineManager.openLeaveRoomDialog(room.roomId())
+                    onTriggered: TimelineManager.openLeaveRoomDialog(room.roomId)
                 }
 
                 Platform.MenuItem {

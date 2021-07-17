@@ -246,7 +246,7 @@ Item {
 
     NhekoDropArea {
         anchors.fill: parent
-        roomid: room ? room.roomId() : ""
+        roomid: room ? room.roomId : ""
     }
 
     Connections {
