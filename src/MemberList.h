@@ -58,5 +58,5 @@ private:
         QVector<QPair<RoomMember, QString>> m_memberList;
         QString room_id_;
         RoomInfo info_;
-        int numUsersLoaded_;
+        int numUsersLoaded_{0};
 };
