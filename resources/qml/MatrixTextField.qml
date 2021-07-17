@@ -10,6 +10,8 @@ import im.nheko 1.0
 TextField {
     id: input
 
+    property alias backgroundColor: backgroundRect.color
+
     palette: Nheko.colors
     color: Nheko.colors.text
 
@@ -62,6 +64,8 @@ TextField {
     }
 
     background: Rectangle {
+        id: backgroundRect
+
         color: Nheko.colors.base
     }
 

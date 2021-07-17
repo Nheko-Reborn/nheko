@@ -56,6 +56,7 @@ ApplicationWindow {
             MatrixTextField {
                 id: inviteeEntry
 
+                backgroundColor: Nheko.colors.window
                 placeholderText: qsTr("@joe:matrix.org", "Example user id. The name 'joe' can be localized however you want.")
                 Layout.fillWidth: true
                 onAccepted: {
