@@ -133,7 +133,7 @@ Page {
             states: [
                 State {
                     name: "highlight"
-                    when: hovered.hovered && !((Rooms.currentRoom && roomId == Rooms.currentRoom.roomId()) || Rooms.currentRoomPreview.roomid == roomId)
+                    when: hovered.hovered && !((Rooms.currentRoom && roomId == Rooms.currentRoom.roomId) || Rooms.currentRoomPreview.roomid == roomId)
 
                     PropertyChanges {
                         target: roomItem
@@ -147,7 +147,7 @@ Page {
                 },
                 State {
                     name: "selected"
-                    when: (Rooms.currentRoom && roomId == Rooms.currentRoom.roomId()) || Rooms.currentRoomPreview.roomid == roomId
+                    when: (Rooms.currentRoom && roomId == Rooms.currentRoom.roomId) || Rooms.currentRoomPreview.roomid == roomId
 
                     PropertyChanges {
                         target: roomItem
