@@ -23,11 +23,23 @@ ApplicationWindow {
         }
     }
 
+    function cleanUpAndClose() {
+        if (inviteeEntry.text !== "")
+            addInvite();
+        invitees.accept();
+        close();
+    }
+
     title: qsTr("Invite users to ") + roomName
     x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     height: 380
     width: 340
+
+    Shortcut {
+        sequence: "Ctrl+Enter"
+        onActivated: cleanUpAndClose()
+    }
 
     Shortcut {
         sequence: StandardKey.Cancel
@@ -38,10 +50,6 @@ ApplicationWindow {
         anchors.fill: parent
         anchors.margins: 10
         spacing: 10
-
-        Keys.onShortcutOverride: event.accepted = ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers & Qt.ControlModifier))
-        Keys.onEnterPressed: if (event.modifiers & Qt.ControlModifier) invitees.accept()
-        Keys.onReturnPressed: if (event.modifiers & Qt.ControlModifier) invitees.accept()
 
         Label {
             text: qsTr("User ID to invite")
@@ -64,14 +72,8 @@ ApplicationWindow {
                 }
                 Component.onCompleted: forceActiveFocus()
 
-//                Shortcut {
-//                    sequence: "Ctrl+Enter"
-//                    onActivated: invitees.accept()
-//                }
-
                 Keys.onShortcutOverride: event.accepted = ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers & Qt.ControlModifier))
-                Keys.onEnterPressed: if (event.modifiers & Qt.ControlModifier) invitees.accept()
-                Keys.onReturnPressed: if (event.modifiers & Qt.ControlModifier) invitees.accept()
+                Keys.onPressed: if ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers === Qt.ControlModifier)) cleanUpAndClose()
 
             }
 
@@ -208,10 +210,7 @@ ApplicationWindow {
         Button {
             text: qsTr("Invite")
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-            onClicked: {
-                invitees.accept();
-                inviteDialogRoot.close();
-            }
+            onClicked: cleanUpAndClose()
         }
 
         Button {
