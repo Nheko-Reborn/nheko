@@ -48,6 +48,13 @@ Page {
     }
 
     Component {
+        id: roomMembersComponent
+
+        RoomMembers {
+        }
+    }
+
+    Component {
         id: mobileCallInviteDialog
 
         CallInvite {
