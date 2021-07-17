@@ -7,6 +7,7 @@ import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Window 2.12
 import im.nheko 1.0
+import "./ui"
 
 ApplicationWindow {
     id: roomMembersRoot
@@ -38,7 +39,7 @@ ApplicationWindow {
             displayName: members.roomName
             Layout.alignment: Qt.AlignHCenter
             url: members.avatarUrl.replace("mxc://", "image://MxcImage/")
-            onClicked: TimelineManager.timeline.openRoomSettings(members.roomId)
+            onClicked: Rooms.currentRoom.openRoomSettings(members.roomId)
         }
 
         Label {
@@ -53,12 +54,12 @@ ApplicationWindow {
             hoverEnabled: true
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Invite more people")
-            onClicked: TimelineManager.timeline.openInviteUsersDialog()
+            onClicked: Rooms.currentRoom.openInviteUsersDialog()
         }
 
         ScrollView {
             clip: false
-            palette: colors
+            palette: Nheko.colors
             padding: 10
             ScrollBar.horizontal.visible: false
             Layout.fillHeight: true
@@ -83,12 +84,12 @@ ApplicationWindow {
                     spacing: 10
 
                     Avatar {
-                        width: avatarSize
-                        height: avatarSize
+                        width: Nheko.avatarSize
+                        height: Nheko.avatarSize
                         userid: model.mxid
                         url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                         displayName: model.displayName
-                        onClicked: TimelineManager.timeline.openUserProfile(model.mxid)
+                        onClicked: Rooms.currentRoom.openUserProfile(model.mxid)
                     }
 
                     ColumnLayout {
@@ -96,13 +97,13 @@ ApplicationWindow {
 
                         Label {
                             text: model.displayName
-                            color: TimelineManager.userColor(model ? model.mxid : "", colors.window)
+                            color: TimelineManager.userColor(model ? model.mxid : "", Nheko.colors.window)
                             font.pointSize: 12
                         }
 
                         Label {
                             text: model.mxid
-                            color: colors.buttonText
+                            color: Nheko.colors.buttonText
                             font.pointSize: 10
                         }
 
