@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #ifndef INVITEESMODEL_H
 #define INVITEESMODEL_H
 

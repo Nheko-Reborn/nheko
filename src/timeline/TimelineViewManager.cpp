@@ -430,10 +430,10 @@ TimelineViewManager::openImageOverlayInternal(QString eventId, QImage img)
         });
 }
 
-//void
-//TimelineViewManager::openInviteUsersDialog()
+// void
+// TimelineViewManager::openInviteUsersDialog()
 //{
-    // TODO: move this somewhere where it will actually work (probably Rooms)
+// TODO: move this somewhere where it will actually work (probably Rooms)
 //        MainWindow::instance()->openInviteUsersDialog(
 //          [this](const QStringList &invitees) { emit inviteUsers(invitees); });
 //}
