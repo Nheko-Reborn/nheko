@@ -155,7 +155,8 @@ Page {
         onOpenInviteUsersDialog: {
             var dialog = inviteDialog.createObject(timelineRoot, {
                 "roomId": Rooms.currentRoom.roomId,
-                "roomName": Rooms.currentRoom.roomName
+                "roomName": Rooms.currentRoom.roomName,
+                "invitees": invitees
             });
             dialog.show();
         }
