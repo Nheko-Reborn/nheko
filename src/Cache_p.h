@@ -259,6 +259,7 @@ public:
         mtx::crypto::InboundGroupSessionPtr getInboundMegolmSession(
           const MegolmSessionIndex &index);
         bool inboundMegolmSessionExists(const MegolmSessionIndex &index);
+        std::optional<GroupSessionData> getMegolmSessionData(const MegolmSessionIndex &index);
 
         //
         // Olm Sessions

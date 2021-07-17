@@ -582,6 +582,25 @@ Cache::getOutboundMegolmSession(const std::string &room_id)
         }
 }
 
+std::optional<GroupSessionData>
+Cache::getMegolmSessionData(const MegolmSessionIndex &index)
+{
+        try {
+                using namespace mtx::crypto;
+
+                auto txn = ro_txn(env_);
+
+                std::string_view value;
+                if (megolmSessionDataDb_.get(txn, json(index).dump(), value)) {
+                        return nlohmann::json::parse(value).get<GroupSessionData>();
+                }
+
+                return std::nullopt;
+        } catch (std::exception &e) {
+                nhlog::db()->error("Failed to retrieve Megolm Session Data: {}", e.what());
+                return std::nullopt;
+        }
+}
 //
 // OLM sessions.
 //
@@ -4621,6 +4640,11 @@ bool
 inboundMegolmSessionExists(const MegolmSessionIndex &index)
 {
         return instance_->inboundMegolmSessionExists(index);
+}
+std::optional<GroupSessionData>
+getMegolmSessionData(const MegolmSessionIndex &index)
+{
+        return instance_->getMegolmSessionData(index);
 }
 
 //

@@ -631,8 +631,9 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
 
                 // Saving the new megolm session.
                 GroupSessionData session_data{};
-                session_data.message_index = 0;
-                session_data.timestamp     = QDateTime::currentMSecsSinceEpoch();
+                session_data.message_index              = 0;
+                session_data.timestamp                  = QDateTime::currentMSecsSinceEpoch();
+                session_data.sender_claimed_ed25519_key = olm::client()->identity_keys().ed25519;
 
                 sendSessionTo.clear();
 
@@ -886,21 +887,16 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
                 return;
         }
 
-        // Check if we were the sender of the session being requested.
-        if (req.content.sender_key != olm::client()->identity_keys().curve25519) {
-                nhlog::crypto()->debug("ignoring key request {} because we were not the sender: "
-                                       "\nrequested({}) ours({})",
-                                       req.content.request_id,
-                                       req.content.sender_key,
-                                       olm::client()->identity_keys().curve25519);
-                return;
-        }
-
-        // Check if we have the keys for the requested session.
-        auto outboundSession = cache::getOutboundMegolmSession(req.content.room_id);
-        if (!outboundSession.session) {
-                nhlog::crypto()->warn("requested session not found in room: {}",
-                                      req.content.room_id);
+        // Check if we were the sender of the session being requested (unless it is actually us
+        // requesting the session).
+        if (req.sender != http::client()->user_id().to_string() &&
+            req.content.sender_key != olm::client()->identity_keys().curve25519) {
+                nhlog::crypto()->debug(
+                  "ignoring key request {} because we did not create the requested session: "
+                  "\nrequested({}) ours({})",
+                  req.content.request_id,
+                  req.content.sender_key,
+                  olm::client()->identity_keys().curve25519);
                 return;
         }
 
@@ -908,7 +904,15 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
         MegolmSessionIndex index{};
         index.room_id    = req.content.room_id;
         index.session_id = req.content.session_id;
-        index.sender_key = olm::client()->identity_keys().curve25519;
+        index.sender_key = req.content.sender_key;
+
+        // Check if we have the keys for the requested session.
+        auto sessionData = cache::getMegolmSessionData(index);
+        if (!sessionData) {
+                nhlog::crypto()->warn("requested session not found in room: {}",
+                                      req.content.room_id);
+                return;
+        }
 
         const auto session = cache::getInboundMegolmSession(index);
         if (!session) {
@@ -942,11 +946,11 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
 
         bool shouldSeeKeys    = false;
         uint64_t minimumIndex = -1;
-        if (outboundSession.data.currently.keys.count(req.sender)) {
-                if (outboundSession.data.currently.keys.at(req.sender)
+        if (sessionData->currently.keys.count(req.sender)) {
+                if (sessionData->currently.keys.at(req.sender)
                       .deviceids.count(req.content.requesting_device_id)) {
                         shouldSeeKeys = true;
-                        minimumIndex  = outboundSession.data.currently.keys.at(req.sender)
+                        minimumIndex  = sessionData->currently.keys.at(req.sender)
                                          .deviceids.at(req.content.requesting_device_id);
                 }
         }
@@ -976,8 +980,9 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
                 forward_key.sender_key  = index.sender_key;
 
                 // TODO(Nico): Figure out if this is correct
-                forward_key.sender_claimed_ed25519_key = olm::client()->identity_keys().ed25519;
-                forward_key.forwarding_curve25519_key_chain = {};
+                forward_key.sender_claimed_ed25519_key = sessionData->sender_claimed_ed25519_key;
+                forward_key.forwarding_curve25519_key_chain =
+                  sessionData->forwarding_curve25519_key_chain;
 
                 send_megolm_key_to_device(
                   req.sender, req.content.requesting_device_id, forward_key);
@@ -998,6 +1003,7 @@ send_megolm_key_to_device(const std::string &user_id,
         std::map<std::string, std::vector<std::string>> targets;
         targets[user_id] = {device_id};
         send_encrypted_to_device_messages(targets, room_key);
+        nhlog::crypto()->debug("Forwarded key to {}:{}", user_id, device_id);
 }
 
 DecryptionResult
