@@ -48,6 +48,13 @@ Page {
     }
 
     Component {
+        id: roomMembersComponent
+
+        RoomMembers {
+        }
+    }
+
+    Component {
         id: mobileCallInviteDialog
 
         CallInvite {
@@ -61,6 +68,20 @@ Page {
         QuickSwitcher {
         }
 
+    }
+
+    Component {
+        id: deviceVerificationDialog
+
+        DeviceVerification {
+        }
+
+    }
+    Component {
+        id: inviteDialog
+
+        InviteDialog {
+        }
     }
 
     Shortcut {
@@ -80,20 +101,6 @@ Page {
     Shortcut {
         sequence: "Ctrl+Up"
         onActivated: Rooms.previousRoom()
-    }
-
-    Component {
-        id: deviceVerificationDialog
-
-        DeviceVerification {
-        }
-
-    }
-    Component {
-        id: inviteDialog
-
-        InviteDialog {
-        }
     }
 
     Connections {
@@ -123,18 +130,18 @@ Page {
     }
 
     Connections {
-        target: TimelineManager.timeline
+        target: Rooms.currentRoom
         onOpenRoomMembersDialog: {
             var membersDialog = roomMembersComponent.createObject(timelineRoot, {
                 "members": members,
-                "roomName": TimelineManager.timeline.roomName
+                "roomName": Rooms.currentRoom.roomName
             });
             membersDialog.show();
         }
     }
 
     Connections {
-        target: TimelineManager.timeline
+        target: Rooms.currentRoom
         onOpenRoomSettingsDialog: {
             var roomSettings = roomSettingsComponent.createObject(timelineRoot, {
                 "roomSettings": settings
@@ -144,12 +151,12 @@ Page {
     }
 
     Connections {
-        target: TimelineManager.timeline
+        target: Rooms.currentRoom
         onOpenInviteUsersDialog: {
             var dialog = inviteDialog.createObject(timelineRoot, {
-                                          "roomId": TimelineManager.timeline.roomId,
-                                          "roomName": TimelineManager.timeline.roomName
-                                      });
+                "roomId": Rooms.currentRoom.roomId,
+                "roomName": Rooms.currentRoom.roomName
+            });
             dialog.show();
         }
     }
