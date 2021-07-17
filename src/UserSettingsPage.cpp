@@ -91,7 +91,7 @@ UserSettings::load(std::optional<QString> profile)
         privacyScreen_        = settings.value("user/privacy_screen", false).toBool();
         privacyScreenTimeout_ = settings.value("user/privacy_screen_timeout", 0).toInt();
         shareKeysWithTrustedUsers_ =
-          settings.value("user/share_keys_with_trusted_users", true).toBool();
+          settings.value("user/automatically_share_keys_with_trusted_users", false).toBool();
         mobileMode_        = settings.value("user/mobile_mode", false).toBool();
         emojiFont_         = settings.value("user/emoji_font_family", "default").toString();
         baseFontSize_      = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
@@ -610,7 +610,8 @@ UserSettings::save()
         settings.setValue("decrypt_sidebar", decryptSidebar_);
         settings.setValue("privacy_screen", privacyScreen_);
         settings.setValue("privacy_screen_timeout", privacyScreenTimeout_);
-        settings.setValue("share_keys_with_trusted_users", shareKeysWithTrustedUsers_);
+        settings.setValue("automatically_share_keys_with_trusted_users",
+                          shareKeysWithTrustedUsers_);
         settings.setValue("mobile_mode", mobileMode_);
         settings.setValue("font_size", baseFontSize_);
         settings.setValue("typing_notifications", typingNotifications_);
