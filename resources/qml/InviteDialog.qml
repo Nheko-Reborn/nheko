@@ -166,8 +166,8 @@ ApplicationWindow {
                 spacing: 10
 
                 Avatar {
-                    width: Nheko.avatarsize
-                    height: Nheko.avatarsize
+                    width: Nheko.avatarSize
+                    height: Nheko.avatarSize
                     userid: model.mxid
                     url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                     displayName: model.displayName
