@@ -96,6 +96,6 @@ MemberList::fetchMore(const QModelIndex &)
 {
         auto members = cache::getMembers(room_id_.toStdString(), rowCount());
         addUsers(members);
-        numUsersLoaded_ = members.size();
+        numUsersLoaded_ += members.size();
         emit numUsersLoadedChanged();
 }
