@@ -59,12 +59,13 @@ try_olm_decryption(const std::string &sender_key,
                    const mtx::events::msg::OlmCipherContent &content);
 
 void
-handle_olm_message(const OlmMessage &msg);
+handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKeys);
 
 //! Establish a new inbound megolm session with the decrypted payload from olm.
 void
 create_inbound_megolm_session(const mtx::events::DeviceEvent<mtx::events::msg::RoomKey> &roomKey,
-                              const std::string &sender_key);
+                              const std::string &sender_key,
+                              const std::string &sender_ed25519);
 void
 import_inbound_megolm_session(
   const mtx::events::DeviceEvent<mtx::events::msg::ForwardedRoomKey> &roomKey);
