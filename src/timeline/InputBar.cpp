@@ -515,6 +515,15 @@ InputBar::sticker(ImagePackModel *model, int row)
         sticker.url  = img.url;
         sticker.body = img.body;
 
+        if (!room->reply().isEmpty()) {
+                sticker.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
+        }
+        if (!room->edit().isEmpty()) {
+                sticker.relations.relations.push_back(
+                  {mtx::common::RelationType::Replace, room->edit().toStdString()});
+        }
+
         room->sendMessageEvent(sticker, mtx::events::EventType::Sticker);
 }
 
