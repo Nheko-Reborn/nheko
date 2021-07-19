@@ -225,6 +225,8 @@ public:
         std::vector<std::string> getParentRoomIds(const std::string &room_id);
         std::vector<std::string> getChildRoomIds(const std::string &room_id);
 
+        std::vector<ImagePackInfo> getImagePacks(const std::string &room_id, bool stickers);
+
         //! Mark a room that uses e2e encryption.
         void setEncryptedRoom(lmdb::txn &txn, const std::string &room_id);
         bool isRoomEncrypted(const std::string &room_id);

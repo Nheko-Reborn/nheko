@@ -11,6 +11,7 @@
 #include <string>
 
 #include <mtx/events/join_rules.hpp>
+#include <mtx/events/mscs/image_packs.hpp>
 
 namespace cache {
 enum class CacheVersion : int
@@ -108,4 +109,10 @@ struct RoomSearchResult
 {
         std::string room_id;
         RoomInfo info;
+};
+
+struct ImagePackInfo
+{
+        std::string packname;
+        std::map<std::string, mtx::events::msc2545::PackImage> images;
 };

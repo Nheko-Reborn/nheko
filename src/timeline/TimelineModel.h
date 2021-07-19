@@ -410,10 +410,17 @@ template<class T>
 void
 TimelineModel::sendMessageEvent(const T &content, mtx::events::EventType eventType)
 {
-        mtx::events::RoomEvent<T> msgCopy = {};
-        msgCopy.content                   = content;
-        msgCopy.type                      = eventType;
-        emit newMessageToSend(msgCopy);
+        if constexpr (std::is_same_v<T, mtx::events::msg::StickerImage>) {
+                mtx::events::Sticker msgCopy = {};
+                msgCopy.content              = content;
+                msgCopy.type                 = eventType;
+                emit newMessageToSend(msgCopy);
+        } else {
+                mtx::events::RoomEvent<T> msgCopy = {};
+                msgCopy.content                   = content;
+                msgCopy.type                      = eventType;
+                emit newMessageToSend(msgCopy);
+        }
         resetReply();
         resetEdit();
 }
