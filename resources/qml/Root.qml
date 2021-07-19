@@ -141,14 +141,12 @@ Page {
             });
             membersDialog.show();
         }
-
         onOpenRoomSettingsDialog: {
             var roomSettings = roomSettingsComponent.createObject(timelineRoot, {
                 "roomSettings": settings
             });
             roomSettings.show();
         }
-
         onOpenInviteUsersDialog: {
             var dialog = inviteDialog.createObject(timelineRoot, {
                 "roomId": Rooms.currentRoom.roomId,
