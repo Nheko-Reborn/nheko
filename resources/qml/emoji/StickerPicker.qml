@@ -15,7 +15,7 @@ Menu {
 
     property var callback
     property var colors
-    property alias model: gridView.model
+    property string roomid
     property var textArea
     property real highlightHue: Nheko.colors.highlight.hslHue
     property real highlightSat: Nheko.colors.highlight.hslSaturation
@@ -24,9 +24,9 @@ Menu {
     readonly property int stickerDimPad: 128 + Nheko.paddingSmall
     readonly property int stickersPerRow: 3
 
-    function show(showAt, model_, callback) {
+    function show(showAt, roomid_, callback) {
         console.debug("Showing sticker picker");
-        model = model_;
+        roomid = roomid_;
         stickerPopup.callback = callback;
         popup(showAt ? showAt : null);
     }
@@ -119,6 +119,8 @@ Menu {
             // emoji grid
             GridView {
                 id: gridView
+
+                model: roomid ? TimelineManager.completerFor("stickers", roomid) : null
 
                 Layout.preferredHeight: cellHeight * 3.5
                 Layout.preferredWidth: stickersPerRow * stickerDimPad + 20

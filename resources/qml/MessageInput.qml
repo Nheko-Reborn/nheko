@@ -331,7 +331,7 @@ Rectangle {
             image: ":/icons/icons/ui/sticky-note-solid.svg"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Stickers")
-            onClicked: stickerPopup.visible ? stickerPopup.close() : stickerPopup.show(stickerButton, TimelineManager.completerFor("stickers", room.roomId()), function(row) {
+            onClicked: stickerPopup.visible ? stickerPopup.close() : stickerPopup.show(stickerButton, room.roomId(), function(row) {
                 room.input.sticker(stickerPopup.model.sourceModel, row);
                 TimelineManager.focusMessageInput();
             })
