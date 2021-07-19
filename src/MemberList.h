@@ -12,7 +12,7 @@ class MemberList : public QAbstractListModel
         Q_OBJECT
 
         Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
-        Q_PROPERTY(size_t memberCount READ memberCount NOTIFY memberCountChanged)
+        Q_PROPERTY(int memberCount READ memberCount NOTIFY memberCountChanged)
         Q_PROPERTY(QString avatarUrl READ avatarUrl NOTIFY avatarUrlChanged)
         Q_PROPERTY(QString roomId READ roomId NOTIFY roomIdChanged)
         Q_PROPERTY(int numUsersLoaded READ numUsersLoaded NOTIFY numUsersLoadedChanged)
@@ -35,7 +35,7 @@ public:
         QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
         QString roomName() const { return QString::fromStdString(info_.name); }
-        size_t memberCount() const { return info_.member_count; }
+        int memberCount() const { return info_.member_count; }
         QString avatarUrl() const { return QString::fromStdString(info_.avatar_url); }
         QString roomId() const { return room_id_; }
         int numUsersLoaded() const { return numUsersLoaded_; }
