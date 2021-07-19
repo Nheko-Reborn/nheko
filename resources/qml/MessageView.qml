@@ -101,7 +101,7 @@ ScrollView {
                     image: ":/icons/icons/ui/smile.png"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("React")
-                    onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
+                    onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(reactButton, function(emoji) {
                         var event_id = row.model ? row.model.eventId : "";
                         room.input.reaction(event_id, emoji);
                         TimelineManager.focusMessageInput();
