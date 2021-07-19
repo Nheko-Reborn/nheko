@@ -72,9 +72,9 @@ ApplicationWindow {
                 Component.onCompleted: forceActiveFocus()
                 Keys.onShortcutOverride: event.accepted = ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers & Qt.ControlModifier))
                 Keys.onPressed: {
-                    if ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers === Qt.ControlModifier)) {
+                    if ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers === Qt.ControlModifier))
                         cleanUpAndClose();
-                    }
+
                 }
             }
 
