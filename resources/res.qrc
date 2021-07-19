@@ -27,6 +27,7 @@
         <file>icons/ui/search@2x.png</file>
         <file>icons/ui/settings.png</file>
         <file>icons/ui/settings@2x.png</file>
+        <file>icons/ui/sticky-note-solid.svg</file>
         <file>icons/ui/smile.png</file>
         <file>icons/ui/smile@2x.png</file>
         <file>icons/ui/speech-bubbles-comment-option.png</file>
@@ -151,8 +152,8 @@
         <file>qml/ForwardCompleter.qml</file>
         <file>qml/TypingIndicator.qml</file>
         <file>qml/RoomSettings.qml</file>
-        <file>qml/emoji/EmojiButton.qml</file>
         <file>qml/emoji/EmojiPicker.qml</file>
+        <file>qml/emoji/StickerPicker.qml</file>
         <file>qml/UserProfile.qml</file>
         <file>qml/delegates/MessageDelegate.qml</file>
         <file>qml/delegates/TextMessage.qml</file>

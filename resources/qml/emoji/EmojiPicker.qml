@@ -130,6 +130,7 @@ Menu {
                 boundsBehavior: Flickable.StopAtBounds
                 clip: true
                 currentIndex: -1 // prevent sorting from stealing focus
+                cacheBuffer: 500
 
                 // Individual emoji
                 delegate: AbstractButton {

@@ -27,40 +27,43 @@ enum Trust
 Q_ENUM_NS(Trust)
 }
 
-struct DeviceAndMasterKeys
+struct DeviceKeysToMsgIndex
 {
-        // map from device id or master key id to message_index
-        std::map<std::string, uint64_t> devices, master_keys;
+        // map from device key to message_index
+        // Using the device id is safe because we check for reuse on device list updates
+        // Using the device id makes our logic much easier to read.
+        std::map<std::string, uint64_t> deviceids;
 };
 
 struct SharedWithUsers
 {
         // userid to keys
-        std::map<std::string, DeviceAndMasterKeys> keys;
+        std::map<std::string, DeviceKeysToMsgIndex> keys;
 };
 
 // Extra information associated with an outbound megolm session.
-struct OutboundGroupSessionData
+struct GroupSessionData
 {
-        std::string session_id;
-        std::string session_key;
         uint64_t message_index = 0;
         uint64_t timestamp     = 0;
 
+        std::string sender_claimed_ed25519_key;
+        std::vector<std::string> forwarding_curve25519_key_chain;
+
         // who has access to this session.
         // Rotate, when a user leaves the room and share, when a user gets added.
-        SharedWithUsers initially, currently;
+        SharedWithUsers currently;
 };
 
 void
-to_json(nlohmann::json &obj, const OutboundGroupSessionData &msg);
+to_json(nlohmann::json &obj, const GroupSessionData &msg);
 void
-from_json(const nlohmann::json &obj, OutboundGroupSessionData &msg);
+from_json(const nlohmann::json &obj, GroupSessionData &msg);
 
 struct OutboundGroupSessionDataRef
 {
         mtx::crypto::OutboundGroupSessionPtr session;
-        OutboundGroupSessionData data;
+        GroupSessionData data;
 };
 
 struct DevicePublicKeys
@@ -134,6 +137,8 @@ struct UserKeyCache
         bool master_key_changed = false;
         //! Device keys that were already used at least once
         std::set<std::string> seen_device_keys;
+        //! Device ids that were already used at least once
+        std::set<std::string> seen_device_ids;
 };
 
 void

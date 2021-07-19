@@ -710,6 +710,14 @@ TimelineModel::data(const QModelIndex &index, int role) const
         return data(*event, role);
 }
 
+QVariant
+TimelineModel::dataById(QString id, int role, QString relatedTo)
+{
+        if (auto event = events.get(id.toStdString(), relatedTo.toStdString()))
+                return data(*event, role);
+        return QVariant();
+}
+
 bool
 TimelineModel::canFetchMore(const QModelIndex &) const
 {
@@ -1292,6 +1300,14 @@ struct SendMessageVisitor
                 sendRoomEvent<mtx::events::msg::KeyVerificationCancel,
                               mtx::events::EventType::KeyVerificationCancel>(msg);
         }
+        void operator()(mtx::events::Sticker msg)
+        {
+                msg.type = mtx::events::EventType::Sticker;
+                if (cache::isRoomEncrypted(model_->room_id_.toStdString())) {
+                        model_->sendEncryptedMessage(msg, mtx::events::EventType::Sticker);
+                } else
+                        emit model_->addPendingMessageToStore(msg);
+        }
 
         TimelineModel *model_;
 };
@@ -1301,6 +1317,7 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
 {
         std::visit(
           [](auto &msg) {
+                  // gets overwritten for reactions and stickers in SendMessageVisitor
                   msg.type             = mtx::events::EventType::RoomMessage;
                   msg.event_id         = "m" + http::client()->generate_txn_id();
                   msg.sender           = http::client()->user_id().to_string();

@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import "./emoji"
 import "./voip"
 import QtQuick 2.12
 import QtQuick.Controls 2.3
@@ -87,7 +88,7 @@ Rectangle {
             Layout.alignment: Qt.AlignBottom // | Qt.AlignHCenter
             Layout.maximumHeight: Window.height / 4
             Layout.minimumHeight: Settings.fontSize
-            implicitWidth: inputBar.width - 4 * (22 + 16) - 24
+            implicitWidth: inputBar.width - 5 * (22 + 16) - 24
 
             TextArea {
                 id: messageInput
@@ -320,6 +321,30 @@ Rectangle {
         }
 
         ImageButton {
+            id: stickerButton
+
+            Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+            Layout.margins: 8
+            hoverEnabled: true
+            width: 22
+            height: 22
+            image: ":/icons/icons/ui/sticky-note-solid.svg"
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Stickers")
+            onClicked: stickerPopup.visible ? stickerPopup.close() : stickerPopup.show(stickerButton, room.roomId(), function(row) {
+                room.input.sticker(stickerPopup.model.sourceModel, row);
+                TimelineManager.focusMessageInput();
+            })
+
+            StickerPicker {
+                id: stickerPopup
+
+                colors: Nheko.colors
+            }
+
+        }
+
+        ImageButton {
             id: emojiButton
 
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
@@ -330,7 +355,7 @@ Rectangle {
             image: ":/icons/icons/ui/smile.png"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Emoji")
-            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
+            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(function(emoji) {
                 messageInput.insert(messageInput.cursorPosition, emoji);
                 TimelineManager.focusMessageInput();
             })

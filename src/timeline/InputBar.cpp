@@ -21,6 +21,7 @@
 #include "ChatPage.h"
 #include "CompletionProxyModel.h"
 #include "Config.h"
+#include "ImagePackModel.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
@@ -499,6 +500,31 @@ InputBar::video(const QString &filename,
         }
 
         room->sendMessageEvent(video, mtx::events::EventType::RoomMessage);
+}
+
+void
+InputBar::sticker(ImagePackModel *model, int row)
+{
+        if (!model || row < 0)
+                return;
+
+        auto img = model->imageAt(row);
+
+        mtx::events::msg::StickerImage sticker{};
+        sticker.info = img.info.value_or(mtx::common::ImageInfo{});
+        sticker.url  = img.url;
+        sticker.body = img.body;
+
+        if (!room->reply().isEmpty()) {
+                sticker.relations.relations.push_back(
+                  {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
+        }
+        if (!room->edit().isEmpty()) {
+                sticker.relations.relations.push_back(
+                  {mtx::common::RelationType::Replace, room->edit().toStdString()});
+        }
+
+        room->sendMessageEvent(sticker, mtx::events::EventType::Sticker);
 }
 
 void

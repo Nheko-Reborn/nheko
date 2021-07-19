@@ -939,12 +939,16 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
                           [](const mtx::responses::UploadKeys &, mtx::http::RequestErr err) {
                                   if (err) {
                                           nhlog::crypto()->warn(
-                                            "failed to update one-time keys: {} {}",
+                                            "failed to update one-time keys: {} {} {}",
                                             err->matrix_error.error,
-                                            static_cast<int>(err->status_code));
-                                          return;
+                                            static_cast<int>(err->status_code),
+                                            static_cast<int>(err->error_code));
+
+                                          if (err->status_code < 400 || err->status_code >= 500)
+                                                  return;
                                   }
 
+                                  // mark as published anyway, otherwise we may end up in a loop.
                                   olm::mark_keys_as_published();
                           });
                 }

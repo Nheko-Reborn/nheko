@@ -8,6 +8,7 @@ import im.nheko 1.0
 
 TextEdit {
     id: r
+
     textFormat: TextEdit.RichText
     readOnly: true
     focus: false
@@ -19,14 +20,13 @@ TextEdit {
     onLinkActivated: Nheko.openLink(link)
     ToolTip.visible: hoveredLink
     ToolTip.text: hoveredLink
+    Component.onCompleted: {
+        TimelineManager.fixImageRendering(r.textDocument, r);
+    }
 
     CursorShape {
         anchors.fill: parent
         cursorShape: hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
-    }
-
-    Component.onCompleted: {
-        TimelineManager.fixImageRendering(r.textDocument, r)
     }
 
 }
