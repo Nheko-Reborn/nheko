@@ -130,6 +130,12 @@ Menu {
                 currentIndex: -1 // prevent sorting from stealing focus
                 cacheBuffer: 500
 
+                ScrollHelper {
+                    flickable: parent
+                    anchors.fill: parent
+                    enabled: !Settings.mobileMode
+                }
+
                 // Individual emoji
                 delegate: AbstractButton {
                     width: stickerDim
