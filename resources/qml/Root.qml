@@ -52,6 +52,7 @@ Page {
 
         RoomMembers {
         }
+
     }
 
     Component {
@@ -77,11 +78,13 @@ Page {
         }
 
     }
+
     Component {
         id: inviteDialog
 
         InviteDialog {
         }
+
     }
 
     Shortcut {
