@@ -3432,7 +3432,7 @@ Cache::getImagePacks(const std::string &room_id, bool stickers)
                                         (void)d;
                                         if (auto pack =
                                               getStateEvent<mtx::events::msc2545::ImagePack>(
-                                                txn, room_id2))
+                                                txn, room_id2, state_id))
                                                 addPack(pack->content);
                                 }
                         }
