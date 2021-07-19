@@ -141,20 +141,14 @@ Page {
             });
             membersDialog.show();
         }
-    }
 
-    Connections {
-        target: Rooms.currentRoom
         onOpenRoomSettingsDialog: {
             var roomSettings = roomSettingsComponent.createObject(timelineRoot, {
                 "roomSettings": settings
             });
             roomSettings.show();
         }
-    }
 
-    Connections {
-        target: Rooms.currentRoom
         onOpenInviteUsersDialog: {
             var dialog = inviteDialog.createObject(timelineRoot, {
                 "roomId": Rooms.currentRoom.roomId,
