@@ -246,17 +246,7 @@ Item {
 
     NhekoDropArea {
         anchors.fill: parent
-        roomid: room ? room.roomId() : ""
-    }
-
-    Connections {
-        target: room
-        onOpenRoomSettingsDialog: {
-            var roomSettings = roomSettingsComponent.createObject(timelineRoot, {
-                "roomSettings": settings
-            });
-            roomSettings.show();
-        }
+        roomid: room ? room.roomId : ""
     }
 
 }

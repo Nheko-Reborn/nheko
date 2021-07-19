@@ -20,6 +20,7 @@
 #include "DeviceVerificationFlow.h"
 #include "EventAccessors.h"
 #include "ImagePackModel.h"
+#include "InviteesModel.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
@@ -174,6 +175,8 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           0,
           "UserProfileModel",
           "UserProfile needs to be instantiated on the C++ side");
+        qmlRegisterUncreatableType<MemberList>(
+          "im.nheko", 1, 0, "MemberList", "MemberList needs to be instantiated on the C++ side");
         qmlRegisterUncreatableType<RoomSettings>(
           "im.nheko",
           1,
@@ -182,6 +185,12 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           "Room Settings needs to be instantiated on the C++ side");
         qmlRegisterUncreatableType<TimelineModel>(
           "im.nheko", 1, 0, "Room", "Room needs to be instantiated on the C++ side");
+        qmlRegisterUncreatableType<InviteesModel>(
+          "im.nheko",
+          1,
+          0,
+          "InviteesModel",
+          "InviteesModel needs to be instantiated on the C++ side");
 
         static auto self = this;
         qmlRegisterSingletonType<MainWindow>(
@@ -421,17 +430,6 @@ TimelineViewManager::openImageOverlayInternal(QString eventId, QImage img)
         });
 }
 
-void
-TimelineViewManager::openInviteUsersDialog()
-{
-        MainWindow::instance()->openInviteUsersDialog(
-          [this](const QStringList &invitees) { emit inviteUsers(invitees); });
-}
-void
-TimelineViewManager::openMemberListDialog(QString roomid) const
-{
-        MainWindow::instance()->openMemberListDialog(roomid);
-}
 void
 TimelineViewManager::openLeaveRoomDialog(QString roomid) const
 {

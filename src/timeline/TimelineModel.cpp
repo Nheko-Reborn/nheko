@@ -25,6 +25,7 @@
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
+#include "MemberList.h"
 #include "MxcImageProvider.h"
 #include "Olm.h"
 #include "TimelineViewManager.h"
@@ -317,6 +318,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
   , events(room_id.toStdString(), this)
   , room_id_(room_id)
   , manager_(manager)
+  , permissions_{room_id}
 {
         lastMessage_.timestamp = 0;
 
@@ -1057,11 +1059,28 @@ TimelineModel::openUserProfile(QString userid)
 }
 
 void
-TimelineModel::openRoomSettings()
+TimelineModel::openRoomMembers()
 {
-        RoomSettings *settings = new RoomSettings(roomId(), this);
+        MemberList *memberList = new MemberList(roomId());
+        emit openRoomMembersDialog(memberList);
+}
+
+void
+TimelineModel::openRoomSettings(QString room_id)
+{
+        RoomSettings *settings = new RoomSettings(room_id == QString() ? roomId() : room_id, this);
         connect(this, &TimelineModel::roomAvatarUrlChanged, settings, &RoomSettings::avatarChanged);
-        openRoomSettingsDialog(settings);
+        emit openRoomSettingsDialog(settings);
+}
+
+void
+TimelineModel::openInviteUsers(QString roomId)
+{
+        InviteesModel *model = new InviteesModel{this};
+        connect(model, &InviteesModel::accept, this, [this, model, roomId]() {
+                emit manager_->inviteUsers(roomId == QString() ? room_id_ : roomId, model->mxids());
+        });
+        emit openInviteUsersDialog(model);
 }
 
 void

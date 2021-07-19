@@ -281,11 +281,9 @@ set(SRC_FILES
 	src/dialogs/CreateRoom.cpp
 	src/dialogs/FallbackAuth.cpp
 	src/dialogs/ImageOverlay.cpp
-	src/dialogs/InviteUsers.cpp
 	src/dialogs/JoinRoom.cpp
 	src/dialogs/LeaveRoom.cpp
 	src/dialogs/Logout.cpp
-	src/dialogs/MemberList.cpp
 	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
 	src/dialogs/ReadReceipts.cpp
@@ -346,11 +344,12 @@ set(SRC_FILES
 	src/CompletionProxyModel.cpp
 	src/DeviceVerificationFlow.cpp
 	src/EventAccessors.cpp
-	src/InviteeItem.cpp
+	src/InviteesModel.cpp
 	src/Logging.cpp
 	src/LoginPage.cpp
 	src/MainWindow.cpp
 	src/MatrixClient.cpp
+	src/MemberList.cpp
 	src/MxcImageProvider.cpp
 	src/Olm.cpp
 	src/RegisterPage.cpp
@@ -492,11 +491,9 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/CreateRoom.h
 	src/dialogs/FallbackAuth.h
 	src/dialogs/ImageOverlay.h
-	src/dialogs/InviteUsers.h
 	src/dialogs/JoinRoom.h
 	src/dialogs/LeaveRoom.h
 	src/dialogs/Logout.h
-	src/dialogs/MemberList.h
 	src/dialogs/PreviewUploadOverlay.h
 	src/dialogs/RawMessage.h
 	src/dialogs/ReCaptcha.h
@@ -554,9 +551,10 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/Clipboard.h
 	src/CompletionProxyModel.h
 	src/DeviceVerificationFlow.h
-	src/InviteeItem.h
+	src/InviteesModel.h
 	src/LoginPage.h
 	src/MainWindow.h
+	src/MemberList.h
 	src/MxcImageProvider.h
 	src/RegisterPage.h
 	src/SSOHandler.h

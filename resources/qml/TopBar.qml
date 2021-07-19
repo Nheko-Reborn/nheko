@@ -111,17 +111,17 @@ Rectangle {
                 Platform.MenuItem {
                     visible: room ? room.permissions.canInvite() : false
                     text: qsTr("Invite users")
-                    onTriggered: TimelineManager.openInviteUsersDialog()
+                    onTriggered: Rooms.currentRoom.openInviteUsers()
                 }
 
                 Platform.MenuItem {
                     text: qsTr("Members")
-                    onTriggered: TimelineManager.openMemberListDialog(room.roomId())
+                    onTriggered: Rooms.currentRoom.openRoomMembers()
                 }
 
                 Platform.MenuItem {
                     text: qsTr("Leave room")
-                    onTriggered: TimelineManager.openLeaveRoomDialog(room.roomId())
+                    onTriggered: TimelineManager.openLeaveRoomDialog(room.roomId)
                 }
 
                 Platform.MenuItem {
