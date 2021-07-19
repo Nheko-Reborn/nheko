@@ -60,7 +60,7 @@ MemberList::addUsers(const std::vector<RoomMember> &members)
 QHash<int, QByteArray>
 MemberList::roleNames() const
 {
-        return {{Mxid, "mxid"}, {DisplayName, "displayName"}, {AvatarUrl, "avatarUrl"}};
+        return {{Mxid, "mxid"}, {DisplayName, "displayName"}, {AvatarUrl, "avatarUrl"},};
 }
 
 QVariant
