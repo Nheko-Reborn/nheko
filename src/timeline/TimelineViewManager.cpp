@@ -597,7 +597,7 @@ TimelineViewManager::completerFor(QString completerName, QString roomId)
                 return proxy;
         } else if (completerName == "stickers") {
                 auto stickerModel = new ImagePackModel(roomId.toStdString(), true);
-                auto proxy        = new CompletionProxyModel(stickerModel);
+                auto proxy = new CompletionProxyModel(stickerModel, 1, static_cast<size_t>(-1) / 4);
                 stickerModel->setParent(proxy);
                 return proxy;
         }

@@ -23,11 +23,7 @@ public:
 
         ImagePackModel(const std::string &roomId, bool stickers, QObject *parent = nullptr);
         QHash<int, QByteArray> roleNames() const override;
-        int rowCount(const QModelIndex &parent = QModelIndex()) const override
-        {
-                (void)parent;
-                return (int)images.size();
-        }
+        int rowCount(const QModelIndex &parent = QModelIndex()) const override;
         QVariant data(const QModelIndex &index, int role) const override;
 
         mtx::events::msc2545::PackImage imageAt(int row)

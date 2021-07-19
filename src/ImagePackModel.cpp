@@ -26,6 +26,12 @@ ImagePackModel::ImagePackModel(const std::string &roomId, bool stickers, QObject
         }
 }
 
+int
+ImagePackModel::rowCount(const QModelIndex &) const
+{
+        return (int)images.size();
+}
+
 QHash<int, QByteArray>
 ImagePackModel::roleNames() const
 {
