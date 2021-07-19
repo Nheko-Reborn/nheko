@@ -16,6 +16,7 @@ Menu {
     property var callback
     property var colors
     property string roomid
+    property alias model: gridView.model
     property var textArea
     property real highlightHue: Nheko.colors.highlight.hslHue
     property real highlightSat: Nheko.colors.highlight.hslSaturation
