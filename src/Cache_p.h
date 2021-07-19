@@ -88,12 +88,6 @@ public:
         //! Retrieve if the room is a space
         bool getRoomIsSpace(lmdb::txn &txn, lmdb::dbi &statesdb);
 
-        //! retrieve a specific event from account data
-        //! pass empty room_id for global account data
-        std::optional<mtx::events::collections::RoomAccountDataEvents> getAccountData(
-          mtx::events::EventType type,
-          const std::string &room_id = "");
-
         //! Get a specific state event
         template<typename T>
         std::optional<mtx::events::StateEvent<T>> getStateEvent(const std::string &room_id,
@@ -230,6 +224,8 @@ public:
         std::vector<std::string> getRoomIds(lmdb::txn &txn);
         std::vector<std::string> getParentRoomIds(const std::string &room_id);
         std::vector<std::string> getChildRoomIds(const std::string &room_id);
+
+        std::vector<ImagePackInfo> getImagePacks(const std::string &room_id, bool stickers);
 
         //! Mark a room that uses e2e encryption.
         void setEncryptedRoom(lmdb::txn &txn, const std::string &room_id);

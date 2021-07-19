@@ -3382,11 +3382,73 @@ Cache::getChildRoomIds(const std::string &room_id)
         return roomids;
 }
 
-std::optional<mtx::events::collections::RoomAccountDataEvents>
-Cache::getAccountData(mtx::events::EventType type, const std::string &room_id)
+std::vector<ImagePackInfo>
+Cache::getImagePacks(const std::string &room_id, bool stickers)
 {
         auto txn = ro_txn(env_);
-        return getAccountData(txn, type, room_id);
+        std::vector<ImagePackInfo> infos;
+
+        auto addPack = [&infos, stickers](const mtx::events::msc2545::ImagePack &pack) {
+                if (!pack.pack || (stickers ? pack.pack->is_sticker() : pack.pack->is_emoji())) {
+                        ImagePackInfo info;
+                        if (pack.pack)
+                                info.packname = pack.pack->display_name;
+
+                        for (const auto &img : pack.images) {
+                                if (img.second.overrides_usage() &&
+                                    (stickers ? !img.second.is_sticker() : !img.second.is_emoji()))
+                                        continue;
+
+                                info.images.insert(img);
+                        }
+
+                        if (!info.images.empty())
+                                infos.push_back(std::move(info));
+                }
+        };
+
+        // packs from account data
+        if (auto accountpack =
+              getAccountData(txn, mtx::events::EventType::ImagePackInAccountData, "")) {
+                auto tmp =
+                  std::get_if<mtx::events::EphemeralEvent<mtx::events::msc2545::ImagePack>>(
+                    &*accountpack);
+                if (tmp)
+                        addPack(tmp->content);
+        }
+
+        // packs from rooms, that were enabled globally
+        if (auto roomPacks = getAccountData(txn, mtx::events::EventType::ImagePackRooms, "")) {
+                auto tmp =
+                  std::get_if<mtx::events::EphemeralEvent<mtx::events::msc2545::ImagePackRooms>>(
+                    &*roomPacks);
+                if (tmp) {
+                        for (const auto &[room_id2, state_to_d] : tmp->content.rooms) {
+                                // don't add stickers from this room twice
+                                if (room_id2 == room_id)
+                                        continue;
+
+                                for (const auto &[state_id, d] : state_to_d) {
+                                        (void)d;
+                                        if (auto pack =
+                                              getStateEvent<mtx::events::msc2545::ImagePack>(
+                                                txn, room_id2))
+                                                addPack(pack->content);
+                                }
+                        }
+                }
+        }
+
+        // packs from current room
+        if (auto pack = getStateEvent<mtx::events::msc2545::ImagePack>(txn, room_id)) {
+                addPack(pack->content);
+        }
+        for (const auto &pack :
+             getStateEventsWithType<mtx::events::msc2545::ImagePack>(txn, room_id)) {
+                addPack(pack.content);
+        }
+
+        return infos;
 }
 
 std::optional<mtx::events::collections::RoomAccountDataEvents>

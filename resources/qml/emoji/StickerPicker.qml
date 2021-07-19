@@ -38,8 +38,6 @@ Menu {
     modal: true
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-    //height: columnView.implicitHeight + 4
-    //width: columnView.implicitWidth
     width: stickersPerRow * stickerDimPad + 20
 
     Rectangle {

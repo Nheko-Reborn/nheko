@@ -11,35 +11,12 @@ ImagePackModel::ImagePackModel(const std::string &roomId, bool stickers, QObject
   : QAbstractListModel(parent)
   , room_id(roomId)
 {
-        auto accountpackV =
-          cache::client()->getAccountData(mtx::events::EventType::ImagePackInAccountData);
-        auto enabledRoomPacksV =
-          cache::client()->getAccountData(mtx::events::EventType::ImagePackRooms);
+        auto packs = cache::client()->getImagePacks(room_id, stickers);
 
-        std::optional<mtx::events::msc2545::ImagePack> accountPack;
-        if (accountpackV) {
-                auto tmp =
-                  std::get_if<mtx::events::EphemeralEvent<mtx::events::msc2545::ImagePack>>(
-                    &*accountpackV);
-                if (tmp)
-                        accountPack = tmp->content;
-        }
-        // mtx::events::msc2545::ImagePackRooms *enabledRoomPacks = nullptr;
-        // if (enabledRoomPacksV)
-        //        enabledRoomPacks =
-        //          std::get_if<mtx::events::msc2545::ImagePackRooms>(&*enabledRoomPacksV);
+        for (const auto &pack : packs) {
+                QString packname = QString::fromStdString(pack.packname);
 
-        if (accountPack && (!accountPack->pack || (stickers ? accountPack->pack->is_sticker()
-                                                            : accountPack->pack->is_emoji()))) {
-                QString packname;
-                if (accountPack->pack)
-                        packname = QString::fromStdString(accountPack->pack->display_name);
-
-                for (const auto &img : accountPack->images) {
-                        if (img.second.overrides_usage() &&
-                            (stickers ? !img.second.is_sticker() : !img.second.is_emoji()))
-                                continue;
-
+                for (const auto &img : pack.images) {
                         ImageDesc i{};
                         i.shortcode = QString::fromStdString(img.first);
                         i.packname  = packname;
