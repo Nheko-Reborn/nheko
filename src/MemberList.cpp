@@ -98,8 +98,14 @@ MemberList::canFetchMore(const QModelIndex &) const
 void
 MemberList::fetchMore(const QModelIndex &)
 {
+        loadingMoreMembers_ = true;
+        emit loadingMoreMembersChanged();
+
         auto members = cache::getMembers(room_id_.toStdString(), rowCount());
         addUsers(members);
         numUsersLoaded_ += members.size();
         emit numUsersLoadedChanged();
+
+        loadingMoreMembers_ = false;
+        emit loadingMoreMembersChanged();
 }
