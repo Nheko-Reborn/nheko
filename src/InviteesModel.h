@@ -30,6 +30,8 @@ class InviteesModel : public QAbstractListModel
 {
         Q_OBJECT
 
+        Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
+
 public:
         enum Roles
         {
@@ -52,6 +54,7 @@ public:
 
 signals:
         void accept();
+        void countChanged();
 
 private:
         QVector<Invitee *> invitees_;
