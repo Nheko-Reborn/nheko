@@ -29,7 +29,7 @@ ApplicationWindow {
     ColumnLayout {
         anchors.fill: parent
         anchors.margins: 10
-        spacing: 10
+        spacing: Nheko.paddingMedium
 
         Avatar {
             id: roomAvatar
@@ -81,7 +81,7 @@ ApplicationWindow {
                 }
 
                 delegate: RowLayout {
-                    spacing: 10
+                    spacing: Nheko.paddingMedium
 
                     Avatar {
                         width: Nheko.avatarSize

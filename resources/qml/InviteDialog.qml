@@ -49,7 +49,7 @@ ApplicationWindow {
     ColumnLayout {
         anchors.fill: parent
         anchors.margins: 10
-        spacing: 10
+        spacing: Nheko.paddingMedium
 
         Label {
             text: qsTr("User ID to invite")
@@ -57,7 +57,7 @@ ApplicationWindow {
         }
 
         RowLayout {
-            spacing: 10
+            spacing: Nheko.paddingMedium
 
             MatrixTextField {
                 id: inviteeEntry
@@ -165,7 +165,7 @@ ApplicationWindow {
             model: invitees
 
             delegate: RowLayout {
-                spacing: 10
+                spacing: Nheko.paddingMedium
 
                 Avatar {
                     width: Nheko.avatarSize
