@@ -22,6 +22,8 @@ InviteesModel::addUser(QString mxid)
         connect(invitee, &Invitee::userInfoLoaded, this, [this]() { endInsertRows(); });
 
         invitees_.push_back(invitee);
+
+        emit countChanged();
 }
 
 QHash<int, QByteArray>

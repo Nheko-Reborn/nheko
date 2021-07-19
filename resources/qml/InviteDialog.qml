@@ -18,13 +18,11 @@ ApplicationWindow {
         if (inviteeEntry.text.match("@.+?:.{3,}")) {
             invitees.addUser(inviteeEntry.text);
             inviteeEntry.clear();
-        } else {
-            warningLabel.show();
         }
     }
 
     function cleanUpAndClose() {
-        if (inviteeEntry.text !== "")
+        if (inviteeEntry.text.match("@.+?:.{3,}"))
             addInvite();
         invitees.accept();
         close();
@@ -79,80 +77,8 @@ ApplicationWindow {
 
             Button {
                 text: qsTr("Add")
-                onClicked: {
-                    if (inviteeEntry.text !== "") {
-                        addInvite();
-                    }
-                }
-            }
-
-        }
-
-        Label {
-            id: warningLabel
-
-            function show() {
-                state = "shown";
-                warningLabelTimer.start();
-            }
-
-            text: qsTr("Please enter a valid username (e.g. @joe:matrix.org).")
-            color: "red"
-            visible: false
-            opacity: 0
-            state: "hidden"
-            states: [
-                State {
-                    name: "shown"
-
-                    PropertyChanges {
-                        target: warningLabel
-                        opacity: 1
-                        visible: true
-                    }
-
-                },
-                State {
-                    name: "hidden"
-
-                    PropertyChanges {
-                        target: warningLabel
-                        opacity: 0
-                        visible: false
-                    }
-
-                }
-            ]
-            transitions: [
-                Transition {
-                    from: "shown"
-                    to: "hidden"
-                    reversible: true
-
-                    SequentialAnimation {
-                        NumberAnimation {
-                            target: warningLabel
-                            property: "opacity"
-                            duration: 500
-                        }
-
-                        PropertyAction {
-                            target: warningLabel
-                            property: "visible"
-                        }
-
-                    }
-
-                }
-            ]
-
-            Timer {
-                id: warningLabelTimer
-
-                interval: 2000
-                repeat: false
-                running: false
-                onTriggered: warningLabel.state = "hidden"
+                enabled: inviteeEntry.text.match("@.+?:.{3,}")
+                onClicked: addInvite()
             }
 
         }
@@ -210,6 +136,7 @@ ApplicationWindow {
         Button {
             text: qsTr("Invite")
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            enabled: invitees.count > 0
             onClicked: cleanUpAndClose()
         }
 
