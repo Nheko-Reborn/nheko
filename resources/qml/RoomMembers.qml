@@ -58,7 +58,6 @@ ApplicationWindow {
         }
 
         ScrollView {
-            clip: false
             palette: Nheko.colors
             padding: 10
             ScrollBar.horizontal.visible: false
