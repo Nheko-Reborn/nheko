@@ -116,7 +116,7 @@ ApplicationWindow {
                 }
 
                 footer: Spinner {
-                    visible: members.numUsersLoaded < members.memberCount
+                    visible: members.numUsersLoaded < members.memberCount && members.loadingMoreMembers
                     // use the default height if it's visible, otherwise no height at all
                     height: visible ? undefined : 0
                     anchors.centerIn: parent
