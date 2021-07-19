@@ -24,6 +24,7 @@ ApplicationWindow {
     function cleanUpAndClose() {
         if (inviteeEntry.text.match("@.+?:.{3,}"))
             addInvite();
+
         invitees.accept();
         close();
     }
@@ -64,15 +65,17 @@ ApplicationWindow {
                 placeholderText: qsTr("@joe:matrix.org", "Example user id. The name 'joe' can be localized however you want.")
                 Layout.fillWidth: true
                 onAccepted: {
-                    if (text !== "") {
+                    if (text !== "")
                         addInvite();
-                    }
+
                 }
                 Component.onCompleted: forceActiveFocus()
-
                 Keys.onShortcutOverride: event.accepted = ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers & Qt.ControlModifier))
-                Keys.onPressed: if ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers === Qt.ControlModifier)) cleanUpAndClose()
-
+                Keys.onPressed: {
+                    if ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers === Qt.ControlModifier)) {
+                        cleanUpAndClose();
+                    }
+                }
             }
 
             Button {

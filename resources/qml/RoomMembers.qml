@@ -2,12 +2,12 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import "./ui"
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Window 2.12
 import im.nheko 1.0
-import "./ui"
 
 ApplicationWindow {
     id: roomMembersRoot
@@ -110,7 +110,9 @@ ApplicationWindow {
                             Layout.fillHeight: true
                             Layout.fillWidth: true
                         }
+
                     }
+
                 }
 
                 footer: Spinner {
@@ -119,12 +121,16 @@ ApplicationWindow {
                     height: visible ? undefined : 0
                     anchors.centerIn: parent
                 }
+
             }
+
         }
+
     }
 
     footer: DialogButtonBox {
         standardButtons: DialogButtonBox.Ok
         onAccepted: roomMembersRoot.close()
     }
+
 }
