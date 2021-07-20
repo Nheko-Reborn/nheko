@@ -48,6 +48,7 @@ ApplicationWindow {
             font.pixelSize: fontMetrics.font.pixelSize * 2
             fullText: members.memberCount + (members.memberCount === 1 ? qsTr(" person in ") : qsTr(" people in ")) + members.roomName
             Layout.alignment: Qt.AlignHCenter
+            elideWidth: parent.width - Nheko.paddingMedium
         }
 
         ImageButton {
