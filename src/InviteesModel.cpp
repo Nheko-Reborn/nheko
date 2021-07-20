@@ -18,9 +18,11 @@ InviteesModel::addUser(QString mxid)
 {
         beginInsertRows(QModelIndex(), invitees_.count(), invitees_.count());
 
-        auto invitee = new Invitee{mxid, this};
+        auto invitee        = new Invitee{mxid, this};
         auto indexOfInvitee = invitees_.count();
-        connect(invitee, &Invitee::userInfoLoaded, this, [this, indexOfInvitee]() { emit dataChanged(index(indexOfInvitee), index(indexOfInvitee)); });
+        connect(invitee, &Invitee::userInfoLoaded, this, [this, indexOfInvitee]() {
+                emit dataChanged(index(indexOfInvitee), index(indexOfInvitee));
+        });
 
         invitees_.push_back(invitee);
 

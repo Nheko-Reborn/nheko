@@ -327,7 +327,8 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                 this->isSpace_ = create->content.type == mtx::events::state::room_type::space;
         this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
 
-        // this connection will simplify adding the plainRoomNameChanged() signal everywhere that it needs to be
+        // this connection will simplify adding the plainRoomNameChanged() signal everywhere that it
+        // needs to be
         connect(this, &TimelineModel::roomNameChanged, this, &TimelineModel::plainRoomNameChanged);
 
         connect(
