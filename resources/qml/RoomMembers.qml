@@ -20,6 +20,8 @@ ApplicationWindow {
     height: 650
     width: 420
     minimumHeight: 420
+    palette: Nheko.colors
+    color: Nheko.colors.window
 
     Shortcut {
         sequence: StandardKey.Cancel

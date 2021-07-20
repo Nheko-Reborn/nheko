@@ -34,6 +34,8 @@ ApplicationWindow {
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     height: 380
     width: 340
+    palette: Nheko.colors
+    color: Nheko.colors.window
 
     Shortcut {
         sequence: "Ctrl+Enter"
