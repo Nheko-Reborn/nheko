@@ -11,7 +11,7 @@ ApplicationWindow {
     id: inviteDialogRoot
 
     property string roomId
-    property string roomName
+    property string plainRoomName
     property InviteesModel invitees
 
     function addInvite() {
@@ -29,7 +29,7 @@ ApplicationWindow {
         close();
     }
 
-    title: qsTr("Invite users to ") + roomName
+    title: qsTr("Invite users to ") + plainRoomName
     x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     height: 380

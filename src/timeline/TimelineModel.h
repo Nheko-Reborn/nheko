@@ -162,6 +162,7 @@ class TimelineModel : public QAbstractListModel
           bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
         Q_PROPERTY(QString roomId READ roomId CONSTANT)
         Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
+        Q_PROPERTY(QString plainRoomName READ plainRoomName NOTIFY plainRoomNameChanged)
         Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY roomAvatarUrlChanged)
         Q_PROPERTY(QString roomTopic READ roomTopic NOTIFY roomTopicChanged)
         Q_PROPERTY(int roomMemberCount READ roomMemberCount NOTIFY roomMemberCountChanged)
@@ -367,6 +368,7 @@ signals:
 
         void encryptionChanged();
         void roomNameChanged();
+        void plainRoomNameChanged();
         void roomTopicChanged();
         void roomAvatarUrlChanged();
         void roomMemberCountChanged();
