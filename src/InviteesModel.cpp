@@ -69,7 +69,8 @@ Invitee::Invitee(const QString &mxid, QObject *parent)
           mxid_.toStdString(),
           [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
                   if (err) {
-                          nhlog::net()->warn("failed to retrieve own profile info");
+                          nhlog::net()->warn("failed to retrieve profile info");
+                          emit userInfoLoaded();
                           return;
                   }
 
