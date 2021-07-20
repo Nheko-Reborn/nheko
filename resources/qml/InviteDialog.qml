@@ -111,13 +111,13 @@ ApplicationWindow {
                     Label {
                         text: model.displayName
                         color: TimelineManager.userColor(model ? model.mxid : "", Nheko.colors.window)
-                        font.pointSize: 12
+                        font.pointSize: fontMetrics.font.pointSize
                     }
 
                     Label {
                         text: model.mxid
                         color: Nheko.colors.buttonText
-                        font.pointSize: 10
+                        font.pointSize: fontMetrics.font.pointSize * 0.9
                     }
 
                     Item {

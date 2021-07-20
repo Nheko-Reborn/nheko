@@ -43,7 +43,7 @@ ApplicationWindow {
         }
 
         Label {
-            font.pixelSize: 24
+            font.pixelSize: fontMetrics.font.pixelSize * 2
             text: members.memberCount + (members.memberCount === 1 ? qsTr(" person in ") : qsTr(" people in ")) + members.roomName
             Layout.alignment: Qt.AlignHCenter
         }
@@ -97,13 +97,13 @@ ApplicationWindow {
                         Label {
                             text: model.displayName
                             color: TimelineManager.userColor(model ? model.mxid : "", Nheko.colors.window)
-                            font.pointSize: 12
+                            font.pointSize: fontMetrics.font.pointSize
                         }
 
                         Label {
                             text: model.mxid
                             color: Nheko.colors.buttonText
-                            font.pointSize: 10
+                            font.pointSize: fontMetrics.font.pointSize * 0.9
                         }
 
                         Item {
