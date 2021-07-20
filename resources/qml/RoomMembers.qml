@@ -44,9 +44,9 @@ ApplicationWindow {
             onClicked: Rooms.currentRoom.openRoomSettings(members.roomId)
         }
 
-        Label {
+        ElidedLabel {
             font.pixelSize: fontMetrics.font.pixelSize * 2
-            text: members.memberCount + (members.memberCount === 1 ? qsTr(" person in ") : qsTr(" people in ")) + members.roomName
+            fullText: members.memberCount + (members.memberCount === 1 ? qsTr(" person in ") : qsTr(" people in ")) + members.roomName
             Layout.alignment: Qt.AlignHCenter
         }
 
