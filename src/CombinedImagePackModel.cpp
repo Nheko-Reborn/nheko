@@ -2,12 +2,14 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "ImagePackModel.h"
+#include "CombinedImagePackModel.h"
 
 #include "Cache_p.h"
 #include "CompletionModelRoles.h"
 
-ImagePackModel::ImagePackModel(const std::string &roomId, bool stickers, QObject *parent)
+CombinedImagePackModel::CombinedImagePackModel(const std::string &roomId,
+                                               bool stickers,
+                                               QObject *parent)
   : QAbstractListModel(parent)
   , room_id(roomId)
 {
@@ -27,13 +29,13 @@ ImagePackModel::ImagePackModel(const std::string &roomId, bool stickers, QObject
 }
 
 int
-ImagePackModel::rowCount(const QModelIndex &) const
+CombinedImagePackModel::rowCount(const QModelIndex &) const
 {
         return (int)images.size();
 }
 
 QHash<int, QByteArray>
-ImagePackModel::roleNames() const
+CombinedImagePackModel::roleNames() const
 {
         return {
           {CompletionModel::CompletionRole, "completionRole"},
@@ -48,7 +50,7 @@ ImagePackModel::roleNames() const
 }
 
 QVariant
-ImagePackModel::data(const QModelIndex &index, int role) const
+CombinedImagePackModel::data(const QModelIndex &index, int role) const
 {
         if (hasIndex(index.row(), index.column(), index.parent())) {
                 switch (role) {

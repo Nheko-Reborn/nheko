@@ -19,9 +19,9 @@
 
 #include "Cache.h"
 #include "ChatPage.h"
+#include "CombinedImagePackModel.h"
 #include "CompletionProxyModel.h"
 #include "Config.h"
-#include "ImagePackModel.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
@@ -503,7 +503,7 @@ InputBar::video(const QString &filename,
 }
 
 void
-InputBar::sticker(ImagePackModel *model, int row)
+InputBar::sticker(CombinedImagePackModel *model, int row)
 {
         if (!model || row < 0)
                 return;

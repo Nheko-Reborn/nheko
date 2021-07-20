@@ -12,7 +12,7 @@
 #include <mtx/responses/messages.hpp>
 
 class TimelineModel;
-class ImagePackModel;
+class CombinedImagePackModel;
 class QMimeData;
 class QDropEvent;
 class QStringList;
@@ -58,7 +58,7 @@ public slots:
                      MarkdownOverride useMarkdown = MarkdownOverride::NOT_SPECIFIED,
                      bool rainbowify              = false);
         void reaction(const QString &reactedEvent, const QString &reactionKey);
-        void sticker(ImagePackModel *model, int row);
+        void sticker(CombinedImagePackModel *model, int row);
 
 private slots:
         void startTyping();

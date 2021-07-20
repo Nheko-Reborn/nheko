@@ -15,11 +15,11 @@
 #include "ChatPage.h"
 #include "Clipboard.h"
 #include "ColorImageProvider.h"
+#include "CombinedImagePackModel.h"
 #include "CompletionProxyModel.h"
 #include "DelegateChooser.h"
 #include "DeviceVerificationFlow.h"
 #include "EventAccessors.h"
-#include "ImagePackModel.h"
 #include "InviteesModel.h"
 #include "Logging.h"
 #include "MainWindow.h"
@@ -146,7 +146,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         qRegisterMetaType<mtx::events::msg::KeyVerificationReady>();
         qRegisterMetaType<mtx::events::msg::KeyVerificationRequest>();
         qRegisterMetaType<mtx::events::msg::KeyVerificationStart>();
-        qRegisterMetaType<ImagePackModel *>();
+        qRegisterMetaType<CombinedImagePackModel *>();
 
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                          "im.nheko",
@@ -622,7 +622,7 @@ TimelineViewManager::completerFor(QString completerName, QString roomId)
                 roomModel->setParent(proxy);
                 return proxy;
         } else if (completerName == "stickers") {
-                auto stickerModel = new ImagePackModel(roomId.toStdString(), true);
+                auto stickerModel = new CombinedImagePackModel(roomId.toStdString(), true);
                 auto proxy = new CompletionProxyModel(stickerModel, 1, static_cast<size_t>(-1) / 4);
                 stickerModel->setParent(proxy);
                 return proxy;
