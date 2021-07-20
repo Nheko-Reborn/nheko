@@ -28,7 +28,7 @@ ApplicationWindow {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 10
+        anchors.margins: Nheko.paddingMedium
         spacing: Nheko.paddingMedium
 
         Avatar {
@@ -59,7 +59,7 @@ ApplicationWindow {
 
         ScrollView {
             palette: Nheko.colors
-            padding: 10
+            padding: Nheko.paddingMedium
             ScrollBar.horizontal.visible: false
             Layout.fillHeight: true
             Layout.minimumHeight: 200
@@ -69,7 +69,7 @@ ApplicationWindow {
                 id: memberList
 
                 clip: true
-                spacing: 8
+                spacing: Nheko.paddingMedium
                 boundsBehavior: Flickable.StopAtBounds
                 model: members
 
@@ -92,7 +92,7 @@ ApplicationWindow {
                     }
 
                     ColumnLayout {
-                        spacing: 5
+                        spacing: Nheko.paddingSmall
 
                         Label {
                             text: model.displayName

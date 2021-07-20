@@ -47,7 +47,7 @@ ApplicationWindow {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 10
+        anchors.margins: Nheko.paddingMedium
         spacing: Nheko.paddingMedium
 
         Label {
@@ -106,7 +106,7 @@ ApplicationWindow {
                 }
 
                 ColumnLayout {
-                    spacing: 5
+                    spacing: Nheko.paddingSmall
 
                     Label {
                         text: model.displayName
