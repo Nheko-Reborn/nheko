@@ -118,11 +118,21 @@ ApplicationWindow {
 
                 }
 
-                footer: Spinner {
-                    visible: members.numUsersLoaded < members.memberCount && members.loadingMoreMembers
+                footer: Item {
+                    width: parent.width
+                    visible: (members.numUsersLoaded < members.memberCount) && members.loadingMoreMembers
+
                     // use the default height if it's visible, otherwise no height at all
-                    height: visible ? undefined : 0
-                    anchors.centerIn: parent
+                    height: membersLoadingSpinner.height
+                    anchors.margins: Nheko.paddingMedium
+
+                    Spinner {
+                        id: membersLoadingSpinner
+
+                        anchors.centerIn: parent
+                        height: visible ? 35 : 0
+                    }
+
                 }
 
             }
