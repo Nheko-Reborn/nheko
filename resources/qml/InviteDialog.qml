@@ -106,7 +106,7 @@ ApplicationWindow {
                     userid: model.mxid
                     url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                     displayName: model.displayName
-                    onClicked: TimelineManager.timeline.openUserProfile(model.mxid)
+                    onClicked: Rooms.currentRoom.openUserProfile(model.mxid)
                 }
 
                 ColumnLayout {
