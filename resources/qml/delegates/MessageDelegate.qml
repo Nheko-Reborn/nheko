@@ -29,6 +29,7 @@ Item {
     required property string roomTopic
     required property string roomName
     required property string callType
+    required property int relatedEventCacheBuster
 
     height: chooser.childrenRect.height
 
@@ -301,7 +302,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: room.formatPowerLevelEvent(d.eventId)
+                formatted: d.relatedEventCacheBuster, room.formatPowerLevelEvent(d.eventId)
             }
 
         }
@@ -313,7 +314,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: room.formatJoinRuleEvent(d.eventId)
+                formatted: d.relatedEventCacheBuster, room.formatJoinRuleEvent(d.eventId)
             }
 
         }
@@ -325,7 +326,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: room.formatHistoryVisibilityEvent(d.eventId)
+                formatted: d.relatedEventCacheBuster, room.formatHistoryVisibilityEvent(d.eventId)
             }
 
         }
@@ -337,7 +338,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: room.formatGuestAccessEvent(d.eventId)
+                formatted: d.relatedEventCacheBuster, room.formatGuestAccessEvent(d.eventId)
             }
 
         }
@@ -349,7 +350,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: room.formatMemberEvent(d.eventId)
+                formatted: d.relatedEventCacheBuster, room.formatMemberEvent(d.eventId)
             }
 
         }

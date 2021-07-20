@@ -208,6 +208,7 @@ public:
                 RoomTopic,
                 CallType,
                 Dump,
+                RelatedEventCacheBuster,
         };
         Q_ENUM(Roles);
 
@@ -399,6 +400,8 @@ private:
         friend struct SendMessageVisitor;
 
         int notification_count = 0, highlight_count = 0;
+
+        unsigned int relatedEventCacheBuster = 0;
 
         bool decryptDescription     = true;
         bool m_paginationInProgress = false;

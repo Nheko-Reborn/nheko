@@ -40,6 +40,7 @@ Item {
     required property int trustlevel
     required property var timestamp
     required property int status
+    required property int relatedEventCacheBuster
 
     anchors.left: parent.left
     anchors.right: parent.right
@@ -90,25 +91,26 @@ Item {
                 }
 
                 visible: replyTo
-                userColor: replyTo, TimelineManager.userColor(userId, Nheko.colors.base)
-                blurhash: replyTo, fromModel(Room.Blurhash) ?? ""
-                body: replyTo, fromModel(Room.Body) ?? ""
-                formattedBody: replyTo, fromModel(Room.FormattedBody) ?? ""
+                userColor: r.relatedEventCacheBuster, TimelineManager.userColor(userId, Nheko.colors.base)
+                blurhash: r.relatedEventCacheBuster, fromModel(Room.Blurhash) ?? ""
+                body: r.relatedEventCacheBuster, fromModel(Room.Body) ?? ""
+                formattedBody: r.relatedEventCacheBuster, fromModel(Room.FormattedBody) ?? ""
                 eventId: fromModel(Room.EventId) ?? ""
-                filename: replyTo, fromModel(Room.Filename) ?? ""
-                filesize: replyTo, fromModel(Room.Filesize) ?? ""
-                proportionalHeight: replyTo, fromModel(Room.ProportionalHeight) ?? 1
-                type: replyTo, fromModel(Room.Type) ?? MtxEvent.UnknownMessage
-                typeString: replyTo, fromModel(Room.TypeString) ?? ""
-                url: replyTo, fromModel(Room.Url) ?? ""
-                originalWidth: replyTo, fromModel(Room.OriginalWidth) ?? 0
-                isOnlyEmoji: replyTo, fromModel(Room.IsOnlyEmoji) ?? false
-                userId: replyTo, fromModel(Room.UserId) ?? ""
-                userName: replyTo, fromModel(Room.UserName) ?? ""
-                thumbnailUrl: replyTo, fromModel(Room.ThumbnailUrl) ?? ""
-                roomTopic: replyTo, fromModel(Room.RoomTopic) ?? ""
-                roomName: replyTo, fromModel(Room.RoomName) ?? ""
-                callType: replyTo, fromModel(Room.CallType) ?? ""
+                filename: r.relatedEventCacheBuster, fromModel(Room.Filename) ?? ""
+                filesize: r.relatedEventCacheBuster, fromModel(Room.Filesize) ?? ""
+                proportionalHeight: r.relatedEventCacheBuster, fromModel(Room.ProportionalHeight) ?? 1
+                type: r.relatedEventCacheBuster, fromModel(Room.Type) ?? MtxEvent.UnknownMessage
+                typeString: r.relatedEventCacheBuster, fromModel(Room.TypeString) ?? ""
+                url: r.relatedEventCacheBuster, fromModel(Room.Url) ?? ""
+                originalWidth: r.relatedEventCacheBuster, fromModel(Room.OriginalWidth) ?? 0
+                isOnlyEmoji: r.relatedEventCacheBuster, fromModel(Room.IsOnlyEmoji) ?? false
+                userId: r.relatedEventCacheBuster, fromModel(Room.UserId) ?? ""
+                userName: r.relatedEventCacheBuster, fromModel(Room.UserName) ?? ""
+                thumbnailUrl: r.relatedEventCacheBuster, fromModel(Room.ThumbnailUrl) ?? ""
+                roomTopic: r.relatedEventCacheBuster, fromModel(Room.RoomTopic) ?? ""
+                roomName: r.relatedEventCacheBuster, fromModel(Room.RoomName) ?? ""
+                callType: r.relatedEventCacheBuster, fromModel(Room.CallType) ?? ""
+                relatedEventCacheBuster: r.relatedEventCacheBuster, fromModel(Room.RelatedEventCacheBuster) ?? 0
             }
 
             // actual message content
@@ -134,6 +136,7 @@ Item {
                 roomTopic: r.roomTopic
                 roomName: r.roomName
                 callType: r.callType
+                relatedEventCacheBuster: r.relatedEventCacheBuster
                 isReply: false
             }
 

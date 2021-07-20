@@ -344,6 +344,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
           &EventStore::dataChanged,
           this,
           [this](int from, int to) {
+                  relatedEventCacheBuster++;
                   nhlog::ui()->debug(
                     "data changed {} to {}", events.size() - to - 1, events.size() - from - 1);
                   emit dataChanged(index(events.size() - to - 1, 0),
@@ -443,6 +444,7 @@ TimelineModel::roleNames() const
           {RoomTopic, "roomTopic"},
           {CallType, "callType"},
           {Dump, "dump"},
+          {RelatedEventCacheBuster, "relatedEventCacheBuster"},
         };
 }
 int
@@ -676,6 +678,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
 
                 return QVariant(m);
         }
+        case RelatedEventCacheBuster:
+                return relatedEventCacheBuster;
         default:
                 return QVariant();
         }

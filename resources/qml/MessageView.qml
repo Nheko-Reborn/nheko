@@ -341,6 +341,7 @@ ScrollView {
             required property var timestamp
             required property int status
             required property int index
+            required property int relatedEventCacheBuster
             required property string previousMessageUserId
             required property string day
             required property string previousMessageDay
@@ -446,6 +447,7 @@ ScrollView {
                 trustlevel: wrapper.trustlevel
                 timestamp: wrapper.timestamp
                 status: wrapper.status
+                relatedEventCacheBuster: wrapper.relatedEventCacheBuster
                 y: section.visible && section.active ? section.y + section.height : 0
 
                 HoverHandler {

@@ -122,7 +122,6 @@ Menu {
                 id: gridView
 
                 model: roomid ? TimelineManager.completerFor("stickers", roomid) : null
-
                 Layout.preferredHeight: cellHeight * 3.5
                 Layout.preferredWidth: stickersPerRow * stickerDimPad + 20
                 Layout.leftMargin: 4
