@@ -15,14 +15,14 @@ ApplicationWindow {
     property InviteesModel invitees
 
     function addInvite() {
-        if (inviteeEntry.text.match("@.+?:.{3,}")) {
+        if (inviteeEntry.isValidMxid) {
             invitees.addUser(inviteeEntry.text);
             inviteeEntry.clear();
         }
     }
 
     function cleanUpAndClose() {
-        if (inviteeEntry.text.match("@.+?:.{3,}"))
+        if (inviteeEntry.isValidMxid)
             addInvite();
 
         invitees.accept();
@@ -63,11 +63,13 @@ ApplicationWindow {
             MatrixTextField {
                 id: inviteeEntry
 
+                property bool isValidMxid: text.match("@.+?:.{3,}")
+
                 backgroundColor: Nheko.colors.window
                 placeholderText: qsTr("@joe:matrix.org", "Example user id. The name 'joe' can be localized however you want.")
                 Layout.fillWidth: true
                 onAccepted: {
-                    if (text !== "")
+                    if (isValidMxid)
                         addInvite();
 
                 }
@@ -82,7 +84,7 @@ ApplicationWindow {
 
             Button {
                 text: qsTr("Add")
-                enabled: inviteeEntry.text.match("@.+?:.{3,}")
+                enabled: inviteeEntry.isValidMxid
                 onClicked: addInvite()
             }
 
