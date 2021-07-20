@@ -56,7 +56,7 @@ ApplicationWindow {
             hoverEnabled: true
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Invite more people")
-            onClicked: Rooms.currentRoom.openInviteUsersDialog()
+            onClicked: Rooms.currentRoom.openInviteUsers()
         }
 
         ScrollView {
