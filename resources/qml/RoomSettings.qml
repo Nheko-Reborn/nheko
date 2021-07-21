@@ -98,7 +98,7 @@ ApplicationWindow {
 
             MatrixText {
                 text: roomSettings.roomName
-                font.pixelSize: 24
+                font.pixelSize: fontMetrics.font.pixelSize * 2
                 Layout.alignment: Qt.AlignHCenter
             }
 
@@ -264,7 +264,7 @@ ApplicationWindow {
 
             MatrixText {
                 text: roomSettings.roomId
-                font.pixelSize: 14
+                font.pixelSize: fontMetrics.font.pixelSize * 1.2
                 Layout.alignment: Qt.AlignRight
             }
 
@@ -274,16 +274,16 @@ ApplicationWindow {
 
             MatrixText {
                 text: roomSettings.roomVersion
-                font.pixelSize: 14
+                font.pixelSize: fontMetrics.font.pixelSize * 1.2
                 Layout.alignment: Qt.AlignRight
             }
 
         }
 
-        Button {
-            Layout.alignment: Qt.AlignRight
-            text: qsTr("OK")
-            onClicked: close()
+        DialogButtonBox {
+            Layout.fillWidth: true
+            standardButtons: DialogButtonBox.Ok
+            onAccepted: close()
         }
 
     }

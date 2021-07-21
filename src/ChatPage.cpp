@@ -116,29 +116,31 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::loggedOut, this, &ChatPage::logout);
 
-        connect(view_manager_, &TimelineViewManager::inviteUsers, this, [this](QStringList users) {
-                const auto room_id = currentRoom().toStdString();
+        connect(
+          view_manager_,
+          &TimelineViewManager::inviteUsers,
+          this,
+          [this](QString roomId, QStringList users) {
+                  for (int ii = 0; ii < users.size(); ++ii) {
+                          QTimer::singleShot(ii * 500, this, [this, roomId, ii, users]() {
+                                  const auto user = users.at(ii);
 
-                for (int ii = 0; ii < users.size(); ++ii) {
-                        QTimer::singleShot(ii * 500, this, [this, room_id, ii, users]() {
-                                const auto user = users.at(ii);
+                                  http::client()->invite_user(
+                                    roomId.toStdString(),
+                                    user.toStdString(),
+                                    [this, user](const mtx::responses::RoomInvite &,
+                                                 mtx::http::RequestErr err) {
+                                            if (err) {
+                                                    emit showNotification(
+                                                      tr("Failed to invite user: %1").arg(user));
+                                                    return;
+                                            }
 
-                                http::client()->invite_user(
-                                  room_id,
-                                  user.toStdString(),
-                                  [this, user](const mtx::responses::RoomInvite &,
-                                               mtx::http::RequestErr err) {
-                                          if (err) {
-                                                  emit showNotification(
-                                                    tr("Failed to invite user: %1").arg(user));
-                                                  return;
-                                          }
-
-                                          emit showNotification(tr("Invited user: %1").arg(user));
-                                  });
-                        });
-                }
-        });
+                                            emit showNotification(tr("Invited user: %1").arg(user));
+                                    });
+                          });
+                  }
+          });
 
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
         connect(this, &ChatPage::newRoom, this, &ChatPage::changeRoom, Qt::QueuedConnection);

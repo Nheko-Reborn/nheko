@@ -17,6 +17,8 @@
 #include "CacheStructs.h"
 #include "EventStore.h"
 #include "InputBar.h"
+#include "InviteesModel.h"
+#include "MemberList.h"
 #include "Permissions.h"
 #include "ui/RoomSettings.h"
 #include "ui/UserProfile.h"
@@ -158,7 +160,9 @@ class TimelineModel : public QAbstractListModel
         Q_PROPERTY(QString edit READ edit WRITE setEdit NOTIFY editChanged RESET resetEdit)
         Q_PROPERTY(
           bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
+        Q_PROPERTY(QString roomId READ roomId CONSTANT)
         Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
+        Q_PROPERTY(QString plainRoomName READ plainRoomName NOTIFY plainRoomNameChanged)
         Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY roomAvatarUrlChanged)
         Q_PROPERTY(QString roomTopic READ roomTopic NOTIFY roomTopicChanged)
         Q_PROPERTY(int roomMemberCount READ roomMemberCount NOTIFY roomMemberCountChanged)
@@ -235,7 +239,9 @@ public:
         Q_INVOKABLE void forwardMessage(QString eventId, QString roomId);
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
         Q_INVOKABLE void openUserProfile(QString userid);
-        Q_INVOKABLE void openRoomSettings();
+        Q_INVOKABLE void openRoomMembers();
+        Q_INVOKABLE void openRoomSettings(QString room_id = QString());
+        Q_INVOKABLE void openInviteUsers(QString roomId = QString());
         Q_INVOKABLE void editAction(QString id);
         Q_INVOKABLE void replyAction(QString id);
         Q_INVOKABLE void readReceiptsAction(QString id) const;
@@ -352,7 +358,9 @@ signals:
         void lastMessageChanged();
         void notificationsChanged();
 
+        void openRoomMembersDialog(MemberList *members);
         void openRoomSettingsDialog(RoomSettings *settings);
+        void openInviteUsersDialog(InviteesModel *invitees);
 
         void newMessageToSend(mtx::events::collections::TimelineEvents event);
         void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);
@@ -360,6 +368,7 @@ signals:
 
         void encryptionChanged();
         void roomNameChanged();
+        void plainRoomNameChanged();
         void roomTopicChanged();
         void roomAvatarUrlChanged();
         void roomMemberCountChanged();
@@ -389,7 +398,7 @@ private:
         TimelineViewManager *manager_;
 
         InputBar input_{this};
-        Permissions permissions_{this};
+        Permissions permissions_;
 
         QTimer showEventTimer{this};
         QString eventIdToShow;

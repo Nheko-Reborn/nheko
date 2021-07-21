@@ -136,7 +136,7 @@ Popup {
                         Settings.screenSharePiP = pipCheckBox.checked;
                         Settings.screenShareRemoteVideo = remoteVideoCheckBox.checked;
                         Settings.screenShareHideCursor = hideCursorCheckBox.checked;
-                        CallManager.sendInvite(room.roomId(), CallType.SCREEN, windowCombo.currentIndex);
+                        CallManager.sendInvite(room.roomId, CallType.SCREEN, windowCombo.currentIndex);
                         close();
                     }
                 }
