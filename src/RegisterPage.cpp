@@ -12,6 +12,7 @@
 
 #include <mtx/responses/register.hpp>
 #include <mtx/responses/well-known.hpp>
+#include <mtxclient/http/client.hpp>
 
 #include "Config.h"
 #include "Logging.h"
@@ -93,6 +94,7 @@ RegisterPage::RegisterPage(QWidget *parent)
 
         server_input_ = new TextField();
         server_input_->setLabel(tr("Homeserver"));
+        server_input_->setRegexp(QRegularExpression("[a-z0-9.-]+"));
         server_input_->setToolTip(
           tr("A server that allows registration. Since matrix is decentralized, you need to first "
              "find a server you can register on or host your own."));
@@ -145,178 +147,39 @@ RegisterPage::RegisterPage(QWidget *parent)
         top_layout_->addLayout(button_layout_);
         top_layout_->addWidget(error_label_, 0, Qt::AlignHCenter);
         top_layout_->addStretch(1);
-
-        connect(
-          this,
-          &RegisterPage::versionErrorCb,
-          this,
-          [this](const QString &msg) {
-                  error_server_label_->show();
-                  server_input_->setValid(false);
-                  showError(error_server_label_, msg);
-          },
-          Qt::QueuedConnection);
+        setLayout(top_layout_);
 
         connect(back_button_, SIGNAL(clicked()), this, SLOT(onBackButtonClicked()));
         connect(register_button_, SIGNAL(clicked()), this, SLOT(onRegisterButtonClicked()));
 
         connect(username_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
-        connect(username_input_, &TextField::editingFinished, this, &RegisterPage::checkFields);
+        connect(username_input_, &TextField::editingFinished, this, &RegisterPage::checkUsername);
         connect(password_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
-        connect(password_input_, &TextField::editingFinished, this, &RegisterPage::checkFields);
+        connect(password_input_, &TextField::editingFinished, this, &RegisterPage::checkPassword);
         connect(password_confirmation_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
-        connect(
-          password_confirmation_, &TextField::editingFinished, this, &RegisterPage::checkFields);
+        connect(password_confirmation_,
+                &TextField::editingFinished,
+                this,
+                &RegisterPage::checkPasswordConfirmation);
         connect(server_input_, SIGNAL(returnPressed()), register_button_, SLOT(click()));
-        connect(server_input_, &TextField::editingFinished, this, &RegisterPage::checkFields);
-        connect(this, &RegisterPage::registerErrorCb, this, [this](const QString &msg) {
-                showError(msg);
-        });
-        connect(
-          this,
-          &RegisterPage::registrationFlow,
-          this,
-          [this](const std::string &user,
-                 const std::string &pass,
-                 const mtx::user_interactive::Unauthorized &unauthorized) {
-                  auto completed_stages = unauthorized.completed;
-                  auto flows            = unauthorized.flows;
-                  auto session = unauthorized.session.empty() ? http::client()->generate_txn_id()
-                                                              : unauthorized.session;
-
-                  nhlog::ui()->info("Completed stages: {}", completed_stages.size());
-
-                  if (!completed_stages.empty())
-                          flows.erase(std::remove_if(
-                                        flows.begin(),
-                                        flows.end(),
-                                        [completed_stages](auto flow) {
-                                                if (completed_stages.size() > flow.stages.size())
-                                                        return true;
-                                                for (size_t f = 0; f < completed_stages.size(); f++)
-                                                        if (completed_stages[f] != flow.stages[f])
-                                                                return true;
-                                                return false;
-                                        }),
-                                      flows.end());
-
-                  if (flows.empty()) {
-                          nhlog::net()->error("No available registration flows!");
-                          emit registerErrorCb(tr("No supported registration flows!"));
-                          return;
-                  }
-
-                  auto current_stage = flows.front().stages.at(completed_stages.size());
-
-                  if (current_stage == mtx::user_interactive::auth_types::recaptcha) {
-                          auto captchaDialog =
-                            new dialogs::ReCaptcha(QString::fromStdString(session), this);
-
-                          connect(captchaDialog,
-                                  &dialogs::ReCaptcha::confirmation,
-                                  this,
-                                  [this, user, pass, session, captchaDialog]() {
-                                          captchaDialog->close();
-                                          captchaDialog->deleteLater();
-
-                                          emit registerAuth(
-                                            user,
-                                            pass,
-                                            mtx::user_interactive::Auth{
-                                              session, mtx::user_interactive::auth::Fallback{}});
-                                  });
-                          connect(captchaDialog,
-                                  &dialogs::ReCaptcha::cancel,
-                                  this,
-                                  &RegisterPage::errorOccurred);
-
-                          QTimer::singleShot(
-                            1000, this, [captchaDialog]() { captchaDialog->show(); });
-                  } else if (current_stage == mtx::user_interactive::auth_types::dummy) {
-                          emit registerAuth(user,
-                                            pass,
-                                            mtx::user_interactive::Auth{
-                                              session, mtx::user_interactive::auth::Dummy{}});
-                  } else {
-                          // use fallback
-                          auto dialog =
-                            new dialogs::FallbackAuth(QString::fromStdString(current_stage),
-                                                      QString::fromStdString(session),
-                                                      this);
-
-                          connect(dialog,
-                                  &dialogs::FallbackAuth::confirmation,
-                                  this,
-                                  [this, user, pass, session, dialog]() {
-                                          dialog->close();
-                                          dialog->deleteLater();
-
-                                          emit registerAuth(
-                                            user,
-                                            pass,
-                                            mtx::user_interactive::Auth{
-                                              session, mtx::user_interactive::auth::Fallback{}});
-                                  });
-                          connect(dialog,
-                                  &dialogs::FallbackAuth::cancel,
-                                  this,
-                                  &RegisterPage::errorOccurred);
-
-                          dialog->show();
-                  }
-          });
+        connect(server_input_, &TextField::editingFinished, this, &RegisterPage::checkServer);
 
         connect(
           this,
-          &RegisterPage::registerAuth,
+          &RegisterPage::serverError,
           this,
-          [this](const std::string &user,
-                 const std::string &pass,
-                 const mtx::user_interactive::Auth &auth) {
-                  http::client()->registration(
-                    user,
-                    pass,
-                    auth,
-                    [this, user, pass](const mtx::responses::Register &res,
-                                       mtx::http::RequestErr err) {
-                            if (!err) {
-                                    http::client()->set_user(res.user_id);
-                                    http::client()->set_access_token(res.access_token);
-                                    http::client()->set_device_id(res.device_id);
+          [this](const QString &msg) {
+                  server_input_->setValid(false);
+                  showError(error_server_label_, msg);
+          },
+          Qt::QueuedConnection);
 
-                                    emit registerOk();
-                                    return;
-                            }
-
-                            // The server requires registration flows.
-                            if (err->status_code == 401) {
-                                    if (err->matrix_error.unauthorized.flows.empty()) {
-                                            nhlog::net()->warn(
-                                              "failed to retrieve registration flows: ({}) "
-                                              "{}",
-                                              static_cast<int>(err->status_code),
-                                              err->matrix_error.error);
-                                            emit registerErrorCb(
-                                              QString::fromStdString(err->matrix_error.error));
-                                            return;
-                                    }
-
-                                    emit registrationFlow(
-                                      user, pass, err->matrix_error.unauthorized);
-                                    return;
-                            }
-
-                            nhlog::net()->warn("failed to register: status_code ({}), "
-                                               "matrix_error: ({}), parser error ({})",
-                                               static_cast<int>(err->status_code),
-                                               err->matrix_error.error,
-                                               err->parse_error);
-
-                            emit registerErrorCb(QString::fromStdString(err->matrix_error.error));
-                    });
-          });
-
-        setLayout(top_layout_);
+        connect(this, &RegisterPage::wellKnownLookup, this, &RegisterPage::doWellKnownLookup);
+        connect(this, &RegisterPage::versionsCheck, this, &RegisterPage::doVersionsCheck);
+        connect(this, &RegisterPage::registration, this, &RegisterPage::doRegistration);
+        connect(this, &RegisterPage::UIA, this, &RegisterPage::doUIA);
+        connect(
+          this, &RegisterPage::registrationWithAuth, this, &RegisterPage::doRegistrationWithAuth);
 }
 
 void
@@ -345,189 +208,296 @@ RegisterPage::showError(QLabel *label, const QString &msg)
         int height = rect.height();
         label->setFixedHeight((int)qCeil(width / 200.0) * height);
         label->setText(msg);
+        label->show();
 }
 
 bool
 RegisterPage::checkOneField(QLabel *label, const TextField *t_field, const QString &msg)
 {
         if (t_field->isValid()) {
-                label->setText("");
                 label->hide();
                 return true;
         } else {
-                label->show();
                 showError(label, msg);
                 return false;
         }
 }
 
 bool
-RegisterPage::checkFields()
+RegisterPage::checkUsername()
 {
-        error_label_->setText("");
-        error_username_label_->setText("");
-        error_password_label_->setText("");
-        error_password_confirmation_label_->setText("");
-        error_server_label_->setText("");
+        return checkOneField(error_username_label_,
+                             username_input_,
+                             tr("The username must not be empty, and must contain only the "
+                                "characters a-z, 0-9, ., _, =, -, and /."));
+}
 
-        error_username_label_->hide();
-        error_password_label_->hide();
-        error_password_confirmation_label_->hide();
-        error_server_label_->hide();
+bool
+RegisterPage::checkPassword()
+{
+        return checkOneField(
+          error_password_label_, password_input_, tr("Password is not long enough (min 8 chars)"));
+}
 
-        password_confirmation_->setValid(true);
-        server_input_->setValid(true);
-
-        bool all_fields_good = true;
-        if (username_input_->isModified() &&
-            !checkOneField(error_username_label_,
-                           username_input_,
-                           tr("The username must not be empty, and must contain only the "
-                              "characters a-z, 0-9, ., _, =, -, and /."))) {
-                all_fields_good = false;
-        } else if (password_input_->isModified() &&
-                   !checkOneField(error_password_label_,
-                                  password_input_,
-                                  tr("Password is not long enough (min 8 chars)"))) {
-                all_fields_good = false;
-        } else if (password_confirmation_->isModified() &&
-                   password_input_->text() != password_confirmation_->text()) {
-                error_password_confirmation_label_->show();
+bool
+RegisterPage::checkPasswordConfirmation()
+{
+        if (password_input_->text() == password_confirmation_->text()) {
+                error_password_confirmation_label_->hide();
+                password_confirmation_->setValid(true);
+                return true;
+        } else {
                 showError(error_password_confirmation_label_, tr("Passwords don't match"));
                 password_confirmation_->setValid(false);
-                all_fields_good = false;
-        } else if (server_input_->isModified() &&
-                   (!server_input_->hasAcceptableInput() || server_input_->text().isEmpty())) {
-                error_server_label_->show();
-                showError(error_server_label_, tr("Invalid server name"));
-                server_input_->setValid(false);
-                all_fields_good = false;
+                return false;
         }
-        if (!username_input_->isModified() || !password_input_->isModified() ||
-            !password_confirmation_->isModified() || !server_input_->isModified()) {
-                all_fields_good = false;
-        }
-        return all_fields_good;
+}
+
+bool
+RegisterPage::checkServer()
+{
+        // This doesn't check that the server is reachable,
+        // just that the input is not obviously wrong.
+        return checkOneField(error_server_label_, server_input_, tr("Invalid server name"));
 }
 
 void
 RegisterPage::onRegisterButtonClicked()
 {
-        if (!checkFields()) {
-                showError(error_label_,
-                          tr("One or more fields have invalid inputs. Please correct those issues "
-                             "and try again."));
-                return;
-        } else {
-                auto username = username_input_->text().toStdString();
-                auto password = password_input_->text().toStdString();
-                auto server   = server_input_->text().toStdString();
+        if (checkUsername() && checkPassword() && checkPasswordConfirmation() && checkServer()) {
+                auto server = server_input_->text().toStdString();
 
                 http::client()->set_server(server);
                 http::client()->verify_certificates(
                   !UserSettings::instance()->disableCertificateValidation());
 
-                http::client()->well_known(
-                  [this, username, password](const mtx::responses::WellKnown &res,
-                                             mtx::http::RequestErr err) {
-                          if (err) {
-                                  if (err->status_code == 404) {
-                                          nhlog::net()->info("Autodiscovery: No .well-known.");
-                                          checkVersionAndRegister(username, password);
-                                          return;
-                                  }
+                // This starts a chain of `emit`s which ends up doing the
+                // registration. Signals are used rather than normal function
+                // calls so that the dialogs used in UIA work correctly.
+                //
+                // The sequence of events looks something like this:
+                //
+                // dowellKnownLookup
+                //   v
+                // doVersionsCheck
+                //   v
+                // doRegistration
+                //   v
+                // doUIA <-----------------+
+                //   v					   | More auth required
+                // doRegistrationWithAuth -+
+                //                         | Success
+                // 						   v
+                //                     registering
 
-                                  if (!err->parse_error.empty()) {
-                                          emit versionErrorCb(tr(
-                                            "Autodiscovery failed. Received malformed response."));
-                                          nhlog::net()->error(
-                                            "Autodiscovery failed. Received malformed response.");
-                                          return;
-                                  }
-
-                                  emit versionErrorCb(tr("Autodiscovery failed. Unknown error when "
-                                                         "requesting .well-known."));
-                                  nhlog::net()->error("Autodiscovery failed. Unknown error when "
-                                                      "requesting .well-known. {} {}",
-                                                      err->status_code,
-                                                      err->error_code);
-                                  return;
-                          }
-
-                          nhlog::net()->info("Autodiscovery: Discovered '" +
-                                             res.homeserver.base_url + "'");
-                          http::client()->set_server(res.homeserver.base_url);
-                          checkVersionAndRegister(username, password);
-                  });
+                emit wellKnownLookup();
 
                 emit registering();
         }
 }
 
 void
-RegisterPage::checkVersionAndRegister(const std::string &username, const std::string &password)
+RegisterPage::doWellKnownLookup()
 {
-        http::client()->versions(
-          [this, username, password](const mtx::responses::Versions &, mtx::http::RequestErr err) {
+        http::client()->well_known(
+          [this](const mtx::responses::WellKnown &res, mtx::http::RequestErr err) {
                   if (err) {
                           if (err->status_code == 404) {
-                                  emit versionErrorCb(tr("The required endpoints were not found. "
-                                                         "Possibly not a Matrix server."));
+                                  nhlog::net()->info("Autodiscovery: No .well-known.");
+                                  // Check that the homeserver can be reached
+                                  emit versionsCheck();
                                   return;
                           }
 
                           if (!err->parse_error.empty()) {
-                                  emit versionErrorCb(tr("Received malformed response. Make sure "
-                                                         "the homeserver domain is valid."));
+                                  emit serverError(
+                                    tr("Autodiscovery failed. Received malformed response."));
+                                  nhlog::net()->error(
+                                    "Autodiscovery failed. Received malformed response.");
                                   return;
                           }
 
-                          emit versionErrorCb(tr(
-                            "An unknown error occured. Make sure the homeserver domain is valid."));
+                          emit serverError(tr("Autodiscovery failed. Unknown error when "
+                                              "requesting .well-known."));
+                          nhlog::net()->error("Autodiscovery failed. Unknown error when "
+                                              "requesting .well-known. {} {}",
+                                              err->status_code,
+                                              err->error_code);
                           return;
                   }
 
-                  http::client()->registration(
-                    username,
-                    password,
-                    [this, username, password](const mtx::responses::Register &res,
-                                               mtx::http::RequestErr err) {
-                            if (!err) {
-                                    http::client()->set_user(res.user_id);
-                                    http::client()->set_access_token(res.access_token);
-
-                                    emit registerOk();
-                                    return;
-                            }
-
-                            // The server requires registration flows.
-                            if (err->status_code == 401) {
-                                    if (err->matrix_error.unauthorized.flows.empty()) {
-                                            nhlog::net()->warn(
-                                              "failed to retrieve registration flows1: ({}) "
-                                              "{}",
-                                              static_cast<int>(err->status_code),
-                                              err->matrix_error.error);
-                                            emit errorOccurred();
-                                            emit registerErrorCb(
-                                              QString::fromStdString(err->matrix_error.error));
-                                            return;
-                                    }
-
-                                    emit registrationFlow(
-                                      username, password, err->matrix_error.unauthorized);
-                                    return;
-                            }
-
-                            nhlog::net()->error(
-                              "failed to register: status_code ({}), matrix_error({})",
-                              static_cast<int>(err->status_code),
-                              err->matrix_error.error);
-
-                            emit registerErrorCb(QString::fromStdString(err->matrix_error.error));
-                            emit errorOccurred();
-                    });
+                  nhlog::net()->info("Autodiscovery: Discovered '" + res.homeserver.base_url + "'");
+                  http::client()->set_server(res.homeserver.base_url);
+                  // Check that the homeserver can be reached
+                  emit versionsCheck();
           });
+}
+
+void
+RegisterPage::doVersionsCheck()
+{
+        // Make a request to /_matrix/client/versions to check the address
+        // given is a Matrix homeserver.
+        http::client()->versions(
+          [this](const mtx::responses::Versions &, mtx::http::RequestErr err) {
+                  if (err) {
+                          if (err->status_code == 404) {
+                                  emit serverError(
+                                    tr("The required endpoints were not found. Possibly "
+                                       "not a Matrix server."));
+                                  return;
+                          }
+
+                          if (!err->parse_error.empty()) {
+                                  emit serverError(
+                                    tr("Received malformed response. Make sure the homeserver "
+                                       "domain is valid."));
+                                  return;
+                          }
+
+                          emit serverError(tr("An unknown error occured. Make sure the "
+                                              "homeserver domain is valid."));
+                          return;
+                  }
+
+                  // Attempt registration without an `auth` dict
+                  emit registration();
+          });
+}
+
+void
+RegisterPage::doRegistration()
+{
+        // These inputs should still be alright, but check just in case
+        if (checkUsername() && checkPassword() && checkPasswordConfirmation()) {
+                auto username = username_input_->text().toStdString();
+                auto password = password_input_->text().toStdString();
+                http::client()->registration(username, password, registrationCb());
+        }
+}
+
+void
+RegisterPage::doRegistrationWithAuth(const mtx::user_interactive::Auth &auth)
+{
+        // These inputs should still be alright, but check just in case
+        if (checkUsername() && checkPassword() && checkPasswordConfirmation()) {
+                auto username = username_input_->text().toStdString();
+                auto password = password_input_->text().toStdString();
+                http::client()->registration(username, password, auth, registrationCb());
+        }
+}
+
+mtx::http::Callback<mtx::responses::Register>
+RegisterPage::registrationCb()
+{
+        // Return a function to be used as the callback when an attempt at
+        // registration is made.
+        return [this](const mtx::responses::Register &res, mtx::http::RequestErr err) {
+                if (!err) {
+                        http::client()->set_user(res.user_id);
+                        http::client()->set_access_token(res.access_token);
+                        emit registerOk();
+                        return;
+                }
+
+                // The server requires registration flows.
+                if (err->status_code == 401) {
+                        if (err->matrix_error.unauthorized.flows.empty()) {
+                                nhlog::net()->warn("failed to retrieve registration flows: "
+                                                   "status_code({}), matrix_error({}) ",
+                                                   static_cast<int>(err->status_code),
+                                                   err->matrix_error.error);
+                                showError(QString::fromStdString(err->matrix_error.error));
+                                return;
+                        }
+
+                        // Attempt to complete a UIA stage
+                        emit UIA(err->matrix_error.unauthorized);
+                        return;
+                }
+
+                nhlog::net()->error("failed to register: status_code ({}), matrix_error({})",
+                                    static_cast<int>(err->status_code),
+                                    err->matrix_error.error);
+
+                showError(QString::fromStdString(err->matrix_error.error));
+        };
+}
+
+void
+RegisterPage::doUIA(const mtx::user_interactive::Unauthorized &unauthorized)
+{
+        auto completed_stages = unauthorized.completed;
+        auto flows            = unauthorized.flows;
+        auto session =
+          unauthorized.session.empty() ? http::client()->generate_txn_id() : unauthorized.session;
+
+        nhlog::ui()->info("Completed stages: {}", completed_stages.size());
+
+        if (!completed_stages.empty()) {
+                // Get rid of all flows which don't start with the sequence of
+                // stages that have already been completed.
+                flows.erase(
+                  std::remove_if(flows.begin(),
+                                 flows.end(),
+                                 [completed_stages](auto flow) {
+                                         if (completed_stages.size() > flow.stages.size())
+                                                 return true;
+                                         for (size_t f = 0; f < completed_stages.size(); f++)
+                                                 if (completed_stages[f] != flow.stages[f])
+                                                         return true;
+                                         return false;
+                                 }),
+                  flows.end());
+        }
+
+        if (flows.empty()) {
+                nhlog::ui()->error("No available registration flows!");
+                showError(tr("No supported registration flows!"));
+                return;
+        }
+
+        auto current_stage = flows.front().stages.at(completed_stages.size());
+
+        if (current_stage == mtx::user_interactive::auth_types::recaptcha) {
+                auto captchaDialog = new dialogs::ReCaptcha(QString::fromStdString(session), this);
+
+                connect(captchaDialog,
+                        &dialogs::ReCaptcha::confirmation,
+                        this,
+                        [this, session, captchaDialog]() {
+                                captchaDialog->close();
+                                captchaDialog->deleteLater();
+                                doRegistrationWithAuth(mtx::user_interactive::Auth{
+                                  session, mtx::user_interactive::auth::Fallback{}});
+                        });
+
+                connect(
+                  captchaDialog, &dialogs::ReCaptcha::cancel, this, &RegisterPage::errorOccurred);
+
+                QTimer::singleShot(1000, this, [captchaDialog]() { captchaDialog->show(); });
+
+        } else if (current_stage == mtx::user_interactive::auth_types::dummy) {
+                doRegistrationWithAuth(
+                  mtx::user_interactive::Auth{session, mtx::user_interactive::auth::Dummy{}});
+
+        } else {
+                // use fallback
+                auto dialog = new dialogs::FallbackAuth(
+                  QString::fromStdString(current_stage), QString::fromStdString(session), this);
+
+                connect(
+                  dialog, &dialogs::FallbackAuth::confirmation, this, [this, session, dialog]() {
+                          dialog->close();
+                          dialog->deleteLater();
+                          emit registrationWithAuth(mtx::user_interactive::Auth{
+                            session, mtx::user_interactive::auth::Fallback{}});
+                  });
+
+                connect(dialog, &dialogs::FallbackAuth::cancel, this, &RegisterPage::errorOccurred);
+
+                dialog->show();
+        }
 }
 
 void

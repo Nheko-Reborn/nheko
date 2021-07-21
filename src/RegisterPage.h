@@ -10,6 +10,7 @@
 #include <memory>
 
 #include <mtx/user_interactive.hpp>
+#include <mtxclient/http/client.hpp>
 
 class FlatButton;
 class RaisedButton;
@@ -33,30 +34,40 @@ signals:
         void errorOccurred();
 
         //! Used to trigger the corresponding slot outside of the main thread.
-        void versionErrorCb(const QString &err);
+        void serverError(const QString &err);
+
+        void wellKnownLookup();
+        void versionsCheck();
+        void registration();
+        void UIA(const mtx::user_interactive::Unauthorized &unauthorized);
+        void registrationWithAuth(const mtx::user_interactive::Auth &auth);
 
         void registering();
         void registerOk();
-        void registerErrorCb(const QString &msg);
-        void registrationFlow(const std::string &user,
-                              const std::string &pass,
-                              const mtx::user_interactive::Unauthorized &unauthorized);
-        void registerAuth(const std::string &user,
-                          const std::string &pass,
-                          const mtx::user_interactive::Auth &auth);
 
 private slots:
         void onBackButtonClicked();
         void onRegisterButtonClicked();
 
+private:
         // function for showing different errors
         void showError(const QString &msg);
-
-private:
-        bool checkOneField(QLabel *label, const TextField *t_field, const QString &msg);
-        bool checkFields();
         void showError(QLabel *label, const QString &msg);
-        void checkVersionAndRegister(const std::string &username, const std::string &password);
+
+        bool checkOneField(QLabel *label, const TextField *t_field, const QString &msg);
+        bool checkUsername();
+        bool checkPassword();
+        bool checkPasswordConfirmation();
+        bool checkServer();
+
+        void doWellKnownLookup();
+        void doVersionsCheck();
+        void doRegistration();
+        void doUIA(const mtx::user_interactive::Unauthorized &unauthorized);
+        void doRegistrationWithAuth(const mtx::user_interactive::Auth &auth);
+        mtx::http::Callback<mtx::responses::Register> registrationCb();
+        void completeUiaStage(const mtx::user_interactive::Unauthorized &unauthorized);
+
         QVBoxLayout *top_layout_;
 
         QHBoxLayout *back_layout_;
@@ -69,6 +80,7 @@ private:
         QLabel *error_password_label_;
         QLabel *error_password_confirmation_label_;
         QLabel *error_server_label_;
+        QLabel *error_registration_token_label_;
 
         FlatButton *back_button_;
         RaisedButton *register_button_;
@@ -81,4 +93,5 @@ private:
         TextField *password_input_;
         TextField *password_confirmation_;
         TextField *server_input_;
+        TextField *registration_token_input_;
 };
