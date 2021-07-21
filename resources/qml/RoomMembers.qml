@@ -41,7 +41,7 @@ ApplicationWindow {
             displayName: members.roomName
             Layout.alignment: Qt.AlignHCenter
             url: members.avatarUrl.replace("mxc://", "image://MxcImage/")
-            onClicked: Rooms.currentRoom.openRoomSettings(members.roomId)
+            onClicked: TimelineManager.openRoomSettings(members.roomId)
         }
 
         ElidedLabel {
@@ -57,7 +57,7 @@ ApplicationWindow {
             hoverEnabled: true
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Invite more people")
-            onClicked: Rooms.currentRoom.openInviteUsers()
+            onClicked: TimelineManager.openInviteUsers(members.roomId)
         }
 
         ScrollView {
@@ -121,7 +121,6 @@ ApplicationWindow {
                 footer: Item {
                     width: parent.width
                     visible: (members.numUsersLoaded < members.memberCount) && members.loadingMoreMembers
-
                     // use the default height if it's visible, otherwise no height at all
                     height: membersLoadingSpinner.height
                     anchors.margins: Nheko.paddingMedium

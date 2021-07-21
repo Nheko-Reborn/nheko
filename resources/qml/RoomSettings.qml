@@ -4,7 +4,7 @@
 
 import "./ui"
 import Qt.labs.platform 1.1 as Platform
-import QtQuick 2.9
+import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.3
@@ -105,6 +105,16 @@ ApplicationWindow {
             MatrixText {
                 text: qsTr("%1 member(s)").arg(roomSettings.memberCount)
                 Layout.alignment: Qt.AlignHCenter
+
+                TapHandler {
+                    onTapped: TimelineManager.openRoomMembers(roomSettings.roomId)
+                }
+
+                CursorShape {
+                    cursorShape: Qt.PointingHandCursor
+                    anchors.fill: parent
+                }
+
             }
 
         }

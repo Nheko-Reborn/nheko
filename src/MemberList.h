@@ -25,7 +25,7 @@ public:
                 DisplayName,
                 AvatarUrl,
         };
-        MemberList(const QString &room_id, QWidget *parent = nullptr);
+        MemberList(const QString &room_id, QObject *parent = nullptr);
 
         QHash<int, QByteArray> roleNames() const override;
         int rowCount(const QModelIndex &parent = QModelIndex()) const override

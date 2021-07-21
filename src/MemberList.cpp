@@ -22,7 +22,7 @@
 #include "timeline/TimelineViewManager.h"
 #include "ui/Avatar.h"
 
-MemberList::MemberList(const QString &room_id, QWidget *parent)
+MemberList::MemberList(const QString &room_id, QObject *parent)
   : QAbstractListModel{parent}
   , room_id_{room_id}
 {
