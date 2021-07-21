@@ -1067,9 +1067,9 @@ TimelineModel::openUserProfile(QString userid)
 }
 
 void
-TimelineModel::openRoomMembers()
+TimelineModel::openRoomMembers(QString room_id)
 {
-        MemberList *memberList = new MemberList(roomId());
+        MemberList *memberList = new MemberList(room_id == QString() ? roomId() : room_id, this);
         emit openRoomMembersDialog(memberList);
 }
 

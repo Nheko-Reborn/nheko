@@ -239,7 +239,7 @@ public:
         Q_INVOKABLE void forwardMessage(QString eventId, QString roomId);
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
         Q_INVOKABLE void openUserProfile(QString userid);
-        Q_INVOKABLE void openRoomMembers();
+        Q_INVOKABLE void openRoomMembers(QString room_id = QString());
         Q_INVOKABLE void openRoomSettings(QString room_id = QString());
         Q_INVOKABLE void openInviteUsers(QString roomId = QString());
         Q_INVOKABLE void editAction(QString id);
