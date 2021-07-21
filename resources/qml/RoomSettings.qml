@@ -107,7 +107,7 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignHCenter
 
                 TapHandler {
-                    onTapped: Rooms.currentRoom.openRoomMembers(roomSettings.roomId)
+                    onTapped: TimelineManager.openRoomMembers(roomSettings.roomId)
                 }
 
                 CursorShape {

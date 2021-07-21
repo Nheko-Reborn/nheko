@@ -1067,31 +1067,6 @@ TimelineModel::openUserProfile(QString userid)
 }
 
 void
-TimelineModel::openRoomMembers(QString room_id)
-{
-        MemberList *memberList = new MemberList(room_id == QString() ? roomId() : room_id, this);
-        emit openRoomMembersDialog(memberList);
-}
-
-void
-TimelineModel::openRoomSettings(QString room_id)
-{
-        RoomSettings *settings = new RoomSettings(room_id == QString() ? roomId() : room_id, this);
-        connect(this, &TimelineModel::roomAvatarUrlChanged, settings, &RoomSettings::avatarChanged);
-        emit openRoomSettingsDialog(settings);
-}
-
-void
-TimelineModel::openInviteUsers(QString roomId)
-{
-        InviteesModel *model = new InviteesModel{this};
-        connect(model, &InviteesModel::accept, this, [this, model, roomId]() {
-                emit manager_->inviteUsers(roomId == QString() ? room_id_ : roomId, model->mxids());
-        });
-        emit openInviteUsersDialog(model);
-}
-
-void
 TimelineModel::replyAction(QString id)
 {
         setReply(id);

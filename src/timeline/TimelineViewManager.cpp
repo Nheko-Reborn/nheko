@@ -352,6 +352,34 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
 }
 
 void
+TimelineViewManager::openRoomMembers(QString room_id)
+{
+        MemberList *memberList = new MemberList(room_id, this);
+        emit openRoomMembersDialog(memberList);
+}
+
+void
+TimelineViewManager::openRoomSettings(QString room_id)
+{
+        RoomSettings *settings = new RoomSettings(room_id, this);
+        connect(rooms_->getRoomById(room_id).data(),
+                &TimelineModel::roomAvatarUrlChanged,
+                settings,
+                &RoomSettings::avatarChanged);
+        emit openRoomSettingsDialog(settings);
+}
+
+void
+TimelineViewManager::openInviteUsers(QString roomId)
+{
+        InviteesModel *model = new InviteesModel{this};
+        connect(model, &InviteesModel::accept, this, [this, model, roomId]() {
+                emit inviteUsers(roomId, model->mxids());
+        });
+        emit openInviteUsersDialog(model);
+}
+
+void
 TimelineViewManager::setVideoCallItem()
 {
         WebRTCSession::instance().setVideoItem(

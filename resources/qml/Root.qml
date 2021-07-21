@@ -133,7 +133,7 @@ Page {
     }
 
     Connections {
-        target: Rooms.currentRoom
+        target: TimelineManager
         onOpenRoomMembersDialog: {
             var membersDialog = roomMembersComponent.createObject(timelineRoot, {
                 "members": members,
