@@ -16,9 +16,10 @@ CombinedImagePackModel::CombinedImagePackModel(const std::string &roomId,
         auto packs = cache::client()->getImagePacks(room_id, stickers);
 
         for (const auto &pack : packs) {
-                QString packname = QString::fromStdString(pack.packname);
+                QString packname =
+                  pack.pack.pack ? QString::fromStdString(pack.pack.pack->display_name) : "";
 
-                for (const auto &img : pack.images) {
+                for (const auto &img : pack.pack.images) {
                         ImageDesc i{};
                         i.shortcode = QString::fromStdString(img.first);
                         i.packname  = packname;

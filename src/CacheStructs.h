@@ -113,6 +113,7 @@ struct RoomSearchResult
 
 struct ImagePackInfo
 {
-        std::string packname;
-        std::map<std::string, mtx::events::msc2545::PackImage> images;
+        mtx::events::msc2545::ImagePack pack;
+        std::string source_room;
+        std::string state_key;
 };

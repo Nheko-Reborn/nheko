@@ -160,6 +160,7 @@
         <file>qml/device-verification/Failed.qml</file>
         <file>qml/device-verification/Success.qml</file>
         <file>qml/dialogs/InputDialog.qml</file>
+        <file>qml/dialogs/ImagePackSettingsDialog.qml</file>
         <file>qml/ui/Ripple.qml</file>
         <file>qml/ui/Spinner.qml</file>
         <file>qml/ui/animations/BlinkAnimation.qml</file>

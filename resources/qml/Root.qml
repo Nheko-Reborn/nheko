@@ -4,6 +4,7 @@
 
 import "./delegates"
 import "./device-verification"
+import "./dialogs"
 import "./emoji"
 import "./voip"
 import Qt.labs.platform 1.1 as Platform
@@ -87,6 +88,14 @@ Page {
 
     }
 
+    Component {
+        id: packSettingsComponent
+
+        ImagePackSettingsDialog {
+        }
+
+    }
+
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
@@ -119,6 +128,12 @@ Page {
                 "profile": profile
             });
             userProfile.show();
+        }
+        onShowImagePackSettings: {
+            var packSet = packSettingsComponent.createObject(timelineRoot, {
+                "packlist": packlist
+            });
+            packSet.show();
         }
     }
 

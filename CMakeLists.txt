@@ -355,6 +355,8 @@ set(SRC_FILES
 	src/RegisterPage.cpp
 	src/SSOHandler.cpp
 	src/CombinedImagePackModel.cpp
+	src/SingleImagePackModel.cpp
+	src/ImagePackListModel.cpp
 	src/TrayIcon.cpp
 	src/UserSettingsPage.cpp
 	src/UsersModel.cpp
@@ -559,6 +561,8 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/RegisterPage.h
 	src/SSOHandler.h
 	src/CombinedImagePackModel.h
+	src/SingleImagePackModel.h
+	src/ImagePackListModel.h
 	src/TrayIcon.h
 	src/UserSettingsPage.h
 	src/UsersModel.h

@@ -3383,26 +3383,30 @@ Cache::getChildRoomIds(const std::string &room_id)
 }
 
 std::vector<ImagePackInfo>
-Cache::getImagePacks(const std::string &room_id, bool stickers)
+Cache::getImagePacks(const std::string &room_id, std::optional<bool> stickers)
 {
         auto txn = ro_txn(env_);
         std::vector<ImagePackInfo> infos;
 
-        auto addPack = [&infos, stickers](const mtx::events::msc2545::ImagePack &pack) {
-                if (!pack.pack || (stickers ? pack.pack->is_sticker() : pack.pack->is_emoji())) {
+        auto addPack = [&infos, stickers](const mtx::events::msc2545::ImagePack &pack,
+                                          const std::string &source_room,
+                                          const std::string &state_key) {
+                if (!pack.pack || !stickers.has_value() ||
+                    (stickers.value() ? pack.pack->is_sticker() : pack.pack->is_emoji())) {
                         ImagePackInfo info;
-                        if (pack.pack)
-                                info.packname = pack.pack->display_name;
+                        info.source_room = source_room;
+                        info.state_key   = state_key;
+                        info.pack.pack   = pack.pack;
 
                         for (const auto &img : pack.images) {
                                 if (img.second.overrides_usage() &&
                                     (stickers ? !img.second.is_sticker() : !img.second.is_emoji()))
                                         continue;
 
-                                info.images.insert(img);
+                                info.pack.images.insert(img);
                         }
 
-                        if (!info.images.empty())
+                        if (!info.pack.images.empty())
                                 infos.push_back(std::move(info));
                 }
         };
@@ -3414,7 +3418,7 @@ Cache::getImagePacks(const std::string &room_id, bool stickers)
                   std::get_if<mtx::events::EphemeralEvent<mtx::events::msc2545::ImagePack>>(
                     &*accountpack);
                 if (tmp)
-                        addPack(tmp->content);
+                        addPack(tmp->content, "", "");
         }
 
         // packs from rooms, that were enabled globally
@@ -3433,7 +3437,7 @@ Cache::getImagePacks(const std::string &room_id, bool stickers)
                                         if (auto pack =
                                               getStateEvent<mtx::events::msc2545::ImagePack>(
                                                 txn, room_id2, state_id))
-                                                addPack(pack->content);
+                                                addPack(pack->content, room_id2, state_id);
                                 }
                         }
                 }
@@ -3441,14 +3445,21 @@ Cache::getImagePacks(const std::string &room_id, bool stickers)
 
         // packs from current room
         if (auto pack = getStateEvent<mtx::events::msc2545::ImagePack>(txn, room_id)) {
-                addPack(pack->content);
+                addPack(pack->content, room_id, "");
         }
         for (const auto &pack :
              getStateEventsWithType<mtx::events::msc2545::ImagePack>(txn, room_id)) {
-                addPack(pack.content);
+                addPack(pack.content, room_id, pack.state_key);
         }
 
         return infos;
+}
+
+std::optional<mtx::events::collections::RoomAccountDataEvents>
+Cache::getAccountData(mtx::events::EventType type, const std::string &room_id)
+{
+        auto txn = ro_txn(env_);
+        return getAccountData(txn, type, room_id);
 }
 
 std::optional<mtx::events::collections::RoomAccountDataEvents>

@@ -249,6 +249,17 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignRight
             }
 
+            MatrixText {
+                text: qsTr("Sticker & Emote Settings")
+            }
+
+            Button {
+                text: qsTr("Change")
+                ToolTip.text: qsTr("Change what packs are enabled, remove packs or create new ones")
+                onClicked: TimelineManager.openImagePackSettings(roomSettings.roomId)
+                Layout.alignment: Qt.AlignRight
+            }
+
             Item {
                 // for adding extra space between sections
                 Layout.fillWidth: true

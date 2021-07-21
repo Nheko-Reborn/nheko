@@ -33,6 +33,7 @@ class ColorImageProvider;
 class UserSettings;
 class ChatPage;
 class DeviceVerificationFlow;
+class ImagePackListModel;
 
 class TimelineViewManager : public QObject
 {
@@ -57,6 +58,7 @@ public:
         Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
         bool isWindowFocused() const { return isWindowFocused_; }
         Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId);
+        Q_INVOKABLE void openImagePackSettings(QString roomid);
         Q_INVOKABLE QColor userColor(QString id, QColor background);
         Q_INVOKABLE QString escapeEmoji(QString str) const;
         Q_INVOKABLE QString htmlEscape(QString str) const { return str.toHtmlEscaped(); }
@@ -93,6 +95,7 @@ signals:
         void openRoomSettingsDialog(RoomSettings *settings);
         void openInviteUsersDialog(InviteesModel *invitees);
         void openProfile(UserProfile *profile);
+        void showImagePackSettings(ImagePackListModel *packlist);
 
 public slots:
         void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);

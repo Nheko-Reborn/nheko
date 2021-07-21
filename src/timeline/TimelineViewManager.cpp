@@ -20,12 +20,14 @@
 #include "DelegateChooser.h"
 #include "DeviceVerificationFlow.h"
 #include "EventAccessors.h"
+#include "ImagePackListModel.h"
 #include "InviteesModel.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "MxcImageProvider.h"
 #include "RoomsModel.h"
+#include "SingleImagePackModel.h"
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
 #include "dialogs/ImageOverlay.h"
@@ -185,6 +187,18 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           "Room Settings needs to be instantiated on the C++ side");
         qmlRegisterUncreatableType<TimelineModel>(
           "im.nheko", 1, 0, "Room", "Room needs to be instantiated on the C++ side");
+        qmlRegisterUncreatableType<ImagePackListModel>(
+          "im.nheko",
+          1,
+          0,
+          "ImagePackListModel",
+          "ImagePackListModel needs to be instantiated on the C++ side");
+        qmlRegisterUncreatableType<SingleImagePackModel>(
+          "im.nheko",
+          1,
+          0,
+          "SingleImagePackModel",
+          "SingleImagePackModel needs to be instantiated on the C++ side");
         qmlRegisterUncreatableType<InviteesModel>(
           "im.nheko",
           1,
@@ -434,6 +448,12 @@ TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId)
 
                   emit openImageOverlayInternalCb(eventId, std::move(img));
           });
+}
+
+void
+TimelineViewManager::openImagePackSettings(QString roomid)
+{
+        emit showImagePackSettings(new ImagePackListModel(roomid.toStdString(), this));
 }
 
 void

@@ -97,6 +97,12 @@ public:
                 return getStateEvent<T>(txn, room_id, state_key);
         }
 
+        //! retrieve a specific event from account data
+        //! pass empty room_id for global account data
+        std::optional<mtx::events::collections::RoomAccountDataEvents> getAccountData(
+          mtx::events::EventType type,
+          const std::string &room_id = "");
+
         //! Retrieve member info from a room.
         std::vector<RoomMember> getMembers(const std::string &room_id,
                                            std::size_t startIndex = 0,
@@ -225,7 +231,8 @@ public:
         std::vector<std::string> getParentRoomIds(const std::string &room_id);
         std::vector<std::string> getChildRoomIds(const std::string &room_id);
 
-        std::vector<ImagePackInfo> getImagePacks(const std::string &room_id, bool stickers);
+        std::vector<ImagePackInfo> getImagePacks(const std::string &room_id,
+                                                 std::optional<bool> stickers);
 
         //! Mark a room that uses e2e encryption.
         void setEncryptedRoom(lmdb::txn &txn, const std::string &room_id);
