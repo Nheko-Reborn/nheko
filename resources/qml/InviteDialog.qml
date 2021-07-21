@@ -29,7 +29,7 @@ ApplicationWindow {
         close();
     }
 
-    title: qsTr("Invite users to ") + plainRoomName
+    title: qsTr("Invite users to %1").arg(plainRoomName)
     x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     height: 380

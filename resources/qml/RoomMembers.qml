@@ -14,7 +14,7 @@ ApplicationWindow {
 
     property MemberList members
 
-    title: qsTr("Members of ") + members.roomName
+    title: qsTr("Members of %1").arg(members.roomName)
     x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     height: 650
@@ -46,7 +46,7 @@ ApplicationWindow {
 
         ElidedLabel {
             font.pixelSize: fontMetrics.font.pixelSize * 2
-            fullText: members.memberCount + (members.memberCount === 1 ? qsTr(" person in ") : qsTr(" people in ")) + members.roomName
+            fullText: qsTr("%n people in %1", "Summary above list of members", members.memberCount).arg(members.roomName)
             Layout.alignment: Qt.AlignHCenter
             elideWidth: parent.width - Nheko.paddingMedium
         }

@@ -38,7 +38,7 @@
 <context>
     <name>AwaitingVerificationConfirmation</name>
     <message>
-        <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+11"/>
+        <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+12"/>
         <source>Awaiting Confirmation</source>
         <translation>In attesa di conferma</translation>
     </message>
@@ -48,7 +48,7 @@
         <translation>In attesa della conferma dall&apos;altra parte per la verifica.</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
@@ -125,7 +125,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+133"/>
+        <location filename="../../src/ChatPage.cpp" line="+135"/>
         <source>Failed to invite user: %1</source>
         <translation>Impossibile invitare l&apos;utente: %1</translation>
     </message>
@@ -157,12 +157,12 @@
     </message>
     <message>
         <location line="+34"/>
-        <location line="+280"/>
+        <location line="+284"/>
         <source>Confirm invite</source>
         <translation>Conferma Invito</translation>
     </message>
     <message>
-        <location line="-279"/>
+        <location line="-283"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Vuoi davvero inviare %1 (%2)?</translation>
     </message>
@@ -227,12 +227,12 @@
         <translation>Rimosso il ban dall&apos;utente: %1</translation>
     </message>
     <message>
-        <location line="+183"/>
+        <location line="+187"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation>Sei sicuro di voler avviare una chat privata con %1?</translation>
     </message>
     <message>
-        <location line="-721"/>
+        <location line="-725"/>
         <source>Cache migration failed!</source>
         <translation>Migrazione della cache fallita!</translation>
     </message>
@@ -352,7 +352,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+183"/>
+        <location filename="../../src/ChatPage.cpp" line="+187"/>
         <source>Decrypt secrets</source>
         <translation>Decifra i segreti</translation>
     </message>
@@ -426,12 +426,12 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+59"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+68"/>
         <source>Search</source>
         <translation>Cerca</translation>
     </message>
     <message>
-        <location line="+172"/>
+        <location line="+186"/>
         <source>People</source>
         <translation>Membri</translation>
     </message>
@@ -607,7 +607,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+233"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+234"/>
         <source>Select a file</source>
         <translation type="unfinished">Seleziona un file</translation>
     </message>
@@ -617,17 +617,43 @@
         <translation type="unfinished">Tutti i File (*)</translation>
     </message>
     <message>
-        <location line="+417"/>
+        <location line="+442"/>
         <source>Failed to upload media. Please try again.</source>
         <translation type="unfinished">Impossibile inviare il file multimediale. Per favore riprova.</translation>
     </message>
 </context>
 <context>
-    <name>InviteeItem</name>
+    <name>InviteDialog</name>
     <message>
-        <location filename="../../src/InviteeItem.cpp" line="+22"/>
-        <source>Remove</source>
-        <translation>Rimuovi</translation>
+        <location filename="../qml/InviteDialog.qml" line="+32"/>
+        <source>Invite users to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>User ID to invite</source>
+        <translation type="unfinished">ID utente da invitare</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>@joe:matrix.org</source>
+        <comment>Example user id. The name &apos;joe&apos; can be localized however you want.</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+58"/>
+        <source>Invite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annulla</translation>
     </message>
 </context>
 <context>
@@ -745,22 +771,9 @@ Esempio: https://server.mio:8787</translation>
     </message>
 </context>
 <context>
-    <name>MemberList</name>
-    <message>
-        <location filename="../../src/dialogs/MemberList.cpp" line="+94"/>
-        <source>Room members</source>
-        <translation>Membri della stanza</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-</context>
-<context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+110"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+169"/>
         <location line="+9"/>
         <source>removed</source>
         <translation>rimosso</translation>
@@ -771,7 +784,7 @@ Esempio: https://server.mio:8787</translation>
         <translation>Crittografia abilitata</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+12"/>
         <source>room name changed to: %1</source>
         <translation>nome della stanza cambiato in: %1</translation>
     </message>
@@ -781,7 +794,7 @@ Esempio: https://server.mio:8787</translation>
         <translation>nome della stanza rimosso</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+12"/>
         <source>topic changed to: %1</source>
         <translation>argomento cambiato in: %1</translation>
     </message>
@@ -791,17 +804,17 @@ Esempio: https://server.mio:8787</translation>
         <translation>argomento rimosso</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+12"/>
         <source>%1 changed the room avatar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+12"/>
         <source>%1 created and configured room: %2</source>
         <translation>%1 creato e configurata stanza: %2</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>%1 placed a voice call.</source>
         <translation>%1 ha avviato una chiamata audio.</translation>
     </message>
@@ -816,17 +829,17 @@ Esempio: https://server.mio:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+14"/>
         <source>%1 answered the call.</source>
         <translation>%1 ha risposto alla chiamata.</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+12"/>
         <source>%1 ended the call.</source>
         <translation>%1 ha terminato la chiamata.</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+12"/>
         <source>Negotiating call...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -834,7 +847,7 @@ Esempio: https://server.mio:8787</translation>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+43"/>
+        <location filename="../qml/MessageInput.qml" line="+44"/>
         <source>Hang up</source>
         <translation>Termina</translation>
     </message>
@@ -855,6 +868,11 @@ Esempio: https://server.mio:8787</translation>
     </message>
     <message>
         <location line="+214"/>
+        <source>Stickers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
         <source>Emoji</source>
         <translation type="unfinished">Emoji</translation>
     </message>
@@ -872,17 +890,17 @@ Esempio: https://server.mio:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+83"/>
+        <location filename="../qml/MessageView.qml" line="+87"/>
         <source>Edit</source>
         <translation>Modifica</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+16"/>
         <source>React</source>
         <translation>Reagisci</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+16"/>
         <source>Reply</source>
         <translation type="unfinished">Risposta</translation>
     </message>
@@ -892,7 +910,7 @@ Esempio: https://server.mio:8787</translation>
         <translation type="unfinished">Opzioni</translation>
     </message>
     <message>
-        <location line="+329"/>
+        <location line="+394"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1101,7 +1119,7 @@ Verificare %1 adesso?</translation>
 <context>
     <name>Placeholder</name>
     <message>
-        <location filename="../qml/delegates/Placeholder.qml" line="+9"/>
+        <location filename="../qml/delegates/Placeholder.qml" line="+11"/>
         <source>unimplemented event: </source>
         <translation>evento non implementato: </translation>
     </message>
@@ -1221,7 +1239,7 @@ Verificare %1 adesso?</translation>
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../qml/ReplyPopup.qml" line="+47"/>
+        <location filename="../qml/ReplyPopup.qml" line="+62"/>
         <source>Close</source>
         <translation>Chiudi</translation>
     </message>
@@ -1234,7 +1252,7 @@ Verificare %1 adesso?</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4009"/>
+        <location filename="../../src/Cache.cpp" line="+4169"/>
         <source>no version stored</source>
         <translation>nessuna versione memorizzata</translation>
     </message>
@@ -1242,7 +1260,7 @@ Verificare %1 adesso?</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+56"/>
+        <location filename="../qml/RoomList.qml" line="+57"/>
         <source>New tag</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1282,17 +1300,7 @@ Verificare %1 adesso?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+222"/>
-        <source>Accept</source>
-        <translation type="unfinished">Accetta</translation>
-    </message>
-    <message>
-        <location line="+21"/>
-        <source>Decline</source>
-        <translation type="unfinished">Rifiuta</translation>
-    </message>
-    <message>
-        <location line="+68"/>
+        <location line="+268"/>
         <source>Status Message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1343,19 +1351,41 @@ Verificare %1 adesso?</translation>
     </message>
 </context>
 <context>
+    <name>RoomMembers</name>
+    <message>
+        <location filename="../qml/RoomMembers.qml" line="+17"/>
+        <source>Members of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location line="+32"/>
+        <source>%n people in %1</source>
+        <comment>Summary above list of members</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Invite more people</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RoomSettings</name>
     <message>
-        <location filename="../qml/RoomSettings.qml" line="+25"/>
+        <location filename="../qml/RoomSettings.qml" line="+26"/>
         <source>Room Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+79"/>
+        <location line="+80"/>
         <source>%1 member(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+45"/>
         <source>SETTINGS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1438,11 +1468,6 @@ Verificare %1 adesso?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>OK</source>
-        <translation type="unfinished">OK</translation>
-    </message>
-    <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+268"/>
         <source>Failed to enable encryption: %1</source>
         <translation type="unfinished">Impossibile abilitare la crittografia: %1</translation>
@@ -1472,6 +1497,24 @@ Verificare %1 adesso?</translation>
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
         <translation type="unfinished">Impossibile fare l&apos;upload dell&apos;immagine: %s</translation>
+    </message>
+</context>
+<context>
+    <name>RoomlistModel</name>
+    <message>
+        <location filename="../../src/timeline/RoomlistModel.cpp" line="+143"/>
+        <source>Pending invite.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>Previewing this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <source>No preview available</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1531,7 +1574,7 @@ Verificare %1 adesso?</translation>
 <context>
     <name>StatusIndicator</name>
     <message>
-        <location filename="../qml/StatusIndicator.qml" line="+21"/>
+        <location filename="../qml/StatusIndicator.qml" line="+24"/>
         <source>Failed</source>
         <translation>Fallito</translation>
     </message>
@@ -1549,6 +1592,14 @@ Verificare %1 adesso?</translation>
         <location line="+2"/>
         <source>Read</source>
         <translation>Letto</translation>
+    </message>
+</context>
+<context>
+    <name>StickerPicker</name>
+    <message>
+        <location filename="../qml/emoji/StickerPicker.qml" line="+70"/>
+        <source>Search</source>
+        <translation type="unfinished">Cerca</translation>
     </message>
 </context>
 <context>
@@ -1572,7 +1623,7 @@ Verificare %1 adesso?</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1095"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1132"/>
         <source>Message redaction failed: %1</source>
         <translation>Oscuramento del messaggio fallito: %1</translation>
     </message>
@@ -1583,7 +1634,7 @@ Verificare %1 adesso?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+164"/>
+        <location line="+173"/>
         <source>Save image</source>
         <translation>Salva immagine</translation>
     </message>
@@ -1717,12 +1768,12 @@ Verificare %1 adesso?</translation>
         <translation>%1 ha oscurato la sua bussata.</translation>
     </message>
     <message>
-        <location line="-883"/>
+        <location line="-909"/>
         <source>You joined this room.</source>
         <translation>Sei entrato in questa stanza.</translation>
     </message>
     <message>
-        <location line="+849"/>
+        <location line="+875"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1751,7 +1802,7 @@ Verificare %1 adesso?</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+106"/>
+        <location filename="../qml/TimelineRow.qml" line="+180"/>
         <source>Edited</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1759,17 +1810,32 @@ Verificare %1 adesso?</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+27"/>
+        <location filename="../qml/TimelineView.qml" line="+30"/>
         <source>No room open</source>
         <translation>Nessuna stanza aperta</translation>
     </message>
     <message>
-        <location line="+127"/>
+        <location line="+139"/>
         <source>%1 member(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+33"/>
+        <source>join the conversation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>accept invite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>decline invite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
         <source>Back to room list</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1777,7 +1843,7 @@ Verificare %1 adesso?</translation>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+461"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+472"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1785,18 +1851,17 @@ Verificare %1 adesso?</translation>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+51"/>
+        <location filename="../qml/TopBar.qml" line="+54"/>
         <source>Back to room list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
-        <location line="+10"/>
+        <location line="-39"/>
         <source>No room selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+90"/>
         <source>Room options</source>
         <translation type="unfinished">Opzioni della stanza</translation>
     </message>
@@ -1837,7 +1902,7 @@ Verificare %1 adesso?</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+24"/>
+        <location filename="../qml/UserProfile.qml" line="+25"/>
         <source>Global User Profile</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1847,7 +1912,7 @@ Verificare %1 adesso?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+114"/>
+        <location line="+115"/>
         <location line="+107"/>
         <source>Verify</source>
         <translation type="unfinished"></translation>
@@ -1896,7 +1961,7 @@ Verificare %1 adesso?</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+362"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+363"/>
         <location filename="../../src/UserSettingsPage.h" line="+194"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
@@ -1905,7 +1970,7 @@ Verificare %1 adesso?</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location line="+524"/>
+        <location line="+525"/>
         <source>Minimize to tray</source>
         <translation>Minimizza nella tray</translation>
     </message>
@@ -2351,7 +2416,7 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>Waiting</name>
     <message>
-        <location filename="../qml/device-verification/Waiting.qml" line="+11"/>
+        <location filename="../qml/device-verification/Waiting.qml" line="+12"/>
         <source>Waiting for other party…</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2402,7 +2467,7 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+207"/>
+        <location filename="../../src/Utils.cpp" line="+210"/>
         <source>Yesterday</source>
         <translation>Ieri</translation>
     </message>
@@ -2471,19 +2536,6 @@ This usually causes the application icon in the task bar to animate in some fash
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
         <translation>Apri il ripiego, segui i passaggi e conferma dopo averli completati.</translation>
-    </message>
-</context>
-<context>
-    <name>dialogs::InviteUsers</name>
-    <message>
-        <location filename="../../src/dialogs/InviteUsers.cpp" line="+46"/>
-        <source>Cancel</source>
-        <translation>Annulla</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>User ID to invite</source>
-        <translation>ID utente da invitare</translation>
     </message>
 </context>
 <context>
