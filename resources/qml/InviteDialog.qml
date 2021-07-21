@@ -55,6 +55,7 @@ ApplicationWindow {
         Label {
             text: qsTr("User ID to invite")
             Layout.fillWidth: true
+            color: Nheko.colors.text
         }
 
         RowLayout {
