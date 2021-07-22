@@ -355,7 +355,7 @@ Rectangle {
             image: ":/icons/icons/ui/smile.png"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Emoji")
-            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(function(emoji) {
+            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
                 messageInput.insert(messageInput.cursorPosition, emoji);
                 TimelineManager.focusMessageInput();
             })
