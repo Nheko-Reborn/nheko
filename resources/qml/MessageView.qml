@@ -493,6 +493,7 @@ ScrollView {
                 foreground: Nheko.colors.mid
                 z: 3
             }
+
         }
 
     }
