@@ -1399,7 +1399,7 @@ UserSettingsPage::exportSessionKeys()
                 QString suffix("-----END MEGOLM SESSION DATA-----");
                 QString newline("\n");
                 QTextStream out(&file);
-                out << prefix << newline << b64 << newline << suffix;
+                out << prefix << newline << b64 << newline << suffix << newline;
                 file.close();
         } catch (const std::exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());
