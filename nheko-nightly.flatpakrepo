@@ -1,6 +1,7 @@
 [Flatpak Repo]
 Title=Nheko Nightly
 Url=https://flatpak.neko.dev/repo/nightly
+SuggestRemoteName=nheko-nightlies
 Homepage=https://nheko.im/
 Comment=Nheko nightly release repository
 Description=Nheko nightly release repository

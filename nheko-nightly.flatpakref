@@ -3,6 +3,7 @@ Title=Nheko Nightly
 Name=io.github.NhekoReborn.Nheko
 Branch=master
 Url=https://flatpak.neko.dev/repo/nightly
+SuggestRemoteName=nheko-nightlies
 Homepage=https://nheko-reborn.github.io/
 Icon=https://nheko.im/nheko-reborn/nheko/-/raw/master/resources/nheko.svg
 RuntimeRepo=https://dl.flathub.org/repo/flathub.flatpakrepo
