@@ -219,7 +219,7 @@ ApplicationWindow {
                 title: qsTr("End-to-End Encryption")
                 text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br>
                             Please take note that it can't be disabled afterwards.")
-                modality: Qt.NonModal
+                modality: Qt.Modal
                 onAccepted: {
                     if (roomSettings.isEncryptionEnabled)
                         return ;
