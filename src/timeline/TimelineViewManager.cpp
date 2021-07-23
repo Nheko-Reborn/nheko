@@ -394,6 +394,13 @@ TimelineViewManager::openInviteUsers(QString roomId)
 }
 
 void
+TimelineViewManager::openGlobalUserProfile(QString userId)
+{
+        UserProfile *profile = new UserProfile{QString{}, userId, this};
+        emit openProfile(profile);
+}
+
+void
 TimelineViewManager::setVideoCallItem()
 {
         WebRTCSession::instance().setVideoItem(
