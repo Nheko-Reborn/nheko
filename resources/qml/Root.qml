@@ -96,6 +96,14 @@ Page {
 
     }
 
+    Component {
+        id: readReceiptsDialog
+
+        ReadReceipts {
+        }
+
+    }
+
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
@@ -162,6 +170,17 @@ Page {
         }
 
         target: TimelineManager
+    }
+
+    Connections {
+        function onOpenReadReceiptsDialog() {
+            var dialog = readReceiptsDialog.createObject(timelineRoot, {
+                "readReceipts": rr
+            });
+            dialog.show();
+        }
+
+        target: Rooms.currentRoom
     }
 
     Connections {

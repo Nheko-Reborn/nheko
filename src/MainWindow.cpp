@@ -36,7 +36,6 @@
 #include "dialogs/JoinRoom.h"
 #include "dialogs/LeaveRoom.h"
 #include "dialogs/Logout.h"
-#include "dialogs/ReadReceipts.h"
 
 MainWindow *MainWindow::instance_ = nullptr;
 
@@ -394,27 +393,6 @@ MainWindow::openLogoutDialog()
                 }
                 chat_page_->initiateLogout();
         });
-
-        showDialog(dialog);
-}
-
-void
-MainWindow::openReadReceiptsDialog(const QString &event_id)
-{
-        auto dialog = new dialogs::ReadReceipts(this);
-
-        const auto room_id = chat_page_->currentRoom();
-
-        try {
-                dialog->addUsers(cache::readReceipts(event_id, room_id));
-        } catch (const lmdb::error &) {
-                nhlog::db()->warn("failed to retrieve read receipts for {} {}",
-                                  event_id.toStdString(),
-                                  chat_page_->currentRoom().toStdString());
-                dialog->deleteLater();
-
-                return;
-        }
 
         showDialog(dialog);
 }

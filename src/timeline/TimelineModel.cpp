@@ -28,6 +28,7 @@
 #include "MemberList.h"
 #include "MxcImageProvider.h"
 #include "Olm.h"
+#include "ReadReceiptsModel.h"
 #include "TimelineViewManager.h"
 #include "Utils.h"
 #include "dialogs/RawMessage.h"
@@ -1089,9 +1090,9 @@ TimelineModel::relatedInfo(QString id)
 }
 
 void
-TimelineModel::readReceiptsAction(QString id) const
+TimelineModel::showReadReceipts(QString id)
 {
-        MainWindow::instance()->openReadReceiptsDialog(id);
+        emit openReadReceiptsDialog(new ReadReceiptsModel{id, roomId(), this});
 }
 
 void

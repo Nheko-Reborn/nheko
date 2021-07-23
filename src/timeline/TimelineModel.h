@@ -20,6 +20,7 @@
 #include "InviteesModel.h"
 #include "MemberList.h"
 #include "Permissions.h"
+#include "ReadReceiptsModel.h"
 #include "ui/RoomSettings.h"
 #include "ui/UserProfile.h"
 
@@ -241,7 +242,7 @@ public:
         Q_INVOKABLE void openUserProfile(QString userid);
         Q_INVOKABLE void editAction(QString id);
         Q_INVOKABLE void replyAction(QString id);
-        Q_INVOKABLE void readReceiptsAction(QString id) const;
+        Q_INVOKABLE void showReadReceipts(QString id);
         Q_INVOKABLE void redactEvent(QString id);
         Q_INVOKABLE int idToIndex(QString id) const;
         Q_INVOKABLE QString indexToId(int index) const;
@@ -348,6 +349,7 @@ signals:
         void typingUsersChanged(std::vector<QString> users);
         void replyChanged(QString reply);
         void editChanged(QString reply);
+        void openReadReceiptsDialog(ReadReceiptsModel *rr);
         void paginationInProgressChanged(const bool);
         void newCallEvent(const mtx::events::collections::TimelineEvents &event);
         void scrollToIndex(int index);

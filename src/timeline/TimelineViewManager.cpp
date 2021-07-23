@@ -26,6 +26,7 @@
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "MxcImageProvider.h"
+#include "ReadReceiptsModel.h"
 #include "RoomsModel.h"
 #include "SingleImagePackModel.h"
 #include "UserSettingsPage.h"
@@ -205,6 +206,12 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           0,
           "InviteesModel",
           "InviteesModel needs to be instantiated on the C++ side");
+        qmlRegisterUncreatableType<ReadReceiptsModel>(
+          "im.nheko",
+          1,
+          0,
+          "ReadReceiptsModel",
+          "ReadReceiptsModel needs to be instantiated on the C++ side");
 
         static auto self = this;
         qmlRegisterSingletonType<MainWindow>(
