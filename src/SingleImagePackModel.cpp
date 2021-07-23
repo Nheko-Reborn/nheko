@@ -94,7 +94,7 @@ SingleImagePackModel::setGloballyEnabled(bool enabled)
         else
                 content.rooms[roomid_].erase(statekey_);
 
-        http::client()->put_account_data(content, [this](mtx::http::RequestErr) {
+        http::client()->put_account_data(content, [](mtx::http::RequestErr) {
                 // emit this->globallyEnabledChanged();
         });
 }
