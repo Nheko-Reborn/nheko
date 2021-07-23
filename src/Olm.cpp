@@ -214,12 +214,14 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
 
         const auto my_key = olm::client()->identity_keys().curve25519;
 
+        bool failed_decryption = false;
+
         for (const auto &cipher : msg.ciphertext) {
                 // We skip messages not meant for the current device.
                 if (cipher.first != my_key) {
                         nhlog::crypto()->debug(
                           "Skipping message for {} since we are {}.", cipher.first, my_key);
-                        return;
+                        continue;
                 }
 
                 const auto type = cipher.second.type;
@@ -234,6 +236,7 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
                                   msg.sender, msg.sender_key, cipher.second);
                         } else {
                                 nhlog::crypto()->error("Undecryptable olm message!");
+                                failed_decryption = true;
                                 continue;
                         }
                 }
@@ -423,22 +426,28 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
                         }
 
                         return;
+                } else {
+                        failed_decryption = true;
                 }
         }
 
-        try {
-                std::map<std::string, std::vector<std::string>> targets;
-                for (auto [device_id, key] : otherUserDeviceKeys.device_keys) {
-                        if (key.keys.at("curve25519:" + device_id) == msg.sender_key)
-                                targets[msg.sender].push_back(device_id);
-                }
+        if (failed_decryption) {
+                try {
+                        std::map<std::string, std::vector<std::string>> targets;
+                        for (auto [device_id, key] : otherUserDeviceKeys.device_keys) {
+                                if (key.keys.at("curve25519:" + device_id) == msg.sender_key)
+                                        targets[msg.sender].push_back(device_id);
+                        }
 
-                send_encrypted_to_device_messages(
-                  targets, mtx::events::DeviceEvent<mtx::events::msg::Dummy>{}, true);
-                nhlog::crypto()->info(
-                  "Recovering from broken olm channel with {}:{}", msg.sender, msg.sender_key);
-        } catch (std::exception &e) {
-                nhlog::crypto()->error("Failed to recover from broken olm sessions: {}", e.what());
+                        send_encrypted_to_device_messages(
+                          targets, mtx::events::DeviceEvent<mtx::events::msg::Dummy>{}, true);
+                        nhlog::crypto()->info("Recovering from broken olm channel with {}:{}",
+                                              msg.sender,
+                                              msg.sender_key);
+                } catch (std::exception &e) {
+                        nhlog::crypto()->error("Failed to recover from broken olm sessions: {}",
+                                               e.what());
+                }
         }
 }
 
