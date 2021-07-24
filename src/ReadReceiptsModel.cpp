@@ -7,6 +7,7 @@
 #include <QLocale>
 
 #include "Cache.h"
+#include "Cache_p.h"
 #include "Logging.h"
 #include "Utils.h"
 
@@ -16,10 +17,26 @@ ReadReceiptsModel::ReadReceiptsModel(QString event_id, QString room_id, QObject 
   , room_id_{room_id}
 {
         try {
-                addUsers(cache::readReceipts(event_id, room_id));
+                addUsers(cache::readReceipts(event_id_, room_id_));
         } catch (const lmdb::error &) {
                 nhlog::db()->warn("failed to retrieve read receipts for {} {}",
-                                  event_id.toStdString(),
+                                  event_id_.toStdString(),
+                                  room_id_.toStdString());
+
+                return;
+        }
+
+        connect(cache::client(), &Cache::newReadReceipts, this, &ReadReceiptsModel::update);
+}
+
+void
+ReadReceiptsModel::update()
+{
+        try {
+                addUsers(cache::readReceipts(event_id_, room_id_));
+        } catch (const lmdb::error &) {
+                nhlog::db()->warn("failed to retrieve read receipts for {} {}",
+                                  event_id_.toStdString(),
                                   room_id_.toStdString());
 
                 return;
@@ -59,7 +76,9 @@ void
 ReadReceiptsModel::addUsers(
   const std::multimap<uint64_t, std::string, std::greater<uint64_t>> &users)
 {
-        beginInsertRows(QModelIndex{}, readReceipts_.length(), users.size() - 1);
+        auto oldLen = readReceipts_.length();
+
+        beginInsertRows(QModelIndex{}, oldLen, users.size() - 1);
 
         readReceipts_.clear();
         for (const auto &user : users) {
@@ -74,6 +93,8 @@ ReadReceiptsModel::addUsers(
                   });
 
         endInsertRows();
+
+        emit dataChanged(index(0), index(oldLen - 1));
 }
 
 QString

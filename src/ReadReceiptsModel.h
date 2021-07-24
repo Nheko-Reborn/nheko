@@ -41,6 +41,7 @@ public:
 
 public slots:
         void addUsers(const std::multimap<uint64_t, std::string, std::greater<uint64_t>> &users);
+        void update();
 
 private:
         QString dateFormat(const QDateTime &then) const;
