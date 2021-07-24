@@ -21,6 +21,11 @@ ApplicationWindow {
     palette: Nheko.colors
     color: Nheko.colors.window
 
+    Shortcut {
+        sequence: StandardKey.Cancel
+        onActivated: readReceiptsRoot.close()
+    }
+
     ColumnLayout {
         anchors.fill: parent
         anchors.margins: Nheko.paddingMedium
