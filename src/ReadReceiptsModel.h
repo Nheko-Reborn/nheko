@@ -6,9 +6,9 @@
 #define READRECEIPTSMODEL_H
 
 #include <QAbstractListModel>
+#include <QDateTime>
 #include <QObject>
 #include <QString>
-#include <QDateTime>
 
 class ReadReceiptsModel : public QAbstractListModel
 {
