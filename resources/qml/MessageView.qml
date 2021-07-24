@@ -580,7 +580,7 @@ ScrollView {
 
         Platform.MenuItem {
             text: qsTr("Read receip&ts")
-            onTriggered: room.readReceiptsAction(messageContextMenu.eventId)
+            onTriggered: room.showReadReceipts(messageContextMenu.eventId)
         }
 
         Platform.MenuItem {
