@@ -55,7 +55,6 @@ ReadReceiptsModel::data(const QModelIndex &index, int role) const
         case AvatarUrl:
                 return readReceipts_[index.row()]->avatarUrl();
         case Timestamp:
-                // the uint64_t to QVariant conversion was ambiguous, so...
                 return readReceipts_[index.row()]->timestamp();
         default:
                 return {};
