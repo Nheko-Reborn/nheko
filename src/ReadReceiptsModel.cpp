@@ -26,12 +26,6 @@ ReadReceiptsModel::ReadReceiptsModel(QString event_id, QString room_id, QObject 
         }
 }
 
-ReadReceiptsModel::~ReadReceiptsModel()
-{
-        for (const auto &item : readReceipts_)
-                item->deleteLater();
-}
-
 QHash<int, QByteArray>
 ReadReceiptsModel::roleNames() const
 {
@@ -49,13 +43,13 @@ ReadReceiptsModel::data(const QModelIndex &index, int role) const
 
         switch (role) {
         case Mxid:
-                return readReceipts_[index.row()]->mxid();
+                return readReceipts_[index.row()].first;
         case DisplayName:
-                return readReceipts_[index.row()]->displayName();
+                return cache::displayName(room_id_, readReceipts_[index.row()].first);
         case AvatarUrl:
-                return readReceipts_[index.row()]->avatarUrl();
+                return cache::avatarUrl(room_id_, readReceipts_[index.row()].first);
         case Timestamp:
-                return readReceipts_[index.row()]->timestamp();
+                return dateFormat(readReceipts_[index.row()].second);
         default:
                 return {};
         }
@@ -65,41 +59,25 @@ void
 ReadReceiptsModel::addUsers(
   const std::multimap<uint64_t, std::string, std::greater<uint64_t>> &users)
 {
-        std::multimap<uint64_t, std::string, std::greater<uint64_t>> unshown;
+        beginInsertRows(QModelIndex{}, readReceipts_.length(), users.size() - 1);
+
+        readReceipts_.clear();
         for (const auto &user : users) {
-                if (users_.find(user.first) == users_.end())
-                        unshown.emplace(user);
+                readReceipts_.push_back({QString::fromStdString(user.second),
+                                         QDateTime::fromMSecsSinceEpoch(user.first)});
         }
 
-        beginInsertRows(
-          QModelIndex{}, readReceipts_.length(), readReceipts_.length() + unshown.size() - 1);
-
-        for (const auto &user : unshown)
-                readReceipts_.push_back(
-                  new ReadReceipt{QString::fromStdString(user.second), room_id_, user.first, this});
-
-        users_.merge(unshown);
+        std::sort(readReceipts_.begin(),
+                  readReceipts_.end(),
+                  [](const QPair<QString, QDateTime> &a, const QPair<QString, QDateTime> &b) {
+                          return a.second > b.second;
+                  });
 
         endInsertRows();
 }
 
-ReadReceipt::ReadReceipt(QString mxid, QString room_id, uint64_t timestamp, QObject *parent)
-  : QObject{parent}
-  , mxid_{mxid}
-  , room_id_{room_id}
-  , displayName_{cache::displayName(room_id_, mxid_)}
-  , avatarUrl_{cache::avatarUrl(room_id_, mxid_)}
-  , timestamp_{timestamp}
-{}
-
 QString
-ReadReceipt::timestamp() const
-{
-        return dateFormat(QDateTime::fromMSecsSinceEpoch(timestamp_));
-}
-
-QString
-ReadReceipt::dateFormat(const QDateTime &then) const
+ReadReceiptsModel::dateFormat(const QDateTime &then) const
 {
         auto now  = QDateTime::currentDateTime();
         auto days = then.daysTo(now);
