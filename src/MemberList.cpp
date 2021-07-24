@@ -2,16 +2,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include <QAbstractSlider>
-#include <QLabel>
-#include <QListWidgetItem>
-#include <QPainter>
-#include <QPushButton>
-#include <QScrollBar>
-#include <QShortcut>
-#include <QStyleOption>
-#include <QVBoxLayout>
-
 #include "MemberList.h"
 
 #include "Cache.h"
