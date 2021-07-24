@@ -20,7 +20,6 @@
 #include "Logging.h"
 #include "Utils.h"
 #include "timeline/TimelineViewManager.h"
-#include "ui/Avatar.h"
 
 MemberList::MemberList(const QString &room_id, QObject *parent)
   : QAbstractListModel{parent}

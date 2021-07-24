@@ -304,7 +304,6 @@ set(SRC_FILES
 	src/timeline/RoomlistModel.cpp
 
 	# UI components
-	src/ui/Avatar.cpp
 	src/ui/Badge.cpp
 	src/ui/DropShadow.cpp
 	src/ui/FlatButton.cpp
@@ -516,7 +515,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/timeline/RoomlistModel.h
 
 	# UI components
-	src/ui/Avatar.h
 	src/ui/Badge.h
 	src/ui/FlatButton.h
 	src/ui/FloatingButton.h
