@@ -964,13 +964,12 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
                 }
         }
 
-        if (!verifiedDevice && !shouldSeeKeys &&
-            !utils::respondsToKeyRequests(req.content.room_id)) {
+        if (!verifiedDevice && !shouldSeeKeys) {
                 nhlog::crypto()->debug("ignoring key request for room {}", req.content.room_id);
                 return;
         }
 
-        if (verifiedDevice || utils::respondsToKeyRequests(req.content.room_id)) {
+        if (verifiedDevice) {
                 // share the minimum index we have
                 minimumIndex = -1;
         }

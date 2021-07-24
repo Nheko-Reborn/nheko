@@ -157,12 +157,12 @@
     </message>
     <message>
         <location line="+34"/>
-        <location line="+284"/>
+        <location line="+286"/>
         <source>Confirm invite</source>
         <translation>Confirm invite</translation>
     </message>
     <message>
-        <location line="-283"/>
+        <location line="-285"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Do you really want to invite %1 (%2)?</translation>
     </message>
@@ -227,12 +227,12 @@
         <translation>Unbanned user: %1</translation>
     </message>
     <message>
-        <location line="+187"/>
+        <location line="+189"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation>Do you really want to start a private chat with %1?</translation>
     </message>
     <message>
-        <location line="-725"/>
+        <location line="-727"/>
         <source>Cache migration failed!</source>
         <translation>Cache migration failed!</translation>
     </message>
@@ -352,7 +352,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+187"/>
+        <location filename="../../src/ChatPage.cpp" line="+189"/>
         <source>Decrypt secrets</source>
         <translation>Decrypt secrets</translation>
     </message>
@@ -602,6 +602,44 @@
         <location filename="../qml/ForwardCompleter.qml" line="+44"/>
         <source>Forward Message</source>
         <translation>Forward Message</translation>
+    </message>
+</context>
+<context>
+    <name>ImagePackSettingsDialog</name>
+    <message>
+        <location filename="../qml/dialogs/ImagePackSettingsDialog.qml" line="+22"/>
+        <source>Image pack settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+151"/>
+        <source>Private pack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Pack from this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Globally enabled pack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+59"/>
+        <source>Enable globally</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Enables this pack to be used in all rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+62"/>
+        <source>Close</source>
+        <translation type="unfinished">Close</translation>
     </message>
 </context>
 <context>
@@ -910,7 +948,7 @@ Example: https://server.my:8787</translation>
         <translation>Options</translation>
     </message>
     <message>
-        <location line="+394"/>
+        <location line="+405"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copy</translation>
     </message>
@@ -1251,7 +1289,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4169"/>
+        <location filename="../../src/Cache.cpp" line="+4180"/>
         <source>no version stored</source>
         <translation>no version stored</translation>
     </message>
@@ -1267,6 +1305,16 @@ Example: https://server.my:8787</translation>
         <location line="+1"/>
         <source>Enter the tag you want to use:</source>
         <translation>Enter the tag you want to use:</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Leave Room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Are you sure you want to leave this room?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1384,7 +1432,7 @@ Example: https://server.my:8787</translation>
         <translation>%1 member(s)</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+55"/>
         <source>SETTINGS</source>
         <translation>SETTINGS</translation>
     </message>
@@ -1440,21 +1488,22 @@ Example: https://server.my:8787</translation>
         <translation>Encryption is currently experimental and things might break unexpectedly.&lt;br&gt;Please take note that it can&apos;t be disabled afterwards.</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Respond to key requests</source>
-        <translation>Respond to key requests</translation>
+        <location line="+16"/>
+        <source>Sticker &amp; Emote Settings</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Whether or not the client should respond automatically with the session keys
-                                upon request. Use with caution, this is a temporary measure to test the
-                                E2E implementation until device verification is completed.</source>
-        <translation>Whether or not the client should respond automatically with the session keys
-upon request. Use with caution, this is a temporary measure to test the
-E2E implementation until device verification is completed.</translation>
+        <location line="+4"/>
+        <source>Change</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+1"/>
+        <source>Change what packs are enabled, remove packs or create new ones</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>INFO</source>
         <translation>INFO</translation>
     </message>
@@ -1469,7 +1518,7 @@ E2E implementation until device verification is completed.</translation>
         <translation>Room Version</translation>
     </message>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+268"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+255"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Failed to enable encryption: %1</translation>
     </message>
@@ -1624,7 +1673,7 @@ E2E implementation until device verification is completed.</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1132"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1107"/>
         <source>Message redaction failed: %1</source>
         <translation>Message redaction failed: %1</translation>
     </message>
@@ -1769,12 +1818,12 @@ E2E implementation until device verification is completed.</translation>
         <translation>%1 redacted their knock.</translation>
     </message>
     <message>
-        <location line="-909"/>
+        <location line="-884"/>
         <source>You joined this room.</source>
         <translation>You joined this room.</translation>
     </message>
     <message>
-        <location line="+875"/>
+        <location line="+850"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation>%1 has changed their avatar and changed their display name to %2.</translation>
     </message>
@@ -1844,7 +1893,7 @@ E2E implementation until device verification is completed.</translation>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+472"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+527"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</translation>
     </message>
@@ -2479,7 +2528,7 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+210"/>
+        <location filename="../../src/Utils.cpp" line="+184"/>
         <source>Yesterday</source>
         <translation>Yesterday</translation>
     </message>
@@ -2663,7 +2712,7 @@ Media size: %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+124"/>
+        <location filename="../../src/Utils.h" line="+115"/>
         <source>You sent an audio clip</source>
         <translation>You sent an audio clip</translation>
     </message>

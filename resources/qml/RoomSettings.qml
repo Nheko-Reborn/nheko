@@ -233,23 +233,6 @@ ApplicationWindow {
             }
 
             MatrixText {
-                visible: roomSettings.isEncryptionEnabled
-                text: qsTr("Respond to key requests")
-            }
-
-            ToggleButton {
-                visible: roomSettings.isEncryptionEnabled
-                ToolTip.text: qsTr("Whether or not the client should respond automatically with the session keys
-                                upon request. Use with caution, this is a temporary measure to test the
-                                E2E implementation until device verification is completed.")
-                checked: roomSettings.respondsToKeyRequests
-                onClicked: {
-                    roomSettings.changeKeyRequestsPreference(checked);
-                }
-                Layout.alignment: Qt.AlignRight
-            }
-
-            MatrixText {
                 text: qsTr("Sticker & Emote Settings")
             }
 

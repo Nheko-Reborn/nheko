@@ -157,12 +157,12 @@
     </message>
     <message>
         <location line="+34"/>
-        <location line="+284"/>
+        <location line="+286"/>
         <source>Confirm invite</source>
         <translation>Confirmer l&apos;invitation</translation>
     </message>
     <message>
-        <location line="-283"/>
+        <location line="-285"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Voulez-vous vraiment inviter %1 (%2)&#x202f;?</translation>
     </message>
@@ -227,12 +227,12 @@
         <translation>%1 n&apos;est plus banni(e)</translation>
     </message>
     <message>
-        <location line="+187"/>
+        <location line="+189"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation>Voulez-vous vraimer commencer une discussion privée avec %1 ?</translation>
     </message>
     <message>
-        <location line="-725"/>
+        <location line="-727"/>
         <source>Cache migration failed!</source>
         <translation>Échec de la migration du cache&#x202f;!</translation>
     </message>
@@ -352,7 +352,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+187"/>
+        <location filename="../../src/ChatPage.cpp" line="+189"/>
         <source>Decrypt secrets</source>
         <translation>Déchiffrer les secrets</translation>
     </message>
@@ -602,6 +602,44 @@
         <location filename="../qml/ForwardCompleter.qml" line="+44"/>
         <source>Forward Message</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImagePackSettingsDialog</name>
+    <message>
+        <location filename="../qml/dialogs/ImagePackSettingsDialog.qml" line="+22"/>
+        <source>Image pack settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+151"/>
+        <source>Private pack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Pack from this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Globally enabled pack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+59"/>
+        <source>Enable globally</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Enables this pack to be used in all rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+62"/>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
     </message>
 </context>
 <context>
@@ -910,7 +948,7 @@ Exemple&#xa0;: https&#x202f;://monserveur.example.com&#x202f;:8787</translation>
         <translation>Options</translation>
     </message>
     <message>
-        <location line="+394"/>
+        <location line="+405"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1251,7 +1289,7 @@ Exemple&#xa0;: https&#x202f;://monserveur.example.com&#x202f;:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4169"/>
+        <location filename="../../src/Cache.cpp" line="+4180"/>
         <source>no version stored</source>
         <translation>pas de version enregistrée</translation>
     </message>
@@ -1266,6 +1304,16 @@ Exemple&#xa0;: https&#x202f;://monserveur.example.com&#x202f;:8787</translation>
     <message>
         <location line="+1"/>
         <source>Enter the tag you want to use:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Leave Room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Are you sure you want to leave this room?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1384,7 +1432,7 @@ Exemple&#xa0;: https&#x202f;://monserveur.example.com&#x202f;:8787</translation>
         <translation>%1 membre(s)</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+55"/>
         <source>SETTINGS</source>
         <translation>CONFIGURATION</translation>
     </message>
@@ -1440,21 +1488,22 @@ Exemple&#xa0;: https&#x202f;://monserveur.example.com&#x202f;:8787</translation>
         <translation>Le chiffrement actuellement expérimental et des comportements inattendus peuvent être rencontrés. &lt;br&gt;Veuillez noter qu&apos;il n&apos;est pas possible de le désactiver par la suite.</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Respond to key requests</source>
-        <translation>Répondre aux demandes de clé</translation>
+        <location line="+16"/>
+        <source>Sticker &amp; Emote Settings</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Whether or not the client should respond automatically with the session keys
-                                upon request. Use with caution, this is a temporary measure to test the
-                                E2E implementation until device verification is completed.</source>
-        <translation>Si le client doit répondre automatiquement avec les clés de session lorsqu&apos;elles sont
-demandées. Utiliser précautionneusement, il s&apos;agit d&apos;une mesure temporaire afin de
-tester le chiffrement de bout en bout tant que la vérification des appareils n&apos;est pas au point.</translation>
+        <location line="+4"/>
+        <source>Change</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+1"/>
+        <source>Change what packs are enabled, remove packs or create new ones</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>INFO</source>
         <translation>INFO</translation>
     </message>
@@ -1469,7 +1518,7 @@ tester le chiffrement de bout en bout tant que la vérification des appareils n&
         <translation>Version du salon</translation>
     </message>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+268"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+255"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Échec de l&apos;activation du chiffrement&#xa0;&#xa0;: %1</translation>
     </message>
@@ -1624,7 +1673,7 @@ tester le chiffrement de bout en bout tant que la vérification des appareils n&
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1132"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1107"/>
         <source>Message redaction failed: %1</source>
         <translation>Échec de la suppression du message&#xa0;: %1</translation>
     </message>
@@ -1769,12 +1818,12 @@ tester le chiffrement de bout en bout tant que la vérification des appareils n&
         <translation>%1 ne frappe plus au salon.</translation>
     </message>
     <message>
-        <location line="-909"/>
+        <location line="-884"/>
         <source>You joined this room.</source>
         <translation>Vous avez rejoint ce salon.</translation>
     </message>
     <message>
-        <location line="+875"/>
+        <location line="+850"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1844,7 +1893,7 @@ tester le chiffrement de bout en bout tant que la vérification des appareils n&
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+472"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+527"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>Pas de discussion privée et chiffrée trouvée avec cet utilisateur. Créez-en une et réessayez.</translation>
     </message>
@@ -2481,7 +2530,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+210"/>
+        <location filename="../../src/Utils.cpp" line="+184"/>
         <source>Yesterday</source>
         <translation>Hier</translation>
     </message>
@@ -2665,7 +2714,7 @@ Taille du média : %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+124"/>
+        <location filename="../../src/Utils.h" line="+115"/>
         <source>You sent an audio clip</source>
         <translation>Vous avez envoyé un message audio</translation>
     </message>
