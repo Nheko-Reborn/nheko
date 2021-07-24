@@ -25,6 +25,7 @@
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
+#include "MemberList.h"
 #include "MxcImageProvider.h"
 #include "Olm.h"
 #include "TimelineViewManager.h"
@@ -317,6 +318,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
   , events(room_id.toStdString(), this)
   , room_id_(room_id)
   , manager_(manager)
+  , permissions_{room_id}
 {
         lastMessage_.timestamp = 0;
 
@@ -324,6 +326,10 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
               cache::client()->getStateEvent<mtx::events::state::Create>(room_id.toStdString()))
                 this->isSpace_ = create->content.type == mtx::events::state::room_type::space;
         this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
+
+        // this connection will simplify adding the plainRoomNameChanged() signal everywhere that it
+        // needs to be
+        connect(this, &TimelineModel::roomNameChanged, this, &TimelineModel::plainRoomNameChanged);
 
         connect(
           this,
@@ -344,6 +350,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
           &EventStore::dataChanged,
           this,
           [this](int from, int to) {
+                  relatedEventCacheBuster++;
                   nhlog::ui()->debug(
                     "data changed {} to {}", events.size() - to - 1, events.size() - from - 1);
                   emit dataChanged(index(events.size() - to - 1, 0),
@@ -443,6 +450,7 @@ TimelineModel::roleNames() const
           {RoomTopic, "roomTopic"},
           {CallType, "callType"},
           {Dump, "dump"},
+          {RelatedEventCacheBuster, "relatedEventCacheBuster"},
         };
 }
 int
@@ -676,6 +684,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
 
                 return QVariant(m);
         }
+        case RelatedEventCacheBuster:
+                return relatedEventCacheBuster;
         default:
                 return QVariant();
         }
@@ -708,6 +718,14 @@ TimelineModel::data(const QModelIndex &index, int role) const
         }
 
         return data(*event, role);
+}
+
+QVariant
+TimelineModel::dataById(QString id, int role, QString relatedTo)
+{
+        if (auto event = events.get(id.toStdString(), relatedTo.toStdString()))
+                return data(*event, role);
+        return QVariant();
 }
 
 bool
@@ -1049,14 +1067,6 @@ TimelineModel::openUserProfile(QString userid)
 }
 
 void
-TimelineModel::openRoomSettings()
-{
-        RoomSettings *settings = new RoomSettings(roomId(), this);
-        connect(this, &TimelineModel::roomAvatarUrlChanged, settings, &RoomSettings::avatarChanged);
-        openRoomSettingsDialog(settings);
-}
-
-void
 TimelineModel::replyAction(QString id)
 {
         setReply(id);
@@ -1292,6 +1302,14 @@ struct SendMessageVisitor
                 sendRoomEvent<mtx::events::msg::KeyVerificationCancel,
                               mtx::events::EventType::KeyVerificationCancel>(msg);
         }
+        void operator()(mtx::events::Sticker msg)
+        {
+                msg.type = mtx::events::EventType::Sticker;
+                if (cache::isRoomEncrypted(model_->room_id_.toStdString())) {
+                        model_->sendEncryptedMessage(msg, mtx::events::EventType::Sticker);
+                } else
+                        emit model_->addPendingMessageToStore(msg);
+        }
 
         TimelineModel *model_;
 };
@@ -1301,6 +1319,7 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
 {
         std::visit(
           [](auto &msg) {
+                  // gets overwritten for reactions and stickers in SendMessageVisitor
                   msg.type             = mtx::events::EventType::RoomMessage;
                   msg.event_id         = "m" + http::client()->generate_txn_id();
                   msg.sender           = http::client()->user_id().to_string();

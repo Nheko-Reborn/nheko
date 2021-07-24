@@ -33,8 +33,8 @@ Page {
 
         Connections {
             onActiveTimelineChanged: {
-                roomlist.positionViewAtIndex(Rooms.roomidToIndex(Rooms.currentRoom.roomId()), ListView.Contain);
-                console.log("Test" + Rooms.currentRoom.roomId() + " " + Rooms.roomidToIndex(Rooms.currentRoom.roomId()));
+                roomlist.positionViewAtIndex(Rooms.roomidToIndex(Rooms.currentRoom.roomId), ListView.Contain);
+                console.log("Test" + Rooms.currentRoom.roomId + " " + Rooms.roomidToIndex(Rooms.currentRoom.roomId));
             }
             target: TimelineManager
         }
@@ -61,9 +61,19 @@ Page {
                 }
             }
 
+            Platform.MessageDialog {
+                id: leaveRoomDialog
+
+                title: qsTr("Leave Room")
+                text: qsTr("Are you sure you want to leave this room?")
+                modality: Qt.Modal
+                onAccepted: Rooms.leave(roomContextMenu.roomid)
+                buttons: Dialog.Ok | Dialog.Cancel
+            }
+
             Platform.MenuItem {
                 text: qsTr("Leave room")
-                onTriggered: Rooms.leave(roomContextMenu.roomid)
+                onTriggered: leaveRoomDialog.open()
             }
 
             Platform.MenuSeparator {
@@ -133,7 +143,7 @@ Page {
             states: [
                 State {
                     name: "highlight"
-                    when: hovered.hovered && !((Rooms.currentRoom && roomId == Rooms.currentRoom.roomId()) || Rooms.currentRoomPreview.roomid == roomId)
+                    when: hovered.hovered && !((Rooms.currentRoom && roomId == Rooms.currentRoom.roomId) || Rooms.currentRoomPreview.roomid == roomId)
 
                     PropertyChanges {
                         target: roomItem
@@ -147,7 +157,7 @@ Page {
                 },
                 State {
                     name: "selected"
-                    when: (Rooms.currentRoom && roomId == Rooms.currentRoom.roomId()) || Rooms.currentRoomPreview.roomid == roomId
+                    when: (Rooms.currentRoom && roomId == Rooms.currentRoom.roomId) || Rooms.currentRoomPreview.roomid == roomId
 
                     PropertyChanges {
                         target: roomItem

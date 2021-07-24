@@ -196,7 +196,6 @@ MxcImageProvider::download(const QString &id,
                                   image.setText("original filename",
                                                 QString::fromStdString(originalFilename));
                                   image.setText("mxc url", "mxc://" + id);
-                                  image.save(fileInfo.absoluteFilePath());
                                   then(id, requestedSize, image, fileInfo.absoluteFilePath());
                           });
                 } catch (std::exception &e) {

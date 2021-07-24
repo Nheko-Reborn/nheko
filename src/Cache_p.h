@@ -97,6 +97,12 @@ public:
                 return getStateEvent<T>(txn, room_id, state_key);
         }
 
+        //! retrieve a specific event from account data
+        //! pass empty room_id for global account data
+        std::optional<mtx::events::collections::RoomAccountDataEvents> getAccountData(
+          mtx::events::EventType type,
+          const std::string &room_id = "");
+
         //! Retrieve member info from a room.
         std::vector<RoomMember> getMembers(const std::string &room_id,
                                            std::size_t startIndex = 0,
@@ -225,6 +231,9 @@ public:
         std::vector<std::string> getParentRoomIds(const std::string &room_id);
         std::vector<std::string> getChildRoomIds(const std::string &room_id);
 
+        std::vector<ImagePackInfo> getImagePacks(const std::string &room_id,
+                                                 std::optional<bool> stickers);
+
         //! Mark a room that uses e2e encryption.
         void setEncryptedRoom(lmdb::txn &txn, const std::string &room_id);
         bool isRoomEncrypted(const std::string &room_id);
@@ -238,12 +247,12 @@ public:
         // Outbound Megolm Sessions
         //
         void saveOutboundMegolmSession(const std::string &room_id,
-                                       const OutboundGroupSessionData &data,
+                                       const GroupSessionData &data,
                                        mtx::crypto::OutboundGroupSessionPtr &session);
         OutboundGroupSessionDataRef getOutboundMegolmSession(const std::string &room_id);
         bool outboundMegolmSessionExists(const std::string &room_id) noexcept;
         void updateOutboundMegolmSession(const std::string &room_id,
-                                         const OutboundGroupSessionData &data,
+                                         const GroupSessionData &data,
                                          mtx::crypto::OutboundGroupSessionPtr &session);
         void dropOutboundMegolmSession(const std::string &room_id);
 
@@ -254,10 +263,12 @@ public:
         // Inbound Megolm Sessions
         //
         void saveInboundMegolmSession(const MegolmSessionIndex &index,
-                                      mtx::crypto::InboundGroupSessionPtr session);
+                                      mtx::crypto::InboundGroupSessionPtr session,
+                                      const GroupSessionData &data);
         mtx::crypto::InboundGroupSessionPtr getInboundMegolmSession(
           const MegolmSessionIndex &index);
         bool inboundMegolmSessionExists(const MegolmSessionIndex &index);
+        std::optional<GroupSessionData> getMegolmSessionData(const MegolmSessionIndex &index);
 
         //
         // Olm Sessions
@@ -676,6 +687,7 @@ private:
 
         lmdb::dbi inboundMegolmSessionDb_;
         lmdb::dbi outboundMegolmSessionDb_;
+        lmdb::dbi megolmSessionDataDb_;
 
         QString localUserId_;
         QString cacheDirectory_;

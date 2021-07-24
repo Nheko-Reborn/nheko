@@ -4,7 +4,7 @@
 
 import "./ui"
 import Qt.labs.platform 1.1 as Platform
-import QtQuick 2.9
+import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.3
@@ -98,13 +98,23 @@ ApplicationWindow {
 
             MatrixText {
                 text: roomSettings.roomName
-                font.pixelSize: 24
+                font.pixelSize: fontMetrics.font.pixelSize * 2
                 Layout.alignment: Qt.AlignHCenter
             }
 
             MatrixText {
                 text: qsTr("%1 member(s)").arg(roomSettings.memberCount)
                 Layout.alignment: Qt.AlignHCenter
+
+                TapHandler {
+                    onTapped: TimelineManager.openRoomMembers(roomSettings.roomId)
+                }
+
+                CursorShape {
+                    cursorShape: Qt.PointingHandCursor
+                    anchors.fill: parent
+                }
+
             }
 
         }
@@ -209,7 +219,7 @@ ApplicationWindow {
                 title: qsTr("End-to-End Encryption")
                 text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br>
                             Please take note that it can't be disabled afterwards.")
-                modality: Qt.NonModal
+                modality: Qt.Modal
                 onAccepted: {
                     if (roomSettings.isEncryptionEnabled)
                         return ;
@@ -220,6 +230,17 @@ ApplicationWindow {
                     encryptionToggle.checked = false;
                 }
                 buttons: Dialog.Ok | Dialog.Cancel
+            }
+
+            MatrixText {
+                text: qsTr("Sticker & Emote Settings")
+            }
+
+            Button {
+                text: qsTr("Change")
+                ToolTip.text: qsTr("Change what packs are enabled, remove packs or create new ones")
+                onClicked: TimelineManager.openImagePackSettings(roomSettings.roomId)
+                Layout.alignment: Qt.AlignRight
             }
 
             Item {
@@ -247,7 +268,7 @@ ApplicationWindow {
 
             MatrixText {
                 text: roomSettings.roomId
-                font.pixelSize: 14
+                font.pixelSize: fontMetrics.font.pixelSize * 1.2
                 Layout.alignment: Qt.AlignRight
             }
 
@@ -257,16 +278,16 @@ ApplicationWindow {
 
             MatrixText {
                 text: roomSettings.roomVersion
-                font.pixelSize: 14
+                font.pixelSize: fontMetrics.font.pixelSize * 1.2
                 Layout.alignment: Qt.AlignRight
             }
 
         }
 
-        Button {
-            Layout.alignment: Qt.AlignRight
-            text: qsTr("OK")
-            onClicked: close()
+        DialogButtonBox {
+            Layout.fillWidth: true
+            standardButtons: DialogButtonBox.Ok
+            onAccepted: close()
         }
 
     }

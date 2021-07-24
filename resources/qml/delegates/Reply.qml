@@ -30,6 +30,7 @@ Item {
     property string roomTopic
     property string roomName
     property string callType
+    property int relatedEventCacheBuster
 
     width: parent.width
     height: replyContainer.height
@@ -95,6 +96,7 @@ Item {
             roomTopic: r.roomTopic
             roomName: r.roomName
             callType: r.callType
+            relatedEventCacheBuster: r.relatedEventCacheBuster
             enabled: false
             width: parent.width
             isReply: true

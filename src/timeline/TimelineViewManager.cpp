@@ -15,15 +15,19 @@
 #include "ChatPage.h"
 #include "Clipboard.h"
 #include "ColorImageProvider.h"
+#include "CombinedImagePackModel.h"
 #include "CompletionProxyModel.h"
 #include "DelegateChooser.h"
 #include "DeviceVerificationFlow.h"
 #include "EventAccessors.h"
+#include "ImagePackListModel.h"
+#include "InviteesModel.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "MxcImageProvider.h"
 #include "RoomsModel.h"
+#include "SingleImagePackModel.h"
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
 #include "dialogs/ImageOverlay.h"
@@ -144,6 +148,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         qRegisterMetaType<mtx::events::msg::KeyVerificationReady>();
         qRegisterMetaType<mtx::events::msg::KeyVerificationRequest>();
         qRegisterMetaType<mtx::events::msg::KeyVerificationStart>();
+        qRegisterMetaType<CombinedImagePackModel *>();
 
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                          "im.nheko",
@@ -172,6 +177,8 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           0,
           "UserProfileModel",
           "UserProfile needs to be instantiated on the C++ side");
+        qmlRegisterUncreatableType<MemberList>(
+          "im.nheko", 1, 0, "MemberList", "MemberList needs to be instantiated on the C++ side");
         qmlRegisterUncreatableType<RoomSettings>(
           "im.nheko",
           1,
@@ -180,6 +187,24 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           "Room Settings needs to be instantiated on the C++ side");
         qmlRegisterUncreatableType<TimelineModel>(
           "im.nheko", 1, 0, "Room", "Room needs to be instantiated on the C++ side");
+        qmlRegisterUncreatableType<ImagePackListModel>(
+          "im.nheko",
+          1,
+          0,
+          "ImagePackListModel",
+          "ImagePackListModel needs to be instantiated on the C++ side");
+        qmlRegisterUncreatableType<SingleImagePackModel>(
+          "im.nheko",
+          1,
+          0,
+          "SingleImagePackModel",
+          "SingleImagePackModel needs to be instantiated on the C++ side");
+        qmlRegisterUncreatableType<InviteesModel>(
+          "im.nheko",
+          1,
+          0,
+          "InviteesModel",
+          "InviteesModel needs to be instantiated on the C++ side");
 
         static auto self = this;
         qmlRegisterSingletonType<MainWindow>(
@@ -341,6 +366,41 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
 }
 
 void
+TimelineViewManager::openRoomMembers(QString room_id)
+{
+        MemberList *memberList = new MemberList(room_id, this);
+        emit openRoomMembersDialog(memberList);
+}
+
+void
+TimelineViewManager::openRoomSettings(QString room_id)
+{
+        RoomSettings *settings = new RoomSettings(room_id, this);
+        connect(rooms_->getRoomById(room_id).data(),
+                &TimelineModel::roomAvatarUrlChanged,
+                settings,
+                &RoomSettings::avatarChanged);
+        emit openRoomSettingsDialog(settings);
+}
+
+void
+TimelineViewManager::openInviteUsers(QString roomId)
+{
+        InviteesModel *model = new InviteesModel{this};
+        connect(model, &InviteesModel::accept, this, [this, model, roomId]() {
+                emit inviteUsers(roomId, model->mxids());
+        });
+        emit openInviteUsersDialog(model);
+}
+
+void
+TimelineViewManager::openGlobalUserProfile(QString userId)
+{
+        UserProfile *profile = new UserProfile{QString{}, userId, this};
+        emit openProfile(profile);
+}
+
+void
 TimelineViewManager::setVideoCallItem()
 {
         WebRTCSession::instance().setVideoItem(
@@ -398,6 +458,12 @@ TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId)
 }
 
 void
+TimelineViewManager::openImagePackSettings(QString roomid)
+{
+        emit showImagePackSettings(new ImagePackListModel(roomid.toStdString(), this));
+}
+
+void
 TimelineViewManager::openImageOverlayInternal(QString eventId, QImage img)
 {
         auto pixmap = QPixmap::fromImage(img);
@@ -419,17 +485,6 @@ TimelineViewManager::openImageOverlayInternal(QString eventId, QImage img)
         });
 }
 
-void
-TimelineViewManager::openInviteUsersDialog()
-{
-        MainWindow::instance()->openInviteUsersDialog(
-          [this](const QStringList &invitees) { emit inviteUsers(invitees); });
-}
-void
-TimelineViewManager::openMemberListDialog(QString roomid) const
-{
-        MainWindow::instance()->openMemberListDialog(roomid);
-}
 void
 TimelineViewManager::openLeaveRoomDialog(QString roomid) const
 {
@@ -592,6 +647,11 @@ TimelineViewManager::completerFor(QString completerName, QString roomId)
                 auto roomModel = new RoomsModel(true);
                 auto proxy     = new CompletionProxyModel(roomModel);
                 roomModel->setParent(proxy);
+                return proxy;
+        } else if (completerName == "stickers") {
+                auto stickerModel = new CombinedImagePackModel(roomId.toStdString(), true);
+                auto proxy = new CompletionProxyModel(stickerModel, 1, static_cast<size_t>(-1) / 4);
+                stickerModel->setParent(proxy);
                 return proxy;
         }
         return nullptr;

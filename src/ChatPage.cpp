@@ -116,29 +116,31 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
         connect(this, &ChatPage::loggedOut, this, &ChatPage::logout);
 
-        connect(view_manager_, &TimelineViewManager::inviteUsers, this, [this](QStringList users) {
-                const auto room_id = currentRoom().toStdString();
+        connect(
+          view_manager_,
+          &TimelineViewManager::inviteUsers,
+          this,
+          [this](QString roomId, QStringList users) {
+                  for (int ii = 0; ii < users.size(); ++ii) {
+                          QTimer::singleShot(ii * 500, this, [this, roomId, ii, users]() {
+                                  const auto user = users.at(ii);
 
-                for (int ii = 0; ii < users.size(); ++ii) {
-                        QTimer::singleShot(ii * 500, this, [this, room_id, ii, users]() {
-                                const auto user = users.at(ii);
+                                  http::client()->invite_user(
+                                    roomId.toStdString(),
+                                    user.toStdString(),
+                                    [this, user](const mtx::responses::RoomInvite &,
+                                                 mtx::http::RequestErr err) {
+                                            if (err) {
+                                                    emit showNotification(
+                                                      tr("Failed to invite user: %1").arg(user));
+                                                    return;
+                                            }
 
-                                http::client()->invite_user(
-                                  room_id,
-                                  user.toStdString(),
-                                  [this, user](const mtx::responses::RoomInvite &,
-                                               mtx::http::RequestErr err) {
-                                          if (err) {
-                                                  emit showNotification(
-                                                    tr("Failed to invite user: %1").arg(user));
-                                                  return;
-                                          }
-
-                                          emit showNotification(tr("Invited user: %1").arg(user));
-                                  });
-                        });
-                }
-        });
+                                            emit showNotification(tr("Invited user: %1").arg(user));
+                                    });
+                          });
+                  }
+          });
 
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
         connect(this, &ChatPage::newRoom, this, &ChatPage::changeRoom, Qt::QueuedConnection);
@@ -927,27 +929,33 @@ ChatPage::currentPresence() const
 void
 ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
 {
-        for (const auto &entry : counts) {
-                if (entry.second < MAX_ONETIME_KEYS) {
-                        const int nkeys = MAX_ONETIME_KEYS - entry.second;
+        uint16_t count = 0;
+        if (auto c = counts.find(mtx::crypto::SIGNED_CURVE25519); c != counts.end())
+                count = c->second;
 
-                        nhlog::crypto()->info("uploading {} {} keys", nkeys, entry.first);
-                        olm::client()->generate_one_time_keys(nkeys);
+        if (count < MAX_ONETIME_KEYS) {
+                const int nkeys = MAX_ONETIME_KEYS - count;
 
-                        http::client()->upload_keys(
-                          olm::client()->create_upload_keys_request(),
-                          [](const mtx::responses::UploadKeys &, mtx::http::RequestErr err) {
-                                  if (err) {
-                                          nhlog::crypto()->warn(
-                                            "failed to update one-time keys: {} {}",
-                                            err->matrix_error.error,
-                                            static_cast<int>(err->status_code));
+                nhlog::crypto()->info(
+                  "uploading {} {} keys", nkeys, mtx::crypto::SIGNED_CURVE25519);
+                olm::client()->generate_one_time_keys(nkeys);
+
+                http::client()->upload_keys(
+                  olm::client()->create_upload_keys_request(),
+                  [](const mtx::responses::UploadKeys &, mtx::http::RequestErr err) {
+                          if (err) {
+                                  nhlog::crypto()->warn("failed to update one-time keys: {} {} {}",
+                                                        err->matrix_error.error,
+                                                        static_cast<int>(err->status_code),
+                                                        static_cast<int>(err->error_code));
+
+                                  if (err->status_code < 400 || err->status_code >= 500)
                                           return;
-                                  }
+                          }
 
-                                  olm::mark_keys_as_published();
-                          });
-                }
+                          // mark as published anyway, otherwise we may end up in a loop.
+                          olm::mark_keys_as_published();
+                  });
         }
 }
 

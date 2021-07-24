@@ -281,11 +281,9 @@ set(SRC_FILES
 	src/dialogs/CreateRoom.cpp
 	src/dialogs/FallbackAuth.cpp
 	src/dialogs/ImageOverlay.cpp
-	src/dialogs/InviteUsers.cpp
 	src/dialogs/JoinRoom.cpp
 	src/dialogs/LeaveRoom.cpp
 	src/dialogs/Logout.cpp
-	src/dialogs/MemberList.cpp
 	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
 	src/dialogs/ReadReceipts.cpp
@@ -346,15 +344,19 @@ set(SRC_FILES
 	src/CompletionProxyModel.cpp
 	src/DeviceVerificationFlow.cpp
 	src/EventAccessors.cpp
-	src/InviteeItem.cpp
+	src/InviteesModel.cpp
 	src/Logging.cpp
 	src/LoginPage.cpp
 	src/MainWindow.cpp
 	src/MatrixClient.cpp
+	src/MemberList.cpp
 	src/MxcImageProvider.cpp
 	src/Olm.cpp
 	src/RegisterPage.cpp
 	src/SSOHandler.cpp
+	src/CombinedImagePackModel.cpp
+	src/SingleImagePackModel.cpp
+	src/ImagePackListModel.cpp
 	src/TrayIcon.cpp
 	src/UserSettingsPage.cpp
 	src/UsersModel.cpp
@@ -380,7 +382,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        1c277e9ac69aafdaf6888ce595b21dc86e970f28
+		GIT_TAG        316a4040785ee2eabac7ef5ce7b4acb71c48f6eb
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -491,11 +493,9 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/CreateRoom.h
 	src/dialogs/FallbackAuth.h
 	src/dialogs/ImageOverlay.h
-	src/dialogs/InviteUsers.h
 	src/dialogs/JoinRoom.h
 	src/dialogs/LeaveRoom.h
 	src/dialogs/Logout.h
-	src/dialogs/MemberList.h
 	src/dialogs/PreviewUploadOverlay.h
 	src/dialogs/RawMessage.h
 	src/dialogs/ReCaptcha.h
@@ -553,12 +553,16 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/Clipboard.h
 	src/CompletionProxyModel.h
 	src/DeviceVerificationFlow.h
-	src/InviteeItem.h
+	src/InviteesModel.h
 	src/LoginPage.h
 	src/MainWindow.h
+	src/MemberList.h
 	src/MxcImageProvider.h
 	src/RegisterPage.h
 	src/SSOHandler.h
+	src/CombinedImagePackModel.h
+	src/SingleImagePackModel.h
+	src/ImagePackListModel.h
 	src/TrayIcon.h
 	src/UserSettingsPage.h
 	src/UsersModel.h

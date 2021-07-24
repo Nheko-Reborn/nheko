@@ -4,6 +4,7 @@
 
 import "./delegates"
 import "./device-verification"
+import "./dialogs"
 import "./emoji"
 import "./voip"
 import Qt.labs.platform 1.1 as Platform
@@ -48,6 +49,14 @@ Page {
     }
 
     Component {
+        id: roomMembersComponent
+
+        RoomMembers {
+        }
+
+    }
+
+    Component {
         id: mobileCallInviteDialog
 
         CallInvite {
@@ -59,6 +68,30 @@ Page {
         id: quickSwitcherComponent
 
         QuickSwitcher {
+        }
+
+    }
+
+    Component {
+        id: deviceVerificationDialog
+
+        DeviceVerification {
+        }
+
+    }
+
+    Component {
+        id: inviteDialog
+
+        InviteDialog {
+        }
+
+    }
+
+    Component {
+        id: packSettingsComponent
+
+        ImagePackSettingsDialog {
         }
 
     }
@@ -82,14 +115,6 @@ Page {
         onActivated: Rooms.previousRoom()
     }
 
-    Component {
-        id: deviceVerificationDialog
-
-        DeviceVerification {
-        }
-
-    }
-
     Connections {
         target: TimelineManager
         onNewDeviceVerificationRequest: {
@@ -104,6 +129,12 @@ Page {
             });
             userProfile.show();
         }
+        onShowImagePackSettings: {
+            var packSet = packSettingsComponent.createObject(timelineRoot, {
+                "packlist": packlist
+            });
+            packSet.show();
+        }
     }
 
     Connections {
@@ -113,6 +144,31 @@ Page {
                 var dialog = mobileCallInviteDialog.createObject(msgView);
                 dialog.open();
             }
+        }
+    }
+
+    Connections {
+        target: TimelineManager
+        onOpenRoomMembersDialog: {
+            var membersDialog = roomMembersComponent.createObject(timelineRoot, {
+                "members": members,
+                "roomName": Rooms.currentRoom.roomName
+            });
+            membersDialog.show();
+        }
+        onOpenRoomSettingsDialog: {
+            var roomSettings = roomSettingsComponent.createObject(timelineRoot, {
+                "roomSettings": settings
+            });
+            roomSettings.show();
+        }
+        onOpenInviteUsersDialog: {
+            var dialog = inviteDialog.createObject(timelineRoot, {
+                "roomId": Rooms.currentRoom.roomId,
+                "plainRoomName": Rooms.currentRoom.plainRoomName,
+                "invitees": invitees
+            });
+            dialog.show();
         }
     }
 

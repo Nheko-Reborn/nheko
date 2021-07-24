@@ -92,16 +92,20 @@ ScrollView {
                     }
                 }
 
-                EmojiButton {
+                ImageButton {
                     id: reactButton
 
                     visible: chat.model ? chat.model.permissions.canSend(MtxEvent.Reaction) : false
                     width: 16
                     hoverEnabled: true
+                    image: ":/icons/icons/ui/smile.png"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("React")
-                    emojiPicker: emojiPopup
-                    event_id: row.model ? row.model.eventId : ""
+                    onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(reactButton, function(emoji) {
+                        var event_id = row.model ? row.model.eventId : "";
+                        room.input.reaction(event_id, emoji);
+                        TimelineManager.focusMessageInput();
+                    })
                 }
 
                 ImageButton {
@@ -337,6 +341,7 @@ ScrollView {
             required property var timestamp
             required property int status
             required property int index
+            required property int relatedEventCacheBuster
             required property string previousMessageUserId
             required property string day
             required property string previousMessageDay
@@ -442,6 +447,7 @@ ScrollView {
                 trustlevel: wrapper.trustlevel
                 timestamp: wrapper.timestamp
                 status: wrapper.status
+                relatedEventCacheBuster: wrapper.relatedEventCacheBuster
                 y: section.visible && section.active ? section.y + section.height : 0
 
                 HoverHandler {
@@ -471,12 +477,23 @@ ScrollView {
 
         }
 
-        footer: Spinner {
+        footer: Item {
             anchors.horizontalCenter: parent.horizontalCenter
-            running: chat.model && chat.model.paginationInProgress
-            foreground: Nheko.colors.mid
+            anchors.margins: Nheko.paddingLarge
             visible: chat.model && chat.model.paginationInProgress
-            z: 3
+            // hacky, but works
+            height: loadingSpinner.height + 2 * Nheko.paddingLarge
+
+            Spinner {
+                id: loadingSpinner
+
+                anchors.centerIn: parent
+                anchors.margins: Nheko.paddingLarge
+                running: chat.model && chat.model.paginationInProgress
+                foreground: Nheko.colors.mid
+                z: 3
+            }
+
         }
 
     }

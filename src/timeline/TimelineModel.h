@@ -17,6 +17,8 @@
 #include "CacheStructs.h"
 #include "EventStore.h"
 #include "InputBar.h"
+#include "InviteesModel.h"
+#include "MemberList.h"
 #include "Permissions.h"
 #include "ui/RoomSettings.h"
 #include "ui/UserProfile.h"
@@ -158,7 +160,9 @@ class TimelineModel : public QAbstractListModel
         Q_PROPERTY(QString edit READ edit WRITE setEdit NOTIFY editChanged RESET resetEdit)
         Q_PROPERTY(
           bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
+        Q_PROPERTY(QString roomId READ roomId CONSTANT)
         Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
+        Q_PROPERTY(QString plainRoomName READ plainRoomName NOTIFY plainRoomNameChanged)
         Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY roomAvatarUrlChanged)
         Q_PROPERTY(QString roomTopic READ roomTopic NOTIFY roomTopicChanged)
         Q_PROPERTY(int roomMemberCount READ roomMemberCount NOTIFY roomMemberCountChanged)
@@ -208,6 +212,7 @@ public:
                 RoomTopic,
                 CallType,
                 Dump,
+                RelatedEventCacheBuster,
         };
         Q_ENUM(Roles);
 
@@ -215,10 +220,7 @@ public:
         int rowCount(const QModelIndex &parent = QModelIndex()) const override;
         QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
         QVariant data(const mtx::events::collections::TimelineEvents &event, int role) const;
-        Q_INVOKABLE QVariant dataById(QString id, int role)
-        {
-                return data(index(idToIndex(id)), role);
-        }
+        Q_INVOKABLE QVariant dataById(QString id, int role, QString relatedTo);
 
         bool canFetchMore(const QModelIndex &) const override;
         void fetchMore(const QModelIndex &) override;
@@ -237,7 +239,6 @@ public:
         Q_INVOKABLE void forwardMessage(QString eventId, QString roomId);
         Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
         Q_INVOKABLE void openUserProfile(QString userid);
-        Q_INVOKABLE void openRoomSettings();
         Q_INVOKABLE void editAction(QString id);
         Q_INVOKABLE void replyAction(QString id);
         Q_INVOKABLE void readReceiptsAction(QString id) const;
@@ -354,14 +355,13 @@ signals:
         void lastMessageChanged();
         void notificationsChanged();
 
-        void openRoomSettingsDialog(RoomSettings *settings);
-
         void newMessageToSend(mtx::events::collections::TimelineEvents event);
         void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);
         void updateFlowEventId(std::string event_id);
 
         void encryptionChanged();
         void roomNameChanged();
+        void plainRoomNameChanged();
         void roomTopicChanged();
         void roomAvatarUrlChanged();
         void roomMemberCountChanged();
@@ -391,7 +391,7 @@ private:
         TimelineViewManager *manager_;
 
         InputBar input_{this};
-        Permissions permissions_{this};
+        Permissions permissions_;
 
         QTimer showEventTimer{this};
         QString eventIdToShow;
@@ -403,6 +403,8 @@ private:
 
         int notification_count = 0, highlight_count = 0;
 
+        unsigned int relatedEventCacheBuster = 0;
+
         bool decryptDescription     = true;
         bool m_paginationInProgress = false;
         bool isSpace_               = false;
@@ -413,10 +415,17 @@ template<class T>
 void
 TimelineModel::sendMessageEvent(const T &content, mtx::events::EventType eventType)
 {
-        mtx::events::RoomEvent<T> msgCopy = {};
-        msgCopy.content                   = content;
-        msgCopy.type                      = eventType;
-        emit newMessageToSend(msgCopy);
+        if constexpr (std::is_same_v<T, mtx::events::msg::StickerImage>) {
+                mtx::events::Sticker msgCopy = {};
+                msgCopy.content              = content;
+                msgCopy.type                 = eventType;
+                emit newMessageToSend(msgCopy);
+        } else {
+                mtx::events::RoomEvent<T> msgCopy = {};
+                msgCopy.content                   = content;
+                msgCopy.type                      = eventType;
+                emit newMessageToSend(msgCopy);
+        }
         resetReply();
         resetEdit();
 }
