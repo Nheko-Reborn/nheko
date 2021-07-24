@@ -292,13 +292,6 @@ RoomSettings::accessJoinRules()
 }
 
 void
-RoomSettings::changeKeyRequestsPreference(bool isOn)
-{
-        utils::setKeyRequestsPreference(roomid_, isOn);
-        emit keyRequestsChanged();
-}
-
-void
 RoomSettings::enableEncryption()
 {
         if (usesEncryption_)

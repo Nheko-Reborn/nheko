@@ -172,16 +172,6 @@ utils::scaleFactor()
         return settings.value("settings/scale_factor", -1).toFloat();
 }
 
-void
-utils::setKeyRequestsPreference(QString roomId, bool value)
-{
-        if (roomId.isEmpty())
-                return;
-
-        QSettings settings;
-        settings.setValue("rooms/respond_to_key_requests/" + roomId, value);
-}
-
 QString
 utils::descriptiveTime(const QDateTime &then)
 {

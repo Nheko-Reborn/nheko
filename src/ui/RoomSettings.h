@@ -104,7 +104,6 @@ public:
         Q_INVOKABLE void openEditModal();
         Q_INVOKABLE void changeAccessRules(int index);
         Q_INVOKABLE void changeNotifications(int currentIndex);
-        Q_INVOKABLE void changeKeyRequestsPreference(bool isOn);
 
 signals:
         void loadingChanged();
@@ -112,7 +111,6 @@ signals:
         void roomTopicChanged();
         void avatarUrlChanged();
         void encryptionChanged();
-        void keyRequestsChanged();
         void notificationsChanged();
         void accessJoinRulesChanged();
         void displayError(const QString &errorMessage);

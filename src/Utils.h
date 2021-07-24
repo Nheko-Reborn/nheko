@@ -67,9 +67,6 @@ scaleFactor();
 void
 setScaleFactor(float factor);
 
-void
-setKeyRequestsPreference(QString roomId, bool value);
-
 //! Human friendly timestamp representation.
 QString
 descriptiveTime(const QDateTime &then);
