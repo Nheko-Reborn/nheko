@@ -115,4 +115,10 @@ ApplicationWindow {
 
     }
 
+    footer: DialogButtonBox {
+        standardButtons: DialogButtonBox.Ok
+        onAccepted: readReceiptsRoot.close()
+
+    }
+
 }
