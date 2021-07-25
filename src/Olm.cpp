@@ -1406,9 +1406,12 @@ request_cross_signing_keys()
                   body,
                   [request_id = secretRequest.request_id, secretName](mtx::http::RequestErr err) {
                           if (err) {
-                                  request_id_to_secret_name.erase(request_id);
                                   nhlog::net()->error("Failed to send request for secrect '{}'",
                                                       secretName);
+                                  // Cancel request on UI thread
+                                  QTimer::singleShot(1, cache::client(), [request_id]() {
+                                          request_id_to_secret_name.erase(request_id);
+                                  });
                                   return;
                           }
                   });
