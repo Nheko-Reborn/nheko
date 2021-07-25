@@ -212,6 +212,11 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
         nhlog::crypto()->info("sender    : {}", msg.sender);
         nhlog::crypto()->info("sender_key: {}", msg.sender_key);
 
+        if (msg.sender_key == olm::client()->identity_keys().ed25519) {
+                nhlog::crypto()->warn("Ignoring olm message from ourselves!");
+                return;
+        }
+
         const auto my_key = olm::client()->identity_keys().curve25519;
 
         bool failed_decryption = false;
@@ -1089,6 +1094,8 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
           messages;
         std::map<std::string, std::map<std::string, DevicePublicKeys>> pks;
 
+        auto our_curve = olm::client()->identity_keys().curve25519;
+
         for (const auto &[user, devices] : targets) {
                 auto deviceKeys = cache::client()->userKeys(user);
 
@@ -1122,8 +1129,14 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                                 continue;
                         }
 
-                        auto session =
-                          cache::getLatestOlmSession(d.keys.at("curve25519:" + device));
+                        auto device_curve = d.keys.at("curve25519:" + device);
+                        if (device_curve == our_curve) {
+                                nhlog::crypto()->warn("Skipping our own device, since sending "
+                                                      "ourselves olm messages makes no sense.");
+                                continue;
+                        }
+
+                        auto session = cache::getLatestOlmSession(device_curve);
                         if (!session || force_new_session) {
                                 claims.one_time_keys[user][device] = mtx::crypto::SIGNED_CURVE25519;
                                 pks[user][device].ed25519          = d.keys.at("ed25519:" + device);
@@ -1137,7 +1150,7 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                                                            ev_json,
                                                            UserId(user),
                                                            d.keys.at("ed25519:" + device),
-                                                           d.keys.at("curve25519:" + device))
+                                                           device_curve)
                             .get<mtx::events::msg::OlmEncrypted>();
 
                         try {
@@ -1256,8 +1269,8 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                 req.device_keys = keysToQuery;
                 http::client()->query_keys(
                   req,
-                  [ev_json, BindPks](const mtx::responses::QueryKeys &res,
-                                     mtx::http::RequestErr err) {
+                  [ev_json, BindPks, our_curve](const mtx::responses::QueryKeys &res,
+                                                mtx::http::RequestErr err) {
                           if (err) {
                                   nhlog::net()->warn("failed to query device keys: {} {}",
                                                      err->matrix_error.error,
@@ -1298,6 +1311,13 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                                           DevicePublicKeys pks;
                                           pks.ed25519    = device_keys.at(edKey);
                                           pks.curve25519 = device_keys.at(curveKey);
+
+                                          if (pks.curve25519 == our_curve) {
+                                                  nhlog::crypto()->warn(
+                                                    "Skipping our own device, since sending "
+                                                    "ourselves olm messages makes no sense.");
+                                                  continue;
+                                          }
 
                                           try {
                                                   if (!mtx::crypto::verify_identity_signature(
