@@ -66,7 +66,6 @@ ApplicationWindow {
             property color background: Nheko.colors.window
             property color importantText: Nheko.colors.text
             property color unimportantText: Nheko.colors.buttonText
-
             property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.5)
 
             color: background

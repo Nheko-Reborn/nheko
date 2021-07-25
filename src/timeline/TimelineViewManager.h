@@ -80,6 +80,7 @@ signals:
         void inviteUsers(QStringList users);
         void focusChanged();
         void focusInput();
+        void showPublicRooms();
         void openImageOverlayInternalCb(QString eventId, QImage img);
         void openProfile(UserProfile *profile);
 

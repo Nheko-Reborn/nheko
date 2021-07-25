@@ -597,6 +597,13 @@ TimelineViewManager::focusTimeline()
         getWidget()->setFocus();
 }
 
+// void
+// TimelineViewManager::showRoomDirectory()
+// {
+//         nhlog::ui()->debug("Plumbed");
+//         emit showPublicRooms();
+// }
+
 void
 TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEvents *e,
                                           QString roomId)
