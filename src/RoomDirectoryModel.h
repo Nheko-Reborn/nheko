@@ -45,7 +45,7 @@ public:
 
     virtual inline int rowCount([[maybe_unused]] const QModelIndex &parent = QModelIndex()) const override
     {
-            return static_cast<int> (publicRoomsData.size());
+            return static_cast<int> (publicRoomsData_.size());
     }
 
     virtual inline bool canFetchMore([[maybe_unused]] const QModelIndex &parent) const override
@@ -59,35 +59,32 @@ public:
 
 signals:
     void fetchedRoomsBatchFromMtxClient(std::vector<mtx::responses::PublicRoomsChunk> rooms, 
-                                        const std::string prev_batch, const std::string next_batch
-                                        /*, std::optional<size_t> total_room_count_estimate*/);
+                                        const std::string &prev_batch, const std::string &next_batch);
     void serverChanged();
     void searchTermEntered();
 
 public slots:
     void displayRooms(std::vector<mtx::responses::PublicRoomsChunk> rooms,
-                      const std::string prev_batch, const std::string next_batch
-                      /*, std::optional<size_t> total_room_count_estimate*/);
+                      const std::string &prev, const std::string &next);
     void setMatrixServer(const QString &s = "");
-    void setFilter(const QString &f);
+    void setSearchTerm(const QString &f);
 
 private:
     using PublicRoomsChunk = mtx::responses::PublicRoomsChunk;
-    static constexpr size_t limit_ = 50; // number of rooms requested from mtxclient at once
+    static constexpr size_t limit_ = 50;
     
     std::string server_;
-    std::string filter_;
-    std::string prev_batch_;
-    std::string next_batch_;
+    std::string userSearchString_;
+    std::string prevBatch_;
+    std::string nextBatch_;
     bool canFetchMore_;
-    
-    std::vector<PublicRoomsChunk> publicRoomsData;
-
-    void printPublicRoomsData() {
-        for (const auto &room: publicRoomsData) {
-            nhlog::ui()->debug(room.name);
-        }
-    }
+    std::vector<PublicRoomsChunk> publicRoomsData_;
 
     std::vector<std::string> getViasForRoom(const std::vector<std::string> &room);
+
+    void resetDisplayedData();
+
+    void printPublicRoomsData() {
+        for (const auto &room: publicRoomsData_) { nhlog::ui()->debug(room.name); }
+    }
 };

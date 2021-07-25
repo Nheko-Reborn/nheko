@@ -22,11 +22,41 @@ ApplicationWindow {
     flags: Qt.Dialog
     title: qsTr("Explore Public Rooms")
 
+    header: RowLayout {
+        id: searchBarLayout
+        spacing: Nheko.paddingMedium
+        width: parent.width      
+
+        property color background: Nheko.colors.window
+        property color importantText: Nheko.colors.text
+
+        implicitHeight: roomTextInput.height
+
+        MatrixTextField {
+            id: roomSearch
+
+            Layout.fillWidth: true
+
+            font.pixelSize: fontMetrics.font.pixelSize * 0.9
+            padding: Nheko.paddingSmall
+            color: searchBarLayout.importantText
+            placeholderText: qsTr("Search for public Matrix rooms")
+            onTextChanged: searchTimer.restart()
+        }
+
+        Timer {
+            id: searchTimer
+
+            interval: 2000
+            onTriggered: roomDirView.model.setSearchTerm(roomSearch.text)
+        }
+    }
+
     ListView {
         id: roomDirView
         anchors.left: parent.left
         anchors.right: parent.right
-        height: parent.height
+        height: parent.height - searchBarLayout.height
         model: RoomDirectoryModel {
             id: roomDir
         }
@@ -36,8 +66,7 @@ ApplicationWindow {
             property color background: Nheko.colors.window
             property color importantText: Nheko.colors.text
             property color unimportantText: Nheko.colors.buttonText
-            property color bubbleBackground: Nheko.colors.highlight
-            property color bubbleText: Nheko.colors.highlightedText
+
             property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.5)
 
             color: background
