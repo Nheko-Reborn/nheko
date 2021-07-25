@@ -1028,8 +1028,15 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
 
         auto decryptionKey = mtx::crypto::key_from_recoverykey(text.toStdString(), keyDesc);
 
-        if (!decryptionKey)
-                decryptionKey = mtx::crypto::key_from_passphrase(text.toStdString(), keyDesc);
+        if (!decryptionKey && keyDesc.passphrase) {
+                try {
+                        decryptionKey =
+                          mtx::crypto::key_from_passphrase(text.toStdString(), keyDesc);
+                } catch (std::exception &e) {
+                        nhlog::crypto()->error("Failed to derive secret key from passphrase: {}",
+                                               e.what());
+                }
+        }
 
         if (!decryptionKey) {
                 QMessageBox::information(
