@@ -715,32 +715,29 @@ Cache::restoreOlmAccount()
 }
 
 void
-Cache::storeSecret(const std::string &name, const std::string &secret)
+Cache::storeSecret(const std::string name, const std::string secret)
 {
         auto settings = UserSettings::instance();
-        QKeychain::WritePasswordJob job(QCoreApplication::applicationName());
-        job.setAutoDelete(false);
-        job.setInsecureFallback(true);
-        job.setKey("matrix." +
-                   QString(QCryptographicHash::hash(settings->profile().toUtf8(),
-                                                    QCryptographicHash::Sha256)) +
-                   "." + name.c_str());
-        job.setTextData(QString::fromStdString(secret));
-        QEventLoop loop;
-        job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
-        job.start();
-        loop.exec();
-
-        if (job.error()) {
-                nhlog::db()->warn(
-                  "Storing secret '{}' failed: {}", name, job.errorString().toStdString());
-        } else {
-                emit secretChanged(name);
-        }
+        auto job      = new QKeychain::WritePasswordJob(QCoreApplication::applicationName());
+        job->setInsecureFallback(true);
+        job->setKey("matrix." +
+                    QString(QCryptographicHash::hash(settings->profile().toUtf8(),
+                                                     QCryptographicHash::Sha256)) +
+                    "." + name.c_str());
+        job->setTextData(QString::fromStdString(secret));
+        QObject::connect(job, &QKeychain::Job::finished, job, [name, this](QKeychain::Job *job) {
+                if (job->error()) {
+                        nhlog::db()->warn(
+                          "Storing secret '{}' failed: {}", name, job->errorString().toStdString());
+                } else {
+                        emit secretChanged(name);
+                }
+        });
+        job->start();
 }
 
 void
-Cache::deleteSecret(const std::string &name)
+Cache::deleteSecret(const std::string name)
 {
         auto settings = UserSettings::instance();
         QKeychain::DeletePasswordJob job(QCoreApplication::applicationName());
@@ -750,6 +747,8 @@ Cache::deleteSecret(const std::string &name)
                    QString(QCryptographicHash::hash(settings->profile().toUtf8(),
                                                     QCryptographicHash::Sha256)) +
                    "." + name.c_str());
+        // FIXME(Nico): Nested event loops are dangerous. Some other slots may resume in the mean
+        // time!
         QEventLoop loop;
         job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
         job.start();
@@ -759,7 +758,7 @@ Cache::deleteSecret(const std::string &name)
 }
 
 std::optional<std::string>
-Cache::secret(const std::string &name)
+Cache::secret(const std::string name)
 {
         auto settings = UserSettings::instance();
         QKeychain::ReadPasswordJob job(QCoreApplication::applicationName());
@@ -769,6 +768,8 @@ Cache::secret(const std::string &name)
                    QString(QCryptographicHash::hash(settings->profile().toUtf8(),
                                                     QCryptographicHash::Sha256)) +
                    "." + name.c_str());
+        // FIXME(Nico): Nested event loops are dangerous. Some other slots may resume in the mean
+        // time!
         QEventLoop loop;
         job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
         job.start();

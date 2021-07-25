@@ -285,9 +285,9 @@ public:
         void saveOlmAccount(const std::string &pickled);
         std::string restoreOlmAccount();
 
-        void storeSecret(const std::string &name, const std::string &secret);
-        void deleteSecret(const std::string &name);
-        std::optional<std::string> secret(const std::string &name);
+        void storeSecret(const std::string name, const std::string secret);
+        void deleteSecret(const std::string name);
+        std::optional<std::string> secret(const std::string name);
 
         template<class T>
         static constexpr bool isStateEvent(const mtx::events::StateEvent<T> &)
