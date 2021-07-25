@@ -124,7 +124,7 @@ ApplicationWindow {
                         Label {
                             id: roomTopic
                             color: roomDirDelegate.unimportantText
-                            font.weight: Font.Thin
+                            
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             elide: Text.ElideRight
                             maximumLineCount: 2
@@ -138,7 +138,6 @@ ApplicationWindow {
                             id: roomCount
                             color: roomDirDelegate.unimportantText
                             Layout.fillWidth: false
-                            font.weight: Font.Thin
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             text: model.numMembers.toString()
                         }
