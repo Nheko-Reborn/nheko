@@ -1208,22 +1208,40 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                                                 continue;
                                         }
 
-                                        // TODO: Verify signatures
                                         auto otk = rd.second.begin()->at("key");
 
-                                        auto id_key = pks.at(user_id).at(device_id).curve25519;
+                                        auto sign_key = pks.at(user_id).at(device_id).ed25519;
+                                        auto id_key   = pks.at(user_id).at(device_id).curve25519;
+
+                                        // Verify signature
+                                        {
+                                                auto signedKey = *rd.second.begin();
+                                                std::string signature =
+                                                  signedKey["signatures"][user_id].value(
+                                                    "ed25519:" + device_id, "");
+
+                                                if (signature.empty() ||
+                                                    !mtx::crypto::ed25519_verify_signature(
+                                                      sign_key, signedKey, signature)) {
+                                                        nhlog::net()->warn(
+                                                          "Skipping device {} as its one time key "
+                                                          "has an invalid signature.",
+                                                          device_id);
+                                                        continue;
+                                                }
+                                        }
+
                                         auto session =
                                           olm::client()->create_outbound_session(id_key, otk);
 
                                         messages[mtx::identifiers::parse<mtx::identifiers::User>(
                                           user_id)][device_id] =
                                           olm::client()
-                                            ->create_olm_encrypted_content(
-                                              session.get(),
-                                              ev_json,
-                                              UserId(user_id),
-                                              pks.at(user_id).at(device_id).ed25519,
-                                              id_key)
+                                            ->create_olm_encrypted_content(session.get(),
+                                                                           ev_json,
+                                                                           UserId(user_id),
+                                                                           sign_key,
+                                                                           id_key)
                                             .get<mtx::events::msg::OlmEncrypted>();
 
                                         try {
