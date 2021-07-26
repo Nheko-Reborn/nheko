@@ -1048,24 +1048,24 @@ decryptEvent(const MegolmSessionIndex &index,
                 return {DecryptionErrorCode::DecryptionFailed, e.what(), std::nullopt};
         }
 
-        // Add missing fields for the event.
-        json body                = json::parse(msg_str);
-        body["event_id"]         = event.event_id;
-        body["sender"]           = event.sender;
-        body["origin_server_ts"] = event.origin_server_ts;
-        body["unsigned"]         = event.unsigned_data;
-
-        // relations are unencrypted in content...
-        mtx::common::add_relations(body["content"], event.content.relations);
-
-        mtx::events::collections::TimelineEvent te;
         try {
+                // Add missing fields for the event.
+                json body                = json::parse(msg_str);
+                body["event_id"]         = event.event_id;
+                body["sender"]           = event.sender;
+                body["origin_server_ts"] = event.origin_server_ts;
+                body["unsigned"]         = event.unsigned_data;
+
+                // relations are unencrypted in content...
+                mtx::common::add_relations(body["content"], event.content.relations);
+
+                mtx::events::collections::TimelineEvent te;
                 mtx::events::collections::from_json(body, te);
+
+                return {std::nullopt, std::nullopt, std::move(te.data)};
         } catch (std::exception &e) {
                 return {DecryptionErrorCode::ParsingFailed, e.what(), std::nullopt};
         }
-
-        return {std::nullopt, std::nullopt, std::move(te.data)};
 }
 
 crypto::Trust
