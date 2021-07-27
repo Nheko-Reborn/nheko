@@ -13,8 +13,7 @@ Item {
     property int screenTimeout
 
     Connections {
-        target: TimelineManager
-        onFocusChanged: {
+        function onFocusChanged() {
             if (TimelineManager.isWindowFocused) {
                 screenSaverTimer.stop();
                 screenSaver.state = "Invisible";
@@ -24,6 +23,8 @@ Item {
 
             }
         }
+
+        target: TimelineManager
     }
 
     Timer {

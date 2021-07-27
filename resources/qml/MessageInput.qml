@@ -261,18 +261,24 @@ Rectangle {
                 background: null
 
                 Connections {
-                    onRoomChanged: {
+                    function onRoomChanged() {
                         messageInput.clear();
-                        messageInput.append(room.input.text());
+                        if (room)
+                            messageInput.append(room.input.text());
+
                         messageInput.completerTriggeredAt = -1;
                         popup.completerName = "";
                         messageInput.forceActiveFocus();
                     }
+
                     target: timelineView
                 }
 
                 Connections {
-                    onCompletionClicked: messageInput.insertCompletion(completion)
+                    function onCompletionClicked(completion) {
+                        messageInput.insertCompletion(completion);
+                    }
+
                     target: popup
                 }
 
@@ -284,28 +290,39 @@ Rectangle {
                 }
 
                 Connections {
-                    ignoreUnknownSignals: true
-                    onInsertText: {
+                    function onInsertText(text) {
                         messageInput.remove(messageInput.selectionStart, messageInput.selectionEnd);
                         messageInput.insert(messageInput.cursorPosition, text);
                     }
-                    onTextChanged: {
+
+                    function onTextChanged(newText) {
                         messageInput.text = newText;
                         messageInput.cursorPosition = newText.length;
                     }
+
+                    ignoreUnknownSignals: true
                     target: room ? room.input : null
                 }
 
                 Connections {
+                    function onReplyChanged() {
+                        messageInput.forceActiveFocus();
+                    }
+
+                    function onEditChanged() {
+                        messageInput.forceActiveFocus();
+                    }
+
                     ignoreUnknownSignals: true
-                    onReplyChanged: messageInput.forceActiveFocus()
-                    onEditChanged: messageInput.forceActiveFocus()
                     target: room
                 }
 
                 Connections {
+                    function onFocusInput() {
+                        messageInput.forceActiveFocus();
+                    }
+
                     target: TimelineManager
-                    onFocusInput: messageInput.forceActiveFocus()
                 }
 
                 MouseArea {

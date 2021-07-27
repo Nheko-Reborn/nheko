@@ -83,12 +83,13 @@ ApplicationWindow {
         }
 
         Connections {
-            target: profile
-            onDisplayError: {
+            function onDisplayError(errorMessage) {
                 errorText.text = errorMessage;
                 errorText.opacity = 1;
                 hideErrorAnimation.restart();
             }
+
+            target: profile
         }
 
         TextInput {

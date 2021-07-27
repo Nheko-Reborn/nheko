@@ -32,11 +32,12 @@ Page {
         }
 
         Connections {
-            onActiveTimelineChanged: {
+            function onCurrentRoomChanged() {
                 roomlist.positionViewAtIndex(Rooms.roomidToIndex(Rooms.currentRoom.roomId), ListView.Contain);
                 console.log("Test" + Rooms.currentRoom.roomId + " " + Rooms.roomidToIndex(Rooms.currentRoom.roomId));
             }
-            target: TimelineManager
+
+            target: Rooms
         }
 
         Platform.Menu {
@@ -66,7 +67,7 @@ Page {
 
                 title: qsTr("Leave Room")
                 text: qsTr("Are you sure you want to leave this room?")
-                modality: Qt.Modal
+                modality: Qt.ApplicationModal
                 onAccepted: Rooms.leave(roomContextMenu.roomid)
                 buttons: Dialog.Ok | Dialog.Cancel
             }

@@ -116,53 +116,43 @@ Page {
     }
 
     Connections {
-        target: TimelineManager
-        onNewDeviceVerificationRequest: {
+        function onNewDeviceVerificationRequest(flow) {
             var dialog = deviceVerificationDialog.createObject(timelineRoot, {
                 "flow": flow
             });
             dialog.show();
         }
-        onOpenProfile: {
+
+        function onOpenProfile(profile) {
             var userProfile = userProfileComponent.createObject(timelineRoot, {
                 "profile": profile
             });
             userProfile.show();
         }
-        onShowImagePackSettings: {
+
+        function onShowImagePackSettings(packlist) {
             var packSet = packSettingsComponent.createObject(timelineRoot, {
                 "packlist": packlist
             });
             packSet.show();
         }
-    }
 
-    Connections {
-        target: CallManager
-        onNewInviteState: {
-            if (CallManager.haveCallInvite && Settings.mobileMode) {
-                var dialog = mobileCallInviteDialog.createObject(msgView);
-                dialog.open();
-            }
-        }
-    }
-
-    Connections {
-        target: TimelineManager
-        onOpenRoomMembersDialog: {
+        function onOpenRoomMembersDialog(members) {
             var membersDialog = roomMembersComponent.createObject(timelineRoot, {
                 "members": members,
                 "roomName": Rooms.currentRoom.roomName
             });
             membersDialog.show();
         }
-        onOpenRoomSettingsDialog: {
+
+        function onOpenRoomSettingsDialog(settings) {
             var roomSettings = roomSettingsComponent.createObject(timelineRoot, {
                 "roomSettings": settings
             });
             roomSettings.show();
         }
-        onOpenInviteUsersDialog: {
+
+        function onOpenInviteUsersDialog(invitees) {
             var dialog = inviteDialog.createObject(timelineRoot, {
                 "roomId": Rooms.currentRoom.roomId,
                 "plainRoomName": Rooms.currentRoom.plainRoomName,
@@ -170,6 +160,19 @@ Page {
             });
             dialog.show();
         }
+
+        target: TimelineManager
+    }
+
+    Connections {
+        function onNewInviteState() {
+            if (CallManager.haveCallInvite && Settings.mobileMode) {
+                var dialog = mobileCallInviteDialog.createObject(msgView);
+                dialog.open();
+            }
+        }
+
+        target: CallManager
     }
 
     ChatPage {

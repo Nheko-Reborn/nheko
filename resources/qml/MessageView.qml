@@ -200,15 +200,22 @@ ScrollView {
         }
 
         Connections {
+            function onFocusChanged() {
+                readTimer.running = TimelineManager.isWindowFocused;
+            }
+
             target: TimelineManager
-            onFocusChanged: readTimer.running = TimelineManager.isWindowFocused
         }
 
         Timer {
             id: readTimer
 
             // force current read index to update
-            onTriggered: chat.model.setCurrentIndex(chat.model.currentIndex)
+            onTriggered: {
+                if (chat.model) {
+                    chat.model.setCurrentIndex(chat.model.currentIndex);
+                }
+            }
             interval: 1000
         }
 
@@ -265,11 +272,15 @@ ScrollView {
                     }
 
                     Connections {
-                        target: chat.model
-                        onRoomAvatarUrlChanged: {
+                        function onRoomAvatarUrlChanged() {
                             messageUserAvatar.url = chat.model.avatarUrl(userId).replace("mxc://", "image://MxcImage/");
                         }
-                        onScrollToIndex: chat.positionViewAtIndex(index, ListView.Visible)
+
+                        function onScrollToIndex(index) {
+                            chat.positionViewAtIndex(index, ListView.Visible);
+                        }
+
+                        target: chat.model
                     }
 
                     Label {
@@ -467,12 +478,13 @@ ScrollView {
             }
 
             Connections {
-                target: chat
-                onMovementEnded: {
+                function onMovementEnded() {
                     if (y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height)
                         chat.model.currentIndex = index;
 
                 }
+
+                target: chat
             }
 
         }

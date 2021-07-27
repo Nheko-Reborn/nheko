@@ -185,8 +185,7 @@ Rectangle {
                 }
 
                 Connections {
-                    target: room
-                    onMediaCached: {
+                    function onMediaCached(mxcUrl, cacheUrl) {
                         if (mxcUrl == url) {
                             media.source = cacheUrl;
                             button.state = "stopped";
@@ -194,6 +193,8 @@ Rectangle {
                         }
                         console.log("media cached: " + mxcUrl + " at " + cacheUrl);
                     }
+
+                    target: room
                 }
 
             }
