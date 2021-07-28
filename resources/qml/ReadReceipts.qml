@@ -20,6 +20,7 @@ ApplicationWindow {
     minimumWidth: headerTitle.width + 2 * Nheko.paddingMedium
     palette: Nheko.colors
     color: Nheko.colors.window
+    flags: Qt.Dialog
 
     Shortcut {
         sequence: StandardKey.Cancel
