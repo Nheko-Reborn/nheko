@@ -76,9 +76,7 @@ void
 ReadReceiptsModel::addUsers(
   const std::multimap<uint64_t, std::string, std::greater<uint64_t>> &users)
 {
-        auto oldLen = readReceipts_.length();
-
-        beginInsertRows(QModelIndex{}, oldLen, users.size() - 1);
+        beginResetModel();
 
         readReceipts_.clear();
         for (const auto &user : users) {
@@ -92,9 +90,7 @@ ReadReceiptsModel::addUsers(
                           return a.second > b.second;
                   });
 
-        endInsertRows();
-
-        emit dataChanged(index(0), index(oldLen - 1));
+        endResetModel();
 }
 
 QString
