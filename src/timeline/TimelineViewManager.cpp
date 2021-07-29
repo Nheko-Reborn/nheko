@@ -153,7 +153,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         qRegisterMetaType<mtx::events::msg::KeyVerificationStart>();
         qRegisterMetaType<CombinedImagePackModel *>();
 
-	qRegisterMetaType<std::vector<mtx::responses::PublicRoomsChunk>>();
+        qRegisterMetaType<std::vector<mtx::responses::PublicRoomsChunk>>();
 
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                          "im.nheko",
@@ -278,7 +278,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                                          "EmojiCategory",
                                          "Error: Only enums");
 
-	qmlRegisterType<RoomDirectoryModel>(
+        qmlRegisterType<RoomDirectoryModel>(
           "im.nheko.RoomDirectoryModel", 1, 0, "RoomDirectoryModel");
 
 #ifdef USE_QUICK_VIEW
