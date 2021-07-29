@@ -206,12 +206,12 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           0,
           "InviteesModel",
           "InviteesModel needs to be instantiated on the C++ side");
-        qmlRegisterUncreatableType<ReadReceiptsModel>(
+        qmlRegisterUncreatableType<ReadReceiptsProxy>(
           "im.nheko",
           1,
           0,
-          "ReadReceiptsModel",
-          "ReadReceiptsModel needs to be instantiated on the C++ side");
+          "ReadReceiptsProxy",
+          "ReadReceiptsProxy needs to be instantiated on the C++ side");
 
         static auto self = this;
         qmlRegisterSingletonType<MainWindow>(

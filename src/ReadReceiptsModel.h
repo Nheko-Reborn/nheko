@@ -8,14 +8,12 @@
 #include <QAbstractListModel>
 #include <QDateTime>
 #include <QObject>
+#include <QSortFilterProxyModel>
 #include <QString>
 
 class ReadReceiptsModel : public QAbstractListModel
 {
         Q_OBJECT
-
-        Q_PROPERTY(QString eventId READ eventId CONSTANT)
-        Q_PROPERTY(QString roomId READ roomId CONSTANT)
 
 public:
         enum Roles
@@ -24,6 +22,7 @@ public:
                 DisplayName,
                 AvatarUrl,
                 Timestamp,
+                RawTimestamp,
         };
 
         explicit ReadReceiptsModel(QString event_id, QString room_id, QObject *parent = nullptr);
@@ -49,6 +48,28 @@ private:
         QString event_id_;
         QString room_id_;
         QVector<QPair<QString, QDateTime>> readReceipts_;
+};
+
+class ReadReceiptsProxy : public QSortFilterProxyModel
+{
+        Q_OBJECT
+
+        Q_PROPERTY(QString eventId READ eventId CONSTANT)
+        Q_PROPERTY(QString roomId READ roomId CONSTANT)
+
+public:
+        explicit ReadReceiptsProxy(QString event_id, QString room_id, QObject *parent = nullptr);
+
+        QString eventId() const { return event_id_; }
+        QString roomId() const { return room_id_; }
+
+        bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
+
+private:
+        QString event_id_;
+        QString room_id_;
+
+        ReadReceiptsModel model_;
 };
 
 #endif // READRECEIPTSMODEL_H

@@ -46,10 +46,13 @@ ReadReceiptsModel::update()
 QHash<int, QByteArray>
 ReadReceiptsModel::roleNames() const
 {
-        return {{Mxid, "mxid"},
-                {DisplayName, "displayName"},
-                {AvatarUrl, "avatarUrl"},
-                {Timestamp, "timestamp"}};
+        // Note: RawTimestamp is purposely not included here
+        return {
+          {Mxid, "mxid"},
+          {DisplayName, "displayName"},
+          {AvatarUrl, "avatarUrl"},
+          {Timestamp, "timestamp"},
+        };
 }
 
 QVariant
@@ -67,6 +70,8 @@ ReadReceiptsModel::data(const QModelIndex &index, int role) const
                 return cache::avatarUrl(room_id_, readReceipts_[index.row()].first);
         case Timestamp:
                 return dateFormat(readReceipts_[index.row()].second);
+        case RawTimestamp:
+                return readReceipts_[index.row()].second;
         default:
                 return {};
         }
@@ -76,21 +81,22 @@ void
 ReadReceiptsModel::addUsers(
   const std::multimap<uint64_t, std::string, std::greater<uint64_t>> &users)
 {
-        beginResetModel();
+        auto newReceipts = users.size() - readReceipts_.size();
 
-        readReceipts_.clear();
-        for (const auto &user : users) {
-                readReceipts_.push_back({QString::fromStdString(user.second),
-                                         QDateTime::fromMSecsSinceEpoch(user.first)});
+        if (newReceipts > 0) {
+                beginInsertRows(
+                  QModelIndex{}, readReceipts_.size(), readReceipts_.size() + newReceipts - 1);
+
+                for (const auto &user : users) {
+                        QPair<QString, QDateTime> item = {
+                          QString::fromStdString(user.second),
+                          QDateTime::fromMSecsSinceEpoch(user.first)};
+                        if (!readReceipts_.contains(item))
+                                readReceipts_.push_back(item);
+                }
+
+                endInsertRows();
         }
-
-        std::sort(readReceipts_.begin(),
-                  readReceipts_.end(),
-                  [](const QPair<QString, QDateTime> &a, const QPair<QString, QDateTime> &b) {
-                          return a.second > b.second;
-                  });
-
-        endResetModel();
 }
 
 QString
@@ -111,4 +117,19 @@ ReadReceiptsModel::dateFormat(const QDateTime &then) const
                   .arg(QLocale::system().toString(then.time(), QLocale::ShortFormat));
 
         return QLocale::system().toString(then.time(), QLocale::ShortFormat);
+}
+
+ReadReceiptsProxy::ReadReceiptsProxy(QString event_id, QString room_id, QObject *parent)
+  : QSortFilterProxyModel{parent}
+  , model_{event_id, room_id, this}
+{
+        setSourceModel(&model_);
+        setSortRole(ReadReceiptsModel::RawTimestamp);
+}
+
+bool
+ReadReceiptsProxy::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
+{
+        // since we are sorting from greatest to least timestamp, return something that looks totally backwards!
+        return source_left.data().toULongLong() > source_right.data().toULongLong();
 }

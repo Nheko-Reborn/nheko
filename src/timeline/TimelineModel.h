@@ -349,7 +349,7 @@ signals:
         void typingUsersChanged(std::vector<QString> users);
         void replyChanged(QString reply);
         void editChanged(QString reply);
-        void openReadReceiptsDialog(ReadReceiptsModel *rr);
+        void openReadReceiptsDialog(ReadReceiptsProxy *rr);
         void paginationInProgressChanged(const bool);
         void newCallEvent(const mtx::events::collections::TimelineEvents &event);
         void scrollToIndex(int index);

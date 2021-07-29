@@ -10,7 +10,7 @@ import im.nheko 1.0
 ApplicationWindow {
     id: readReceiptsRoot
 
-    property ReadReceiptsModel readReceipts
+    property ReadReceiptsProxy readReceipts
 
     x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
@@ -86,7 +86,7 @@ ApplicationWindow {
                             ToolTip.text: model.mxid
 
                             TapHandler {
-                                onSingleTapped: chat.model.openUserProfile(userId)
+                                onSingleTapped: Rooms.currentRoom.openUserProfile(userId)
                             }
 
                             CursorShape {

@@ -350,7 +350,7 @@ set(SRC_FILES
 	src/MemberList.cpp
 	src/MxcImageProvider.cpp
 	src/Olm.cpp
-	src/ReadReceiptsModel.cpp
+    src/ReadReceiptsModel.cpp
 	src/RegisterPage.cpp
 	src/SSOHandler.cpp
 	src/CombinedImagePackModel.cpp
@@ -555,7 +555,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/MainWindow.h
 	src/MemberList.h
 	src/MxcImageProvider.h
-	src/ReadReceiptsModel.h
+    src/ReadReceiptsModel.h
 	src/RegisterPage.h
 	src/SSOHandler.h
 	src/CombinedImagePackModel.h
