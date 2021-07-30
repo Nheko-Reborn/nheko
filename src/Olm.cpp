@@ -286,11 +286,17 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
 
                         bool from_their_device = false;
                         for (auto [device_id, key] : otherUserDeviceKeys.device_keys) {
-                                if (key.keys.at("curve25519:" + device_id) == msg.sender_key) {
-                                        if (key.keys.at("ed25519:" + device_id) == sender_ed25519) {
-                                                from_their_device = true;
-                                                break;
-                                        }
+                                auto c_key = key.keys.find("curve25519:" + device_id);
+                                auto e_key = key.keys.find("ed25519:" + device_id);
+
+                                if (c_key == key.keys.end() || e_key == key.keys.end()) {
+                                        nhlog::crypto()->warn(
+                                          "Skipping device {} as we have no keys for it.",
+                                          device_id);
+                                } else if (c_key->second == msg.sender_key &&
+                                           e_key->second == sender_ed25519) {
+                                        from_their_device = true;
+                                        break;
                                 }
                         }
                         if (!from_their_device) {
