@@ -11,6 +11,7 @@ ApplicationWindow {
     id: readReceiptsRoot
 
     property ReadReceiptsProxy readReceipts
+    property Room room
 
     x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
@@ -65,7 +66,7 @@ ApplicationWindow {
                         userid: model.mxid
                         url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                         displayName: model.displayName
-                        onClicked: Rooms.currentRoom.openUserProfile(model.mxid)
+                        onClicked: room.openUserProfile(model.mxid)
                         ToolTip.visible: avatarHover.hovered
                         ToolTip.text: model.mxid
 
@@ -86,7 +87,7 @@ ApplicationWindow {
                             ToolTip.text: model.mxid
 
                             TapHandler {
-                                onSingleTapped: Rooms.currentRoom.openUserProfile(userId)
+                                onSingleTapped: room.openUserProfile(userId)
                             }
 
                             CursorShape {

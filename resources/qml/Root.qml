@@ -173,9 +173,10 @@ Page {
     }
 
     Connections {
-        function onOpenReadReceiptsDialog() {
+        function onOpenReadReceiptsDialog(rr) {
             var dialog = readReceiptsDialog.createObject(timelineRoot, {
-                "readReceipts": rr
+                "readReceipts": rr,
+                "room": Rooms.currentRoom
             });
             dialog.show();
         }
