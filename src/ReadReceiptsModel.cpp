@@ -106,13 +106,14 @@ ReadReceiptsModel::dateFormat(const QDateTime &then) const
         auto days = then.daysTo(now);
 
         if (days == 0)
-                return tr("Today %1")
+                return tr("Today, %1")
                   .arg(QLocale::system().toString(then.time(), QLocale::ShortFormat));
         else if (days < 2)
-                return tr("Yesterday %1")
+                return tr("Yesterday, %1")
                   .arg(QLocale::system().toString(then.time(), QLocale::ShortFormat));
         else if (days < 7)
-                return QString("%1 %2")
+                //: %1 is the name of the current day, %2 is the time the read receipt was read. The result may look like this: Monday, 7:15
+                return QString("%1, %2")
                   .arg(then.toString("dddd"))
                   .arg(QLocale::system().toString(then.time(), QLocale::ShortFormat));
 
