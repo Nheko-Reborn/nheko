@@ -286,7 +286,6 @@ set(SRC_FILES
 	src/dialogs/Logout.cpp
 	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
-	src/dialogs/ReadReceipts.cpp
 
 	# Emoji
 	src/emoji/EmojiModel.cpp
@@ -305,7 +304,6 @@ set(SRC_FILES
 	src/timeline/RoomlistModel.cpp
 
 	# UI components
-	src/ui/Avatar.cpp
 	src/ui/Badge.cpp
 	src/ui/DropShadow.cpp
 	src/ui/FlatButton.cpp
@@ -352,6 +350,7 @@ set(SRC_FILES
 	src/MemberList.cpp
 	src/MxcImageProvider.cpp
 	src/Olm.cpp
+    src/ReadReceiptsModel.cpp
 	src/RegisterPage.cpp
 	src/SSOHandler.cpp
 	src/CombinedImagePackModel.cpp
@@ -499,7 +498,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/PreviewUploadOverlay.h
 	src/dialogs/RawMessage.h
 	src/dialogs/ReCaptcha.h
-	src/dialogs/ReadReceipts.h
 
 	# Emoji
 	src/emoji/EmojiModel.h
@@ -517,7 +515,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/timeline/RoomlistModel.h
 
 	# UI components
-	src/ui/Avatar.h
 	src/ui/Badge.h
 	src/ui/FlatButton.h
 	src/ui/FloatingButton.h
@@ -558,6 +555,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/MainWindow.h
 	src/MemberList.h
 	src/MxcImageProvider.h
+    src/ReadReceiptsModel.h
 	src/RegisterPage.h
 	src/SSOHandler.h
 	src/CombinedImagePackModel.h

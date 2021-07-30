@@ -96,6 +96,14 @@ Page {
 
     }
 
+    Component {
+        id: readReceiptsDialog
+
+        ReadReceipts {
+        }
+
+    }
+
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: {

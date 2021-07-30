@@ -34,7 +34,7 @@ ImageButton {
     }
     onClicked: {
         if (status == MtxEvent.Read)
-            room.readReceiptsAction(eventId);
+            room.showReadReceipts(eventId);
 
     }
     image: {

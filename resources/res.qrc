@@ -112,7 +112,6 @@
     </qresource>
     <qresource prefix="/">
         <file>qtquickcontrols2.conf</file>
-
         <file>qml/Root.qml</file>
         <file>qml/ChatPage.qml</file>
         <file>qml/CommunitiesList.qml</file>
@@ -177,6 +176,7 @@
         <file>qml/components/FlatButton.qml</file>
         <file>qml/RoomMembers.qml</file>
         <file>qml/InviteDialog.qml</file>
+        <file>qml/ReadReceipts.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>
