@@ -63,8 +63,6 @@ public:
         QString eventId() const { return event_id_; }
         QString roomId() const { return room_id_; }
 
-        bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
-
 private:
         QString event_id_;
         QString room_id_;

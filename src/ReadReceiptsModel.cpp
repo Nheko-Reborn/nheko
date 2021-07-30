@@ -125,11 +125,6 @@ ReadReceiptsProxy::ReadReceiptsProxy(QString event_id, QString room_id, QObject 
 {
         setSourceModel(&model_);
         setSortRole(ReadReceiptsModel::RawTimestamp);
-}
-
-bool
-ReadReceiptsProxy::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
-{
-        // since we are sorting from greatest to least timestamp, return something that looks totally backwards!
-        return source_left.data().toULongLong() > source_right.data().toULongLong();
+        sort(0, Qt::DescendingOrder);
+        setDynamicSortFilter(true);
 }
