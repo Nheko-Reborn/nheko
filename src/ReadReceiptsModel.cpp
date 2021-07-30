@@ -106,8 +106,7 @@ ReadReceiptsModel::dateFormat(const QDateTime &then) const
         auto days = then.daysTo(now);
 
         if (days == 0)
-                return tr("Today, %1")
-                  .arg(QLocale::system().toString(then.time(), QLocale::ShortFormat));
+                return QLocale::system().toString(then.time(), QLocale::ShortFormat);
         else if (days < 2)
                 return tr("Yesterday, %1")
                   .arg(QLocale::system().toString(then.time(), QLocale::ShortFormat));
