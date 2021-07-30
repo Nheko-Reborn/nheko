@@ -36,6 +36,7 @@ ApplicationWindow {
         Label {
             id: headerTitle
 
+            color: Nheko.colors.text
             Layout.alignment: Qt.AlignCenter
             text: qsTr("Read receipts")
             font.pointSize: fontMetrics.font.pointSize * 1.5
