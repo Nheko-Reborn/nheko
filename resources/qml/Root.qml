@@ -173,18 +173,6 @@ Page {
     }
 
     Connections {
-        function onOpenReadReceiptsDialog(rr) {
-            var dialog = readReceiptsDialog.createObject(timelineRoot, {
-                "readReceipts": rr,
-                "room": Rooms.currentRoom
-            });
-            dialog.show();
-        }
-
-        target: Rooms.currentRoom
-    }
-
-    Connections {
         function onNewInviteState() {
             if (CallManager.haveCallInvite && Settings.mobileMode) {
                 var dialog = mobileCallInviteDialog.createObject(msgView);

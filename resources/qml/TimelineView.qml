@@ -249,4 +249,16 @@ Item {
         roomid: room ? room.roomId : ""
     }
 
+    Connections {
+        function onOpenReadReceiptsDialog(rr) {
+            var dialog = readReceiptsDialog.createObject(timelineRoot, {
+                "readReceipts": rr,
+                "room": room
+            });
+            dialog.show();
+        }
+
+        target: room
+    }
+
 }
