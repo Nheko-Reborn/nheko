@@ -185,7 +185,7 @@ Page {
 
                     }
                     gesturePolicy: TapHandler.ReleaseWithinBounds
-                    acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | DeviceType.TouchPad
+                    acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
                 }
 
                 TapHandler {
@@ -201,7 +201,7 @@ Page {
                 HoverHandler {
                     id: hovered
 
-                    acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | DeviceType.TouchPad
+                    acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
                 }
 
             }
