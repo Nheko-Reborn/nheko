@@ -258,6 +258,13 @@ Item {
             dialog.show();
         }
 
+        function onShowRawMessageDialog(rawMessage) {
+            var dialog = rawMessageDialog.createObject(timelineRoot, {
+                "rawMessage": rawMessage
+            });
+            dialog.show();
+        }
+
         target: room
     }
 

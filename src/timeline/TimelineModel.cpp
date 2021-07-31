@@ -31,7 +31,6 @@
 #include "ReadReceiptsModel.h"
 #include "TimelineViewManager.h"
 #include "Utils.h"
-#include "dialogs/RawMessage.h"
 
 Q_DECLARE_METATYPE(QModelIndex)
 
@@ -1026,14 +1025,13 @@ TimelineModel::formatDateSeparator(QDate date) const
 }
 
 void
-TimelineModel::viewRawMessage(QString id) const
+TimelineModel::viewRawMessage(QString id)
 {
         auto e = events.get(id.toStdString(), "", false);
         if (!e)
                 return;
         std::string ev = mtx::accessors::serialize_event(*e).dump(4);
-        auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
-        Q_UNUSED(dialog);
+        emit showRawMessageDialog(QString::fromStdString(ev));
 }
 
 void
@@ -1047,15 +1045,14 @@ TimelineModel::forwardMessage(QString eventId, QString roomId)
 }
 
 void
-TimelineModel::viewDecryptedRawMessage(QString id) const
+TimelineModel::viewDecryptedRawMessage(QString id)
 {
         auto e = events.get(id.toStdString(), "");
         if (!e)
                 return;
 
         std::string ev = mtx::accessors::serialize_event(*e).dump(4);
-        auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
-        Q_UNUSED(dialog);
+        emit showRawMessageDialog(QString::fromStdString(ev));
 }
 
 void

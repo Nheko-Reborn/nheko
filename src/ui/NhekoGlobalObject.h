@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <QFontDatabase>
 #include <QObject>
 #include <QPalette>
 
@@ -38,6 +39,10 @@ public:
         int paddingLarge() const { return 20; }
         UserProfile *currentUser() const;
 
+        Q_INVOKABLE QFont monospaceFont() const
+        {
+                return QFontDatabase::systemFont(QFontDatabase::FixedFont);
+        }
         Q_INVOKABLE void openLink(QString link) const;
         Q_INVOKABLE void setStatusMessage(QString msg) const;
         Q_INVOKABLE void showUserSettingsPage() const;

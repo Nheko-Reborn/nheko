@@ -104,6 +104,14 @@ Page {
 
     }
 
+    Component {
+        id: rawMessageDialog
+
+        RawMessageDialog {
+        }
+
+    }
+
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
