@@ -689,6 +689,8 @@ private:
         lmdb::dbi outboundMegolmSessionDb_;
         lmdb::dbi megolmSessionDataDb_;
 
+        lmdb::dbi encryptedRooms_;
+
         QString localUserId_;
         QString cacheDirectory_;
 

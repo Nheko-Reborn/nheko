@@ -288,6 +288,9 @@ Cache::setup()
         outboundMegolmSessionDb_ = lmdb::dbi::open(txn, OUTBOUND_MEGOLM_SESSIONS_DB, MDB_CREATE);
         megolmSessionDataDb_     = lmdb::dbi::open(txn, MEGOLM_SESSIONS_DATA_DB, MDB_CREATE);
 
+        // What rooms are encrypted
+        encryptedRooms_ = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
+
         txn.commit();
 
         databaseReady_ = true;
@@ -298,8 +301,7 @@ Cache::setEncryptedRoom(lmdb::txn &txn, const std::string &room_id)
 {
         nhlog::db()->info("mark room {} as encrypted", room_id);
 
-        auto db = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
-        db.put(txn, room_id, "0");
+        encryptedRooms_.put(txn, room_id, "0");
 }
 
 bool
@@ -308,8 +310,7 @@ Cache::isRoomEncrypted(const std::string &room_id)
         std::string_view unused;
 
         auto txn = ro_txn(env_);
-        auto db  = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
-        auto res = db.get(txn, room_id, unused);
+        auto res = encryptedRooms_.get(txn, room_id, unused);
 
         return res;
 }
