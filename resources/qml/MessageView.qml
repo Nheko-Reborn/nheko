@@ -212,9 +212,9 @@ ScrollView {
 
             // force current read index to update
             onTriggered: {
-                if (chat.model) {
+                if (chat.model)
                     chat.model.setCurrentIndex(chat.model.currentIndex);
-                }
+
             }
             interval: 1000
         }
