@@ -25,6 +25,7 @@ ApplicationWindow {
     }
 
     ScrollView {
+        anchors.margins: Nheko.paddingMedium
         anchors.fill: parent
         palette: Nheko.colors
         padding: Nheko.paddingMedium
@@ -33,8 +34,12 @@ ApplicationWindow {
             id: rawMessageView
 
             font: Nheko.monospaceFont()
-            palette: Nheko.colors
+            color: Nheko.colors.text
             readOnly: true
+
+            background: Rectangle {
+                color: Nheko.colors.base
+            }
         }
 
     }
