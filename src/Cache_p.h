@@ -48,7 +48,8 @@ public:
         // user cache stores user keys
         std::optional<UserKeyCache> userKeys(const std::string &user_id);
         std::map<std::string, std::optional<UserKeyCache>> getMembersWithKeys(
-          const std::string &room_id);
+          const std::string &room_id,
+          bool verified_only);
         void updateUserKeys(const std::string &sync_token,
                             const mtx::responses::QueryKeys &keyQuery);
         void markUserKeysOutOfDate(lmdb::txn &txn,

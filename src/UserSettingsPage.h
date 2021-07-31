@@ -88,6 +88,8 @@ class UserSettings : public QObject
                      setScreenShareHideCursor NOTIFY screenShareHideCursorChanged)
         Q_PROPERTY(
           bool useStunServer READ useStunServer WRITE setUseStunServer NOTIFY useStunServerChanged)
+        Q_PROPERTY(bool onlyShareKeysWithVerifiedUsers READ onlyShareKeysWithVerifiedUsers WRITE
+                     setOnlyShareKeysWithVerifiedUsers NOTIFY onlyShareKeysWithVerifiedUsersChanged)
         Q_PROPERTY(bool shareKeysWithTrustedUsers READ shareKeysWithTrustedUsers WRITE
                      setShareKeysWithTrustedUsers NOTIFY shareKeysWithTrustedUsersChanged)
         Q_PROPERTY(QString profile READ profile WRITE setProfile NOTIFY profileChanged)
@@ -152,6 +154,7 @@ public:
         void setScreenShareRemoteVideo(bool state);
         void setScreenShareHideCursor(bool state);
         void setUseStunServer(bool state);
+        void setOnlyShareKeysWithVerifiedUsers(bool state);
         void setShareKeysWithTrustedUsers(bool state);
         void setProfile(QString profile);
         void setUserId(QString userId);
@@ -208,6 +211,7 @@ public:
         bool screenShareHideCursor() const { return screenShareHideCursor_; }
         bool useStunServer() const { return useStunServer_; }
         bool shareKeysWithTrustedUsers() const { return shareKeysWithTrustedUsers_; }
+        bool onlyShareKeysWithVerifiedUsers() const { return onlyShareKeysWithVerifiedUsers_; }
         QString profile() const { return profile_; }
         QString userId() const { return userId_; }
         QString accessToken() const { return accessToken_; }
@@ -252,6 +256,7 @@ signals:
         void screenShareRemoteVideoChanged(bool state);
         void screenShareHideCursorChanged(bool state);
         void useStunServerChanged(bool state);
+        void onlyShareKeysWithVerifiedUsersChanged(bool state);
         void shareKeysWithTrustedUsersChanged(bool state);
         void profileChanged(QString profile);
         void userIdChanged(QString userId);
@@ -284,6 +289,7 @@ private:
         bool privacyScreen_;
         int privacyScreenTimeout_;
         bool shareKeysWithTrustedUsers_;
+        bool onlyShareKeysWithVerifiedUsers_;
         bool mobileMode_;
         int timelineMaxWidth_;
         int roomListWidth_;
@@ -372,6 +378,7 @@ private:
         Toggle *privacyScreen_;
         QSpinBox *privacyScreenTimeout_;
         Toggle *shareKeysWithTrustedUsers_;
+        Toggle *onlyShareKeysWithVerifiedUsers_;
         Toggle *mobileMode_;
         QLabel *deviceFingerprintValue_;
         QLabel *deviceIdValue_;

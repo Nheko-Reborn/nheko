@@ -524,7 +524,8 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
 
         auto own_user_id = http::client()->user_id().to_string();
 
-        auto members = cache::client()->getMembersWithKeys(room_id);
+        auto members = cache::client()->getMembersWithKeys(
+          room_id, UserSettings::instance()->onlyShareKeysWithVerifiedUsers());
 
         std::map<std::string, std::vector<std::string>> sendSessionTo;
         mtx::crypto::OutboundGroupSessionPtr session = nullptr;
