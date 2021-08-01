@@ -236,9 +236,9 @@ public:
         Q_INVOKABLE QString formatGuestAccessEvent(QString id);
         Q_INVOKABLE QString formatPowerLevelEvent(QString id);
 
-        Q_INVOKABLE void viewRawMessage(QString id) const;
+        Q_INVOKABLE void viewRawMessage(QString id);
         Q_INVOKABLE void forwardMessage(QString eventId, QString roomId);
-        Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
+        Q_INVOKABLE void viewDecryptedRawMessage(QString id);
         Q_INVOKABLE void openUserProfile(QString userid);
         Q_INVOKABLE void editAction(QString id);
         Q_INVOKABLE void replyAction(QString id);
@@ -350,6 +350,7 @@ signals:
         void replyChanged(QString reply);
         void editChanged(QString reply);
         void openReadReceiptsDialog(ReadReceiptsProxy *rr);
+        void showRawMessageDialog(QString rawMessage);
         void paginationInProgressChanged(const bool);
         void newCallEvent(const mtx::events::collections::TimelineEvents &event);
         void scrollToIndex(int index);

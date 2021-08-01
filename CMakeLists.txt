@@ -496,7 +496,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/LeaveRoom.h
 	src/dialogs/Logout.h
 	src/dialogs/PreviewUploadOverlay.h
-	src/dialogs/RawMessage.h
 	src/dialogs/ReCaptcha.h
 
 	# Emoji
