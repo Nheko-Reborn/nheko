@@ -27,7 +27,7 @@ ApplicationWindow {
         spacing: Nheko.paddingMedium
         width: parent.width      
 
-        implicitHeight: roomTextInput.height
+        implicitHeight: roomSearch.height
 
         MatrixTextField {
             id: roomSearch
@@ -35,7 +35,7 @@ ApplicationWindow {
             Layout.fillWidth: true
 
             font.pixelSize: fontMetrics.font.pixelSize
-            padding: Nheko.paddingSmall
+            padding: Math.ceil(1.5 * Nheko.paddingSmall)
             color: Nheko.colors.text
             placeholderText: qsTr("Search for public rooms")
             onTextChanged: searchTimer.restart()
