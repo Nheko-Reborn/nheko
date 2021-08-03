@@ -62,7 +62,7 @@ ApplicationWindow {
             property color background: Nheko.colors.window
             property color importantText: Nheko.colors.text
             property color unimportantText: Nheko.colors.buttonText
-            property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.5)
+            property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 4)
 
             color: background
             
@@ -115,13 +115,14 @@ ApplicationWindow {
                         Layout.fillWidth: true
                         Layout.preferredWidth: parent.width
                         spacing: Nheko.paddingSmall
-                        Layout.alignment: Qt.AlignLeft
-                        Layout.preferredHeight: Math.max(roomTopic.height, roomCount.height, joinRoomButton.height)
+                        Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+			Layout.preferredHeight: Math.ceil(fontMetrics.lineSpacing * 4)
 
                         Label {
                             id: roomTopic
                             color: roomDirDelegate.unimportantText
                             font.weight: Font.Thin
+			    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             font.pixelSize: fontMetrics.font.pixelSize
                             elide: Text.ElideRight
                             maximumLineCount: 2
@@ -130,23 +131,37 @@ ApplicationWindow {
                             verticalAlignment: Text.AlignVCenter
                             wrapMode: Text.WordWrap
                         }
+			Item {
+			  id: numMembersRectangle
+			  Layout.fillWidth: false
+			  Layout.margins: Nheko.paddingSmall
+                          width: roomCount.width
 
                         Label {
                             id: roomCount
                             color: roomDirDelegate.unimportantText
+			    anchors.centerIn: parent
                             Layout.fillWidth: false
                             font.weight: Font.Thin
                             font.pixelSize: fontMetrics.font.pixelSize
                             text: model.numMembers.toString()
                         }
+			}
 
-                        Button {
-                            id: joinRoomButton
-                            Layout.fillWidth: false
-                            text: "Join"
-                            Layout.margins: Nheko.paddingSmall
-                            onClicked: roomDir.joinRoom(model.index)
-                        }
+			Item {
+				id: buttonRectangle
+				Layout.fillWidth: false
+				Layout.margins: Nheko.paddingSmall	
+                        	width: joinRoomButton.width
+				Button {
+                            		id: joinRoomButton
+			    		visible: roomDir.canJoinRoom(model.roomid)
+					anchors.centerIn: parent 
+                            		width: Math.ceil(0.1 * roomDirectoryWindow.width)
+					text: "Join"
+                            		onClicked: roomDir.joinRoom(model.index)
+                        	}		
+			}
                     }
                 }
             }
