@@ -56,6 +56,7 @@ public:
         }
         void fetchMore(const QModelIndex &) override;
 
+	Q_INVOKABLE bool canJoinRoom(const QByteArray &room);
         Q_INVOKABLE void joinRoom(const int &index = -1);
 
 signals:

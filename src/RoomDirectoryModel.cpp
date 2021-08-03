@@ -4,6 +4,7 @@
 
 #include "RoomDirectoryModel.h"
 #include "ChatPage.h"
+#include "Cache.h"
 
 #include <algorithm>
 
@@ -66,6 +67,16 @@ RoomDirectoryModel::setSearchTerm(const QString &f)
         nhlog::ui()->debug("Received user query: {}", userSearchString_);
 
         resetDisplayedData();
+}
+
+
+bool
+RoomDirectoryModel::canJoinRoom(const QByteArray &room)
+{
+	const auto &cache = cache::roomInfo();
+	const QString room_id (room);
+	const bool validRoom = !room_id.isNull() && !room_id.isEmpty();
+	return validRoom && !cache.contains(room_id);
 }
 
 std::vector<std::string>
