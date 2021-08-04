@@ -13,15 +13,14 @@ ApplicationWindow {
     property ReadReceiptsProxy readReceipts
     property Room room
 
-    x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
-    y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     height: 380
     width: 340
     minimumHeight: 380
     minimumWidth: headerTitle.width + 2 * Nheko.paddingMedium
     palette: Nheko.colors
     color: Nheko.colors.window
-    flags: Qt.Dialog
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    Component.onCompleted: Nheko.reparent(readReceiptsRoot)
 
     Shortcut {
         sequence: StandardKey.Cancel

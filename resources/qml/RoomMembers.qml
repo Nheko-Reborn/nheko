@@ -6,7 +6,7 @@ import "./ui"
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
-import QtQuick.Window 2.12
+import QtQuick.Window 2.13
 import im.nheko 1.0
 
 ApplicationWindow {
@@ -15,13 +15,13 @@ ApplicationWindow {
     property MemberList members
 
     title: qsTr("Members of %1").arg(members.roomName)
-    x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
-    y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     height: 650
     width: 420
     minimumHeight: 420
     palette: Nheko.colors
     color: Nheko.colors.window
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    Component.onCompleted: Nheko.reparent(roomMembersRoot)
 
     Shortcut {
         sequence: StandardKey.Cancel

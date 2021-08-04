@@ -10,7 +10,7 @@ import QtGraphicalEffects 1.0
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
-import QtQuick.Window 2.2
+import QtQuick.Window 2.13
 import im.nheko 1.0
 
 ScrollView {

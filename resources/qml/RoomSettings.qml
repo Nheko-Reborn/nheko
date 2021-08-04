@@ -7,7 +7,7 @@ import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
-import QtQuick.Window 2.3
+import QtQuick.Window 2.13
 import im.nheko 1.0
 
 ApplicationWindow {
@@ -15,14 +15,13 @@ ApplicationWindow {
 
     property var roomSettings
 
-    x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
-    y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     minimumWidth: 420
     minimumHeight: 650
     palette: Nheko.colors
     color: Nheko.colors.window
     modality: Qt.NonModal
-    flags: Qt.Dialog
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    Component.onCompleted: Nheko.reparent(roomSettingsDialog)
     title: qsTr("Room Settings")
 
     Shortcut {

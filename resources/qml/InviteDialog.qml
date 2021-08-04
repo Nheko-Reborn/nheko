@@ -30,12 +30,12 @@ ApplicationWindow {
     }
 
     title: qsTr("Invite users to %1").arg(plainRoomName)
-    x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
-    y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     height: 380
     width: 340
     palette: Nheko.colors
     color: Nheko.colors.window
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    Component.onCompleted: Nheko.reparent(inviteDialogRoot)
 
     Shortcut {
         sequence: "Ctrl+Enter"

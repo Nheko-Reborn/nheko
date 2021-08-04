@@ -11,13 +11,12 @@ ApplicationWindow {
 
     property alias rawMessage: rawMessageView.text
 
-    x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
-    y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     height: 420
     width: 420
     palette: Nheko.colors
     color: Nheko.colors.window
-    flags: Qt.Tool | Qt.WindowStaysOnTopHint
+    flags: Qt.Tool | Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint
+    Component.onCompleted: Nheko.reparent(rawMessageRoot)
 
     Shortcut {
         sequence: StandardKey.Cancel
@@ -40,6 +39,7 @@ ApplicationWindow {
             background: Rectangle {
                 color: Nheko.colors.base
             }
+
         }
 
     }
@@ -48,4 +48,5 @@ ApplicationWindow {
         standardButtons: DialogButtonBox.Ok
         onAccepted: rawMessageRoot.close()
     }
+
 }

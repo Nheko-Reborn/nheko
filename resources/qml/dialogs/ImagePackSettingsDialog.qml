@@ -20,14 +20,13 @@ ApplicationWindow {
     readonly property int stickerDimPad: 128 + Nheko.paddingSmall
 
     title: qsTr("Image pack settings")
-    x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
-    y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     height: 400
     width: 600
     palette: Nheko.colors
     color: Nheko.colors.base
     modality: Qt.NonModal
-    flags: Qt.Dialog
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    Component.onCompleted: Nheko.reparent(win)
 
     AdaptiveLayout {
         id: adaptiveView
@@ -202,6 +201,12 @@ ApplicationWindow {
                 color: Nheko.colors.window
 
                 ColumnLayout {
+                    //Button {
+                    //    Layout.alignment: Qt.AlignHCenter
+                    //    text: qsTr("Edit")
+                    //    enabled: currentPack.canEdit
+                    //}
+
                     id: packinfo
 
                     property string packName: currentPack ? currentPack.packname : ""
