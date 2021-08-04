@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "RoomDirectoryModel.h"
-#include "ChatPage.h"
 #include "Cache.h"
+#include "ChatPage.h"
 
 #include <algorithm>
 
@@ -69,14 +69,13 @@ RoomDirectoryModel::setSearchTerm(const QString &f)
         resetDisplayedData();
 }
 
-
 bool
 RoomDirectoryModel::canJoinRoom(const QByteArray &room)
 {
-	const auto &cache = cache::roomInfo();
-	const QString room_id (room);
-	const bool validRoom = !room_id.isNull() && !room_id.isEmpty();
-	return validRoom && !cache.contains(room_id);
+        const auto &cache = cache::roomInfo();
+        const QString room_id(room);
+        const bool validRoom = !room_id.isNull() && !room_id.isEmpty();
+        return validRoom && !cache.contains(room_id);
 }
 
 std::vector<std::string>
