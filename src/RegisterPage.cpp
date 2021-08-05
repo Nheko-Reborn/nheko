@@ -94,7 +94,7 @@ RegisterPage::RegisterPage(QWidget *parent)
 
         server_input_ = new TextField();
         server_input_->setLabel(tr("Homeserver"));
-        server_input_->setRegexp(QRegularExpression("[a-z0-9.-]+"));
+        server_input_->setRegexp(QRegularExpression(".+"));
         server_input_->setToolTip(
           tr("A server that allows registration. Since matrix is decentralized, you need to first "
              "find a server you can register on or host your own."));
