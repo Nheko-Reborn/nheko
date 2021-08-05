@@ -125,7 +125,7 @@ template<class T>
 bool
 containsStateUpdates(const T &e)
 {
-        return std::visit([](const auto &ev) { return Cache::isStateEvent(ev); }, e);
+        return std::visit([](const auto &ev) { return Cache::isStateEvent_<decltype(ev)>; }, e);
 }
 
 bool

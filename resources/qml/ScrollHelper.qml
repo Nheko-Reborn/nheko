@@ -30,6 +30,10 @@ MouseArea {
     property alias enabled: root.enabled
 
     function calculateNewPosition(flickableItem, wheel) {
+        // breaks ListView's with headers...
+        //if (typeof (flickableItem.headerItem) !== "undefined" && flickableItem.headerItem)
+        //    minYExtent += flickableItem.headerItem.height;
+
         //Nothing to scroll
         if (flickableItem.contentHeight < flickableItem.height)
             return flickableItem.contentY;
@@ -55,9 +59,6 @@ MouseArea {
 
         var minYExtent = flickableItem.originY + flickableItem.topMargin;
         var maxYExtent = (flickableItem.contentHeight + flickableItem.bottomMargin + flickableItem.originY) - flickableItem.height;
-        if (typeof (flickableItem.headerItem) !== "undefined" && flickableItem.headerItem)
-            minYExtent += flickableItem.headerItem.height;
-
         //Avoid overscrolling
         return Math.max(minYExtent, Math.min(maxYExtent, flickableItem.contentY - pixelDelta));
     }

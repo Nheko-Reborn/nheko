@@ -107,7 +107,13 @@ enum EventType
         KeyVerificationCancel,
         KeyVerificationKey,
         KeyVerificationDone,
-        KeyVerificationReady
+        KeyVerificationReady,
+        //! m.image_pack, currently im.ponies.room_emotes
+        ImagePackInRoom,
+        //! m.image_pack, currently im.ponies.user_emotes
+        ImagePackInAccountData,
+        //! m.image_pack.rooms, currently im.ponies.emote_rooms
+        ImagePackRooms,
 };
 Q_ENUM_NS(EventType)
 mtx::events::EventType fromRoomEventType(qml_mtx_events::EventType);

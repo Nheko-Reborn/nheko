@@ -20,13 +20,21 @@ ApplicationWindow {
     readonly property int stickerDimPad: 128 + Nheko.paddingSmall
 
     title: qsTr("Image pack settings")
-    height: 400
-    width: 600
+    height: 600
+    width: 800
     palette: Nheko.colors
     color: Nheko.colors.base
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint
     Component.onCompleted: Nheko.reparent(win)
+
+    Component {
+        id: packEditor
+
+        ImagePackEditorDialog {
+        }
+
+    }
 
     AdaptiveLayout {
         id: adaptiveView
@@ -54,7 +62,7 @@ ApplicationWindow {
                     enabled: !Settings.mobileMode
                 }
 
-                delegate: Rectangle {
+                delegate: AvatarListTile {
                     id: packItem
 
                     property color background: Nheko.colors.window
@@ -63,129 +71,22 @@ ApplicationWindow {
                     property color bubbleBackground: Nheko.colors.highlight
                     property color bubbleText: Nheko.colors.highlightedText
                     required property string displayName
-                    required property string avatarUrl
                     required property bool fromAccountData
                     required property bool fromCurrentRoom
-                    required property int index
 
-                    color: background
-                    height: avatarSize + 2 * Nheko.paddingMedium
-                    width: ListView.view.width
-                    state: "normal"
-                    states: [
-                        State {
-                            name: "highlight"
-                            when: hovered.hovered && !(index == currentPackIndex)
-
-                            PropertyChanges {
-                                target: packItem
-                                background: Nheko.colors.dark
-                                importantText: Nheko.colors.brightText
-                                unimportantText: Nheko.colors.brightText
-                                bubbleBackground: Nheko.colors.highlight
-                                bubbleText: Nheko.colors.highlightedText
-                            }
-
-                        },
-                        State {
-                            name: "selected"
-                            when: index == currentPackIndex
-
-                            PropertyChanges {
-                                target: packItem
-                                background: Nheko.colors.highlight
-                                importantText: Nheko.colors.highlightedText
-                                unimportantText: Nheko.colors.highlightedText
-                                bubbleBackground: Nheko.colors.highlightedText
-                                bubbleText: Nheko.colors.highlight
-                            }
-
-                        }
-                    ]
+                    title: displayName
+                    subtitle: {
+                        if (fromAccountData)
+                            return qsTr("Private pack");
+                        else if (fromCurrentRoom)
+                            return qsTr("Pack from this room");
+                        else
+                            return qsTr("Globally enabled pack");
+                    }
+                    selectedIndex: currentPackIndex
 
                     TapHandler {
-                        margin: -Nheko.paddingSmall
                         onSingleTapped: currentPackIndex = index
-                    }
-
-                    HoverHandler {
-                        id: hovered
-                    }
-
-                    RowLayout {
-                        spacing: Nheko.paddingMedium
-                        anchors.fill: parent
-                        anchors.margins: Nheko.paddingMedium
-
-                        Avatar {
-                            // In the future we could show an online indicator by setting the userid for the avatar
-                            //userid: Nheko.currentUser.userid
-
-                            id: avatar
-
-                            enabled: false
-                            Layout.alignment: Qt.AlignVCenter
-                            height: avatarSize
-                            width: avatarSize
-                            url: avatarUrl.replace("mxc://", "image://MxcImage/")
-                            displayName: packItem.displayName
-                        }
-
-                        ColumnLayout {
-                            id: textContent
-
-                            Layout.alignment: Qt.AlignLeft
-                            Layout.fillWidth: true
-                            Layout.minimumWidth: 100
-                            width: parent.width - avatar.width
-                            Layout.preferredWidth: parent.width - avatar.width
-                            spacing: Nheko.paddingSmall
-
-                            RowLayout {
-                                Layout.fillWidth: true
-                                spacing: 0
-
-                                ElidedLabel {
-                                    Layout.alignment: Qt.AlignBottom
-                                    color: packItem.importantText
-                                    elideWidth: textContent.width - Nheko.paddingMedium
-                                    fullText: displayName
-                                    textFormat: Text.PlainText
-                                }
-
-                                Item {
-                                    Layout.fillWidth: true
-                                }
-
-                            }
-
-                            RowLayout {
-                                Layout.fillWidth: true
-                                spacing: 0
-
-                                ElidedLabel {
-                                    color: packItem.unimportantText
-                                    font.pixelSize: fontMetrics.font.pixelSize * 0.9
-                                    elideWidth: textContent.width - Nheko.paddingSmall
-                                    fullText: {
-                                        if (fromAccountData)
-                                            return qsTr("Private pack");
-                                        else if (fromCurrentRoom)
-                                            return qsTr("Pack from this room");
-                                        else
-                                            return qsTr("Globally enabled pack");
-                                    }
-                                    textFormat: Text.PlainText
-                                }
-
-                                Item {
-                                    Layout.fillWidth: true
-                                }
-
-                            }
-
-                        }
-
                     }
 
                 }
@@ -201,15 +102,10 @@ ApplicationWindow {
                 color: Nheko.colors.window
 
                 ColumnLayout {
-                    //Button {
-                    //    Layout.alignment: Qt.AlignHCenter
-                    //    text: qsTr("Edit")
-                    //    enabled: currentPack.canEdit
-                    //}
-
                     id: packinfo
 
                     property string packName: currentPack ? currentPack.packname : ""
+                    property string attribution: currentPack ? currentPack.attribution : ""
                     property string avatarUrl: currentPack ? currentPack.avatarUrl : ""
 
                     anchors.fill: parent
@@ -227,8 +123,18 @@ ApplicationWindow {
 
                     MatrixText {
                         text: packinfo.packName
-                        font.pixelSize: 24
+                        font.pixelSize: Math.ceil(fontMetrics.pixelSize * 1.1)
+                        horizontalAlignment: TextEdit.AlignHCenter
                         Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredWidth: packinfoC.width - Nheko.paddingLarge * 2
+                    }
+
+                    MatrixText {
+                        text: packinfo.attribution
+                        wrapMode: TextEdit.Wrap
+                        horizontalAlignment: TextEdit.AlignHCenter
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredWidth: packinfoC.width - Nheko.paddingLarge * 2
                     }
 
                     GridLayout {
@@ -248,6 +154,18 @@ ApplicationWindow {
                             Layout.alignment: Qt.AlignRight
                         }
 
+                    }
+
+                    Button {
+                        Layout.alignment: Qt.AlignHCenter
+                        text: qsTr("Edit")
+                        enabled: currentPack.canEdit
+                        onClicked: {
+                            var dialog = packEditor.createObject(timelineRoot, {
+                                "imagePack": currentPack
+                            });
+                            dialog.show();
+                        }
                     }
 
                     GridView {
@@ -272,7 +190,7 @@ ApplicationWindow {
                             width: stickerDim
                             height: stickerDim
                             hoverEnabled: true
-                            ToolTip.text: ":" + model.shortcode + ": - " + model.body
+                            ToolTip.text: ":" + model.shortCode + ": - " + model.body
                             ToolTip.visible: hovered
 
                             contentItem: Image {

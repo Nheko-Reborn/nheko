@@ -1,0 +1,283 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+import ".."
+import "../components"
+import QtQuick 2.12
+import QtQuick.Controls 2.12
+import QtQuick.Layouts 1.12
+import im.nheko 1.0
+
+ApplicationWindow {
+    //Component.onCompleted: Nheko.reparent(win)
+
+    id: win
+
+    property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.3)
+    property SingleImagePackModel imagePack
+    property int currentImageIndex: -1
+    readonly property int stickerDim: 128
+    readonly property int stickerDimPad: 128 + Nheko.paddingSmall
+
+    title: qsTr("Editing image pack")
+    height: 600
+    width: 600
+    palette: Nheko.colors
+    color: Nheko.colors.base
+    modality: Qt.WindowModal
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+
+    AdaptiveLayout {
+        id: adaptiveView
+
+        anchors.fill: parent
+        singlePageMode: false
+        pageIndex: 0
+
+        AdaptiveLayoutElement {
+            id: packlistC
+
+            visible: Settings.groupView
+            minimumWidth: 200
+            collapsedWidth: 200
+            preferredWidth: 300
+            maximumWidth: 300
+            clip: true
+
+            ListView {
+                //required property bool isEmote
+                //required property bool isSticker
+
+                model: imagePack
+
+                ScrollHelper {
+                    flickable: parent
+                    anchors.fill: parent
+                    enabled: !Settings.mobileMode
+                }
+
+                header: AvatarListTile {
+                    title: imagePack.packname
+                    avatarUrl: imagePack.avatarUrl
+                    subtitle: imagePack.statekey
+                    index: -1
+                    selectedIndex: currentImageIndex
+
+                    TapHandler {
+                        onSingleTapped: currentImageIndex = -1
+                    }
+
+                    Rectangle {
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        height: parent.height - Nheko.paddingSmall * 2
+                        width: 3
+                        color: Nheko.colors.highlight
+                    }
+
+                }
+
+                delegate: AvatarListTile {
+                    id: packItem
+
+                    property color background: Nheko.colors.window
+                    property color importantText: Nheko.colors.text
+                    property color unimportantText: Nheko.colors.buttonText
+                    property color bubbleBackground: Nheko.colors.highlight
+                    property color bubbleText: Nheko.colors.highlightedText
+                    required property string shortCode
+                    required property string url
+                    required property string body
+
+                    title: shortCode
+                    subtitle: body
+                    avatarUrl: url
+                    selectedIndex: currentImageIndex
+                    crop: false
+
+                    TapHandler {
+                        onSingleTapped: currentImageIndex = index
+                    }
+
+                }
+
+            }
+
+        }
+
+        AdaptiveLayoutElement {
+            id: packinfoC
+
+            Rectangle {
+                color: Nheko.colors.window
+
+                GridLayout {
+                    anchors.fill: parent
+                    anchors.margins: Nheko.paddingMedium
+                    visible: currentImageIndex == -1
+                    enabled: visible
+                    columns: 2
+                    rowSpacing: Nheko.paddingLarge
+
+                    Avatar {
+                        Layout.columnSpan: 2
+                        url: imagePack.avatarUrl.replace("mxc://", "image://MxcImage/")
+                        displayName: imagePack.packname
+                        height: 130
+                        width: 130
+                        crop: false
+                        Layout.alignment: Qt.AlignHCenter
+                    }
+
+                    MatrixText {
+                        visible: imagePack.roomid
+                        text: qsTr("State key")
+                    }
+
+                    MatrixTextField {
+                        visible: imagePack.roomid
+                        Layout.fillWidth: true
+                        text: imagePack.statekey
+                        onTextEdited: imagePack.statekey = text
+                    }
+
+                    MatrixText {
+                        text: qsTr("Packname")
+                    }
+
+                    MatrixTextField {
+                        Layout.fillWidth: true
+                        text: imagePack.packname
+                        onTextEdited: imagePack.packname = text
+                    }
+
+                    MatrixText {
+                        text: qsTr("Attrbution")
+                    }
+
+                    MatrixTextField {
+                        Layout.fillWidth: true
+                        text: imagePack.attribution
+                        onTextEdited: imagePack.attribution = text
+                    }
+
+                    MatrixText {
+                        text: qsTr("Use as Emoji")
+                    }
+
+                    ToggleButton {
+                        checked: imagePack.isEmotePack
+                        onToggled: imagePack.isEmotePack = checked
+                        Layout.alignment: Qt.AlignRight
+                    }
+
+                    MatrixText {
+                        text: qsTr("Use as Sticker")
+                    }
+
+                    ToggleButton {
+                        checked: imagePack.isStickerPack
+                        onToggled: imagePack.isStickerPack = checked
+                        Layout.alignment: Qt.AlignRight
+                    }
+
+                    Item {
+                        Layout.columnSpan: 2
+                        Layout.fillHeight: true
+                    }
+
+                }
+
+                GridLayout {
+                    anchors.fill: parent
+                    anchors.margins: Nheko.paddingMedium
+                    visible: currentImageIndex >= 0
+                    enabled: visible
+                    columns: 2
+                    rowSpacing: Nheko.paddingLarge
+
+                    Avatar {
+                        Layout.columnSpan: 2
+                        url: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.Url).replace("mxc://", "image://MxcImage/")
+                        displayName: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.ShortCode)
+                        height: 130
+                        width: 130
+                        crop: false
+                        Layout.alignment: Qt.AlignHCenter
+                    }
+
+                    MatrixText {
+                        text: qsTr("Shortcode")
+                    }
+
+                    MatrixTextField {
+                        Layout.fillWidth: true
+                        text: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.ShortCode)
+                        onTextEdited: imagePack.setData(imagePack.index(currentImageIndex, 0), text, SingleImagePackModel.ShortCode)
+                    }
+
+                    MatrixText {
+                        text: qsTr("Body")
+                    }
+
+                    MatrixTextField {
+                        Layout.fillWidth: true
+                        text: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.Body)
+                        onTextEdited: imagePack.setData(imagePack.index(currentImageIndex, 0), text, SingleImagePackModel.Body)
+                    }
+
+                    MatrixText {
+                        text: qsTr("Use as Emoji")
+                    }
+
+                    ToggleButton {
+                        checked: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.IsEmote)
+                        onToggled: imagePack.setData(imagePack.index(currentImageIndex, 0), text, SingleImagePackModel.IsEmote)
+                        Layout.alignment: Qt.AlignRight
+                    }
+
+                    MatrixText {
+                        text: qsTr("Use as Sticker")
+                    }
+
+                    ToggleButton {
+                        checked: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.IsSticker)
+                        onToggled: imagePack.setData(imagePack.index(currentImageIndex, 0), text, SingleImagePackModel.IsSticker)
+                        Layout.alignment: Qt.AlignRight
+                    }
+
+                    Item {
+                        Layout.columnSpan: 2
+                        Layout.fillHeight: true
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    footer: DialogButtonBox {
+        id: buttons
+
+        Button {
+            text: qsTr("Cancel")
+            DialogButtonBox.buttonRole: DialogButtonBox.DestructiveRole
+            onClicked: win.close()
+        }
+
+        Button {
+            text: qsTr("Save")
+            DialogButtonBox.buttonRole: DialogButtonBox.ApplyRole
+            onClicked: {
+                imagePack.save();
+                win.close();
+            }
+        }
+
+    }
+
+}

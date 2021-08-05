@@ -15,14 +15,18 @@ class SingleImagePackModel : public QAbstractListModel
         Q_OBJECT
 
         Q_PROPERTY(QString roomid READ roomid CONSTANT)
-        Q_PROPERTY(QString statekey READ statekey CONSTANT)
-        Q_PROPERTY(QString attribution READ statekey CONSTANT)
-        Q_PROPERTY(QString packname READ packname CONSTANT)
-        Q_PROPERTY(QString avatarUrl READ avatarUrl CONSTANT)
-        Q_PROPERTY(bool isStickerPack READ isStickerPack CONSTANT)
-        Q_PROPERTY(bool isEmotePack READ isEmotePack CONSTANT)
+        Q_PROPERTY(QString statekey READ statekey WRITE setStatekey NOTIFY statekeyChanged)
+        Q_PROPERTY(
+          QString attribution READ attribution WRITE setAttribution NOTIFY attributionChanged)
+        Q_PROPERTY(QString packname READ packname WRITE setPackname NOTIFY packnameChanged)
+        Q_PROPERTY(QString avatarUrl READ avatarUrl WRITE setAvatarUrl NOTIFY avatarUrlChanged)
+        Q_PROPERTY(
+          bool isStickerPack READ isStickerPack WRITE setIsStickerPack NOTIFY isStickerPackChanged)
+        Q_PROPERTY(bool isEmotePack READ isEmotePack WRITE setIsEmotePack NOTIFY isEmotePackChanged)
         Q_PROPERTY(bool isGloballyEnabled READ isGloballyEnabled WRITE setGloballyEnabled NOTIFY
                      globallyEnabledChanged)
+        Q_PROPERTY(bool canEdit READ canEdit CONSTANT)
+
 public:
         enum Roles
         {
@@ -32,11 +36,15 @@ public:
                 IsEmote,
                 IsSticker,
         };
+        Q_ENUM(Roles);
 
         SingleImagePackModel(ImagePackInfo pack_, QObject *parent = nullptr);
         QHash<int, QByteArray> roleNames() const override;
         int rowCount(const QModelIndex &parent = QModelIndex()) const override;
         QVariant data(const QModelIndex &index, int role) const override;
+        bool setData(const QModelIndex &index,
+                     const QVariant &value,
+                     int role = Qt::EditRole) override;
 
         QString roomid() const { return QString::fromStdString(roomid_); }
         QString statekey() const { return QString::fromStdString(statekey_); }
@@ -47,14 +55,30 @@ public:
         bool isEmotePack() const { return pack.pack->is_emoji(); }
 
         bool isGloballyEnabled() const;
+        bool canEdit() const;
         void setGloballyEnabled(bool enabled);
+
+        void setPackname(QString val);
+        void setAttribution(QString val);
+        void setAvatarUrl(QString val);
+        void setStatekey(QString val);
+        void setIsStickerPack(bool val);
+        void setIsEmotePack(bool val);
+
+        Q_INVOKABLE void save();
 
 signals:
         void globallyEnabledChanged();
+        void statekeyChanged();
+        void attributionChanged();
+        void packnameChanged();
+        void avatarUrlChanged();
+        void isEmotePackChanged();
+        void isStickerPackChanged();
 
 private:
         std::string roomid_;
-        std::string statekey_;
+        std::string statekey_, old_statekey_;
 
         mtx::events::msc2545::ImagePack pack;
         std::vector<std::string> shortcodes;

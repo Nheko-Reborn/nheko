@@ -308,6 +308,15 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
         case qml_mtx_events::KeyVerificationDone:
         case qml_mtx_events::KeyVerificationReady:
                 return mtx::events::EventType::RoomMessage;
+                //! m.image_pack, currently im.ponies.room_emotes
+        case qml_mtx_events::ImagePackInRoom:
+                return mtx::events::EventType::ImagePackRooms;
+        //! m.image_pack, currently im.ponies.user_emotes
+        case qml_mtx_events::ImagePackInAccountData:
+                return mtx::events::EventType::ImagePackInAccountData;
+        //! m.image_pack.rooms, currently im.ponies.emote_rooms
+        case qml_mtx_events::ImagePackRooms:
+                return mtx::events::EventType::ImagePackRooms;
         default:
                 return mtx::events::EventType::Unsupported;
         };

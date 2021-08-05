@@ -154,7 +154,7 @@ ApplicationWindow {
 
         GridLayout {
             columns: 2
-            rowSpacing: 10
+            rowSpacing: Nheko.paddingLarge
 
             MatrixText {
                 text: qsTr("SETTINGS")
@@ -180,7 +180,7 @@ ApplicationWindow {
             }
 
             MatrixText {
-                text: "Room access"
+                text: qsTr("Room access")
                 Layout.fillWidth: true
             }
 
