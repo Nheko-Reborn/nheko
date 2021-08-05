@@ -49,7 +49,6 @@ private slots:
         void onBackButtonClicked();
         void onRegisterButtonClicked();
 
-private:
         // function for showing different errors
         void showError(const QString &msg);
         void showError(QLabel *label, const QString &msg);
@@ -66,8 +65,8 @@ private:
         void doUIA(const mtx::user_interactive::Unauthorized &unauthorized);
         void doRegistrationWithAuth(const mtx::user_interactive::Auth &auth);
         mtx::http::Callback<mtx::responses::Register> registrationCb();
-        void completeUiaStage(const mtx::user_interactive::Unauthorized &unauthorized);
 
+private:
         QVBoxLayout *top_layout_;
 
         QHBoxLayout *back_layout_;
