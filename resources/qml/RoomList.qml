@@ -439,6 +439,7 @@ Page {
                     url: (userInfoGrid.profile ? userInfoGrid.profile.avatarUrl : "").replace("mxc://", "image://MxcImage/")
                     displayName: userInfoGrid.profile ? userInfoGrid.profile.displayName : ""
                     userid: userInfoGrid.profile ? userInfoGrid.profile.userid : ""
+                    enabled: false
                 }
 
                 ColumnLayout {
