@@ -23,6 +23,9 @@ MouseArea {
     // console.warn("Delta: ", wheel.pixelDelta.y);
     // console.warn("Old position: ", flickable.contentY);
     // console.warn("New position: ", newPos);
+    // breaks ListView's with headers...
+    //if (typeof (flickableItem.headerItem) !== "undefined" && flickableItem.headerItem)
+    //    minYExtent += flickableItem.headerItem.height;
 
     id: root
 
@@ -55,9 +58,6 @@ MouseArea {
 
         var minYExtent = flickableItem.originY + flickableItem.topMargin;
         var maxYExtent = (flickableItem.contentHeight + flickableItem.bottomMargin + flickableItem.originY) - flickableItem.height;
-        if (typeof (flickableItem.headerItem) !== "undefined" && flickableItem.headerItem)
-            minYExtent += flickableItem.headerItem.height;
-
         //Avoid overscrolling
         return Math.max(minYExtent, Math.min(maxYExtent, flickableItem.contentY - pixelDelta));
     }

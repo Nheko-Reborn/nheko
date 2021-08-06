@@ -19,9 +19,10 @@ class MxcImageResponse
   , public QRunnable
 {
 public:
-        MxcImageResponse(const QString &id, const QSize &requestedSize)
+        MxcImageResponse(const QString &id, bool crop, const QSize &requestedSize)
           : m_id(id)
           , m_requestedSize(requestedSize)
+          , m_crop(crop)
         {
                 setAutoDelete(false);
         }
@@ -37,6 +38,7 @@ public:
         QString m_id, m_error;
         QSize m_requestedSize;
         QImage m_image;
+        bool m_crop;
 };
 
 class MxcImageProvider
@@ -51,7 +53,8 @@ public slots:
         static void addEncryptionInfo(mtx::crypto::EncryptedFile info);
         static void download(const QString &id,
                              const QSize &requestedSize,
-                             std::function<void(QString, QSize, QImage, QString)> then);
+                             std::function<void(QString, QSize, QImage, QString)> then,
+                             bool crop = true);
 
 private:
         QThreadPool pool;

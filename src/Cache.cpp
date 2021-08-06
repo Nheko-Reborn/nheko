@@ -125,7 +125,7 @@ template<class T>
 bool
 containsStateUpdates(const T &e)
 {
-        return std::visit([](const auto &ev) { return Cache::isStateEvent(ev); }, e);
+        return std::visit([](const auto &ev) { return Cache::isStateEvent_<decltype(ev)>; }, e);
 }
 
 bool
@@ -3401,7 +3401,7 @@ Cache::getImagePacks(const std::string &room_id, std::optional<bool> stickers)
                         info.pack.pack   = pack.pack;
 
                         for (const auto &img : pack.images) {
-                                if (img.second.overrides_usage() &&
+                                if (stickers.has_value() && img.second.overrides_usage() &&
                                     (stickers ? !img.second.is_sticker() : !img.second.is_emoji()))
                                         continue;
 
