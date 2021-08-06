@@ -58,8 +58,8 @@ build-macos:
     - pip3 install dmgbuild
     - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
   script:
-    - export PATH=/usr/local/opt/qt/bin/:${PATH}
-    - export CMAKE_PREFIX_PATH=/usr/local/opt/qt5
+    - export PATH=/usr/local/opt/qt@5/bin/:${PATH}
+    - export CMAKE_PREFIX_PATH=/usr/local/opt/qt@5
     - cmake -GNinja -H. -Bbuild
         -DCMAKE_BUILD_TYPE=RelWithDebInfo
         -DCMAKE_INSTALL_PREFIX=.deps/usr
