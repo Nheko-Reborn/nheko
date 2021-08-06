@@ -8,7 +8,6 @@ rename-desktop-file: nheko.desktop
 rename-appdata-file: nheko.appdata.xml
 finish-args:
   - --device=dri
-  - --device=shm
   # needed for webcams, see #517
   - --device=all
   - --share=ipc
