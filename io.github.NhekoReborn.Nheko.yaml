@@ -8,6 +8,7 @@ rename-desktop-file: nheko.desktop
 rename-appdata-file: nheko.appdata.xml
 finish-args:
   - --device=dri
+  - --device=shm
   # needed for webcams, see #517
   - --device=all
   - --share=ipc
@@ -19,6 +20,8 @@ finish-args:
   - --talk-name=org.freedesktop.secrets
   - --talk-name=org.freedesktop.StatusNotifierItem
   - --talk-name=org.kde.*
+  # needed for SingleApplication to work
+  - --allow=per-app-dev-shm
 cleanup:
   - /include
   - /bin/mdb*
