@@ -4,13 +4,18 @@
 
 #include "SingleImagePackModel.h"
 
+#include <QFile>
+#include <QMimeDatabase>
+
 #include "Cache_p.h"
 #include "ChatPage.h"
+#include "Logging.h"
 #include "MatrixClient.h"
+#include "Utils.h"
 #include "timeline/Permissions.h"
 #include "timeline/TimelineModel.h"
 
-#include "Logging.h"
+Q_DECLARE_METATYPE(mtx::common::ImageInfo);
 
 SingleImagePackModel::SingleImagePackModel(ImagePackInfo pack_, QObject *parent)
   : QAbstractListModel(parent)
@@ -19,11 +24,15 @@ SingleImagePackModel::SingleImagePackModel(ImagePackInfo pack_, QObject *parent)
   , old_statekey_(statekey_)
   , pack(std::move(pack_.pack))
 {
+        [[maybe_unused]] static auto imageInfoType = qRegisterMetaType<mtx::common::ImageInfo>();
+
         if (!pack.pack)
                 pack.pack = mtx::events::msc2545::ImagePack::PackDescription{};
 
         for (const auto &e : pack.images)
                 shortcodes.push_back(e.first);
+
+        connect(this, &SingleImagePackModel::addImage, this, &SingleImagePackModel::addImageCb);
 }
 
 int
@@ -278,4 +287,62 @@ SingleImagePackModel::save()
                                       .arg(QString::fromStdString(e->matrix_error.error)));
                   });
         }
+}
+
+void
+SingleImagePackModel::addStickers(QList<QUrl> files)
+{
+        for (const auto &f : files) {
+                auto file = QFile(f.toLocalFile());
+                if (!file.open(QFile::ReadOnly)) {
+                        ChatPage::instance()->showNotification(
+                          tr("Failed to open image: {}").arg(f.toLocalFile()));
+                        return;
+                }
+
+                auto bytes = file.readAll();
+                auto img   = utils::readImage(bytes);
+
+                mtx::common::ImageInfo info{};
+
+                auto sz = img.size() / 2;
+                if (sz.width() > 512 || sz.height() > 512) {
+                        sz.scale(512, 512, Qt::AspectRatioMode::KeepAspectRatio);
+                }
+
+                info.h    = sz.height();
+                info.w    = sz.width();
+                info.size = bytes.size();
+
+                auto filename = f.fileName().toStdString();
+                http::client()->upload(
+                  bytes.toStdString(),
+                  QMimeDatabase().mimeTypeForFile(f.toLocalFile()).name().toStdString(),
+                  filename,
+                  [this, filename, info](const mtx::responses::ContentURI &uri,
+                                         mtx::http::RequestErr e) {
+                          if (e) {
+                                  ChatPage::instance()->showNotification(
+                                    tr("Failed to upload image: {}")
+                                      .arg(QString::fromStdString(e->matrix_error.error)));
+                                  return;
+                          }
+
+                          emit addImage(uri.content_uri, filename, info);
+                  });
+        }
+}
+void
+SingleImagePackModel::addImageCb(std::string uri, std::string filename, mtx::common::ImageInfo info)
+{
+        mtx::events::msc2545::PackImage img{};
+        img.url  = uri;
+        img.info = info;
+        beginInsertRows(
+          QModelIndex(), static_cast<int>(shortcodes.size()), static_cast<int>(shortcodes.size()));
+
+        pack.images[filename] = img;
+        shortcodes.push_back(filename);
+
+        endInsertRows();
 }

@@ -23,6 +23,9 @@ MouseArea {
     // console.warn("Delta: ", wheel.pixelDelta.y);
     // console.warn("Old position: ", flickable.contentY);
     // console.warn("New position: ", newPos);
+    // breaks ListView's with headers...
+    //if (typeof (flickableItem.headerItem) !== "undefined" && flickableItem.headerItem)
+    //    minYExtent += flickableItem.headerItem.height;
 
     id: root
 
@@ -30,10 +33,6 @@ MouseArea {
     property alias enabled: root.enabled
 
     function calculateNewPosition(flickableItem, wheel) {
-        // breaks ListView's with headers...
-        //if (typeof (flickableItem.headerItem) !== "undefined" && flickableItem.headerItem)
-        //    minYExtent += flickableItem.headerItem.height;
-
         //Nothing to scroll
         if (flickableItem.contentHeight < flickableItem.height)
             return flickableItem.contentY;

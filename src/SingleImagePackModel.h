@@ -5,6 +5,8 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QList>
+#include <QUrl>
 
 #include <mtx/events/mscs/image_packs.hpp>
 
@@ -66,6 +68,7 @@ public:
         void setIsEmotePack(bool val);
 
         Q_INVOKABLE void save();
+        Q_INVOKABLE void addStickers(QList<QUrl> files);
 
 signals:
         void globallyEnabledChanged();
@@ -75,6 +78,11 @@ signals:
         void avatarUrlChanged();
         void isEmotePackChanged();
         void isStickerPackChanged();
+
+        void addImage(std::string uri, std::string filename, mtx::common::ImageInfo info);
+
+private slots:
+        void addImageCb(std::string uri, std::string filename, mtx::common::ImageInfo info);
 
 private:
         std::string roomid_;

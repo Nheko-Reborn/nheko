@@ -4,6 +4,7 @@
 
 import ".."
 import "../components"
+import Qt.labs.platform 1.1
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
@@ -74,6 +75,23 @@ ApplicationWindow {
                         height: parent.height - Nheko.paddingSmall * 2
                         width: 3
                         color: Nheko.colors.highlight
+                    }
+
+                }
+
+                footer: Button {
+                    palette: Nheko.colors
+                    onClicked: addFilesDialog.open()
+                    width: ListView.view.width
+                    text: qsTr("Add images")
+
+                    FileDialog {
+                        id: addFilesDialog
+
+                        folder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
+                        fileMode: FileDialog.OpenFiles
+                        nameFilters: [qsTr("Stickers (*.png *.webp)")]
+                        onAccepted: imagePack.addStickers(files)
                     }
 
                 }
