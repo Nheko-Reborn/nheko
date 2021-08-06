@@ -62,6 +62,34 @@ ApplicationWindow {
                     enabled: !Settings.mobileMode
                 }
 
+                footer: ColumnLayout {
+                    Button {
+                        palette: Nheko.colors
+                        onClicked: {
+                            var dialog = packEditor.createObject(timelineRoot, {
+                                "imagePack": packlist.newPack(false)
+                            });
+                            dialog.show();
+                        }
+                        width: packlist.width
+                        visible: !packlist.containsAccountPack
+                        text: qsTr("Create account pack")
+                    }
+
+                    Button {
+                        palette: Nheko.colors
+                        onClicked: {
+                            var dialog = packEditor.createObject(timelineRoot, {
+                                "imagePack": packlist.newPack(true)
+                            });
+                            dialog.show();
+                        }
+                        width: packlist.width
+                        text: qsTr("New room pack")
+                    }
+
+                }
+
                 delegate: AvatarListTile {
                     id: packItem
 

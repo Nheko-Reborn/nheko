@@ -15,7 +15,7 @@
 #include "timeline/Permissions.h"
 #include "timeline/TimelineModel.h"
 
-Q_DECLARE_METATYPE(mtx::common::ImageInfo);
+Q_DECLARE_METATYPE(mtx::common::ImageInfo)
 
 SingleImagePackModel::SingleImagePackModel(ImagePackInfo pack_, QObject *parent)
   : QAbstractListModel(parent)
@@ -285,6 +285,8 @@ SingleImagePackModel::save()
                                   ChatPage::instance()->showNotification(
                                     tr("Failed to update image pack: {}")
                                       .arg(QString::fromStdString(e->matrix_error.error)));
+
+                          nhlog::net()->info("Uploaded image pack: {}", statekey_);
                   });
         }
 }
