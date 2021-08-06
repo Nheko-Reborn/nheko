@@ -255,7 +255,7 @@ void
 SingleImagePackModel::save()
 {
         if (roomid_.empty()) {
-                http::client()->put_account_data(pack, [this](mtx::http::RequestErr e) {
+                http::client()->put_account_data(pack, [](mtx::http::RequestErr e) {
                         if (e)
                                 ChatPage::instance()->showNotification(
                                   tr("Failed to update image pack: {}")
@@ -268,7 +268,7 @@ SingleImagePackModel::save()
                           to_string(mtx::events::EventType::ImagePackInRoom),
                           old_statekey_,
                           nlohmann::json::object(),
-                          [this](const mtx::responses::EventId &, mtx::http::RequestErr e) {
+                          [](const mtx::responses::EventId &, mtx::http::RequestErr e) {
                                   if (e)
                                           ChatPage::instance()->showNotification(
                                             tr("Failed to delete old image pack: {}")
