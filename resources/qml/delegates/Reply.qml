@@ -30,6 +30,7 @@ Item {
     property string roomTopic
     property string roomName
     property string callType
+    property int encryptionError
     property int relatedEventCacheBuster
 
     width: parent.width
@@ -97,6 +98,7 @@ Item {
             roomName: r.roomName
             callType: r.callType
             relatedEventCacheBuster: r.relatedEventCacheBuster
+            encryptionError: r.encryptionError
             enabled: false
             width: parent.width
             isReply: true

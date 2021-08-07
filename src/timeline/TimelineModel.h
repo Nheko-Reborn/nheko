@@ -212,6 +212,7 @@ public:
                 IsEditable,
                 IsEncrypted,
                 Trustlevel,
+                EncryptionError,
                 ReplyTo,
                 Reactions,
                 RoomId,
@@ -263,6 +264,8 @@ public:
                 beginResetModel();
                 endResetModel();
         }
+
+        Q_INVOKABLE void requestKeyForEvent(QString id);
 
         std::vector<::Reaction> reactions(const std::string &event_id)
         {

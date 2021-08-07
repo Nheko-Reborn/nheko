@@ -20,8 +20,7 @@
 
 Q_DECLARE_METATYPE(Reaction)
 
-QCache<EventStore::IdIndex, mtx::events::collections::TimelineEvents> EventStore::decryptedEvents_{
-  1000};
+QCache<EventStore::IdIndex, olm::DecryptionResult> EventStore::decryptedEvents_{1000};
 QCache<EventStore::IdIndex, mtx::events::collections::TimelineEvents> EventStore::events_by_id_{
   1000};
 QCache<EventStore::Index, mtx::events::collections::TimelineEvents> EventStore::events_{1000};
@@ -144,12 +143,16 @@ EventStore::EventStore(std::string room_id, QObject *)
                                                             mtx::events::msg::Encrypted>) {
                                                     auto event =
                                                       decryptEvent({room_id_, e.event_id}, e);
-                                                    if (auto dec =
-                                                          std::get_if<mtx::events::RoomEvent<
-                                                            mtx::events::msg::
-                                                              KeyVerificationRequest>>(event)) {
-                                                            emit updateFlowEventId(
-                                                              event_id.event_id.to_string());
+                                                    if (event->event) {
+                                                            if (auto dec = std::get_if<
+                                                                  mtx::events::RoomEvent<
+                                                                    mtx::events::msg::
+                                                                      KeyVerificationRequest>>(
+                                                                  &event->event.value())) {
+                                                                    emit updateFlowEventId(
+                                                                      event_id.event_id
+                                                                        .to_string());
+                                                            }
                                                     }
                                             }
                                     });
@@ -393,12 +396,12 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                 if (auto encrypted =
                       std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
                         &event)) {
-                        mtx::events::collections::TimelineEvents *d_event =
-                          decryptEvent({room_id_, encrypted->event_id}, *encrypted);
-                        if (std::visit(
+                        auto d_event = decryptEvent({room_id_, encrypted->event_id}, *encrypted);
+                        if (d_event->event &&
+                            std::visit(
                               [](auto e) { return (e.sender != utils::localUser().toStdString()); },
-                              *d_event)) {
-                                handle_room_verification(*d_event);
+                              *d_event->event)) {
+                                handle_room_verification(*d_event->event);
                         }
                 }
         }
@@ -599,11 +602,15 @@ EventStore::get(int idx, bool decrypt)
                 events_.insert(index, event_ptr);
         }
 
-        if (decrypt)
+        if (decrypt) {
                 if (auto encrypted =
                       std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
-                        event_ptr))
-                        return decryptEvent({room_id_, encrypted->event_id}, *encrypted);
+                        event_ptr)) {
+                        auto decrypted = decryptEvent({room_id_, encrypted->event_id}, *encrypted);
+                        if (decrypted->event)
+                                return &*decrypted->event;
+                }
+        }
 
         return event_ptr;
 }
@@ -629,7 +636,7 @@ EventStore::indexToId(int idx) const
         return cache::client()->getTimelineEventId(room_id_, toInternalIdx(idx));
 }
 
-mtx::events::collections::TimelineEvents *
+olm::DecryptionResult *
 EventStore::decryptEvent(const IdIndex &idx,
                          const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e)
 {
@@ -641,57 +648,24 @@ EventStore::decryptEvent(const IdIndex &idx,
         index.session_id = e.content.session_id;
         index.sender_key = e.content.sender_key;
 
-        auto asCacheEntry = [&idx](mtx::events::collections::TimelineEvents &&event) {
-                auto event_ptr = new mtx::events::collections::TimelineEvents(std::move(event));
+        auto asCacheEntry = [&idx](olm::DecryptionResult &&event) {
+                auto event_ptr = new olm::DecryptionResult(std::move(event));
                 decryptedEvents_.insert(idx, event_ptr);
                 return event_ptr;
         };
 
         auto decryptionResult = olm::decryptEvent(index, e);
 
-        mtx::events::RoomEvent<mtx::events::msg::Notice> dummy;
-        dummy.origin_server_ts = e.origin_server_ts;
-        dummy.event_id         = e.event_id;
-        dummy.sender           = e.sender;
-
         if (decryptionResult.error) {
-                switch (*decryptionResult.error) {
+                switch (decryptionResult.error) {
                 case olm::DecryptionErrorCode::MissingSession:
                 case olm::DecryptionErrorCode::MissingSessionIndex: {
-                        if (decryptionResult.error == olm::DecryptionErrorCode::MissingSession)
-                                dummy.content.body =
-                                  tr("-- Encrypted Event (No keys found for decryption) --",
-                                     "Placeholder, when the message was not decrypted yet or can't "
-                                     "be "
-                                     "decrypted.")
-                                    .toStdString();
-                        else
-                                dummy.content.body =
-                                  tr("-- Encrypted Event (Key not valid for this index) --",
-                                     "Placeholder, when the message can't be decrypted with this "
-                                     "key since it is not valid for this index ")
-                                    .toStdString();
                         nhlog::crypto()->info("Could not find inbound megolm session ({}, {}, {})",
                                               index.room_id,
                                               index.session_id,
                                               e.sender);
-                        // we may not want to request keys during initial sync and such
-                        if (suppressKeyRequests)
-                                break;
-                        // TODO: Check if this actually works and look in key backup
-                        auto copy    = e;
-                        copy.room_id = room_id_;
-                        if (pending_key_requests.count(e.content.session_id)) {
-                                pending_key_requests.at(e.content.session_id)
-                                  .events.push_back(copy);
-                        } else {
-                                PendingKeyRequests request;
-                                request.request_id =
-                                  "key_request." + http::client()->generate_txn_id();
-                                request.events.push_back(copy);
-                                olm::send_key_request_for(copy, request.request_id);
-                                pending_key_requests[e.content.session_id] = request;
-                        }
+
+                        requestSession(e, false);
                         break;
                 }
                 case olm::DecryptionErrorCode::DbError:
@@ -701,12 +675,6 @@ EventStore::decryptEvent(const IdIndex &idx,
                           index.session_id,
                           index.sender_key,
                           decryptionResult.error_message.value_or(""));
-                        dummy.content.body =
-                          tr("-- Decryption Error (failed to retrieve megolm keys from db) --",
-                             "Placeholder, when the message can't be decrypted, because the DB "
-                             "access "
-                             "failed.")
-                            .toStdString();
                         break;
                 case olm::DecryptionErrorCode::DecryptionFailed:
                         nhlog::crypto()->critical(
@@ -715,22 +683,8 @@ EventStore::decryptEvent(const IdIndex &idx,
                           index.session_id,
                           index.sender_key,
                           decryptionResult.error_message.value_or(""));
-                        dummy.content.body =
-                          tr("-- Decryption Error (%1) --",
-                             "Placeholder, when the message can't be decrypted. In this case, the "
-                             "Olm "
-                             "decrytion returned an error, which is passed as %1.")
-                            .arg(
-                              QString::fromStdString(decryptionResult.error_message.value_or("")))
-                            .toStdString();
                         break;
                 case olm::DecryptionErrorCode::ParsingFailed:
-                        dummy.content.body =
-                          tr("-- Encrypted Event (Unknown event type) --",
-                             "Placeholder, when the message was decrypted, but we couldn't parse "
-                             "it, because "
-                             "Nheko/mtxclient don't support that event type yet.")
-                            .toStdString();
                         break;
                 case olm::DecryptionErrorCode::ReplayAttack:
                         nhlog::crypto()->critical(
@@ -738,85 +692,50 @@ EventStore::decryptEvent(const IdIndex &idx,
                           e.event_id,
                           room_id_,
                           index.sender_key);
-                        dummy.content.body =
-                          tr("-- Replay attack! This message index was reused! --").toStdString();
                         break;
-                case olm::DecryptionErrorCode::UnknownFingerprint:
-                        // TODO: don't fail, just show in UI.
-                        nhlog::crypto()->critical("Message by unverified fingerprint {}",
-                                                  index.sender_key);
-                        dummy.content.body =
-                          tr("-- Message by unverified device! --").toStdString();
+                case olm::DecryptionErrorCode::NoError:
+                        // unreachable
                         break;
                 }
-                return asCacheEntry(std::move(dummy));
-        }
-
-        std::string msg_str;
-        try {
-                auto session = cache::client()->getInboundMegolmSession(index);
-                auto res =
-                  olm::client()->decrypt_group_message(session.get(), e.content.ciphertext);
-                msg_str = std::string((char *)res.data.data(), res.data.size());
-        } catch (const lmdb::error &e) {
-                nhlog::db()->critical("failed to retrieve megolm session with index ({}, {}, {})",
-                                      index.room_id,
-                                      index.session_id,
-                                      index.sender_key,
-                                      e.what());
-                dummy.content.body =
-                  tr("-- Decryption Error (failed to retrieve megolm keys from db) --",
-                     "Placeholder, when the message can't be decrypted, because the DB "
-                     "access "
-                     "failed.")
-                    .toStdString();
-                return asCacheEntry(std::move(dummy));
-        } catch (const mtx::crypto::olm_exception &e) {
-                nhlog::crypto()->critical("failed to decrypt message with index ({}, {}, {}): {}",
-                                          index.room_id,
-                                          index.session_id,
-                                          index.sender_key,
-                                          e.what());
-                dummy.content.body =
-                  tr("-- Decryption Error (%1) --",
-                     "Placeholder, when the message can't be decrypted. In this case, the "
-                     "Olm "
-                     "decrytion returned an error, which is passed as %1.")
-                    .arg(e.what())
-                    .toStdString();
-                return asCacheEntry(std::move(dummy));
-        }
-
-        // Add missing fields for the event.
-        json body                = json::parse(msg_str);
-        body["event_id"]         = e.event_id;
-        body["sender"]           = e.sender;
-        body["origin_server_ts"] = e.origin_server_ts;
-        body["unsigned"]         = e.unsigned_data;
-
-        // relations are unencrypted in content...
-        mtx::common::add_relations(body["content"], e.content.relations);
-
-        json event_array = json::array();
-        event_array.push_back(body);
-
-        std::vector<mtx::events::collections::TimelineEvents> temp_events;
-        mtx::responses::utils::parse_timeline_events(event_array, temp_events);
-
-        if (temp_events.size() == 1) {
-                auto encInfo = mtx::accessors::file(temp_events[0]);
-
-                if (encInfo)
-                        emit newEncryptedImage(encInfo.value());
-
-                return asCacheEntry(std::move(temp_events[0]));
+                return asCacheEntry(std::move(decryptionResult));
         }
 
         auto encInfo = mtx::accessors::file(decryptionResult.event.value());
         if (encInfo)
                 emit newEncryptedImage(encInfo.value());
 
-        return asCacheEntry(std::move(decryptionResult.event.value()));
+        return asCacheEntry(std::move(decryptionResult));
+}
+
+void
+EventStore::requestSession(const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &ev,
+                           bool manual)
+{
+        // we may not want to request keys during initial sync and such
+        if (suppressKeyRequests)
+                return;
+
+        // TODO: Look in key backup
+        auto copy    = ev;
+        copy.room_id = room_id_;
+        if (pending_key_requests.count(ev.content.session_id)) {
+                auto &r = pending_key_requests.at(ev.content.session_id);
+                r.events.push_back(copy);
+
+                // automatically request once every 10 min, manually every 1 min
+                qint64 delay = manual ? 60 : (60 * 10);
+                if (r.requested_at + delay < QDateTime::currentSecsSinceEpoch()) {
+                        r.requested_at = QDateTime::currentSecsSinceEpoch();
+                        olm::send_key_request_for(copy, r.request_id);
+                }
+        } else {
+                PendingKeyRequests request;
+                request.request_id   = "key_request." + http::client()->generate_txn_id();
+                request.requested_at = QDateTime::currentSecsSinceEpoch();
+                request.events.push_back(copy);
+                olm::send_key_request_for(copy, request.request_id);
+                pending_key_requests[ev.content.session_id] = request;
+        }
 }
 
 void
@@ -877,13 +796,54 @@ EventStore::get(std::string id, std::string_view related_to, bool decrypt, bool 
                 events_by_id_.insert(index, event_ptr);
         }
 
-        if (decrypt)
+        if (decrypt) {
                 if (auto encrypted =
                       std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
-                        event_ptr))
-                        return decryptEvent(index, *encrypted);
+                        event_ptr)) {
+                        auto decrypted = decryptEvent(index, *encrypted);
+                        if (decrypted->event)
+                                return &*decrypted->event;
+                }
+        }
 
         return event_ptr;
+}
+
+olm::DecryptionErrorCode
+EventStore::decryptionError(std::string id)
+{
+        if (this->thread() != QThread::currentThread())
+                nhlog::db()->warn("{} called from a different thread!", __func__);
+
+        if (id.empty())
+                return olm::DecryptionErrorCode::NoError;
+
+        IdIndex index{room_id_, std::move(id)};
+        auto edits_ = edits(index.id);
+        if (!edits_.empty()) {
+                index.id = mtx::accessors::event_id(edits_.back());
+                auto event_ptr =
+                  new mtx::events::collections::TimelineEvents(std::move(edits_.back()));
+                events_by_id_.insert(index, event_ptr);
+        }
+
+        auto event_ptr = events_by_id_.object(index);
+        if (!event_ptr) {
+                auto event = cache::client()->getEvent(room_id_, index.id);
+                if (!event) {
+                        return olm::DecryptionErrorCode::NoError;
+                }
+                event_ptr = new mtx::events::collections::TimelineEvents(std::move(event->data));
+                events_by_id_.insert(index, event_ptr);
+        }
+
+        if (auto encrypted =
+              std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(event_ptr)) {
+                auto decrypted = decryptEvent(index, *encrypted);
+                return decrypted->error;
+        }
+
+        return olm::DecryptionErrorCode::NoError;
 }
 
 void

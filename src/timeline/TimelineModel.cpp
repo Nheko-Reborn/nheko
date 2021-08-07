@@ -452,6 +452,7 @@ TimelineModel::roleNames() const
           {IsEditable, "isEditable"},
           {IsEncrypted, "isEncrypted"},
           {Trustlevel, "trustlevel"},
+          {EncryptionError, "encryptionError"},
           {ReplyTo, "replyTo"},
           {Reactions, "reactions"},
           {RoomId, "roomId"},
@@ -639,6 +640,9 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 return crypto::Trust::Unverified;
         }
 
+        case EncryptionError:
+                return events.decryptionError(event_id(event));
+
         case ReplyTo:
                 return QVariant(QString::fromStdString(relations(event).reply_to().value_or("")));
         case Reactions: {
@@ -690,6 +694,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 m.insert(names[RoomName], data(event, static_cast<int>(RoomName)));
                 m.insert(names[RoomTopic], data(event, static_cast<int>(RoomTopic)));
                 m.insert(names[CallType], data(event, static_cast<int>(CallType)));
+                m.insert(names[EncryptionError], data(event, static_cast<int>(EncryptionError)));
 
                 return QVariant(m);
         }
@@ -1548,6 +1553,17 @@ TimelineModel::scrollTimerEvent()
         } else {
                 emit scrollToIndex(idToIndex(eventIdToShow));
                 showEventTimerCounter++;
+        }
+}
+
+void
+TimelineModel::requestKeyForEvent(QString id)
+{
+        auto encrypted_event = events.get(id.toStdString(), "", false);
+        if (encrypted_event) {
+                if (auto ev = std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                      encrypted_event))
+                        events.requestSession(*ev, true);
         }
 }
 

@@ -349,6 +349,7 @@ ScrollView {
             required property string callType
             required property var reactions
             required property int trustlevel
+            required property int encryptionError
             required property var timestamp
             required property int status
             required property int index
@@ -456,6 +457,7 @@ ScrollView {
                 callType: wrapper.callType
                 reactions: wrapper.reactions
                 trustlevel: wrapper.trustlevel
+                encryptionError: wrapper.encryptionError
                 timestamp: wrapper.timestamp
                 status: wrapper.status
                 relatedEventCacheBuster: wrapper.relatedEventCacheBuster

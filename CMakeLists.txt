@@ -541,32 +541,33 @@ qt5_wrap_cpp(MOC_HEADERS
 
 	src/AvatarProvider.h
 	src/BlurhashProvider.h
-	src/Cache_p.h
 	src/CacheCryptoStructs.h
+	src/Cache_p.h
 	src/CallDevices.h
 	src/CallManager.h
 	src/ChatPage.h
 	src/Clipboard.h
+	src/CombinedImagePackModel.h
 	src/CompletionProxyModel.h
 	src/DeviceVerificationFlow.h
+	src/ImagePackListModel.h
 	src/InviteesModel.h
 	src/LoginPage.h
 	src/MainWindow.h
 	src/MemberList.h
 	src/MxcImageProvider.h
-    src/ReadReceiptsModel.h
+	src/Olm.h
 	src/RegisterPage.h
+	src/RoomsModel.h
 	src/SSOHandler.h
-	src/CombinedImagePackModel.h
 	src/SingleImagePackModel.h
-	src/ImagePackListModel.h
 	src/TrayIcon.h
 	src/UserSettingsPage.h
 	src/UsersModel.h
-	src/RoomsModel.h
 	src/WebRTCSession.h
 	src/WelcomePage.h
-	)
+	src/ReadReceiptsModel.h
+)
 
 #
 # Bundle translations.

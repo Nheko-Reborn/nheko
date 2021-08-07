@@ -1069,7 +1069,7 @@ decryptEvent(const MegolmSessionIndex &index,
                 mtx::events::collections::TimelineEvent te;
                 mtx::events::collections::from_json(body, te);
 
-                return {std::nullopt, std::nullopt, std::move(te.data)};
+                return {DecryptionErrorCode::NoError, std::nullopt, std::move(te.data)};
         } catch (std::exception &e) {
                 return {DecryptionErrorCode::ParsingFailed, e.what(), std::nullopt};
         }

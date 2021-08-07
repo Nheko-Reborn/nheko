@@ -15,6 +15,7 @@
 #include <mtx/responses/messages.hpp>
 #include <mtx/responses/sync.hpp>
 
+#include "Olm.h"
 #include "Reaction.h"
 
 class EventStore : public QObject
@@ -78,6 +79,9 @@ public:
         mtx::events::collections::TimelineEvents *get(int idx, bool decrypt = true);
 
         QVariantList reactions(const std::string &event_id);
+        olm::DecryptionErrorCode decryptionError(std::string id);
+        void requestSession(const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &ev,
+                            bool manual);
 
         int size() const
         {
@@ -119,7 +123,7 @@ public slots:
 
 private:
         std::vector<mtx::events::collections::TimelineEvents> edits(const std::string &event_id);
-        mtx::events::collections::TimelineEvents *decryptEvent(
+        olm::DecryptionResult *decryptEvent(
           const IdIndex &idx,
           const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e);
         void handle_room_verification(mtx::events::collections::TimelineEvents event);
@@ -129,7 +133,7 @@ private:
         uint64_t first = std::numeric_limits<uint64_t>::max(),
                  last  = std::numeric_limits<uint64_t>::max();
 
-        static QCache<IdIndex, mtx::events::collections::TimelineEvents> decryptedEvents_;
+        static QCache<IdIndex, olm::DecryptionResult> decryptedEvents_;
         static QCache<Index, mtx::events::collections::TimelineEvents> events_;
         static QCache<IdIndex, mtx::events::collections::TimelineEvents> events_by_id_;
 
@@ -137,6 +141,7 @@ private:
         {
                 std::string request_id;
                 std::vector<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>> events;
+                qint64 requested_at;
         };
         std::map<std::string, PendingKeyRequests> pending_key_requests;
 

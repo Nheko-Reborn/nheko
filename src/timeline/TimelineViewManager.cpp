@@ -158,6 +158,8 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                                          "MtxEvent",
                                          "Can't instantiate enum!");
         qmlRegisterUncreatableMetaObject(
+          olm::staticMetaObject, "im.nheko", 1, 0, "Olm", "Can't instantiate enum!");
+        qmlRegisterUncreatableMetaObject(
           crypto::staticMetaObject, "im.nheko", 1, 0, "Crypto", "Can't instantiate enum!");
         qmlRegisterUncreatableMetaObject(verification::staticMetaObject,
                                          "im.nheko",
