@@ -68,6 +68,7 @@ Popup {
             isOnlyEmoji: modelData.isOnlyEmoji ?? false
             userId: modelData.userId ?? ""
             userName: modelData.userName ?? ""
+            encryptionError: modelData.encryptionError ?? ""
         }
 
         MatrixTextField {
