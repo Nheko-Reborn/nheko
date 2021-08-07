@@ -19,8 +19,13 @@ ApplicationWindow {
     palette: Nheko.colors
     color: Nheko.colors.window
     modality: Qt.WindowModal
-    flags: Qt.Dialog
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint
     title: qsTr("Explore Public Rooms")
+
+    Shortcut {
+        sequence: StandardKey.Cancel
+        onActivated: roomDirectoryWindow.close()
+    }
 
     header: RowLayout {
         id: searchBarLayout
