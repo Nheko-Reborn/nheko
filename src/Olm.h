@@ -81,9 +81,11 @@ encrypt_group_message(const std::string &room_id,
                       const std::string &device_id,
                       nlohmann::json body);
 
+//! Decrypt an event. Use dont_write_db to prevent db writes when already in a write transaction.
 DecryptionResult
 decryptEvent(const MegolmSessionIndex &index,
-             const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &event);
+             const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &event,
+             bool dont_write_db = false);
 crypto::Trust
 calculate_trust(const std::string &user_id, const std::string &curve25519);
 

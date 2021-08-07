@@ -158,7 +158,7 @@ Cache::isHiddenEvent(lmdb::txn &txn,
                 index.session_id = encryptedEvent->content.session_id;
                 index.sender_key = encryptedEvent->content.sender_key;
 
-                auto result = olm::decryptEvent(index, *encryptedEvent);
+                auto result = olm::decryptEvent(index, *encryptedEvent, true);
                 if (!result.error)
                         e = result.event.value();
         }
@@ -4294,6 +4294,8 @@ to_json(nlohmann::json &obj, const GroupSessionData &msg)
         obj["forwarding_curve25519_key_chain"] = msg.forwarding_curve25519_key_chain;
 
         obj["currently"] = msg.currently;
+
+        obj["indices"] = msg.indices;
 }
 
 void
@@ -4307,6 +4309,8 @@ from_json(const nlohmann::json &obj, GroupSessionData &msg)
           obj.value("forwarding_curve25519_key_chain", std::vector<std::string>{});
 
         msg.currently = obj.value("currently", SharedWithUsers{});
+
+        msg.indices = obj.value("indices", std::map<uint32_t, std::string>());
 }
 
 void
