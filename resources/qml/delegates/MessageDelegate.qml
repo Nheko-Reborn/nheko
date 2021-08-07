@@ -29,6 +29,7 @@ Item {
     required property string roomTopic
     required property string roomName
     required property string callType
+    required property int encryptionError
     required property int relatedEventCacheBuster
 
     height: chooser.childrenRect.height
@@ -185,6 +186,16 @@ Item {
 
             Pill {
                 text: qsTr("Encryption enabled")
+            }
+
+        }
+
+        DelegateChoice {
+            roleValue: MtxEvent.Encrypted
+
+            Encrypted {
+                encryptionError: d.encryptionError
+                eventId: d.eventId
             }
 
         }

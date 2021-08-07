@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include "CacheStructs.h"
 #include <QAbstractListModel>
+
+#include "CacheStructs.h"
 
 class MemberList : public QAbstractListModel
 {

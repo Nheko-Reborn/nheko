@@ -74,3 +74,21 @@ ImagePackListModel::packAt(int row)
         QQmlEngine::setObjectOwnership(e, QQmlEngine::CppOwnership);
         return e;
 }
+
+SingleImagePackModel *
+ImagePackListModel::newPack(bool inRoom)
+{
+        ImagePackInfo info{};
+        if (inRoom)
+                info.source_room = room_id;
+        return new SingleImagePackModel(info);
+}
+
+bool
+ImagePackListModel::containsAccountPack() const
+{
+        for (const auto &p : packs)
+                if (p->roomid().isEmpty())
+                        return true;
+        return false;
+}

@@ -11,10 +11,11 @@ import im.nheko 1.0
 Rectangle {
     id: avatar
 
-    property alias url: img.source
+    property string url
     property string userid
     property string displayName
     property alias textColor: label.color
+    property bool crop: true
 
     signal clicked(var mouse)
 
@@ -44,12 +45,13 @@ Rectangle {
 
         anchors.fill: parent
         asynchronous: true
-        fillMode: Image.PreserveAspectCrop
+        fillMode: avatar.crop ? Image.PreserveAspectCrop : Image.PreserveAspectFit
         mipmap: true
         smooth: true
         sourceSize.width: avatar.width
         sourceSize.height: avatar.height
         layer.enabled: true
+        source: avatar.url + ((avatar.crop || !avatar.url) ? "" : "?scale")
 
         MouseArea {
             id: mouseArea

@@ -286,11 +286,17 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
 
                         bool from_their_device = false;
                         for (auto [device_id, key] : otherUserDeviceKeys.device_keys) {
-                                if (key.keys.at("curve25519:" + device_id) == msg.sender_key) {
-                                        if (key.keys.at("ed25519:" + device_id) == sender_ed25519) {
-                                                from_their_device = true;
-                                                break;
-                                        }
+                                auto c_key = key.keys.find("curve25519:" + device_id);
+                                auto e_key = key.keys.find("ed25519:" + device_id);
+
+                                if (c_key == key.keys.end() || e_key == key.keys.end()) {
+                                        nhlog::crypto()->warn(
+                                          "Skipping device {} as we have no keys for it.",
+                                          device_id);
+                                } else if (c_key->second == msg.sender_key &&
+                                           e_key->second == sender_ed25519) {
+                                        from_their_device = true;
+                                        break;
                                 }
                         }
                         if (!from_their_device) {
@@ -518,7 +524,8 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
 
         auto own_user_id = http::client()->user_id().to_string();
 
-        auto members = cache::client()->getMembersWithKeys(room_id);
+        auto members = cache::client()->getMembersWithKeys(
+          room_id, UserSettings::instance()->onlyShareKeysWithVerifiedUsers());
 
         std::map<std::string, std::vector<std::string>> sendSessionTo;
         mtx::crypto::OutboundGroupSessionPtr session = nullptr;
@@ -1062,7 +1069,7 @@ decryptEvent(const MegolmSessionIndex &index,
                 mtx::events::collections::TimelineEvent te;
                 mtx::events::collections::from_json(body, te);
 
-                return {std::nullopt, std::nullopt, std::move(te.data)};
+                return {DecryptionErrorCode::NoError, std::nullopt, std::move(te.data)};
         } catch (std::exception &e) {
                 return {DecryptionErrorCode::ParsingFailed, e.what(), std::nullopt};
         }
@@ -1138,9 +1145,23 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
 
                         auto session = cache::getLatestOlmSession(device_curve);
                         if (!session || force_new_session) {
-                                claims.one_time_keys[user][device] = mtx::crypto::SIGNED_CURVE25519;
-                                pks[user][device].ed25519          = d.keys.at("ed25519:" + device);
-                                pks[user][device].curve25519 = d.keys.at("curve25519:" + device);
+                                static QMap<QPair<std::string, std::string>, qint64> rateLimit;
+                                auto currentTime = QDateTime::currentSecsSinceEpoch();
+                                if (rateLimit.value(QPair(user, device)) + 60 * 60 * 10 <
+                                    currentTime) {
+                                        claims.one_time_keys[user][device] =
+                                          mtx::crypto::SIGNED_CURVE25519;
+                                        pks[user][device].ed25519 = d.keys.at("ed25519:" + device);
+                                        pks[user][device].curve25519 =
+                                          d.keys.at("curve25519:" + device);
+
+                                        rateLimit.insert(QPair(user, device), currentTime);
+                                } else {
+                                        nhlog::crypto()->warn("Not creating new session with {}:{} "
+                                                              "because of rate limit",
+                                                              user,
+                                                              device);
+                                }
                                 continue;
                         }
 

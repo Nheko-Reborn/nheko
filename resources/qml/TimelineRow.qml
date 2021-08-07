@@ -7,7 +7,7 @@ import "./emoji"
 import QtQuick 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
-import QtQuick.Window 2.2
+import QtQuick.Window 2.13
 import im.nheko 1.0
 
 Item {
@@ -38,6 +38,7 @@ Item {
     required property string callType
     required property var reactions
     required property int trustlevel
+    required property int encryptionError
     required property var timestamp
     required property int status
     required property int relatedEventCacheBuster
@@ -110,6 +111,7 @@ Item {
                 roomTopic: r.relatedEventCacheBuster, fromModel(Room.RoomTopic) ?? ""
                 roomName: r.relatedEventCacheBuster, fromModel(Room.RoomName) ?? ""
                 callType: r.relatedEventCacheBuster, fromModel(Room.CallType) ?? ""
+                encryptionError: r.relatedEventCacheBuster, fromModel(Room.EncryptionError) ?? ""
                 relatedEventCacheBuster: r.relatedEventCacheBuster, fromModel(Room.RelatedEventCacheBuster) ?? 0
             }
 
@@ -136,6 +138,7 @@ Item {
                 roomTopic: r.roomTopic
                 roomName: r.roomName
                 callType: r.callType
+                encryptionError: r.encryptionError
                 relatedEventCacheBuster: r.relatedEventCacheBuster
                 isReply: false
             }

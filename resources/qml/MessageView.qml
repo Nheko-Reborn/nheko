@@ -10,7 +10,7 @@ import QtGraphicalEffects 1.0
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
-import QtQuick.Window 2.2
+import QtQuick.Window 2.13
 import im.nheko 1.0
 
 ScrollView {
@@ -212,9 +212,9 @@ ScrollView {
 
             // force current read index to update
             onTriggered: {
-                if (chat.model) {
+                if (chat.model)
                     chat.model.setCurrentIndex(chat.model.currentIndex);
-                }
+
             }
             interval: 1000
         }
@@ -349,6 +349,7 @@ ScrollView {
             required property string callType
             required property var reactions
             required property int trustlevel
+            required property int encryptionError
             required property var timestamp
             required property int status
             required property int index
@@ -456,6 +457,7 @@ ScrollView {
                 callType: wrapper.callType
                 reactions: wrapper.reactions
                 trustlevel: wrapper.trustlevel
+                encryptionError: wrapper.encryptionError
                 timestamp: wrapper.timestamp
                 status: wrapper.status
                 relatedEventCacheBuster: wrapper.relatedEventCacheBuster
@@ -580,7 +582,7 @@ ScrollView {
 
         Platform.MenuItem {
             text: qsTr("Read receip&ts")
-            onTriggered: room.readReceiptsAction(messageContextMenu.eventId)
+            onTriggered: room.showReadReceipts(messageContextMenu.eventId)
         }
 
         Platform.MenuItem {

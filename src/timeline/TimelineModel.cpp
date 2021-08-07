@@ -28,9 +28,9 @@
 #include "MemberList.h"
 #include "MxcImageProvider.h"
 #include "Olm.h"
+#include "ReadReceiptsModel.h"
 #include "TimelineViewManager.h"
 #include "Utils.h"
-#include "dialogs/RawMessage.h"
 
 Q_DECLARE_METATYPE(QModelIndex)
 
@@ -308,6 +308,15 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
         case qml_mtx_events::KeyVerificationDone:
         case qml_mtx_events::KeyVerificationReady:
                 return mtx::events::EventType::RoomMessage;
+                //! m.image_pack, currently im.ponies.room_emotes
+        case qml_mtx_events::ImagePackInRoom:
+                return mtx::events::EventType::ImagePackRooms;
+        //! m.image_pack, currently im.ponies.user_emotes
+        case qml_mtx_events::ImagePackInAccountData:
+                return mtx::events::EventType::ImagePackInAccountData;
+        //! m.image_pack.rooms, currently im.ponies.emote_rooms
+        case qml_mtx_events::ImagePackRooms:
+                return mtx::events::EventType::ImagePackRooms;
         default:
                 return mtx::events::EventType::Unsupported;
         };
@@ -443,6 +452,7 @@ TimelineModel::roleNames() const
           {IsEditable, "isEditable"},
           {IsEncrypted, "isEncrypted"},
           {Trustlevel, "trustlevel"},
+          {EncryptionError, "encryptionError"},
           {ReplyTo, "replyTo"},
           {Reactions, "reactions"},
           {RoomId, "roomId"},
@@ -630,6 +640,9 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 return crypto::Trust::Unverified;
         }
 
+        case EncryptionError:
+                return events.decryptionError(event_id(event));
+
         case ReplyTo:
                 return QVariant(QString::fromStdString(relations(event).reply_to().value_or("")));
         case Reactions: {
@@ -681,6 +694,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 m.insert(names[RoomName], data(event, static_cast<int>(RoomName)));
                 m.insert(names[RoomTopic], data(event, static_cast<int>(RoomTopic)));
                 m.insert(names[CallType], data(event, static_cast<int>(CallType)));
+                m.insert(names[EncryptionError], data(event, static_cast<int>(EncryptionError)));
 
                 return QVariant(m);
         }
@@ -1025,14 +1039,13 @@ TimelineModel::formatDateSeparator(QDate date) const
 }
 
 void
-TimelineModel::viewRawMessage(QString id) const
+TimelineModel::viewRawMessage(QString id)
 {
         auto e = events.get(id.toStdString(), "", false);
         if (!e)
                 return;
         std::string ev = mtx::accessors::serialize_event(*e).dump(4);
-        auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
-        Q_UNUSED(dialog);
+        emit showRawMessageDialog(QString::fromStdString(ev));
 }
 
 void
@@ -1046,15 +1059,14 @@ TimelineModel::forwardMessage(QString eventId, QString roomId)
 }
 
 void
-TimelineModel::viewDecryptedRawMessage(QString id) const
+TimelineModel::viewDecryptedRawMessage(QString id)
 {
         auto e = events.get(id.toStdString(), "");
         if (!e)
                 return;
 
         std::string ev = mtx::accessors::serialize_event(*e).dump(4);
-        auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
-        Q_UNUSED(dialog);
+        emit showRawMessageDialog(QString::fromStdString(ev));
 }
 
 void
@@ -1089,9 +1101,9 @@ TimelineModel::relatedInfo(QString id)
 }
 
 void
-TimelineModel::readReceiptsAction(QString id) const
+TimelineModel::showReadReceipts(QString id)
 {
-        MainWindow::instance()->openReadReceiptsDialog(id);
+        emit openReadReceiptsDialog(new ReadReceiptsProxy{id, roomId(), this});
 }
 
 void
@@ -1541,6 +1553,17 @@ TimelineModel::scrollTimerEvent()
         } else {
                 emit scrollToIndex(idToIndex(eventIdToShow));
                 showEventTimerCounter++;
+        }
+}
+
+void
+TimelineModel::requestKeyForEvent(QString id)
+{
+        auto encrypted_event = events.get(id.toStdString(), "", false);
+        if (encrypted_event) {
+                if (auto ev = std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                      encrypted_event))
+                        events.requestSession(*ev, true);
         }
 }
 

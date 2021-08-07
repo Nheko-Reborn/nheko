@@ -31,7 +31,6 @@
 
 #include "notifications/Manager.h"
 
-#include "dialogs/ReadReceipts.h"
 #include "timeline/TimelineViewManager.h"
 
 #include "blurhash.hpp"

@@ -286,7 +286,6 @@ set(SRC_FILES
 	src/dialogs/Logout.cpp
 	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
-	src/dialogs/ReadReceipts.cpp
 
 	# Emoji
 	src/emoji/EmojiModel.cpp
@@ -305,7 +304,6 @@ set(SRC_FILES
 	src/timeline/RoomlistModel.cpp
 
 	# UI components
-	src/ui/Avatar.cpp
 	src/ui/Badge.cpp
 	src/ui/DropShadow.cpp
 	src/ui/FlatButton.cpp
@@ -352,6 +350,7 @@ set(SRC_FILES
 	src/MemberList.cpp
 	src/MxcImageProvider.cpp
 	src/Olm.cpp
+    src/ReadReceiptsModel.cpp
 	src/RegisterPage.cpp
 	src/SSOHandler.cpp
 	src/CombinedImagePackModel.cpp
@@ -383,7 +382,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        316a4040785ee2eabac7ef5ce7b4acb71c48f6eb
+		GIT_TAG        bcf363cb5e6c423f40c96123e227bc8c5f6d6f80
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -498,9 +497,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/LeaveRoom.h
 	src/dialogs/Logout.h
 	src/dialogs/PreviewUploadOverlay.h
-	src/dialogs/RawMessage.h
 	src/dialogs/ReCaptcha.h
-	src/dialogs/ReadReceipts.h
 
 	# Emoji
 	src/emoji/EmojiModel.h
@@ -518,7 +515,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/timeline/RoomlistModel.h
 
 	# UI components
-	src/ui/Avatar.h
 	src/ui/Badge.h
 	src/ui/FlatButton.h
 	src/ui/FloatingButton.h
@@ -546,24 +542,26 @@ qt5_wrap_cpp(MOC_HEADERS
 
 	src/AvatarProvider.h
 	src/BlurhashProvider.h
-	src/Cache_p.h
 	src/CacheCryptoStructs.h
+	src/Cache_p.h
 	src/CallDevices.h
 	src/CallManager.h
 	src/ChatPage.h
 	src/Clipboard.h
+	src/CombinedImagePackModel.h
 	src/CompletionProxyModel.h
 	src/DeviceVerificationFlow.h
+	src/ImagePackListModel.h
 	src/InviteesModel.h
 	src/LoginPage.h
 	src/MainWindow.h
 	src/MemberList.h
 	src/MxcImageProvider.h
+	src/Olm.h
 	src/RegisterPage.h
+	src/RoomsModel.h
 	src/SSOHandler.h
-	src/CombinedImagePackModel.h
 	src/SingleImagePackModel.h
-	src/ImagePackListModel.h
 	src/TrayIcon.h
 	src/UserSettingsPage.h
 	src/UsersModel.h
@@ -571,7 +569,8 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/RoomDirectoryModel.h
 	src/WebRTCSession.h
 	src/WelcomePage.h
-	)
+	src/ReadReceiptsModel.h
+)
 
 #
 # Bundle translations.

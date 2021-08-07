@@ -9,10 +9,10 @@ import "./emoji"
 import "./voip"
 import Qt.labs.platform 1.1 as Platform
 import QtGraphicalEffects 1.0
-import QtQuick 2.9
-import QtQuick.Controls 2.5
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
-import QtQuick.Window 2.2
+import QtQuick.Window 2.15
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
 
@@ -92,6 +92,22 @@ Page {
         id: packSettingsComponent
 
         ImagePackSettingsDialog {
+        }
+
+    }
+
+    Component {
+        id: readReceiptsDialog
+
+        ReadReceipts {
+        }
+
+    }
+
+    Component {
+        id: rawMessageDialog
+
+        RawMessageDialog {
         }
 
     }

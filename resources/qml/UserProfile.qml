@@ -4,19 +4,20 @@
 
 import "./device-verification"
 import "./ui"
-import QtQuick 2.9
-import QtQuick.Controls 2.3
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
-import QtQuick.Window 2.3
+import QtQuick.Window 2.13
 import im.nheko 1.0
 
 ApplicationWindow {
+    // this does not work in ApplicationWindow, just in Window
+    //transientParent: Nheko.mainwindow()
+
     id: userProfileDialog
 
     property var profile
 
-    x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
-    y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     height: 650
     width: 420
     minimumHeight: 420
@@ -24,7 +25,8 @@ ApplicationWindow {
     color: Nheko.colors.window
     title: profile.isGlobalUserProfile ? qsTr("Global User Profile") : qsTr("Room User Profile")
     modality: Qt.NonModal
-    flags: Qt.Dialog
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    Component.onCompleted: Nheko.reparent(userProfileDialog)
 
     Shortcut {
         sequence: StandardKey.Cancel

@@ -125,7 +125,7 @@ template<class T>
 bool
 containsStateUpdates(const T &e)
 {
-        return std::visit([](const auto &ev) { return Cache::isStateEvent(ev); }, e);
+        return std::visit([](const auto &ev) { return Cache::isStateEvent_<decltype(ev)>; }, e);
 }
 
 bool
@@ -288,6 +288,9 @@ Cache::setup()
         outboundMegolmSessionDb_ = lmdb::dbi::open(txn, OUTBOUND_MEGOLM_SESSIONS_DB, MDB_CREATE);
         megolmSessionDataDb_     = lmdb::dbi::open(txn, MEGOLM_SESSIONS_DATA_DB, MDB_CREATE);
 
+        // What rooms are encrypted
+        encryptedRooms_ = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
+
         txn.commit();
 
         databaseReady_ = true;
@@ -298,8 +301,7 @@ Cache::setEncryptedRoom(lmdb::txn &txn, const std::string &room_id)
 {
         nhlog::db()->info("mark room {} as encrypted", room_id);
 
-        auto db = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
-        db.put(txn, room_id, "0");
+        encryptedRooms_.put(txn, room_id, "0");
 }
 
 bool
@@ -308,8 +310,7 @@ Cache::isRoomEncrypted(const std::string &room_id)
         std::string_view unused;
 
         auto txn = ro_txn(env_);
-        auto db  = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
-        auto res = db.get(txn, room_id, unused);
+        auto res = encryptedRooms_.get(txn, room_id, unused);
 
         return res;
 }
@@ -3400,7 +3401,7 @@ Cache::getImagePacks(const std::string &room_id, std::optional<bool> stickers)
                         info.pack.pack   = pack.pack;
 
                         for (const auto &img : pack.images) {
-                                if (img.second.overrides_usage() &&
+                                if (stickers.has_value() && img.second.overrides_usage() &&
                                     (stickers ? !img.second.is_sticker() : !img.second.is_emoji()))
                                         continue;
 
@@ -3541,7 +3542,7 @@ Cache::roomMembers(const std::string &room_id)
 }
 
 std::map<std::string, std::optional<UserKeyCache>>
-Cache::getMembersWithKeys(const std::string &room_id)
+Cache::getMembersWithKeys(const std::string &room_id, bool verified_only)
 {
         std::string_view keys;
 
@@ -3558,10 +3559,51 @@ Cache::getMembersWithKeys(const std::string &room_id)
                         auto res = keysDb.get(txn, user_id, keys);
 
                         if (res) {
-                                members[std::string(user_id)] =
-                                  json::parse(keys).get<UserKeyCache>();
+                                auto k = json::parse(keys).get<UserKeyCache>();
+                                if (verified_only) {
+                                        auto verif = verificationStatus(std::string(user_id));
+                                        if (verif.user_verified == crypto::Trust::Verified ||
+                                            !verif.verified_devices.empty()) {
+                                                auto keyCopy = k;
+                                                keyCopy.device_keys.clear();
+
+                                                std::copy_if(
+                                                  k.device_keys.begin(),
+                                                  k.device_keys.end(),
+                                                  std::inserter(keyCopy.device_keys,
+                                                                keyCopy.device_keys.end()),
+                                                  [&verif](const auto &key) {
+                                                          auto curve25519 = key.second.keys.find(
+                                                            "curve25519:" + key.first);
+                                                          if (curve25519 == key.second.keys.end())
+                                                                  return false;
+                                                          if (auto t =
+                                                                verif.verified_device_keys.find(
+                                                                  curve25519->second);
+                                                              t ==
+                                                                verif.verified_device_keys.end() ||
+                                                              t->second != crypto::Trust::Verified)
+                                                                  return false;
+
+                                                          return key.first ==
+                                                                   key.second.device_id &&
+                                                                 std::find(
+                                                                   verif.verified_devices.begin(),
+                                                                   verif.verified_devices.end(),
+                                                                   key.first) !=
+                                                                   verif.verified_devices.end();
+                                                  });
+
+                                                if (!keyCopy.device_keys.empty())
+                                                        members[std::string(user_id)] =
+                                                          std::move(keyCopy);
+                                        }
+                                } else {
+                                        members[std::string(user_id)] = std::move(k);
+                                }
                         } else {
-                                members[std::string(user_id)] = {};
+                                if (!verified_only)
+                                        members[std::string(user_id)] = {};
                         }
                 }
                 cursor.close();

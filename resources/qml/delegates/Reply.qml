@@ -5,7 +5,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
-import QtQuick.Window 2.2
+import QtQuick.Window 2.13
 import im.nheko 1.0
 
 Item {
@@ -30,6 +30,7 @@ Item {
     property string roomTopic
     property string roomName
     property string callType
+    property int encryptionError
     property int relatedEventCacheBuster
 
     width: parent.width
@@ -97,6 +98,7 @@ Item {
             roomName: r.roomName
             callType: r.callType
             relatedEventCacheBuster: r.relatedEventCacheBuster
+            encryptionError: r.encryptionError
             enabled: false
             width: parent.width
             isReply: true

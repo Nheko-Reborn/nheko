@@ -19,6 +19,8 @@ finish-args:
   - --talk-name=org.freedesktop.secrets
   - --talk-name=org.freedesktop.StatusNotifierItem
   - --talk-name=org.kde.*
+  # needed for SingleApplication to work
+  - --allow=per-app-dev-shm
 cleanup:
   - /include
   - /bin/mdb*
@@ -161,7 +163,7 @@ modules:
     buildsystem: cmake-ninja
     name: mtxclient
     sources:
-      - commit: 316a4040785ee2eabac7ef5ce7b4acb71c48f6eb
+      - commit: bcf363cb5e6c423f40c96123e227bc8c5f6d6f80
         type: git
         url: https://github.com/Nheko-Reborn/mtxclient.git
   - config-opts:

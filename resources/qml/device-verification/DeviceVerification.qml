@@ -4,7 +4,7 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
-import QtQuick.Window 2.10
+import QtQuick.Window 2.13
 import im.nheko 1.0
 
 ApplicationWindow {
@@ -14,13 +14,12 @@ ApplicationWindow {
 
     onClosing: TimelineManager.removeVerificationFlow(flow)
     title: stack.currentItem.title
-    flags: Qt.Dialog
     modality: Qt.NonModal
     palette: Nheko.colors
     height: stack.implicitHeight
     width: stack.implicitWidth
-    x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
-    y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    Component.onCompleted: Nheko.reparent(dialog)
 
     StackView {
         id: stack

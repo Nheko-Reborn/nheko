@@ -12,6 +12,7 @@ class SingleImagePackModel;
 class ImagePackListModel : public QAbstractListModel
 {
         Q_OBJECT
+        Q_PROPERTY(bool containsAccountPack READ containsAccountPack CONSTANT)
 public:
         enum Roles
         {
@@ -29,6 +30,9 @@ public:
         QVariant data(const QModelIndex &index, int role) const override;
 
         Q_INVOKABLE SingleImagePackModel *packAt(int row);
+        Q_INVOKABLE SingleImagePackModel *newPack(bool inRoom);
+
+        bool containsAccountPack() const;
 
 private:
         std::string room_id;

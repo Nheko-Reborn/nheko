@@ -179,31 +179,38 @@ Component {
                 }
             ]
 
-            TapHandler {
-                margin: -Nheko.paddingSmall
-                acceptedButtons: Qt.RightButton
-                onSingleTapped: {
-                    if (!TimelineManager.isInvite)
-                        roomContextMenu.show(roomId, tags);
+            // NOTE(Nico): We want to prevent the touch areas from overlapping. For some reason we need to add 1px of padding for that...
+            Item {
+                anchors.fill: parent
+                anchors.margins: 1
 
+                TapHandler {
+                    acceptedButtons: Qt.RightButton
+                    onSingleTapped: {
+                        if (!TimelineManager.isInvite)
+                            roomContextMenu.show(roomId, tags);
+
+                    }
+                    gesturePolicy: TapHandler.ReleaseWithinBounds
+                    acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
                 }
-                gesturePolicy: TapHandler.ReleaseWithinBounds
-            }
 
-            TapHandler {
-                margin: -Nheko.paddingSmall
-                onSingleTapped: Rooms.setCurrentRoom(roomId)
-                onLongPressed: {
-                    if (!isInvite)
-                        roomContextMenu.show(roomId, tags);
+                TapHandler {
+                    margin: -Nheko.paddingSmall
+                    onSingleTapped: Rooms.setCurrentRoom(roomId)
+                    onLongPressed: {
+                        if (!isInvite)
+                            roomContextMenu.show(roomId, tags);
 
+                    }
                 }
-            }
 
-            HoverHandler {
-                id: hovered
+                HoverHandler {
+                    id: hovered
 
-                margin: -Nheko.paddingSmall
+                    acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
+                }
+
             }
 
             RowLayout {
@@ -439,6 +446,7 @@ Component {
                     url: (userInfoGrid.profile ? userInfoGrid.profile.avatarUrl : "").replace("mxc://", "image://MxcImage/")
                     displayName: userInfoGrid.profile ? userInfoGrid.profile.displayName : ""
                     userid: userInfoGrid.profile ? userInfoGrid.profile.userid : ""
+                    enabled: false
                 }
 
                 ColumnLayout {

@@ -22,7 +22,14 @@ QHash<QString, mtx::crypto::EncryptedFile> infos;
 QQuickImageResponse *
 MxcImageProvider::requestImageResponse(const QString &id, const QSize &requestedSize)
 {
-        MxcImageResponse *response = new MxcImageResponse(id, requestedSize);
+        auto id_  = id;
+        bool crop = true;
+        if (id.endsWith("?scale")) {
+                crop = false;
+                id_.remove("?scale");
+        }
+
+        MxcImageResponse *response = new MxcImageResponse(id_, crop, requestedSize);
         pool.start(response);
         return response;
 }
@@ -36,20 +43,24 @@ void
 MxcImageResponse::run()
 {
         MxcImageProvider::download(
-          m_id, m_requestedSize, [this](QString, QSize, QImage image, QString) {
+          m_id,
+          m_requestedSize,
+          [this](QString, QSize, QImage image, QString) {
                   if (image.isNull()) {
                           m_error = "Failed to download image.";
                   } else {
                           m_image = image;
                   }
                   emit finished();
-          });
+          },
+          m_crop);
 }
 
 void
 MxcImageProvider::download(const QString &id,
                            const QSize &requestedSize,
-                           std::function<void(QString, QSize, QImage, QString)> then)
+                           std::function<void(QString, QSize, QImage, QString)> then,
+                           bool crop)
 {
         std::optional<mtx::crypto::EncryptedFile> encryptionInfo;
         auto temp = infos.find("mxc://" + id);
@@ -58,11 +69,12 @@ MxcImageProvider::download(const QString &id,
 
         if (requestedSize.isValid() && !encryptionInfo) {
                 QString fileName =
-                  QString("%1_%2x%3_crop")
+                  QString("%1_%2x%3_%4")
                     .arg(QString::fromUtf8(id.toUtf8().toBase64(QByteArray::Base64UrlEncoding |
                                                                 QByteArray::OmitTrailingEquals)))
                     .arg(requestedSize.width())
-                    .arg(requestedSize.height());
+                    .arg(requestedSize.height())
+                    .arg(crop ? "crop" : "scale");
                 QFileInfo fileInfo(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
                                      "/media_cache",
                                    fileName);
@@ -85,7 +97,7 @@ MxcImageProvider::download(const QString &id,
                 opts.mxc_url = "mxc://" + id.toStdString();
                 opts.width   = requestedSize.width() > 0 ? requestedSize.width() : -1;
                 opts.height  = requestedSize.height() > 0 ? requestedSize.height() : -1;
-                opts.method  = "crop";
+                opts.method  = crop ? "crop" : "scale";
                 http::client()->get_thumbnail(
                   opts,
                   [fileInfo, requestedSize, then, id](const std::string &res,

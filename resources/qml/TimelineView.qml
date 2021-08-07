@@ -13,7 +13,7 @@ import QtGraphicalEffects 1.0
 import QtQuick 2.9
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
-import QtQuick.Window 2.2
+import QtQuick.Window 2.13
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
 
@@ -247,6 +247,25 @@ Item {
     NhekoDropArea {
         anchors.fill: parent
         roomid: room ? room.roomId : ""
+    }
+
+    Connections {
+        function onOpenReadReceiptsDialog(rr) {
+            var dialog = readReceiptsDialog.createObject(timelineRoot, {
+                "readReceipts": rr,
+                "room": room
+            });
+            dialog.show();
+        }
+
+        function onShowRawMessageDialog(rawMessage) {
+            var dialog = rawMessageDialog.createObject(timelineRoot, {
+                "rawMessage": rawMessage
+            });
+            dialog.show();
+        }
+
+        target: room
     }
 
 }

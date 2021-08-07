@@ -48,7 +48,8 @@ public:
         // user cache stores user keys
         std::optional<UserKeyCache> userKeys(const std::string &user_id);
         std::map<std::string, std::optional<UserKeyCache>> getMembersWithKeys(
-          const std::string &room_id);
+          const std::string &room_id,
+          bool verified_only);
         void updateUserKeys(const std::string &sync_token,
                             const mtx::responses::QueryKeys &keyQuery);
         void markUserKeysOutOfDate(lmdb::txn &txn,
@@ -290,15 +291,9 @@ public:
         std::optional<std::string> secret(const std::string name);
 
         template<class T>
-        static constexpr bool isStateEvent(const mtx::events::StateEvent<T> &)
-        {
-                return true;
-        }
-        template<class T>
-        static constexpr bool isStateEvent(const mtx::events::Event<T> &)
-        {
-                return false;
-        }
+        constexpr static bool isStateEvent_ =
+          std::is_same_v<std::remove_cv_t<std::remove_reference_t<T>>,
+                         mtx::events::StateEvent<decltype(std::declval<T>().content)>>;
 
         static int compare_state_key(const MDB_val *a, const MDB_val *b)
         {
@@ -415,11 +410,27 @@ private:
                 }
 
                 std::visit(
-                  [&txn, &statesdb, &stateskeydb, &eventsDb](auto e) {
-                          if constexpr (isStateEvent(e)) {
+                  [&txn, &statesdb, &stateskeydb, &eventsDb, &membersdb](const auto &e) {
+                          if constexpr (isStateEvent_<decltype(e)>) {
                                   eventsDb.put(txn, e.event_id, json(e).dump());
 
-                                  if (e.type != EventType::Unsupported) {
+                                  if (std::is_same_v<
+                                        std::remove_cv_t<std::remove_reference_t<decltype(e)>>,
+                                        StateEvent<mtx::events::msg::Redacted>>) {
+                                          if (e.type == EventType::RoomMember)
+                                                  membersdb.del(txn, e.state_key, "");
+                                          else if (e.state_key.empty())
+                                                  statesdb.del(txn, to_string(e.type));
+                                          else
+                                                  stateskeydb.del(
+                                                    txn,
+                                                    to_string(e.type),
+                                                    json::object({
+                                                                   {"key", e.state_key},
+                                                                   {"id", e.event_id},
+                                                                 })
+                                                      .dump());
+                                  } else if (e.type != EventType::Unsupported) {
                                           if (e.state_key.empty())
                                                   statesdb.put(
                                                     txn, to_string(e.type), json(e).dump());
@@ -688,6 +699,8 @@ private:
         lmdb::dbi inboundMegolmSessionDb_;
         lmdb::dbi outboundMegolmSessionDb_;
         lmdb::dbi megolmSessionDataDb_;
+
+        lmdb::dbi encryptedRooms_;
 
         QString localUserId_;
         QString cacheDirectory_;

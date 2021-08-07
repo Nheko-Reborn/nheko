@@ -162,6 +162,8 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                                          "MtxEvent",
                                          "Can't instantiate enum!");
         qmlRegisterUncreatableMetaObject(
+          olm::staticMetaObject, "im.nheko", 1, 0, "Olm", "Can't instantiate enum!");
+        qmlRegisterUncreatableMetaObject(
           crypto::staticMetaObject, "im.nheko", 1, 0, "Crypto", "Can't instantiate enum!");
         qmlRegisterUncreatableMetaObject(verification::staticMetaObject,
                                          "im.nheko",
@@ -210,6 +212,12 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           0,
           "InviteesModel",
           "InviteesModel needs to be instantiated on the C++ side");
+        qmlRegisterUncreatableType<ReadReceiptsProxy>(
+          "im.nheko",
+          1,
+          0,
+          "ReadReceiptsProxy",
+          "ReadReceiptsProxy needs to be instantiated on the C++ side");
 
         static auto self = this;
         qmlRegisterSingletonType<MainWindow>(
