@@ -2,7 +2,6 @@ name: Bug Report
 description: Create a report to help us improve
 #title: "[Bug]: "
 labels: [bug]
-assignees:
 body:
   - type: markdown
     attributes:
@@ -77,7 +76,7 @@ body:
         - Haiku
         - Other
   - type: dropdown
-    id: os
+    id: install-method
     attributes:
       label: Installation method
       multiple: true
