@@ -1,0 +1,151 @@
+name: Bug Report
+description: Create a report to help us improve
+#title: "[Bug]: "
+labels: [bug]
+assignees:
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+				Please try to fill out all fields to the best of your ability.
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+      placeholder: Enter your description here.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: To Reproduce
+      description: Steps to reproduce the behavior:
+      placeholder: |
+			  1. Go to '...'
+				2. Click on '....'
+				3. Scroll down to '....'
+				4. See error
+      value: |
+			  1. Go to '...'
+				2. Click on '....'
+				3. Scroll down to '....'
+				4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: behaviour
+    attributes:
+      label: What happened?
+      description: A clear and concise description of what actually happened.
+    validations:
+      required: false
+  - type: textarea
+    id: expected-behaviour
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: false
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+			placeholder: Upload your screenshots here. You can paste them or click on "Attach files".
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Get the version from the settings menu (bottom left corner)
+			placeholder: 0.0.1-deafbeef
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      multiple: true
+      options:
+        - Linux
+        - macOS
+        - Windows
+        - BSD
+				- Haiku
+				- Other
+  - type: dropdown
+    id: os
+    attributes:
+      label: Installation method
+      multiple: true
+      options:
+        - Flathub
+        - Flatpak nightly repo or download
+        - AppImage
+        - Windows download
+        - macOS DMG file
+				- Some repository (AUR, homebrew, distribution repository, PPA, etc)
+				- Local build
+  - type: input
+    id: qt-version
+    attributes:
+      label: Qt version
+      description: What version of Qt does your system use? (If you compiled Nheko yourself.)
+			placeholder: 5.15.2.
+    validations:
+      required: false
+  - type: input
+    id: compiler
+    attributes:
+      label: C++ compiler
+      description: What compiler (and version) did you use (if you compiled Nheko yourself)?
+			placeholder: gcc-9000
+    validations:
+      required: false
+  - type: input
+    id: de
+    attributes:
+      label: Desktop Environment
+      description: If you are on Linux, describe your desktop environment.
+			placeholder: KDE with i3 as the window manager
+    validations:
+      required: false
+  - type: checkboxes
+    id: profiles
+    attributes:
+      label: Did you use profiles?
+      description: Usually by passing the --profile command line parameter. If you don't know, answer 'no'.
+      options:
+        - label: Profiles used?
+          required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+			placeholder: |
+			  The log file is located in
+					Linux: ~/.cache/nheko/
+					macOS: ~/Library/Caches/nheko or /Library/Caches/nheko
+					Windows: C:/Users/<USER>/AppData/Local/nheko/cache
+      render: shell
+  - type: textarea
+    id: backtrace
+    attributes:
+      label: Backtrace
+      description: If the program crashed send a backtrace.
+			placeholder: |
+			  You can retrieve a backtrace by building nheko with -DCMAKE_BUILD_TYPE=Debug and running it through gdb or lldb.
+
+				gdb ./build/nheko
+
+				>> run
+
+				... Make the program crash
+
+				>> bt
+      render: shell
+
