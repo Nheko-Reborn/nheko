@@ -131,7 +131,6 @@ void
 RoomDirectoryModel::fetchMore(const QModelIndex &)
 {
         nhlog::net()->debug("Fetching more rooms from mtxclient...");
-        nhlog::net()->debug("Prev batch: {} | Next batch: {}", prevBatch_, nextBatch_);
 
         mtx::requests::PublicRooms req;
         req.limit                      = limit_;
@@ -183,5 +182,5 @@ RoomDirectoryModel::displayRooms(std::vector<mtx::responses::PublicRoomsChunk> f
                 canFetchMore_ = false;
         }
 
-        prevBatch_ = std::exchange(nextBatch_, next_batch);
+        prevBatch_ = next_batch;
 }
