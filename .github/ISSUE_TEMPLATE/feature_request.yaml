@@ -42,7 +42,7 @@ body:
     id: version-check
     attributes:
       label: Happens in the latest version
-      description: Please verified, that this is still missing in the latest version.
+      description: Please verify that this is still missing in the latest version.
       options:
         - label: Yes, this feature is still missing.
           required: true
