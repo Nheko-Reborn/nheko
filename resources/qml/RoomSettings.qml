@@ -15,8 +15,8 @@ ApplicationWindow {
 
     property var roomSettings
 
-    minimumWidth: 420
-    minimumHeight: 650
+    minimumWidth: 450
+    minimumHeight: 680
     palette: Nheko.colors
     color: Nheko.colors.window
     modality: Qt.NonModal
