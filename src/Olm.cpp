@@ -425,6 +425,8 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
                                                     }
                                             });
 
+                                        nhlog::crypto()->info("Storing secret {}",
+                                                              secret_name->second);
                                         cache::client()->storeSecret(secret_name->second,
                                                                      e->content.secret);
 

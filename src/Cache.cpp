@@ -720,20 +720,34 @@ Cache::storeSecret(const std::string name, const std::string secret)
 {
         auto settings = UserSettings::instance();
         auto job      = new QKeychain::WritePasswordJob(QCoreApplication::applicationName());
+        job->setAutoDelete(true);
         job->setInsecureFallback(true);
-        job->setKey("matrix." +
-                    QString(QCryptographicHash::hash(settings->profile().toUtf8(),
-                                                     QCryptographicHash::Sha256)) +
-                    "." + name.c_str());
+
+        // job->setSettings(new QSettings(job));
+        job->setKey(
+          "matrix." +
+          QString(QCryptographicHash::hash(settings->profile().toUtf8(), QCryptographicHash::Sha256)
+                    .toBase64()) +
+          "." + QString::fromStdString(name));
+
         job->setTextData(QString::fromStdString(secret));
-        QObject::connect(job, &QKeychain::Job::finished, job, [name, this](QKeychain::Job *job) {
-                if (job->error()) {
-                        nhlog::db()->warn(
-                          "Storing secret '{}' failed: {}", name, job->errorString().toStdString());
-                } else {
-                        emit secretChanged(name);
-                }
-        });
+        QObject::connect(
+          job,
+          &QKeychain::WritePasswordJob::finished,
+          this,
+          [name, this](QKeychain::Job *job) {
+                  if (job->error()) {
+                          nhlog::db()->warn("Storing secret '{}' failed: {}",
+                                            name,
+                                            job->errorString().toStdString());
+                  } else {
+                          // if we emit the signal directly, qtkeychain breaks and won't execute new
+                          // jobs. You can't start a job from the finish signal of a job.
+                          QTimer::singleShot(100, [this, name] { emit secretChanged(name); });
+                          nhlog::db()->info("Storing secret '{}' successful", name);
+                  }
+          },
+          Qt::ConnectionType::DirectConnection);
         job->start();
 }
 
@@ -744,10 +758,11 @@ Cache::deleteSecret(const std::string name)
         QKeychain::DeletePasswordJob job(QCoreApplication::applicationName());
         job.setAutoDelete(false);
         job.setInsecureFallback(true);
-        job.setKey("matrix." +
-                   QString(QCryptographicHash::hash(settings->profile().toUtf8(),
-                                                    QCryptographicHash::Sha256)) +
-                   "." + name.c_str());
+        job.setKey(
+          "matrix." +
+          QString(QCryptographicHash::hash(settings->profile().toUtf8(), QCryptographicHash::Sha256)
+                    .toBase64()) +
+          "." + QString::fromStdString(name));
         // FIXME(Nico): Nested event loops are dangerous. Some other slots may resume in the mean
         // time!
         QEventLoop loop;
@@ -765,10 +780,11 @@ Cache::secret(const std::string name)
         QKeychain::ReadPasswordJob job(QCoreApplication::applicationName());
         job.setAutoDelete(false);
         job.setInsecureFallback(true);
-        job.setKey("matrix." +
-                   QString(QCryptographicHash::hash(settings->profile().toUtf8(),
-                                                    QCryptographicHash::Sha256)) +
-                   "." + name.c_str());
+        job.setKey(
+          "matrix." +
+          QString(QCryptographicHash::hash(settings->profile().toUtf8(), QCryptographicHash::Sha256)
+                    .toBase64()) +
+          "." + QString::fromStdString(name));
         // FIXME(Nico): Nested event loops are dangerous. Some other slots may resume in the mean
         // time!
         QEventLoop loop;
