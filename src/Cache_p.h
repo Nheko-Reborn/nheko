@@ -414,24 +414,25 @@ private:
                           if constexpr (isStateEvent_<decltype(e)>) {
                                   eventsDb.put(txn, e.event_id, json(e).dump());
 
-                                  if (std::is_same_v<
-                                        std::remove_cv_t<std::remove_reference_t<decltype(e)>>,
-                                        StateEvent<mtx::events::msg::Redacted>>) {
-                                          if (e.type == EventType::RoomMember)
-                                                  membersdb.del(txn, e.state_key, "");
-                                          else if (e.state_key.empty())
-                                                  statesdb.del(txn, to_string(e.type));
-                                          else
-                                                  stateskeydb.del(
-                                                    txn,
-                                                    to_string(e.type),
-                                                    json::object({
-                                                                   {"key", e.state_key},
-                                                                   {"id", e.event_id},
-                                                                 })
-                                                      .dump());
-                                  } else if (e.type != EventType::Unsupported) {
-                                          if (e.state_key.empty())
+                                  if (e.type != EventType::Unsupported) {
+                                          if (std::is_same_v<
+                                                std::remove_cv_t<
+                                                  std::remove_reference_t<decltype(e)>>,
+                                                StateEvent<mtx::events::msg::Redacted>>) {
+                                                  if (e.type == EventType::RoomMember)
+                                                          membersdb.del(txn, e.state_key, "");
+                                                  else if (e.state_key.empty())
+                                                          statesdb.del(txn, to_string(e.type));
+                                                  else
+                                                          stateskeydb.del(
+                                                            txn,
+                                                            to_string(e.type),
+                                                            json::object({
+                                                                           {"key", e.state_key},
+                                                                           {"id", e.event_id},
+                                                                         })
+                                                              .dump());
+                                          } else if (e.state_key.empty())
                                                   statesdb.put(
                                                     txn, to_string(e.type), json(e).dump());
                                           else
