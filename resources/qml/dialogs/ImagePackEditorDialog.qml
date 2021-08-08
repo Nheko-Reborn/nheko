@@ -171,7 +171,7 @@ ApplicationWindow {
                     }
 
                     MatrixText {
-                        text: qsTr("Attrbution")
+                        text: qsTr("Attribution")
                     }
 
                     MatrixTextField {
