@@ -8,6 +8,7 @@
 #include <QFontDatabase>
 #include <QFrame>
 #include <QProcessEnvironment>
+#include <QSettings>
 #include <QSharedPointer>
 #include <QWidget>
 
@@ -106,6 +107,8 @@ class UserSettings : public QObject
 public:
         static QSharedPointer<UserSettings> instance();
         static void initialize(std::optional<QString> profile);
+
+        QSettings *qsettings() { return &settings; }
 
         enum class Presence
         {
@@ -315,6 +318,8 @@ private:
         QString deviceId_;
         QString homeserver_;
         QStringList hiddenTags_;
+
+        QSettings settings;
 
         static QSharedPointer<UserSettings> instance_;
 };

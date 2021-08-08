@@ -19,7 +19,6 @@
 #include <QResizeEvent>
 #include <QScrollArea>
 #include <QScroller>
-#include <QSettings>
 #include <QSpinBox>
 #include <QStandardPaths>
 #include <QString>
@@ -63,7 +62,6 @@ UserSettings::initialize(std::optional<QString> profile)
 void
 UserSettings::load(std::optional<QString> profile)
 {
-        QSettings settings;
         tray_        = settings.value("user/window/tray", false).toBool();
         startInTray_ = settings.value("user/window/start_in_tray", false).toBool();
 
@@ -601,7 +599,6 @@ UserSettings::applyTheme()
 void
 UserSettings::save()
 {
-        QSettings settings;
         settings.beginGroup("user");
 
         settings.beginGroup("window");

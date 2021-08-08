@@ -722,8 +722,8 @@ Cache::storeSecret(const std::string name, const std::string secret)
         auto job      = new QKeychain::WritePasswordJob(QCoreApplication::applicationName());
         job->setAutoDelete(true);
         job->setInsecureFallback(true);
+        job->setSettings(UserSettings::instance()->qsettings());
 
-        // job->setSettings(new QSettings(job));
         job->setKey(
           "matrix." +
           QString(QCryptographicHash::hash(settings->profile().toUtf8(), QCryptographicHash::Sha256)
@@ -731,6 +731,7 @@ Cache::storeSecret(const std::string name, const std::string secret)
           "." + QString::fromStdString(name));
 
         job->setTextData(QString::fromStdString(secret));
+
         QObject::connect(
           job,
           &QKeychain::WritePasswordJob::finished,
@@ -758,11 +759,14 @@ Cache::deleteSecret(const std::string name)
         QKeychain::DeletePasswordJob job(QCoreApplication::applicationName());
         job.setAutoDelete(false);
         job.setInsecureFallback(true);
+        job.setSettings(UserSettings::instance()->qsettings());
+
         job.setKey(
           "matrix." +
           QString(QCryptographicHash::hash(settings->profile().toUtf8(), QCryptographicHash::Sha256)
                     .toBase64()) +
           "." + QString::fromStdString(name));
+
         // FIXME(Nico): Nested event loops are dangerous. Some other slots may resume in the mean
         // time!
         QEventLoop loop;
@@ -780,11 +784,14 @@ Cache::secret(const std::string name)
         QKeychain::ReadPasswordJob job(QCoreApplication::applicationName());
         job.setAutoDelete(false);
         job.setInsecureFallback(true);
+        job.setSettings(UserSettings::instance()->qsettings());
+
         job.setKey(
           "matrix." +
           QString(QCryptographicHash::hash(settings->profile().toUtf8(), QCryptographicHash::Sha256)
                     .toBase64()) +
           "." + QString::fromStdString(name));
+
         // FIXME(Nico): Nested event loops are dangerous. Some other slots may resume in the mean
         // time!
         QEventLoop loop;
