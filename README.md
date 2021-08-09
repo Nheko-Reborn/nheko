@@ -213,7 +213,7 @@ sudo emerge -a ">=dev-qt/qtgui-5.10.0" media-libs/fontconfig dev-libs/qtkeychain
 
 ```bash
 # Build requirements + qml modules needed at runtime (you may not need all of them, but the following seem to work according to reports):
-sudo apt install g++ cmake zlib1g-dev libssl-dev qt{base,declarative,tools,multimedia,quickcontrols2-}5-dev libqt5svg5-dev libboost-system-dev libboost-thread-dev libboost-iostreams-dev libolm-dev liblmdb++-dev libcmark-dev nlohmann-json3-dev libspdlog-dev libgtest-dev qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,-labs-platform,graphicaleffects,quick-controls2} qt5keychain-dev libevent-dev
+sudo apt install g++ cmake zlib1g-dev libssl-dev qt{base,declarative,tools,multimedia,quickcontrols2-}5-dev libqt5svg5-dev libboost-system-dev libboost-thread-dev libboost-iostreams-dev libolm-dev liblmdb++-dev libcmark-dev nlohmann-json3-dev libspdlog-dev libgtest-dev qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,-labs-platform,graphicaleffects,quick-controls2} qt5keychain-dev libevent-dev libcurl-dev
 ```
 This will install all dependencies, except for tweeny (use bundled tweeny)
 and mtxclient (needs to be build separately).
