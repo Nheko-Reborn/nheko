@@ -190,7 +190,12 @@ Page {
 
                 TapHandler {
                     margin: -Nheko.paddingSmall
-                    onSingleTapped: Rooms.setCurrentRoom(roomId)
+                    onSingleTapped: {
+                        if (!Rooms.currentRoom || Rooms.currentRoom.roomId !== roomId)
+                            Rooms.setCurrentRoom(roomId);
+                        else
+                            Rooms.resetCurrentRoom();
+                    }
                     onLongPressed: {
                         if (!isInvite)
                             roomContextMenu.show(roomId, tags);
