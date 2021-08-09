@@ -287,7 +287,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                                          "Error: Only enums");
 
         qmlRegisterType<RoomDirectoryModel>(
-          "im.nheko.RoomDirectoryModel", 1, 0, "RoomDirectoryModel");
+          "im.nheko", 1, 0, "RoomDirectoryModel");
 
 #ifdef USE_QUICK_VIEW
         view      = new QQuickView(parent);

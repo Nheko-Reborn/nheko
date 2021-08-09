@@ -6,7 +6,6 @@ import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import im.nheko 1.0
-import im.nheko.RoomDirectoryModel 1.0
 
 ApplicationWindow {
     id: roomDirectoryWindow
@@ -40,7 +39,7 @@ ApplicationWindow {
             Layout.fillWidth: true
 
             font.pixelSize: fontMetrics.font.pixelSize
-            padding: Math.ceil(1.5 * Nheko.paddingSmall)
+            padding: Nheko.paddingMedium
             color: Nheko.colors.text
             placeholderText: qsTr("Search for public rooms")
             onTextChanged: searchTimer.restart()
@@ -57,7 +56,6 @@ ApplicationWindow {
     ListView {
         id: roomDirView
         anchors.fill: parent
-        height: parent.height - searchBarLayout.height
         model: RoomDirectoryModel {
             id: roomDir
         }
@@ -67,7 +65,7 @@ ApplicationWindow {
             property color background: Nheko.colors.window
             property color importantText: Nheko.colors.text
             property color unimportantText: Nheko.colors.buttonText
-            property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 4)
+            property int avatarSize: fontMetrics.lineSpacing * 4
 
             color: background
             
@@ -121,7 +119,7 @@ ApplicationWindow {
                         Layout.preferredWidth: parent.width
                         spacing: Nheko.paddingSmall
                         Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-			Layout.preferredHeight: Math.ceil(fontMetrics.lineSpacing * 4)
+			Layout.preferredHeight: fontMetrics.lineSpacing * 4
 
                         Label {
                             id: roomTopic

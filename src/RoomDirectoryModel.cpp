@@ -42,9 +42,7 @@ RoomDirectoryModel::resetDisplayedData()
         nextBatch_    = "";
         canFetchMore_ = true;
 
-        beginRemoveRows(QModelIndex(), 0, static_cast<int>(publicRoomsData_.size()));
         publicRoomsData_.clear();
-        endRemoveRows();
 
         endResetModel();
 }
@@ -87,8 +85,7 @@ RoomDirectoryModel::getViasForRoom(const std::vector<std::string> &aliases)
 
         std::transform(
           aliases.begin(), aliases.end(), std::back_inserter(vias), [](const auto &alias) {
-                  const auto roomAliasDelimiter = ":";
-                  return alias.substr(alias.find(roomAliasDelimiter) + 1);
+                  return alias.substr(alias.find(":") + 1);
           });
 
         return vias;

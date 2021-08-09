@@ -565,7 +565,6 @@ Component {
                     ToolTip.text: qsTr("Room directory")
                     Layout.margins: Nheko.paddingMedium
 			onClicked: {
-                        console.debug("Roomdir clicked");
                         var win = roomDirectoryComponent.createObject(timelineRoot);
                         win.show();
                     } 

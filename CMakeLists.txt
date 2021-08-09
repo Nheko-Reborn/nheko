@@ -359,8 +359,8 @@ set(SRC_FILES
 	src/TrayIcon.cpp
 	src/UserSettingsPage.cpp
 	src/UsersModel.cpp
-	src/RoomsModel.cpp
 	src/RoomDirectoryModel.cpp
+	src/RoomsModel.cpp
 	src/Utils.cpp
 	src/WebRTCSession.cpp
 	src/WelcomePage.cpp
@@ -565,8 +565,8 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/TrayIcon.h
 	src/UserSettingsPage.h
 	src/UsersModel.h
-	src/RoomsModel.h
 	src/RoomDirectoryModel.h
+	src/RoomsModel.h
 	src/WebRTCSession.h
 	src/WelcomePage.h
 	src/ReadReceiptsModel.h

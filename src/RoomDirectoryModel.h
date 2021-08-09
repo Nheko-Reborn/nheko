@@ -51,7 +51,6 @@ public:
 
         inline bool canFetchMore(const QModelIndex &) const override
         {
-                nhlog::net()->debug("determining if can fetch more");
                 return canFetchMore_;
         }
         void fetchMore(const QModelIndex &) override;
