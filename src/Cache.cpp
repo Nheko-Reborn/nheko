@@ -1586,26 +1586,32 @@ Cache::roomsWithStateUpdates(const mtx::responses::Sync &res)
 RoomInfo
 Cache::singleRoomInfo(const std::string &room_id)
 {
-        auto txn      = ro_txn(env_);
-        auto statesdb = getStatesDb(txn, room_id);
+        auto txn = ro_txn(env_);
 
-        std::string_view data;
+        try {
+                auto statesdb = getStatesDb(txn, room_id);
 
-        // Check if the room is joined.
-        if (roomsDb_.get(txn, room_id, data)) {
-                try {
-                        RoomInfo tmp     = json::parse(data);
-                        tmp.member_count = getMembersDb(txn, room_id).size(txn);
-                        tmp.join_rule    = getRoomJoinRule(txn, statesdb);
-                        tmp.guest_access = getRoomGuestAccess(txn, statesdb);
+                std::string_view data;
 
-                        return tmp;
-                } catch (const json::exception &e) {
-                        nhlog::db()->warn("failed to parse room info: room_id ({}), {}: {}",
-                                          room_id,
-                                          std::string(data.data(), data.size()),
-                                          e.what());
+                // Check if the room is joined.
+                if (roomsDb_.get(txn, room_id, data)) {
+                        try {
+                                RoomInfo tmp     = json::parse(data);
+                                tmp.member_count = getMembersDb(txn, room_id).size(txn);
+                                tmp.join_rule    = getRoomJoinRule(txn, statesdb);
+                                tmp.guest_access = getRoomGuestAccess(txn, statesdb);
+
+                                return tmp;
+                        } catch (const json::exception &e) {
+                                nhlog::db()->warn("failed to parse room info: room_id ({}), {}: {}",
+                                                  room_id,
+                                                  std::string(data.data(), data.size()),
+                                                  e.what());
+                        }
                 }
+        } catch (const lmdb::error &e) {
+                nhlog::db()->warn(
+                  "failed to read room info from db: room_id ({}), {}", room_id, e.what());
         }
 
         return RoomInfo();
