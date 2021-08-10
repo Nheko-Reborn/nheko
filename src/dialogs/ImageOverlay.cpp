@@ -31,6 +31,8 @@ ImageOverlay::ImageOverlay(QPixmap image, QWidget *parent)
 
         connect(this, SIGNAL(closing()), this, SLOT(close()));
 
+        close_shortcut_ = new QShortcut(QKeySequence(Qt::Key_Escape), this, SLOT(close()));
+
         raise();
 }
 
