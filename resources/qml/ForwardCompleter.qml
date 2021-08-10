@@ -109,15 +109,17 @@ Popup {
     }
 
     Connections {
-        onCompletionSelected: {
+        function onCompletionSelected(id) {
             room.forwardMessage(messageContextMenu.eventId, id);
             forwardMessagePopup.close();
         }
-        onCountChanged: {
+
+        function onCountChanged() {
             if (completerPopup.count > 0 && (completerPopup.currentIndex < 0 || completerPopup.currentIndex >= completerPopup.count))
                 completerPopup.currentIndex = 0;
 
         }
+
         target: completerPopup
     }
 

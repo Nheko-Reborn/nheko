@@ -7,7 +7,7 @@ import "./voip"
 import QtQuick 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
-import QtQuick.Window 2.2
+import QtQuick.Window 2.13
 import im.nheko 1.0
 
 Rectangle {
@@ -261,18 +261,24 @@ Rectangle {
                 background: null
 
                 Connections {
-                    onRoomChanged: {
+                    function onRoomChanged() {
                         messageInput.clear();
-                        messageInput.append(room.input.text());
+                        if (room)
+                            messageInput.append(room.input.text());
+
                         messageInput.completerTriggeredAt = -1;
                         popup.completerName = "";
                         messageInput.forceActiveFocus();
                     }
+
                     target: timelineView
                 }
 
                 Connections {
-                    onCompletionClicked: messageInput.insertCompletion(completion)
+                    function onCompletionClicked(completion) {
+                        messageInput.insertCompletion(completion);
+                    }
+
                     target: popup
                 }
 
@@ -284,28 +290,39 @@ Rectangle {
                 }
 
                 Connections {
-                    ignoreUnknownSignals: true
-                    onInsertText: {
+                    function onInsertText(text) {
                         messageInput.remove(messageInput.selectionStart, messageInput.selectionEnd);
                         messageInput.insert(messageInput.cursorPosition, text);
                     }
-                    onTextChanged: {
+
+                    function onTextChanged(newText) {
                         messageInput.text = newText;
                         messageInput.cursorPosition = newText.length;
                     }
+
+                    ignoreUnknownSignals: true
                     target: room ? room.input : null
                 }
 
                 Connections {
+                    function onReplyChanged() {
+                        messageInput.forceActiveFocus();
+                    }
+
+                    function onEditChanged() {
+                        messageInput.forceActiveFocus();
+                    }
+
                     ignoreUnknownSignals: true
-                    onReplyChanged: messageInput.forceActiveFocus()
-                    onEditChanged: messageInput.forceActiveFocus()
                     target: room
                 }
 
                 Connections {
+                    function onFocusInput() {
+                        messageInput.forceActiveFocus();
+                    }
+
                     target: TimelineManager
-                    onFocusInput: messageInput.forceActiveFocus()
                 }
 
                 MouseArea {
@@ -331,7 +348,7 @@ Rectangle {
             image: ":/icons/icons/ui/sticky-note-solid.svg"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Stickers")
-            onClicked: stickerPopup.visible ? stickerPopup.close() : stickerPopup.show(stickerButton, room.roomId(), function(row) {
+            onClicked: stickerPopup.visible ? stickerPopup.close() : stickerPopup.show(stickerButton, room.roomId, function(row) {
                 room.input.sticker(stickerPopup.model.sourceModel, row);
                 TimelineManager.focusMessageInput();
             })
@@ -355,7 +372,7 @@ Rectangle {
             image: ":/icons/icons/ui/smile.png"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Emoji")
-            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(function(emoji) {
+            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
                 messageInput.insert(messageInput.cursorPosition, emoji);
                 TimelineManager.focusMessageInput();
             })

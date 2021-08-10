@@ -8,9 +8,9 @@
 #include "MatrixClient.h"
 #include "TimelineModel.h"
 
-Permissions::Permissions(TimelineModel *parent)
+Permissions::Permissions(QString roomId, QObject *parent)
   : QObject(parent)
-  , room(parent)
+  , roomId_(roomId)
 {
         invalidate();
 }
@@ -19,7 +19,7 @@ void
 Permissions::invalidate()
 {
         pl = cache::client()
-               ->getStateEvent<mtx::events::state::PowerLevels>(room->roomId().toStdString())
+               ->getStateEvent<mtx::events::state::PowerLevels>(roomId_.toStdString())
                .value_or(mtx::events::StateEvent<mtx::events::state::PowerLevels>{})
                .content;
 }

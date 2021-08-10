@@ -30,19 +30,11 @@ qmlMessageHandler(QtMsgType type, const QMessageLogContext &context, const QStri
         const char *function = context.function ? context.function : "";
 
         if (
-          // Surpress binding wrning for now, as we can't set restore mode to keep compat with
-          // qt 5.10
-          msg.contains(QStringLiteral(
-            "QML Binding: Not restoring previous value because restoreMode has not been set.")) ||
           // The default style has the point size set. If you use pixel size anywhere, you get
           // that warning, which is useless, since sometimes you need the pixel size to match the
           // text to the size of the outer element for example. This is done in the avatar and
           // without that you get one warning for every Avatar displayed, which is stupid!
-          msg.endsWith(QStringLiteral("Both point size and pixel size set. Using pixel size.")) ||
-          // The new syntax breaks rebinding on Qt < 5.15. Until we can drop that, we still need it.
-          msg.endsWith(QStringLiteral(
-            "QML Connections: Implicitly defined onFoo properties in Connections are "
-            "deprecated. Use this syntax instead: function onFoo(<arguments>) { ... }")))
+          msg.endsWith(QStringLiteral("Both point size and pixel size set. Using pixel size.")))
                 return;
 
         switch (type) {

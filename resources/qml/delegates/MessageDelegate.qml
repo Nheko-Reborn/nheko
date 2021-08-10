@@ -29,6 +29,8 @@ Item {
     required property string roomTopic
     required property string roomName
     required property string callType
+    required property int encryptionError
+    required property int relatedEventCacheBuster
 
     height: chooser.childrenRect.height
 
@@ -189,6 +191,16 @@ Item {
         }
 
         DelegateChoice {
+            roleValue: MtxEvent.Encrypted
+
+            Encrypted {
+                encryptionError: d.encryptionError
+                eventId: d.eventId
+            }
+
+        }
+
+        DelegateChoice {
             roleValue: MtxEvent.Name
 
             NoticeMessage {
@@ -231,7 +243,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: qsTr("%1 created and configured room: %2").arg(d.userName).arg(room.roomId())
+                formatted: qsTr("%1 created and configured room: %2").arg(d.userName).arg(room.roomId)
             }
 
         }
@@ -301,7 +313,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: room.formatPowerLevelEvent(d.eventId)
+                formatted: d.relatedEventCacheBuster, room.formatPowerLevelEvent(d.eventId)
             }
 
         }
@@ -313,7 +325,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: room.formatJoinRuleEvent(d.eventId)
+                formatted: d.relatedEventCacheBuster, room.formatJoinRuleEvent(d.eventId)
             }
 
         }
@@ -325,7 +337,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: room.formatHistoryVisibilityEvent(d.eventId)
+                formatted: d.relatedEventCacheBuster, room.formatHistoryVisibilityEvent(d.eventId)
             }
 
         }
@@ -337,7 +349,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: room.formatGuestAccessEvent(d.eventId)
+                formatted: d.relatedEventCacheBuster, room.formatGuestAccessEvent(d.eventId)
             }
 
         }
@@ -349,7 +361,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: room.formatMemberEvent(d.eventId)
+                formatted: d.relatedEventCacheBuster, room.formatMemberEvent(d.eventId)
             }
 
         }

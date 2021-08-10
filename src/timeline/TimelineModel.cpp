@@ -25,11 +25,12 @@
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
+#include "MemberList.h"
 #include "MxcImageProvider.h"
 #include "Olm.h"
+#include "ReadReceiptsModel.h"
 #include "TimelineViewManager.h"
 #include "Utils.h"
-#include "dialogs/RawMessage.h"
 
 Q_DECLARE_METATYPE(QModelIndex)
 
@@ -307,6 +308,15 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
         case qml_mtx_events::KeyVerificationDone:
         case qml_mtx_events::KeyVerificationReady:
                 return mtx::events::EventType::RoomMessage;
+                //! m.image_pack, currently im.ponies.room_emotes
+        case qml_mtx_events::ImagePackInRoom:
+                return mtx::events::EventType::ImagePackRooms;
+        //! m.image_pack, currently im.ponies.user_emotes
+        case qml_mtx_events::ImagePackInAccountData:
+                return mtx::events::EventType::ImagePackInAccountData;
+        //! m.image_pack.rooms, currently im.ponies.emote_rooms
+        case qml_mtx_events::ImagePackRooms:
+                return mtx::events::EventType::ImagePackRooms;
         default:
                 return mtx::events::EventType::Unsupported;
         };
@@ -317,6 +327,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
   , events(room_id.toStdString(), this)
   , room_id_(room_id)
   , manager_(manager)
+  , permissions_{room_id}
 {
         lastMessage_.timestamp = 0;
 
@@ -324,6 +335,10 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
               cache::client()->getStateEvent<mtx::events::state::Create>(room_id.toStdString()))
                 this->isSpace_ = create->content.type == mtx::events::state::room_type::space;
         this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
+
+        // this connection will simplify adding the plainRoomNameChanged() signal everywhere that it
+        // needs to be
+        connect(this, &TimelineModel::roomNameChanged, this, &TimelineModel::plainRoomNameChanged);
 
         connect(
           this,
@@ -344,6 +359,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
           &EventStore::dataChanged,
           this,
           [this](int from, int to) {
+                  relatedEventCacheBuster++;
                   nhlog::ui()->debug(
                     "data changed {} to {}", events.size() - to - 1, events.size() - from - 1);
                   emit dataChanged(index(events.size() - to - 1, 0),
@@ -436,6 +452,7 @@ TimelineModel::roleNames() const
           {IsEditable, "isEditable"},
           {IsEncrypted, "isEncrypted"},
           {Trustlevel, "trustlevel"},
+          {EncryptionError, "encryptionError"},
           {ReplyTo, "replyTo"},
           {Reactions, "reactions"},
           {RoomId, "roomId"},
@@ -443,6 +460,7 @@ TimelineModel::roleNames() const
           {RoomTopic, "roomTopic"},
           {CallType, "callType"},
           {Dump, "dump"},
+          {RelatedEventCacheBuster, "relatedEventCacheBuster"},
         };
 }
 int
@@ -622,6 +640,9 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 return crypto::Trust::Unverified;
         }
 
+        case EncryptionError:
+                return events.decryptionError(event_id(event));
+
         case ReplyTo:
                 return QVariant(QString::fromStdString(relations(event).reply_to().value_or("")));
         case Reactions: {
@@ -673,9 +694,12 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 m.insert(names[RoomName], data(event, static_cast<int>(RoomName)));
                 m.insert(names[RoomTopic], data(event, static_cast<int>(RoomTopic)));
                 m.insert(names[CallType], data(event, static_cast<int>(CallType)));
+                m.insert(names[EncryptionError], data(event, static_cast<int>(EncryptionError)));
 
                 return QVariant(m);
         }
+        case RelatedEventCacheBuster:
+                return relatedEventCacheBuster;
         default:
                 return QVariant();
         }
@@ -1015,14 +1039,13 @@ TimelineModel::formatDateSeparator(QDate date) const
 }
 
 void
-TimelineModel::viewRawMessage(QString id) const
+TimelineModel::viewRawMessage(QString id)
 {
         auto e = events.get(id.toStdString(), "", false);
         if (!e)
                 return;
         std::string ev = mtx::accessors::serialize_event(*e).dump(4);
-        auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
-        Q_UNUSED(dialog);
+        emit showRawMessageDialog(QString::fromStdString(ev));
 }
 
 void
@@ -1036,15 +1059,14 @@ TimelineModel::forwardMessage(QString eventId, QString roomId)
 }
 
 void
-TimelineModel::viewDecryptedRawMessage(QString id) const
+TimelineModel::viewDecryptedRawMessage(QString id)
 {
         auto e = events.get(id.toStdString(), "");
         if (!e)
                 return;
 
         std::string ev = mtx::accessors::serialize_event(*e).dump(4);
-        auto dialog    = new dialogs::RawMessage(QString::fromStdString(ev));
-        Q_UNUSED(dialog);
+        emit showRawMessageDialog(QString::fromStdString(ev));
 }
 
 void
@@ -1054,14 +1076,6 @@ TimelineModel::openUserProfile(QString userid)
         connect(
           this, &TimelineModel::roomAvatarUrlChanged, userProfile, &UserProfile::updateAvatarUrl);
         emit manager_->openProfile(userProfile);
-}
-
-void
-TimelineModel::openRoomSettings()
-{
-        RoomSettings *settings = new RoomSettings(roomId(), this);
-        connect(this, &TimelineModel::roomAvatarUrlChanged, settings, &RoomSettings::avatarChanged);
-        openRoomSettingsDialog(settings);
 }
 
 void
@@ -1087,9 +1101,9 @@ TimelineModel::relatedInfo(QString id)
 }
 
 void
-TimelineModel::readReceiptsAction(QString id) const
+TimelineModel::showReadReceipts(QString id)
 {
-        MainWindow::instance()->openReadReceiptsDialog(id);
+        emit openReadReceiptsDialog(new ReadReceiptsProxy{id, roomId(), this});
 }
 
 void
@@ -1539,6 +1553,17 @@ TimelineModel::scrollTimerEvent()
         } else {
                 emit scrollToIndex(idToIndex(eventIdToShow));
                 showEventTimerCounter++;
+        }
+}
+
+void
+TimelineModel::requestKeyForEvent(QString id)
+{
+        auto encrypted_event = events.get(id.toStdString(), "", false);
+        if (encrypted_event) {
+                if (auto ev = std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                      encrypted_event))
+                        events.requestSession(*ev, true);
         }
 }
 

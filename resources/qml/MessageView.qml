@@ -10,7 +10,7 @@ import QtGraphicalEffects 1.0
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
-import QtQuick.Window 2.2
+import QtQuick.Window 2.13
 import im.nheko 1.0
 
 ScrollView {
@@ -200,15 +200,22 @@ ScrollView {
         }
 
         Connections {
+            function onFocusChanged() {
+                readTimer.running = TimelineManager.isWindowFocused;
+            }
+
             target: TimelineManager
-            onFocusChanged: readTimer.running = TimelineManager.isWindowFocused
         }
 
         Timer {
             id: readTimer
 
             // force current read index to update
-            onTriggered: chat.model.setCurrentIndex(chat.model.currentIndex)
+            onTriggered: {
+                if (chat.model)
+                    chat.model.setCurrentIndex(chat.model.currentIndex);
+
+            }
             interval: 1000
         }
 
@@ -265,11 +272,15 @@ ScrollView {
                     }
 
                     Connections {
-                        target: chat.model
-                        onRoomAvatarUrlChanged: {
+                        function onRoomAvatarUrlChanged() {
                             messageUserAvatar.url = chat.model.avatarUrl(userId).replace("mxc://", "image://MxcImage/");
                         }
-                        onScrollToIndex: chat.positionViewAtIndex(index, ListView.Visible)
+
+                        function onScrollToIndex(index) {
+                            chat.positionViewAtIndex(index, ListView.Visible);
+                        }
+
+                        target: chat.model
                     }
 
                     Label {
@@ -338,9 +349,11 @@ ScrollView {
             required property string callType
             required property var reactions
             required property int trustlevel
+            required property int encryptionError
             required property var timestamp
             required property int status
             required property int index
+            required property int relatedEventCacheBuster
             required property string previousMessageUserId
             required property string day
             required property string previousMessageDay
@@ -444,8 +457,10 @@ ScrollView {
                 callType: wrapper.callType
                 reactions: wrapper.reactions
                 trustlevel: wrapper.trustlevel
+                encryptionError: wrapper.encryptionError
                 timestamp: wrapper.timestamp
                 status: wrapper.status
+                relatedEventCacheBuster: wrapper.relatedEventCacheBuster
                 y: section.visible && section.active ? section.y + section.height : 0
 
                 HoverHandler {
@@ -465,22 +480,34 @@ ScrollView {
             }
 
             Connections {
-                target: chat
-                onMovementEnded: {
+                function onMovementEnded() {
                     if (y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height)
                         chat.model.currentIndex = index;
 
                 }
+
+                target: chat
             }
 
         }
 
-        footer: Spinner {
+        footer: Item {
             anchors.horizontalCenter: parent.horizontalCenter
-            running: chat.model && chat.model.paginationInProgress
-            foreground: Nheko.colors.mid
+            anchors.margins: Nheko.paddingLarge
             visible: chat.model && chat.model.paginationInProgress
-            z: 3
+            // hacky, but works
+            height: loadingSpinner.height + 2 * Nheko.paddingLarge
+
+            Spinner {
+                id: loadingSpinner
+
+                anchors.centerIn: parent
+                anchors.margins: Nheko.paddingLarge
+                running: chat.model && chat.model.paginationInProgress
+                foreground: Nheko.colors.mid
+                z: 3
+            }
+
         }
 
     }
@@ -555,7 +582,7 @@ ScrollView {
 
         Platform.MenuItem {
             text: qsTr("Read receip&ts")
-            onTriggered: room.readReceiptsAction(messageContextMenu.eventId)
+            onTriggered: room.showReadReceipts(messageContextMenu.eventId)
         }
 
         Platform.MenuItem {

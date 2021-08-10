@@ -24,7 +24,7 @@ Rectangle {
     TapHandler {
         onSingleTapped: {
             if (room)
-                room.openRoomSettings();
+                TimelineManager.openRoomSettings(room.roomId);
 
             eventPoint.accepted = true;
         }
@@ -66,7 +66,7 @@ Rectangle {
             displayName: roomName
             onClicked: {
                 if (room)
-                    room.openRoomSettings();
+                    TimelineManager.openRoomSettings(room.roomId);
 
             }
         }
@@ -111,22 +111,22 @@ Rectangle {
                 Platform.MenuItem {
                     visible: room ? room.permissions.canInvite() : false
                     text: qsTr("Invite users")
-                    onTriggered: TimelineManager.openInviteUsersDialog()
+                    onTriggered: TimelineManager.openInviteUsers(room.roomId)
                 }
 
                 Platform.MenuItem {
                     text: qsTr("Members")
-                    onTriggered: TimelineManager.openMemberListDialog(room.roomId())
+                    onTriggered: TimelineManager.openRoomMembers(room.roomId)
                 }
 
                 Platform.MenuItem {
                     text: qsTr("Leave room")
-                    onTriggered: TimelineManager.openLeaveRoomDialog(room.roomId())
+                    onTriggered: TimelineManager.openLeaveRoomDialog(room.roomId)
                 }
 
                 Platform.MenuItem {
                     text: qsTr("Settings")
-                    onTriggered: room.openRoomSettings()
+                    onTriggered: TimelineManager.openRoomSettings(room.roomId)
                 }
 
             }

@@ -50,6 +50,9 @@ struct GroupSessionData
         std::string sender_claimed_ed25519_key;
         std::vector<std::string> forwarding_curve25519_key_chain;
 
+        //! map from index to event_id to check for replay attacks
+        std::map<uint32_t, std::string> indices;
+
         // who has access to this session.
         // Rotate, when a user leaves the room and share, when a user gets added.
         SharedWithUsers currently;

@@ -10,7 +10,6 @@
         <file>icons/ui/do-not-disturb-rounded-sign@2x.png</file>
         <file>icons/ui/round-remove-button.png</file>
         <file>icons/ui/round-remove-button@2x.png</file>
-
         <file>icons/ui/double-tick-indicator.png</file>
         <file>icons/ui/double-tick-indicator@2x.png</file>
         <file>icons/ui/lock.png</file>
@@ -56,22 +55,17 @@
         <file>icons/ui/pause-symbol@2x.png</file>
         <file>icons/ui/remove-symbol.png</file>
         <file>icons/ui/remove-symbol@2x.png</file>
-
         <file>icons/ui/world.png</file>
         <file>icons/ui/world@2x.png</file>
-
         <file>icons/ui/tag.png</file>
         <file>icons/ui/tag@2x.png</file>
         <file>icons/ui/star.png</file>
         <file>icons/ui/star@2x.png</file>
         <file>icons/ui/lowprio.png</file>
         <file>icons/ui/lowprio@2x.png</file>
-
         <file>icons/ui/edit.png</file>
         <file>icons/ui/edit@2x.png</file>
-    
         <file>icons/ui/mail-reply.png</file>
-
         <file>icons/ui/place-call.png</file>
         <file>icons/ui/end-call.png</file>
         <file>icons/ui/microphone-mute.png</file>
@@ -79,7 +73,6 @@
         <file>icons/ui/screen-share.png</file>
         <file>icons/ui/toggle-camera-view.png</file>
         <file>icons/ui/video-call.png</file>
-
         <file>icons/emoji-categories/people.png</file>
         <file>icons/emoji-categories/people@2x.png</file>
         <file>icons/emoji-categories/nature.png</file>
@@ -100,16 +93,12 @@
     <qresource prefix="/logos">
         <file>nheko.png</file>
         <file>nheko.svg</file>
-
         <file>splash.png</file>
         <file>splash@2x.png</file>
-
         <file>register.png</file>
         <file>register@2x.png</file>
-
         <file>login.png</file>
         <file>login@2x.png</file>
-
         <file>nheko-512.png</file>
         <file>nheko-256.png</file>
         <file>nheko-128.png</file>
@@ -124,7 +113,6 @@
     </qresource>
     <qresource prefix="/">
         <file>qtquickcontrols2.conf</file>
-
         <file>qml/Root.qml</file>
         <file>qml/ChatPage.qml</file>
         <file>qml/CommunitiesList.qml</file>
@@ -156,14 +144,15 @@
         <file>qml/emoji/StickerPicker.qml</file>
         <file>qml/UserProfile.qml</file>
         <file>qml/delegates/MessageDelegate.qml</file>
-        <file>qml/delegates/TextMessage.qml</file>
-        <file>qml/delegates/NoticeMessage.qml</file>
-        <file>qml/delegates/ImageMessage.qml</file>
-        <file>qml/delegates/PlayableMediaMessage.qml</file>
+        <file>qml/delegates/Encrypted.qml</file>
         <file>qml/delegates/FileMessage.qml</file>
+        <file>qml/delegates/ImageMessage.qml</file>
+        <file>qml/delegates/NoticeMessage.qml</file>
         <file>qml/delegates/Pill.qml</file>
         <file>qml/delegates/Placeholder.qml</file>
+        <file>qml/delegates/PlayableMediaMessage.qml</file>
         <file>qml/delegates/Reply.qml</file>
+        <file>qml/delegates/TextMessage.qml</file>
         <file>qml/device-verification/Waiting.qml</file>
         <file>qml/device-verification/DeviceVerification.qml</file>
         <file>qml/device-verification/DigitVerification.qml</file>
@@ -172,6 +161,8 @@
         <file>qml/device-verification/Failed.qml</file>
         <file>qml/device-verification/Success.qml</file>
         <file>qml/dialogs/InputDialog.qml</file>
+        <file>qml/dialogs/ImagePackSettingsDialog.qml</file>
+        <file>qml/dialogs/ImagePackEditorDialog.qml</file>
         <file>qml/ui/Ripple.qml</file>
         <file>qml/ui/Spinner.qml</file>
         <file>qml/ui/animations/BlinkAnimation.qml</file>
@@ -185,7 +176,12 @@
         <file>qml/voip/VideoCall.qml</file>
         <file>qml/components/AdaptiveLayout.qml</file>
         <file>qml/components/AdaptiveLayoutElement.qml</file>
+        <file>qml/components/AvatarListTile.qml</file>
         <file>qml/components/FlatButton.qml</file>
+        <file>qml/RoomMembers.qml</file>
+        <file>qml/InviteDialog.qml</file>
+        <file>qml/ReadReceipts.qml</file>
+        <file>qml/RawMessageDialog.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>

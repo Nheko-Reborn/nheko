@@ -4,10 +4,10 @@
 
 import "./ui"
 import Qt.labs.platform 1.1 as Platform
-import QtQuick 2.9
+import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
-import QtQuick.Window 2.3
+import QtQuick.Window 2.13
 import im.nheko 1.0
 
 ApplicationWindow {
@@ -15,14 +15,13 @@ ApplicationWindow {
 
     property var roomSettings
 
-    x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
-    y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     minimumWidth: 420
     minimumHeight: 650
     palette: Nheko.colors
     color: Nheko.colors.window
     modality: Qt.NonModal
-    flags: Qt.Dialog
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    Component.onCompleted: Nheko.reparent(roomSettingsDialog)
     title: qsTr("Room Settings")
 
     Shortcut {
@@ -98,13 +97,23 @@ ApplicationWindow {
 
             MatrixText {
                 text: roomSettings.roomName
-                font.pixelSize: 24
+                font.pixelSize: fontMetrics.font.pixelSize * 2
                 Layout.alignment: Qt.AlignHCenter
             }
 
             MatrixText {
                 text: qsTr("%1 member(s)").arg(roomSettings.memberCount)
                 Layout.alignment: Qt.AlignHCenter
+
+                TapHandler {
+                    onTapped: TimelineManager.openRoomMembers(roomSettings.roomId)
+                }
+
+                CursorShape {
+                    cursorShape: Qt.PointingHandCursor
+                    anchors.fill: parent
+                }
+
             }
 
         }
@@ -145,7 +154,7 @@ ApplicationWindow {
 
         GridLayout {
             columns: 2
-            rowSpacing: 10
+            rowSpacing: Nheko.paddingLarge
 
             MatrixText {
                 text: qsTr("SETTINGS")
@@ -171,7 +180,7 @@ ApplicationWindow {
             }
 
             MatrixText {
-                text: "Room access"
+                text: qsTr("Room access")
                 Layout.fillWidth: true
             }
 
@@ -209,7 +218,7 @@ ApplicationWindow {
                 title: qsTr("End-to-End Encryption")
                 text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br>
                             Please take note that it can't be disabled afterwards.")
-                modality: Qt.NonModal
+                modality: Qt.Modal
                 onAccepted: {
                     if (roomSettings.isEncryptionEnabled)
                         return ;
@@ -223,19 +232,13 @@ ApplicationWindow {
             }
 
             MatrixText {
-                visible: roomSettings.isEncryptionEnabled
-                text: qsTr("Respond to key requests")
+                text: qsTr("Sticker & Emote Settings")
             }
 
-            ToggleButton {
-                visible: roomSettings.isEncryptionEnabled
-                ToolTip.text: qsTr("Whether or not the client should respond automatically with the session keys
-                                upon request. Use with caution, this is a temporary measure to test the
-                                E2E implementation until device verification is completed.")
-                checked: roomSettings.respondsToKeyRequests
-                onClicked: {
-                    roomSettings.changeKeyRequestsPreference(checked);
-                }
+            Button {
+                text: qsTr("Change")
+                ToolTip.text: qsTr("Change what packs are enabled, remove packs or create new ones")
+                onClicked: TimelineManager.openImagePackSettings(roomSettings.roomId)
                 Layout.alignment: Qt.AlignRight
             }
 
@@ -264,7 +267,7 @@ ApplicationWindow {
 
             MatrixText {
                 text: roomSettings.roomId
-                font.pixelSize: 14
+                font.pixelSize: fontMetrics.font.pixelSize * 1.2
                 Layout.alignment: Qt.AlignRight
             }
 
@@ -274,16 +277,16 @@ ApplicationWindow {
 
             MatrixText {
                 text: roomSettings.roomVersion
-                font.pixelSize: 14
+                font.pixelSize: fontMetrics.font.pixelSize * 1.2
                 Layout.alignment: Qt.AlignRight
             }
 
         }
 
-        Button {
-            Layout.alignment: Qt.AlignRight
-            text: qsTr("OK")
-            onClicked: close()
+        DialogButtonBox {
+            Layout.fillWidth: true
+            standardButtons: DialogButtonBox.Ok
+            onAccepted: close()
         }
 
     }

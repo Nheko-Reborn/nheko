@@ -4,11 +4,14 @@
 
 #pragma once
 
+#include <QFontDatabase>
 #include <QObject>
 #include <QPalette>
 
 #include "Theme.h"
 #include "UserProfile.h"
+
+class QWindow;
 
 class Nheko : public QObject
 {
@@ -38,12 +41,17 @@ public:
         int paddingLarge() const { return 20; }
         UserProfile *currentUser() const;
 
+        Q_INVOKABLE QFont monospaceFont() const
+        {
+                return QFontDatabase::systemFont(QFontDatabase::FixedFont);
+        }
         Q_INVOKABLE void openLink(QString link) const;
         Q_INVOKABLE void setStatusMessage(QString msg) const;
         Q_INVOKABLE void showUserSettingsPage() const;
         Q_INVOKABLE void openLogoutDialog() const;
         Q_INVOKABLE void openCreateRoomDialog() const;
         Q_INVOKABLE void openJoinRoomDialog() const;
+        Q_INVOKABLE void reparent(QWindow *win) const;
 
 public slots:
         void updateUserProfile();

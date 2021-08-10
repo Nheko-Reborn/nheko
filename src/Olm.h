@@ -14,9 +14,11 @@
 constexpr auto OLM_ALGO = "m.olm.v1.curve25519-aes-sha2";
 
 namespace olm {
+Q_NAMESPACE
 
-enum class DecryptionErrorCode
+enum DecryptionErrorCode
 {
+        NoError,
         MissingSession, // Session was not found, retrieve from backup or request from other devices
                         // and try again
         MissingSessionIndex, // Session was found, but it does not reach back enough to this index,
@@ -25,14 +27,13 @@ enum class DecryptionErrorCode
         DecryptionFailed,    // libolm error
         ParsingFailed,       // Failed to parse the actual event
         ReplayAttack,        // Megolm index reused
-        UnknownFingerprint,  // Unknown device Fingerprint
 };
+Q_ENUM_NS(DecryptionErrorCode)
 
 struct DecryptionResult
 {
-        std::optional<DecryptionErrorCode> error;
+        DecryptionErrorCode error;
         std::optional<std::string> error_message;
-
         std::optional<mtx::events::collections::TimelineEvents> event;
 };
 
@@ -80,9 +81,11 @@ encrypt_group_message(const std::string &room_id,
                       const std::string &device_id,
                       nlohmann::json body);
 
+//! Decrypt an event. Use dont_write_db to prevent db writes when already in a write transaction.
 DecryptionResult
 decryptEvent(const MegolmSessionIndex &index,
-             const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &event);
+             const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &event,
+             bool dont_write_db = false);
 crypto::Trust
 calculate_trust(const std::string &user_id, const std::string &curve25519);
 

@@ -125,7 +125,7 @@ template<class T>
 bool
 containsStateUpdates(const T &e)
 {
-        return std::visit([](const auto &ev) { return Cache::isStateEvent(ev); }, e);
+        return std::visit([](const auto &ev) { return Cache::isStateEvent_<decltype(ev)>; }, e);
 }
 
 bool
@@ -158,7 +158,7 @@ Cache::isHiddenEvent(lmdb::txn &txn,
                 index.session_id = encryptedEvent->content.session_id;
                 index.sender_key = encryptedEvent->content.sender_key;
 
-                auto result = olm::decryptEvent(index, *encryptedEvent);
+                auto result = olm::decryptEvent(index, *encryptedEvent, true);
                 if (!result.error)
                         e = result.event.value();
         }
@@ -288,6 +288,9 @@ Cache::setup()
         outboundMegolmSessionDb_ = lmdb::dbi::open(txn, OUTBOUND_MEGOLM_SESSIONS_DB, MDB_CREATE);
         megolmSessionDataDb_     = lmdb::dbi::open(txn, MEGOLM_SESSIONS_DATA_DB, MDB_CREATE);
 
+        // What rooms are encrypted
+        encryptedRooms_ = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
+
         txn.commit();
 
         databaseReady_ = true;
@@ -298,8 +301,7 @@ Cache::setEncryptedRoom(lmdb::txn &txn, const std::string &room_id)
 {
         nhlog::db()->info("mark room {} as encrypted", room_id);
 
-        auto db = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
-        db.put(txn, room_id, "0");
+        encryptedRooms_.put(txn, room_id, "0");
 }
 
 bool
@@ -308,8 +310,7 @@ Cache::isRoomEncrypted(const std::string &room_id)
         std::string_view unused;
 
         auto txn = ro_txn(env_);
-        auto db  = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
-        auto res = db.get(txn, room_id, unused);
+        auto res = encryptedRooms_.get(txn, room_id, unused);
 
         return res;
 }
@@ -715,32 +716,29 @@ Cache::restoreOlmAccount()
 }
 
 void
-Cache::storeSecret(const std::string &name, const std::string &secret)
+Cache::storeSecret(const std::string name, const std::string secret)
 {
         auto settings = UserSettings::instance();
-        QKeychain::WritePasswordJob job(QCoreApplication::applicationName());
-        job.setAutoDelete(false);
-        job.setInsecureFallback(true);
-        job.setKey("matrix." +
-                   QString(QCryptographicHash::hash(settings->profile().toUtf8(),
-                                                    QCryptographicHash::Sha256)) +
-                   "." + name.c_str());
-        job.setTextData(QString::fromStdString(secret));
-        QEventLoop loop;
-        job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
-        job.start();
-        loop.exec();
-
-        if (job.error()) {
-                nhlog::db()->warn(
-                  "Storing secret '{}' failed: {}", name, job.errorString().toStdString());
-        } else {
-                emit secretChanged(name);
-        }
+        auto job      = new QKeychain::WritePasswordJob(QCoreApplication::applicationName());
+        job->setInsecureFallback(true);
+        job->setKey("matrix." +
+                    QString(QCryptographicHash::hash(settings->profile().toUtf8(),
+                                                     QCryptographicHash::Sha256)) +
+                    "." + name.c_str());
+        job->setTextData(QString::fromStdString(secret));
+        QObject::connect(job, &QKeychain::Job::finished, job, [name, this](QKeychain::Job *job) {
+                if (job->error()) {
+                        nhlog::db()->warn(
+                          "Storing secret '{}' failed: {}", name, job->errorString().toStdString());
+                } else {
+                        emit secretChanged(name);
+                }
+        });
+        job->start();
 }
 
 void
-Cache::deleteSecret(const std::string &name)
+Cache::deleteSecret(const std::string name)
 {
         auto settings = UserSettings::instance();
         QKeychain::DeletePasswordJob job(QCoreApplication::applicationName());
@@ -750,6 +748,8 @@ Cache::deleteSecret(const std::string &name)
                    QString(QCryptographicHash::hash(settings->profile().toUtf8(),
                                                     QCryptographicHash::Sha256)) +
                    "." + name.c_str());
+        // FIXME(Nico): Nested event loops are dangerous. Some other slots may resume in the mean
+        // time!
         QEventLoop loop;
         job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
         job.start();
@@ -759,7 +759,7 @@ Cache::deleteSecret(const std::string &name)
 }
 
 std::optional<std::string>
-Cache::secret(const std::string &name)
+Cache::secret(const std::string name)
 {
         auto settings = UserSettings::instance();
         QKeychain::ReadPasswordJob job(QCoreApplication::applicationName());
@@ -769,6 +769,8 @@ Cache::secret(const std::string &name)
                    QString(QCryptographicHash::hash(settings->profile().toUtf8(),
                                                     QCryptographicHash::Sha256)) +
                    "." + name.c_str());
+        // FIXME(Nico): Nested event loops are dangerous. Some other slots may resume in the mean
+        // time!
         QEventLoop loop;
         job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
         job.start();
@@ -3383,26 +3385,30 @@ Cache::getChildRoomIds(const std::string &room_id)
 }
 
 std::vector<ImagePackInfo>
-Cache::getImagePacks(const std::string &room_id, bool stickers)
+Cache::getImagePacks(const std::string &room_id, std::optional<bool> stickers)
 {
         auto txn = ro_txn(env_);
         std::vector<ImagePackInfo> infos;
 
-        auto addPack = [&infos, stickers](const mtx::events::msc2545::ImagePack &pack) {
-                if (!pack.pack || (stickers ? pack.pack->is_sticker() : pack.pack->is_emoji())) {
+        auto addPack = [&infos, stickers](const mtx::events::msc2545::ImagePack &pack,
+                                          const std::string &source_room,
+                                          const std::string &state_key) {
+                if (!pack.pack || !stickers.has_value() ||
+                    (stickers.value() ? pack.pack->is_sticker() : pack.pack->is_emoji())) {
                         ImagePackInfo info;
-                        if (pack.pack)
-                                info.packname = pack.pack->display_name;
+                        info.source_room = source_room;
+                        info.state_key   = state_key;
+                        info.pack.pack   = pack.pack;
 
                         for (const auto &img : pack.images) {
-                                if (img.second.overrides_usage() &&
+                                if (stickers.has_value() && img.second.overrides_usage() &&
                                     (stickers ? !img.second.is_sticker() : !img.second.is_emoji()))
                                         continue;
 
-                                info.images.insert(img);
+                                info.pack.images.insert(img);
                         }
 
-                        if (!info.images.empty())
+                        if (!info.pack.images.empty())
                                 infos.push_back(std::move(info));
                 }
         };
@@ -3414,7 +3420,7 @@ Cache::getImagePacks(const std::string &room_id, bool stickers)
                   std::get_if<mtx::events::EphemeralEvent<mtx::events::msc2545::ImagePack>>(
                     &*accountpack);
                 if (tmp)
-                        addPack(tmp->content);
+                        addPack(tmp->content, "", "");
         }
 
         // packs from rooms, that were enabled globally
@@ -3433,7 +3439,7 @@ Cache::getImagePacks(const std::string &room_id, bool stickers)
                                         if (auto pack =
                                               getStateEvent<mtx::events::msc2545::ImagePack>(
                                                 txn, room_id2, state_id))
-                                                addPack(pack->content);
+                                                addPack(pack->content, room_id2, state_id);
                                 }
                         }
                 }
@@ -3441,14 +3447,21 @@ Cache::getImagePacks(const std::string &room_id, bool stickers)
 
         // packs from current room
         if (auto pack = getStateEvent<mtx::events::msc2545::ImagePack>(txn, room_id)) {
-                addPack(pack->content);
+                addPack(pack->content, room_id, "");
         }
         for (const auto &pack :
              getStateEventsWithType<mtx::events::msc2545::ImagePack>(txn, room_id)) {
-                addPack(pack.content);
+                addPack(pack.content, room_id, pack.state_key);
         }
 
         return infos;
+}
+
+std::optional<mtx::events::collections::RoomAccountDataEvents>
+Cache::getAccountData(mtx::events::EventType type, const std::string &room_id)
+{
+        auto txn = ro_txn(env_);
+        return getAccountData(txn, type, room_id);
 }
 
 std::optional<mtx::events::collections::RoomAccountDataEvents>
@@ -3529,7 +3542,7 @@ Cache::roomMembers(const std::string &room_id)
 }
 
 std::map<std::string, std::optional<UserKeyCache>>
-Cache::getMembersWithKeys(const std::string &room_id)
+Cache::getMembersWithKeys(const std::string &room_id, bool verified_only)
 {
         std::string_view keys;
 
@@ -3546,10 +3559,51 @@ Cache::getMembersWithKeys(const std::string &room_id)
                         auto res = keysDb.get(txn, user_id, keys);
 
                         if (res) {
-                                members[std::string(user_id)] =
-                                  json::parse(keys).get<UserKeyCache>();
+                                auto k = json::parse(keys).get<UserKeyCache>();
+                                if (verified_only) {
+                                        auto verif = verificationStatus(std::string(user_id));
+                                        if (verif.user_verified == crypto::Trust::Verified ||
+                                            !verif.verified_devices.empty()) {
+                                                auto keyCopy = k;
+                                                keyCopy.device_keys.clear();
+
+                                                std::copy_if(
+                                                  k.device_keys.begin(),
+                                                  k.device_keys.end(),
+                                                  std::inserter(keyCopy.device_keys,
+                                                                keyCopy.device_keys.end()),
+                                                  [&verif](const auto &key) {
+                                                          auto curve25519 = key.second.keys.find(
+                                                            "curve25519:" + key.first);
+                                                          if (curve25519 == key.second.keys.end())
+                                                                  return false;
+                                                          if (auto t =
+                                                                verif.verified_device_keys.find(
+                                                                  curve25519->second);
+                                                              t ==
+                                                                verif.verified_device_keys.end() ||
+                                                              t->second != crypto::Trust::Verified)
+                                                                  return false;
+
+                                                          return key.first ==
+                                                                   key.second.device_id &&
+                                                                 std::find(
+                                                                   verif.verified_devices.begin(),
+                                                                   verif.verified_devices.end(),
+                                                                   key.first) !=
+                                                                   verif.verified_devices.end();
+                                                  });
+
+                                                if (!keyCopy.device_keys.empty())
+                                                        members[std::string(user_id)] =
+                                                          std::move(keyCopy);
+                                        }
+                                } else {
+                                        members[std::string(user_id)] = std::move(k);
+                                }
                         } else {
-                                members[std::string(user_id)] = {};
+                                if (!verified_only)
+                                        members[std::string(user_id)] = {};
                         }
                 }
                 cursor.close();
@@ -4240,6 +4294,8 @@ to_json(nlohmann::json &obj, const GroupSessionData &msg)
         obj["forwarding_curve25519_key_chain"] = msg.forwarding_curve25519_key_chain;
 
         obj["currently"] = msg.currently;
+
+        obj["indices"] = msg.indices;
 }
 
 void
@@ -4253,6 +4309,8 @@ from_json(const nlohmann::json &obj, GroupSessionData &msg)
           obj.value("forwarding_curve25519_key_chain", std::vector<std::string>{});
 
         msg.currently = obj.value("currently", SharedWithUsers{});
+
+        msg.indices = obj.value("indices", std::map<uint32_t, std::string>());
 }
 
 void

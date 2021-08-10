@@ -52,7 +52,7 @@ ColumnLayout {
 
         id: mediaCachedObserver
         target: room
-        onMediaCached: {
+        function onMediaCached(mxcUrl, cacheUrl) {
             if (mxcUrl == url) {
                 mediaCached = true
                 media.source = "file://" + cacheUrl

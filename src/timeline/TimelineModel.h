@@ -17,7 +17,10 @@
 #include "CacheStructs.h"
 #include "EventStore.h"
 #include "InputBar.h"
+#include "InviteesModel.h"
+#include "MemberList.h"
 #include "Permissions.h"
+#include "ReadReceiptsModel.h"
 #include "ui/RoomSettings.h"
 #include "ui/UserProfile.h"
 
@@ -104,7 +107,13 @@ enum EventType
         KeyVerificationCancel,
         KeyVerificationKey,
         KeyVerificationDone,
-        KeyVerificationReady
+        KeyVerificationReady,
+        //! m.image_pack, currently im.ponies.room_emotes
+        ImagePackInRoom,
+        //! m.image_pack, currently im.ponies.user_emotes
+        ImagePackInAccountData,
+        //! m.image_pack.rooms, currently im.ponies.emote_rooms
+        ImagePackRooms,
 };
 Q_ENUM_NS(EventType)
 mtx::events::EventType fromRoomEventType(qml_mtx_events::EventType);
@@ -158,7 +167,9 @@ class TimelineModel : public QAbstractListModel
         Q_PROPERTY(QString edit READ edit WRITE setEdit NOTIFY editChanged RESET resetEdit)
         Q_PROPERTY(
           bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
+        Q_PROPERTY(QString roomId READ roomId CONSTANT)
         Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
+        Q_PROPERTY(QString plainRoomName READ plainRoomName NOTIFY plainRoomNameChanged)
         Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY roomAvatarUrlChanged)
         Q_PROPERTY(QString roomTopic READ roomTopic NOTIFY roomTopicChanged)
         Q_PROPERTY(int roomMemberCount READ roomMemberCount NOTIFY roomMemberCountChanged)
@@ -201,6 +212,7 @@ public:
                 IsEditable,
                 IsEncrypted,
                 Trustlevel,
+                EncryptionError,
                 ReplyTo,
                 Reactions,
                 RoomId,
@@ -208,6 +220,7 @@ public:
                 RoomTopic,
                 CallType,
                 Dump,
+                RelatedEventCacheBuster,
         };
         Q_ENUM(Roles);
 
@@ -230,14 +243,13 @@ public:
         Q_INVOKABLE QString formatGuestAccessEvent(QString id);
         Q_INVOKABLE QString formatPowerLevelEvent(QString id);
 
-        Q_INVOKABLE void viewRawMessage(QString id) const;
+        Q_INVOKABLE void viewRawMessage(QString id);
         Q_INVOKABLE void forwardMessage(QString eventId, QString roomId);
-        Q_INVOKABLE void viewDecryptedRawMessage(QString id) const;
+        Q_INVOKABLE void viewDecryptedRawMessage(QString id);
         Q_INVOKABLE void openUserProfile(QString userid);
-        Q_INVOKABLE void openRoomSettings();
         Q_INVOKABLE void editAction(QString id);
         Q_INVOKABLE void replyAction(QString id);
-        Q_INVOKABLE void readReceiptsAction(QString id) const;
+        Q_INVOKABLE void showReadReceipts(QString id);
         Q_INVOKABLE void redactEvent(QString id);
         Q_INVOKABLE int idToIndex(QString id) const;
         Q_INVOKABLE QString indexToId(int index) const;
@@ -252,6 +264,8 @@ public:
                 beginResetModel();
                 endResetModel();
         }
+
+        Q_INVOKABLE void requestKeyForEvent(QString id);
 
         std::vector<::Reaction> reactions(const std::string &event_id)
         {
@@ -344,6 +358,8 @@ signals:
         void typingUsersChanged(std::vector<QString> users);
         void replyChanged(QString reply);
         void editChanged(QString reply);
+        void openReadReceiptsDialog(ReadReceiptsProxy *rr);
+        void showRawMessageDialog(QString rawMessage);
         void paginationInProgressChanged(const bool);
         void newCallEvent(const mtx::events::collections::TimelineEvents &event);
         void scrollToIndex(int index);
@@ -351,14 +367,13 @@ signals:
         void lastMessageChanged();
         void notificationsChanged();
 
-        void openRoomSettingsDialog(RoomSettings *settings);
-
         void newMessageToSend(mtx::events::collections::TimelineEvents event);
         void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);
         void updateFlowEventId(std::string event_id);
 
         void encryptionChanged();
         void roomNameChanged();
+        void plainRoomNameChanged();
         void roomTopicChanged();
         void roomAvatarUrlChanged();
         void roomMemberCountChanged();
@@ -388,7 +403,7 @@ private:
         TimelineViewManager *manager_;
 
         InputBar input_{this};
-        Permissions permissions_{this};
+        Permissions permissions_;
 
         QTimer showEventTimer{this};
         QString eventIdToShow;
@@ -399,6 +414,8 @@ private:
         friend struct SendMessageVisitor;
 
         int notification_count = 0, highlight_count = 0;
+
+        unsigned int relatedEventCacheBuster = 0;
 
         bool decryptDescription     = true;
         bool m_paginationInProgress = false;

@@ -18,8 +18,8 @@ TextEdit {
     //enabled: selectByMouse
     color: Nheko.colors.text
     onLinkActivated: Nheko.openLink(link)
-    ToolTip.visible: hoveredLink
-    ToolTip.text: hoveredLink
+    ToolTip.visible: hoveredLink || false
+    ToolTip.text: hoveredLink || ""
     Component.onCompleted: {
         TimelineManager.fixImageRendering(r.textDocument, r);
     }

@@ -90,13 +90,11 @@ UserSettings::load(std::optional<QString> profile)
         decryptSidebar_       = settings.value("user/decrypt_sidebar", true).toBool();
         privacyScreen_        = settings.value("user/privacy_screen", false).toBool();
         privacyScreenTimeout_ = settings.value("user/privacy_screen_timeout", 0).toInt();
-        shareKeysWithTrustedUsers_ =
-          settings.value("user/automatically_share_keys_with_trusted_users", false).toBool();
-        mobileMode_        = settings.value("user/mobile_mode", false).toBool();
-        emojiFont_         = settings.value("user/emoji_font_family", "default").toString();
-        baseFontSize_      = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
-        auto tempPresence  = settings.value("user/presence", "").toString().toStdString();
-        auto presenceValue = QMetaEnum::fromType<Presence>().keyToValue(tempPresence.c_str());
+        mobileMode_           = settings.value("user/mobile_mode", false).toBool();
+        emojiFont_            = settings.value("user/emoji_font_family", "default").toString();
+        baseFontSize_         = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
+        auto tempPresence     = settings.value("user/presence", "").toString().toStdString();
+        auto presenceValue    = QMetaEnum::fromType<Presence>().keyToValue(tempPresence.c_str());
         if (presenceValue < 0)
                 presenceValue = 0;
         presence_               = static_cast<Presence>(presenceValue);
@@ -122,6 +120,12 @@ UserSettings::load(std::optional<QString> profile)
         homeserver_  = settings.value(prefix + "auth/home_server", "").toString();
         userId_      = settings.value(prefix + "auth/user_id", "").toString();
         deviceId_    = settings.value(prefix + "auth/device_id", "").toString();
+
+        shareKeysWithTrustedUsers_ =
+          settings.value(prefix + "user/automatically_share_keys_with_trusted_users", false)
+            .toBool();
+        onlyShareKeysWithVerifiedUsers_ =
+          settings.value(prefix + "user/only_share_keys_with_verified_users", false).toBool();
 
         disableCertificateValidation_ =
           settings.value("disable_certificate_validation", false).toBool();
@@ -402,6 +406,17 @@ UserSettings::setUseStunServer(bool useStunServer)
 }
 
 void
+UserSettings::setOnlyShareKeysWithVerifiedUsers(bool shareKeys)
+{
+        if (shareKeys == onlyShareKeysWithVerifiedUsers_)
+                return;
+
+        onlyShareKeysWithVerifiedUsers_ = shareKeys;
+        emit onlyShareKeysWithVerifiedUsersChanged(shareKeys);
+        save();
+}
+
+void
 UserSettings::setShareKeysWithTrustedUsers(bool shareKeys)
 {
         if (shareKeys == shareKeysWithTrustedUsers_)
@@ -610,8 +625,6 @@ UserSettings::save()
         settings.setValue("decrypt_sidebar", decryptSidebar_);
         settings.setValue("privacy_screen", privacyScreen_);
         settings.setValue("privacy_screen_timeout", privacyScreenTimeout_);
-        settings.setValue("automatically_share_keys_with_trusted_users",
-                          shareKeysWithTrustedUsers_);
         settings.setValue("mobile_mode", mobileMode_);
         settings.setValue("font_size", baseFontSize_);
         settings.setValue("typing_notifications", typingNotifications_);
@@ -649,6 +662,11 @@ UserSettings::save()
         settings.setValue(prefix + "auth/home_server", homeserver_);
         settings.setValue(prefix + "auth/user_id", userId_);
         settings.setValue(prefix + "auth/device_id", deviceId_);
+
+        settings.setValue(prefix + "user/automatically_share_keys_with_trusted_users",
+                          shareKeysWithTrustedUsers_);
+        settings.setValue(prefix + "user/only_share_keys_with_verified_users",
+                          onlyShareKeysWithVerifiedUsers_);
 
         settings.setValue("disable_certificate_validation", disableCertificateValidation_);
 
@@ -703,41 +721,43 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         general_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
         general_->setFont(font);
 
-        trayToggle_                = new Toggle{this};
-        startInTrayToggle_         = new Toggle{this};
-        avatarCircles_             = new Toggle{this};
-        decryptSidebar_            = new Toggle(this);
-        privacyScreen_             = new Toggle{this};
-        shareKeysWithTrustedUsers_ = new Toggle(this);
-        groupViewToggle_           = new Toggle{this};
-        timelineButtonsToggle_     = new Toggle{this};
-        typingNotifications_       = new Toggle{this};
-        messageHoverHighlight_     = new Toggle{this};
-        enlargeEmojiOnlyMessages_  = new Toggle{this};
-        sortByImportance_          = new Toggle{this};
-        readReceipts_              = new Toggle{this};
-        markdown_                  = new Toggle{this};
-        desktopNotifications_      = new Toggle{this};
-        alertOnNotification_       = new Toggle{this};
-        useStunServer_             = new Toggle{this};
-        mobileMode_                = new Toggle{this};
-        scaleFactorCombo_          = new QComboBox{this};
-        fontSizeCombo_             = new QComboBox{this};
-        fontSelectionCombo_        = new QFontComboBox{this};
-        emojiFontSelectionCombo_   = new QComboBox{this};
-        ringtoneCombo_             = new QComboBox{this};
-        microphoneCombo_           = new QComboBox{this};
-        cameraCombo_               = new QComboBox{this};
-        cameraResolutionCombo_     = new QComboBox{this};
-        cameraFrameRateCombo_      = new QComboBox{this};
-        timelineMaxWidthSpin_      = new QSpinBox{this};
-        privacyScreenTimeout_      = new QSpinBox{this};
+        trayToggle_                     = new Toggle{this};
+        startInTrayToggle_              = new Toggle{this};
+        avatarCircles_                  = new Toggle{this};
+        decryptSidebar_                 = new Toggle(this);
+        privacyScreen_                  = new Toggle{this};
+        onlyShareKeysWithVerifiedUsers_ = new Toggle(this);
+        shareKeysWithTrustedUsers_      = new Toggle(this);
+        groupViewToggle_                = new Toggle{this};
+        timelineButtonsToggle_          = new Toggle{this};
+        typingNotifications_            = new Toggle{this};
+        messageHoverHighlight_          = new Toggle{this};
+        enlargeEmojiOnlyMessages_       = new Toggle{this};
+        sortByImportance_               = new Toggle{this};
+        readReceipts_                   = new Toggle{this};
+        markdown_                       = new Toggle{this};
+        desktopNotifications_           = new Toggle{this};
+        alertOnNotification_            = new Toggle{this};
+        useStunServer_                  = new Toggle{this};
+        mobileMode_                     = new Toggle{this};
+        scaleFactorCombo_               = new QComboBox{this};
+        fontSizeCombo_                  = new QComboBox{this};
+        fontSelectionCombo_             = new QFontComboBox{this};
+        emojiFontSelectionCombo_        = new QComboBox{this};
+        ringtoneCombo_                  = new QComboBox{this};
+        microphoneCombo_                = new QComboBox{this};
+        cameraCombo_                    = new QComboBox{this};
+        cameraResolutionCombo_          = new QComboBox{this};
+        cameraFrameRateCombo_           = new QComboBox{this};
+        timelineMaxWidthSpin_           = new QSpinBox{this};
+        privacyScreenTimeout_           = new QSpinBox{this};
 
         trayToggle_->setChecked(settings_->tray());
         startInTrayToggle_->setChecked(settings_->startInTray());
         avatarCircles_->setChecked(settings_->avatarCircles());
         decryptSidebar_->setChecked(settings_->decryptSidebar());
         privacyScreen_->setChecked(settings_->privacyScreen());
+        onlyShareKeysWithVerifiedUsers_->setChecked(settings_->onlyShareKeysWithVerifiedUsers());
         shareKeysWithTrustedUsers_->setChecked(settings_->shareKeysWithTrustedUsers());
         groupViewToggle_->setChecked(settings_->groupView());
         timelineButtonsToggle_->setChecked(settings_->buttonsInTimeline());
@@ -1008,10 +1028,14 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         formLayout_->addRow(new HorizontalLine{this});
         boxWrap(tr("Device ID"), deviceIdValue_);
         boxWrap(tr("Device Fingerprint"), deviceFingerprintValue_);
-        boxWrap(
-          tr("Share keys with verified users and devices"),
-          shareKeysWithTrustedUsers_,
-          tr("Automatically replies to key requests from other users, if they are verified."));
+        boxWrap(tr("Send encrypted messages to verified users only"),
+                onlyShareKeysWithVerifiedUsers_,
+                tr("Requires a user to be verified to send encrypted messages to them. This "
+                   "improves safety but makes E2EE more tedious."));
+        boxWrap(tr("Share keys with verified users and devices"),
+                shareKeysWithTrustedUsers_,
+                tr("Automatically replies to key requests from other users, if they are verified, "
+                   "even if that device shouldn't have access to those keys otherwise."));
         formLayout_->addRow(new HorizontalLine{this});
         formLayout_->addRow(sessionKeysLabel, sessionKeysLayout);
         formLayout_->addRow(crossSigningKeysLabel, crossSigningKeysLayout);
@@ -1179,6 +1203,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 }
         });
 
+        connect(onlyShareKeysWithVerifiedUsers_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setOnlyShareKeysWithVerifiedUsers(enabled);
+        });
+
         connect(shareKeysWithTrustedUsers_, &Toggle::toggled, this, [this](bool enabled) {
                 settings_->setShareKeysWithTrustedUsers(enabled);
         });
@@ -1271,6 +1299,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         groupViewToggle_->setState(settings_->groupView());
         decryptSidebar_->setState(settings_->decryptSidebar());
         privacyScreen_->setState(settings_->privacyScreen());
+        onlyShareKeysWithVerifiedUsers_->setState(settings_->onlyShareKeysWithVerifiedUsers());
         shareKeysWithTrustedUsers_->setState(settings_->shareKeysWithTrustedUsers());
         avatarCircles_->setState(settings_->avatarCircles());
         typingNotifications_->setState(settings_->typingNotifications());
@@ -1399,7 +1428,7 @@ UserSettingsPage::exportSessionKeys()
                 QString suffix("-----END MEGOLM SESSION DATA-----");
                 QString newline("\n");
                 QTextStream out(&file);
-                out << prefix << newline << b64 << newline << suffix;
+                out << prefix << newline << b64 << newline << suffix << newline;
                 file.close();
         } catch (const std::exception &e) {
                 QMessageBox::warning(this, tr("Error"), e.what());

@@ -78,7 +78,6 @@ class RoomSettings : public QObject
         Q_PROPERTY(bool canChangeJoinRules READ canChangeJoinRules CONSTANT)
         Q_PROPERTY(bool canChangeNameAndTopic READ canChangeNameAndTopic CONSTANT)
         Q_PROPERTY(bool isEncryptionEnabled READ isEncryptionEnabled NOTIFY encryptionChanged)
-        Q_PROPERTY(bool respondsToKeyRequests READ respondsToKeyRequests NOTIFY keyRequestsChanged)
 
 public:
         RoomSettings(QString roomid, QObject *parent = nullptr);
@@ -91,7 +90,6 @@ public:
         int memberCount() const;
         int notifications();
         int accessJoinRules();
-        bool respondsToKeyRequests();
         bool isLoading() const;
         //! Whether the user has enough power level to send m.room.join_rules events.
         bool canChangeJoinRules() const;
@@ -106,7 +104,6 @@ public:
         Q_INVOKABLE void openEditModal();
         Q_INVOKABLE void changeAccessRules(int index);
         Q_INVOKABLE void changeNotifications(int currentIndex);
-        Q_INVOKABLE void changeKeyRequestsPreference(bool isOn);
 
 signals:
         void loadingChanged();
@@ -114,7 +111,6 @@ signals:
         void roomTopicChanged();
         void avatarUrlChanged();
         void encryptionChanged();
-        void keyRequestsChanged();
         void notificationsChanged();
         void accessJoinRulesChanged();
         void displayError(const QString &errorMessage);

@@ -172,32 +172,6 @@ utils::scaleFactor()
         return settings.value("settings/scale_factor", -1).toFloat();
 }
 
-bool
-utils::respondsToKeyRequests(const std::string &roomId)
-{
-        return respondsToKeyRequests(QString::fromStdString(roomId));
-}
-
-bool
-utils::respondsToKeyRequests(const QString &roomId)
-{
-        if (roomId.isEmpty())
-                return false;
-
-        QSettings settings;
-        return settings.value("rooms/respond_to_key_requests/" + roomId, false).toBool();
-}
-
-void
-utils::setKeyRequestsPreference(QString roomId, bool value)
-{
-        if (roomId.isEmpty())
-                return;
-
-        QSettings settings;
-        settings.setValue("rooms/respond_to_key_requests/" + roomId, value);
-}
-
 QString
 utils::descriptiveTime(const QDateTime &then)
 {
@@ -556,7 +530,7 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                                 // Use colors as described here:
                                 // https://shark.comfsm.fm/~dleeling/cis/hsl_rainbow.html
                                 auto color =
-                                  QColor::fromHslF((charIdx - 1.0) / textLen * (5. / 6.), 1.0, 0.5);
+                                  QColor::fromHslF((charIdx - 1.0) / textLen * (5. / 6.), 0.9, 0.5);
                                 // format color for HTML
                                 auto colorString = color.name(QColor::NameFormat::HexRgb);
                                 // create HTML element for current char

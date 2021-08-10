@@ -21,6 +21,7 @@
 #include "LoginPage.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
+#include "MemberList.h"
 #include "RegisterPage.h"
 #include "TrayIcon.h"
 #include "UserSettingsPage.h"
@@ -32,12 +33,9 @@
 #include "ui/SnackBar.h"
 
 #include "dialogs/CreateRoom.h"
-#include "dialogs/InviteUsers.h"
 #include "dialogs/JoinRoom.h"
 #include "dialogs/LeaveRoom.h"
 #include "dialogs/Logout.h"
-#include "dialogs/MemberList.h"
-#include "dialogs/ReadReceipts.h"
 
 MainWindow *MainWindow::instance_ = nullptr;
 
@@ -311,14 +309,6 @@ MainWindow::hasActiveUser()
 }
 
 void
-MainWindow::openMemberListDialog(const QString &room_id)
-{
-        auto dialog = new dialogs::MemberList(room_id, this);
-
-        showDialog(dialog);
-}
-
-void
 MainWindow::openLeaveRoomDialog(const QString &room_id)
 {
         auto dialog = new dialogs::LeaveRoom(this);
@@ -339,18 +329,6 @@ MainWindow::showOverlayProgressBar()
         spinner_->start();
 
         showSolidOverlayModal(spinner_);
-}
-
-void
-MainWindow::openInviteUsersDialog(std::function<void(const QStringList &invitees)> callback)
-{
-        auto dialog = new dialogs::InviteUsers(this);
-        connect(dialog, &dialogs::InviteUsers::sendInvites, this, [callback](QStringList invitees) {
-                if (!invitees.isEmpty())
-                        callback(invitees);
-        });
-
-        showDialog(dialog);
 }
 
 void
@@ -415,27 +393,6 @@ MainWindow::openLogoutDialog()
                 }
                 chat_page_->initiateLogout();
         });
-
-        showDialog(dialog);
-}
-
-void
-MainWindow::openReadReceiptsDialog(const QString &event_id)
-{
-        auto dialog = new dialogs::ReadReceipts(this);
-
-        const auto room_id = chat_page_->currentRoom();
-
-        try {
-                dialog->addUsers(cache::readReceipts(event_id, room_id));
-        } catch (const lmdb::error &) {
-                nhlog::db()->warn("failed to retrieve read receipts for {} {}",
-                                  event_id.toStdString(),
-                                  chat_page_->currentRoom().toStdString());
-                dialog->deleteLater();
-
-                return;
-        }
 
         showDialog(dialog);
 }

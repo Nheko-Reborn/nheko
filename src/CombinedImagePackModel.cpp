@@ -2,21 +2,24 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "ImagePackModel.h"
+#include "CombinedImagePackModel.h"
 
 #include "Cache_p.h"
 #include "CompletionModelRoles.h"
 
-ImagePackModel::ImagePackModel(const std::string &roomId, bool stickers, QObject *parent)
+CombinedImagePackModel::CombinedImagePackModel(const std::string &roomId,
+                                               bool stickers,
+                                               QObject *parent)
   : QAbstractListModel(parent)
   , room_id(roomId)
 {
         auto packs = cache::client()->getImagePacks(room_id, stickers);
 
         for (const auto &pack : packs) {
-                QString packname = QString::fromStdString(pack.packname);
+                QString packname =
+                  pack.pack.pack ? QString::fromStdString(pack.pack.pack->display_name) : "";
 
-                for (const auto &img : pack.images) {
+                for (const auto &img : pack.pack.images) {
                         ImageDesc i{};
                         i.shortcode = QString::fromStdString(img.first);
                         i.packname  = packname;
@@ -27,13 +30,13 @@ ImagePackModel::ImagePackModel(const std::string &roomId, bool stickers, QObject
 }
 
 int
-ImagePackModel::rowCount(const QModelIndex &) const
+CombinedImagePackModel::rowCount(const QModelIndex &) const
 {
         return (int)images.size();
 }
 
 QHash<int, QByteArray>
-ImagePackModel::roleNames() const
+CombinedImagePackModel::roleNames() const
 {
         return {
           {CompletionModel::CompletionRole, "completionRole"},
@@ -48,7 +51,7 @@ ImagePackModel::roleNames() const
 }
 
 QVariant
-ImagePackModel::data(const QModelIndex &index, int role) const
+CombinedImagePackModel::data(const QModelIndex &index, int role) const
 {
         if (hasIndex(index.row(), index.column(), index.parent())) {
                 switch (role) {

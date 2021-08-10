@@ -23,12 +23,13 @@ Popup {
     }
 
     Connections {
-        target: CallManager
-        onNewInviteState: {
+        function onNewInviteState() {
             if (!CallManager.haveCallInvite)
                 close();
 
         }
+
+        target: CallManager
     }
 
     ColumnLayout {

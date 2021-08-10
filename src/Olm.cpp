@@ -212,14 +212,21 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
         nhlog::crypto()->info("sender    : {}", msg.sender);
         nhlog::crypto()->info("sender_key: {}", msg.sender_key);
 
+        if (msg.sender_key == olm::client()->identity_keys().ed25519) {
+                nhlog::crypto()->warn("Ignoring olm message from ourselves!");
+                return;
+        }
+
         const auto my_key = olm::client()->identity_keys().curve25519;
+
+        bool failed_decryption = false;
 
         for (const auto &cipher : msg.ciphertext) {
                 // We skip messages not meant for the current device.
                 if (cipher.first != my_key) {
                         nhlog::crypto()->debug(
                           "Skipping message for {} since we are {}.", cipher.first, my_key);
-                        return;
+                        continue;
                 }
 
                 const auto type = cipher.second.type;
@@ -234,6 +241,7 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
                                   msg.sender, msg.sender_key, cipher.second);
                         } else {
                                 nhlog::crypto()->error("Undecryptable olm message!");
+                                failed_decryption = true;
                                 continue;
                         }
                 }
@@ -278,11 +286,17 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
 
                         bool from_their_device = false;
                         for (auto [device_id, key] : otherUserDeviceKeys.device_keys) {
-                                if (key.keys.at("curve25519:" + device_id) == msg.sender_key) {
-                                        if (key.keys.at("ed25519:" + device_id) == sender_ed25519) {
-                                                from_their_device = true;
-                                                break;
-                                        }
+                                auto c_key = key.keys.find("curve25519:" + device_id);
+                                auto e_key = key.keys.find("ed25519:" + device_id);
+
+                                if (c_key == key.keys.end() || e_key == key.keys.end()) {
+                                        nhlog::crypto()->warn(
+                                          "Skipping device {} as we have no keys for it.",
+                                          device_id);
+                                } else if (c_key->second == msg.sender_key &&
+                                           e_key->second == sender_ed25519) {
+                                        from_their_device = true;
+                                        break;
                                 }
                         }
                         if (!from_their_device) {
@@ -423,22 +437,28 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
                         }
 
                         return;
+                } else {
+                        failed_decryption = true;
                 }
         }
 
-        try {
-                std::map<std::string, std::vector<std::string>> targets;
-                for (auto [device_id, key] : otherUserDeviceKeys.device_keys) {
-                        if (key.keys.at("curve25519:" + device_id) == msg.sender_key)
-                                targets[msg.sender].push_back(device_id);
-                }
+        if (failed_decryption) {
+                try {
+                        std::map<std::string, std::vector<std::string>> targets;
+                        for (auto [device_id, key] : otherUserDeviceKeys.device_keys) {
+                                if (key.keys.at("curve25519:" + device_id) == msg.sender_key)
+                                        targets[msg.sender].push_back(device_id);
+                        }
 
-                send_encrypted_to_device_messages(
-                  targets, mtx::events::DeviceEvent<mtx::events::msg::Dummy>{}, true);
-                nhlog::crypto()->info(
-                  "Recovering from broken olm channel with {}:{}", msg.sender, msg.sender_key);
-        } catch (std::exception &e) {
-                nhlog::crypto()->error("Failed to recover from broken olm sessions: {}", e.what());
+                        send_encrypted_to_device_messages(
+                          targets, mtx::events::DeviceEvent<mtx::events::msg::Dummy>{}, true);
+                        nhlog::crypto()->info("Recovering from broken olm channel with {}:{}",
+                                              msg.sender,
+                                              msg.sender_key);
+                } catch (std::exception &e) {
+                        nhlog::crypto()->error("Failed to recover from broken olm sessions: {}",
+                                               e.what());
+                }
         }
 }
 
@@ -504,7 +524,8 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
 
         auto own_user_id = http::client()->user_id().to_string();
 
-        auto members = cache::client()->getMembersWithKeys(room_id);
+        auto members = cache::client()->getMembersWithKeys(
+          room_id, UserSettings::instance()->onlyShareKeysWithVerifiedUsers());
 
         std::map<std::string, std::vector<std::string>> sendSessionTo;
         mtx::crypto::OutboundGroupSessionPtr session = nullptr;
@@ -955,13 +976,12 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
                 }
         }
 
-        if (!verifiedDevice && !shouldSeeKeys &&
-            !utils::respondsToKeyRequests(req.content.room_id)) {
+        if (!verifiedDevice && !shouldSeeKeys) {
                 nhlog::crypto()->debug("ignoring key request for room {}", req.content.room_id);
                 return;
         }
 
-        if (verifiedDevice || utils::respondsToKeyRequests(req.content.room_id)) {
+        if (verifiedDevice) {
                 // share the minimum index we have
                 minimumIndex = -1;
         }
@@ -1008,7 +1028,8 @@ send_megolm_key_to_device(const std::string &user_id,
 
 DecryptionResult
 decryptEvent(const MegolmSessionIndex &index,
-             const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &event)
+             const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &event,
+             bool dont_write_db)
 {
         try {
                 if (!cache::client()->inboundMegolmSessionExists(index)) {
@@ -1023,10 +1044,26 @@ decryptEvent(const MegolmSessionIndex &index,
         std::string msg_str;
         try {
                 auto session = cache::client()->getInboundMegolmSession(index);
+                auto sessionData =
+                  cache::client()->getMegolmSessionData(index).value_or(GroupSessionData{});
 
                 auto res =
                   olm::client()->decrypt_group_message(session.get(), event.content.ciphertext);
                 msg_str = std::string((char *)res.data.data(), res.data.size());
+
+                if (!event.event_id.empty() && event.event_id[0] == '$') {
+                        auto oldIdx = sessionData.indices.find(res.message_index);
+                        if (oldIdx != sessionData.indices.end()) {
+                                if (oldIdx->second != event.event_id)
+                                        return {DecryptionErrorCode::ReplayAttack,
+                                                std::nullopt,
+                                                std::nullopt};
+                        } else if (!dont_write_db) {
+                                sessionData.indices[res.message_index] = event.event_id;
+                                cache::client()->saveInboundMegolmSession(
+                                  index, std::move(session), sessionData);
+                        }
+                }
         } catch (const lmdb::error &e) {
                 return {DecryptionErrorCode::DbError, e.what(), std::nullopt};
         } catch (const mtx::crypto::olm_exception &e) {
@@ -1035,24 +1072,24 @@ decryptEvent(const MegolmSessionIndex &index,
                 return {DecryptionErrorCode::DecryptionFailed, e.what(), std::nullopt};
         }
 
-        // Add missing fields for the event.
-        json body                = json::parse(msg_str);
-        body["event_id"]         = event.event_id;
-        body["sender"]           = event.sender;
-        body["origin_server_ts"] = event.origin_server_ts;
-        body["unsigned"]         = event.unsigned_data;
-
-        // relations are unencrypted in content...
-        mtx::common::add_relations(body["content"], event.content.relations);
-
-        mtx::events::collections::TimelineEvent te;
         try {
+                // Add missing fields for the event.
+                json body                = json::parse(msg_str);
+                body["event_id"]         = event.event_id;
+                body["sender"]           = event.sender;
+                body["origin_server_ts"] = event.origin_server_ts;
+                body["unsigned"]         = event.unsigned_data;
+
+                // relations are unencrypted in content...
+                mtx::common::add_relations(body["content"], event.content.relations);
+
+                mtx::events::collections::TimelineEvent te;
                 mtx::events::collections::from_json(body, te);
+
+                return {DecryptionErrorCode::NoError, std::nullopt, std::move(te.data)};
         } catch (std::exception &e) {
                 return {DecryptionErrorCode::ParsingFailed, e.what(), std::nullopt};
         }
-
-        return {std::nullopt, std::nullopt, std::move(te.data)};
 }
 
 crypto::Trust
@@ -1080,6 +1117,8 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
         std::map<mtx::identifiers::User, std::map<std::string, mtx::events::msg::OlmEncrypted>>
           messages;
         std::map<std::string, std::map<std::string, DevicePublicKeys>> pks;
+
+        auto our_curve = olm::client()->identity_keys().curve25519;
 
         for (const auto &[user, devices] : targets) {
                 auto deviceKeys = cache::client()->userKeys(user);
@@ -1114,12 +1153,32 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                                 continue;
                         }
 
-                        auto session =
-                          cache::getLatestOlmSession(d.keys.at("curve25519:" + device));
+                        auto device_curve = d.keys.at("curve25519:" + device);
+                        if (device_curve == our_curve) {
+                                nhlog::crypto()->warn("Skipping our own device, since sending "
+                                                      "ourselves olm messages makes no sense.");
+                                continue;
+                        }
+
+                        auto session = cache::getLatestOlmSession(device_curve);
                         if (!session || force_new_session) {
-                                claims.one_time_keys[user][device] = mtx::crypto::SIGNED_CURVE25519;
-                                pks[user][device].ed25519          = d.keys.at("ed25519:" + device);
-                                pks[user][device].curve25519 = d.keys.at("curve25519:" + device);
+                                static QMap<QPair<std::string, std::string>, qint64> rateLimit;
+                                auto currentTime = QDateTime::currentSecsSinceEpoch();
+                                if (rateLimit.value(QPair(user, device)) + 60 * 60 * 10 <
+                                    currentTime) {
+                                        claims.one_time_keys[user][device] =
+                                          mtx::crypto::SIGNED_CURVE25519;
+                                        pks[user][device].ed25519 = d.keys.at("ed25519:" + device);
+                                        pks[user][device].curve25519 =
+                                          d.keys.at("curve25519:" + device);
+
+                                        rateLimit.insert(QPair(user, device), currentTime);
+                                } else {
+                                        nhlog::crypto()->warn("Not creating new session with {}:{} "
+                                                              "because of rate limit",
+                                                              user,
+                                                              device);
+                                }
                                 continue;
                         }
 
@@ -1129,7 +1188,7 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                                                            ev_json,
                                                            UserId(user),
                                                            d.keys.at("ed25519:" + device),
-                                                           d.keys.at("curve25519:" + device))
+                                                           device_curve)
                             .get<mtx::events::msg::OlmEncrypted>();
 
                         try {
@@ -1187,22 +1246,40 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                                                 continue;
                                         }
 
-                                        // TODO: Verify signatures
                                         auto otk = rd.second.begin()->at("key");
 
-                                        auto id_key = pks.at(user_id).at(device_id).curve25519;
+                                        auto sign_key = pks.at(user_id).at(device_id).ed25519;
+                                        auto id_key   = pks.at(user_id).at(device_id).curve25519;
+
+                                        // Verify signature
+                                        {
+                                                auto signedKey = *rd.second.begin();
+                                                std::string signature =
+                                                  signedKey["signatures"][user_id].value(
+                                                    "ed25519:" + device_id, "");
+
+                                                if (signature.empty() ||
+                                                    !mtx::crypto::ed25519_verify_signature(
+                                                      sign_key, signedKey, signature)) {
+                                                        nhlog::net()->warn(
+                                                          "Skipping device {} as its one time key "
+                                                          "has an invalid signature.",
+                                                          device_id);
+                                                        continue;
+                                                }
+                                        }
+
                                         auto session =
                                           olm::client()->create_outbound_session(id_key, otk);
 
                                         messages[mtx::identifiers::parse<mtx::identifiers::User>(
                                           user_id)][device_id] =
                                           olm::client()
-                                            ->create_olm_encrypted_content(
-                                              session.get(),
-                                              ev_json,
-                                              UserId(user_id),
-                                              pks.at(user_id).at(device_id).ed25519,
-                                              id_key)
+                                            ->create_olm_encrypted_content(session.get(),
+                                                                           ev_json,
+                                                                           UserId(user_id),
+                                                                           sign_key,
+                                                                           id_key)
                                             .get<mtx::events::msg::OlmEncrypted>();
 
                                         try {
@@ -1248,8 +1325,8 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                 req.device_keys = keysToQuery;
                 http::client()->query_keys(
                   req,
-                  [ev_json, BindPks](const mtx::responses::QueryKeys &res,
-                                     mtx::http::RequestErr err) {
+                  [ev_json, BindPks, our_curve](const mtx::responses::QueryKeys &res,
+                                                mtx::http::RequestErr err) {
                           if (err) {
                                   nhlog::net()->warn("failed to query device keys: {} {}",
                                                      err->matrix_error.error,
@@ -1290,6 +1367,13 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                                           DevicePublicKeys pks;
                                           pks.ed25519    = device_keys.at(edKey);
                                           pks.curve25519 = device_keys.at(curveKey);
+
+                                          if (pks.curve25519 == our_curve) {
+                                                  nhlog::crypto()->warn(
+                                                    "Skipping our own device, since sending "
+                                                    "ourselves olm messages makes no sense.");
+                                                  continue;
+                                          }
 
                                           try {
                                                   if (!mtx::crypto::verify_identity_signature(
@@ -1360,9 +1444,12 @@ request_cross_signing_keys()
                   body,
                   [request_id = secretRequest.request_id, secretName](mtx::http::RequestErr err) {
                           if (err) {
-                                  request_id_to_secret_name.erase(request_id);
                                   nhlog::net()->error("Failed to send request for secrect '{}'",
                                                       secretName);
+                                  // Cancel request on UI thread
+                                  QTimer::singleShot(1, cache::client(), [request_id]() {
+                                          request_id_to_secret_name.erase(request_id);
+                                  });
                                   return;
                           }
                   });

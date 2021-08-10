@@ -533,6 +533,8 @@ RoomlistModel::initializeRooms()
         for (const auto &id : cache::client()->roomIds())
                 addRoom(id, true);
 
+        nhlog::db()->info("Restored {} rooms from cache", rowCount());
+
         endResetModel();
 }
 

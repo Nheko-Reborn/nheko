@@ -6,6 +6,7 @@
 
 #include <QDesktopServices>
 #include <QUrl>
+#include <QWindow>
 
 #include "Cache_p.h"
 #include "ChatPage.h"
@@ -139,4 +140,10 @@ Nheko::openJoinRoomDialog() const
 {
         MainWindow::instance()->openJoinRoomDialog(
           [](const QString &room_id) { ChatPage::instance()->joinRoom(room_id); });
+}
+
+void
+Nheko::reparent(QWindow *win) const
+{
+        win->setTransientParent(MainWindow::instance()->windowHandle());
 }

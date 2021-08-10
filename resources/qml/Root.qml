@@ -4,14 +4,15 @@
 
 import "./delegates"
 import "./device-verification"
+import "./dialogs"
 import "./emoji"
 import "./voip"
 import Qt.labs.platform 1.1 as Platform
 import QtGraphicalEffects 1.0
-import QtQuick 2.9
-import QtQuick.Controls 2.5
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
-import QtQuick.Window 2.2
+import QtQuick.Window 2.15
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
 
@@ -48,6 +49,14 @@ Page {
     }
 
     Component {
+        id: roomMembersComponent
+
+        RoomMembers {
+        }
+
+    }
+
+    Component {
         id: mobileCallInviteDialog
 
         CallInvite {
@@ -59,6 +68,46 @@ Page {
         id: quickSwitcherComponent
 
         QuickSwitcher {
+        }
+
+    }
+
+    Component {
+        id: deviceVerificationDialog
+
+        DeviceVerification {
+        }
+
+    }
+
+    Component {
+        id: inviteDialog
+
+        InviteDialog {
+        }
+
+    }
+
+    Component {
+        id: packSettingsComponent
+
+        ImagePackSettingsDialog {
+        }
+
+    }
+
+    Component {
+        id: readReceiptsDialog
+
+        ReadReceipts {
+        }
+
+    }
+
+    Component {
+        id: rawMessageDialog
+
+        RawMessageDialog {
         }
 
     }
@@ -82,38 +131,64 @@ Page {
         onActivated: Rooms.previousRoom()
     }
 
-    Component {
-        id: deviceVerificationDialog
-
-        DeviceVerification {
-        }
-
-    }
-
     Connections {
-        target: TimelineManager
-        onNewDeviceVerificationRequest: {
+        function onNewDeviceVerificationRequest(flow) {
             var dialog = deviceVerificationDialog.createObject(timelineRoot, {
                 "flow": flow
             });
             dialog.show();
         }
-        onOpenProfile: {
+
+        function onOpenProfile(profile) {
             var userProfile = userProfileComponent.createObject(timelineRoot, {
                 "profile": profile
             });
             userProfile.show();
         }
+
+        function onShowImagePackSettings(packlist) {
+            var packSet = packSettingsComponent.createObject(timelineRoot, {
+                "packlist": packlist
+            });
+            packSet.show();
+        }
+
+        function onOpenRoomMembersDialog(members) {
+            var membersDialog = roomMembersComponent.createObject(timelineRoot, {
+                "members": members,
+                "roomName": Rooms.currentRoom.roomName
+            });
+            membersDialog.show();
+        }
+
+        function onOpenRoomSettingsDialog(settings) {
+            var roomSettings = roomSettingsComponent.createObject(timelineRoot, {
+                "roomSettings": settings
+            });
+            roomSettings.show();
+        }
+
+        function onOpenInviteUsersDialog(invitees) {
+            var dialog = inviteDialog.createObject(timelineRoot, {
+                "roomId": Rooms.currentRoom.roomId,
+                "plainRoomName": Rooms.currentRoom.plainRoomName,
+                "invitees": invitees
+            });
+            dialog.show();
+        }
+
+        target: TimelineManager
     }
 
     Connections {
-        target: CallManager
-        onNewInviteState: {
+        function onNewInviteState() {
             if (CallManager.haveCallInvite && Settings.mobileMode) {
                 var dialog = mobileCallInviteDialog.createObject(msgView);
                 dialog.open();
             }
         }
+
+        target: CallManager
     }
 
     ChatPage {

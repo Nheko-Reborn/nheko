@@ -56,6 +56,7 @@ Rectangle {
             RoomList {
                 id: roomlist
 
+                implicitHeight: chatPage.height
                 collapsed: parent.collapsed
             }
 

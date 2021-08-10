@@ -281,14 +281,11 @@ set(SRC_FILES
 	src/dialogs/CreateRoom.cpp
 	src/dialogs/FallbackAuth.cpp
 	src/dialogs/ImageOverlay.cpp
-	src/dialogs/InviteUsers.cpp
 	src/dialogs/JoinRoom.cpp
 	src/dialogs/LeaveRoom.cpp
 	src/dialogs/Logout.cpp
-	src/dialogs/MemberList.cpp
 	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
-	src/dialogs/ReadReceipts.cpp
 
 	# Emoji
 	src/emoji/EmojiModel.cpp
@@ -307,7 +304,6 @@ set(SRC_FILES
 	src/timeline/RoomlistModel.cpp
 
 	# UI components
-	src/ui/Avatar.cpp
 	src/ui/Badge.cpp
 	src/ui/DropShadow.cpp
 	src/ui/FlatButton.cpp
@@ -346,16 +342,20 @@ set(SRC_FILES
 	src/CompletionProxyModel.cpp
 	src/DeviceVerificationFlow.cpp
 	src/EventAccessors.cpp
-	src/InviteeItem.cpp
+	src/InviteesModel.cpp
 	src/Logging.cpp
 	src/LoginPage.cpp
 	src/MainWindow.cpp
 	src/MatrixClient.cpp
+	src/MemberList.cpp
 	src/MxcImageProvider.cpp
 	src/Olm.cpp
+    src/ReadReceiptsModel.cpp
 	src/RegisterPage.cpp
 	src/SSOHandler.cpp
-	src/ImagePackModel.cpp
+	src/CombinedImagePackModel.cpp
+	src/SingleImagePackModel.cpp
+	src/ImagePackListModel.cpp
 	src/TrayIcon.cpp
 	src/UserSettingsPage.cpp
 	src/UsersModel.cpp
@@ -381,7 +381,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        1c277e9ac69aafdaf6888ce595b21dc86e970f28
+		GIT_TAG        bcf363cb5e6c423f40c96123e227bc8c5f6d6f80
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -492,15 +492,11 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/CreateRoom.h
 	src/dialogs/FallbackAuth.h
 	src/dialogs/ImageOverlay.h
-	src/dialogs/InviteUsers.h
 	src/dialogs/JoinRoom.h
 	src/dialogs/LeaveRoom.h
 	src/dialogs/Logout.h
-	src/dialogs/MemberList.h
 	src/dialogs/PreviewUploadOverlay.h
-	src/dialogs/RawMessage.h
 	src/dialogs/ReCaptcha.h
-	src/dialogs/ReadReceipts.h
 
 	# Emoji
 	src/emoji/EmojiModel.h
@@ -518,7 +514,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/timeline/RoomlistModel.h
 
 	# UI components
-	src/ui/Avatar.h
 	src/ui/Badge.h
 	src/ui/FlatButton.h
 	src/ui/FloatingButton.h
@@ -546,28 +541,33 @@ qt5_wrap_cpp(MOC_HEADERS
 
 	src/AvatarProvider.h
 	src/BlurhashProvider.h
-	src/Cache_p.h
 	src/CacheCryptoStructs.h
+	src/Cache_p.h
 	src/CallDevices.h
 	src/CallManager.h
 	src/ChatPage.h
 	src/Clipboard.h
+	src/CombinedImagePackModel.h
 	src/CompletionProxyModel.h
 	src/DeviceVerificationFlow.h
-	src/InviteeItem.h
+	src/ImagePackListModel.h
+	src/InviteesModel.h
 	src/LoginPage.h
 	src/MainWindow.h
+	src/MemberList.h
 	src/MxcImageProvider.h
+	src/Olm.h
 	src/RegisterPage.h
+	src/RoomsModel.h
 	src/SSOHandler.h
-	src/ImagePackModel.h
+	src/SingleImagePackModel.h
 	src/TrayIcon.h
 	src/UserSettingsPage.h
 	src/UsersModel.h
-	src/RoomsModel.h
 	src/WebRTCSession.h
 	src/WelcomePage.h
-	)
+	src/ReadReceiptsModel.h
+)
 
 #
 # Bundle translations.

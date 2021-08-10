@@ -8,7 +8,7 @@
 
 #include <mtx/events/mscs/image_packs.hpp>
 
-class ImagePackModel : public QAbstractListModel
+class CombinedImagePackModel : public QAbstractListModel
 {
         Q_OBJECT
 public:
@@ -21,7 +21,7 @@ public:
                 OriginalRow,
         };
 
-        ImagePackModel(const std::string &roomId, bool stickers, QObject *parent = nullptr);
+        CombinedImagePackModel(const std::string &roomId, bool stickers, QObject *parent = nullptr);
         QHash<int, QByteArray> roleNames() const override;
         int rowCount(const QModelIndex &parent = QModelIndex()) const override;
         QVariant data(const QModelIndex &index, int role) const override;
