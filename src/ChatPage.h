@@ -17,10 +17,8 @@
 #include <mtx/events/presence.hpp>
 #include <mtx/secret_storage.hpp>
 
-#include <QFrame>
 #include <QHBoxLayout>
 #include <QMap>
-#include <QPixmap>
 #include <QPoint>
 #include <QTimer>
 #include <QWidget>
