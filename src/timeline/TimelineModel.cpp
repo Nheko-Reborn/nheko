@@ -310,7 +310,7 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
                 return mtx::events::EventType::RoomMessage;
                 //! m.image_pack, currently im.ponies.room_emotes
         case qml_mtx_events::ImagePackInRoom:
-                return mtx::events::EventType::ImagePackRooms;
+                return mtx::events::EventType::ImagePackInRoom;
         //! m.image_pack, currently im.ponies.user_emotes
         case qml_mtx_events::ImagePackInAccountData:
                 return mtx::events::EventType::ImagePackInAccountData;
