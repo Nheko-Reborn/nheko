@@ -34,7 +34,6 @@ Page {
         Connections {
             function onCurrentRoomChanged() {
                 roomlist.positionViewAtIndex(Rooms.roomidToIndex(Rooms.currentRoom.roomId), ListView.Contain);
-                console.log("Test" + Rooms.currentRoom.roomId + " " + Rooms.roomidToIndex(Rooms.currentRoom.roomId));
             }
 
             target: Rooms
