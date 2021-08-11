@@ -25,6 +25,7 @@
 
 #include "dialogs/FallbackAuth.h"
 #include "dialogs/ReCaptcha.h"
+#include "dialogs/TokenRegistration.h"
 
 Q_DECLARE_METATYPE(mtx::user_interactive::Unauthorized)
 Q_DECLARE_METATYPE(mtx::user_interactive::Auth)
@@ -481,6 +482,23 @@ RegisterPage::doUIA(const mtx::user_interactive::Unauthorized &unauthorized)
                 doRegistrationWithAuth(
                   mtx::user_interactive::Auth{session, mtx::user_interactive::auth::Dummy{}});
 
+        } else if (current_stage == mtx::user_interactive::auth_types::registration_token) {
+                auto dialog = new dialogs::TokenRegistration(this);
+
+                connect(dialog,
+                        &dialogs::TokenRegistration::confirmation,
+                        this,
+                        [this, session, dialog](std::string token) {
+                                dialog->close();
+                                dialog->deleteLater();
+                                emit registrationWithAuth(mtx::user_interactive::Auth{
+                                  session, mtx::user_interactive::auth::RegistrationToken{token}});
+                        });
+
+                connect(
+                  dialog, &dialogs::TokenRegistration::cancel, this, &RegisterPage::errorOccurred);
+
+                dialog->show();
         } else {
                 // use fallback
                 auto dialog = new dialogs::FallbackAuth(
