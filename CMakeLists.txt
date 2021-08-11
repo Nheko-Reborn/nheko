@@ -381,7 +381,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        2e6b834f3fbd12b23ddb5219a5a4eacb7e11e0a3
+		GIT_TAG        c5e12e9000fcb889a2746a774a039e0cee7d27ff
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -676,7 +676,7 @@ if(USE_BUNDLED_COEURL)
 	FetchContent_Declare(
 		coeurl
 		GIT_REPOSITORY https://nheko.im/Nheko-Reborn/coeurl.git
-		GIT_TAG        ab7e5b31cb4945ad2c7f276d1f93ce07773011ba
+		GIT_TAG        18470f1c3570f652f79de8e2fbe3eef4238c4171
 		)
 	FetchContent_MakeAvailable(coeurl)
 	target_link_libraries(nheko PUBLIC coeurl::coeurl)
