@@ -28,8 +28,10 @@ ImageOverlay::ImageOverlay(QPixmap image, QWidget *parent)
         setAttribute(Qt::WA_TranslucentBackground, true);
         setAttribute(Qt::WA_DeleteOnClose, true);
         setWindowState(Qt::WindowFullScreen);
+        close_shortcut_ = new QShortcut(QKeySequence(Qt::Key_Escape), this);
 
-        connect(this, SIGNAL(closing()), this, SLOT(close()));
+        connect(close_shortcut_, &QShortcut::activated, this, &ImageOverlay::closing);
+        connect(this, &ImageOverlay::closing, this, &ImageOverlay::close);
 
         raise();
 }

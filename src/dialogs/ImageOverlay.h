@@ -8,6 +8,7 @@
 #include <QDialog>
 #include <QMouseEvent>
 #include <QPixmap>
+#include <QShortcut>
 
 namespace dialogs {
 
@@ -32,5 +33,6 @@ private:
         QRect content_;
         QRect close_button_;
         QRect save_button_;
+        QShortcut *close_shortcut_;
 };
 } // dialogs
