@@ -33,8 +33,8 @@ Page {
 
         Connections {
             function onCurrentRoomChanged() {
-                roomlist.positionViewAtIndex(Rooms.roomidToIndex(Rooms.currentRoom.roomId), ListView.Contain);
-                console.log("Test" + Rooms.currentRoom.roomId + " " + Rooms.roomidToIndex(Rooms.currentRoom.roomId));
+                if (Rooms.currentRoom)
+                    roomlist.positionViewAtIndex(Rooms.roomidToIndex(Rooms.currentRoom.roomId), ListView.Contain);
             }
 
             target: Rooms
@@ -190,7 +190,12 @@ Page {
 
                 TapHandler {
                     margin: -Nheko.paddingSmall
-                    onSingleTapped: Rooms.setCurrentRoom(roomId)
+                    onSingleTapped: {
+                        if (!Rooms.currentRoom || Rooms.currentRoom.roomId !== roomId)
+                            Rooms.setCurrentRoom(roomId);
+                        else
+                            Rooms.resetCurrentRoom();
+                    }
                     onLongPressed: {
                         if (!isInvite)
                             roomContextMenu.show(roomId, tags);

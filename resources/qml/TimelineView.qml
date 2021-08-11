@@ -85,9 +85,13 @@ Item {
                         target: timelineView
                     }
 
-                    MessageView {
+                    Loader {
+                        active: room || roomPreview
                         Layout.fillWidth: true
-                        implicitHeight: msgView.height - typingIndicator.height
+                        sourceComponent: MessageView {
+                            implicitHeight: msgView.height - typingIndicator.height
+                        }
+
                     }
 
                     Loader {
