@@ -152,7 +152,7 @@ modules:
       - -Ddefault_library=static
     name: coeurl
     sources:
-      - commit: e741ced9b2bcf14069e17d466aaef58b277b481d
+      - commit: ab7e5b31cb4945ad2c7f276d1f93ce07773011ba
         type: git
         url: https://nheko.im/nheko-reborn/coeurl.git
   - config-opts:
