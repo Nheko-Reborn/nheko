@@ -286,7 +286,6 @@ set(SRC_FILES
 	src/dialogs/Logout.cpp
 	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
-	src/dialogs/TokenRegistration.cpp
 
 	# Emoji
 	src/emoji/EmojiModel.cpp
@@ -498,7 +497,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/Logout.h
 	src/dialogs/PreviewUploadOverlay.h
 	src/dialogs/ReCaptcha.h
-	src/dialogs/TokenRegistration.h
 
 	# Emoji
 	src/emoji/EmojiModel.h
