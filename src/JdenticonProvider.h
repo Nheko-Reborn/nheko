@@ -7,8 +7,6 @@
 
 #include <mtx/common.hpp>
 
-#include <boost/optional.hpp>
-
 #include "jdenticoninterface.h"
 
 namespace Jdenticon {

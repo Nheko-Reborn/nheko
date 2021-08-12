@@ -106,8 +106,6 @@ signals:
         void reload();
 
 private:
-        bool loadJdenticonPlugin();
-
         void showDialog(QWidget *dialog);
         bool hasActiveUser();
         void restoreWindowSize();
