@@ -286,8 +286,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                                          "EmojiCategory",
                                          "Error: Only enums");
 
-        qmlRegisterType<RoomDirectoryModel>(
-          "im.nheko", 1, 0, "RoomDirectoryModel");
+        qmlRegisterType<RoomDirectoryModel>("im.nheko", 1, 0, "RoomDirectoryModel");
 
 #ifdef USE_QUICK_VIEW
         view      = new QQuickView(parent);

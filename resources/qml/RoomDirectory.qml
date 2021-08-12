@@ -10,10 +10,10 @@ import im.nheko 1.0
 
 ApplicationWindow {
     id: roomDirectoryWindow
+
+    property RoomDirectoryModel publicRooms
+
     visible: true
-
-    property RoomDirectoryModel publicRooms : RoomDirectoryModel {}
-
     x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     minimumWidth: 650
@@ -29,38 +29,12 @@ ApplicationWindow {
         onActivated: roomDirectoryWindow.close()
     }
 
-    header: RowLayout {
-        id: searchBarLayout
-        spacing: Nheko.paddingMedium
-        width: parent.width      
-
-        implicitHeight: roomSearch.height
-
-        MatrixTextField {
-            id: roomSearch
-
-            Layout.fillWidth: true
-	    selectByMouse: true
-
-            font.pixelSize: fontMetrics.font.pixelSize
-            padding: Nheko.paddingMedium
-            color: Nheko.colors.text
-            placeholderText: qsTr("Search for public rooms")
-            onTextChanged: searchTimer.restart()
-        }
-
-        Timer {
-            id: searchTimer
-
-            interval: 350
-            onTriggered: roomDirView.model.setSearchTerm(roomSearch.text)
-        }
-    }
-
     ListView {
         id: roomDirView
+
         anchors.fill: parent
         model: publicRooms
+
         delegate: Rectangle {
             id: roomDirDelegate
 
@@ -70,12 +44,10 @@ ApplicationWindow {
             property int avatarSize: fontMetrics.lineSpacing * 4
 
             color: background
-            
             height: avatarSize + 2.5 * Nheko.paddingMedium
             width: ListView.view.width
 
             RowLayout {
-
                 spacing: Nheko.paddingMedium
                 anchors.fill: parent
                 anchors.margins: Nheko.paddingMedium
@@ -103,6 +75,7 @@ ApplicationWindow {
 
                     RowLayout {
                         id: roomNameRow
+
                         Layout.fillWidth: true
                         spacing: 0
 
@@ -113,21 +86,24 @@ ApplicationWindow {
                             font.pixelSize: fontMetrics.font.pixelSize * 1.1
                             fullText: model.name
                         }
+
                     }
 
                     RowLayout {
                         id: roomDescriptionRow
+
                         Layout.fillWidth: true
                         Layout.preferredWidth: parent.width
                         spacing: Nheko.paddingSmall
                         Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-			Layout.preferredHeight: fontMetrics.lineSpacing * 4
+                        Layout.preferredHeight: fontMetrics.lineSpacing * 4
 
                         Label {
                             id: roomTopic
+
                             color: roomDirDelegate.unimportantText
                             font.weight: Font.Thin
-			    Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             font.pixelSize: fontMetrics.font.pixelSize
                             elide: Text.ElideRight
                             maximumLineCount: 2
@@ -136,60 +112,105 @@ ApplicationWindow {
                             verticalAlignment: Text.AlignVCenter
                             wrapMode: Text.WordWrap
                         }
-			Item {
-			  id: numMembersRectangle
-			  Layout.fillWidth: false
-			  Layout.margins: Nheko.paddingSmall
-                          width: roomCount.width
 
-                        Label {
-                            id: roomCount
-                            color: roomDirDelegate.unimportantText
-			    anchors.centerIn: parent
+                        Item {
+                            id: numMembersRectangle
+
                             Layout.fillWidth: false
-                            font.weight: Font.Thin
-                            font.pixelSize: fontMetrics.font.pixelSize
-                            text: model.numMembers.toString()
+                            Layout.margins: Nheko.paddingSmall
+                            width: roomCount.width
+
+                            Label {
+                                id: roomCount
+
+                                color: roomDirDelegate.unimportantText
+                                anchors.centerIn: parent
+                                Layout.fillWidth: false
+                                font.weight: Font.Thin
+                                font.pixelSize: fontMetrics.font.pixelSize
+                                text: model.numMembers.toString()
+                            }
+
                         }
-			}
 
-			Item {
-				id: buttonRectangle
-				Layout.fillWidth: false
-				Layout.margins: Nheko.paddingSmall	
-                        	width: joinRoomButton.width
-				Button {
-                            		id: joinRoomButton
-			    		visible: publicRooms.canJoinRoom(model.roomid)
-					anchors.centerIn: parent 
-                            		width: Math.ceil(0.1 * roomDirectoryWindow.width)
-					text: "Join"
-                            		onClicked: publicRooms.joinRoom(model.index)
-                        	}		
-			}
+                        Item {
+                            id: buttonRectangle
+
+                            Layout.fillWidth: false
+                            Layout.margins: Nheko.paddingSmall
+                            width: joinRoomButton.width
+
+                            Button {
+                                id: joinRoomButton
+
+                                visible: publicRooms.canJoinRoom(model.roomid)
+                                anchors.centerIn: parent
+                                width: Math.ceil(0.1 * roomDirectoryWindow.width)
+                                text: "Join"
+                                onClicked: publicRooms.joinRoom(model.index)
+                            }
+
+                        }
+
                     }
+
                 }
+
             }
+
         }
-	
-	footer: Item {
-		anchors.horizontalCenter: parent.horizontalCenter
-        	width: parent.width
-        	visible: (publicRooms.reachedEndOfPagination == false) && publicRooms.loadingMoreRooms
-		// hacky but works
-        	height: loadingSpinner.height + 2 * Nheko.paddingLarge
-        	anchors.margins: Nheko.paddingLarge
 
-        	Spinner {
-                	id: loadingSpinner
+        footer: Item {
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width
+            visible: (publicRooms.reachedEndOfPagination == false) && publicRooms.loadingMoreRooms
+            // hacky but works
+            height: loadingSpinner.height + 2 * Nheko.paddingLarge
+            anchors.margins: Nheko.paddingLarge
 
-                	anchors.centerIn: parent
-			anchors.margins: Nheko.paddingLarge
-			running: visible
-			foreground: Nheko.colors.mid 
-                	z: 7
-               }
-    	}
- 
+            Spinner {
+                id: loadingSpinner
+
+                anchors.centerIn: parent
+                anchors.margins: Nheko.paddingLarge
+                running: visible
+                foreground: Nheko.colors.mid
+                z: 7
+            }
+
+        }
+
     }
+
+    publicRooms: RoomDirectoryModel {
+    }
+
+    header: RowLayout {
+        id: searchBarLayout
+
+        spacing: Nheko.paddingMedium
+        width: parent.width
+        implicitHeight: roomSearch.height
+
+        MatrixTextField {
+            id: roomSearch
+
+            Layout.fillWidth: true
+            selectByMouse: true
+            font.pixelSize: fontMetrics.font.pixelSize
+            padding: Nheko.paddingMedium
+            color: Nheko.colors.text
+            placeholderText: qsTr("Search for public rooms")
+            onTextChanged: searchTimer.restart()
+        }
+
+        Timer {
+            id: searchTimer
+
+            interval: 350
+            onTriggered: roomDirView.model.setSearchTerm(roomSearch.text)
+        }
+
+    }
+
 }

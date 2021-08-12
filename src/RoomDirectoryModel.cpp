@@ -82,10 +82,10 @@ RoomDirectoryModel::getViasForRoom(const std::vector<std::string> &aliases)
 
         vias.reserve(aliases.size());
 
-        std::transform(
-          aliases.begin(), aliases.end(), std::back_inserter(vias), [](const auto &alias) {
-                  return alias.substr(alias.find(":") + 1);
-          });
+        std::transform(aliases.begin(),
+                       aliases.end(),
+                       std::back_inserter(vias),
+                       [](const auto &alias) { return alias.substr(alias.find(":") + 1); });
 
         return vias;
 }
@@ -126,7 +126,8 @@ RoomDirectoryModel::data(const QModelIndex &index, int role) const
 void
 RoomDirectoryModel::fetchMore(const QModelIndex &)
 {
-	if (!canFetchMore_) return;	
+        if (!canFetchMore_)
+                return;
 
         nhlog::net()->debug("Fetching more rooms from mtxclient...");
 
@@ -137,18 +138,18 @@ RoomDirectoryModel::fetchMore(const QModelIndex &)
         // req.third_party_instance_id = third_party_instance_id;
         auto requested_server = server_;
 
-	reachedEndOfPagination_ = false;
-	emit reachedEndOfPaginationChanged();
+        reachedEndOfPagination_ = false;
+        emit reachedEndOfPaginationChanged();
 
-	loadingMoreRooms_ = true;
-	emit loadingMoreRoomsChanged();
+        loadingMoreRooms_ = true;
+        emit loadingMoreRoomsChanged();
 
         http::client()->post_public_rooms(
           req,
           [requested_server, this, req](const mtx::responses::PublicRooms &res,
                                         mtx::http::RequestErr err) {
-		  loadingMoreRooms_ = false;
-		  emit loadingMoreRoomsChanged();
+                  loadingMoreRooms_ = false;
+                  emit loadingMoreRoomsChanged();
 
                   if (err) {
                           nhlog::net()->error(
@@ -184,12 +185,12 @@ RoomDirectoryModel::displayRooms(std::vector<mtx::responses::PublicRoomsChunk> f
         endInsertRows();
 
         if (next_batch.empty()) {
-                canFetchMore_ = false;
-		reachedEndOfPagination_ = true;
-		emit reachedEndOfPaginationChanged();
+                canFetchMore_           = false;
+                reachedEndOfPagination_ = true;
+                emit reachedEndOfPaginationChanged();
         }
 
         prevBatch_ = next_batch;
 
-	nhlog::ui()->debug ("Finished loading rooms");
+        nhlog::ui()->debug("Finished loading rooms");
 }
