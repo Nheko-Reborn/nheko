@@ -40,6 +40,7 @@ ApplicationWindow {
             id: roomSearch
 
             Layout.fillWidth: true
+	    selectByMouse: true
 
             font.pixelSize: fontMetrics.font.pixelSize
             padding: Nheko.paddingMedium
