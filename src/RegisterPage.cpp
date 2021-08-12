@@ -483,10 +483,21 @@ RegisterPage::doUIA(const mtx::user_interactive::Unauthorized &unauthorized)
                   mtx::user_interactive::Auth{session, mtx::user_interactive::auth::Dummy{}});
 
         } else if (current_stage == mtx::user_interactive::auth_types::registration_token) {
-                QString token = QInputDialog::getText(
-                  this, tr("Registration token"), tr("Please enter a valid registration token."));
-                emit registrationWithAuth(mtx::user_interactive::Auth{
-                  session, mtx::user_interactive::auth::RegistrationToken{token.toStdString()}});
+                bool ok;
+                QString token =
+                  QInputDialog::getText(this,
+                                        tr("Registration token"),
+                                        tr("Please enter a valid registration token."),
+                                        QLineEdit::Normal,
+                                        QString(),
+                                        &ok);
+
+		if (ok) {
+			emit registrationWithAuth(mtx::user_interactive::Auth{
+			  session, mtx::user_interactive::auth::RegistrationToken{token.toStdString()}});
+		} else {
+			emit errorOccurred();
+		}
         } else {
                 // use fallback
                 auto dialog = new dialogs::FallbackAuth(
