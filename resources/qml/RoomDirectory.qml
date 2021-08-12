@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import "./ui"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
@@ -10,6 +11,8 @@ import im.nheko 1.0
 ApplicationWindow {
     id: roomDirectoryWindow
     visible: true
+
+    property RoomDirectoryModel publicRooms : RoomDirectoryModel {}
 
     x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
     y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
@@ -56,9 +59,7 @@ ApplicationWindow {
     ListView {
         id: roomDirView
         anchors.fill: parent
-        model: RoomDirectoryModel {
-            id: roomDir
-        }
+        model: publicRooms
         delegate: Rectangle {
             id: roomDirDelegate
 
@@ -158,16 +159,36 @@ ApplicationWindow {
                         	width: joinRoomButton.width
 				Button {
                             		id: joinRoomButton
-			    		visible: roomDir.canJoinRoom(model.roomid)
+			    		visible: publicRooms.canJoinRoom(model.roomid)
 					anchors.centerIn: parent 
                             		width: Math.ceil(0.1 * roomDirectoryWindow.width)
 					text: "Join"
-                            		onClicked: roomDir.joinRoom(model.index)
+                            		onClicked: publicRooms.joinRoom(model.index)
                         	}		
 			}
                     }
                 }
             }
-        } 
+        }
+	
+	footer: Item {
+		anchors.horizontalCenter: parent.horizontalCenter
+        	width: parent.width
+        	visible: (publicRooms.reachedEndOfPagination == false) && publicRooms.loadingMoreRooms
+		// hacky but works
+        	height: loadingSpinner.height + 2 * Nheko.paddingLarge
+        	anchors.margins: Nheko.paddingLarge
+
+        	Spinner {
+                	id: loadingSpinner
+
+                	anchors.centerIn: parent
+			anchors.margins: Nheko.paddingLarge
+			running: visible
+			foreground: Nheko.colors.mid 
+                	z: 7
+               }
+    	}
+ 
     }
 }

@@ -27,6 +27,9 @@ class RoomDirectoryModel : public QAbstractListModel
 {
         Q_OBJECT
 
+	Q_PROPERTY (bool loadingMoreRooms READ loadingMoreRooms NOTIFY loadingMoreRoomsChanged)
+	Q_PROPERTY (bool reachedEndOfPagination READ reachedEndOfPagination NOTIFY reachedEndOfPaginationChanged)
+
 public:
         explicit RoomDirectoryModel(QObject *parent = nullptr, const std::string &s = "");
 
@@ -49,10 +52,15 @@ public:
                 return static_cast<int>(publicRoomsData_.size());
         }
 
-        inline bool canFetchMore(const QModelIndex &) const override
+        bool canFetchMore(const QModelIndex &) const override
         {
                 return canFetchMore_;
         }
+
+	bool loadingMoreRooms() const { return loadingMoreRooms_; }
+
+	bool reachedEndOfPagination() const { return reachedEndOfPagination_; }
+
         void fetchMore(const QModelIndex &) override;
 
         Q_INVOKABLE bool canJoinRoom(const QByteArray &room);
@@ -60,15 +68,13 @@ public:
 
 signals:
         void fetchedRoomsBatch(std::vector<mtx::responses::PublicRoomsChunk> rooms,
-                               const std::string &prev_batch,
                                const std::string &next_batch);
-        void serverChanged();
-        void searchTermEntered();
+	void loadingMoreRoomsChanged();
+	void reachedEndOfPaginationChanged();
 
 public slots:
         void displayRooms(std::vector<mtx::responses::PublicRoomsChunk> rooms,
-                          const std::string &prev,
-                          const std::string &next);
+                          const std::string &next_batch);
         void setMatrixServer(const QString &s = "");
         void setSearchTerm(const QString &f);
 
@@ -79,7 +85,9 @@ private:
         std::string userSearchString_;
         std::string prevBatch_;
         std::string nextBatch_;
-        bool canFetchMore_;
+        bool canFetchMore_ {true};
+	bool loadingMoreRooms_ {false};
+	bool reachedEndOfPagination_ {false};
         std::vector<mtx::responses::PublicRoomsChunk> publicRoomsData_;
 
         std::vector<std::string> getViasForRoom(const std::vector<std::string> &room);

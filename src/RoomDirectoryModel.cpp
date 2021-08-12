@@ -11,7 +11,6 @@
 RoomDirectoryModel::RoomDirectoryModel(QObject *parent, const std::string &s)
   : QAbstractListModel(parent)
   , server_(s)
-  , canFetchMore_(true)
 {
         connect(this,
                 &RoomDirectoryModel::fetchedRoomsBatch,
@@ -127,6 +126,8 @@ RoomDirectoryModel::data(const QModelIndex &index, int role) const
 void
 RoomDirectoryModel::fetchMore(const QModelIndex &)
 {
+	if (!canFetchMore_) return;	
+
         nhlog::net()->debug("Fetching more rooms from mtxclient...");
 
         mtx::requests::PublicRooms req;
@@ -136,10 +137,19 @@ RoomDirectoryModel::fetchMore(const QModelIndex &)
         // req.third_party_instance_id = third_party_instance_id;
         auto requested_server = server_;
 
+	reachedEndOfPagination_ = false;
+	emit reachedEndOfPaginationChanged();
+
+	loadingMoreRooms_ = true;
+	emit loadingMoreRoomsChanged();
+
         http::client()->post_public_rooms(
           req,
           [requested_server, this, req](const mtx::responses::PublicRooms &res,
                                         mtx::http::RequestErr err) {
+		  loadingMoreRooms_ = false;
+		  emit loadingMoreRoomsChanged();
+
                   if (err) {
                           nhlog::net()->error(
                             "Failed to retrieve rooms from mtxclient - {} - {} - {}",
@@ -149,7 +159,7 @@ RoomDirectoryModel::fetchMore(const QModelIndex &)
                   } else if (req.filter.generic_search_term == this->userSearchString_ &&
                              req.since == this->prevBatch_ && requested_server == this->server_) {
                           nhlog::net()->debug("signalling chunk to GUI thread");
-                          emit fetchedRoomsBatch(res.chunk, res.prev_batch, res.next_batch);
+                          emit fetchedRoomsBatch(res.chunk, res.next_batch);
                   }
           },
           requested_server);
@@ -157,11 +167,9 @@ RoomDirectoryModel::fetchMore(const QModelIndex &)
 
 void
 RoomDirectoryModel::displayRooms(std::vector<mtx::responses::PublicRoomsChunk> fetched_rooms,
-                                 const std::string &prev_batch,
                                  const std::string &next_batch)
 {
-        nhlog::net()->debug("Prev batch: {} | Next batch: {}", prevBatch_, nextBatch_);
-        nhlog::net()->debug("NP batch: {} | NN batch: {}", prev_batch, next_batch);
+        nhlog::net()->debug("Prev batch: {} | Next batch: {}", prevBatch_, next_batch);
 
         if (fetched_rooms.empty()) {
                 nhlog::net()->error("mtxclient helper thread yielded empty chunk!");
@@ -177,7 +185,11 @@ RoomDirectoryModel::displayRooms(std::vector<mtx::responses::PublicRoomsChunk> f
 
         if (next_batch.empty()) {
                 canFetchMore_ = false;
+		reachedEndOfPagination_ = true;
+		emit reachedEndOfPaginationChanged();
         }
 
         prevBatch_ = next_batch;
+
+	nhlog::ui()->debug ("Finished loading rooms");
 }
