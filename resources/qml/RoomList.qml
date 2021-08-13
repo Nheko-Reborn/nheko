@@ -35,6 +35,7 @@ Page {
             function onCurrentRoomChanged() {
                 if (Rooms.currentRoom)
                     roomlist.positionViewAtIndex(Rooms.roomidToIndex(Rooms.currentRoom.roomId), ListView.Contain);
+
             }
 
             target: Rooms

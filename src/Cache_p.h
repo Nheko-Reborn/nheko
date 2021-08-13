@@ -46,7 +46,6 @@ public:
         std::string statusMessage(const std::string &user_id);
 
         // user cache stores user keys
-        std::optional<UserKeyCache> userKeys(const std::string &user_id);
         std::map<std::string, std::optional<UserKeyCache>> getMembersWithKeys(
           const std::string &room_id,
           bool verified_only);
@@ -63,9 +62,11 @@ public:
                         std::function<void(const UserKeyCache &, mtx::http::RequestErr)> cb);
 
         // device & user verification cache
+        std::optional<UserKeyCache> userKeys(const std::string &user_id);
         VerificationStatus verificationStatus(const std::string &user_id);
         void markDeviceVerified(const std::string &user_id, const std::string &device);
         void markDeviceUnverified(const std::string &user_id, const std::string &device);
+        crypto::Trust roomVerificationStatus(const std::string &room_id);
 
         std::vector<std::string> joinedRooms();
 
@@ -681,7 +682,10 @@ private:
                 return QString::fromStdString(event.state_key);
         }
 
-        std::optional<VerificationCache> verificationCache(const std::string &user_id);
+        std::optional<VerificationCache> verificationCache(const std::string &user_id,
+                                                           lmdb::txn &txn);
+        VerificationStatus verificationStatus_(const std::string &user_id, lmdb::txn &txn);
+        std::optional<UserKeyCache> userKeys_(const std::string &user_id, lmdb::txn &txn);
 
         void setNextBatchToken(lmdb::txn &txn, const std::string &token);
         void setNextBatchToken(lmdb::txn &txn, const QString &token);

@@ -88,6 +88,7 @@ Item {
                     Loader {
                         active: room || roomPreview
                         Layout.fillWidth: true
+
                         sourceComponent: MessageView {
                             implicitHeight: msgView.height - typingIndicator.height
                         }

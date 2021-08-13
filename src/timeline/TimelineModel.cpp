@@ -418,6 +418,14 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                 &events,
                 &EventStore::enableKeyRequests);
 
+        connect(this, &TimelineModel::encryptionChanged, this, &TimelineModel::trustlevelChanged);
+        connect(
+          this, &TimelineModel::roomMemberCountChanged, this, &TimelineModel::trustlevelChanged);
+        connect(cache::client(),
+                &Cache::verificationStatusChanged,
+                this,
+                &TimelineModel::trustlevelChanged);
+
         showEventTimer.callOnTimeout(this, &TimelineModel::scrollTimerEvent);
 }
 
@@ -1991,6 +1999,15 @@ TimelineModel::roomTopic() const
         else
                 return utils::replaceEmoji(utils::linkifyMessage(
                   QString::fromStdString(info[room_id_].topic).toHtmlEscaped()));
+}
+
+crypto::Trust
+TimelineModel::trustlevel() const
+{
+        if (!isEncrypted_)
+                return crypto::Trust::Unverified;
+
+        return cache::client()->roomVerificationStatus(room_id_.toStdString());
 }
 
 int

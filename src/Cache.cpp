@@ -114,7 +114,13 @@ ro_txn(lmdb::env &env)
                 txn           = lmdb::txn::begin(env, nullptr, MDB_RDONLY);
                 reuse_counter = 0;
         } else if (reuse_counter > 0) {
-                txn.renew();
+                try {
+                        txn.renew();
+                } catch (...) {
+                        txn.abort();
+                        txn           = lmdb::txn::begin(env, nullptr, MDB_RDONLY);
+                        reuse_counter = 0;
+                }
         }
         reuse_counter++;
 
@@ -289,7 +295,9 @@ Cache::setup()
         megolmSessionDataDb_     = lmdb::dbi::open(txn, MEGOLM_SESSIONS_DATA_DB, MDB_CREATE);
 
         // What rooms are encrypted
-        encryptedRooms_ = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
+        encryptedRooms_                      = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
+        [[maybe_unused]] auto verificationDb = getVerificationDb(txn);
+        [[maybe_unused]] auto userKeysDb     = getUserKeysDb(txn);
 
         txn.commit();
 
@@ -861,6 +869,9 @@ Cache::setNextBatchToken(lmdb::txn &txn, const QString &token)
 bool
 Cache::isInitialized()
 {
+        if (!env_.handle())
+                return false;
+
         auto txn = ro_txn(env_);
         std::string_view token;
 
@@ -3570,6 +3581,37 @@ Cache::roomMembers(const std::string &room_id)
         return members;
 }
 
+crypto::Trust
+Cache::roomVerificationStatus(const std::string &room_id)
+{
+        std::string_view keys;
+
+        crypto::Trust trust = crypto::Verified;
+
+        try {
+                auto txn = ro_txn(env_);
+
+                auto db     = getMembersDb(txn, room_id);
+                auto keysDb = getUserKeysDb(txn);
+
+                std::string_view user_id, unused;
+                auto cursor = lmdb::cursor::open(txn, db);
+                while (cursor.get(user_id, unused, MDB_NEXT)) {
+                        auto verif = verificationStatus_(std::string(user_id), txn);
+                        if (verif.unverified_device_count)
+                                return crypto::Unverified;
+                        else if (verif.user_verified == crypto::TOFU)
+                                trust = crypto::TOFU;
+                }
+        } catch (std::exception &e) {
+                nhlog::db()->error(
+                  "Failed to calculate verification status for {}: {}", room_id, e.what());
+                return crypto::Unverified;
+        }
+
+        return trust;
+}
+
 std::map<std::string, std::optional<UserKeyCache>>
 Cache::getMembersWithKeys(const std::string &room_id, bool verified_only)
 {
@@ -3752,10 +3794,16 @@ from_json(const json &j, UserKeyCache &info)
 std::optional<UserKeyCache>
 Cache::userKeys(const std::string &user_id)
 {
+        auto txn = ro_txn(env_);
+        return userKeys_(user_id, txn);
+}
+
+std::optional<UserKeyCache>
+Cache::userKeys_(const std::string &user_id, lmdb::txn &txn)
+{
         std::string_view keys;
 
         try {
-                auto txn = ro_txn(env_);
                 auto db  = getUserKeysDb(txn);
                 auto res = db.get(txn, user_id, keys);
 
@@ -3764,7 +3812,8 @@ Cache::userKeys(const std::string &user_id)
                 } else {
                         return {};
                 }
-        } catch (std::exception &) {
+        } catch (std::exception &e) {
+                nhlog::db()->error("Failed to retrieve user keys for {}: {}", user_id, e.what());
                 return {};
         }
 }
@@ -3799,8 +3848,14 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                         auto last_changed = updateToWrite.last_changed;
                         // skip if we are tracking this and expect it to be up to date with the last
                         // sync token
-                        if (!last_changed.empty() && last_changed != sync_token)
+                        if (!last_changed.empty() && last_changed != sync_token) {
+                                nhlog::db()->debug("Not storing update for user {}, because "
+                                                   "last_changed {}, but we fetched update for {}",
+                                                   user,
+                                                   last_changed,
+                                                   sync_token);
                                 continue;
+                        }
 
                         if (!updateToWrite.master_keys.keys.empty() &&
                             update.master_keys.keys != updateToWrite.master_keys.keys) {
@@ -3859,6 +3914,7 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                                 updateToWrite.seen_device_ids.insert(device_id);
                         }
                 }
+                updateToWrite.updated_at = sync_token;
                 db.put(txn, user, json(updateToWrite).dump());
         }
 
@@ -3944,35 +4000,46 @@ void
 Cache::query_keys(const std::string &user_id,
                   std::function<void(const UserKeyCache &, mtx::http::RequestErr)> cb)
 {
-        auto cache_ = cache::userKeys(user_id);
-
-        if (cache_.has_value()) {
-                if (!cache_->updated_at.empty() && cache_->updated_at == cache_->last_changed) {
-                        cb(cache_.value(), {});
-                        return;
-                }
-        }
-
         mtx::requests::QueryKeys req;
-        req.device_keys[user_id] = {};
-
         std::string last_changed;
-        if (cache_)
-                last_changed = cache_->last_changed;
-        req.token = last_changed;
+        {
+                auto txn    = ro_txn(env_);
+                auto cache_ = userKeys_(user_id, txn);
+
+                if (cache_.has_value()) {
+                        if (cache_->updated_at == cache_->last_changed) {
+                                cb(cache_.value(), {});
+                                return;
+                        } else
+                                nhlog::db()->info("Keys outdated for {}: {} vs {}",
+                                                  user_id,
+                                                  cache_->updated_at,
+                                                  cache_->last_changed);
+                } else
+                        nhlog::db()->info("No keys found for {}", user_id);
+
+                req.device_keys[user_id] = {};
+
+                if (cache_)
+                        last_changed = cache_->last_changed;
+                req.token = last_changed;
+        }
 
         // use context object so that we can disconnect again
         QObject *context{new QObject(this)};
-        QObject::connect(this,
-                         &Cache::verificationStatusChanged,
-                         context,
-                         [cb, user_id, context_ = context](std::string updated_user) mutable {
-                                 if (user_id == updated_user) {
-                                         context_->deleteLater();
-                                         auto keys = cache::userKeys(user_id);
-                                         cb(keys.value_or(UserKeyCache{}), {});
-                                 }
-                         });
+        QObject::connect(
+          this,
+          &Cache::verificationStatusChanged,
+          context,
+          [cb, user_id, context_ = context, this](std::string updated_user) mutable {
+                  if (user_id == updated_user) {
+                          context_->deleteLater();
+                          auto txn  = ro_txn(env_);
+                          auto keys = this->userKeys_(user_id, txn);
+                          cb(keys.value_or(UserKeyCache{}), {});
+                  }
+          },
+          Qt::QueuedConnection);
 
         http::client()->query_keys(
           req,
@@ -4000,17 +4067,16 @@ to_json(json &j, const VerificationCache &info)
 void
 from_json(const json &j, VerificationCache &info)
 {
-        info.device_verified = j.at("device_verified").get<std::vector<std::string>>();
-        info.device_blocked  = j.at("device_blocked").get<std::vector<std::string>>();
+        info.device_verified = j.at("device_verified").get<std::set<std::string>>();
+        info.device_blocked  = j.at("device_blocked").get<std::set<std::string>>();
 }
 
 std::optional<VerificationCache>
-Cache::verificationCache(const std::string &user_id)
+Cache::verificationCache(const std::string &user_id, lmdb::txn &txn)
 {
         std::string_view verifiedVal;
 
-        auto txn = lmdb::txn::begin(env_);
-        auto db  = getVerificationDb(txn);
+        auto db = getVerificationDb(txn);
 
         try {
                 VerificationCache verified_state;
@@ -4029,26 +4095,28 @@ Cache::verificationCache(const std::string &user_id)
 void
 Cache::markDeviceVerified(const std::string &user_id, const std::string &key)
 {
-        std::string_view val;
+        {
+                std::string_view val;
 
-        auto txn = lmdb::txn::begin(env_);
-        auto db  = getVerificationDb(txn);
+                auto txn = lmdb::txn::begin(env_);
+                auto db  = getVerificationDb(txn);
 
-        try {
-                VerificationCache verified_state;
-                auto res = db.get(txn, user_id, val);
-                if (res) {
-                        verified_state = json::parse(val);
+                try {
+                        VerificationCache verified_state;
+                        auto res = db.get(txn, user_id, val);
+                        if (res) {
+                                verified_state = json::parse(val);
+                        }
+
+                        for (const auto &device : verified_state.device_verified)
+                                if (device == key)
+                                        return;
+
+                        verified_state.device_verified.insert(key);
+                        db.put(txn, user_id, json(verified_state).dump());
+                        txn.commit();
+                } catch (std::exception &) {
                 }
-
-                for (const auto &device : verified_state.device_verified)
-                        if (device == key)
-                                return;
-
-                verified_state.device_verified.push_back(key);
-                db.put(txn, user_id, json(verified_state).dump());
-                txn.commit();
-        } catch (std::exception &) {
         }
 
         const auto local_user = utils::localUser().toStdString();
@@ -4086,11 +4154,7 @@ Cache::markDeviceUnverified(const std::string &user_id, const std::string &key)
                         verified_state = json::parse(val);
                 }
 
-                verified_state.device_verified.erase(
-                  std::remove(verified_state.device_verified.begin(),
-                              verified_state.device_verified.end(),
-                              key),
-                  verified_state.device_verified.end());
+                verified_state.device_verified.erase(key);
 
                 db.put(txn, user_id, json(verified_state).dump());
                 txn.commit();
@@ -4120,13 +4184,24 @@ Cache::markDeviceUnverified(const std::string &user_id, const std::string &key)
 VerificationStatus
 Cache::verificationStatus(const std::string &user_id)
 {
+        auto txn = ro_txn(env_);
+        return verificationStatus_(user_id, txn);
+}
+
+VerificationStatus
+Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
+{
         std::unique_lock<std::mutex> lock(verification_storage.verification_storage_mtx);
         if (verification_storage.status.count(user_id))
                 return verification_storage.status.at(user_id);
 
         VerificationStatus status;
 
-        if (auto verifCache = verificationCache(user_id)) {
+        // assume there is at least one unverified device until we have checked we have the device
+        // list for that user.
+        status.unverified_device_count = 1;
+
+        if (auto verifCache = verificationCache(user_id, txn)) {
                 status.verified_devices = verifCache->device_verified;
         }
 
@@ -4134,11 +4209,9 @@ Cache::verificationStatus(const std::string &user_id)
 
         crypto::Trust trustlevel = crypto::Trust::Unverified;
         if (user_id == local_user) {
-                status.verified_devices.push_back(http::client()->device_id());
+                status.verified_devices.insert(http::client()->device_id());
                 trustlevel = crypto::Trust::Verified;
         }
-
-        verification_storage.status[user_id] = status;
 
         auto verifyAtLeastOneSig = [](const auto &toVerif,
                                       const std::map<std::string, std::string> &keys,
@@ -4157,6 +4230,16 @@ Cache::verificationStatus(const std::string &user_id)
                 return false;
         };
 
+        auto updateUnverifiedDevices = [&status](auto &theirDeviceKeys) {
+                int currentVerifiedDevices = 0;
+                for (auto device_id : status.verified_devices) {
+                        if (theirDeviceKeys.count(device_id))
+                                currentVerifiedDevices++;
+                }
+                status.unverified_device_count =
+                  static_cast<int>(theirDeviceKeys.size()) - currentVerifiedDevices;
+        };
+
         try {
                 // for local user verify this device_key -> our master_key -> our self_signing_key
                 // -> our device_keys
@@ -4166,17 +4249,24 @@ Cache::verificationStatus(const std::string &user_id)
                 //
                 // This means verifying the other user adds 2 extra steps,verifying our user_signing
                 // key and their master key
-                auto ourKeys   = userKeys(local_user);
-                auto theirKeys = userKeys(user_id);
-                if (!ourKeys || !theirKeys)
+                auto ourKeys   = userKeys_(local_user, txn);
+                auto theirKeys = userKeys_(user_id, txn);
+                if (!ourKeys || !theirKeys) {
+                        verification_storage.status[user_id] = status;
                         return status;
+                }
+
+                // Update verified devices count to count without cross-signing
+                updateUnverifiedDevices(theirKeys->device_keys);
 
                 if (!mtx::crypto::ed25519_verify_signature(
                       olm::client()->identity_keys().ed25519,
                       json(ourKeys->master_keys),
                       ourKeys->master_keys.signatures.at(local_user)
-                        .at("ed25519:" + http::client()->device_id())))
+                        .at("ed25519:" + http::client()->device_id()))) {
+                        verification_storage.status[user_id] = status;
                         return status;
+                }
 
                 auto master_keys = ourKeys->master_keys.keys;
 
@@ -4191,14 +4281,17 @@ Cache::verificationStatus(const std::string &user_id)
                                 trustlevel = crypto::Trust::Verified;
                         else if (!theirKeys->master_key_changed)
                                 trustlevel = crypto::Trust::TOFU;
-                        else
+                        else {
+                                verification_storage.status[user_id] = status;
                                 return status;
+                        }
 
                         master_keys = theirKeys->master_keys.keys;
                 }
 
                 status.user_verified = trustlevel;
 
+                verification_storage.status[user_id] = status;
                 if (!verifyAtLeastOneSig(theirKeys->self_signing_keys, master_keys, user_id))
                         return status;
 
@@ -4209,16 +4302,19 @@ Cache::verificationStatus(const std::string &user_id)
                                   device_key.keys.at("curve25519:" + device_key.device_id);
                                 if (verifyAtLeastOneSig(
                                       device_key, theirKeys->self_signing_keys.keys, user_id)) {
-                                        status.verified_devices.push_back(device_key.device_id);
+                                        status.verified_devices.insert(device_key.device_id);
                                         status.verified_device_keys[identkey] = trustlevel;
                                 }
                         } catch (...) {
                         }
                 }
 
+                updateUnverifiedDevices(theirKeys->device_keys);
                 verification_storage.status[user_id] = status;
                 return status;
-        } catch (std::exception &) {
+        } catch (std::exception &e) {
+                nhlog::db()->error(
+                  "Failed to calculate verification status of {}: {}", user_id, e.what());
                 return status;
         }
 }
