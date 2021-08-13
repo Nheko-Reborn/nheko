@@ -66,7 +66,7 @@ public:
         Q_INVOKABLE QString userPresence(QString id) const;
         Q_INVOKABLE QString userStatus(QString id) const;
 
-        Q_INVOKABLE void openRoomMembers(QString room_id);
+        Q_INVOKABLE void openRoomMembers(TimelineModel *room);
         Q_INVOKABLE void openRoomSettings(QString room_id);
         Q_INVOKABLE void openInviteUsers(QString roomId);
         Q_INVOKABLE void openGlobalUserProfile(QString userId);
@@ -92,7 +92,7 @@ signals:
         void focusChanged();
         void focusInput();
         void openImageOverlayInternalCb(QString eventId, QImage img);
-        void openRoomMembersDialog(MemberList *members);
+        void openRoomMembersDialog(MemberList *members, TimelineModel *room);
         void openRoomSettingsDialog(RoomSettings *settings);
         void openInviteUsersDialog(InviteesModel *invitees);
         void openProfile(UserProfile *profile);

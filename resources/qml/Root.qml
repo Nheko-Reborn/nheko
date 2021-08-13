@@ -153,10 +153,10 @@ Page {
             packSet.show();
         }
 
-        function onOpenRoomMembersDialog(members) {
+        function onOpenRoomMembersDialog(members, room) {
             var membersDialog = roomMembersComponent.createObject(timelineRoot, {
                 "members": members,
-                "roomName": Rooms.currentRoom.roomName
+                "room": room
             });
             membersDialog.show();
         }

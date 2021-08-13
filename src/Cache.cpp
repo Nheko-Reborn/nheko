@@ -3584,8 +3584,6 @@ Cache::roomMembers(const std::string &room_id)
 crypto::Trust
 Cache::roomVerificationStatus(const std::string &room_id)
 {
-        std::string_view keys;
-
         crypto::Trust trust = crypto::Verified;
 
         try {

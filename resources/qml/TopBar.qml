@@ -140,7 +140,7 @@ Rectangle {
 
                 Platform.MenuItem {
                     text: qsTr("Members")
-                    onTriggered: TimelineManager.openRoomMembers(room.roomId)
+                    onTriggered: TimelineManager.openRoomMembers(room)
                 }
 
                 Platform.MenuItem {
