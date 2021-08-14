@@ -8,7 +8,6 @@ import "./dialogs"
 import "./emoji"
 import "./voip"
 import Qt.labs.platform 1.1 as Platform
-import QtGraphicalEffects 1.0
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3

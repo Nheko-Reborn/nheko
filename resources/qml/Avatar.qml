@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "./ui"
-import QtGraphicalEffects 1.0
 import QtQuick 2.6
 import QtQuick.Controls 2.3
 import im.nheko 1.0
@@ -50,8 +49,7 @@ Rectangle {
         smooth: true
         sourceSize.width: avatar.width
         sourceSize.height: avatar.height
-        layer.enabled: true
-        source: avatar.url + ((avatar.crop || !avatar.url) ? "" : "?scale")
+        source: avatar.url ? (avatar.url + "?radius=" + radius + ((avatar.crop) ? "" : "&scale")) : ""
 
         MouseArea {
             id: mouseArea
@@ -61,18 +59,6 @@ Rectangle {
             Ripple {
                 rippleTarget: mouseArea
                 color: Qt.rgba(Nheko.colors.alternateBase.r, Nheko.colors.alternateBase.g, Nheko.colors.alternateBase.b, 0.5)
-            }
-
-        }
-
-        layer.effect: OpacityMask {
-            cached: true
-
-            maskSource: Rectangle {
-                anchors.fill: parent
-                width: avatar.width
-                height: avatar.height
-                radius: Settings.avatarCircles ? height / 2 : 3
             }
 
         }
