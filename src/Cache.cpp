@@ -3901,8 +3901,43 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                                                 }
                                         }
 
-                                        if (!keyReused && !oldDeviceKeys.count(device_id))
+                                        if (!keyReused && !oldDeviceKeys.count(device_id)) {
+                                                // ensure the key has a valid signature from itself
+                                                std::string device_signing_key =
+                                                  "ed25519:" + device_keys.device_id;
+                                                if (device_id != device_keys.device_id) {
+                                                        nhlog::crypto()->warn(
+                                                          "device {}:{} has a different device id "
+                                                          "in the body: {}",
+                                                          user,
+                                                          device_id,
+                                                          device_keys.device_id);
+                                                        continue;
+                                                }
+                                                if (!device_keys.signatures.count(user) ||
+                                                    !device_keys.signatures.at(user).count(
+                                                      device_signing_key)) {
+                                                        nhlog::crypto()->warn(
+                                                          "device {}:{} has no signature",
+                                                          user,
+                                                          device_id);
+                                                        continue;
+                                                }
+
+                                                if (!mtx::crypto::ed25519_verify_signature(
+                                                      device_keys.keys.at(device_signing_key),
+                                                      json(device_keys),
+                                                      device_keys.signatures.at(user).at(
+                                                        device_signing_key))) {
+                                                        nhlog::crypto()->warn(
+                                                          "device {}:{} has an invalid signature",
+                                                          user,
+                                                          device_id);
+                                                        continue;
+                                                }
+
                                                 updateToWrite.device_keys[device_id] = device_keys;
+                                        }
                                 }
 
                                 for (const auto &[key_id, key] : device_keys.keys) {
