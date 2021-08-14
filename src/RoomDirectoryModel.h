@@ -71,10 +71,13 @@ signals:
         void reachedEndOfPaginationChanged();
 
 public slots:
-        void displayRooms(std::vector<mtx::responses::PublicRoomsChunk> rooms,
-                          const std::string &next_batch);
         void setMatrixServer(const QString &s = "");
         void setSearchTerm(const QString &f);
+
+private slots:
+
+        void displayRooms(std::vector<mtx::responses::PublicRoomsChunk> rooms,
+                          const std::string &next_batch);
 
 private:
         static constexpr size_t limit_ = 50;

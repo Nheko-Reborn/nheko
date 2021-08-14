@@ -69,10 +69,8 @@ RoomDirectoryModel::setSearchTerm(const QString &f)
 bool
 RoomDirectoryModel::canJoinRoom(const QByteArray &room)
 {
-        const auto &cache = cache::roomInfo();
         const QString room_id(room);
-        const bool validRoom = !room_id.isNull() && !room_id.isEmpty();
-        return validRoom && !cache.contains(room_id);
+        return !room_id.isEmpty() && !cache::getRoomInfo({room_id.toStdString()}).count(room_id);
 }
 
 std::vector<std::string>

@@ -22,6 +22,7 @@ ApplicationWindow {
     color: Nheko.colors.window
     modality: Qt.WindowModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    Component.onCompleted: Nheko.reparent(roomDirectoryWindow)
     title: qsTr("Explore Public Rooms")
 
     Shortcut {
@@ -35,6 +36,12 @@ ApplicationWindow {
         anchors.fill: parent
         model: publicRooms
 
+	ScrollHelper {
+            flickable: parent
+            anchors.fill: parent
+            enabled: !Settings.mobileMode
+        }
+
         delegate: Rectangle {
             id: roomDirDelegate
 
@@ -44,7 +51,7 @@ ApplicationWindow {
             property int avatarSize: fontMetrics.lineSpacing * 4
 
             color: background
-            height: avatarSize + 2.5 * Nheko.paddingMedium
+            height: avatarSize + Nheko.paddingLarge
             width: ListView.view.width
 
             RowLayout {
@@ -67,7 +74,6 @@ ApplicationWindow {
                     id: textContent
 
                     Layout.alignment: Qt.AlignLeft
-                    Layout.fillWidth: true
                     width: parent.width - avatar.width
                     Layout.preferredWidth: parent.width - avatar.width
                     Layout.preferredHeight: roomNameRow.height + roomDescriptionRow.height
@@ -76,7 +82,6 @@ ApplicationWindow {
                     RowLayout {
                         id: roomNameRow
 
-                        Layout.fillWidth: true
                         spacing: 0
 
                         ElidedLabel {
@@ -92,7 +97,6 @@ ApplicationWindow {
                     RowLayout {
                         id: roomDescriptionRow
 
-                        Layout.fillWidth: true
                         Layout.preferredWidth: parent.width
                         spacing: Nheko.paddingSmall
                         Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
@@ -116,7 +120,6 @@ ApplicationWindow {
                         Item {
                             id: numMembersRectangle
 
-                            Layout.fillWidth: false
                             Layout.margins: Nheko.paddingSmall
                             width: roomCount.width
 
@@ -125,8 +128,6 @@ ApplicationWindow {
 
                                 color: roomDirDelegate.unimportantText
                                 anchors.centerIn: parent
-                                Layout.fillWidth: false
-                                font.weight: Font.Thin
                                 font.pixelSize: fontMetrics.font.pixelSize
                                 text: model.numMembers.toString()
                             }
@@ -136,7 +137,6 @@ ApplicationWindow {
                         Item {
                             id: buttonRectangle
 
-                            Layout.fillWidth: false
                             Layout.margins: Nheko.paddingSmall
                             width: joinRoomButton.width
 
@@ -175,7 +175,6 @@ ApplicationWindow {
                 anchors.margins: Nheko.paddingLarge
                 running: visible
                 foreground: Nheko.colors.mid
-                z: 7
             }
 
         }
