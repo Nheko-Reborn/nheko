@@ -3587,24 +3587,33 @@ Cache::roomVerificationStatus(const std::string &room_id)
         crypto::Trust trust = crypto::Verified;
 
         try {
-                auto txn = ro_txn(env_);
+                auto txn = lmdb::txn::begin(env_);
 
                 auto db     = getMembersDb(txn, room_id);
                 auto keysDb = getUserKeysDb(txn);
+                std::vector<std::string> keysToRequest;
 
                 std::string_view user_id, unused;
                 auto cursor = lmdb::cursor::open(txn, db);
                 while (cursor.get(user_id, unused, MDB_NEXT)) {
                         auto verif = verificationStatus_(std::string(user_id), txn);
-                        if (verif.unverified_device_count)
-                                return crypto::Unverified;
-                        else if (verif.user_verified == crypto::TOFU)
+                        if (verif.unverified_device_count) {
+                                trust = crypto::Unverified;
+                                if (verif.verified_devices.empty() && verif.no_keys) {
+                                        // we probably don't have the keys yet, so query them
+                                        keysToRequest.push_back(std::string(user_id));
+                                }
+                        } else if (verif.user_verified == crypto::TOFU && trust == crypto::Verified)
                                 trust = crypto::TOFU;
                 }
+
+                if (!keysToRequest.empty())
+                        markUserKeysOutOfDate(txn, keysDb, keysToRequest, "");
+
         } catch (std::exception &e) {
                 nhlog::db()->error(
                   "Failed to calculate verification status for {}: {}", room_id, e.what());
-                return crypto::Unverified;
+                trust = crypto::Unverified;
         }
 
         return trust;
@@ -4000,14 +4009,16 @@ Cache::markUserKeysOutOfDate(lmdb::txn &txn,
                 nhlog::db()->debug("Marking user keys out of date: {}", user);
 
                 std::string_view oldKeys;
+
+                UserKeyCache cacheEntry;
                 auto res = db.get(txn, user, oldKeys);
-
-                if (!res)
-                        continue;
-
-                auto cacheEntry =
-                  json::parse(std::string_view(oldKeys.data(), oldKeys.size())).get<UserKeyCache>();
+                if (res) {
+                        auto cacheEntry =
+                          json::parse(std::string_view(oldKeys.data(), oldKeys.size()))
+                            .get<UserKeyCache>();
+                }
                 cacheEntry.last_changed = sync_token;
+
                 db.put(txn, user, json(cacheEntry).dump());
 
                 query.device_keys[user] = {};
@@ -4233,6 +4244,7 @@ Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
         // assume there is at least one unverified device until we have checked we have the device
         // list for that user.
         status.unverified_device_count = 1;
+        status.no_keys                 = true;
 
         if (auto verifCache = verificationCache(user_id, txn)) {
                 status.verified_devices = verifCache->device_verified;
@@ -4284,6 +4296,9 @@ Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
                 // key and their master key
                 auto ourKeys   = userKeys_(local_user, txn);
                 auto theirKeys = userKeys_(user_id, txn);
+                if (theirKeys)
+                        status.no_keys = false;
+
                 if (!ourKeys || !theirKeys) {
                         verification_storage.status[user_id] = status;
                         return status;

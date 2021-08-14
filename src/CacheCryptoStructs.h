@@ -117,6 +117,8 @@ struct VerificationStatus
         std::map<std::string, crypto::Trust> verified_device_keys;
         //! Count of unverified devices
         int unverified_device_count = 0;
+        // if the keys are not in cache
+        bool no_keys = false;
 };
 
 //! In memory cache of verification status
