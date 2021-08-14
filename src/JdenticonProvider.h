@@ -23,7 +23,7 @@ class JdenticonResponse
   , public QRunnable
 {
 public:
-        JdenticonResponse(const QString &key, const QSize &requestedSize);
+        JdenticonResponse(const QString &key, bool crop, double radius, const QSize &requestedSize);
 
         QQuickTextureFactory *textureFactory() const override
         {
@@ -33,6 +33,8 @@ public:
         void run() override;
 
         QString m_key;
+        bool m_crop;
+        double m_radius;
         QSize m_requestedSize;
         QPixmap m_pixmap;
         JdenticonInterface *jdenticonInterface_ = nullptr;
@@ -48,10 +50,30 @@ public:
         static bool isAvailable() { return Jdenticon::getJdenticonInterface() != nullptr; }
 
 public slots:
-        QQuickImageResponse *requestImageResponse(const QString &key,
+        QQuickImageResponse *requestImageResponse(const QString &id,
                                                   const QSize &requestedSize) override
         {
-                JdenticonResponse *response = new JdenticonResponse(key, requestedSize);
+                auto id_      = id;
+                bool crop     = true;
+                double radius = 0;
+
+                auto queryStart = id.lastIndexOf('?');
+                if (queryStart != -1) {
+                        id_            = id.left(queryStart);
+                        auto query     = id.midRef(queryStart + 1);
+                        auto queryBits = query.split('&');
+
+                        for (auto b : queryBits) {
+                                if (b == "scale") {
+                                        crop = false;
+                                } else if (b.startsWith("radius=")) {
+                                        radius = b.mid(7).toDouble();
+                                }
+                        }
+                }
+
+                JdenticonResponse *response =
+                  new JdenticonResponse(id_, crop, radius, requestedSize);
                 pool.start(response);
                 return response;
         }

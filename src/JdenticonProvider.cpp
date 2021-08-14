@@ -7,6 +7,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QPainter>
+#include <QPainterPath>
 #include <QPluginLoader>
 #include <QSvgRenderer>
 
@@ -18,8 +19,13 @@
 #include "Utils.h"
 #include "jdenticoninterface.h"
 
-JdenticonResponse::JdenticonResponse(const QString &key, const QSize &requestedSize)
+JdenticonResponse::JdenticonResponse(const QString &key,
+                                     bool crop,
+                                     double radius,
+                                     const QSize &requestedSize)
   : m_key(key)
+  , m_crop{crop}
+  , m_radius{radius}
   , m_requestedSize(requestedSize.isValid() ? requestedSize : QSize(100, 100))
   , m_pixmap{m_requestedSize}
   , jdenticonInterface_{Jdenticon::getJdenticonInterface()}
@@ -32,10 +38,16 @@ JdenticonResponse::run()
 {
         m_pixmap.fill(Qt::transparent);
         QPainter painter{&m_pixmap};
+        painter.setRenderHint(QPainter::Antialiasing, true);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+
+        QPainterPath ppath;
+        ppath.addRoundedRect(m_pixmap.rect(), m_radius, m_radius);
+
+        painter.setClipPath(ppath);
+
         QSvgRenderer renderer{
           jdenticonInterface_->generate(m_key, m_requestedSize.width()).toUtf8()};
-        //        m_image = QImage::fromData(jdenticonInterface_->generate(m_key,
-        //        size->width()).toUtf8());
         renderer.render(&painter);
 
         emit finished();

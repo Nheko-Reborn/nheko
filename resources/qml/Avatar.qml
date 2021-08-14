@@ -43,7 +43,19 @@ Rectangle {
         id: identicon
         anchors.fill: parent
         visible: img.status != Image.Ready && Settings.useIdenticon
-        source: Settings.useIdenticon ? "image://jdenticon/" + userid : ""
+        source: Settings.useIdenticon ? "image://jdenticon/" + userid + "?radius=" + radius : ""
+        layer.enabled: true
+
+        MouseArea {
+            anchors.fill: parent
+
+            Ripple {
+                rippleTarget: parent
+                color: Qt.rgba(Nheko.colors.alternateBase.r, Nheko.colors.alternateBase.g, Nheko.colors.alternateBase.b, 0.5)
+            }
+
+        }
+
     }
 
     Image {
