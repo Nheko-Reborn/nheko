@@ -36,7 +36,7 @@ ApplicationWindow {
         anchors.fill: parent
         model: publicRooms
 
-	ScrollHelper {
+        ScrollHelper {
             flickable: parent
             anchors.fill: parent
             enabled: !Settings.mobileMode
