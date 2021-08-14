@@ -86,6 +86,9 @@ Popup {
                 } else if (event.key == Qt.Key_Down && completerPopup.opened) {
                     event.accepted = true;
                     completerPopup.down();
+                } else if (event.key == Qt.Key_Tab && completerPopup.opened) {
+                    event.accepted = true;
+                    completerPopup.down();
                 } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
                     completerPopup.finishCompletion();
                     event.accepted = true;
