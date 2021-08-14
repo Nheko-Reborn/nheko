@@ -4013,9 +4013,8 @@ Cache::markUserKeysOutOfDate(lmdb::txn &txn,
                 UserKeyCache cacheEntry;
                 auto res = db.get(txn, user, oldKeys);
                 if (res) {
-                        auto cacheEntry =
-                          json::parse(std::string_view(oldKeys.data(), oldKeys.size()))
-                            .get<UserKeyCache>();
+                        cacheEntry = json::parse(std::string_view(oldKeys.data(), oldKeys.size()))
+                                       .get<UserKeyCache>();
                 }
                 cacheEntry.last_changed = sync_token;
 
