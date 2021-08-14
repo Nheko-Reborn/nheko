@@ -76,6 +76,8 @@ RoomlistModel::roleNames() const
           {IsSpace, "isSpace"},
           {Tags, "tags"},
           {ParentSpaces, "parentSpaces"},
+          {RoomMemberCount, "roomMemberCount"},
+          {DirectChatAvatarMxid, "directChatAvatarMxid"},
         };
 }
 
@@ -129,6 +131,10 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                                         list.push_back(QString::fromStdString(t));
                                 return list;
                         }
+                        case Roles::RoomMemberCount:
+                                return room->roomMemberCount();
+                        case Roles::DirectChatAvatarMxid:
+                                return room->directChatAvatarMxid();
                         default:
                                 return {};
                         }

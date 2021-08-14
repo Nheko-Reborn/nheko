@@ -2073,3 +2073,16 @@ TimelineModel::roomMemberCount() const
 {
         return (int)cache::client()->memberCount(room_id_.toStdString());
 }
+
+QString
+TimelineModel::directChatAvatarMxid() const
+{
+        if (roomMemberCount() < 3) {
+                QString id;
+                for (auto member : cache::getMembers(room_id_.toStdString()))
+                        if (member.user_id != UserSettings::instance()->userId())
+                                id = member.user_id;
+                return id;
+        } else
+                return "";
+}

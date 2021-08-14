@@ -143,6 +143,8 @@ Page {
             required property int notificationCount
             required property bool hasLoudNotification
             required property bool hasUnreadMessages
+            required property int roomMemberCount
+            required property string directChatAvatarMxid
 
             color: background
             height: avatarSize + 2 * Nheko.paddingMedium
@@ -237,6 +239,7 @@ Page {
                     width: avatarSize
                     url: avatarUrl.replace("mxc://", "image://MxcImage/")
                     displayName: roomName
+                    userid: roomMemberCount < 3 ?  directChatAvatarMxid : roomId
 
                     Rectangle {
                         id: collapsedNotificationBubble

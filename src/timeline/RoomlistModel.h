@@ -65,6 +65,8 @@ public:
                 IsPreviewFetched,
                 Tags,
                 ParentSpaces,
+                RoomMemberCount,
+                DirectChatAvatarMxid,
         };
 
         RoomlistModel(TimelineViewManager *parent = nullptr);
