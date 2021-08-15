@@ -492,12 +492,13 @@ RegisterPage::doUIA(const mtx::user_interactive::Unauthorized &unauthorized)
                                         QString(),
                                         &ok);
 
-		if (ok) {
-			emit registrationWithAuth(mtx::user_interactive::Auth{
-			  session, mtx::user_interactive::auth::RegistrationToken{token.toStdString()}});
-		} else {
-			emit errorOccurred();
-		}
+                if (ok) {
+                        emit registrationWithAuth(mtx::user_interactive::Auth{
+                          session,
+                          mtx::user_interactive::auth::RegistrationToken{token.toStdString()}});
+                } else {
+                        emit errorOccurred();
+                }
         } else {
                 // use fallback
                 auto dialog = new dialogs::FallbackAuth(
