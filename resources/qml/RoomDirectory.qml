@@ -79,7 +79,7 @@ ApplicationWindow {
                     ElidedLabel {
                         Layout.alignment: Qt.AlignBottom
                         color: roomDirDelegate.importantText
-                        elideWidth: textContent.width - numMembersRectangle.width  - buttonRectangle.width
+                        elideWidth: textContent.width - numMembersRectangle.width - buttonRectangle.width
                         font.pixelSize: fontMetrics.font.pixelSize * 1.1
                         fullText: model.name
                     }
