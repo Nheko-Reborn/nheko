@@ -14,8 +14,6 @@ ApplicationWindow {
     property RoomDirectoryModel publicRooms
 
     visible: true
-    x: MainWindow.x + (MainWindow.width / 2) - (width / 2)
-    y: MainWindow.y + (MainWindow.height / 2) - (height / 2)
     minimumWidth: 650
     minimumHeight: 420
     palette: Nheko.colors
@@ -57,7 +55,7 @@ ApplicationWindow {
             RowLayout {
                 spacing: Nheko.paddingMedium
                 anchors.fill: parent
-                anchors.margins: Nheko.paddingMedium
+                anchors.margins: Nheko.paddingLarge
                 implicitHeight: textContent.height
 
                 Avatar {
@@ -76,22 +74,14 @@ ApplicationWindow {
                     Layout.alignment: Qt.AlignLeft
                     width: parent.width - avatar.width
                     Layout.preferredWidth: parent.width - avatar.width
-                    Layout.preferredHeight: roomNameRow.height + roomDescriptionRow.height
                     spacing: Nheko.paddingSmall
 
-                    RowLayout {
-                        id: roomNameRow
-
-                        spacing: 0
-
-                        ElidedLabel {
-                            Layout.alignment: Qt.AlignBottom
-                            color: roomDirDelegate.importantText
-                            elideWidth: textContent.width * 0.5 - Nheko.paddingMedium
-                            font.pixelSize: fontMetrics.font.pixelSize * 1.1
-                            fullText: model.name
-                        }
-
+                    ElidedLabel {
+                        Layout.alignment: Qt.AlignBottom
+                        color: roomDirDelegate.importantText
+                        elideWidth: textContent.width - numMembersRectangle.width  - buttonRectangle.width
+                        font.pixelSize: fontMetrics.font.pixelSize * 1.1
+                        fullText: model.name
                     }
 
                     RowLayout {
@@ -106,7 +96,6 @@ ApplicationWindow {
                             id: roomTopic
 
                             color: roomDirDelegate.unimportantText
-                            font.weight: Font.Thin
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             font.pixelSize: fontMetrics.font.pixelSize
                             elide: Text.ElideRight
@@ -163,7 +152,7 @@ ApplicationWindow {
         footer: Item {
             anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width
-            visible: (publicRooms.reachedEndOfPagination == false) && publicRooms.loadingMoreRooms
+            visible: !publicRooms.reachedEndOfPagination && publicRooms.loadingMoreRooms
             // hacky but works
             height: loadingSpinner.height + 2 * Nheko.paddingLarge
             anchors.margins: Nheko.paddingLarge
