@@ -1,0 +1,49 @@
+name: Feature request
+description: Suggest an idea for this project
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please verify that there is no feature request for this already!
+  - type: textarea
+    id: problem
+    attributes:
+      label: The Problem
+      description: Is your feature request related to a problem? Please describe.
+      placeholder: "A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]"
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: The Solution
+      description: Describe the solution you'd like
+      placeholder: A clear and concise description of what you want to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Describe alternatives you've considered.
+      placeholder: A clear and concise description of any alternative solutions or features you've considered.
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Describe alternatives you've considered.
+      placeholder: Add any other context or screenshots about the feature request here.
+    validations:
+      required: false
+  - type: checkboxes
+    id: version-check
+    attributes:
+      label: Happens in the latest version
+      description: Please verify that this is still missing in the latest version.
+      options:
+        - label: Yes, this feature is still missing.
+          required: true
+

@@ -25,6 +25,7 @@ public:
                 Mxid,
                 DisplayName,
                 AvatarUrl,
+                Trustlevel,
         };
         MemberList(const QString &room_id, QObject *parent = nullptr);
 

@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "./ui"
-import QtGraphicalEffects 1.0
 import QtQuick 2.6
 import QtQuick.Controls 2.3
 import im.nheko 1.0
@@ -21,7 +20,7 @@ Rectangle {
 
     width: 48
     height: 48
-    radius: Settings.avatarCircles ? height / 2 : 3
+    radius: Settings.avatarCircles ? height / 2 : height / 8
     color: Nheko.colors.alternateBase
     Component.onCompleted: {
         mouseArea.clicked.connect(clicked);
@@ -50,8 +49,7 @@ Rectangle {
         smooth: true
         sourceSize.width: avatar.width
         sourceSize.height: avatar.height
-        layer.enabled: true
-        source: avatar.url + ((avatar.crop || !avatar.url) ? "" : "?scale")
+        source: avatar.url ? (avatar.url + "?radius=" + (Settings.avatarCircles ? 100.0 : 25.0) + ((avatar.crop) ? "" : "&scale")) : ""
 
         MouseArea {
             id: mouseArea
@@ -65,18 +63,6 @@ Rectangle {
 
         }
 
-        layer.effect: OpacityMask {
-            cached: true
-
-            maskSource: Rectangle {
-                anchors.fill: parent
-                width: avatar.width
-                height: avatar.height
-                radius: Settings.avatarCircles ? height / 2 : 3
-            }
-
-        }
-
     }
 
     Rectangle {
@@ -85,7 +71,7 @@ Rectangle {
         visible: !!userid
         height: avatar.height / 6
         width: height
-        radius: Settings.avatarCircles ? height / 2 : height / 4
+        radius: Settings.avatarCircles ? height / 2 : height / 8
         color: {
             switch (TimelineManager.userPresence(userid)) {
             case "online":

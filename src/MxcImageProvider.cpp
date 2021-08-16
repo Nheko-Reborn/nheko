@@ -11,6 +11,8 @@
 #include <QByteArray>
 #include <QDir>
 #include <QFileInfo>
+#include <QPainter>
+#include <QPainterPath>
 #include <QStandardPaths>
 
 #include "Logging.h"
@@ -22,14 +24,26 @@ QHash<QString, mtx::crypto::EncryptedFile> infos;
 QQuickImageResponse *
 MxcImageProvider::requestImageResponse(const QString &id, const QSize &requestedSize)
 {
-        auto id_  = id;
-        bool crop = true;
-        if (id.endsWith("?scale")) {
-                crop = false;
-                id_.remove("?scale");
+        auto id_      = id;
+        bool crop     = true;
+        double radius = 0;
+
+        auto queryStart = id.lastIndexOf('?');
+        if (queryStart != -1) {
+                id_            = id.left(queryStart);
+                auto query     = id.midRef(queryStart + 1);
+                auto queryBits = query.split('&');
+
+                for (auto b : queryBits) {
+                        if (b == "scale") {
+                                crop = false;
+                        } else if (b.startsWith("radius=")) {
+                                radius = b.mid(7).toDouble();
+                        }
+                }
         }
 
-        MxcImageResponse *response = new MxcImageResponse(id_, crop, requestedSize);
+        MxcImageResponse *response = new MxcImageResponse(id_, crop, radius, requestedSize);
         pool.start(response);
         return response;
 }
@@ -53,14 +67,35 @@ MxcImageResponse::run()
                   }
                   emit finished();
           },
-          m_crop);
+          m_crop,
+          m_radius);
+}
+
+static QImage
+clipRadius(QImage img, double radius)
+{
+        QImage out(img.size(), QImage::Format_ARGB32_Premultiplied);
+        out.fill(Qt::transparent);
+
+        QPainter painter(&out);
+        painter.setRenderHint(QPainter::Antialiasing, true);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+
+        QPainterPath ppath;
+        ppath.addRoundedRect(img.rect(), radius, radius, Qt::SizeMode::RelativeSize);
+
+        painter.setClipPath(ppath);
+        painter.drawImage(img.rect(), img);
+
+        return out;
 }
 
 void
 MxcImageProvider::download(const QString &id,
                            const QSize &requestedSize,
                            std::function<void(QString, QSize, QImage, QString)> then,
-                           bool crop)
+                           bool crop,
+                           double radius)
 {
         std::optional<mtx::crypto::EncryptedFile> encryptionInfo;
         auto temp = infos.find("mxc://" + id);
@@ -69,12 +104,13 @@ MxcImageProvider::download(const QString &id,
 
         if (requestedSize.isValid() && !encryptionInfo) {
                 QString fileName =
-                  QString("%1_%2x%3_%4")
+                  QString("%1_%2x%3_%4_radius%5")
                     .arg(QString::fromUtf8(id.toUtf8().toBase64(QByteArray::Base64UrlEncoding |
                                                                 QByteArray::OmitTrailingEquals)))
                     .arg(requestedSize.width())
                     .arg(requestedSize.height())
-                    .arg(crop ? "crop" : "scale");
+                    .arg(crop ? "crop" : "scale")
+                    .arg(radius);
                 QFileInfo fileInfo(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
                                      "/media_cache",
                                    fileName);
@@ -85,6 +121,10 @@ MxcImageProvider::download(const QString &id,
                         if (!image.isNull()) {
                                 image = image.scaled(
                                   requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+                                if (radius != 0) {
+                                        image = clipRadius(std::move(image), radius);
+                                }
 
                                 if (!image.isNull()) {
                                         then(id, requestedSize, image, fileInfo.absoluteFilePath());
@@ -100,8 +140,8 @@ MxcImageProvider::download(const QString &id,
                 opts.method  = crop ? "crop" : "scale";
                 http::client()->get_thumbnail(
                   opts,
-                  [fileInfo, requestedSize, then, id](const std::string &res,
-                                                      mtx::http::RequestErr err) {
+                  [fileInfo, requestedSize, radius, then, id](const std::string &res,
+                                                              mtx::http::RequestErr err) {
                           if (err || res.empty()) {
                                   then(id, QSize(), {}, "");
 
@@ -113,6 +153,10 @@ MxcImageProvider::download(const QString &id,
                           if (!image.isNull()) {
                                   image = image.scaled(
                                     requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+                                  if (radius != 0) {
+                                          image = clipRadius(std::move(image), radius);
+                                  }
                           }
                           image.setText("mxc url", "mxc://" + id);
                           if (image.save(fileInfo.absoluteFilePath(), "png"))
@@ -126,8 +170,12 @@ MxcImageProvider::download(const QString &id,
                   });
         } else {
                 try {
-                        QString fileName = QString::fromUtf8(id.toUtf8().toBase64(
-                          QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals));
+                        QString fileName =
+                          QString("%1_radius%2")
+                            .arg(QString::fromUtf8(id.toUtf8().toBase64(
+                              QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals)))
+                            .arg(radius);
+
                         QFileInfo fileInfo(
                           QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
                             "/media_cache",
@@ -148,6 +196,11 @@ MxcImageProvider::download(const QString &id,
                                         QImage image = utils::readImage(data);
                                         image.setText("mxc url", "mxc://" + id);
                                         if (!image.isNull()) {
+                                                if (radius != 0) {
+                                                        image =
+                                                          clipRadius(std::move(image), radius);
+                                                }
+
                                                 then(id,
                                                      requestedSize,
                                                      image,
@@ -158,6 +211,11 @@ MxcImageProvider::download(const QString &id,
                                         QImage image =
                                           utils::readImageFromFile(fileInfo.absoluteFilePath());
                                         if (!image.isNull()) {
+                                                if (radius != 0) {
+                                                        image =
+                                                          clipRadius(std::move(image), radius);
+                                                }
+
                                                 then(id,
                                                      requestedSize,
                                                      image,
@@ -169,7 +227,7 @@ MxcImageProvider::download(const QString &id,
 
                         http::client()->download(
                           "mxc://" + id.toStdString(),
-                          [fileInfo, requestedSize, then, id, encryptionInfo](
+                          [fileInfo, requestedSize, then, id, radius, encryptionInfo](
                             const std::string &res,
                             const std::string &,
                             const std::string &originalFilename,
@@ -195,6 +253,10 @@ MxcImageProvider::download(const QString &id,
                                           auto data =
                                             QByteArray(tempData.data(), (int)tempData.size());
                                           QImage image = utils::readImage(data);
+                                          if (radius != 0) {
+                                                  image = clipRadius(std::move(image), radius);
+                                          }
+
                                           image.setText("original filename",
                                                         QString::fromStdString(originalFilename));
                                           image.setText("mxc url", "mxc://" + id);
@@ -205,6 +267,10 @@ MxcImageProvider::download(const QString &id,
 
                                   QImage image =
                                     utils::readImageFromFile(fileInfo.absoluteFilePath());
+                                  if (radius != 0) {
+                                          image = clipRadius(std::move(image), radius);
+                                  }
+
                                   image.setText("original filename",
                                                 QString::fromStdString(originalFilename));
                                   image.setText("mxc url", "mxc://" + id);

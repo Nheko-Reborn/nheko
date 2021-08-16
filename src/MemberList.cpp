@@ -53,6 +53,7 @@ MemberList::roleNames() const
           {Mxid, "mxid"},
           {DisplayName, "displayName"},
           {AvatarUrl, "avatarUrl"},
+          {Trustlevel, "trustlevel"},
         };
 }
 
@@ -69,6 +70,17 @@ MemberList::data(const QModelIndex &index, int role) const
                 return m_memberList[index.row()].first.display_name;
         case AvatarUrl:
                 return m_memberList[index.row()].second;
+        case Trustlevel: {
+                auto stat =
+                  cache::verificationStatus(m_memberList[index.row()].first.user_id.toStdString());
+
+                if (!stat)
+                        return crypto::Unverified;
+                if (stat->unverified_device_count)
+                        return crypto::Unverified;
+                else
+                        return stat->user_verified;
+        }
         default:
                 return {};
         }

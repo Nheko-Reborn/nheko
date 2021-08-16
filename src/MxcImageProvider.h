@@ -19,10 +19,11 @@ class MxcImageResponse
   , public QRunnable
 {
 public:
-        MxcImageResponse(const QString &id, bool crop, const QSize &requestedSize)
+        MxcImageResponse(const QString &id, bool crop, double radius, const QSize &requestedSize)
           : m_id(id)
           , m_requestedSize(requestedSize)
           , m_crop(crop)
+          , m_radius(radius)
         {
                 setAutoDelete(false);
         }
@@ -39,6 +40,7 @@ public:
         QSize m_requestedSize;
         QImage m_image;
         bool m_crop;
+        double m_radius;
 };
 
 class MxcImageProvider
@@ -54,7 +56,8 @@ public slots:
         static void download(const QString &id,
                              const QSize &requestedSize,
                              std::function<void(QString, QSize, QImage, QString)> then,
-                             bool crop = true);
+                             bool crop     = true,
+                             double radius = 0);
 
 private:
         QThreadPool pool;

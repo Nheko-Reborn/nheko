@@ -175,6 +175,7 @@ class TimelineModel : public QAbstractListModel
         Q_PROPERTY(int roomMemberCount READ roomMemberCount NOTIFY roomMemberCountChanged)
         Q_PROPERTY(bool isEncrypted READ isEncrypted NOTIFY encryptionChanged)
         Q_PROPERTY(bool isSpace READ isSpace CONSTANT)
+        Q_PROPERTY(int trustlevel READ trustlevel NOTIFY trustlevelChanged)
         Q_PROPERTY(InputBar *input READ input CONSTANT)
         Q_PROPERTY(Permissions *permissions READ permissions NOTIFY permissionsChanged)
 
@@ -287,6 +288,7 @@ public:
         DescInfo lastMessage() const { return lastMessage_; }
         bool isSpace() const { return isSpace_; }
         bool isEncrypted() const { return isEncrypted_; }
+        crypto::Trust trustlevel() const;
         int roomMemberCount() const;
 
 public slots:
@@ -372,6 +374,7 @@ signals:
         void updateFlowEventId(std::string event_id);
 
         void encryptionChanged();
+        void trustlevelChanged();
         void roomNameChanged();
         void plainRoomNameChanged();
         void roomTopicChanged();

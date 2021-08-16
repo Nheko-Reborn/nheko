@@ -112,9 +112,13 @@ struct VerificationStatus
         //! True, if the users master key is verified
         crypto::Trust user_verified = crypto::Trust::Unverified;
         //! List of all devices marked as verified
-        std::vector<std::string> verified_devices;
+        std::set<std::string> verified_devices;
         //! Map from sender key/curve25519 to trust status
         std::map<std::string, crypto::Trust> verified_device_keys;
+        //! Count of unverified devices
+        int unverified_device_count = 0;
+        // if the keys are not in cache
+        bool no_keys = false;
 };
 
 //! In memory cache of verification status
@@ -154,9 +158,9 @@ from_json(const nlohmann::json &j, UserKeyCache &info);
 struct VerificationCache
 {
         //! list of verified device_ids with device-verification
-        std::vector<std::string> device_verified;
+        std::set<std::string> device_verified;
         //! list of devices the user blocks
-        std::vector<std::string> device_blocked;
+        std::set<std::string> device_blocked;
 };
 
 void

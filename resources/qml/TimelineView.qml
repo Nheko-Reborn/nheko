@@ -9,7 +9,6 @@ import "./emoji"
 import "./ui"
 import "./voip"
 import Qt.labs.platform 1.1 as Platform
-import QtGraphicalEffects 1.0
 import QtQuick 2.9
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
@@ -85,9 +84,14 @@ Item {
                         target: timelineView
                     }
 
-                    MessageView {
+                    Loader {
+                        active: room || roomPreview
                         Layout.fillWidth: true
-                        implicitHeight: msgView.height - typingIndicator.height
+
+                        sourceComponent: MessageView {
+                            implicitHeight: msgView.height - typingIndicator.height
+                        }
+
                     }
 
                     Loader {

@@ -8,7 +8,6 @@ import "./dialogs"
 import "./emoji"
 import "./voip"
 import Qt.labs.platform 1.1 as Platform
-import QtGraphicalEffects 1.0
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
@@ -153,10 +152,10 @@ Page {
             packSet.show();
         }
 
-        function onOpenRoomMembersDialog(members) {
+        function onOpenRoomMembersDialog(members, room) {
             var membersDialog = roomMembersComponent.createObject(timelineRoot, {
                 "members": members,
-                "roomName": Rooms.currentRoom.roomName
+                "room": room
             });
             membersDialog.show();
         }

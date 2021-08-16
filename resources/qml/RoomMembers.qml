@@ -13,6 +13,7 @@ ApplicationWindow {
     id: roomMembersRoot
 
     property MemberList members
+    property Room room
 
     title: qsTr("Members of %1").arg(members.roomName)
     height: 650
@@ -83,9 +84,14 @@ ApplicationWindow {
                 }
 
                 delegate: RowLayout {
+                    id: del
+
+                    width: ListView.view.width
                     spacing: Nheko.paddingMedium
 
                     Avatar {
+                        id: avatar
+
                         width: Nheko.avatarSize
                         height: Nheko.avatarSize
                         userid: model.mxid
@@ -97,16 +103,18 @@ ApplicationWindow {
                     ColumnLayout {
                         spacing: Nheko.paddingSmall
 
-                        Label {
-                            text: model.displayName
+                        ElidedLabel {
+                            fullText: model.displayName
                             color: TimelineManager.userColor(model ? model.mxid : "", Nheko.colors.window)
-                            font.pointSize: fontMetrics.font.pointSize
+                            font.pixelSize: fontMetrics.font.pixelSize
+                            elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
                         }
 
-                        Label {
-                            text: model.mxid
+                        ElidedLabel {
+                            fullText: model.mxid
                             color: Nheko.colors.buttonText
-                            font.pointSize: fontMetrics.font.pointSize * 0.9
+                            font.pixelSize: Math.ceil(fontMetrics.font.pixelSize * 0.9)
+                            elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
                         }
 
                         Item {
@@ -114,6 +122,28 @@ ApplicationWindow {
                             Layout.fillWidth: true
                         }
 
+                    }
+
+                    EncryptionIndicator {
+                        id: encryptInd
+
+                        Layout.alignment: Qt.AlignRight
+                        visible: room.isEncrypted
+                        encrypted: room.isEncrypted
+                        trust: encrypted ? model.trustlevel : Crypto.Unverified
+                        ToolTip.text: {
+                            if (!encrypted)
+                                return qsTr("This room is not encrypted!");
+
+                            switch (trust) {
+                            case Crypto.Verified:
+                                return qsTr("This user is verified.");
+                            case Crypto.TOFU:
+                                return qsTr("This user isn't verified, but is still using the same master key from the first time you met.");
+                            default:
+                                return qsTr("This user has unverified devices!");
+                            }
+                        }
                     }
 
                 }

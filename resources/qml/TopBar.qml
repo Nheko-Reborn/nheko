@@ -15,6 +15,8 @@ Rectangle {
     property string roomName: room ? room.roomName : qsTr("No room selected")
     property string avatarUrl: room ? room.roomAvatarUrl : ""
     property string roomTopic: room ? room.roomTopic : ""
+    property bool isEncrypted: room ? room.isEncrypted : false
+    property int trustlevel: room ? room.trustlevel : Crypto.Unverified
 
     Layout.fillWidth: true
     implicitHeight: topLayout.height + Nheko.paddingMedium * 2
@@ -92,11 +94,33 @@ Rectangle {
             text: roomTopic
         }
 
+        EncryptionIndicator {
+            Layout.column: 3
+            Layout.row: 0
+            Layout.rowSpan: 2
+            visible: isEncrypted
+            encrypted: isEncrypted
+            trust: trustlevel
+            ToolTip.text: {
+                if (!encrypted)
+                    return qsTr("This room is not encrypted!");
+
+                switch (trust) {
+                case Crypto.Verified:
+                    return qsTr("This room contains only verified devices.");
+                case Crypto.TOFU:
+                    return qsTr("This rooms contain verified devices and devices which have never changed their master key.");
+                default:
+                    return qsTr("This room contains unverified devices!");
+                }
+            }
+        }
+
         ImageButton {
             id: roomOptionsButton
 
             visible: !!room
-            Layout.column: 3
+            Layout.column: 4
             Layout.row: 0
             Layout.rowSpan: 2
             Layout.alignment: Qt.AlignVCenter
@@ -116,7 +140,7 @@ Rectangle {
 
                 Platform.MenuItem {
                     text: qsTr("Members")
-                    onTriggered: TimelineManager.openRoomMembers(room.roomId)
+                    onTriggered: TimelineManager.openRoomMembers(room)
                 }
 
                 Platform.MenuItem {

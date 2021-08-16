@@ -425,6 +425,8 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
                                                     }
                                             });
 
+                                        nhlog::crypto()->info("Storing secret {}",
+                                                              secret_name->second);
                                         cache::client()->storeSecret(secret_name->second,
                                                                      e->content.secret);
 
@@ -1110,6 +1112,8 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                                   const mtx::events::collections::DeviceEvents &event,
                                   bool force_new_session)
 {
+        static QMap<QPair<std::string, std::string>, qint64> rateLimit;
+
         nlohmann::json ev_json = std::visit([](const auto &e) { return json(e); }, event);
 
         std::map<std::string, std::vector<std::string>> keysToQuery;
@@ -1162,7 +1166,6 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
 
                         auto session = cache::getLatestOlmSession(device_curve);
                         if (!session || force_new_session) {
-                                static QMap<QPair<std::string, std::string>, qint64> rateLimit;
                                 auto currentTime = QDateTime::currentSecsSinceEpoch();
                                 if (rateLimit.value(QPair(user, device)) + 60 * 60 * 10 <
                                     currentTime) {
@@ -1318,7 +1321,8 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                 };
         };
 
-        http::client()->claim_keys(claims, BindPks(pks));
+        if (!claims.one_time_keys.empty())
+                http::client()->claim_keys(claims, BindPks(pks));
 
         if (!keysToQuery.empty()) {
                 mtx::requests::QueryKeys req;
@@ -1395,9 +1399,25 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                                                   continue;
                                           }
 
-                                          deviceKeys[user_id].emplace(device_id, pks);
-                                          claim_keys.one_time_keys[user.first][device_id] =
-                                            mtx::crypto::SIGNED_CURVE25519;
+                                          auto currentTime = QDateTime::currentSecsSinceEpoch();
+                                          if (rateLimit.value(QPair(user.first, device_id.get())) +
+                                                60 * 60 * 10 <
+                                              currentTime) {
+                                                  deviceKeys[user_id].emplace(device_id, pks);
+                                                  claim_keys.one_time_keys[user.first][device_id] =
+                                                    mtx::crypto::SIGNED_CURVE25519;
+
+                                                  rateLimit.insert(
+                                                    QPair(user.first, device_id.get()),
+                                                    currentTime);
+                                          } else {
+                                                  nhlog::crypto()->warn(
+                                                    "Not creating new session with {}:{} "
+                                                    "because of rate limit",
+                                                    user.first,
+                                                    device_id.get());
+                                                  continue;
+                                          }
 
                                           nhlog::net()->info("{}", device_id.get());
                                           nhlog::net()->info("  curve25519 {}", pks.curve25519);
@@ -1405,7 +1425,8 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                                   }
                           }
 
-                          http::client()->claim_keys(claim_keys, BindPks(deviceKeys));
+                          if (!claim_keys.one_time_keys.empty())
+                                  http::client()->claim_keys(claim_keys, BindPks(deviceKeys));
                   });
         }
 }

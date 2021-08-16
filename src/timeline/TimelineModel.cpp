@@ -310,7 +310,7 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
                 return mtx::events::EventType::RoomMessage;
                 //! m.image_pack, currently im.ponies.room_emotes
         case qml_mtx_events::ImagePackInRoom:
-                return mtx::events::EventType::ImagePackRooms;
+                return mtx::events::EventType::ImagePackInRoom;
         //! m.image_pack, currently im.ponies.user_emotes
         case qml_mtx_events::ImagePackInAccountData:
                 return mtx::events::EventType::ImagePackInAccountData;
@@ -417,6 +417,14 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
                 &TimelineViewManager::initialSyncChanged,
                 &events,
                 &EventStore::enableKeyRequests);
+
+        connect(this, &TimelineModel::encryptionChanged, this, &TimelineModel::trustlevelChanged);
+        connect(
+          this, &TimelineModel::roomMemberCountChanged, this, &TimelineModel::trustlevelChanged);
+        connect(cache::client(),
+                &Cache::verificationStatusChanged,
+                this,
+                &TimelineModel::trustlevelChanged);
 
         showEventTimer.callOnTimeout(this, &TimelineModel::scrollTimerEvent);
 }
@@ -1991,6 +1999,15 @@ TimelineModel::roomTopic() const
         else
                 return utils::replaceEmoji(utils::linkifyMessage(
                   QString::fromStdString(info[room_id_].topic).toHtmlEscaped()));
+}
+
+crypto::Trust
+TimelineModel::trustlevel() const
+{
+        if (!isEncrypted_)
+                return crypto::Trust::Unverified;
+
+        return cache::client()->roomVerificationStatus(room_id_.toStdString());
 }
 
 int

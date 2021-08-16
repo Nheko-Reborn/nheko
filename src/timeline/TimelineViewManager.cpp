@@ -375,10 +375,12 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
 }
 
 void
-TimelineViewManager::openRoomMembers(QString room_id)
+TimelineViewManager::openRoomMembers(TimelineModel *room)
 {
-        MemberList *memberList = new MemberList(room_id, this);
-        emit openRoomMembersDialog(memberList);
+        if (!room)
+                return;
+        MemberList *memberList = new MemberList(room->roomId(), this);
+        emit openRoomMembersDialog(memberList, room);
 }
 
 void

@@ -68,6 +68,7 @@ Popup {
             isOnlyEmoji: modelData.isOnlyEmoji ?? false
             userId: modelData.userId ?? ""
             userName: modelData.userName ?? ""
+            encryptionError: modelData.encryptionError ?? ""
         }
 
         MatrixTextField {
@@ -83,6 +84,9 @@ Popup {
                     event.accepted = true;
                     completerPopup.up();
                 } else if (event.key == Qt.Key_Down && completerPopup.opened) {
+                    event.accepted = true;
+                    completerPopup.down();
+                } else if (event.key == Qt.Key_Tab && completerPopup.opened) {
                     event.accepted = true;
                     completerPopup.down();
                 } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
