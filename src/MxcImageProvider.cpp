@@ -82,7 +82,7 @@ clipRadius(QImage img, double radius)
         painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
         QPainterPath ppath;
-        ppath.addRoundedRect(img.rect(), radius, radius);
+        ppath.addRoundedRect(img.rect(), radius, radius, Qt::SizeMode::RelativeSize);
 
         painter.setClipPath(ppath);
         painter.drawImage(img.rect(), img);

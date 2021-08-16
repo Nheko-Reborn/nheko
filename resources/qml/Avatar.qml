@@ -20,7 +20,7 @@ Rectangle {
 
     width: 48
     height: 48
-    radius: Settings.avatarCircles ? height / 2 : 3
+    radius: Settings.avatarCircles ? height / 2 : height / 8
     color: Nheko.colors.alternateBase
     Component.onCompleted: {
         mouseArea.clicked.connect(clicked);
@@ -49,7 +49,7 @@ Rectangle {
         smooth: true
         sourceSize.width: avatar.width
         sourceSize.height: avatar.height
-        source: avatar.url ? (avatar.url + "?radius=" + radius + ((avatar.crop) ? "" : "&scale")) : ""
+        source: avatar.url ? (avatar.url + "?radius=" + (Settings.avatarCircles ? 100.0 : 25.0) + ((avatar.crop) ? "" : "&scale")) : ""
 
         MouseArea {
             id: mouseArea
@@ -71,7 +71,7 @@ Rectangle {
         visible: !!userid
         height: avatar.height / 6
         width: height
-        radius: Settings.avatarCircles ? height / 2 : height / 4
+        radius: Settings.avatarCircles ? height / 2 : height / 8
         color: {
             switch (TimelineManager.userPresence(userid)) {
             case "online":
