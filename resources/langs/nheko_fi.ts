@@ -497,18 +497,8 @@
 <context>
     <name>Encrypted</name>
     <message>
-        <location filename="../qml/delegates/Encrypted.qml" line="+22"/>
-        <source>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location line="+2"/>
         <source>This message couldn&apos;t be decrypted, because we only have a key for newer messages. You can try requesting access to this message.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>There was an internal error reading the decryption key from the database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -518,17 +508,7 @@
     </message>
     <message>
         <location line="+2"/>
-        <source>The message couldn&apos;t be parsed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Unknown decryption error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -605,18 +585,8 @@
 <context>
     <name>ImagePackEditorDialog</name>
     <message>
-        <location filename="../qml/dialogs/ImagePackEditorDialog.qml" line="+24"/>
-        <source>Editing image pack</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location line="+62"/>
         <source>Add images</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Stickers (*.png *.webp)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -625,19 +595,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Packname</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location line="+10"/>
         <source>Attribution</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <location line="+65"/>
-        <source>Use as Emoji</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -647,19 +606,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-30"/>
-        <source>Shortcode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location line="+10"/>
         <source>Body</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+46"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Peruuta</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -672,11 +621,6 @@
     <message>
         <location filename="../qml/dialogs/ImagePackSettingsDialog.qml" line="+22"/>
         <source>Image pack settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+54"/>
-        <source>Create account pack</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -708,11 +652,6 @@
         <location line="+4"/>
         <source>Enables this pack to be used in all rooms</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Edit</source>
-        <translation type="unfinished">Muokkaa</translation>
     </message>
     <message>
         <location line="+64"/>
@@ -1259,11 +1198,6 @@ Esimerkki: https://server.my:8787</translation>
 </context>
 <context>
     <name>ReadReceipts</name>
-    <message>
-        <location filename="../qml/ReadReceipts.qml" line="+40"/>
-        <source>Read receipts</source>
-        <translation type="unfinished">Lukukuittaukset</translation>
-    </message>
 </context>
 <context>
     <name>ReadReceiptsModel</name>
@@ -1320,11 +1254,6 @@ Esimerkki: https://server.my:8787</translation>
         <location line="+322"/>
         <source>No supported registration flows!</source>
         <translation>Ei tuettuja rekisteröintejä!</translation>
-    </message>
-    <message>
-        <location line="+32"/>
-        <source>Registration token</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1518,18 +1447,8 @@ Esimerkki: https://server.my:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+76"/>
-        <source>This room is not encrypted!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location line="+4"/>
         <source>This user is verified.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>This user isn&apos;t verified, but is still using the same master key from the first time you met.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1574,11 +1493,6 @@ Esimerkki: https://server.my:8787</translation>
         <location line="+0"/>
         <source>All messages</source>
         <translation>Kaikki viestit</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Room access</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1748,19 +1662,8 @@ Esimerkki: https://server.my:8787</translation>
 <context>
     <name>SingleImagePackModel</name>
     <message>
-        <location filename="../../src/SingleImagePackModel.cpp" line="+261"/>
-        <location line="+25"/>
-        <source>Failed to update image pack: {}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location line="-12"/>
         <source>Failed to delete old image pack: {}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+27"/>
-        <source>Failed to open image: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2059,18 +1962,8 @@ Esimerkki: https://server.my:8787</translation>
         <translation>Ei valittua huonetta</translation>
     </message>
     <message>
-        <location line="+91"/>
-        <source>This room is not encrypted!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location line="+4"/>
         <source>This room contains only verified devices.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>This rooms contain verified devices and devices which have never changed their master key.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2410,11 +2303,6 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
         <translation>Suurenna fonttikokoa jos näytetään viestit vain muutamalla emojilla.</translation>
     </message>
     <message>
-        <location line="+55"/>
-        <source>Send encrypted messages to verified users only</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location line="+2"/>
         <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
         <translation type="unfinished"></translation>
@@ -2423,11 +2311,6 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
         <location line="+2"/>
         <source>Share keys with verified users and devices</source>
         <translation>Jaa avaimet vahvistettujen käyttäjien ja laitteiden kanssa</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Automatically replies to key requests from other users, if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+410"/>
