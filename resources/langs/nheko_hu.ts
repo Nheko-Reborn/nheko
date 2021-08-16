@@ -56,7 +56,7 @@
 <context>
     <name>CallInvite</name>
     <message>
-        <location filename="../qml/voip/CallInvite.qml" line="+70"/>
+        <location filename="../qml/voip/CallInvite.qml" line="+71"/>
         <source>Video Call</source>
         <translation>Videóhívás</translation>
     </message>
@@ -125,7 +125,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+135"/>
+        <location filename="../../src/ChatPage.cpp" line="+132"/>
         <source>Failed to invite user: %1</source>
         <translation>Nem sikerült meghívni a felhasználót: %1</translation>
     </message>
@@ -157,12 +157,12 @@
     </message>
     <message>
         <location line="+34"/>
-        <location line="+286"/>
+        <location line="+293"/>
         <source>Confirm invite</source>
         <translation>Meghívás megerősítése</translation>
     </message>
     <message>
-        <location line="-285"/>
+        <location line="-292"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Biztos, hogy meg akarod hívni a következő felhasználót: %1 (%2)?</translation>
     </message>
@@ -227,12 +227,12 @@
         <translation>Kitiltás feloldva a felhasználónak: %1</translation>
     </message>
     <message>
-        <location line="+189"/>
+        <location line="+196"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation>Biztosan privát csevegést akarsz indítani %1 felhasználóval?</translation>
     </message>
     <message>
-        <location line="-727"/>
+        <location line="-734"/>
         <source>Cache migration failed!</source>
         <translation>Gyorsítótár migráció nem sikerült!</translation>
     </message>
@@ -367,7 +367,7 @@
         <translation>Add meg a %1 nevű helyreállítási kulcsodat vagy a jelmondatodat a titkos tároló feloldásához:</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+24"/>
         <source>Decryption failed</source>
         <translation>Titkosítás feloldása nem sikerült</translation>
     </message>
@@ -495,6 +495,49 @@
     </message>
 </context>
 <context>
+    <name>Encrypted</name>
+    <message>
+        <location filename="../qml/delegates/Encrypted.qml" line="+22"/>
+        <source>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>This message couldn&apos;t be decrypted, because we only have a key for newer messages. You can try requesting access to this message.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>There was an internal error reading the decryption key from the database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>There was an error decrypting this message.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>The message couldn&apos;t be parsed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Unknown decryption error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Request key</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EncryptionIndicator</name>
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+34"/>
@@ -515,51 +558,6 @@
         <location line="+2"/>
         <source>Encrypted by an unverified device</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>EventStore</name>
-    <message>
-        <location filename="../../src/timeline/EventStore.cpp" line="+663"/>
-        <source>-- Encrypted Event (No keys found for decryption) --</source>
-        <comment>Placeholder, when the message was not decrypted yet or can&apos;t be decrypted.</comment>
-        <translation>-- Titkosított esemény (Nem találhatók kulcsok a titkosítás feloldásához) --</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>-- Encrypted Event (Key not valid for this index) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted with this key since it is not valid for this index </comment>
-        <translation>-- Titkosított esemény (a kulcs nem érvényes ehhez az indexhez) --</translation>
-    </message>
-    <message>
-        <location line="+35"/>
-        <location line="+63"/>
-        <source>-- Decryption Error (failed to retrieve megolm keys from db) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted, because the DB access failed.</comment>
-        <translation>-- Hiba a titkosítás feloldásakor (nem sikerült lekérni a megolm kulcsokat az adatbázisból) --</translation>
-    </message>
-    <message>
-        <location line="-49"/>
-        <location line="+62"/>
-        <source>-- Decryption Error (%1) --</source>
-        <comment>Placeholder, when the message can&apos;t be decrypted. In this case, the Olm decrytion returned an error, which is passed as %1.</comment>
-        <translation>-- Hiba a titkosítás feloldásakor (%1) --</translation>
-    </message>
-    <message>
-        <location line="-52"/>
-        <source>-- Encrypted Event (Unknown event type) --</source>
-        <comment>Placeholder, when the message was decrypted, but we couldn&apos;t parse it, because Nheko/mtxclient don&apos;t support that event type yet.</comment>
-        <translation>-- Titkosított esemény (Ismeretlen eseménytípus) --</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>-- Replay attack! This message index was reused! --</source>
-        <translation>-- Újrajátszási támadás! Ez az üzenetindex újra fel lett használva! --</translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>-- Message by unverified device! --</source>
-        <translation>-- Nem hitelesített eszközről érkezett üzenet! --</translation>
     </message>
 </context>
 <context>
@@ -605,6 +603,71 @@
     </message>
 </context>
 <context>
+    <name>ImagePackEditorDialog</name>
+    <message>
+        <location filename="../qml/dialogs/ImagePackEditorDialog.qml" line="+24"/>
+        <source>Editing image pack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+62"/>
+        <source>Add images</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Stickers (*.png *.webp)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+60"/>
+        <source>State key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Packname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Attribution</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <location line="+65"/>
+        <source>Use as Emoji</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-55"/>
+        <location line="+65"/>
+        <source>Use as Sticker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-30"/>
+        <source>Shortcode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Mégse</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ImagePackSettingsDialog</name>
     <message>
         <location filename="../qml/dialogs/ImagePackSettingsDialog.qml" line="+22"/>
@@ -612,7 +675,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+151"/>
+        <location line="+54"/>
+        <source>Create account pack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>New room pack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>Private pack</source>
         <translation type="unfinished"></translation>
     </message>
@@ -627,7 +700,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+63"/>
         <source>Enable globally</source>
         <translation type="unfinished"></translation>
     </message>
@@ -637,7 +710,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+10"/>
+        <source>Edit</source>
+        <translation type="unfinished">Szerkesztés</translation>
+    </message>
+    <message>
+        <location line="+64"/>
         <source>Close</source>
         <translation type="unfinished">Bezárás</translation>
     </message>
@@ -811,12 +889,12 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+187"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+188"/>
         <source>Encryption enabled</source>
         <translation>Titkosítás bekapcsolva</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+22"/>
         <source>room name changed to: %1</source>
         <translation>a szoba neve megváltoztatva erre: %1</translation>
     </message>
@@ -871,13 +949,13 @@ Példa: https://szerver.em:8787</translation>
         <translation>%1 fogadta a hívást.</translation>
     </message>
     <message>
-        <location line="-99"/>
+        <location line="-109"/>
         <location line="+9"/>
         <source>removed</source>
         <translation>eltávolítva</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+112"/>
         <source>%1 ended the call.</source>
         <translation>%1 befejezte a hívást.</translation>
     </message>
@@ -905,7 +983,7 @@ Példa: https://szerver.em:8787</translation>
         <translation>Írj egy üzenetet…</translation>
     </message>
     <message>
-        <location line="+214"/>
+        <location line="+231"/>
         <source>Stickers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -928,7 +1006,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+87"/>
+        <location filename="../qml/MessageView.qml" line="+86"/>
         <source>Edit</source>
         <translation>Szerkesztés</translation>
     </message>
@@ -948,7 +1026,7 @@ Példa: https://szerver.em:8787</translation>
         <translation>Műveletek</translation>
     </message>
     <message>
-        <location line="+405"/>
+        <location line="+419"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1180,20 +1258,36 @@ Példa: https://szerver.em:8787</translation>
     </message>
 </context>
 <context>
+    <name>ReadReceipts</name>
+    <message>
+        <location filename="../qml/ReadReceipts.qml" line="+40"/>
+        <source>Read receipts</source>
+        <translation type="unfinished">Olvasási jegyek</translation>
+    </message>
+</context>
+<context>
+    <name>ReadReceiptsModel</name>
+    <message>
+        <location filename="../../src/ReadReceiptsModel.cpp" line="+111"/>
+        <source>Yesterday, %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+78"/>
+        <location filename="../../src/RegisterPage.cpp" line="+80"/>
         <source>Username</source>
         <translation>Felhasználónév</translation>
     </message>
     <message>
         <location line="+2"/>
-        <location line="+305"/>
+        <location line="+150"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
         <translation>A felhasználónév nem lehet üres és csak a következő karaktereket tartalmazhatja: a-z, 0-9, ., _, =, - és /.</translation>
     </message>
     <message>
-        <location line="-301"/>
+        <location line="-146"/>
         <source>Password</source>
         <translation>Jelszó</translation>
     </message>
@@ -1213,7 +1307,7 @@ Példa: https://szerver.em:8787</translation>
         <translation>Homeszerver</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
         <translation>Egy szerver, amelyen engedélyezve vannak a regisztrációk. Mivel a Matrix decentralizált, először találnod kell egy szervert, ahol regisztrálhatsz, vagy be kell állítanod a saját szervered.</translation>
     </message>
@@ -1223,22 +1317,27 @@ Példa: https://szerver.em:8787</translation>
         <translation>REGISZTRÁCIÓ</translation>
     </message>
     <message>
-        <location line="+73"/>
+        <location line="+322"/>
         <source>No supported registration flows!</source>
         <translation>Nem támogatott regisztrációs folyamat!</translation>
     </message>
     <message>
-        <location line="+213"/>
-        <source>One or more fields have invalid inputs. Please correct those issues and try again.</source>
-        <translation>Egy vagy több mező tartalma nem helyes. Kérlek, javítsd ki azokat a hibákat, és próbáld újra!</translation>
+        <location line="+32"/>
+        <source>Registration token</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+1"/>
+        <source>Please enter a valid registration token.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-175"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation type="unfinished">Az automatikus felderítés nem sikerült. Helytelen válasz érkezett.</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
         <translation type="unfinished">Az automatikus felderítés nem sikerült. Ismeretlen hiba a .well-known lekérése közben.</translation>
     </message>
@@ -1248,7 +1347,7 @@ Példa: https://szerver.em:8787</translation>
         <translation type="unfinished">Nem találhatók szükséges végpontok. Lehet, hogy nem egy Matrixszerver.</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
         <translation type="unfinished">Helytelen válasz érkezett. Ellenőrizd, hogy a homeszervered domainje helyes.</translation>
     </message>
@@ -1258,17 +1357,17 @@ Példa: https://szerver.em:8787</translation>
         <translation type="unfinished">Egy ismeretlen hiba történt. Ellenőrizd, hogy a homeszervered domainje helyes.</translation>
     </message>
     <message>
-        <location line="-94"/>
+        <location line="-119"/>
         <source>Password is not long enough (min 8 chars)</source>
         <translation>A jelszó nem elég hosszú (legalább 8 karakter)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+11"/>
         <source>Passwords don&apos;t match</source>
         <translation>A jelszavak nem egyeznek</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+11"/>
         <source>Invalid server name</source>
         <translation>Nem megfelelő szervernév</translation>
     </message>
@@ -1276,7 +1375,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../qml/ReplyPopup.qml" line="+62"/>
+        <location filename="../qml/ReplyPopup.qml" line="+63"/>
         <source>Close</source>
         <translation>Bezárás</translation>
     </message>
@@ -1289,7 +1388,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4180"/>
+        <location filename="../../src/Cache.cpp" line="+4395"/>
         <source>no version stored</source>
         <translation>nincs tárolva verzió</translation>
     </message>
@@ -1297,7 +1396,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+57"/>
+        <location filename="../qml/RoomList.qml" line="+59"/>
         <source>New tag</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1347,7 +1446,7 @@ Példa: https://szerver.em:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+268"/>
+        <location line="+280"/>
         <source>Status Message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1367,7 +1466,7 @@ Példa: https://szerver.em:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+79"/>
+        <location line="+80"/>
         <source>Logout</source>
         <translation type="unfinished">Kijelentkezés</translation>
     </message>
@@ -1400,7 +1499,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>RoomMembers</name>
     <message>
-        <location filename="../qml/RoomMembers.qml" line="+17"/>
+        <location filename="../qml/RoomMembers.qml" line="+18"/>
         <source>Members of %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1417,11 +1516,31 @@ Példa: https://szerver.em:8787</translation>
         <source>Invite more people</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="+76"/>
+        <source>This room is not encrypted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>This user is verified.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>This user isn&apos;t verified, but is still using the same master key from the first time you met.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>This user has unverified devices!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RoomSettings</name>
     <message>
-        <location filename="../qml/RoomSettings.qml" line="+26"/>
+        <location filename="../qml/RoomSettings.qml" line="+25"/>
         <source>Room Settings</source>
         <translation>Szobabeállítások</translation>
     </message>
@@ -1456,7 +1575,12 @@ Példa: https://szerver.em:8787</translation>
         <translation>Az összes üzenet</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+9"/>
+        <source>Room access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>Anyone and guests</source>
         <translation>Bárki és vendégek</translation>
     </message>
@@ -1621,6 +1745,30 @@ Példa: https://szerver.em:8787</translation>
     </message>
 </context>
 <context>
+    <name>SingleImagePackModel</name>
+    <message>
+        <location filename="../../src/SingleImagePackModel.cpp" line="+261"/>
+        <location line="+25"/>
+        <source>Failed to update image pack: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-12"/>
+        <source>Failed to delete old image pack: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>Failed to open image: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>Failed to upload image: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StatusIndicator</name>
     <message>
         <location filename="../qml/StatusIndicator.qml" line="+24"/>
@@ -1672,7 +1820,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1107"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1127"/>
         <source>Message redaction failed: %1</source>
         <translation>Az üzenet visszavonása nem sikerült: %1</translation>
     </message>
@@ -1703,7 +1851,7 @@ Példa: https://szerver.em:8787</translation>
         <translation>Fájl mentése</translation>
     </message>
     <message numerus="yes">
-        <location line="+228"/>
+        <location line="+239"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -1816,12 +1964,12 @@ Példa: https://szerver.em:8787</translation>
         <translation>%1 visszavonta a kopogását.</translation>
     </message>
     <message>
-        <location line="-884"/>
+        <location line="-893"/>
         <source>You joined this room.</source>
         <translation>Csatlakoztál ehhez a szobához.</translation>
     </message>
     <message>
-        <location line="+850"/>
+        <location line="+859"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1850,7 +1998,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+180"/>
+        <location filename="../qml/TimelineRow.qml" line="+183"/>
         <source>Edited</source>
         <translation>Szerkesztve</translation>
     </message>
@@ -1858,12 +2006,12 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+30"/>
+        <location filename="../qml/TimelineView.qml" line="+29"/>
         <source>No room open</source>
         <translation>Nincs nyitott szoba</translation>
     </message>
     <message>
-        <location line="+139"/>
+        <location line="+144"/>
         <source>%1 member(s)</source>
         <translation type="unfinished">%1 tag</translation>
     </message>
@@ -1891,7 +2039,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+527"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+538"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>Nem található titkosított privát csevegés ezzel a felhasználóval. Hozz létre egy titkosított privát csevegést vele, és próbáld újra!</translation>
     </message>
@@ -1899,17 +2047,37 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+54"/>
+        <location filename="../qml/TopBar.qml" line="+56"/>
         <source>Back to room list</source>
         <translation>Vissza a szobák listájára</translation>
     </message>
     <message>
-        <location line="-39"/>
+        <location line="-41"/>
         <source>No room selected</source>
         <translation>Nincs kiválasztva szoba</translation>
     </message>
     <message>
-        <location line="+90"/>
+        <location line="+91"/>
+        <source>This room is not encrypted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>This room contains only verified devices.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>This rooms contain verified devices and devices which have never changed their master key.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>This room contains unverified devices!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>Room options</source>
         <translation>Szoba beállításai</translation>
     </message>
@@ -1950,7 +2118,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+25"/>
+        <location filename="../qml/UserProfile.qml" line="+26"/>
         <source>Global User Profile</source>
         <translation>Globális felhasználói profil</translation>
     </message>
@@ -1960,7 +2128,7 @@ Példa: https://szerver.em:8787</translation>
         <translation>Szobai felhasználói profil</translation>
     </message>
     <message>
-        <location line="+115"/>
+        <location line="+117"/>
         <location line="+107"/>
         <source>Verify</source>
         <translation>Hitelesítés</translation>
@@ -2009,8 +2177,8 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+363"/>
-        <location filename="../../src/UserSettingsPage.h" line="+194"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+365"/>
+        <location filename="../../src/UserSettingsPage.h" line="+200"/>
         <source>Default</source>
         <translation>Alapértelmezett</translation>
     </message>
@@ -2018,7 +2186,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location line="+525"/>
+        <location line="+540"/>
         <source>Minimize to tray</source>
         <translation>Kicsinyítés a tálcára</translation>
     </message>
@@ -2038,12 +2206,12 @@ Példa: https://szerver.em:8787</translation>
         <translation>Kerekített profilképek</translation>
     </message>
     <message>
-        <location line="-210"/>
+        <location line="-212"/>
         <source>profile: %1</source>
         <translation>profil: %1</translation>
     </message>
     <message>
-        <location line="+96"/>
+        <location line="+98"/>
         <source>Default</source>
         <translation>Alapértelmezett</translation>
     </message>
@@ -2241,12 +2409,27 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
         <translation>A betűméret megnövelése, ha az üzenetek csak néhány hangulatjelet tartalmaznak.</translation>
     </message>
     <message>
-        <location line="+56"/>
+        <location line="+55"/>
+        <source>Send encrypted messages to verified users only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Share keys with verified users and devices</source>
         <translation>Kulcsok megosztása hitelesített felhasználókkal és eszközökkel</translation>
     </message>
     <message>
-        <location line="+406"/>
+        <location line="+2"/>
+        <source>Automatically replies to key requests from other users, if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+410"/>
         <source>CACHED</source>
         <translation>GYORSÍTÓTÁRAZVA</translation>
     </message>
@@ -2256,7 +2439,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
         <translation>NINCS GYORSÍTÓTÁRAZVA</translation>
     </message>
     <message>
-        <location line="-460"/>
+        <location line="-469"/>
         <source>Scale factor</source>
         <translation>Nagyítási tényező</translation>
     </message>
@@ -2351,12 +2534,12 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
         <translation>TITKOSÍTÁS</translation>
     </message>
     <message>
-        <location line="-115"/>
+        <location line="-117"/>
         <source>GENERAL</source>
         <translation>ÁLTALÁNOS</translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+66"/>
         <source>INTERFACE</source>
         <translation>FELÜLET</translation>
     </message>
@@ -2376,12 +2559,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
         <translation>Hangulatjelek betűtípusa</translation>
     </message>
     <message>
-        <location line="+40"/>
-        <source>Automatically replies to key requests from other users, if they are verified.</source>
-        <translation>Automatikus válasz a más felhasználóktól érkező kulcskérelmekre, ha ők hitelesítve vannak.</translation>
-    </message>
-    <message>
-        <location line="+5"/>
+        <location line="+49"/>
         <source>Master signing key</source>
         <translation>Mester-aláírókulcs</translation>
     </message>
@@ -2431,7 +2609,7 @@ Ettől általában animálttá válik az alkalmazásablakok listáján szereplő
         <translation>Minden fájl (*)</translation>
     </message>
     <message>
-        <location line="+236"/>
+        <location line="+241"/>
         <source>Open Sessions File</source>
         <translation>Munkameneti fájl megnyitása</translation>
     </message>
@@ -2680,32 +2858,6 @@ Média mérete: %2
         <location line="+11"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
         <translation>Oldd meg a reCAPTCHA feladványát, és nyomd meg a „Megerősítés” gombot</translation>
-    </message>
-</context>
-<context>
-    <name>dialogs::ReadReceipts</name>
-    <message>
-        <location filename="../../src/dialogs/ReadReceipts.cpp" line="+124"/>
-        <source>Read receipts</source>
-        <translation>Olvasási jegyek</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Close</source>
-        <translation>Bezárás</translation>
-    </message>
-</context>
-<context>
-    <name>dialogs::ReceiptItem</name>
-    <message>
-        <location line="-46"/>
-        <source>Today %1</source>
-        <translation>Ma %1</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Yesterday %1</source>
-        <translation>Tegnap %1</translation>
     </message>
 </context>
 <context>
