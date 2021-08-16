@@ -6,7 +6,7 @@ set -eux
 #TAG=$(git tag -l --points-at HEAD)
 
 # Add Qt binaries to path
-PATH=/usr/local/opt/qt/bin/:${PATH}
+PATH=/usr/local/opt/qt@5/bin/:${PATH}
 
 ( cd build
   # macdeployqt does not copy symlinks over.
