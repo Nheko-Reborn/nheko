@@ -131,17 +131,17 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+665"/>
+        <location line="+668"/>
         <source>Invited user: %1</source>
         <translation>Invited user: %1</translation>
     </message>
     <message>
-        <location line="-456"/>
+        <location line="-459"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</translation>
     </message>
     <message>
-        <location line="+360"/>
+        <location line="+362"/>
         <source>Confirm join</source>
         <translation>Confirm join</translation>
     </message>
@@ -156,13 +156,13 @@
         <translation>Room %1 created.</translation>
     </message>
     <message>
-        <location line="+34"/>
-        <location line="+293"/>
+        <location line="+35"/>
+        <location line="+351"/>
         <source>Confirm invite</source>
         <translation>Confirm invite</translation>
     </message>
     <message>
-        <location line="-292"/>
+        <location line="-350"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Do you really want to invite %1 (%2)?</translation>
     </message>
@@ -227,12 +227,12 @@
         <translation>Unbanned user: %1</translation>
     </message>
     <message>
-        <location line="+196"/>
+        <location line="+254"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation>Do you really want to start a private chat with %1?</translation>
     </message>
     <message>
-        <location line="-734"/>
+        <location line="-795"/>
         <source>Cache migration failed!</source>
         <translation>Cache migration failed!</translation>
     </message>
@@ -247,7 +247,7 @@
         <translation>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+49"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Failed to restore OLM account. Please login again.</translation>
     </message>
@@ -257,7 +257,7 @@
         <translation>Failed to restore save data. Please login again.</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+102"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</translation>
     </message>
@@ -288,7 +288,7 @@
         <translation>Room creation failed: %1</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Failed to leave room: %1</source>
         <translation>Failed to leave room: %1</translation>
     </message>
@@ -352,7 +352,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+189"/>
+        <location filename="../../src/ChatPage.cpp" line="+247"/>
         <source>Decrypt secrets</source>
         <translation>Decrypt secrets</translation>
     </message>
@@ -499,42 +499,42 @@
     <message>
         <location filename="../qml/delegates/Encrypted.qml" line="+22"/>
         <source>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</source>
-        <translation type="unfinished"></translation>
+        <translation>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message couldn&apos;t be decrypted, because we only have a key for newer messages. You can try requesting access to this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>This message couldn&apos;t be decrypted, because we only have a key for newer messages. You can try requesting access to this message.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>There was an internal error reading the decryption key from the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>There was an internal error reading the decryption key from the database.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>There was an error decrypting this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>There was an error decrypting this message.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The message couldn&apos;t be parsed.</source>
-        <translation type="unfinished"></translation>
+        <translation>The message couldn&apos;t be parsed.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation type="unfinished"></translation>
+        <translation>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown decryption error</source>
-        <translation type="unfinished"></translation>
+        <translation>Unknown decryption error</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Request key</source>
-        <translation type="unfinished"></translation>
+        <translation>Request key</translation>
     </message>
 </context>
 <context>
@@ -556,8 +556,8 @@
     </message>
     <message>
         <location line="+2"/>
-        <source>Encrypted by an unverified device</source>
-        <translation>Encrypted by an unverified device</translation>
+        <source>Encrypted by an unverified device or the key is from an untrusted source like the key backup.</source>
+        <translation>Encrypted by an unverified device or the key is from an untrusted source like the key backup.</translation>
     </message>
 </context>
 <context>
@@ -607,64 +607,64 @@
     <message>
         <location filename="../qml/dialogs/ImagePackEditorDialog.qml" line="+24"/>
         <source>Editing image pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Editing image pack</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>Add images</source>
-        <translation type="unfinished"></translation>
+        <translation>Add images</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Stickers (*.png *.webp)</source>
-        <translation type="unfinished"></translation>
+        <translation>Stickers (*.png *.webp)</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>State key</source>
-        <translation type="unfinished"></translation>
+        <translation>State key</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Packname</source>
-        <translation type="unfinished"></translation>
+        <translation>Packname</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation>Attribution</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+65"/>
         <source>Use as Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>Use as Emoji</translation>
     </message>
     <message>
         <location line="-55"/>
         <location line="+65"/>
         <source>Use as Sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Use as Sticker</translation>
     </message>
     <message>
         <location line="-30"/>
         <source>Shortcode</source>
-        <translation type="unfinished"></translation>
+        <translation>Shortcode</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Body</source>
-        <translation type="unfinished"></translation>
+        <translation>Body</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Save</translation>
     </message>
 </context>
 <context>
@@ -672,52 +672,52 @@
     <message>
         <location filename="../qml/dialogs/ImagePackSettingsDialog.qml" line="+22"/>
         <source>Image pack settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Image pack settings</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Create account pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Create account pack</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>New room pack</source>
-        <translation type="unfinished"></translation>
+        <translation>New room pack</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Private pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Private pack</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Pack from this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Pack from this room</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Globally enabled pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Globally enabled pack</translation>
     </message>
     <message>
         <location line="+63"/>
         <source>Enable globally</source>
-        <translation type="unfinished"></translation>
+        <translation>Enable globally</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Enables this pack to be used in all rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Enables this pack to be used in all rooms</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Edit</source>
-        <translation type="unfinished">Edit</translation>
+        <translation>Edit</translation>
     </message>
     <message>
         <location line="+64"/>
         <source>Close</source>
-        <translation type="unfinished">Close</translation>
+        <translation>Close</translation>
     </message>
 </context>
 <context>
@@ -889,7 +889,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+188"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+190"/>
         <source>Encryption enabled</source>
         <translation>Encryption enabled</translation>
     </message>
@@ -944,7 +944,12 @@ Example: https://server.my:8787</translation>
         <translation>Negotiating call…</translation>
     </message>
     <message>
-        <location line="-24"/>
+        <location line="+70"/>
+        <source>Allow them in</source>
+        <translation>Allow them in</translation>
+    </message>
+    <message>
+        <location line="-94"/>
         <source>%1 answered the call.</source>
         <translation>%1 answered the call.</translation>
     </message>
@@ -1262,7 +1267,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location filename="../qml/ReadReceipts.qml" line="+40"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Read receipts</translation>
+        <translation>Read receipts</translation>
     </message>
 </context>
 <context>
@@ -1270,7 +1275,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location filename="../../src/ReadReceiptsModel.cpp" line="+111"/>
         <source>Yesterday, %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Yesterday, %1</translation>
     </message>
 </context>
 <context>
@@ -1324,12 +1329,12 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+32"/>
         <source>Registration token</source>
-        <translation type="unfinished"></translation>
+        <translation>Registration token</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please enter a valid registration token.</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter a valid registration token.</translation>
     </message>
     <message>
         <location line="-175"/>
@@ -1386,9 +1391,22 @@ Example: https://server.my:8787</translation>
     </message>
 </context>
 <context>
+    <name>RoomDirectory</name>
+    <message>
+        <location filename="../qml/RoomDirectory.qml" line="+24"/>
+        <source>Explore Public Rooms</source>
+        <translation>Explore Public Rooms</translation>
+    </message>
+    <message>
+        <location line="+166"/>
+        <source>Search for public rooms</source>
+        <translation>Search for public rooms</translation>
+    </message>
+</context>
+<context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4395"/>
+        <location filename="../../src/Cache.cpp" line="+4440"/>
         <source>no version stored</source>
         <translation>no version stored</translation>
     </message>
@@ -1396,7 +1414,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+59"/>
+        <location filename="../qml/RoomList.qml" line="+67"/>
         <source>New tag</source>
         <translation>New tag</translation>
     </message>
@@ -1408,12 +1426,12 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+9"/>
         <source>Leave Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Leave room</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to leave this room?</source>
-        <translation type="unfinished"></translation>
+        <translation>Are you sure you want to leave this room?</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1491,7 +1509,7 @@ Example: https://server.my:8787</translation>
         <translation>Room directory</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+16"/>
         <source>User settings</source>
         <translation>User settings</translation>
     </message>
@@ -1520,22 +1538,22 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+76"/>
         <source>This room is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>This room is not encrypted!</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>This user is verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>This user is verified.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This user isn&apos;t verified, but is still using the same master key from the first time you met.</source>
-        <translation type="unfinished"></translation>
+        <translation>This user isn&apos;t verified, but is still using the same master key from the first time you met.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This user has unverified devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>This user has unverified devices!</translation>
     </message>
 </context>
 <context>
@@ -1578,10 +1596,10 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+9"/>
         <source>Room access</source>
-        <translation type="unfinished"></translation>
+        <translation>Room access</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Anyone and guests</source>
         <translation>Anyone and guests</translation>
     </message>
@@ -1596,7 +1614,17 @@ Example: https://server.my:8787</translation>
         <translation>Invited users</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+2"/>
+        <source>By knocking</source>
+        <translation>By knocking</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Restricted by membership in other rooms</source>
+        <translation>Restricted by membership in other rooms</translation>
+    </message>
+    <message>
+        <location line="+12"/>
         <source>Encryption</source>
         <translation>Encryption</translation>
     </message>
@@ -1614,17 +1642,17 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+16"/>
         <source>Sticker &amp; Emote Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker &amp; Emote Settings</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Change</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Change what packs are enabled, remove packs or create new ones</source>
-        <translation type="unfinished"></translation>
+        <translation>Change what packs are enabled, remove packs or create new ones</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1642,12 +1670,12 @@ Example: https://server.my:8787</translation>
         <translation>Room Version</translation>
     </message>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+255"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+259"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Failed to enable encryption: %1</translation>
     </message>
     <message>
-        <location line="+228"/>
+        <location line="+252"/>
         <source>Select an avatar</source>
         <translation>Select an avatar</translation>
     </message>
@@ -1750,23 +1778,23 @@ Example: https://server.my:8787</translation>
     <message>
         <location filename="../../src/SingleImagePackModel.cpp" line="+261"/>
         <location line="+25"/>
-        <source>Failed to update image pack: {}</source>
-        <translation type="unfinished"></translation>
+        <source>Failed to update image pack: %1</source>
+        <translation>Failed to update image pack: %1</translation>
     </message>
     <message>
         <location line="-12"/>
-        <source>Failed to delete old image pack: {}</source>
-        <translation type="unfinished"></translation>
+        <source>Failed to delete old image pack: %1</source>
+        <translation>Failed to delete old image pack: %1</translation>
     </message>
     <message>
         <location line="+27"/>
-        <source>Failed to open image: {}</source>
-        <translation type="unfinished"></translation>
+        <source>Failed to open image: %1</source>
+        <translation>Failed to open image: %1</translation>
     </message>
     <message>
         <location line="+27"/>
-        <source>Failed to upload image: {}</source>
-        <translation type="unfinished"></translation>
+        <source>Failed to upload image: %1</source>
+        <translation>Failed to upload image: %1</translation>
     </message>
 </context>
 <context>
@@ -1821,7 +1849,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1127"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1125"/>
         <source>Message redaction failed: %1</source>
         <translation>Message redaction failed: %1</translation>
     </message>
@@ -1871,7 +1899,17 @@ Example: https://server.my:8787</translation>
         <translation>%1 made this room require an invitation to join.</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+2"/>
+        <source>%1 allowed to join this room by knocking.</source>
+        <translation>%1 allowed to join this room by knocking.</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>%1 allowed members of the following rooms to automatically join this room: %2</source>
+        <translation>%1 allowed members of the following rooms to automatically join this room: %2</translation>
+    </message>
+    <message>
+        <location line="+27"/>
         <source>%1 made the room open to guests.</source>
         <translation>%1 made the room open to guests.</translation>
     </message>
@@ -1906,7 +1944,7 @@ Example: https://server.my:8787</translation>
         <translation>%1 has changed the room&apos;s permissions.</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+78"/>
         <source>%1 was invited.</source>
         <translation>%1 was invited.</translation>
     </message>
@@ -1921,12 +1959,17 @@ Example: https://server.my:8787</translation>
         <translation>%1 changed some profile info.</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>%1 joined.</source>
         <translation>%1 joined.</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+2"/>
+        <source>%1 joined via authorisation from %2&apos;s server.</source>
+        <translation>%1 joined via authorisation from %2&apos;s server.</translation>
+    </message>
+    <message>
+        <location line="+12"/>
         <source>%1 rejected their invite.</source>
         <translation>%1 rejected their invite.</translation>
     </message>
@@ -1966,12 +2009,12 @@ Example: https://server.my:8787</translation>
         <translation>%1 redacted their knock.</translation>
     </message>
     <message>
-        <location line="-893"/>
+        <location line="-957"/>
         <source>You joined this room.</source>
         <translation>You joined this room.</translation>
     </message>
     <message>
-        <location line="+859"/>
+        <location line="+917"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation>%1 has changed their avatar and changed their display name to %2.</translation>
     </message>
@@ -1981,7 +2024,7 @@ Example: https://server.my:8787</translation>
         <translation>%1 has changed their display name to %2.</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+37"/>
         <source>Rejected the knock from %1.</source>
         <translation>Rejected the knock from %1.</translation>
     </message>
@@ -2013,7 +2056,7 @@ Example: https://server.my:8787</translation>
         <translation>No room open</translation>
     </message>
     <message>
-        <location line="+144"/>
+        <location line="+145"/>
         <source>%1 member(s)</source>
         <translation>%1 member(s)</translation>
     </message>
@@ -2041,7 +2084,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+538"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+544"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</translation>
     </message>
@@ -2061,22 +2104,22 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+91"/>
         <source>This room is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>This room is not encrypted!</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>This room contains only verified devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>This room contains only verified devices.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This rooms contain verified devices and devices which have never changed their master key.</source>
-        <translation type="unfinished"></translation>
+        <translation>This rooms contain verified devices and devices which have never changed their master key.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This room contains unverified devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>This room contains unverified devices!</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -2179,8 +2222,8 @@ Example: https://server.my:8787</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+365"/>
-        <location filename="../../src/UserSettingsPage.h" line="+200"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+366"/>
+        <location filename="../../src/UserSettingsPage.h" line="+203"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -2188,7 +2231,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location line="+540"/>
+        <location line="+554"/>
         <source>Minimize to tray</source>
         <translation>Minimize to tray</translation>
     </message>
@@ -2208,12 +2251,12 @@ Example: https://server.my:8787</translation>
         <translation>Circular Avatars</translation>
     </message>
     <message>
-        <location line="-212"/>
+        <location line="-214"/>
         <source>profile: %1</source>
         <translation>profile: %1</translation>
     </message>
     <message>
-        <location line="+98"/>
+        <location line="+100"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -2412,12 +2455,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+55"/>
         <source>Send encrypted messages to verified users only</source>
-        <translation type="unfinished"></translation>
+        <translation>Send encrypted messages to verified users only</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
-        <translation type="unfinished"></translation>
+        <translation>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2427,10 +2470,20 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Automatically replies to key requests from other users, if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatically replies to key requests from other users, if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</translation>
     </message>
     <message>
-        <location line="+410"/>
+        <location line="+2"/>
+        <source>Online Key Backup</source>
+        <translation>Online Key Backup</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Download message encryption keys from and upload to the encrypted online key backup.</source>
+        <translation>Download message encryption keys from and upload to the encrypted online key backup.</translation>
+    </message>
+    <message>
+        <location line="+415"/>
         <source>CACHED</source>
         <translation>CACHED</translation>
     </message>
@@ -2440,7 +2493,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>NOT CACHED</translation>
     </message>
     <message>
-        <location line="-469"/>
+        <location line="-478"/>
         <source>Scale factor</source>
         <translation>Scale factor</translation>
     </message>
@@ -2535,12 +2588,12 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>ENCRYPTION</translation>
     </message>
     <message>
-        <location line="-117"/>
+        <location line="-119"/>
         <source>GENERAL</source>
         <translation>GENERAL</translation>
     </message>
     <message>
-        <location line="+66"/>
+        <location line="+68"/>
         <source>INTERFACE</source>
         <translation>INTERFACE</translation>
     </message>
@@ -2560,7 +2613,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>Emoji Font Family</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+53"/>
         <source>Master signing key</source>
         <translation>Master signing key</translation>
     </message>
@@ -2610,7 +2663,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>All Files (*)</translation>
     </message>
     <message>
-        <location line="+241"/>
+        <location line="+246"/>
         <source>Open Sessions File</source>
         <translation>Open Sessions File</translation>
     </message>

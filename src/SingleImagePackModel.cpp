@@ -258,7 +258,7 @@ SingleImagePackModel::save()
                 http::client()->put_account_data(pack, [](mtx::http::RequestErr e) {
                         if (e)
                                 ChatPage::instance()->showNotification(
-                                  tr("Failed to update image pack: {}")
+                                  tr("Failed to update image pack: %1")
                                     .arg(QString::fromStdString(e->matrix_error.error)));
                 });
         } else {
@@ -271,7 +271,7 @@ SingleImagePackModel::save()
                           [](const mtx::responses::EventId &, mtx::http::RequestErr e) {
                                   if (e)
                                           ChatPage::instance()->showNotification(
-                                            tr("Failed to delete old image pack: {}")
+                                            tr("Failed to delete old image pack: %1")
                                               .arg(QString::fromStdString(e->matrix_error.error)));
                           });
                 }
@@ -283,10 +283,10 @@ SingleImagePackModel::save()
                   [this](const mtx::responses::EventId &, mtx::http::RequestErr e) {
                           if (e)
                                   ChatPage::instance()->showNotification(
-                                    tr("Failed to update image pack: {}")
+                                    tr("Failed to update image pack: %1")
                                       .arg(QString::fromStdString(e->matrix_error.error)));
 
-                          nhlog::net()->info("Uploaded image pack: {}", statekey_);
+                          nhlog::net()->info("Uploaded image pack: %1", statekey_);
                   });
         }
 }
@@ -298,7 +298,7 @@ SingleImagePackModel::addStickers(QList<QUrl> files)
                 auto file = QFile(f.toLocalFile());
                 if (!file.open(QFile::ReadOnly)) {
                         ChatPage::instance()->showNotification(
-                          tr("Failed to open image: {}").arg(f.toLocalFile()));
+                          tr("Failed to open image: %1").arg(f.toLocalFile()));
                         return;
                 }
 
@@ -325,7 +325,7 @@ SingleImagePackModel::addStickers(QList<QUrl> files)
                                          mtx::http::RequestErr e) {
                           if (e) {
                                   ChatPage::instance()->showNotification(
-                                    tr("Failed to upload image: {}")
+                                    tr("Failed to upload image: %1")
                                       .arg(QString::fromStdString(e->matrix_error.error)));
                                   return;
                           }
