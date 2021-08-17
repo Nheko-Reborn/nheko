@@ -16,12 +16,13 @@ Page {
     property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.3)
     property bool collapsed: false
 
-Component {
+    Component {
         id: roomDirectoryComponent
 
         RoomDirectory {
         }
-    }	
+
+    }
 
     ListView {
         id: roomlist
@@ -570,10 +571,10 @@ Component {
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Room directory")
                     Layout.margins: Nheko.paddingMedium
-			onClicked: {
+                    onClicked: {
                         var win = roomDirectoryComponent.createObject(timelineRoot);
                         win.show();
-                    } 
+                    }
                 }
 
                 ImageButton {

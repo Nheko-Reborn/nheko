@@ -1689,6 +1689,19 @@ TimelineModel::formatJoinRuleEvent(QString id)
                 return tr("%1 opened the room to the public.").arg(name);
         case mtx::events::state::JoinRule::Invite:
                 return tr("%1 made this room require and invitation to join.").arg(name);
+        case mtx::events::state::JoinRule::Knock:
+                return tr("%1 allowed to join this room by knocking.").arg(name);
+        case mtx::events::state::JoinRule::Restricted: {
+                QStringList rooms;
+                for (const auto &r : event->content.allow) {
+                        if (r.type == mtx::events::state::JoinAllowanceType::RoomMembership)
+                                rooms.push_back(QString::fromStdString(r.room_id));
+                }
+                return tr("%1 allowed members of the following rooms to automatically join this "
+                          "room: %2")
+                  .arg(name)
+                  .arg(rooms.join(", "));
+        }
         default:
                 // Currently, knock and private are reserved keywords and not implemented in Matrix.
                 return "";
@@ -1771,6 +1784,51 @@ TimelineModel::formatPowerLevelEvent(QString id)
         return tr("%1 has changed the room's permissions.").arg(name);
 }
 
+void
+TimelineModel::acceptKnock(QString id)
+{
+        mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+        if (!e)
+                return;
+
+        auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::Member>>(e);
+        if (!event)
+                return;
+
+        if (!permissions_.canInvite())
+                return;
+
+        if (cache::isRoomMember(event->state_key, room_id_.toStdString()))
+                return;
+
+        using namespace mtx::events::state;
+        if (event->content.membership != Membership::Knock)
+                return;
+
+        ChatPage::instance()->inviteUser(QString::fromStdString(event->state_key), "");
+}
+
+bool
+TimelineModel::showAcceptKnockButton(QString id)
+{
+        mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+        if (!e)
+                return false;
+
+        auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::Member>>(e);
+        if (!event)
+                return false;
+
+        if (!permissions_.canInvite())
+                return false;
+
+        if (cache::isRoomMember(event->state_key, room_id_.toStdString()))
+                return false;
+
+        using namespace mtx::events::state;
+        return event->content.membership == Membership::Knock;
+}
+
 QString
 TimelineModel::formatMemberEvent(QString id)
 {
@@ -1826,7 +1884,13 @@ TimelineModel::formatMemberEvent(QString id)
                         // the case of nothing changed but join follows join shouldn't happen, so
                         // just show it as join
                 } else {
-                        rendered = tr("%1 joined.").arg(name);
+                        if (event->content.join_authorised_via_users_server.empty())
+                                rendered = tr("%1 joined.").arg(name);
+                        else
+                                rendered = tr("%1 joined via authorisation from %2's server.")
+                                             .arg(name)
+                                             .arg(QString::fromStdString(
+                                               event->content.join_authorised_via_users_server));
                 }
                 break;
         case Membership::Leave:

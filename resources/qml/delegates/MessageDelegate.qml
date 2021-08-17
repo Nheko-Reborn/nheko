@@ -3,6 +3,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import QtQuick 2.6
+import QtQuick.Controls 2.1
+import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
 Item {
@@ -357,11 +359,23 @@ Item {
         DelegateChoice {
             roleValue: MtxEvent.Member
 
-            NoticeMessage {
-                body: formatted
-                isOnlyEmoji: false
-                isReply: d.isReply
-                formatted: d.relatedEventCacheBuster, room.formatMemberEvent(d.eventId)
+            ColumnLayout {
+                width: parent ? parent.width : undefined
+
+                NoticeMessage {
+                    body: formatted
+                    isOnlyEmoji: false
+                    isReply: d.isReply
+                    formatted: d.relatedEventCacheBuster, room.formatMemberEvent(d.eventId)
+                }
+
+                Button {
+                    visible: d.relatedEventCacheBuster, room.showAcceptKnockButton(d.eventId)
+                    palette: Nheko.colors
+                    text: qsTr("Allow them in")
+                    onClicked: room.acceptKnock(eventId)
+                }
+
             }
 
         }

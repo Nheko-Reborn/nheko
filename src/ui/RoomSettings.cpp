@@ -218,8 +218,12 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
                 } else {
                         accessRules_ = 1;
                 }
-        } else {
+        } else if (info_.join_rule == state::JoinRule::Invite) {
                 accessRules_ = 2;
+        } else if (info_.join_rule == state::JoinRule::Knock) {
+                accessRules_ = 3;
+        } else if (info_.join_rule == state::JoinRule::Restricted) {
+                accessRules_ = 4;
         }
         emit accessJoinRulesChanged();
 }
@@ -368,6 +372,21 @@ RoomSettings::isEncryptionEnabled() const
         return usesEncryption_;
 }
 
+bool
+RoomSettings::supportsKnocking() const
+{
+        return info_.version != "" && info_.version != "1" && info_.version != "2" &&
+               info_.version != "3" && info_.version != "4" && info_.version != "5" &&
+               info_.version != "6";
+}
+bool
+RoomSettings::supportsRestricted() const
+{
+        return info_.version != "" && info_.version != "1" && info_.version != "2" &&
+               info_.version != "3" && info_.version != "4" && info_.version != "5" &&
+               info_.version != "6" && info_.version != "7";
+}
+
 void
 RoomSettings::openEditModal()
 {
@@ -463,6 +482,15 @@ RoomSettings::changeAccessRules(int index)
                 case 0:
                 case 1:
                         event.join_rule = state::JoinRule::Public;
+                        break;
+                case 2:
+                        event.join_rule = state::JoinRule::Invite;
+                        break;
+                case 3:
+                        event.join_rule = state::JoinRule::Knock;
+                        break;
+                case 4:
+                        event.join_rule = state::JoinRule::Restricted;
                         break;
                 default:
                         event.join_rule = state::JoinRule::Invite;

@@ -186,7 +186,16 @@ ApplicationWindow {
 
             ComboBox {
                 enabled: roomSettings.canChangeJoinRules
-                model: [qsTr("Anyone and guests"), qsTr("Anyone"), qsTr("Invited users")]
+                model: {
+                    let opts = [qsTr("Anyone and guests"), qsTr("Anyone"), qsTr("Invited users")];
+                    if (roomSettings.supportsKnocking)
+                        opts.push(qsTr("By knocking"));
+
+                    if (roomSettings.supportsRestricted)
+                        opts.push(qsTr("Restricted by membership in other rooms"));
+
+                    return opts;
+                }
                 currentIndex: roomSettings.accessJoinRules
                 onActivated: {
                     roomSettings.changeAccessRules(index);

@@ -78,6 +78,8 @@ class RoomSettings : public QObject
         Q_PROPERTY(bool canChangeJoinRules READ canChangeJoinRules CONSTANT)
         Q_PROPERTY(bool canChangeNameAndTopic READ canChangeNameAndTopic CONSTANT)
         Q_PROPERTY(bool isEncryptionEnabled READ isEncryptionEnabled NOTIFY encryptionChanged)
+        Q_PROPERTY(bool supportsKnocking READ supportsKnocking CONSTANT)
+        Q_PROPERTY(bool supportsRestricted READ supportsRestricted CONSTANT)
 
 public:
         RoomSettings(QString roomid, QObject *parent = nullptr);
@@ -98,6 +100,8 @@ public:
         //! Whether the user has enough power level to send m.room.avatar event.
         bool canChangeAvatar() const;
         bool isEncryptionEnabled() const;
+        bool supportsKnocking() const;
+        bool supportsRestricted() const;
 
         Q_INVOKABLE void enableEncryption();
         Q_INVOKABLE void updateAvatar();

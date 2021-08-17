@@ -238,6 +238,8 @@ public:
         Q_INVOKABLE QString avatarUrl(QString id) const;
         Q_INVOKABLE QString formatDateSeparator(QDate date) const;
         Q_INVOKABLE QString formatTypingUsers(const std::vector<QString> &users, QColor bg);
+        Q_INVOKABLE bool showAcceptKnockButton(QString id);
+        Q_INVOKABLE void acceptKnock(QString id);
         Q_INVOKABLE QString formatMemberEvent(QString id);
         Q_INVOKABLE QString formatJoinRuleEvent(QString id);
         Q_INVOKABLE QString formatHistoryVisibilityEvent(QString id);

@@ -49,7 +49,7 @@ Rectangle {
         smooth: true
         sourceSize.width: avatar.width
         sourceSize.height: avatar.height
-        source: avatar.url ? (avatar.url + "?radius=" + (Settings.avatarCircles ? 100.0 : 25.0) + ((avatar.crop) ? "" : "&scale")) : ""
+        source: avatar.url ? (avatar.url + "?radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale")) : ""
 
         MouseArea {
             id: mouseArea
