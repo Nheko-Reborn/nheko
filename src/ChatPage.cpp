@@ -994,7 +994,7 @@ ChatPage::getBackupVersion()
                   }
 
                   // switch to UI thread for secrets stuff
-                  QTimer::singleShot(0, this, [this, res] {
+                  QTimer::singleShot(0, this, [res] {
                           auto auth_data = nlohmann::json::parse(res.auth_data);
 
                           if (res.algorithm == "m.megolm_backup.v1.curve25519-aes-sha2") {
@@ -1025,46 +1025,6 @@ ChatPage::getBackupVersion()
                                   data.algorithm = res.algorithm;
                                   data.version   = res.version;
                                   cache::client()->saveBackupVersion(data);
-
-                                  // We really don't need to add our signature.
-                                  // if (!auth_data["signatures"]
-                                  //              [http::client()->user_id().to_string()]
-                                  //                .contains("ed25519:" +
-                                  //                          http::client()->device_id())) {
-                                  //        // add our signature
-                                  //        // This is not strictly necessary, but some Element
-                                  //        // clients rely on it. We assume the master_key
-                                  //        signature
-                                  //        // already exists and add our device signature just to
-                                  //        be
-                                  //        // safe, even though just the master signature is
-                                  //        enough,
-                                  //        // if cross-signing is used.
-                                  //        auto signatures = auth_data["signatures"];
-                                  //        auth_data.erase("signatures");
-                                  //        auth_data.erase("unsigned");
-                                  //        signatures[http::client()->user_id().to_string()]
-                                  //                  ["ed25519:" + http::client()->device_id()] =
-                                  //                    olm::client()->sign_message(auth_data.dump());
-                                  //        auth_data["signatures"] = signatures;
-
-                                  //        auto copy      = res;
-                                  //        copy.auth_data = auth_data.dump();
-                                  //        http::client()->update_backup_version(
-                                  //          res.version, copy, [](mtx::http::RequestErr e) {
-                                  //                  if (e) {
-                                  //                          nhlog::crypto()->error(
-                                  //                            "Failed to update online backup "
-                                  //                            "signatures: {} - {}",
-                                  //                            mtx::errors::to_string(
-                                  //                              e->matrix_error.errcode),
-                                  //                            e->matrix_error.error);
-                                  //                  } else {
-                                  //                          nhlog::crypto()->info(
-                                  //                            "Updated key backup signatures");
-                                  //                  }
-                                  //          });
-                                  //}
                           } else {
                                   nhlog::crypto()->info("Unsupported key backup algorithm: {}",
                                                         res.algorithm);
