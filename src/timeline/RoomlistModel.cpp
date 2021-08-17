@@ -379,6 +379,8 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
                 if (!suppressInsertNotification &&
                     ((!wasInvite && !wasPreview) || !previewedRooms.empty()))
                         endInsertRows();
+
+                emit ChatPage::instance()->newRoom(room_id);
         }
 }
 

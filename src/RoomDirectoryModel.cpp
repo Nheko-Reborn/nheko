@@ -8,10 +8,23 @@
 
 #include <algorithm>
 
-RoomDirectoryModel::RoomDirectoryModel(QObject *parent, const std::string &s)
+RoomDirectoryModel::RoomDirectoryModel(QObject *parent, const std::string &server)
   : QAbstractListModel(parent)
-  , server_(s)
+  , server_(server)
 {
+        connect(ChatPage::instance(), &ChatPage::newRoom, this, [this](const QString &roomid) {
+                auto roomid_ = roomid.toStdString();
+
+                int i = 0;
+                for (const auto &room : publicRoomsData_) {
+                        if (room.room_id == roomid_) {
+                                emit dataChanged(index(i), index(i), {Roles::CanJoin});
+                                break;
+                        }
+                        i++;
+                }
+        });
+
         connect(this,
                 &RoomDirectoryModel::fetchedRoomsBatch,
                 this,
@@ -29,6 +42,7 @@ RoomDirectoryModel::roleNames() const
           {Roles::Topic, "topic"},
           {Roles::MemberCount, "numMembers"},
           {Roles::Previewable, "canPreview"},
+          {Roles::CanJoin, "canJoin"},
         };
 }
 
@@ -67,10 +81,9 @@ RoomDirectoryModel::setSearchTerm(const QString &f)
 }
 
 bool
-RoomDirectoryModel::canJoinRoom(const QByteArray &room)
+RoomDirectoryModel::canJoinRoom(const QString &room) const
 {
-        const QString room_id(room);
-        return !room_id.isEmpty() && !cache::getRoomInfo({room_id.toStdString()}).count(room_id);
+        return !room.isEmpty() && cache::getRoomInfo({room.toStdString()}).empty();
 }
 
 std::vector<std::string>
@@ -116,6 +129,8 @@ RoomDirectoryModel::data(const QModelIndex &index, int role) const
                         return QVariant::fromValue(room_chunk.num_joined_members);
                 case Roles::Previewable:
                         return QVariant::fromValue(room_chunk.world_readable);
+                case Roles::CanJoin:
+                        return canJoinRoom(QString::fromStdString(room_chunk.room_id));
                 }
         }
         return {};

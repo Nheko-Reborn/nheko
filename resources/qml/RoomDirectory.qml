@@ -132,9 +132,8 @@ ApplicationWindow {
                             Button {
                                 id: joinRoomButton
 
-                                visible: publicRooms.canJoinRoom(model.roomid)
+                                visible: model.canJoin
                                 anchors.centerIn: parent
-                                width: Math.ceil(0.1 * roomDirectoryWindow.width)
                                 text: "Join"
                                 onClicked: publicRooms.joinRoom(model.index)
                             }

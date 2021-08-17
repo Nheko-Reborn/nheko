@@ -32,7 +32,7 @@ class RoomDirectoryModel : public QAbstractListModel
                      reachedEndOfPaginationChanged)
 
 public:
-        explicit RoomDirectoryModel(QObject *parent = nullptr, const std::string &s = "");
+        explicit RoomDirectoryModel(QObject *parent = nullptr, const std::string &server = "");
 
         enum Roles
         {
@@ -41,7 +41,8 @@ public:
                 AvatarUrl,
                 Topic,
                 MemberCount,
-                Previewable
+                Previewable,
+                CanJoin,
         };
         QHash<int, QByteArray> roleNames() const override;
 
@@ -61,7 +62,6 @@ public:
 
         void fetchMore(const QModelIndex &) override;
 
-        Q_INVOKABLE bool canJoinRoom(const QByteArray &room);
         Q_INVOKABLE void joinRoom(const int &index = -1);
 
 signals:
@@ -80,6 +80,8 @@ private slots:
                           const std::string &next_batch);
 
 private:
+        bool canJoinRoom(const QString &room) const;
+
         static constexpr size_t limit_ = 50;
 
         std::string server_;
