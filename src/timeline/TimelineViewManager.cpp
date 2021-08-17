@@ -27,6 +27,7 @@
 #include "MatrixClient.h"
 #include "MxcImageProvider.h"
 #include "ReadReceiptsModel.h"
+#include "RoomDirectoryModel.h"
 #include "RoomsModel.h"
 #include "SingleImagePackModel.h"
 #include "UserSettingsPage.h"
@@ -40,6 +41,7 @@
 
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
+Q_DECLARE_METATYPE(std::vector<mtx::responses::PublicRoomsChunk>)
 
 namespace msgs = mtx::events::msg;
 
@@ -150,6 +152,8 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         qRegisterMetaType<mtx::events::msg::KeyVerificationRequest>();
         qRegisterMetaType<mtx::events::msg::KeyVerificationStart>();
         qRegisterMetaType<CombinedImagePackModel *>();
+
+        qRegisterMetaType<std::vector<mtx::responses::PublicRoomsChunk>>();
 
         qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                          "im.nheko",
@@ -281,6 +285,8 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                                          0,
                                          "EmojiCategory",
                                          "Error: Only enums");
+
+        qmlRegisterType<RoomDirectoryModel>("im.nheko", 1, 0, "RoomDirectoryModel");
 
 #ifdef USE_QUICK_VIEW
         view      = new QQuickView(parent);

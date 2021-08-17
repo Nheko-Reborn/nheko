@@ -142,6 +142,7 @@
         <file>qml/emoji/EmojiPicker.qml</file>
         <file>qml/emoji/StickerPicker.qml</file>
         <file>qml/UserProfile.qml</file>
+        <file>qml/RoomDirectory.qml</file>
         <file>qml/delegates/MessageDelegate.qml</file>
         <file>qml/delegates/Encrypted.qml</file>
         <file>qml/delegates/FileMessage.qml</file>
