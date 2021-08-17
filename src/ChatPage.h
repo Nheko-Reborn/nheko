@@ -125,6 +125,7 @@ signals:
         void newSyncResponse(const mtx::responses::Sync &res, const std::string &prev_batch_token);
         void leftRoom(const QString &room_id);
         void newRoom(const QString &room_id);
+        void changeToRoom(const QString &room_id);
 
         void initializeViews(const mtx::responses::Rooms &rooms);
         void initializeEmptyViews();

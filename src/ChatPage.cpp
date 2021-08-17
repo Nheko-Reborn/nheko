@@ -140,7 +140,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
           });
 
         connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
-        connect(this, &ChatPage::newRoom, this, &ChatPage::changeRoom, Qt::QueuedConnection);
+        connect(this, &ChatPage::changeToRoom, this, &ChatPage::changeRoom, Qt::QueuedConnection);
         connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendNotifications);
         connect(this,
                 &ChatPage::highlightedNotifsRetrieved,
@@ -751,6 +751,7 @@ ChatPage::createRoom(const mtx::requests::CreateRoom &req)
                   QString newRoomId = QString::fromStdString(res.room_id.to_string());
                   emit showNotification(tr("Room %1 created.").arg(newRoomId));
                   emit newRoom(newRoomId);
+                  emit changeToRoom(newRoomId);
           });
 }
 
