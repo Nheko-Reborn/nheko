@@ -86,6 +86,7 @@ Item {
 
                     Loader {
                         active: room || roomPreview
+                        asynchronous: true
                         Layout.fillWidth: true
 
                         sourceComponent: MessageView {
