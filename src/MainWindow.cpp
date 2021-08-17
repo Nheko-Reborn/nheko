@@ -130,26 +130,29 @@ MainWindow::MainWindow(QWidget *parent)
 
         trayIcon_->setVisible(userSettings_->tray());
 
-        if (hasActiveUser()) {
-                QString token       = userSettings_->accessToken();
-                QString home_server = userSettings_->homeserver();
-                QString user_id     = userSettings_->userId();
-                QString device_id   = userSettings_->deviceId();
+        // load cache on event loop
+        QTimer::singleShot(0, this, [this] {
+                if (hasActiveUser()) {
+                        QString token       = userSettings_->accessToken();
+                        QString home_server = userSettings_->homeserver();
+                        QString user_id     = userSettings_->userId();
+                        QString device_id   = userSettings_->deviceId();
 
-                http::client()->set_access_token(token.toStdString());
-                http::client()->set_server(home_server.toStdString());
-                http::client()->set_device_id(device_id.toStdString());
+                        http::client()->set_access_token(token.toStdString());
+                        http::client()->set_server(home_server.toStdString());
+                        http::client()->set_device_id(device_id.toStdString());
 
-                try {
-                        using namespace mtx::identifiers;
-                        http::client()->set_user(parse<User>(user_id.toStdString()));
-                } catch (const std::invalid_argument &) {
-                        nhlog::ui()->critical("bootstrapped with invalid user_id: {}",
-                                              user_id.toStdString());
+                        try {
+                                using namespace mtx::identifiers;
+                                http::client()->set_user(parse<User>(user_id.toStdString()));
+                        } catch (const std::invalid_argument &) {
+                                nhlog::ui()->critical("bootstrapped with invalid user_id: {}",
+                                                      user_id.toStdString());
+                        }
+
+                        showChatPage();
                 }
-
-                showChatPage();
-        }
+        });
 
         if (loadJdenticonPlugin()) {
                 nhlog::ui()->info("loaded jdenticon.");

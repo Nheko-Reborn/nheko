@@ -124,6 +124,7 @@ UserSettings::load(std::optional<QString> profile)
             .toBool();
         onlyShareKeysWithVerifiedUsers_ =
           settings.value(prefix + "user/only_share_keys_with_verified_users", false).toBool();
+        useOnlineKeyBackup_ = settings.value(prefix + "user/online_key_backup", true).toBool();
 
         disableCertificateValidation_ =
           settings.value("disable_certificate_validation", false).toBool();
@@ -426,6 +427,17 @@ UserSettings::setShareKeysWithTrustedUsers(bool shareKeys)
 }
 
 void
+UserSettings::setUseOnlineKeyBackup(bool useBackup)
+{
+        if (useBackup == useOnlineKeyBackup_)
+                return;
+
+        useOnlineKeyBackup_ = useBackup;
+        emit useOnlineKeyBackupChanged(useBackup);
+        save();
+}
+
+void
 UserSettings::setRingtone(QString ringtone)
 {
         if (ringtone == ringtone_)
@@ -664,6 +676,7 @@ UserSettings::save()
                           shareKeysWithTrustedUsers_);
         settings.setValue(prefix + "user/only_share_keys_with_verified_users",
                           onlyShareKeysWithVerifiedUsers_);
+        settings.setValue(prefix + "user/online_key_backup", useOnlineKeyBackup_);
 
         settings.setValue("disable_certificate_validation", disableCertificateValidation_);
 
@@ -725,6 +738,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         privacyScreen_                  = new Toggle{this};
         onlyShareKeysWithVerifiedUsers_ = new Toggle(this);
         shareKeysWithTrustedUsers_      = new Toggle(this);
+        useOnlineKeyBackup_             = new Toggle(this);
         groupViewToggle_                = new Toggle{this};
         timelineButtonsToggle_          = new Toggle{this};
         typingNotifications_            = new Toggle{this};
@@ -756,6 +770,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         privacyScreen_->setChecked(settings_->privacyScreen());
         onlyShareKeysWithVerifiedUsers_->setChecked(settings_->onlyShareKeysWithVerifiedUsers());
         shareKeysWithTrustedUsers_->setChecked(settings_->shareKeysWithTrustedUsers());
+        useOnlineKeyBackup_->setChecked(settings_->useOnlineKeyBackup());
         groupViewToggle_->setChecked(settings_->groupView());
         timelineButtonsToggle_->setChecked(settings_->buttonsInTimeline());
         typingNotifications_->setChecked(settings_->typingNotifications());
@@ -1033,6 +1048,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 shareKeysWithTrustedUsers_,
                 tr("Automatically replies to key requests from other users, if they are verified, "
                    "even if that device shouldn't have access to those keys otherwise."));
+        boxWrap(tr("Online Key Backup"),
+                useOnlineKeyBackup_,
+                tr("Download message encryption keys from and upload to the encrypted online key "
+                   "backup."));
         formLayout_->addRow(new HorizontalLine{this});
         formLayout_->addRow(sessionKeysLabel, sessionKeysLayout);
         formLayout_->addRow(crossSigningKeysLabel, crossSigningKeysLayout);
@@ -1208,6 +1227,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 settings_->setShareKeysWithTrustedUsers(enabled);
         });
 
+        connect(useOnlineKeyBackup_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setUseOnlineKeyBackup(enabled);
+        });
+
         connect(avatarCircles_, &Toggle::toggled, this, [this](bool enabled) {
                 settings_->setAvatarCircles(enabled);
         });
@@ -1298,6 +1321,7 @@ UserSettingsPage::showEvent(QShowEvent *)
         privacyScreen_->setState(settings_->privacyScreen());
         onlyShareKeysWithVerifiedUsers_->setState(settings_->onlyShareKeysWithVerifiedUsers());
         shareKeysWithTrustedUsers_->setState(settings_->shareKeysWithTrustedUsers());
+        useOnlineKeyBackup_->setState(settings_->useOnlineKeyBackup());
         avatarCircles_->setState(settings_->avatarCircles());
         typingNotifications_->setState(settings_->typingNotifications());
         sortByImportance_->setState(settings_->sortByImportance());

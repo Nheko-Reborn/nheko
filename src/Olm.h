@@ -70,6 +70,8 @@ create_inbound_megolm_session(const mtx::events::DeviceEvent<mtx::events::msg::R
 void
 import_inbound_megolm_session(
   const mtx::events::DeviceEvent<mtx::events::msg::ForwardedRoomKey> &roomKey);
+void
+lookup_keybackup(const std::string room, const std::string session_id);
 
 nlohmann::json
 handle_pre_key_olm_message(const std::string &sender,
@@ -87,7 +89,7 @@ decryptEvent(const MegolmSessionIndex &index,
              const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &event,
              bool dont_write_db = false);
 crypto::Trust
-calculate_trust(const std::string &user_id, const std::string &curve25519);
+calculate_trust(const std::string &user_id, const MegolmSessionIndex &index);
 
 void
 mark_keys_as_published();

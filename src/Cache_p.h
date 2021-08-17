@@ -287,6 +287,10 @@ public:
         void saveOlmAccount(const std::string &pickled);
         std::string restoreOlmAccount();
 
+        void saveBackupVersion(const OnlineBackupVersion &data);
+        void deleteBackupVersion();
+        std::optional<OnlineBackupVersion> backupVersion();
+
         void storeSecret(const std::string name, const std::string secret);
         void deleteSecret(const std::string name);
         std::optional<std::string> secret(const std::string name);

@@ -641,8 +641,9 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                         if (auto encrypted =
                               std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
                                 &*encrypted_event)) {
-                                return olm::calculate_trust(encrypted->sender,
-                                                            encrypted->content.sender_key);
+                                return olm::calculate_trust(
+                                  encrypted->sender,
+                                  MegolmSessionIndex(room_id_.toStdString(), encrypted->content));
                         }
                 }
                 return crypto::Trust::Unverified;
@@ -840,10 +841,7 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
 
         for (auto e : timeline.events) {
                 if (auto encryptedEvent = std::get_if<EncryptedEvent<msg::Encrypted>>(&e)) {
-                        MegolmSessionIndex index;
-                        index.room_id    = room_id_.toStdString();
-                        index.session_id = encryptedEvent->content.session_id;
-                        index.sender_key = encryptedEvent->content.sender_key;
+                        MegolmSessionIndex index(room_id_.toStdString(), encryptedEvent->content);
 
                         auto result = olm::decryptEvent(index, *encryptedEvent);
                         if (result.event)

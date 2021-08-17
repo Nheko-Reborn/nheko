@@ -47,6 +47,11 @@ struct GroupSessionData
         uint64_t message_index = 0;
         uint64_t timestamp     = 0;
 
+        // If we got the session via key sharing or forwarding, we can usually trust it.
+        // If it came from asymmetric key backup, it is not trusted.
+        // TODO(Nico): What about forwards? They might come from key backup?
+        bool trusted = true;
+
         std::string sender_claimed_ed25519_key;
         std::vector<std::string> forwarding_curve25519_key_chain;
 
@@ -83,6 +88,13 @@ from_json(const nlohmann::json &obj, DevicePublicKeys &msg);
 //! Represents a unique megolm session identifier.
 struct MegolmSessionIndex
 {
+        MegolmSessionIndex() = default;
+        MegolmSessionIndex(std::string room_id_, const mtx::events::msg::Encrypted &e)
+          : room_id(std::move(room_id_))
+          , session_id(e.session_id)
+          , sender_key(e.sender_key)
+        {}
+
         //! The room in which this session exists.
         std::string room_id;
         //! The session_id of the megolm session.
@@ -167,3 +179,16 @@ void
 to_json(nlohmann::json &j, const VerificationCache &info);
 void
 from_json(const nlohmann::json &j, VerificationCache &info);
+
+struct OnlineBackupVersion
+{
+        //! the version of the online backup currently enabled
+        std::string version;
+        //! the algorithm used by the backup
+        std::string algorithm;
+};
+
+void
+to_json(nlohmann::json &j, const OnlineBackupVersion &info);
+void
+from_json(const nlohmann::json &j, OnlineBackupVersion &info);

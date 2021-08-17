@@ -643,10 +643,7 @@ EventStore::decryptEvent(const IdIndex &idx,
         if (auto cachedEvent = decryptedEvents_.object(idx))
                 return cachedEvent;
 
-        MegolmSessionIndex index;
-        index.room_id    = room_id_;
-        index.session_id = e.content.session_id;
-        index.sender_key = e.content.sender_key;
+        MegolmSessionIndex index(room_id_, e.content);
 
         auto asCacheEntry = [&idx](olm::DecryptionResult &&event) {
                 auto event_ptr = new olm::DecryptionResult(std::move(event));
@@ -726,6 +723,7 @@ EventStore::requestSession(const mtx::events::EncryptedEvent<mtx::events::msg::E
                 qint64 delay = manual ? 60 : (60 * 10);
                 if (r.requested_at + delay < QDateTime::currentSecsSinceEpoch()) {
                         r.requested_at = QDateTime::currentSecsSinceEpoch();
+                        olm::lookup_keybackup(room_id_, ev.content.session_id);
                         olm::send_key_request_for(copy, r.request_id);
                 }
         } else {
@@ -733,6 +731,7 @@ EventStore::requestSession(const mtx::events::EncryptedEvent<mtx::events::msg::E
                 request.request_id   = "key_request." + http::client()->generate_txn_id();
                 request.requested_at = QDateTime::currentSecsSinceEpoch();
                 request.events.push_back(copy);
+                olm::lookup_keybackup(room_id_, ev.content.session_id);
                 olm::send_key_request_for(copy, request.request_id);
                 pending_key_requests[ev.content.session_id] = request;
         }

@@ -833,6 +833,8 @@ import_inbound_megolm_session(
                 data.forwarding_curve25519_key_chain =
                   roomKey.content.forwarding_curve25519_key_chain;
                 data.sender_claimed_ed25519_key = roomKey.content.sender_claimed_ed25519_key;
+                // may have come from online key backup, so we can't trust it...
+                data.trusted = false;
 
                 cache::saveInboundMegolmSession(index, std::move(megolm_session), data);
         } catch (const lmdb::error &e) {
@@ -854,6 +856,97 @@ mark_keys_as_published()
 {
         olm::client()->mark_keys_as_published();
         cache::saveOlmAccount(olm::client()->save(STORAGE_SECRET_KEY));
+}
+
+void
+lookup_keybackup(const std::string room, const std::string session_id)
+{
+        if (!UserSettings::instance()->useOnlineKeyBackup()) {
+                // Online key backup disabled
+                return;
+        }
+
+        auto backupVersion = cache::client()->backupVersion();
+        if (!backupVersion) {
+                // no trusted OKB
+                return;
+        }
+
+        using namespace mtx::crypto;
+
+        auto decryptedSecret = cache::secret(mtx::secret_storage::secrets::megolm_backup_v1);
+        if (!decryptedSecret) {
+                // no backup key available
+                return;
+        }
+        auto sessionDecryptionKey = to_binary_buf(base642bin(*decryptedSecret));
+
+        http::client()->room_keys(
+          backupVersion->version,
+          room,
+          session_id,
+          [room, session_id, sessionDecryptionKey](const mtx::responses::backup::SessionBackup &bk,
+                                                   mtx::http::RequestErr err) {
+                  if (err) {
+                          if (err->status_code != 404)
+                                  nhlog::crypto()->error(
+                                    "Failed to dowload key {}:{}: {} - {}",
+                                    room,
+                                    session_id,
+                                    mtx::errors::to_string(err->matrix_error.errcode),
+                                    err->matrix_error.error);
+                          return;
+                  }
+                  try {
+                          auto session = decrypt_session(bk.session_data, sessionDecryptionKey);
+
+                          if (session.algorithm != mtx::crypto::MEGOLM_ALGO)
+                                  // don't know this algorithm
+                                  return;
+
+                          MegolmSessionIndex index;
+                          index.room_id    = room;
+                          index.session_id = session_id;
+                          index.sender_key = session.sender_key;
+
+                          GroupSessionData data{};
+                          data.forwarding_curve25519_key_chain =
+                            session.forwarding_curve25519_key_chain;
+                          data.sender_claimed_ed25519_key = session.sender_claimed_keys["ed25519"];
+                          // online key backup can't be trusted, because anyone can upload to it.
+                          data.trusted = false;
+
+                          auto megolm_session =
+                            olm::client()->import_inbound_group_session(session.session_key);
+
+                          if (!cache::inboundMegolmSessionExists(index) ||
+                              olm_inbound_group_session_first_known_index(megolm_session.get()) <
+                                olm_inbound_group_session_first_known_index(
+                                  cache::getInboundMegolmSession(index).get())) {
+                                  cache::saveInboundMegolmSession(
+                                    index, std::move(megolm_session), data);
+
+                                  nhlog::crypto()->info("imported inbound megolm session "
+                                                        "from key backup ({}, {})",
+                                                        room,
+                                                        session_id);
+
+                                  // call on UI thread
+                                  QTimer::singleShot(0, ChatPage::instance(), [index] {
+                                          ChatPage::instance()->receivedSessionKey(
+                                            index.room_id, index.session_id);
+                                  });
+                          }
+                  } catch (const lmdb::error &e) {
+                          nhlog::crypto()->critical("failed to save inbound megolm session: {}",
+                                                    e.what());
+                          return;
+                  } catch (const mtx::crypto::olm_exception &e) {
+                          nhlog::crypto()->critical("failed to import inbound megolm session: {}",
+                                                    e.what());
+                          return;
+                  }
+          });
 }
 
 void
@@ -898,6 +991,8 @@ send_key_request_for(mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> e,
                                      e.sender,
                                      e.content.device_id);
           });
+
+        // http::client()->room_keys
 }
 
 void
@@ -1095,12 +1190,15 @@ decryptEvent(const MegolmSessionIndex &index,
 }
 
 crypto::Trust
-calculate_trust(const std::string &user_id, const std::string &curve25519)
+calculate_trust(const std::string &user_id, const MegolmSessionIndex &index)
 {
         auto status              = cache::client()->verificationStatus(user_id);
+        auto megolmData          = cache::client()->getMegolmSessionData(index);
         crypto::Trust trustlevel = crypto::Trust::Unverified;
-        if (status.verified_device_keys.count(curve25519))
-                trustlevel = status.verified_device_keys.at(curve25519);
+
+        if (megolmData && megolmData->trusted &&
+            status.verified_device_keys.count(index.sender_key))
+                trustlevel = status.verified_device_keys.at(index.sender_key);
 
         return trustlevel;
 }

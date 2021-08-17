@@ -93,6 +93,8 @@ class UserSettings : public QObject
                      setOnlyShareKeysWithVerifiedUsers NOTIFY onlyShareKeysWithVerifiedUsersChanged)
         Q_PROPERTY(bool shareKeysWithTrustedUsers READ shareKeysWithTrustedUsers WRITE
                      setShareKeysWithTrustedUsers NOTIFY shareKeysWithTrustedUsersChanged)
+        Q_PROPERTY(bool useOnlineKeyBackup READ useOnlineKeyBackup WRITE setUseOnlineKeyBackup
+                     NOTIFY useOnlineKeyBackupChanged)
         Q_PROPERTY(QString profile READ profile WRITE setProfile NOTIFY profileChanged)
         Q_PROPERTY(QString userId READ userId WRITE setUserId NOTIFY userIdChanged)
         Q_PROPERTY(
@@ -159,6 +161,7 @@ public:
         void setUseStunServer(bool state);
         void setOnlyShareKeysWithVerifiedUsers(bool state);
         void setShareKeysWithTrustedUsers(bool state);
+        void setUseOnlineKeyBackup(bool state);
         void setProfile(QString profile);
         void setUserId(QString userId);
         void setAccessToken(QString accessToken);
@@ -215,6 +218,7 @@ public:
         bool useStunServer() const { return useStunServer_; }
         bool shareKeysWithTrustedUsers() const { return shareKeysWithTrustedUsers_; }
         bool onlyShareKeysWithVerifiedUsers() const { return onlyShareKeysWithVerifiedUsers_; }
+        bool useOnlineKeyBackup() const { return useOnlineKeyBackup_; }
         QString profile() const { return profile_; }
         QString userId() const { return userId_; }
         QString accessToken() const { return accessToken_; }
@@ -261,6 +265,7 @@ signals:
         void useStunServerChanged(bool state);
         void onlyShareKeysWithVerifiedUsersChanged(bool state);
         void shareKeysWithTrustedUsersChanged(bool state);
+        void useOnlineKeyBackupChanged(bool state);
         void profileChanged(QString profile);
         void userIdChanged(QString userId);
         void accessTokenChanged(QString accessToken);
@@ -293,6 +298,7 @@ private:
         int privacyScreenTimeout_;
         bool shareKeysWithTrustedUsers_;
         bool onlyShareKeysWithVerifiedUsers_;
+        bool useOnlineKeyBackup_;
         bool mobileMode_;
         int timelineMaxWidth_;
         int roomListWidth_;
@@ -384,6 +390,7 @@ private:
         QSpinBox *privacyScreenTimeout_;
         Toggle *shareKeysWithTrustedUsers_;
         Toggle *onlyShareKeysWithVerifiedUsers_;
+        Toggle *useOnlineKeyBackup_;
         Toggle *mobileMode_;
         QLabel *deviceFingerprintValue_;
         QLabel *deviceIdValue_;

@@ -182,6 +182,7 @@ private:
         void trySync();
         void ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts);
         void getProfileInfo();
+        void getBackupVersion();
 
         //! Check if the given room is currently open.
         bool isRoomActive(const QString &room_id);

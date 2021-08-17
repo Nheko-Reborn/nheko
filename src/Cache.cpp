@@ -42,6 +42,7 @@ static const std::string SECRET("secret");
 static const std::string_view NEXT_BATCH_KEY("next_batch");
 static const std::string_view OLM_ACCOUNT_KEY("olm_account");
 static const std::string_view CACHE_FORMAT_VERSION_KEY("cache_format_version");
+static const std::string_view CURRENT_ONLINE_BACKUP_VERSION("current_online_backup_version");
 
 constexpr size_t MAX_RESTORED_MESSAGES = 30'000;
 
@@ -721,6 +722,36 @@ Cache::restoreOlmAccount()
         syncStateDb_.get(txn, OLM_ACCOUNT_KEY, pickled);
 
         return std::string(pickled.data(), pickled.size());
+}
+
+void
+Cache::saveBackupVersion(const OnlineBackupVersion &data)
+{
+        auto txn = lmdb::txn::begin(env_);
+        syncStateDb_.put(txn, CURRENT_ONLINE_BACKUP_VERSION, nlohmann::json(data).dump());
+        txn.commit();
+}
+
+void
+Cache::deleteBackupVersion()
+{
+        auto txn = lmdb::txn::begin(env_);
+        syncStateDb_.del(txn, CURRENT_ONLINE_BACKUP_VERSION);
+        txn.commit();
+}
+
+std::optional<OnlineBackupVersion>
+Cache::backupVersion()
+{
+        try {
+                auto txn = ro_txn(env_);
+                std::string_view v;
+                syncStateDb_.get(txn, CURRENT_ONLINE_BACKUP_VERSION, v);
+
+                return nlohmann::json::parse(v).get<OnlineBackupVersion>();
+        } catch (...) {
+                return std::nullopt;
+        }
 }
 
 void
@@ -4114,6 +4145,20 @@ from_json(const json &j, VerificationCache &info)
         info.device_blocked  = j.at("device_blocked").get<std::set<std::string>>();
 }
 
+void
+to_json(json &j, const OnlineBackupVersion &info)
+{
+        j["v"] = info.version;
+        j["a"] = info.algorithm;
+}
+
+void
+from_json(const json &j, OnlineBackupVersion &info)
+{
+        info.version   = j.at("v").get<std::string>();
+        info.algorithm = j.at("a").get<std::string>();
+}
+
 std::optional<VerificationCache>
 Cache::verificationCache(const std::string &user_id, lmdb::txn &txn)
 {
@@ -4461,6 +4506,7 @@ to_json(nlohmann::json &obj, const GroupSessionData &msg)
 {
         obj["message_index"] = msg.message_index;
         obj["ts"]            = msg.timestamp;
+        obj["trust"]         = msg.trusted;
 
         obj["sender_claimed_ed25519_key"]      = msg.sender_claimed_ed25519_key;
         obj["forwarding_curve25519_key_chain"] = msg.forwarding_curve25519_key_chain;
@@ -4475,6 +4521,7 @@ from_json(const nlohmann::json &obj, GroupSessionData &msg)
 {
         msg.message_index = obj.at("message_index");
         msg.timestamp     = obj.value("ts", 0ULL);
+        msg.trusted       = obj.value("trust", true);
 
         msg.sender_claimed_ed25519_key = obj.value("sender_claimed_ed25519_key", "");
         msg.forwarding_curve25519_key_chain =

@@ -385,6 +385,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
         }
 
         getProfileInfo();
+        getBackupVersion();
         tryInitialSync();
 }
 
@@ -418,6 +419,7 @@ ChatPage::loadStateFromCache()
         nhlog::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
 
         getProfileInfo();
+        getBackupVersion();
 
         emit contentLoaded();
 
@@ -971,6 +973,104 @@ ChatPage::getProfileInfo()
                   emit setUserDisplayName(QString::fromStdString(res.display_name));
 
                   emit setUserAvatar(QString::fromStdString(res.avatar_url));
+          });
+}
+
+void
+ChatPage::getBackupVersion()
+{
+        if (!UserSettings::instance()->useOnlineKeyBackup()) {
+                nhlog::crypto()->info("Online key backup disabled.");
+                return;
+        }
+
+        http::client()->backup_version(
+          [this](const mtx::responses::backup::BackupVersion &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::net()->warn("Failed to retrieve backup version");
+                          if (err->status_code == 404)
+                                  cache::client()->deleteBackupVersion();
+                          return;
+                  }
+
+                  // switch to UI thread for secrets stuff
+                  QTimer::singleShot(0, this, [this, res] {
+                          auto auth_data = nlohmann::json::parse(res.auth_data);
+
+                          if (res.algorithm == "m.megolm_backup.v1.curve25519-aes-sha2") {
+                                  auto key =
+                                    cache::secret(mtx::secret_storage::secrets::megolm_backup_v1);
+                                  if (!key) {
+                                          nhlog::crypto()->info("No key for online key backup.");
+                                          cache::client()->deleteBackupVersion();
+                                          return;
+                                  }
+
+                                  using namespace mtx::crypto;
+                                  auto pubkey = CURVE25519_public_key_from_private(
+                                    to_binary_buf(base642bin(*key)));
+
+                                  if (auth_data["public_key"].get<std::string>() != pubkey) {
+                                          nhlog::crypto()->info(
+                                            "Our backup key {} does not match the one "
+                                            "used in the online backup {}",
+                                            pubkey,
+                                            auth_data["public_key"]);
+                                          cache::client()->deleteBackupVersion();
+                                          return;
+                                  }
+
+                                  nhlog::crypto()->info("Using online key backup.");
+                                  OnlineBackupVersion data{};
+                                  data.algorithm = res.algorithm;
+                                  data.version   = res.version;
+                                  cache::client()->saveBackupVersion(data);
+
+                                  // We really don't need to add our signature.
+                                  // if (!auth_data["signatures"]
+                                  //              [http::client()->user_id().to_string()]
+                                  //                .contains("ed25519:" +
+                                  //                          http::client()->device_id())) {
+                                  //        // add our signature
+                                  //        // This is not strictly necessary, but some Element
+                                  //        // clients rely on it. We assume the master_key
+                                  //        signature
+                                  //        // already exists and add our device signature just to
+                                  //        be
+                                  //        // safe, even though just the master signature is
+                                  //        enough,
+                                  //        // if cross-signing is used.
+                                  //        auto signatures = auth_data["signatures"];
+                                  //        auth_data.erase("signatures");
+                                  //        auth_data.erase("unsigned");
+                                  //        signatures[http::client()->user_id().to_string()]
+                                  //                  ["ed25519:" + http::client()->device_id()] =
+                                  //                    olm::client()->sign_message(auth_data.dump());
+                                  //        auth_data["signatures"] = signatures;
+
+                                  //        auto copy      = res;
+                                  //        copy.auth_data = auth_data.dump();
+                                  //        http::client()->update_backup_version(
+                                  //          res.version, copy, [](mtx::http::RequestErr e) {
+                                  //                  if (e) {
+                                  //                          nhlog::crypto()->error(
+                                  //                            "Failed to update online backup "
+                                  //                            "signatures: {} - {}",
+                                  //                            mtx::errors::to_string(
+                                  //                              e->matrix_error.errcode),
+                                  //                            e->matrix_error.error);
+                                  //                  } else {
+                                  //                          nhlog::crypto()->info(
+                                  //                            "Updated key backup signatures");
+                                  //                  }
+                                  //          });
+                                  //}
+                          } else {
+                                  nhlog::crypto()->info("Unsupported key backup algorithm: {}",
+                                                        res.algorithm);
+                                  cache::client()->deleteBackupVersion();
+                          }
+                  });
           });
 }
 
