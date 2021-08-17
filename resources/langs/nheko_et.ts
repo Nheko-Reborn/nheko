@@ -743,33 +743,33 @@
     <message>
         <location filename="../qml/InviteDialog.qml" line="+32"/>
         <source>Invite users to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsu kasutajaid %1 jututuppa</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>User ID to invite</source>
-        <translation type="unfinished">Kasutajatunnus, kellele soovid kutset saata</translation>
+        <translation>Kasutajatunnus, kellele soovid kutset saata</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>@joe:matrix.org</source>
         <comment>Example user id. The name &apos;joe&apos; can be localized however you want.</comment>
-        <translation type="unfinished"></translation>
+        <translation>@kadri:matrix.org</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa</translation>
     </message>
     <message>
         <location line="+58"/>
         <source>Invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada kutse</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Loobu</translation>
     </message>
 </context>
 <context>
@@ -985,7 +985,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+231"/>
         <source>Stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Kleepsud</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -1501,21 +1501,21 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/RoomMembers.qml" line="+18"/>
         <source>Members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 jututoa liikmed</translation>
     </message>
     <message numerus="yes">
         <location line="+32"/>
         <source>%n people in %1</source>
         <comment>Summary above list of members</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n osaline %1 jututoas</numerusform>
+            <numerusform>%n osalist %1 jututoas</numerusform>
         </translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Invite more people</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsu veel liikmeid</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1678,17 +1678,17 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../../src/timeline/RoomlistModel.cpp" line="+143"/>
         <source>Pending invite.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ootel kutse.</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Previewing this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa eelvaade</translation>
     </message>
     <message>
         <location line="+34"/>
         <source>No preview available</source>
-        <translation type="unfinished"></translation>
+        <translation>Eelvaade pole saadaval</translation>
     </message>
 </context>
 <context>
@@ -1797,7 +1797,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/emoji/StickerPicker.qml" line="+70"/>
         <source>Search</source>
-        <translation type="unfinished">Otsi</translation>
+        <translation>Otsi</translation>
     </message>
 </context>
 <context>
@@ -2020,17 +2020,17 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+33"/>
         <source>join the conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>liitu vestlusega</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>accept invite</source>
-        <translation type="unfinished"></translation>
+        <translation>võta kutse vastu</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>decline invite</source>
-        <translation type="unfinished"></translation>
+        <translation>lükka kutse tagasi</translation>
     </message>
     <message>
         <location line="+27"/>
