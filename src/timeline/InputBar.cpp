@@ -515,6 +515,13 @@ InputBar::sticker(CombinedImagePackModel *model, int row)
         sticker.url  = img.url;
         sticker.body = img.body;
 
+        // workaround for https://github.com/vector-im/element-ios/issues/2353
+        sticker.info.thumbnail_url           = sticker.url;
+        sticker.info.thumbnail_info.mimetype = sticker.info.mimetype;
+        sticker.info.thumbnail_info.size     = sticker.info.size;
+        sticker.info.thumbnail_info.h        = sticker.info.h;
+        sticker.info.thumbnail_info.w        = sticker.info.w;
+
         if (!room->reply().isEmpty()) {
                 sticker.relations.relations.push_back(
                   {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
