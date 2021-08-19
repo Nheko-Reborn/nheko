@@ -64,6 +64,8 @@ utils::stripReplyFromBody(const std::string &bodyi)
                 body.remove(plainQuote);
         if (body.startsWith("\n"))
                 body.remove(0, 1);
+
+        body.replace("@room", QString::fromUtf8("@\u2060room"));
         return body.toStdString();
 }
 
@@ -73,7 +75,7 @@ utils::stripReplyFromFormattedBody(const std::string &formatted_bodyi)
         QString formatted_body = QString::fromStdString(formatted_bodyi);
         formatted_body.remove(QRegularExpression("<mx-reply>.*</mx-reply>",
                                                  QRegularExpression::DotMatchesEverythingOption));
-        formatted_body.replace("@room", "@\u2060room");
+        formatted_body.replace("@room", QString::fromUtf8("@\u2060room"));
         return formatted_body.toStdString();
 }
 
@@ -91,7 +93,6 @@ utils::stripReplyFallbacks(const TimelineEvent &event, std::string id, QString r
         related.quoted_body =
           QString::fromStdString(stripReplyFromBody(related.quoted_body.toStdString()));
         related.quoted_body = utils::getQuoteBody(related);
-        related.quoted_body.replace("@room", QString::fromUtf8("@\u2060room"));
 
         // get quoted body and strip reply fallback
         related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(event);
