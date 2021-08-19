@@ -27,7 +27,7 @@ ApplicationWindow {
     palette: Nheko.colors
     color: Nheko.colors.base
     modality: Qt.WindowModal
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     AdaptiveLayout {
         id: adaptiveView

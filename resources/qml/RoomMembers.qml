@@ -21,7 +21,7 @@ ApplicationWindow {
     minimumHeight: 420
     palette: Nheko.colors
     color: Nheko.colors.window
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     Component.onCompleted: Nheko.reparent(roomMembersRoot)
 
     Shortcut {

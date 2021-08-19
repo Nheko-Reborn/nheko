@@ -18,7 +18,7 @@ ApplicationWindow {
     palette: Nheko.colors
     height: stack.implicitHeight
     width: stack.implicitWidth
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     Component.onCompleted: Nheko.reparent(dialog)
 
     StackView {

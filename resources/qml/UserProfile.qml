@@ -25,7 +25,7 @@ ApplicationWindow {
     color: Nheko.colors.window
     title: profile.isGlobalUserProfile ? qsTr("Global User Profile") : qsTr("Room User Profile")
     modality: Qt.NonModal
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     Component.onCompleted: Nheko.reparent(userProfileDialog)
 
     Shortcut {

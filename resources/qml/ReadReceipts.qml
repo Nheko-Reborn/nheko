@@ -19,7 +19,7 @@ ApplicationWindow {
     minimumWidth: headerTitle.width + 2 * Nheko.paddingMedium
     palette: Nheko.colors
     color: Nheko.colors.window
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     Component.onCompleted: Nheko.reparent(readReceiptsRoot)
 
     Shortcut {

@@ -25,7 +25,7 @@ ApplicationWindow {
     palette: Nheko.colors
     color: Nheko.colors.base
     modality: Qt.NonModal
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     Component.onCompleted: Nheko.reparent(win)
 
     Component {

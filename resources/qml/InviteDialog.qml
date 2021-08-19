@@ -34,7 +34,7 @@ ApplicationWindow {
     width: 340
     palette: Nheko.colors
     color: Nheko.colors.window
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     Component.onCompleted: Nheko.reparent(inviteDialogRoot)
 
     Shortcut {
