@@ -712,12 +712,12 @@
     <message>
         <location line="+10"/>
         <source>Edit</source>
-        <translation type="unfinished">Muuda</translation>
+        <translation>Muuda</translation>
     </message>
     <message>
         <location line="+64"/>
         <source>Close</source>
-        <translation type="unfinished">Sulge</translation>
+        <translation>Sulge</translation>
     </message>
 </context>
 <context>
@@ -1267,7 +1267,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/ReadReceipts.qml" line="+40"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Lugemisteatised</translation>
+        <translation>Lugemisteatised</translation>
     </message>
 </context>
 <context>
