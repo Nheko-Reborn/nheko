@@ -835,6 +835,13 @@ import_inbound_megolm_session(
                 data.sender_claimed_ed25519_key = roomKey.content.sender_claimed_ed25519_key;
                 // may have come from online key backup, so we can't trust it...
                 data.trusted = false;
+                // if we got it forwarded from the sender, assume it is trusted. They may still have
+                // used key backup, but it is unlikely.
+                if (roomKey.content.forwarding_curve25519_key_chain.size() == 1 &&
+                    roomKey.content.forwarding_curve25519_key_chain.back() ==
+                      roomKey.content.sender_key) {
+                        data.trusted = true;
+                }
 
                 cache::saveInboundMegolmSession(index, std::move(megolm_session), data);
         } catch (const lmdb::error &e) {
