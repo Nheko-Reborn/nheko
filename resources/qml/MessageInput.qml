@@ -176,7 +176,11 @@ Rectangle {
                     } else if (event.key == Qt.Key_Escape && popup.opened) {
                         completerTriggeredAt = -1;
                         popup.completerName = "";
+                        popup.close();
                         event.accepted = true;
+                    } else if (event.matches(StandardKey.SelectAll) && popup.opened) {
+                        completerTriggeredAt = -1;
+                        popup.completerName = "";
                         popup.close();
                     } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
                         if (popup.opened) {
