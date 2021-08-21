@@ -93,7 +93,7 @@ Rectangle {
             TextArea {
                 id: messageInput
 
-                property int completerTriggeredAt: -1
+                property int completerTriggeredAt: 0
 
                 function insertCompletion(completion) {
                     messageInput.remove(completerTriggeredAt, cursorPosition);
@@ -134,8 +134,7 @@ Rectangle {
                         return ;
 
                     room.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
-                    if (cursorPosition <= completerTriggeredAt) {
-                        completerTriggeredAt = -1;
+                    if (popup.opened && cursorPosition <= completerTriggeredAt) {
                         popup.close();
                     }
                     if (popup.opened)
@@ -145,7 +144,7 @@ Rectangle {
                 onSelectionStartChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 onSelectionEndChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 // Ensure that we get escape key press events first.
-                Keys.onShortcutOverride: event.accepted = (completerTriggeredAt != -1 && (event.key === Qt.Key_Escape || event.key === Qt.Key_Tab || event.key === Qt.Key_Enter))
+                Keys.onShortcutOverride: event.accepted = (popup.opened && (event.key === Qt.Key_Escape || event.key === Qt.Key_Tab || event.key === Qt.Key_Enter))
                 Keys.onPressed: {
                     if (event.matches(StandardKey.Paste)) {
                         room.input.paste(false);
@@ -174,12 +173,10 @@ Rectangle {
                         messageInput.openCompleter(selectionStart, "roomAliases");
                         popup.open();
                     } else if (event.key == Qt.Key_Escape && popup.opened) {
-                        completerTriggeredAt = -1;
                         popup.completerName = "";
                         popup.close();
                         event.accepted = true;
                     } else if (event.matches(StandardKey.SelectAll) && popup.opened) {
-                        completerTriggeredAt = -1;
                         popup.completerName = "";
                         popup.close();
                     } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
@@ -270,7 +267,6 @@ Rectangle {
                         if (room)
                             messageInput.append(room.input.text());
 
-                        messageInput.completerTriggeredAt = -1;
                         popup.completerName = "";
                         messageInput.forceActiveFocus();
                     }
@@ -289,8 +285,8 @@ Rectangle {
                 Completer {
                     id: popup
 
-                    x: messageInput.completerTriggeredAt >= 0 ? messageInput.positionToRectangle(messageInput.completerTriggeredAt).x : 0
-                    y: messageInput.completerTriggeredAt >= 0 ? messageInput.positionToRectangle(messageInput.completerTriggeredAt).y - height : 0
+                    x: messageInput.positionToRectangle(messageInput.completerTriggeredAt).x
+                    y: messageInput.positionToRectangle(messageInput.completerTriggeredAt).y - height
                 }
 
                 Connections {
