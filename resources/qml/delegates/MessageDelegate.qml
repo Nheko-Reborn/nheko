@@ -34,7 +34,7 @@ Item {
     required property int encryptionError
     required property int relatedEventCacheBuster
 
-    height: chooser.childrenRect.height
+    height: chooser.child.height
 
     DelegateChooser {
         id: chooser
