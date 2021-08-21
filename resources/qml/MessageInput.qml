@@ -165,13 +165,13 @@ Rectangle {
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_N) {
                         messageInput.text = room.input.nextText();
                     } else if (event.key == Qt.Key_At) {
-                        messageInput.openCompleter(cursorPosition, "user");
+                        messageInput.openCompleter(selectionStart, "user");
                         popup.open();
                     } else if (event.key == Qt.Key_Colon) {
-                        messageInput.openCompleter(cursorPosition, "emoji");
+                        messageInput.openCompleter(selectionStart, "emoji");
                         popup.open();
                     } else if (event.key == Qt.Key_NumberSign) {
-                        messageInput.openCompleter(cursorPosition, "roomAliases");
+                        messageInput.openCompleter(selectionStart, "roomAliases");
                         popup.open();
                     } else if (event.key == Qt.Key_Escape && popup.opened) {
                         completerTriggeredAt = -1;
