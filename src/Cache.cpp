@@ -1140,7 +1140,7 @@ Cache::runMigrations()
                                            auto db = lmdb::dbi::open(txn, dbName.c_str());
                                            db.drop(txn, true);
                                    } catch (std::exception &e) {
-                                           nhlog::db()->warning(
+                                           nhlog::db()->warn(
                                              "Failed to drop '{}': {}", dbName, e.what());
                                    }
                            };
