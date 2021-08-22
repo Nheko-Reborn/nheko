@@ -1135,7 +1135,7 @@ Cache::runMigrations()
            [this]() {
                    try {
                            auto txn      = lmdb::txn::begin(env_, nullptr);
-                           auto try_drop = [this, &txn](const std::string &dbName) {
+                           auto try_drop = [&txn](const std::string &dbName) {
                                    try {
                                            auto db = lmdb::dbi::open(txn, dbName.c_str());
                                            db.drop(txn, true);
