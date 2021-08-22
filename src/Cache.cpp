@@ -35,7 +35,7 @@
 
 //! Should be changed when a breaking change occurs in the cache format.
 //! This will reset client's data.
-static const std::string CURRENT_CACHE_FORMAT_VERSION("2020.10.20");
+static const std::string CURRENT_CACHE_FORMAT_VERSION("2021.08.22");
 static const std::string SECRET("secret");
 
 //! Keys used for the DB
@@ -891,12 +891,6 @@ Cache::setNextBatchToken(lmdb::txn &txn, const std::string &token)
         syncStateDb_.put(txn, NEXT_BATCH_KEY, token);
 }
 
-void
-Cache::setNextBatchToken(lmdb::txn &txn, const QString &token)
-{
-        setNextBatchToken(txn, token.toStdString());
-}
-
 bool
 Cache::isInitialized()
 {
@@ -1135,6 +1129,51 @@ Cache::runMigrations()
                    }
 
                    nhlog::db()->info("Successfully migrated olm sessions.");
+                   return true;
+           }},
+          {"2021.08.22",
+           [this]() {
+                   try {
+                           auto txn      = lmdb::txn::begin(env_, nullptr);
+                           auto try_drop = [this, &txn](const std::string &dbName) {
+                                   try {
+                                           auto db = lmdb::dbi::open(txn, dbName.c_str());
+                                           db.drop(txn, true);
+                                   } catch (std::exception &e) {
+                                           nhlog::db()->warning(
+                                             "Failed to drop '{}': {}", dbName, e.what());
+                                   }
+                           };
+
+                           auto room_ids = getRoomIds(txn);
+
+                           for (const auto &room : room_ids) {
+                                   try_drop(room + "/state");
+                                   try_drop(room + "/state_by_key");
+                                   try_drop(room + "/account_data");
+                                   try_drop(room + "/members");
+                                   try_drop(room + "/mentions");
+                                   try_drop(room + "/events");
+                                   try_drop(room + "/event_order");
+                                   try_drop(room + "/event2order");
+                                   try_drop(room + "/msg2order");
+                                   try_drop(room + "/order2msg");
+                                   try_drop(room + "/pending");
+                                   try_drop(room + "/related");
+                           }
+
+                           // clear db, don't delete
+                           roomsDb_.drop(txn, false);
+                           setNextBatchToken(txn, "");
+
+                           txn.commit();
+                   } catch (const lmdb::error &) {
+                           nhlog::db()->critical("Failed to clear cache!");
+                           return false;
+                   }
+
+                   nhlog::db()->info(
+                     "Successfully cleared the cache. Will do a clean sync after startup.");
                    return true;
            }},
         };
@@ -3230,8 +3269,7 @@ Cache::isNotificationSent(const std::string &event_id)
 std::vector<std::string>
 Cache::getRoomIds(lmdb::txn &txn)
 {
-        auto db     = lmdb::dbi::open(txn, ROOMS_DB, MDB_CREATE);
-        auto cursor = lmdb::cursor::open(txn, db);
+        auto cursor = lmdb::cursor::open(txn, roomsDb_);
 
         std::vector<std::string> rooms;
 

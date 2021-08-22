@@ -692,7 +692,6 @@ private:
         std::optional<UserKeyCache> userKeys_(const std::string &user_id, lmdb::txn &txn);
 
         void setNextBatchToken(lmdb::txn &txn, const std::string &token);
-        void setNextBatchToken(lmdb::txn &txn, const QString &token);
 
         lmdb::env env_;
         lmdb::dbi syncStateDb_;
