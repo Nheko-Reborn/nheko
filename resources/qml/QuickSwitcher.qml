@@ -39,15 +39,16 @@ Popup {
             completerPopup.completer.searchString = text;
         }
         Keys.onPressed: {
-            if (event.key == Qt.Key_Up && completerPopup.opened) {
+            if ((event.key == Qt.Key_Up || event.key == Qt.Key_Backtab) && completerPopup.opened) {
                 event.accepted = true;
                 completerPopup.up();
-            } else if (event.key == Qt.Key_Down && completerPopup.opened) {
+            } else if ((event.key == Qt.Key_Down || event.key == Qt.Key_Tab) && completerPopup.opened) {
                 event.accepted = true;
-                completerPopup.down();
-            } else if (event.key == Qt.Key_Tab && completerPopup.opened) {
-                event.accepted = true;
-                completerPopup.down();
+                if (event.key == Qt.Key_Tab && (event.modifiers & Qt.ShiftModifier)) {
+                    completerPopup.up();
+                } else {
+                    completerPopup.down();
+                }
             } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
                 completerPopup.finishCompletion();
                 event.accepted = true;

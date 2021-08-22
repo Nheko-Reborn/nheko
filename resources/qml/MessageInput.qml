@@ -195,7 +195,11 @@ Rectangle {
                     } else if (event.key == Qt.Key_Tab) {
                         event.accepted = true;
                         if (popup.opened) {
-                            popup.up();
+                            if (event.modifiers & Qt.ShiftModifier) {
+                                popup.down();
+                            } else {
+                                popup.up();
+                            }
                         } else {
                             var pos = cursorPosition - 1;
                             while (pos > -1) {
@@ -219,7 +223,7 @@ Rectangle {
                     } else if (event.key == Qt.Key_Up && popup.opened) {
                         event.accepted = true;
                         popup.up();
-                    } else if (event.key == Qt.Key_Down && popup.opened) {
+                    } else if ((event.key == Qt.Key_Down || event.key == Qt.Key_Backtab) && popup.opened) {
                         event.accepted = true;
                         popup.down();
                     } else if (event.key == Qt.Key_Up && event.modifiers == Qt.NoModifier) {
