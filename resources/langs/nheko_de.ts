@@ -17,17 +17,17 @@
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>Du teilst deinen Bildschirm</translation>
+        <translation>Bildschirm wird geteilt</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation>Bild-in-Bild Teilen/Verstecken</translation>
+        <translation>Bild-in-Bild zeigen/verstecken</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation>Stummschaltung Aufheben</translation>
+        <translation>Mikrofon aktivieren</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -659,7 +659,7 @@
     <message>
         <location line="+46"/>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -712,12 +712,12 @@
     <message>
         <location line="+10"/>
         <source>Edit</source>
-        <translation type="unfinished">Bearbeiten</translation>
+        <translation>Bearbeiten</translation>
     </message>
     <message>
         <location line="+64"/>
         <source>Close</source>
-        <translation type="unfinished">Schließen</translation>
+        <translation>Schließen</translation>
     </message>
 </context>
 <context>
@@ -1267,7 +1267,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../qml/ReadReceipts.qml" line="+40"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Lesebestätigungen</translation>
+        <translation>Lesebestätigungen</translation>
     </message>
 </context>
 <context>
