@@ -126,11 +126,31 @@ choco install nheko-reborn
 
 ### FAQ
 
-##
+---
+
 **Q:** Why don't videos run for me on Windows?
 
 **A:** You're probably missing the required video codecs, download [K-Lite Codec Pack](https://codecguide.com/download_kl.htm).
-##
+
+---
+
+**Q:** What commands are supported by nheko?
+
+**A:** See <https://github.com/Nheko-Reborn/nheko/wiki/Commands>
+
+---
+
+**Q:** Does nheko support end-to-end encryption (EE2E)?
+
+**A:** Yes, see [feature list](#features)
+
+---
+
+**Q:** Can I test a bleeding edge development version?
+
+**A:** Checkout nightly builds <https://matrix-static.neko.dev/room/!TshDrgpBNBDmfDeEGN:neko.dev/>
+
+---
 
 ### Build Requirements
 
