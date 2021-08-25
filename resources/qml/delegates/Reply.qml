@@ -7,6 +7,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
 import im.nheko 1.0
+import Qt.labs.platform 1.1 as Platform
 
 Item {
     id: r
@@ -36,11 +37,6 @@ Item {
     width: parent.width
     height: replyContainer.height
 
-    TapHandler {
-        onSingleTapped: chat.model.showEvent(eventId)
-        gesturePolicy: TapHandler.ReleaseWithinBounds
-    }
-
     CursorShape {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
@@ -62,6 +58,25 @@ Item {
         anchors.leftMargin: 4
         width: parent.width - 8
 
+        TapHandler {
+            acceptedButtons: Qt.LeftButton
+            onSingleTapped: chat.model.showEvent(r.eventId)
+            gesturePolicy: TapHandler.ReleaseWithinBounds
+        }
+
+        TapHandler {
+            acceptedButtons: Qt.RightButton
+            onLongPressed: replyContextMenu.show(
+              reply.child.copyText,
+              reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight)
+            )
+            onSingleTapped: replyContextMenu.show(
+              reply.child.copyText,
+              reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight)
+            )
+            gesturePolicy: TapHandler.ReleaseWithinBounds
+        }
+
         Text {
             id: userName_
 
@@ -73,7 +88,6 @@ Item {
                 onSingleTapped: chat.model.openUserProfile(userId)
                 gesturePolicy: TapHandler.ReleaseWithinBounds
             }
-
         }
 
         MessageDelegate {
@@ -99,11 +113,11 @@ Item {
             callType: r.callType
             relatedEventCacheBuster: r.relatedEventCacheBuster
             encryptionError: r.encryptionError
+            // This is disabled so that left clicking the reply goes to its location
             enabled: false
             width: parent.width
             isReply: true
         }
-
     }
 
     Rectangle {
