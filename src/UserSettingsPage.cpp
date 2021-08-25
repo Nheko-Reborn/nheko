@@ -124,7 +124,7 @@ UserSettings::load(std::optional<QString> profile)
             .toBool();
         onlyShareKeysWithVerifiedUsers_ =
           settings.value(prefix + "user/only_share_keys_with_verified_users", false).toBool();
-        useOnlineKeyBackup_ = settings.value(prefix + "user/online_key_backup", true).toBool();
+        useOnlineKeyBackup_ = settings.value(prefix + "user/online_key_backup", false).toBool();
 
         disableCertificateValidation_ =
           settings.value("disable_certificate_validation", false).toBool();
@@ -1228,6 +1228,17 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         });
 
         connect(useOnlineKeyBackup_, &Toggle::toggled, this, [this](bool enabled) {
+                if (enabled) {
+                        if (QMessageBox::question(
+                              this,
+                              tr("Enable online key backup"),
+                              tr("The Nheko authors recommend not enabling online key backup until "
+                                 "symmetric online key backup is available. Enable anyway?")) !=
+                            QMessageBox::StandardButton::NoButton) {
+                                useOnlineKeyBackup_->setState(false);
+                                return;
+                        }
+                }
                 settings_->setUseOnlineKeyBackup(enabled);
         });
 
