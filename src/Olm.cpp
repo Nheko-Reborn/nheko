@@ -916,7 +916,7 @@ backup_session_key(const MegolmSessionIndex &idx,
                   idx.room_id,
                   idx.session_id,
                   bk,
-                  [idx](const mtx::http::RequestErr &err) {
+                  [idx](mtx::http::RequestErr err) {
                           if (err) {
                                   nhlog::net()->warn(
                                     "failed to backup session key ({}:{}): {} ({})",
