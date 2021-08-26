@@ -32,6 +32,11 @@ constexpr auto MEGOLM_ALGO = "m.megolm.v1.aes-sha2";
 }
 
 namespace olm {
+static void
+backup_session_key(const MegolmSessionIndex &idx,
+                   const GroupSessionData &data,
+                   mtx::crypto::InboundGroupSessionPtr &session);
+
 void
 from_json(const nlohmann::json &obj, OlmMessage &msg)
 {
@@ -682,6 +687,7 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
                         index.sender_key = olm::client()->identity_keys().curve25519;
                         auto megolm_session =
                           olm::client()->init_inbound_group_session(session_key);
+                        backup_session_key(index, session_data, megolm_session);
                         cache::saveInboundMegolmSession(
                           index, std::move(megolm_session), session_data);
                 }
@@ -801,6 +807,7 @@ create_inbound_megolm_session(const mtx::events::DeviceEvent<mtx::events::msg::R
 
                 auto megolm_session =
                   olm::client()->init_inbound_group_session(roomKey.content.session_key);
+                backup_session_key(index, data, megolm_session);
                 cache::saveInboundMegolmSession(index, std::move(megolm_session), data);
         } catch (const lmdb::error &e) {
                 nhlog::crypto()->critical("failed to save inbound megolm session: {}", e.what());
@@ -843,6 +850,7 @@ import_inbound_megolm_session(
                         data.trusted = true;
                 }
 
+                backup_session_key(index, data, megolm_session);
                 cache::saveInboundMegolmSession(index, std::move(megolm_session), data);
         } catch (const lmdb::error &e) {
                 nhlog::crypto()->critical("failed to save inbound megolm session: {}", e.what());
@@ -856,6 +864,74 @@ import_inbound_megolm_session(
           "established inbound megolm session ({}, {})", roomKey.content.room_id, roomKey.sender);
 
         ChatPage::instance()->receivedSessionKey(index.room_id, index.session_id);
+}
+
+void
+backup_session_key(const MegolmSessionIndex &idx,
+                   const GroupSessionData &data,
+                   mtx::crypto::InboundGroupSessionPtr &session)
+{
+        try {
+                if (!UserSettings::instance()->useOnlineKeyBackup()) {
+                        // Online key backup disabled
+                        return;
+                }
+
+                auto backupVersion = cache::client()->backupVersion();
+                if (!backupVersion) {
+                        // no trusted OKB
+                        return;
+                }
+
+                using namespace mtx::crypto;
+
+                auto decryptedSecret =
+                  cache::secret(mtx::secret_storage::secrets::megolm_backup_v1);
+                if (!decryptedSecret) {
+                        // no backup key available
+                        return;
+                }
+                auto sessionDecryptionKey = to_binary_buf(base642bin(*decryptedSecret));
+
+                auto public_key =
+                  mtx::crypto::CURVE25519_public_key_from_private(sessionDecryptionKey);
+
+                mtx::responses::backup::SessionData sessionData;
+                sessionData.algorithm                       = mtx::crypto::MEGOLM_ALGO;
+                sessionData.forwarding_curve25519_key_chain = data.forwarding_curve25519_key_chain;
+                sessionData.sender_claimed_keys["ed25519"]  = data.sender_claimed_ed25519_key;
+                sessionData.sender_key                      = idx.sender_key;
+                sessionData.session_key = mtx::crypto::export_session(session.get(), -1);
+
+                auto encrypt_session = mtx::crypto::encrypt_session(sessionData, public_key);
+
+                mtx::responses::backup::SessionBackup bk;
+                bk.first_message_index = olm_inbound_group_session_first_known_index(session.get());
+                bk.forwarded_count     = data.forwarding_curve25519_key_chain.size();
+                bk.is_verified         = false;
+                bk.session_data        = std::move(encrypt_session);
+
+                http::client()->put_room_keys(
+                  backupVersion->version,
+                  idx.room_id,
+                  idx.session_id,
+                  bk,
+                  [idx](const mtx::http::RequestErr &err) {
+                          if (err) {
+                                  nhlog::net()->warn(
+                                    "failed to backup session key ({}:{}): {} ({})",
+                                    idx.room_id,
+                                    idx.session_id,
+                                    err->matrix_error.error,
+                                    static_cast<int>(err->status_code));
+                          } else {
+                                  nhlog::crypto()->debug(
+                                    "backed up session key ({}:{})", idx.room_id, idx.session_id);
+                          }
+                  });
+        } catch (std::exception &e) {
+                nhlog::net()->warn("failed to backup session key: {}", e.what());
+        }
 }
 
 void

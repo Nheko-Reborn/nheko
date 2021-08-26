@@ -1234,7 +1234,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                               tr("Enable online key backup"),
                               tr("The Nheko authors recommend not enabling online key backup until "
                                  "symmetric online key backup is available. Enable anyway?")) !=
-                            QMessageBox::StandardButton::NoButton) {
+                            QMessageBox::StandardButton::Yes) {
                                 useOnlineKeyBackup_->setState(false);
                                 return;
                         }
