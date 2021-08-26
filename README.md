@@ -77,6 +77,7 @@ sudo dnf install nheko
 #### Gentoo Linux
 ```bash
 sudo eselect repository enable guru
+sudo emaint sync -r guru
 sudo emerge -a nheko
 ```
 
