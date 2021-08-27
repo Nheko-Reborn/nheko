@@ -85,11 +85,10 @@ Popup {
                     completerPopup.up();
                 } else if ((event.key == Qt.Key_Down || event.key == Qt.Key_Tab) && completerPopup.opened) {
                     event.accepted = true;
-                    if (event.key == Qt.Key_Tab && (event.modifiers & Qt.ShiftModifier)) {
+                    if (event.key == Qt.Key_Tab && (event.modifiers & Qt.ShiftModifier))
                         completerPopup.up();
-                    } else {
+                    else
                         completerPopup.down();
-                    }
                 } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
                     completerPopup.finishCompletion();
                     event.accepted = true;

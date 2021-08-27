@@ -293,6 +293,15 @@ public:
         crypto::Trust trustlevel() const;
         int roomMemberCount() const;
 
+        std::optional<mtx::events::collections::TimelineEvents> eventById(const QString &id)
+        {
+                auto e = events.get(id.toStdString(), "");
+                if (e)
+                        return *e;
+                else
+                        return std::nullopt;
+        }
+
 public slots:
         void setCurrentIndex(int index);
         int currentIndex() const { return idToIndex(currentId); }

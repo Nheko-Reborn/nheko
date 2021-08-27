@@ -134,9 +134,9 @@ Rectangle {
                         return ;
 
                     room.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
-                    if (popup.opened && cursorPosition <= completerTriggeredAt) {
+                    if (popup.opened && cursorPosition <= completerTriggeredAt)
                         popup.close();
-                    }
+
                     if (popup.opened)
                         popup.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition));
 
@@ -195,11 +195,10 @@ Rectangle {
                     } else if (event.key == Qt.Key_Tab) {
                         event.accepted = true;
                         if (popup.opened) {
-                            if (event.modifiers & Qt.ShiftModifier) {
+                            if (event.modifiers & Qt.ShiftModifier)
                                 popup.down();
-                            } else {
+                            else
                                 popup.up();
-                            }
                         } else {
                             var pos = cursorPosition - 1;
                             while (pos > -1) {

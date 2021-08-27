@@ -311,6 +311,7 @@ set(SRC_FILES
 	src/ui/InfoMessage.cpp
 	src/ui/Label.cpp
 	src/ui/LoadingIndicator.cpp
+	src/ui/MxcMediaProxy.cpp
 	src/ui/NhekoCursorShape.cpp
 	src/ui/NhekoDropArea.cpp
 	src/ui/NhekoGlobalObject.cpp
@@ -350,7 +351,7 @@ set(SRC_FILES
 	src/MemberList.cpp
 	src/MxcImageProvider.cpp
 	src/Olm.cpp
-    src/ReadReceiptsModel.cpp
+	src/ReadReceiptsModel.cpp
 	src/RegisterPage.cpp
 	src/SSOHandler.cpp
 	src/CombinedImagePackModel.cpp
@@ -521,6 +522,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/InfoMessage.h
 	src/ui/Label.h
 	src/ui/LoadingIndicator.h
+	src/ui/MxcMediaProxy.h
 	src/ui/Menu.h
 	src/ui/NhekoCursorShape.h
 	src/ui/NhekoDropArea.h

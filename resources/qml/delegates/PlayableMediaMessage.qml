@@ -3,9 +3,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "../"
-import QtMultimedia 5.6
-import QtQuick 2.12
-import QtQuick.Controls 2.1
+import QtMultimedia 5.15
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
@@ -55,7 +55,8 @@ Rectangle {
                 VideoOutput {
                     anchors.fill: parent
                     fillMode: VideoOutput.PreserveAspectFit
-                    source: media
+                    flushMode: VideoOutput.FirstFrame
+                    source: mxcmedia
                 }
 
             }
@@ -93,15 +94,15 @@ Rectangle {
                         return hh + ":" + mm + ":" + ss;
                     }
 
-                    positionText.text = formatTime(new Date(media.position));
-                    durationText.text = formatTime(new Date(media.duration));
+                    positionText.text = formatTime(new Date(mxcmedia.position));
+                    durationText.text = formatTime(new Date(mxcmedia.duration));
                 }
 
                 Layout.fillWidth: true
-                value: media.position
+                value: mxcmedia.position
                 from: 0
-                to: media.duration
-                onMoved: media.seek(value)
+                to: mxcmedia.duration
+                onMoved: mxcmedia.position = value
                 onValueChanged: updatePositionTexts()
                 palette: Nheko.colors
             }
@@ -132,15 +133,15 @@ Rectangle {
                 onClicked: {
                     switch (button.state) {
                     case "":
-                        room.cacheMedia(eventId);
+                        mxcmedia.eventId = eventId;
                         break;
                     case "stopped":
-                        media.play();
+                        mxcmedia.play();
                         console.log("play");
                         button.state = "playing";
                         break;
                     case "playing":
-                        media.pause();
+                        mxcmedia.pause();
                         console.log("pause");
                         button.state = "stopped";
                         break;
@@ -172,29 +173,22 @@ Rectangle {
                     cursorShape: Qt.PointingHandCursor
                 }
 
-                MediaPlayer {
-                    id: media
+                MxcMedia {
+                    id: mxcmedia
 
+                    roomm: room
                     onError: console.log(errorString)
-                    onStatusChanged: {
-                        if (status == MediaPlayer.Loaded)
+                    onMediaStatusChanged: {
+                        if (status == MxcMedia.LoadedMedia) {
                             progress.updatePositionTexts();
-
-                    }
-                    onStopped: button.state = "stopped"
-                }
-
-                Connections {
-                    function onMediaCached(mxcUrl, cacheUrl) {
-                        if (mxcUrl == url) {
-                            media.source = cacheUrl;
                             button.state = "stopped";
-                            console.log("media loaded: " + mxcUrl + " at " + cacheUrl);
                         }
-                        console.log("media cached: " + mxcUrl + " at " + cacheUrl);
                     }
-
-                    target: room
+                    onStateChanged: {
+                        if (state == MxcMedia.StoppedState) {
+                            button.state = "stopped";
+                        }
+                    }
                 }
 
             }
