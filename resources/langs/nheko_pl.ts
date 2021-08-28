@@ -12,17 +12,17 @@
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Łączenie...</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation type="unfinished"></translation>
+        <translation>Udostępniasz ekran</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukryj/Pokaż Obraz w obrazie</translation>
     </message>
     <message>
         <location line="+13"/>
