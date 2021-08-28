@@ -3,7 +3,7 @@
 <component type="desktop">
   <id>nheko.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
-  <project_license>GPL-3.0-or-later and CC-BY</project_license>
+  <project_license>GPL-3.0-or-later</project_license>
   <name>nheko</name>
   <summary>Desktop client for the Matrix protocol</summary>
   <description>
