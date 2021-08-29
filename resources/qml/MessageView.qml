@@ -33,7 +33,7 @@ ScrollView {
         verticalLayoutDirection: ListView.BottomToTop
         onCountChanged: {
             // Mark timeline as read
-            if (atYEnd)
+            if (atYEnd && room)
                 model.currentIndex = 0;
 
         }
@@ -233,8 +233,8 @@ ScrollView {
                     id: dateBubble
 
                     anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
-                    visible: previousMessageDay !== day
-                    text: chat.model.formatDateSeparator(timestamp)
+                    visible: room && previousMessageDay !== day
+                    text: room ? room.formatDateSeparator(timestamp) : ""
                     color: Nheko.colors.text
                     height: Math.round(fontMetrics.height * 1.4)
                     width: contentWidth * 1.2
@@ -257,10 +257,10 @@ ScrollView {
 
                         width: Nheko.avatarSize
                         height: Nheko.avatarSize
-                        url: chat.model.avatarUrl(userId).replace("mxc://", "image://MxcImage/")
+                        url: !room ? "" : room.avatarUrl(userId).replace("mxc://", "image://MxcImage/")
                         displayName: userName
                         userid: userId
-                        onClicked: chat.model.openUserProfile(userId)
+                        onClicked: room.openUserProfile(userId)
                         ToolTip.visible: avatarHover.hovered
                         ToolTip.text: userid
 

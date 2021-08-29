@@ -279,7 +279,6 @@ ApplicationWindow {
                         Layout.alignment: Qt.AlignRight
                     }
 
-
                     Item {
                         Layout.columnSpan: 2
                         Layout.fillHeight: true
