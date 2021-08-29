@@ -18,7 +18,6 @@
 #include <QMessageBox>
 #include <QPoint>
 #include <QScreen>
-#include <QSettings>
 #include <QStandardPaths>
 #include <QTranslator>
 

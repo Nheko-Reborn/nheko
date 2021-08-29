@@ -6,7 +6,6 @@
 #include <QApplication>
 #include <QInputDialog>
 #include <QMessageBox>
-#include <QSettings>
 
 #include <mtx/responses.hpp>
 
@@ -277,15 +276,15 @@ ChatPage::resetUI()
 void
 ChatPage::deleteConfigs()
 {
-        QSettings settings;
+        auto settings = UserSettings::instance()->qsettings();
 
         if (UserSettings::instance()->profile() != "") {
-                settings.beginGroup("profile");
-                settings.beginGroup(UserSettings::instance()->profile());
+                settings->beginGroup("profile");
+                settings->beginGroup(UserSettings::instance()->profile());
         }
-        settings.beginGroup("auth");
-        settings.remove("");
-        settings.endGroup(); // auth
+        settings->beginGroup("auth");
+        settings->remove("");
+        settings->endGroup(); // auth
 
         http::client()->shutdown();
         cache::deleteData();

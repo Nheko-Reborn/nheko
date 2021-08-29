@@ -7,7 +7,6 @@
 #include <QLayout>
 #include <QMessageBox>
 #include <QPluginLoader>
-#include <QSettings>
 #include <QShortcut>
 
 #include <mtx/requests.hpp>
@@ -188,9 +187,10 @@ MainWindow::event(QEvent *event)
 void
 MainWindow::restoreWindowSize()
 {
-        QSettings settings;
-        int savedWidth  = settings.value("window/width").toInt();
-        int savedheight = settings.value("window/height").toInt();
+        int savedWidth  = userSettings_->qsettings()->value("window/width").toInt();
+        int savedheight = userSettings_->qsettings()->value("window/height").toInt();
+
+        nhlog::ui()->info("Restoring window size {}x{}", savedWidth, savedheight);
 
         if (savedWidth == 0 || savedheight == 0)
                 resize(conf::window::width, conf::window::height);
@@ -201,11 +201,11 @@ MainWindow::restoreWindowSize()
 void
 MainWindow::saveCurrentWindowSize()
 {
-        QSettings settings;
+        auto settings = userSettings_->qsettings();
         QSize current = size();
 
-        settings.setValue("window/width", current.width());
-        settings.setValue("window/height", current.height());
+        settings->setValue("window/width", current.width());
+        settings->setValue("window/height", current.height());
 }
 
 void
@@ -301,14 +301,14 @@ MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 bool
 MainWindow::hasActiveUser()
 {
-        QSettings settings;
+        auto settings = userSettings_->qsettings();
         QString prefix;
         if (userSettings_->profile() != "")
                 prefix = "profile/" + userSettings_->profile() + "/";
 
-        return settings.contains(prefix + "auth/access_token") &&
-               settings.contains(prefix + "auth/home_server") &&
-               settings.contains(prefix + "auth/user_id");
+        return settings->contains(prefix + "auth/access_token") &&
+               settings->contains(prefix + "auth/home_server") &&
+               settings->contains(prefix + "auth/user_id");
 }
 
 void
