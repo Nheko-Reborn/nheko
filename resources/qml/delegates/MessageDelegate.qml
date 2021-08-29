@@ -102,6 +102,7 @@ Item {
                 body: d.body
                 filename: d.filename
                 isReply: d.isReply
+                eventId: d.eventId
             }
 
         }
@@ -118,6 +119,7 @@ Item {
                 body: d.body
                 filename: d.filename
                 isReply: d.isReply
+                eventId: d.eventId
             }
 
         }

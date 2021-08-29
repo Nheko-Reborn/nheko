@@ -185,9 +185,9 @@ Rectangle {
                         }
                     }
                     onStateChanged: {
-                        if (state == MxcMedia.StoppedState) {
+                        if (state == MxcMedia.StoppedState)
                             button.state = "stopped";
-                        }
+
                     }
                 }
 

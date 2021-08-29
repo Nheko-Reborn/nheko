@@ -2,16 +2,14 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "MxcMediaProxy.h"
+#include "MxcAnimatedImage.h"
 
 #include <QDir>
-#include <QFile>
 #include <QFileInfo>
-#include <QMediaObject>
-#include <QMediaPlayer>
 #include <QMimeDatabase>
+#include <QQuickWindow>
+#include <QSGImageNode>
 #include <QStandardPaths>
-#include <QUrl>
 
 #include "EventAccessors.h"
 #include "Logging.h"
@@ -19,21 +17,7 @@
 #include "timeline/TimelineModel.h"
 
 void
-MxcMediaProxy::setVideoSurface(QAbstractVideoSurface *surface)
-{
-        qDebug() << "Changing surface";
-        m_surface = surface;
-        setVideoOutput(m_surface);
-}
-
-QAbstractVideoSurface *
-MxcMediaProxy::getVideoSurface()
-{
-        return m_surface;
-}
-
-void
-MxcMediaProxy::startDownload()
+MxcAnimatedImage::startDownload()
 {
         if (!room_)
                 return;
@@ -47,9 +31,16 @@ MxcMediaProxy::startDownload()
                 return;
         }
 
+        QByteArray mimeType = QString::fromStdString(mtx::accessors::mimetype(*event)).toUtf8();
+
+        animatable_ = QMovie::supportedFormats().contains(mimeType.split('/').back());
+        animatableChanged();
+
+        if (!animatable_)
+                return;
+
         QString mxcUrl           = QString::fromStdString(mtx::accessors::url(*event));
         QString originalFilename = QString::fromStdString(mtx::accessors::filename(*event));
-        QString mimeType         = QString::fromStdString(mtx::accessors::mimetype(*event));
 
         auto encryptionInfo = mtx::accessors::file(*event);
 
@@ -73,11 +64,17 @@ MxcMediaProxy::startDownload()
 
         QDir().mkpath(filename.path());
 
-        QPointer<MxcMediaProxy> self = this;
+        QPointer<MxcAnimatedImage> self = this;
 
-        auto processBuffer = [this, encryptionInfo, filename, self](QIODevice &device) {
+        auto processBuffer = [this, mimeType, encryptionInfo, self](QIODevice &device) {
                 if (!self)
                         return;
+
+                if (buffer.isOpen()) {
+                        movie.stop();
+                        movie.setDevice(nullptr);
+                        buffer.close();
+                }
 
                 if (encryptionInfo) {
                         QByteArray ba = device.readAll();
@@ -91,11 +88,13 @@ MxcMediaProxy::startDownload()
                 buffer.open(QIODevice::ReadOnly);
                 buffer.reset();
 
-                QTimer::singleShot(0, this, [this, filename] {
-                        nhlog::ui()->info("Playing buffer with size: {}, {}",
+                QTimer::singleShot(0, this, [this, mimeType] {
+                        nhlog::ui()->info("Playing movie with size: {}, {}",
                                           buffer.bytesAvailable(),
                                           buffer.isOpen());
-                        this->setMedia(QMediaContent(filename.fileName()), &buffer);
+                        movie.setFormat(mimeType);
+                        movie.setDevice(&buffer);
+                        movie.start();
                         emit loadedChanged();
                 });
         };
@@ -139,4 +138,27 @@ MxcMediaProxy::startDownload()
                           nhlog::ui()->warn("Error while saving file to: {}", e.what());
                   }
           });
+}
+
+QSGNode *
+MxcAnimatedImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
+{
+        imageDirty      = false;
+        QSGImageNode *n = static_cast<QSGImageNode *>(oldNode);
+        if (!n)
+                n = window()->createImageNode();
+
+        // n->setTexture(nullptr);
+        auto img = movie.currentImage();
+        if (!img.isNull())
+                n->setTexture(window()->createTextureFromImage(img));
+        else
+                return nullptr;
+
+        n->setSourceRect(img.rect());
+        n->setRect(QRect(0, 0, width(), height()));
+        n->setFiltering(QSGTexture::Linear);
+        n->setMipmapFiltering(QSGTexture::Linear);
+
+        return n;
 }

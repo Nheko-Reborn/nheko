@@ -14,6 +14,7 @@ Item {
     required property string body
     required property string filename
     required property bool isReply
+    required property string eventId
     property double tempWidth: Math.min(parent ? parent.width : undefined, originalWidth < 1 ? 200 : originalWidth)
     property double tempHeight: tempWidth * proportionalHeight
     property double divisor: isReply ? 5 : 3
@@ -37,6 +38,7 @@ Item {
     Image {
         id: img
 
+        visible: !mxcimage.loaded
         anchors.fill: parent
         source: url.replace("mxc://", "image://MxcImage/")
         asynchronous: true
@@ -53,38 +55,47 @@ Item {
             gesturePolicy: TapHandler.ReleaseWithinBounds
         }
 
-        HoverHandler {
-            id: mouseArea
+    }
+
+    MxcAnimatedImage {
+        id: mxcimage
+
+        visible: loaded
+        anchors.fill: parent
+        roomm: room
+        eventId: parent.eventId
+    }
+
+    HoverHandler {
+        id: mouseArea
+    }
+
+    Item {
+        id: overlay
+
+        anchors.fill: parent
+        visible: mouseArea.hovered
+
+        Rectangle {
+            id: container
+
+            width: parent.width
+            implicitHeight: imgcaption.implicitHeight
+            anchors.bottom: overlay.bottom
+            color: Nheko.colors.window
+            opacity: 0.75
         }
 
-        Item {
-            id: overlay
+        Text {
+            id: imgcaption
 
-            anchors.fill: parent
-            visible: mouseArea.hovered
-
-            Rectangle {
-                id: container
-
-                width: parent.width
-                implicitHeight: imgcaption.implicitHeight
-                anchors.bottom: overlay.bottom
-                color: Nheko.colors.window
-                opacity: 0.75
-            }
-
-            Text {
-                id: imgcaption
-
-                anchors.fill: container
-                elide: Text.ElideMiddle
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                // See this MSC: https://github.com/matrix-org/matrix-doc/pull/2530
-                text: filename ? filename : body
-                color: Nheko.colors.text
-            }
-
+            anchors.fill: container
+            elide: Text.ElideMiddle
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            // See this MSC: https://github.com/matrix-org/matrix-doc/pull/2530
+            text: filename ? filename : body
+            color: Nheko.colors.text
         }
 
     }

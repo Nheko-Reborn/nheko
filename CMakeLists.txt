@@ -311,6 +311,7 @@ set(SRC_FILES
 	src/ui/InfoMessage.cpp
 	src/ui/Label.cpp
 	src/ui/LoadingIndicator.cpp
+	src/ui/MxcAnimatedImage.cpp
 	src/ui/MxcMediaProxy.cpp
 	src/ui/NhekoCursorShape.cpp
 	src/ui/NhekoDropArea.cpp
@@ -522,6 +523,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/InfoMessage.h
 	src/ui/Label.h
 	src/ui/LoadingIndicator.h
+	src/ui/MxcAnimatedImage.h
 	src/ui/MxcMediaProxy.h
 	src/ui/Menu.h
 	src/ui/NhekoCursorShape.h
