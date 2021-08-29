@@ -152,8 +152,10 @@ MxcAnimatedImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeD
 
         imageDirty      = false;
         QSGImageNode *n = static_cast<QSGImageNode *>(oldNode);
-        if (!n)
+        if (!n) {
                 n = window()->createImageNode();
+                n->setOwnsTexture(true);
+        }
 
         // n->setTexture(nullptr);
         auto img = movie.currentImage();
