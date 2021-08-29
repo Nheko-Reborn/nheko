@@ -94,8 +94,12 @@ MxcAnimatedImage::startDownload()
                                           buffer.isOpen());
                         movie.setFormat(mimeType);
                         movie.setDevice(&buffer);
-                        movie.start();
+                        if (play_)
+                                movie.start();
+                        else
+                                movie.jumpToFrame(0);
                         emit loadedChanged();
+                        update();
                 });
         };
 
@@ -143,6 +147,9 @@ MxcAnimatedImage::startDownload()
 QSGNode *
 MxcAnimatedImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
 {
+        if (!imageDirty)
+                return oldNode;
+
         imageDirty      = false;
         QSGImageNode *n = static_cast<QSGImageNode *>(oldNode);
         if (!n)

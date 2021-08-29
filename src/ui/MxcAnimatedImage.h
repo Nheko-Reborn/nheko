@@ -19,6 +19,7 @@ class MxcAnimatedImage : public QQuickItem
         Q_PROPERTY(QString eventId READ eventId WRITE setEventId NOTIFY eventIdChanged)
         Q_PROPERTY(bool animatable READ animatable NOTIFY animatableChanged)
         Q_PROPERTY(bool loaded READ loaded NOTIFY loadedChanged)
+        Q_PROPERTY(bool play READ play WRITE setPlay NOTIFY playChanged)
 public:
         MxcAnimatedImage(QQuickItem *parent = nullptr)
           : QQuickItem(parent)
@@ -32,6 +33,7 @@ public:
 
         bool animatable() const { return animatable_; }
         bool loaded() const { return buffer.size() > 0; }
+        bool play() const { return play_; }
         QString eventId() const { return eventId_; }
         TimelineModel *room() const { return room_; }
         void setEventId(QString newEventId)
@@ -48,6 +50,14 @@ public:
                         emit roomChanged();
                 }
         }
+        void setPlay(bool newPlay)
+        {
+                if (play_ != newPlay) {
+                        play_ = newPlay;
+                        movie.setPaused(!play_);
+                        emit playChanged();
+                }
+        }
 
         QSGNode *updatePaintNode(QSGNode *oldNode,
                                  QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;
@@ -57,6 +67,7 @@ signals:
         void eventIdChanged();
         void animatableChanged();
         void loadedChanged();
+        void playChanged();
 
 private slots:
         void startDownload();
@@ -76,4 +87,5 @@ private:
         QMovie movie;
         int currentFrame = 0;
         bool imageDirty  = true;
+        bool play_       = true;
 };

@@ -63,6 +63,7 @@ Item {
         visible: loaded
         anchors.fill: parent
         roomm: room
+        play: !Settings.animateImagesOnHover || mouseArea.hovered
         eventId: parent.eventId
     }
 

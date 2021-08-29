@@ -79,6 +79,7 @@ UserSettings::load(std::optional<QString> profile)
         enlargeEmojiOnlyMessages_ =
           settings.value("user/timeline/enlarge_emoji_only_msg", false).toBool();
         markdown_             = settings.value("user/markdown_enabled", true).toBool();
+        animateImagesOnHover_ = settings.value("user/animate_images_on_hover", false).toBool();
         typingNotifications_  = settings.value("user/typing_notifications", true).toBool();
         sortByImportance_     = settings.value("user/sort_by_unread", true).toBool();
         readReceipts_         = settings.value("user/read_receipts", true).toBool();
@@ -204,6 +205,16 @@ UserSettings::setMarkdown(bool state)
                 return;
         markdown_ = state;
         emit markdownChanged(state);
+        save();
+}
+
+void
+UserSettings::setAnimateImagesOnHover(bool state)
+{
+        if (state == animateImagesOnHover_)
+                return;
+        animateImagesOnHover_ = state;
+        emit animateImagesOnHoverChanged(state);
         save();
 }
 
@@ -643,6 +654,7 @@ UserSettings::save()
         settings.setValue("group_view", groupView_);
         settings.setValue("hidden_tags", hiddenTags_);
         settings.setValue("markdown_enabled", markdown_);
+        settings.setValue("animate_images_on_hover", animateImagesOnHover_);
         settings.setValue("desktop_notifications", hasDesktopNotifications_);
         settings.setValue("alert_on_notification", hasAlertOnNotification_);
         settings.setValue("theme", theme());
@@ -747,6 +759,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         sortByImportance_               = new Toggle{this};
         readReceipts_                   = new Toggle{this};
         markdown_                       = new Toggle{this};
+        animateImagesOnHover_           = new Toggle{this};
         desktopNotifications_           = new Toggle{this};
         alertOnNotification_            = new Toggle{this};
         useStunServer_                  = new Toggle{this};
@@ -779,6 +792,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         sortByImportance_->setChecked(settings_->sortByImportance());
         readReceipts_->setChecked(settings_->readReceipts());
         markdown_->setChecked(settings_->markdown());
+        animateImagesOnHover_->setChecked(settings_->animateImagesOnHover());
         desktopNotifications_->setChecked(settings_->hasDesktopNotifications());
         alertOnNotification_->setChecked(settings_->hasAlertOnNotification());
         useStunServer_->setChecked(settings_->useStunServer());
@@ -973,6 +987,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
           markdown_,
           tr("Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
              "text."));
+        boxWrap(tr("Play animated images only on hover"),
+                animateImagesOnHover_,
+                tr("Plays media like GIFs or APNGs only when explicitly hovering over them."));
         boxWrap(tr("Desktop notifications"),
                 desktopNotifications_,
                 tr("Notify about received message when the client is not currently focused."));
@@ -1248,6 +1265,10 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
         connect(markdown_, &Toggle::toggled, this, [this](bool enabled) {
                 settings_->setMarkdown(enabled);
+        });
+
+        connect(animateImagesOnHover_, &Toggle::toggled, this, [this](bool enabled) {
+                settings_->setAnimateImagesOnHover(enabled);
         });
 
         connect(typingNotifications_, &Toggle::toggled, this, [this](bool enabled) {
