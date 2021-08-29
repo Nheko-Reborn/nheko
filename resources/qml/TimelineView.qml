@@ -84,16 +84,11 @@ Item {
                         target: timelineView
                     }
 
-                    Loader {
-                        active: room || roomPreview
-                        asynchronous: false
-                        Layout.fillWidth: true
 
-                        sourceComponent: MessageView {
+                        MessageView {
                             implicitHeight: msgView.height - typingIndicator.height
+                            Layout.fillWidth: true
                         }
-
-                    }
 
                     Loader {
                         source: CallManager.isOnCall && CallManager.callType != CallType.VOICE ? "voip/VideoCall.qml" : ""
