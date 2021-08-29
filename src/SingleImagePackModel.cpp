@@ -310,11 +310,15 @@ SingleImagePackModel::addStickers(QList<QUrl> files)
                 auto sz = img.size() / 2;
                 if (sz.width() > 512 || sz.height() > 512) {
                         sz.scale(512, 512, Qt::AspectRatioMode::KeepAspectRatio);
+                } else if (img.height() < 128 && img.width() < 128) {
+                        sz = img.size();
                 }
 
                 info.h    = sz.height();
                 info.w    = sz.width();
                 info.size = bytes.size();
+                info.mimetype =
+                  QMimeDatabase().mimeTypeForFile(f.toLocalFile()).name().toStdString();
 
                 auto filename = f.fileName().toStdString();
                 http::client()->upload(
@@ -334,6 +338,19 @@ SingleImagePackModel::addStickers(QList<QUrl> files)
                   });
         }
 }
+
+void
+SingleImagePackModel::remove(int idx)
+{
+        if (idx < (int)shortcodes.size() && idx >= 0) {
+                beginRemoveRows(QModelIndex(), idx, idx);
+                auto s = shortcodes.at(idx);
+                shortcodes.erase(shortcodes.begin() + idx);
+                pack.images.erase(s);
+                endRemoveRows();
+        }
+}
+
 void
 SingleImagePackModel::addImageCb(std::string uri, std::string filename, mtx::common::ImageInfo info)
 {

@@ -90,7 +90,7 @@ ApplicationWindow {
 
                         folder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
                         fileMode: FileDialog.OpenFiles
-                        nameFilters: [qsTr("Stickers (*.png *.webp)")]
+                        nameFilters: [qsTr("Stickers (*.png *.webp *.gif)")]
                         onAccepted: imagePack.addStickers(files)
                     }
 
@@ -264,6 +264,21 @@ ApplicationWindow {
                         onClicked: imagePack.setData(imagePack.index(currentImageIndex, 0), checked, SingleImagePackModel.IsSticker)
                         Layout.alignment: Qt.AlignRight
                     }
+
+                    MatrixText {
+                        text: qsTr("Remove from pack")
+                    }
+
+                    Button {
+                        text: qsTr("Remove")
+                        onClicked: {
+                            let temp = currentImageIndex;
+                            currentImageIndex = -1;
+                            imagePack.remove(temp);
+                        }
+                        Layout.alignment: Qt.AlignRight
+                    }
+
 
                     Item {
                         Layout.columnSpan: 2
