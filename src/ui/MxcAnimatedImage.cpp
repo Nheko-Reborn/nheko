@@ -155,14 +155,19 @@ MxcAnimatedImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeD
         if (!n) {
                 n = window()->createImageNode();
                 n->setOwnsTexture(true);
+                // n->setFlags(QSGNode::OwnedByParent | QSGNode::OwnsGeometry |
+                // GSGNode::OwnsMaterial);
+                n->setFlags(QSGNode::OwnedByParent);
         }
 
         // n->setTexture(nullptr);
         auto img = movie.currentImage();
         if (!img.isNull())
                 n->setTexture(window()->createTextureFromImage(img));
-        else
+        else {
+                delete n;
                 return nullptr;
+        }
 
         n->setSourceRect(img.rect());
         n->setRect(QRect(0, 0, width(), height()));
