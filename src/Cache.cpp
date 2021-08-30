@@ -13,6 +13,7 @@
 #include <QFile>
 #include <QHash>
 #include <QMap>
+#include <QMessageBox>
 #include <QStandardPaths>
 
 #if __has_include(<keychain.h>)
@@ -754,6 +755,24 @@ Cache::backupVersion()
         }
 }
 
+static void
+fatalSecretError()
+{
+        QMessageBox::critical(
+          ChatPage::instance(),
+          QCoreApplication::translate("SecretStorage", "Failed to connect to secret storage"),
+          QCoreApplication::translate(
+            "SecretStorage",
+            "Nheko could not connect to the secure storage to save encryption secrets to. "
+            "This can have multiple reasons. Check if your D-Bus service is running and "
+            "you have configured a service like KWallet, Gnome Secrets or the equivalent "
+            "for your platform. If you are having trouble, feel free to open an issue "
+            "here: https://github.com/Nheko-Reborn/nheko/issues"));
+
+        QCoreApplication::exit(1);
+        exit(1);
+}
+
 void
 Cache::storeSecret(const std::string name, const std::string secret)
 {
@@ -780,6 +799,7 @@ Cache::storeSecret(const std::string name, const std::string secret)
                           nhlog::db()->warn("Storing secret '{}' failed: {}",
                                             name,
                                             job->errorString().toStdString());
+                          fatalSecretError();
                   } else {
                           // if we emit the signal directly, qtkeychain breaks and won't execute new
                           // jobs. You can't start a job from the finish signal of a job.
@@ -840,8 +860,14 @@ Cache::secret(const std::string name)
 
         const QString secret = job.textData();
         if (job.error()) {
-                nhlog::db()->debug(
-                  "Restoring secret '{}' failed: {}", name, job.errorString().toStdString());
+                if (job.error() == QKeychain::Error::EntryNotFound)
+                        return std::nullopt;
+                nhlog::db()->error("Restoring secret '{}' failed ({}): {}",
+                                   name,
+                                   job.error(),
+                                   job.errorString().toStdString());
+
+                fatalSecretError();
                 return std::nullopt;
         }
         if (secret.isEmpty()) {
