@@ -989,7 +989,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
              "text."));
         boxWrap(tr("Play animated images only on hover"),
                 animateImagesOnHover_,
-                tr("Plays media like GIFs or APNGs only when explicitly hovering over them."));
+                tr("Plays media like GIFs or WEBPs only when explicitly hovering over them."));
         boxWrap(tr("Desktop notifications"),
                 desktopNotifications_,
                 tr("Notify about received message when the client is not currently focused."));

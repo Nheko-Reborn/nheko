@@ -125,23 +125,23 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+132"/>
+        <location filename="../../src/ChatPage.cpp" line="+128"/>
         <source>Failed to invite user: %1</source>
         <translation>Failed to invite user: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+668"/>
+        <location line="+673"/>
         <source>Invited user: %1</source>
         <translation>Invited user: %1</translation>
     </message>
     <message>
-        <location line="-459"/>
+        <location line="-464"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</translation>
     </message>
     <message>
-        <location line="+362"/>
+        <location line="+367"/>
         <source>Confirm join</source>
         <translation>Confirm join</translation>
     </message>
@@ -232,7 +232,7 @@
         <translation>Do you really want to start a private chat with %1?</translation>
     </message>
     <message>
-        <location line="-795"/>
+        <location line="-800"/>
         <source>Cache migration failed!</source>
         <translation>Cache migration failed!</translation>
     </message>
@@ -253,11 +253,13 @@
     </message>
     <message>
         <location line="+4"/>
+        <location line="+4"/>
+        <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
         <translation>Failed to restore save data. Please login again.</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+99"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</translation>
     </message>
@@ -431,7 +433,7 @@
         <translation>Search</translation>
     </message>
     <message>
-        <location line="+186"/>
+        <location line="+187"/>
         <source>People</source>
         <translation>People</translation>
     </message>
@@ -616,8 +618,8 @@
     </message>
     <message>
         <location line="+7"/>
-        <source>Stickers (*.png *.webp)</source>
-        <translation>Stickers (*.png *.webp)</translation>
+        <source>Stickers (*.png *.webp *.gif)</source>
+        <translation>Stickers (*.png *.webp *.gif)</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -657,7 +659,17 @@
         <translation>Body</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+30"/>
+        <source>Remove from pack</source>
+        <translation>Remove from pack</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Remove</source>
+        <translation>Remove</translation>
+    </message>
+    <message>
+        <location line="+26"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -733,7 +745,7 @@
         <translation>All Files (*)</translation>
     </message>
     <message>
-        <location line="+442"/>
+        <location line="+449"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Failed to upload media. Please try again.</translation>
     </message>
@@ -889,7 +901,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+190"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+192"/>
         <source>Encryption enabled</source>
         <translation>Encryption enabled</translation>
     </message>
@@ -988,7 +1000,7 @@ Example: https://server.my:8787</translation>
         <translation>Write a message…</translation>
     </message>
     <message>
-        <location line="+231"/>
+        <location line="+234"/>
         <source>Stickers</source>
         <translation>Stickers</translation>
     </message>
@@ -1247,7 +1259,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+200"/>
+        <location filename="../../src/main.cpp" line="+199"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</translation>
     </message>
@@ -1406,7 +1418,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4440"/>
+        <location filename="../../src/Cache.cpp" line="+4531"/>
         <source>no version stored</source>
         <translation>no version stored</translation>
     </message>
@@ -1774,6 +1786,19 @@ Example: https://server.my:8787</translation>
     </message>
 </context>
 <context>
+    <name>SecretStorage</name>
+    <message>
+        <location filename="../../src/Cache.cpp" line="-3765"/>
+        <source>Failed to connect to secret storage</source>
+        <translation>Failed to connect to secret storage</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Secrets or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
+        <translation>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Secrets or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</translation>
+    </message>
+</context>
+<context>
     <name>SingleImagePackModel</name>
     <message>
         <location filename="../../src/SingleImagePackModel.cpp" line="+261"/>
@@ -1792,7 +1817,7 @@ Example: https://server.my:8787</translation>
         <translation>Failed to open image: %1</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+31"/>
         <source>Failed to upload image: %1</source>
         <translation>Failed to upload image: %1</translation>
     </message>
@@ -2056,7 +2081,7 @@ Example: https://server.my:8787</translation>
         <translation>No room open</translation>
     </message>
     <message>
-        <location line="+145"/>
+        <location line="+139"/>
         <source>%1 member(s)</source>
         <translation>%1 member(s)</translation>
     </message>
@@ -2084,7 +2109,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+544"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+548"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</translation>
     </message>
@@ -2222,8 +2247,8 @@ Example: https://server.my:8787</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+366"/>
-        <location filename="../../src/UserSettingsPage.h" line="+203"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+377"/>
+        <location filename="../../src/UserSettingsPage.h" line="+207"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -2231,7 +2256,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location line="+554"/>
+        <location line="+557"/>
         <source>Minimize to tray</source>
         <translation>Minimize to tray</translation>
     </message>
@@ -2251,12 +2276,12 @@ Example: https://server.my:8787</translation>
         <translation>Circular Avatars</translation>
     </message>
     <message>
-        <location line="-214"/>
+        <location line="-216"/>
         <source>profile: %1</source>
         <translation>profile: %1</translation>
     </message>
     <message>
-        <location line="+100"/>
+        <location line="+102"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -2412,6 +2437,11 @@ When disabled, all messages are sent as a plain text.</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Play animated images only on hover</source>
+        <translation>Play animated images only on hover</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Desktop notifications</source>
         <translation>Desktop notifications</translation>
     </message>
@@ -2483,7 +2513,17 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>Download message encryption keys from and upload to the encrypted online key backup.</translation>
     </message>
     <message>
-        <location line="+415"/>
+        <location line="+181"/>
+        <source>Enable online key backup</source>
+        <translation>Enable online key backup</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The Nheko authors recommend not enabling online key backup until symmetric online key backup is available. Enable anyway?</source>
+        <translation>The Nheko authors recommend not enabling online key backup until symmetric online key backup is available. Enable anyway?</translation>
+    </message>
+    <message>
+        <location line="+248"/>
         <source>CACHED</source>
         <translation>CACHED</translation>
     </message>
@@ -2493,7 +2533,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>NOT CACHED</translation>
     </message>
     <message>
-        <location line="-478"/>
+        <location line="-493"/>
         <source>Scale factor</source>
         <translation>Scale factor</translation>
     </message>
@@ -2568,7 +2608,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>Device Fingerprint</translation>
     </message>
     <message>
-        <location line="-164"/>
+        <location line="-167"/>
         <source>Session Keys</source>
         <translation>Session Keys</translation>
     </message>
@@ -2588,17 +2628,22 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>ENCRYPTION</translation>
     </message>
     <message>
-        <location line="-119"/>
+        <location line="-121"/>
         <source>GENERAL</source>
         <translation>GENERAL</translation>
     </message>
     <message>
-        <location line="+68"/>
+        <location line="+70"/>
         <source>INTERFACE</source>
         <translation>INTERFACE</translation>
     </message>
     <message>
-        <location line="+194"/>
+        <location line="+180"/>
+        <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
+        <translation>Plays media like GIFs or WEBPs only when explicitly hovering over them.</translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>Touchscreen mode</source>
         <translation>Touchscreen mode</translation>
     </message>
@@ -2663,7 +2708,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>All Files (*)</translation>
     </message>
     <message>
-        <location line="+246"/>
+        <location line="+261"/>
         <source>Open Sessions File</source>
         <translation>Open Sessions File</translation>
     </message>
@@ -2759,7 +2804,7 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+184"/>
+        <location filename="../../src/Utils.cpp" line="+185"/>
         <source>Yesterday</source>
         <translation>Yesterday</translation>
     </message>

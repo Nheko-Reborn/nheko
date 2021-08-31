@@ -125,23 +125,23 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+132"/>
+        <location filename="../../src/ChatPage.cpp" line="+128"/>
         <source>Failed to invite user: %1</source>
         <translation>Malsukcesis inviti uzanton: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+668"/>
+        <location line="+673"/>
         <source>Invited user: %1</source>
         <translation type="unfinished">Invitita uzanto: %1</translation>
     </message>
     <message>
-        <location line="-459"/>
+        <location line="-464"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Malsukcesis migrado de kaŝmemoro al nuna versio. Tio povas havi diversajn kialojn. Bonvolu raporti eraron kaj dume provi malpli novan version. Alternative, vi povas provi forigi la kaŝmemoron permane.</translation>
     </message>
     <message>
-        <location line="+362"/>
+        <location line="+367"/>
         <source>Confirm join</source>
         <translation>Konfirmu aliĝon</translation>
     </message>
@@ -233,7 +233,7 @@
         <translation>Ĉu vi certe volas komenci privatan babilon kun %1?</translation>
     </message>
     <message>
-        <location line="-795"/>
+        <location line="-800"/>
         <source>Cache migration failed!</source>
         <translation>Malsukcesis migrado de kaŝmemoro!</translation>
     </message>
@@ -254,11 +254,13 @@
     </message>
     <message>
         <location line="+4"/>
+        <location line="+4"/>
+        <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+99"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Malsukcesis agordi ĉifrajn ŝlosilojn. Respondo de servilo: %1 %2. Bonvolu reprovi poste.</translation>
     </message>
@@ -432,7 +434,7 @@
         <translation>Serĉu</translation>
     </message>
     <message>
-        <location line="+186"/>
+        <location line="+187"/>
         <source>People</source>
         <translation>Homoj</translation>
     </message>
@@ -617,7 +619,7 @@
     </message>
     <message>
         <location line="+7"/>
-        <source>Stickers (*.png *.webp)</source>
+        <source>Stickers (*.png *.webp *.gif)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -658,7 +660,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+30"/>
+        <source>Remove from pack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
         <source>Cancel</source>
         <translation type="unfinished">Nuligi</translation>
     </message>
@@ -734,7 +746,7 @@
         <translation>Ĉiuj dosieroj (*)</translation>
     </message>
     <message>
-        <location line="+442"/>
+        <location line="+449"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Malsukcesis alŝuti vidaŭdaĵojn. Bonvolu reprovi.</translation>
     </message>
@@ -892,7 +904,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+172"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+174"/>
         <location line="+9"/>
         <source>removed</source>
         <translation>forigita</translation>
@@ -991,7 +1003,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Skribu mesaĝon…</translation>
     </message>
     <message>
-        <location line="+231"/>
+        <location line="+234"/>
         <source>Stickers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1250,7 +1262,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+200"/>
+        <location filename="../../src/main.cpp" line="+199"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1409,7 +1421,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4440"/>
+        <location filename="../../src/Cache.cpp" line="+4531"/>
         <source>no version stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1777,6 +1789,19 @@ Ekzemplo: https://servilo.mia:8787</translation>
     </message>
 </context>
 <context>
+    <name>SecretStorage</name>
+    <message>
+        <location filename="../../src/Cache.cpp" line="-3765"/>
+        <source>Failed to connect to secret storage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Secrets or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SingleImagePackModel</name>
     <message>
         <location filename="../../src/SingleImagePackModel.cpp" line="+261"/>
@@ -1795,7 +1820,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+31"/>
         <source>Failed to upload image: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2062,7 +2087,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+145"/>
+        <location line="+139"/>
         <source>%1 member(s)</source>
         <translation type="unfinished">%1 ĉambrano(j)</translation>
     </message>
@@ -2090,7 +2115,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>TimelineViewManager</name>
     <message>
-        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+544"/>
+        <location filename="../../src/timeline/TimelineViewManager.cpp" line="+548"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2228,8 +2253,8 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+366"/>
-        <location filename="../../src/UserSettingsPage.h" line="+203"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+377"/>
+        <location filename="../../src/UserSettingsPage.h" line="+207"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2237,7 +2262,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location line="+554"/>
+        <location line="+557"/>
         <source>Minimize to tray</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2257,12 +2282,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-214"/>
+        <location line="-216"/>
         <source>profile: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+100"/>
+        <location line="+102"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2425,6 +2450,11 @@ Kun ĉi tio malŝaltita, ĉiuj mesaĝoj sendiĝas en plata teksto.</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Play animated images only on hover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Desktop notifications</source>
         <translation>Labortablaj sciigoj</translation>
     </message>
@@ -2495,7 +2525,17 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+415"/>
+        <location line="+181"/>
+        <source>Enable online key backup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The Nheko authors recommend not enabling online key backup until symmetric online key backup is available. Enable anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+248"/>
         <source>CACHED</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2505,7 +2545,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-478"/>
+        <location line="-493"/>
         <source>Scale factor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2580,7 +2620,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-164"/>
+        <location line="-167"/>
         <source>Session Keys</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2600,17 +2640,22 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-119"/>
+        <location line="-121"/>
         <source>GENERAL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+68"/>
+        <location line="+70"/>
         <source>INTERFACE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+194"/>
+        <location line="+180"/>
+        <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>Touchscreen mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2675,7 +2720,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>Ĉiuj dosieroj (*)</translation>
     </message>
     <message>
-        <location line="+246"/>
+        <location line="+261"/>
         <source>Open Sessions File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2772,7 +2817,7 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+184"/>
+        <location filename="../../src/Utils.cpp" line="+185"/>
         <source>Yesterday</source>
         <translation>Hieraŭ</translation>
     </message>
