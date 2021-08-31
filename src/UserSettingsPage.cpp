@@ -812,9 +812,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         if (JdenticonProvider::isAvailable()) {
                 useIdenticon_ = new Toggle{this};
                 useIdenticon_->setChecked(settings_->useIdenticon());
-        }
-        else
-            useIdenticon_ = nullptr;
+        } else
+                useIdenticon_ = nullptr;
 
         if (!settings_->tray()) {
                 startInTrayToggle_->setState(false);
