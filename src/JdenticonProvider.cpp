@@ -19,6 +19,25 @@
 #include "Utils.h"
 #include "jdenticoninterface.h"
 
+static QPixmap
+clipRadius(QPixmap img, double radius)
+{
+        QPixmap out(img.size());
+        out.fill(Qt::transparent);
+
+        QPainter painter(&out);
+        painter.setRenderHint(QPainter::Antialiasing, true);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+
+        QPainterPath ppath;
+        ppath.addRoundedRect(img.rect(), radius, radius, Qt::SizeMode::RelativeSize);
+
+        painter.setClipPath(ppath);
+        painter.drawPixmap(img.rect(), img);
+
+        return out;
+}
+
 JdenticonResponse::JdenticonResponse(const QString &key,
                                      bool crop,
                                      double radius,
@@ -37,18 +56,19 @@ void
 JdenticonResponse::run()
 {
         m_pixmap.fill(Qt::transparent);
-        QPainter painter{&m_pixmap};
+
+        QPainter painter;
+        painter.begin(&m_pixmap);
         painter.setRenderHint(QPainter::Antialiasing, true);
         painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-
-        QPainterPath ppath;
-        ppath.addRoundedRect(m_pixmap.rect(), m_radius, m_radius);
-
-        painter.setClipPath(ppath);
 
         QSvgRenderer renderer{
           jdenticonInterface_->generate(m_key, m_requestedSize.width()).toUtf8()};
         renderer.render(&painter);
+
+        painter.end();
+
+        m_pixmap = clipRadius(m_pixmap, m_radius);
 
         emit finished();
 }
@@ -64,7 +84,7 @@ getJdenticonInterface()
 
                 bool plugins = pluginsDir.cd("plugins");
                 if (plugins) {
-                        for (QString fileName : pluginsDir.entryList(QDir::Files)) {
+                        for (const QString &fileName : pluginsDir.entryList(QDir::Files)) {
                                 QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
                                 QObject *plugin = pluginLoader.instance();
                                 if (plugin) {
