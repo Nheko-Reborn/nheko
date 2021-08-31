@@ -817,6 +817,12 @@ TimelineModel::syncState(const mtx::responses::State &s)
                         emit roomAvatarUrlChanged();
                         emit roomNameChanged();
                         emit roomMemberCountChanged();
+
+                        if (roomMemberCount() <= 2)
+                        {
+                            emit isDirectChanged();
+                            emit directChatAvatarMxidChanged();
+                        }
                 } else if (std::holds_alternative<StateEvent<state::Encryption>>(e)) {
                         this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
                         emit encryptionChanged();

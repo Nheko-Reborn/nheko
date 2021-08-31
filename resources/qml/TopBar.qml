@@ -65,7 +65,8 @@ Rectangle {
             width: Nheko.avatarSize
             height: Nheko.avatarSize
             url: avatarUrl.replace("mxc://", "image://MxcImage/")
-            userid: room.roomMemberCount < 3 ? room.directChatAvatarMxid : room.roomId
+            roomid: room.roomId
+            userid: room.isDirect ? room.directChatAvatarMxid : undefined
             displayName: roomName
             onClicked: {
                 if (room)

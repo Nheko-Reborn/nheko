@@ -65,7 +65,7 @@ public:
                 IsPreviewFetched,
                 Tags,
                 ParentSpaces,
-                RoomMemberCount,
+                IsDirect,
                 DirectChatAvatarMxid,
         };
 

@@ -143,7 +143,7 @@ Page {
             required property int notificationCount
             required property bool hasLoudNotification
             required property bool hasUnreadMessages
-            required property int roomMemberCount
+            required property bool isDirect
             required property string directChatAvatarMxid
 
             color: background
@@ -239,7 +239,8 @@ Page {
                     width: avatarSize
                     url: avatarUrl.replace("mxc://", "image://MxcImage/")
                     displayName: roomName
-                    userid: roomMemberCount < 3 ?  directChatAvatarMxid : roomId
+                    userid: isDirect ? directChatAvatarMxid : undefined
+                    roomid: roomId
 
                     Rectangle {
                         id: collapsedNotificationBubble

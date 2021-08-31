@@ -12,6 +12,7 @@ Rectangle {
 
     property string url
     property string userid
+    property string roomid
     property string displayName
     property alias textColor: label.color
     property bool crop: true
@@ -43,7 +44,7 @@ Rectangle {
         id: identicon
         anchors.fill: parent
         visible: img.status != Image.Ready && Settings.useIdenticon
-        source: Settings.useIdenticon ? "image://jdenticon/" + userid + "?radius=" + radius : ""
+        source: Settings.useIdenticon ? ("image://jdenticon/" + (userid !== "" ? userid : roomid) + "?radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale")) : ""
         layer.enabled: true
 
         MouseArea {
