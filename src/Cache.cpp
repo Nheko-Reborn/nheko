@@ -36,8 +36,7 @@
 
 //! Should be changed when a breaking change occurs in the cache format.
 //! This will reset client's data.
-static const std::string CURRENT_CACHE_FORMAT_VERSION("2021.08.22");
-static const std::string SECRET("secret");
+static const std::string CURRENT_CACHE_FORMAT_VERSION("2021.08.31");
 
 //! Keys used for the DB
 static const std::string_view NEXT_BATCH_KEY("next_batch");
@@ -370,7 +369,8 @@ Cache::exportSessionKeys()
                 ExportedSession exported;
                 MegolmSessionIndex index;
 
-                auto saved_session = unpickle<InboundSessionObject>(std::string(value), SECRET);
+                auto saved_session =
+                  unpickle<InboundSessionObject>(std::string(value), pickle_secret_);
 
                 try {
                         index = nlohmann::json::parse(key).get<MegolmSessionIndex>();
@@ -424,13 +424,14 @@ Cache::saveInboundMegolmSession(const MegolmSessionIndex &index,
 {
         using namespace mtx::crypto;
         const auto key     = json(index).dump();
-        const auto pickled = pickle<InboundSessionObject>(session.get(), SECRET);
+        const auto pickled = pickle<InboundSessionObject>(session.get(), pickle_secret_);
 
         auto txn = lmdb::txn::begin(env_);
 
         std::string_view value;
         if (inboundMegolmSessionDb_.get(txn, key, value)) {
-                auto oldSession = unpickle<InboundSessionObject>(std::string(value), SECRET);
+                auto oldSession =
+                  unpickle<InboundSessionObject>(std::string(value), pickle_secret_);
                 if (olm_inbound_group_session_first_known_index(session.get()) >
                     olm_inbound_group_session_first_known_index(oldSession.get())) {
                         nhlog::crypto()->warn(
@@ -455,7 +456,8 @@ Cache::getInboundMegolmSession(const MegolmSessionIndex &index)
                 std::string_view value;
 
                 if (inboundMegolmSessionDb_.get(txn, key, value)) {
-                        auto session = unpickle<InboundSessionObject>(std::string(value), SECRET);
+                        auto session =
+                          unpickle<InboundSessionObject>(std::string(value), pickle_secret_);
                         return session;
                 }
         } catch (std::exception &e) {
@@ -502,7 +504,7 @@ Cache::updateOutboundMegolmSession(const std::string &room_id,
 
         // Save the updated pickled data for the session.
         json j;
-        j["session"] = pickle<OutboundSessionObject>(ptr.get(), SECRET);
+        j["session"] = pickle<OutboundSessionObject>(ptr.get(), pickle_secret_);
 
         auto txn = lmdb::txn::begin(env_);
         outboundMegolmSessionDb_.put(txn, room_id, j.dump());
@@ -532,7 +534,7 @@ Cache::saveOutboundMegolmSession(const std::string &room_id,
                                  mtx::crypto::OutboundGroupSessionPtr &session)
 {
         using namespace mtx::crypto;
-        const auto pickled = pickle<OutboundSessionObject>(session.get(), SECRET);
+        const auto pickled = pickle<OutboundSessionObject>(session.get(), pickle_secret_);
 
         GroupSessionData data = data_;
         data.message_index    = olm_outbound_group_session_message_index(session.get());
@@ -575,7 +577,7 @@ Cache::getOutboundMegolmSession(const std::string &room_id)
                 auto obj = json::parse(value);
 
                 OutboundGroupSessionDataRef ref{};
-                ref.session = unpickle<OutboundSessionObject>(obj.at("session"), SECRET);
+                ref.session = unpickle<OutboundSessionObject>(obj.at("session"), pickle_secret_);
 
                 MegolmSessionIndex index;
                 index.room_id    = room_id;
@@ -626,7 +628,7 @@ Cache::saveOlmSession(const std::string &curve25519,
         auto txn = lmdb::txn::begin(env_);
         auto db  = getOlmSessionsDb(txn, curve25519);
 
-        const auto pickled    = pickle<SessionObject>(session.get(), SECRET);
+        const auto pickled    = pickle<SessionObject>(session.get(), pickle_secret_);
         const auto session_id = mtx::crypto::session_id(session.get());
 
         StoredOlmSession stored_session;
@@ -653,7 +655,7 @@ Cache::getOlmSession(const std::string &curve25519, const std::string &session_i
 
         if (found) {
                 auto data = json::parse(pickled).get<StoredOlmSession>();
-                return unpickle<SessionObject>(data.pickled_session, SECRET);
+                return unpickle<SessionObject>(data.pickled_session, pickle_secret_);
         }
 
         return std::nullopt;
@@ -681,9 +683,9 @@ Cache::getLatestOlmSession(const std::string &curve25519)
 
         txn.commit();
 
-        return currentNewest
-                 ? std::optional(unpickle<SessionObject>(currentNewest->pickled_session, SECRET))
-                 : std::nullopt;
+        return currentNewest ? std::optional(unpickle<SessionObject>(currentNewest->pickled_session,
+                                                                     pickle_secret_))
+                             : std::nullopt;
 }
 
 std::vector<std::string>
@@ -719,6 +721,7 @@ std::string
 Cache::restoreOlmAccount()
 {
         auto txn = ro_txn(env_);
+
         std::string_view pickled;
         syncStateDb_.get(txn, OLM_ACCOUNT_KEY, pickled);
 
@@ -774,7 +777,7 @@ fatalSecretError()
 }
 
 void
-Cache::storeSecret(const std::string name, const std::string secret)
+Cache::storeSecret(const std::string name, const std::string secret, bool internal)
 {
         auto settings = UserSettings::instance();
         auto job      = new QKeychain::WritePasswordJob(QCoreApplication::applicationName());
@@ -783,7 +786,7 @@ Cache::storeSecret(const std::string name, const std::string secret)
         job->setSettings(UserSettings::instance()->qsettings());
 
         job->setKey(
-          "matrix." +
+          (internal ? "nheko." : "matrix.") +
           QString(QCryptographicHash::hash(settings->profile().toUtf8(), QCryptographicHash::Sha256)
                     .toBase64()) +
           "." + QString::fromStdString(name));
@@ -812,7 +815,7 @@ Cache::storeSecret(const std::string name, const std::string secret)
 }
 
 void
-Cache::deleteSecret(const std::string name)
+Cache::deleteSecret(const std::string name, bool internal)
 {
         auto settings = UserSettings::instance();
         QKeychain::DeletePasswordJob job(QCoreApplication::applicationName());
@@ -821,7 +824,7 @@ Cache::deleteSecret(const std::string name)
         job.setSettings(UserSettings::instance()->qsettings());
 
         job.setKey(
-          "matrix." +
+          (internal ? "nheko." : "matrix.") +
           QString(QCryptographicHash::hash(settings->profile().toUtf8(), QCryptographicHash::Sha256)
                     .toBase64()) +
           "." + QString::fromStdString(name));
@@ -837,7 +840,7 @@ Cache::deleteSecret(const std::string name)
 }
 
 std::optional<std::string>
-Cache::secret(const std::string name)
+Cache::secret(const std::string name, bool internal)
 {
         auto settings = UserSettings::instance();
         QKeychain::ReadPasswordJob job(QCoreApplication::applicationName());
@@ -846,7 +849,7 @@ Cache::secret(const std::string name)
         job.setSettings(UserSettings::instance()->qsettings());
 
         job.setKey(
-          "matrix." +
+          (internal ? "nheko." : "matrix.") +
           QString(QCryptographicHash::hash(settings->profile().toUtf8(), QCryptographicHash::Sha256)
                     .toBase64()) +
           "." + QString::fromStdString(name));
@@ -877,6 +880,22 @@ Cache::secret(const std::string name)
 
         return secret.toStdString();
 }
+
+std::string
+Cache::pickleSecret()
+{
+        if (pickle_secret_.empty()) {
+                auto s = secret("pickle_secret", true);
+                if (!s) {
+                        this->pickle_secret_ = mtx::client::utils::random_token(64, true);
+                        storeSecret("pickle_secret", pickle_secret_, true);
+                } else {
+                        this->pickle_secret_ = *s;
+                }
+        }
+
+        return pickle_secret_;
+};
 
 void
 Cache::removeInvite(lmdb::txn &txn, const std::string &room_id)
@@ -979,6 +998,7 @@ Cache::deleteData()
         deleteSecret(mtx::secret_storage::secrets::cross_signing_master);
         deleteSecret(mtx::secret_storage::secrets::cross_signing_user_signing);
         deleteSecret(mtx::secret_storage::secrets::cross_signing_self_signing);
+        deleteSecret("pickle_secret", true);
 }
 
 //! migrates db to the current format
@@ -1200,6 +1220,11 @@ Cache::runMigrations()
 
                    nhlog::db()->info(
                      "Successfully cleared the cache. Will do a clean sync after startup.");
+                   return true;
+           }},
+          {"2021.08.31",
+           [this]() {
+                   storeSecret("pickle_secret", "secret", true);
                    return true;
            }},
         };

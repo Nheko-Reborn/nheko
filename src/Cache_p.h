@@ -291,9 +291,11 @@ public:
         void deleteBackupVersion();
         std::optional<OnlineBackupVersion> backupVersion();
 
-        void storeSecret(const std::string name, const std::string secret);
-        void deleteSecret(const std::string name);
-        std::optional<std::string> secret(const std::string name);
+        void storeSecret(const std::string name, const std::string secret, bool internal = false);
+        void deleteSecret(const std::string name, bool internal = false);
+        std::optional<std::string> secret(const std::string name, bool internal = false);
+
+        std::string pickleSecret();
 
         template<class T>
         constexpr static bool isStateEvent_ =
@@ -712,6 +714,8 @@ private:
 
         QString localUserId_;
         QString cacheDirectory_;
+
+        std::string pickle_secret_;
 
         VerificationStorage verification_storage;
 

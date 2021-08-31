@@ -32,9 +32,6 @@
 
 #include "blurhash.hpp"
 
-// TODO: Needs to be updated with an actual secret.
-static const std::string STORAGE_SECRET_KEY("secret");
-
 ChatPage *ChatPage::instance_             = nullptr;
 constexpr int CHECK_CONNECTIVITY_INTERVAL = 15'000;
 constexpr int RETRY_TIMEOUT               = 5'000;
@@ -372,7 +369,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                 // There isn't a saved olm account to restore.
                 nhlog::crypto()->info("creating new olm account");
                 olm::client()->create_new_account();
-                cache::saveOlmAccount(olm::client()->save(STORAGE_SECRET_KEY));
+                cache::saveOlmAccount(olm::client()->save(cache::client()->pickleSecret()));
         } catch (const lmdb::error &e) {
                 nhlog::crypto()->critical("failed to save olm account {}", e.what());
                 emit dropToLoginPageCb(QString::fromStdString(e.what()));
@@ -394,7 +391,7 @@ ChatPage::loadStateFromCache()
         nhlog::db()->info("restoring state from cache");
 
         try {
-                olm::client()->load(cache::restoreOlmAccount(), STORAGE_SECRET_KEY);
+                olm::client()->load(cache::restoreOlmAccount(), cache::client()->pickleSecret());
 
                 emit initializeEmptyViews();
                 emit initializeMentions(cache::getTimelineMentions());
@@ -411,6 +408,11 @@ ChatPage::loadStateFromCache()
                 return;
         } catch (const json::exception &e) {
                 nhlog::db()->critical("failed to parse cache data: {}", e.what());
+                emit dropToLoginPageCb(tr("Failed to restore save data. Please login again."));
+                return;
+        } catch (const std::exception &e) {
+                nhlog::db()->critical("failed to load cache data: {}", e.what());
+                emit dropToLoginPageCb(tr("Failed to restore save data. Please login again."));
                 return;
         }
 

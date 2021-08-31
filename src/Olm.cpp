@@ -27,7 +27,6 @@ auto client_ = std::make_unique<mtx::crypto::OlmClient>();
 
 std::map<std::string, std::string> request_id_to_secret_name;
 
-const std::string STORAGE_SECRET_KEY("secret");
 constexpr auto MEGOLM_ALGO = "m.megolm.v1.aes-sha2";
 }
 
@@ -483,7 +482,7 @@ handle_pre_key_olm_message(const std::string &sender,
 
                 // We also remove the one time key used to establish that
                 // session so we'll have to update our copy of the account object.
-                cache::saveOlmAccount(olm::client()->save("secret"));
+                cache::saveOlmAccount(olm::client()->save(cache::client()->pickleSecret()));
         } catch (const mtx::crypto::olm_exception &e) {
                 nhlog::crypto()->critical(
                   "failed to create inbound session with {}: {}", sender, e.what());
@@ -938,7 +937,7 @@ void
 mark_keys_as_published()
 {
         olm::client()->mark_keys_as_published();
-        cache::saveOlmAccount(olm::client()->save(STORAGE_SECRET_KEY));
+        cache::saveOlmAccount(olm::client()->save(cache::client()->pickleSecret()));
 }
 
 void
