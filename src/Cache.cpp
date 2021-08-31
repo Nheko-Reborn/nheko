@@ -3759,7 +3759,8 @@ Cache::getMembersWithKeys(const std::string &room_id, bool verified_only)
                         if (res) {
                                 auto k = json::parse(keys).get<UserKeyCache>();
                                 if (verified_only) {
-                                        auto verif = verificationStatus(std::string(user_id));
+                                        auto verif = verificationStatus_(std::string(user_id), txn);
+
                                         if (verif.user_verified == crypto::Trust::Verified ||
                                             !verif.verified_devices.empty()) {
                                                 auto keyCopy = k;
@@ -3807,7 +3808,8 @@ Cache::getMembersWithKeys(const std::string &room_id, bool verified_only)
                 cursor.close();
 
                 return members;
-        } catch (std::exception &) {
+        } catch (std::exception &e) {
+                nhlog::db()->debug("Error retrieving members: {}", e.what());
                 return {};
         }
 }
