@@ -895,7 +895,7 @@ Cache::pickleSecret()
         }
 
         return pickle_secret_;
-};
+}
 
 void
 Cache::removeInvite(lmdb::txn &txn, const std::string &room_id)
