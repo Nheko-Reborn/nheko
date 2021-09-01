@@ -619,7 +619,7 @@
     <message>
         <location line="+7"/>
         <source>Stickers (*.png *.webp *.gif)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kleepsud (*.png *.webp *.gif)</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -661,12 +661,12 @@
     <message>
         <location line="+30"/>
         <source>Remove from pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Eemalda pakist</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Eemalda</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -1790,12 +1790,12 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../../src/Cache.cpp" line="-3765"/>
         <source>Failed to connect to secret storage</source>
-        <translation type="unfinished"></translation>
+        <translation>Ühenduse loomine võtmehoidlaga ei õnnestunud</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Secrets or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptovõtmete salvestamiseks Nhekol ei õnnestunud luua ühendust võtmehoidlaga. Sellel võib olla mitu põhjust. Kontrolli, kas D-Bus&apos;i alusteenus toimib ning sa oled seadistanud KWallet&apos;i, Gnome Secrets&apos;i või mõne muu sinu platvormil kasutatava turvalise andmehoidla teenuse. Probleemide korral palun ava siin https://github.com/Nheko-Reborn/nheko/issues veateade</translation>
     </message>
 </context>
 <context>
@@ -2438,7 +2438,7 @@ Kui Markdown ei ole kasutusel, siis saadetakse kõik sõnumid vormindamata tekst
     <message>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Esita liikuvaid pilte vaid siis, kui kursor on pildi kohal</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2515,12 +2515,12 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+181"/>
         <source>Enable online key backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Võta kasutusele krüptovõtmete varundus võrgus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The Nheko authors recommend not enabling online key backup until symmetric online key backup is available. Enable anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Seni kuni sümmetriline krüptovõtmete varundamine pole teostatav, siis Nheko arendajad ei soovita krüptovõtmeid võrgus salvestada. Kas ikkagi jätkame?</translation>
     </message>
     <message>
         <location line="+248"/>
@@ -2640,7 +2640,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+180"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Esitame liikuvaid GIF ja WEBP pilte vaid siis, kui kursor on pildi kohal.</translation>
     </message>
     <message>
         <location line="+17"/>
