@@ -619,7 +619,7 @@
     <message>
         <location line="+7"/>
         <source>Stickers (*.png *.webp *.gif)</source>
-        <translation type="unfinished"></translation>
+        <translation>Stickers (*.png *.webp *.gif)</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -661,12 +661,12 @@
     <message>
         <location line="+30"/>
         <source>Remove from pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijder uit afbeeldingspakket</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijder</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -1790,12 +1790,12 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location filename="../../src/Cache.cpp" line="-3765"/>
         <source>Failed to connect to secret storage</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbinden met geheimopslag mislukt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Secrets or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko kon niet verbinden met de geheimopslag om sleutels in te bewaren. Dit kan verscheidene redenen hebben. Controleer of je D-Bus service draait en of je een service zoals KWallet, Gnome Secrets of een dergelijk equivalent voor je platform hebt ingesteld. Als je problemen ondervindt kan je ook altijd hier een issue openen: https://github.com/Nheko-Reborn/nheko/issues</translation>
     </message>
 </context>
 <context>
@@ -1909,7 +1909,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
-            <numerusform>1%2% is aan het typen.</numerusform>
+            <numerusform>%1%2 is aan het typen.</numerusform>
             <numerusform>%1 en %2 zijn aan het typen.</numerusform>
         </translation>
     </message>
@@ -2438,7 +2438,7 @@ Indien uitgeschakeld worden alle berichten als platte tekst verstuurd.</translat
     <message>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Speel animaties in afbeeldingen alleen af tijdens muisover</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2515,12 +2515,12 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
     <message>
         <location line="+181"/>
         <source>Enable online key backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Activeer online reservesleutelopslag</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The Nheko authors recommend not enabling online key backup until symmetric online key backup is available. Enable anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>De Nheko auteurs raden af om online reservesleutelopslag te gebruiken totdat symmetrische reservesleutelopslag beschikbaar is. Toch activeren?</translation>
     </message>
     <message>
         <location line="+248"/>
@@ -2640,7 +2640,7 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
     <message>
         <location line="+180"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Speelt media zoals GIFs en WebPs alleen af terwijl de muiscursor erboven hangt.</translation>
     </message>
     <message>
         <location line="+17"/>
