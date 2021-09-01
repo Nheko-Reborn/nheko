@@ -130,6 +130,7 @@ Page {
                         else
                             return "image://colorimage/" + model.avatarUrl + "?" + communityItem.unimportantText;
                     }
+                    roomid: model.roomid
                     displayName: model.displayName
                     color: communityItem.background
                 }

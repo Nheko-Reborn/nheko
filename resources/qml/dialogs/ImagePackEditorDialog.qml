@@ -111,6 +111,7 @@ ApplicationWindow {
                     title: shortCode
                     subtitle: body
                     avatarUrl: url
+                    roomid: imagePack.roomid
                     selectedIndex: currentImageIndex
                     crop: false
 

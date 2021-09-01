@@ -65,6 +65,7 @@ ApplicationWindow {
                     width: avatarSize
                     height: avatarSize
                     url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                    roomid: model.roomid
                     displayName: model.name
                 }
 

@@ -137,6 +137,7 @@ Item {
     ColumnLayout {
         id: preview
 
+        property string roomid: room ? room.roomid : (roomPreview ? roomPreview.roomid : "")
         property string roomName: room ? room.roomName : (roomPreview ? roomPreview.roomName : "")
         property string roomTopic: room ? room.roomTopic : (roomPreview ? roomPreview.roomTopic : "")
         property string avatarUrl: room ? room.roomAvatarUrl : (roomPreview ? roomPreview.roomAvatarUrl : "")
@@ -153,6 +154,7 @@ Item {
 
         Avatar {
             url: parent.avatarUrl.replace("mxc://", "image://MxcImage/")
+            roomid: parent.roomid
             displayName: parent.roomName
             height: 130
             width: 130

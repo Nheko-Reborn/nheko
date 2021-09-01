@@ -38,6 +38,7 @@ ApplicationWindow {
 
         Avatar {
             url: roomSettings.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
+            roomid: roomSettings.roomid
             displayName: roomSettings.roomName
             height: 130
             width: 130

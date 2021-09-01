@@ -112,6 +112,7 @@ ApplicationWindow {
                             return qsTr("Globally enabled pack");
                     }
                     selectedIndex: currentPackIndex
+                    roomid: currentPack.roomid
 
                     TapHandler {
                         onSingleTapped: currentPackIndex = index
