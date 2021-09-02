@@ -189,13 +189,26 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Rooms &rooms) {
                 view_manager_->sync(rooms);
 
-                bool hasNotifications = false;
+                static unsigned int prevNotificationCount = 0;
+                unsigned int notificationCount            = 0;
                 for (const auto &room : rooms.join) {
-                        if (room.second.unread_notifications.notification_count > 0)
-                                hasNotifications = true;
+                        notificationCount += room.second.unread_notifications.notification_count;
                 }
 
-                if (hasNotifications && userSettings_->hasNotifications())
+                // HACK: If we had less notifications last time we checked, send an alert if the
+                // user wanted one. Technically, this may cause an alert to be missed if new ones
+                // come in while you are reading old ones. Since the window is almost certainly open
+                // in this edge case, that's probably a non-issue.
+                // TODO: Replace this once we have proper pushrules support. This is a horrible hack
+                if (prevNotificationCount < notificationCount) {
+                        if (userSettings_->hasAlertOnNotification())
+                                QApplication::alert(this);
+                }
+                prevNotificationCount = notificationCount;
+
+                // No need to check amounts for this section, as this function internally checks for
+                // duplicates.
+                if (notificationCount && userSettings_->hasNotifications())
                         http::client()->notifications(
                           5,
                           "",
@@ -461,10 +474,6 @@ ChatPage::sendNotifications(const mtx::responses::Notifications &res)
                                 // Don't send a notification when the current room is opened.
                                 if (isRoomActive(room_id))
                                         continue;
-
-                                if (userSettings_->hasAlertOnNotification()) {
-                                        QApplication::alert(this);
-                                }
 
                                 if (userSettings_->hasDesktopNotifications()) {
                                         auto info = cache::singleRoomInfo(item.room_id);
