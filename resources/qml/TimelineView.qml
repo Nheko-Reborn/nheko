@@ -123,6 +123,9 @@ Item {
             color: Nheko.theme.separator
         }
 
+        NotificationWarning {
+        }
+
         ReplyPopup {
         }
 

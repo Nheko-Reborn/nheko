@@ -61,3 +61,10 @@ Permissions::canSend(int eventType)
                pl.event_level(to_string(qml_mtx_events::fromRoomEventType(
                  static_cast<qml_mtx_events::EventType>(eventType))));
 }
+
+bool
+Permissions::canPingRoom()
+{
+        return pl.user_level(http::client()->user_id().to_string()) >=
+               pl.notification_level(mtx::events::state::notification_keys::room);
+}

@@ -28,6 +28,8 @@ class InputBar : public QObject
 {
         Q_OBJECT
         Q_PROPERTY(bool uploading READ uploading NOTIFY uploadingChanged)
+        Q_PROPERTY(bool containsAtRoom READ containsAtRoom NOTIFY containsAtRoomChanged)
+        Q_PROPERTY(QString text READ text NOTIFY textChanged)
 
 public:
         InputBar(TimelineModel *parent)
@@ -47,6 +49,8 @@ public slots:
         QString previousText();
         QString nextText();
         void setText(QString newText);
+
+        bool containsAtRoom() const { return containsAtRoom_; }
 
         void send();
         void paste(bool fromMouse);
@@ -68,6 +72,7 @@ signals:
         void insertText(QString text);
         void textChanged(QString newText);
         void uploadingChanged(bool value);
+        void containsAtRoomChanged();
 
 private:
         void emote(QString body, bool rainbowify);
@@ -105,11 +110,14 @@ private:
                 }
         }
 
+        void updateAtRoom(const QString &t);
+
         QTimer typingRefresh_;
         QTimer typingTimeout_;
         TimelineModel *room;
         std::deque<QString> history_;
         std::size_t history_index_ = 0;
         int selectionStart = 0, selectionEnd = 0, cursorPosition = 0;
-        bool uploading_ = false;
+        bool uploading_      = false;
+        bool containsAtRoom_ = false;
 };

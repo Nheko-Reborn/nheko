@@ -25,6 +25,8 @@ public:
         Q_INVOKABLE bool canChange(int eventType);
         Q_INVOKABLE bool canSend(int eventType);
 
+        Q_INVOKABLE bool canPingRoom();
+
         void invalidate();
 
 private:

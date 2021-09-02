@@ -268,7 +268,7 @@ Rectangle {
                     function onRoomChanged() {
                         messageInput.clear();
                         if (room)
-                            messageInput.append(room.input.text());
+                            messageInput.append(room.input.text);
 
                         popup.completerName = "";
                         messageInput.forceActiveFocus();

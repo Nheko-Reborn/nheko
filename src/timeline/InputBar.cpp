@@ -11,6 +11,7 @@
 #include <QMimeData>
 #include <QMimeDatabase>
 #include <QStandardPaths>
+#include <QTextBoundaryFinder>
 #include <QUrl>
 
 #include <QRegularExpression>
@@ -130,6 +131,34 @@ InputBar::insertMimeData(const QMimeData *md)
 }
 
 void
+InputBar::updateAtRoom(const QString &t)
+{
+        bool roomMention = false;
+
+        if (t.size() > 4) {
+                QTextBoundaryFinder finder(QTextBoundaryFinder::BoundaryType::Word, t);
+
+                finder.toStart();
+                do {
+                        auto start = finder.position();
+                        finder.toNextBoundary();
+                        auto end = finder.position();
+                        if (start > 0 && end - start >= 4 &&
+                            t.midRef(start, end - start) == "room" &&
+                            t.at(start - 1) == QChar('@')) {
+                                roomMention = true;
+                                break;
+                        }
+                } while (finder.position() < t.size());
+        }
+
+        if (roomMention != this->containsAtRoom_) {
+                this->containsAtRoom_ = roomMention;
+                emit containsAtRoomChanged();
+        }
+}
+
+void
 InputBar::setText(QString newText)
 {
         if (history_.empty())
@@ -157,6 +186,8 @@ InputBar::updateState(int selectionStart_, int selectionEnd_, int cursorPosition
                 else
                         history_.front() = text_;
                 history_index_ = 0;
+
+                updateAtRoom(text_);
         }
 
         selectionStart = selectionStart_;
@@ -182,6 +213,7 @@ InputBar::previousText()
         else if (text().isEmpty())
                 history_index_--;
 
+        updateAtRoom(text());
         return text();
 }
 
@@ -192,6 +224,7 @@ InputBar::nextText()
         if (history_index_ >= INPUT_HISTORY_SIZE)
                 history_index_ = 0;
 
+        updateAtRoom(text());
         return text();
 }
 
