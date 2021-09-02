@@ -412,6 +412,8 @@ ScrollView {
             Loader {
                 id: section
 
+                z: 4
+
                 property int parentWidth: parent.width
                 property string userId: wrapper.userId
                 property string previousMessageUserId: wrapper.previousMessageUserId
