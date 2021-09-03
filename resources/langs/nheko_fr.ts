@@ -1710,7 +1710,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
         <location line="+34"/>
         <location line="+20"/>
         <source>Failed to upload image: %s</source>
-        <translation>Échec de l’envoi de l&apos;image : %s</translation>
+        <translation>Échec de l&apos;envoi de l&apos;image : %s</translation>
     </message>
 </context>
 <context>
@@ -1718,17 +1718,17 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location filename="../../src/timeline/RoomlistModel.cpp" line="+143"/>
         <source>Pending invite.</source>
-        <translation type="unfinished"></translation>
+        <translation>Invitation en attente.</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Previewing this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Prévisualisation du salon</translation>
     </message>
     <message>
         <location line="+34"/>
         <source>No preview available</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune prévisualisation disponible</translation>
     </message>
 </context>
 <context>
@@ -1741,12 +1741,12 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+11"/>
         <source>Window:</source>
-        <translation>Fenêtre  :</translation>
+        <translation>Fenêtre :</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Frame rate:</source>
-        <translation>Fréquence d&apos;images  :</translation>
+        <translation>Fréquence d&apos;images :</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -1782,7 +1782,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+7"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -1790,12 +1790,12 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location filename="../../src/Cache.cpp" line="-3765"/>
         <source>Failed to connect to secret storage</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de la connexion au stockage des secrets</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Secrets or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko n&apos;a pas pu se connecter au stockage des secrets pour y stocker les secrets de chiffrement. Plusieurs causes sont possibles. Vérifiez si votre service D-Bus est en cours d&apos;exécution et si vous avez configuré un service comme KWallet, Gnome Secrets, ou un équivalent pour votre plate-forme. En cas de difficulté, n&apos;hésitez pas à ouvrir un ticket ici (en anglais) : https://github.com/Nheko-Reborn/nheko/issues</translation>
     </message>
 </context>
 <context>
@@ -1804,22 +1804,22 @@ Exemple : https ://monserveur.example.com:8787</translation>
         <location filename="../../src/SingleImagePackModel.cpp" line="+261"/>
         <location line="+25"/>
         <source>Failed to update image pack: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de la mise à jour du paquet d&apos;images : %1</translation>
     </message>
     <message>
         <location line="-12"/>
         <source>Failed to delete old image pack: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de l&apos;effacement de l&apos;ancien paquet d&apos;images : %1</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Failed to open image: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de l&apos;ouverture de l&apos;image : %1</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Failed to upload image: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de l&apos;envoi de l&apos;image : %1</translation>
     </message>
 </context>
 <context>
@@ -1850,7 +1850,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location filename="../qml/emoji/StickerPicker.qml" line="+70"/>
         <source>Search</source>
-        <translation type="unfinished">Chercher</translation>
+        <translation>Rechercher</translation>
     </message>
 </context>
 <context>
@@ -1863,7 +1863,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+12"/>
         <source>Verification successful! Both sides verified their devices!</source>
-        <translation>Vérification réussie ! Les deux côtés ont vérifié leur appareil !</translation>
+        <translation>Vérification réussie !  Les deux côtés ont vérifié leur appareil !</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1916,7 +1916,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+68"/>
         <source>%1 opened the room to the public.</source>
-        <translation>%1 a rendu le salon ouvert au public.</translation>
+        <translation>%1 a ouvert le salon au public.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1926,12 +1926,12 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+2"/>
         <source>%1 allowed to join this room by knocking.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a permis de rejoindre ce salon en toquant.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 allowed members of the following rooms to automatically join this room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a permis aux membres des salons suivants de rejoindre automatiquement ce salon : %2</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1961,7 +1961,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they joined the room.</source>
-        <translation>%1 a rendu l&apos;historique du salon visible à partir de l&apos;instant où un membre le rejoint.</translation>
+        <translation>%1 a rendu l&apos;historique du salon visible aux membres à partir de l&apos;instant où ils le rejoignent.</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -1981,7 +1981,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+2"/>
         <source>%1 changed some profile info.</source>
-        <translation>%1 a changé ses informations de profil.</translation>
+        <translation>%1 a changé des informations de profil.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1991,7 +1991,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+2"/>
         <source>%1 joined via authorisation from %2&apos;s server.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a rejoint via une autorisation de la part du serveur de %2.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2026,12 +2026,12 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+9"/>
         <source>Reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Raison : %1</translation>
     </message>
     <message>
         <location line="-20"/>
         <source>%1 redacted their knock.</source>
-        <translation>%1 ne frappe plus au salon.</translation>
+        <translation>%1 a arrêté de toquer.</translation>
     </message>
     <message>
         <location line="-957"/>
@@ -2041,17 +2041,17 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+917"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a changé son avatar et changé son surnom en %2.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 has changed their display name to %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a changé son surnom en %2.</translation>
     </message>
     <message>
         <location line="+37"/>
         <source>Rejected the knock from %1.</source>
-        <translation>%1 a été rejeté après avoir frappé au salon.</translation>
+        <translation>%1 a été rejeté après avoir toqué.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2062,7 +2062,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+10"/>
         <source>%1 knocked.</source>
-        <translation>%1 a frappé au salon.</translation>
+        <translation>%1 a toqué.</translation>
     </message>
 </context>
 <context>
@@ -2083,27 +2083,27 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+139"/>
         <source>%1 member(s)</source>
-        <translation type="unfinished">%1 membre(s)</translation>
+        <translation>%1 membre(s)</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>join the conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>rejoindre la conversation</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>accept invite</source>
-        <translation type="unfinished"></translation>
+        <translation>accepter l&apos;invitation</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>decline invite</source>
-        <translation type="unfinished"></translation>
+        <translation>décliner l&apos;invitation</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Back to room list</source>
-        <translation type="unfinished">Revenir à la liste des salons</translation>
+        <translation>Revenir à la liste des salons</translation>
     </message>
 </context>
 <context>
@@ -2111,7 +2111,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location filename="../../src/timeline/TimelineViewManager.cpp" line="+548"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation>Pas de discussion privée et chiffrée trouvée avec cet utilisateur. Créez-en une et réessayez.</translation>
+        <translation>Aucune discussion privée chiffrée trouvée avec cet utilisateur. Créez-en une et réessayez.</translation>
     </message>
 </context>
 <context>
@@ -2129,22 +2129,22 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+91"/>
         <source>This room is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce salon n&apos;est pas chiffré !</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>This room contains only verified devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce salon ne contient que des appareils vérifiés.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This rooms contain verified devices and devices which have never changed their master key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce salon contient des appareils vérifiés et des appareils qui n&apos;ont jamais changé leur clef maîtresse.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This room contains unverified devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce salon contient des appareils non vérifiés !</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -2226,7 +2226,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+307"/>
         <source>Select an avatar</source>
-        <translation>Sélectionner un avatar</translation>
+        <translation>Sélectionnez un avatar</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2258,7 +2258,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+557"/>
         <source>Minimize to tray</source>
-        <translation>Réduire à la barre des tâches</translation>
+        <translation>Réduire dans la barre des tâches</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2293,7 +2293,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+46"/>
         <source>Cross Signing Keys</source>
-        <translation type="unfinished">Clés d&apos;auto-vérification (Cross-Signing)</translation>
+        <translation>Clés de signature croisée (Cross-Signing)</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2308,12 +2308,12 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+27"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation>Conserver l&apos;application en arrière plan après la fermeture de la fenêtre du client.</translation>
+        <translation>Conserver l&apos;application en arrière-plan après avoir fermé la fenêtre du client.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation>Démarrer l&apos;application en arrière plan sans montrer la fenêtre du client.</translation>
+        <translation>Démarrer l&apos;application en arrière-plan sans montrer la fenêtre du client.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2325,7 +2325,7 @@ OFF – carré, ON – cercle.</translation>
     <message>
         <location line="+3"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation>Affiche une colonne contenant les groupes et tags à côté de la liste des salons.</translation>
+        <translation>Affiche une colonne contenant les groupes et étiquettes à côté de la liste des salons.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2364,7 +2364,7 @@ Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds
         <translation>Temps d&apos;attente (en secondes) avant le floutage des
 conversations lorsque la fenêtre n&apos;est plus active.
 Régler à 0 pour flouter immédiatement lorsque la fenêtre n&apos;est plus au premier plan.
-Valeur maximale de une heure (3600 secondes).</translation>
+Valeur maximale d&apos;une heure (3600 secondes).</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2374,12 +2374,12 @@ Valeur maximale de une heure (3600 secondes).</translation>
     <message>
         <location line="+2"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation>Montre les boutons de réponse, réaction ou options additionnelles près de chaque message.</translation>
+        <translation>Montre les boutons de réponse, réaction et options additionnelles près de chaque message.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation>Limiter la largeur de l&apos;historique</translation>
+        <translation>Limiter la largeur de la discussion</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2409,9 +2409,9 @@ Ceci activera ou désactivera également l&apos;envoi de notifications similaire
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
         <translation>Montre les salons qui contiennent de nouveaux messages en premier.
-Si non activé, la liste des salons sera uniquement trié en fonction de la date du dernier message.
+Si non activé, la liste des salons sera uniquement triée en fonction de la date du dernier message.
 Si activé, les salons qui ont des notifications actives (le petit cercle avec un chiffre dedans) seront affichés en premier.
-Les salons que vous avez rendu silencieux seront toujours triés par date du dernier message, car ceux-ci sont considérés comme moins importants.</translation>
+Les salons que vous avez rendu silencieux seront toujours triés par date du dernier message, puisqu&apos;ils sont considérés comme moins importants.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2440,17 +2440,17 @@ Lorsque désactivé, tous les messages sont envoyés en texte brut.</translation
     <message>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne jouer les images animées que quand survolées</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Desktop notifications</source>
-        <translation>Notifier sur le bureau</translation>
+        <translation>Notifications sur le bureau</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Notify about received message when the client is not currently focused.</source>
-        <translation>Notifie des messages reçus lorsque la fenêtre du client n&apos;est pas focalisée.</translation>
+        <translation>Notifie des messages reçus lorsque la fenêtre du client n&apos;est pas active.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2477,22 +2477,22 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location line="+1"/>
         <source>Large Emoji in timeline</source>
-        <translation>Grandes émoticônes dans la discussion</translation>
+        <translation>Grands emojis dans la discussion</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation>Augmente la taille de la police lors de l&apos;affichage de messages contenant uniquement quelques emojis.</translation>
+        <translation>Augmente la taille de la police des messages contenant uniquement quelques emojis.</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Send encrypted messages to verified users only</source>
-        <translation type="unfinished"></translation>
+        <translation>N&apos;envoyer des messages chiffrés qu&apos;aux utilisateurs vérifiés</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
-        <translation type="unfinished"></translation>
+        <translation>Requiert qu&apos;un utilisateur soit vérifié pour lui envoyer des messages chiffrés. La sécurité en est améliorée, mais le chiffrement de bout en bout devient plus fastidieux.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2502,27 +2502,27 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location line="+2"/>
         <source>Automatically replies to key requests from other users, if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished"></translation>
+        <translation>Répond automatiquement aux requêtes de clefs des autres utilisateurs, s&apos;ils sont vérifiés, même si cet appareil ne devrait pas avoir accès à ces clefs autrement.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Online Key Backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauvegarde des clefs en ligne</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Download message encryption keys from and upload to the encrypted online key backup.</source>
-        <translation type="unfinished"></translation>
+        <translation>Télécharge les clefs de chiffrement de message depuis et envoie vers la sauvegarde chiffrée en ligne de clefs.</translation>
     </message>
     <message>
         <location line="+181"/>
         <source>Enable online key backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Activer la sauvegarde de clefs en ligne</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The Nheko authors recommend not enabling online key backup until symmetric online key backup is available. Enable anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Les auteurs de Nheko ne recommandent pas d&apos;activer la sauvegarde en ligne de clefs jusqu&apos;à ce que la sauvegarde symétrique en ligne de clefs soit disponible. Activer quand même ?</translation>
     </message>
     <message>
         <location line="+248"/>
@@ -2542,7 +2542,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location line="+2"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation>Agrandit l&apos;interface entière de ce facteur.</translation>
+        <translation>Agrandit l&apos;interface entière par ce facteur.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2642,7 +2642,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location line="+180"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Joue les images comme les GIFs ou WEBPs uniquement quand la souris est au-dessus.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -2652,17 +2652,17 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation>Empêchera la sélection de texte dans la discussion pour faciliter le défilement tactile.</translation>
+        <translation>Empêche la sélection de texte dans la discussion pour faciliter le défilement tactile.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Emoji Font Family</source>
-        <translation>Nom de Police Emoji</translation>
+        <translation>Nom de police pour émoji</translation>
     </message>
     <message>
         <location line="+53"/>
         <source>Master signing key</source>
-        <translation>Clé de signature de l&apos;utilisateur</translation>
+        <translation>Clé de signature maîtresse de l&apos;utilisateur</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2677,12 +2677,12 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location line="+2"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation type="unfinished">La clé utilisée pour vérifier d&apos;autres utilisateurs. Si celle-ci est cachée, vérifier un utilisateur vérifiera tous ses appareils.</translation>
+        <translation>La clé utilisée pour vérifier d&apos;autres utilisateurs. Si celle-ci est dans le cache, vérifier un utilisateur vérifiera tous ses appareils.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Self signing key</source>
-        <translation type="unfinished">Clé d&apos;auto-vérification</translation>
+        <translation>Clé d&apos;auto-vérification</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2692,12 +2692,12 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location line="+3"/>
         <source>Backup key</source>
-        <translation type="unfinished">Clé de secours</translation>
+        <translation>Clé de secours</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
-        <translation>La clé utilisée pour déchiffrer les sauvegardes de clé stockées en ligne. Si celle-ci est cachée, vous pouvez activer la sauvegarde de vos clés en ligne afin d&apos;en conserver une copie chiffrée en toute sécurité sur le serveur.</translation>
+        <translation>La clé utilisée pour déchiffrer les sauvegardes de clé stockées en ligne. Si celle-ci est dans le cache, vous pouvez activer la sauvegarde de vos clés en ligne afin d&apos;en conserver une copie chiffrée en toute sécurité sur le serveur.</translation>
     </message>
     <message>
         <location line="+54"/>
@@ -2712,7 +2712,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location line="+261"/>
         <source>Open Sessions File</source>
-        <translation>Ouvrir fichier de sessions</translation>
+        <translation>Ouvrir le fichier de sessions</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2733,7 +2733,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location line="-27"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation>Entrez la clé secrète pour déchiffrer le fichier  :</translation>
+        <translation>Entrez la phrase de passe pour déchiffrer le fichier :</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2744,7 +2744,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation>Entrez une clé secrète pour chiffrer vos clés de session  :</translation>
+        <translation>Entrez une phrase de passe pour chiffrer vos clés de session :</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -2859,7 +2859,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location filename="../../src/dialogs/FallbackAuth.cpp" line="+34"/>
         <source>Open Fallback in Browser</source>
-        <translation>Ouvrir la solution de repli dans le navigateur</translation>
+        <translation>Ouvrir la solution de secours dans le navigateur</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2874,7 +2874,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
-        <translation>Ouvrez la solution de repli, suivez les étapes et confirmez après les avoir terminées.</translation>
+        <translation>Ouvrez la solution de secours, suivez les étapes et confirmez après les avoir terminées.</translation>
     </message>
 </context>
 <context>
@@ -3026,12 +3026,12 @@ Taille du média : %2
     <message>
         <location line="+5"/>
         <source>You: %1</source>
-        <translation>Vous  : %1</translation>
+        <translation>Vous : %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1: %2</source>
-        <translation>%1  : %2</translation>
+        <translation>%1 : %2</translation>
     </message>
     <message>
         <location line="+7"/>
