@@ -650,4 +650,38 @@ ScrollView {
 
     }
 
+    Platform.Menu {
+        id: replyContextMenu
+
+        property string text
+        property string link
+
+        function show(text_, link_) {
+            text = text_;
+            link = link_;
+            open();
+        }
+
+        Platform.MenuItem {
+            visible: replyContextMenu.text
+            enabled: visible
+            text: qsTr("&Copy")
+            onTriggered: Clipboard.text = replyContextMenu.text
+        }
+
+        Platform.MenuItem {
+            visible: replyContextMenu.link
+            enabled: visible
+            text: qsTr("Copy &link location")
+            onTriggered: Clipboard.text = replyContextMenu.link
+        }
+
+        Platform.MenuItem {
+            visible: true
+            enabled: visible
+            text: qsTr("&Go to reply")
+            onTriggered: chat.model.showEvent(eventId)
+        }
+    }
+
 }
