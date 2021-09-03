@@ -15,7 +15,7 @@ Item {
     Rectangle {
         id: warningRect
 
-        visible: (room && room.permissions.canPingRoom && room.input.containsAtRoom)
+        visible: (room && room.permissions.canPingRoom() && room.input.containsAtRoom)
         color: Nheko.colors.base
         anchors.fill: parent
         z: 3
