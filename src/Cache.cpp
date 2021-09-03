@@ -4442,13 +4442,19 @@ Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
                 // Update verified devices count to count without cross-signing
                 updateUnverifiedDevices(theirKeys->device_keys);
 
-                if (!mtx::crypto::ed25519_verify_signature(
-                      olm::client()->identity_keys().ed25519,
-                      json(ourKeys->master_keys),
-                      ourKeys->master_keys.signatures.at(local_user)
-                        .at("ed25519:" + http::client()->device_id()))) {
-                        verification_storage.status[user_id] = status;
-                        return status;
+                {
+                        auto &mk           = ourKeys->master_keys;
+                        std::string dev_id = "ed25519:" + http::client()->device_id();
+                        if (!mk.signatures.count(local_user) ||
+                            !mk.signatures.at(local_user).count(dev_id) ||
+                            !mtx::crypto::ed25519_verify_signature(
+                              olm::client()->identity_keys().ed25519,
+                              json(mk),
+                              mk.signatures.at(local_user).at(dev_id))) {
+                                nhlog::crypto()->debug("We have not verified our own master key");
+                                verification_storage.status[user_id] = status;
+                                return status;
+                        }
                 }
 
                 auto master_keys = ourKeys->master_keys.keys;
