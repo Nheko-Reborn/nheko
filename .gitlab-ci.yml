@@ -55,7 +55,6 @@ build-macos:
     #- brew update
     #- brew reinstall --force python3
     #- brew bundle --file=./.ci/macos/Brewfile --force --cleanup
-    - pip3 install dmgbuild
     - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
   script:
     - export PATH=/usr/local/opt/qt@5/bin/:${PATH}
@@ -72,18 +71,39 @@ build-macos:
     - cmake --build build
   after_script:
     - mv ../.hunter .hunter
-    - ./.ci/macos/deploy.sh
-    - ./.ci/upload-nightly-gitlab.sh artifacts/nheko-${CI_COMMIT_SHORT_SHA}.dmg
   artifacts:
     paths:
-      - artifacts/nheko-${CI_COMMIT_SHORT_SHA}.dmg
-    name: nheko-${CI_COMMIT_SHORT_SHA}-macos
-    expose_as: 'macos-dmg'
+      - build/nheko.app
+    name: nheko-${CI_COMMIT_SHORT_SHA}-macos-app
+    expose_as: 'macos-app'
+    public: false
   cache:
     key: "${CI_JOB_NAME}"
     paths:
       - .hunter/
       - "${CCACHE_DIR}"
+
+codesign-macos:
+  stage: deploy
+  tags: [macos]
+  before_script:
+    - pip3 install dmgbuild
+  script:
+    - export PATH=/usr/local/opt/qt@5/bin/:${PATH}
+    - ./.ci/macos/notarize.sh
+  after_script:
+    - ./.ci/upload-nightly-gitlab.sh artifacts/nheko-${CI_COMMIT_SHORT_SHA}.dmg
+  needs:
+    - build-macos
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if : $CI_COMMIT_TAG
+  artifacts:
+    paths:
+      - artifacts/nheko-${CI_COMMIT_SHORT_SHA}.dmg
+    name: nheko-${CI_COMMIT_SHORT_SHA}-macos
+    expose_as: 'macos-dmg'
+
 
 build-flatpak-amd64:
   stage: build
