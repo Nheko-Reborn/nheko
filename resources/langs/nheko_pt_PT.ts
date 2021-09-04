@@ -6,7 +6,7 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+106"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>A chamar...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -17,7 +17,7 @@
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation type="unfinished"></translation>
+        <translation>Está a partilhar o seu ecrã</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -40,7 +40,7 @@
     <message>
         <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+12"/>
         <source>Awaiting Confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>A aguardar confirmação</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -58,17 +58,17 @@
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+71"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Videochamada</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Chamada</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenhum microfone encontrado.</translation>
     </message>
 </context>
 <context>
@@ -76,42 +76,42 @@
     <message>
         <location filename="../qml/voip/CallInviteBar.qml" line="+64"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Videochamada</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Chamada</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Dispositivos</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Aceitar</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Unknown microphone: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Microfone desconhecido: %1</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Unknown camera: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Câmara desconhecida: %1</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Recusar</translation>
     </message>
     <message>
         <location line="-28"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenhum microfone encontrado.</translation>
     </message>
 </context>
 <context>
@@ -119,7 +119,7 @@
     <message>
         <location filename="../../src/CallManager.cpp" line="+521"/>
         <source>Entire screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Ecrã inteiro</translation>
     </message>
 </context>
 <context>
@@ -127,28 +127,28 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+128"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao convidar utilizador: %1</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+673"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizador convidado: %1</translation>
     </message>
     <message>
         <location line="-464"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>A migração da cache para a versão atual falhou, e existem várias razões possíveis. Por favor abra um problema (&quot;issue&quot;) e experimente usar uma versão mais antiga entretanto. Alternativamente, pode tentar apagar a cache manualmente.</translation>
     </message>
     <message>
         <location line="+367"/>
         <source>Confirm join</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar entrada</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to join %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Tem a certeza que quer entrar em %1?</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -164,7 +164,7 @@
     <message>
         <location line="-350"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Tem a certeza que quer convidar %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -179,12 +179,12 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to kick %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Tem a certeza que quer expulsar %1 (%2)?</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Kicked user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizador expulso: %1</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -194,7 +194,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to ban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Tem a certeza que quer banir %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -204,12 +204,12 @@
     <message>
         <location line="+5"/>
         <source>Banned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizador banido: %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Confirm unban</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar perdão</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -229,39 +229,39 @@
     <message>
         <location line="+254"/>
         <source>Do you really want to start a private chat with %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Tem a certeza que quer começar uma conversa privada com %1?</translation>
     </message>
     <message>
         <location line="-800"/>
         <source>Cache migration failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao migrar a cache!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Incompatible cache version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versão da cache incompatível</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>A cache que existe no seu disco é mais recente do que esta versão do Nheko suporta. Por favor atualize-a ou apague-a.</translation>
     </message>
     <message>
         <location line="+49"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao restaurar a sua conta OLM. Por favor autentique-se novamente.</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+4"/>
         <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao restaurar dados guardados. Por favor, autentique-se novamente.</translation>
     </message>
     <message>
         <location line="+99"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao estabelecer chaves encriptadas. Resposta do servidor: %1 %2. Tente novamente.</translation>
     </message>
     <message>
         <location line="+34"/>
