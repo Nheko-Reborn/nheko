@@ -29,6 +29,7 @@ MatrixText {
         border-collapse: collapse;
         border: 1px solid " + Nheko.colors.text + ";
     }
+    blockquote { margin-left: 1em; }
     </style>
     " + formatted.replace("<pre>", "<pre style='white-space: pre-wrap; background-color: " + Nheko.colors.alternateBase + "'>").replace("<del>", "<s>").replace("</del>", "</s>").replace("<strike>", "<s>").replace("</strike>", "</s>")
     width: parent ? parent.width : undefined
