@@ -50,7 +50,7 @@
     <message>
         <location line="+13"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -153,13 +153,13 @@
     <message>
         <location line="+44"/>
         <source>Room %1 created.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sala %1 criada.</translation>
     </message>
     <message>
         <location line="+35"/>
         <location line="+351"/>
         <source>Confirm invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar convite</translation>
     </message>
     <message>
         <location line="-350"/>
@@ -169,12 +169,12 @@
     <message>
         <location line="+11"/>
         <source>Failed to invite %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao convidar %1 para %2: %3</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Confirm kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar expulsão</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -189,7 +189,7 @@
     <message>
         <location line="+10"/>
         <source>Confirm ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar banimento</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -199,7 +199,7 @@
     <message>
         <location line="+11"/>
         <source>Failed to ban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao banir %1 em %2: %3</translation>
     </message>
     <message>
         <location line="+5"/>
