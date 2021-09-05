@@ -66,7 +66,7 @@ public:
                 Tags,
                 ParentSpaces,
                 IsDirect,
-                DirectChatAvatarMxid,
+                DirectChatOtherUserId,
         };
 
         RoomlistModel(TimelineViewManager *parent = nullptr);
