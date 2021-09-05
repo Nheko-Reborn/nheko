@@ -20,6 +20,7 @@ ApplicationWindow {
 
     height: 650
     width: 420
+    minimumWidth: 150
     minimumHeight: 420
     palette: Nheko.colors
     color: Nheko.colors.window
@@ -45,9 +46,23 @@ ApplicationWindow {
             height: 130
             width: 130
             displayName: profile.displayName
+            id: displayAvatar
             userid: profile.userid
             Layout.alignment: Qt.AlignHCenter
-            onClicked: profile.isSelf ? profile.changeAvatar() : TimelineManager.openImageOverlay(profile.avatarUrl, "")
+            onClicked: TimelineManager.openImageOverlay(profile.avatarUrl, "")
+
+            ImageButton {
+                hoverEnabled: true
+                ToolTip.visible: hovered
+                ToolTip.text: profile.isGlobalUserProfile ? qsTr("Change avatar globally.") : qsTr("Change avatar. Will only apply to this room.")
+                anchors.left: displayAvatar.left
+                anchors.top: displayAvatar.top
+                anchors.leftMargin: Nheko.paddingMedium
+                anchors.topMargin: Nheko.paddingMedium
+                visible: profile.isSelf
+                image: ":/icons/icons/ui/edit.png"
+                onClicked: profile.changeAvatar()
+            }
         }
 
         Spinner {
@@ -113,9 +128,12 @@ ApplicationWindow {
 
             ImageButton {
                 visible: profile.isSelf
-                anchors.leftMargin: 5
+                anchors.leftMargin: Nheko.paddingSmall
                 anchors.left: displayUsername.right
                 anchors.verticalCenter: displayUsername.verticalCenter
+                hoverEnabled: true
+                ToolTip.visible: hovered
+                ToolTip.text: profile.isGlobalUserProfile ? qsTr("Change display name globally.") : qsTr("Change display name. Will only apply to this room.")
                 image: displayUsername.isUsernameEditingAllowed ? ":/icons/icons/ui/checkmark.png" : ":/icons/icons/ui/edit.png"
                 onClicked: {
                     if (displayUsername.isUsernameEditingAllowed) {
@@ -135,6 +153,30 @@ ApplicationWindow {
             text: profile.userid
             font.pixelSize: 15
             Layout.alignment: Qt.AlignHCenter
+        }
+
+        MatrixText {
+            id: displayRoomname
+            text: qsTr("Room: %1").arg(profile.room.roomName)
+            Layout.alignment: Qt.AlignHCenter
+            visible: !profile.isGlobalUserProfile
+            ToolTip.text: qsTr("This is a room-specific profile. The user's name and avatar may be different from their global versions.")
+            ToolTip.visible: ma.hovered
+            HoverHandler {
+                id: ma
+            }
+
+            ImageButton {
+                anchors.leftMargin: Nheko.paddingSmall
+                anchors.left: displayRoomname.right
+                anchors.verticalCenter: displayRoomname.verticalCenter
+                image: ":/icons/icons/ui/world.png"
+                hoverEnabled: true
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Open the global profile for this user.")
+                onClicked: profile.openGlobalProfile()
+                visible: !profile.isGlobalUserProfile
+            }
         }
 
         Button {
@@ -163,7 +205,7 @@ ApplicationWindow {
             //         right: 5
             //     }
             //     ToolTip.visible: hovered
-            //     ToolTip.text: qsTr("Ignore messages from this user")
+            //     ToolTip.text: qsTr("Ignore messages from this user.")
             //     onClicked : {
             //         profile.ignoreUser()
             //     }
@@ -176,7 +218,7 @@ ApplicationWindow {
                 image: ":/icons/icons/ui/black-bubble-speech.png"
                 hoverEnabled: true
                 ToolTip.visible: hovered
-                ToolTip.text: qsTr("Start a private chat")
+                ToolTip.text: qsTr("Start a private chat.")
                 onClicked: profile.startChat()
             }
 
@@ -184,18 +226,18 @@ ApplicationWindow {
                 image: ":/icons/icons/ui/round-remove-button.png"
                 hoverEnabled: true
                 ToolTip.visible: hovered
-                ToolTip.text: qsTr("Kick the user")
+                ToolTip.text: qsTr("Kick the user.")
                 onClicked: profile.kickUser()
-                visible: profile.room ? profile.room.permissions.canKick() : false
+                visible: !profile.isGlobalUserProfile && profile.room.permissions.canKick()
             }
 
             ImageButton {
                 image: ":/icons/icons/ui/do-not-disturb-rounded-sign.png"
                 hoverEnabled: true
                 ToolTip.visible: hovered
-                ToolTip.text: qsTr("Ban the user")
+                ToolTip.text: qsTr("Ban the user.")
                 onClicked: profile.banUser()
-                visible: profile.room ? profile.room.permissions.canBan() : false
+                visible: !profile.isGlobalUserProfile && profile.room.permissions.canBan()
             }
 
         }
