@@ -2999,24 +2999,31 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                         eventsDb.put(txn, redaction->redacts, event.dump());
                         eventsDb.put(txn, redaction->event_id, json(*redaction).dump());
                 } else {
-                        eventsDb.put(txn, event_id, event.dump());
-
-                        ++index;
-
                         first = false;
 
-                        nhlog::db()->debug("saving '{}'", orderEntry.dump());
+                        // This check protects against duplicates in the timeline. If the event_id
+                        // is already in the DB, we skip putting it (again) in ordered DBs, and only
+                        // update the event itself and its relations.
+                        std::string_view unused_read;
+                        if (!eventsDb.get(txn, event_id, unused_read)) {
+                                ++index;
 
-                        cursor.put(lmdb::to_sv(index), orderEntry.dump(), MDB_APPEND);
-                        evToOrderDb.put(txn, event_id, lmdb::to_sv(index));
+                                nhlog::db()->debug("saving '{}'", orderEntry.dump());
 
-                        // TODO(Nico): Allow blacklisting more event types in UI
-                        if (!isHiddenEvent(txn, e, room_id)) {
-                                ++msgIndex;
-                                msgCursor.put(lmdb::to_sv(msgIndex), event_id, MDB_APPEND);
+                                cursor.put(lmdb::to_sv(index), orderEntry.dump(), MDB_APPEND);
+                                evToOrderDb.put(txn, event_id, lmdb::to_sv(index));
 
-                                msg2orderDb.put(txn, event_id, lmdb::to_sv(msgIndex));
+                                // TODO(Nico): Allow blacklisting more event types in UI
+                                if (!isHiddenEvent(txn, e, room_id)) {
+                                        ++msgIndex;
+                                        msgCursor.put(lmdb::to_sv(msgIndex), event_id, MDB_APPEND);
+
+                                        msg2orderDb.put(txn, event_id, lmdb::to_sv(msgIndex));
+                                }
+                        } else {
+                                nhlog::db()->warn("duplicate event '{}'", orderEntry.dump());
                         }
+                        eventsDb.put(txn, event_id, event.dump());
 
                         auto relations = mtx::accessors::relations(e);
                         if (!relations.relations.empty()) {
@@ -3078,23 +3085,29 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
                 auto event                = mtx::accessors::serialize_event(e);
                 event_id_val              = event["event_id"].get<std::string>();
                 std::string_view event_id = event_id_val;
-                eventsDb.put(txn, event_id, event.dump());
 
-                --index;
+                // This check protects against duplicates in the timeline. If the event_id is
+                // already in the DB, we skip putting it (again) in ordered DBs, and only update the
+                // event itself and its relations.
+                std::string_view unused_read;
+                if (!eventsDb.get(txn, event_id, unused_read)) {
+                        --index;
 
-                json orderEntry        = json::object();
-                orderEntry["event_id"] = event_id_val;
+                        json orderEntry        = json::object();
+                        orderEntry["event_id"] = event_id_val;
 
-                orderDb.put(txn, lmdb::to_sv(index), orderEntry.dump());
-                evToOrderDb.put(txn, event_id, lmdb::to_sv(index));
+                        orderDb.put(txn, lmdb::to_sv(index), orderEntry.dump());
+                        evToOrderDb.put(txn, event_id, lmdb::to_sv(index));
 
-                // TODO(Nico): Allow blacklisting more event types in UI
-                if (!isHiddenEvent(txn, e, room_id)) {
-                        --msgIndex;
-                        order2msgDb.put(txn, lmdb::to_sv(msgIndex), event_id);
+                        // TODO(Nico): Allow blacklisting more event types in UI
+                        if (!isHiddenEvent(txn, e, room_id)) {
+                                --msgIndex;
+                                order2msgDb.put(txn, lmdb::to_sv(msgIndex), event_id);
 
-                        msg2orderDb.put(txn, event_id, lmdb::to_sv(msgIndex));
+                                msg2orderDb.put(txn, event_id, lmdb::to_sv(msgIndex));
+                        }
                 }
+                eventsDb.put(txn, event_id, event.dump());
 
                 auto relations = mtx::accessors::relations(e);
                 if (!relations.relations.empty()) {
