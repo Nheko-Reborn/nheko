@@ -1001,6 +1001,23 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
                                   // mark as published anyway, otherwise we may end up in a loop.
                                   olm::mark_keys_as_published();
                           });
+                } else if (count->second > 2 * MAX_ONETIME_KEYS) {
+                        nhlog::crypto()->warn("too many one-time keys, deleting 1");
+                        mtx::requests::ClaimKeys req;
+                        req.one_time_keys[http::client()->user_id().to_string()]
+                                         [http::client()->device_id()] =
+                          std::string(mtx::crypto::SIGNED_CURVE25519);
+                        http::client()->claim_keys(
+                          req, [](const mtx::responses::ClaimKeys &, mtx::http::RequestErr err) {
+                                  if (err)
+                                          nhlog::crypto()->warn(
+                                            "failed to clear 1 one-time key: {} {} {}",
+                                            err->matrix_error.error,
+                                            static_cast<int>(err->status_code),
+                                            static_cast<int>(err->error_code));
+                                  else
+                                          nhlog::crypto()->info("cleared 1 one-time key");
+                          });
                 }
         }
 }
