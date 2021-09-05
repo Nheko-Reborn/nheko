@@ -206,7 +206,9 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
         std::vector<RoomMember> members(cache::getMembers(roomid.toStdString()));
         const RoomMember &callee =
           members.front().user_id == utils::localUser() ? members.back() : members.front();
-        callParty_          = callee.display_name.isEmpty() ? callee.user_id : callee.display_name;
+        callParty_ = callee.user_id;
+        callPartyDisplayName_ =
+          callee.display_name.isEmpty() ? callee.user_id : callee.display_name;
         callPartyAvatarUrl_ = QString::fromStdString(roomInfo.avatar_url);
         emit newInviteState();
         playRingtone(QUrl("qrc:/media/media/ringback.ogg"), true);
@@ -308,7 +310,9 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
         std::vector<RoomMember> members(cache::getMembers(callInviteEvent.room_id));
         const RoomMember &caller =
           members.front().user_id == utils::localUser() ? members.back() : members.front();
-        callParty_          = caller.display_name.isEmpty() ? caller.user_id : caller.display_name;
+        callParty_ = caller.user_id;
+        callPartyDisplayName_ =
+          caller.display_name.isEmpty() ? caller.user_id : caller.display_name;
         callPartyAvatarUrl_ = QString::fromStdString(roomInfo.avatar_url);
 
         haveCallInvite_ = true;
@@ -459,6 +463,7 @@ CallManager::clear()
 {
         roomid_.clear();
         callParty_.clear();
+        callPartyDisplayName_.clear();
         callPartyAvatarUrl_.clear();
         callid_.clear();
         callType_       = CallType::VOICE;

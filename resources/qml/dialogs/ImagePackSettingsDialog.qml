@@ -112,7 +112,7 @@ ApplicationWindow {
                             return qsTr("Globally enabled pack");
                     }
                     selectedIndex: currentPackIndex
-                    roomid: currentPack.roomid
+                    userid: displayName
 
                     TapHandler {
                         onSingleTapped: currentPackIndex = index
@@ -144,6 +144,7 @@ ApplicationWindow {
                     Avatar {
                         url: packinfo.avatarUrl.replace("mxc://", "image://MxcImage/")
                         displayName: packinfo.packName
+                        userid: packinfo.packName
                         height: 100
                         width: 100
                         Layout.alignment: Qt.AlignHCenter

@@ -61,6 +61,7 @@ ApplicationWindow {
                 header: AvatarListTile {
                     title: imagePack.packname
                     avatarUrl: imagePack.avatarUrl
+                    userid: imagePack.packname
                     subtitle: imagePack.statekey
                     index: -1
                     selectedIndex: currentImageIndex
@@ -111,7 +112,6 @@ ApplicationWindow {
                     title: shortCode
                     subtitle: body
                     avatarUrl: url
-                    roomid: imagePack.roomid
                     selectedIndex: currentImageIndex
                     crop: false
 
@@ -143,6 +143,7 @@ ApplicationWindow {
                         Layout.columnSpan: 2
                         url: imagePack.avatarUrl.replace("mxc://", "image://MxcImage/")
                         displayName: imagePack.packname
+                        userid: imagePack.packname
                         height: 130
                         width: 130
                         crop: false
@@ -220,6 +221,7 @@ ApplicationWindow {
                         Layout.columnSpan: 2
                         url: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.Url).replace("mxc://", "image://MxcImage/")
                         displayName: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.ShortCode)
+                        userid: displayName
                         height: 130
                         width: 130
                         crop: false

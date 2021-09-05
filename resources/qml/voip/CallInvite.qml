@@ -40,7 +40,7 @@ Popup {
         Label {
             Layout.alignment: Qt.AlignCenter
             Layout.topMargin: msgView.height / 25
-            text: CallManager.callParty
+            text: CallManager.callPartyDisplayName
             font.pointSize: fontMetrics.font.pointSize * 2
             color: Nheko.colors.windowText
         }
@@ -50,7 +50,8 @@ Popup {
             width: msgView.height / 5
             height: msgView.height / 5
             url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
-            displayName: CallManager.callParty
+            userid: CallManager.callParty
+            displayName: CallManager.callPartyDisplayName
         }
 
         ColumnLayout {

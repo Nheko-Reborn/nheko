@@ -32,6 +32,7 @@ class CallManager : public QObject
         Q_PROPERTY(webrtc::CallType callType READ callType NOTIFY newInviteState)
         Q_PROPERTY(webrtc::State callState READ callState NOTIFY newCallState)
         Q_PROPERTY(QString callParty READ callParty NOTIFY newInviteState)
+        Q_PROPERTY(QString callPartyDisplayName READ callPartyDisplayName NOTIFY newInviteState)
         Q_PROPERTY(QString callPartyAvatarUrl READ callPartyAvatarUrl NOTIFY newInviteState)
         Q_PROPERTY(bool isMicMuted READ isMicMuted NOTIFY micMuteChanged)
         Q_PROPERTY(bool haveLocalPiP READ haveLocalPiP NOTIFY newCallState)
@@ -48,6 +49,7 @@ public:
         webrtc::CallType callType() const { return callType_; }
         webrtc::State callState() const { return session_.state(); }
         QString callParty() const { return callParty_; }
+        QString callPartyDisplayName() const { return callPartyDisplayName_; }
         QString callPartyAvatarUrl() const { return callPartyAvatarUrl_; }
         bool isMicMuted() const { return session_.isMicMuted(); }
         bool haveLocalPiP() const { return session_.haveLocalPiP(); }
@@ -87,6 +89,7 @@ private:
         WebRTCSession &session_;
         QString roomid_;
         QString callParty_;
+        QString callPartyDisplayName_;
         QString callPartyAvatarUrl_;
         std::string callid_;
         const uint32_t timeoutms_  = 120000;
