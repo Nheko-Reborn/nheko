@@ -261,7 +261,7 @@
     <message>
         <location line="+99"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation>Falha ao estabelecer chaves encriptadas. Resposta do servidor: %1 %2. Tente novamente.</translation>
+        <translation>Falha ao estabelecer chaves encriptadas. Resposta do servidor: %1 %2. Tente novamente mais tarde.</translation>
     </message>
     <message>
         <location line="+34"/>
