@@ -181,6 +181,7 @@ private:
         void startInitialSync();
         void tryInitialSync();
         void trySync();
+        void verifyOneTimeKeyCountAfterStartup();
         void ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts);
         void getProfileInfo();
         void getBackupVersion();

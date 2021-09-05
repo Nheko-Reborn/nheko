@@ -434,6 +434,7 @@ ChatPage::loadStateFromCache()
 
         getProfileInfo();
         getBackupVersion();
+        verifyOneTimeKeyCountAfterStartup();
 
         emit contentLoaded();
 
@@ -937,11 +938,47 @@ ChatPage::currentPresence() const
 }
 
 void
+ChatPage::verifyOneTimeKeyCountAfterStartup()
+{
+        http::client()->upload_keys(
+          olm::client()->create_upload_keys_request(),
+          [this](const mtx::responses::UploadKeys &res, mtx::http::RequestErr err) {
+                  if (err) {
+                          nhlog::crypto()->warn("failed to update one-time keys: {} {} {}",
+                                                err->matrix_error.error,
+                                                static_cast<int>(err->status_code),
+                                                static_cast<int>(err->error_code));
+
+                          if (err->status_code < 400 || err->status_code >= 500)
+                                  return;
+                  }
+
+                  std::map<std::string, uint16_t> key_counts;
+                  auto count = 0;
+                  if (auto c = res.one_time_key_counts.find(mtx::crypto::SIGNED_CURVE25519);
+                      c == res.one_time_key_counts.end()) {
+                          key_counts[mtx::crypto::SIGNED_CURVE25519] = 0;
+                  } else {
+                          key_counts[mtx::crypto::SIGNED_CURVE25519] = c->second;
+                          count                                      = c->second;
+                  }
+
+                  nhlog::crypto()->info(
+                    "Fetched server key count {} {}", count, mtx::crypto::SIGNED_CURVE25519);
+
+                  ensureOneTimeKeyCount(key_counts);
+          });
+}
+
+void
 ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
 {
-        if (auto count = counts.find(mtx::crypto::SIGNED_CURVE25519); c != counts.end()) {
-                if (count < MAX_ONETIME_KEYS) {
-                        const int nkeys = MAX_ONETIME_KEYS - count;
+        if (auto count = counts.find(mtx::crypto::SIGNED_CURVE25519); count != counts.end()) {
+                nhlog::crypto()->debug(
+                  "Updated server key count {} {}", count->second, mtx::crypto::SIGNED_CURVE25519);
+
+                if (count->second < MAX_ONETIME_KEYS) {
+                        const int nkeys = MAX_ONETIME_KEYS - count->second;
 
                         nhlog::crypto()->info(
                           "uploading {} {} keys", nkeys, mtx::crypto::SIGNED_CURVE25519);
