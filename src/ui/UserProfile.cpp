@@ -409,7 +409,8 @@ UserProfile::getGlobalProfileData()
           userid_.toStdString(),
           [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
                   if (err) {
-                          nhlog::net()->warn("failed to retrieve own profile info");
+                          nhlog::net()->warn("failed to retrieve profile info for {}",
+                                             userid_.toStdString());
                           return;
                   }
 
@@ -417,4 +418,11 @@ UserProfile::getGlobalProfileData()
                   globalAvatarUrl = QString::fromStdString(res.avatar_url);
                   emit avatarUrlChanged();
           });
+}
+
+void
+UserProfile::openGlobalProfile()
+{
+        UserProfile *userProfile = new UserProfile("", userid_, manager, model);
+        emit manager->openProfile(userProfile);
 }

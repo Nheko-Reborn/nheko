@@ -125,6 +125,7 @@ public:
         Q_INVOKABLE void startChat();
         Q_INVOKABLE void changeUsername(QString username);
         Q_INVOKABLE void changeAvatar();
+        Q_INVOKABLE void openGlobalProfile();
 
 signals:
         void userStatusChanged();
