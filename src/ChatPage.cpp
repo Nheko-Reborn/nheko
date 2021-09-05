@@ -939,33 +939,32 @@ ChatPage::currentPresence() const
 void
 ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
 {
-        uint16_t count = 0;
-        if (auto c = counts.find(mtx::crypto::SIGNED_CURVE25519); c != counts.end())
-                count = c->second;
+        if (auto count = counts.find(mtx::crypto::SIGNED_CURVE25519); c != counts.end()) {
+                if (count < MAX_ONETIME_KEYS) {
+                        const int nkeys = MAX_ONETIME_KEYS - count;
 
-        if (count < MAX_ONETIME_KEYS) {
-                const int nkeys = MAX_ONETIME_KEYS - count;
+                        nhlog::crypto()->info(
+                          "uploading {} {} keys", nkeys, mtx::crypto::SIGNED_CURVE25519);
+                        olm::client()->generate_one_time_keys(nkeys);
 
-                nhlog::crypto()->info(
-                  "uploading {} {} keys", nkeys, mtx::crypto::SIGNED_CURVE25519);
-                olm::client()->generate_one_time_keys(nkeys);
+                        http::client()->upload_keys(
+                          olm::client()->create_upload_keys_request(),
+                          [](const mtx::responses::UploadKeys &, mtx::http::RequestErr err) {
+                                  if (err) {
+                                          nhlog::crypto()->warn(
+                                            "failed to update one-time keys: {} {} {}",
+                                            err->matrix_error.error,
+                                            static_cast<int>(err->status_code),
+                                            static_cast<int>(err->error_code));
 
-                http::client()->upload_keys(
-                  olm::client()->create_upload_keys_request(),
-                  [](const mtx::responses::UploadKeys &, mtx::http::RequestErr err) {
-                          if (err) {
-                                  nhlog::crypto()->warn("failed to update one-time keys: {} {} {}",
-                                                        err->matrix_error.error,
-                                                        static_cast<int>(err->status_code),
-                                                        static_cast<int>(err->error_code));
+                                          if (err->status_code < 400 || err->status_code >= 500)
+                                                  return;
+                                  }
 
-                                  if (err->status_code < 400 || err->status_code >= 500)
-                                          return;
-                          }
-
-                          // mark as published anyway, otherwise we may end up in a loop.
-                          olm::mark_keys_as_published();
-                  });
+                                  // mark as published anyway, otherwise we may end up in a loop.
+                                  olm::mark_keys_as_published();
+                          });
+                }
         }
 }
 
