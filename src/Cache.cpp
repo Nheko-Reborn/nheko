@@ -3005,7 +3005,7 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                         // is already in the DB, we skip putting it (again) in ordered DBs, and only
                         // update the event itself and its relations.
                         std::string_view unused_read;
-                        if (!eventsDb.get(txn, event_id, unused_read)) {
+                        if (!evToOrderDb.get(txn, event_id, unused_read)) {
                                 ++index;
 
                                 nhlog::db()->debug("saving '{}'", orderEntry.dump());
@@ -3090,7 +3090,7 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
                 // already in the DB, we skip putting it (again) in ordered DBs, and only update the
                 // event itself and its relations.
                 std::string_view unused_read;
-                if (!eventsDb.get(txn, event_id, unused_read)) {
+                if (!evToOrderDb.get(txn, event_id, unused_read)) {
                         --index;
 
                         json orderEntry        = json::object();
