@@ -177,8 +177,8 @@ class TimelineModel : public QAbstractListModel
         Q_PROPERTY(bool isSpace READ isSpace CONSTANT)
         Q_PROPERTY(int trustlevel READ trustlevel NOTIFY trustlevelChanged)
         Q_PROPERTY(bool isDirect READ isDirect NOTIFY isDirectChanged)
-        Q_PROPERTY(
-          QString directChatOtherUserId READ directChatOtherUserId NOTIFY directChatOtherUserIdChanged)
+        Q_PROPERTY(QString directChatOtherUserId READ directChatOtherUserId NOTIFY
+                     directChatOtherUserIdChanged)
         Q_PROPERTY(InputBar *input READ input CONSTANT)
         Q_PROPERTY(Permissions *permissions READ permissions NOTIFY permissionsChanged)
 
