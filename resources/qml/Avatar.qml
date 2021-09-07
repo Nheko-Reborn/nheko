@@ -43,8 +43,8 @@ Rectangle {
     Image {
         id: identicon
         anchors.fill: parent
-        visible: img.status != Image.Ready && Settings.useIdenticon
         layer.enabled: true
+        visible: Settings.useIdenticon && img.status != Image.Ready
         source: Settings.useIdenticon ? ("image://jdenticon/" + (userid !== "" ? userid : roomid) + "?radius=" + (Settings.avatarCircles ? 100 : 25)) : ""
 
         MouseArea {
