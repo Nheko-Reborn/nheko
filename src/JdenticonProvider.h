@@ -64,9 +64,7 @@ public slots:
                         auto queryBits = query.split('&');
 
                         for (auto b : queryBits) {
-                                if (b == "scale") {
-                                        crop = false;
-                                } else if (b.startsWith("radius=")) {
+                                if (b.startsWith("radius=")) {
                                         radius = b.mid(7).toDouble();
                                 }
                         }
