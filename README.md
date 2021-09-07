@@ -171,7 +171,7 @@ choco install nheko-reborn
     - Voice call support: dtls, opus, rtpmanager, srtp, webrtc
     - Video call support (optional): compositor, opengl, qmlgl, rtp, vpx
     - [libnice](https://gitlab.freedesktop.org/libnice/libnice)
-- [qtkeychain](https://github.com/frankosterfeld/qtkeychain)
+- [qtkeychain](https://github.com/frankosterfeld/qtkeychain) (You need at least version 0.12 for proper Gnome Keychain support)
 - A compiler that supports C++ 17:
     - Clang 6 (tested on Travis CI)
     - GCC 7 (tested on Travis CI)
