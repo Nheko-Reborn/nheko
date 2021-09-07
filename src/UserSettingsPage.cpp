@@ -757,6 +757,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         trayToggle_                     = new Toggle{this};
         startInTrayToggle_              = new Toggle{this};
         avatarCircles_                  = new Toggle{this};
+        useIdenticon_                   = new Toggle{this};
         decryptSidebar_                 = new Toggle(this);
         privacyScreen_                  = new Toggle{this};
         onlyShareKeysWithVerifiedUsers_ = new Toggle(this);
@@ -790,6 +791,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         trayToggle_->setChecked(settings_->tray());
         startInTrayToggle_->setChecked(settings_->startInTray());
         avatarCircles_->setChecked(settings_->avatarCircles());
+        useIdenticon_->setChecked(settings_->useIdenticon());
         decryptSidebar_->setChecked(settings_->decryptSidebar());
         privacyScreen_->setChecked(settings_->privacyScreen());
         onlyShareKeysWithVerifiedUsers_->setChecked(settings_->onlyShareKeysWithVerifiedUsers());
@@ -808,12 +810,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         alertOnNotification_->setChecked(settings_->hasAlertOnNotification());
         useStunServer_->setChecked(settings_->useStunServer());
         mobileMode_->setChecked(settings_->mobileMode());
-
-        if (JdenticonProvider::isAvailable()) {
-                useIdenticon_ = new Toggle{this};
-                useIdenticon_->setChecked(settings_->useIdenticon());
-        } else
-                useIdenticon_ = nullptr;
 
         if (!settings_->tray()) {
                 startInTrayToggle_->setState(false);
@@ -958,12 +954,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         boxWrap(tr("Circular Avatars"),
                 avatarCircles_,
                 tr("Change the appearance of user avatars in chats.\nOFF - square, ON - Circle."));
-        if (JdenticonProvider::isAvailable())
-                boxWrap(
-                  tr("Use identicons"),
-                  useIdenticon_,
-                  tr(
-                    "Display an identicon instead of a letter when a user has not set an avatar."));
+        boxWrap(tr("Use identicons"),
+                useIdenticon_,
+                tr("Display an identicon instead of a letter when a user has not set an avatar."));
         boxWrap(tr("Group's sidebar"),
                 groupViewToggle_,
                 tr("Show a column containing groups and tags next to the room list."));
@@ -1290,6 +1283,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                 connect(useIdenticon_, &Toggle::toggled, this, [this](bool enabled) {
                         settings_->setUseIdenticon(enabled);
                 });
+        else
+                useIdenticon_->setDisabled(true);
 
         connect(markdown_, &Toggle::toggled, this, [this](bool enabled) {
                 settings_->setMarkdown(enabled);
