@@ -78,8 +78,9 @@ JdenticonInterface *
 getJdenticonInterface()
 {
         static JdenticonInterface *interface = nullptr;
+        static bool interfaceExists{true};
 
-        if (interface == nullptr) {
+        if (interface == nullptr && interfaceExists) {
                 QDir pluginsDir(qApp->applicationDirPath());
 
                 bool plugins = pluginsDir.cd("plugins");
@@ -97,6 +98,7 @@ getJdenticonInterface()
                         }
                 } else {
                         nhlog::ui()->info("jdenticon plugin not found.");
+                        interfaceExists = false;
                 }
         }
 
