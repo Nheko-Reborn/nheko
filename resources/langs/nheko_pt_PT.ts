@@ -12,7 +12,7 @@
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>A ligar...</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -32,7 +32,7 @@
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Silenciar microfone</translation>
     </message>
 </context>
 <context>
@@ -45,7 +45,7 @@
     <message>
         <location line="+12"/>
         <source>Waiting for other side to complete verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>A aguardar que o outro lado complete a verificação.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -214,17 +214,17 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to unban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Tem a certeza que quer perdoar %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Failed to unban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao perdoar %1 em %2: %3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Unbanned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizador perdoado: %1</translation>
     </message>
     <message>
         <location line="+254"/>
@@ -267,37 +267,37 @@
         <location line="+34"/>
         <location line="+117"/>
         <source>Please try to login again: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, tente autenticar-se novamente: %1</translation>
     </message>
     <message>
         <location line="+51"/>
         <source>Failed to join room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao entrar em sala: %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You joined the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrou na sala</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Failed to remove invite: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao remover convite: %1</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Room creation failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao criar sala: %1</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Failed to leave room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao sair da sala: %1</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Failed to kick %1 from %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao expulsar %1 de %2: %3</translation>
     </message>
 </context>
 <context>
@@ -305,7 +305,7 @@
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+44"/>
         <source>Hide rooms with this tag or from this space by default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocultar salas com esta etiqueta ou  pertencentes a este espaço por defeito.</translation>
     </message>
 </context>
 <context>
@@ -313,42 +313,42 @@
     <message>
         <location filename="../../src/timeline/CommunitiesModel.cpp" line="+37"/>
         <source>All rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Todas as salas</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Shows all rooms without filtering.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra todas as salas sem filtros.</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Favourites</source>
-        <translation type="unfinished"></translation>
+        <translation>Favoritos</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rooms you have favourited.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salas favoritas.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Low Priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Prioridade baixa</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rooms with low priority.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salas com prioridade baixa.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Server Notices</source>
-        <translation type="unfinished"></translation>
+        <translation>Avisos do servidor</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Messages from your server or administrator.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mensagens do seu servidor ou administrador.</translation>
     </message>
 </context>
 <context>
@@ -356,27 +356,27 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+247"/>
         <source>Decrypt secrets</source>
-        <translation type="unfinished"></translation>
+        <translation>Desencriptar segredos</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase to decrypt your secrets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Insira a sua chave de recuperação ou palavra-passe para desencriptar os seus segredos:</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Enter your recovery key or passphrase called %1 to decrypt your secrets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Insira a sua chave de recuperação ou palavra-passe chamada %1 para desencriptar os seus segredos:</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Decryption failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao desencriptar</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Failed to decrypt secrets with the provided recovery key or passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao desencriptada segredos com a chave ou palavra-passe dada</translation>
     </message>
 </context>
 <context>
@@ -384,22 +384,22 @@
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+11"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Código de verificação</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor verifique os seguintes dígitos.  Deve ver os mesmos em ambos os lados. Se forem diferentes, carregue em &quot;Não coincidem!&quot; para abortar a verificação!</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Não coincidem!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Coincidem!</translation>
     </message>
 </context>
 <context>
@@ -407,22 +407,22 @@
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+42"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplicar</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Tópico</translation>
     </message>
 </context>
 <context>
@@ -430,47 +430,47 @@
     <message>
         <location filename="../qml/emoji/EmojiPicker.qml" line="+68"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Procurar</translation>
     </message>
     <message>
         <location line="+187"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>Pessoas</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>Natureza</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished"></translation>
+        <translation>Comida</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished"></translation>
+        <translation>Actividades</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished"></translation>
+        <translation>Viagem</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>Objetos</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>Símbolos</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>Bandeiras</translation>
     </message>
 </context>
 <context>
@@ -478,22 +478,22 @@
     <message>
         <location filename="../qml/device-verification/EmojiVerification.qml" line="+11"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Código de verificação</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor verifique os seguintes emojis. Deve ver os mesmos em ambos os lados. Se não coincidirem, carregue em &quot;Não coincidem!&quot; para abortar a verificação!</translation>
     </message>
     <message>
         <location line="+376"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Não coincidem!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Coincidem!</translation>
     </message>
 </context>
 <context>
