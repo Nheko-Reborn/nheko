@@ -43,7 +43,6 @@ Rectangle {
     Image {
         id: identicon
         anchors.fill: parent
-        layer.enabled: true
         visible: Settings.useIdenticon && img.status != Image.Ready
         source: Settings.useIdenticon ? ("image://jdenticon/" + (userid !== "" ? userid : roomid) + "?radius=" + (Settings.avatarCircles ? 100 : 25)) : ""
 
