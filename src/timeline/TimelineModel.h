@@ -295,7 +295,7 @@ public:
         bool isEncrypted() const { return isEncrypted_; }
         crypto::Trust trustlevel() const;
         int roomMemberCount() const;
-        bool isDirect() const { return roomMemberCount() <= 2; } // TODO: handle invites
+        bool isDirect() const { return roomMemberCount() <= 2; }
         QString directChatOtherUserId() const;
 
         std::optional<mtx::events::collections::TimelineEvents> eventById(const QString &id)

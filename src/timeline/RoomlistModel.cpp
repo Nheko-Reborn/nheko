@@ -164,6 +164,13 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                                 return false;
                         case Roles::Tags:
                                 return QStringList();
+                        case Roles::IsDirect:
+                                return room.member_count == 1;
+                        case Roles::DirectChatOtherUserId:
+                                // if this is a direct chat, the front member is correct; otherwise,
+                                // it won't be used anyway
+                                return QString::fromStdString(
+                                  cache::roomMembers(roomid.toStdString()).front());
                         default:
                                 return {};
                         }
@@ -196,6 +203,11 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                                 return true;
                         case Roles::Tags:
                                 return QStringList();
+                        case Roles::IsDirect:
+                                return room.member_count == 1;
+                        case Roles::DirectChatOtherUserId:
+                                return QString::fromStdString(
+                                  cache::roomMembers(roomid.toStdString()).front());
                         default:
                                 return {};
                         }
