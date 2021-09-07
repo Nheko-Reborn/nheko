@@ -1279,8 +1279,13 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
 
         if (sigil1 == "u") {
                 if (action.isEmpty()) {
-                        if (auto t = view_manager_->rooms()->currentRoom())
+                        auto t = view_manager_->rooms()->currentRoom();
+                        if (t &&
+                            cache::isRoomMember(mxid1.toStdString(), t->roomId().toStdString())) {
                                 t->openUserProfile(mxid1);
+                                return;
+                        }
+                        emit view_manager_->openGlobalUserProfile(mxid1);
                 } else if (action == "chat") {
                         this->startChat(mxid1);
                 }

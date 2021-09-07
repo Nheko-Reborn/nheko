@@ -423,6 +423,5 @@ UserProfile::getGlobalProfileData()
 void
 UserProfile::openGlobalProfile()
 {
-        UserProfile *userProfile = new UserProfile("", userid_, manager, model);
-        emit manager->openProfile(userProfile);
+        emit manager->openGlobalUserProfile(userid_);
 }
