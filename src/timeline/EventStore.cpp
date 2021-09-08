@@ -71,11 +71,14 @@ EventStore::EventStore(std::string room_id, QObject *)
                           fetchMore();
                   else {
                           if (this->last != std::numeric_limits<uint64_t>::max()) {
+                                  auto oldFirst = this->first;
                                   emit beginInsertRows(toExternalIdx(newFirst),
                                                        toExternalIdx(this->first - 1));
                                   this->first = newFirst;
                                   emit endInsertRows();
                                   emit fetchedMore();
+                                  emit dataChanged(toExternalIdx(oldFirst),
+                                                   toExternalIdx(oldFirst));
                           } else {
                                   auto range = cache::client()->getTimelineRange(room_id_);
 
