@@ -42,21 +42,22 @@ UsersModel::data(const QModelIndex &index, int role) const
                 case CompletionModel::CompletionRole:
                         if (UserSettings::instance()->markdown())
                                 return QString("[%1](https://matrix.to/#/%2)")
-                                  .arg(displayNames[index.row()])
+                                  .arg(displayNames[index.row()].toHtmlEscaped())
                                   .arg(QString(QUrl::toPercentEncoding(userids[index.row()])));
                         else
                                 return displayNames[index.row()];
                 case CompletionModel::SearchRole:
+                        return displayNames[index.row()];
                 case Qt::DisplayRole:
                 case Roles::DisplayName:
-                        return displayNames[index.row()];
+                        return displayNames[index.row()].toHtmlEscaped();
                 case CompletionModel::SearchRole2:
                         return userids[index.row()];
                 case Roles::AvatarUrl:
                         return cache::avatarUrl(QString::fromStdString(room_id),
                                                 QString::fromStdString(roomMembers_[index.row()]));
                 case Roles::UserID:
-                        return userids[index.row()];
+                        return userids[index.row()].toHtmlEscaped();
                 }
         }
         return {};

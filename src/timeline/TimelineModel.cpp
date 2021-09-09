@@ -1858,7 +1858,8 @@ TimelineModel::formatMemberEvent(QString id)
                 break;
         case Membership::Join:
                 if (prevEvent && prevEvent->content.membership == Membership::Join) {
-                        QString oldName = QString::fromStdString(prevEvent->content.display_name);
+                        QString oldName = utils::replaceEmoji(
+                          QString::fromStdString(prevEvent->content.display_name).toHtmlEscaped());
 
                         bool displayNameChanged =
                           prevEvent->content.display_name != event->content.display_name;
