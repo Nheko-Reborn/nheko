@@ -22,7 +22,7 @@
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar/Ocultar Picture-in-Picture</translation>
     </message>
     <message>
         <location line="+13"/>
