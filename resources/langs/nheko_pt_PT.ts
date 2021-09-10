@@ -501,22 +501,22 @@
     <message>
         <location filename="../qml/delegates/Encrypted.qml" line="+22"/>
         <source>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</source>
-        <translation>Não há nenhuma chave para desbloquear esta mensagem. Nós pedimos a chave automaticamente, mas pode tentar pedi-la outra vez se estiver impaciente.</translation>
+        <translation>Não existe nenhuma chave para desbloquear esta mensagem. Nós pedimos a chave automaticamente, mas pode tentar pedi-la outra vez se estiver impaciente.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message couldn&apos;t be decrypted, because we only have a key for newer messages. You can try requesting access to this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Esta mensagem não pôde ser desencriptada, porque apenas temos uma chave para mensagens mais recentes. Pode tentar solicitar acesso a esta mensagem.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>There was an internal error reading the decryption key from the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocorreu um erro interno ao ler a chave de desencriptação da base de dados.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>There was an error decrypting this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocorreu um erro ao desencriptar esta mensagem.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -526,7 +526,7 @@
     <message>
         <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation type="unfinished"></translation>
+        <translation>Esta chave de encriptação foi reutilizada! É possível que alguém esteja a tentar inserir mensagens falsas neste chat!</translation>
     </message>
     <message>
         <location line="+2"/>
