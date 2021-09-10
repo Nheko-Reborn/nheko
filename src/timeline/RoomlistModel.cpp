@@ -201,10 +201,9 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                         case Roles::Tags:
                                 return QStringList();
                         case Roles::IsDirect:
-                                return room.member_count == 1;
+                                return false;
                         case Roles::DirectChatOtherUserId:
-                                return QString::fromStdString(
-                                  cache::roomMembers(roomid.toStdString()).front());
+                                return QString{}; // should never be reached
                         default:
                                 return {};
                         }
