@@ -84,6 +84,10 @@ getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
 std::vector<RoomMember>
 getMembers(const std::string &room_id, std::size_t startIndex = 0, std::size_t len = 30);
 
+//! Get the other person from an invite to a direct chat.
+RoomMember
+getDirectInviteMember(const std::string &room_id);
+
 bool
 isInitialized();
 

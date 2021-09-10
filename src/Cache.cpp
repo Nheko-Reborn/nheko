@@ -2614,6 +2614,12 @@ Cache::getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &members
         return QString("Empty Room");
 }
 
+RoomMember
+Cache::getDirectInviteMember(const std::string &room_id)
+{
+        return getMembersFromInvitedRoom(room_id, 0, 1).front();
+}
+
 QString
 Cache::getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
 {
@@ -2742,6 +2748,48 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
 {
         auto txn    = ro_txn(env_);
         auto db     = getMembersDb(txn, room_id);
+        auto cursor = lmdb::cursor::open(txn, db);
+
+        std::size_t currentIndex = 0;
+
+        const auto endIndex = std::min(startIndex + len, db.size(txn));
+
+        std::vector<RoomMember> members;
+
+        std::string_view user_id, user_data;
+        while (cursor.get(user_id, user_data, MDB_NEXT)) {
+                if (currentIndex < startIndex) {
+                        currentIndex += 1;
+                        continue;
+                }
+
+                if (currentIndex >= endIndex)
+                        break;
+
+                try {
+                        MemberInfo tmp = json::parse(user_data);
+                        members.emplace_back(
+                          RoomMember{QString::fromStdString(std::string(user_id)),
+                                     QString::fromStdString(tmp.name)});
+                } catch (const json::exception &e) {
+                        nhlog::db()->warn("{}", e.what());
+                }
+
+                currentIndex += 1;
+        }
+
+        cursor.close();
+
+        return members;
+}
+
+std::vector<RoomMember>
+Cache::getMembersFromInvitedRoom(const std::string &room_id,
+                                 std::size_t startIndex,
+                                 std::size_t len)
+{
+        auto txn    = ro_txn(env_);
+        auto db     = getInviteMembersDb(txn, room_id);
         auto cursor = lmdb::cursor::open(txn, db);
 
         std::size_t currentIndex = 0;
@@ -4814,6 +4862,12 @@ std::vector<RoomMember>
 getMembers(const std::string &room_id, std::size_t startIndex, std::size_t len)
 {
         return instance_->getMembers(room_id, startIndex, len);
+}
+
+RoomMember
+getDirectInviteMember(const std::string &room_id)
+{
+        return instance_->getDirectInviteMember(room_id);
 }
 
 void

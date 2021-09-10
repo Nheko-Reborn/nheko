@@ -109,6 +109,10 @@ public:
         std::vector<RoomMember> getMembers(const std::string &room_id,
                                            std::size_t startIndex = 0,
                                            std::size_t len        = 30);
+
+        std::vector<RoomMember> getMembersFromInvitedRoom(const std::string &room_id,
+                                                          std::size_t startIndex = 0,
+                                                          std::size_t len        = 30);
         size_t memberCount(const std::string &room_id);
 
         void saveState(const mtx::responses::Sync &res);
@@ -134,6 +138,9 @@ public:
 
         //! Retrieve all the user ids from a room.
         std::vector<std::string> roomMembers(const std::string &room_id);
+
+        //! Get the other user from an invite to a direct chat.
+        RoomMember getDirectInviteMember(const std::string &room_id);
 
         //! Check if the given user has power leve greater than than
         //! lowest power level of the given events.
@@ -313,7 +320,6 @@ public:
 
                 return get_skey(a).compare(get_skey(b));
         }
-
 signals:
         void newReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
         void roomReadStatus(const std::map<QString, bool> &status);

@@ -167,10 +167,7 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                         case Roles::IsDirect:
                                 return room.member_count == 1;
                         case Roles::DirectChatOtherUserId:
-                                // if this is a direct chat, the front member is correct; otherwise,
-                                // it won't be used anyway
-                                return QString::fromStdString(
-                                  cache::roomMembers(roomid.toStdString()).front());
+                                return cache::getDirectInviteMember(roomid.toStdString()).user_id;
                         default:
                                 return {};
                         }
