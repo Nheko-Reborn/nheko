@@ -55,9 +55,6 @@ public:
                                    lmdb::dbi &db,
                                    const std::vector<std::string> &user_ids,
                                    const std::string &sync_token);
-        void deleteUserKeys(lmdb::txn &txn,
-                            lmdb::dbi &db,
-                            const std::vector<std::string> &user_ids);
         void query_keys(const std::string &user_id,
                         std::function<void(const UserKeyCache &, mtx::http::RequestErr)> cb);
 

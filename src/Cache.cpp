@@ -1572,7 +1572,6 @@ Cache::saveState(const mtx::responses::Sync &res)
         savePresence(txn, res.presence);
 
         markUserKeysOutOfDate(txn, userKeyCacheDb, res.device_lists.changed, currentBatchToken);
-        deleteUserKeys(txn, userKeyCacheDb, res.device_lists.left);
 
         removeLeftRooms(txn, res.rooms.leave);
 
@@ -4122,13 +4121,6 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                 }
                 emit verificationStatusChanged(user_id);
         }
-}
-
-void
-Cache::deleteUserKeys(lmdb::txn &txn, lmdb::dbi &db, const std::vector<std::string> &user_ids)
-{
-        for (const auto &user_id : user_ids)
-                db.del(txn, user_id);
 }
 
 void
