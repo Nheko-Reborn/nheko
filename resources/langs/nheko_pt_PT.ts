@@ -501,7 +501,7 @@
     <message>
         <location filename="../qml/delegates/Encrypted.qml" line="+22"/>
         <source>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</source>
-        <translation type="unfinished"></translation>
+        <translation>Não há nenhuma chave para desbloquear esta mensagem. Nós pedimos a chave automaticamente, mas pode tentar pedi-la outra vez se estiver impaciente.</translation>
     </message>
     <message>
         <location line="+2"/>
