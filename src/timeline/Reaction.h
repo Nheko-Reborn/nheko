@@ -16,8 +16,8 @@ struct Reaction
         Q_PROPERTY(int count READ count)
 
 public:
-        QString key() const { return key_; }
-        QString users() const { return users_; }
+        QString key() const { return key_.toHtmlEscaped(); }
+        QString users() const { return users_.toHtmlEscaped(); }
         QString selfReactedEvent() const { return selfReactedEvent_; }
         int count() const { return count_; }
 
