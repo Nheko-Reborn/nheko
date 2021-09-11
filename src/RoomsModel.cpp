@@ -77,7 +77,7 @@ RoomsModel::data(const QModelIndex &index, int role) const
                         return QString::fromStdString(
                           roomInfos.at(roomids[index.row()]).avatar_url);
                 case Roles::RoomID:
-                        return roomids[index.row()];
+                        return roomids[index.row()].toHtmlEscaped();
                 }
         }
         return {};
