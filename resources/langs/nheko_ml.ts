@@ -17,7 +17,7 @@
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation type="unfinished"></translation>
+        <translation>നിങ്ങൾ സ്ക്രീൻ പങ്കിടുന്നു</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -91,7 +91,7 @@
     <message>
         <location line="+10"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>സ്വീകരിക്കുക</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -119,7 +119,7 @@
     <message>
         <location filename="../../src/CallManager.cpp" line="+521"/>
         <source>Entire screen</source>
-        <translation type="unfinished"></translation>
+        <translation>മുഴുവൻ സ്ക്രീൻ</translation>
     </message>
 </context>
 <context>
@@ -143,12 +143,12 @@
     <message>
         <location line="+367"/>
         <source>Confirm join</source>
-        <translation type="unfinished"></translation>
+        <translation>ചേരുന്നത് ഉറപ്പാക്കുക</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to join %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>നിങ്ങൾക്ക് %1 -ൽ ചേരാൻ ആഗ്രഹം ഉണ്ടോ?</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -174,7 +174,7 @@
     <message>
         <location line="+15"/>
         <source>Confirm kick</source>
-        <translation type="unfinished"></translation>
+        <translation>പുറത്താക്കൽ ഉറപ്പാക്കുക</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -184,7 +184,7 @@
     <message>
         <location line="+16"/>
         <source>Kicked user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>ഉപയോക്താവിനെ പുറത്താക്കി: %1</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -267,7 +267,7 @@
         <location line="+34"/>
         <location line="+117"/>
         <source>Please try to login again: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>ദയവായി വീണ്ടും ലോഗിൻ ചെയ്യാൻ നോക്കുക: %1</translation>
     </message>
     <message>
         <location line="+51"/>
@@ -287,7 +287,7 @@
     <message>
         <location line="+21"/>
         <source>Room creation failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>മുറി സൃഷ്ടിക്കുന്നത് പരാജയപ്പെട്ടു: %1</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -323,7 +323,7 @@
     <message>
         <location line="+30"/>
         <source>Favourites</source>
-        <translation type="unfinished"></translation>
+        <translation>പ്രിയപ്പെട്ടവ</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -384,7 +384,7 @@
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+11"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>ഉറപ്പാക്കൽ കോഡ്</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -450,17 +450,17 @@
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished"></translation>
+        <translation>പ്രവർത്തനം</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished"></translation>
+        <translation>യാത്ര</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>സാധനങ്ങൾ</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -470,7 +470,7 @@
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>പതാകകൾ</translation>
     </message>
 </context>
 <context>
@@ -478,7 +478,7 @@
     <message>
         <location filename="../qml/device-verification/EmojiVerification.qml" line="+11"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>ഉറപ്പാക്കൽ കോഡ്</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -536,7 +536,7 @@
     <message>
         <location line="+10"/>
         <source>Request key</source>
-        <translation type="unfinished"></translation>
+        <translation>കീ അഭ്യർ</translation>
     </message>
 </context>
 <context>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../qml/device-verification/Failed.qml" line="+11"/>
         <source>Verification failed</source>
-        <translation type="unfinished"></translation>
+        <translation>ഉറപ്പാക്കൽ പരാജയപ്പെട്ടു</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -614,12 +614,12 @@
     <message>
         <location line="+62"/>
         <source>Add images</source>
-        <translation type="unfinished"></translation>
+        <translation>ചിത്രങ്ങൾ ചേർക്കുക</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Stickers (*.png *.webp *.gif)</source>
-        <translation type="unfinished"></translation>
+        <translation>സ്റ്റിക്കറുകൾ(*.png *.webp *.gif)</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -629,7 +629,7 @@
     <message>
         <location line="+11"/>
         <source>Packname</source>
-        <translation type="unfinished"></translation>
+        <translation>പാക്കിന്റെ പേര്</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -640,13 +640,13 @@
         <location line="+10"/>
         <location line="+65"/>
         <source>Use as Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>ഇമോജി ആയി ഉപയോഗിക്കുക</translation>
     </message>
     <message>
         <location line="-55"/>
         <location line="+65"/>
         <source>Use as Sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>സ്റ്റിക്കറായി ഉപയോഗിക്കുക</translation>
     </message>
     <message>
         <location line="-30"/>
@@ -666,7 +666,7 @@
     <message>
         <location line="+4"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>നീക്കം ചെയ്യുക</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -676,7 +676,7 @@
     <message>
         <location line="+6"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>സംരക്ഷിക്കുക</translation>
     </message>
 </context>
 <context>
@@ -689,12 +689,12 @@
     <message>
         <location line="+54"/>
         <source>Create account pack</source>
-        <translation type="unfinished"></translation>
+        <translation>അക്കൗണ്ട് പാക്ക് സൃഷ്ടിക്കുക</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>New room pack</source>
-        <translation type="unfinished"></translation>
+        <translation>പുതിയ മുറി പാക്ക്</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -742,7 +742,7 @@
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>എല്ലാ ഫയലുകളും (*)</translation>
     </message>
     <message>
         <location line="+449"/>
@@ -755,7 +755,7 @@
     <message>
         <location filename="../qml/InviteDialog.qml" line="+32"/>
         <source>Invite users to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 - ലേക്ക് ഉപയോക്താക്കളെ ക്ഷണിക്കുക</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -766,17 +766,17 @@
         <location line="+14"/>
         <source>@joe:matrix.org</source>
         <comment>Example user id. The name &apos;joe&apos; can be localized however you want.</comment>
-        <translation type="unfinished"></translation>
+        <translation>@joe:matrix.org</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>ചേർക്കുക</translation>
     </message>
     <message>
         <location line="+58"/>
         <source>Invite</source>
-        <translation type="unfinished"></translation>
+        <translation>ക്ഷണിക്കുക</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -794,7 +794,7 @@
     <message>
         <location line="+2"/>
         <source>e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>ഉദാ. @joe:matrix.org</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -843,7 +843,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+19"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>പ്രവേശിക്കുക</translation>
     </message>
     <message>
         <location line="+84"/>
@@ -881,7 +881,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-168"/>
         <source>SSO LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>എസ് എസ് ഓ ലോഗിൻ</translation>
     </message>
     <message>
         <location line="+264"/>
@@ -909,7 +909,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+0"/>
         <source>removed room name</source>
-        <translation type="unfinished"></translation>
+        <translation>മുറിയുടെ പേര് നീക്കം ചെയ്തു</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -919,7 +919,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+0"/>
         <source>removed topic</source>
-        <translation type="unfinished"></translation>
+        <translation>വിഷയം നീക്കം ചെയ്തു</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -954,7 +954,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+70"/>
         <source>Allow them in</source>
-        <translation type="unfinished"></translation>
+        <translation>ഇവരെ അനുവദിക്കുക</translation>
     </message>
     <message>
         <location line="-94"/>
@@ -988,7 +988,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+25"/>
         <source>Send a file</source>
-        <translation type="unfinished"></translation>
+        <translation>ഒരു ഫയൽ അയയ്ക്കുക</translation>
     </message>
     <message>
         <location line="+50"/>
@@ -998,7 +998,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+234"/>
         <source>Stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>സ്റ്റിക്കറുകൾ</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -1021,7 +1021,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/MessageView.qml" line="+86"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>തിരുത്തുക</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1031,7 +1031,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>മറുപടി നൽകുക</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -1076,7 +1076,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>&amp;Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;വായിച്ചതായി കാണിക്കുക</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1154,7 +1154,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+0"/>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>നിരസിക്കുക</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1164,7 +1164,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+0"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>സ്വീകരിക്കുക</translation>
     </message>
 </context>
 <context>
@@ -1180,7 +1180,7 @@ Example: https://server.my:8787</source>
         <location line="+4"/>
         <source>* %1 %2</source>
         <comment>Format an emote message in a notification, %1 is the sender, %2 the message</comment>
-        <translation type="unfinished"></translation>
+        <translation>* %1 %2</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1192,7 +1192,7 @@ Example: https://server.my:8787</source>
         <location line="+4"/>
         <source>%1: %2</source>
         <comment>Format a normal message in a notification. %1 is the sender, %2 the message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-1"/>
