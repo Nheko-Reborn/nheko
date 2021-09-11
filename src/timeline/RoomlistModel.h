@@ -170,6 +170,7 @@ public slots:
         void setCurrentRoom(QString roomid) { roomlistmodel->setCurrentRoom(std::move(roomid)); }
         void resetCurrentRoom() { roomlistmodel->resetCurrentRoom(); }
 
+        void nextRoomWithActivity();
         void nextRoom();
         void previousRoom();
 
