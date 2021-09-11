@@ -526,17 +526,17 @@
     <message>
         <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation>Esta chave de encriptação foi reutilizada! É possível que alguém esteja a tentar inserir mensagens falsas neste chat!</translation>
+        <translation>Esta chave de encriptação foi reutilizada! É possível que alguém esteja a tentar inserir mensagens falsas nesta conversa!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown decryption error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erro de desencriptação desconhecido</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Request key</source>
-        <translation type="unfinished"></translation>
+        <translation>Solicitar chave</translation>
     </message>
 </context>
 <context>
@@ -544,17 +544,17 @@
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+34"/>
         <source>This message is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Esta mensagem não está encriptada!</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Encrypted by a verified device</source>
-        <translation type="unfinished"></translation>
+        <translation>Encriptado por um dispositivo verificado.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
-        <translation type="unfinished"></translation>
+        <translation>Encriptado por um dispositivo não verificado, mas até agora tem confiado neste utilizador.</translation>
     </message>
     <message>
         <location line="+2"/>
