@@ -165,9 +165,13 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                         case Roles::Tags:
                                 return QStringList();
                         case Roles::IsDirect:
+                                // The list of users from the room doesn't contain the invited
+                                // users, so we won't factor the invite into the count
                                 return room.member_count == 1;
                         case Roles::DirectChatOtherUserId:
-                                return cache::getDirectInviteMember(roomid.toStdString()).user_id;
+                                return cache::getMembersFromInvite(roomid.toStdString(), 0, 1)
+                                  .front()
+                                  .user_id;
                         default:
                                 return {};
                         }

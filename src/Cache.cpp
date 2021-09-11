@@ -2614,12 +2614,6 @@ Cache::getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &members
         return QString("Empty Room");
 }
 
-RoomMember
-Cache::getDirectInviteMember(const std::string &room_id)
-{
-        return getMembersFromInvitedRoom(room_id, 0, 1).front();
-}
-
 QString
 Cache::getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
 {
@@ -2784,9 +2778,7 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
 }
 
 std::vector<RoomMember>
-Cache::getMembersFromInvitedRoom(const std::string &room_id,
-                                 std::size_t startIndex,
-                                 std::size_t len)
+Cache::getMembersFromInvite(const std::string &room_id, std::size_t startIndex, std::size_t len)
 {
         auto txn    = ro_txn(env_);
         auto db     = getInviteMembersDb(txn, room_id);
@@ -4864,10 +4856,10 @@ getMembers(const std::string &room_id, std::size_t startIndex, std::size_t len)
         return instance_->getMembers(room_id, startIndex, len);
 }
 
-RoomMember
-getDirectInviteMember(const std::string &room_id)
+std::vector<RoomMember>
+getMembersFromInvite(const std::string &room_id, std::size_t startIndex, std::size_t len)
 {
-        return instance_->getDirectInviteMember(room_id);
+        return instance_->getMembersFromInvite(room_id, startIndex, len);
 }
 
 void

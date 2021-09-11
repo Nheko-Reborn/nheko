@@ -110,9 +110,9 @@ public:
                                            std::size_t startIndex = 0,
                                            std::size_t len        = 30);
 
-        std::vector<RoomMember> getMembersFromInvitedRoom(const std::string &room_id,
-                                                          std::size_t startIndex = 0,
-                                                          std::size_t len        = 30);
+        std::vector<RoomMember> getMembersFromInvite(const std::string &room_id,
+                                                     std::size_t startIndex = 0,
+                                                     std::size_t len        = 30);
         size_t memberCount(const std::string &room_id);
 
         void saveState(const mtx::responses::Sync &res);
