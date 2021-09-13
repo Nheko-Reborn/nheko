@@ -136,9 +136,6 @@ public:
         //! Retrieve all the user ids from a room.
         std::vector<std::string> roomMembers(const std::string &room_id);
 
-        //! Get the other user from an invite to a direct chat.
-        RoomMember getDirectInviteMember(const std::string &room_id);
-
         //! Check if the given user has power leve greater than than
         //! lowest power level of the given events.
         bool hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes,
