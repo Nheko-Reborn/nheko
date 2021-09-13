@@ -1116,8 +1116,8 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     </message>
     <message>
         <location line="+43"/>
-        <source>&amp;Go to quoted message</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Go to reply</source>
+        <translation>&amp;Ga naar citaat</translation>
     </message>
 </context>
 <context>
@@ -1183,7 +1183,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location filename="../qml/NotificationWarning.qml" line="+32"/>
         <source>You will be pinging the whole room</source>
-        <translation type="unfinished"></translation>
+        <translation>Je gaat een melding versturen naar de hele kamer</translation>
     </message>
 </context>
 <context>
@@ -2215,37 +2215,37 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+38"/>
         <source>Change avatar globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander avatar globaal.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change avatar. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander avatar. Heeft alleen effect op deze kamer.</translation>
     </message>
     <message>
         <location line="+79"/>
         <source>Change display name globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander weergavenaam globaal.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change display name. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander weergavenaam. Heeft alleen effect op deze kamer.</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamer: %1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dit is een kamer-specifiek profiel. De weergavenaam en avatar kunnen verschillen van de globale versie.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Open the global profile for this user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Open het globale profiel van deze gebruiker.</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2256,17 +2256,17 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="-72"/>
         <source>Start a private chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Begin een privéchat.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Kick the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijder de gebruiker.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Ban the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verban de gebruiker.</translation>
     </message>
     <message>
         <location line="+55"/>
