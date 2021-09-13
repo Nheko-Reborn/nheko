@@ -679,7 +679,7 @@ ScrollView {
         Platform.MenuItem {
             visible: true
             enabled: visible
-            text: qsTr("&Go to reply")
+            text: qsTr("&Go to quoted message")
             onTriggered: chat.model.showEvent(eventId)
         }
     }

@@ -1116,8 +1116,8 @@ Beispiel: https://mein.server:8787</translation>
     </message>
     <message>
         <location line="+43"/>
-        <source>&amp;Go to reply</source>
-        <translation>&amp;Gehe zur Antwort</translation>
+        <source>&amp;Go to quoted message</source>
+        <translation>&amp;Gehe zur zitierten Nachricht</translation>
     </message>
 </context>
 <context>
