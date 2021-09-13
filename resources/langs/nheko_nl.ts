@@ -1114,11 +1114,6 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <source>Copy link to eve&amp;nt</source>
         <translation>Kopieer link naar gebeurte&amp;nis</translation>
     </message>
-    <message>
-        <location line="+43"/>
-        <source>&amp;Go to reply</source>
-        <translation>&amp;Ga naar citaat</translation>
-    </message>
 </context>
 <context>
     <name>NewVerificationRequest</name>
