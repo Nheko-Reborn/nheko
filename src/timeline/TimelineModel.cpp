@@ -817,6 +817,11 @@ TimelineModel::syncState(const mtx::responses::State &s)
                         emit roomAvatarUrlChanged();
                         emit roomNameChanged();
                         emit roomMemberCountChanged();
+
+                        if (roomMemberCount() <= 2) {
+                                emit isDirectChanged();
+                                emit directChatOtherUserIdChanged();
+                        }
                 } else if (std::holds_alternative<StateEvent<state::Encryption>>(e)) {
                         this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
                         emit encryptionChanged();
@@ -2072,4 +2077,17 @@ int
 TimelineModel::roomMemberCount() const
 {
         return (int)cache::client()->memberCount(room_id_.toStdString());
+}
+
+QString
+TimelineModel::directChatOtherUserId() const
+{
+        if (roomMemberCount() < 3) {
+                QString id;
+                for (auto member : cache::getMembers(room_id_.toStdString()))
+                        if (member.user_id != UserSettings::instance()->userId())
+                                id = member.user_id;
+                return id;
+        } else
+                return "";
 }

@@ -34,14 +34,15 @@ Rectangle {
             width: Nheko.avatarSize
             height: Nheko.avatarSize
             url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
-            displayName: CallManager.callParty
+            userid: CallManager.callParty
+            displayName: CallManager.callPartyDisplayName
             onClicked: TimelineManager.openImageOverlay(room.avatarUrl(userid), room.data.eventId)
         }
 
         Label {
             Layout.leftMargin: 8
             font.pointSize: fontMetrics.font.pointSize * 1.1
-            text: CallManager.callParty
+            text: CallManager.callPartyDisplayName
             color: "#000000"
         }
 

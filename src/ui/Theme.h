@@ -8,12 +8,6 @@
 #include <QPalette>
 
 namespace ui {
-enum class AvatarType
-{
-        Image,
-        Letter
-};
-
 // Default font size.
 const int FontSize = 16;
 

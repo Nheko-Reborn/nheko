@@ -65,6 +65,8 @@ public:
                 IsPreviewFetched,
                 Tags,
                 ParentSpaces,
+                IsDirect,
+                DirectChatOtherUserId,
         };
 
         RoomlistModel(TimelineViewManager *parent = nullptr);

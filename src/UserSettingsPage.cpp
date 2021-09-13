@@ -86,6 +86,7 @@ UserSettings::load(std::optional<QString> profile)
         theme_                = settings.value("user/theme", defaultTheme_).toString();
         font_                 = settings.value("user/font_family", "default").toString();
         avatarCircles_        = settings.value("user/avatar_circles", true).toBool();
+        useIdenticon_         = settings.value("user/use_identicon", true).toBool();
         decryptSidebar_       = settings.value("user/decrypt_sidebar", true).toBool();
         privacyScreen_        = settings.value("user/privacy_screen", false).toBool();
         privacyScreenTimeout_ = settings.value("user/privacy_screen_timeout", 0).toInt();
@@ -596,6 +597,15 @@ UserSettings::setDisableCertificateValidation(bool disabled)
         disableCertificateValidation_ = disabled;
         http::client()->verify_certificates(!disabled);
         emit disableCertificateValidationChanged(disabled);
+}
+
+void
+UserSettings::setUseIdenticon(bool state)
+{
+        if (state == useIdenticon_)
+                return;
+        useIdenticon_ = state;
+        emit useIdenticonChanged(useIdenticon_);
         save();
 }
 
@@ -674,6 +684,7 @@ UserSettings::save()
         settings.setValue("screen_share_hide_cursor", screenShareHideCursor_);
         settings.setValue("use_stun_server", useStunServer_);
         settings.setValue("currentProfile", profile_);
+        settings.setValue("use_identicon", useIdenticon_);
 
         settings.endGroup(); // user
 
@@ -746,6 +757,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         trayToggle_                     = new Toggle{this};
         startInTrayToggle_              = new Toggle{this};
         avatarCircles_                  = new Toggle{this};
+        useIdenticon_                   = new Toggle{this};
         decryptSidebar_                 = new Toggle(this);
         privacyScreen_                  = new Toggle{this};
         onlyShareKeysWithVerifiedUsers_ = new Toggle(this);
@@ -779,6 +791,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         trayToggle_->setChecked(settings_->tray());
         startInTrayToggle_->setChecked(settings_->startInTray());
         avatarCircles_->setChecked(settings_->avatarCircles());
+        useIdenticon_->setChecked(settings_->useIdenticon());
         decryptSidebar_->setChecked(settings_->decryptSidebar());
         privacyScreen_->setChecked(settings_->privacyScreen());
         onlyShareKeysWithVerifiedUsers_->setChecked(settings_->onlyShareKeysWithVerifiedUsers());
@@ -941,6 +954,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         boxWrap(tr("Circular Avatars"),
                 avatarCircles_,
                 tr("Change the appearance of user avatars in chats.\nOFF - square, ON - Circle."));
+        boxWrap(tr("Use identicons"),
+                useIdenticon_,
+                tr("Display an identicon instead of a letter when a user has not set an avatar."));
         boxWrap(tr("Group's sidebar"),
                 groupViewToggle_,
                 tr("Show a column containing groups and tags next to the room list."));
@@ -1262,6 +1278,13 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
         connect(avatarCircles_, &Toggle::toggled, this, [this](bool enabled) {
                 settings_->setAvatarCircles(enabled);
         });
+
+        if (JdenticonProvider::isAvailable())
+                connect(useIdenticon_, &Toggle::toggled, this, [this](bool enabled) {
+                        settings_->setUseIdenticon(enabled);
+                });
+        else
+                useIdenticon_->setDisabled(true);
 
         connect(markdown_, &Toggle::toggled, this, [this](bool enabled) {
                 settings_->setMarkdown(enabled);

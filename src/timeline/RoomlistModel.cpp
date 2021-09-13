@@ -76,6 +76,8 @@ RoomlistModel::roleNames() const
           {IsSpace, "isSpace"},
           {Tags, "tags"},
           {ParentSpaces, "parentSpaces"},
+          {IsDirect, "isDirect"},
+          {DirectChatOtherUserId, "directChatOtherUserId"},
         };
 }
 
@@ -129,6 +131,10 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                                         list.push_back(QString::fromStdString(t));
                                 return list;
                         }
+                        case Roles::IsDirect:
+                                return room->isDirect();
+                        case Roles::DirectChatOtherUserId:
+                                return room->directChatOtherUserId();
                         default:
                                 return {};
                         }
@@ -158,6 +164,14 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                                 return false;
                         case Roles::Tags:
                                 return QStringList();
+                        case Roles::IsDirect:
+                                // The list of users from the room doesn't contain the invited
+                                // users, so we won't factor the invite into the count
+                                return room.member_count == 1;
+                        case Roles::DirectChatOtherUserId:
+                                return cache::getMembersFromInvite(roomid.toStdString(), 0, 1)
+                                  .front()
+                                  .user_id;
                         default:
                                 return {};
                         }
@@ -190,6 +204,10 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                                 return true;
                         case Roles::Tags:
                                 return QStringList();
+                        case Roles::IsDirect:
+                                return false;
+                        case Roles::DirectChatOtherUserId:
+                                return QString{}; // should never be reached
                         default:
                                 return {};
                         }

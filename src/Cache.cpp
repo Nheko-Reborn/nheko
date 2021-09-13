@@ -2776,6 +2776,46 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
         return members;
 }
 
+std::vector<RoomMember>
+Cache::getMembersFromInvite(const std::string &room_id, std::size_t startIndex, std::size_t len)
+{
+        auto txn    = ro_txn(env_);
+        auto db     = getInviteMembersDb(txn, room_id);
+        auto cursor = lmdb::cursor::open(txn, db);
+
+        std::size_t currentIndex = 0;
+
+        const auto endIndex = std::min(startIndex + len, db.size(txn));
+
+        std::vector<RoomMember> members;
+
+        std::string_view user_id, user_data;
+        while (cursor.get(user_id, user_data, MDB_NEXT)) {
+                if (currentIndex < startIndex) {
+                        currentIndex += 1;
+                        continue;
+                }
+
+                if (currentIndex >= endIndex)
+                        break;
+
+                try {
+                        MemberInfo tmp = json::parse(user_data);
+                        members.emplace_back(
+                          RoomMember{QString::fromStdString(std::string(user_id)),
+                                     QString::fromStdString(tmp.name)});
+                } catch (const json::exception &e) {
+                        nhlog::db()->warn("{}", e.what());
+                }
+
+                currentIndex += 1;
+        }
+
+        cursor.close();
+
+        return members;
+}
+
 bool
 Cache::isRoomMember(const std::string &user_id, const std::string &room_id)
 {
@@ -4806,6 +4846,12 @@ std::vector<RoomMember>
 getMembers(const std::string &room_id, std::size_t startIndex, std::size_t len)
 {
         return instance_->getMembers(room_id, startIndex, len);
+}
+
+std::vector<RoomMember>
+getMembersFromInvite(const std::string &room_id, std::size_t startIndex, std::size_t len)
+{
+        return instance_->getMembersFromInvite(room_id, startIndex, len);
 }
 
 void

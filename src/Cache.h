@@ -83,6 +83,9 @@ getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
 //! Retrieve member info from a room.
 std::vector<RoomMember>
 getMembers(const std::string &room_id, std::size_t startIndex = 0, std::size_t len = 30);
+//! Retrive member info from an invite.
+std::vector<RoomMember>
+getMembersFromInvite(const std::string &room_id, std::size_t start_index = 0, std::size_t len = 30);
 
 bool
 isInitialized();

@@ -141,6 +141,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
   , imgProvider(new MxcImageProvider())
   , colorImgProvider(new ColorImageProvider())
   , blurhashProvider(new BlurhashProvider())
+  , jdenticonProvider(new JdenticonProvider())
   , callManager_(callManager)
   , rooms_(new RoomlistModel(this))
   , communities_(new CommunitiesModel(this))
@@ -310,6 +311,8 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         view->engine()->addImageProvider("MxcImage", imgProvider);
         view->engine()->addImageProvider("colorimage", colorImgProvider);
         view->engine()->addImageProvider("blurhash", blurhashProvider);
+        if (JdenticonProvider::isAvailable())
+                view->engine()->addImageProvider("jdenticon", jdenticonProvider);
         view->setSource(QUrl("qrc:///qml/Root.qml"));
 
         connect(parent, &ChatPage::themeChanged, this, &TimelineViewManager::updateColorPalette);

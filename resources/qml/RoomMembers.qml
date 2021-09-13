@@ -39,6 +39,7 @@ ApplicationWindow {
 
             width: 130
             height: width
+            roomid: members.roomId
             displayName: members.roomName
             Layout.alignment: Qt.AlignHCenter
             url: members.avatarUrl.replace("mxc://", "image://MxcImage/")

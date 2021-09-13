@@ -93,7 +93,7 @@ to_json(nlohmann::json &j, const RoomInfo &info);
 void
 from_json(const nlohmann::json &j, RoomInfo &info);
 
-//! Basic information per member;
+//! Basic information per member.
 struct MemberInfo
 {
         std::string name;

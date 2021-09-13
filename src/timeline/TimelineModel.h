@@ -176,6 +176,9 @@ class TimelineModel : public QAbstractListModel
         Q_PROPERTY(bool isEncrypted READ isEncrypted NOTIFY encryptionChanged)
         Q_PROPERTY(bool isSpace READ isSpace CONSTANT)
         Q_PROPERTY(int trustlevel READ trustlevel NOTIFY trustlevelChanged)
+        Q_PROPERTY(bool isDirect READ isDirect NOTIFY isDirectChanged)
+        Q_PROPERTY(QString directChatOtherUserId READ directChatOtherUserId NOTIFY
+                     directChatOtherUserIdChanged)
         Q_PROPERTY(InputBar *input READ input CONSTANT)
         Q_PROPERTY(Permissions *permissions READ permissions NOTIFY permissionsChanged)
 
@@ -292,6 +295,8 @@ public:
         bool isEncrypted() const { return isEncrypted_; }
         crypto::Trust trustlevel() const;
         int roomMemberCount() const;
+        bool isDirect() const { return roomMemberCount() <= 2; }
+        QString directChatOtherUserId() const;
 
         std::optional<mtx::events::collections::TimelineEvents> eventById(const QString &id)
         {
@@ -391,6 +396,8 @@ signals:
         void roomTopicChanged();
         void roomAvatarUrlChanged();
         void roomMemberCountChanged();
+        void isDirectChanged();
+        void directChatOtherUserIdChanged();
         void permissionsChanged();
         void forwardToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 

@@ -112,6 +112,7 @@ ApplicationWindow {
                             return qsTr("Globally enabled pack");
                     }
                     selectedIndex: currentPackIndex
+                    roomid: currentPack.statekey
 
                     TapHandler {
                         onSingleTapped: currentPackIndex = index
@@ -135,6 +136,7 @@ ApplicationWindow {
                     property string packName: currentPack ? currentPack.packname : ""
                     property string attribution: currentPack ? currentPack.attribution : ""
                     property string avatarUrl: currentPack ? currentPack.avatarUrl : ""
+                    property string statekey: currentPack ? currentPack.statekey : ""
 
                     anchors.fill: parent
                     anchors.margins: Nheko.paddingLarge
@@ -143,6 +145,7 @@ ApplicationWindow {
                     Avatar {
                         url: packinfo.avatarUrl.replace("mxc://", "image://MxcImage/")
                         displayName: packinfo.packName
+                        roomid: packinfo.statekey
                         height: 100
                         width: 100
                         Layout.alignment: Qt.AlignHCenter
