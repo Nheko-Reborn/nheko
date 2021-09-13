@@ -131,17 +131,17 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+673"/>
+        <location line="+683"/>
         <source>Invited user: %1</source>
         <translation>Invited user: %1</translation>
     </message>
     <message>
-        <location line="-464"/>
+        <location line="-461"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</translation>
     </message>
     <message>
-        <location line="+367"/>
+        <location line="+364"/>
         <source>Confirm join</source>
         <translation>Confirm join</translation>
     </message>
@@ -157,12 +157,12 @@
     </message>
     <message>
         <location line="+35"/>
-        <location line="+351"/>
+        <location line="+403"/>
         <source>Confirm invite</source>
         <translation>Confirm invite</translation>
     </message>
     <message>
-        <location line="-350"/>
+        <location line="-402"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Do you really want to invite %1 (%2)?</translation>
     </message>
@@ -227,12 +227,12 @@
         <translation>Unbanned user: %1</translation>
     </message>
     <message>
-        <location line="+254"/>
+        <location line="+306"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation>Do you really want to start a private chat with %1?</translation>
     </message>
     <message>
-        <location line="-800"/>
+        <location line="-849"/>
         <source>Cache migration failed!</source>
         <translation>Cache migration failed!</translation>
     </message>
@@ -259,7 +259,7 @@
         <translation>Failed to restore save data. Please login again.</translation>
     </message>
     <message>
-        <location line="+99"/>
+        <location line="+96"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</translation>
     </message>
@@ -354,7 +354,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+247"/>
+        <location filename="../../src/ChatPage.cpp" line="+299"/>
         <source>Decrypt secrets</source>
         <translation>Decrypt secrets</translation>
     </message>
@@ -735,7 +735,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+234"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+267"/>
         <source>Select a file</source>
         <translation>Select a file</translation>
     </message>
@@ -1043,17 +1043,19 @@ Example: https://server.my:8787</translation>
         <translation>Options</translation>
     </message>
     <message>
-        <location line="+419"/>
+        <location line="+421"/>
+        <location line="+118"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copy</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="-111"/>
+        <location line="+118"/>
         <source>Copy &amp;link location</source>
         <translation>Copy &amp;link location</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="-110"/>
         <source>Re&amp;act</source>
         <translation>Re&amp;act</translation>
     </message>
@@ -1112,6 +1114,11 @@ Example: https://server.my:8787</translation>
         <source>Copy link to eve&amp;nt</source>
         <translation>Copy link to eve&amp;nt</translation>
     </message>
+    <message>
+        <location line="+43"/>
+        <source>&amp;Go to reply</source>
+        <translation>&amp;Go to reply</translation>
+    </message>
 </context>
 <context>
     <name>NewVerificationRequest</name>
@@ -1169,6 +1176,14 @@ Example: https://server.my:8787</translation>
         <location line="+0"/>
         <source>Accept</source>
         <translation>Accept</translation>
+    </message>
+</context>
+<context>
+    <name>NotificationWarning</name>
+    <message>
+        <location filename="../qml/NotificationWarning.qml" line="+32"/>
+        <source>You will be pinging the whole room</source>
+        <translation>You will be pinging the whole room</translation>
     </message>
 </context>
 <context>
@@ -1418,7 +1433,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4531"/>
+        <location filename="../../src/Cache.cpp" line="+4542"/>
         <source>no version stored</source>
         <translation>no version stored</translation>
     </message>
@@ -1788,7 +1803,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-3765"/>
+        <location filename="../../src/Cache.cpp" line="-3776"/>
         <source>Failed to connect to secret storage</source>
         <translation>Failed to connect to secret storage</translation>
     </message>
@@ -1874,7 +1889,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1125"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1120"/>
         <source>Message redaction failed: %1</source>
         <translation>Message redaction failed: %1</translation>
     </message>
@@ -1974,7 +1989,7 @@ Example: https://server.my:8787</translation>
         <translation>%1 was invited.</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+20"/>
         <source>%1 changed their avatar.</source>
         <translation>%1 changed their avatar.</translation>
     </message>
@@ -2034,12 +2049,12 @@ Example: https://server.my:8787</translation>
         <translation>%1 redacted their knock.</translation>
     </message>
     <message>
-        <location line="-957"/>
+        <location line="-958"/>
         <source>You joined this room.</source>
         <translation>You joined this room.</translation>
     </message>
     <message>
-        <location line="+917"/>
+        <location line="+918"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation>%1 has changed their avatar and changed their display name to %2.</translation>
     </message>
@@ -2081,7 +2096,7 @@ Example: https://server.my:8787</translation>
         <translation>No room open</translation>
     </message>
     <message>
-        <location line="+139"/>
+        <location line="+142"/>
         <source>%1 member(s)</source>
         <translation>%1 member(s)</translation>
     </message>
@@ -2188,7 +2203,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+26"/>
+        <location filename="../qml/UserProfile.qml" line="+27"/>
         <source>Global User Profile</source>
         <translation>Global User Profile</translation>
     </message>
@@ -2198,28 +2213,63 @@ Example: https://server.my:8787</translation>
         <translation>Room User Profile</translation>
     </message>
     <message>
-        <location line="+117"/>
-        <location line="+107"/>
+        <location line="+38"/>
+        <source>Change avatar globally.</source>
+        <translation>Change avatar globally.</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Change avatar. Will only apply to this room.</source>
+        <translation>Change avatar. Will only apply to this room.</translation>
+    </message>
+    <message>
+        <location line="+79"/>
+        <source>Change display name globally.</source>
+        <translation>Change display name globally.</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Change display name. Will only apply to this room.</source>
+        <translation>Change display name. Will only apply to this room.</translation>
+    </message>
+    <message>
+        <location line="+28"/>
+        <source>Room: %1</source>
+        <translation>Room: %1</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</source>
+        <translation>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Open the global profile for this user.</source>
+        <translation>Open the global profile for this user.</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <location line="+109"/>
         <source>Verify</source>
         <translation>Verify</translation>
     </message>
     <message>
-        <location line="-54"/>
-        <source>Ban the user</source>
-        <translation>Ban the user</translation>
-    </message>
-    <message>
-        <location line="-17"/>
-        <source>Start a private chat</source>
-        <translation>Start a private chat</translation>
+        <location line="-72"/>
+        <source>Start a private chat.</source>
+        <translation>Start a private chat.</translation>
     </message>
     <message>
         <location line="+8"/>
-        <source>Kick the user</source>
-        <translation>Kick the user</translation>
+        <source>Kick the user.</source>
+        <translation>Kick the user.</translation>
     </message>
     <message>
-        <location line="+63"/>
+        <location line="+9"/>
+        <source>Ban the user.</source>
+        <translation>Ban the user.</translation>
+    </message>
+    <message>
+        <location line="+55"/>
         <source>Unverify</source>
         <translation>Unverify</translation>
     </message>

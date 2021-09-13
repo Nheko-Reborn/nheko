@@ -131,17 +131,17 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+673"/>
+        <location line="+683"/>
         <source>Invited user: %1</source>
         <translation>Eingeladener Benutzer: %1</translation>
     </message>
     <message>
-        <location line="-464"/>
+        <location line="-461"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Das Migrieren des Caches auf die aktuelle Version ist fehlgeschlagen. Das kann verschiedene Gründe als Ursache haben. Bitte melde den Fehler und verwende in der Zwischenzeit eine ältere Version. Alternativ kannst du den Cache manuell löschen.</translation>
     </message>
     <message>
-        <location line="+367"/>
+        <location line="+364"/>
         <source>Confirm join</source>
         <translation>Beitritt bestätigen</translation>
     </message>
@@ -157,12 +157,12 @@
     </message>
     <message>
         <location line="+35"/>
-        <location line="+351"/>
+        <location line="+403"/>
         <source>Confirm invite</source>
         <translation>Einladung bestätigen</translation>
     </message>
     <message>
-        <location line="-350"/>
+        <location line="-402"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Nutzer %1 (%2) wirklich einladen?</translation>
     </message>
@@ -227,12 +227,12 @@
         <translation>Verbannung aufgehoben: %1</translation>
     </message>
     <message>
-        <location line="+254"/>
+        <location line="+306"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation>Möchtest du wirklich eine private Konversation mit %1 beginnen?</translation>
     </message>
     <message>
-        <location line="-800"/>
+        <location line="-849"/>
         <source>Cache migration failed!</source>
         <translation>Migration des Caches fehlgeschlagen!</translation>
     </message>
@@ -259,7 +259,7 @@
         <translation>Gespeicherte Nachrichten konnten nicht wiederhergestellt werden. Bitte melde Dich erneut an.</translation>
     </message>
     <message>
-        <location line="+99"/>
+        <location line="+96"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Fehler beim Setup der Verschlüsselungsschlüssel. Servermeldung: %1 %2. Bitte versuche es später erneut.</translation>
     </message>
@@ -354,7 +354,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+247"/>
+        <location filename="../../src/ChatPage.cpp" line="+299"/>
         <source>Decrypt secrets</source>
         <translation>Geheimnisse entschlüsseln</translation>
     </message>
@@ -735,7 +735,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+234"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+267"/>
         <source>Select a file</source>
         <translation>Datei auswählen</translation>
     </message>
@@ -1043,17 +1043,19 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Optionen</translation>
     </message>
     <message>
-        <location line="+419"/>
+        <location line="+421"/>
+        <location line="+118"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopieren</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="-111"/>
+        <location line="+118"/>
         <source>Copy &amp;link location</source>
         <translation>Kopiere &amp;Link</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="-110"/>
         <source>Re&amp;act</source>
         <translation>Re&amp;agieren</translation>
     </message>
@@ -1112,6 +1114,11 @@ Beispiel: https://mein.server:8787</translation>
         <source>Copy link to eve&amp;nt</source>
         <translation>Link &amp;zu diesem Event kopieren</translation>
     </message>
+    <message>
+        <location line="+43"/>
+        <source>&amp;Go to reply</source>
+        <translation>&amp;Gehe zur Antwort</translation>
+    </message>
 </context>
 <context>
     <name>NewVerificationRequest</name>
@@ -1169,6 +1176,14 @@ Beispiel: https://mein.server:8787</translation>
         <location line="+0"/>
         <source>Accept</source>
         <translation>Akzeptieren</translation>
+    </message>
+</context>
+<context>
+    <name>NotificationWarning</name>
+    <message>
+        <location filename="../qml/NotificationWarning.qml" line="+32"/>
+        <source>You will be pinging the whole room</source>
+        <translation>Du wirst den ganzen Raum benachrichtigen</translation>
     </message>
 </context>
 <context>
@@ -1418,7 +1433,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4531"/>
+        <location filename="../../src/Cache.cpp" line="+4542"/>
         <source>no version stored</source>
         <translation>keine Version gespeichert</translation>
     </message>
@@ -1788,7 +1803,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-3765"/>
+        <location filename="../../src/Cache.cpp" line="-3776"/>
         <source>Failed to connect to secret storage</source>
         <translation>Verbindung zum kryptografischen Speicher fehlgeschlagen</translation>
     </message>
@@ -1874,7 +1889,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1125"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1120"/>
         <source>Message redaction failed: %1</source>
         <translation>Nachricht zurückziehen fehlgeschlagen: %1</translation>
     </message>
@@ -1974,7 +1989,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>%1 wurde eingeladen.</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+20"/>
         <source>%1 changed their avatar.</source>
         <translation>%1 hat den Avatar geändert.</translation>
     </message>
@@ -2034,12 +2049,12 @@ Beispiel: https://mein.server:8787</translation>
         <translation>%1 hat das Anklopfen zurückgezogen.</translation>
     </message>
     <message>
-        <location line="-957"/>
+        <location line="-958"/>
         <source>You joined this room.</source>
         <translation>Du bist dem Raum beigetreten.</translation>
     </message>
     <message>
-        <location line="+917"/>
+        <location line="+918"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation>%1 hat den eigenen Avatar und Namen geändert zu %2.</translation>
     </message>
@@ -2081,7 +2096,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Kein Raum geöffnet</translation>
     </message>
     <message>
-        <location line="+139"/>
+        <location line="+142"/>
         <source>%1 member(s)</source>
         <translation>%1 Teilnehmer</translation>
     </message>
@@ -2188,7 +2203,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+26"/>
+        <location filename="../qml/UserProfile.qml" line="+27"/>
         <source>Global User Profile</source>
         <translation>Globales Nutzerprofil</translation>
     </message>
@@ -2198,28 +2213,63 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Raumspezifisches Nutzerprofil</translation>
     </message>
     <message>
-        <location line="+117"/>
-        <location line="+107"/>
+        <location line="+38"/>
+        <source>Change avatar globally.</source>
+        <translation>Ändere das Profilbild in allen Räumen.</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Change avatar. Will only apply to this room.</source>
+        <translation>Ändere das Profilbild nur in diesem Raum.</translation>
+    </message>
+    <message>
+        <location line="+79"/>
+        <source>Change display name globally.</source>
+        <translation>Ändere den Anzeigenamen in allen Räumen.</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Change display name. Will only apply to this room.</source>
+        <translation>Ändere den Anzeigenamen nur in diesem Raum.</translation>
+    </message>
+    <message>
+        <location line="+28"/>
+        <source>Room: %1</source>
+        <translation>Raum: %1</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</source>
+        <translation>Dies ist das raumspezifische Nutzerprofil. Der Anzeigename und das Profilbild kann sich von dem globalen Profil unterscheiden.</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Open the global profile for this user.</source>
+        <translation>Öffne das globale Profil des Nutzers.</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <location line="+109"/>
         <source>Verify</source>
         <translation>Verifizieren</translation>
     </message>
     <message>
-        <location line="-54"/>
-        <source>Ban the user</source>
-        <translation>Banne den Nutzer</translation>
-    </message>
-    <message>
-        <location line="-17"/>
-        <source>Start a private chat</source>
-        <translation>Starte eine private Konservation</translation>
+        <location line="-72"/>
+        <source>Start a private chat.</source>
+        <translation>Starte eine private Unterhaltung.</translation>
     </message>
     <message>
         <location line="+8"/>
-        <source>Kick the user</source>
-        <translation>Kicke den Nutzer</translation>
+        <source>Kick the user.</source>
+        <translation>Benutzer aus dem Raum werfen.</translation>
     </message>
     <message>
-        <location line="+63"/>
+        <location line="+9"/>
+        <source>Ban the user.</source>
+        <translation>Benutzer aus dem Raum verbannen.</translation>
+    </message>
+    <message>
+        <location line="+55"/>
         <source>Unverify</source>
         <translation>Verifizierung zurückziehen</translation>
     </message>

@@ -131,17 +131,17 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+673"/>
+        <location line="+683"/>
         <source>Invited user: %1</source>
         <translation>Invitita uzanto: %1</translation>
     </message>
     <message>
-        <location line="-464"/>
+        <location line="-461"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Malsukcesis migrado de kaŝmemoro al nuna versio. Tio povas havi diversajn kialojn. Bonvolu raporti eraron kaj dume provi malpli novan version. Alternative, vi povas provi forigi la kaŝmemoron permane.</translation>
     </message>
     <message>
-        <location line="+367"/>
+        <location line="+364"/>
         <source>Confirm join</source>
         <translation>Konfirmu aliĝon</translation>
     </message>
@@ -158,12 +158,12 @@
     </message>
     <message>
         <location line="+35"/>
-        <location line="+351"/>
+        <location line="+403"/>
         <source>Confirm invite</source>
         <translation>Konfirmu inviton</translation>
     </message>
     <message>
-        <location line="-350"/>
+        <location line="-402"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Ĉu vi certe volas inviti uzanton %1 (%2)?</translation>
     </message>
@@ -228,12 +228,12 @@
         <translation>Malforbaris uzanton: %1</translation>
     </message>
     <message>
-        <location line="+254"/>
+        <location line="+306"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation>Ĉu vi certe volas komenci privatan babilon kun %1?</translation>
     </message>
     <message>
-        <location line="-800"/>
+        <location line="-849"/>
         <source>Cache migration failed!</source>
         <translation>Malsukcesis migrado de kaŝmemoro!</translation>
     </message>
@@ -260,7 +260,7 @@
         <translation>Malsukcesis rehavi konservitajn datumojn. Bonvolu resaluti.</translation>
     </message>
     <message>
-        <location line="+99"/>
+        <location line="+96"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Malsukcesis agordi ĉifrajn ŝlosilojn. Respondo de servilo: %1 %2. Bonvolu reprovi poste.</translation>
     </message>
@@ -355,7 +355,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+247"/>
+        <location filename="../../src/ChatPage.cpp" line="+299"/>
         <source>Decrypt secrets</source>
         <translation>Malĉifri sekretojn</translation>
     </message>
@@ -736,7 +736,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+234"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+267"/>
         <source>Select a file</source>
         <translation>Elektu dosieron</translation>
     </message>
@@ -1047,17 +1047,19 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Elektebloj</translation>
     </message>
     <message>
-        <location line="+419"/>
+        <location line="+421"/>
+        <location line="+118"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopii</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="-111"/>
+        <location line="+118"/>
         <source>Copy &amp;link location</source>
         <translation>Kopii celon de &amp;ligilo</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="-110"/>
         <source>Re&amp;act</source>
         <translation>Re&amp;agi</translation>
     </message>
@@ -1116,6 +1118,11 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <source>Copy link to eve&amp;nt</source>
         <translation>Kopii ligilon al oka&amp;zo</translation>
     </message>
+    <message>
+        <location line="+43"/>
+        <source>&amp;Go to reply</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NewVerificationRequest</name>
@@ -1173,6 +1180,14 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <location line="+0"/>
         <source>Accept</source>
         <translation>Akcepti</translation>
+    </message>
+</context>
+<context>
+    <name>NotificationWarning</name>
+    <message>
+        <location filename="../qml/NotificationWarning.qml" line="+32"/>
+        <source>You will be pinging the whole room</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1422,7 +1437,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4531"/>
+        <location filename="../../src/Cache.cpp" line="+4542"/>
         <source>no version stored</source>
         <translation>neniu versio konservita</translation>
     </message>
@@ -1792,7 +1807,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-3765"/>
+        <location filename="../../src/Cache.cpp" line="-3776"/>
         <source>Failed to connect to secret storage</source>
         <translation>Malsukcesis konektiĝi al sekreta deponejo</translation>
     </message>
@@ -1879,7 +1894,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1125"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1120"/>
         <source>Message redaction failed: %1</source>
         <translation>Malsukcesis redaktado de mesaĝo: %1</translation>
     </message>
@@ -1980,7 +1995,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>%1 estis invitita.</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+20"/>
         <source>%1 changed their avatar.</source>
         <translatorcomment>%1 ŝanĝis sian avataron.</translatorcomment>
         <translation>%1 ŝanĝis sian profilbildon.</translation>
@@ -2041,12 +2056,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>%1 forigis sian frapon.</translation>
     </message>
     <message>
-        <location line="-957"/>
+        <location line="-958"/>
         <source>You joined this room.</source>
         <translation>Vi aliĝis ĉi tiun ĉambron.</translation>
     </message>
     <message>
-        <location line="+917"/>
+        <location line="+918"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation>%1 ŝanĝis sian profilbildon kaj sian prezentan nomon al %2.</translation>
     </message>
@@ -2088,7 +2103,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Neniu ĉambro estas malfermita</translation>
     </message>
     <message>
-        <location line="+139"/>
+        <location line="+142"/>
         <source>%1 member(s)</source>
         <translation>%1 ĉambrano(j)</translation>
     </message>
@@ -2195,7 +2210,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/UserProfile.qml" line="+26"/>
+        <location filename="../qml/UserProfile.qml" line="+27"/>
         <source>Global User Profile</source>
         <translation>Ĉiea profilo de uzanto</translation>
     </message>
@@ -2205,28 +2220,63 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Ĉambra profilo de uzanto</translation>
     </message>
     <message>
-        <location line="+117"/>
-        <location line="+107"/>
+        <location line="+38"/>
+        <source>Change avatar globally.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Change avatar. Will only apply to this room.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+79"/>
+        <source>Change display name globally.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Change display name. Will only apply to this room.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+28"/>
+        <source>Room: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Open the global profile for this user.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <location line="+109"/>
         <source>Verify</source>
         <translation>Kontroli</translation>
     </message>
     <message>
-        <location line="-54"/>
-        <source>Ban the user</source>
-        <translation>Forbari la uzanton</translation>
-    </message>
-    <message>
-        <location line="-17"/>
-        <source>Start a private chat</source>
-        <translation>Komenci privatan babilon</translation>
+        <location line="-72"/>
+        <source>Start a private chat.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
-        <source>Kick the user</source>
-        <translation>Forpeli la uzanton</translation>
+        <source>Kick the user.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+63"/>
+        <location line="+9"/>
+        <source>Ban the user.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+55"/>
         <source>Unverify</source>
         <translation>Malkontroli</translation>
     </message>
