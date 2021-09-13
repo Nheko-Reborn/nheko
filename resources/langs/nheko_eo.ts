@@ -22,7 +22,7 @@
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation type="unfinished">Kaŝi/Montri bildon en bildo</translation>
+        <translation>Kaŝi/Montri «bildon en bildo»</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -133,7 +133,7 @@
         <location line="+4"/>
         <location line="+673"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished">Invitita uzanto: %1</translation>
+        <translation>Invitita uzanto: %1</translation>
     </message>
     <message>
         <location line="-464"/>
@@ -250,14 +250,14 @@
     <message>
         <location line="+49"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis rehavi konton je OLM. Bonvolu resaluti.</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+4"/>
         <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis rehavi konservitajn datumojn. Bonvolu resaluti.</translation>
     </message>
     <message>
         <location line="+99"/>
@@ -610,7 +610,7 @@
     <message>
         <location filename="../qml/dialogs/ImagePackEditorDialog.qml" line="+24"/>
         <source>Editing image pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Redaktado de bildopako</translation>
     </message>
     <message>
         <location line="+62"/>
@@ -625,12 +625,12 @@
     <message>
         <location line="+60"/>
         <source>State key</source>
-        <translation type="unfinished"></translation>
+        <translation>Identigilo (stata ŝlosilo)</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Packname</source>
-        <translation type="unfinished"></translation>
+        <translation>Nomo de pako</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -657,7 +657,7 @@
     <message>
         <location line="+10"/>
         <source>Body</source>
-        <translation type="unfinished"></translation>
+        <translation>Korpo</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -710,17 +710,17 @@
     <message>
         <location line="+2"/>
         <source>Globally enabled pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉie ŝaltita pako</translation>
     </message>
     <message>
         <location line="+63"/>
         <source>Enable globally</source>
-        <translation type="unfinished"></translation>
+        <translation>Ŝalti ĉie</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Enables this pack to be used in all rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Ŝaltas ĉi tiun pakon por uzo en ĉiuj ĉambroj</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -874,7 +874,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+24"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation type="unfinished"></translation>
+        <translation>La bezonataj konektaj lokoj ne troviĝis. Eble tio ne estas Matriksa servilo.</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -923,7 +923,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+0"/>
         <source>removed room name</source>
-        <translation type="unfinished"></translation>
+        <translation>forigis nomon de ĉambro</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -933,7 +933,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+0"/>
         <source>removed topic</source>
-        <translation type="unfinished"></translation>
+        <translation>forigis temon</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1365,7 +1365,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+26"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation type="unfinished"></translation>
+        <translation>La bezonataj konektaj lokoj ne troviĝis. Eble tio ne estas Matriksa servilo.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1424,7 +1424,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location filename="../../src/Cache.cpp" line="+4531"/>
         <source>no version stored</source>
-        <translation type="unfinished"></translation>
+        <translation>neniu versio konservita</translation>
     </message>
 </context>
 <context>
@@ -1482,12 +1482,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+280"/>
         <source>Status Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Statmesaĝo</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter your status message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Enigu vian statmesaĝon:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1497,7 +1497,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+5"/>
         <source>Set status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Meti statmesaĝon</translation>
     </message>
     <message>
         <location line="+80"/>
@@ -1722,7 +1722,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location filename="../../src/timeline/RoomlistModel.cpp" line="+143"/>
         <source>Pending invite.</source>
-        <translation type="unfinished"></translation>
+        <translation>Atendanta invito.</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -1755,18 +1755,18 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+19"/>
         <source>Include your camera picture-in-picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Enigi vian filmilon en la filmon</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Request remote camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Peti foran filmilon</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+9"/>
         <source>View your callee&apos;s camera like a regular video call</source>
-        <translation type="unfinished"></translation>
+        <translation>Vidi la filmilon de via vokato kiel en ordinara vidvoko</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1776,12 +1776,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+20"/>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation>Vidigi</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Antaŭrigardi</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1794,12 +1794,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location filename="../../src/Cache.cpp" line="-3765"/>
         <source>Failed to connect to secret storage</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis konektiĝi al sekreta deponejo</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Secrets or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko ne povis konektiĝi al la sekreta deponejo por konservi ĉifrajn sekretojn. Tio povas havi diversajn kialojn. Kontrolu, ĉu la servo «D-Bus» funkcias, kaj ĉu vi agordis kroman servon kiel «KWallet», «Gnome Secrets», aŭ similan servon por via sistemo. Se daŭras problemoj, laŭplaĉe raportu ilin tie ĉi: https://github.com/Nheko-Reborn/nheko/issues</translation>
     </message>
 </context>
 <context>
@@ -1808,12 +1808,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <location filename="../../src/SingleImagePackModel.cpp" line="+261"/>
         <location line="+25"/>
         <source>Failed to update image pack: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis ĝisdatigi bildopakon: %1</translation>
     </message>
     <message>
         <location line="-12"/>
         <source>Failed to delete old image pack: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis forigi malnovan bildopakon: %1</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -2189,7 +2189,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+1"/>
         <source>Quit</source>
-        <translation type="unfinished">Ĉesigi</translation>
+        <translation>Ĉesigi</translation>
     </message>
 </context>
 <context>
@@ -2371,7 +2371,7 @@ Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds
         <translation>Tempo de atendo (en sekundoj) ekde senfokusiĝo
 de la fenestro, post kiu la enhavo malklariĝos.
 Agordu al 0 por malklarigi enhavon tuj post senfokusiĝo.
-Maksimuma valoro estas 1 horo (3600 sekundoj).</translation>
+Maksimuma valoro estas 1 horo (3600 sekundoj)</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2519,52 +2519,52 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Online Key Backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Enreta savkopiado de ŝlosiloj</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Download message encryption keys from and upload to the encrypted online key backup.</source>
-        <translation type="unfinished"></translation>
+        <translation>Elŝutu ĉifrajn ŝlosilojn por mesaĝoj de la ĉifrita enreta deponejo de ŝlosiloj, aŭ alŝutu ilin tien.</translation>
     </message>
     <message>
         <location line="+181"/>
         <source>Enable online key backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Ŝalti enretan savkopiadon de ŝlosiloj</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The Nheko authors recommend not enabling online key backup until symmetric online key backup is available. Enable anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Aŭtoroj de Nheko rekomendas ne ŝalti enretan savkopiadon de ŝlosiloj, almenaŭ ĝis simetria enreta savkopiado estos disponebla. Ĉu vi tamen volas ĝin ŝalti?</translation>
     </message>
     <message>
         <location line="+248"/>
         <source>CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>KAŜMEMORITA</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>NOT CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>NE KAŜMEMORITA</translation>
     </message>
     <message>
         <location line="-493"/>
         <source>Scale factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Skala obligo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ŝanĝas skalan obligon de la tuta fasado.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipara grando</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Font Family</source>
-        <translation type="unfinished">Tiparo</translation>
+        <translation>Tipara familio</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2619,7 +2619,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+1"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished">Fingrospuro de aparato</translation>
+        <translation>Fingrospuro de aparato</translation>
     </message>
     <message>
         <location line="-167"/>
@@ -2669,7 +2669,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+12"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished">Bildosigna tiparo</translation>
+        <translation>Bildosigna tiparo</translation>
     </message>
     <message>
         <location line="+53"/>
@@ -2714,7 +2714,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+54"/>
         <source>Select a file</source>
-        <translation type="unfinished">Elektu dosieron</translation>
+        <translation>Elektu dosieron</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2724,7 +2724,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+261"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished"></translation>
+        <translation>Malfermi dosieron kun salutaĵoj</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2740,7 +2740,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <location line="-66"/>
         <location line="+28"/>
         <source>File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Pasvorto de dosiero</translation>
     </message>
     <message>
         <location line="-27"/>
@@ -2859,12 +2859,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+8"/>
         <source>Room Preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Antaŭagordo de ĉambro</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Individua ĉambro</translation>
     </message>
 </context>
 <context>
@@ -2872,7 +2872,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/FallbackAuth.cpp" line="+34"/>
         <source>Open Fallback in Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Iri al foliumilo por la alternativa metodo</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2887,7 +2887,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Iru al la alternativa metodo, sekvu la paŝojn, kaj fininte ilin, konfirmu.</translation>
     </message>
 </context>
 <context>
@@ -2971,7 +2971,7 @@ Grandeco de vidaŭdaĵo: %2
     <message>
         <location line="+11"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished"></translation>
+        <translation>Solvu la kontrolon de homeco de «reCAPTCHA» kaj premu la konfirman butonon</translation>
     </message>
 </context>
 <context>
@@ -2979,12 +2979,12 @@ Grandeco de vidaŭdaĵo: %2
     <message>
         <location filename="../../src/Utils.h" line="+115"/>
         <source>You sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>Vi sendis sonmesaĝon</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sendis sonmesaĝon</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3092,7 +3092,7 @@ Grandeco de vidaŭdaĵo: %2
     <message>
         <location line="+4"/>
         <source>Unknown Message Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Nekonata tipo de mesaĝo</translation>
     </message>
 </context>
 </TS>
