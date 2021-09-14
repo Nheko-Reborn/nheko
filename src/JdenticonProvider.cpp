@@ -62,9 +62,14 @@ JdenticonResponse::run()
         painter.setRenderHint(QPainter::Antialiasing, true);
         painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
-        QSvgRenderer renderer{
-          jdenticonInterface_->generate(m_key, m_requestedSize.width()).toUtf8()};
-        renderer.render(&painter);
+        try {
+                QSvgRenderer renderer{
+                  jdenticonInterface_->generate(m_key, m_requestedSize.width()).toUtf8()};
+                renderer.render(&painter);
+        } catch (std::exception &e) {
+                nhlog::ui()->error(
+                  "caught {} in jdenticonprovider, key '{}'", e.what(), m_key.toStdString());
+        }
 
         painter.end();
 
