@@ -101,6 +101,7 @@ ApplicationWindow {
                     required property string displayName
                     required property bool fromAccountData
                     required property bool fromCurrentRoom
+                    required property string statekey
 
                     title: displayName
                     subtitle: {
@@ -112,7 +113,7 @@ ApplicationWindow {
                             return qsTr("Globally enabled pack");
                     }
                     selectedIndex: currentPackIndex
-                    roomid: currentPack.statekey
+                    roomid: statekey
 
                     TapHandler {
                         onSingleTapped: currentPackIndex = index
