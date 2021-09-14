@@ -918,6 +918,52 @@ FilteredRoomlistModel::toggleTag(QString roomid, QString tag, bool on)
 }
 
 void
+FilteredRoomlistModel::nextRoomWithActivity()
+{
+        int roomWithMention       = -1;
+        int roomWithNotification  = -1;
+        int roomWithUnreadMessage = -1;
+        auto r                    = currentRoom();
+        int currentRoomIdx        = r ? roomidToIndex(r->roomId()) : -1;
+        // first look for mentions
+        for (int i = 0; i < (int)roomlistmodel->roomids.size(); i++) {
+                if (i == currentRoomIdx)
+                        continue;
+                if (this->data(index(i, 0), RoomlistModel::HasLoudNotification).toBool()) {
+                        roomWithMention = i;
+                        break;
+                }
+                if (roomWithNotification == -1 &&
+                    this->data(index(i, 0), RoomlistModel::NotificationCount).toInt() > 0) {
+                        roomWithNotification = i;
+                        // don't break, we must continue looking for rooms with mentions
+                }
+                if (roomWithNotification == -1 && roomWithUnreadMessage == -1 &&
+                    this->data(index(i, 0), RoomlistModel::HasUnreadMessages).toBool()) {
+                        roomWithUnreadMessage = i;
+                        // don't break, we must continue looking for rooms with mentions
+                }
+        }
+        QString targetRoomId = nullptr;
+        if (roomWithMention != -1) {
+                targetRoomId =
+                  this->data(index(roomWithMention, 0), RoomlistModel::RoomId).toString();
+                nhlog::ui()->debug("choosing {} for mentions", targetRoomId.toStdString());
+        } else if (roomWithNotification != -1) {
+                targetRoomId =
+                  this->data(index(roomWithNotification, 0), RoomlistModel::RoomId).toString();
+                nhlog::ui()->debug("choosing {} for notifications", targetRoomId.toStdString());
+        } else if (roomWithUnreadMessage != -1) {
+                targetRoomId =
+                  this->data(index(roomWithUnreadMessage, 0), RoomlistModel::RoomId).toString();
+                nhlog::ui()->debug("choosing {} for unread messages", targetRoomId.toStdString());
+        }
+        if (targetRoomId != nullptr) {
+                setCurrentRoom(targetRoomId);
+        }
+}
+
+void
 FilteredRoomlistModel::nextRoom()
 {
         auto r = currentRoom();

@@ -121,6 +121,11 @@ Page {
     }
 
     Shortcut {
+        sequence: "Alt+A"
+        onActivated: Rooms.nextRoomWithActivity()
+    }
+
+    Shortcut {
         sequence: "Ctrl+Down"
         onActivated: Rooms.nextRoom()
     }
