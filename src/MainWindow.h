@@ -6,9 +6,11 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 
 #include <QMainWindow>
 #include <QSharedPointer>
+#include <QShortcut>
 #include <QStackedWidget>
 #include <QSystemTrayIcon>
 
@@ -135,4 +137,7 @@ private:
         //! Overlay modal used to project other widgets.
         OverlayModal *modal_       = nullptr;
         LoadingIndicator *spinner_ = nullptr;
+
+        //! Quit keyboard shortcut
+        std::unique_ptr<QShortcut> quitShortcut;
 };

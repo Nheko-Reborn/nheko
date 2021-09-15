@@ -125,8 +125,8 @@ MainWindow::MainWindow(QWidget *parent)
 
         connect(register_page_, &RegisterPage::registerOk, this, &MainWindow::showChatPage);
 
-        QShortcut *quitShortcut = new QShortcut(QKeySequence::Quit, this);
-        connect(quitShortcut, &QShortcut::activated, this, QApplication::quit);
+        quitShortcut.reset(new QShortcut(QKeySequence::Quit, this));
+        connect(quitShortcut.get(), &QShortcut::activated, this, QApplication::quit);
 
         trayIcon_->setVisible(userSettings_->tray());
 
