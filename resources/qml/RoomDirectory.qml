@@ -181,6 +181,18 @@ ApplicationWindow {
         implicitHeight: roomSearch.height
 
         MatrixTextField {
+            id: chooseServer
+
+            Layout.fillWidth: true
+            selectByMouse: true
+            font.pixelSize: fontMetrics.font.pixelSize
+            padding: Nheko.paddingMedium
+            color: Nheko.colors.text
+            placeholderText: qsTr("Choose custom homeserver")
+            onTextChanged: publicRooms.setMatrixServer(text)
+        }
+
+        MatrixTextField {
             id: roomSearch
 
             Layout.fillWidth: true
