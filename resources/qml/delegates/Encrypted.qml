@@ -3,11 +3,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import ".."
+import QtQuick 2.15
 import QtQuick.Controls 2.1
-import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
-ColumnLayout {
+Column {
     id: r
 
     required property int encryptionError
