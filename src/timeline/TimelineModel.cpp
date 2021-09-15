@@ -1534,11 +1534,25 @@ void
 TimelineModel::showEvent(QString eventId)
 {
         using namespace std::chrono_literals;
-        if (idToIndex(eventId) != -1) {
+        // Direct to eventId
+        if (eventId[0] == '$') {
+                int idx = idToIndex(eventId);
+                if (idx == -1) {
+                        nhlog::ui()->warn("Scrolling to event id {}, failed - no known index",
+                                          eventId.toStdString());
+                        return;
+                }
                 eventIdToShow = eventId;
                 emit scrollTargetChanged();
                 showEventTimer.start(50ms);
+                return;
         }
+        // to message index
+        eventId       = indexToId(eventId.toInt());
+        eventIdToShow = eventId;
+        emit scrollTargetChanged();
+        showEventTimer.start(50ms);
+        return;
 }
 
 void

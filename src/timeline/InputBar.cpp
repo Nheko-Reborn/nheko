@@ -630,6 +630,23 @@ InputBar::command(QString command, QString args)
                 notice(args, false);
         } else if (command == "rainbownotice") {
                 notice(args, true);
+        } else if (command == "goto") {
+                // Goto has three different modes:
+                // 1 - Going directly to a given event ID
+                if (args[0] == '$') {
+                        room->showEvent(args);
+                        return;
+                }
+                // 2 - Going directly to a given message index
+                if (args[0] >= '0' && args[0] <= '9') {
+                        room->showEvent(args);
+                        return;
+                }
+                // 3 - Matrix URI handler, as if you clicked the URI
+                if (ChatPage::instance()->handleMatrixUri(args)) {
+                        return;
+                }
+                nhlog::net()->error("Could not resolve goto: {}", args.toStdString());
         }
 }
 

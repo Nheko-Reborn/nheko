@@ -78,8 +78,8 @@ public:
         QString currentRoom() const;
 
 public slots:
-        void handleMatrixUri(const QByteArray &uri);
-        void handleMatrixUri(const QUrl &uri);
+        bool handleMatrixUri(const QByteArray &uri);
+        bool handleMatrixUri(const QUrl &uri);
 
         void startChat(QString userid);
         void leaveRoom(const QString &room_id);
