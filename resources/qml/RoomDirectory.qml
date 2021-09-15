@@ -181,18 +181,6 @@ ApplicationWindow {
         implicitHeight: roomSearch.height
 
         MatrixTextField {
-            id: chooseServer
-
-            Layout.fillWidth: true
-            selectByMouse: true
-            font.pixelSize: fontMetrics.font.pixelSize
-            padding: Nheko.paddingMedium
-            color: Nheko.colors.text
-            placeholderText: qsTr("Choose custom homeserver")
-            onTextChanged: publicRooms.setMatrixServer(text)
-        }
-
-        MatrixTextField {
             id: roomSearch
 
             Layout.fillWidth: true
@@ -202,6 +190,17 @@ ApplicationWindow {
             color: Nheko.colors.text
             placeholderText: qsTr("Search for public rooms")
             onTextChanged: searchTimer.restart()
+        }
+
+        MatrixTextField {
+            id: chooseServer
+            Layout.minimumWidth: 0.3 * header.width
+            Layout.maximumWidth: 0.3 * header.width
+
+            padding: Nheko.paddingMedium
+            color: Nheko.colors.text
+            placeholderText: qsTr("Choose custom homeserver")
+            onTextChanged: publicRooms.setMatrixServer(text)
         }
 
         Timer {
