@@ -717,6 +717,10 @@ TimelineModel::data(const QModelIndex &index, int role) const
         if (index.row() < 0 && index.row() >= rowCount())
                 return QVariant();
 
+        // HACK(Nico): fetchMore likes to break with dynamically sized delegates and reuseItems
+        if (index.row() + 1 == rowCount() && !m_paginationInProgress)
+                const_cast<TimelineModel *>(this)->fetchMore(index);
+
         auto event = events.get(rowCount() - index.row() - 1);
 
         if (!event)
