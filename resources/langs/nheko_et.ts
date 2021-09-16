@@ -1117,7 +1117,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+43"/>
         <source>&amp;Go to quoted message</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vaata tsiteeritud sõnumit</translation>
     </message>
 </context>
 <context>
@@ -1183,7 +1183,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/NotificationWarning.qml" line="+32"/>
         <source>You will be pinging the whole room</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa saadad viitesõnumi tervele jututoale</translation>
     </message>
 </context>
 <context>
@@ -2215,37 +2215,37 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+38"/>
         <source>Change avatar globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda oma tunnuspilti kõikjal.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change avatar. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda oma tunnuspilti vaid selles jututoas.</translation>
     </message>
     <message>
         <location line="+79"/>
         <source>Change display name globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda oma kuvatavat nime kõikjal.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change display name. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda oma kuvatavat nime vaid selles jututoas.</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututuba: %1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</source>
-        <translation type="unfinished"></translation>
+        <translation>See kasutajaprofiil on vaid selle jututoa kohane. Kasutaja kuvatav nimi ja tunnuspilt võivad muudes jutubades olla teistsugused.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Open the global profile for this user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaata selle kasutaja üldist profiili.</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2256,17 +2256,17 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="-72"/>
         <source>Start a private chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alusta privaatset vestlust.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Kick the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Müksa kasutaja välja.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Ban the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sea kasutajale suhtluskeeld.</translation>
     </message>
     <message>
         <location line="+55"/>
