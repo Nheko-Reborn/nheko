@@ -104,7 +104,7 @@ RoomDirectoryModel::getViasForRoom(const std::vector<std::string> &aliases)
         // request. For more details consult the specs:
         // https://matrix.org/docs/spec/client_server/r0.6.1#post-matrix-client-r0-join-roomidoralias
         if (!server_.empty()) {
-            vias.push_back(server_);
+                vias.push_back(server_);
         }
 
         return vias;
