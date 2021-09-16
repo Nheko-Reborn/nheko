@@ -328,7 +328,7 @@
     <message>
         <location line="+2"/>
         <source>Rooms you have favourited.</source>
-        <translation>Suosikkihuoneesi</translation>
+        <translation>Suosikkihuoneesi.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -619,7 +619,7 @@
     <message>
         <location line="+7"/>
         <source>Stickers (*.png *.webp *.gif)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tarrat (*.png *.webp *.gif)</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -666,12 +666,12 @@
     <message>
         <location line="+4"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Poista</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Cancel</source>
-        <translation type="unfinished">Peruuta</translation>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -724,12 +724,12 @@
     <message>
         <location line="+10"/>
         <source>Edit</source>
-        <translation type="unfinished">Muokkaa</translation>
+        <translation>Muokkaa</translation>
     </message>
     <message>
         <location line="+64"/>
         <source>Close</source>
-        <translation type="unfinished">Sulje</translation>
+        <translation>Sulje</translation>
     </message>
 </context>
 <context>
@@ -760,7 +760,7 @@
     <message>
         <location line="+24"/>
         <source>User ID to invite</source>
-        <translation type="unfinished">Käyttäjätunnus kutsuttavaksi</translation>
+        <translation>Käyttäjätunnus kutsuttavaksi</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -781,7 +781,7 @@
     <message>
         <location line="+7"/>
         <source>Cancel</source>
-        <translation type="unfinished">Peruuta</translation>
+        <translation>Peruuta</translation>
     </message>
 </context>
 <context>
@@ -1057,7 +1057,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="-110"/>
         <source>Re&amp;act</source>
-        <translation>Re&amp;act</translation>
+        <translation>Rea&amp;goi</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1294,7 +1294,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../qml/ReadReceipts.qml" line="+40"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Lukukuittaukset</translation>
+        <translation>Lukukuittaukset</translation>
     </message>
 </context>
 <context>
@@ -1865,7 +1865,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../qml/emoji/StickerPicker.qml" line="+70"/>
         <source>Search</source>
-        <translation type="unfinished">Hae</translation>
+        <translation>Hae</translation>
     </message>
 </context>
 <context>
@@ -1956,7 +1956,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>%1 has closed the room to guest access.</source>
-        <translation>%1 on sulkenut huoneen vierailta</translation>
+        <translation>%1 on sulkenut huoneen vierailta.</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -2256,17 +2256,17 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="-72"/>
         <source>Start a private chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aloita yksityinen keskustelu.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Kick the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Potki käyttäjä.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Ban the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Anna käyttäjälle porttikielto.</translation>
     </message>
     <message>
         <location line="+55"/>
@@ -2370,7 +2370,7 @@ Esimerkki: https://server.my:8787</translation>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - Circle.</source>
         <translation>Muuta käyttäjien avatarien ulkonäköä keskusteluissa.
-POIS PÄÄLTÄ - neliö, PÄÄLLÄ - pyöreä</translation>
+POIS PÄÄLTÄ - neliö, PÄÄLLÄ - pyöreä.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2615,7 +2615,7 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
     <message>
         <location line="+2"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation>Aseta ilmoitusääni soimaan kun kutsu puheluun tulee.</translation>
+        <translation>Aseta ilmoitusääni soimaan kun kutsu puheluun tulee</translation>
     </message>
     <message>
         <location line="+1"/>
