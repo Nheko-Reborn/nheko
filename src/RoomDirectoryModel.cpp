@@ -98,6 +98,15 @@ RoomDirectoryModel::getViasForRoom(const std::vector<std::string> &aliases)
                        std::back_inserter(vias),
                        [](const auto &alias) { return alias.substr(alias.find(":") + 1); });
 
+        // When joining a room hosted on a homeserver other than the one the
+        // account has been registered on, the room's server has to be explicitly
+        // specified in the "server_name=..." URL parameter of the Matrix Join Room
+        // request. For more details consult the specs:
+        // https://matrix.org/docs/spec/client_server/r0.6.1#post-matrix-client-r0-join-roomidoralias
+        if (!server_.empty()) {
+            vias.push_back(server_);
+        }
+
         return vias;
 }
 
