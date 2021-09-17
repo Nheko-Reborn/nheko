@@ -1233,14 +1233,58 @@ mxidFromSegments(QStringRef sigil, QStringRef mxid)
         }
 }
 
-void
+bool
 ChatPage::handleMatrixUri(const QByteArray &uri)
 {
         nhlog::ui()->info("Received uri! {}", uri.toStdString());
         QUrl uri_{QString::fromUtf8(uri)};
 
+        // Convert matrix.to URIs to proper format
+        if (uri_.scheme() == "https" && uri_.host() == "matrix.to") {
+                QString p = uri_.fragment(QUrl::FullyEncoded);
+                if (p.startsWith("/"))
+                        p.remove(0, 1);
+
+                auto temp = p.split("?");
+                QString query;
+                if (temp.size() >= 2)
+                        query = QUrl::fromPercentEncoding(temp.takeAt(1).toUtf8());
+
+                temp            = temp.first().split("/");
+                auto identifier = QUrl::fromPercentEncoding(temp.takeFirst().toUtf8());
+                QString eventId = QUrl::fromPercentEncoding(temp.join('/').toUtf8());
+                if (!identifier.isEmpty()) {
+                        if (identifier.startsWith("@")) {
+                                QByteArray newUri =
+                                  "matrix:u/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
+                                if (!query.isEmpty())
+                                        newUri.append("?" + query.toUtf8());
+                                return handleMatrixUri(QUrl::fromEncoded(newUri));
+                        } else if (identifier.startsWith("#")) {
+                                QByteArray newUri =
+                                  "matrix:r/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
+                                if (!eventId.isEmpty())
+                                        newUri.append(
+                                          "/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
+                                if (!query.isEmpty())
+                                        newUri.append("?" + query.toUtf8());
+                                return handleMatrixUri(QUrl::fromEncoded(newUri));
+                        } else if (identifier.startsWith("!")) {
+                                QByteArray newUri = "matrix:roomid/" + QUrl::toPercentEncoding(
+                                                                         identifier.remove(0, 1));
+                                if (!eventId.isEmpty())
+                                        newUri.append(
+                                          "/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
+                                if (!query.isEmpty())
+                                        newUri.append("?" + query.toUtf8());
+                                return handleMatrixUri(QUrl::fromEncoded(newUri));
+                        }
+                }
+        }
+
+        // non-matrix URIs are not handled by us, return false
         if (uri_.scheme() != "matrix")
-                return;
+                return false;
 
         auto tempPath = uri_.path(QUrl::ComponentFormattingOption::FullyEncoded);
         if (tempPath.startsWith('/'))
@@ -1248,17 +1292,17 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
         auto segments = tempPath.splitRef('/');
 
         if (segments.size() != 2 && segments.size() != 4)
-                return;
+                return false;
 
         auto sigil1 = segments[0];
         auto mxid1  = mxidFromSegments(sigil1, segments[1]);
         if (mxid1.isEmpty())
-                return;
+                return false;
 
         QString mxid2;
         if (segments.size() == 4 && segments[2] == "e") {
                 if (segments[3].isEmpty())
-                        return;
+                        return false;
                 else
                         mxid2 = "$" + QUrl::fromPercentEncoding(segments[3].toUtf8());
         }
@@ -1283,12 +1327,13 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                         if (t &&
                             cache::isRoomMember(mxid1.toStdString(), t->roomId().toStdString())) {
                                 t->openUserProfile(mxid1);
-                                return;
+                                return true;
                         }
                         emit view_manager_->openGlobalUserProfile(mxid1);
                 } else if (action == "chat") {
                         this->startChat(mxid1);
                 }
+                return true;
         } else if (sigil1 == "roomid") {
                 auto joined_rooms = cache::joinedRooms();
                 auto targetRoomId = mxid1.toStdString();
@@ -1298,13 +1343,15 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                                 view_manager_->rooms()->setCurrentRoom(mxid1);
                                 if (!mxid2.isEmpty())
                                         view_manager_->showEvent(mxid1, mxid2);
-                                return;
+                                return true;
                         }
                 }
 
                 if (action == "join" || action.isEmpty()) {
                         joinRoomVia(targetRoomId, vias);
+                        return true;
                 }
+                return false;
         } else if (sigil1 == "r") {
                 auto joined_rooms    = cache::joinedRooms();
                 auto targetRoomAlias = mxid1.toStdString();
@@ -1318,21 +1365,25 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
                                         if (!mxid2.isEmpty())
                                                 view_manager_->showEvent(
                                                   QString::fromStdString(roomid), mxid2);
-                                        return;
+                                        return true;
                                 }
                         }
                 }
 
                 if (action == "join" || action.isEmpty()) {
                         joinRoomVia(mxid1.toStdString(), vias);
+                        return true;
                 }
+                return false;
         }
+        return false;
 }
 
-void
+bool
 ChatPage::handleMatrixUri(const QUrl &uri)
 {
-        handleMatrixUri(uri.toString(QUrl::ComponentFormattingOption::FullyEncoded).toUtf8());
+        return handleMatrixUri(
+          uri.toString(QUrl::ComponentFormattingOption::FullyEncoded).toUtf8());
 }
 
 bool

@@ -20,6 +20,9 @@ ScrollView {
 
     ListView {
         id: chat
+        
+        displayMarginBeginning: height/2
+        displayMarginEnd: height/2
 
         property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < parent.availableWidth) ? Settings.timelineMaxWidth : parent.availableWidth) - parent.padding * 2
 
@@ -276,7 +279,7 @@ ScrollView {
                         }
 
                         function onScrollToIndex(index) {
-                            chat.positionViewAtIndex(index, ListView.Visible);
+                            chat.positionViewAtIndex(index, ListView.Center);
                         }
 
                         target: chat.model
