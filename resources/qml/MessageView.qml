@@ -25,8 +25,8 @@ ScrollView {
 
         model: room
         // reuseItems still has a few bugs, see https://bugreports.qt.io/browse/QTBUG-95105 https://bugreports.qt.io/browse/QTBUG-95107
-        onModelChanged: if (room) room.sendReset()
-        reuseItems: true
+        //onModelChanged: if (room) room.sendReset()
+        //reuseItems: true
         boundsBehavior: Flickable.StopAtBounds
         pixelAligned: true
         spacing: 4
