@@ -13,18 +13,18 @@ namespace dialogs {
 
 class FallbackAuth : public QWidget
 {
-        Q_OBJECT
+    Q_OBJECT
 
 public:
-        FallbackAuth(const QString &authType, const QString &session, QWidget *parent = nullptr);
+    FallbackAuth(const QString &authType, const QString &session, QWidget *parent = nullptr);
 
 signals:
-        void confirmation();
-        void cancel();
+    void confirmation();
+    void cancel();
 
 private:
-        QPushButton *openBtn_;
-        QPushButton *confirmBtn_;
-        QPushButton *cancelBtn_;
+    QPushButton *openBtn_;
+    QPushButton *confirmBtn_;
+    QPushButton *cancelBtn_;
 };
 } // dialogs

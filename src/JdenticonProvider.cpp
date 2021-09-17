@@ -22,20 +22,20 @@
 static QPixmap
 clipRadius(QPixmap img, double radius)
 {
-        QPixmap out(img.size());
-        out.fill(Qt::transparent);
+    QPixmap out(img.size());
+    out.fill(Qt::transparent);
 
-        QPainter painter(&out);
-        painter.setRenderHint(QPainter::Antialiasing, true);
-        painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+    QPainter painter(&out);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
-        QPainterPath ppath;
-        ppath.addRoundedRect(img.rect(), radius, radius, Qt::SizeMode::RelativeSize);
+    QPainterPath ppath;
+    ppath.addRoundedRect(img.rect(), radius, radius, Qt::SizeMode::RelativeSize);
 
-        painter.setClipPath(ppath);
-        painter.drawPixmap(img.rect(), img);
+    painter.setClipPath(ppath);
+    painter.drawPixmap(img.rect(), img);
 
-        return out;
+    return out;
 }
 
 JdenticonResponse::JdenticonResponse(const QString &key,
@@ -49,64 +49,64 @@ JdenticonResponse::JdenticonResponse(const QString &key,
   , m_pixmap{m_requestedSize}
   , jdenticonInterface_{Jdenticon::getJdenticonInterface()}
 {
-        setAutoDelete(false);
+    setAutoDelete(false);
 }
 
 void
 JdenticonResponse::run()
 {
-        m_pixmap.fill(Qt::transparent);
+    m_pixmap.fill(Qt::transparent);
 
-        QPainter painter;
-        painter.begin(&m_pixmap);
-        painter.setRenderHint(QPainter::Antialiasing, true);
-        painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+    QPainter painter;
+    painter.begin(&m_pixmap);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
-        try {
-                QSvgRenderer renderer{
-                  jdenticonInterface_->generate(m_key, m_requestedSize.width()).toUtf8()};
-                renderer.render(&painter);
-        } catch (std::exception &e) {
-                nhlog::ui()->error(
-                  "caught {} in jdenticonprovider, key '{}'", e.what(), m_key.toStdString());
-        }
+    try {
+        QSvgRenderer renderer{
+          jdenticonInterface_->generate(m_key, m_requestedSize.width()).toUtf8()};
+        renderer.render(&painter);
+    } catch (std::exception &e) {
+        nhlog::ui()->error(
+          "caught {} in jdenticonprovider, key '{}'", e.what(), m_key.toStdString());
+    }
 
-        painter.end();
+    painter.end();
 
-        m_pixmap = clipRadius(m_pixmap, m_radius);
+    m_pixmap = clipRadius(m_pixmap, m_radius);
 
-        emit finished();
+    emit finished();
 }
 
 namespace Jdenticon {
 JdenticonInterface *
 getJdenticonInterface()
 {
-        static JdenticonInterface *interface = nullptr;
-        static bool interfaceExists{true};
+    static JdenticonInterface *interface = nullptr;
+    static bool interfaceExists{true};
 
-        if (interface == nullptr && interfaceExists) {
-                QDir pluginsDir(qApp->applicationDirPath());
+    if (interface == nullptr && interfaceExists) {
+        QDir pluginsDir(qApp->applicationDirPath());
 
-                bool plugins = pluginsDir.cd("plugins");
-                if (plugins) {
-                        for (const QString &fileName : pluginsDir.entryList(QDir::Files)) {
-                                QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
-                                QObject *plugin = pluginLoader.instance();
-                                if (plugin) {
-                                        interface = qobject_cast<JdenticonInterface *>(plugin);
-                                        if (interface) {
-                                                nhlog::ui()->info("Loaded jdenticon plugin.");
-                                                break;
-                                        }
-                                }
-                        }
-                } else {
-                        nhlog::ui()->info("jdenticon plugin not found.");
-                        interfaceExists = false;
+        bool plugins = pluginsDir.cd("plugins");
+        if (plugins) {
+            for (const QString &fileName : pluginsDir.entryList(QDir::Files)) {
+                QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
+                QObject *plugin = pluginLoader.instance();
+                if (plugin) {
+                    interface = qobject_cast<JdenticonInterface *>(plugin);
+                    if (interface) {
+                        nhlog::ui()->info("Loaded jdenticon plugin.");
+                        break;
+                    }
                 }
+            }
+        } else {
+            nhlog::ui()->info("jdenticon plugin not found.");
+            interfaceExists = false;
         }
+    }
 
-        return interface;
+    return interface;
 }
 }

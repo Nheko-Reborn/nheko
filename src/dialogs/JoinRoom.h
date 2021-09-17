@@ -13,24 +13,24 @@ namespace dialogs {
 
 class JoinRoom : public QFrame
 {
-        Q_OBJECT
+    Q_OBJECT
 public:
-        JoinRoom(QWidget *parent = nullptr);
+    JoinRoom(QWidget *parent = nullptr);
 
 signals:
-        void joinRoom(const QString &room);
+    void joinRoom(const QString &room);
 
 protected:
-        void showEvent(QShowEvent *event) override;
+    void showEvent(QShowEvent *event) override;
 
 private slots:
-        void handleInput();
+    void handleInput();
 
 private:
-        QPushButton *confirmBtn_;
-        QPushButton *cancelBtn_;
+    QPushButton *confirmBtn_;
+    QPushButton *cancelBtn_;
 
-        TextField *roomInput_;
+    TextField *roomInput_;
 };
 
 } // dialogs

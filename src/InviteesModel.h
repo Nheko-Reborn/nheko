@@ -10,54 +10,54 @@
 
 class Invitee : public QObject
 {
-        Q_OBJECT
+    Q_OBJECT
 
 public:
-        Invitee(const QString &mxid, QObject *parent = nullptr);
+    Invitee(const QString &mxid, QObject *parent = nullptr);
 
 signals:
-        void userInfoLoaded();
+    void userInfoLoaded();
 
 private:
-        const QString mxid_;
-        QString displayName_;
-        QString avatarUrl_;
+    const QString mxid_;
+    QString displayName_;
+    QString avatarUrl_;
 
-        friend class InviteesModel;
+    friend class InviteesModel;
 };
 
 class InviteesModel : public QAbstractListModel
 {
-        Q_OBJECT
+    Q_OBJECT
 
-        Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
+    Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
 
 public:
-        enum Roles
-        {
-                Mxid,
-                DisplayName,
-                AvatarUrl,
-        };
+    enum Roles
+    {
+        Mxid,
+        DisplayName,
+        AvatarUrl,
+    };
 
-        InviteesModel(QObject *parent = nullptr);
+    InviteesModel(QObject *parent = nullptr);
 
-        Q_INVOKABLE void addUser(QString mxid);
+    Q_INVOKABLE void addUser(QString mxid);
 
-        QHash<int, QByteArray> roleNames() const override;
-        int rowCount(const QModelIndex & = QModelIndex()) const override
-        {
-                return (int)invitees_.size();
-        }
-        QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-        QStringList mxids();
+    QHash<int, QByteArray> roleNames() const override;
+    int rowCount(const QModelIndex & = QModelIndex()) const override
+    {
+        return (int)invitees_.size();
+    }
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QStringList mxids();
 
 signals:
-        void accept();
-        void countChanged();
+    void accept();
+    void countChanged();
 
 private:
-        QVector<Invitee *> invitees_;
+    QVector<Invitee *> invitees_;
 };
 
 #endif // INVITEESMODEL_H

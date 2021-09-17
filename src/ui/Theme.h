@@ -16,62 +16,62 @@ const int AvatarSize = 40;
 
 enum class ButtonPreset
 {
-        FlatPreset,
-        CheckablePreset
+    FlatPreset,
+    CheckablePreset
 };
 
 enum class RippleStyle
 {
-        CenteredRipple,
-        PositionedRipple,
-        NoRipple
+    CenteredRipple,
+    PositionedRipple,
+    NoRipple
 };
 
 enum class OverlayStyle
 {
-        NoOverlay,
-        TintedOverlay,
-        GrayOverlay
+    NoOverlay,
+    TintedOverlay,
+    GrayOverlay
 };
 
 enum class Role
 {
-        Default,
-        Primary,
-        Secondary
+    Default,
+    Primary,
+    Secondary
 };
 
 enum class ButtonIconPlacement
 {
-        LeftIcon,
-        RightIcon
+    LeftIcon,
+    RightIcon
 };
 
 enum class ProgressType
 {
-        DeterminateProgress,
-        IndeterminateProgress
+    DeterminateProgress,
+    IndeterminateProgress
 };
 
 } // namespace ui
 
 class Theme : public QPalette
 {
-        Q_GADGET
-        Q_PROPERTY(QColor sidebarBackground READ sidebarBackground CONSTANT)
-        Q_PROPERTY(QColor alternateButton READ alternateButton CONSTANT)
-        Q_PROPERTY(QColor separator READ separator CONSTANT)
-        Q_PROPERTY(QColor red READ red CONSTANT)
+    Q_GADGET
+    Q_PROPERTY(QColor sidebarBackground READ sidebarBackground CONSTANT)
+    Q_PROPERTY(QColor alternateButton READ alternateButton CONSTANT)
+    Q_PROPERTY(QColor separator READ separator CONSTANT)
+    Q_PROPERTY(QColor red READ red CONSTANT)
 public:
-        Theme() {}
-        explicit Theme(std::string_view theme);
-        static QPalette paletteFromTheme(std::string_view theme);
+    Theme() {}
+    explicit Theme(std::string_view theme);
+    static QPalette paletteFromTheme(std::string_view theme);
 
-        QColor sidebarBackground() const { return sidebarBackground_; }
-        QColor alternateButton() const { return alternateButton_; }
-        QColor separator() const { return separator_; }
-        QColor red() const { return red_; }
+    QColor sidebarBackground() const { return sidebarBackground_; }
+    QColor alternateButton() const { return alternateButton_; }
+    QColor separator() const { return separator_; }
+    QColor red() const { return red_; }
 
 private:
-        QColor sidebarBackground_, separator_, red_, alternateButton_;
+    QColor sidebarBackground_, separator_, red_, alternateButton_;
 };

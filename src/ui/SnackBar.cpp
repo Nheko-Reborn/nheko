@@ -15,121 +15,121 @@ SnackBar::SnackBar(QWidget *parent)
   : OverlayWidget(parent)
   , offset_anim(this, "offset", this)
 {
-        QFont font;
-        font.setPointSizeF(font.pointSizeF() * 1.2);
-        font.setWeight(50);
-        setFont(font);
+    QFont font;
+    font.setPointSizeF(font.pointSizeF() * 1.2);
+    font.setWeight(50);
+    setFont(font);
 
-        boxHeight_ = QFontMetrics(font).height() * 2;
-        offset_    = STARTING_OFFSET;
-        position_  = SnackBarPosition::Top;
+    boxHeight_ = QFontMetrics(font).height() * 2;
+    offset_    = STARTING_OFFSET;
+    position_  = SnackBarPosition::Top;
 
-        hideTimer_.setSingleShot(true);
+    hideTimer_.setSingleShot(true);
 
-        offset_anim.setStartValue(1.0);
-        offset_anim.setEndValue(0.0);
-        offset_anim.setDuration(100);
-        offset_anim.setEasingCurve(QEasingCurve::OutCubic);
+    offset_anim.setStartValue(1.0);
+    offset_anim.setEndValue(0.0);
+    offset_anim.setDuration(100);
+    offset_anim.setEasingCurve(QEasingCurve::OutCubic);
 
-        connect(this, &SnackBar::offsetChanged, this, [this]() mutable { repaint(); });
-        connect(
-          &offset_anim, &QPropertyAnimation::finished, this, [this]() { hideTimer_.start(10000); });
+    connect(this, &SnackBar::offsetChanged, this, [this]() mutable { repaint(); });
+    connect(
+      &offset_anim, &QPropertyAnimation::finished, this, [this]() { hideTimer_.start(10000); });
 
-        connect(&hideTimer_, SIGNAL(timeout()), this, SLOT(hideMessage()));
+    connect(&hideTimer_, SIGNAL(timeout()), this, SLOT(hideMessage()));
 
-        hide();
+    hide();
 }
 
 void
 SnackBar::start()
 {
-        if (messages_.empty())
-                return;
+    if (messages_.empty())
+        return;
 
-        show();
-        raise();
+    show();
+    raise();
 
-        offset_anim.start();
+    offset_anim.start();
 }
 
 void
 SnackBar::hideMessage()
 {
-        stopTimers();
-        hide();
+    stopTimers();
+    hide();
 
-        if (!messages_.empty())
-                // Moving on to the next message.
-                messages_.pop_front();
+    if (!messages_.empty())
+        // Moving on to the next message.
+        messages_.pop_front();
 
-        // Resetting the starting position of the widget.
-        offset_ = STARTING_OFFSET;
+    // Resetting the starting position of the widget.
+    offset_ = STARTING_OFFSET;
 
-        if (!messages_.empty())
-                start();
+    if (!messages_.empty())
+        start();
 }
 
 void
 SnackBar::stopTimers()
 {
-        hideTimer_.stop();
+    hideTimer_.stop();
 }
 
 void
 SnackBar::showMessage(const QString &msg)
 {
-        messages_.push_back(msg);
+    messages_.push_back(msg);
 
-        // There is already an active message.
-        if (isVisible())
-                return;
+    // There is already an active message.
+    if (isVisible())
+        return;
 
-        start();
+    start();
 }
 
 void
 SnackBar::mousePressEvent(QMouseEvent *)
 {
-        hideMessage();
+    hideMessage();
 }
 
 void
 SnackBar::paintEvent(QPaintEvent *event)
 {
-        Q_UNUSED(event)
+    Q_UNUSED(event)
 
-        if (messages_.empty())
-                return;
+    if (messages_.empty())
+        return;
 
-        auto message_ = messages_.front();
+    auto message_ = messages_.front();
 
-        QPainter p(this);
-        p.setRenderHint(QPainter::Antialiasing);
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
 
-        QBrush brush;
-        brush.setStyle(Qt::SolidPattern);
-        brush.setColor(bgColor_);
-        p.setBrush(brush);
+    QBrush brush;
+    brush.setStyle(Qt::SolidPattern);
+    brush.setColor(bgColor_);
+    p.setBrush(brush);
 
-        QRect r(0, 0, std::max(MIN_WIDTH, width() * MIN_WIDTH_PERCENTAGE), boxHeight_);
+    QRect r(0, 0, std::max(MIN_WIDTH, width() * MIN_WIDTH_PERCENTAGE), boxHeight_);
 
-        p.setPen(Qt::white);
-        QRect br = p.boundingRect(r, Qt::AlignHCenter | Qt::AlignTop | Qt::TextWordWrap, message_);
+    p.setPen(Qt::white);
+    QRect br = p.boundingRect(r, Qt::AlignHCenter | Qt::AlignTop | Qt::TextWordWrap, message_);
 
-        p.setPen(Qt::NoPen);
-        r = br.united(r).adjusted(-BOX_PADDING, -BOX_PADDING, BOX_PADDING, BOX_PADDING);
+    p.setPen(Qt::NoPen);
+    r = br.united(r).adjusted(-BOX_PADDING, -BOX_PADDING, BOX_PADDING, BOX_PADDING);
 
-        const qreal s = 1 - offset_;
+    const qreal s = 1 - offset_;
 
-        if (position_ == SnackBarPosition::Bottom)
-                p.translate((width() - (r.width() - 2 * BOX_PADDING)) / 2,
-                            height() - BOX_PADDING - s * (r.height()));
-        else
-                p.translate((width() - (r.width() - 2 * BOX_PADDING)) / 2,
-                            s * (r.height()) - 2 * BOX_PADDING);
+    if (position_ == SnackBarPosition::Bottom)
+        p.translate((width() - (r.width() - 2 * BOX_PADDING)) / 2,
+                    height() - BOX_PADDING - s * (r.height()));
+    else
+        p.translate((width() - (r.width() - 2 * BOX_PADDING)) / 2,
+                    s * (r.height()) - 2 * BOX_PADDING);
 
-        br.moveCenter(r.center());
-        p.drawRoundedRect(r.adjusted(0, 0, 0, 4), 4, 4);
-        p.setPen(textColor_);
-        p.drawText(br, Qt::AlignHCenter | Qt::AlignTop | Qt::TextWordWrap, message_);
+    br.moveCenter(r.center());
+    p.drawRoundedRect(r.adjusted(0, 0, 0, 4), 4, 4);
+    p.setPen(textColor_);
+    p.drawText(br, Qt::AlignHCenter | Qt::AlignTop | Qt::TextWordWrap, message_);
 }

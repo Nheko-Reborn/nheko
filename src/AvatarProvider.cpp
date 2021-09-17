@@ -22,45 +22,44 @@ namespace AvatarProvider {
 void
 resolve(QString avatarUrl, int size, QObject *receiver, AvatarCallback callback)
 {
-        const auto cacheKey = QString("%1_size_%2").arg(avatarUrl).arg(size);
+    const auto cacheKey = QString("%1_size_%2").arg(avatarUrl).arg(size);
 
-        QPixmap pixmap;
-        if (avatarUrl.isEmpty()) {
-                callback(pixmap);
-                return;
-        }
+    QPixmap pixmap;
+    if (avatarUrl.isEmpty()) {
+        callback(pixmap);
+        return;
+    }
 
-        if (avatar_cache.find(cacheKey, &pixmap)) {
-                callback(pixmap);
-                return;
-        }
+    if (avatar_cache.find(cacheKey, &pixmap)) {
+        callback(pixmap);
+        return;
+    }
 
-        MxcImageProvider::download(avatarUrl.remove(QStringLiteral("mxc://")),
-                                   QSize(size, size),
-                                   [callback, cacheKey, recv = QPointer<QObject>(receiver)](
-                                     QString, QSize, QImage img, QString) {
-                                           if (!recv)
-                                                   return;
+    MxcImageProvider::download(avatarUrl.remove(QStringLiteral("mxc://")),
+                               QSize(size, size),
+                               [callback, cacheKey, recv = QPointer<QObject>(receiver)](
+                                 QString, QSize, QImage img, QString) {
+                                   if (!recv)
+                                       return;
 
-                                           auto proxy = std::make_shared<AvatarProxy>();
-                                           QObject::connect(proxy.get(),
-                                                            &AvatarProxy::avatarDownloaded,
-                                                            recv,
-                                                            [callback, cacheKey](QPixmap pm) {
-                                                                    if (!pm.isNull())
-                                                                            avatar_cache.insert(
-                                                                              cacheKey, pm);
-                                                                    callback(pm);
-                                                            });
+                                   auto proxy = std::make_shared<AvatarProxy>();
+                                   QObject::connect(proxy.get(),
+                                                    &AvatarProxy::avatarDownloaded,
+                                                    recv,
+                                                    [callback, cacheKey](QPixmap pm) {
+                                                        if (!pm.isNull())
+                                                            avatar_cache.insert(cacheKey, pm);
+                                                        callback(pm);
+                                                    });
 
-                                           if (img.isNull()) {
-                                                   emit proxy->avatarDownloaded(QPixmap{});
-                                                   return;
-                                           }
+                                   if (img.isNull()) {
+                                       emit proxy->avatarDownloaded(QPixmap{});
+                                       return;
+                                   }
 
-                                           auto pm = QPixmap::fromImage(std::move(img));
-                                           emit proxy->avatarDownloaded(pm);
-                                   });
+                                   auto pm = QPixmap::fromImage(std::move(img));
+                                   emit proxy->avatarDownloaded(pm);
+                               });
 }
 
 void
@@ -70,8 +69,8 @@ resolve(const QString &room_id,
         QObject *receiver,
         AvatarCallback callback)
 {
-        auto avatarUrl = cache::avatarUrl(room_id, user_id);
+    auto avatarUrl = cache::avatarUrl(room_id, user_id);
 
-        resolve(std::move(avatarUrl), size, receiver, callback);
+    resolve(std::move(avatarUrl), size, receiver, callback);
 }
 }

@@ -12,30 +12,30 @@ class QTimer;
 class QPaintEvent;
 class LoadingIndicator : public QWidget
 {
-        Q_OBJECT
-        Q_PROPERTY(QColor color READ color WRITE setColor)
+    Q_OBJECT
+    Q_PROPERTY(QColor color READ color WRITE setColor)
 
 public:
-        LoadingIndicator(QWidget *parent = nullptr);
+    LoadingIndicator(QWidget *parent = nullptr);
 
-        void paintEvent(QPaintEvent *e) override;
+    void paintEvent(QPaintEvent *e) override;
 
-        void start();
-        void stop();
+    void start();
+    void stop();
 
-        QColor color() { return color_; }
-        void setColor(QColor color) { color_ = color; }
+    QColor color() { return color_; }
+    void setColor(QColor color) { color_ = color; }
 
-        int interval() { return interval_; }
-        void setInterval(int interval) { interval_ = interval; }
+    int interval() { return interval_; }
+    void setInterval(int interval) { interval_ = interval; }
 
 private slots:
-        void onTimeout();
+    void onTimeout();
 
 private:
-        int interval_;
-        int angle_;
+    int interval_;
+    int angle_;
 
-        QColor color_;
-        QTimer *timer_;
+    QColor color_;
+    QTimer *timer_;
 };

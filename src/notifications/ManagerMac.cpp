@@ -19,48 +19,42 @@
 static QString
 formatNotification(const mtx::responses::Notification &notification)
 {
-        return utils::stripReplyFallbacks(notification.event, {}, {}).quoted_body;
+    return utils::stripReplyFallbacks(notification.event, {}, {}).quoted_body;
 }
 
 void
 NotificationsManager::postNotification(const mtx::responses::Notification &notification,
                                        const QImage &icon)
 {
-        Q_UNUSED(icon)
+    Q_UNUSED(icon)
 
-        const auto room_name =
-          QString::fromStdString(cache::singleRoomInfo(notification.room_id).name);
-        const auto sender =
-          cache::displayName(QString::fromStdString(notification.room_id),
-                             QString::fromStdString(mtx::accessors::sender(notification.event)));
+    const auto room_name = QString::fromStdString(cache::singleRoomInfo(notification.room_id).name);
+    const auto sender =
+      cache::displayName(QString::fromStdString(notification.room_id),
+                         QString::fromStdString(mtx::accessors::sender(notification.event)));
 
-        const auto isEncrypted =
-          std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
-            &notification.event) != nullptr;
-        const auto isReply = utils::isReply(notification.event);
-        if (isEncrypted) {
-                // TODO: decrypt this message if the decryption setting is on in the UserSettings
-                const QString messageInfo = (isReply ? tr("%1 replied with an encrypted message")
-                                                     : tr("%1 sent an encrypted message"))
-                                              .arg(sender);
-                objCxxPostNotification(room_name, messageInfo, "", QImage());
-        } else {
-                const QString messageInfo =
-                  (isReply ? tr("%1 replied to a message") : tr("%1 sent a message")).arg(sender);
-                if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image)
-                        MxcImageProvider::download(
-                          QString::fromStdString(mtx::accessors::url(notification.event))
-                            .remove("mxc://"),
-                          QSize(200, 80),
-                          [this, notification, room_name, messageInfo](
-                            QString, QSize, QImage image, QString) {
-                                  objCxxPostNotification(room_name,
-                                                         messageInfo,
-                                                         formatNotification(notification),
-                                                         image);
-                          });
-                else
-                        objCxxPostNotification(
-                          room_name, messageInfo, formatNotification(notification), QImage());
-        }
+    const auto isEncrypted = std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                               &notification.event) != nullptr;
+    const auto isReply = utils::isReply(notification.event);
+    if (isEncrypted) {
+        // TODO: decrypt this message if the decryption setting is on in the UserSettings
+        const QString messageInfo = (isReply ? tr("%1 replied with an encrypted message")
+                                             : tr("%1 sent an encrypted message"))
+                                      .arg(sender);
+        objCxxPostNotification(room_name, messageInfo, "", QImage());
+    } else {
+        const QString messageInfo =
+          (isReply ? tr("%1 replied to a message") : tr("%1 sent a message")).arg(sender);
+        if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image)
+            MxcImageProvider::download(
+              QString::fromStdString(mtx::accessors::url(notification.event)).remove("mxc://"),
+              QSize(200, 80),
+              [this, notification, room_name, messageInfo](QString, QSize, QImage image, QString) {
+                  objCxxPostNotification(
+                    room_name, messageInfo, formatNotification(notification), image);
+              });
+        else
+            objCxxPostNotification(
+              room_name, messageInfo, formatNotification(notification), QImage());
+    }
 }

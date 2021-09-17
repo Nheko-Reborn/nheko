@@ -18,54 +18,54 @@ using namespace dialogs;
 ReCaptcha::ReCaptcha(const QString &session, QWidget *parent)
   : QWidget(parent)
 {
-        setAutoFillBackground(true);
-        setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
-        setWindowModality(Qt::WindowModal);
-        setAttribute(Qt::WA_DeleteOnClose, true);
+    setAutoFillBackground(true);
+    setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
+    setWindowModality(Qt::WindowModal);
+    setAttribute(Qt::WA_DeleteOnClose, true);
 
-        auto layout = new QVBoxLayout(this);
-        layout->setSpacing(conf::modals::WIDGET_SPACING);
-        layout->setMargin(conf::modals::WIDGET_MARGIN);
+    auto layout = new QVBoxLayout(this);
+    layout->setSpacing(conf::modals::WIDGET_SPACING);
+    layout->setMargin(conf::modals::WIDGET_MARGIN);
 
-        auto buttonLayout = new QHBoxLayout();
-        buttonLayout->setSpacing(8);
-        buttonLayout->setMargin(0);
+    auto buttonLayout = new QHBoxLayout();
+    buttonLayout->setSpacing(8);
+    buttonLayout->setMargin(0);
 
-        openCaptchaBtn_ = new QPushButton("Open reCAPTCHA", this);
-        cancelBtn_      = new QPushButton(tr("Cancel"), this);
-        confirmBtn_     = new QPushButton(tr("Confirm"), this);
-        confirmBtn_->setDefault(true);
+    openCaptchaBtn_ = new QPushButton("Open reCAPTCHA", this);
+    cancelBtn_      = new QPushButton(tr("Cancel"), this);
+    confirmBtn_     = new QPushButton(tr("Confirm"), this);
+    confirmBtn_->setDefault(true);
 
-        buttonLayout->addStretch(1);
-        buttonLayout->addWidget(openCaptchaBtn_);
-        buttonLayout->addWidget(cancelBtn_);
-        buttonLayout->addWidget(confirmBtn_);
+    buttonLayout->addStretch(1);
+    buttonLayout->addWidget(openCaptchaBtn_);
+    buttonLayout->addWidget(cancelBtn_);
+    buttonLayout->addWidget(confirmBtn_);
 
-        QFont font;
-        font.setPointSizeF(font.pointSizeF() * conf::modals::LABEL_MEDIUM_SIZE_RATIO);
+    QFont font;
+    font.setPointSizeF(font.pointSizeF() * conf::modals::LABEL_MEDIUM_SIZE_RATIO);
 
-        auto label = new QLabel(tr("Solve the reCAPTCHA and press the confirm button"), this);
-        label->setFont(font);
+    auto label = new QLabel(tr("Solve the reCAPTCHA and press the confirm button"), this);
+    label->setFont(font);
 
-        layout->addWidget(label);
-        layout->addLayout(buttonLayout);
+    layout->addWidget(label);
+    layout->addLayout(buttonLayout);
 
-        connect(openCaptchaBtn_, &QPushButton::clicked, [session]() {
-                const auto url = QString("https://%1:%2/_matrix/client/r0/auth/m.login.recaptcha/"
-                                         "fallback/web?session=%3")
-                                   .arg(QString::fromStdString(http::client()->server()))
-                                   .arg(http::client()->port())
-                                   .arg(session);
+    connect(openCaptchaBtn_, &QPushButton::clicked, [session]() {
+        const auto url = QString("https://%1:%2/_matrix/client/r0/auth/m.login.recaptcha/"
+                                 "fallback/web?session=%3")
+                           .arg(QString::fromStdString(http::client()->server()))
+                           .arg(http::client()->port())
+                           .arg(session);
 
-                QDesktopServices::openUrl(url);
-        });
+        QDesktopServices::openUrl(url);
+    });
 
-        connect(confirmBtn_, &QPushButton::clicked, this, [this]() {
-                emit confirmation();
-                emit close();
-        });
-        connect(cancelBtn_, &QPushButton::clicked, this, [this]() {
-                emit cancel();
-                emit close();
-        });
+    connect(confirmBtn_, &QPushButton::clicked, this, [this]() {
+        emit confirmation();
+        emit close();
+    });
+    connect(cancelBtn_, &QPushButton::clicked, this, [this]() {
+        emit cancel();
+        emit close();
+    });
 }

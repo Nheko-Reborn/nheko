@@ -12,15 +12,15 @@ namespace dialogs {
 
 class LeaveRoom : public QFrame
 {
-        Q_OBJECT
+    Q_OBJECT
 public:
-        explicit LeaveRoom(QWidget *parent = nullptr);
+    explicit LeaveRoom(QWidget *parent = nullptr);
 
 signals:
-        void leaving();
+    void leaving();
 
 private:
-        QPushButton *confirmBtn_;
-        QPushButton *cancelBtn_;
+    QPushButton *confirmBtn_;
+    QPushButton *cancelBtn_;
 };
 } // dialogs

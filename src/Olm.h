@@ -18,32 +18,32 @@ Q_NAMESPACE
 
 enum DecryptionErrorCode
 {
-        NoError,
-        MissingSession, // Session was not found, retrieve from backup or request from other devices
-                        // and try again
-        MissingSessionIndex, // Session was found, but it does not reach back enough to this index,
-                             // retrieve from backup or request from other devices and try again
-        DbError,             // DB read failed
-        DecryptionFailed,    // libolm error
-        ParsingFailed,       // Failed to parse the actual event
-        ReplayAttack,        // Megolm index reused
+    NoError,
+    MissingSession, // Session was not found, retrieve from backup or request from other devices
+                    // and try again
+    MissingSessionIndex, // Session was found, but it does not reach back enough to this index,
+                         // retrieve from backup or request from other devices and try again
+    DbError,             // DB read failed
+    DecryptionFailed,    // libolm error
+    ParsingFailed,       // Failed to parse the actual event
+    ReplayAttack,        // Megolm index reused
 };
 Q_ENUM_NS(DecryptionErrorCode)
 
 struct DecryptionResult
 {
-        DecryptionErrorCode error;
-        std::optional<std::string> error_message;
-        std::optional<mtx::events::collections::TimelineEvents> event;
+    DecryptionErrorCode error;
+    std::optional<std::string> error_message;
+    std::optional<mtx::events::collections::TimelineEvents> event;
 };
 
 struct OlmMessage
 {
-        std::string sender_key;
-        std::string sender;
+    std::string sender_key;
+    std::string sender;
 
-        using RecipientKey = std::string;
-        std::map<RecipientKey, mtx::events::msg::OlmCipherContent> ciphertext;
+    using RecipientKey = std::string;
+    std::map<RecipientKey, mtx::events::msg::OlmCipherContent> ciphertext;
 };
 
 void

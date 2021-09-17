@@ -17,32 +17,32 @@ namespace dialogs {
 
 class CreateRoom : public QFrame
 {
-        Q_OBJECT
+    Q_OBJECT
 public:
-        CreateRoom(QWidget *parent = nullptr);
+    CreateRoom(QWidget *parent = nullptr);
 
 signals:
-        void createRoom(const mtx::requests::CreateRoom &request);
+    void createRoom(const mtx::requests::CreateRoom &request);
 
 protected:
-        void showEvent(QShowEvent *event) override;
+    void showEvent(QShowEvent *event) override;
 
 private:
-        void clearFields();
+    void clearFields();
 
-        QComboBox *visibilityCombo_;
-        QComboBox *presetCombo_;
+    QComboBox *visibilityCombo_;
+    QComboBox *presetCombo_;
 
-        Toggle *directToggle_;
+    Toggle *directToggle_;
 
-        QPushButton *confirmBtn_;
-        QPushButton *cancelBtn_;
+    QPushButton *confirmBtn_;
+    QPushButton *cancelBtn_;
 
-        TextField *nameInput_;
-        TextField *topicInput_;
-        TextField *aliasInput_;
+    TextField *nameInput_;
+    TextField *topicInput_;
+    TextField *aliasInput_;
 
-        mtx::requests::CreateRoom request_;
+    mtx::requests::CreateRoom request_;
 };
 
 } // dialogs
