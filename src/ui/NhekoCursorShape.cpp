@@ -14,16 +14,16 @@ NhekoCursorShape::NhekoCursorShape(QQuickItem *parent)
 Qt::CursorShape
 NhekoCursorShape::cursorShape() const
 {
-        return cursor().shape();
+    return cursor().shape();
 }
 
 void
 NhekoCursorShape::setCursorShape(Qt::CursorShape cursorShape)
 {
-        if (currentShape_ == cursorShape)
-                return;
+    if (currentShape_ == cursorShape)
+        return;
 
-        currentShape_ = cursorShape;
-        setCursor(cursorShape);
-        emit cursorShapeChanged();
+    currentShape_ = cursorShape;
+    setCursor(cursorShape);
+    emit cursorShapeChanged();
 }

@@ -23,59 +23,58 @@ class JdenticonResponse
   , public QRunnable
 {
 public:
-        JdenticonResponse(const QString &key, bool crop, double radius, const QSize &requestedSize);
+    JdenticonResponse(const QString &key, bool crop, double radius, const QSize &requestedSize);
 
-        QQuickTextureFactory *textureFactory() const override
-        {
-                return QQuickTextureFactory::textureFactoryForImage(m_pixmap.toImage());
-        }
+    QQuickTextureFactory *textureFactory() const override
+    {
+        return QQuickTextureFactory::textureFactoryForImage(m_pixmap.toImage());
+    }
 
-        void run() override;
+    void run() override;
 
-        QString m_key;
-        bool m_crop;
-        double m_radius;
-        QSize m_requestedSize;
-        QPixmap m_pixmap;
-        JdenticonInterface *jdenticonInterface_ = nullptr;
+    QString m_key;
+    bool m_crop;
+    double m_radius;
+    QSize m_requestedSize;
+    QPixmap m_pixmap;
+    JdenticonInterface *jdenticonInterface_ = nullptr;
 };
 
 class JdenticonProvider
   : public QObject
   , public QQuickAsyncImageProvider
 {
-        Q_OBJECT
+    Q_OBJECT
 
 public:
-        static bool isAvailable() { return Jdenticon::getJdenticonInterface() != nullptr; }
+    static bool isAvailable() { return Jdenticon::getJdenticonInterface() != nullptr; }
 
 public slots:
-        QQuickImageResponse *requestImageResponse(const QString &id,
-                                                  const QSize &requestedSize) override
-        {
-                auto id_      = id;
-                bool crop     = true;
-                double radius = 0;
+    QQuickImageResponse *requestImageResponse(const QString &id,
+                                              const QSize &requestedSize) override
+    {
+        auto id_      = id;
+        bool crop     = true;
+        double radius = 0;
 
-                auto queryStart = id.lastIndexOf('?');
-                if (queryStart != -1) {
-                        id_            = id.left(queryStart);
-                        auto query     = id.midRef(queryStart + 1);
-                        auto queryBits = query.split('&');
+        auto queryStart = id.lastIndexOf('?');
+        if (queryStart != -1) {
+            id_            = id.left(queryStart);
+            auto query     = id.midRef(queryStart + 1);
+            auto queryBits = query.split('&');
 
-                        for (auto b : queryBits) {
-                                if (b.startsWith("radius=")) {
-                                        radius = b.mid(7).toDouble();
-                                }
-                        }
+            for (auto b : queryBits) {
+                if (b.startsWith("radius=")) {
+                    radius = b.mid(7).toDouble();
                 }
-
-                JdenticonResponse *response =
-                  new JdenticonResponse(id_, crop, radius, requestedSize);
-                pool.start(response);
-                return response;
+            }
         }
 
+        JdenticonResponse *response = new JdenticonResponse(id_, crop, radius, requestedSize);
+        pool.start(response);
+        return response;
+    }
+
 private:
-        QThreadPool pool;
+    QThreadPool pool;
 };

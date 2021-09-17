@@ -12,10 +12,10 @@ using AvatarCallback = std::function<void(QPixmap)>;
 
 class AvatarProxy : public QObject
 {
-        Q_OBJECT
+    Q_OBJECT
 
 signals:
-        void avatarDownloaded(QPixmap pm);
+    void avatarDownloaded(QPixmap pm);
 };
 
 namespace AvatarProvider {

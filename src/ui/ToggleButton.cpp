@@ -12,84 +12,84 @@
 void
 Toggle::paintEvent(QPaintEvent *event)
 {
-        Q_UNUSED(event);
+    Q_UNUSED(event);
 }
 
 Toggle::Toggle(QWidget *parent)
   : QAbstractButton{parent}
 {
-        init();
+    init();
 
-        connect(this, &QAbstractButton::toggled, this, &Toggle::setState);
+    connect(this, &QAbstractButton::toggled, this, &Toggle::setState);
 }
 
 void
 Toggle::setState(bool isEnabled)
 {
-        setChecked(isEnabled);
-        thumb_->setShift(isEnabled ? Position::Left : Position::Right);
-        setupProperties();
+    setChecked(isEnabled);
+    thumb_->setShift(isEnabled ? Position::Left : Position::Right);
+    setupProperties();
 }
 
 void
 Toggle::init()
 {
-        track_ = new ToggleTrack(this);
-        thumb_ = new ToggleThumb(this);
+    track_ = new ToggleTrack(this);
+    thumb_ = new ToggleThumb(this);
 
-        setCursor(QCursor(Qt::PointingHandCursor));
-        setCheckable(true);
-        setChecked(false);
+    setCursor(QCursor(Qt::PointingHandCursor));
+    setCheckable(true);
+    setChecked(false);
 
-        setState(false);
-        setupProperties();
+    setState(false);
+    setupProperties();
 
-        QCoreApplication::processEvents();
+    QCoreApplication::processEvents();
 }
 
 void
 Toggle::setupProperties()
 {
-        if (isEnabled()) {
-                Position position = thumb_->shift();
+    if (isEnabled()) {
+        Position position = thumb_->shift();
 
-                thumb_->setThumbColor(trackColor());
+        thumb_->setThumbColor(trackColor());
 
-                if (position == Position::Left)
-                        track_->setTrackColor(activeColor());
-                else if (position == Position::Right)
-                        track_->setTrackColor(inactiveColor());
-        }
+        if (position == Position::Left)
+            track_->setTrackColor(activeColor());
+        else if (position == Position::Right)
+            track_->setTrackColor(inactiveColor());
+    }
 
-        update();
+    update();
 }
 
 void
 Toggle::setDisabledColor(const QColor &color)
 {
-        disabledColor_ = color;
-        setupProperties();
+    disabledColor_ = color;
+    setupProperties();
 }
 
 void
 Toggle::setActiveColor(const QColor &color)
 {
-        activeColor_ = color;
-        setupProperties();
+    activeColor_ = color;
+    setupProperties();
 }
 
 void
 Toggle::setInactiveColor(const QColor &color)
 {
-        inactiveColor_ = color;
-        setupProperties();
+    inactiveColor_ = color;
+    setupProperties();
 }
 
 void
 Toggle::setTrackColor(const QColor &color)
 {
-        trackColor_ = color;
-        setupProperties();
+    trackColor_ = color;
+    setupProperties();
 }
 
 ToggleThumb::ToggleThumb(Toggle *parent)
@@ -98,119 +98,119 @@ ToggleThumb::ToggleThumb(Toggle *parent)
   , position_{Position::Right}
   , offset_{0}
 {
-        parent->installEventFilter(this);
+    parent->installEventFilter(this);
 }
 
 void
 ToggleThumb::setShift(Position position)
 {
-        if (position_ != position) {
-                position_ = position;
-                updateOffset();
-        }
+    if (position_ != position) {
+        position_ = position;
+        updateOffset();
+    }
 }
 
 bool
 ToggleThumb::eventFilter(QObject *obj, QEvent *event)
 {
-        const QEvent::Type type = event->type();
+    const QEvent::Type type = event->type();
 
-        if (QEvent::Resize == type || QEvent::Move == type) {
-                setGeometry(toggle_->rect().adjusted(8, 8, -8, -8));
-                updateOffset();
-        }
+    if (QEvent::Resize == type || QEvent::Move == type) {
+        setGeometry(toggle_->rect().adjusted(8, 8, -8, -8));
+        updateOffset();
+    }
 
-        return QWidget::eventFilter(obj, event);
+    return QWidget::eventFilter(obj, event);
 }
 
 void
 ToggleThumb::paintEvent(QPaintEvent *event)
 {
-        Q_UNUSED(event)
+    Q_UNUSED(event)
 
-        QPainter painter(this);
-        painter.setRenderHint(QPainter::Antialiasing);
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
 
-        QBrush brush;
-        brush.setStyle(Qt::SolidPattern);
-        brush.setColor(toggle_->isEnabled() ? thumbColor_ : Qt::white);
+    QBrush brush;
+    brush.setStyle(Qt::SolidPattern);
+    brush.setColor(toggle_->isEnabled() ? thumbColor_ : Qt::white);
 
+    painter.setBrush(brush);
+    painter.setPen(Qt::NoPen);
+
+    int s;
+    QRectF r;
+
+    s = height() - 10;
+    r = QRectF(5 + offset_, 5, s, s);
+
+    painter.drawEllipse(r);
+
+    if (!toggle_->isEnabled()) {
+        brush.setColor(toggle_->disabledColor());
         painter.setBrush(brush);
-        painter.setPen(Qt::NoPen);
-
-        int s;
-        QRectF r;
-
-        s = height() - 10;
-        r = QRectF(5 + offset_, 5, s, s);
-
         painter.drawEllipse(r);
-
-        if (!toggle_->isEnabled()) {
-                brush.setColor(toggle_->disabledColor());
-                painter.setBrush(brush);
-                painter.drawEllipse(r);
-        }
+    }
 }
 
 void
 ToggleThumb::updateOffset()
 {
-        const QSize s(size());
-        offset_ = position_ == Position::Left ? static_cast<qreal>(s.width() - s.height()) : 0;
-        update();
+    const QSize s(size());
+    offset_ = position_ == Position::Left ? static_cast<qreal>(s.width() - s.height()) : 0;
+    update();
 }
 
 ToggleTrack::ToggleTrack(Toggle *parent)
   : QWidget{parent}
   , toggle_{parent}
 {
-        Q_ASSERT(parent);
+    Q_ASSERT(parent);
 
-        parent->installEventFilter(this);
+    parent->installEventFilter(this);
 }
 
 void
 ToggleTrack::setTrackColor(const QColor &color)
 {
-        trackColor_ = color;
-        update();
+    trackColor_ = color;
+    update();
 }
 
 bool
 ToggleTrack::eventFilter(QObject *obj, QEvent *event)
 {
-        const QEvent::Type type = event->type();
+    const QEvent::Type type = event->type();
 
-        if (QEvent::Resize == type || QEvent::Move == type) {
-                setGeometry(toggle_->rect());
-        }
+    if (QEvent::Resize == type || QEvent::Move == type) {
+        setGeometry(toggle_->rect());
+    }
 
-        return QWidget::eventFilter(obj, event);
+    return QWidget::eventFilter(obj, event);
 }
 
 void
 ToggleTrack::paintEvent(QPaintEvent *event)
 {
-        Q_UNUSED(event)
+    Q_UNUSED(event)
 
-        QPainter painter(this);
-        painter.setRenderHint(QPainter::Antialiasing);
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
 
-        QBrush brush;
-        if (toggle_->isEnabled()) {
-                brush.setColor(trackColor_);
-                painter.setOpacity(0.8);
-        } else {
-                brush.setColor(toggle_->disabledColor());
-                painter.setOpacity(0.6);
-        }
+    QBrush brush;
+    if (toggle_->isEnabled()) {
+        brush.setColor(trackColor_);
+        painter.setOpacity(0.8);
+    } else {
+        brush.setColor(toggle_->disabledColor());
+        painter.setOpacity(0.6);
+    }
 
-        brush.setStyle(Qt::SolidPattern);
-        painter.setBrush(brush);
-        painter.setPen(Qt::NoPen);
+    brush.setStyle(Qt::SolidPattern);
+    painter.setBrush(brush);
+    painter.setPen(Qt::NoPen);
 
-        const int h = height() / 2;
-        const QRect r(0, h / 2, width(), h);
-        painter.drawRoundedRect(r.adjusted(14, 4, -14, -4), h / 2 - 4, h / 2 - 4);
+    const int h = height() / 2;
+    const QRect r(0, h / 2, width(), h);
+    painter.drawRoundedRect(r.adjusted(14, 4, -14, -4), h / 2 - 4, h / 2 - 4);
 }

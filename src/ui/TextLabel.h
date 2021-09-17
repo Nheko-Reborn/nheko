@@ -15,45 +15,45 @@ class QWheelEvent;
 
 class ContextMenuFilter : public QObject
 {
-        Q_OBJECT
+    Q_OBJECT
 
 public:
-        explicit ContextMenuFilter(QWidget *parent)
-          : QObject(parent)
-        {}
+    explicit ContextMenuFilter(QWidget *parent)
+      : QObject(parent)
+    {}
 
 signals:
-        void contextMenuIsOpening();
+    void contextMenuIsOpening();
 
 protected:
-        bool eventFilter(QObject *obj, QEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
 };
 
 class TextLabel : public QTextBrowser
 {
-        Q_OBJECT
+    Q_OBJECT
 
 public:
-        TextLabel(const QString &text, QWidget *parent = nullptr);
-        TextLabel(QWidget *parent = nullptr);
+    TextLabel(const QString &text, QWidget *parent = nullptr);
+    TextLabel(QWidget *parent = nullptr);
 
-        void wheelEvent(QWheelEvent *event) override;
-        void clearLinks() { link_.clear(); }
+    void wheelEvent(QWheelEvent *event) override;
+    void clearLinks() { link_.clear(); }
 
 protected:
-        void mousePressEvent(QMouseEvent *e) override;
-        void mouseReleaseEvent(QMouseEvent *e) override;
-        void focusOutEvent(QFocusEvent *e) override;
+    void mousePressEvent(QMouseEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent *e) override;
+    void focusOutEvent(QFocusEvent *e) override;
 
 private slots:
-        void adjustHeight(const QSizeF &size) { setFixedHeight(size.height()); }
-        void handleLinkActivation(const QUrl &link);
+    void adjustHeight(const QSizeF &size) { setFixedHeight(size.height()); }
+    void handleLinkActivation(const QUrl &link);
 
 signals:
-        void userProfileTriggered(const QString &user_id);
-        void linkActivated(const QUrl &link);
+    void userProfileTriggered(const QString &user_id);
+    void linkActivated(const QUrl &link);
 
 private:
-        QString link_;
-        bool contextMenuRequested_ = false;
+    QString link_;
+    bool contextMenuRequested_ = false;
 };

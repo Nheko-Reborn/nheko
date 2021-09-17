@@ -10,16 +10,16 @@
 
 class Menu : public QMenu
 {
-        Q_OBJECT
+    Q_OBJECT
 public:
-        Menu(QWidget *parent = nullptr)
-          : QMenu(parent){};
+    Menu(QWidget *parent = nullptr)
+      : QMenu(parent){};
 
 protected:
-        void leaveEvent(QEvent *e) override
-        {
-                hide();
+    void leaveEvent(QEvent *e) override
+    {
+        hide();
 
-                QMenu::leaveEvent(e);
-        }
+        QMenu::leaveEvent(e);
+    }
 };

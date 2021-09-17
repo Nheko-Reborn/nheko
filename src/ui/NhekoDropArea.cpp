@@ -16,28 +16,28 @@
 NhekoDropArea::NhekoDropArea(QQuickItem *parent)
   : QQuickItem(parent)
 {
-        setFlags(ItemAcceptsDrops);
+    setFlags(ItemAcceptsDrops);
 }
 
 void
 NhekoDropArea::dragEnterEvent(QDragEnterEvent *event)
 {
-        event->acceptProposedAction();
+    event->acceptProposedAction();
 }
 
 void
 NhekoDropArea::dragMoveEvent(QDragMoveEvent *event)
 {
-        event->acceptProposedAction();
+    event->acceptProposedAction();
 }
 
 void
 NhekoDropArea::dropEvent(QDropEvent *event)
 {
-        if (event) {
-                auto model = ChatPage::instance()->timelineManager()->rooms()->getRoomById(roomid_);
-                if (model) {
-                        model->input()->insertMimeData(event->mimeData());
-                }
+    if (event) {
+        auto model = ChatPage::instance()->timelineManager()->rooms()->getRoomById(roomid_);
+        if (model) {
+            model->input()->insertMimeData(event->mimeData());
         }
+    }
 }

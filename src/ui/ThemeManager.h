@@ -8,23 +8,23 @@
 
 class ThemeManager : public QCommonStyle
 {
-        Q_OBJECT
+    Q_OBJECT
 
 public:
-        inline static ThemeManager &instance();
+    inline static ThemeManager &instance();
 
-        QColor themeColor(const QString &key) const;
+    QColor themeColor(const QString &key) const;
 
 private:
-        ThemeManager();
+    ThemeManager();
 
-        ThemeManager(ThemeManager const &);
-        void operator=(ThemeManager const &);
+    ThemeManager(ThemeManager const &);
+    void operator=(ThemeManager const &);
 };
 
 inline ThemeManager &
 ThemeManager::instance()
 {
-        static ThemeManager instance;
-        return instance;
+    static ThemeManager instance;
+    return instance;
 }

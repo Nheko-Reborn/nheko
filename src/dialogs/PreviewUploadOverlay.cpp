@@ -29,188 +29,185 @@ PreviewUploadOverlay::PreviewUploadOverlay(QWidget *parent)
   , upload_{tr("Upload"), this}
   , cancel_{tr("Cancel"), this}
 {
-        auto hlayout = new QHBoxLayout;
-        hlayout->addStretch(1);
-        hlayout->addWidget(&cancel_);
-        hlayout->addWidget(&upload_);
-        hlayout->setMargin(0);
+    auto hlayout = new QHBoxLayout;
+    hlayout->addStretch(1);
+    hlayout->addWidget(&cancel_);
+    hlayout->addWidget(&upload_);
+    hlayout->setMargin(0);
 
-        auto vlayout = new QVBoxLayout{this};
-        vlayout->addWidget(&titleLabel_);
-        vlayout->addWidget(&infoLabel_);
-        vlayout->addWidget(&fileName_);
-        vlayout->addLayout(hlayout);
-        vlayout->setSpacing(conf::modals::WIDGET_SPACING);
-        vlayout->setMargin(conf::modals::WIDGET_MARGIN);
+    auto vlayout = new QVBoxLayout{this};
+    vlayout->addWidget(&titleLabel_);
+    vlayout->addWidget(&infoLabel_);
+    vlayout->addWidget(&fileName_);
+    vlayout->addLayout(hlayout);
+    vlayout->setSpacing(conf::modals::WIDGET_SPACING);
+    vlayout->setMargin(conf::modals::WIDGET_MARGIN);
 
-        upload_.setDefault(true);
-        connect(&upload_, &QPushButton::clicked, [this]() {
-                emit confirmUpload(data_, mediaType_, fileName_.text());
-                close();
-        });
+    upload_.setDefault(true);
+    connect(&upload_, &QPushButton::clicked, [this]() {
+        emit confirmUpload(data_, mediaType_, fileName_.text());
+        close();
+    });
 
-        connect(&fileName_, &QLineEdit::returnPressed, this, [this]() {
-                emit confirmUpload(data_, mediaType_, fileName_.text());
-                close();
-        });
+    connect(&fileName_, &QLineEdit::returnPressed, this, [this]() {
+        emit confirmUpload(data_, mediaType_, fileName_.text());
+        close();
+    });
 
-        connect(&cancel_, &QPushButton::clicked, this, [this]() {
-                emit aborted();
-                close();
-        });
+    connect(&cancel_, &QPushButton::clicked, this, [this]() {
+        emit aborted();
+        close();
+    });
 }
 
 void
 PreviewUploadOverlay::init()
 {
-        QSize winsize;
-        QPoint center;
+    QSize winsize;
+    QPoint center;
 
-        auto window = MainWindow::instance();
-        if (window) {
-                winsize = window->frameGeometry().size();
-                center  = window->frameGeometry().center();
-        } else {
-                nhlog::ui()->warn("unable to retrieve MainWindow's size");
-        }
+    auto window = MainWindow::instance();
+    if (window) {
+        winsize = window->frameGeometry().size();
+        center  = window->frameGeometry().center();
+    } else {
+        nhlog::ui()->warn("unable to retrieve MainWindow's size");
+    }
 
-        fileName_.setText(QFileInfo{filePath_}.fileName());
+    fileName_.setText(QFileInfo{filePath_}.fileName());
 
-        setAutoFillBackground(true);
-        setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
-        setWindowModality(Qt::WindowModal);
+    setAutoFillBackground(true);
+    setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
+    setWindowModality(Qt::WindowModal);
 
-        QFont font;
-        font.setPointSizeF(font.pointSizeF() * conf::modals::LABEL_MEDIUM_SIZE_RATIO);
+    QFont font;
+    font.setPointSizeF(font.pointSizeF() * conf::modals::LABEL_MEDIUM_SIZE_RATIO);
 
-        titleLabel_.setFont(font);
-        titleLabel_.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        titleLabel_.setAlignment(Qt::AlignCenter);
-        infoLabel_.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-        fileName_.setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        fileName_.setAlignment(Qt::AlignCenter);
-        upload_.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        cancel_.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    titleLabel_.setFont(font);
+    titleLabel_.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    titleLabel_.setAlignment(Qt::AlignCenter);
+    infoLabel_.setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    fileName_.setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    fileName_.setAlignment(Qt::AlignCenter);
+    upload_.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    cancel_.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-        if (isImage_) {
-                infoLabel_.setAlignment(Qt::AlignCenter);
+    if (isImage_) {
+        infoLabel_.setAlignment(Qt::AlignCenter);
 
-                const auto maxWidth  = winsize.width() * 0.8;
-                const auto maxHeight = winsize.height() * 0.8;
+        const auto maxWidth  = winsize.width() * 0.8;
+        const auto maxHeight = winsize.height() * 0.8;
 
-                // Scale image preview to fit into the application window.
-                infoLabel_.setPixmap(utils::scaleDown(maxWidth, maxHeight, image_));
-                move(center.x() - (width() * 0.5), center.y() - (height() * 0.5));
-        } else {
-                infoLabel_.setAlignment(Qt::AlignLeft);
-        }
-        infoLabel_.setScaledContents(false);
+        // Scale image preview to fit into the application window.
+        infoLabel_.setPixmap(utils::scaleDown(maxWidth, maxHeight, image_));
+        move(center.x() - (width() * 0.5), center.y() - (height() * 0.5));
+    } else {
+        infoLabel_.setAlignment(Qt::AlignLeft);
+    }
+    infoLabel_.setScaledContents(false);
 
-        show();
+    show();
 }
 
 void
 PreviewUploadOverlay::setLabels(const QString &type, const QString &mime, uint64_t upload_size)
 {
-        if (mediaType_.split('/')[0] == "image") {
-                if (!image_.loadFromData(data_)) {
-                        titleLabel_.setText(QString{tr(ERR_MSG)}.arg(type));
-                } else {
-                        titleLabel_.setText(QString{tr(DEFAULT)}.arg(mediaType_));
-                }
-                isImage_ = true;
+    if (mediaType_.split('/')[0] == "image") {
+        if (!image_.loadFromData(data_)) {
+            titleLabel_.setText(QString{tr(ERR_MSG)}.arg(type));
         } else {
-                auto const info = QString{tr("Media type: %1\n"
-                                             "Media size: %2\n")}
-                                    .arg(mime)
-                                    .arg(utils::humanReadableFileSize(upload_size));
-
-                titleLabel_.setText(QString{tr(DEFAULT)}.arg("file"));
-                infoLabel_.setText(info);
+            titleLabel_.setText(QString{tr(DEFAULT)}.arg(mediaType_));
         }
+        isImage_ = true;
+    } else {
+        auto const info = QString{tr("Media type: %1\n"
+                                     "Media size: %2\n")}
+                            .arg(mime)
+                            .arg(utils::humanReadableFileSize(upload_size));
+
+        titleLabel_.setText(QString{tr(DEFAULT)}.arg("file"));
+        infoLabel_.setText(info);
+    }
 }
 
 void
 PreviewUploadOverlay::setPreview(const QImage &src, const QString &mime)
 {
-        nhlog::ui()->info("Pasting image with size: {}x{}, format: {}",
-                          src.height(),
-                          src.width(),
-                          mime.toStdString());
+    nhlog::ui()->info(
+      "Pasting image with size: {}x{}, format: {}", src.height(), src.width(), mime.toStdString());
 
-        auto const &split = mime.split('/');
-        auto const &type  = split[1];
+    auto const &split = mime.split('/');
+    auto const &type  = split[1];
 
-        QBuffer buffer(&data_);
-        buffer.open(QIODevice::WriteOnly);
-        if (src.save(&buffer, type.toStdString().c_str()))
-                titleLabel_.setText(QString{tr(DEFAULT)}.arg("image"));
-        else
-                titleLabel_.setText(QString{tr(ERR_MSG)}.arg(type));
-
-        mediaType_ = mime;
-        filePath_  = "clipboard." + type;
-        image_.convertFromImage(src);
-        isImage_ = true;
-
+    QBuffer buffer(&data_);
+    buffer.open(QIODevice::WriteOnly);
+    if (src.save(&buffer, type.toStdString().c_str()))
         titleLabel_.setText(QString{tr(DEFAULT)}.arg("image"));
-        init();
+    else
+        titleLabel_.setText(QString{tr(ERR_MSG)}.arg(type));
+
+    mediaType_ = mime;
+    filePath_  = "clipboard." + type;
+    image_.convertFromImage(src);
+    isImage_ = true;
+
+    titleLabel_.setText(QString{tr(DEFAULT)}.arg("image"));
+    init();
 }
 
 void
 PreviewUploadOverlay::setPreview(const QByteArray data, const QString &mime)
 {
-        auto const &split = mime.split('/');
-        auto const &type  = split[1];
+    auto const &split = mime.split('/');
+    auto const &type  = split[1];
 
-        data_      = data;
-        mediaType_ = mime;
-        filePath_  = "clipboard." + type;
-        isImage_   = false;
+    data_      = data;
+    mediaType_ = mime;
+    filePath_  = "clipboard." + type;
+    isImage_   = false;
 
-        setLabels(type, mime, data_.size());
-        init();
+    setLabels(type, mime, data_.size());
+    init();
 }
 
 void
 PreviewUploadOverlay::setPreview(const QString &path)
 {
-        QFile file{path};
+    QFile file{path};
 
-        if (!file.open(QIODevice::ReadOnly)) {
-                nhlog::ui()->warn("Failed to open file ({}): {}",
-                                  path.toStdString(),
-                                  file.errorString().toStdString());
-                close();
-                return;
-        }
+    if (!file.open(QIODevice::ReadOnly)) {
+        nhlog::ui()->warn(
+          "Failed to open file ({}): {}", path.toStdString(), file.errorString().toStdString());
+        close();
+        return;
+    }
 
-        QMimeDatabase db;
-        auto mime = db.mimeTypeForFileNameAndData(path, &file);
+    QMimeDatabase db;
+    auto mime = db.mimeTypeForFileNameAndData(path, &file);
 
-        if ((data_ = file.readAll()).isEmpty()) {
-                nhlog::ui()->warn("Failed to read media: {}", file.errorString().toStdString());
-                close();
-                return;
-        }
+    if ((data_ = file.readAll()).isEmpty()) {
+        nhlog::ui()->warn("Failed to read media: {}", file.errorString().toStdString());
+        close();
+        return;
+    }
 
-        auto const &split = mime.name().split('/');
+    auto const &split = mime.name().split('/');
 
-        mediaType_ = mime.name();
-        filePath_  = file.fileName();
-        isImage_   = false;
+    mediaType_ = mime.name();
+    filePath_  = file.fileName();
+    isImage_   = false;
 
-        setLabels(split[1], mime.name(), data_.size());
-        init();
+    setLabels(split[1], mime.name(), data_.size());
+    init();
 }
 
 void
 PreviewUploadOverlay::keyPressEvent(QKeyEvent *event)
 {
-        if (event->matches(QKeySequence::Cancel)) {
-                emit aborted();
-                close();
-        } else {
-                QWidget::keyPressEvent(event);
-        }
+    if (event->matches(QKeySequence::Cancel)) {
+        emit aborted();
+        close();
+    } else {
+        QWidget::keyPressEvent(event);
+    }
 }

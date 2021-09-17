@@ -8,18 +8,18 @@
 
 class WelcomePage : public QWidget
 {
-        Q_OBJECT
+    Q_OBJECT
 
 public:
-        explicit WelcomePage(QWidget *parent = nullptr);
+    explicit WelcomePage(QWidget *parent = nullptr);
 
 protected:
-        void paintEvent(QPaintEvent *) override;
+    void paintEvent(QPaintEvent *) override;
 
 signals:
-        // Notify that the user wants to login in.
-        void userLogin();
+    // Notify that the user wants to login in.
+    void userLogin();
 
-        // Notify that the user wants to register.
-        void userRegister();
+    // Notify that the user wants to register.
+    void userRegister();
 };

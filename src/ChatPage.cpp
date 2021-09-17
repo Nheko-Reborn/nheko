@@ -50,660 +50,641 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   , notificationsManager(this)
   , callManager_(new CallManager(this))
 {
-        setObjectName("chatPage");
+    setObjectName("chatPage");
 
-        instance_ = this;
+    instance_ = this;
 
-        qRegisterMetaType<std::optional<mtx::crypto::EncryptedFile>>();
-        qRegisterMetaType<std::optional<RelatedInfo>>();
-        qRegisterMetaType<mtx::presence::PresenceState>();
-        qRegisterMetaType<mtx::secret_storage::AesHmacSha2KeyDescription>();
-        qRegisterMetaType<SecretsToDecrypt>();
+    qRegisterMetaType<std::optional<mtx::crypto::EncryptedFile>>();
+    qRegisterMetaType<std::optional<RelatedInfo>>();
+    qRegisterMetaType<mtx::presence::PresenceState>();
+    qRegisterMetaType<mtx::secret_storage::AesHmacSha2KeyDescription>();
+    qRegisterMetaType<SecretsToDecrypt>();
 
-        topLayout_ = new QHBoxLayout(this);
-        topLayout_->setSpacing(0);
-        topLayout_->setMargin(0);
+    topLayout_ = new QHBoxLayout(this);
+    topLayout_->setSpacing(0);
+    topLayout_->setMargin(0);
 
-        view_manager_ = new TimelineViewManager(callManager_, this);
+    view_manager_ = new TimelineViewManager(callManager_, this);
 
-        topLayout_->addWidget(view_manager_->getWidget());
+    topLayout_->addWidget(view_manager_->getWidget());
 
-        connect(this,
-                &ChatPage::downloadedSecrets,
-                this,
-                &ChatPage::decryptDownloadedSecrets,
-                Qt::QueuedConnection);
+    connect(this,
+            &ChatPage::downloadedSecrets,
+            this,
+            &ChatPage::decryptDownloadedSecrets,
+            Qt::QueuedConnection);
 
-        connect(this, &ChatPage::connectionLost, this, [this]() {
-                nhlog::net()->info("connectivity lost");
-                isConnected_ = false;
-                http::client()->shutdown();
-        });
-        connect(this, &ChatPage::connectionRestored, this, [this]() {
-                nhlog::net()->info("trying to re-connect");
-                isConnected_ = true;
+    connect(this, &ChatPage::connectionLost, this, [this]() {
+        nhlog::net()->info("connectivity lost");
+        isConnected_ = false;
+        http::client()->shutdown();
+    });
+    connect(this, &ChatPage::connectionRestored, this, [this]() {
+        nhlog::net()->info("trying to re-connect");
+        isConnected_ = true;
 
-                // Drop all pending connections.
-                http::client()->shutdown();
-                trySync();
-        });
+        // Drop all pending connections.
+        http::client()->shutdown();
+        trySync();
+    });
 
-        connectivityTimer_.setInterval(CHECK_CONNECTIVITY_INTERVAL);
-        connect(&connectivityTimer_, &QTimer::timeout, this, [=]() {
-                if (http::client()->access_token().empty()) {
-                        connectivityTimer_.stop();
-                        return;
-                }
+    connectivityTimer_.setInterval(CHECK_CONNECTIVITY_INTERVAL);
+    connect(&connectivityTimer_, &QTimer::timeout, this, [=]() {
+        if (http::client()->access_token().empty()) {
+            connectivityTimer_.stop();
+            return;
+        }
 
-                http::client()->versions(
-                  [this](const mtx::responses::Versions &, mtx::http::RequestErr err) {
-                          if (err) {
-                                  emit connectionLost();
-                                  return;
-                          }
+        http::client()->versions(
+          [this](const mtx::responses::Versions &, mtx::http::RequestErr err) {
+              if (err) {
+                  emit connectionLost();
+                  return;
+              }
 
-                          if (!isConnected_)
-                                  emit connectionRestored();
-                  });
-        });
-
-        connect(this, &ChatPage::loggedOut, this, &ChatPage::logout);
-
-        connect(
-          view_manager_,
-          &TimelineViewManager::inviteUsers,
-          this,
-          [this](QString roomId, QStringList users) {
-                  for (int ii = 0; ii < users.size(); ++ii) {
-                          QTimer::singleShot(ii * 500, this, [this, roomId, ii, users]() {
-                                  const auto user = users.at(ii);
-
-                                  http::client()->invite_user(
-                                    roomId.toStdString(),
-                                    user.toStdString(),
-                                    [this, user](const mtx::responses::RoomInvite &,
-                                                 mtx::http::RequestErr err) {
-                                            if (err) {
-                                                    emit showNotification(
-                                                      tr("Failed to invite user: %1").arg(user));
-                                                    return;
-                                            }
-
-                                            emit showNotification(tr("Invited user: %1").arg(user));
-                                    });
-                          });
-                  }
+              if (!isConnected_)
+                  emit connectionRestored();
           });
+    });
 
-        connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
-        connect(this, &ChatPage::changeToRoom, this, &ChatPage::changeRoom, Qt::QueuedConnection);
-        connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendNotifications);
-        connect(this,
-                &ChatPage::highlightedNotifsRetrieved,
-                this,
-                [](const mtx::responses::Notifications &notif) {
-                        try {
-                                cache::saveTimelineMentions(notif);
-                        } catch (const lmdb::error &e) {
-                                nhlog::db()->error("failed to save mentions: {}", e.what());
+    connect(this, &ChatPage::loggedOut, this, &ChatPage::logout);
+
+    connect(
+      view_manager_,
+      &TimelineViewManager::inviteUsers,
+      this,
+      [this](QString roomId, QStringList users) {
+          for (int ii = 0; ii < users.size(); ++ii) {
+              QTimer::singleShot(ii * 500, this, [this, roomId, ii, users]() {
+                  const auto user = users.at(ii);
+
+                  http::client()->invite_user(
+                    roomId.toStdString(),
+                    user.toStdString(),
+                    [this, user](const mtx::responses::RoomInvite &, mtx::http::RequestErr err) {
+                        if (err) {
+                            emit showNotification(tr("Failed to invite user: %1").arg(user));
+                            return;
                         }
-                });
 
-        connect(&notificationsManager,
-                &NotificationsManager::notificationClicked,
-                this,
-                [this](const QString &roomid, const QString &eventid) {
-                        Q_UNUSED(eventid)
-                        view_manager_->rooms()->setCurrentRoom(roomid);
-                        activateWindow();
-                });
-        connect(&notificationsManager,
-                &NotificationsManager::sendNotificationReply,
-                this,
-                [this](const QString &roomid, const QString &eventid, const QString &body) {
-                        view_manager_->rooms()->setCurrentRoom(roomid);
-                        view_manager_->queueReply(roomid, eventid, body);
-                        activateWindow();
-                });
+                        emit showNotification(tr("Invited user: %1").arg(user));
+                    });
+              });
+          }
+      });
 
-        connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, [this]() {
-                // ensure the qml context is shutdown before we destroy all other singletons
-                // Otherwise Qml will try to access the room list or settings, after they have been
-                // destroyed
-                topLayout_->removeWidget(view_manager_->getWidget());
-                delete view_manager_->getWidget();
-        });
-
-        connect(
-          this,
-          &ChatPage::initializeViews,
-          view_manager_,
-          [this](const mtx::responses::Rooms &rooms) { view_manager_->sync(rooms); },
-          Qt::QueuedConnection);
-        connect(this,
-                &ChatPage::initializeEmptyViews,
-                view_manager_,
-                &TimelineViewManager::initializeRoomlist);
-        connect(
-          this, &ChatPage::chatFocusChanged, view_manager_, &TimelineViewManager::chatFocusChanged);
-        connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Rooms &rooms) {
-                view_manager_->sync(rooms);
-
-                static unsigned int prevNotificationCount = 0;
-                unsigned int notificationCount            = 0;
-                for (const auto &room : rooms.join) {
-                        notificationCount += room.second.unread_notifications.notification_count;
+    connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
+    connect(this, &ChatPage::changeToRoom, this, &ChatPage::changeRoom, Qt::QueuedConnection);
+    connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendNotifications);
+    connect(this,
+            &ChatPage::highlightedNotifsRetrieved,
+            this,
+            [](const mtx::responses::Notifications &notif) {
+                try {
+                    cache::saveTimelineMentions(notif);
+                } catch (const lmdb::error &e) {
+                    nhlog::db()->error("failed to save mentions: {}", e.what());
                 }
+            });
 
-                // HACK: If we had less notifications last time we checked, send an alert if the
-                // user wanted one. Technically, this may cause an alert to be missed if new ones
-                // come in while you are reading old ones. Since the window is almost certainly open
-                // in this edge case, that's probably a non-issue.
-                // TODO: Replace this once we have proper pushrules support. This is a horrible hack
-                if (prevNotificationCount < notificationCount) {
-                        if (userSettings_->hasAlertOnNotification())
-                                QApplication::alert(this);
-                }
-                prevNotificationCount = notificationCount;
+    connect(&notificationsManager,
+            &NotificationsManager::notificationClicked,
+            this,
+            [this](const QString &roomid, const QString &eventid) {
+                Q_UNUSED(eventid)
+                view_manager_->rooms()->setCurrentRoom(roomid);
+                activateWindow();
+            });
+    connect(&notificationsManager,
+            &NotificationsManager::sendNotificationReply,
+            this,
+            [this](const QString &roomid, const QString &eventid, const QString &body) {
+                view_manager_->rooms()->setCurrentRoom(roomid);
+                view_manager_->queueReply(roomid, eventid, body);
+                activateWindow();
+            });
 
-                // No need to check amounts for this section, as this function internally checks for
-                // duplicates.
-                if (notificationCount && userSettings_->hasNotifications())
-                        http::client()->notifications(
-                          5,
-                          "",
-                          "",
-                          [this](const mtx::responses::Notifications &res,
-                                 mtx::http::RequestErr err) {
-                                  if (err) {
-                                          nhlog::net()->warn(
-                                            "failed to retrieve notifications: {} ({})",
-                                            err->matrix_error.error,
-                                            static_cast<int>(err->status_code));
-                                          return;
-                                  }
+    connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, [this]() {
+        // ensure the qml context is shutdown before we destroy all other singletons
+        // Otherwise Qml will try to access the room list or settings, after they have been
+        // destroyed
+        topLayout_->removeWidget(view_manager_->getWidget());
+        delete view_manager_->getWidget();
+    });
 
-                                  emit notificationsRetrieved(std::move(res));
-                          });
-        });
+    connect(
+      this,
+      &ChatPage::initializeViews,
+      view_manager_,
+      [this](const mtx::responses::Rooms &rooms) { view_manager_->sync(rooms); },
+      Qt::QueuedConnection);
+    connect(this,
+            &ChatPage::initializeEmptyViews,
+            view_manager_,
+            &TimelineViewManager::initializeRoomlist);
+    connect(
+      this, &ChatPage::chatFocusChanged, view_manager_, &TimelineViewManager::chatFocusChanged);
+    connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Rooms &rooms) {
+        view_manager_->sync(rooms);
 
-        connect(
-          this, &ChatPage::tryInitialSyncCb, this, &ChatPage::tryInitialSync, Qt::QueuedConnection);
-        connect(this, &ChatPage::trySyncCb, this, &ChatPage::trySync, Qt::QueuedConnection);
-        connect(
-          this,
-          &ChatPage::tryDelayedSyncCb,
-          this,
-          [this]() { QTimer::singleShot(RETRY_TIMEOUT, this, &ChatPage::trySync); },
-          Qt::QueuedConnection);
+        static unsigned int prevNotificationCount = 0;
+        unsigned int notificationCount            = 0;
+        for (const auto &room : rooms.join) {
+            notificationCount += room.second.unread_notifications.notification_count;
+        }
 
-        connect(this,
-                &ChatPage::newSyncResponse,
-                this,
-                &ChatPage::handleSyncResponse,
-                Qt::QueuedConnection);
+        // HACK: If we had less notifications last time we checked, send an alert if the
+        // user wanted one. Technically, this may cause an alert to be missed if new ones
+        // come in while you are reading old ones. Since the window is almost certainly open
+        // in this edge case, that's probably a non-issue.
+        // TODO: Replace this once we have proper pushrules support. This is a horrible hack
+        if (prevNotificationCount < notificationCount) {
+            if (userSettings_->hasAlertOnNotification())
+                QApplication::alert(this);
+        }
+        prevNotificationCount = notificationCount;
 
-        connect(this, &ChatPage::dropToLoginPageCb, this, &ChatPage::dropToLoginPage);
+        // No need to check amounts for this section, as this function internally checks for
+        // duplicates.
+        if (notificationCount && userSettings_->hasNotifications())
+            http::client()->notifications(
+              5,
+              "",
+              "",
+              [this](const mtx::responses::Notifications &res, mtx::http::RequestErr err) {
+                  if (err) {
+                      nhlog::net()->warn("failed to retrieve notifications: {} ({})",
+                                         err->matrix_error.error,
+                                         static_cast<int>(err->status_code));
+                      return;
+                  }
 
-        connectCallMessage<mtx::events::msg::CallInvite>();
-        connectCallMessage<mtx::events::msg::CallCandidates>();
-        connectCallMessage<mtx::events::msg::CallAnswer>();
-        connectCallMessage<mtx::events::msg::CallHangUp>();
+                  emit notificationsRetrieved(std::move(res));
+              });
+    });
+
+    connect(
+      this, &ChatPage::tryInitialSyncCb, this, &ChatPage::tryInitialSync, Qt::QueuedConnection);
+    connect(this, &ChatPage::trySyncCb, this, &ChatPage::trySync, Qt::QueuedConnection);
+    connect(
+      this,
+      &ChatPage::tryDelayedSyncCb,
+      this,
+      [this]() { QTimer::singleShot(RETRY_TIMEOUT, this, &ChatPage::trySync); },
+      Qt::QueuedConnection);
+
+    connect(
+      this, &ChatPage::newSyncResponse, this, &ChatPage::handleSyncResponse, Qt::QueuedConnection);
+
+    connect(this, &ChatPage::dropToLoginPageCb, this, &ChatPage::dropToLoginPage);
+
+    connectCallMessage<mtx::events::msg::CallInvite>();
+    connectCallMessage<mtx::events::msg::CallCandidates>();
+    connectCallMessage<mtx::events::msg::CallAnswer>();
+    connectCallMessage<mtx::events::msg::CallHangUp>();
 }
 
 void
 ChatPage::logout()
 {
-        resetUI();
-        deleteConfigs();
+    resetUI();
+    deleteConfigs();
 
-        emit closing();
-        connectivityTimer_.stop();
+    emit closing();
+    connectivityTimer_.stop();
 }
 
 void
 ChatPage::dropToLoginPage(const QString &msg)
 {
-        nhlog::ui()->info("dropping to the login page: {}", msg.toStdString());
+    nhlog::ui()->info("dropping to the login page: {}", msg.toStdString());
 
-        http::client()->shutdown();
-        connectivityTimer_.stop();
+    http::client()->shutdown();
+    connectivityTimer_.stop();
 
-        resetUI();
-        deleteConfigs();
+    resetUI();
+    deleteConfigs();
 
-        emit showLoginPage(msg);
+    emit showLoginPage(msg);
 }
 
 void
 ChatPage::resetUI()
 {
-        view_manager_->clearAll();
+    view_manager_->clearAll();
 
-        emit unreadMessages(0);
+    emit unreadMessages(0);
 }
 
 void
 ChatPage::deleteConfigs()
 {
-        auto settings = UserSettings::instance()->qsettings();
+    auto settings = UserSettings::instance()->qsettings();
 
-        if (UserSettings::instance()->profile() != "") {
-                settings->beginGroup("profile");
-                settings->beginGroup(UserSettings::instance()->profile());
-        }
-        settings->beginGroup("auth");
-        settings->remove("");
-        settings->endGroup(); // auth
+    if (UserSettings::instance()->profile() != "") {
+        settings->beginGroup("profile");
+        settings->beginGroup(UserSettings::instance()->profile());
+    }
+    settings->beginGroup("auth");
+    settings->remove("");
+    settings->endGroup(); // auth
 
-        http::client()->shutdown();
-        cache::deleteData();
+    http::client()->shutdown();
+    cache::deleteData();
 }
 
 void
 ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 {
-        using namespace mtx::identifiers;
+    using namespace mtx::identifiers;
 
-        try {
-                http::client()->set_user(parse<User>(userid.toStdString()));
-        } catch (const std::invalid_argument &) {
-                nhlog::ui()->critical("bootstrapped with invalid user_id: {}",
-                                      userid.toStdString());
-        }
+    try {
+        http::client()->set_user(parse<User>(userid.toStdString()));
+    } catch (const std::invalid_argument &) {
+        nhlog::ui()->critical("bootstrapped with invalid user_id: {}", userid.toStdString());
+    }
 
-        http::client()->set_server(homeserver.toStdString());
-        http::client()->set_access_token(token.toStdString());
-        http::client()->verify_certificates(
-          !UserSettings::instance()->disableCertificateValidation());
+    http::client()->set_server(homeserver.toStdString());
+    http::client()->set_access_token(token.toStdString());
+    http::client()->verify_certificates(!UserSettings::instance()->disableCertificateValidation());
 
-        // The Olm client needs the user_id & device_id that will be included
-        // in the generated payloads & keys.
-        olm::client()->set_user_id(http::client()->user_id().to_string());
-        olm::client()->set_device_id(http::client()->device_id());
+    // The Olm client needs the user_id & device_id that will be included
+    // in the generated payloads & keys.
+    olm::client()->set_user_id(http::client()->user_id().to_string());
+    olm::client()->set_device_id(http::client()->device_id());
 
-        try {
-                cache::init(userid);
+    try {
+        cache::init(userid);
 
-                connect(cache::client(),
-                        &Cache::newReadReceipts,
-                        view_manager_,
-                        &TimelineViewManager::updateReadReceipts);
+        connect(cache::client(),
+                &Cache::newReadReceipts,
+                view_manager_,
+                &TimelineViewManager::updateReadReceipts);
 
-                connect(cache::client(),
-                        &Cache::removeNotification,
-                        &notificationsManager,
-                        &NotificationsManager::removeNotification);
+        connect(cache::client(),
+                &Cache::removeNotification,
+                &notificationsManager,
+                &NotificationsManager::removeNotification);
 
-                const bool isInitialized = cache::isInitialized();
-                const auto cacheVersion  = cache::formatVersion();
+        const bool isInitialized = cache::isInitialized();
+        const auto cacheVersion  = cache::formatVersion();
 
-                callManager_->refreshTurnServer();
+        callManager_->refreshTurnServer();
 
-                if (!isInitialized) {
-                        cache::setCurrentFormat();
-                } else {
-                        if (cacheVersion == cache::CacheVersion::Current) {
-                                loadStateFromCache();
-                                return;
-                        } else if (cacheVersion == cache::CacheVersion::Older) {
-                                if (!cache::runMigrations()) {
-                                        QMessageBox::critical(
-                                          this,
+        if (!isInitialized) {
+            cache::setCurrentFormat();
+        } else {
+            if (cacheVersion == cache::CacheVersion::Current) {
+                loadStateFromCache();
+                return;
+            } else if (cacheVersion == cache::CacheVersion::Older) {
+                if (!cache::runMigrations()) {
+                    QMessageBox::critical(this,
                                           tr("Cache migration failed!"),
                                           tr("Migrating the cache to the current version failed. "
                                              "This can have different reasons. Please open an "
                                              "issue and try to use an older version in the mean "
                                              "time. Alternatively you can try deleting the cache "
                                              "manually."));
-                                        QCoreApplication::quit();
-                                }
-                                loadStateFromCache();
-                                return;
-                        } else if (cacheVersion == cache::CacheVersion::Newer) {
-                                QMessageBox::critical(
-                                  this,
-                                  tr("Incompatible cache version"),
-                                  tr("The cache on your disk is newer than this version of Nheko "
-                                     "supports. Please update or clear your cache."));
-                                QCoreApplication::quit();
-                                return;
-                        }
+                    QCoreApplication::quit();
                 }
-
-        } catch (const lmdb::error &e) {
-                nhlog::db()->critical("failure during boot: {}", e.what());
-                cache::deleteData();
-                nhlog::net()->info("falling back to initial sync");
+                loadStateFromCache();
+                return;
+            } else if (cacheVersion == cache::CacheVersion::Newer) {
+                QMessageBox::critical(
+                  this,
+                  tr("Incompatible cache version"),
+                  tr("The cache on your disk is newer than this version of Nheko "
+                     "supports. Please update or clear your cache."));
+                QCoreApplication::quit();
+                return;
+            }
         }
 
-        try {
-                // It's the first time syncing with this device
-                // There isn't a saved olm account to restore.
-                nhlog::crypto()->info("creating new olm account");
-                olm::client()->create_new_account();
-                cache::saveOlmAccount(olm::client()->save(cache::client()->pickleSecret()));
-        } catch (const lmdb::error &e) {
-                nhlog::crypto()->critical("failed to save olm account {}", e.what());
-                emit dropToLoginPageCb(QString::fromStdString(e.what()));
-                return;
-        } catch (const mtx::crypto::olm_exception &e) {
-                nhlog::crypto()->critical("failed to create new olm account {}", e.what());
-                emit dropToLoginPageCb(QString::fromStdString(e.what()));
-                return;
-        }
+    } catch (const lmdb::error &e) {
+        nhlog::db()->critical("failure during boot: {}", e.what());
+        cache::deleteData();
+        nhlog::net()->info("falling back to initial sync");
+    }
 
-        getProfileInfo();
-        getBackupVersion();
-        tryInitialSync();
+    try {
+        // It's the first time syncing with this device
+        // There isn't a saved olm account to restore.
+        nhlog::crypto()->info("creating new olm account");
+        olm::client()->create_new_account();
+        cache::saveOlmAccount(olm::client()->save(cache::client()->pickleSecret()));
+    } catch (const lmdb::error &e) {
+        nhlog::crypto()->critical("failed to save olm account {}", e.what());
+        emit dropToLoginPageCb(QString::fromStdString(e.what()));
+        return;
+    } catch (const mtx::crypto::olm_exception &e) {
+        nhlog::crypto()->critical("failed to create new olm account {}", e.what());
+        emit dropToLoginPageCb(QString::fromStdString(e.what()));
+        return;
+    }
+
+    getProfileInfo();
+    getBackupVersion();
+    tryInitialSync();
 }
 
 void
 ChatPage::loadStateFromCache()
 {
-        nhlog::db()->info("restoring state from cache");
+    nhlog::db()->info("restoring state from cache");
 
-        try {
-                olm::client()->load(cache::restoreOlmAccount(), cache::client()->pickleSecret());
+    try {
+        olm::client()->load(cache::restoreOlmAccount(), cache::client()->pickleSecret());
 
-                emit initializeEmptyViews();
-                emit initializeMentions(cache::getTimelineMentions());
+        emit initializeEmptyViews();
+        emit initializeMentions(cache::getTimelineMentions());
 
-                cache::calculateRoomReadStatus();
+        cache::calculateRoomReadStatus();
 
-        } catch (const mtx::crypto::olm_exception &e) {
-                nhlog::crypto()->critical("failed to restore olm account: {}", e.what());
-                emit dropToLoginPageCb(tr("Failed to restore OLM account. Please login again."));
-                return;
-        } catch (const lmdb::error &e) {
-                nhlog::db()->critical("failed to restore cache: {}", e.what());
-                emit dropToLoginPageCb(tr("Failed to restore save data. Please login again."));
-                return;
-        } catch (const json::exception &e) {
-                nhlog::db()->critical("failed to parse cache data: {}", e.what());
-                emit dropToLoginPageCb(tr("Failed to restore save data. Please login again."));
-                return;
-        } catch (const std::exception &e) {
-                nhlog::db()->critical("failed to load cache data: {}", e.what());
-                emit dropToLoginPageCb(tr("Failed to restore save data. Please login again."));
-                return;
-        }
+    } catch (const mtx::crypto::olm_exception &e) {
+        nhlog::crypto()->critical("failed to restore olm account: {}", e.what());
+        emit dropToLoginPageCb(tr("Failed to restore OLM account. Please login again."));
+        return;
+    } catch (const lmdb::error &e) {
+        nhlog::db()->critical("failed to restore cache: {}", e.what());
+        emit dropToLoginPageCb(tr("Failed to restore save data. Please login again."));
+        return;
+    } catch (const json::exception &e) {
+        nhlog::db()->critical("failed to parse cache data: {}", e.what());
+        emit dropToLoginPageCb(tr("Failed to restore save data. Please login again."));
+        return;
+    } catch (const std::exception &e) {
+        nhlog::db()->critical("failed to load cache data: {}", e.what());
+        emit dropToLoginPageCb(tr("Failed to restore save data. Please login again."));
+        return;
+    }
 
-        nhlog::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
-        nhlog::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
+    nhlog::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
+    nhlog::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
 
-        getProfileInfo();
-        getBackupVersion();
-        verifyOneTimeKeyCountAfterStartup();
+    getProfileInfo();
+    getBackupVersion();
+    verifyOneTimeKeyCountAfterStartup();
 
-        emit contentLoaded();
+    emit contentLoaded();
 
-        // Start receiving events.
-        emit trySyncCb();
+    // Start receiving events.
+    emit trySyncCb();
 }
 
 void
 ChatPage::removeRoom(const QString &room_id)
 {
-        try {
-                cache::removeRoom(room_id);
-                cache::removeInvite(room_id.toStdString());
-        } catch (const lmdb::error &e) {
-                nhlog::db()->critical("failure while removing room: {}", e.what());
-                // TODO: Notify the user.
-        }
+    try {
+        cache::removeRoom(room_id);
+        cache::removeInvite(room_id.toStdString());
+    } catch (const lmdb::error &e) {
+        nhlog::db()->critical("failure while removing room: {}", e.what());
+        // TODO: Notify the user.
+    }
 }
 
 void
 ChatPage::sendNotifications(const mtx::responses::Notifications &res)
 {
-        for (const auto &item : res.notifications) {
-                const auto event_id = mtx::accessors::event_id(item.event);
+    for (const auto &item : res.notifications) {
+        const auto event_id = mtx::accessors::event_id(item.event);
 
-                try {
-                        if (item.read) {
-                                cache::removeReadNotification(event_id);
-                                continue;
-                        }
+        try {
+            if (item.read) {
+                cache::removeReadNotification(event_id);
+                continue;
+            }
 
-                        if (!cache::isNotificationSent(event_id)) {
-                                const auto room_id = QString::fromStdString(item.room_id);
+            if (!cache::isNotificationSent(event_id)) {
+                const auto room_id = QString::fromStdString(item.room_id);
 
-                                // We should only sent one notification per event.
-                                cache::markSentNotification(event_id);
+                // We should only sent one notification per event.
+                cache::markSentNotification(event_id);
 
-                                // Don't send a notification when the current room is opened.
-                                if (isRoomActive(room_id))
-                                        continue;
+                // Don't send a notification when the current room is opened.
+                if (isRoomActive(room_id))
+                    continue;
 
-                                if (userSettings_->hasDesktopNotifications()) {
-                                        auto info = cache::singleRoomInfo(item.room_id);
+                if (userSettings_->hasDesktopNotifications()) {
+                    auto info = cache::singleRoomInfo(item.room_id);
 
-                                        AvatarProvider::resolve(
-                                          QString::fromStdString(info.avatar_url),
-                                          96,
-                                          this,
-                                          [this, item](QPixmap image) {
-                                                  notificationsManager.postNotification(
-                                                    item, image.toImage());
-                                          });
-                                }
-                        }
-                } catch (const lmdb::error &e) {
-                        nhlog::db()->warn("error while sending notification: {}", e.what());
+                    AvatarProvider::resolve(QString::fromStdString(info.avatar_url),
+                                            96,
+                                            this,
+                                            [this, item](QPixmap image) {
+                                                notificationsManager.postNotification(
+                                                  item, image.toImage());
+                                            });
                 }
+            }
+        } catch (const lmdb::error &e) {
+            nhlog::db()->warn("error while sending notification: {}", e.what());
         }
+    }
 }
 
 void
 ChatPage::tryInitialSync()
 {
-        nhlog::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
-        nhlog::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
+    nhlog::crypto()->info("ed25519   : {}", olm::client()->identity_keys().ed25519);
+    nhlog::crypto()->info("curve25519: {}", olm::client()->identity_keys().curve25519);
 
-        // Upload one time keys for the device.
-        nhlog::crypto()->info("generating one time keys");
-        olm::client()->generate_one_time_keys(MAX_ONETIME_KEYS);
+    // Upload one time keys for the device.
+    nhlog::crypto()->info("generating one time keys");
+    olm::client()->generate_one_time_keys(MAX_ONETIME_KEYS);
 
-        http::client()->upload_keys(
-          olm::client()->create_upload_keys_request(),
-          [this](const mtx::responses::UploadKeys &res, mtx::http::RequestErr err) {
-                  if (err) {
-                          const int status_code = static_cast<int>(err->status_code);
+    http::client()->upload_keys(
+      olm::client()->create_upload_keys_request(),
+      [this](const mtx::responses::UploadKeys &res, mtx::http::RequestErr err) {
+          if (err) {
+              const int status_code = static_cast<int>(err->status_code);
 
-                          if (status_code == 404) {
-                                  nhlog::net()->warn(
-                                    "skipping key uploading. server doesn't provide /keys/upload");
-                                  return startInitialSync();
-                          }
+              if (status_code == 404) {
+                  nhlog::net()->warn("skipping key uploading. server doesn't provide /keys/upload");
+                  return startInitialSync();
+              }
 
-                          nhlog::crypto()->critical("failed to upload one time keys: {} {}",
-                                                    err->matrix_error.error,
-                                                    status_code);
+              nhlog::crypto()->critical(
+                "failed to upload one time keys: {} {}", err->matrix_error.error, status_code);
 
-                          QString errorMsg(tr("Failed to setup encryption keys. Server response: "
-                                              "%1 %2. Please try again later.")
-                                             .arg(QString::fromStdString(err->matrix_error.error))
-                                             .arg(status_code));
+              QString errorMsg(tr("Failed to setup encryption keys. Server response: "
+                                  "%1 %2. Please try again later.")
+                                 .arg(QString::fromStdString(err->matrix_error.error))
+                                 .arg(status_code));
 
-                          emit dropToLoginPageCb(errorMsg);
-                          return;
-                  }
+              emit dropToLoginPageCb(errorMsg);
+              return;
+          }
 
-                  olm::mark_keys_as_published();
+          olm::mark_keys_as_published();
 
-                  for (const auto &entry : res.one_time_key_counts)
-                          nhlog::net()->info(
-                            "uploaded {} {} one-time keys", entry.second, entry.first);
+          for (const auto &entry : res.one_time_key_counts)
+              nhlog::net()->info("uploaded {} {} one-time keys", entry.second, entry.first);
 
-                  startInitialSync();
-          });
+          startInitialSync();
+      });
 }
 
 void
 ChatPage::startInitialSync()
 {
-        nhlog::net()->info("trying initial sync");
+    nhlog::net()->info("trying initial sync");
 
-        mtx::http::SyncOpts opts;
-        opts.timeout      = 0;
-        opts.set_presence = currentPresence();
+    mtx::http::SyncOpts opts;
+    opts.timeout      = 0;
+    opts.set_presence = currentPresence();
 
-        http::client()->sync(
-          opts, [this](const mtx::responses::Sync &res, mtx::http::RequestErr err) {
-                  // TODO: Initial Sync should include mentions as well...
+    http::client()->sync(opts, [this](const mtx::responses::Sync &res, mtx::http::RequestErr err) {
+        // TODO: Initial Sync should include mentions as well...
 
-                  if (err) {
-                          const auto error      = QString::fromStdString(err->matrix_error.error);
-                          const auto msg        = tr("Please try to login again: %1").arg(error);
-                          const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
-                          const int status_code = static_cast<int>(err->status_code);
+        if (err) {
+            const auto error      = QString::fromStdString(err->matrix_error.error);
+            const auto msg        = tr("Please try to login again: %1").arg(error);
+            const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
+            const int status_code = static_cast<int>(err->status_code);
 
-                          nhlog::net()->error("initial sync error: {} {} {} {}",
-                                              err->parse_error,
-                                              status_code,
-                                              err->error_code,
-                                              err_code);
+            nhlog::net()->error("initial sync error: {} {} {} {}",
+                                err->parse_error,
+                                status_code,
+                                err->error_code,
+                                err_code);
 
-                          // non http related errors
-                          if (status_code <= 0 || status_code >= 600) {
-                                  startInitialSync();
-                                  return;
-                          }
+            // non http related errors
+            if (status_code <= 0 || status_code >= 600) {
+                startInitialSync();
+                return;
+            }
 
-                          switch (status_code) {
-                          case 502:
-                          case 504:
-                          case 524: {
-                                  startInitialSync();
-                                  return;
-                          }
-                          default: {
-                                  emit dropToLoginPageCb(msg);
-                                  return;
-                          }
-                          }
-                  }
+            switch (status_code) {
+            case 502:
+            case 504:
+            case 524: {
+                startInitialSync();
+                return;
+            }
+            default: {
+                emit dropToLoginPageCb(msg);
+                return;
+            }
+            }
+        }
 
-                  nhlog::net()->info("initial sync completed");
+        nhlog::net()->info("initial sync completed");
 
-                  try {
-                          cache::client()->saveState(res);
+        try {
+            cache::client()->saveState(res);
 
-                          olm::handle_to_device_messages(res.to_device.events);
+            olm::handle_to_device_messages(res.to_device.events);
 
-                          emit initializeViews(std::move(res.rooms));
-                          emit initializeMentions(cache::getTimelineMentions());
+            emit initializeViews(std::move(res.rooms));
+            emit initializeMentions(cache::getTimelineMentions());
 
-                          cache::calculateRoomReadStatus();
-                  } catch (const lmdb::error &e) {
-                          nhlog::db()->error("failed to save state after initial sync: {}",
-                                             e.what());
-                          startInitialSync();
-                          return;
-                  }
+            cache::calculateRoomReadStatus();
+        } catch (const lmdb::error &e) {
+            nhlog::db()->error("failed to save state after initial sync: {}", e.what());
+            startInitialSync();
+            return;
+        }
 
-                  emit trySyncCb();
-                  emit contentLoaded();
-          });
+        emit trySyncCb();
+        emit contentLoaded();
+    });
 }
 
 void
 ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string &prev_batch_token)
 {
-        try {
-                if (prev_batch_token != cache::nextBatchToken()) {
-                        nhlog::net()->warn("Duplicate sync, dropping");
-                        return;
-                }
-        } catch (const lmdb::error &e) {
-                nhlog::db()->warn("Logged out in the mean time, dropping sync");
+    try {
+        if (prev_batch_token != cache::nextBatchToken()) {
+            nhlog::net()->warn("Duplicate sync, dropping");
+            return;
         }
+    } catch (const lmdb::error &e) {
+        nhlog::db()->warn("Logged out in the mean time, dropping sync");
+    }
 
-        nhlog::net()->debug("sync completed: {}", res.next_batch);
+    nhlog::net()->debug("sync completed: {}", res.next_batch);
 
-        // Ensure that we have enough one-time keys available.
-        ensureOneTimeKeyCount(res.device_one_time_keys_count);
+    // Ensure that we have enough one-time keys available.
+    ensureOneTimeKeyCount(res.device_one_time_keys_count);
 
-        // TODO: fine grained error handling
-        try {
-                cache::client()->saveState(res);
-                olm::handle_to_device_messages(res.to_device.events);
+    // TODO: fine grained error handling
+    try {
+        cache::client()->saveState(res);
+        olm::handle_to_device_messages(res.to_device.events);
 
-                auto updates = cache::getRoomInfo(cache::client()->roomsWithStateUpdates(res));
+        auto updates = cache::getRoomInfo(cache::client()->roomsWithStateUpdates(res));
 
-                emit syncUI(res.rooms);
+        emit syncUI(res.rooms);
 
-                // if we process a lot of syncs (1 every 200ms), this means we clean the
-                // db every 100s
-                static int syncCounter = 0;
-                if (syncCounter++ >= 500) {
-                        cache::deleteOldData();
-                        syncCounter = 0;
-                }
-        } catch (const lmdb::map_full_error &e) {
-                nhlog::db()->error("lmdb is full: {}", e.what());
-                cache::deleteOldData();
-        } catch (const lmdb::error &e) {
-                nhlog::db()->error("saving sync response: {}", e.what());
+        // if we process a lot of syncs (1 every 200ms), this means we clean the
+        // db every 100s
+        static int syncCounter = 0;
+        if (syncCounter++ >= 500) {
+            cache::deleteOldData();
+            syncCounter = 0;
         }
+    } catch (const lmdb::map_full_error &e) {
+        nhlog::db()->error("lmdb is full: {}", e.what());
+        cache::deleteOldData();
+    } catch (const lmdb::error &e) {
+        nhlog::db()->error("saving sync response: {}", e.what());
+    }
 
-        emit trySyncCb();
+    emit trySyncCb();
 }
 
 void
 ChatPage::trySync()
 {
-        mtx::http::SyncOpts opts;
-        opts.set_presence = currentPresence();
+    mtx::http::SyncOpts opts;
+    opts.set_presence = currentPresence();
 
-        if (!connectivityTimer_.isActive())
-                connectivityTimer_.start();
+    if (!connectivityTimer_.isActive())
+        connectivityTimer_.start();
 
-        try {
-                opts.since = cache::nextBatchToken();
-        } catch (const lmdb::error &e) {
-                nhlog::db()->error("failed to retrieve next batch token: {}", e.what());
-                return;
-        }
+    try {
+        opts.since = cache::nextBatchToken();
+    } catch (const lmdb::error &e) {
+        nhlog::db()->error("failed to retrieve next batch token: {}", e.what());
+        return;
+    }
 
-        http::client()->sync(
-          opts,
-          [this, since = opts.since](const mtx::responses::Sync &res, mtx::http::RequestErr err) {
-                  if (err) {
-                          const auto error      = QString::fromStdString(err->matrix_error.error);
-                          const auto msg        = tr("Please try to login again: %1").arg(error);
-                          const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
-                          const int status_code = static_cast<int>(err->status_code);
+    http::client()->sync(
+      opts, [this, since = opts.since](const mtx::responses::Sync &res, mtx::http::RequestErr err) {
+          if (err) {
+              const auto error      = QString::fromStdString(err->matrix_error.error);
+              const auto msg        = tr("Please try to login again: %1").arg(error);
+              const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
+              const int status_code = static_cast<int>(err->status_code);
 
-                          if ((http::is_logged_in() &&
-                               (err->matrix_error.errcode ==
-                                  mtx::errors::ErrorCode::M_UNKNOWN_TOKEN ||
-                                err->matrix_error.errcode ==
-                                  mtx::errors::ErrorCode::M_MISSING_TOKEN)) ||
-                              !http::is_logged_in()) {
-                                  emit dropToLoginPageCb(msg);
-                                  return;
-                          }
+              if ((http::is_logged_in() &&
+                   (err->matrix_error.errcode == mtx::errors::ErrorCode::M_UNKNOWN_TOKEN ||
+                    err->matrix_error.errcode == mtx::errors::ErrorCode::M_MISSING_TOKEN)) ||
+                  !http::is_logged_in()) {
+                  emit dropToLoginPageCb(msg);
+                  return;
+              }
 
-                          nhlog::net()->error("sync error: {} {} {} {}",
-                                              err->parse_error,
-                                              status_code,
-                                              err->error_code,
-                                              err_code);
-                          emit tryDelayedSyncCb();
-                          return;
-                  }
+              nhlog::net()->error("sync error: {} {} {} {}",
+                                  err->parse_error,
+                                  status_code,
+                                  err->error_code,
+                                  err_code);
+              emit tryDelayedSyncCb();
+              return;
+          }
 
-                  emit newSyncResponse(res, since);
-          });
+          emit newSyncResponse(res, since);
+      });
 }
 
 void
 ChatPage::joinRoom(const QString &room)
 {
-        const auto room_id = room.toStdString();
-        joinRoomVia(room_id, {}, false);
+    const auto room_id = room.toStdString();
+    joinRoomVia(room_id, {}, false);
 }
 
 void
@@ -711,692 +692,662 @@ ChatPage::joinRoomVia(const std::string &room_id,
                       const std::vector<std::string> &via,
                       bool promptForConfirmation)
 {
-        if (promptForConfirmation &&
-            QMessageBox::Yes !=
-              QMessageBox::question(
-                this,
-                tr("Confirm join"),
-                tr("Do you really want to join %1?").arg(QString::fromStdString(room_id))))
-                return;
+    if (promptForConfirmation &&
+        QMessageBox::Yes !=
+          QMessageBox::question(
+            this,
+            tr("Confirm join"),
+            tr("Do you really want to join %1?").arg(QString::fromStdString(room_id))))
+        return;
 
-        http::client()->join_room(
-          room_id, via, [this, room_id](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
-                  if (err) {
-                          emit showNotification(
-                            tr("Failed to join room: %1")
-                              .arg(QString::fromStdString(err->matrix_error.error)));
-                          return;
-                  }
+    http::client()->join_room(
+      room_id, via, [this, room_id](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
+          if (err) {
+              emit showNotification(
+                tr("Failed to join room: %1").arg(QString::fromStdString(err->matrix_error.error)));
+              return;
+          }
 
-                  emit tr("You joined the room");
+          emit tr("You joined the room");
 
-                  // We remove any invites with the same room_id.
-                  try {
-                          cache::removeInvite(room_id);
-                  } catch (const lmdb::error &e) {
-                          emit showNotification(tr("Failed to remove invite: %1").arg(e.what()));
-                  }
+          // We remove any invites with the same room_id.
+          try {
+              cache::removeInvite(room_id);
+          } catch (const lmdb::error &e) {
+              emit showNotification(tr("Failed to remove invite: %1").arg(e.what()));
+          }
 
-                  view_manager_->rooms()->setCurrentRoom(QString::fromStdString(room_id));
-          });
+          view_manager_->rooms()->setCurrentRoom(QString::fromStdString(room_id));
+      });
 }
 
 void
 ChatPage::createRoom(const mtx::requests::CreateRoom &req)
 {
-        http::client()->create_room(
-          req, [this](const mtx::responses::CreateRoom &res, mtx::http::RequestErr err) {
-                  if (err) {
-                          const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
-                          const auto error      = err->matrix_error.error;
-                          const int status_code = static_cast<int>(err->status_code);
+    http::client()->create_room(
+      req, [this](const mtx::responses::CreateRoom &res, mtx::http::RequestErr err) {
+          if (err) {
+              const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
+              const auto error      = err->matrix_error.error;
+              const int status_code = static_cast<int>(err->status_code);
 
-                          nhlog::net()->warn(
-                            "failed to create room: {} {} ({})", error, err_code, status_code);
+              nhlog::net()->warn("failed to create room: {} {} ({})", error, err_code, status_code);
 
-                          emit showNotification(
-                            tr("Room creation failed: %1").arg(QString::fromStdString(error)));
-                          return;
-                  }
+              emit showNotification(
+                tr("Room creation failed: %1").arg(QString::fromStdString(error)));
+              return;
+          }
 
-                  QString newRoomId = QString::fromStdString(res.room_id.to_string());
-                  emit showNotification(tr("Room %1 created.").arg(newRoomId));
-                  emit newRoom(newRoomId);
-                  emit changeToRoom(newRoomId);
-          });
+          QString newRoomId = QString::fromStdString(res.room_id.to_string());
+          emit showNotification(tr("Room %1 created.").arg(newRoomId));
+          emit newRoom(newRoomId);
+          emit changeToRoom(newRoomId);
+      });
 }
 
 void
 ChatPage::leaveRoom(const QString &room_id)
 {
-        http::client()->leave_room(
-          room_id.toStdString(),
-          [this, room_id](const mtx::responses::Empty &, mtx::http::RequestErr err) {
-                  if (err) {
-                          emit showNotification(
-                            tr("Failed to leave room: %1")
-                              .arg(QString::fromStdString(err->matrix_error.error)));
-                          return;
-                  }
+    http::client()->leave_room(
+      room_id.toStdString(),
+      [this, room_id](const mtx::responses::Empty &, mtx::http::RequestErr err) {
+          if (err) {
+              emit showNotification(tr("Failed to leave room: %1")
+                                      .arg(QString::fromStdString(err->matrix_error.error)));
+              return;
+          }
 
-                  emit leftRoom(room_id);
-          });
+          emit leftRoom(room_id);
+      });
 }
 
 void
 ChatPage::changeRoom(const QString &room_id)
 {
-        view_manager_->rooms()->setCurrentRoom(room_id);
+    view_manager_->rooms()->setCurrentRoom(room_id);
 }
 
 void
 ChatPage::inviteUser(QString userid, QString reason)
 {
-        auto room = currentRoom();
+    auto room = currentRoom();
 
-        if (QMessageBox::question(this,
-                                  tr("Confirm invite"),
-                                  tr("Do you really want to invite %1 (%2)?")
-                                    .arg(cache::displayName(room, userid))
-                                    .arg(userid)) != QMessageBox::Yes)
-                return;
+    if (QMessageBox::question(this,
+                              tr("Confirm invite"),
+                              tr("Do you really want to invite %1 (%2)?")
+                                .arg(cache::displayName(room, userid))
+                                .arg(userid)) != QMessageBox::Yes)
+        return;
 
-        http::client()->invite_user(
-          room.toStdString(),
-          userid.toStdString(),
-          [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
-                  if (err) {
-                          emit showNotification(
-                            tr("Failed to invite %1 to %2: %3")
-                              .arg(userid)
-                              .arg(room)
-                              .arg(QString::fromStdString(err->matrix_error.error)));
-                  } else
-                          emit showNotification(tr("Invited user: %1").arg(userid));
-          },
-          reason.trimmed().toStdString());
+    http::client()->invite_user(
+      room.toStdString(),
+      userid.toStdString(),
+      [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
+          if (err) {
+              emit showNotification(tr("Failed to invite %1 to %2: %3")
+                                      .arg(userid)
+                                      .arg(room)
+                                      .arg(QString::fromStdString(err->matrix_error.error)));
+          } else
+              emit showNotification(tr("Invited user: %1").arg(userid));
+      },
+      reason.trimmed().toStdString());
 }
 void
 ChatPage::kickUser(QString userid, QString reason)
 {
-        auto room = currentRoom();
+    auto room = currentRoom();
 
-        if (QMessageBox::question(this,
-                                  tr("Confirm kick"),
-                                  tr("Do you really want to kick %1 (%2)?")
-                                    .arg(cache::displayName(room, userid))
-                                    .arg(userid)) != QMessageBox::Yes)
-                return;
+    if (QMessageBox::question(this,
+                              tr("Confirm kick"),
+                              tr("Do you really want to kick %1 (%2)?")
+                                .arg(cache::displayName(room, userid))
+                                .arg(userid)) != QMessageBox::Yes)
+        return;
 
-        http::client()->kick_user(
-          room.toStdString(),
-          userid.toStdString(),
-          [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
-                  if (err) {
-                          emit showNotification(
-                            tr("Failed to kick %1 from %2: %3")
-                              .arg(userid)
-                              .arg(room)
-                              .arg(QString::fromStdString(err->matrix_error.error)));
-                  } else
-                          emit showNotification(tr("Kicked user: %1").arg(userid));
-          },
-          reason.trimmed().toStdString());
+    http::client()->kick_user(
+      room.toStdString(),
+      userid.toStdString(),
+      [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
+          if (err) {
+              emit showNotification(tr("Failed to kick %1 from %2: %3")
+                                      .arg(userid)
+                                      .arg(room)
+                                      .arg(QString::fromStdString(err->matrix_error.error)));
+          } else
+              emit showNotification(tr("Kicked user: %1").arg(userid));
+      },
+      reason.trimmed().toStdString());
 }
 void
 ChatPage::banUser(QString userid, QString reason)
 {
-        auto room = currentRoom();
+    auto room = currentRoom();
 
-        if (QMessageBox::question(this,
-                                  tr("Confirm ban"),
-                                  tr("Do you really want to ban %1 (%2)?")
-                                    .arg(cache::displayName(room, userid))
-                                    .arg(userid)) != QMessageBox::Yes)
-                return;
+    if (QMessageBox::question(this,
+                              tr("Confirm ban"),
+                              tr("Do you really want to ban %1 (%2)?")
+                                .arg(cache::displayName(room, userid))
+                                .arg(userid)) != QMessageBox::Yes)
+        return;
 
-        http::client()->ban_user(
-          room.toStdString(),
-          userid.toStdString(),
-          [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
-                  if (err) {
-                          emit showNotification(
-                            tr("Failed to ban %1 in %2: %3")
-                              .arg(userid)
-                              .arg(room)
-                              .arg(QString::fromStdString(err->matrix_error.error)));
-                  } else
-                          emit showNotification(tr("Banned user: %1").arg(userid));
-          },
-          reason.trimmed().toStdString());
+    http::client()->ban_user(
+      room.toStdString(),
+      userid.toStdString(),
+      [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
+          if (err) {
+              emit showNotification(tr("Failed to ban %1 in %2: %3")
+                                      .arg(userid)
+                                      .arg(room)
+                                      .arg(QString::fromStdString(err->matrix_error.error)));
+          } else
+              emit showNotification(tr("Banned user: %1").arg(userid));
+      },
+      reason.trimmed().toStdString());
 }
 void
 ChatPage::unbanUser(QString userid, QString reason)
 {
-        auto room = currentRoom();
+    auto room = currentRoom();
 
-        if (QMessageBox::question(this,
-                                  tr("Confirm unban"),
-                                  tr("Do you really want to unban %1 (%2)?")
-                                    .arg(cache::displayName(room, userid))
-                                    .arg(userid)) != QMessageBox::Yes)
-                return;
+    if (QMessageBox::question(this,
+                              tr("Confirm unban"),
+                              tr("Do you really want to unban %1 (%2)?")
+                                .arg(cache::displayName(room, userid))
+                                .arg(userid)) != QMessageBox::Yes)
+        return;
 
-        http::client()->unban_user(
-          room.toStdString(),
-          userid.toStdString(),
-          [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
-                  if (err) {
-                          emit showNotification(
-                            tr("Failed to unban %1 in %2: %3")
-                              .arg(userid)
-                              .arg(room)
-                              .arg(QString::fromStdString(err->matrix_error.error)));
-                  } else
-                          emit showNotification(tr("Unbanned user: %1").arg(userid));
-          },
-          reason.trimmed().toStdString());
+    http::client()->unban_user(
+      room.toStdString(),
+      userid.toStdString(),
+      [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
+          if (err) {
+              emit showNotification(tr("Failed to unban %1 in %2: %3")
+                                      .arg(userid)
+                                      .arg(room)
+                                      .arg(QString::fromStdString(err->matrix_error.error)));
+          } else
+              emit showNotification(tr("Unbanned user: %1").arg(userid));
+      },
+      reason.trimmed().toStdString());
 }
 
 void
 ChatPage::receivedSessionKey(const std::string &room_id, const std::string &session_id)
 {
-        view_manager_->receivedSessionKey(room_id, session_id);
+    view_manager_->receivedSessionKey(room_id, session_id);
 }
 
 QString
 ChatPage::status() const
 {
-        return QString::fromStdString(cache::statusMessage(utils::localUser().toStdString()));
+    return QString::fromStdString(cache::statusMessage(utils::localUser().toStdString()));
 }
 
 void
 ChatPage::setStatus(const QString &status)
 {
-        http::client()->put_presence_status(
-          currentPresence(), status.toStdString(), [](mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->warn("failed to set presence status_msg: {}",
-                                             err->matrix_error.error);
-                  }
-          });
+    http::client()->put_presence_status(
+      currentPresence(), status.toStdString(), [](mtx::http::RequestErr err) {
+          if (err) {
+              nhlog::net()->warn("failed to set presence status_msg: {}", err->matrix_error.error);
+          }
+      });
 }
 
 mtx::presence::PresenceState
 ChatPage::currentPresence() const
 {
-        switch (userSettings_->presence()) {
-        case UserSettings::Presence::Online:
-                return mtx::presence::online;
-        case UserSettings::Presence::Unavailable:
-                return mtx::presence::unavailable;
-        case UserSettings::Presence::Offline:
-                return mtx::presence::offline;
-        default:
-                return mtx::presence::online;
-        }
+    switch (userSettings_->presence()) {
+    case UserSettings::Presence::Online:
+        return mtx::presence::online;
+    case UserSettings::Presence::Unavailable:
+        return mtx::presence::unavailable;
+    case UserSettings::Presence::Offline:
+        return mtx::presence::offline;
+    default:
+        return mtx::presence::online;
+    }
 }
 
 void
 ChatPage::verifyOneTimeKeyCountAfterStartup()
 {
-        http::client()->upload_keys(
-          olm::client()->create_upload_keys_request(),
-          [this](const mtx::responses::UploadKeys &res, mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::crypto()->warn("failed to update one-time keys: {} {} {}",
-                                                err->matrix_error.error,
-                                                static_cast<int>(err->status_code),
-                                                static_cast<int>(err->error_code));
+    http::client()->upload_keys(
+      olm::client()->create_upload_keys_request(),
+      [this](const mtx::responses::UploadKeys &res, mtx::http::RequestErr err) {
+          if (err) {
+              nhlog::crypto()->warn("failed to update one-time keys: {} {} {}",
+                                    err->matrix_error.error,
+                                    static_cast<int>(err->status_code),
+                                    static_cast<int>(err->error_code));
 
-                          if (err->status_code < 400 || err->status_code >= 500)
-                                  return;
-                  }
+              if (err->status_code < 400 || err->status_code >= 500)
+                  return;
+          }
 
-                  std::map<std::string, uint16_t> key_counts;
-                  auto count = 0;
-                  if (auto c = res.one_time_key_counts.find(mtx::crypto::SIGNED_CURVE25519);
-                      c == res.one_time_key_counts.end()) {
-                          key_counts[mtx::crypto::SIGNED_CURVE25519] = 0;
-                  } else {
-                          key_counts[mtx::crypto::SIGNED_CURVE25519] = c->second;
-                          count                                      = c->second;
-                  }
+          std::map<std::string, uint16_t> key_counts;
+          auto count = 0;
+          if (auto c = res.one_time_key_counts.find(mtx::crypto::SIGNED_CURVE25519);
+              c == res.one_time_key_counts.end()) {
+              key_counts[mtx::crypto::SIGNED_CURVE25519] = 0;
+          } else {
+              key_counts[mtx::crypto::SIGNED_CURVE25519] = c->second;
+              count                                      = c->second;
+          }
 
-                  nhlog::crypto()->info(
-                    "Fetched server key count {} {}", count, mtx::crypto::SIGNED_CURVE25519);
+          nhlog::crypto()->info(
+            "Fetched server key count {} {}", count, mtx::crypto::SIGNED_CURVE25519);
 
-                  ensureOneTimeKeyCount(key_counts);
-          });
+          ensureOneTimeKeyCount(key_counts);
+      });
 }
 
 void
 ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
 {
-        if (auto count = counts.find(mtx::crypto::SIGNED_CURVE25519); count != counts.end()) {
-                nhlog::crypto()->debug(
-                  "Updated server key count {} {}", count->second, mtx::crypto::SIGNED_CURVE25519);
+    if (auto count = counts.find(mtx::crypto::SIGNED_CURVE25519); count != counts.end()) {
+        nhlog::crypto()->debug(
+          "Updated server key count {} {}", count->second, mtx::crypto::SIGNED_CURVE25519);
 
-                if (count->second < MAX_ONETIME_KEYS) {
-                        const int nkeys = MAX_ONETIME_KEYS - count->second;
+        if (count->second < MAX_ONETIME_KEYS) {
+            const int nkeys = MAX_ONETIME_KEYS - count->second;
 
-                        nhlog::crypto()->info(
-                          "uploading {} {} keys", nkeys, mtx::crypto::SIGNED_CURVE25519);
-                        olm::client()->generate_one_time_keys(nkeys);
+            nhlog::crypto()->info("uploading {} {} keys", nkeys, mtx::crypto::SIGNED_CURVE25519);
+            olm::client()->generate_one_time_keys(nkeys);
 
-                        http::client()->upload_keys(
-                          olm::client()->create_upload_keys_request(),
-                          [](const mtx::responses::UploadKeys &, mtx::http::RequestErr err) {
-                                  if (err) {
-                                          nhlog::crypto()->warn(
-                                            "failed to update one-time keys: {} {} {}",
+            http::client()->upload_keys(
+              olm::client()->create_upload_keys_request(),
+              [](const mtx::responses::UploadKeys &, mtx::http::RequestErr err) {
+                  if (err) {
+                      nhlog::crypto()->warn("failed to update one-time keys: {} {} {}",
                                             err->matrix_error.error,
                                             static_cast<int>(err->status_code),
                                             static_cast<int>(err->error_code));
 
-                                          if (err->status_code < 400 || err->status_code >= 500)
-                                                  return;
-                                  }
+                      if (err->status_code < 400 || err->status_code >= 500)
+                          return;
+                  }
 
-                                  // mark as published anyway, otherwise we may end up in a loop.
-                                  olm::mark_keys_as_published();
-                          });
-                } else if (count->second > 2 * MAX_ONETIME_KEYS) {
-                        nhlog::crypto()->warn("too many one-time keys, deleting 1");
-                        mtx::requests::ClaimKeys req;
-                        req.one_time_keys[http::client()->user_id().to_string()]
-                                         [http::client()->device_id()] =
-                          std::string(mtx::crypto::SIGNED_CURVE25519);
-                        http::client()->claim_keys(
-                          req, [](const mtx::responses::ClaimKeys &, mtx::http::RequestErr err) {
-                                  if (err)
-                                          nhlog::crypto()->warn(
-                                            "failed to clear 1 one-time key: {} {} {}",
+                  // mark as published anyway, otherwise we may end up in a loop.
+                  olm::mark_keys_as_published();
+              });
+        } else if (count->second > 2 * MAX_ONETIME_KEYS) {
+            nhlog::crypto()->warn("too many one-time keys, deleting 1");
+            mtx::requests::ClaimKeys req;
+            req.one_time_keys[http::client()->user_id().to_string()][http::client()->device_id()] =
+              std::string(mtx::crypto::SIGNED_CURVE25519);
+            http::client()->claim_keys(
+              req, [](const mtx::responses::ClaimKeys &, mtx::http::RequestErr err) {
+                  if (err)
+                      nhlog::crypto()->warn("failed to clear 1 one-time key: {} {} {}",
                                             err->matrix_error.error,
                                             static_cast<int>(err->status_code),
                                             static_cast<int>(err->error_code));
-                                  else
-                                          nhlog::crypto()->info("cleared 1 one-time key");
-                          });
-                }
+                  else
+                      nhlog::crypto()->info("cleared 1 one-time key");
+              });
         }
+    }
 }
 
 void
 ChatPage::getProfileInfo()
 {
-        const auto userid = utils::localUser().toStdString();
+    const auto userid = utils::localUser().toStdString();
 
-        http::client()->get_profile(
-          userid, [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->warn("failed to retrieve own profile info");
-                          return;
-                  }
+    http::client()->get_profile(
+      userid, [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
+          if (err) {
+              nhlog::net()->warn("failed to retrieve own profile info");
+              return;
+          }
 
-                  emit setUserDisplayName(QString::fromStdString(res.display_name));
+          emit setUserDisplayName(QString::fromStdString(res.display_name));
 
-                  emit setUserAvatar(QString::fromStdString(res.avatar_url));
-          });
+          emit setUserAvatar(QString::fromStdString(res.avatar_url));
+      });
 }
 
 void
 ChatPage::getBackupVersion()
 {
-        if (!UserSettings::instance()->useOnlineKeyBackup()) {
-                nhlog::crypto()->info("Online key backup disabled.");
-                return;
-        }
+    if (!UserSettings::instance()->useOnlineKeyBackup()) {
+        nhlog::crypto()->info("Online key backup disabled.");
+        return;
+    }
 
-        http::client()->backup_version(
-          [this](const mtx::responses::backup::BackupVersion &res, mtx::http::RequestErr err) {
-                  if (err) {
-                          nhlog::net()->warn("Failed to retrieve backup version");
-                          if (err->status_code == 404)
-                                  cache::client()->deleteBackupVersion();
-                          return;
+    http::client()->backup_version(
+      [this](const mtx::responses::backup::BackupVersion &res, mtx::http::RequestErr err) {
+          if (err) {
+              nhlog::net()->warn("Failed to retrieve backup version");
+              if (err->status_code == 404)
+                  cache::client()->deleteBackupVersion();
+              return;
+          }
+
+          // switch to UI thread for secrets stuff
+          QTimer::singleShot(0, this, [res] {
+              auto auth_data = nlohmann::json::parse(res.auth_data);
+
+              if (res.algorithm == "m.megolm_backup.v1.curve25519-aes-sha2") {
+                  auto key = cache::secret(mtx::secret_storage::secrets::megolm_backup_v1);
+                  if (!key) {
+                      nhlog::crypto()->info("No key for online key backup.");
+                      cache::client()->deleteBackupVersion();
+                      return;
                   }
 
-                  // switch to UI thread for secrets stuff
-                  QTimer::singleShot(0, this, [res] {
-                          auto auth_data = nlohmann::json::parse(res.auth_data);
+                  using namespace mtx::crypto;
+                  auto pubkey = CURVE25519_public_key_from_private(to_binary_buf(base642bin(*key)));
 
-                          if (res.algorithm == "m.megolm_backup.v1.curve25519-aes-sha2") {
-                                  auto key =
-                                    cache::secret(mtx::secret_storage::secrets::megolm_backup_v1);
-                                  if (!key) {
-                                          nhlog::crypto()->info("No key for online key backup.");
-                                          cache::client()->deleteBackupVersion();
-                                          return;
-                                  }
-
-                                  using namespace mtx::crypto;
-                                  auto pubkey = CURVE25519_public_key_from_private(
-                                    to_binary_buf(base642bin(*key)));
-
-                                  if (auth_data["public_key"].get<std::string>() != pubkey) {
-                                          nhlog::crypto()->info(
-                                            "Our backup key {} does not match the one "
+                  if (auth_data["public_key"].get<std::string>() != pubkey) {
+                      nhlog::crypto()->info("Our backup key {} does not match the one "
                                             "used in the online backup {}",
                                             pubkey,
                                             auth_data["public_key"]);
-                                          cache::client()->deleteBackupVersion();
-                                          return;
-                                  }
+                      cache::client()->deleteBackupVersion();
+                      return;
+                  }
 
-                                  nhlog::crypto()->info("Using online key backup.");
-                                  OnlineBackupVersion data{};
-                                  data.algorithm = res.algorithm;
-                                  data.version   = res.version;
-                                  cache::client()->saveBackupVersion(data);
-                          } else {
-                                  nhlog::crypto()->info("Unsupported key backup algorithm: {}",
-                                                        res.algorithm);
-                                  cache::client()->deleteBackupVersion();
-                          }
-                  });
+                  nhlog::crypto()->info("Using online key backup.");
+                  OnlineBackupVersion data{};
+                  data.algorithm = res.algorithm;
+                  data.version   = res.version;
+                  cache::client()->saveBackupVersion(data);
+              } else {
+                  nhlog::crypto()->info("Unsupported key backup algorithm: {}", res.algorithm);
+                  cache::client()->deleteBackupVersion();
+              }
           });
+      });
 }
 
 void
 ChatPage::initiateLogout()
 {
-        http::client()->logout([this](const mtx::responses::Logout &, mtx::http::RequestErr err) {
-                if (err) {
-                        // TODO: handle special errors
-                        emit contentLoaded();
-                        nhlog::net()->warn("failed to logout: {} - {}",
-                                           mtx::errors::to_string(err->matrix_error.errcode),
-                                           err->matrix_error.error);
-                        return;
-                }
+    http::client()->logout([this](const mtx::responses::Logout &, mtx::http::RequestErr err) {
+        if (err) {
+            // TODO: handle special errors
+            emit contentLoaded();
+            nhlog::net()->warn("failed to logout: {} - {}",
+                               mtx::errors::to_string(err->matrix_error.errcode),
+                               err->matrix_error.error);
+            return;
+        }
 
-                emit loggedOut();
-        });
+        emit loggedOut();
+    });
 
-        emit showOverlayProgressBar();
+    emit showOverlayProgressBar();
 }
 
 template<typename T>
 void
 ChatPage::connectCallMessage()
 {
-        connect(callManager_,
-                qOverload<const QString &, const T &>(&CallManager::newMessage),
-                view_manager_,
-                qOverload<const QString &, const T &>(&TimelineViewManager::queueCallMessage));
+    connect(callManager_,
+            qOverload<const QString &, const T &>(&CallManager::newMessage),
+            view_manager_,
+            qOverload<const QString &, const T &>(&TimelineViewManager::queueCallMessage));
 }
 
 void
 ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescription keyDesc,
                                    const SecretsToDecrypt &secrets)
 {
-        QString text = QInputDialog::getText(
+    QString text = QInputDialog::getText(
+      ChatPage::instance(),
+      QCoreApplication::translate("CrossSigningSecrets", "Decrypt secrets"),
+      keyDesc.name.empty()
+        ? QCoreApplication::translate(
+            "CrossSigningSecrets", "Enter your recovery key or passphrase to decrypt your secrets:")
+        : QCoreApplication::translate(
+            "CrossSigningSecrets",
+            "Enter your recovery key or passphrase called %1 to decrypt your secrets:")
+            .arg(QString::fromStdString(keyDesc.name)),
+      QLineEdit::Password);
+
+    if (text.isEmpty())
+        return;
+
+    auto decryptionKey = mtx::crypto::key_from_recoverykey(text.toStdString(), keyDesc);
+
+    if (!decryptionKey && keyDesc.passphrase) {
+        try {
+            decryptionKey = mtx::crypto::key_from_passphrase(text.toStdString(), keyDesc);
+        } catch (std::exception &e) {
+            nhlog::crypto()->error("Failed to derive secret key from passphrase: {}", e.what());
+        }
+    }
+
+    if (!decryptionKey) {
+        QMessageBox::information(
           ChatPage::instance(),
-          QCoreApplication::translate("CrossSigningSecrets", "Decrypt secrets"),
-          keyDesc.name.empty()
-            ? QCoreApplication::translate(
-                "CrossSigningSecrets",
-                "Enter your recovery key or passphrase to decrypt your secrets:")
-            : QCoreApplication::translate(
-                "CrossSigningSecrets",
-                "Enter your recovery key or passphrase called %1 to decrypt your secrets:")
-                .arg(QString::fromStdString(keyDesc.name)),
-          QLineEdit::Password);
+          QCoreApplication::translate("CrossSigningSecrets", "Decryption failed"),
+          QCoreApplication::translate("CrossSigningSecrets",
+                                      "Failed to decrypt secrets with the "
+                                      "provided recovery key or passphrase"));
+        return;
+    }
 
-        if (text.isEmpty())
-                return;
-
-        auto decryptionKey = mtx::crypto::key_from_recoverykey(text.toStdString(), keyDesc);
-
-        if (!decryptionKey && keyDesc.passphrase) {
-                try {
-                        decryptionKey =
-                          mtx::crypto::key_from_passphrase(text.toStdString(), keyDesc);
-                } catch (std::exception &e) {
-                        nhlog::crypto()->error("Failed to derive secret key from passphrase: {}",
-                                               e.what());
-                }
-        }
-
-        if (!decryptionKey) {
-                QMessageBox::information(
-                  ChatPage::instance(),
-                  QCoreApplication::translate("CrossSigningSecrets", "Decryption failed"),
-                  QCoreApplication::translate("CrossSigningSecrets",
-                                              "Failed to decrypt secrets with the "
-                                              "provided recovery key or passphrase"));
-                return;
-        }
-
-        for (const auto &[secretName, encryptedSecret] : secrets) {
-                auto decrypted = mtx::crypto::decrypt(encryptedSecret, *decryptionKey, secretName);
-                if (!decrypted.empty())
-                        cache::storeSecret(secretName, decrypted);
-        }
+    for (const auto &[secretName, encryptedSecret] : secrets) {
+        auto decrypted = mtx::crypto::decrypt(encryptedSecret, *decryptionKey, secretName);
+        if (!decrypted.empty())
+            cache::storeSecret(secretName, decrypted);
+    }
 }
 
 void
 ChatPage::startChat(QString userid)
 {
-        auto joined_rooms = cache::joinedRooms();
-        auto room_infos   = cache::getRoomInfo(joined_rooms);
+    auto joined_rooms = cache::joinedRooms();
+    auto room_infos   = cache::getRoomInfo(joined_rooms);
 
-        for (std::string room_id : joined_rooms) {
-                if (room_infos[QString::fromStdString(room_id)].member_count == 2) {
-                        auto room_members = cache::roomMembers(room_id);
-                        if (std::find(room_members.begin(),
-                                      room_members.end(),
-                                      (userid).toStdString()) != room_members.end()) {
-                                view_manager_->rooms()->setCurrentRoom(
-                                  QString::fromStdString(room_id));
-                                return;
-                        }
-                }
-        }
-
-        if (QMessageBox::Yes !=
-            QMessageBox::question(
-              this,
-              tr("Confirm invite"),
-              tr("Do you really want to start a private chat with %1?").arg(userid)))
+    for (std::string room_id : joined_rooms) {
+        if (room_infos[QString::fromStdString(room_id)].member_count == 2) {
+            auto room_members = cache::roomMembers(room_id);
+            if (std::find(room_members.begin(), room_members.end(), (userid).toStdString()) !=
+                room_members.end()) {
+                view_manager_->rooms()->setCurrentRoom(QString::fromStdString(room_id));
                 return;
-
-        mtx::requests::CreateRoom req;
-        req.preset     = mtx::requests::Preset::PrivateChat;
-        req.visibility = mtx::common::RoomVisibility::Private;
-        if (utils::localUser() != userid) {
-                req.invite    = {userid.toStdString()};
-                req.is_direct = true;
+            }
         }
-        emit ChatPage::instance()->createRoom(req);
+    }
+
+    if (QMessageBox::Yes !=
+        QMessageBox::question(
+          this,
+          tr("Confirm invite"),
+          tr("Do you really want to start a private chat with %1?").arg(userid)))
+        return;
+
+    mtx::requests::CreateRoom req;
+    req.preset     = mtx::requests::Preset::PrivateChat;
+    req.visibility = mtx::common::RoomVisibility::Private;
+    if (utils::localUser() != userid) {
+        req.invite    = {userid.toStdString()};
+        req.is_direct = true;
+    }
+    emit ChatPage::instance()->createRoom(req);
 }
 
 static QString
 mxidFromSegments(QStringRef sigil, QStringRef mxid)
 {
-        if (mxid.isEmpty())
-                return "";
+    if (mxid.isEmpty())
+        return "";
 
-        auto mxid_ = QUrl::fromPercentEncoding(mxid.toUtf8());
+    auto mxid_ = QUrl::fromPercentEncoding(mxid.toUtf8());
 
-        if (sigil == "u") {
-                return "@" + mxid_;
-        } else if (sigil == "roomid") {
-                return "!" + mxid_;
-        } else if (sigil == "r") {
-                return "#" + mxid_;
-                //} else if (sigil == "group") {
-                //        return "+" + mxid_;
-        } else {
-                return "";
-        }
+    if (sigil == "u") {
+        return "@" + mxid_;
+    } else if (sigil == "roomid") {
+        return "!" + mxid_;
+    } else if (sigil == "r") {
+        return "#" + mxid_;
+        //} else if (sigil == "group") {
+        //        return "+" + mxid_;
+    } else {
+        return "";
+    }
 }
 
 bool
 ChatPage::handleMatrixUri(const QByteArray &uri)
 {
-        nhlog::ui()->info("Received uri! {}", uri.toStdString());
-        QUrl uri_{QString::fromUtf8(uri)};
+    nhlog::ui()->info("Received uri! {}", uri.toStdString());
+    QUrl uri_{QString::fromUtf8(uri)};
 
-        // Convert matrix.to URIs to proper format
-        if (uri_.scheme() == "https" && uri_.host() == "matrix.to") {
-                QString p = uri_.fragment(QUrl::FullyEncoded);
-                if (p.startsWith("/"))
-                        p.remove(0, 1);
+    // Convert matrix.to URIs to proper format
+    if (uri_.scheme() == "https" && uri_.host() == "matrix.to") {
+        QString p = uri_.fragment(QUrl::FullyEncoded);
+        if (p.startsWith("/"))
+            p.remove(0, 1);
 
-                auto temp = p.split("?");
-                QString query;
-                if (temp.size() >= 2)
-                        query = QUrl::fromPercentEncoding(temp.takeAt(1).toUtf8());
+        auto temp = p.split("?");
+        QString query;
+        if (temp.size() >= 2)
+            query = QUrl::fromPercentEncoding(temp.takeAt(1).toUtf8());
 
-                temp            = temp.first().split("/");
-                auto identifier = QUrl::fromPercentEncoding(temp.takeFirst().toUtf8());
-                QString eventId = QUrl::fromPercentEncoding(temp.join('/').toUtf8());
-                if (!identifier.isEmpty()) {
-                        if (identifier.startsWith("@")) {
-                                QByteArray newUri =
-                                  "matrix:u/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                                if (!query.isEmpty())
-                                        newUri.append("?" + query.toUtf8());
-                                return handleMatrixUri(QUrl::fromEncoded(newUri));
-                        } else if (identifier.startsWith("#")) {
-                                QByteArray newUri =
-                                  "matrix:r/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                                if (!eventId.isEmpty())
-                                        newUri.append(
-                                          "/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
-                                if (!query.isEmpty())
-                                        newUri.append("?" + query.toUtf8());
-                                return handleMatrixUri(QUrl::fromEncoded(newUri));
-                        } else if (identifier.startsWith("!")) {
-                                QByteArray newUri = "matrix:roomid/" + QUrl::toPercentEncoding(
-                                                                         identifier.remove(0, 1));
-                                if (!eventId.isEmpty())
-                                        newUri.append(
-                                          "/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
-                                if (!query.isEmpty())
-                                        newUri.append("?" + query.toUtf8());
-                                return handleMatrixUri(QUrl::fromEncoded(newUri));
-                        }
-                }
+        temp            = temp.first().split("/");
+        auto identifier = QUrl::fromPercentEncoding(temp.takeFirst().toUtf8());
+        QString eventId = QUrl::fromPercentEncoding(temp.join('/').toUtf8());
+        if (!identifier.isEmpty()) {
+            if (identifier.startsWith("@")) {
+                QByteArray newUri = "matrix:u/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
+                if (!query.isEmpty())
+                    newUri.append("?" + query.toUtf8());
+                return handleMatrixUri(QUrl::fromEncoded(newUri));
+            } else if (identifier.startsWith("#")) {
+                QByteArray newUri = "matrix:r/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
+                if (!eventId.isEmpty())
+                    newUri.append("/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
+                if (!query.isEmpty())
+                    newUri.append("?" + query.toUtf8());
+                return handleMatrixUri(QUrl::fromEncoded(newUri));
+            } else if (identifier.startsWith("!")) {
+                QByteArray newUri =
+                  "matrix:roomid/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
+                if (!eventId.isEmpty())
+                    newUri.append("/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
+                if (!query.isEmpty())
+                    newUri.append("?" + query.toUtf8());
+                return handleMatrixUri(QUrl::fromEncoded(newUri));
+            }
         }
+    }
 
-        // non-matrix URIs are not handled by us, return false
-        if (uri_.scheme() != "matrix")
-                return false;
+    // non-matrix URIs are not handled by us, return false
+    if (uri_.scheme() != "matrix")
+        return false;
 
-        auto tempPath = uri_.path(QUrl::ComponentFormattingOption::FullyEncoded);
-        if (tempPath.startsWith('/'))
-                tempPath.remove(0, 1);
-        auto segments = tempPath.splitRef('/');
+    auto tempPath = uri_.path(QUrl::ComponentFormattingOption::FullyEncoded);
+    if (tempPath.startsWith('/'))
+        tempPath.remove(0, 1);
+    auto segments = tempPath.splitRef('/');
 
-        if (segments.size() != 2 && segments.size() != 4)
-                return false;
+    if (segments.size() != 2 && segments.size() != 4)
+        return false;
 
-        auto sigil1 = segments[0];
-        auto mxid1  = mxidFromSegments(sigil1, segments[1]);
-        if (mxid1.isEmpty())
-                return false;
+    auto sigil1 = segments[0];
+    auto mxid1  = mxidFromSegments(sigil1, segments[1]);
+    if (mxid1.isEmpty())
+        return false;
 
-        QString mxid2;
-        if (segments.size() == 4 && segments[2] == "e") {
-                if (segments[3].isEmpty())
-                        return false;
-                else
-                        mxid2 = "$" + QUrl::fromPercentEncoding(segments[3].toUtf8());
+    QString mxid2;
+    if (segments.size() == 4 && segments[2] == "e") {
+        if (segments[3].isEmpty())
+            return false;
+        else
+            mxid2 = "$" + QUrl::fromPercentEncoding(segments[3].toUtf8());
+    }
+
+    std::vector<std::string> vias;
+    QString action;
+
+    for (QString item : uri_.query(QUrl::ComponentFormattingOption::FullyEncoded).split('&')) {
+        nhlog::ui()->info("item: {}", item.toStdString());
+
+        if (item.startsWith("action=")) {
+            action = item.remove("action=");
+        } else if (item.startsWith("via=")) {
+            vias.push_back(QUrl::fromPercentEncoding(item.remove("via=").toUtf8()).toStdString());
         }
+    }
 
-        std::vector<std::string> vias;
-        QString action;
-
-        for (QString item : uri_.query(QUrl::ComponentFormattingOption::FullyEncoded).split('&')) {
-                nhlog::ui()->info("item: {}", item.toStdString());
-
-                if (item.startsWith("action=")) {
-                        action = item.remove("action=");
-                } else if (item.startsWith("via=")) {
-                        vias.push_back(
-                          QUrl::fromPercentEncoding(item.remove("via=").toUtf8()).toStdString());
-                }
-        }
-
-        if (sigil1 == "u") {
-                if (action.isEmpty()) {
-                        auto t = view_manager_->rooms()->currentRoom();
-                        if (t &&
-                            cache::isRoomMember(mxid1.toStdString(), t->roomId().toStdString())) {
-                                t->openUserProfile(mxid1);
-                                return true;
-                        }
-                        emit view_manager_->openGlobalUserProfile(mxid1);
-                } else if (action == "chat") {
-                        this->startChat(mxid1);
-                }
+    if (sigil1 == "u") {
+        if (action.isEmpty()) {
+            auto t = view_manager_->rooms()->currentRoom();
+            if (t && cache::isRoomMember(mxid1.toStdString(), t->roomId().toStdString())) {
+                t->openUserProfile(mxid1);
                 return true;
-        } else if (sigil1 == "roomid") {
-                auto joined_rooms = cache::joinedRooms();
-                auto targetRoomId = mxid1.toStdString();
+            }
+            emit view_manager_->openGlobalUserProfile(mxid1);
+        } else if (action == "chat") {
+            this->startChat(mxid1);
+        }
+        return true;
+    } else if (sigil1 == "roomid") {
+        auto joined_rooms = cache::joinedRooms();
+        auto targetRoomId = mxid1.toStdString();
 
-                for (auto roomid : joined_rooms) {
-                        if (roomid == targetRoomId) {
-                                view_manager_->rooms()->setCurrentRoom(mxid1);
-                                if (!mxid2.isEmpty())
-                                        view_manager_->showEvent(mxid1, mxid2);
-                                return true;
-                        }
-                }
+        for (auto roomid : joined_rooms) {
+            if (roomid == targetRoomId) {
+                view_manager_->rooms()->setCurrentRoom(mxid1);
+                if (!mxid2.isEmpty())
+                    view_manager_->showEvent(mxid1, mxid2);
+                return true;
+            }
+        }
 
-                if (action == "join" || action.isEmpty()) {
-                        joinRoomVia(targetRoomId, vias);
-                        return true;
-                }
-                return false;
-        } else if (sigil1 == "r") {
-                auto joined_rooms    = cache::joinedRooms();
-                auto targetRoomAlias = mxid1.toStdString();
-
-                for (auto roomid : joined_rooms) {
-                        auto aliases = cache::client()->getRoomAliases(roomid);
-                        if (aliases) {
-                                if (aliases->alias == targetRoomAlias) {
-                                        view_manager_->rooms()->setCurrentRoom(
-                                          QString::fromStdString(roomid));
-                                        if (!mxid2.isEmpty())
-                                                view_manager_->showEvent(
-                                                  QString::fromStdString(roomid), mxid2);
-                                        return true;
-                                }
-                        }
-                }
-
-                if (action == "join" || action.isEmpty()) {
-                        joinRoomVia(mxid1.toStdString(), vias);
-                        return true;
-                }
-                return false;
+        if (action == "join" || action.isEmpty()) {
+            joinRoomVia(targetRoomId, vias);
+            return true;
         }
         return false;
+    } else if (sigil1 == "r") {
+        auto joined_rooms    = cache::joinedRooms();
+        auto targetRoomAlias = mxid1.toStdString();
+
+        for (auto roomid : joined_rooms) {
+            auto aliases = cache::client()->getRoomAliases(roomid);
+            if (aliases) {
+                if (aliases->alias == targetRoomAlias) {
+                    view_manager_->rooms()->setCurrentRoom(QString::fromStdString(roomid));
+                    if (!mxid2.isEmpty())
+                        view_manager_->showEvent(QString::fromStdString(roomid), mxid2);
+                    return true;
+                }
+            }
+        }
+
+        if (action == "join" || action.isEmpty()) {
+            joinRoomVia(mxid1.toStdString(), vias);
+            return true;
+        }
+        return false;
+    }
+    return false;
 }
 
 bool
 ChatPage::handleMatrixUri(const QUrl &uri)
 {
-        return handleMatrixUri(
-          uri.toString(QUrl::ComponentFormattingOption::FullyEncoded).toUtf8());
+    return handleMatrixUri(uri.toString(QUrl::ComponentFormattingOption::FullyEncoded).toUtf8());
 }
 
 bool
 ChatPage::isRoomActive(const QString &room_id)
 {
-        return isActiveWindow() && currentRoom() == room_id;
+    return isActiveWindow() && currentRoom() == room_id;
 }
 
 QString
 ChatPage::currentRoom() const
 {
-        if (view_manager_->rooms()->currentRoom())
-                return view_manager_->rooms()->currentRoom()->roomId();
-        else
-                return "";
+    if (view_manager_->rooms()->currentRoom())
+        return view_manager_->rooms()->currentRoom()->roomId();
+    else
+        return "";
 }

@@ -14,25 +14,25 @@ namespace dialogs {
 
 class ImageOverlay : public QWidget
 {
-        Q_OBJECT
+    Q_OBJECT
 public:
-        ImageOverlay(QPixmap image, QWidget *parent = nullptr);
+    ImageOverlay(QPixmap image, QWidget *parent = nullptr);
 
 protected:
-        void mousePressEvent(QMouseEvent *event) override;
-        void paintEvent(QPaintEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 
 signals:
-        void closing();
-        void saving();
+    void closing();
+    void saving();
 
 private:
-        QPixmap originalImage_;
-        QPixmap image_;
+    QPixmap originalImage_;
+    QPixmap image_;
 
-        QRect content_;
-        QRect close_button_;
-        QRect save_button_;
-        QShortcut *close_shortcut_;
+    QRect content_;
+    QRect close_button_;
+    QRect save_button_;
+    QShortcut *close_shortcut_;
 };
 } // dialogs

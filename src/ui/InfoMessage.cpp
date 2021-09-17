@@ -19,60 +19,60 @@ constexpr int HMargin  = 20;
 InfoMessage::InfoMessage(QWidget *parent)
   : QWidget{parent}
 {
-        initFont();
+    initFont();
 }
 
 InfoMessage::InfoMessage(QString msg, QWidget *parent)
   : QWidget{parent}
   , msg_{msg}
 {
-        initFont();
+    initFont();
 
-        QFontMetrics fm{font()};
-        width_  = fm.horizontalAdvance(msg_) + HPadding * 2;
-        height_ = fm.ascent() + 2 * VPadding;
+    QFontMetrics fm{font()};
+    width_  = fm.horizontalAdvance(msg_) + HPadding * 2;
+    height_ = fm.ascent() + 2 * VPadding;
 
-        setFixedHeight(height_ + 2 * HMargin);
+    setFixedHeight(height_ + 2 * HMargin);
 }
 
 void
 InfoMessage::paintEvent(QPaintEvent *)
 {
-        QPainter p(this);
-        p.setRenderHint(QPainter::Antialiasing);
-        p.setFont(font());
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+    p.setFont(font());
 
-        // Center the box horizontally & vertically.
-        auto textRegion = QRectF(width() / 2 - width_ / 2, HMargin, width_, height_);
+    // Center the box horizontally & vertically.
+    auto textRegion = QRectF(width() / 2 - width_ / 2, HMargin, width_, height_);
 
-        QPainterPath ppath;
-        ppath.addRoundedRect(textRegion, height_ / 2, height_ / 2);
+    QPainterPath ppath;
+    ppath.addRoundedRect(textRegion, height_ / 2, height_ / 2);
 
-        p.setPen(Qt::NoPen);
-        p.fillPath(ppath, boxColor());
-        p.drawPath(ppath);
+    p.setPen(Qt::NoPen);
+    p.fillPath(ppath, boxColor());
+    p.drawPath(ppath);
 
-        p.setPen(QPen(textColor()));
-        p.drawText(textRegion, Qt::AlignCenter, msg_);
+    p.setPen(QPen(textColor()));
+    p.drawText(textRegion, Qt::AlignCenter, msg_);
 }
 
 DateSeparator::DateSeparator(QDateTime datetime, QWidget *parent)
   : InfoMessage{parent}
 {
-        auto now = QDateTime::currentDateTime();
+    auto now = QDateTime::currentDateTime();
 
-        QString fmt = QLocale::system().dateFormat(QLocale::LongFormat);
+    QString fmt = QLocale::system().dateFormat(QLocale::LongFormat);
 
-        if (now.date().year() == datetime.date().year()) {
-                QRegularExpression rx("[^a-zA-Z]*y+[^a-zA-Z]*");
-                fmt = fmt.remove(rx);
-        }
+    if (now.date().year() == datetime.date().year()) {
+        QRegularExpression rx("[^a-zA-Z]*y+[^a-zA-Z]*");
+        fmt = fmt.remove(rx);
+    }
 
-        msg_ = datetime.date().toString(fmt);
+    msg_ = datetime.date().toString(fmt);
 
-        QFontMetrics fm{font()};
-        width_  = fm.horizontalAdvance(msg_) + HPadding * 2;
-        height_ = fm.ascent() + 2 * VPadding;
+    QFontMetrics fm{font()};
+    width_  = fm.horizontalAdvance(msg_) + HPadding * 2;
+    height_ = fm.ascent() + 2 * VPadding;
 
-        setFixedHeight(height_ + 2 * HMargin);
+    setFixedHeight(height_ + 2 * HMargin);
 }

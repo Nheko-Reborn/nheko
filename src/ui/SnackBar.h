@@ -14,79 +14,79 @@
 
 enum class SnackBarPosition
 {
-        Bottom,
-        Top,
+    Bottom,
+    Top,
 };
 
 class SnackBar : public OverlayWidget
 {
-        Q_OBJECT
+    Q_OBJECT
 
-        Q_PROPERTY(QColor bgColor READ backgroundColor WRITE setBackgroundColor)
-        Q_PROPERTY(QColor textColor READ textColor WRITE setTextColor)
-        Q_PROPERTY(double offset READ offset WRITE setOffset NOTIFY offsetChanged)
+    Q_PROPERTY(QColor bgColor READ backgroundColor WRITE setBackgroundColor)
+    Q_PROPERTY(QColor textColor READ textColor WRITE setTextColor)
+    Q_PROPERTY(double offset READ offset WRITE setOffset NOTIFY offsetChanged)
 
 public:
-        explicit SnackBar(QWidget *parent);
+    explicit SnackBar(QWidget *parent);
 
-        QColor backgroundColor() const { return bgColor_; }
-        void setBackgroundColor(const QColor &color)
-        {
-                bgColor_ = color;
-                update();
-        }
+    QColor backgroundColor() const { return bgColor_; }
+    void setBackgroundColor(const QColor &color)
+    {
+        bgColor_ = color;
+        update();
+    }
 
-        QColor textColor() const { return textColor_; }
-        void setTextColor(const QColor &color)
-        {
-                textColor_ = color;
-                update();
-        }
-        void setPosition(SnackBarPosition pos)
-        {
-                position_ = pos;
-                update();
-        }
+    QColor textColor() const { return textColor_; }
+    void setTextColor(const QColor &color)
+    {
+        textColor_ = color;
+        update();
+    }
+    void setPosition(SnackBarPosition pos)
+    {
+        position_ = pos;
+        update();
+    }
 
-        double offset() { return offset_; }
-        void setOffset(double offset)
-        {
-                if (offset != offset_) {
-                        offset_ = offset;
-                        emit offsetChanged();
-                }
+    double offset() { return offset_; }
+    void setOffset(double offset)
+    {
+        if (offset != offset_) {
+            offset_ = offset;
+            emit offsetChanged();
         }
+    }
 
 public slots:
-        void showMessage(const QString &msg);
+    void showMessage(const QString &msg);
 
 signals:
-        void offsetChanged();
+    void offsetChanged();
 
 protected:
-        void paintEvent(QPaintEvent *event) override;
-        void mousePressEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
 private slots:
-        void hideMessage();
+    void hideMessage();
 
 private:
-        void stopTimers();
-        void start();
+    void stopTimers();
+    void start();
 
-        QColor bgColor_;
-        QColor textColor_;
+    QColor bgColor_;
+    QColor textColor_;
 
-        qreal bgOpacity_;
-        qreal offset_;
+    qreal bgOpacity_;
+    qreal offset_;
 
-        std::deque<QString> messages_;
+    std::deque<QString> messages_;
 
-        QTimer hideTimer_;
+    QTimer hideTimer_;
 
-        double boxHeight_;
+    double boxHeight_;
 
-        QPropertyAnimation offset_anim;
+    QPropertyAnimation offset_anim;
 
-        SnackBarPosition position_;
+    SnackBarPosition position_;
 };
