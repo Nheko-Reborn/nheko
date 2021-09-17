@@ -192,6 +192,17 @@ ApplicationWindow {
             onTextChanged: searchTimer.restart()
         }
 
+        MatrixTextField {
+            id: chooseServer
+            Layout.minimumWidth: 0.3 * header.width
+            Layout.maximumWidth: 0.3 * header.width
+
+            padding: Nheko.paddingMedium
+            color: Nheko.colors.text
+            placeholderText: qsTr("Choose custom homeserver")
+            onTextChanged: publicRooms.setMatrixServer(text)
+        }
+
         Timer {
             id: searchTimer
 
