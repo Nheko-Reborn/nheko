@@ -2,12 +2,12 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
 import im.nheko 1.0
-import Qt.labs.platform 1.1 as Platform
 
 Item {
     id: r
@@ -66,14 +66,8 @@ Item {
 
         TapHandler {
             acceptedButtons: Qt.RightButton
-            onLongPressed: replyContextMenu.show(
-              reply.child.copyText,
-              reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight)
-            )
-            onSingleTapped: replyContextMenu.show(
-              reply.child.copyText,
-              reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight)
-            )
+            onLongPressed: replyContextMenu.show(reply.child.copyText, reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight))
+            onSingleTapped: replyContextMenu.show(reply.child.copyText, reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight))
             gesturePolicy: TapHandler.ReleaseWithinBounds
         }
 
@@ -88,6 +82,7 @@ Item {
                 onSingleTapped: chat.model.openUserProfile(userId)
                 gesturePolicy: TapHandler.ReleaseWithinBounds
             }
+
         }
 
         MessageDelegate {
@@ -118,6 +113,7 @@ Item {
             width: parent.width
             isReply: true
         }
+
     }
 
     Rectangle {

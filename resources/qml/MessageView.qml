@@ -20,12 +20,11 @@ ScrollView {
 
     ListView {
         id: chat
-        
-        displayMarginBeginning: height/2
-        displayMarginEnd: height/2
 
         property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < parent.availableWidth) ? Settings.timelineMaxWidth : parent.availableWidth) - parent.padding * 2
 
+        displayMarginBeginning: height / 2
+        displayMarginEnd: height / 2
         model: room
         // reuseItems still has a few bugs, see https://bugreports.qt.io/browse/QTBUG-95105 https://bugreports.qt.io/browse/QTBUG-95107
         //onModelChanged: if (room) room.sendReset()
@@ -415,8 +414,6 @@ ScrollView {
             Loader {
                 id: section
 
-                z: 4
-
                 property int parentWidth: parent.width
                 property string userId: wrapper.userId
                 property string previousMessageUserId: wrapper.previousMessageUserId
@@ -425,6 +422,7 @@ ScrollView {
                 property string userName: wrapper.userName
                 property var timestamp: wrapper.timestamp
 
+                z: 4
                 active: previousMessageUserId !== undefined && previousMessageUserId !== userId || previousMessageDay !== day
                 //asynchronous: true
                 sourceComponent: sectionHeader
@@ -685,6 +683,7 @@ ScrollView {
             text: qsTr("&Go to quoted message")
             onTriggered: chat.model.showEvent(eventId)
         }
+
     }
 
 }

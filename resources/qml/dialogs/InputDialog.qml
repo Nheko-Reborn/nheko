@@ -12,6 +12,7 @@ ApplicationWindow {
     id: inputDialog
 
     property alias prompt: promptLabel.text
+    property alias echoMode: statusInput.echoMode
     property var onAccepted: undefined
 
     modality: Qt.NonModal

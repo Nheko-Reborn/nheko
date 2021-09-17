@@ -328,6 +328,7 @@ set(SRC_FILES
 	src/ui/Theme.cpp
 	src/ui/ThemeManager.cpp
 	src/ui/ToggleButton.cpp
+	src/ui/UIA.cpp
 	src/ui/UserProfile.cpp
 
 	# Generic notification stuff
@@ -365,6 +366,7 @@ set(SRC_FILES
 	src/RoomDirectoryModel.cpp
 	src/RoomsModel.cpp
 	src/Utils.cpp
+	src/SelfVerificationStatus.cpp
 	src/WebRTCSession.cpp
 	src/WelcomePage.cpp
 	src/main.cpp
@@ -385,7 +387,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        4a598632f432953f4dbfacf6cfed4f85a1c59c5a
+		GIT_TAG        8b56b466dbacde501ed9087d53bb4f51b297eca8
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -541,6 +543,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/Theme.h
 	src/ui/ThemeManager.h
 	src/ui/ToggleButton.h
+	src/ui/UIA.h
 	src/ui/UserProfile.h
 
 	src/notifications/Manager.h
@@ -573,6 +576,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/UsersModel.h
 	src/RoomDirectoryModel.h
 	src/RoomsModel.h
+	src/SelfVerificationStatus.h
 	src/WebRTCSession.h
 	src/WelcomePage.h
 	src/ReadReceiptsModel.h

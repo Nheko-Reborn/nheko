@@ -195,6 +195,29 @@ Page {
         target: CallManager
     }
 
+    SelfVerificationCheck {
+    }
+
+    InputDialog {
+        id: uiaPassPrompt
+
+        echoMode: TextInput.Password
+        title: UIA.title
+        prompt: qsTr("Please enter your login password to continue:")
+        onAccepted: (t) => {
+            return UIA.continuePassword(t);
+        }
+    }
+
+    Connections {
+        function onPassword() {
+            console.log("UIA: password needed");
+            uiaPassPrompt.show();
+        }
+
+        target: UIA
+    }
+
     ChatPage {
         anchors.fill: parent
     }
