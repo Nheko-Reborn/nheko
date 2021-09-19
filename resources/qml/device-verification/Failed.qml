@@ -33,7 +33,7 @@ Pane {
                 case DeviceVerificationFlow.User:
                     return qsTr("Other party canceled the verification.");
                 case DeviceVerificationFlow.OutOfOrder:
-                    return qsTr("Device verification timed out.");
+                    return qsTr("Verification messages received out of order!");
                 default:
                     return "Unknown verification error.";
                 }

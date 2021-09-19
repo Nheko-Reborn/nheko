@@ -378,7 +378,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
             &ChatPage::receivedDeviceVerificationDone,
             this,
             [this](const mtx::events::msg::KeyVerificationDone &msg) {
-                nhlog::crypto()->info("verification: receoved done");
+                nhlog::crypto()->info("verification: received done");
                 if (msg.transaction_id.has_value()) {
                     if (msg.transaction_id.value() != this->transaction_id)
                         return;
