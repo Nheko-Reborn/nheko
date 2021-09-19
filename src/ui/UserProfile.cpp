@@ -152,6 +152,15 @@ UserProfile::isSelf() const
 }
 
 void
+UserProfile::refreshDevices()
+{
+    std::vector<std::string> keysToRequest;
+    keysToRequest.push_back(this->userid_.toStdString());
+    cache::client()->markUserKeysOutOfDate(keysToRequest);
+    fetchDeviceList(this->userid_);
+}
+
+void
 UserProfile::fetchDeviceList(const QString &userID)
 {
     auto localUser = utils::localUser();
@@ -204,6 +213,9 @@ UserProfile::fetchDeviceList(const QString &userID)
                         mtx::crypto::verify_identity_signature(
                           device, DeviceId(device.device_id), UserId(other_user_id)))
                         verified = verification::Status::VERIFIED;
+
+                    if (isSelf() && device.device_id == ::http::client()->device_id())
+                        verified = verification::Status::SELF;
 
                     deviceInfo.push_back(
                       {QString::fromStdString(d.first),

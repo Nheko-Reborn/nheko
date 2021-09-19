@@ -50,6 +50,7 @@ public:
       const std::string &room_id,
       bool verified_only);
     void updateUserKeys(const std::string &sync_token, const mtx::responses::QueryKeys &keyQuery);
+    void markUserKeysOutOfDate(const std::vector<std::string> &user_ids);
     void markUserKeysOutOfDate(lmdb::txn &txn,
                                lmdb::dbi &db,
                                const std::vector<std::string> &user_ids,

@@ -4046,6 +4046,16 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
 }
 
 void
+Cache::markUserKeysOutOfDate(const std::vector<std::string> &user_ids)
+{
+    auto currentBatchToken = nextBatchToken();
+    auto txn               = lmdb::txn::begin(env_);
+    auto db                = getUserKeysDb(txn);
+    markUserKeysOutOfDate(txn, db, user_ids, currentBatchToken);
+    txn.commit();
+}
+
+void
 Cache::markUserKeysOutOfDate(lmdb::txn &txn,
                              lmdb::dbi &db,
                              const std::vector<std::string> &user_ids,

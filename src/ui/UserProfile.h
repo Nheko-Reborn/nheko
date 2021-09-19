@@ -18,6 +18,7 @@ Q_NAMESPACE
 
 enum Status
 {
+    SELF,
     VERIFIED,
     UNVERIFIED,
     BLOCKED
@@ -118,6 +119,7 @@ public:
     Q_INVOKABLE void verify(QString device = "");
     Q_INVOKABLE void unverify(QString device = "");
     Q_INVOKABLE void fetchDeviceList(const QString &userID);
+    Q_INVOKABLE void refreshDevices();
     Q_INVOKABLE void banUser();
     // Q_INVOKABLE void ignoreUser();
     Q_INVOKABLE void kickUser();
