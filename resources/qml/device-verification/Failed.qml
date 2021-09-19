@@ -35,7 +35,7 @@ Pane {
                 case DeviceVerificationFlow.OutOfOrder:
                     return qsTr("Verification messages received out of order!");
                 default:
-                    return "Unknown verification error.";
+                    return qsTr("Unknown verification error.");
                 }
             }
             color: Nheko.colors.text
