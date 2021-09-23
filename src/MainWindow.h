@@ -59,7 +59,6 @@ public:
     void saveCurrentWindowSize();
 
     void openLeaveRoomDialog(const QString &room_id);
-    void openInviteUsersDialog(std::function<void(const QStringList &invitees)> callback);
     void openCreateRoomDialog(
       std::function<void(const mtx::requests::CreateRoom &request)> callback);
     void openJoinRoomDialog(std::function<void(const QString &room_id)> callback);
