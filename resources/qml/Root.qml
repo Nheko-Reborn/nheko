@@ -125,6 +125,13 @@ Page {
         }
     }
 
+    Component {
+        id: leaveRoomComponent
+
+        LeaveRoomDialog {
+        }
+    }
+
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
@@ -207,6 +214,13 @@ Page {
                 "invitees": invitees
             });
             dialog.show();
+        }
+
+        function onOpenLeaveRoomDialog(roomid) {
+            var dialog = leaveRoomComponent.createObject(timelineRoot, {
+                                                          "roomId": roomid
+                                                      });
+            dialog.open();
         }
 
         target: TimelineManager

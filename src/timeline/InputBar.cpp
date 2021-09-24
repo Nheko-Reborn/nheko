@@ -577,7 +577,7 @@ InputBar::command(QString command, QString args)
     } else if (command == "join") {
         ChatPage::instance()->joinRoom(args);
     } else if (command == "part" || command == "leave") {
-        MainWindow::instance()->openLeaveRoomDialog(room->roomId());
+        ChatPage::instance()->timelineManager()->openLeaveRoomDialog(room->roomId());
     } else if (command == "invite") {
         ChatPage::instance()->inviteUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
     } else if (command == "kick") {

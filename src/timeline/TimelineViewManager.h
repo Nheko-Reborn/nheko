@@ -73,7 +73,6 @@ public:
     Q_INVOKABLE void openGlobalUserProfile(QString userId);
 
     Q_INVOKABLE void focusMessageInput();
-    Q_INVOKABLE void openLeaveRoomDialog(QString roomid) const;
     Q_INVOKABLE void removeVerificationFlow(DeviceVerificationFlow *flow);
 
     Q_INVOKABLE void fixImageRendering(QQuickTextDocument *t, QQuickItem *i);
@@ -98,6 +97,7 @@ signals:
     void openInviteUsersDialog(InviteesModel *invitees);
     void openProfile(UserProfile *profile);
     void showImagePackSettings(ImagePackListModel *packlist);
+    void openLeaveRoomDialog(QString roomid);
 
 public slots:
     void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);

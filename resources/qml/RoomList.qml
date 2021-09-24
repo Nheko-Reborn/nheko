@@ -71,19 +71,9 @@ Page {
                 }
             }
 
-            Platform.MessageDialog {
-                id: leaveRoomDialog
-
-                title: qsTr("Leave Room")
-                text: qsTr("Are you sure you want to leave this room?")
-                modality: Qt.ApplicationModal
-                onAccepted: Rooms.leave(roomContextMenu.roomid)
-                buttons: Dialog.Ok | Dialog.Cancel
-            }
-
             Platform.MenuItem {
                 text: qsTr("Leave room")
-                onTriggered: leaveRoomDialog.open()
+                onTriggered: TimelineManager.openLeaveRoomDialog(roomContextMenu.roomid)
             }
 
             Platform.MenuSeparator {

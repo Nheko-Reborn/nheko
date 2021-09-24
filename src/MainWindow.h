@@ -37,7 +37,6 @@ struct CreateRoom;
 namespace dialogs {
 class CreateRoom;
 class InviteUsers;
-class LeaveRoom;
 class Logout;
 class MemberList;
 class ReCaptcha;
@@ -58,7 +57,6 @@ public:
     static MainWindow *instance() { return instance_; }
     void saveCurrentWindowSize();
 
-    void openLeaveRoomDialog(const QString &room_id);
     void openCreateRoomDialog(
       std::function<void(const mtx::requests::CreateRoom &request)> callback);
     void openJoinRoomDialog(std::function<void(const QString &room_id)> callback);

@@ -476,12 +476,6 @@ TimelineViewManager::openImageOverlayInternal(QString eventId, QImage img)
 }
 
 void
-TimelineViewManager::openLeaveRoomDialog(QString roomid) const
-{
-    MainWindow::instance()->openLeaveRoomDialog(roomid);
-}
-
-void
 TimelineViewManager::verifyUser(QString userid)
 {
     auto joined_rooms = cache::joinedRooms();
