@@ -21,6 +21,7 @@ Nheko::Nheko()
     connect(
       UserSettings::instance().get(), &UserSettings::themeChanged, this, &Nheko::colorsChanged);
     connect(ChatPage::instance(), &ChatPage::contentLoaded, this, &Nheko::updateUserProfile);
+    connect(this, &Nheko::joinRoom, ChatPage::instance(), &ChatPage::joinRoom);
 }
 
 void
@@ -94,13 +95,6 @@ Nheko::openCreateRoomDialog() const
 {
     MainWindow::instance()->openCreateRoomDialog(
       [](const mtx::requests::CreateRoom &req) { ChatPage::instance()->createRoom(req); });
-}
-
-void
-Nheko::openJoinRoomDialog() const
-{
-    MainWindow::instance()->openJoinRoomDialog(
-      [](const QString &room_id) { ChatPage::instance()->joinRoom(room_id); });
 }
 
 void

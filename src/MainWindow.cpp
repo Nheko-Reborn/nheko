@@ -33,7 +33,6 @@
 #include "ui/SnackBar.h"
 
 #include "dialogs/CreateRoom.h"
-#include "dialogs/JoinRoom.h"
 #include "dialogs/LeaveRoom.h"
 
 MainWindow *MainWindow::instance_ = nullptr;
@@ -322,18 +321,6 @@ MainWindow::showOverlayProgressBar()
     spinner_->start();
 
     showSolidOverlayModal(spinner_);
-}
-
-void
-MainWindow::openJoinRoomDialog(std::function<void(const QString &room_id)> callback)
-{
-    auto dialog = new dialogs::JoinRoom(this);
-    connect(dialog, &dialogs::JoinRoom::joinRoom, this, [callback](const QString &room) {
-        if (!room.isEmpty())
-            callback(room);
-    });
-
-    showDialog(dialog);
 }
 
 void

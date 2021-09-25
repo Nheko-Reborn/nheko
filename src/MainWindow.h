@@ -37,7 +37,6 @@ struct CreateRoom;
 namespace dialogs {
 class CreateRoom;
 class InviteUsers;
-class JoinRoom;
 class LeaveRoom;
 class Logout;
 class MemberList;
@@ -64,6 +63,7 @@ public:
     void openCreateRoomDialog(
       std::function<void(const mtx::requests::CreateRoom &request)> callback);
     void openJoinRoomDialog(std::function<void(const QString &room_id)> callback);
+    void openLogoutDialog();
 
     void hideOverlay();
     void showSolidOverlayModal(QWidget *content, QFlags<Qt::AlignmentFlag> flags = Qt::AlignCenter);
