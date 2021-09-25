@@ -139,11 +139,8 @@
         <file>qml/ForwardCompleter.qml</file>
         <file>qml/TypingIndicator.qml</file>
         <file>qml/NotificationWarning.qml</file>
-        <file>qml/RoomSettings.qml</file>
         <file>qml/emoji/EmojiPicker.qml</file>
         <file>qml/emoji/StickerPicker.qml</file>
-        <file>qml/UserProfile.qml</file>
-        <file>qml/RoomDirectory.qml</file>
         <file>qml/delegates/MessageDelegate.qml</file>
         <file>qml/delegates/Encrypted.qml</file>
         <file>qml/delegates/FileMessage.qml</file>
@@ -179,10 +176,13 @@
         <file>qml/components/AdaptiveLayoutElement.qml</file>
         <file>qml/components/AvatarListTile.qml</file>
         <file>qml/components/FlatButton.qml</file>
-        <file>qml/RoomMembers.qml</file>
-        <file>qml/InviteDialog.qml</file>
-        <file>qml/ReadReceipts.qml</file>
-        <file>qml/RawMessageDialog.qml</file>
+        <file>qml/dialogs/InviteDialog.qml</file>
+        <file>qml/dialogs/RawMessageDialog.qml</file>
+        <file>qml/dialogs/ReadReceipts.qml</file>
+        <file>qml/dialogs/RoomDirectory.qml</file>
+        <file>qml/dialogs/RoomMembers.qml</file>
+        <file>qml/dialogs/RoomSettings.qml</file>
+        <file>qml/dialogs/UserProfile.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>
