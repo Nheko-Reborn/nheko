@@ -21,7 +21,8 @@ ApplicationWindow {
     height: fontMetrics.lineSpacing * 7
 
     ColumnLayout {
-        anchors.margins: Nheko.paddingLarge
+        spacing: Nheko.paddingMedium
+        anchors.margins: Nheko.paddingMedium
         anchors.fill: parent
 
         Label {
