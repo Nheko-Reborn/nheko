@@ -45,10 +45,8 @@ InputBar::paste(bool fromMouse)
 {
     const QMimeData *md = nullptr;
 
-    if (fromMouse) {
-        if (QGuiApplication::clipboard()->supportsSelection()) {
-            md = QGuiApplication::clipboard()->mimeData(QClipboard::Selection);
-        }
+    if (fromMouse && QGuiApplication::clipboard()->supportsSelection()) {
+        md = QGuiApplication::clipboard()->mimeData(QClipboard::Selection);
     } else {
         md = QGuiApplication::clipboard()->mimeData(QClipboard::Clipboard);
     }
@@ -69,7 +67,7 @@ InputBar::insertMimeData(const QMimeData *md)
     const auto audio   = formats.filter("audio/", Qt::CaseInsensitive);
     const auto video   = formats.filter("video/", Qt::CaseInsensitive);
 
-    if (!image.empty() && md->hasImage()) {
+    if (md->hasImage()) {
         showPreview(*md, "", image);
     } else if (!audio.empty()) {
         showPreview(*md, "", audio);
@@ -653,9 +651,15 @@ InputBar::showPreview(const QMimeData &source, QString path, const QStringList &
       new dialogs::PreviewUploadOverlay(ChatPage::instance());
     previewDialog_->setAttribute(Qt::WA_DeleteOnClose);
 
-    if (source.hasImage())
-        previewDialog_->setPreview(qvariant_cast<QImage>(source.imageData()), formats.front());
-    else if (!path.isEmpty())
+    if (source.hasImage()) {
+        if (formats.size() && formats.front().startsWith("image/")) {
+            // known format, keep as-is
+            previewDialog_->setPreview(qvariant_cast<QImage>(source.imageData()), formats.front());
+        } else {
+            // unknown image format, default to image/png
+            previewDialog_->setPreview(qvariant_cast<QImage>(source.imageData()), "image/png");
+        }
+    } else if (!path.isEmpty())
         previewDialog_->setPreview(path);
     else if (!formats.isEmpty()) {
         auto mime = formats.first();
