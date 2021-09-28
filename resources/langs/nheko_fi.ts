@@ -2154,12 +2154,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>This rooms contain verified devices and devices which have never changed their master key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tämä huone sisältää vahvistettuja laitteita ja laitteita, jotka eivät ole koskaan vaihtaneet pääavainta.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This room contains unverified devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tämä huone sisältää varmentamattomia laitteita!</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -2215,37 +2215,37 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+38"/>
         <source>Change avatar globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaihda avataria kaikkialla.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change avatar. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta avataria. Toimii vain tässä huoneessa.</translation>
     </message>
     <message>
         <location line="+79"/>
         <source>Change display name globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta näyttönimeä kaikkialla.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change display name. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta näyttönimeä. Toimii vain tässä huoneessa.</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Huone: %1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tämä on huoneelle erityinen profiili. Käyttäjän nimi ja avatar voivat erota niiden kaikkialla käytössä olevista versioista.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Open the global profile for this user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Avaa tämän käyttäjän yleinen profiili.</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2488,7 +2488,7 @@ Kun poissa päältä, kaikki viestit lähetetään tavallisena tekstinä.</trans
     <message>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Toista animoidut kuvat vain kun kohdistin on niiden päällä</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2535,12 +2535,12 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
     <message>
         <location line="+55"/>
         <source>Send encrypted messages to verified users only</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä salatut viestit vain vahvistetuille käyttäjille</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaatii käyttäjän olevan vahvistettu, jotta hänelle voi lähettää salattuja viestejä. Tämä parantaa turvallisuutta, mutta tekee päästä-päähän -salauksen hankalammaksi.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2550,12 +2550,12 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
     <message>
         <location line="+2"/>
         <source>Automatically replies to key requests from other users, if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished"></translation>
+        <translation>Automaattisesti vastaa avainpyyntöihin, jos ne ovat vahvistettuja, vaikka tuolla laitteella ei tulisi muuten olla pääsyä noihin avaimiin.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Online Key Backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Avaimen varmuuskopiointi verkkoon</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2565,12 +2565,12 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
     <message>
         <location line="+181"/>
         <source>Enable online key backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Salli avaimen varmuuskopiointi verkkoon</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The Nheko authors recommend not enabling online key backup until symmetric online key backup is available. Enable anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Nhekon tekijät eivät suosittele avaimen varmuuskopiointia verkkoon kunnes avaimen symmetrinen varmuuskopiointi verkkoon on saatavilla. Sallitaanko se kuitenkin?</translation>
     </message>
     <message>
         <location line="+248"/>
@@ -2690,7 +2690,7 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
     <message>
         <location line="+180"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Soittaa mediaa kuten GIF- ja WEBP-tiedostoja vain kun kursori on niiden kohdalla.</translation>
     </message>
     <message>
         <location line="+17"/>
