@@ -2385,18 +2385,19 @@ OFF - kwadrat, ON - koło.</translation>
     <message>
         <location line="+1"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Odszyfruj wiadomości na pasku bocznym</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Odszyfruj wiadomości na pasku bocznym.
+Dotyczy wyłącznie czatów z włączonym szyfrowaniem.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekran prywatności</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2407,7 +2408,7 @@ be blurred.</source>
     <message>
         <location line="+2"/>
         <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation type="unfinished"></translation>
+        <translation>Opóźnienie ekranu prywatności (w sekundach [0 - 3600])</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2562,47 +2563,47 @@ To zwykle sprawia, że ikona aplikacji w tacce systemowej jest animowana.</trans
     <message>
         <location line="+2"/>
         <source>Download message encryption keys from and upload to the encrypted online key backup.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobierz klucze szyfrowania wiadomości i umieść w szyfrowanym backup-ie kluczy online.</translation>
     </message>
     <message>
         <location line="+181"/>
         <source>Enable online key backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Włącz backup kluczy online</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The Nheko authors recommend not enabling online key backup until symmetric online key backup is available. Enable anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Autorzy Nheko nie zalecają włączenia backup-u kluczy online dopóki symetryczny backup kluczy online nie jest dostępny. Włączyć mimo to?</translation>
     </message>
     <message>
         <location line="+248"/>
         <source>CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>ZAPISANE W CACHE-U</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>NOT CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>NIE ZAPISANE W CACHE-U</translation>
     </message>
     <message>
         <location line="-493"/>
         <source>Scale factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Współczynnik skalowania</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmień współczynnik skalowania całego interfejsu użytkownika.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Wielkość czcionki</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Rodzina czcionki</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2612,42 +2613,42 @@ To zwykle sprawia, że ikona aplikacji w tacce systemowej jest animowana.</trans
     <message>
         <location line="+4"/>
         <source>Ringtone</source>
-        <translation type="unfinished"></translation>
+        <translation>Dzwonek</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustaw dźwięk powiadomienia odtwarzanego podczas zaproszenia do połączenia</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Microphone</source>
-        <translation type="unfinished"></translation>
+        <translation>Mikrofon</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamera</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozdzielczość kamery</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera frame rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilość klatek na sekundę kamery</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozwól na korzystanie z serwera pomocniczego do nawiązywania połączeń głosowych/wideo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Używaj serwera pomocniczego turn.matrix.org gdy twój homeserver nie udostępnia własnego serwera pomocniczego.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2662,17 +2663,17 @@ To zwykle sprawia, że ikona aplikacji w tacce systemowej jest animowana.</trans
     <message>
         <location line="-167"/>
         <source>Session Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Klucze sesji</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>IMPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>IMPORTUJ</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>EXPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>EKSPORTUS</translation>
     </message>
     <message>
         <location line="-34"/>
@@ -2687,82 +2688,82 @@ To zwykle sprawia, że ikona aplikacji w tacce systemowej jest animowana.</trans
     <message>
         <location line="+70"/>
         <source>INTERFACE</source>
-        <translation type="unfinished"></translation>
+        <translation>INTERFEJS</translation>
     </message>
     <message>
         <location line="+180"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Odtwarzaj media takie jak GIF  czy WEBP tylko gdy wskazane przy użyciu myszy.</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Touchscreen mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tryb ekranu dotykowego</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapobiega zaznaczaniu tekstu w historii rozmów by ułatwić przewijanie przy użyciu interfejsu dotykowego.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Rodzina czcionki emotikon</translation>
     </message>
     <message>
         <location line="+53"/>
         <source>Master signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Główny klucz podpisywania</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>Twój najważniejszy klucz. Nie musi być zapisany w cache-u -- nie zapisując go w cache-u zmniejszasz ryzyko, że ten klucz zostanie wykradzony. Ponadto, ten klucz jest potrzebny wyłącznie podczas odświerzania kluczy podpisywania sesji.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>User signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Klucz podpisywania użytkownika</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Klucz używany do weryfikacji innych użytkowników. Gdy zapisany w cache-u, weryfikacja użytkownika dokona weryfikacji wszystkich jego urządzeń.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Self signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Klucz samo-podpisywania</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users, that have verified you.</source>
-        <translation type="unfinished"></translation>
+        <translation>Klucz służący do weryfikacji twoich własnych urządzeń. Jeśli zapisany w cache-u, weryfikacja jednego z twoich urządzeń sprawi, że będzie ono zweryfikowane dla wszystkich twoich pozostałych urządzeń oraz dla tych użytkowników, którzy zweryfikowali Ciebie.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Backup key</source>
-        <translation type="unfinished"></translation>
+        <translation>Klucz backup-u</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Klucz służący do odszyfrowania backup-u kluczy online. Jeśli zapisany w cache-u, możesz włączyć backup kluczy online by zapisać w klucze zaszyfrowane bezpiecznie w backup-ie na serwerze.</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Select a file</source>
-        <translation type="unfinished">Wybierz plik</translation>
+        <translation>Wybierz plik</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Wszystkie pliki (*)</translation>
+        <translation>Wszystkie pliki (*)</translation>
     </message>
     <message>
         <location line="+261"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished"></translation>
+        <translation>Otwórz Plik Sesji</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2772,34 +2773,34 @@ To zwykle sprawia, że ikona aplikacji w tacce systemowej jest animowana.</trans
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd</translation>
     </message>
     <message>
         <location line="-66"/>
         <location line="+28"/>
         <source>File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Hasło Pliku</translation>
     </message>
     <message>
         <location line="-27"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wpisz frazę do odszyfrowania pliku: </translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+28"/>
         <source>The password cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Hasło nie może być puste</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wpisz frazę do odszyfrowania twoich kluczy sesji:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>File to save the exported session keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Plik do którego zostaną wyeksportowane klucze sesji</translation>
     </message>
 </context>
 <context>
@@ -2909,7 +2910,7 @@ To zwykle sprawia, że ikona aplikacji w tacce systemowej jest animowana.</trans
     <message>
         <location filename="../../src/dialogs/FallbackAuth.cpp" line="+34"/>
         <source>Open Fallback in Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>W razie konieczności otwórz w przeglądarce</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2919,12 +2920,12 @@ To zwykle sprawia, że ikona aplikacji w tacce systemowej jest animowana.</trans
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished">Potwierdź</translation>
+        <translation>Potwierdź</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Otwórz w przeglądarce i postępuj zgodnie z instrukcją.</translation>
     </message>
 </context>
 <context>
@@ -3016,112 +3017,112 @@ Rozmiar multimediów: %2
     <message>
         <location filename="../../src/Utils.h" line="+115"/>
         <source>You sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>Wysłałeś(aś) klip audio</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wysłał(a) klip audio</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Wysłałeś(aś) obraz</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wysłał(a) obraz</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Wysłałeś(aś) plik</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wysłał(a) plik</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>Wysłałeś(aś) wideo</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wysłał(a) wideo</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Wysłałeś(aś) naklejkę</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wysłał(a) naklejkę</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Wysłałeś(aś) powiadomienie</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wysłał(a) powiadomienie</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ty: %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1: %&lt;</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>You sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>Wysłałeś(aś) zaszyfrowaną wiadomość</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wysłał(a) zaszyfrowaną wiadomość</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Wykonujesz telefon</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wykonuje telefon</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Odebrałeś(aś) połączenie</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 odebrał(a) połączenie</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Zakończyłeś(aś) połączenie</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zakończył(a) połączenie</translation>
     </message>
 </context>
 <context>
