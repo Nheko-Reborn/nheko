@@ -501,42 +501,42 @@
     <message>
         <location filename="../qml/delegates/Encrypted.qml" line="+22"/>
         <source>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tämän viestin avaamista varten ei ole avainta. Pyysimme avainta automaattisesti, mutta voit yrittää pyytää sitä uudestaan jos olet kärsimätön.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message couldn&apos;t be decrypted, because we only have a key for newer messages. You can try requesting access to this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tämän viestin salausta ei voitu purkaa, koska meillä on avain vain uudemmille viesteille. Voit yrittää pyytää pääsyä tähän viestiin.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>There was an internal error reading the decryption key from the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisäinen virhe tapahtui kun salausavainta yritettiin lukea tietokannasta.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>There was an error decrypting this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tämän viestin salauksen purkamisessa tapahtui virhe.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The message couldn&apos;t be parsed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tätä viestiä ei voitu jäsentää.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation type="unfinished"></translation>
+        <translation>Salausavainta käytettiin uudelleen! Joku yrittää mahdollisesti tuoda vääriä viestejä tähän keskusteluun!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown decryption error</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuntematon virhe salauksen purkamisessa</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Request key</source>
-        <translation type="unfinished"></translation>
+        <translation>Pyydä avainta</translation>
     </message>
 </context>
 <context>
@@ -559,7 +559,7 @@
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device or the key is from an untrusted source like the key backup.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vahvistamattoman laitteen salaama tai tämä avain on epäluotettavasta lähteestä kuten avaimen varmuuskopiosta.</translation>
     </message>
 </context>
 <context>
@@ -609,12 +609,12 @@
     <message>
         <location filename="../qml/dialogs/ImagePackEditorDialog.qml" line="+24"/>
         <source>Editing image pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Muokataan kuvapakkausta</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>Add images</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisää kuvia</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -624,44 +624,44 @@
     <message>
         <location line="+60"/>
         <source>State key</source>
-        <translation type="unfinished"></translation>
+        <translation>TIla-avain</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Packname</source>
-        <translation type="unfinished"></translation>
+        <translation>Pakkauksen nimi</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation>Osoitus</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+65"/>
         <source>Use as Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>Käytä emojina</translation>
     </message>
     <message>
         <location line="-55"/>
         <location line="+65"/>
         <source>Use as Sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Käytä tarrana</translation>
     </message>
     <message>
         <location line="-30"/>
         <source>Shortcode</source>
-        <translation type="unfinished"></translation>
+        <translation>Lyhyt koodi</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Body</source>
-        <translation type="unfinished"></translation>
+        <translation>Runko</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Remove from pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Poista pakkauksesta</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -676,7 +676,7 @@
     <message>
         <location line="+6"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Tallenna</translation>
     </message>
 </context>
 <context>
@@ -684,42 +684,42 @@
     <message>
         <location filename="../qml/dialogs/ImagePackSettingsDialog.qml" line="+22"/>
         <source>Image pack settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvapakkauksen asetukset</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Create account pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Luo tilipakkaus</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>New room pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Uusi huonepakkaus</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Private pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Yksityinen pakkaus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Pack from this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Pakkaus tälle huoneelle</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Globally enabled pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaikkialla käytössä oleva pakkaus</translation>
     </message>
     <message>
         <location line="+63"/>
         <source>Enable globally</source>
-        <translation type="unfinished"></translation>
+        <translation>Salli käytettäväksi kaikkialla</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Enables this pack to be used in all rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Sallii tämän pakkauksen käytettäväksi kaikissa huoneissa</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -755,7 +755,7 @@
     <message>
         <location filename="../qml/InviteDialog.qml" line="+32"/>
         <source>Invite users to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsu käyttäjiä %1</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -766,17 +766,17 @@
         <location line="+14"/>
         <source>@joe:matrix.org</source>
         <comment>Example user id. The name &apos;joe&apos; can be localized however you want.</comment>
-        <translation type="unfinished"></translation>
+        <translation>@matti:matrix.org</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisää</translation>
     </message>
     <message>
         <location line="+58"/>
         <source>Invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsu</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -974,7 +974,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+70"/>
         <source>Allow them in</source>
-        <translation type="unfinished"></translation>
+        <translation>Salli heidät sisään</translation>
     </message>
 </context>
 <context>
@@ -1002,7 +1002,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+234"/>
         <source>Stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Tarrat</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -1117,7 +1117,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+43"/>
         <source>&amp;Go to quoted message</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Mene lainattuun viestiin</translation>
     </message>
 </context>
 <context>
@@ -1183,7 +1183,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../qml/NotificationWarning.qml" line="+32"/>
         <source>You will be pinging the whole room</source>
-        <translation type="unfinished"></translation>
+        <translation>Hälytät koko huonetta</translation>
     </message>
 </context>
 <context>
@@ -1302,7 +1302,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../../src/ReadReceiptsModel.cpp" line="+111"/>
         <source>Yesterday, %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Eilen, &amp;1</translation>
     </message>
 </context>
 <context>
@@ -1356,12 +1356,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+32"/>
         <source>Registration token</source>
-        <translation type="unfinished"></translation>
+        <translation>Rekisteröitymispoletti</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please enter a valid registration token.</source>
-        <translation type="unfinished"></translation>
+        <translation>Anna kelvollinen rekisteröitymispoletti.</translation>
     </message>
     <message>
         <location line="-175"/>
@@ -1422,12 +1422,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../qml/RoomDirectory.qml" line="+24"/>
         <source>Explore Public Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutki julkisia huoneita</translation>
     </message>
     <message>
         <location line="+166"/>
         <source>Search for public rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Etsi julkisia huoneita</translation>
     </message>
 </context>
 <context>
@@ -1453,12 +1453,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+9"/>
         <source>Leave Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Poistu huoneesta</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to leave this room?</source>
-        <translation type="unfinished"></translation>
+        <translation>Oletko varma, että haluat poistua tästä huoneesta?</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1546,41 +1546,41 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../qml/RoomMembers.qml" line="+18"/>
         <source>Members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;1 jäsenet</translation>
     </message>
     <message numerus="yes">
         <location line="+32"/>
         <source>%n people in %1</source>
         <comment>Summary above list of members</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n henkilö huoneessa %1</numerusform>
+            <numerusform>%n henkilöä huonessa %1</numerusform>
         </translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Invite more people</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsu lisää ihmisiä</translation>
     </message>
     <message>
         <location line="+76"/>
         <source>This room is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tämä huone ei ole salattu!</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>This user is verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tämä käyttäjä on vahvistettu.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This user isn&apos;t verified, but is still using the same master key from the first time you met.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tätä käyttäjää ei ole vahvistettu, mutta hän käyttää edelleen samaa päävavainta kuin ensimmäisellä tapaamiskerralla.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This user has unverified devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tällä käyttäjällä on vahvistamattomia laitteita!</translation>
     </message>
 </context>
 <context>
@@ -1623,7 +1623,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+9"/>
         <source>Room access</source>
-        <translation type="unfinished"></translation>
+        <translation>Huoneeseen pääsy</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1643,12 +1643,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>By knocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Koputtamalla</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Restricted by membership in other rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Rajoitettu jäsenyyden perusteella muissa huoneissa</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1669,17 +1669,17 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+16"/>
         <source>Sticker &amp; Emote Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Tarra- ja emojiasetukset</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Change what packs are enabled, remove packs or create new ones</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta mitkä pakkaukset ovat sallittuja, poista pakkauksia tai luo uusia</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1733,17 +1733,17 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../../src/timeline/RoomlistModel.cpp" line="+143"/>
         <source>Pending invite.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsua odotetaan.</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Previewing this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Esikatsellaan tätä huonetta</translation>
     </message>
     <message>
         <location line="+34"/>
         <source>No preview available</source>
-        <translation type="unfinished"></translation>
+        <translation>Esikatselu ei saatavilla</translation>
     </message>
 </context>
 <context>
@@ -1805,12 +1805,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../../src/Cache.cpp" line="-3776"/>
         <source>Failed to connect to secret storage</source>
-        <translation type="unfinished"></translation>
+        <translation>Salattuun tallennustilaan ei saatu yhteyttä</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Secrets or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko ei pystynyt yhdistämään salattuun tallennustilaan tallentamaan salaukseen kuuluvia salaisuuksia. Tämä voi johtua useasta syystä. Tarkista, onko D-Bus-palvelu käynnissä ja oletko määrittänyt alustallesi palvelun kuten KWallet, Gnome Secrets tai vastaavan. Jos sinulla on ongelmia, voit luoda vikailmoituksen täällä: https://github.com/Nheko-Reborn/nheko/issues</translation>
     </message>
 </context>
 <context>
@@ -1819,22 +1819,22 @@ Esimerkki: https://server.my:8787</translation>
         <location filename="../../src/SingleImagePackModel.cpp" line="+261"/>
         <location line="+25"/>
         <source>Failed to update image pack: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvapakkausta %1 ei onnistuttu päivittämään</translation>
     </message>
     <message>
         <location line="-12"/>
         <source>Failed to delete old image pack: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Vanhaa kuvapakkausta %1 ei onnistuttu poistamaan</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Failed to open image: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvaa %1 ei onnistuttu avaamaan</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Failed to upload image: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvan lähetys epäonnistui: %s</translation>
     </message>
 </context>
 <context>
@@ -1941,12 +1941,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>%1 allowed to join this room by knocking.</source>
-        <translation type="unfinished"></translation>
+        <translation>Käyttäjän %1 annettiin liittyä tähän huoneeseen koputtamalla.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 allowed members of the following rooms to automatically join this room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 salli seuraavien huoneiden jäsenten liittyä automaattisesti tähän huoneeseen: %2</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -2006,7 +2006,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>%1 joined via authorisation from %2&apos;s server.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 liittyi käyttäjän %2 palvelimen suomalla vahvistuksella.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2103,17 +2103,17 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+33"/>
         <source>join the conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>liity keskusteluun</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>accept invite</source>
-        <translation type="unfinished"></translation>
+        <translation>salli kutsu</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>decline invite</source>
-        <translation type="unfinished"></translation>
+        <translation>peru kutsu</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -2144,12 +2144,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+91"/>
         <source>This room is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tämä huone ei ole salattu!</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>This room contains only verified devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tämä huone sisältää vain vahvistettuja laitteita.</translation>
     </message>
     <message>
         <location line="+2"/>
