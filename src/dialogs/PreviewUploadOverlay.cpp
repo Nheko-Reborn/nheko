@@ -158,6 +158,8 @@ PreviewUploadOverlay::setPreview(const QImage &src, const QString &mime)
 void
 PreviewUploadOverlay::setPreview(const QByteArray data, const QString &mime)
 {
+    nhlog::ui()->info("Pasting {} bytes of data, mimetype {}", data.size(), mime.toStdString());
+
     auto const &split = mime.split('/');
     auto const &type  = split[1];
 
@@ -165,6 +167,11 @@ PreviewUploadOverlay::setPreview(const QByteArray data, const QString &mime)
     mediaType_ = mime;
     filePath_  = "clipboard." + type;
     isImage_   = false;
+
+    if (mime == "image/svg+xml") {
+        isImage_ = true;
+        image_.loadFromData(data_, mediaType_.toStdString().c_str());
+    }
 
     setLabels(type, mime, data_.size());
     init();

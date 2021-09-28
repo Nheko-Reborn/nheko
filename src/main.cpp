@@ -176,12 +176,6 @@ main(int argc, char *argv[])
                           100,
                           userdata);
 
-    if (app.isSecondary()) {
-        // open uri in main instance
-        app.sendMessage(matrixUri.toUtf8());
-        return 0;
-    }
-
     QCommandLineParser parser;
     parser.addHelpOption();
     parser.addVersionOption();
@@ -201,6 +195,15 @@ main(int argc, char *argv[])
     parser.addOption(configName);
 
     parser.process(app);
+
+    // This check needs to happen _after_ process(), so that we actually print help for --help when
+    // Nheko is already running.
+    if (app.isSecondary()) {
+        nhlog::ui()->info("Sending Matrix URL to main application: {}", matrixUri.toStdString());
+        // open uri in main instance
+        app.sendMessage(matrixUri.toUtf8());
+        return 0;
+    }
 
     app.setWindowIcon(QIcon::fromTheme("nheko", QIcon{":/logos/nheko.png"}));
 

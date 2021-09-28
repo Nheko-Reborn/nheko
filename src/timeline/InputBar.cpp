@@ -45,10 +45,8 @@ InputBar::paste(bool fromMouse)
 {
     const QMimeData *md = nullptr;
 
-    if (fromMouse) {
-        if (QGuiApplication::clipboard()->supportsSelection()) {
-            md = QGuiApplication::clipboard()->mimeData(QClipboard::Selection);
-        }
+    if (fromMouse && QGuiApplication::clipboard()->supportsSelection()) {
+        md = QGuiApplication::clipboard()->mimeData(QClipboard::Selection);
     } else {
         md = QGuiApplication::clipboard()->mimeData(QClipboard::Clipboard);
     }
@@ -69,8 +67,12 @@ InputBar::insertMimeData(const QMimeData *md)
     const auto audio   = formats.filter("audio/", Qt::CaseInsensitive);
     const auto video   = formats.filter("video/", Qt::CaseInsensitive);
 
-    if (!image.empty() && md->hasImage()) {
-        showPreview(*md, "", image);
+    if (md->hasImage()) {
+        if (formats.contains("image/svg+xml", Qt::CaseInsensitive)) {
+            showPreview(*md, "", QStringList("image/svg+xml"));
+        } else {
+            showPreview(*md, "", image);
+        }
     } else if (!audio.empty()) {
         showPreview(*md, "", audio);
     } else if (!video.empty()) {
@@ -653,9 +655,16 @@ InputBar::showPreview(const QMimeData &source, QString path, const QStringList &
       new dialogs::PreviewUploadOverlay(ChatPage::instance());
     previewDialog_->setAttribute(Qt::WA_DeleteOnClose);
 
-    if (source.hasImage())
-        previewDialog_->setPreview(qvariant_cast<QImage>(source.imageData()), formats.front());
-    else if (!path.isEmpty())
+    // Force SVG to _not_ be handled as an image, but as raw data
+    if (source.hasImage() && (!formats.size() || formats.front() != "image/svg+xml")) {
+        if (formats.size() && formats.front().startsWith("image/")) {
+            // known format, keep as-is
+            previewDialog_->setPreview(qvariant_cast<QImage>(source.imageData()), formats.front());
+        } else {
+            // unknown image format, default to image/png
+            previewDialog_->setPreview(qvariant_cast<QImage>(source.imageData()), "image/png");
+        }
+    } else if (!path.isEmpty())
         previewDialog_->setPreview(path);
     else if (!formats.isEmpty()) {
         auto mime = formats.first();
@@ -675,6 +684,12 @@ InputBar::showPreview(const QMimeData &source, QString path, const QStringList &
       &dialogs::PreviewUploadOverlay::confirmUpload,
       this,
       [this](const QByteArray data, const QString &mime, const QString &fn) {
+          if (!data.size()) {
+              nhlog::ui()->warn("Attempted to upload zero-byte file?! Mimetype {}, filename {}",
+                                mime.toStdString(),
+                                fn.toStdString());
+              return;
+          }
           setUploading(true);
 
           setText("");
