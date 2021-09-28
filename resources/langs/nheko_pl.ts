@@ -133,7 +133,7 @@
         <location line="+4"/>
         <location line="+683"/>
         <source>Invited user: %1</source>
-        <translation>Zaproszono użytkownika</translation>
+        <translation>Zaproszono użytkownika %1</translation>
     </message>
     <message>
         <location line="-461"/>
@@ -338,7 +338,7 @@
     <message>
         <location line="+2"/>
         <source>Rooms with low priority.</source>
-        <translation>Pokoje o niskim priorytecie</translation>
+        <translation>Pokoje o niskim priorytecie.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -376,7 +376,7 @@
     <message>
         <location line="+1"/>
         <source>Failed to decrypt secrets with the provided recovery key or passphrase</source>
-        <translation>Nie udało się odszyfrować sekretów przy pomocy podanego klucza odzyskiwania albo frazy-klucz.</translation>
+        <translation>Nie udało się odszyfrować sekretów przy pomocy podanego klucza odzyskiwania albo frazy-klucz</translation>
     </message>
 </context>
 <context>
@@ -624,17 +624,17 @@
     <message>
         <location line="+60"/>
         <source>State key</source>
-        <translation type="unfinished"></translation>
+        <translation>Unikalny klucz paczki</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Packname</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa paczki</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation>Źródło (autor/link)</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -651,12 +651,12 @@
     <message>
         <location line="-30"/>
         <source>Shortcode</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrót</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Body</source>
-        <translation type="unfinished"></translation>
+        <translation>Treść</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -814,7 +814,7 @@ Jeżeli Nheko nie odnajdzie Twojego serwera domowego, wyświetli formularz umoż
     <message>
         <location line="+2"/>
         <source>Your password.</source>
-        <translation>Twoje hasło</translation>
+        <translation>Twoje hasło.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -948,7 +948,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>%1 placed a video call.</source>
-        <translation>%1 rozpoczął(-ęła) połączenie wideo</translation>
+        <translation>%1 rozpoczął(-ęła) połączenie wideo.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1237,7 +1237,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location filename="../qml/voip/PlaceCall.qml" line="+48"/>
         <source>Place a call to %1?</source>
-        <translation>Rozpocząć połączenie głosowe?</translation>
+        <translation>Rozpocząć połączenie głosowe z %1?</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1556,8 +1556,8 @@ Przykład: https://server.my:8787</translation>
         <comment>Summary above list of members</comment>
         <translation>
             <numerusform>%n osoba w %1</numerusform>
-            <numerusform>Podsumowanie</numerusform>
-            <numerusform>%n ludzi w %1</numerusform>
+            <numerusform>%n osób w %1</numerusform>
+            <numerusform>%n osób w %1</numerusform>
         </translation>
     </message>
     <message>
@@ -1568,7 +1568,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+76"/>
         <source>This room is not encrypted!</source>
-        <translation>Ten pokój jest zaszyfrowany</translation>
+        <translation>Ten pokój jest szyfrowany!</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1755,7 +1755,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location filename="../qml/voip/ScreenShare.qml" line="+30"/>
         <source>Share desktop with %1?</source>
-        <translation>Udostępnić pulpit (desktop) użytkownikowi: %?</translation>
+        <translation>Udostępnić pulpit (desktop) użytkownikowi: %1?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -1928,9 +1928,9 @@ Przykład: https://server.my:8787</translation>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
-            <numerusform>%1 i %2 piszą.</numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>%1 %2 pisze.</numerusform>
+            <numerusform>%1, oraz %2 piszą (w sumie %n osób).</numerusform>
+            <numerusform>%1, oraz %2 piszą (w sumie %n osób).</numerusform>
         </translation>
     </message>
     <message>
@@ -2071,7 +2071,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+37"/>
         <source>Rejected the knock from %1.</source>
-        <translation>Odrzucono pukanie użytkownika %2.</translation>
+        <translation>Odrzucono pukanie użytkownika %1.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2328,7 +2328,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="-3"/>
         <source>Circular Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>Okrągłe awatary</translation>
     </message>
     <message>
         <location line="-216"/>
@@ -2353,7 +2353,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+4"/>
         <source>REQUEST</source>
-        <translation type="unfinished"></translation>
+        <translation>POPROŚ O</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2784,7 +2784,7 @@ To zwykle sprawia, że ikona aplikacji w tacce systemowej jest animowana.</trans
     <message>
         <location line="-27"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation>Wpisz frazę do odszyfrowania pliku: </translation>
+        <translation>Wpisz frazę do odszyfrowania pliku:</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -3082,7 +3082,7 @@ Rozmiar multimediów: %2
     <message>
         <location line="+3"/>
         <source>%1: %2</source>
-        <translation>%1: %&lt;</translation>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location line="+7"/>
