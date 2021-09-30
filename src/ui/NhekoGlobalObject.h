@@ -48,7 +48,7 @@ public:
     Q_INVOKABLE void openLink(QString link) const;
     Q_INVOKABLE void setStatusMessage(QString msg) const;
     Q_INVOKABLE void showUserSettingsPage() const;
-    Q_INVOKABLE void openLogoutDialog() const;
+    Q_INVOKABLE void logout() const;
     Q_INVOKABLE void openCreateRoomDialog() const;
     Q_INVOKABLE void openJoinRoomDialog() const;
     Q_INVOKABLE void reparent(QWindow *win) const;
@@ -59,6 +59,8 @@ public slots:
 signals:
     void colorsChanged();
     void profileChanged();
+
+    void openLogoutDialog();
 
 private:
     QScopedPointer<UserProfile> currentUser_;

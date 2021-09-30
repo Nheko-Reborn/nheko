@@ -183,6 +183,7 @@
         <file>qml/dialogs/RoomMembers.qml</file>
         <file>qml/dialogs/RoomSettings.qml</file>
         <file>qml/dialogs/UserProfile.qml</file>
+        <file>qml/dialogs/LogoutDialog.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>

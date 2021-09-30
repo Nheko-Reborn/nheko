@@ -35,7 +35,6 @@
 #include "dialogs/CreateRoom.h"
 #include "dialogs/JoinRoom.h"
 #include "dialogs/LeaveRoom.h"
-#include "dialogs/Logout.h"
 
 MainWindow *MainWindow::instance_ = nullptr;
 
@@ -370,24 +369,6 @@ MainWindow::showSolidOverlayModal(QWidget *content, QFlags<Qt::AlignmentFlag> fl
     modal_->setContentAlignment(flags);
     modal_->raise();
     modal_->show();
-}
-
-void
-MainWindow::openLogoutDialog()
-{
-    auto dialog = new dialogs::Logout(this);
-    connect(dialog, &dialogs::Logout::loggingOut, this, [this]() {
-        if (WebRTCSession::instance().state() != webrtc::State::DISCONNECTED) {
-            if (QMessageBox::question(this, "nheko", "A call is in progress. Log out?") !=
-                QMessageBox::Yes) {
-                return;
-            }
-            WebRTCSession::instance().end();
-        }
-        chat_page_->initiateLogout();
-    });
-
-    showDialog(dialog);
 }
 
 bool
