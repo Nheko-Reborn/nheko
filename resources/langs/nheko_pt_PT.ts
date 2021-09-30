@@ -521,7 +521,7 @@
     <message>
         <location line="+2"/>
         <source>The message couldn&apos;t be parsed.</source>
-        <translation>Esta mensagem não pôde ser analisada.</translation>
+        <translation>Esta mensagem não pôde ser processada.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -559,7 +559,7 @@
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device or the key is from an untrusted source like the key backup.</source>
-        <translation type="unfinished"></translation>
+        <translation>Encriptado por um dispositivo não verificado ou a chave é de uma fonte não confiável como o backup da chave.</translation>
     </message>
 </context>
 <context>
