@@ -559,7 +559,7 @@
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device or the key is from an untrusted source like the key backup.</source>
-        <translation>Encriptado por um dispositivo não verificado ou a chave é de uma fonte não confiável como o backup da chave.</translation>
+        <translation>Encriptado por um dispositivo não verificado ou a chave é de uma fonte não confiável, como o backup da chave.</translation>
     </message>
 </context>
 <context>
@@ -567,33 +567,33 @@
     <message>
         <location filename="../qml/device-verification/Failed.qml" line="+11"/>
         <source>Verification failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao verifcar</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Other client does not support our verification protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>O outro cliente não suporta o nosso protocolo de verificação.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Key mismatch detected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Detetada divergência de chaves!</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+4"/>
         <source>Device verification timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>A verificação do dispositivo expirou.</translation>
     </message>
     <message>
         <location line="-2"/>
         <source>Other party canceled the verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>A outra parte cancelou a verificação.</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fechar</translation>
     </message>
 </context>
 <context>
@@ -601,7 +601,7 @@
     <message>
         <location filename="../qml/ForwardCompleter.qml" line="+44"/>
         <source>Forward Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Reencaminhar mensagem</translation>
     </message>
 </context>
 <context>
@@ -609,17 +609,17 @@
     <message>
         <location filename="../qml/dialogs/ImagePackEditorDialog.qml" line="+24"/>
         <source>Editing image pack</source>
-        <translation type="unfinished"></translation>
+        <translation>A editar pacote de imagens</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>Add images</source>
-        <translation type="unfinished"></translation>
+        <translation>Adicionar imagens</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Stickers (*.png *.webp *.gif)</source>
-        <translation type="unfinished"></translation>
+        <translation>Autocolantes (*.png *.webp *.gif)</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -629,7 +629,7 @@
     <message>
         <location line="+11"/>
         <source>Packname</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome do pacote</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -640,43 +640,43 @@
         <location line="+10"/>
         <location line="+65"/>
         <source>Use as Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar como emoji</translation>
     </message>
     <message>
         <location line="-55"/>
         <location line="+65"/>
         <source>Use as Sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar como autocolante</translation>
     </message>
     <message>
         <location line="-30"/>
         <source>Shortcode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Código</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Body</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Corpo</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Remove from pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Remover do pacote</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Remover</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Guardar</translation>
     </message>
 </context>
 <context>
@@ -684,52 +684,52 @@
     <message>
         <location filename="../qml/dialogs/ImagePackSettingsDialog.qml" line="+22"/>
         <source>Image pack settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Definições do pacote de imagens</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Create account pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Criar pacote de conta</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>New room pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Criar pacote de sala</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Private pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Pacote privado</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Pack from this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Pacote desta sala</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Globally enabled pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Pacote ativo globalmente</translation>
     </message>
     <message>
         <location line="+63"/>
         <source>Enable globally</source>
-        <translation type="unfinished"></translation>
+        <translation>Ativar globalmente</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Enables this pack to be used in all rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Permite que o pacote seja usado em todas as salas</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar</translation>
     </message>
     <message>
         <location line="+64"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Fechar</translation>
     </message>
 </context>
 <context>
@@ -737,17 +737,17 @@
     <message>
         <location filename="../../src/timeline/InputBar.cpp" line="+267"/>
         <source>Select a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecionar um ficheiro</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos os ficheiros (*)</translation>
     </message>
     <message>
         <location line="+449"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao carregar mídia. Por favor, tente novamente.</translation>
     </message>
 </context>
 <context>
@@ -755,33 +755,33 @@
     <message>
         <location filename="../qml/InviteDialog.qml" line="+32"/>
         <source>Invite users to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Convidar utilizadores para %1</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>User ID to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>ID do utilizador a convidar</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>@joe:matrix.org</source>
         <comment>Example user id. The name &apos;joe&apos; can be localized however you want.</comment>
-        <translation type="unfinished"></translation>
+        <translation>@ze:matrix.org</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Adicionar</translation>
     </message>
     <message>
         <location line="+58"/>
         <source>Invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Convidar</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -789,12 +789,12 @@
     <message>
         <location filename="../../src/LoginPage.cpp" line="+81"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID Matrix</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>p. ex. @ze:matrix.org</translation>
     </message>
     <message>
         <location line="+2"/>
