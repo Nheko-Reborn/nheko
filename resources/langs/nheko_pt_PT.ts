@@ -521,7 +521,7 @@
     <message>
         <location line="+2"/>
         <source>The message couldn&apos;t be parsed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Esta mensagem não pôde ser analisada.</translation>
     </message>
     <message>
         <location line="+2"/>
