@@ -1121,7 +1121,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+43"/>
         <source>&amp;Go to quoted message</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Iri al citita mesaĝo</translation>
     </message>
 </context>
 <context>
@@ -2222,37 +2222,37 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+38"/>
         <source>Change avatar globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ŝanĝi bildon ĉie.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change avatar. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ŝanĝi bildon. Efektiviĝos nur en ĉi tiu ĉambro.</translation>
     </message>
     <message>
         <location line="+79"/>
         <source>Change display name globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ŝanĝi prezentan nomon ĉie.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change display name. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ŝanĝi prezentan nomon. Efektiviĝos nur en ĉi tiu ĉambro.</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉambro: %1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉi tio estas profilo speciala por ĉambro. La nomo kaj profilbildo de la uzanto povas esti malsamaj de siaj ĉieaj versioj.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Open the global profile for this user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Malfermi la ĉiean profilon de ĉi tiu uzanto.</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2263,17 +2263,17 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="-72"/>
         <source>Start a private chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Komenci privatan babilon.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Kick the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Forpeli la uzanton.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Ban the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Forbari la uzanton.</translation>
     </message>
     <message>
         <location line="+55"/>
