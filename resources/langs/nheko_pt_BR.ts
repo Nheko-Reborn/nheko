@@ -40,7 +40,7 @@
     <message>
         <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+12"/>
         <source>Awaiting Confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Aguardando Confirmação</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -138,7 +138,7 @@
     <message>
         <location line="-461"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao migrar cache para versão atual. Isso pode ter diferentes razões. Por favor reporte o problema e tente usar uma versão antiga no meio tempo. Alternativamente, você pode tentar excluir o cache manualmente.</translation>
     </message>
     <message>
         <location line="+364"/>
@@ -148,7 +148,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to join %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Deseja realmente entrar em %1?</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -164,7 +164,7 @@
     <message>
         <location line="-402"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Deseja realmente convidar %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -179,7 +179,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to kick %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Deseja realmente expulsar %1 (%2)?</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -194,7 +194,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to ban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Deseja realmente banir %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -214,7 +214,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to unban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Deseja realmente desbanir %1 (%2)?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -229,7 +229,7 @@
     <message>
         <location line="+306"/>
         <source>Do you really want to start a private chat with %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Deseja realmente iniciar uma conversa privada com %1?</translation>
     </message>
     <message>
         <location line="-849"/>
@@ -239,12 +239,12 @@
     <message>
         <location line="+13"/>
         <source>Incompatible cache version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versão de cache incompatível</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>O cache em seu disco é mais recente do que essa versão do Nheko suporta. Por favor atualize ou limpe o cache.</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -261,7 +261,7 @@
     <message>
         <location line="+96"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao configurar chaves de criptografia. Resposta do servidor: %1 %2. Por favor tente novamente mais tarde.</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -272,17 +272,17 @@
     <message>
         <location line="+51"/>
         <source>Failed to join room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao entrar na sala: %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You joined the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Você entrou na sala</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Failed to remove invite: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao remover o convite: %1</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -292,12 +292,12 @@
     <message>
         <location line="+19"/>
         <source>Failed to leave room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao sair da sala: %1</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Failed to kick %1 from %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao expulsar %1 de %2: %3</translation>
     </message>
 </context>
 <context>
