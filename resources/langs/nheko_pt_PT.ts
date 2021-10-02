@@ -305,7 +305,7 @@
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+44"/>
         <source>Hide rooms with this tag or from this space by default.</source>
-        <translation>Ocultar salas com esta etiqueta ou  pertencentes a este espaço por defeito.</translation>
+        <translation>Ocultar, por defeito, salas com esta etiqueta ou pertencentes a este espaço.</translation>
     </message>
 </context>
 <context>
@@ -825,7 +825,7 @@ Se o Nheko não conseguir encontrar o seu servidor, irá apresentar um campo ond
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation>Um nome para este dispositivo, que será exibido noutros quando os estiver a verificar. Caso nenhum seja fornecido, será usado um predefinido.</translation>
+        <translation>Um nome para este dispositivo, que será exibido noutros quando os estiver a verificar. Caso nenhum seja fornecido, será usado um pré-definido.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1931,153 +1931,153 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location line="+68"/>
         <source>%1 opened the room to the public.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 abriu a sala ao público.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 made this room require and invitation to join.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 tornou esta sala acessível apenas por convite.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 allowed to join this room by knocking.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 tornou possível entrar na sala &quot;batendo à porta&quot;.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 allowed members of the following rooms to automatically join this room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 autorizou os membros das seguintes salas a juntarem-se à sala automaticamente: %2</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>%1 made the room open to guests.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 tornou a sala aberta a visitantes.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 has closed the room to guest access.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 fechou o acesso à sala a visitantes.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room history world readable. Events may be now read by non-joined people.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 tornou o histórico da sala visível a qualquer pessoa. Eventos podem agora ser lidos por não-membros.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 set the room history visible to members from this point on.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 tornou o histórico da sala, a partir deste momento, visível a membros</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they were invited.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 tornou o histórico visível a membros desde o seu convite.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 set the room history visible to members since they joined the room.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 tornou o histórico da sala visível ao membros desde a sua entrada.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 has changed the room&apos;s permissions.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 alterou as permissões da sala.</translation>
     </message>
     <message>
         <location line="+78"/>
         <source>%1 was invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 foi convidado.</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>%1 changed their avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 alterou o seu avatar.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 changed some profile info.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 alterou alguma informação de perfil.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 joined.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 entrou.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 joined via authorisation from %2&apos;s server.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 entrou com autorização do servidor de %2.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 rejected their invite.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 recusou o seu convite.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Revoked the invite to %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Convite de %1 cancelado.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 left the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 saiu da sala.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kicked %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 foi expulso.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unbanned %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 foi perdoado.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 was banned.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 foi banido.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Razão: %1</translation>
     </message>
     <message>
         <location line="-20"/>
         <source>%1 redacted their knock.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 eliminou a sua &quot;batida à porta&quot;.</translation>
     </message>
     <message>
         <location line="-958"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrou na sala.</translation>
     </message>
     <message>
         <location line="+918"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 alterou o seu avatar e também o seu nome de exibição para %2.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 has changed their display name to %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 alterou o seu nome de exibição para %2.</translation>
     </message>
     <message>
         <location line="+37"/>
         <source>Rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Recusada a batida de %1.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 saiu depois de já ter saído!</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 knocked.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 bateu à porta.</translation>
     </message>
 </context>
 <context>
@@ -2085,7 +2085,7 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location filename="../qml/TimelineRow.qml" line="+183"/>
         <source>Edited</source>
-        <translation type="unfinished"></translation>
+        <translation>Editada</translation>
     </message>
 </context>
 <context>
@@ -2093,32 +2093,32 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location filename="../qml/TimelineView.qml" line="+29"/>
         <source>No room open</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenhuma sala aberta</translation>
     </message>
     <message>
         <location line="+142"/>
         <source>%1 member(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 membro(s)</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>join the conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>juntar-se à conversa</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>accept invite</source>
-        <translation type="unfinished"></translation>
+        <translation>aceitar convite</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>decline invite</source>
-        <translation type="unfinished"></translation>
+        <translation>recusar convite</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Voltar à lista de salas</translation>
     </message>
 </context>
 <context>
@@ -2126,7 +2126,7 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location filename="../../src/timeline/TimelineViewManager.cpp" line="+548"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Não foi encontrada nenhuma conversa privada e encriptada com este utilizador. Crie uma e tente novamente.</translation>
     </message>
 </context>
 <context>
@@ -2134,57 +2134,57 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location filename="../qml/TopBar.qml" line="+56"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Voltar à lista de salas</translation>
     </message>
     <message>
         <location line="-41"/>
         <source>No room selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenhuma sala selecionada</translation>
     </message>
     <message>
         <location line="+91"/>
         <source>This room is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Esta sala não é encriptada!</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>This room contains only verified devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Esta sala contém apenas dispositivos verificados.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This rooms contain verified devices and devices which have never changed their master key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Esta sala contém dispositivos verificados e outros que nunca alteraram a sua chave-mestra.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This room contains unverified devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Esta sala contém dispositivos não verificados!</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Room options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opções da sala</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Invite users</source>
-        <translation type="unfinished"></translation>
+        <translation>Convidar utilizadores</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Members</source>
-        <translation type="unfinished"></translation>
+        <translation>Membros</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Sair da sala</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Definições</translation>
     </message>
 </context>
 <context>
@@ -2192,12 +2192,12 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location filename="../../src/TrayIcon.cpp" line="+112"/>
         <source>Show</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Sair</translation>
     </message>
 </context>
 <context>
@@ -2205,93 +2205,93 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location filename="../qml/UserProfile.qml" line="+27"/>
         <source>Global User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Perfil de utilizador global</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Room User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Perfil de utilizador na sala</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Change avatar globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alterar avatar globalmente.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change avatar. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alterar avatar. Irá apenas afetar esta sala.</translation>
     </message>
     <message>
         <location line="+79"/>
         <source>Change display name globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alterar nome de exibição globalmente.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change display name. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alterar nome de exibição. Irá apenas afetar esta sala.</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sala: %1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</source>
-        <translation type="unfinished"></translation>
+        <translation>Este é um perfil específico desta sala. O nome e avatar do utilizador poderão ser diferentes dos seus homólogos globais.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Open the global profile for this user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir o perfil global deste utilizador.</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+109"/>
         <source>Verify</source>
-        <translation type="unfinished"></translation>
+        <translation>Verificar</translation>
     </message>
     <message>
         <location line="-72"/>
         <source>Start a private chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar uma conversa privada.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Kick the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Expulsar o utilizador.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Ban the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Banir o utilizador.</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Unverify</source>
-        <translation type="unfinished"></translation>
+        <translation>Anular verificação</translation>
     </message>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+307"/>
         <source>Select an avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecionar um avatar</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos os ficheiros (*)</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>O ficheiro selecionado não é uma imagem</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Erro ao ler ficheiro: %1</translation>
     </message>
 </context>
 <context>
@@ -2300,7 +2300,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <location filename="../../src/UserSettingsPage.cpp" line="+377"/>
         <location filename="../../src/UserSettingsPage.h" line="+207"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Padrão</translation>
     </message>
 </context>
 <context>
@@ -2308,42 +2308,42 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location line="+557"/>
         <source>Minimize to tray</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Minimizar para bandeja</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start in tray</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Iniciar na bandeja</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Group&apos;s sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Barra lateral do grupo</translation>
     </message>
     <message>
         <location line="-3"/>
         <source>Circular Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>Avatares circulares</translation>
     </message>
     <message>
         <location line="-216"/>
         <source>profile: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>perfil: %1</translation>
     </message>
     <message>
         <location line="+102"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Padrão</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>CALLS</source>
-        <translation type="unfinished"></translation>
+        <translation>CHAMADAS</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>Cross Signing Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Chaves de assinatura cruzada</translation>
     </message>
     <message>
         <location line="+4"/>
