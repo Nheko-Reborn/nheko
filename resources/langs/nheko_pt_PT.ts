@@ -2353,12 +2353,12 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location line="+1"/>
         <source>DOWNLOAD</source>
-        <translation type="unfinished"></translation>
+        <translation>DESCARREGAR</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Manter a aplicação a correr em segundo plano depois de fechar a janela.</translation>
     </message>
     <message>
         <location line="+3"/>
