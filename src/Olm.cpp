@@ -1129,6 +1129,10 @@ decryptEvent(const MegolmSessionIndex &index,
     std::string msg_str;
     try {
         auto session = cache::client()->getInboundMegolmSession(index);
+        if (!session) {
+            return {DecryptionErrorCode::MissingSession, std::nullopt, std::nullopt};
+        }
+
         auto sessionData =
           cache::client()->getMegolmSessionData(index).value_or(GroupSessionData{});
 
