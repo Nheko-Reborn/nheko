@@ -191,7 +191,7 @@ appimage-amd64:
     - apt-get install -y git wget curl
 
     # update appimage-builder (optional)
-    - pip3 install --upgrade git+https://www.opencode.net/azubieta/appimagecraft.git
+    - pip3 install --upgrade git+https://github.com/AppImageCrafters/appimage-builder.git
 
     - apt-get update && apt-get -y install --no-install-recommends g++-7 build-essential ninja-build qt${QT_PKG}{base,declarative,tools,multimedia,script,quickcontrols2,svg} liblmdb-dev libssl-dev git ninja-build qt5keychain-dev libgtest-dev ccache libevent-dev libcurl4-openssl-dev libgl1-mesa-dev 
     - wget https://github.com/Kitware/CMake/releases/download/v3.19.0/cmake-3.19.0-Linux-x86_64.sh && sh cmake-3.19.0-Linux-x86_64.sh  --skip-license  --prefix=/usr/local
