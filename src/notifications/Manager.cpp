@@ -23,18 +23,12 @@ NotificationsManager::getMessageTemplate(const mtx::responses::Notification &not
     }
 
     if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote) {
-        return tr("* %1 %2",
-                  "Format an emote message in a notification, %1 is the sender, %2 the "
-                  "message")
-          .arg(sender);
+        return QString("* %1 %2").arg(sender);
     } else if (utils::isReply(notification.event)) {
         return tr("%1 replied: %2",
                   "Format a reply in a notification. %1 is the sender, %2 the message")
           .arg(sender);
     } else {
-        return tr("%1: %2",
-                  "Format a normal message in a notification. %1 is the sender, %2 the "
-                  "message")
-          .arg(sender);
+        return QString("%1: %2").arg(sender);
     }
 }

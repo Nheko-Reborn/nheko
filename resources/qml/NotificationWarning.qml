@@ -29,7 +29,7 @@ Item {
             anchors.rightMargin: 10
             anchors.bottom: parent.bottom
             color: Nheko.theme.red
-            text: qsTr("You will be pinging the whole room")
+            text: qsTr("You are about to notify the whole room")
             textFormat: Text.PlainText
         }
 
