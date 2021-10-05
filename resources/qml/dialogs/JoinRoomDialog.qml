@@ -48,6 +48,7 @@ ApplicationWindow {
         MatrixTextField {
             id: input
 
+            focus: true
             Layout.fillWidth: true
         }
 
