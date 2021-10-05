@@ -20,6 +20,19 @@ ApplicationWindow {
     width: 350
     height: fontMetrics.lineSpacing * 7
 
+    Shortcut {
+        sequence: "Return"
+        onActivated: {
+            if (input.text.match("#.+?:.{3,}"))
+                dbb.accepted();
+        }
+    }
+
+    Shortcut {
+        sequence: StandardKey.Cancel
+        onActivated: dbb.rejected()
+    }
+
     ColumnLayout {
         spacing: Nheko.paddingMedium
         anchors.margins: Nheko.paddingMedium
@@ -41,6 +54,8 @@ ApplicationWindow {
     }
 
     footer: DialogButtonBox {
+        id: dbb
+
         onAccepted: {
             Nheko.joinRoom(input.text);
             joinRoomRoot.close();
