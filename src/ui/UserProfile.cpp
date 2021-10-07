@@ -140,9 +140,7 @@ UserProfile::isSelf() const
 void
 UserProfile::refreshDevices()
 {
-    std::vector<std::string> keysToRequest;
-    keysToRequest.push_back(this->userid_.toStdString());
-    cache::client()->markUserKeysOutOfDate(keysToRequest);
+    cache::client()->markUserKeysOutOfDate({this->userid_.toStdString()});
     fetchDeviceList(this->userid_);
 }
 

@@ -320,7 +320,7 @@ ApplicationWindow {
             Button {
                 id: verifyButton
 
-                visible: (!profile.userVerificationEnabled && !profile.isSelf) || (profile.isSelf && (verificationStatus == VerificationStatus.UNVERIFIED || !profile.userVerificationEnabled))
+                visible: verificationStatus == VerificationStatus.UNVERIFIED && (profile.isSelf || !profile.userVerificationEnabled)
                 text: (verificationStatus != VerificationStatus.VERIFIED) ? qsTr("Verify") : qsTr("Unverify")
                 onClicked: {
                     if (verificationStatus == VerificationStatus.VERIFIED)
