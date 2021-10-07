@@ -249,6 +249,14 @@ ApplicationWindow {
                     visible: !profile.isGlobalUserProfile && profile.room.permissions.canBan()
                 }
 
+                ImageButton {
+                    image: ":/icons/icons/ui/refresh.png"
+                    hoverEnabled: true
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Refresh device list.")
+                    onClicked: profile.refreshDevices();
+                }
+
             }
         }
 
@@ -264,6 +272,9 @@ ApplicationWindow {
 
 
         delegate: RowLayout {
+            required property int verificationStatus
+            required property string deviceId
+            required property string deviceName
             width: devicelist.width
             spacing: 4
 
@@ -276,7 +287,7 @@ ApplicationWindow {
                     elide: Text.ElideRight
                     font.bold: true
                     color: Nheko.colors.text
-                    text: model.deviceId
+                    text: deviceId
                 }
 
                 Text {
@@ -284,7 +295,7 @@ ApplicationWindow {
                     Layout.alignment: Qt.AlignRight
                     elide: Text.ElideRight
                     color: Nheko.colors.text
-                    text: model.deviceName
+                    text: deviceName
                 }
 
             }
@@ -292,19 +303,30 @@ ApplicationWindow {
             Image {
                 Layout.preferredHeight: 16
                 Layout.preferredWidth: 16
-                source: ((model.verificationStatus == VerificationStatus.VERIFIED) ? "image://colorimage/:/icons/icons/ui/lock.png?green" : ((model.verificationStatus == VerificationStatus.UNVERIFIED) ? "image://colorimage/:/icons/icons/ui/unlock.png?yellow" : "image://colorimage/:/icons/icons/ui/unlock.png?red"))
+                source: {
+                    switch (verificationStatus){
+                    case VerificationStatus.VERIFIED:
+                        return "image://colorimage/:/icons/icons/ui/lock.png?green";
+                    case VerificationStatus.UNVERIFIED:
+                        return "image://colorimage/:/icons/icons/ui/unlock.png?yellow";
+                    case VerificationStatus.SELF:
+                        return "image://colorimage/:/icons/icons/ui/checkmark.png?green";
+                    default:
+                        return "image://colorimage/:/icons/icons/ui/unlock.png?red";
+                    }
+                }
             }
 
             Button {
                 id: verifyButton
 
-                visible: (!profile.userVerificationEnabled && !profile.isSelf) || (profile.isSelf && (model.verificationStatus != VerificationStatus.VERIFIED || !profile.userVerificationEnabled))
-                text: (model.verificationStatus != VerificationStatus.VERIFIED) ? qsTr("Verify") : qsTr("Unverify")
+                visible: verificationStatus == VerificationStatus.UNVERIFIED && (profile.isSelf || !profile.userVerificationEnabled)
+                text: (verificationStatus != VerificationStatus.VERIFIED) ? qsTr("Verify") : qsTr("Unverify")
                 onClicked: {
-                    if (model.verificationStatus == VerificationStatus.VERIFIED)
-                        profile.unverify(model.deviceId);
+                    if (verificationStatus == VerificationStatus.VERIFIED)
+                        profile.unverify(deviceId);
                     else
-                        profile.verify(model.deviceId);
+                        profile.verify(deviceId);
                 }
             }
 

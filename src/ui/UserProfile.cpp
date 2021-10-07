@@ -34,6 +34,7 @@ UserProfile::UserProfile(QString roomid,
             this,
             &UserProfile::setGlobalUsername,
             Qt::QueuedConnection);
+    connect(this, &UserProfile::verificationStatiChanged, &UserProfile::updateVerificationStatus);
 
     if (isGlobalUserProfile()) {
         getGlobalProfileData();
@@ -48,22 +49,7 @@ UserProfile::UserProfile(QString roomid,
           if (user_id != this->userid_.toStdString())
               return;
 
-          auto status = cache::verificationStatus(user_id);
-          if (!status)
-              return;
-          this->isUserVerified = status->user_verified;
-          emit userStatusChanged();
-
-          for (auto &deviceInfo : deviceList_.deviceList_) {
-              deviceInfo.verification_status =
-                std::find(status->verified_devices.begin(),
-                          status->verified_devices.end(),
-                          deviceInfo.device_id.toStdString()) == status->verified_devices.end()
-                  ? verification::UNVERIFIED
-                  : verification::VERIFIED;
-          }
-          deviceList_.reset(deviceList_.deviceList_);
-          emit devicesChanged();
+          emit verificationStatiChanged();
       });
     fetchDeviceList(this->userid_);
 }
@@ -152,6 +138,13 @@ UserProfile::isSelf() const
 }
 
 void
+UserProfile::refreshDevices()
+{
+    cache::client()->markUserKeysOutOfDate({this->userid_.toStdString()});
+    fetchDeviceList(this->userid_);
+}
+
+void
 UserProfile::fetchDeviceList(const QString &userID)
 {
     auto localUser = utils::localUser();
@@ -161,20 +154,18 @@ UserProfile::fetchDeviceList(const QString &userID)
 
     cache::client()->query_keys(
       userID.toStdString(),
-      [other_user_id = userID.toStdString(), this](const UserKeyCache &other_user_keys,
+      [other_user_id = userID.toStdString(), this](const UserKeyCache &,
                                                    mtx::http::RequestErr err) {
           if (err) {
               nhlog::net()->warn("failed to query device keys: {},{}",
                                  mtx::errors::to_string(err->matrix_error.errcode),
                                  static_cast<int>(err->status_code));
-              return;
           }
 
           // Ensure local key cache is up to date
           cache::client()->query_keys(
             utils::localUser().toStdString(),
-            [other_user_id, other_user_keys, this](const UserKeyCache &,
-                                                   mtx::http::RequestErr err) {
+            [this](const UserKeyCache &, mtx::http::RequestErr err) {
                 using namespace mtx;
                 std::string local_user_id = utils::localUser().toStdString();
 
@@ -182,39 +173,56 @@ UserProfile::fetchDeviceList(const QString &userID)
                     nhlog::net()->warn("failed to query device keys: {},{}",
                                        mtx::errors::to_string(err->matrix_error.errcode),
                                        static_cast<int>(err->status_code));
-                    return;
                 }
 
-                this->hasMasterKey = !other_user_keys.master_keys.keys.empty();
-
-                std::vector<DeviceInfo> deviceInfo;
-                auto devices            = other_user_keys.device_keys;
-                auto verificationStatus = cache::client()->verificationStatus(other_user_id);
-
-                isUserVerified = verificationStatus.user_verified;
-                emit userStatusChanged();
-
-                for (const auto &d : devices) {
-                    auto device                   = d.second;
-                    verification::Status verified = verification::Status::UNVERIFIED;
-
-                    if (std::find(verificationStatus.verified_devices.begin(),
-                                  verificationStatus.verified_devices.end(),
-                                  device.device_id) != verificationStatus.verified_devices.end() &&
-                        mtx::crypto::verify_identity_signature(
-                          device, DeviceId(device.device_id), UserId(other_user_id)))
-                        verified = verification::Status::VERIFIED;
-
-                    deviceInfo.push_back(
-                      {QString::fromStdString(d.first),
-                       QString::fromStdString(device.unsigned_info.device_display_name),
-                       verified});
-                }
-
-                this->deviceList_.queueReset(std::move(deviceInfo));
-                emit devicesChanged();
+                emit verificationStatiChanged();
             });
       });
+}
+
+void
+UserProfile::updateVerificationStatus()
+{
+    if (!cache::client() || !cache::client()->isDatabaseReady())
+        return;
+
+    auto user_keys = cache::client()->userKeys(userid_.toStdString());
+    if (!user_keys) {
+        this->hasMasterKey   = false;
+        this->isUserVerified = crypto::Trust::Unverified;
+        this->deviceList_.reset({});
+        emit userStatusChanged();
+        return;
+    }
+
+    this->hasMasterKey = !user_keys->master_keys.keys.empty();
+
+    std::vector<DeviceInfo> deviceInfo;
+    auto devices            = user_keys->device_keys;
+    auto verificationStatus = cache::client()->verificationStatus(userid_.toStdString());
+
+    this->isUserVerified = verificationStatus.user_verified;
+    emit userStatusChanged();
+
+    for (const auto &d : devices) {
+        auto device = d.second;
+        verification::Status verified =
+          std::find(verificationStatus.verified_devices.begin(),
+                    verificationStatus.verified_devices.end(),
+                    device.device_id) == verificationStatus.verified_devices.end()
+            ? verification::UNVERIFIED
+            : verification::VERIFIED;
+
+        if (isSelf() && device.device_id == ::http::client()->device_id())
+            verified = verification::Status::SELF;
+
+        deviceInfo.push_back({QString::fromStdString(d.first),
+                              QString::fromStdString(device.unsigned_info.device_display_name),
+                              verified});
+    }
+
+    this->deviceList_.queueReset(std::move(deviceInfo));
+    emit devicesChanged();
 }
 
 void
