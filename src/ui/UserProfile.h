@@ -137,11 +137,15 @@ signals:
     void globalUsernameRetrieved(const QString &globalUser);
     void devicesChanged();
 
+    // internal
+    void verificationStatiChanged();
+
 public slots:
     void updateAvatarUrl();
 
-protected slots:
+private slots:
     void setGlobalUsername(const QString &globalUser);
+    void updateVerificationStatus();
 
 private:
     void updateRoomMemberState(mtx::events::state::Member member);
