@@ -14,6 +14,7 @@
 #include "MainWindow.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
+#include "WebRTCSession.h"
 
 Nheko::Nheko()
 {
@@ -83,9 +84,9 @@ Nheko::showUserSettingsPage() const
 }
 
 void
-Nheko::openLogoutDialog() const
+Nheko::logout() const
 {
-    MainWindow::instance()->openLogoutDialog();
+    ChatPage::instance()->initiateLogout();
 }
 
 void

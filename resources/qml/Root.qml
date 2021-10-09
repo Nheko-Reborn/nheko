@@ -111,6 +111,13 @@ Page {
 
     }
 
+    Component {
+        id: logoutDialog
+
+        LogoutDialog {
+        }
+    }
+
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
@@ -133,6 +140,15 @@ Page {
     Shortcut {
         sequence: "Ctrl+Up"
         onActivated: Rooms.previousRoom()
+    }
+
+    Connections {
+        function onOpenLogoutDialog() {
+            var dialog = logoutDialog.createObject(timelineRoot);
+            dialog.open();
+        }
+
+        target: Nheko
     }
 
     Connections {
