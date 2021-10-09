@@ -13,8 +13,8 @@
 #include "Logging.h"
 #include "MainWindow.h"
 #include "UserSettingsPage.h"
-#include "WebRTCSession.h"
 #include "Utils.h"
+#include "WebRTCSession.h"
 
 Nheko::Nheko()
 {
