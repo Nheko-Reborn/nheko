@@ -21,14 +21,6 @@ ApplicationWindow {
     height: fontMetrics.lineSpacing * 7
 
     Shortcut {
-        sequence: "Return"
-        onActivated: {
-            if (input.text.match("#.+?:.{3,}"))
-                dbb.accepted();
-        }
-    }
-
-    Shortcut {
         sequence: StandardKey.Cancel
         onActivated: dbb.rejected()
     }
@@ -50,6 +42,10 @@ ApplicationWindow {
 
             focus: true
             Layout.fillWidth: true
+            onAccepted: {
+                if (input.text.match("#.+?:.{3,}"))
+                    dbb.accepted();
+            }
         }
 
     }
