@@ -43,4 +43,5 @@ MatrixText {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
     }
+
 }

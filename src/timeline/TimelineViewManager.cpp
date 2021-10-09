@@ -29,6 +29,7 @@
 #include "ReadReceiptsModel.h"
 #include "RoomDirectoryModel.h"
 #include "RoomsModel.h"
+#include "SelfVerificationStatus.h"
 #include "SingleImagePackModel.h"
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
@@ -40,6 +41,7 @@
 #include "ui/NhekoCursorShape.h"
 #include "ui/NhekoDropArea.h"
 #include "ui/NhekoGlobalObject.h"
+#include "ui/UIA.h"
 
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
@@ -212,18 +214,9 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
       "ReadReceiptsProxy needs to be instantiated on the C++ side");
 
     static auto self = this;
-    qmlRegisterSingletonType<MainWindow>(
-      "im.nheko", 1, 0, "MainWindow", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          auto ptr = MainWindow::instance();
-          QQmlEngine::setObjectOwnership(ptr, QQmlEngine::CppOwnership);
-          return ptr;
-      });
-    qmlRegisterSingletonType<TimelineViewManager>(
-      "im.nheko", 1, 0, "TimelineManager", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          auto ptr = self;
-          QQmlEngine::setObjectOwnership(ptr, QQmlEngine::CppOwnership);
-          return ptr;
-      });
+    qmlRegisterSingletonInstance("im.nheko", 1, 0, "MainWindow", MainWindow::instance());
+    qmlRegisterSingletonInstance("im.nheko", 1, 0, "TimelineManager", self);
+    qmlRegisterSingletonInstance("im.nheko", 1, 0, "UIA", UIA::instance());
     qmlRegisterSingletonType<RoomlistModel>(
       "im.nheko", 1, 0, "Rooms", [](QQmlEngine *, QJSEngine *) -> QObject * {
           auto ptr = new FilteredRoomlistModel(self->rooms_);
@@ -238,24 +231,11 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
                   &FilteredRoomlistModel::updateHiddenTagsAndSpaces);
           return ptr;
       });
-    qmlRegisterSingletonType<RoomlistModel>(
-      "im.nheko", 1, 0, "Communities", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          auto ptr = self->communities_;
-          QQmlEngine::setObjectOwnership(ptr, QQmlEngine::CppOwnership);
-          return ptr;
-      });
-    qmlRegisterSingletonType<UserSettings>(
-      "im.nheko", 1, 0, "Settings", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          auto ptr = ChatPage::instance()->userSettings().data();
-          QQmlEngine::setObjectOwnership(ptr, QQmlEngine::CppOwnership);
-          return ptr;
-      });
-    qmlRegisterSingletonType<CallManager>(
-      "im.nheko", 1, 0, "CallManager", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          auto ptr = ChatPage::instance()->callManager();
-          QQmlEngine::setObjectOwnership(ptr, QQmlEngine::CppOwnership);
-          return ptr;
-      });
+    qmlRegisterSingletonInstance("im.nheko", 1, 0, "Communities", self->communities_);
+    qmlRegisterSingletonInstance(
+      "im.nheko", 1, 0, "Settings", ChatPage::instance()->userSettings().data());
+    qmlRegisterSingletonInstance(
+      "im.nheko", 1, 0, "CallManager", ChatPage::instance()->callManager());
     qmlRegisterSingletonType<Clipboard>(
       "im.nheko", 1, 0, "Clipboard", [](QQmlEngine *, QJSEngine *) -> QObject * {
           return new Clipboard();
@@ -263,6 +243,10 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
     qmlRegisterSingletonType<Nheko>(
       "im.nheko", 1, 0, "Nheko", [](QQmlEngine *, QJSEngine *) -> QObject * {
           return new Nheko();
+      });
+    qmlRegisterSingletonType<SelfVerificationStatus>(
+      "im.nheko", 1, 0, "SelfVerificationStatus", [](QQmlEngine *, QJSEngine *) -> QObject * {
+          return new SelfVerificationStatus();
       });
 
     qRegisterMetaType<mtx::events::collections::TimelineEvents>();

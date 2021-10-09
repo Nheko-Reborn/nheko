@@ -201,6 +201,18 @@ Cache::Cache(const QString &userId, QObject *parent)
 {
     setup();
     connect(this, &Cache::userKeysUpdate, this, &Cache::updateUserKeys, Qt::QueuedConnection);
+    connect(
+      this,
+      &Cache::verificationStatusChanged,
+      this,
+      [this](const std::string &u) {
+          if (u == localUserId_.toStdString()) {
+              auto status = verificationStatus(u);
+              if (status.unverified_device_count || !status.user_verified)
+                  emit selfUnverified();
+          }
+      },
+      Qt::QueuedConnection);
 }
 
 void

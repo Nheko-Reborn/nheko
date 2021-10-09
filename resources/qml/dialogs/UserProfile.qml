@@ -35,8 +35,18 @@ ApplicationWindow {
         onActivated: userProfileDialog.close()
     }
 
-
     ListView {
+        id: devicelist
+
+        Layout.fillHeight: true
+        Layout.fillWidth: true
+        clip: true
+        spacing: 8
+        boundsBehavior: Flickable.StopAtBounds
+        model: profile.deviceList
+        anchors.fill: parent
+        anchors.margins: 10
+        footerPositioning: ListView.OverlayFooter
 
         ScrollHelper {
             flickable: parent
@@ -46,16 +56,17 @@ ApplicationWindow {
 
         header: ColumnLayout {
             id: contentL
-            width: devicelist.width
 
+            width: devicelist.width
             spacing: 10
 
             Avatar {
+                id: displayAvatar
+
                 url: profile.avatarUrl.replace("mxc://", "image://MxcImage/")
                 height: 130
                 width: 130
                 displayName: profile.displayName
-                id: displayAvatar
                 userid: profile.userid
                 Layout.alignment: Qt.AlignHCenter
                 onClicked: TimelineManager.openImageOverlay(profile.avatarUrl, "")
@@ -72,6 +83,7 @@ ApplicationWindow {
                     image: ":/icons/icons/ui/edit.png"
                     onClicked: profile.changeAvatar()
                 }
+
             }
 
             Spinner {
@@ -163,19 +175,22 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignHCenter
             }
 
-
             RowLayout {
                 visible: !profile.isGlobalUserProfile
                 Layout.alignment: Qt.AlignHCenter
                 spacing: Nheko.paddingSmall
+
                 MatrixText {
                     id: displayRoomname
-                    text: qsTr("Room: %1").arg(profile.room?profile.room.roomName:"")
+
+                    text: qsTr("Room: %1").arg(profile.room ? profile.room.roomName : "")
                     ToolTip.text: qsTr("This is a room-specific profile. The user's name and avatar may be different from their global versions.")
                     ToolTip.visible: ma.hovered
+
                     HoverHandler {
                         id: ma
                     }
+
                 }
 
                 ImageButton {
@@ -185,6 +200,7 @@ ApplicationWindow {
                     ToolTip.text: qsTr("Open the global profile for this user.")
                     onClicked: profile.openGlobalProfile()
                 }
+
             }
 
             Button {
@@ -254,27 +270,18 @@ ApplicationWindow {
                     hoverEnabled: true
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Refresh device list.")
-                    onClicked: profile.refreshDevices();
+                    onClicked: profile.refreshDevices()
                 }
 
             }
+
         }
-
-        id: devicelist
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-        clip: true
-        spacing: 8
-        boundsBehavior: Flickable.StopAtBounds
-        model: profile.deviceList
-        anchors.fill: parent
-        anchors.margins: 10
-
 
         delegate: RowLayout {
             required property int verificationStatus
             required property string deviceId
             required property string deviceName
+
             width: devicelist.width
             spacing: 4
 
@@ -304,7 +311,7 @@ ApplicationWindow {
                 Layout.preferredHeight: 16
                 Layout.preferredWidth: 16
                 source: {
-                    switch (verificationStatus){
+                    switch (verificationStatus) {
                     case VerificationStatus.VERIFIED:
                         return "image://colorimage/:/icons/icons/ui/lock.png?green";
                     case VerificationStatus.UNVERIFIED:
@@ -331,17 +338,19 @@ ApplicationWindow {
             }
 
         }
-        footerPositioning: ListView.OverlayFooter
+
         footer: DialogButtonBox {
             z: 2
             width: devicelist.width
             alignment: Qt.AlignRight
             standardButtons: DialogButtonBox.Ok
             onAccepted: userProfileDialog.close()
+
             background: Rectangle {
                 anchors.fill: parent
                 color: Nheko.colors.window
             }
+
         }
 
     }
