@@ -185,8 +185,16 @@
         <file>qml/voip/VideoCall.qml</file>
         <file>qml/components/AdaptiveLayout.qml</file>
         <file>qml/components/AdaptiveLayoutElement.qml</file>
-        <file>qml/components/AvatarListTile.qml</file>
-		<file>qml/components/FlatButton.qml</file>
+		<file>qml/components/AvatarListTile.qml</file>
+        <file>qml/components/FlatButton.qml</file>
+        <file>qml/dialogs/InviteDialog.qml</file>
+		<file>qml/dialogs/LeaveRoomDialog.qml</file>
+        <file>qml/dialogs/RawMessageDialog.qml</file>
+        <file>qml/dialogs/ReadReceipts.qml</file>
+        <file>qml/dialogs/RoomDirectory.qml</file>
+        <file>qml/dialogs/RoomMembers.qml</file>
+        <file>qml/dialogs/RoomSettings.qml</file>
+		<file>qml/dialogs/UserProfile.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>

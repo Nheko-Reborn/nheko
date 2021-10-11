@@ -33,7 +33,6 @@
 #include "ui/SnackBar.h"
 
 #include "dialogs/CreateRoom.h"
-#include "dialogs/LeaveRoom.h"
 
 MainWindow *MainWindow::instance_ = nullptr;
 
@@ -298,17 +297,6 @@ MainWindow::hasActiveUser()
     return settings->contains(prefix + "auth/access_token") &&
            settings->contains(prefix + "auth/home_server") &&
            settings->contains(prefix + "auth/user_id");
-}
-
-void
-MainWindow::openLeaveRoomDialog(const QString &room_id)
-{
-    auto dialog = new dialogs::LeaveRoom(this);
-    connect(dialog, &dialogs::LeaveRoom::leaving, this, [this, room_id]() {
-        chat_page_->leaveRoom(room_id);
-    });
-
-    showDialog(dialog);
 }
 
 void
