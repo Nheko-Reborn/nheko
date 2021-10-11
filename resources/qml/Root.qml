@@ -118,6 +118,13 @@ Page {
         }
     }
 
+    Component {
+        id: joinRoomDialog
+
+        JoinRoomDialog {
+        }
+    }
+
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
@@ -146,6 +153,11 @@ Page {
         function onOpenLogoutDialog() {
             var dialog = logoutDialog.createObject(timelineRoot);
             dialog.open();
+        }
+
+        function onOpenJoinRoomDialog() {
+            var dialog = joinRoomDialog.createObject(timelineRoot);
+            dialog.show();
         }
 
         target: Nheko

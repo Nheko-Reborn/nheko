@@ -50,7 +50,6 @@ public:
     Q_INVOKABLE void showUserSettingsPage() const;
     Q_INVOKABLE void logout() const;
     Q_INVOKABLE void openCreateRoomDialog() const;
-    Q_INVOKABLE void openJoinRoomDialog() const;
     Q_INVOKABLE void reparent(QWindow *win) const;
 
 public slots:
@@ -61,6 +60,8 @@ signals:
     void profileChanged();
 
     void openLogoutDialog();
+    void openJoinRoomDialog();
+    void joinRoom(QString roomId);
 
 private:
     QScopedPointer<UserProfile> currentUser_;
