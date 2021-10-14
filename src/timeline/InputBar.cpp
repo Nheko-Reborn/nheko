@@ -26,7 +26,6 @@
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
-#include "Olm.h"
 #include "RoomsModel.h"
 #include "TimelineModel.h"
 #include "TimelineViewManager.h"

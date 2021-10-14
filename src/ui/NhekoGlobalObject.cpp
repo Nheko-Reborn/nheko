@@ -14,7 +14,7 @@
 #include "MainWindow.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
-#include "WebRTCSession.h"
+#include "voip/WebRTCSession.h"
 
 Nheko::Nheko()
 {

@@ -26,11 +26,11 @@
 #include "TrayIcon.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
-#include "WebRTCSession.h"
 #include "WelcomePage.h"
 #include "ui/LoadingIndicator.h"
 #include "ui/OverlayModal.h"
 #include "ui/SnackBar.h"
+#include "voip/WebRTCSession.h"
 
 #include "dialogs/CreateRoom.h"
 

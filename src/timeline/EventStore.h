@@ -15,8 +15,8 @@
 #include <mtx/responses/messages.hpp>
 #include <mtx/responses/sync.hpp>
 
-#include "Olm.h"
 #include "Reaction.h"
+#include "encryption/Olm.h"
 
 class EventStore : public QObject
 {

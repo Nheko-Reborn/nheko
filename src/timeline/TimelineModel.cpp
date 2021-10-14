@@ -27,10 +27,10 @@
 #include "MatrixClient.h"
 #include "MemberList.h"
 #include "MxcImageProvider.h"
-#include "Olm.h"
 #include "ReadReceiptsModel.h"
 #include "TimelineViewManager.h"
 #include "Utils.h"
+#include "encryption/Olm.h"
 
 Q_DECLARE_METATYPE(QModelIndex)
 

@@ -9,10 +9,10 @@
 
 #include "Cache_p.h"
 #include "ChatPage.h"
-#include "DeviceVerificationFlow.h"
 #include "Logging.h"
 #include "UserProfile.h"
 #include "Utils.h"
+#include "encryption/DeviceVerificationFlow.h"
 #include "mtx/responses/crypto.hpp"
 #include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"

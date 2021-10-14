@@ -14,7 +14,6 @@
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QPainter>
-#include <QProcessEnvironment>
 #include <QPushButton>
 #include <QResizeEvent>
 #include <QScrollArea>
@@ -26,14 +25,14 @@
 #include <QtQml>
 
 #include "Cache.h"
-#include "CallDevices.h"
 #include "Config.h"
 #include "MatrixClient.h"
-#include "Olm.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
+#include "encryption/Olm.h"
 #include "ui/FlatButton.h"
 #include "ui/ToggleButton.h"
+#include "voip/CallDevices.h"
 
 #include "config/nheko.h"
 

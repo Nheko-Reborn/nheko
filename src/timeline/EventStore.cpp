@@ -15,7 +15,6 @@
 #include "EventAccessors.h"
 #include "Logging.h"
 #include "MatrixClient.h"
-#include "Olm.h"
 #include "Utils.h"
 
 Q_DECLARE_METATYPE(Reaction)

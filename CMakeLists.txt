@@ -329,19 +329,24 @@ set(SRC_FILES
 	src/ui/UIA.cpp
 	src/ui/UserProfile.cpp
 
+	src/voip/CallDevices.cpp
+	src/voip/CallManager.cpp
+	src/voip/WebRTCSession.cpp
+
+	src/encryption/DeviceVerificationFlow.cpp
+	src/encryption/Olm.cpp
+	src/encryption/SelfVerificationStatus.cpp
+
 	# Generic notification stuff
 	src/notifications/Manager.cpp
 
 	src/AvatarProvider.cpp
 	src/BlurhashProvider.cpp
 	src/Cache.cpp
-	src/CallDevices.cpp
-	src/CallManager.cpp
 	src/ChatPage.cpp
 	src/Clipboard.cpp
 	src/ColorImageProvider.cpp
 	src/CompletionProxyModel.cpp
-	src/DeviceVerificationFlow.cpp
 	src/EventAccessors.cpp
 	src/InviteesModel.cpp
 	src/JdenticonProvider.cpp
@@ -351,7 +356,6 @@ set(SRC_FILES
 	src/MatrixClient.cpp
 	src/MemberList.cpp
 	src/MxcImageProvider.cpp
-	src/Olm.cpp
 	src/ReadReceiptsModel.cpp
 	src/RegisterPage.cpp
 	src/SSOHandler.cpp
@@ -364,8 +368,6 @@ set(SRC_FILES
 	src/RoomDirectoryModel.cpp
 	src/RoomsModel.cpp
 	src/Utils.cpp
-	src/SelfVerificationStatus.cpp
-	src/WebRTCSession.cpp
 	src/WelcomePage.cpp
 	src/main.cpp
 
@@ -542,19 +544,24 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/UIA.h
 	src/ui/UserProfile.h
 
+	src/voip/CallDevices.h
+	src/voip/CallManager.h
+	src/voip/WebRTCSession.h
+
+	src/encryption/SelfVerificationStatus.h
+	src/encryption/DeviceVerificationFlow.h
+	src/encryption/Olm.h
+
 	src/notifications/Manager.h
 
 	src/AvatarProvider.h
 	src/BlurhashProvider.h
 	src/CacheCryptoStructs.h
 	src/Cache_p.h
-	src/CallDevices.h
-	src/CallManager.h
 	src/ChatPage.h
 	src/Clipboard.h
 	src/CombinedImagePackModel.h
 	src/CompletionProxyModel.h
-	src/DeviceVerificationFlow.h
 	src/ImagePackListModel.h
 	src/InviteesModel.h
 	src/JdenticonProvider.h
@@ -562,7 +569,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/MainWindow.h
 	src/MemberList.h
 	src/MxcImageProvider.h
-	src/Olm.h
 	src/RegisterPage.h
 	src/RoomsModel.h
 	src/SSOHandler.h
@@ -572,8 +578,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/UsersModel.h
 	src/RoomDirectoryModel.h
 	src/RoomsModel.h
-	src/SelfVerificationStatus.h
-	src/WebRTCSession.h
 	src/WelcomePage.h
 	src/ReadReceiptsModel.h
 )

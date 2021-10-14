@@ -17,16 +17,16 @@
 #include <mtx/responses/sync.hpp>
 
 #include "Cache.h"
-#include "CallManager.h"
 #include "JdenticonProvider.h"
 #include "Logging.h"
 #include "TimelineModel.h"
 #include "Utils.h"
-#include "WebRTCSession.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
 #include "timeline/CommunitiesModel.h"
 #include "timeline/RoomlistModel.h"
+#include "voip/CallManager.h"
+#include "voip/WebRTCSession.h"
 
 class MxcImageProvider;
 class BlurhashProvider;
