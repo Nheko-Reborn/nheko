@@ -91,7 +91,7 @@ ApplicationWindow {
 
                         folder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
                         fileMode: FileDialog.OpenFiles
-                        nameFilters: [qsTr("Stickers (*.png *.webp *.gif)")]
+                        nameFilters: [qsTr("Stickers (*.png *.webp *.gif *.jpg *.jpeg)")]
                         onAccepted: imagePack.addStickers(files)
                     }
 

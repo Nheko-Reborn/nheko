@@ -618,8 +618,8 @@
     </message>
     <message>
         <location line="+7"/>
-        <source>Stickers (*.png *.webp *.gif)</source>
-        <translation>സ്റ്റിക്കറുകൾ(*.png *.webp *.gif)</translation>
+        <source>Stickers (*.png *.webp *.gif *.jpg *.jpeg)</source>
+        <translation>സ്റ്റിക്കറുകൾ(*.png *.webp *.gif *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+60"/>
