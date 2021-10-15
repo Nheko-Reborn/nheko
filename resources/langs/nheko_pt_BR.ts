@@ -618,7 +618,7 @@
     </message>
     <message>
         <location line="+7"/>
-        <source>Stickers (*.png *.webp *.gif)</source>
+        <source>Stickers (*.png *.webp *.gif *.jpg *.jpeg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
