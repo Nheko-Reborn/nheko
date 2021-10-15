@@ -338,9 +338,9 @@ void
 UserProfile::verify(QString device)
 {
     if (!device.isEmpty())
-        manager->verifyDevice(userid_, device);
+        manager->verificationManager()->verifyDevice(userid_, device);
     else {
-        manager->verifyUser(userid_);
+        manager->verificationManager()->verifyUser(userid_);
     }
 }
 

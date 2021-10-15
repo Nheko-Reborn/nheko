@@ -9,7 +9,6 @@
 #include <QQuickTextDocument>
 #include <QQuickView>
 #include <QQuickWidget>
-#include <QSharedPointer>
 #include <QWidget>
 
 #include <mtx/common.hpp>
@@ -23,6 +22,7 @@
 #include "Utils.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
+#include "encryption/VerificationManager.h"
 #include "timeline/CommunitiesModel.h"
 #include "timeline/RoomlistModel.h"
 #include "voip/CallManager.h"
@@ -33,7 +33,6 @@ class BlurhashProvider;
 class ColorImageProvider;
 class UserSettings;
 class ChatPage;
-class DeviceVerificationFlow;
 class ImagePackListModel;
 
 class TimelineViewManager : public QObject
@@ -53,6 +52,7 @@ public:
 
     MxcImageProvider *imageProvider() { return imgProvider; }
     CallManager *callManager() { return callManager_; }
+    VerificationManager *verificationManager() { return verificationManager_; }
 
     void clearAll() { rooms_->clear(); }
 
@@ -73,19 +73,14 @@ public:
     Q_INVOKABLE void openGlobalUserProfile(QString userId);
 
     Q_INVOKABLE void focusMessageInput();
-    Q_INVOKABLE void removeVerificationFlow(DeviceVerificationFlow *flow);
 
     Q_INVOKABLE void fixImageRendering(QQuickTextDocument *t, QQuickItem *i);
-
-    void verifyUser(QString userid);
-    void verifyDevice(QString userid, QString deviceid);
 
 signals:
     void activeTimelineChanged(TimelineModel *timeline);
     void initialSyncChanged(bool isInitialSync);
     void replyingEventChanged(QString replyingEvent);
     void replyClosed();
-    void newDeviceVerificationRequest(DeviceVerificationFlow *flow);
     void inviteUsers(QString roomId, QStringList users);
     void showRoomList();
     void narrowViewChanged();
@@ -142,17 +137,17 @@ private:
     BlurhashProvider *blurhashProvider;
     JdenticonProvider *jdenticonProvider;
 
-    CallManager *callManager_ = nullptr;
-
     bool isInitialSync_   = true;
     bool isWindowFocused_ = false;
 
     RoomlistModel *rooms_          = nullptr;
     CommunitiesModel *communities_ = nullptr;
 
-    QHash<QString, QColor> userColors;
+    // don't move this above the rooms_
+    CallManager *callManager_                 = nullptr;
+    VerificationManager *verificationManager_ = nullptr;
 
-    QHash<QString, QSharedPointer<DeviceVerificationFlow>> dvList;
+    QHash<QString, QColor> userColors;
 };
 Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationAccept)
 Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationCancel)

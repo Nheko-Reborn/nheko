@@ -12,7 +12,7 @@ ApplicationWindow {
 
     property var flow
 
-    onClosing: TimelineManager.removeVerificationFlow(flow)
+    onClosing: VerificationManager.removeVerificationFlow(flow)
     title: stack.currentItem.title
     modality: Qt.NonModal
     palette: Nheko.colors

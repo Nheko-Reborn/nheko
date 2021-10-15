@@ -336,6 +336,7 @@ set(SRC_FILES
 	src/encryption/DeviceVerificationFlow.cpp
 	src/encryption/Olm.cpp
 	src/encryption/SelfVerificationStatus.cpp
+	src/encryption/VerificationManager.cpp
 
 	# Generic notification stuff
 	src/notifications/Manager.cpp
@@ -548,9 +549,10 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/voip/CallManager.h
 	src/voip/WebRTCSession.h
 
-	src/encryption/SelfVerificationStatus.h
 	src/encryption/DeviceVerificationFlow.h
 	src/encryption/Olm.h
+	src/encryption/SelfVerificationStatus.h
+	src/encryption/VerificationManager.h
 
 	src/notifications/Manager.h
 

@@ -178,6 +178,10 @@ Page {
             dialog.show();
         }
 
+        target: VerificationManager
+    }
+
+    Connections {
         function onOpenProfile(profile) {
             var userProfile = userProfileComponent.createObject(timelineRoot, {
                 "profile": profile
