@@ -16,6 +16,7 @@
 #include "mtx/responses/crypto.hpp"
 #include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"
+#include "ui/UIA.h"
 
 UserProfile::UserProfile(QString roomid,
                          QString userid,
@@ -138,6 +139,27 @@ UserProfile::isSelf() const
 }
 
 void
+UserProfile::signOutDevice(const QString &deviceID)
+{
+    http::client()->delete_device(
+      deviceID.toStdString(),
+      UIA::instance()->genericHandler(tr("Sign out device %1").arg(deviceID)),
+      [this, deviceID](mtx::http::RequestErr e) {
+          if (e) {
+              nhlog::ui()->critical("Failure when attempting to sign out device {}",
+                                    deviceID.toStdString());
+              return;
+          }
+          nhlog::ui()->info("Device {} successfully signed out!", deviceID.toStdString());
+          // This is us. Let's update the interface accordingly
+          if (isSelf() && deviceID.toStdString() == ::http::client()->device_id()) {
+              ChatPage::instance()->dropToLoginPageCb(tr("You signed out this device."));
+          }
+          refreshDevices();
+      });
+}
+
+void
 UserProfile::refreshDevices()
 {
     cache::client()->markUserKeysOutOfDate({this->userid_.toStdString()});
@@ -219,6 +241,47 @@ UserProfile::updateVerificationStatus()
         deviceInfo.push_back({QString::fromStdString(d.first),
                               QString::fromStdString(device.unsigned_info.device_display_name),
                               verified});
+    }
+
+    // For self, also query devices without keys
+    if (isSelf()) {
+        http::client()->query_devices(
+          [this, deviceInfo](const mtx::responses::QueryDevices &allDevs,
+                             mtx::http::RequestErr err) mutable {
+              if (err) {
+                  nhlog::net()->warn("failed to query devices: {} {}",
+                                     err->matrix_error.error,
+                                     static_cast<int>(err->status_code));
+                  this->deviceList_.queueReset(std::move(deviceInfo));
+                  emit devicesChanged();
+                  return;
+              }
+              for (const auto &d : allDevs.devices) {
+                  // First, check if we already have an entry for this device
+                  bool found = false;
+                  for (auto &e : deviceInfo) {
+                      if (e.device_id.toStdString() == d.device_id) {
+                          found = true;
+                          // Gottem! Let's fill in the blanks
+                          e.lastIp = QString::fromStdString(d.last_seen_ip);
+                          e.lastTs = d.last_seen_ts;
+                          break;
+                      }
+                  }
+                  // No entry? Let's add one.
+                  if (!found) {
+                      deviceInfo.push_back({QString::fromStdString(d.device_id),
+                                            QString::fromStdString(d.display_name),
+                                            verification::NOT_APPLICABLE,
+                                            QString::fromStdString(d.last_seen_ip),
+                                            d.last_seen_ts});
+                  }
+              }
+
+              this->deviceList_.queueReset(std::move(deviceInfo));
+              emit devicesChanged();
+          });
+        return;
     }
 
     this->deviceList_.queueReset(std::move(deviceInfo));

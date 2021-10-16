@@ -21,7 +21,8 @@ enum Status
     SELF,
     VERIFIED,
     UNVERIFIED,
-    BLOCKED
+    BLOCKED,
+    NOT_APPLICABLE
 };
 Q_ENUM_NS(Status)
 }
@@ -35,10 +36,22 @@ class DeviceInfo
 public:
     DeviceInfo(const QString deviceID,
                const QString displayName,
+               verification::Status verification_status_,
+               const QString lastIp_,
+               const size_t lastTs_)
+      : device_id(deviceID)
+      , display_name(displayName)
+      , verification_status(verification_status_)
+      , lastIp(lastIp_)
+      , lastTs(lastTs_)
+    {}
+    DeviceInfo(const QString deviceID,
+               const QString displayName,
                verification::Status verification_status_)
       : device_id(deviceID)
       , display_name(displayName)
       , verification_status(verification_status_)
+      , lastTs(0)
     {}
     DeviceInfo()
       : verification_status(verification::UNVERIFIED)
@@ -48,6 +61,8 @@ public:
     QString display_name;
 
     verification::Status verification_status;
+    QString lastIp;
+    size_t lastTs;
 };
 
 class DeviceInfoModel : public QAbstractListModel
@@ -121,6 +136,7 @@ public:
     Q_INVOKABLE void fetchDeviceList(const QString &userID);
     Q_INVOKABLE void refreshDevices();
     Q_INVOKABLE void banUser();
+    Q_INVOKABLE void signOutDevice(const QString &deviceID);
     // Q_INVOKABLE void ignoreUser();
     Q_INVOKABLE void kickUser();
     Q_INVOKABLE void startChat();
