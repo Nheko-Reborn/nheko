@@ -310,6 +310,7 @@ ApplicationWindow {
             Image {
                 Layout.preferredHeight: 16
                 Layout.preferredWidth: 16
+                visible: verificationStatus != VerificationStatus.NOT_APPLICABLE
                 source: {
                     switch (verificationStatus) {
                     case VerificationStatus.VERIFIED:
@@ -335,6 +336,15 @@ ApplicationWindow {
                     else
                         profile.verify(deviceId);
                 }
+            }
+
+            ImageButton {
+              image: ":/icons/icons/ui/power-button-off.png"
+              hoverEnabled: true
+              ToolTip.visible: hovered
+              ToolTip.text: qsTr("Sign out this device.")
+              onClicked: profile.signOutDevice(deviceId)
+              visible: profile.isSelf
             }
 
         }
