@@ -35,7 +35,7 @@ Item {
                 Layout.margins: Nheko.paddingMedium
                 Layout.maximumWidth: (Overlay.overlay ? Overlay.overlay.width : 400) - Nheko.paddingMedium * 4
                 Layout.fillWidth: true
-                text: qsTr("This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don't share it with anyone and don't lose it! Don't go to start! Don't draw $200 from the bank!")
+                text: qsTr("This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don't share it with anyone and don't lose it! Do not pass go! Do not collect $200!")
                 color: Nheko.colors.text
                 wrapMode: Text.Wrap
             }
