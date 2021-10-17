@@ -631,8 +631,8 @@ DeviceVerificationFlow::sendVerificationRequest()
         req.to      = this->toClient.to_string();
         req.msgtype = "m.key.verification.request";
         req.body    = "User is requesting to verify keys with you. However, your client does "
-                      "not support this method, so you will need to use the legacy method of "
-                      "key verification.";
+                   "not support this method, so you will need to use the legacy method of "
+                   "key verification.";
     }
 
     send(req);

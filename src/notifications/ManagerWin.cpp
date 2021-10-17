@@ -100,16 +100,10 @@ NotificationsManager::systemPostNotification(const QString &line1,
     WinToast::instance()->showToast(templ, new CustomHandler());
 }
 
-void
-NotificationsManager::actionInvoked(uint, QString)
-{}
-void
-NotificationsManager::notificationReplied(uint, QString)
-{}
+void NotificationsManager::actionInvoked(uint, QString) {}
+void NotificationsManager::notificationReplied(uint, QString) {}
 
-void
-NotificationsManager::notificationClosed(uint, uint)
-{}
+void NotificationsManager::notificationClosed(uint, uint) {}
 
 void
 NotificationsManager::removeNotification(const QString &, const QString &)
