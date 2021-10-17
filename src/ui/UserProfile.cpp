@@ -62,6 +62,8 @@ DeviceInfoModel::roleNames() const
       {DeviceId, "deviceId"},
       {DeviceName, "deviceName"},
       {VerificationStatus, "verificationStatus"},
+      {LastIp, "lastIp"},
+      {LastTs, "lastTs"},
     };
 }
 
@@ -78,6 +80,10 @@ DeviceInfoModel::data(const QModelIndex &index, int role) const
         return deviceList_[index.row()].display_name;
     case VerificationStatus:
         return QVariant::fromValue(deviceList_[index.row()].verification_status);
+    case LastIp:
+        return deviceList_[index.row()].lastIp;
+    case LastTs:
+        return deviceList_[index.row()].lastTs;
     default:
         return {};
     }
@@ -332,6 +338,19 @@ UserProfile::changeUsername(QString username)
 
         updateRoomMemberState(std::move(member));
     }
+}
+
+void
+UserProfile::changeDeviceName(QString deviceID, QString deviceName)
+{
+    http::client()->set_device_name(
+      deviceID.toStdString(), deviceName.toStdString(), [this](mtx::http::RequestErr err) {
+          if (err) {
+              nhlog::net()->warn("could not change device name");
+              return;
+          }
+          refreshDevices();
+      });
 }
 
 void

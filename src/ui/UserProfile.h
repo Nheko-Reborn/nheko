@@ -62,7 +62,7 @@ public:
 
     verification::Status verification_status;
     QString lastIp;
-    size_t lastTs;
+    qlonglong lastTs;
 };
 
 class DeviceInfoModel : public QAbstractListModel
@@ -74,6 +74,8 @@ public:
         DeviceId,
         DeviceName,
         VerificationStatus,
+        LastIp,
+        LastTs,
     };
 
     explicit DeviceInfoModel(QObject *parent = nullptr)
@@ -141,6 +143,7 @@ public:
     Q_INVOKABLE void kickUser();
     Q_INVOKABLE void startChat();
     Q_INVOKABLE void changeUsername(QString username);
+    Q_INVOKABLE void changeDeviceName(QString deviceID, QString deviceName);
     Q_INVOKABLE void changeAvatar();
     Q_INVOKABLE void openGlobalProfile();
 
