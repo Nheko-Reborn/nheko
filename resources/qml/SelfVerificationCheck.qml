@@ -237,8 +237,8 @@ Item {
             console.log("STATUS CHANGED: " + SelfVerificationStatus.status);
             if (SelfVerificationStatus.status == SelfVerificationStatus.NoMasterKey)
                 bootstrapCrosssigning.open();
-            else if (SelfVerificationStatus.status == SelfVerificationStatus.UnverifiedMasterKey)
-                verifyMasterKey.open();
+//            else if (SelfVerificationStatus.status == SelfVerificationStatus.UnverifiedMasterKey)
+//                verifyMasterKey.open();
 
         }
 

@@ -45,4 +45,3 @@ private:
     bool isInitialSync_ = false;
     RoomlistModel *rooms_;
 };
-

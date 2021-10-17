@@ -1114,7 +1114,11 @@ WebRTCSession::haveLocalPiP() const
     return false;
 }
 
-bool WebRTCSession::createOffer(webrtc::CallType, uint32_t) { return false; }
+bool
+WebRTCSession::createOffer(webrtc::CallType, uint32_t)
+{
+    return false;
+}
 
 bool
 WebRTCSession::acceptOffer(const std::string &)
