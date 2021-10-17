@@ -61,7 +61,17 @@ Nheko::openLink(QString link) const
     QUrl url(link);
     // Open externally if we couldn't handle it internally
     if (!ChatPage::instance()->handleMatrixUri(url)) {
-        QDesktopServices::openUrl(url);
+        const QStringList allowedUrlSchemes = {
+          "http",
+          "https",
+          "mailto",
+        };
+
+        if (allowedUrlSchemes.contains(url.scheme()))
+            QDesktopServices::openUrl(url);
+        else
+            nhlog::ui()->warn("Url '{}' not opened, because the scheme is not in the allow list",
+                              url.toDisplayString().toStdString());
     }
 }
 void
