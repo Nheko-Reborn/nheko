@@ -7,6 +7,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import im.nheko 1.0
+import "./components/"
 
 Item {
     visible: false
@@ -80,31 +81,15 @@ Item {
         text: qsTr("Failed to setup encryption: %1").arg(errorMessage)
     }
 
-    Dialog {
+    MainWindowDialog {
         id: bootstrapCrosssigning
 
-        parent: Overlay.overlay
-        anchors.centerIn: parent
-        height: (Math.floor(parent.height / 2) - Nheko.paddingLarge) * 2
-        width: (Math.floor(parent.width / 2) - Nheko.paddingLarge) * 2
-        padding: 0
-        modal: true
-        standardButtons: Dialog.Ok | Dialog.Cancel
-        closePolicy: Popup.NoAutoClose
         onAccepted: SelfVerificationStatus.setupCrosssigning(storeSecretsOnline.checked, usePassword.checked ? passwordField.text : "", useOnlineKeyBackup.checked)
-
-        ScrollView {
-            id: scroll
-
-            clip: true
-            anchors.fill: parent
-            ScrollBar.horizontal.visible: false
-            ScrollBar.vertical.visible: true
 
             GridLayout {
                 id: grid
 
-                width: scroll.width - scroll.ScrollBar.vertical.width
+                width: bootstrapCrosssigning.useableWidth
                 columns: 2
                 rowSpacing: 0
                 columnSpacing: 0
@@ -222,7 +207,6 @@ Item {
 
             }
 
-        }
 
         background: Rectangle {
             color: Nheko.colors.window
@@ -233,11 +217,28 @@ Item {
 
     }
 
+    MainWindowDialog {
+        id: verifyMasterKey
+
+        onAccepted: SelfVerificationStatus.verifyMasterKey()
+
+        GridLayout {
+            id: masterGrid
+
+            width: verifyMasterKey.useableWidth
+            columns: 2
+            rowSpacing: 0
+            columnSpacing: 0
+        }
+    }
+
     Connections {
         function onStatusChanged() {
             console.log("STATUS CHANGED: " + SelfVerificationStatus.status);
             if (SelfVerificationStatus.status == SelfVerificationStatus.NoMasterKey)
                 bootstrapCrosssigning.open();
+            else if (SelfVerificationStatus.status == SelfVerificationStatus.UnverifiedMasterKey)
+                verifyMasterKey.open();
 
         }
 
