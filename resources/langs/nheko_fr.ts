@@ -2215,37 +2215,37 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+38"/>
         <source>Change avatar globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Changer l&apos;image de profil partout.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change avatar. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Changer l&apos;image de profil. Ne s&apos;appliquera qu&apos;à ce salon.</translation>
     </message>
     <message>
         <location line="+79"/>
         <source>Change display name globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Changer de surnom partout.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change display name. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Changer de surnom. Ne s&apos;appliquera qu&apos;à ce salon.</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Salon : %1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ceci est un profil spécifique à un salon. Le surnom et l&apos;image de profil peuvent être différents de leurs versions globales.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Open the global profile for this user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir le profil global de cet utilisateur.</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2256,17 +2256,17 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="-72"/>
         <source>Start a private chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Démarrer une discussion privée.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Kick the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Expulser l&apos;utilisateur.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Ban the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bannir l&apos;utilisateur.</translation>
     </message>
     <message>
         <location line="+55"/>
