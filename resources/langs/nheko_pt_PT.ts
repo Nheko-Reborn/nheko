@@ -2390,13 +2390,14 @@ Only affects messages in encrypted chats.</source>
     <message>
         <location line="+2"/>
         <source>Privacy Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Ecrã de privacidade</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation type="unfinished"></translation>
+        <translation>Quando a janela perde a atenção, a cronologia 
+será desfocada.</translation>
     </message>
     <message>
         <location line="+2"/>
