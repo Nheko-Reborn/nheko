@@ -114,7 +114,7 @@ Rectangle {
                 case Crypto.Verified:
                     return qsTr("This room contains only verified devices.");
                 case Crypto.TOFU:
-                    return qsTr("This rooms contain verified devices and devices which have never changed their master key.");
+                    return qsTr("This room contains verified devices and devices which have never changed their master key.");
                 default:
                     return qsTr("This room contains unverified devices!");
                 }
