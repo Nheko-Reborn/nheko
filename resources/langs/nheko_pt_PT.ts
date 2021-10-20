@@ -2402,14 +2402,16 @@ será desfocada.</translation>
     <message>
         <location line="+2"/>
         <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo de inatividade para ecrã de privacidade (em segundos [0 - 3600])</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation>Definir tempo (em segundos) depois da janela perder a 
+atenção até que o ecrã seja desfocado.
+Defina como 0 para desfocar imediatamente após perder a atenção. Valor máximo de 1 hora (3600 segundos)</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2434,41 +2436,45 @@ Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds
     <message>
         <location line="+2"/>
         <source>Typing notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notificações de escrita</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar quem está a escrever numa sala.
+Irá também ativar ou desativar o envio de notificações de escrita para outros.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Sort rooms by unreads</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordenar salas por não lidas</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exibe salas com novas mensagens primeiro.
+Se desativada, a lista de salas será apenas ordenada pela data da última mensagem de cada sala.
+Se ativada, salas com notificações ativas (pequeno círculo com um número dentro) serão ordenadas no topo. Salas silenciadas continuarão a ser ordenadas por data, visto que não são consideradas tão importantes como as outras.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Recibos de leitura</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar se a sua mensagem foi lida.
+Estado exibido ao lado da data.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar mensagens como Markdown</translation>
     </message>
     <message>
         <location line="+2"/>
