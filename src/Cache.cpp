@@ -3420,9 +3420,15 @@ Cache::updateSpaces(lmdb::txn &txn,
                 spacesParentsDb_.put(txn, event.state_key, space);
             }
         }
+
+        for (const auto &r : getRoomIds(txn)) {
+            if (auto parent = getStateEvent<mtx::events::state::space::Parent>(txn, r, space)) {
+                rooms_with_updates.insert(r);
+            }
+        }
     }
 
-    const auto space_event_type = to_string(mtx::events::EventType::RoomPowerLevels);
+    const auto space_event_type = to_string(mtx::events::EventType::SpaceChild);
 
     for (const auto &room : rooms_with_updates) {
         for (const auto &event :
@@ -3440,6 +3446,13 @@ Cache::updateSpaces(lmdb::txn &txn,
                     pls->content.state_level(space_event_type)) {
                     spacesChildrenDb_.put(txn, space, room);
                     spacesParentsDb_.put(txn, room, space);
+                } else {
+                    nhlog::db()->debug("Skipping {} in {} because of missing PL. {}: {} < {}",
+                                       room,
+                                       space,
+                                       event.sender,
+                                       pls->content.user_level(event.sender),
+                                       pls->content.state_level(space_event_type));
                 }
             }
         }
