@@ -281,6 +281,8 @@ ApplicationWindow {
             required property int verificationStatus
             required property string deviceId
             required property string deviceName
+            required property string lastIp
+            required property var lastTs
 
             width: devicelist.width
             spacing: 4
@@ -288,21 +290,90 @@ ApplicationWindow {
             ColumnLayout {
                 spacing: 0
 
-                Text {
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignLeft
-                    elide: Text.ElideRight
-                    font.bold: true
-                    color: Nheko.colors.text
-                    text: deviceId
+                RowLayout {
+                    Text {
+                        Layout.fillWidth: true
+                        Layout.alignment: Qt.AlignLeft
+                        elide: Text.ElideRight
+                        font.bold: true
+                        color: Nheko.colors.text
+                        text: deviceId
+                    }
+
+                    Image {
+                        Layout.preferredHeight: 16
+                        Layout.preferredWidth: 16
+                        visible: profile.isSelf && verificationStatus != VerificationStatus.NOT_APPLICABLE
+                        source: {
+                            switch (verificationStatus) {
+                            case VerificationStatus.VERIFIED:
+                                return "image://colorimage/:/icons/icons/ui/lock.png?green";
+                            case VerificationStatus.UNVERIFIED:
+                                return "image://colorimage/:/icons/icons/ui/unlock.png?yellow";
+                            case VerificationStatus.SELF:
+                                return "image://colorimage/:/icons/icons/ui/checkmark.png?green";
+                            default:
+                                return "image://colorimage/:/icons/icons/ui/unlock.png?red";
+                            }
+                        }
+                    }
+
+                    ImageButton {
+                      Layout.alignment: Qt.AlignTop
+                      image: ":/icons/icons/ui/power-button-off.png"
+                      hoverEnabled: true
+                      ToolTip.visible: hovered
+                      ToolTip.text: qsTr("Sign out this device.")
+                      onClicked: profile.signOutDevice(deviceId)
+                      visible: profile.isSelf
+                    }
+                }
+
+                RowLayout {
+                    id: deviceNameRow
+                    property bool isEditingAllowed
+
+                    TextInput {
+                        id: deviceNameField
+                        readOnly: !deviceNameRow.isEditingAllowed
+                        text: deviceName
+                        color: Nheko.colors.text
+                        Layout.alignment: Qt.AlignLeft
+                        Layout.fillWidth: true
+                        selectByMouse: true
+                        onAccepted: {
+                            profile.changeDeviceName(deviceId, deviceNameField.text);
+                            deviceNameRow.isEditingAllowed = false;
+                        }
+                    }
+
+                    ImageButton {
+                        visible: profile.isSelf
+                        hoverEnabled: true
+                        ToolTip.visible: hovered
+                        ToolTip.text: qsTr("Change device name.")
+                        image: deviceNameRow.isEditingAllowed ? ":/icons/icons/ui/checkmark.png" : ":/icons/icons/ui/edit.png"
+                        onClicked: {
+                            if (deviceNameRow.isEditingAllowed) {
+                                profile.changeDeviceName(deviceId, deviceNameField.text);
+                                deviceNameRow.isEditingAllowed = false;
+                            } else {
+                                deviceNameRow.isEditingAllowed = true;
+                                deviceNameField.focus = true;
+                                deviceNameField.selectAll();
+                            }
+                        }
+                    }
+
                 }
 
                 Text {
+                    visible: profile.isSelf
                     Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignRight
+                    Layout.alignment: Qt.AlignLeft
                     elide: Text.ElideRight
                     color: Nheko.colors.text
-                    text: deviceName
+                    text: qsTr("Last seen %1 from %2").arg(new Date(lastTs).toLocaleString(Locale.ShortFormat)).arg(lastIp?lastIp:"???")
                 }
 
             }
@@ -310,7 +381,7 @@ ApplicationWindow {
             Image {
                 Layout.preferredHeight: 16
                 Layout.preferredWidth: 16
-                visible: verificationStatus != VerificationStatus.NOT_APPLICABLE
+                visible: !profile.isSelf && verificationStatus != VerificationStatus.NOT_APPLICABLE
                 source: {
                     switch (verificationStatus) {
                     case VerificationStatus.VERIFIED:
@@ -338,14 +409,7 @@ ApplicationWindow {
                 }
             }
 
-            ImageButton {
-              image: ":/icons/icons/ui/power-button-off.png"
-              hoverEnabled: true
-              ToolTip.visible: hovered
-              ToolTip.text: qsTr("Sign out this device.")
-              onClicked: profile.signOutDevice(deviceId)
-              visible: profile.isSelf
-            }
+
 
         }
 
