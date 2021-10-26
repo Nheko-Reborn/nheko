@@ -3127,10 +3127,5 @@ Mediagrootte: %2
 </context>
 <context>
     <name></name>
-    <message>
-        <location line="+43"/>
-        <source>&amp;Go to quoted message</source>
-        <translation>&amp;Ga naar geciteerd bericht</translation>
-    </message>
 </context>
 </TS>
