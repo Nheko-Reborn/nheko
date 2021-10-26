@@ -841,7 +841,7 @@ Jika Nheko gagal menemukan homeserver Anda, Nheko akan menampilkan kolom untuk m
         <location line="+1"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
-        <translation>Alamat yang dapat digunakan untuk mengkontak API client homeserver Anda.
+        <translation>Alamat yang dapat digunakan untuk menghubungi API klien homeserver Anda.
 Misalnya: https://server.my:8787</translation>
     </message>
     <message>
@@ -2356,12 +2356,12 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+27"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation>Membiarkan aplikasi berjalan di latar belakang setelah menutup jendela client.</translation>
+        <translation>Membiarkan aplikasi berjalan di latar belakang setelah menutup jendela klien.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation>Mulai aplikasinya di latar belakang tanpa menunjukkan jendela clientnya.</translation>
+        <translation>Mulai aplikasinya di latar belakang tanpa menunjukkan jendela kliennya.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2496,7 +2496,7 @@ Ketika dinonaktifkan, semua pesan akan dikirim sebagai teks biasa.</translation>
     <message>
         <location line="+2"/>
         <source>Notify about received message when the client is not currently focused.</source>
-        <translation>Memberitahukan tentang pesan yang diterima ketika clientnya tidak difokuskan.</translation>
+        <translation>Memberitahukan tentang pesan yang diterima ketika kliennya tidak difokuskan.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2831,7 +2831,7 @@ Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</transla
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+34"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation>Selamat datang ke nheko! Sebuah client desktop untuk protokol Matrix.</translation>
+        <translation>Selamat datang di nheko! Sebuah klien desktop untuk protokol Matrix.</translation>
     </message>
     <message>
         <location line="+1"/>
