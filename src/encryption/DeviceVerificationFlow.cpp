@@ -32,12 +32,15 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                                DeviceVerificationFlow::Type flow_type,
                                                TimelineModel *model,
                                                QString userID,
-                                               QString deviceId_)
+                                               std::vector<QString> deviceIds_)
   : sender(false)
   , type(flow_type)
-  , deviceId(deviceId_)
+  , deviceIds(std::move(deviceIds_))
   , model_(model)
 {
+    if (deviceIds.size() == 1)
+        deviceId = deviceIds.front();
+
     timeout = new QTimer(this);
     timeout->setSingleShot(true);
     this->sas           = olm::client()->sas_init();
@@ -346,33 +349,62 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
           }
       });
 
-    connect(ChatPage::instance(),
-            &ChatPage::receivedDeviceVerificationReady,
-            this,
-            [this](const mtx::events::msg::KeyVerificationReady &msg) {
-                nhlog::crypto()->info("verification: received ready");
-                if (!sender) {
-                    if (msg.from_device != http::client()->device_id()) {
-                        error_ = User;
-                        emit errorChanged();
-                        setState(Failed);
-                    }
+    connect(
+      ChatPage::instance(),
+      &ChatPage::receivedDeviceVerificationReady,
+      this,
+      [this](const mtx::events::msg::KeyVerificationReady &msg) {
+          nhlog::crypto()->info("verification: received ready");
+          if (!sender) {
+              if (msg.from_device != http::client()->device_id()) {
+                  error_ = User;
+                  emit errorChanged();
+                  setState(Failed);
+              }
 
-                    return;
-                }
+              return;
+          }
 
-                if (msg.transaction_id.has_value()) {
-                    if (msg.transaction_id.value() != this->transaction_id)
-                        return;
-                } else if (msg.relations.references()) {
-                    if (msg.relations.references() != this->relation.event_id)
-                        return;
-                    else {
-                        this->deviceId = QString::fromStdString(msg.from_device);
-                    }
-                }
-                this->startVerificationRequest();
-            });
+          if (msg.transaction_id.has_value()) {
+              if (msg.transaction_id.value() != this->transaction_id)
+                  return;
+
+              if (this->deviceId.isEmpty() && this->deviceIds.size() > 1) {
+                  auto from = QString::fromStdString(msg.from_device);
+                  if (std::find(deviceIds.begin(), deviceIds.end(), from) != deviceIds.end()) {
+                      mtx::events::msg::KeyVerificationCancel req{};
+                      req.code           = "m.user";
+                      req.reason         = "accepted by other device";
+                      req.transaction_id = this->transaction_id;
+                      mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationCancel> body;
+
+                      for (const auto &d : this->deviceIds) {
+                          if (d != from)
+                              body[this->toClient][d.toStdString()] = req;
+                      }
+
+                      http::client()->send_to_device(
+                        http::client()->generate_txn_id(), body, [](mtx::http::RequestErr err) {
+                            if (err)
+                                nhlog::net()->warn(
+                                  "failed to send verification to_device message: {} {}",
+                                  err->matrix_error.error,
+                                  static_cast<int>(err->status_code));
+                        });
+
+                      this->deviceId  = from;
+                      this->deviceIds = {from};
+                  }
+              }
+          } else if (msg.relations.references()) {
+              if (msg.relations.references() != this->relation.event_id)
+                  return;
+              else {
+                  this->deviceId = QString::fromStdString(msg.from_device);
+              }
+          }
+          this->startVerificationRequest();
+      });
 
     connect(ChatPage::instance(),
             &ChatPage::receivedDeviceVerificationDone,
@@ -782,7 +814,7 @@ DeviceVerificationFlow::NewInRoomVerification(QObject *parent_,
                                  Type::RoomMsg,
                                  timelineModel_,
                                  other_user_,
-                                 QString::fromStdString(msg.from_device)));
+                                 {QString::fromStdString(msg.from_device)}));
 
     flow->setEventId(event_id_.toStdString());
 
@@ -801,7 +833,7 @@ DeviceVerificationFlow::NewToDeviceVerification(QObject *parent_,
                                                 QString txn_id_)
 {
     QSharedPointer<DeviceVerificationFlow> flow(new DeviceVerificationFlow(
-      parent_, Type::ToDevice, nullptr, other_user_, QString::fromStdString(msg.from_device)));
+      parent_, Type::ToDevice, nullptr, other_user_, {QString::fromStdString(msg.from_device)}));
     flow->transaction_id = txn_id_.toStdString();
 
     if (std::find(msg.methods.begin(),
@@ -819,7 +851,7 @@ DeviceVerificationFlow::NewToDeviceVerification(QObject *parent_,
                                                 QString txn_id_)
 {
     QSharedPointer<DeviceVerificationFlow> flow(new DeviceVerificationFlow(
-      parent_, Type::ToDevice, nullptr, other_user_, QString::fromStdString(msg.from_device)));
+      parent_, Type::ToDevice, nullptr, other_user_, {QString::fromStdString(msg.from_device)}));
     flow->transaction_id = txn_id_.toStdString();
 
     flow->handleStartMessage(msg, "");
@@ -832,15 +864,19 @@ DeviceVerificationFlow::InitiateUserVerification(QObject *parent_,
                                                  QString userid)
 {
     QSharedPointer<DeviceVerificationFlow> flow(
-      new DeviceVerificationFlow(parent_, Type::RoomMsg, timelineModel_, userid, ""));
+      new DeviceVerificationFlow(parent_, Type::RoomMsg, timelineModel_, userid, {}));
     flow->sender = true;
     return flow;
 }
 QSharedPointer<DeviceVerificationFlow>
-DeviceVerificationFlow::InitiateDeviceVerification(QObject *parent_, QString userid, QString device)
+DeviceVerificationFlow::InitiateDeviceVerification(QObject *parent_,
+                                                   QString userid,
+                                                   std::vector<QString> devices)
 {
+    assert(!devices.empty());
+
     QSharedPointer<DeviceVerificationFlow> flow(
-      new DeviceVerificationFlow(parent_, Type::ToDevice, nullptr, userid, device));
+      new DeviceVerificationFlow(parent_, Type::ToDevice, nullptr, userid, devices));
 
     flow->sender         = true;
     flow->transaction_id = http::client()->generate_txn_id();

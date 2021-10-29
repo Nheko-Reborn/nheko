@@ -93,6 +93,7 @@ Item {
                 columns: 2
                 rowSpacing: 0
                 columnSpacing: 0
+            z: 1
 
                 Label {
                     Layout.margins: Nheko.paddingMedium
@@ -220,15 +221,53 @@ Item {
     MainWindowDialog {
         id: verifyMasterKey
 
-        onAccepted: SelfVerificationStatus.verifyMasterKey()
+        standardButtons: Dialog.Cancel
 
         GridLayout {
             id: masterGrid
 
             width: verifyMasterKey.useableWidth
-            columns: 2
-            rowSpacing: 0
-            columnSpacing: 0
+            columns: 1
+            z: 1
+
+                Label {
+                    Layout.margins: Nheko.paddingMedium
+                    Layout.alignment: Qt.AlignHCenter
+                    //Layout.columnSpan: 2
+                    font.pointSize: fontMetrics.font.pointSize * 2
+                    text: qsTr("Activate Encryption")
+                    color: Nheko.colors.text
+                    wrapMode: Text.Wrap
+                }
+
+                Label {
+                    Layout.margins: Nheko.paddingMedium
+                    Layout.alignment: Qt.AlignLeft
+                    //Layout.columnSpan: 2
+                    Layout.maximumWidth: grid.width - Nheko.paddingMedium * 2
+                    text: qsTr("It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.\nIf you choose verify, you need to have the other device available. If you choose \"enter passphrase\", you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.")
+                    color: Nheko.colors.text
+                    wrapMode: Text.Wrap
+                }
+
+        FlatButton {
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("verify")
+            onClicked: {
+                console.log("AAAAA");
+                SelfVerificationStatus.verifyMasterKey();
+                verifyMasterKey.close();
+            }
+        }
+        FlatButton {
+            visible: SelfVerificationStatus.hasSSSS
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("enter passphrase")
+            onClicked: {
+                SelfVerificationStatus.verifyMasterKeyWithPassphrase()
+                verifyMasterKey.close();
+            }
+        }
         }
     }
 
@@ -237,8 +276,8 @@ Item {
             console.log("STATUS CHANGED: " + SelfVerificationStatus.status);
             if (SelfVerificationStatus.status == SelfVerificationStatus.NoMasterKey)
                 bootstrapCrosssigning.open();
-//            else if (SelfVerificationStatus.status == SelfVerificationStatus.UnverifiedMasterKey)
-//                verifyMasterKey.open();
+            else if (SelfVerificationStatus.status == SelfVerificationStatus.UnverifiedMasterKey)
+                verifyMasterKey.open();
 
         }
 

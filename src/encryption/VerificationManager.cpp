@@ -120,7 +120,16 @@ VerificationManager::removeVerificationFlow(DeviceVerificationFlow *flow)
 void
 VerificationManager::verifyDevice(QString userid, QString deviceid)
 {
-    auto flow = DeviceVerificationFlow::InitiateDeviceVerification(this, userid, deviceid);
+    auto flow = DeviceVerificationFlow::InitiateDeviceVerification(this, userid, {deviceid});
+    this->dvList[flow->transactionId()] = flow;
+    emit newDeviceVerificationRequest(flow.data());
+}
+
+void
+VerificationManager::verifyOneOfDevices(QString userid, std::vector<QString> deviceids)
+{
+    auto flow =
+      DeviceVerificationFlow::InitiateDeviceVerification(this, userid, std::move(deviceids));
     this->dvList[flow->transactionId()] = flow;
     emit newDeviceVerificationRequest(flow.data());
 }

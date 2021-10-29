@@ -5,10 +5,12 @@
 #include "SelfVerificationStatus.h"
 
 #include "Cache_p.h"
+#include "ChatPage.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "Olm.h"
+#include "timeline/TimelineViewManager.h"
 #include "ui/UIA.h"
 
 #include <mtx/responses/common.hpp>
@@ -196,6 +198,35 @@ void
 SelfVerificationStatus::verifyMasterKey()
 {
     nhlog::db()->info("Clicked verify master key");
+
+    const auto this_user = http::client()->user_id().to_string();
+
+    auto keys        = cache::client()->userKeys(this_user);
+    const auto &sigs = keys->master_keys.signatures[this_user];
+
+    std::vector<QString> devices;
+    for (const auto &[dev, sig] : sigs) {
+        (void)sig;
+
+        auto d = QString::fromStdString(dev);
+        if (d.startsWith("ed25519:")) {
+            d.remove("ed25519:");
+
+            if (keys->device_keys.count(d.toStdString()))
+                devices.push_back(std::move(d));
+        }
+    }
+
+    if (!devices.empty())
+        ChatPage::instance()->timelineManager()->verificationManager()->verifyOneOfDevices(
+          QString::fromStdString(this_user), std::move(devices));
+}
+
+void
+SelfVerificationStatus::verifyMasterKeyWithPassphrase()
+{
+    nhlog::db()->info("Clicked verify master key with passphrase");
+    olm::download_cross_signing_keys();
 }
 
 void
@@ -207,9 +238,15 @@ SelfVerificationStatus::verifyUnverifiedDevices()
 void
 SelfVerificationStatus::invalidate()
 {
+    using namespace mtx::secret_storage;
+
     nhlog::db()->info("Invalidating self verification status");
+    this->hasSSSS_ = false;
+    emit hasSSSSChanged();
+
     auto keys = cache::client()->userKeys(http::client()->user_id().to_string());
-    if (!keys) {
+    if (!keys || keys->device_keys.find(http::client()->device_id()) == keys->device_keys.end()) {
+        cache::client()->markUserKeysOutOfDate({http::client()->user_id().to_string()});
         cache::client()->query_keys(http::client()->user_id().to_string(),
                                     [](const UserKeyCache &, mtx::http::RequestErr) {});
         return;
@@ -222,6 +259,14 @@ SelfVerificationStatus::invalidate()
         }
         return;
     }
+
+    http::client()->secret_storage_secret(secrets::cross_signing_self_signing,
+                                          [this](Secret secret, mtx::http::RequestErr err) {
+                                              if (!err && !secret.encrypted.empty()) {
+                                                  this->hasSSSS_ = true;
+                                                  emit hasSSSSChanged();
+                                              }
+                                          });
 
     auto verifStatus = cache::client()->verificationStatus(http::client()->user_id().to_string());
 

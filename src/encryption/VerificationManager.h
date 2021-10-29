@@ -27,6 +27,7 @@ public:
     Q_INVOKABLE void removeVerificationFlow(DeviceVerificationFlow *flow);
     void verifyUser(QString userid);
     void verifyDevice(QString userid, QString deviceid);
+    void verifyOneOfDevices(QString userid, std::vector<QString> deviceids);
 
 signals:
     void newDeviceVerificationRequest(DeviceVerificationFlow *flow);

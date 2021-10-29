@@ -1131,11 +1131,71 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
         return;
     }
 
+    auto deviceKeys = cache::client()->userKeys(http::client()->user_id().to_string());
+    mtx::requests::KeySignaturesUpload req;
+
     for (const auto &[secretName, encryptedSecret] : secrets) {
         auto decrypted = mtx::crypto::decrypt(encryptedSecret, *decryptionKey, secretName);
-        if (!decrypted.empty())
+        if (!decrypted.empty()) {
             cache::storeSecret(secretName, decrypted);
+
+            if (deviceKeys &&
+                secretName == mtx::secret_storage::secrets::cross_signing_self_signing) {
+                auto myKey = deviceKeys->device_keys.at(http::client()->device_id());
+                if (myKey.user_id == http::client()->user_id().to_string() &&
+                    myKey.device_id == http::client()->device_id() &&
+                    myKey.keys["ed25519:" + http::client()->device_id()] ==
+                      olm::client()->identity_keys().ed25519 &&
+                    myKey.keys["curve25519:" + http::client()->device_id()] ==
+                      olm::client()->identity_keys().curve25519) {
+                    json j = myKey;
+                    j.erase("signatures");
+                    j.erase("unsigned");
+
+                    auto ssk = mtx::crypto::PkSigning::from_seed(decrypted);
+                    myKey.signatures[http::client()->user_id().to_string()]
+                                    ["ed25519:" + ssk.public_key()] = ssk.sign(j.dump());
+                    req.signatures[http::client()->user_id().to_string()]
+                                  [http::client()->device_id()] = myKey;
+                }
+            } else if (deviceKeys &&
+                       secretName == mtx::secret_storage::secrets::cross_signing_master) {
+                auto mk = mtx::crypto::PkSigning::from_seed(decrypted);
+
+                if (deviceKeys->master_keys.user_id == http::client()->user_id().to_string() &&
+                    deviceKeys->master_keys.keys["ed25519:" + mk.public_key()] == mk.public_key()) {
+                    json j = deviceKeys->master_keys;
+                    j.erase("signatures");
+                    j.erase("unsigned");
+                    mtx::crypto::CrossSigningKeys master_key = j;
+                    master_key.signatures[http::client()->user_id().to_string()]
+                                         ["ed25519:" + http::client()->device_id()] =
+                      olm::client()->sign_message(j.dump());
+                    req.signatures[http::client()->user_id().to_string()][mk.public_key()] =
+                      master_key;
+                }
+            }
+        }
     }
+
+    if (!req.signatures.empty())
+        http::client()->keys_signatures_upload(
+          req, [](const mtx::responses::KeySignaturesUpload &res, mtx::http::RequestErr err) {
+              if (err) {
+                  nhlog::net()->error("failed to upload signatures: {},{}",
+                                      mtx::errors::to_string(err->matrix_error.errcode),
+                                      static_cast<int>(err->status_code));
+              }
+
+              for (const auto &[user_id, tmp] : res.errors)
+                  for (const auto &[key_id, e] : tmp)
+                      nhlog::net()->error("signature error for user '{}' and key "
+                                          "id {}: {}, {}",
+                                          user_id,
+                                          key_id,
+                                          mtx::errors::to_string(e.errcode),
+                                          e.error);
+          });
 }
 
 void

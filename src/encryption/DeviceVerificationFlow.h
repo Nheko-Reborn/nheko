@@ -120,9 +120,8 @@ public:
       QString txn_id_);
     static QSharedPointer<DeviceVerificationFlow>
     InitiateUserVerification(QObject *parent_, TimelineModel *timelineModel_, QString userid);
-    static QSharedPointer<DeviceVerificationFlow> InitiateDeviceVerification(QObject *parent,
-                                                                             QString userid,
-                                                                             QString device);
+    static QSharedPointer<DeviceVerificationFlow>
+    InitiateDeviceVerification(QObject *parent, QString userid, std::vector<QString> devices);
 
     // getters
     QString state();
@@ -161,7 +160,7 @@ private:
                            DeviceVerificationFlow::Type flow_type,
                            TimelineModel *model,
                            QString userID,
-                           QString deviceId_);
+                           std::vector<QString> deviceIds_);
     void setState(State state)
     {
         if (state != state_) {
@@ -196,6 +195,7 @@ private:
     Type type;
     mtx::identifiers::User toClient;
     QString deviceId;
+    std::vector<QString> deviceIds;
 
     // public part of our master key, when trusted or empty
     std::string our_trusted_master_key;
@@ -222,11 +222,12 @@ private:
     {
         if (this->type == DeviceVerificationFlow::Type::ToDevice) {
             mtx::requests::ToDeviceMessages<T> body;
-            msg.transaction_id                           = this->transaction_id;
-            body[this->toClient][deviceId.toStdString()] = msg;
+            msg.transaction_id = this->transaction_id;
+            for (const auto &d : deviceIds)
+                body[this->toClient][d.toStdString()] = msg;
 
             http::client()->send_to_device<T>(
-              this->transaction_id, body, [](mtx::http::RequestErr err) {
+              http::client()->generate_txn_id(), body, [](mtx::http::RequestErr err) {
                   if (err)
                       nhlog::net()->warn("failed to send verification to_device message: {} {}",
                                          err->matrix_error.error,
