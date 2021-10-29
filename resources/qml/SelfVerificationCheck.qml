@@ -254,7 +254,6 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("verify")
             onClicked: {
-                console.log("AAAAA");
                 SelfVerificationStatus.verifyMasterKey();
                 verifyMasterKey.close();
             }
