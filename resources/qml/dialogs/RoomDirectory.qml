@@ -184,6 +184,7 @@ ApplicationWindow {
         MatrixTextField {
             id: roomSearch
 
+            focus: true
             Layout.fillWidth: true
             selectByMouse: true
             font.pixelSize: fontMetrics.font.pixelSize
