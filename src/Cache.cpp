@@ -969,35 +969,37 @@ Cache::nextBatchToken()
 void
 Cache::deleteData()
 {
-    this->databaseReady_ = false;
-    // TODO: We need to remove the env_ while not accepting new requests.
-    lmdb::dbi_close(env_, syncStateDb_);
-    lmdb::dbi_close(env_, roomsDb_);
-    lmdb::dbi_close(env_, invitesDb_);
-    lmdb::dbi_close(env_, readReceiptsDb_);
-    lmdb::dbi_close(env_, notificationsDb_);
+    if (this->databaseReady_) {
+        this->databaseReady_ = false;
+        // TODO: We need to remove the env_ while not accepting new requests.
+        lmdb::dbi_close(env_, syncStateDb_);
+        lmdb::dbi_close(env_, roomsDb_);
+        lmdb::dbi_close(env_, invitesDb_);
+        lmdb::dbi_close(env_, readReceiptsDb_);
+        lmdb::dbi_close(env_, notificationsDb_);
 
-    lmdb::dbi_close(env_, devicesDb_);
-    lmdb::dbi_close(env_, deviceKeysDb_);
+        lmdb::dbi_close(env_, devicesDb_);
+        lmdb::dbi_close(env_, deviceKeysDb_);
 
-    lmdb::dbi_close(env_, inboundMegolmSessionDb_);
-    lmdb::dbi_close(env_, outboundMegolmSessionDb_);
-    lmdb::dbi_close(env_, megolmSessionDataDb_);
+        lmdb::dbi_close(env_, inboundMegolmSessionDb_);
+        lmdb::dbi_close(env_, outboundMegolmSessionDb_);
+        lmdb::dbi_close(env_, megolmSessionDataDb_);
 
-    env_.close();
+        env_.close();
 
-    verification_storage.status.clear();
+        verification_storage.status.clear();
 
-    if (!cacheDirectory_.isEmpty()) {
-        QDir(cacheDirectory_).removeRecursively();
-        nhlog::db()->info("deleted cache files from disk");
+        if (!cacheDirectory_.isEmpty()) {
+            QDir(cacheDirectory_).removeRecursively();
+            nhlog::db()->info("deleted cache files from disk");
+        }
+
+        deleteSecret(mtx::secret_storage::secrets::megolm_backup_v1);
+        deleteSecret(mtx::secret_storage::secrets::cross_signing_master);
+        deleteSecret(mtx::secret_storage::secrets::cross_signing_user_signing);
+        deleteSecret(mtx::secret_storage::secrets::cross_signing_self_signing);
+        deleteSecret("pickle_secret", true);
     }
-
-    deleteSecret(mtx::secret_storage::secrets::megolm_backup_v1);
-    deleteSecret(mtx::secret_storage::secrets::cross_signing_master);
-    deleteSecret(mtx::secret_storage::secrets::cross_signing_user_signing);
-    deleteSecret(mtx::secret_storage::secrets::cross_signing_self_signing);
-    deleteSecret("pickle_secret", true);
 }
 
 //! migrates db to the current format
