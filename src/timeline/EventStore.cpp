@@ -819,8 +819,10 @@ EventStore::decryptionError(std::string id)
 void
 EventStore::fetchMore()
 {
-    if (noMoreMessages)
+    if (noMoreMessages) {
+        emit fetchedMore();
         return;
+    }
 
     mtx::http::MessagesOpts opts;
     opts.room_id = room_id_;
