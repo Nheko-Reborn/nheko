@@ -851,7 +851,7 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
 
         if (!hiddenSpaces.empty()) {
             for (const auto &t : parents)
-                if (hiddenSpaces.contains(t))
+                if (t != filterStr && hiddenSpaces.contains(t))
                     return false;
         }
 
