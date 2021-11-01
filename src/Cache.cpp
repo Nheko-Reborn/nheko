@@ -208,8 +208,7 @@ Cache::Cache(const QString &userId, QObject *parent)
       [this](const std::string &u) {
           if (u == localUserId_.toStdString()) {
               auto status = verificationStatus(u);
-              if (status.unverified_device_count || !status.user_verified)
-                  emit selfUnverified();
+              emit selfVerificationStatusChanged();
           }
       },
       Qt::QueuedConnection);
@@ -4265,6 +4264,7 @@ Cache::markDeviceVerified(const std::string &user_id, const std::string &key)
         std::unique_lock<std::mutex> lock(verification_storage.verification_storage_mtx);
         if (user_id == local_user) {
             std::swap(tmp, verification_storage.status);
+            verification_storage.status.clear();
         } else {
             verification_storage.status.erase(user_id);
         }
@@ -4274,9 +4274,8 @@ Cache::markDeviceVerified(const std::string &user_id, const std::string &key)
             (void)status;
             emit verificationStatusChanged(user);
         }
-    } else {
-        emit verificationStatusChanged(user_id);
     }
+    emit verificationStatusChanged(user_id);
 }
 
 void
@@ -4316,9 +4315,8 @@ Cache::markDeviceUnverified(const std::string &user_id, const std::string &key)
             (void)status;
             emit verificationStatusChanged(user);
         }
-    } else {
-        emit verificationStatusChanged(user_id);
     }
+    emit verificationStatusChanged(user_id);
 }
 
 VerificationStatus

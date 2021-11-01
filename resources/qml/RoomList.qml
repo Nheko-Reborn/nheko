@@ -502,6 +502,86 @@ Page {
             Layout.fillWidth: true
         }
 
+        Rectangle {
+            id: unverifiedStuffBubble
+            color: Qt.lighter(Nheko.theme.orange, verifyButtonHovered.hovered ? 1.2 : 1.0)
+            Layout.fillWidth: true
+            implicitHeight: explanation.height + Nheko.paddingMedium * 2
+            visible: SelfVerificationStatus.status != SelfVerificationStatus.AllVerified
+
+            RowLayout {
+                id: unverifiedStuffBubbleContainer
+                width: parent.width
+                height: explanation.height + Nheko.paddingMedium * 2
+                spacing: 0
+
+                Label {
+                    id: explanation
+                    Layout.margins: Nheko.paddingMedium
+                    Layout.rightMargin: Nheko.paddingSmall
+                    color: Nheko.colors.buttonText
+                    Layout.fillWidth: true
+                    text: switch(SelfVerificationStatus.status) {
+                        case SelfVerificationStatus.NoMasterKey:
+                        //: Cross-signing setup has not run yet.
+                        return qsTr("Encryption not set up");
+                        case SelfVerificationStatus.UnverifiedMasterKey:
+                        //: The user just signed in with this device and hasn't verified their master key.
+                        return qsTr("Unverified login");
+                        case SelfVerificationStatus.UnverifiedDevices:
+                        //: There are unverified devices signed in to this account.
+                        return qsTr("Please verify your other devices");
+                        default:
+                        return ""
+                    }
+                    textFormat: Text.PlainText
+                    wrapMode: Text.Wrap
+                }
+
+                ImageButton {
+                    id: closeUnverifiedBubble
+
+                    Layout.rightMargin: Nheko.paddingMedium
+                    Layout.topMargin: Nheko.paddingMedium
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    hoverEnabled: true
+                    width: fontMetrics.font.pixelSize
+                    height: fontMetrics.font.pixelSize
+                    image: ":/icons/icons/ui/remove-symbol.png"
+                    ToolTip.visible: closeUnverifiedBubble.hovered
+                    ToolTip.text: qsTr("Close")
+                    onClicked: unverifiedStuffBubble.visible = false
+                }
+
+            }
+
+            HoverHandler {
+                id: verifyButtonHovered
+                enabled: !closeUnverifiedBubble.hovered
+
+                acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
+            }
+
+            TapHandler {
+                enabled: !closeUnverifiedBubble.hovered
+                acceptedButtons: Qt.LeftButton
+                onSingleTapped: {
+                    if (SelfVerificationStatus.status == SelfVerificationStatus.UnverifiedDevices) {
+                        SelfVerificationStatus.verifyUnverifiedDevices();
+                    } else {
+                        SelfVerificationStatus.statusChanged();
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            color: Nheko.theme.separator
+            height: 1
+            Layout.fillWidth: true
+            visible: unverifiedStuffBubble.visible
+        }
+
     }
 
     footer: ColumnLayout {

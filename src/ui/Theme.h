@@ -62,6 +62,7 @@ class Theme : public QPalette
     Q_PROPERTY(QColor alternateButton READ alternateButton CONSTANT)
     Q_PROPERTY(QColor separator READ separator CONSTANT)
     Q_PROPERTY(QColor red READ red CONSTANT)
+    Q_PROPERTY(QColor orange READ orange CONSTANT)
 public:
     Theme() {}
     explicit Theme(std::string_view theme);
@@ -71,7 +72,8 @@ public:
     QColor alternateButton() const { return alternateButton_; }
     QColor separator() const { return separator_; }
     QColor red() const { return red_; }
+    QColor orange() const { return orange_; }
 
 private:
-    QColor sidebarBackground_, separator_, red_, alternateButton_;
+    QColor sidebarBackground_, separator_, red_, orange_, alternateButton_;
 };

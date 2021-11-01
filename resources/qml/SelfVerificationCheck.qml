@@ -277,6 +277,10 @@ Item {
                 bootstrapCrosssigning.open();
             else if (SelfVerificationStatus.status == SelfVerificationStatus.UnverifiedMasterKey)
                 verifyMasterKey.open();
+            else {
+                bootstrapCrosssigning.close();
+                verifyMasterKey.close();
+            }
 
         }
 

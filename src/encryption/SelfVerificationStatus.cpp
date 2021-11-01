@@ -20,7 +20,7 @@ SelfVerificationStatus::SelfVerificationStatus(QObject *o)
 {
     connect(MainWindow::instance(), &MainWindow::reload, this, [this] {
         connect(cache::client(),
-                &Cache::selfUnverified,
+                &Cache::selfVerificationStatusChanged,
                 this,
                 &SelfVerificationStatus::invalidate,
                 Qt::UniqueConnection);
@@ -233,6 +233,24 @@ void
 SelfVerificationStatus::verifyUnverifiedDevices()
 {
     nhlog::db()->info("Clicked verify unverified devices");
+    const auto this_user = http::client()->user_id().to_string();
+
+    auto keys  = cache::client()->userKeys(this_user);
+    auto verif = cache::client()->verificationStatus(this_user);
+
+    if (!keys)
+        return;
+
+    std::vector<QString> devices;
+    for (const auto &[device, keys] : keys->device_keys) {
+        (void)keys;
+        if (!verif.verified_devices.count(device))
+            devices.push_back(QString::fromStdString(device));
+    }
+
+    if (!devices.empty())
+        ChatPage::instance()->timelineManager()->verificationManager()->verifyOneOfDevices(
+          QString::fromStdString(this_user), std::move(devices));
 }
 
 void

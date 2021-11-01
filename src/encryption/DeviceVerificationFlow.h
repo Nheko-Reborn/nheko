@@ -69,6 +69,7 @@ class DeviceVerificationFlow : public QObject
     Q_PROPERTY(std::vector<int> sasList READ getSasList CONSTANT)
     Q_PROPERTY(bool isDeviceVerification READ isDeviceVerification CONSTANT)
     Q_PROPERTY(bool isSelfVerification READ isSelfVerification CONSTANT)
+    Q_PROPERTY(bool isMultiDeviceVerification READ isMultiDeviceVerification CONSTANT)
 
 public:
     enum State
@@ -139,6 +140,7 @@ public:
         return this->type == DeviceVerificationFlow::Type::ToDevice;
     }
     bool isSelfVerification() const;
+    bool isMultiDeviceVerification() const { return deviceIds.size() > 1; }
 
     void callback_fn(const UserKeyCache &res, mtx::http::RequestErr err, std::string user_id);
 

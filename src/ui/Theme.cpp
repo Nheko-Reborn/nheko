@@ -62,13 +62,16 @@ Theme::Theme(std::string_view theme)
         sidebarBackground_ = QColor("#233649");
         alternateButton_   = QColor("#ccc");
         red_               = QColor("#a82353");
+        orange_            = QColor("#fcbe05");
     } else if (theme == "dark") {
         sidebarBackground_ = QColor("#2d3139");
         alternateButton_   = QColor("#414A59");
         red_               = QColor("#a82353");
+        orange_            = QColor("#fcc53a");
     } else {
         sidebarBackground_ = p.window().color();
         alternateButton_   = p.dark().color();
         red_               = QColor("red");
+        orange_            = QColor("orange");
     }
 }
