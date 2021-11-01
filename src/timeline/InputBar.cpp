@@ -170,6 +170,7 @@ InputBar::setText(QString newText)
     if (history_.size() == INPUT_HISTORY_SIZE)
         history_.pop_back();
 
+    updateAtRoom("");
     emit textChanged(newText);
 }
 void
