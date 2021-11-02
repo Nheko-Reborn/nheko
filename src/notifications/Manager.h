@@ -77,10 +77,12 @@ private:
 private:
     // Objective-C(++) doesn't like to do lots of regular C++, so the actual notification
     // posting is split out
-    void objCxxPostNotification(const QString &title,
+    void objCxxPostNotification(const QString &room_name,
+                                const QString &room_id,
+                                const QString &event_id,
                                 const QString &subtitle,
                                 const QString &informativeText,
-                                const QImage &bodyImage);
+                                const QString &bodyImagePath);
 #endif
 
 #if defined(Q_OS_WINDOWS)
