@@ -33,6 +33,9 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
       cache::displayName(QString::fromStdString(notification.room_id),
                          QString::fromStdString(mtx::accessors::sender(notification.event)));
 
+    const auto room_id  = QString::fromStdString(notification.room_id);
+    const auto event_id = QString::fromStdString(mtx::accessors::event_id(notification.event));
+
     const auto isEncrypted = std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
                                &notification.event) != nullptr;
     const auto isReply = utils::isReply(notification.event);
@@ -41,7 +44,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         const QString messageInfo = (isReply ? tr("%1 replied with an encrypted message")
                                              : tr("%1 sent an encrypted message"))
                                       .arg(sender);
-        objCxxPostNotification(room_name, messageInfo, "", QImage());
+        objCxxPostNotification(room_name, room_id, event_id, messageInfo, "", "");
     } else {
         const QString messageInfo =
           (isReply ? tr("%1 replied to a message") : tr("%1 sent a message")).arg(sender);
@@ -49,12 +52,17 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
             MxcImageProvider::download(
               QString::fromStdString(mtx::accessors::url(notification.event)).remove("mxc://"),
               QSize(200, 80),
-              [this, notification, room_name, messageInfo](QString, QSize, QImage image, QString) {
-                  objCxxPostNotification(
-                    room_name, messageInfo, formatNotification(notification), image);
+              [this, notification, room_name, room_id, event_id, messageInfo](
+                QString, QSize, QImage, QString imgPath) {
+                  objCxxPostNotification(room_name,
+                                         room_id,
+                                         event_id,
+                                         messageInfo,
+                                         formatNotification(notification),
+                                         imgPath);
               });
         else
             objCxxPostNotification(
-              room_name, messageInfo, formatNotification(notification), QImage());
+              room_name, room_id, event_id, messageInfo, formatNotification(notification), "");
     }
 }
