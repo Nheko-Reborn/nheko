@@ -47,29 +47,32 @@ Page {
 
         }
 
-        delegate: Rectangle {
+        delegate: ItemDelegate {
             id: communityItem
 
-            property color background: Nheko.colors.window
+            property color backgroundColor: Nheko.colors.window
             property color importantText: Nheko.colors.text
             property color unimportantText: Nheko.colors.buttonText
             property color bubbleBackground: Nheko.colors.highlight
             property color bubbleText: Nheko.colors.highlightedText
 
-            color: background
+            background: Rectangle {
+                color: backgroundColor
+            }
+
             height: avatarSize + 2 * Nheko.paddingMedium
             width: ListView.view.width
             state: "normal"
-            ToolTip.visible: hovered.hovered && collapsed
+            ToolTip.visible: hovered && collapsed
             ToolTip.text: model.tooltip
             states: [
                 State {
                     name: "highlight"
-                    when: (hovered.hovered || model.hidden) && !(Communities.currentTagId == model.id)
+                    when: (communityItem.hovered || model.hidden) && !(Communities.currentTagId == model.id)
 
                     PropertyChanges {
                         target: communityItem
-                        background: Nheko.colors.dark
+                        backgroundColor: Nheko.colors.dark
                         importantText: Nheko.colors.brightText
                         unimportantText: Nheko.colors.brightText
                         bubbleBackground: Nheko.colors.highlight
@@ -83,7 +86,7 @@ Page {
 
                     PropertyChanges {
                         target: communityItem
-                        background: Nheko.colors.highlight
+                        backgroundColor: Nheko.colors.highlight
                         importantText: Nheko.colors.highlightedText
                         unimportantText: Nheko.colors.highlightedText
                         bubbleBackground: Nheko.colors.highlightedText
@@ -93,24 +96,20 @@ Page {
                 }
             ]
 
-            TapHandler {
-                margin: -Nheko.paddingSmall
-                acceptedButtons: Qt.RightButton
-                onSingleTapped: communityContextMenu.show(model.id)
-                gesturePolicy: TapHandler.ReleaseWithinBounds
+            Item {
+                anchors.fill: parent
+
+                TapHandler {
+                    acceptedButtons: Qt.RightButton
+                    onSingleTapped: communityContextMenu.show(model.id)
+                    gesturePolicy: TapHandler.ReleaseWithinBounds
+                    acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
+                }
+
             }
 
-            TapHandler {
-                margin: -Nheko.paddingSmall
-                onSingleTapped: Communities.setCurrentTagId(model.id)
-                onLongPressed: communityContextMenu.show(model.id)
-            }
-
-            HoverHandler {
-                id: hovered
-
-                margin: -Nheko.paddingSmall
-            }
+            onClicked: Communities.setCurrentTagId(model.id)
+            onPressAndHold: communityContextMenu.show(model.id)
 
             RowLayout {
                 spacing: Nheko.paddingMedium
@@ -132,7 +131,7 @@ Page {
                     }
                     roomid: model.id
                     displayName: model.displayName
-                    color: communityItem.background
+                    color: communityItem.backgroundColor
                 }
 
                 ElidedLabel {
