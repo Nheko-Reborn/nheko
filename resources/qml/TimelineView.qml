@@ -24,7 +24,7 @@ Item {
     property bool showBackButton: false
 
     Label {
-        visible: !room && !TimelineManager.isInitialSync && !roomPreview
+        visible: !room && !TimelineManager.isInitialSync && (!roomPreview || !roomPreview.roomid)
         anchors.centerIn: parent
         text: qsTr("No room open")
         font.pointSize: 24
@@ -137,7 +137,7 @@ Item {
     ColumnLayout {
         id: preview
 
-        property string roomId: room ? room.roomId : (roomPreview ? roomPreview.roomId : "")
+        property string roomId: room ? room.roomId : (roomPreview ? roomPreview.roomid : "")
         property string roomName: room ? room.roomName : (roomPreview ? roomPreview.roomName : "")
         property string roomTopic: room ? room.roomTopic : (roomPreview ? roomPreview.roomTopic : "")
         property string avatarUrl: room ? room.roomAvatarUrl : (roomPreview ? roomPreview.roomAvatarUrl : "")
@@ -163,7 +163,7 @@ Item {
         }
 
         MatrixText {
-            text: parent.roomName
+            text: parent.roomName == "" ? qsTr("No preview available") : parent.roomName
             font.pixelSize: 24
             Layout.alignment: Qt.AlignHCenter
         }
@@ -240,7 +240,7 @@ Item {
         anchors.margins: Nheko.paddingMedium
         width: Nheko.avatarSize
         height: Nheko.avatarSize
-        visible: room != null && room.isSpace && showBackButton
+        visible: (room == null || room.isSpace) && showBackButton
         enabled: visible
         image: ":/icons/icons/ui/angle-pointing-to-left.png"
         ToolTip.visible: hovered

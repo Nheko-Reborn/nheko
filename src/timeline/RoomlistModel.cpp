@@ -609,6 +609,12 @@ RoomlistModel::setCurrentRoom(QString roomid)
         (currentRoomPreview_ && currentRoomPreview_->roomid() == roomid))
         return;
 
+    if (roomid.isEmpty()) {
+        currentRoom_        = nullptr;
+        currentRoomPreview_ = {};
+        emit currentRoomChanged();
+    }
+
     nhlog::ui()->debug("Trying to switch to: {}", roomid.toStdString());
     if (models.contains(roomid)) {
         currentRoom_ = models.value(roomid);
@@ -635,10 +641,24 @@ RoomlistModel::setCurrentRoom(QString roomid)
             p.roomTopic_        = QString::fromStdString(i->topic);
             p.roomAvatarUrl_    = QString::fromStdString(i->avatar_url);
             currentRoomPreview_ = std::move(p);
+            nhlog::ui()->debug("Switched to (preview): {}",
+                               currentRoomPreview_->roomid_.toStdString());
+        } else {
+            p.roomid_           = roomid;
+            currentRoomPreview_ = p;
+            nhlog::ui()->debug("Switched to (empty): {}",
+                               currentRoomPreview_->roomid_.toStdString());
         }
 
         emit currentRoomChanged();
-        nhlog::ui()->debug("Switched to: {}", roomid.toStdString());
+    } else {
+        currentRoom_ = nullptr;
+
+        RoomPreview p;
+        p.roomid_           = roomid;
+        currentRoomPreview_ = std::move(p);
+        emit currentRoomChanged();
+        nhlog::ui()->debug("Switched to (empty): {}", roomid.toStdString());
     }
 }
 

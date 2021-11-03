@@ -21,7 +21,7 @@ Rectangle {
 
         anchors.fill: parent
         singlePageMode: communityListC.preferredWidth + roomListC.preferredWidth + timlineViewC.minimumWidth > width
-        pageIndex: Rooms.currentRoom ? 2 : 1
+        pageIndex: (Rooms.currentRoom || Rooms.currentRoomPreview.roomid) ? 2 : 1
 
         AdaptiveLayoutElement {
             id: communityListC

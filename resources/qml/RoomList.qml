@@ -192,6 +192,7 @@ Page {
                 TapHandler {
                     margin: -Nheko.paddingSmall
                     onSingleTapped: {
+                        console.log("tapped "+roomId);
                         if (!Rooms.currentRoom || Rooms.currentRoom.roomId !== roomId)
                             Rooms.setCurrentRoom(roomId);
                         else
