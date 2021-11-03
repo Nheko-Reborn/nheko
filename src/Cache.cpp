@@ -766,11 +766,11 @@ fatalSecretError()
       QCoreApplication::translate("SecretStorage", "Failed to connect to secret storage"),
       QCoreApplication::translate(
         "SecretStorage",
-        "Nheko could not connect to the secure storage to save encryption secrets to. "
-        "This can have multiple reasons. Check if your D-Bus service is running and "
-        "you have configured a service like KWallet, Gnome Secrets or the equivalent "
-        "for your platform. If you are having trouble, feel free to open an issue "
-        "here: https://github.com/Nheko-Reborn/nheko/issues"));
+        "Nheko could not connect to the secure storage to save encryption secrets to. This can "
+        "have multiple reasons. Check if your D-Bus service is running and you have configured a "
+        "service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If "
+        "you are having trouble, feel free to open an issue here: "
+        "https://github.com/Nheko-Reborn/nheko/issues"));
 
     QCoreApplication::exit(1);
     exit(1);
