@@ -23,6 +23,7 @@
 #include "ui/FlatButton.h"
 #include "ui/RaisedButton.h"
 #include "ui/TextField.h"
+#include "ui/UIA.h"
 
 #include "dialogs/FallbackAuth.h"
 #include "dialogs/ReCaptcha.h"
@@ -178,8 +179,6 @@ RegisterPage::RegisterPage(QWidget *parent)
     connect(this, &RegisterPage::wellKnownLookup, this, &RegisterPage::doWellKnownLookup);
     connect(this, &RegisterPage::versionsCheck, this, &RegisterPage::doVersionsCheck);
     connect(this, &RegisterPage::registration, this, &RegisterPage::doRegistration);
-    connect(this, &RegisterPage::UIA, this, &RegisterPage::doUIA);
-    connect(this, &RegisterPage::registrationWithAuth, this, &RegisterPage::doRegistrationWithAuth);
 }
 
 void
@@ -277,18 +276,11 @@ RegisterPage::onRegisterButtonClicked()
         //
         // The sequence of events looks something like this:
         //
-        // dowellKnownLookup
+        // doKnownLookup
         //   v
         // doVersionsCheck
         //   v
-        // doRegistration
-        //   v
-        // doUIA <-----------------+
-        //   v					   | More auth required
-        // doRegistrationWithAuth -+
-        //                         | Success
-        // 						   v
-        //                     registering
+        // doRegistration -> loops the UIAHandler until complete
 
         emit wellKnownLookup();
 
@@ -367,18 +359,12 @@ RegisterPage::doRegistration()
     if (checkUsername() && checkPassword() && checkPasswordConfirmation()) {
         auto username = username_input_->text().toStdString();
         auto password = password_input_->text().toStdString();
-        http::client()->registration(username, password, registrationCb());
-    }
-}
-
-void
-RegisterPage::doRegistrationWithAuth(const mtx::user_interactive::Auth &auth)
-{
-    // These inputs should still be alright, but check just in case
-    if (checkUsername() && checkPassword() && checkPasswordConfirmation()) {
-        auto username = username_input_->text().toStdString();
-        auto password = password_input_->text().toStdString();
-        http::client()->registration(username, password, auth, registrationCb());
+        connect(UIA::instance(), &UIA::error, this, [this](QString msg) {
+            showError(msg);
+            disconnect(UIA::instance(), &UIA::error, this, nullptr);
+        });
+        http::client()->registration(
+          username, password, ::UIA::instance()->genericHandler("Registration"), registrationCb());
     }
 }
 
@@ -392,6 +378,7 @@ RegisterPage::registrationCb()
             http::client()->set_user(res.user_id);
             http::client()->set_access_token(res.access_token);
             emit registerOk();
+            disconnect(UIA::instance(), &UIA::error, this, nullptr);
             return;
         }
 
@@ -403,11 +390,7 @@ RegisterPage::registrationCb()
                                    static_cast<int>(err->status_code),
                                    err->matrix_error.error);
                 showError(QString::fromStdString(err->matrix_error.error));
-                return;
             }
-
-            // Attempt to complete a UIA stage
-            emit UIA(err->matrix_error.unauthorized);
             return;
         }
 
@@ -417,92 +400,6 @@ RegisterPage::registrationCb()
 
         showError(QString::fromStdString(err->matrix_error.error));
     };
-}
-
-void
-RegisterPage::doUIA(const mtx::user_interactive::Unauthorized &unauthorized)
-{
-    auto completed_stages = unauthorized.completed;
-    auto flows            = unauthorized.flows;
-    auto session =
-      unauthorized.session.empty() ? http::client()->generate_txn_id() : unauthorized.session;
-
-    nhlog::ui()->info("Completed stages: {}", completed_stages.size());
-
-    if (!completed_stages.empty()) {
-        // Get rid of all flows which don't start with the sequence of
-        // stages that have already been completed.
-        flows.erase(std::remove_if(flows.begin(),
-                                   flows.end(),
-                                   [completed_stages](auto flow) {
-                                       if (completed_stages.size() > flow.stages.size())
-                                           return true;
-                                       for (size_t f = 0; f < completed_stages.size(); f++)
-                                           if (completed_stages[f] != flow.stages[f])
-                                               return true;
-                                       return false;
-                                   }),
-                    flows.end());
-    }
-
-    if (flows.empty()) {
-        nhlog::ui()->error("No available registration flows!");
-        showError(tr("No supported registration flows!"));
-        return;
-    }
-
-    auto current_stage = flows.front().stages.at(completed_stages.size());
-
-    if (current_stage == mtx::user_interactive::auth_types::recaptcha) {
-        auto captchaDialog = new dialogs::ReCaptcha(QString::fromStdString(session), this);
-
-        connect(
-          captchaDialog, &dialogs::ReCaptcha::confirmation, this, [this, session, captchaDialog]() {
-              captchaDialog->close();
-              captchaDialog->deleteLater();
-              doRegistrationWithAuth(
-                mtx::user_interactive::Auth{session, mtx::user_interactive::auth::Fallback{}});
-          });
-
-        connect(captchaDialog, &dialogs::ReCaptcha::cancel, this, &RegisterPage::errorOccurred);
-
-        QTimer::singleShot(1000, this, [captchaDialog]() { captchaDialog->show(); });
-
-    } else if (current_stage == mtx::user_interactive::auth_types::dummy) {
-        doRegistrationWithAuth(
-          mtx::user_interactive::Auth{session, mtx::user_interactive::auth::Dummy{}});
-
-    } else if (current_stage == mtx::user_interactive::auth_types::registration_token) {
-        bool ok;
-        QString token = QInputDialog::getText(this,
-                                              tr("Registration token"),
-                                              tr("Please enter a valid registration token."),
-                                              QLineEdit::Normal,
-                                              QString(),
-                                              &ok);
-
-        if (ok) {
-            emit registrationWithAuth(mtx::user_interactive::Auth{
-              session, mtx::user_interactive::auth::RegistrationToken{token.toStdString()}});
-        } else {
-            emit errorOccurred();
-        }
-    } else {
-        // use fallback
-        auto dialog = new dialogs::FallbackAuth(
-          QString::fromStdString(current_stage), QString::fromStdString(session), this);
-
-        connect(dialog, &dialogs::FallbackAuth::confirmation, this, [this, session, dialog]() {
-            dialog->close();
-            dialog->deleteLater();
-            emit registrationWithAuth(
-              mtx::user_interactive::Auth{session, mtx::user_interactive::auth::Fallback{}});
-        });
-
-        connect(dialog, &dialogs::FallbackAuth::cancel, this, &RegisterPage::errorOccurred);
-
-        dialog->show();
-    }
 }
 
 void

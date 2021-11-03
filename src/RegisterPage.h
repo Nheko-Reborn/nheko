@@ -39,8 +39,6 @@ signals:
     void wellKnownLookup();
     void versionsCheck();
     void registration();
-    void UIA(const mtx::user_interactive::Unauthorized &unauthorized);
-    void registrationWithAuth(const mtx::user_interactive::Auth &auth);
 
     void registering();
     void registerOk();
@@ -62,8 +60,6 @@ private slots:
     void doWellKnownLookup();
     void doVersionsCheck();
     void doRegistration();
-    void doUIA(const mtx::user_interactive::Unauthorized &unauthorized);
-    void doRegistrationWithAuth(const mtx::user_interactive::Auth &auth);
     mtx::http::Callback<mtx::responses::Register> registrationCb();
 
 private:

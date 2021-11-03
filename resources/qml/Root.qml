@@ -255,10 +255,72 @@ Page {
         }
     }
 
+    InputDialog {
+        id: uiaEmailPrompt
+
+        title: UIA.title
+        prompt: qsTr("Please enter a valid email address to continue:")
+        onAccepted: (t) => {
+            return UIA.continueEmail(t);
+        }
+    }
+
+    PhoneNumberInputDialog {
+        id: uiaPhoneNumberPrompt
+
+        title: UIA.title
+        prompt: qsTr("Please enter a valid phone number to continue:")
+        onAccepted: (p, t) => {
+            return UIA.continuePhoneNumber(p, t);
+        }
+    }
+
+    InputDialog {
+        id: uiaTokenPrompt
+
+        title: UIA.title
+        prompt: qsTr("Please enter the token, which has been sent to you:")
+        onAccepted: (t) => {
+            return UIA.submit3pidToken(t);
+        }
+    }
+
+    Platform.MessageDialog {
+        id: uiaErrorDialog
+
+        buttons: Platform.MessageDialog.Ok
+    }
+
+    Platform.MessageDialog {
+        id: uiaConfirmationLinkDialog
+
+        buttons: Platform.MessageDialog.Ok
+        text: qsTr("Wait for the confirmation link to arrive, then continue.")
+
+        onAccepted: UIA.continue3pidReceived()
+    }
+
+
     Connections {
         function onPassword() {
             console.log("UIA: password needed");
             uiaPassPrompt.show();
+        }
+        function onEmail() {
+            uiaEmailPrompt.show();
+        }
+        function onPhoneNumber() {
+            uiaPhoneNumberPrompt.show();
+        }
+        function onPrompt3pidToken() {
+            uiaTokenPrompt.show();
+        }
+        function onConfirm3pidToken() {
+            uiaConfirmationLinkDialog.open();
+        }
+        function onError(msg) {
+            uiaErrorDialog.text = msg;
+            uiaErrorDialog.open();
         }
 
         target: UIA
