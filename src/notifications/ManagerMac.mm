@@ -7,6 +7,33 @@
 #include <QtMac>
 #include <QImage>
 
+@interface UNNotificationAttachment (UNNotificationAttachmentAdditions)
+    + (UNNotificationAttachment *) createFromImageData:(NSData*)imgData identifier:(NSString *)imageFileIdentifier options:(NSDictionary*)attachmentOptions;
+@end
+
+@implementation UNNotificationAttachment (UNNotificationAttachmentAdditions)
+    + (UNNotificationAttachment *) createFromImageData:(NSData*)imgData identifier:(NSString *)imageFileIdentifier options:(NSDictionary*)attachmentOptions {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSString *tmpSubFolderName = [[NSProcessInfo processInfo] globallyUniqueString];
+        NSURL *tmpSubFolderURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:tmpSubFolderName] isDirectory:true];
+        NSError *error = nil;
+        [fileManager createDirectoryAtURL:tmpSubFolderURL withIntermediateDirectories:true attributes:nil error:&error];
+        if(error) {
+            NSLog(@"%@",[error localizedDescription]);
+            return nil;
+        }
+        NSURL *fileURL = [tmpSubFolderURL URLByAppendingPathComponent:imageFileIdentifier];
+        [imgData writeToURL:fileURL atomically:true];
+        UNNotificationAttachment *imageAttachment = [UNNotificationAttachment attachmentWithIdentifier:@"" URL:fileURL options:attachmentOptions error:&error];
+        if(error) {
+            NSLog(@"%@",[error localizedDescription]);
+            return nil;
+        }
+        return imageAttachment;
+
+    }
+@end
+
 NotificationsManager::NotificationsManager(QObject *parent): QObject(parent)
 {
 
@@ -42,14 +69,14 @@ NotificationsManager::objCxxPostNotification(const QString &room_name,
     content.threadIdentifier  = room_id.toNSString();
 
     if (!bodyImagePath.isEmpty()) {
-        NSError * _Nullable error;
-        NSURL *imageURL = [NSURL URLWithString:bodyImagePath.toNSString()];
-        NSArray* attachments = [NSMutableArray array];
-        UNNotificationAttachment *attachment = [UNNotificationAttachment attachmentWithIdentifier:@"" URL:imageURL options:nil error:&error];
-        if (error) {
-                NSLog(@"%@",[error localizedDescription]);
+        NSURL *imageURL = [NSURL fileURLWithPath:bodyImagePath.toNSString()];
+        NSData *img = [NSData dataWithContentsOfURL:imageURL];
+        NSArray *attachments = [NSMutableArray array];
+        UNNotificationAttachment *attachment = [UNNotificationAttachment createFromImageData:img identifier:@"attachment_image.jpeg" options:nil];
+        if (attachment) {
+            attachments = [NSMutableArray arrayWithObjects: attachment, nil];
+            content.attachments = attachments;
         }
-        content.attachments = [attachments arrayByAddingObject:attachment];
     }
 
     UNNotificationRequest *notificationRequest = [UNNotificationRequest requestWithIdentifier:event_id.toNSString() content:content trigger:nil];
