@@ -9,6 +9,9 @@ import QtQuick.Layouts 1.3
 import im.nheko 1.0
 
 Dialog {
+    default property alias inner: scroll.data
+    property int useableWidth: scroll.width - scroll.ScrollBar.vertical.width
+
     parent: Overlay.overlay
     anchors.centerIn: parent
     height: (Math.floor(parent.height / 2) - Nheko.paddingLarge) * 2
@@ -17,10 +20,6 @@ Dialog {
     modal: true
     standardButtons: Dialog.Ok | Dialog.Cancel
     closePolicy: Popup.NoAutoClose
-
-    default property alias inner: scroll.data
-    property int useableWidth: scroll.width - scroll.ScrollBar.vertical.width
-
     contentChildren: [
         ScrollView {
             id: scroll

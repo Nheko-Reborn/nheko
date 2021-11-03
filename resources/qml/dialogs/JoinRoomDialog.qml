@@ -45,6 +45,7 @@ ApplicationWindow {
             onAccepted: {
                 if (input.text.match("#.+?:.{3,}"))
                     dbb.accepted();
+
             }
         }
 
@@ -71,6 +72,7 @@ ApplicationWindow {
             text: "Cancel"
             DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
         }
+
     }
 
 }

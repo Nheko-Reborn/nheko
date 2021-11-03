@@ -319,22 +319,25 @@ ApplicationWindow {
                     }
 
                     ImageButton {
-                      Layout.alignment: Qt.AlignTop
-                      image: ":/icons/icons/ui/power-button-off.png"
-                      hoverEnabled: true
-                      ToolTip.visible: hovered
-                      ToolTip.text: qsTr("Sign out this device.")
-                      onClicked: profile.signOutDevice(deviceId)
-                      visible: profile.isSelf
+                        Layout.alignment: Qt.AlignTop
+                        image: ":/icons/icons/ui/power-button-off.png"
+                        hoverEnabled: true
+                        ToolTip.visible: hovered
+                        ToolTip.text: qsTr("Sign out this device.")
+                        onClicked: profile.signOutDevice(deviceId)
+                        visible: profile.isSelf
                     }
+
                 }
 
                 RowLayout {
                     id: deviceNameRow
+
                     property bool isEditingAllowed
 
                     TextInput {
                         id: deviceNameField
+
                         readOnly: !deviceNameRow.isEditingAllowed
                         text: deviceName
                         color: Nheko.colors.text
@@ -373,7 +376,7 @@ ApplicationWindow {
                     Layout.alignment: Qt.AlignLeft
                     elide: Text.ElideRight
                     color: Nheko.colors.text
-                    text: qsTr("Last seen %1 from %2").arg(new Date(lastTs).toLocaleString(Locale.ShortFormat)).arg(lastIp?lastIp:"???")
+                    text: qsTr("Last seen %1 from %2").arg(new Date(lastTs).toLocaleString(Locale.ShortFormat)).arg(lastIp ? lastIp : "???")
                 }
 
             }
@@ -408,8 +411,6 @@ ApplicationWindow {
                         profile.verify(deviceId);
                 }
             }
-
-
 
         }
 

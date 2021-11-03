@@ -116,6 +116,7 @@ Page {
 
         LogoutDialog {
         }
+
     }
 
     Component {
@@ -123,6 +124,7 @@ Page {
 
         JoinRoomDialog {
         }
+
     }
 
     Component {
@@ -130,6 +132,7 @@ Page {
 
         LeaveRoomDialog {
         }
+
     }
 
     Shortcut {
@@ -222,8 +225,8 @@ Page {
 
         function onOpenLeaveRoomDialog(roomid) {
             var dialog = leaveRoomComponent.createObject(timelineRoot, {
-                                                          "roomId": roomid
-                                                      });
+                "roomId": roomid
+            });
             dialog.open();
         }
 
@@ -296,28 +299,31 @@ Page {
 
         buttons: Platform.MessageDialog.Ok
         text: qsTr("Wait for the confirmation link to arrive, then continue.")
-
         onAccepted: UIA.continue3pidReceived()
     }
-
 
     Connections {
         function onPassword() {
             console.log("UIA: password needed");
             uiaPassPrompt.show();
         }
+
         function onEmail() {
             uiaEmailPrompt.show();
         }
+
         function onPhoneNumber() {
             uiaPhoneNumberPrompt.show();
         }
+
         function onPrompt3pidToken() {
             uiaTokenPrompt.show();
         }
+
         function onConfirm3pidToken() {
             uiaConfirmationLinkDialog.open();
         }
+
         function onError(msg) {
             uiaErrorDialog.text = msg;
             uiaErrorDialog.open();

@@ -2,9 +2,9 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import Qt.labs.platform 1.1
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import Qt.labs.platform 1.1
 import im.nheko 1.0
 
 MessageDialog {
