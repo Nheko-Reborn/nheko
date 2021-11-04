@@ -82,7 +82,7 @@ SelfVerificationStatus::setupCrosssigning(bool useSSSS, QString password, bool u
         ssss = olm::client()->create_ssss_key(password.toStdString());
         if (!ssss) {
             nhlog::crypto()->critical("Failed to setup secure server side secret storage!");
-            emit setupFailed(tr("Failed to create keys secure server side secret storage!"));
+            emit setupFailed(tr("Failed to create keys for secure server side secret storage!"));
             return;
         }
 

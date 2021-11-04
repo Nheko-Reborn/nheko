@@ -950,7 +950,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
             tr("Change the appearance of user avatars in chats.\nOFF - square, ON - Circle."));
     boxWrap(tr("Use identicons"),
             useIdenticon_,
-            tr("Display an identicon instead of a letter when a user has not set an avatar."));
+            tr("Display an identicon instead of a letter when no avatar is set."));
     boxWrap(tr("Group's sidebar"),
             groupViewToggle_,
             tr("Show a column containing groups and tags next to the room list."));
