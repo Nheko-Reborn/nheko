@@ -2587,11 +2587,6 @@ Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
         <translation>Kasuta identikone</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Display an identicon instead of a letter when a user has not set an avatar.</source>
-        <translation>Kui kasutaja pole tunnuspilti, siis kasuta tähe asemel identikoni ehk matemaatilist tunnuspilti.</translation>
-    </message>
-    <message>
         <location line="+5"/>
         <source>Show a column containing groups and tags next to the room list.</source>
         <translation>Näita jututubade loendi kõrval veergu rühmade ja siltidega.</translation>
