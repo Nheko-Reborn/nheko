@@ -116,7 +116,7 @@ MxcMediaProxy::startDownload()
                 this->setMedia(QUrl::fromLocalFile(filename.filePath()));
             }
 #else
-            Q_UNSUED(suffix)
+            Q_UNUSED(suffix)
             Q_UNUSED(encryptionInfo)
 
             nhlog::ui()->info(
