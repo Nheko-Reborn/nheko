@@ -592,12 +592,12 @@
     <message>
         <location line="+2"/>
         <source>Verification messages received out of order!</source>
-        <translation type="unfinished"></translation>
+        <translation>Verificatieberichten in verkeerde volgorde ontvangen!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown verification error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Onbekende verificatiefout.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -798,12 +798,12 @@
     <message>
         <location filename="../qml/dialogs/JoinRoomDialog.qml" line="+14"/>
         <source>Join room</source>
-        <translation type="unfinished"></translation>
+        <translation>Ga kamer binnen</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished">Kamer ID of alias</translation>
+        <translation>Kamer ID of alias</translation>
     </message>
 </context>
 <context>
@@ -811,12 +811,12 @@
     <message>
         <location filename="../qml/dialogs/LeaveRoomDialog.qml" line="+15"/>
         <source>Leave room</source>
-        <translation type="unfinished">Kamer verlaten</translation>
+        <translation>Kamer verlaten</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished">Weet je zeker dat je de kamer wil verlaten?</translation>
+        <translation>Weet je zeker dat je de kamer wil verlaten?</translation>
     </message>
 </context>
 <context>
@@ -938,17 +938,17 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location filename="../qml/dialogs/LogoutDialog.qml" line="+13"/>
         <source>Log out</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitloggen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A call is in progress. Log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Er is een oproep gaande. Uitloggen?</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Are you sure you want to log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Weet je zeker dat je wil uitloggen?</translation>
     </message>
 </context>
 <context>
@@ -1170,7 +1170,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+43"/>
         <source>&amp;Go to quoted message</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ga naar geciteerd bericht</translation>
     </message>
 </context>
 <context>
@@ -1188,7 +1188,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+16"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Om andere gebruikers te laten weten welke apparaten echt van jou zijn, kan je ze verifiëren. Dit zorgt ook dat reservesleutels automatisch werken. Nu een ongeverifiëerd apparaat verifiëren? (Zorg a.u.b. dat je een van de apparaten bij de hand hebt.)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1241,7 +1241,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location filename="../qml/NotificationWarning.qml" line="+32"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished"></translation>
+        <translation>Je staat op het punt de hele kamer een notificatie te sturen</translation>
     </message>
 </context>
 <context>
@@ -1463,7 +1463,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+11"/>
         <source>Choose custom homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Kies een aangepaste thuisserver</translation>
     </message>
 </context>
 <context>
@@ -1545,24 +1545,24 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <location line="+40"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteling niet ingesteld</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unverified login</source>
         <extracomment>The user just signed in with this device and hasn&apos;t verified their master key.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Ongeverifiëerde login</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please verify your other devices</source>
         <extracomment>There are unverified devices signed in to this account.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Verifieer a.u.b. je andere apparaten</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Close</source>
-        <translation type="unfinished">Sluiten</translation>
+        <translation>Sluiten</translation>
     </message>
     <message>
         <location line="+65"/>
@@ -1800,27 +1800,27 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location filename="../qml/Root.qml" line="+255"/>
         <source>Please enter your login password to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer a.u.b. je wachtwoord in om door te gaan:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid email address to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer a.u.b. een geldig email adres in om door te gaan:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid phone number to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer a.u.b. een geldig telefoonnummer in om door te gaan:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter the token, which has been sent to you:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer a.u.b. de token in die je is toegestuurd:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Wait for the confirmation link to arrive, then continue.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wacht op de bevestigingslink, en ga dan door.</translation>
     </message>
 </context>
 <context>
@@ -1887,7 +1887,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko kon niet verbinden met de veilige opslag voor versleutelingsgegevens. Dit kan verscheidene redenen hebben. Controleer of je D-Bus service wel draait, en of je een service zoals KWallet, Gnome Keyring, KeyPassXC of een soortgelijk equivalent voor je platform hebt ingesteld. Als je problemen ondervind, voel je vrij om hier een nieuwe issue te openen: https://github.com/Nheko-Reborn/nheko/issues</translation>
     </message>
 </context>
 <context>
@@ -1895,49 +1895,51 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location filename="../qml/SelfVerificationCheck.qml" line="+39"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation type="unfinished"></translation>
+        <translation>Dit is je herstelsleutel. Je hebt deze nodig om toegang tot je versleutelde berichten en sleutels te herstellen. Hou deze veilig. Deel hem met niemand, en raak hem niet kwijt! Ga niet langs start, ontvang geen €200!</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Encryption setup successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteling succesvol ingesteld</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Failed to setup encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kon versleuteling niet instellen: %1</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Setup Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteling instellen</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
-        <translation type="unfinished"></translation>
+        <translation>Hallo, en welkom bij Matrix!
+Zo te zien ben je nieuw. Voordat je je berichten veilig kan versleutelen, moeten we een paar kleine dingen instellen. Je kan ofwel direct op accepteren drukken of een paar basisopties aanpassen. We proberen ook de basisprincipes uit te leggen. Je kan deze overslaan, maar wellicht vind je het behulpzaam!</translation>
     </message>
     <message>
         <location line="+124"/>
         <source>Activate Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Activeer versleuteling</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.
 If you choose verify, you need to have the other device available. If you choose &quot;enter passphrase&quot;, you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het lijkt erop dat je versleuteling al hebt ingesteld voor dit account. Om bij je versleutelde berichten te kunnen en om dit apparaat als vertrouwd te laten verschijnen, kan je ofwel een bestaand apparaat verifiëren ofwel je herstelsleutel invoeren (als je er één hebt). Kies a.u.b een van de opties hieronder.
+Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebben. Als je &quot;Voer herstelsleutel in&quot; kiest moet je je herstelsleutel of wachtwoordzin hebben. Als je op annuleren klikt kan je later altijd alsnog jezelf verifiëren.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>verify</source>
-        <translation type="unfinished"></translation>
+        <translation>verifieer</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>enter passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>voer herstelsleutel in</translation>
     </message>
 </context>
 <context>
@@ -1945,27 +1947,27 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+40"/>
         <source>Failed to create keys for cross-signing!</source>
-        <translation type="unfinished"></translation>
+        <translation>Aanmaken van sleutels voor kruisversleuteling mislukt!</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to create keys for online key backup!</source>
-        <translation type="unfinished"></translation>
+        <translation>Aanmaken van sleutels voor online sleutelreservekopie mislukt!</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Failed to create keys secure server side secret storage!</source>
-        <translation type="unfinished"></translation>
+        <translation>Aanmaken van sleutels voor veilige serverkant geheimopslag mislukt!</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Encryption Setup</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteling instellen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteling instellen mislukt: %1</translation>
     </message>
 </context>
 <context>
@@ -2253,7 +2255,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+137"/>
         <source>No preview available</source>
-        <translation type="unfinished">Geen voorbeeld beschikbaar</translation>
+        <translation>Geen voorbeeld beschikbaar</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2306,7 +2308,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+2"/>
         <source>This room contains verified devices and devices which have never changed their master key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze kamer bevat alleen geverifiëerde apparaten en apparaten die nooit hun hoofdsleutel hebben veranderd.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2357,24 +2359,24 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../../src/ui/UIA.cpp" line="+59"/>
         <source>No available registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen beschikbare registratiestromen!</translation>
     </message>
     <message>
         <location line="+26"/>
         <location line="+24"/>
         <location line="+17"/>
         <source>Registration aborted</source>
-        <translation type="unfinished"></translation>
+        <translation>Registratie afgebroken</translation>
     </message>
     <message>
         <location line="-27"/>
         <source>Please enter a valid registration token.</source>
-        <translation type="unfinished">Voer a.u.b een geldig registratieteken in.</translation>
+        <translation>Voer a.u.b een geldig registratieteken in.</translation>
     </message>
     <message>
         <location line="+165"/>
         <source>Invalid token</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongeldig teken</translation>
     </message>
 </context>
 <context>
@@ -2448,22 +2450,22 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+9"/>
         <source>Refresh device list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ververs apparaatlijst.</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Sign out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Meld dit apparaat af.</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Change device name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander apparaatnaam.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Last seen %1 from %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Laatst gezien %1 via %2</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -2473,12 +2475,12 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+152"/>
         <source>Sign out device %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Meld apparaat %1 af</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>You signed out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Je hebt dit apparaat afgemeld.</translation>
     </message>
     <message>
         <location line="+223"/>
@@ -2582,12 +2584,12 @@ UIT - vierkant, AAN - cirkel.</translation>
     <message>
         <location line="+1"/>
         <source>Use identicons</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruik identicons</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Display an identicon instead of a letter when a user has not set an avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Laat een identicon zien in plaats van een letter als er geen avatar is ingesteld.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3022,7 +3024,7 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
     <message>
         <location filename="../../src/encryption/VerificationManager.cpp" line="+105"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation type="unfinished">Geen versleutelde chat gevonden met deze gebruiker. Maak een versleutelde chat aan met deze gebruiker en probeer het opnieuw.</translation>
+        <translation>Geen versleutelde chat gevonden met deze gebruiker. Maak een versleutelde chat aan met deze gebruiker en probeer het opnieuw.</translation>
     </message>
 </context>
 <context>
