@@ -592,12 +592,12 @@
     <message>
         <location line="+2"/>
         <source>Verification messages received out of order!</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifizierungsnachrichten in falscher Reihnenfolge empfangen!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown verification error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Unbekannter Verifizierungsfehler.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -798,12 +798,12 @@
     <message>
         <location filename="../qml/dialogs/JoinRoomDialog.qml" line="+14"/>
         <source>Join room</source>
-        <translation type="unfinished"></translation>
+        <translation>Raum betreten</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished">Raum-ID oder -Alias</translation>
+        <translation>Raum-ID oder -Alias</translation>
     </message>
 </context>
 <context>
@@ -811,12 +811,12 @@
     <message>
         <location filename="../qml/dialogs/LeaveRoomDialog.qml" line="+15"/>
         <source>Leave room</source>
-        <translation type="unfinished">Raum verlassen</translation>
+        <translation>Raum verlassen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished">Willst du wirklich den Raum verlassen?</translation>
+        <translation>Willst du wirklich den Raum verlassen?</translation>
     </message>
 </context>
 <context>
@@ -938,17 +938,17 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../qml/dialogs/LogoutDialog.qml" line="+13"/>
         <source>Log out</source>
-        <translation type="unfinished"></translation>
+        <translation>Abmelden</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A call is in progress. Log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Du befindest dich in einem Telefonat. Wirklich abmelden?</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Are you sure you want to log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Wirklich abmelden?</translation>
     </message>
 </context>
 <context>
@@ -1188,7 +1188,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+16"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Damit andere Nutzer sehen, welche Geräte tatsächlich dir gehören, kannst du sie verifizieren. Das erlaubt auch Schlüsselbackup zu nutzen ohne ein Passwort einzugeben. Jetzt ein unverifiziertes Gerät verifizieren? (Bitte stelle sicher, dass sich das unverifizierte Gerät in deiner Nähe befindet.)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1241,7 +1241,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../qml/NotificationWarning.qml" line="+32"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished"></translation>
+        <translation>Du wirst den ganzen Raum eine Benachrichtigung schicken</translation>
     </message>
 </context>
 <context>
@@ -1463,7 +1463,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+11"/>
         <source>Choose custom homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Wähle einen anderen Server aus</translation>
     </message>
 </context>
 <context>
@@ -1545,24 +1545,24 @@ Beispiel: https://mein.server:8787</translation>
         <location line="+40"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Verschlüsselung ist nicht konfiguriert</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unverified login</source>
         <extracomment>The user just signed in with this device and hasn&apos;t verified their master key.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Login noch nicht verifiziert</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please verify your other devices</source>
         <extracomment>There are unverified devices signed in to this account.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Verifiziere deine anderen Geräte</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Close</source>
-        <translation type="unfinished">Schließen</translation>
+        <translation>Schließen</translation>
     </message>
     <message>
         <location line="+65"/>
@@ -1800,27 +1800,27 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../qml/Root.qml" line="+255"/>
         <source>Please enter your login password to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte gib dein Anmeldepassword an um fortzufahren:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid email address to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte gib eine gültige Emailadresse an um fortzufahren:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid phone number to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte gib eine gültige Telefonnummer an um fortzufahren:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter the token, which has been sent to you:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte gib das Token ein, dass dir soeben zugesendet wurde:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Wait for the confirmation link to arrive, then continue.</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte auf den Bestätigungslink und fahre fort, wenn du diesem gefolgt bist.</translation>
     </message>
 </context>
 <context>
@@ -1900,7 +1900,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+33"/>
         <source>Encryption setup successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschlüsselung erfolgreich konfiguriert</translation>
     </message>
     <message>
         <location line="+9"/>
