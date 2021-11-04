@@ -18,32 +18,32 @@ Q_NAMESPACE
 
 enum DecryptionErrorCode
 {
-        NoError,
-        MissingSession, // Session was not found, retrieve from backup or request from other devices
-                        // and try again
-        MissingSessionIndex, // Session was found, but it does not reach back enough to this index,
-                             // retrieve from backup or request from other devices and try again
-        DbError,             // DB read failed
-        DecryptionFailed,    // libolm error
-        ParsingFailed,       // Failed to parse the actual event
-        ReplayAttack,        // Megolm index reused
+    NoError,
+    MissingSession, // Session was not found, retrieve from backup or request from other devices
+                    // and try again
+    MissingSessionIndex, // Session was found, but it does not reach back enough to this index,
+                         // retrieve from backup or request from other devices and try again
+    DbError,             // DB read failed
+    DecryptionFailed,    // libolm error
+    ParsingFailed,       // Failed to parse the actual event
+    ReplayAttack,        // Megolm index reused
 };
 Q_ENUM_NS(DecryptionErrorCode)
 
 struct DecryptionResult
 {
-        DecryptionErrorCode error;
-        std::optional<std::string> error_message;
-        std::optional<mtx::events::collections::TimelineEvents> event;
+    DecryptionErrorCode error;
+    std::optional<std::string> error_message;
+    std::optional<mtx::events::collections::TimelineEvents> event;
 };
 
 struct OlmMessage
 {
-        std::string sender_key;
-        std::string sender;
+    std::string sender_key;
+    std::string sender;
 
-        using RecipientKey = std::string;
-        std::map<RecipientKey, mtx::events::msg::OlmCipherContent> ciphertext;
+    using RecipientKey = std::string;
+    std::map<RecipientKey, mtx::events::msg::OlmCipherContent> ciphertext;
 };
 
 void
@@ -70,6 +70,8 @@ create_inbound_megolm_session(const mtx::events::DeviceEvent<mtx::events::msg::R
 void
 import_inbound_megolm_session(
   const mtx::events::DeviceEvent<mtx::events::msg::ForwardedRoomKey> &roomKey);
+void
+lookup_keybackup(const std::string room, const std::string session_id);
 
 nlohmann::json
 handle_pre_key_olm_message(const std::string &sender,
@@ -87,7 +89,7 @@ decryptEvent(const MegolmSessionIndex &index,
              const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &event,
              bool dont_write_db = false);
 crypto::Trust
-calculate_trust(const std::string &user_id, const std::string &curve25519);
+calculate_trust(const std::string &user_id, const MegolmSessionIndex &index);
 
 void
 mark_keys_as_published();

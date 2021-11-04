@@ -24,101 +24,101 @@ struct Login;
 
 class LoginPage : public QWidget
 {
-        Q_OBJECT
+    Q_OBJECT
 
 public:
-        enum class LoginMethod
-        {
-                Password,
-                SSO,
-        };
+    enum class LoginMethod
+    {
+        Password,
+        SSO,
+    };
 
-        LoginPage(QWidget *parent = nullptr);
+    LoginPage(QWidget *parent = nullptr);
 
-        void reset();
+    void reset();
 
 signals:
-        void backButtonClicked();
-        void loggingIn();
-        void errorOccurred();
+    void backButtonClicked();
+    void loggingIn();
+    void errorOccurred();
 
-        //! Used to trigger the corresponding slot outside of the main thread.
-        void versionErrorCb(const QString &err);
-        void versionOkCb(bool passwordSupported, bool ssoSupported);
+    //! Used to trigger the corresponding slot outside of the main thread.
+    void versionErrorCb(const QString &err);
+    void versionOkCb(bool passwordSupported, bool ssoSupported);
 
-        void loginOk(const mtx::responses::Login &res);
-        void showErrorMessage(QLabel *label, const QString &msg);
+    void loginOk(const mtx::responses::Login &res);
+    void showErrorMessage(QLabel *label, const QString &msg);
 
 protected:
-        void paintEvent(QPaintEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 
 public slots:
-        // Displays errors produced during the login.
-        void showError(const QString &msg);
-        void showError(QLabel *label, const QString &msg);
+    // Displays errors produced during the login.
+    void showError(const QString &msg);
+    void showError(QLabel *label, const QString &msg);
 
 private slots:
-        // Callback for the back button.
-        void onBackButtonClicked();
+    // Callback for the back button.
+    void onBackButtonClicked();
 
-        // Callback for the login button.
-        void onLoginButtonClicked(LoginMethod loginMethod);
+    // Callback for the login button.
+    void onLoginButtonClicked(LoginMethod loginMethod);
 
-        // Callback for probing the server found in the mxid
-        void onMatrixIdEntered();
+    // Callback for probing the server found in the mxid
+    void onMatrixIdEntered();
 
-        // Callback for probing the manually entered server
-        void onServerAddressEntered();
+    // Callback for probing the manually entered server
+    void onServerAddressEntered();
 
-        // Callback for errors produced during server probing
-        void versionError(const QString &error_message);
-        // Callback for successful server probing
-        void versionOk(bool passwordSupported, bool ssoSupported);
+    // Callback for errors produced during server probing
+    void versionError(const QString &error_message);
+    // Callback for successful server probing
+    void versionOk(bool passwordSupported, bool ssoSupported);
 
 private:
-        void checkHomeserverVersion();
-        std::string initialDeviceName()
-        {
+    void checkHomeserverVersion();
+    std::string initialDeviceName()
+    {
 #if defined(Q_OS_MAC)
-                return "Nheko on macOS";
+        return "Nheko on macOS";
 #elif defined(Q_OS_LINUX)
-                return "Nheko on Linux";
+        return "Nheko on Linux";
 #elif defined(Q_OS_WIN)
-                return "Nheko on Windows";
+        return "Nheko on Windows";
 #elif defined(Q_OS_FREEBSD)
-                return "Nheko on FreeBSD";
+        return "Nheko on FreeBSD";
 #else
-                return "Nheko";
+        return "Nheko";
 #endif
-        }
+    }
 
-        QVBoxLayout *top_layout_;
+    QVBoxLayout *top_layout_;
 
-        QHBoxLayout *top_bar_layout_;
-        QHBoxLayout *logo_layout_;
-        QHBoxLayout *button_layout_;
+    QHBoxLayout *top_bar_layout_;
+    QHBoxLayout *logo_layout_;
+    QHBoxLayout *button_layout_;
 
-        QLabel *logo_;
-        QLabel *error_label_;
-        QLabel *error_matrixid_label_;
+    QLabel *logo_;
+    QLabel *error_label_;
+    QLabel *error_matrixid_label_;
 
-        QHBoxLayout *serverLayout_;
-        QHBoxLayout *matrixidLayout_;
-        LoadingIndicator *spinner_;
-        QLabel *errorIcon_;
-        QString inferredServerAddress_;
+    QHBoxLayout *serverLayout_;
+    QHBoxLayout *matrixidLayout_;
+    LoadingIndicator *spinner_;
+    QLabel *errorIcon_;
+    QString inferredServerAddress_;
 
-        FlatButton *back_button_;
-        RaisedButton *login_button_, *sso_login_button_;
+    FlatButton *back_button_;
+    RaisedButton *login_button_, *sso_login_button_;
 
-        QWidget *form_widget_;
-        QHBoxLayout *form_wrapper_;
-        QVBoxLayout *form_layout_;
+    QWidget *form_widget_;
+    QHBoxLayout *form_wrapper_;
+    QVBoxLayout *form_layout_;
 
-        TextField *matrixid_input_;
-        TextField *password_input_;
-        TextField *deviceName_;
-        TextField *serverInput_;
-        bool passwordSupported = true;
-        bool ssoSupported      = false;
+    TextField *matrixid_input_;
+    TextField *password_input_;
+    TextField *deviceName_;
+    TextField *serverInput_;
+    bool passwordSupported = true;
+    bool ssoSupported      = false;
 };

@@ -16,6 +16,14 @@ Page {
     property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.3)
     property bool collapsed: false
 
+    Component {
+        id: roomDirectoryComponent
+
+        RoomDirectory {
+        }
+
+    }
+
     ListView {
         id: roomlist
 
@@ -63,19 +71,9 @@ Page {
                 }
             }
 
-            Platform.MessageDialog {
-                id: leaveRoomDialog
-
-                title: qsTr("Leave Room")
-                text: qsTr("Are you sure you want to leave this room?")
-                modality: Qt.ApplicationModal
-                onAccepted: Rooms.leave(roomContextMenu.roomid)
-                buttons: Dialog.Ok | Dialog.Cancel
-            }
-
             Platform.MenuItem {
                 text: qsTr("Leave room")
-                onTriggered: leaveRoomDialog.open()
+                onTriggered: TimelineManager.openLeaveRoomDialog(roomContextMenu.roomid)
             }
 
             Platform.MenuSeparator {
@@ -116,10 +114,10 @@ Page {
 
         }
 
-        delegate: Rectangle {
+        delegate: ItemDelegate {
             id: roomItem
 
-            property color background: Nheko.colors.window
+            property color backgroundColor: Nheko.colors.window
             property color importantText: Nheko.colors.text
             property color unimportantText: Nheko.colors.buttonText
             property color bubbleBackground: Nheko.colors.highlight
@@ -135,21 +133,34 @@ Page {
             required property int notificationCount
             required property bool hasLoudNotification
             required property bool hasUnreadMessages
+            required property bool isDirect
+            required property string directChatOtherUserId
 
-            color: background
             height: avatarSize + 2 * Nheko.paddingMedium
             width: ListView.view.width
             state: "normal"
-            ToolTip.visible: hovered.hovered && collapsed
+            ToolTip.visible: hovered && collapsed
             ToolTip.text: roomName
+            onClicked: {
+                console.log("tapped " + roomId);
+                if (!Rooms.currentRoom || Rooms.currentRoom.roomId !== roomId)
+                    Rooms.setCurrentRoom(roomId);
+                else
+                    Rooms.resetCurrentRoom();
+            }
+            onPressAndHold: {
+                if (!isInvite)
+                    roomContextMenu.show(roomId, tags);
+
+            }
             states: [
                 State {
                     name: "highlight"
-                    when: hovered.hovered && !((Rooms.currentRoom && roomId == Rooms.currentRoom.roomId) || Rooms.currentRoomPreview.roomid == roomId)
+                    when: roomItem.hovered && !((Rooms.currentRoom && roomId == Rooms.currentRoom.roomId) || Rooms.currentRoomPreview.roomid == roomId)
 
                     PropertyChanges {
                         target: roomItem
-                        background: Nheko.colors.dark
+                        backgroundColor: Nheko.colors.dark
                         importantText: Nheko.colors.brightText
                         unimportantText: Nheko.colors.brightText
                         bubbleBackground: Nheko.colors.highlight
@@ -163,7 +174,7 @@ Page {
 
                     PropertyChanges {
                         target: roomItem
-                        background: Nheko.colors.highlight
+                        backgroundColor: Nheko.colors.highlight
                         importantText: Nheko.colors.highlightedText
                         unimportantText: Nheko.colors.highlightedText
                         bubbleBackground: Nheko.colors.highlightedText
@@ -189,27 +200,6 @@ Page {
                     acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
                 }
 
-                TapHandler {
-                    margin: -Nheko.paddingSmall
-                    onSingleTapped: {
-                        if (!Rooms.currentRoom || Rooms.currentRoom.roomId !== roomId)
-                            Rooms.setCurrentRoom(roomId);
-                        else
-                            Rooms.resetCurrentRoom();
-                    }
-                    onLongPressed: {
-                        if (!isInvite)
-                            roomContextMenu.show(roomId, tags);
-
-                    }
-                }
-
-                HoverHandler {
-                    id: hovered
-
-                    acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
-                }
-
             }
 
             RowLayout {
@@ -229,6 +219,8 @@ Page {
                     width: avatarSize
                     url: avatarUrl.replace("mxc://", "image://MxcImage/")
                     displayName: roomName
+                    userid: isDirect ? directChatOtherUserId : ""
+                    roomid: roomId
 
                     Rectangle {
                         id: collapsedNotificationBubble
@@ -357,6 +349,10 @@ Page {
                 width: 3
                 color: Nheko.colors.highlight
                 visible: hasUnreadMessages
+            }
+
+            background: Rectangle {
+                color: backgroundColor
             }
 
         }
@@ -500,6 +496,91 @@ Page {
             Layout.fillWidth: true
         }
 
+        Rectangle {
+            id: unverifiedStuffBubble
+
+            color: Qt.lighter(Nheko.theme.orange, verifyButtonHovered.hovered ? 1.2 : 1)
+            Layout.fillWidth: true
+            implicitHeight: explanation.height + Nheko.paddingMedium * 2
+            visible: SelfVerificationStatus.status != SelfVerificationStatus.AllVerified
+
+            RowLayout {
+                id: unverifiedStuffBubbleContainer
+
+                width: parent.width
+                height: explanation.height + Nheko.paddingMedium * 2
+                spacing: 0
+
+                Label {
+                    id: explanation
+
+                    Layout.margins: Nheko.paddingMedium
+                    Layout.rightMargin: Nheko.paddingSmall
+                    color: Nheko.colors.buttonText
+                    Layout.fillWidth: true
+                    text: {
+                        switch (SelfVerificationStatus.status) {
+                        case SelfVerificationStatus.NoMasterKey:
+                            //: Cross-signing setup has not run yet.
+                            return qsTr("Encryption not set up");
+                        case SelfVerificationStatus.UnverifiedMasterKey:
+                            //: The user just signed in with this device and hasn't verified their master key.
+                            return qsTr("Unverified login");
+                        case SelfVerificationStatus.UnverifiedDevices:
+                            //: There are unverified devices signed in to this account.
+                            return qsTr("Please verify your other devices");
+                        default:
+                            return "";
+                        }
+                    }
+                    textFormat: Text.PlainText
+                    wrapMode: Text.Wrap
+                }
+
+                ImageButton {
+                    id: closeUnverifiedBubble
+
+                    Layout.rightMargin: Nheko.paddingMedium
+                    Layout.topMargin: Nheko.paddingMedium
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    hoverEnabled: true
+                    width: fontMetrics.font.pixelSize
+                    height: fontMetrics.font.pixelSize
+                    image: ":/icons/icons/ui/remove-symbol.png"
+                    ToolTip.visible: closeUnverifiedBubble.hovered
+                    ToolTip.text: qsTr("Close")
+                    onClicked: unverifiedStuffBubble.visible = false
+                }
+
+            }
+
+            HoverHandler {
+                id: verifyButtonHovered
+
+                enabled: !closeUnverifiedBubble.hovered
+                acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
+            }
+
+            TapHandler {
+                enabled: !closeUnverifiedBubble.hovered
+                acceptedButtons: Qt.LeftButton
+                onSingleTapped: {
+                    if (SelfVerificationStatus.status == SelfVerificationStatus.UnverifiedDevices)
+                        SelfVerificationStatus.verifyUnverifiedDevices();
+                    else
+                        SelfVerificationStatus.statusChanged();
+                }
+            }
+
+        }
+
+        Rectangle {
+            color: Nheko.theme.separator
+            height: 1
+            Layout.fillWidth: true
+            visible: unverifiedStuffBubble.visible
+        }
+
     }
 
     footer: ColumnLayout {
@@ -563,6 +644,10 @@ Page {
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Room directory")
                     Layout.margins: Nheko.paddingMedium
+                    onClicked: {
+                        var win = roomDirectoryComponent.createObject(timelineRoot);
+                        win.show();
+                    }
                 }
 
                 ImageButton {

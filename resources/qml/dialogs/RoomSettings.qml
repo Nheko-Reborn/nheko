@@ -2,7 +2,8 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import "./ui"
+import ".."
+import "../ui"
 import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.3
@@ -20,7 +21,7 @@ ApplicationWindow {
     palette: Nheko.colors
     color: Nheko.colors.window
     modality: Qt.NonModal
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     Component.onCompleted: Nheko.reparent(roomSettingsDialog)
     title: qsTr("Room Settings")
 
@@ -38,6 +39,7 @@ ApplicationWindow {
 
         Avatar {
             url: roomSettings.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
+            roomid: roomSettings.roomId
             displayName: roomSettings.roomName
             height: 130
             width: 130
@@ -186,7 +188,16 @@ ApplicationWindow {
 
             ComboBox {
                 enabled: roomSettings.canChangeJoinRules
-                model: [qsTr("Anyone and guests"), qsTr("Anyone"), qsTr("Invited users")]
+                model: {
+                    let opts = [qsTr("Anyone and guests"), qsTr("Anyone"), qsTr("Invited users")];
+                    if (roomSettings.supportsKnocking)
+                        opts.push(qsTr("By knocking"));
+
+                    if (roomSettings.supportsRestricted)
+                        opts.push(qsTr("Restricted by membership in other rooms"));
+
+                    return opts;
+                }
                 currentIndex: roomSettings.accessJoinRules
                 onActivated: {
                     roomSettings.changeAccessRules(index);

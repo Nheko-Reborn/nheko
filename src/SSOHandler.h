@@ -9,20 +9,20 @@
 
 class SSOHandler : public QObject
 {
-        Q_OBJECT
+    Q_OBJECT
 
 public:
-        SSOHandler(QObject *parent = nullptr);
+    SSOHandler(QObject *parent = nullptr);
 
-        ~SSOHandler();
+    ~SSOHandler();
 
-        std::string url() const;
+    std::string url() const;
 
 signals:
-        void ssoSuccess(std::string token);
-        void ssoFailed();
+    void ssoSuccess(std::string token);
+    void ssoFailed();
 
 private:
-        httplib::Server svr;
-        int port = 0;
+    httplib::Server svr;
+    int port = 0;
 };

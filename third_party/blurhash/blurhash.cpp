@@ -6,10 +6,6 @@
 #include <cmath>
 #include <stdexcept>
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
 #ifdef DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest.h>
 #endif
@@ -17,6 +13,9 @@
 using namespace std::literals;
 
 namespace {
+template<class T>
+T pi = 3.14159265358979323846;
+
 constexpr std::array<char, 84> int_to_b83{
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$%*+,-.:;=?@[]^_{|}~"};
 
@@ -62,13 +61,13 @@ struct Components
 };
 
 int
-packComponents(const Components &c)
+packComponents(const Components &c) noexcept
 {
         return (c.x - 1) + (c.y - 1) * 9;
 }
 
 Components
-unpackComponents(int c)
+unpackComponents(int c) noexcept
 {
         return {c % 9 + 1, c / 9 + 1};
 }
@@ -88,7 +87,7 @@ decode83(std::string_view value)
 }
 
 float
-decodeMaxAC(int quantizedMaxAC)
+decodeMaxAC(int quantizedMaxAC) noexcept
 {
         return (quantizedMaxAC + 1) / 166.;
 }
@@ -101,13 +100,13 @@ decodeMaxAC(std::string_view maxAC)
 }
 
 int
-encodeMaxAC(float maxAC)
+encodeMaxAC(float maxAC) noexcept
 {
-        return std::max(0, std::min(82, int(maxAC * 166 - 0.5)));
+        return std::max(0, std::min(82, int(maxAC * 166 - 0.5f)));
 }
 
 float
-srgbToLinear(int value)
+srgbToLinear(int value) noexcept
 {
         auto srgbToLinearF = [](float x) {
                 if (x <= 0.0f)
@@ -124,7 +123,7 @@ srgbToLinear(int value)
 }
 
 int
-linearToSrgb(float value)
+linearToSrgb(float value) noexcept
 {
         auto linearToSrgbF = [](float x) -> float {
                 if (x <= 0.0f)
@@ -137,7 +136,7 @@ linearToSrgb(float value)
                         return std::pow(x, 1.0f / 2.4f) * 1.055f - 0.055f;
         };
 
-        return int(linearToSrgbF(value) * 255.f + 0.5);
+        return int(linearToSrgbF(value) * 255.f + 0.5f);
 }
 
 struct Color
@@ -235,8 +234,8 @@ multiplyBasisFunction(Components components, int width, int height, unsigned cha
 
         for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
-                        float basis = std::cos(M_PI * components.x * x / float(width)) *
-                                      std::cos(M_PI * components.y * y / float(height));
+                        float basis = std::cos(pi<float> * components.x * x / float(width)) *
+                                      std::cos(pi<float> * components.y * y / float(height));
                         c.r += basis * srgbToLinear(pixels[3 * x + 0 + y * width * 3]);
                         c.g += basis * srgbToLinear(pixels[3 * x + 1 + y * width * 3]);
                         c.b += basis * srgbToLinear(pixels[3 * x + 2 + y * width * 3]);
@@ -251,7 +250,7 @@ multiplyBasisFunction(Components components, int width, int height, unsigned cha
 
 namespace blurhash {
 Image
-decode(std::string_view blurhash, size_t width, size_t height, size_t bytesPerPixel)
+decode(std::string_view blurhash, size_t width, size_t height, size_t bytesPerPixel) noexcept
 {
         Image i{};
 
@@ -287,8 +286,8 @@ decode(std::string_view blurhash, size_t width, size_t height, size_t bytesPerPi
                         for (size_t nx = 0; nx < size_t(components.x); nx++) {
                                 for (size_t ny = 0; ny < size_t(components.y); ny++) {
                                         float basis =
-                                          std::cos(M_PI * float(x) * float(nx) / float(width)) *
-                                          std::cos(M_PI * float(y) * float(ny) / float(height));
+                                          std::cos(pi<float> * float(nx * x) / float(width)) *
+                                          std::cos(pi<float> * float(ny * y) / float(height));
                                         c += values[nx + ny * components.x] * basis;
                                 }
                         }

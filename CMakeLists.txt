@@ -281,8 +281,6 @@ set(SRC_FILES
 	src/dialogs/CreateRoom.cpp
 	src/dialogs/FallbackAuth.cpp
 	src/dialogs/ImageOverlay.cpp
-	src/dialogs/JoinRoom.cpp
-	src/dialogs/LeaveRoom.cpp
 	src/dialogs/Logout.cpp
 	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
@@ -311,6 +309,8 @@ set(SRC_FILES
 	src/ui/InfoMessage.cpp
 	src/ui/Label.cpp
 	src/ui/LoadingIndicator.cpp
+	src/ui/MxcAnimatedImage.cpp
+	src/ui/MxcMediaProxy.cpp
 	src/ui/NhekoCursorShape.cpp
 	src/ui/NhekoDropArea.cpp
 	src/ui/NhekoGlobalObject.cpp
@@ -326,7 +326,17 @@ set(SRC_FILES
 	src/ui/Theme.cpp
 	src/ui/ThemeManager.cpp
 	src/ui/ToggleButton.cpp
+	src/ui/UIA.cpp
 	src/ui/UserProfile.cpp
+
+	src/voip/CallDevices.cpp
+	src/voip/CallManager.cpp
+	src/voip/WebRTCSession.cpp
+
+	src/encryption/DeviceVerificationFlow.cpp
+	src/encryption/Olm.cpp
+	src/encryption/SelfVerificationStatus.cpp
+	src/encryption/VerificationManager.cpp
 
 	# Generic notification stuff
 	src/notifications/Manager.cpp
@@ -334,23 +344,20 @@ set(SRC_FILES
 	src/AvatarProvider.cpp
 	src/BlurhashProvider.cpp
 	src/Cache.cpp
-	src/CallDevices.cpp
-	src/CallManager.cpp
 	src/ChatPage.cpp
 	src/Clipboard.cpp
 	src/ColorImageProvider.cpp
 	src/CompletionProxyModel.cpp
-	src/DeviceVerificationFlow.cpp
 	src/EventAccessors.cpp
 	src/InviteesModel.cpp
+	src/JdenticonProvider.cpp
 	src/Logging.cpp
 	src/LoginPage.cpp
 	src/MainWindow.cpp
 	src/MatrixClient.cpp
 	src/MemberList.cpp
 	src/MxcImageProvider.cpp
-	src/Olm.cpp
-    src/ReadReceiptsModel.cpp
+	src/ReadReceiptsModel.cpp
 	src/RegisterPage.cpp
 	src/SSOHandler.cpp
 	src/CombinedImagePackModel.cpp
@@ -359,9 +366,9 @@ set(SRC_FILES
 	src/TrayIcon.cpp
 	src/UserSettingsPage.cpp
 	src/UsersModel.cpp
+	src/RoomDirectoryModel.cpp
 	src/RoomsModel.cpp
 	src/Utils.cpp
-	src/WebRTCSession.cpp
 	src/WelcomePage.cpp
 	src/main.cpp
 
@@ -381,7 +388,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        deb51ef1d6df870098069312f0a1999550e1eb85
+		GIT_TAG        7fe7a70fcf7540beb6d7b4847e53a425de66c6bf
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -492,8 +499,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/CreateRoom.h
 	src/dialogs/FallbackAuth.h
 	src/dialogs/ImageOverlay.h
-	src/dialogs/JoinRoom.h
-	src/dialogs/LeaveRoom.h
 	src/dialogs/Logout.h
 	src/dialogs/PreviewUploadOverlay.h
 	src/dialogs/ReCaptcha.h
@@ -520,6 +525,8 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/InfoMessage.h
 	src/ui/Label.h
 	src/ui/LoadingIndicator.h
+	src/ui/MxcAnimatedImage.h
+	src/ui/MxcMediaProxy.h
 	src/ui/Menu.h
 	src/ui/NhekoCursorShape.h
 	src/ui/NhekoDropArea.h
@@ -535,7 +542,17 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/Theme.h
 	src/ui/ThemeManager.h
 	src/ui/ToggleButton.h
+	src/ui/UIA.h
 	src/ui/UserProfile.h
+
+	src/voip/CallDevices.h
+	src/voip/CallManager.h
+	src/voip/WebRTCSession.h
+
+	src/encryption/DeviceVerificationFlow.h
+	src/encryption/Olm.h
+	src/encryption/SelfVerificationStatus.h
+	src/encryption/VerificationManager.h
 
 	src/notifications/Manager.h
 
@@ -543,20 +560,17 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/BlurhashProvider.h
 	src/CacheCryptoStructs.h
 	src/Cache_p.h
-	src/CallDevices.h
-	src/CallManager.h
 	src/ChatPage.h
 	src/Clipboard.h
 	src/CombinedImagePackModel.h
 	src/CompletionProxyModel.h
-	src/DeviceVerificationFlow.h
 	src/ImagePackListModel.h
 	src/InviteesModel.h
+	src/JdenticonProvider.h
 	src/LoginPage.h
 	src/MainWindow.h
 	src/MemberList.h
 	src/MxcImageProvider.h
-	src/Olm.h
 	src/RegisterPage.h
 	src/RoomsModel.h
 	src/SSOHandler.h
@@ -564,7 +578,8 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/TrayIcon.h
 	src/UserSettingsPage.h
 	src/UsersModel.h
-	src/WebRTCSession.h
+	src/RoomDirectoryModel.h
+	src/RoomsModel.h
 	src/WelcomePage.h
 	src/ReadReceiptsModel.h
 )
@@ -576,7 +591,7 @@ include(Translations)
 set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
 
 if (APPLE)
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation -framework Cocoa")
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation -framework Cocoa -framework UserNotifications")
 	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerMac.mm src/notifications/ManagerMac.cpp src/emoji/MacHelper.mm)
 	if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
 		set_source_files_properties( src/notifications/ManagerMac.mm src/emoji/MacHelper.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)

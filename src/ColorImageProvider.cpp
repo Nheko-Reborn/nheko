@@ -9,23 +9,23 @@
 QPixmap
 ColorImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &)
 {
-        auto args = id.split('?');
+    auto args = id.split('?');
 
-        QPixmap source(args[0]);
+    QPixmap source(args[0]);
 
-        if (size)
-                *size = QSize(source.width(), source.height());
+    if (size)
+        *size = QSize(source.width(), source.height());
 
-        if (args.size() < 2)
-                return source;
+    if (args.size() < 2)
+        return source;
 
-        QColor color(args[1]);
+    QColor color(args[1]);
 
-        QPixmap colorized = source;
-        QPainter painter(&colorized);
-        painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
-        painter.fillRect(colorized.rect(), color);
-        painter.end();
+    QPixmap colorized = source;
+    QPainter painter(&colorized);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    painter.fillRect(colorized.rect(), color);
+    painter.end();
 
-        return colorized;
+    return colorized;
 }

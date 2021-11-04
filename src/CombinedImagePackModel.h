@@ -10,39 +10,39 @@
 
 class CombinedImagePackModel : public QAbstractListModel
 {
-        Q_OBJECT
+    Q_OBJECT
 public:
-        enum Roles
-        {
-                Url = Qt::UserRole,
-                ShortCode,
-                Body,
-                PackName,
-                OriginalRow,
-        };
+    enum Roles
+    {
+        Url = Qt::UserRole,
+        ShortCode,
+        Body,
+        PackName,
+        OriginalRow,
+    };
 
-        CombinedImagePackModel(const std::string &roomId, bool stickers, QObject *parent = nullptr);
-        QHash<int, QByteArray> roleNames() const override;
-        int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-        QVariant data(const QModelIndex &index, int role) const override;
+    CombinedImagePackModel(const std::string &roomId, bool stickers, QObject *parent = nullptr);
+    QHash<int, QByteArray> roleNames() const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role) const override;
 
-        mtx::events::msc2545::PackImage imageAt(int row)
-        {
-                if (row < 0 || static_cast<size_t>(row) >= images.size())
-                        return {};
-                return images.at(static_cast<size_t>(row)).image;
-        }
+    mtx::events::msc2545::PackImage imageAt(int row)
+    {
+        if (row < 0 || static_cast<size_t>(row) >= images.size())
+            return {};
+        return images.at(static_cast<size_t>(row)).image;
+    }
 
 private:
-        std::string room_id;
+    std::string room_id;
 
-        struct ImageDesc
-        {
-                QString shortcode;
-                QString packname;
+    struct ImageDesc
+    {
+        QString shortcode;
+        QString packname;
 
-                mtx::events::msc2545::PackImage image;
-        };
+        mtx::events::msc2545::PackImage image;
+    };
 
-        std::vector<ImageDesc> images;
+    std::vector<ImageDesc> images;
 };

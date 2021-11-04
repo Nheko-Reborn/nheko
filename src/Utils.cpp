@@ -38,154 +38,154 @@ template<class T, class Event>
 static DescInfo
 createDescriptionInfo(const Event &event, const QString &localUser, const QString &displayName)
 {
-        const auto msg    = std::get<T>(event);
-        const auto sender = QString::fromStdString(msg.sender);
+    const auto msg    = std::get<T>(event);
+    const auto sender = QString::fromStdString(msg.sender);
 
-        const auto username = displayName;
-        const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
-        auto body           = utils::event_body(event).trimmed();
-        if (mtx::accessors::relations(event).reply_to())
-                body = QString::fromStdString(utils::stripReplyFromBody(body.toStdString()));
+    const auto username = displayName;
+    const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
+    auto body           = utils::event_body(event).trimmed();
+    if (mtx::accessors::relations(event).reply_to())
+        body = QString::fromStdString(utils::stripReplyFromBody(body.toStdString()));
 
-        return DescInfo{QString::fromStdString(msg.event_id),
-                        sender,
-                        utils::messageDescription<T>(username, body, sender == localUser),
-                        utils::descriptiveTime(ts),
-                        msg.origin_server_ts,
-                        ts};
+    return DescInfo{QString::fromStdString(msg.event_id),
+                    sender,
+                    utils::messageDescription<T>(username, body, sender == localUser),
+                    utils::descriptiveTime(ts),
+                    msg.origin_server_ts,
+                    ts};
 }
 
 std::string
 utils::stripReplyFromBody(const std::string &bodyi)
 {
-        QString body = QString::fromStdString(bodyi);
-        QRegularExpression plainQuote("^>.*?$\n?", QRegularExpression::MultilineOption);
-        while (body.startsWith(">"))
-                body.remove(plainQuote);
-        if (body.startsWith("\n"))
-                body.remove(0, 1);
-        return body.toStdString();
+    QString body = QString::fromStdString(bodyi);
+    QRegularExpression plainQuote("^>.*?$\n?", QRegularExpression::MultilineOption);
+    while (body.startsWith(">"))
+        body.remove(plainQuote);
+    if (body.startsWith("\n"))
+        body.remove(0, 1);
+
+    body.replace("@room", QString::fromUtf8("@\u2060room"));
+    return body.toStdString();
 }
 
 std::string
 utils::stripReplyFromFormattedBody(const std::string &formatted_bodyi)
 {
-        QString formatted_body = QString::fromStdString(formatted_bodyi);
-        formatted_body.remove(QRegularExpression("<mx-reply>.*</mx-reply>",
-                                                 QRegularExpression::DotMatchesEverythingOption));
-        formatted_body.replace("@room", "@\u2060room");
-        return formatted_body.toStdString();
+    QString formatted_body = QString::fromStdString(formatted_bodyi);
+    formatted_body.remove(QRegularExpression("<mx-reply>.*</mx-reply>",
+                                             QRegularExpression::DotMatchesEverythingOption));
+    formatted_body.replace("@room", QString::fromUtf8("@\u2060room"));
+    return formatted_body.toStdString();
 }
 
 RelatedInfo
 utils::stripReplyFallbacks(const TimelineEvent &event, std::string id, QString room_id_)
 {
-        RelatedInfo related   = {};
-        related.quoted_user   = QString::fromStdString(mtx::accessors::sender(event));
-        related.related_event = std::move(id);
-        related.type          = mtx::accessors::msg_type(event);
+    RelatedInfo related   = {};
+    related.quoted_user   = QString::fromStdString(mtx::accessors::sender(event));
+    related.related_event = std::move(id);
+    related.type          = mtx::accessors::msg_type(event);
 
-        // get body, strip reply fallback, then transform the event to text, if it is a media event
-        // etc
-        related.quoted_body = QString::fromStdString(mtx::accessors::body(event));
-        related.quoted_body =
-          QString::fromStdString(stripReplyFromBody(related.quoted_body.toStdString()));
-        related.quoted_body = utils::getQuoteBody(related);
-        related.quoted_body.replace("@room", QString::fromUtf8("@\u2060room"));
+    // get body, strip reply fallback, then transform the event to text, if it is a media event
+    // etc
+    related.quoted_body = QString::fromStdString(mtx::accessors::body(event));
+    related.quoted_body =
+      QString::fromStdString(stripReplyFromBody(related.quoted_body.toStdString()));
+    related.quoted_body = utils::getQuoteBody(related);
 
-        // get quoted body and strip reply fallback
-        related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(event);
-        related.quoted_formatted_body = QString::fromStdString(
-          stripReplyFromFormattedBody(related.quoted_formatted_body.toStdString()));
-        related.room = room_id_;
+    // get quoted body and strip reply fallback
+    related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(event);
+    related.quoted_formatted_body = QString::fromStdString(
+      stripReplyFromFormattedBody(related.quoted_formatted_body.toStdString()));
+    related.room = room_id_;
 
-        return related;
+    return related;
 }
 
 QString
 utils::localUser()
 {
-        return QString::fromStdString(http::client()->user_id().to_string());
+    return QString::fromStdString(http::client()->user_id().to_string());
 }
 
 bool
 utils::codepointIsEmoji(uint code)
 {
-        // TODO: Be more precise here.
-        return (code >= 0x2600 && code <= 0x27bf) || (code >= 0x2b00 && code <= 0x2bff) ||
-               (code >= 0x1f000 && code <= 0x1faff) || code == 0x200d || code == 0xfe0f;
+    // TODO: Be more precise here.
+    return (code >= 0x2600 && code <= 0x27bf) || (code >= 0x2b00 && code <= 0x2bff) ||
+           (code >= 0x1f000 && code <= 0x1faff) || code == 0x200d || code == 0xfe0f;
 }
 
 QString
 utils::replaceEmoji(const QString &body)
 {
-        QString fmtBody;
-        fmtBody.reserve(body.size());
+    QString fmtBody;
+    fmtBody.reserve(body.size());
 
-        QVector<uint> utf32_string = body.toUcs4();
+    QVector<uint> utf32_string = body.toUcs4();
 
-        bool insideFontBlock = false;
-        for (auto &code : utf32_string) {
-                if (utils::codepointIsEmoji(code)) {
-                        if (!insideFontBlock) {
-                                fmtBody += QStringLiteral("<font face=\"") %
-                                           UserSettings::instance()->emojiFont() %
-                                           QStringLiteral("\">");
-                                insideFontBlock = true;
-                        }
+    bool insideFontBlock = false;
+    for (auto &code : utf32_string) {
+        if (utils::codepointIsEmoji(code)) {
+            if (!insideFontBlock) {
+                fmtBody += QStringLiteral("<font face=\"") % UserSettings::instance()->emojiFont() %
+                           QStringLiteral("\">");
+                insideFontBlock = true;
+            }
 
-                } else {
-                        if (insideFontBlock) {
-                                fmtBody += QStringLiteral("</font>");
-                                insideFontBlock = false;
-                        }
-                }
-                if (QChar::requiresSurrogates(code)) {
-                        QChar emoji[] = {static_cast<ushort>(QChar::highSurrogate(code)),
-                                         static_cast<ushort>(QChar::lowSurrogate(code))};
-                        fmtBody.append(emoji, 2);
-                } else {
-                        fmtBody.append(QChar(static_cast<ushort>(code)));
-                }
-        }
-        if (insideFontBlock) {
+        } else {
+            if (insideFontBlock) {
                 fmtBody += QStringLiteral("</font>");
+                insideFontBlock = false;
+            }
         }
+        if (QChar::requiresSurrogates(code)) {
+            QChar emoji[] = {static_cast<ushort>(QChar::highSurrogate(code)),
+                             static_cast<ushort>(QChar::lowSurrogate(code))};
+            fmtBody.append(emoji, 2);
+        } else {
+            fmtBody.append(QChar(static_cast<ushort>(code)));
+        }
+    }
+    if (insideFontBlock) {
+        fmtBody += QStringLiteral("</font>");
+    }
 
-        return fmtBody;
+    return fmtBody;
 }
 
 void
 utils::setScaleFactor(float factor)
 {
-        if (factor < 1 || factor > 3)
-                return;
+    if (factor < 1 || factor > 3)
+        return;
 
-        QSettings settings;
-        settings.setValue("settings/scale_factor", factor);
+    QSettings settings;
+    settings.setValue("settings/scale_factor", factor);
 }
 
 float
 utils::scaleFactor()
 {
-        QSettings settings;
-        return settings.value("settings/scale_factor", -1).toFloat();
+    QSettings settings;
+    return settings.value("settings/scale_factor", -1).toFloat();
 }
 
 QString
 utils::descriptiveTime(const QDateTime &then)
 {
-        const auto now  = QDateTime::currentDateTime();
-        const auto days = then.daysTo(now);
+    const auto now  = QDateTime::currentDateTime();
+    const auto days = then.daysTo(now);
 
-        if (days == 0)
-                return QLocale::system().toString(then.time(), QLocale::ShortFormat);
-        else if (days < 2)
-                return QString(QCoreApplication::translate("descriptiveTime", "Yesterday"));
-        else if (days < 7)
-                return then.toString("dddd");
+    if (days == 0)
+        return QLocale::system().toString(then.time(), QLocale::ShortFormat);
+    else if (days < 2)
+        return QString(QCoreApplication::translate("descriptiveTime", "Yesterday"));
+    else if (days < 7)
+        return then.toString("dddd");
 
-        return QLocale::system().toString(then.date(), QLocale::ShortFormat);
+    return QLocale::system().toString(then.date(), QLocale::ShortFormat);
 }
 
 DescInfo
@@ -193,630 +193,622 @@ utils::getMessageDescription(const TimelineEvent &event,
                              const QString &localUser,
                              const QString &displayName)
 {
-        using Audio      = mtx::events::RoomEvent<mtx::events::msg::Audio>;
-        using Emote      = mtx::events::RoomEvent<mtx::events::msg::Emote>;
-        using File       = mtx::events::RoomEvent<mtx::events::msg::File>;
-        using Image      = mtx::events::RoomEvent<mtx::events::msg::Image>;
-        using Notice     = mtx::events::RoomEvent<mtx::events::msg::Notice>;
-        using Text       = mtx::events::RoomEvent<mtx::events::msg::Text>;
-        using Video      = mtx::events::RoomEvent<mtx::events::msg::Video>;
-        using CallInvite = mtx::events::RoomEvent<mtx::events::msg::CallInvite>;
-        using CallAnswer = mtx::events::RoomEvent<mtx::events::msg::CallAnswer>;
-        using CallHangUp = mtx::events::RoomEvent<mtx::events::msg::CallHangUp>;
-        using Encrypted  = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
+    using Audio      = mtx::events::RoomEvent<mtx::events::msg::Audio>;
+    using Emote      = mtx::events::RoomEvent<mtx::events::msg::Emote>;
+    using File       = mtx::events::RoomEvent<mtx::events::msg::File>;
+    using Image      = mtx::events::RoomEvent<mtx::events::msg::Image>;
+    using Notice     = mtx::events::RoomEvent<mtx::events::msg::Notice>;
+    using Text       = mtx::events::RoomEvent<mtx::events::msg::Text>;
+    using Video      = mtx::events::RoomEvent<mtx::events::msg::Video>;
+    using CallInvite = mtx::events::RoomEvent<mtx::events::msg::CallInvite>;
+    using CallAnswer = mtx::events::RoomEvent<mtx::events::msg::CallAnswer>;
+    using CallHangUp = mtx::events::RoomEvent<mtx::events::msg::CallHangUp>;
+    using Encrypted  = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
-        if (std::holds_alternative<Audio>(event)) {
-                return createDescriptionInfo<Audio>(event, localUser, displayName);
-        } else if (std::holds_alternative<Emote>(event)) {
-                return createDescriptionInfo<Emote>(event, localUser, displayName);
-        } else if (std::holds_alternative<File>(event)) {
-                return createDescriptionInfo<File>(event, localUser, displayName);
-        } else if (std::holds_alternative<Image>(event)) {
-                return createDescriptionInfo<Image>(event, localUser, displayName);
-        } else if (std::holds_alternative<Notice>(event)) {
-                return createDescriptionInfo<Notice>(event, localUser, displayName);
-        } else if (std::holds_alternative<Text>(event)) {
-                return createDescriptionInfo<Text>(event, localUser, displayName);
-        } else if (std::holds_alternative<Video>(event)) {
-                return createDescriptionInfo<Video>(event, localUser, displayName);
-        } else if (std::holds_alternative<CallInvite>(event)) {
-                return createDescriptionInfo<CallInvite>(event, localUser, displayName);
-        } else if (std::holds_alternative<CallAnswer>(event)) {
-                return createDescriptionInfo<CallAnswer>(event, localUser, displayName);
-        } else if (std::holds_alternative<CallHangUp>(event)) {
-                return createDescriptionInfo<CallHangUp>(event, localUser, displayName);
-        } else if (std::holds_alternative<mtx::events::Sticker>(event)) {
-                return createDescriptionInfo<mtx::events::Sticker>(event, localUser, displayName);
-        } else if (auto msg = std::get_if<Encrypted>(&event); msg != nullptr) {
-                const auto sender = QString::fromStdString(msg->sender);
+    if (std::holds_alternative<Audio>(event)) {
+        return createDescriptionInfo<Audio>(event, localUser, displayName);
+    } else if (std::holds_alternative<Emote>(event)) {
+        return createDescriptionInfo<Emote>(event, localUser, displayName);
+    } else if (std::holds_alternative<File>(event)) {
+        return createDescriptionInfo<File>(event, localUser, displayName);
+    } else if (std::holds_alternative<Image>(event)) {
+        return createDescriptionInfo<Image>(event, localUser, displayName);
+    } else if (std::holds_alternative<Notice>(event)) {
+        return createDescriptionInfo<Notice>(event, localUser, displayName);
+    } else if (std::holds_alternative<Text>(event)) {
+        return createDescriptionInfo<Text>(event, localUser, displayName);
+    } else if (std::holds_alternative<Video>(event)) {
+        return createDescriptionInfo<Video>(event, localUser, displayName);
+    } else if (std::holds_alternative<CallInvite>(event)) {
+        return createDescriptionInfo<CallInvite>(event, localUser, displayName);
+    } else if (std::holds_alternative<CallAnswer>(event)) {
+        return createDescriptionInfo<CallAnswer>(event, localUser, displayName);
+    } else if (std::holds_alternative<CallHangUp>(event)) {
+        return createDescriptionInfo<CallHangUp>(event, localUser, displayName);
+    } else if (std::holds_alternative<mtx::events::Sticker>(event)) {
+        return createDescriptionInfo<mtx::events::Sticker>(event, localUser, displayName);
+    } else if (auto msg = std::get_if<Encrypted>(&event); msg != nullptr) {
+        const auto sender = QString::fromStdString(msg->sender);
 
-                const auto username = displayName;
-                const auto ts       = QDateTime::fromMSecsSinceEpoch(msg->origin_server_ts);
+        const auto username = displayName;
+        const auto ts       = QDateTime::fromMSecsSinceEpoch(msg->origin_server_ts);
 
-                DescInfo info;
-                info.userid = sender;
-                info.body   = QString(" %1").arg(
-                  messageDescription<Encrypted>(username, "", sender == localUser));
-                info.timestamp       = msg->origin_server_ts;
-                info.descriptiveTime = utils::descriptiveTime(ts);
-                info.event_id        = QString::fromStdString(msg->event_id);
-                info.datetime        = ts;
+        DescInfo info;
+        info.userid = sender;
+        info.body =
+          QString(" %1").arg(messageDescription<Encrypted>(username, "", sender == localUser));
+        info.timestamp       = msg->origin_server_ts;
+        info.descriptiveTime = utils::descriptiveTime(ts);
+        info.event_id        = QString::fromStdString(msg->event_id);
+        info.datetime        = ts;
 
-                return info;
-        }
+        return info;
+    }
 
-        return DescInfo{};
+    return DescInfo{};
 }
 
 QString
 utils::firstChar(const QString &input)
 {
-        if (input.isEmpty())
-                return input;
+    if (input.isEmpty())
+        return input;
 
-        for (auto const &c : input.toUcs4()) {
-                if (QString::fromUcs4(&c, 1) != QString("#"))
-                        return QString::fromUcs4(&c, 1).toUpper();
-        }
+    for (auto const &c : input.toUcs4()) {
+        if (QString::fromUcs4(&c, 1) != QString("#"))
+            return QString::fromUcs4(&c, 1).toUpper();
+    }
 
-        return QString::fromUcs4(&input.toUcs4().at(0), 1).toUpper();
+    return QString::fromUcs4(&input.toUcs4().at(0), 1).toUpper();
 }
 
 QString
 utils::humanReadableFileSize(uint64_t bytes)
 {
-        constexpr static const char *units[] = {"B", "KiB", "MiB", "GiB", "TiB"};
-        constexpr static const int length    = sizeof(units) / sizeof(units[0]);
+    constexpr static const char *units[] = {"B", "KiB", "MiB", "GiB", "TiB"};
+    constexpr static const int length    = sizeof(units) / sizeof(units[0]);
 
-        int u       = 0;
-        double size = static_cast<double>(bytes);
-        while (size >= 1024.0 && u < length) {
-                ++u;
-                size /= 1024.0;
-        }
+    int u       = 0;
+    double size = static_cast<double>(bytes);
+    while (size >= 1024.0 && u < length) {
+        ++u;
+        size /= 1024.0;
+    }
 
-        return QString::number(size, 'g', 4) + ' ' + units[u];
+    return QString::number(size, 'g', 4) + ' ' + units[u];
 }
 
 int
 utils::levenshtein_distance(const std::string &s1, const std::string &s2)
 {
-        const auto nlen = s1.size();
-        const auto hlen = s2.size();
+    const auto nlen = s1.size();
+    const auto hlen = s2.size();
 
-        if (hlen == 0)
-                return -1;
-        if (nlen == 1)
-                return (int)s2.find(s1);
+    if (hlen == 0)
+        return -1;
+    if (nlen == 1)
+        return (int)s2.find(s1);
 
-        std::vector<int> row1(hlen + 1, 0);
+    std::vector<int> row1(hlen + 1, 0);
 
-        for (size_t i = 0; i < nlen; ++i) {
-                std::vector<int> row2(1, (int)i + 1);
+    for (size_t i = 0; i < nlen; ++i) {
+        std::vector<int> row2(1, (int)i + 1);
 
-                for (size_t j = 0; j < hlen; ++j) {
-                        const int cost = s1[i] != s2[j];
-                        row2.push_back(
-                          std::min(row1[j + 1] + 1, std::min(row2[j] + 1, row1[j] + cost)));
-                }
-
-                row1.swap(row2);
+        for (size_t j = 0; j < hlen; ++j) {
+            const int cost = s1[i] != s2[j];
+            row2.push_back(std::min(row1[j + 1] + 1, std::min(row2[j] + 1, row1[j] + cost)));
         }
 
-        return *std::min_element(row1.begin(), row1.end());
+        row1.swap(row2);
+    }
+
+    return *std::min_element(row1.begin(), row1.end());
 }
 
 QString
 utils::event_body(const mtx::events::collections::TimelineEvents &e)
 {
-        using namespace mtx::events;
-        if (auto ev = std::get_if<RoomEvent<msg::Audio>>(&e); ev != nullptr)
-                return QString::fromStdString(ev->content.body);
-        if (auto ev = std::get_if<RoomEvent<msg::Emote>>(&e); ev != nullptr)
-                return QString::fromStdString(ev->content.body);
-        if (auto ev = std::get_if<RoomEvent<msg::File>>(&e); ev != nullptr)
-                return QString::fromStdString(ev->content.body);
-        if (auto ev = std::get_if<RoomEvent<msg::Image>>(&e); ev != nullptr)
-                return QString::fromStdString(ev->content.body);
-        if (auto ev = std::get_if<RoomEvent<msg::Notice>>(&e); ev != nullptr)
-                return QString::fromStdString(ev->content.body);
-        if (auto ev = std::get_if<RoomEvent<msg::Text>>(&e); ev != nullptr)
-                return QString::fromStdString(ev->content.body);
-        if (auto ev = std::get_if<RoomEvent<msg::Video>>(&e); ev != nullptr)
-                return QString::fromStdString(ev->content.body);
+    using namespace mtx::events;
+    if (auto ev = std::get_if<RoomEvent<msg::Audio>>(&e); ev != nullptr)
+        return QString::fromStdString(ev->content.body);
+    if (auto ev = std::get_if<RoomEvent<msg::Emote>>(&e); ev != nullptr)
+        return QString::fromStdString(ev->content.body);
+    if (auto ev = std::get_if<RoomEvent<msg::File>>(&e); ev != nullptr)
+        return QString::fromStdString(ev->content.body);
+    if (auto ev = std::get_if<RoomEvent<msg::Image>>(&e); ev != nullptr)
+        return QString::fromStdString(ev->content.body);
+    if (auto ev = std::get_if<RoomEvent<msg::Notice>>(&e); ev != nullptr)
+        return QString::fromStdString(ev->content.body);
+    if (auto ev = std::get_if<RoomEvent<msg::Text>>(&e); ev != nullptr)
+        return QString::fromStdString(ev->content.body);
+    if (auto ev = std::get_if<RoomEvent<msg::Video>>(&e); ev != nullptr)
+        return QString::fromStdString(ev->content.body);
 
-        return "";
+    return "";
 }
 
 QPixmap
 utils::scaleImageToPixmap(const QImage &img, int size)
 {
-        if (img.isNull())
-                return QPixmap();
+    if (img.isNull())
+        return QPixmap();
 
-        // Deprecated in 5.13: const double sz =
-        //  std::ceil(QApplication::desktop()->screen()->devicePixelRatioF() * (double)size);
-        const double sz =
-          std::ceil(QGuiApplication::primaryScreen()->devicePixelRatio() * (double)size);
-        return QPixmap::fromImage(
-          img.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    // Deprecated in 5.13: const double sz =
+    //  std::ceil(QApplication::desktop()->screen()->devicePixelRatioF() * (double)size);
+    const double sz =
+      std::ceil(QGuiApplication::primaryScreen()->devicePixelRatio() * (double)size);
+    return QPixmap::fromImage(img.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }
 
 QPixmap
 utils::scaleDown(uint64_t maxWidth, uint64_t maxHeight, const QPixmap &source)
 {
-        if (source.isNull())
-                return QPixmap();
+    if (source.isNull())
+        return QPixmap();
 
-        const double widthRatio     = (double)maxWidth / (double)source.width();
-        const double heightRatio    = (double)maxHeight / (double)source.height();
-        const double minAspectRatio = std::min(widthRatio, heightRatio);
+    const double widthRatio     = (double)maxWidth / (double)source.width();
+    const double heightRatio    = (double)maxHeight / (double)source.height();
+    const double minAspectRatio = std::min(widthRatio, heightRatio);
 
-        // Size of the output image.
-        int w, h = 0;
+    // Size of the output image.
+    int w, h = 0;
 
-        if (minAspectRatio > 1) {
-                w = source.width();
-                h = source.height();
-        } else {
-                w = source.width() * minAspectRatio;
-                h = source.height() * minAspectRatio;
-        }
+    if (minAspectRatio > 1) {
+        w = source.width();
+        h = source.height();
+    } else {
+        w = source.width() * minAspectRatio;
+        h = source.height() * minAspectRatio;
+    }
 
-        return source.scaled(w, h, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    return source.scaled(w, h, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 }
 
 QString
 utils::mxcToHttp(const QUrl &url, const QString &server, int port)
 {
-        auto mxcParts = mtx::client::utils::parse_mxc_url(url.toString().toStdString());
+    auto mxcParts = mtx::client::utils::parse_mxc_url(url.toString().toStdString());
 
-        return QString("https://%1:%2/_matrix/media/r0/download/%3/%4")
-          .arg(server)
-          .arg(port)
-          .arg(QString::fromStdString(mxcParts.server))
-          .arg(QString::fromStdString(mxcParts.media_id));
+    return QString("https://%1:%2/_matrix/media/r0/download/%3/%4")
+      .arg(server)
+      .arg(port)
+      .arg(QString::fromStdString(mxcParts.server))
+      .arg(QString::fromStdString(mxcParts.media_id));
 }
 
 QString
 utils::humanReadableFingerprint(const std::string &ed25519)
 {
-        return humanReadableFingerprint(QString::fromStdString(ed25519));
+    return humanReadableFingerprint(QString::fromStdString(ed25519));
 }
 QString
 utils::humanReadableFingerprint(const QString &ed25519)
 {
-        QString fingerprint;
-        for (int i = 0; i < ed25519.length(); i = i + 4) {
-                fingerprint.append(ed25519.midRef(i, 4));
-                if (i > 0 && i % 16 == 12)
-                        fingerprint.append('\n');
-                else if (i < ed25519.length())
-                        fingerprint.append(' ');
-        }
-        return fingerprint;
+    QString fingerprint;
+    for (int i = 0; i < ed25519.length(); i = i + 4) {
+        fingerprint.append(ed25519.midRef(i, 4));
+        if (i > 0 && i % 16 == 12)
+            fingerprint.append('\n');
+        else if (i < ed25519.length())
+            fingerprint.append(' ');
+    }
+    return fingerprint;
 }
 
 QString
 utils::linkifyMessage(const QString &body)
 {
-        // Convert to valid XML.
-        auto doc = body;
-        doc.replace(conf::strings::url_regex, conf::strings::url_html);
-        doc.replace(QRegularExpression("\\b(?<![\"'])(?>(matrix:[\\S]{5,}))(?![\"'])\\b"),
-                    conf::strings::url_html);
+    // Convert to valid XML.
+    auto doc = body;
+    doc.replace(conf::strings::url_regex, conf::strings::url_html);
+    doc.replace(QRegularExpression("\\b(?<![\"'])(?>(matrix:[\\S]{5,}))(?![\"'])\\b"),
+                conf::strings::url_html);
 
-        return doc;
+    return doc;
 }
 
 QString
 utils::escapeBlacklistedHtml(const QString &rawStr)
 {
-        static const std::array allowedTags = {
-          "font",       "/font",       "del",    "/del",    "h1",    "/h1",    "h2",     "/h2",
-          "h3",         "/h3",         "h4",     "/h4",     "h5",    "/h5",    "h6",     "/h6",
-          "blockquote", "/blockquote", "p",      "/p",      "a",     "/a",     "ul",     "/ul",
-          "ol",         "/ol",         "sup",    "/sup",    "sub",   "/sub",   "li",     "/li",
-          "b",          "/b",          "i",      "/i",      "u",     "/u",     "strong", "/strong",
-          "em",         "/em",         "strike", "/strike", "code",  "/code",  "hr",     "/hr",
-          "br",         "br/",         "div",    "/div",    "table", "/table", "thead",  "/thead",
-          "tbody",      "/tbody",      "tr",     "/tr",     "th",    "/th",    "td",     "/td",
-          "caption",    "/caption",    "pre",    "/pre",    "span",  "/span",  "img",    "/img"};
-        QByteArray data = rawStr.toUtf8();
-        QByteArray buffer;
-        const int length = data.size();
-        buffer.reserve(length);
-        bool escapingTag = false;
-        for (int pos = 0; pos != length; ++pos) {
-                switch (data.at(pos)) {
-                case '<': {
-                        bool oneTagMatched = false;
-                        const int endPos =
-                          static_cast<int>(std::min(static_cast<size_t>(data.indexOf('>', pos)),
-                                                    static_cast<size_t>(data.indexOf(' ', pos))));
+    static const std::array allowedTags = {
+      "font",       "/font",       "del",    "/del",    "h1",    "/h1",    "h2",     "/h2",
+      "h3",         "/h3",         "h4",     "/h4",     "h5",    "/h5",    "h6",     "/h6",
+      "blockquote", "/blockquote", "p",      "/p",      "a",     "/a",     "ul",     "/ul",
+      "ol",         "/ol",         "sup",    "/sup",    "sub",   "/sub",   "li",     "/li",
+      "b",          "/b",          "i",      "/i",      "u",     "/u",     "strong", "/strong",
+      "em",         "/em",         "strike", "/strike", "code",  "/code",  "hr",     "/hr",
+      "br",         "br/",         "div",    "/div",    "table", "/table", "thead",  "/thead",
+      "tbody",      "/tbody",      "tr",     "/tr",     "th",    "/th",    "td",     "/td",
+      "caption",    "/caption",    "pre",    "/pre",    "span",  "/span",  "img",    "/img"};
+    QByteArray data = rawStr.toUtf8();
+    QByteArray buffer;
+    const int length = data.size();
+    buffer.reserve(length);
+    bool escapingTag = false;
+    for (int pos = 0; pos != length; ++pos) {
+        switch (data.at(pos)) {
+        case '<': {
+            bool oneTagMatched = false;
+            const int endPos =
+              static_cast<int>(std::min(static_cast<size_t>(data.indexOf('>', pos)),
+                                        static_cast<size_t>(data.indexOf(' ', pos))));
 
-                        auto mid = data.mid(pos + 1, endPos - pos - 1);
-                        for (const auto &tag : allowedTags) {
-                                // TODO: Check src and href attribute
-                                if (mid.toLower() == tag) {
-                                        oneTagMatched = true;
-                                }
-                        }
-                        if (oneTagMatched)
-                                buffer.append('<');
-                        else {
-                                escapingTag = true;
-                                buffer.append("&lt;");
-                        }
-                        break;
+            auto mid = data.mid(pos + 1, endPos - pos - 1);
+            for (const auto &tag : allowedTags) {
+                // TODO: Check src and href attribute
+                if (mid.toLower() == tag) {
+                    oneTagMatched = true;
                 }
-                case '>':
-                        if (escapingTag) {
-                                buffer.append("&gt;");
-                                escapingTag = false;
-                        } else
-                                buffer.append('>');
-                        break;
-                default:
-                        buffer.append(data.at(pos));
-                        break;
-                }
+            }
+            if (oneTagMatched)
+                buffer.append('<');
+            else {
+                escapingTag = true;
+                buffer.append("&lt;");
+            }
+            break;
         }
-        return QString::fromUtf8(buffer);
+        case '>':
+            if (escapingTag) {
+                buffer.append("&gt;");
+                escapingTag = false;
+            } else
+                buffer.append('>');
+            break;
+        default:
+            buffer.append(data.at(pos));
+            break;
+        }
+    }
+    return QString::fromUtf8(buffer);
 }
 
 QString
 utils::markdownToHtml(const QString &text, bool rainbowify)
 {
-        const auto str = text.toUtf8();
-        cmark_node *const node =
-          cmark_parse_document(str.constData(), str.size(), CMARK_OPT_UNSAFE);
+    const auto str         = text.toUtf8();
+    cmark_node *const node = cmark_parse_document(str.constData(), str.size(), CMARK_OPT_UNSAFE);
 
-        if (rainbowify) {
-                // create iterator over node
-                cmark_iter *iter = cmark_iter_new(node);
+    if (rainbowify) {
+        // create iterator over node
+        cmark_iter *iter = cmark_iter_new(node);
 
-                cmark_event_type ev_type;
+        cmark_event_type ev_type;
 
-                // First loop to get total text length
-                int textLen = 0;
-                while ((ev_type = cmark_iter_next(iter)) != CMARK_EVENT_DONE) {
-                        cmark_node *cur = cmark_iter_get_node(iter);
-                        // only text nodes (no code or semilar)
-                        if (cmark_node_get_type(cur) != CMARK_NODE_TEXT)
-                                continue;
-                        // count up by length of current node's text
-                        QTextBoundaryFinder tbf(QTextBoundaryFinder::BoundaryType::Grapheme,
-                                                QString(cmark_node_get_literal(cur)));
-                        while (tbf.toNextBoundary() != -1)
-                                textLen++;
-                }
-
-                // create new iter to start over
-                cmark_iter_free(iter);
-                iter = cmark_iter_new(node);
-
-                // Second loop to rainbowify
-                int charIdx = 0;
-                while ((ev_type = cmark_iter_next(iter)) != CMARK_EVENT_DONE) {
-                        cmark_node *cur = cmark_iter_get_node(iter);
-                        // only text nodes (no code or semilar)
-                        if (cmark_node_get_type(cur) != CMARK_NODE_TEXT)
-                                continue;
-
-                        // get text in current node
-                        QString nodeText(cmark_node_get_literal(cur));
-                        // create buffer to append rainbow text to
-                        QString buf;
-                        int boundaryStart = 0;
-                        int boundaryEnd   = 0;
-                        // use QTextBoundaryFinder to iterate ofer graphemes
-                        QTextBoundaryFinder tbf(QTextBoundaryFinder::BoundaryType::Grapheme,
-                                                nodeText);
-                        while ((boundaryEnd = tbf.toNextBoundary()) != -1) {
-                                charIdx++;
-                                // Split text to get current char
-                                auto curChar =
-                                  nodeText.midRef(boundaryStart, boundaryEnd - boundaryStart);
-                                boundaryStart = boundaryEnd;
-                                // Don't rainbowify whitespaces
-                                if (curChar.trimmed().isEmpty() ||
-                                    codepointIsEmoji(curChar.toUcs4().first())) {
-                                        buf.append(curChar);
-                                        continue;
-                                }
-
-                                // get correct color for char index
-                                // Use colors as described here:
-                                // https://shark.comfsm.fm/~dleeling/cis/hsl_rainbow.html
-                                auto color =
-                                  QColor::fromHslF((charIdx - 1.0) / textLen * (5. / 6.), 0.9, 0.5);
-                                // format color for HTML
-                                auto colorString = color.name(QColor::NameFormat::HexRgb);
-                                // create HTML element for current char
-                                auto curCharColored = QString("<font color=\"%0\">%1</font>")
-                                                        .arg(colorString)
-                                                        .arg(curChar);
-                                // append colored HTML element to buffer
-                                buf.append(curCharColored);
-                        }
-
-                        // create HTML_INLINE node to prevent HTML from being escaped
-                        auto htmlNode = cmark_node_new(CMARK_NODE_HTML_INLINE);
-                        // set content of HTML node to buffer contents
-                        cmark_node_set_literal(htmlNode, buf.toUtf8().data());
-                        // replace current node with HTML node
-                        cmark_node_replace(cur, htmlNode);
-                        // free memory of old node
-                        cmark_node_free(cur);
-                }
-
-                cmark_iter_free(iter);
+        // First loop to get total text length
+        int textLen = 0;
+        while ((ev_type = cmark_iter_next(iter)) != CMARK_EVENT_DONE) {
+            cmark_node *cur = cmark_iter_get_node(iter);
+            // only text nodes (no code or semilar)
+            if (cmark_node_get_type(cur) != CMARK_NODE_TEXT)
+                continue;
+            // count up by length of current node's text
+            QTextBoundaryFinder tbf(QTextBoundaryFinder::BoundaryType::Grapheme,
+                                    QString(cmark_node_get_literal(cur)));
+            while (tbf.toNextBoundary() != -1)
+                textLen++;
         }
 
-        const char *tmp_buf = cmark_render_html(node, CMARK_OPT_UNSAFE);
-        // Copy the null terminated output buffer.
-        std::string html(tmp_buf);
+        // create new iter to start over
+        cmark_iter_free(iter);
+        iter = cmark_iter_new(node);
 
-        // The buffer is no longer needed.
-        free((char *)tmp_buf);
+        // Second loop to rainbowify
+        int charIdx = 0;
+        while ((ev_type = cmark_iter_next(iter)) != CMARK_EVENT_DONE) {
+            cmark_node *cur = cmark_iter_get_node(iter);
+            // only text nodes (no code or semilar)
+            if (cmark_node_get_type(cur) != CMARK_NODE_TEXT)
+                continue;
 
-        auto result = linkifyMessage(escapeBlacklistedHtml(QString::fromStdString(html))).trimmed();
+            // get text in current node
+            QString nodeText(cmark_node_get_literal(cur));
+            // create buffer to append rainbow text to
+            QString buf;
+            int boundaryStart = 0;
+            int boundaryEnd   = 0;
+            // use QTextBoundaryFinder to iterate ofer graphemes
+            QTextBoundaryFinder tbf(QTextBoundaryFinder::BoundaryType::Grapheme, nodeText);
+            while ((boundaryEnd = tbf.toNextBoundary()) != -1) {
+                charIdx++;
+                // Split text to get current char
+                auto curChar  = nodeText.midRef(boundaryStart, boundaryEnd - boundaryStart);
+                boundaryStart = boundaryEnd;
+                // Don't rainbowify whitespaces
+                if (curChar.trimmed().isEmpty() || codepointIsEmoji(curChar.toUcs4().first())) {
+                    buf.append(curChar);
+                    continue;
+                }
 
-        if (result.count("<p>") == 1 && result.startsWith("<p>") && result.endsWith("</p>")) {
-                result = result.mid(3, result.size() - 3 - 4);
+                // get correct color for char index
+                // Use colors as described here:
+                // https://shark.comfsm.fm/~dleeling/cis/hsl_rainbow.html
+                auto color = QColor::fromHslF((charIdx - 1.0) / textLen * (5. / 6.), 0.9, 0.5);
+                // format color for HTML
+                auto colorString = color.name(QColor::NameFormat::HexRgb);
+                // create HTML element for current char
+                auto curCharColored =
+                  QString("<font color=\"%0\">%1</font>").arg(colorString).arg(curChar);
+                // append colored HTML element to buffer
+                buf.append(curCharColored);
+            }
+
+            // create HTML_INLINE node to prevent HTML from being escaped
+            auto htmlNode = cmark_node_new(CMARK_NODE_HTML_INLINE);
+            // set content of HTML node to buffer contents
+            cmark_node_set_literal(htmlNode, buf.toUtf8().data());
+            // replace current node with HTML node
+            cmark_node_replace(cur, htmlNode);
+            // free memory of old node
+            cmark_node_free(cur);
         }
 
-        return result;
+        cmark_iter_free(iter);
+    }
+
+    const char *tmp_buf = cmark_render_html(node, CMARK_OPT_UNSAFE);
+    // Copy the null terminated output buffer.
+    std::string html(tmp_buf);
+
+    // The buffer is no longer needed.
+    free((char *)tmp_buf);
+
+    auto result = linkifyMessage(escapeBlacklistedHtml(QString::fromStdString(html))).trimmed();
+
+    if (result.count("<p>") == 1 && result.startsWith("<p>") && result.endsWith("</p>")) {
+        result = result.mid(3, result.size() - 3 - 4);
+    }
+
+    return result;
 }
 
 QString
 utils::getFormattedQuoteBody(const RelatedInfo &related, const QString &html)
 {
-        auto getFormattedBody = [related]() -> QString {
-                using MsgType = mtx::events::MessageType;
+    auto getFormattedBody = [related]() -> QString {
+        using MsgType = mtx::events::MessageType;
 
-                switch (related.type) {
-                case MsgType::File: {
-                        return "sent a file.";
-                }
-                case MsgType::Image: {
-                        return "sent an image.";
-                }
-                case MsgType::Audio: {
-                        return "sent an audio file.";
-                }
-                case MsgType::Video: {
-                        return "sent a video";
-                }
-                default: {
-                        return related.quoted_formatted_body;
-                }
-                }
-        };
-        return QString("<mx-reply><blockquote><a "
-                       "href=\"https://matrix.to/#/%1/%2\">In reply "
-                       "to</a> <a href=\"https://matrix.to/#/%3\">%4</a><br"
-                       "/>%5</blockquote></mx-reply>")
-                 .arg(related.room,
-                      QString::fromStdString(related.related_event),
-                      related.quoted_user,
-                      related.quoted_user,
-                      getFormattedBody()) +
-               html;
+        switch (related.type) {
+        case MsgType::File: {
+            return "sent a file.";
+        }
+        case MsgType::Image: {
+            return "sent an image.";
+        }
+        case MsgType::Audio: {
+            return "sent an audio file.";
+        }
+        case MsgType::Video: {
+            return "sent a video";
+        }
+        default: {
+            return related.quoted_formatted_body;
+        }
+        }
+    };
+    return QString("<mx-reply><blockquote><a "
+                   "href=\"https://matrix.to/#/%1/%2\">In reply "
+                   "to</a> <a href=\"https://matrix.to/#/%3\">%4</a><br"
+                   "/>%5</blockquote></mx-reply>")
+             .arg(related.room,
+                  QString::fromStdString(related.related_event),
+                  related.quoted_user,
+                  related.quoted_user,
+                  getFormattedBody()) +
+           html;
 }
 
 QString
 utils::getQuoteBody(const RelatedInfo &related)
 {
-        using MsgType = mtx::events::MessageType;
+    using MsgType = mtx::events::MessageType;
 
-        switch (related.type) {
-        case MsgType::File: {
-                return "sent a file.";
-        }
-        case MsgType::Image: {
-                return "sent an image.";
-        }
-        case MsgType::Audio: {
-                return "sent an audio file.";
-        }
-        case MsgType::Video: {
-                return "sent a video";
-        }
-        default: {
-                return related.quoted_body;
-        }
-        }
+    switch (related.type) {
+    case MsgType::File: {
+        return "sent a file.";
+    }
+    case MsgType::Image: {
+        return "sent an image.";
+    }
+    case MsgType::Audio: {
+        return "sent an audio file.";
+    }
+    case MsgType::Video: {
+        return "sent a video";
+    }
+    default: {
+        return related.quoted_body;
+    }
+    }
 }
 
 QString
 utils::linkColor()
 {
-        const auto theme = UserSettings::instance()->theme();
+    const auto theme = UserSettings::instance()->theme();
 
-        if (theme == "light") {
-                return "#0077b5";
-        } else if (theme == "dark") {
-                return "#38A3D8";
-        } else {
-                return QPalette().color(QPalette::Link).name();
-        }
+    if (theme == "light") {
+        return "#0077b5";
+    } else if (theme == "dark") {
+        return "#38A3D8";
+    } else {
+        return QPalette().color(QPalette::Link).name();
+    }
 }
 
 uint32_t
 utils::hashQString(const QString &input)
 {
-        uint32_t hash = 0;
+    uint32_t hash = 0;
 
-        for (int i = 0; i < input.length(); i++) {
-                hash = input.at(i).digitValue() + ((hash << 5) - hash);
-        }
+    for (int i = 0; i < input.length(); i++) {
+        hash = input.at(i).digitValue() + ((hash << 5) - hash);
+    }
 
-        return hash;
+    return hash;
 }
 
 QColor
 utils::generateContrastingHexColor(const QString &input, const QColor &backgroundCol)
 {
-        const qreal backgroundLum = luminance(backgroundCol);
+    const qreal backgroundLum = luminance(backgroundCol);
 
-        // Create a color for the input
-        auto hash = hashQString(input);
-        // create a hue value based on the hash of the input.
-        auto userHue = static_cast<int>(hash % 360);
-        // start with moderate saturation and lightness values.
-        auto sat       = 220;
-        auto lightness = 125;
+    // Create a color for the input
+    auto hash = hashQString(input);
+    // create a hue value based on the hash of the input.
+    auto userHue = static_cast<int>(hash % 360);
+    // start with moderate saturation and lightness values.
+    auto sat       = 220;
+    auto lightness = 125;
 
-        // converting to a QColor makes the luminance calc easier.
-        QColor inputColor = QColor::fromHsl(userHue, sat, lightness);
+    // converting to a QColor makes the luminance calc easier.
+    QColor inputColor = QColor::fromHsl(userHue, sat, lightness);
 
-        // calculate the initial luminance and contrast of the
-        // generated color.  It's possible that no additional
-        // work will be necessary.
-        auto lum      = luminance(inputColor);
-        auto contrast = computeContrast(lum, backgroundLum);
+    // calculate the initial luminance and contrast of the
+    // generated color.  It's possible that no additional
+    // work will be necessary.
+    auto lum      = luminance(inputColor);
+    auto contrast = computeContrast(lum, backgroundLum);
 
-        // If the contrast doesn't meet our criteria,
-        // try again and again until they do by modifying first
-        // the lightness and then the saturation of the color.
-        int iterationCount = 9;
-        while (contrast < 5) {
-                // if our lightness is at it's bounds, try changing
-                // saturation instead.
-                if (lightness == 242 || lightness == 13) {
-                        qreal newSat = qBound(26.0, sat * 1.25, 242.0);
+    // If the contrast doesn't meet our criteria,
+    // try again and again until they do by modifying first
+    // the lightness and then the saturation of the color.
+    int iterationCount = 9;
+    while (contrast < 5) {
+        // if our lightness is at it's bounds, try changing
+        // saturation instead.
+        if (lightness == 242 || lightness == 13) {
+            qreal newSat = qBound(26.0, sat * 1.25, 242.0);
 
-                        inputColor.setHsl(userHue, qFloor(newSat), lightness);
-                        auto tmpLum         = luminance(inputColor);
-                        auto higherContrast = computeContrast(tmpLum, backgroundLum);
-                        if (higherContrast > contrast) {
-                                contrast = higherContrast;
-                                sat      = newSat;
-                        } else {
-                                newSat = qBound(26.0, sat / 1.25, 242.0);
-                                inputColor.setHsl(userHue, qFloor(newSat), lightness);
-                                tmpLum             = luminance(inputColor);
-                                auto lowerContrast = computeContrast(tmpLum, backgroundLum);
-                                if (lowerContrast > contrast) {
-                                        contrast = lowerContrast;
-                                        sat      = newSat;
-                                }
-                        }
-                } else {
-                        qreal newLightness = qBound(13.0, lightness * 1.25, 242.0);
-
-                        inputColor.setHsl(userHue, sat, qFloor(newLightness));
-
-                        auto tmpLum         = luminance(inputColor);
-                        auto higherContrast = computeContrast(tmpLum, backgroundLum);
-
-                        // Check to make sure we have actually improved contrast
-                        if (higherContrast > contrast) {
-                                contrast  = higherContrast;
-                                lightness = newLightness;
-                                // otherwise, try going the other way instead.
-                        } else {
-                                newLightness = qBound(13.0, lightness / 1.25, 242.0);
-                                inputColor.setHsl(userHue, sat, qFloor(newLightness));
-                                tmpLum             = luminance(inputColor);
-                                auto lowerContrast = computeContrast(tmpLum, backgroundLum);
-                                if (lowerContrast > contrast) {
-                                        contrast  = lowerContrast;
-                                        lightness = newLightness;
-                                }
-                        }
+            inputColor.setHsl(userHue, qFloor(newSat), lightness);
+            auto tmpLum         = luminance(inputColor);
+            auto higherContrast = computeContrast(tmpLum, backgroundLum);
+            if (higherContrast > contrast) {
+                contrast = higherContrast;
+                sat      = newSat;
+            } else {
+                newSat = qBound(26.0, sat / 1.25, 242.0);
+                inputColor.setHsl(userHue, qFloor(newSat), lightness);
+                tmpLum             = luminance(inputColor);
+                auto lowerContrast = computeContrast(tmpLum, backgroundLum);
+                if (lowerContrast > contrast) {
+                    contrast = lowerContrast;
+                    sat      = newSat;
                 }
+            }
+        } else {
+            qreal newLightness = qBound(13.0, lightness * 1.25, 242.0);
 
-                // don't loop forever, just give up at some point!
-                // Someone smart may find a better solution
-                if (--iterationCount < 0)
-                        break;
+            inputColor.setHsl(userHue, sat, qFloor(newLightness));
+
+            auto tmpLum         = luminance(inputColor);
+            auto higherContrast = computeContrast(tmpLum, backgroundLum);
+
+            // Check to make sure we have actually improved contrast
+            if (higherContrast > contrast) {
+                contrast  = higherContrast;
+                lightness = newLightness;
+                // otherwise, try going the other way instead.
+            } else {
+                newLightness = qBound(13.0, lightness / 1.25, 242.0);
+                inputColor.setHsl(userHue, sat, qFloor(newLightness));
+                tmpLum             = luminance(inputColor);
+                auto lowerContrast = computeContrast(tmpLum, backgroundLum);
+                if (lowerContrast > contrast) {
+                    contrast  = lowerContrast;
+                    lightness = newLightness;
+                }
+            }
         }
 
-        // get the hex value of the generated color.
-        auto colorHex = inputColor.name();
+        // don't loop forever, just give up at some point!
+        // Someone smart may find a better solution
+        if (--iterationCount < 0)
+            break;
+    }
 
-        return colorHex;
+    // get the hex value of the generated color.
+    auto colorHex = inputColor.name();
+
+    return colorHex;
 }
 
 qreal
 utils::computeContrast(const qreal &one, const qreal &two)
 {
-        auto ratio = (one + 0.05) / (two + 0.05);
+    auto ratio = (one + 0.05) / (two + 0.05);
 
-        if (two > one) {
-                ratio = 1 / ratio;
-        }
+    if (two > one) {
+        ratio = 1 / ratio;
+    }
 
-        return ratio;
+    return ratio;
 }
 
 qreal
 utils::luminance(const QColor &col)
 {
-        int colRgb[3] = {col.red(), col.green(), col.blue()};
-        qreal lumRgb[3];
+    int colRgb[3] = {col.red(), col.green(), col.blue()};
+    qreal lumRgb[3];
 
-        for (int i = 0; i < 3; i++) {
-                qreal v   = colRgb[i] / 255.0;
-                lumRgb[i] = v <= 0.03928 ? v / 12.92 : qPow((v + 0.055) / 1.055, 2.4);
-        }
+    for (int i = 0; i < 3; i++) {
+        qreal v   = colRgb[i] / 255.0;
+        lumRgb[i] = v <= 0.03928 ? v / 12.92 : qPow((v + 0.055) / 1.055, 2.4);
+    }
 
-        auto lum = lumRgb[0] * 0.2126 + lumRgb[1] * 0.7152 + lumRgb[2] * 0.0722;
+    auto lum = lumRgb[0] * 0.2126 + lumRgb[1] * 0.7152 + lumRgb[2] * 0.0722;
 
-        return lum;
+    return lum;
 }
 
 void
 utils::centerWidget(QWidget *widget, QWidget *parent)
 {
-        auto findCenter = [childRect = widget->rect()](QRect hostRect) -> QPoint {
-                return QPoint(hostRect.center().x() - (childRect.width() * 0.5),
-                              hostRect.center().y() - (childRect.height() * 0.5));
-        };
+    auto findCenter = [childRect = widget->rect()](QRect hostRect) -> QPoint {
+        return QPoint(hostRect.center().x() - (childRect.width() * 0.5),
+                      hostRect.center().y() - (childRect.height() * 0.5));
+    };
 
-        if (parent) {
-                widget->move(parent->window()->frameGeometry().topLeft() +
-                             parent->window()->rect().center() - widget->rect().center());
-                return;
-        }
+    if (parent) {
+        widget->move(parent->window()->frameGeometry().topLeft() +
+                     parent->window()->rect().center() - widget->rect().center());
+        return;
+    }
 
-        // Deprecated in 5.13: widget->move(findCenter(QApplication::desktop()->screenGeometry()));
-        widget->move(findCenter(QGuiApplication::primaryScreen()->geometry()));
+    // Deprecated in 5.13: widget->move(findCenter(QApplication::desktop()->screenGeometry()));
+    widget->move(findCenter(QGuiApplication::primaryScreen()->geometry()));
 }
 
 void
 utils::restoreCombobox(QComboBox *combo, const QString &value)
 {
-        for (auto i = 0; i < combo->count(); ++i) {
-                if (value == combo->itemText(i)) {
-                        combo->setCurrentIndex(i);
-                        break;
-                }
+    for (auto i = 0; i < combo->count(); ++i) {
+        if (value == combo->itemText(i)) {
+            combo->setCurrentIndex(i);
+            break;
         }
+    }
 }
 
 QImage
 utils::readImageFromFile(const QString &filename)
 {
-        QImageReader reader(filename);
-        reader.setAutoTransform(true);
-        return reader.read();
+    QImageReader reader(filename);
+    reader.setAutoTransform(true);
+    return reader.read();
 }
 QImage
 utils::readImage(const QByteArray &data)
 {
-        QBuffer buf;
-        buf.setData(data);
-        QImageReader reader(&buf);
-        reader.setAutoTransform(true);
-        return reader.read();
+    QBuffer buf;
+    buf.setData(data);
+    QImageReader reader(&buf);
+    reader.setAutoTransform(true);
+    return reader.read();
 }
 
 bool
 utils::isReply(const mtx::events::collections::TimelineEvents &e)
 {
-        return mtx::accessors::relations(e).reply_to().has_value();
+    return mtx::accessors::relations(e).reply_to().has_value();
 }

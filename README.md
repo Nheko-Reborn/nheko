@@ -77,6 +77,7 @@ sudo dnf install nheko
 #### Gentoo Linux
 ```bash
 sudo eselect repository enable guru
+sudo emaint sync -r guru
 sudo emerge -a nheko
 ```
 
@@ -126,11 +127,31 @@ choco install nheko-reborn
 
 ### FAQ
 
-##
+---
+
 **Q:** Why don't videos run for me on Windows?
 
 **A:** You're probably missing the required video codecs, download [K-Lite Codec Pack](https://codecguide.com/download_kl.htm).
-##
+
+---
+
+**Q:** What commands are supported by nheko?
+
+**A:** See <https://github.com/Nheko-Reborn/nheko/wiki/Commands>
+
+---
+
+**Q:** Does nheko support end-to-end encryption (EE2E)?
+
+**A:** Yes, see [feature list](#features)
+
+---
+
+**Q:** Can I test a bleeding edge development version?
+
+**A:** Checkout nightly builds <https://matrix-static.neko.dev/room/!TshDrgpBNBDmfDeEGN:neko.dev/>
+
+---
 
 ### Build Requirements
 
@@ -150,7 +171,7 @@ choco install nheko-reborn
     - Voice call support: dtls, opus, rtpmanager, srtp, webrtc
     - Video call support (optional): compositor, opengl, qmlgl, rtp, vpx
     - [libnice](https://gitlab.freedesktop.org/libnice/libnice)
-- [qtkeychain](https://github.com/frankosterfeld/qtkeychain)
+- [qtkeychain](https://github.com/frankosterfeld/qtkeychain) (You need at least version 0.12 for proper Gnome Keychain support)
 - A compiler that supports C++ 17:
     - Clang 6 (tested on Travis CI)
     - GCC 7 (tested on Travis CI)

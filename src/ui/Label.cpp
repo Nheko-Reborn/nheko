@@ -17,16 +17,16 @@ Label::Label(const QString &text, QWidget *parent, Qt::WindowFlags f)
 void
 Label::mousePressEvent(QMouseEvent *e)
 {
-        pressPosition_ = e->pos();
-        emit pressed(e);
-        QLabel::mousePressEvent(e);
+    pressPosition_ = e->pos();
+    emit pressed(e);
+    QLabel::mousePressEvent(e);
 }
 
 void
 Label::mouseReleaseEvent(QMouseEvent *e)
 {
-        emit released(e);
-        if (pressPosition_ == e->pos())
-                emit clicked(e);
-        QLabel::mouseReleaseEvent(e);
+    emit released(e);
+    if (pressPosition_ == e->pos())
+        emit clicked(e);
+    QLabel::mouseReleaseEvent(e);
 }

@@ -54,7 +54,7 @@ if __name__ == '__main__':
     }
 
     current_category = ''
-    for line in open(filename, 'r'):
+    for line in open(filename, 'r', encoding="utf8"):
         if line.startswith('# group:'):
             current_category = line.split(':', 1)[1].strip()
 

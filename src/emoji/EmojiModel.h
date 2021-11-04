@@ -18,22 +18,22 @@ namespace emoji {
  */
 class EmojiModel : public QAbstractListModel
 {
-        Q_OBJECT
+    Q_OBJECT
 public:
-        enum Roles
-        {
-                Unicode = Qt::UserRole, // unicode of emoji
-                Category,               // category of emoji
-                ShortName,              // shortext of the emoji
-                Emoji,                  // Contains everything from the Emoji
-        };
+    enum Roles
+    {
+        Unicode = Qt::UserRole, // unicode of emoji
+        Category,               // category of emoji
+        ShortName,              // shortext of the emoji
+        Emoji,                  // Contains everything from the Emoji
+    };
 
-        using QAbstractListModel::QAbstractListModel;
+    using QAbstractListModel::QAbstractListModel;
 
-        Q_INVOKABLE int categoryToIndex(int category);
+    Q_INVOKABLE int categoryToIndex(int category);
 
-        QHash<int, QByteArray> roleNames() const override;
-        int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-        QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QHash<int, QByteArray> roleNames() const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 };
 }

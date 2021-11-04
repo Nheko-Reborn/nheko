@@ -11,20 +11,20 @@
 
 class NhekoCursorShape : public QQuickItem
 {
-        Q_OBJECT
+    Q_OBJECT
 
-        Q_PROPERTY(Qt::CursorShape cursorShape READ cursorShape WRITE setCursorShape NOTIFY
-                     cursorShapeChanged)
+    Q_PROPERTY(
+      Qt::CursorShape cursorShape READ cursorShape WRITE setCursorShape NOTIFY cursorShapeChanged)
 
 public:
-        explicit NhekoCursorShape(QQuickItem *parent = 0);
+    explicit NhekoCursorShape(QQuickItem *parent = 0);
 
 private:
-        Qt::CursorShape cursorShape() const;
-        void setCursorShape(Qt::CursorShape cursorShape);
+    Qt::CursorShape cursorShape() const;
+    void setCursorShape(Qt::CursorShape cursorShape);
 
-        Qt::CursorShape currentShape_;
+    Qt::CursorShape currentShape_;
 
 signals:
-        void cursorShapeChanged();
+    void cursorShapeChanged();
 };

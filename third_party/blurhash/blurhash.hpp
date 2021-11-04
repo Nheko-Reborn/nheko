@@ -13,7 +13,7 @@ struct Image
 
 // Decode a blurhash to an image with size width*height
 Image
-decode(std::string_view blurhash, size_t width, size_t height, size_t bytesPerPixel = 3);
+decode(std::string_view blurhash, size_t width, size_t height, size_t bytesPerPixel = 3) noexcept;
 
 // Encode an image of rgb pixels (without padding) with size width*height into a blurhash with x*y
 // components

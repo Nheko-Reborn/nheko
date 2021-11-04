@@ -23,6 +23,8 @@ Rectangle {
     required property int index
     required property int selectedIndex
     property bool crop: true
+    property alias roomid: avatar.roomid
+    property alias userid: avatar.userid
 
     color: background
     height: avatarSize + 2 * Nheko.paddingMedium

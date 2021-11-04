@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import ".."
+import QtQuick.Controls 2.3
 import im.nheko 1.0
 
 MatrixText {
@@ -28,6 +29,7 @@ MatrixText {
         border-collapse: collapse;
         border: 1px solid " + Nheko.colors.text + ";
     }
+    blockquote { margin-left: 1em; }
     </style>
     " + formatted.replace("<pre>", "<pre style='white-space: pre-wrap; background-color: " + Nheko.colors.alternateBase + "'>").replace("<del>", "<s>").replace("</del>", "</s>").replace("<strike>", "<s>").replace("</strike>", "</s>")
     width: parent ? parent.width : undefined
@@ -35,4 +37,11 @@ MatrixText {
     clip: isReply
     selectByMouse: !Settings.mobileMode && !isReply
     font.pointSize: (Settings.enlargeEmojiOnlyMessages && isOnlyEmoji > 0 && isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize
+
+    CursorShape {
+        enabled: isReply
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
+    }
+
 }

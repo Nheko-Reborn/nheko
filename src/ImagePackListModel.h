@@ -11,31 +11,31 @@
 class SingleImagePackModel;
 class ImagePackListModel : public QAbstractListModel
 {
-        Q_OBJECT
-        Q_PROPERTY(bool containsAccountPack READ containsAccountPack CONSTANT)
+    Q_OBJECT
+    Q_PROPERTY(bool containsAccountPack READ containsAccountPack CONSTANT)
 public:
-        enum Roles
-        {
-                DisplayName = Qt::UserRole,
-                AvatarUrl,
-                FromAccountData,
-                FromCurrentRoom,
-                StateKey,
-                RoomId,
-        };
+    enum Roles
+    {
+        DisplayName = Qt::UserRole,
+        AvatarUrl,
+        FromAccountData,
+        FromCurrentRoom,
+        StateKey,
+        RoomId,
+    };
 
-        ImagePackListModel(const std::string &roomId, QObject *parent = nullptr);
-        QHash<int, QByteArray> roleNames() const override;
-        int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-        QVariant data(const QModelIndex &index, int role) const override;
+    ImagePackListModel(const std::string &roomId, QObject *parent = nullptr);
+    QHash<int, QByteArray> roleNames() const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role) const override;
 
-        Q_INVOKABLE SingleImagePackModel *packAt(int row);
-        Q_INVOKABLE SingleImagePackModel *newPack(bool inRoom);
+    Q_INVOKABLE SingleImagePackModel *packAt(int row);
+    Q_INVOKABLE SingleImagePackModel *newPack(bool inRoom);
 
-        bool containsAccountPack() const;
+    bool containsAccountPack() const;
 
 private:
-        std::string room_id;
+    std::string room_id;
 
-        std::vector<QSharedPointer<SingleImagePackModel>> packs;
+    std::vector<QSharedPointer<SingleImagePackModel>> packs;
 };

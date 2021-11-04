@@ -3,9 +3,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "../"
-import QtMultimedia 5.6
-import QtQuick 2.12
-import QtQuick.Controls 2.1
+import QtMultimedia 5.15
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
@@ -40,26 +40,16 @@ ColumnLayout {
 
     id: content
     Layout.maximumWidth: parent? parent.width: undefined
-    MediaPlayer {
-        id: media
+    MxcMedia {
+        id: mxcmedia
         // TODO: Show error in overlay or so?
-        onError: console.log(errorString)
-        volume: volumeSlider.desiredVolume
-    }
-
-    Connections {
-        property bool mediaCached: false
-
-        id: mediaCachedObserver
-        target: room
-        function onMediaCached(mxcUrl, cacheUrl) {
-            if (mxcUrl == url) {
-                mediaCached = true
-                media.source = "file://" + cacheUrl
-                console.log("media loaded: " + mxcUrl + " at " + cacheUrl)
-            }
-            console.log("media cached: " + mxcUrl + " at " + cacheUrl)
-        }
+        onError: console.log(error)
+        roomm: room
+		onMediaStatusChanged: {
+			if (status == MxcMedia.LoadedMedia) {
+				progress.updatePositionTexts();
+			}
+		}
     }
       
     Rectangle {
@@ -87,7 +77,7 @@ ColumnLayout {
             Rectangle {
                 // Display over video controls
                 z: videoOutput.z + 1
-                visible: !mediaCachedObserver.mediaCached
+                visible: !mxcmedia.loaded
                 anchors.fill: parent
                 color: Nheko.colors.window
                 opacity: 0.5
@@ -103,8 +93,8 @@ ColumnLayout {
                     id: cacheVideoArea
                     anchors.fill: parent
                     hoverEnabled: true
-                    enabled: !mediaCachedObserver.mediaCached
-                    onClicked: room.cacheMedia(eventId)
+                    enabled: !mxcmedia.loaded
+                    onClicked: mxcmedia.eventId = eventId
                 }
             }
             VideoOutput {
@@ -112,7 +102,9 @@ ColumnLayout {
                 clip: true
                 anchors.fill: parent
                 fillMode: VideoOutput.PreserveAspectFit
-                source: media
+                source: mxcmedia
+				flushMode: VideoOutput.FirstFrame
+
                 // TODO: once we can use Qt 5.12, use HoverHandler
                 MouseArea {
                     id: playerMouseArea
@@ -120,9 +112,9 @@ ColumnLayout {
                     onClicked: {
                         if (controlRect.shouldShowControls &&
                             !controlRect.contains(mapToItem(controlRect, mouseX, mouseY))) {
-                                (media.playbackState == MediaPlayer.PlayingState) ?
-                                    media.pause() :
-                                    media.play()
+                                (mxcmedia.state == MediaPlayer.PlayingState) ?
+                                    mxcmedia.pause() :
+                                    mxcmedia.play()
                         }
                     }
 					Rectangle {
@@ -159,7 +151,7 @@ ColumnLayout {
 								property color controlColor: (playbackStateArea.containsMouse) ?
 									Nheko.colors.highlight : Nheko.colors.text
 
-								source: (media.playbackState == MediaPlayer.PlayingState) ?
+								source: (mxcmedia.state == MediaPlayer.PlayingState) ?
 									"image://colorimage/:/icons/icons/ui/pause-symbol.png?"+controlColor :
 									"image://colorimage/:/icons/icons/ui/play-sign.png?"+controlColor
 								MouseArea {
@@ -168,25 +160,25 @@ ColumnLayout {
 									anchors.fill: parent
 									hoverEnabled: true
 									onClicked: {
-										(media.playbackState == MediaPlayer.PlayingState) ?
-											media.pause() :
-											media.play()
+										(mxcmedia.state == MediaPlayer.PlayingState) ?
+											mxcmedia.pause() :
+											mxcmedia.play()
 									}
 								}
 							}
 							Label {
-								text: (!mediaCachedObserver.mediaCached) ? "-/-" :
-									durationToString(media.position) + "/" + durationToString(media.duration)
+								text: (!mxcmedia.loaded) ? "-/-" :
+									durationToString(mxcmedia.position) + "/" + durationToString(mxcmedia.duration)
 							}
 
 							Slider {
 								Layout.fillWidth: true
 								Layout.minimumWidth: 50
 								height: controlRect.controlHeight
-								value: media.position
-								onMoved: media.seek(value)
+								value: mxcmedia.position
+								onMoved: mxcmedia.position = value
 								from: 0
-								to: media.duration
+								to: mxcmedia.duration
 							}
 							// Volume slider activator
 							Image {
@@ -195,7 +187,7 @@ ColumnLayout {
 
 								// TODO: add icons for different volume levels
 								id: volumeImage
-								source: (media.volume > 0 && !media.muted) ?
+								source: (mxcmedia.volume > 0 && !mxcmedia.muted) ?
 									"image://colorimage/:/icons/icons/ui/volume-up.png?"+ controlColor :
 									"image://colorimage/:/icons/icons/ui/volume-off-indicator.png?"+ controlColor
 								Layout.rightMargin: 5
@@ -205,7 +197,7 @@ ColumnLayout {
 									id: volumeImageArea	
 									anchors.fill: parent
 									hoverEnabled: true
-									onClicked: media.muted = !media.muted
+									onClicked: mxcmedia.muted = !mxcmedia.muted
 									onExited: volumeSliderHideTimer.start()
 									onPositionChanged: volumeSliderHideTimer.start()
 									// For hiding volume slider after a while
@@ -248,7 +240,7 @@ ColumnLayout {
 										id: volumeSlider
 										from: 0
 										to: 1
-										value: (media.muted) ? 0 :
+										value: (mxcmedia.muted) ? 0 :
 											QtMultimedia.convertVolume(desiredVolume,
 												QtMultimedia.LinearVolumeScale,
 												QtMultimedia.LogarithmicVolumeScale)
@@ -262,7 +254,7 @@ ColumnLayout {
 											QtMultimedia.LinearVolumeScale)
 										/* This would be better handled in 'media', but it has some issue with listening
 											to this signal */
-										onDesiredVolumeChanged: media.muted = !(desiredVolume > 0)
+										onDesiredVolumeChanged: mxcmedia.muted = !(desiredVolume > 0)
 									}
 									// Used for resetting the timer on mouse moves on volumeSliderRect
 									MouseArea {
@@ -288,7 +280,7 @@ ColumnLayout {
 					}
                     // This breaks separation of concerns but this same thing doesn't work when called from controlRect...
                     property bool shouldShowControls: (containsMouse && controlHideTimer.running) ||
-                        (media.playbackState != MediaPlayer.PlayingState) ||
+                        (mxcmedia.state != MediaPlayer.PlayingState) ||
                         controlRect.contains(mapToItem(controlRect, mouseX, mouseY))
 
                     // For hiding controls on stationary cursor
@@ -331,9 +323,9 @@ ColumnLayout {
 					Nheko.colors.highlight : Nheko.colors.text
 
 				source: {
-                    if (!mediaCachedObserver.mediaCached)
+                    if (!mxcmedia.loaded)
                         return "image://colorimage/:/icons/icons/ui/arrow-pointing-down.png?"+controlColor
-                    return (media.playbackState == MediaPlayer.PlayingState) ?
+                    return (mxcmedia.state == MediaPlayer.PlayingState) ?
                         "image://colorimage/:/icons/icons/ui/pause-symbol.png?"+controlColor :
                         "image://colorimage/:/icons/icons/ui/play-sign.png?"+controlColor
                 }
@@ -343,29 +335,29 @@ ColumnLayout {
 					anchors.fill: parent
 					hoverEnabled: true
 					onClicked: {
-                        if (!mediaCachedObserver.mediaCached) {
-                            room.cacheMedia(eventId)
+                        if (!mxcmedia.loaded) {
+                            mxcmedia.eventId = eventId
                             return
                         }
-						(media.playbackState == MediaPlayer.PlayingState) ?
-							media.pause() :
-							media.play()
+						(mxcmedia.state == MediaPlayer.PlayingState) ?
+							mxcmedia.pause() :
+							mxcmedia.play()
 					}
 				}
 			}
 			Label {
-				text: (!mediaCachedObserver.mediaCached) ? "-/-" :
-					durationToString(media.position) + "/" + durationToString(media.duration)
+				text: (!mxcmedia.loaded) ? "-/-" :
+					durationToString(mxcmedia.position) + "/" + durationToString(mxcmedia.duration)
 			}
 
 			Slider {
 				Layout.fillWidth: true
 				Layout.minimumWidth: 50
 				height: controlRect.controlHeight
-				value: media.position
-				onMoved: media.seek(value)
+				value: mxcmedia.position
+				onMoved: mxcmedia.seek(value)
 				from: 0
-				to: media.duration
+				to: mxcmedia.duration
 			}
 		}
 	}

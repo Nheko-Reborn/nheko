@@ -139,6 +139,7 @@ Popup {
                             height: popup.avatarHeight
                             width: popup.avatarWidth
                             displayName: model.displayName
+                            userid: model.userid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             onClicked: popup.completionClicked(completer.completionAt(model.index))
                         }
@@ -194,6 +195,7 @@ Popup {
                             height: popup.avatarHeight
                             width: popup.avatarWidth
                             displayName: model.roomName
+                            roomid: model.roomid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             onClicked: {
                                 popup.completionClicked(completer.completionAt(model.index));
@@ -225,6 +227,7 @@ Popup {
                             height: popup.avatarHeight
                             width: popup.avatarWidth
                             displayName: model.roomName
+                            roomid: model.roomid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             onClicked: popup.completionClicked(completer.completionAt(model.index))
                         }

@@ -13,15 +13,15 @@ namespace dialogs {
 
 class Logout : public QFrame
 {
-        Q_OBJECT
+    Q_OBJECT
 public:
-        explicit Logout(QWidget *parent = nullptr);
+    explicit Logout(QWidget *parent = nullptr);
 
 signals:
-        void loggingOut();
+    void loggingOut();
 
 private:
-        QPushButton *confirmBtn_;
-        QPushButton *cancelBtn_;
+    QPushButton *confirmBtn_;
+    QPushButton *cancelBtn_;
 };
 } // dialogs

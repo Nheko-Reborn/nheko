@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import ".."
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
@@ -19,7 +20,7 @@ ApplicationWindow {
     minimumWidth: headerTitle.width + 2 * Nheko.paddingMedium
     palette: Nheko.colors
     color: Nheko.colors.window
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     Component.onCompleted: Nheko.reparent(readReceiptsRoot)
 
     Shortcut {

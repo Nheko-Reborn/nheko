@@ -10,47 +10,47 @@
 
 class InfoMessage : public QWidget
 {
-        Q_OBJECT
+    Q_OBJECT
 
-        Q_PROPERTY(QColor textColor WRITE setTextColor READ textColor)
-        Q_PROPERTY(QColor boxColor WRITE setBoxColor READ boxColor)
+    Q_PROPERTY(QColor textColor WRITE setTextColor READ textColor)
+    Q_PROPERTY(QColor boxColor WRITE setBoxColor READ boxColor)
 
 public:
-        explicit InfoMessage(QWidget *parent = nullptr);
-        InfoMessage(QString msg, QWidget *parent = nullptr);
+    explicit InfoMessage(QWidget *parent = nullptr);
+    InfoMessage(QString msg, QWidget *parent = nullptr);
 
-        void setTextColor(QColor color) { textColor_ = color; }
-        void setBoxColor(QColor color) { boxColor_ = color; }
-        void saveDatetime(QDateTime datetime) { datetime_ = datetime; }
+    void setTextColor(QColor color) { textColor_ = color; }
+    void setBoxColor(QColor color) { boxColor_ = color; }
+    void saveDatetime(QDateTime datetime) { datetime_ = datetime; }
 
-        QColor textColor() const { return textColor_; }
-        QColor boxColor() const { return boxColor_; }
-        QDateTime datetime() const { return datetime_; }
+    QColor textColor() const { return textColor_; }
+    QColor boxColor() const { return boxColor_; }
+    QDateTime datetime() const { return datetime_; }
 
 protected:
-        void paintEvent(QPaintEvent *event) override;
-        void initFont()
-        {
-                QFont f;
-                f.setWeight(QFont::Medium);
-                setFont(f);
-        }
+    void paintEvent(QPaintEvent *event) override;
+    void initFont()
+    {
+        QFont f;
+        f.setWeight(QFont::Medium);
+        setFont(f);
+    }
 
-        int width_;
-        int height_;
+    int width_;
+    int height_;
 
-        QString msg_;
+    QString msg_;
 
-        QDateTime datetime_;
+    QDateTime datetime_;
 
-        QColor textColor_ = QColor("black");
-        QColor boxColor_  = QColor("white");
+    QColor textColor_ = QColor("black");
+    QColor boxColor_  = QColor("white");
 };
 
 class DateSeparator : public InfoMessage
 {
-        Q_OBJECT
+    Q_OBJECT
 
 public:
-        DateSeparator(QDateTime datetime, QWidget *parent = nullptr);
+    DateSeparator(QDateTime datetime, QWidget *parent = nullptr);
 };

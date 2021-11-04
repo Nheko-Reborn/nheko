@@ -2,7 +2,8 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import "./ui"
+import ".."
+import "../ui"
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
@@ -21,7 +22,7 @@ ApplicationWindow {
     minimumHeight: 420
     palette: Nheko.colors
     color: Nheko.colors.window
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     Component.onCompleted: Nheko.reparent(roomMembersRoot)
 
     Shortcut {
@@ -39,6 +40,7 @@ ApplicationWindow {
 
             width: 130
             height: width
+            roomid: members.roomId
             displayName: members.roomName
             Layout.alignment: Qt.AlignHCenter
             url: members.avatarUrl.replace("mxc://", "image://MxcImage/")

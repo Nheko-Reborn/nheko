@@ -14,136 +14,101 @@
 #include "MainWindow.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
+#include "voip/WebRTCSession.h"
 
 Nheko::Nheko()
 {
-        connect(
-          UserSettings::instance().get(), &UserSettings::themeChanged, this, &Nheko::colorsChanged);
-        connect(ChatPage::instance(), &ChatPage::contentLoaded, this, &Nheko::updateUserProfile);
+    connect(
+      UserSettings::instance().get(), &UserSettings::themeChanged, this, &Nheko::colorsChanged);
+    connect(ChatPage::instance(), &ChatPage::contentLoaded, this, &Nheko::updateUserProfile);
+    connect(this, &Nheko::joinRoom, ChatPage::instance(), &ChatPage::joinRoom);
 }
 
 void
 Nheko::updateUserProfile()
 {
-        if (cache::client() && cache::client()->isInitialized())
-                currentUser_.reset(
-                  new UserProfile("", utils::localUser(), ChatPage::instance()->timelineManager()));
-        else
-                currentUser_.reset();
-        emit profileChanged();
+    if (cache::client() && cache::client()->isInitialized())
+        currentUser_.reset(
+          new UserProfile("", utils::localUser(), ChatPage::instance()->timelineManager()));
+    else
+        currentUser_.reset();
+    emit profileChanged();
 }
 
 QPalette
 Nheko::colors() const
 {
-        return Theme::paletteFromTheme(UserSettings::instance()->theme().toStdString());
+    return Theme::paletteFromTheme(UserSettings::instance()->theme().toStdString());
 }
 
 QPalette
 Nheko::inactiveColors() const
 {
-        auto p = colors();
-        p.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
-        return p;
+    auto p = colors();
+    p.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
+    return p;
 }
 
 Theme
 Nheko::theme() const
 {
-        return Theme(UserSettings::instance()->theme().toStdString());
+    return Theme(UserSettings::instance()->theme().toStdString());
 }
 
 void
 Nheko::openLink(QString link) const
 {
-        QUrl url(link);
-        if (url.scheme() == "https" && url.host() == "matrix.to") {
-                // handle matrix.to links internally
-                QString p = url.fragment(QUrl::FullyEncoded);
-                if (p.startsWith("/"))
-                        p.remove(0, 1);
+    QUrl url(link);
+    // Open externally if we couldn't handle it internally
+    if (!ChatPage::instance()->handleMatrixUri(url)) {
+        const QStringList allowedUrlSchemes = {
+          "http",
+          "https",
+          "mailto",
+        };
 
-                auto temp = p.split("?");
-                QString query;
-                if (temp.size() >= 2)
-                        query = QUrl::fromPercentEncoding(temp.takeAt(1).toUtf8());
-
-                temp            = temp.first().split("/");
-                auto identifier = QUrl::fromPercentEncoding(temp.takeFirst().toUtf8());
-                QString eventId = QUrl::fromPercentEncoding(temp.join('/').toUtf8());
-                if (!identifier.isEmpty()) {
-                        if (identifier.startsWith("@")) {
-                                QByteArray uri =
-                                  "matrix:u/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                                if (!query.isEmpty())
-                                        uri.append("?" + query.toUtf8());
-                                ChatPage::instance()->handleMatrixUri(QUrl::fromEncoded(uri));
-                        } else if (identifier.startsWith("#")) {
-                                QByteArray uri =
-                                  "matrix:r/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                                if (!eventId.isEmpty())
-                                        uri.append("/e/" +
-                                                   QUrl::toPercentEncoding(eventId.remove(0, 1)));
-                                if (!query.isEmpty())
-                                        uri.append("?" + query.toUtf8());
-                                ChatPage::instance()->handleMatrixUri(QUrl::fromEncoded(uri));
-                        } else if (identifier.startsWith("!")) {
-                                QByteArray uri = "matrix:roomid/" +
-                                                 QUrl::toPercentEncoding(identifier.remove(0, 1));
-                                if (!eventId.isEmpty())
-                                        uri.append("/e/" +
-                                                   QUrl::toPercentEncoding(eventId.remove(0, 1)));
-                                if (!query.isEmpty())
-                                        uri.append("?" + query.toUtf8());
-                                ChatPage::instance()->handleMatrixUri(QUrl::fromEncoded(uri));
-                        }
-                }
-        } else {
-                QDesktopServices::openUrl(url);
-        }
+        if (allowedUrlSchemes.contains(url.scheme()))
+            QDesktopServices::openUrl(url);
+        else
+            nhlog::ui()->warn("Url '{}' not opened, because the scheme is not in the allow list",
+                              url.toDisplayString().toStdString());
+    }
 }
 void
 Nheko::setStatusMessage(QString msg) const
 {
-        ChatPage::instance()->setStatus(msg);
+    ChatPage::instance()->setStatus(msg);
 }
 
 UserProfile *
 Nheko::currentUser() const
 {
-        nhlog::ui()->debug("Profile requested");
+    nhlog::ui()->debug("Profile requested");
 
-        return currentUser_.get();
+    return currentUser_.get();
 }
 
 void
 Nheko::showUserSettingsPage() const
 {
-        ChatPage::instance()->showUserSettingsPage();
+    ChatPage::instance()->showUserSettingsPage();
 }
 
 void
-Nheko::openLogoutDialog() const
+Nheko::logout() const
 {
-        MainWindow::instance()->openLogoutDialog();
+    ChatPage::instance()->initiateLogout();
 }
 
 void
 Nheko::openCreateRoomDialog() const
 {
-        MainWindow::instance()->openCreateRoomDialog(
-          [](const mtx::requests::CreateRoom &req) { ChatPage::instance()->createRoom(req); });
-}
-
-void
-Nheko::openJoinRoomDialog() const
-{
-        MainWindow::instance()->openJoinRoomDialog(
-          [](const QString &room_id) { ChatPage::instance()->joinRoom(room_id); });
+    MainWindow::instance()->openCreateRoomDialog(
+      [](const mtx::requests::CreateRoom &req) { ChatPage::instance()->createRoom(req); });
 }
 
 void
 Nheko::reparent(QWindow *win) const
 {
-        win->setTransientParent(MainWindow::instance()->windowHandle());
+    win->setTransientParent(MainWindow::instance()->windowHandle());
 }

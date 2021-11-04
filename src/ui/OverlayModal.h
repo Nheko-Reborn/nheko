@@ -15,25 +15,25 @@
 class OverlayModal : public OverlayWidget
 {
 public:
-        OverlayModal(QWidget *parent);
+    OverlayModal(QWidget *parent);
 
-        void setColor(QColor color) { color_ = color; }
-        void setDismissible(bool state) { isDismissible_ = state; }
+    void setColor(QColor color) { color_ = color; }
+    void setDismissible(bool state) { isDismissible_ = state; }
 
-        void setContentAlignment(QFlags<Qt::AlignmentFlag> flag) { layout_->setAlignment(flag); }
-        void setWidget(QWidget *widget);
+    void setContentAlignment(QFlags<Qt::AlignmentFlag> flag) { layout_->setAlignment(flag); }
+    void setWidget(QWidget *widget);
 
 protected:
-        void paintEvent(QPaintEvent *event) override;
-        void keyPressEvent(QKeyEvent *event) override;
-        void mousePressEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
 private:
-        QWidget *content_;
-        QVBoxLayout *layout_;
+    QWidget *content_;
+    QVBoxLayout *layout_;
 
-        QColor color_;
+    QColor color_;
 
-        //! Decides whether or not the modal can be removed by clicking into it.
-        bool isDismissible_ = true;
+    //! Decides whether or not the modal can be removed by clicking into it.
+    bool isDismissible_ = true;
 };

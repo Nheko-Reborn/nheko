@@ -111,6 +111,30 @@ Page {
 
     }
 
+    Component {
+        id: logoutDialog
+
+        LogoutDialog {
+        }
+
+    }
+
+    Component {
+        id: joinRoomDialog
+
+        JoinRoomDialog {
+        }
+
+    }
+
+    Component {
+        id: leaveRoomComponent
+
+        LeaveRoomDialog {
+        }
+
+    }
+
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
@@ -118,6 +142,11 @@ Page {
             TimelineManager.focusTimeline();
             quickSwitch.open();
         }
+    }
+
+    Shortcut {
+        sequence: "Alt+A"
+        onActivated: Rooms.nextRoomWithActivity()
     }
 
     Shortcut {
@@ -131,6 +160,20 @@ Page {
     }
 
     Connections {
+        function onOpenLogoutDialog() {
+            var dialog = logoutDialog.createObject(timelineRoot);
+            dialog.open();
+        }
+
+        function onOpenJoinRoomDialog() {
+            var dialog = joinRoomDialog.createObject(timelineRoot);
+            dialog.show();
+        }
+
+        target: Nheko
+    }
+
+    Connections {
         function onNewDeviceVerificationRequest(flow) {
             var dialog = deviceVerificationDialog.createObject(timelineRoot, {
                 "flow": flow
@@ -138,6 +181,10 @@ Page {
             dialog.show();
         }
 
+        target: VerificationManager
+    }
+
+    Connections {
         function onOpenProfile(profile) {
             var userProfile = userProfileComponent.createObject(timelineRoot, {
                 "profile": profile
@@ -176,6 +223,13 @@ Page {
             dialog.show();
         }
 
+        function onOpenLeaveRoomDialog(roomid) {
+            var dialog = leaveRoomComponent.createObject(timelineRoot, {
+                "roomId": roomid
+            });
+            dialog.open();
+        }
+
         target: TimelineManager
     }
 
@@ -188,6 +242,94 @@ Page {
         }
 
         target: CallManager
+    }
+
+    SelfVerificationCheck {
+    }
+
+    InputDialog {
+        id: uiaPassPrompt
+
+        echoMode: TextInput.Password
+        title: UIA.title
+        prompt: qsTr("Please enter your login password to continue:")
+        onAccepted: (t) => {
+            return UIA.continuePassword(t);
+        }
+    }
+
+    InputDialog {
+        id: uiaEmailPrompt
+
+        title: UIA.title
+        prompt: qsTr("Please enter a valid email address to continue:")
+        onAccepted: (t) => {
+            return UIA.continueEmail(t);
+        }
+    }
+
+    PhoneNumberInputDialog {
+        id: uiaPhoneNumberPrompt
+
+        title: UIA.title
+        prompt: qsTr("Please enter a valid phone number to continue:")
+        onAccepted: (p, t) => {
+            return UIA.continuePhoneNumber(p, t);
+        }
+    }
+
+    InputDialog {
+        id: uiaTokenPrompt
+
+        title: UIA.title
+        prompt: qsTr("Please enter the token, which has been sent to you:")
+        onAccepted: (t) => {
+            return UIA.submit3pidToken(t);
+        }
+    }
+
+    Platform.MessageDialog {
+        id: uiaErrorDialog
+
+        buttons: Platform.MessageDialog.Ok
+    }
+
+    Platform.MessageDialog {
+        id: uiaConfirmationLinkDialog
+
+        buttons: Platform.MessageDialog.Ok
+        text: qsTr("Wait for the confirmation link to arrive, then continue.")
+        onAccepted: UIA.continue3pidReceived()
+    }
+
+    Connections {
+        function onPassword() {
+            console.log("UIA: password needed");
+            uiaPassPrompt.show();
+        }
+
+        function onEmail() {
+            uiaEmailPrompt.show();
+        }
+
+        function onPhoneNumber() {
+            uiaPhoneNumberPrompt.show();
+        }
+
+        function onPrompt3pidToken() {
+            uiaTokenPrompt.show();
+        }
+
+        function onConfirm3pidToken() {
+            uiaConfirmationLinkDialog.open();
+        }
+
+        function onError(msg) {
+            uiaErrorDialog.text = msg;
+            uiaErrorDialog.open();
+        }
+
+        target: UIA
     }
 
     ChatPage {

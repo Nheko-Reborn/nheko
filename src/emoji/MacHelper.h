@@ -9,6 +9,6 @@
 class MacHelper
 {
 public:
-        static void showEmojiWindow();
-        static void initializeMenus();
+    static void showEmojiWindow();
+    static void initializeMenus();
 };

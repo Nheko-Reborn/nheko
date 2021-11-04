@@ -19,46 +19,46 @@ class MxcImageResponse
   , public QRunnable
 {
 public:
-        MxcImageResponse(const QString &id, bool crop, double radius, const QSize &requestedSize)
-          : m_id(id)
-          , m_requestedSize(requestedSize)
-          , m_crop(crop)
-          , m_radius(radius)
-        {
-                setAutoDelete(false);
-        }
+    MxcImageResponse(const QString &id, bool crop, double radius, const QSize &requestedSize)
+      : m_id(id)
+      , m_requestedSize(requestedSize)
+      , m_crop(crop)
+      , m_radius(radius)
+    {
+        setAutoDelete(false);
+    }
 
-        QQuickTextureFactory *textureFactory() const override
-        {
-                return QQuickTextureFactory::textureFactoryForImage(m_image);
-        }
-        QString errorString() const override { return m_error; }
+    QQuickTextureFactory *textureFactory() const override
+    {
+        return QQuickTextureFactory::textureFactoryForImage(m_image);
+    }
+    QString errorString() const override { return m_error; }
 
-        void run() override;
+    void run() override;
 
-        QString m_id, m_error;
-        QSize m_requestedSize;
-        QImage m_image;
-        bool m_crop;
-        double m_radius;
+    QString m_id, m_error;
+    QSize m_requestedSize;
+    QImage m_image;
+    bool m_crop;
+    double m_radius;
 };
 
 class MxcImageProvider
   : public QObject
   , public QQuickAsyncImageProvider
 {
-        Q_OBJECT
+    Q_OBJECT
 public slots:
-        QQuickImageResponse *requestImageResponse(const QString &id,
-                                                  const QSize &requestedSize) override;
+    QQuickImageResponse *requestImageResponse(const QString &id,
+                                              const QSize &requestedSize) override;
 
-        static void addEncryptionInfo(mtx::crypto::EncryptedFile info);
-        static void download(const QString &id,
-                             const QSize &requestedSize,
-                             std::function<void(QString, QSize, QImage, QString)> then,
-                             bool crop     = true,
-                             double radius = 0);
+    static void addEncryptionInfo(mtx::crypto::EncryptedFile info);
+    static void download(const QString &id,
+                         const QSize &requestedSize,
+                         std::function<void(QString, QSize, QImage, QString)> then,
+                         bool crop     = true,
+                         double radius = 0);
 
 private:
-        QThreadPool pool;
+    QThreadPool pool;
 };

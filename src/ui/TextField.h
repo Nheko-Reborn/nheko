@@ -18,163 +18,163 @@ class TextFieldStateMachine;
 
 class TextField : public QLineEdit
 {
-        Q_OBJECT
+    Q_OBJECT
 
-        Q_PROPERTY(QColor inkColor WRITE setInkColor READ inkColor)
-        Q_PROPERTY(QColor labelColor WRITE setLabelColor READ labelColor)
-        Q_PROPERTY(QColor underlineColor WRITE setUnderlineColor READ underlineColor)
-        Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor READ backgroundColor)
+    Q_PROPERTY(QColor inkColor WRITE setInkColor READ inkColor)
+    Q_PROPERTY(QColor labelColor WRITE setLabelColor READ labelColor)
+    Q_PROPERTY(QColor underlineColor WRITE setUnderlineColor READ underlineColor)
+    Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor READ backgroundColor)
 
 public:
-        explicit TextField(QWidget *parent = nullptr);
+    explicit TextField(QWidget *parent = nullptr);
 
-        void setInkColor(const QColor &color);
-        void setBackgroundColor(const QColor &color);
-        void setLabel(const QString &label);
-        void setLabelColor(const QColor &color);
-        void setLabelFontSize(qreal size);
-        void setShowLabel(bool value);
-        void setUnderlineColor(const QColor &color);
-        void setRegexp(const QRegularExpression &regexp);
-        void setValid(bool valid);
+    void setInkColor(const QColor &color);
+    void setBackgroundColor(const QColor &color);
+    void setLabel(const QString &label);
+    void setLabelColor(const QColor &color);
+    void setLabelFontSize(qreal size);
+    void setShowLabel(bool value);
+    void setUnderlineColor(const QColor &color);
+    void setRegexp(const QRegularExpression &regexp);
+    void setValid(bool valid);
 
-        QColor inkColor() const;
-        QColor labelColor() const;
-        QColor underlineColor() const;
-        QColor backgroundColor() const;
-        QString label() const;
-        bool hasLabel() const;
-        bool isValid() const;
-        qreal labelFontSize() const;
+    QColor inkColor() const;
+    QColor labelColor() const;
+    QColor underlineColor() const;
+    QColor backgroundColor() const;
+    QString label() const;
+    bool hasLabel() const;
+    bool isValid() const;
+    qreal labelFontSize() const;
 
 protected:
-        bool event(QEvent *event) override;
-        void paintEvent(QPaintEvent *event) override;
+    bool event(QEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 
 private:
-        void init();
+    void init();
 
-        QColor ink_color_;
-        QColor background_color_;
-        QColor label_color_;
-        QColor underline_color_;
-        QString label_text_;
-        TextFieldLabel *label_;
-        TextFieldStateMachine *state_machine_;
-        bool show_label_;
-        QRegularExpression regexp_;
-        bool is_valid_;
-        qreal label_font_size_;
+    QColor ink_color_;
+    QColor background_color_;
+    QColor label_color_;
+    QColor underline_color_;
+    QString label_text_;
+    TextFieldLabel *label_;
+    TextFieldStateMachine *state_machine_;
+    bool show_label_;
+    QRegularExpression regexp_;
+    bool is_valid_;
+    qreal label_font_size_;
 };
 
 class TextFieldLabel : public QWidget
 {
-        Q_OBJECT
+    Q_OBJECT
 
-        Q_PROPERTY(qreal scale WRITE setScale READ scale)
-        Q_PROPERTY(QPointF offset WRITE setOffset READ offset)
-        Q_PROPERTY(QColor color WRITE setColor READ color)
+    Q_PROPERTY(qreal scale WRITE setScale READ scale)
+    Q_PROPERTY(QPointF offset WRITE setOffset READ offset)
+    Q_PROPERTY(QColor color WRITE setColor READ color)
 
 public:
-        TextFieldLabel(TextField *parent);
+    TextFieldLabel(TextField *parent);
 
-        inline void setColor(const QColor &color);
-        inline void setOffset(const QPointF &pos);
-        inline void setScale(qreal scale);
+    inline void setColor(const QColor &color);
+    inline void setOffset(const QPointF &pos);
+    inline void setScale(qreal scale);
 
-        inline QColor color() const;
-        inline QPointF offset() const;
-        inline qreal scale() const;
+    inline QColor color() const;
+    inline QPointF offset() const;
+    inline qreal scale() const;
 
 protected:
-        void paintEvent(QPaintEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 
 private:
-        TextField *const text_field_;
+    TextField *const text_field_;
 
-        QColor color_;
-        qreal scale_;
-        qreal x_;
-        qreal y_;
+    QColor color_;
+    qreal scale_;
+    qreal x_;
+    qreal y_;
 };
 
 inline void
 TextFieldLabel::setColor(const QColor &color)
 {
-        color_ = color;
-        update();
+    color_ = color;
+    update();
 }
 
 inline void
 TextFieldLabel::setOffset(const QPointF &pos)
 {
-        x_ = pos.x();
-        y_ = pos.y();
-        update();
+    x_ = pos.x();
+    y_ = pos.y();
+    update();
 }
 
 inline void
 TextFieldLabel::setScale(qreal scale)
 {
-        scale_ = scale;
-        update();
+    scale_ = scale;
+    update();
 }
 
 inline QPointF
 TextFieldLabel::offset() const
 {
-        return QPointF(x_, y_);
+    return QPointF(x_, y_);
 }
 inline qreal
 TextFieldLabel::scale() const
 {
-        return scale_;
+    return scale_;
 }
 inline QColor
 TextFieldLabel::color() const
 {
-        return color_;
+    return color_;
 }
 
 class TextFieldStateMachine : public QStateMachine
 {
-        Q_OBJECT
+    Q_OBJECT
 
-        Q_PROPERTY(qreal progress WRITE setProgress READ progress)
+    Q_PROPERTY(qreal progress WRITE setProgress READ progress)
 
 public:
-        TextFieldStateMachine(TextField *parent);
+    TextFieldStateMachine(TextField *parent);
 
-        inline void setProgress(qreal progress);
-        void setLabel(TextFieldLabel *label);
+    inline void setProgress(qreal progress);
+    void setLabel(TextFieldLabel *label);
 
-        inline qreal progress() const;
+    inline qreal progress() const;
 
 public slots:
-        void setupProperties();
+    void setupProperties();
 
 private:
-        QPropertyAnimation *color_anim_;
-        QPropertyAnimation *offset_anim_;
+    QPropertyAnimation *color_anim_;
+    QPropertyAnimation *offset_anim_;
 
-        QState *focused_state_;
-        QState *normal_state_;
+    QState *focused_state_;
+    QState *normal_state_;
 
-        TextField *text_field_;
-        TextFieldLabel *label_;
+    TextField *text_field_;
+    TextFieldLabel *label_;
 
-        qreal progress_;
+    qreal progress_;
 };
 
 inline void
 TextFieldStateMachine::setProgress(qreal progress)
 {
-        progress_ = progress;
-        text_field_->update();
+    progress_ = progress;
+    text_field_->update();
 }
 
 inline qreal
 TextFieldStateMachine::progress() const
 {
-        return progress_;
+    return progress_;
 }

@@ -39,7 +39,7 @@ Image {
         case Crypto.TOFU:
             return qsTr("Encrypted by an unverified device, but you have trusted that user so far.");
         default:
-            return qsTr("Encrypted by an unverified device");
+            return qsTr("Encrypted by an unverified device or the key is from an untrusted source like the key backup.");
         }
     }
 

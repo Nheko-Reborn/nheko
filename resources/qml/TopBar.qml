@@ -13,10 +13,13 @@ Rectangle {
 
     property bool showBackButton: false
     property string roomName: room ? room.roomName : qsTr("No room selected")
+    property string roomId: room ? room.roomId : ""
     property string avatarUrl: room ? room.roomAvatarUrl : ""
     property string roomTopic: room ? room.roomTopic : ""
     property bool isEncrypted: room ? room.isEncrypted : false
     property int trustlevel: room ? room.trustlevel : Crypto.Unverified
+    property bool isDirect: room ? room.isDirect : false
+    property string directChatOtherUserId: room ? room.directChatOtherUserId : ""
 
     Layout.fillWidth: true
     implicitHeight: topLayout.height + Nheko.paddingMedium * 2
@@ -65,10 +68,12 @@ Rectangle {
             width: Nheko.avatarSize
             height: Nheko.avatarSize
             url: avatarUrl.replace("mxc://", "image://MxcImage/")
+            roomid: roomId
+            userid: isDirect ? directChatOtherUserId : ""
             displayName: roomName
             onClicked: {
                 if (room)
-                    TimelineManager.openRoomSettings(room.roomId);
+                    TimelineManager.openRoomSettings(roomId);
 
             }
         }
@@ -109,7 +114,7 @@ Rectangle {
                 case Crypto.Verified:
                     return qsTr("This room contains only verified devices.");
                 case Crypto.TOFU:
-                    return qsTr("This rooms contain verified devices and devices which have never changed their master key.");
+                    return qsTr("This room contains verified devices and devices which have never changed their master key.");
                 default:
                     return qsTr("This room contains unverified devices!");
                 }
@@ -135,7 +140,7 @@ Rectangle {
                 Platform.MenuItem {
                     visible: room ? room.permissions.canInvite() : false
                     text: qsTr("Invite users")
-                    onTriggered: TimelineManager.openInviteUsers(room.roomId)
+                    onTriggered: TimelineManager.openInviteUsers(roomId)
                 }
 
                 Platform.MenuItem {
@@ -145,12 +150,12 @@ Rectangle {
 
                 Platform.MenuItem {
                     text: qsTr("Leave room")
-                    onTriggered: TimelineManager.openLeaveRoomDialog(room.roomId)
+                    onTriggered: TimelineManager.openLeaveRoomDialog(roomId)
                 }
 
                 Platform.MenuItem {
                     text: qsTr("Settings")
-                    onTriggered: TimelineManager.openRoomSettings(room.roomId)
+                    onTriggered: TimelineManager.openRoomSettings(roomId)
                 }
 
             }

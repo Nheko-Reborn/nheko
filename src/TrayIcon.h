@@ -16,33 +16,33 @@ class QPainter;
 class MsgCountComposedIcon : public QIconEngine
 {
 public:
-        MsgCountComposedIcon(const QString &filename);
+    MsgCountComposedIcon(const QString &filename);
 
-        void paint(QPainter *p, const QRect &rect, QIcon::Mode mode, QIcon::State state) override;
-        QIconEngine *clone() const override;
-        QList<QSize> availableSizes(QIcon::Mode mode, QIcon::State state) const override;
-        QPixmap pixmap(const QSize &size, QIcon::Mode mode, QIcon::State state) override;
+    void paint(QPainter *p, const QRect &rect, QIcon::Mode mode, QIcon::State state) override;
+    QIconEngine *clone() const override;
+    QList<QSize> availableSizes(QIcon::Mode mode, QIcon::State state) const override;
+    QPixmap pixmap(const QSize &size, QIcon::Mode mode, QIcon::State state) override;
 
-        int msgCount = 0;
+    int msgCount = 0;
 
 private:
-        const int BubbleDiameter = 17;
+    const int BubbleDiameter = 17;
 
-        QIcon icon_;
+    QIcon icon_;
 };
 
 class TrayIcon : public QSystemTrayIcon
 {
-        Q_OBJECT
+    Q_OBJECT
 public:
-        TrayIcon(const QString &filename, QWidget *parent);
+    TrayIcon(const QString &filename, QWidget *parent);
 
 public slots:
-        void setUnreadCount(int count);
+    void setUnreadCount(int count);
 
 private:
-        QAction *viewAction_;
-        QAction *quitAction_;
+    QAction *viewAction_;
+    QAction *quitAction_;
 
-        MsgCountComposedIcon *icon_;
+    MsgCountComposedIcon *icon_;
 };

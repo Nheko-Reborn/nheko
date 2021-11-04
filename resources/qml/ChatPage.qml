@@ -2,11 +2,14 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtQuick 2.9
-import QtQuick.Controls 2.5
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import "components"
 import im.nheko 1.0
+
+// this needs to be last
+import QtQml 2.15
 
 Rectangle {
     id: chatPage
@@ -18,7 +21,7 @@ Rectangle {
 
         anchors.fill: parent
         singlePageMode: communityListC.preferredWidth + roomListC.preferredWidth + timlineViewC.minimumWidth > width
-        pageIndex: Rooms.currentRoom ? 2 : 1
+        pageIndex: (Rooms.currentRoom || Rooms.currentRoomPreview.roomid) ? 2 : 1
 
         AdaptiveLayoutElement {
             id: communityListC
@@ -41,6 +44,7 @@ Rectangle {
                 value: communityListC.preferredWidth
                 when: !adaptiveView.singlePageMode
                 delayed: true
+                restoreMode: Binding.RestoreBindingOrValue
             }
 
         }
@@ -66,6 +70,7 @@ Rectangle {
                 value: roomListC.preferredWidth
                 when: !adaptiveView.singlePageMode
                 delayed: true
+                restoreMode: Binding.RestoreBindingOrValue
             }
 
         }

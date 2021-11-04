@@ -16,37 +16,37 @@ Q_NAMESPACE
 
 struct Emoji
 {
-        Q_GADGET
+    Q_GADGET
 public:
-        enum class Category
-        {
-                People,
-                Nature,
-                Food,
-                Activity,
-                Travel,
-                Objects,
-                Symbols,
-                Flags,
-                Search
-        };
-        Q_ENUM(Category)
+    enum class Category
+    {
+        People,
+        Nature,
+        Food,
+        Activity,
+        Travel,
+        Objects,
+        Symbols,
+        Flags,
+        Search
+    };
+    Q_ENUM(Category)
 
-        Q_PROPERTY(const QString &unicode MEMBER unicode)
-        Q_PROPERTY(const QString &shortName MEMBER shortName)
-        Q_PROPERTY(emoji::Emoji::Category category MEMBER category)
+    Q_PROPERTY(const QString &unicode MEMBER unicode)
+    Q_PROPERTY(const QString &shortName MEMBER shortName)
+    Q_PROPERTY(emoji::Emoji::Category category MEMBER category)
 
 public:
-        QString unicode;
-        QString shortName;
-        Category category;
+    QString unicode;
+    QString shortName;
+    Category category;
 };
 
 class Provider
 {
 public:
-        // all emoji for QML purposes
-        static const QVector<Emoji> emoji;
+    // all emoji for QML purposes
+    static const QVector<Emoji> emoji;
 };
 
 } // namespace emoji

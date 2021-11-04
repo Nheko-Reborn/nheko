@@ -23,6 +23,8 @@ ScrollView {
 
         property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < parent.availableWidth) ? Settings.timelineMaxWidth : parent.availableWidth) - parent.padding * 2
 
+        displayMarginBeginning: height / 2
+        displayMarginEnd: height / 2
         model: room
         // reuseItems still has a few bugs, see https://bugreports.qt.io/browse/QTBUG-95105 https://bugreports.qt.io/browse/QTBUG-95107
         //onModelChanged: if (room) room.sendReset()
@@ -33,7 +35,7 @@ ScrollView {
         verticalLayoutDirection: ListView.BottomToTop
         onCountChanged: {
             // Mark timeline as read
-            if (atYEnd)
+            if (atYEnd && room)
                 model.currentIndex = 0;
 
         }
@@ -233,8 +235,8 @@ ScrollView {
                     id: dateBubble
 
                     anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
-                    visible: previousMessageDay !== day
-                    text: chat.model.formatDateSeparator(timestamp)
+                    visible: room && previousMessageDay !== day
+                    text: room ? room.formatDateSeparator(timestamp) : ""
                     color: Nheko.colors.text
                     height: Math.round(fontMetrics.height * 1.4)
                     width: contentWidth * 1.2
@@ -257,10 +259,10 @@ ScrollView {
 
                         width: Nheko.avatarSize
                         height: Nheko.avatarSize
-                        url: chat.model.avatarUrl(userId).replace("mxc://", "image://MxcImage/")
+                        url: !room ? "" : room.avatarUrl(userId).replace("mxc://", "image://MxcImage/")
                         displayName: userName
                         userid: userId
-                        onClicked: chat.model.openUserProfile(userId)
+                        onClicked: room.openUserProfile(userId)
                         ToolTip.visible: avatarHover.hovered
                         ToolTip.text: userid
 
@@ -276,7 +278,7 @@ ScrollView {
                         }
 
                         function onScrollToIndex(index) {
-                            chat.positionViewAtIndex(index, ListView.Visible);
+                            chat.positionViewAtIndex(index, ListView.Center);
                         }
 
                         target: chat.model
@@ -361,7 +363,7 @@ ScrollView {
 
             anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
             width: chat.delegateMaxWidth
-            height: section ? section.height + timelinerow.height : timelinerow.height
+            height: Math.max(section.active ? section.height + timelinerow.height : timelinerow.height, 10)
 
             Rectangle {
                 id: scrollHighlight
@@ -420,6 +422,7 @@ ScrollView {
                 property string userName: wrapper.userName
                 property var timestamp: wrapper.timestamp
 
+                z: 4
                 active: previousMessageUserId !== undefined && previousMessageUserId !== userId || previousMessageDay !== day
                 //asynchronous: true
                 sourceComponent: sectionHeader
@@ -644,6 +647,41 @@ ScrollView {
         id: forwardCompleterComponent
 
         ForwardCompleter {
+        }
+
+    }
+
+    Platform.Menu {
+        id: replyContextMenu
+
+        property string text
+        property string link
+
+        function show(text_, link_) {
+            text = text_;
+            link = link_;
+            open();
+        }
+
+        Platform.MenuItem {
+            visible: replyContextMenu.text
+            enabled: visible
+            text: qsTr("&Copy")
+            onTriggered: Clipboard.text = replyContextMenu.text
+        }
+
+        Platform.MenuItem {
+            visible: replyContextMenu.link
+            enabled: visible
+            text: qsTr("Copy &link location")
+            onTriggered: Clipboard.text = replyContextMenu.link
+        }
+
+        Platform.MenuItem {
+            visible: true
+            enabled: visible
+            text: qsTr("&Go to quoted message")
+            onTriggered: chat.model.showEvent(eventId)
         }
 
     }

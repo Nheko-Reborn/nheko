@@ -25,7 +25,7 @@ ApplicationWindow {
     palette: Nheko.colors
     color: Nheko.colors.base
     modality: Qt.NonModal
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     Component.onCompleted: Nheko.reparent(win)
 
     Component {
@@ -101,6 +101,7 @@ ApplicationWindow {
                     required property string displayName
                     required property bool fromAccountData
                     required property bool fromCurrentRoom
+                    required property string statekey
 
                     title: displayName
                     subtitle: {
@@ -112,6 +113,7 @@ ApplicationWindow {
                             return qsTr("Globally enabled pack");
                     }
                     selectedIndex: currentPackIndex
+                    roomid: statekey
 
                     TapHandler {
                         onSingleTapped: currentPackIndex = index
@@ -135,6 +137,7 @@ ApplicationWindow {
                     property string packName: currentPack ? currentPack.packname : ""
                     property string attribution: currentPack ? currentPack.attribution : ""
                     property string avatarUrl: currentPack ? currentPack.avatarUrl : ""
+                    property string statekey: currentPack ? currentPack.statekey : ""
 
                     anchors.fill: parent
                     anchors.margins: Nheko.paddingLarge
@@ -143,6 +146,7 @@ ApplicationWindow {
                     Avatar {
                         url: packinfo.avatarUrl.replace("mxc://", "image://MxcImage/")
                         displayName: packinfo.packName
+                        roomid: packinfo.statekey
                         height: 100
                         width: 100
                         Layout.alignment: Qt.AlignHCenter

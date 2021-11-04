@@ -12,6 +12,7 @@ Rectangle {
 
     property string url
     property string userid
+    property string roomid
     property string displayName
     property alias textColor: label.color
     property bool crop: true
@@ -35,8 +36,27 @@ Rectangle {
         font.pixelSize: avatar.height / 2
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        visible: img.status != Image.Ready
+        visible: img.status != Image.Ready && !Settings.useIdenticon
         color: Nheko.colors.text
+    }
+
+    Image {
+        id: identicon
+
+        anchors.fill: parent
+        visible: Settings.useIdenticon && img.status != Image.Ready
+        source: Settings.useIdenticon ? ("image://jdenticon/" + (userid !== "" ? userid : roomid) + "?radius=" + (Settings.avatarCircles ? 100 : 25)) : ""
+
+        MouseArea {
+            anchors.fill: parent
+
+            Ripple {
+                rippleTarget: parent
+                color: Qt.rgba(Nheko.colors.alternateBase.r, Nheko.colors.alternateBase.g, Nheko.colors.alternateBase.b, 0.5)
+            }
+
+        }
+
     }
 
     Image {
@@ -49,7 +69,7 @@ Rectangle {
         smooth: true
         sourceSize.width: avatar.width
         sourceSize.height: avatar.height
-        source: avatar.url ? (avatar.url + "?radius=" + (Settings.avatarCircles ? 100.0 : 25.0) + ((avatar.crop) ? "" : "&scale")) : ""
+        source: avatar.url ? (avatar.url + "?radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale")) : ""
 
         MouseArea {
             id: mouseArea

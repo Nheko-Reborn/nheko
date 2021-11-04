@@ -12,6 +12,7 @@ ApplicationWindow {
     id: inputDialog
 
     property alias prompt: promptLabel.text
+    property alias echoMode: statusInput.echoMode
     property var onAccepted: undefined
 
     modality: Qt.NonModal
@@ -21,7 +22,8 @@ ApplicationWindow {
     height: fontMetrics.lineSpacing * 7
 
     ColumnLayout {
-        anchors.margins: Nheko.paddingLarge
+        spacing: Nheko.paddingMedium
+        anchors.margins: Nheko.paddingMedium
         anchors.fill: parent
 
         Label {
