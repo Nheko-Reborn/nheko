@@ -1957,7 +1957,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+29"/>
         <source>Failed to create keys for secure server side secret storage!</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to create keys for secure server side secret storage!</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -2904,7 +2904,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+133"/>
         <source>Display an identicon instead of a letter when no avatar is set.</source>
-        <translation type="unfinished"></translation>
+        <translation>Display an identicon instead of a letter when no avatar is set.</translation>
     </message>
     <message>
         <location line="+46"/>
