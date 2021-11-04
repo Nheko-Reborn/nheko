@@ -592,12 +592,12 @@
     <message>
         <location line="+2"/>
         <source>Verification messages received out of order!</source>
-        <translation type="unfinished"></translation>
+        <translation>Saabunud verifitseerimissõnumid on vales järjekorras!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown verification error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Teadmata viga verifitseerimisel.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -798,12 +798,12 @@
     <message>
         <location filename="../qml/dialogs/JoinRoomDialog.qml" line="+14"/>
         <source>Join room</source>
-        <translation type="unfinished"></translation>
+        <translation>Liitu jututoaga</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished">Jututoa tunnus või alias</translation>
+        <translation>Jututoa tunnus või alias</translation>
     </message>
 </context>
 <context>
@@ -811,12 +811,12 @@
     <message>
         <location filename="../qml/dialogs/LeaveRoomDialog.qml" line="+15"/>
         <source>Leave room</source>
-        <translation type="unfinished">Lahku jututoast</translation>
+        <translation>Lahku jututoast</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished">Kas sa oled kindel, et soovid lahkuda?</translation>
+        <translation>Kas sa oled kindel, et soovid lahkuda?</translation>
     </message>
 </context>
 <context>
@@ -938,17 +938,17 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/dialogs/LogoutDialog.qml" line="+13"/>
         <source>Log out</source>
-        <translation type="unfinished"></translation>
+        <translation>Logi välja</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A call is in progress. Log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõne on pooleli. Kas tõesti logime välja?</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Are you sure you want to log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa oled kindel, et soovid välja logida?</translation>
     </message>
 </context>
 <context>
@@ -1188,7 +1188,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+16"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Palun verifitseeri oma seadmed. See tagab, et muud kasutajad saaks kontrollida missugused seadmed on sinu omad ning krüptovõtmete automaatne varundus toimiks. Kas verifitseerime mõne verifitseerimata seadme nüüd? (Selleks peab sul mõni verifitseeritud seadmetest käepärast olema.)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1241,7 +1241,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/NotificationWarning.qml" line="+32"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa oled saatmas teavitust kogu jututoale</translation>
     </message>
 </context>
 <context>
@@ -1463,7 +1463,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+11"/>
         <source>Choose custom homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali oma koduserver</translation>
     </message>
 </context>
 <context>
@@ -1545,24 +1545,24 @@ Näiteks: https://server.minu:8787</translation>
         <location line="+40"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimine pole veel kasutusel</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unverified login</source>
         <extracomment>The user just signed in with this device and hasn&apos;t verified their master key.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Verifitseerimata sisselogimissessioon</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please verify your other devices</source>
         <extracomment>There are unverified devices signed in to this account.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Palun verifitseeri oma muud seadmed</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Close</source>
-        <translation type="unfinished">Sulge</translation>
+        <translation>Sulge</translation>
     </message>
     <message>
         <location line="+65"/>
@@ -1800,27 +1800,27 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/Root.qml" line="+255"/>
         <source>Please enter your login password to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Jätkamaks palun sisesta oma salasõna:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid email address to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Jätkamaks palun sisesta oma kehtiv e-posti aadress:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid phone number to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Jätkamaks palun sisesta kehtiv telefoninumber:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter the token, which has been sent to you:</source>
-        <translation type="unfinished"></translation>
+        <translation>Palun sisesta sulle saadetud tunnusluba:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Wait for the confirmation link to arrive, then continue.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jätkamaks palun oota, kuni oled saanud kinnituslingi.</translation>
     </message>
 </context>
 <context>
@@ -1887,7 +1887,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptovõtmete salvestamiseks Nhekol ei õnnestunud luua ühendust võtmehoidlaga. Sellel võib olla mitu põhjust. Kontrolli, kas D-Bus&apos;i alusteenus toimib ning sa oled seadistanud KWallet&apos;i, Gnome Keyring&apos;i, KeePassXC&apos;i või mõne muu sinu platvormil kasutatava turvalise andmehoidla teenuse. Probleemide korral palun ava siin https://github.com/Nheko-Reborn/nheko/issues veateade</translation>
     </message>
 </context>
 <context>
@@ -1895,49 +1895,51 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/SelfVerificationCheck.qml" line="+39"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation type="unfinished"></translation>
+        <translation>See on sinu taastevõti. Kui peaks olema vaja taastada ligipääsu sinu krüptitud sõnumitele või muudele võtmetele, siis sul läheb seda vaja. Hoia taastevõtit turvalises kohas. Ära jaga seda teistega ega ära kaota teda ära! Ega ära võta vastu sulle selle eest pakutavat 200 eurot!</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Encryption setup successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimise kasutuselevõtmine õnnestus</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Failed to setup encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimise seadistamine ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Setup Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadista krüptimine</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
-        <translation type="unfinished"></translation>
+        <translation>Hei ja tere tulemast Matrixi võrku!
+Tundub, et see on uus teema sinu jaoks. Enne, kui sa saad sõnumeid turvaliselt krüptida, on vaja paar asja ära teha. Sa võid kas nõustuda kõikide järgnevate toimingutega ühe korraga või kohendada seadistusi eraldi. Me üritame järgnevalt selgitada ka olulisemaid asjaolusid. Sa võid need küll vahele jätta, kuid selle teabe valdamine tegelikult on kasulik!</translation>
     </message>
     <message>
         <location line="+124"/>
         <source>Activate Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimise aktiveerimine</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.
 If you choose verify, you need to have the other device available. If you choose &quot;enter passphrase&quot;, you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tundud, et sellel kontol juba on krüptimine kasutusel. Saamaks ligipääsu sinu krüptitud sõnumitele ja märkimaks seda seadet usaldusväärseks sa kas tee läbi verifitseerimine või sisesta oma taastamiseks mõeldud salafraas. Palun vali järgnevalt oma eelistus.
+Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui eelistad salafraasi sisestamist, siis peab sul olema käepärast oma konto taastevõti või salafraas. Kui praegu katkestad, siis verifitseerimist saad alati ka hiljem teha.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>verify</source>
-        <translation type="unfinished"></translation>
+        <translation>verifitseeri</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>enter passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>sisesta salafraas</translation>
     </message>
 </context>
 <context>
@@ -1945,27 +1947,27 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+40"/>
         <source>Failed to create keys for cross-signing!</source>
-        <translation type="unfinished"></translation>
+        <translation>Risttunnustamise võtmete loomine ei õnnestunud!</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to create keys for online key backup!</source>
-        <translation type="unfinished"></translation>
+        <translation>Võrgupõhise võtmete varunduse jaoks krüptovõtmete loomine ei õnnestunud!</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Failed to create keys secure server side secret storage!</source>
-        <translation type="unfinished"></translation>
+        <translation>Serveripoolse turvalise võtmehoidla võtmete loomine ei õnnestunud!</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Encryption Setup</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimise seadistamine</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimise seadistamine ei õnnestunud: %1</translation>
     </message>
 </context>
 <context>
@@ -2253,7 +2255,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+137"/>
         <source>No preview available</source>
-        <translation type="unfinished">Eelvaade pole saadaval</translation>
+        <translation>Eelvaade pole saadaval</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2306,7 +2308,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+2"/>
         <source>This room contains verified devices and devices which have never changed their master key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selles jututoas on vaid verifitseeritud seadmed ning nad ei ole kunagi muutnud oma juurvõtit.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2357,24 +2359,24 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../../src/ui/UIA.cpp" line="+59"/>
         <source>No available registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Registreerimiseks vajalikku töövoogu ei leidu!</translation>
     </message>
     <message>
         <location line="+26"/>
         <location line="+24"/>
         <location line="+17"/>
         <source>Registration aborted</source>
-        <translation type="unfinished"></translation>
+        <translation>Registreerimine on katkestatud</translation>
     </message>
     <message>
         <location line="-27"/>
         <source>Please enter a valid registration token.</source>
-        <translation type="unfinished">Registreerimiseks palun sisesta kehtiv tunnusluba.</translation>
+        <translation>Registreerimiseks palun sisesta kehtiv tunnusluba.</translation>
     </message>
     <message>
         <location line="+165"/>
         <source>Invalid token</source>
-        <translation type="unfinished"></translation>
+        <translation>Vigane tunnusluba</translation>
     </message>
 </context>
 <context>
@@ -2448,22 +2450,22 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+9"/>
         <source>Refresh device list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Uuenda seadmete loendit.</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Sign out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Logi see seade võrgust välja.</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Change device name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda seadme nime.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Last seen %1 from %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Viimati oli võrgus %1 %2 aadressil</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -2473,12 +2475,12 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+152"/>
         <source>Sign out device %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Logi %1 seade võrgust välja</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>You signed out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa oled selle seadme võrgust välja loginud.</translation>
     </message>
     <message>
         <location line="+223"/>
@@ -2582,12 +2584,12 @@ Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
     <message>
         <location line="+1"/>
         <source>Use identicons</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasuta identikone</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Display an identicon instead of a letter when a user has not set an avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kui kasutaja pole tunnuspilti, siis kasuta tähe asemel identikoni ehk matemaatilist tunnuspilti.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3022,7 +3024,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location filename="../../src/encryption/VerificationManager.cpp" line="+105"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation type="unfinished">Ühtegi krüptitud vestlust selle kasutajaga ei leidunud. Palun loo temaga krüptitud vestlus ja proovi uuesti.</translation>
+        <translation>Ühtegi krüptitud vestlust selle kasutajaga ei leidunud. Palun loo temaga krüptitud vestlus ja proovi uuesti.</translation>
     </message>
 </context>
 <context>
