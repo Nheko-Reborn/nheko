@@ -1956,7 +1956,7 @@ If you choose verify, you need to have the other device available. If you choose
     </message>
     <message>
         <location line="+29"/>
-        <source>Failed to create keys secure server side secret storage!</source>
+        <source>Failed to create keys for secure server side secret storage!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2588,12 +2588,7 @@ OFF - kwadrat, ON - koło.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Display an identicon instead of a letter when a user has not set an avatar.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Show a column containing groups and tags next to the room list.</source>
         <translation>Pokazuj kolumnę zawierającą grupy i tagi obok listy pokoi.</translation>
     </message>
@@ -2906,7 +2901,12 @@ To zwykle sprawia, że ikona aplikacji w tacce systemowej jest animowana.</trans
         <translation>INTERFEJS</translation>
     </message>
     <message>
-        <location line="+179"/>
+        <location line="+133"/>
+        <source>Display an identicon instead of a letter when no avatar is set.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+46"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
         <translation>Odtwarzaj media takie jak GIF  czy WEBP tylko gdy wskazane przy użyciu myszy.</translation>
     </message>

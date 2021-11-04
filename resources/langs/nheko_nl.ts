@@ -1956,8 +1956,8 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
     </message>
     <message>
         <location line="+29"/>
-        <source>Failed to create keys secure server side secret storage!</source>
-        <translation>Aanmaken van sleutels voor veilige serverkant geheimopslag mislukt!</translation>
+        <source>Failed to create keys for secure server side secret storage!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+44"/>
@@ -2587,12 +2587,7 @@ UIT - vierkant, AAN - cirkel.</translation>
         <translation>Gebruik identicons</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Display an identicon instead of a letter when a user has not set an avatar.</source>
-        <translation>Laat een identicon zien in plaats van een letter als er geen avatar is ingesteld.</translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Show a column containing groups and tags next to the room list.</source>
         <translation>Laat een kolom zien met groepen en markeringen naast de kamerlijst.</translation>
     </message>
@@ -2907,7 +2902,12 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
         <translation>INTERFACE</translation>
     </message>
     <message>
-        <location line="+179"/>
+        <location line="+133"/>
+        <source>Display an identicon instead of a letter when no avatar is set.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+46"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
         <translation>Speelt media zoals GIFs en WebPs alleen af terwijl de muiscursor erboven hangt.</translation>
     </message>

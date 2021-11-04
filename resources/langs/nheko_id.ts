@@ -1953,7 +1953,7 @@ If you choose verify, you need to have the other device available. If you choose
     </message>
     <message>
         <location line="+29"/>
-        <source>Failed to create keys secure server side secret storage!</source>
+        <source>Failed to create keys for secure server side secret storage!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2583,12 +2583,7 @@ MATI - persegi, NYALA - Lingkaran.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Display an identicon instead of a letter when a user has not set an avatar.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Show a column containing groups and tags next to the room list.</source>
         <translation>Menampilkan kolom yang berisi grup dan tanda di sebelah daftar ruangan.</translation>
     </message>
@@ -2903,7 +2898,12 @@ Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</transla
         <translation>ANTARMUKA</translation>
     </message>
     <message>
-        <location line="+179"/>
+        <location line="+133"/>
+        <source>Display an identicon instead of a letter when no avatar is set.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+46"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
         <translation>Memainkan media seperti GIF atau WEBP ketika kursor di atas medianya.</translation>
     </message>

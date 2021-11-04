@@ -1956,8 +1956,8 @@ If you choose verify, you need to have the other device available. If you choose
     </message>
     <message>
         <location line="+29"/>
-        <source>Failed to create keys secure server side secret storage!</source>
-        <translation>Failed to create keys secure server side secret storage!</translation>
+        <source>Failed to create keys for secure server side secret storage!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+44"/>
@@ -2587,12 +2587,7 @@ OFF - square, ON - Circle.</translation>
         <translation>Use identicons</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Display an identicon instead of a letter when a user has not set an avatar.</source>
-        <translation>Display an identicon instead of a letter when a user has not set an avatar.</translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Show a column containing groups and tags next to the room list.</source>
         <translation>Show a column containing groups and tags next to the room list.</translation>
     </message>
@@ -2907,7 +2902,12 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>INTERFACE</translation>
     </message>
     <message>
-        <location line="+179"/>
+        <location line="+133"/>
+        <source>Display an identicon instead of a letter when no avatar is set.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+46"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
         <translation>Plays media like GIFs or WEBPs only when explicitly hovering over them.</translation>
     </message>

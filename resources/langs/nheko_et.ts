@@ -1956,7 +1956,7 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
     </message>
     <message>
         <location line="+29"/>
-        <source>Failed to create keys secure server side secret storage!</source>
+        <source>Failed to create keys for secure server side secret storage!</source>
         <translation>Serveripoolse turvalise võtmehoidla võtmete loomine ei õnnestunud!</translation>
     </message>
     <message>
@@ -2592,7 +2592,7 @@ Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
         <translation>Kui kasutaja pole tunnuspilti, siis kasuta tähe asemel identikoni ehk matemaatilist tunnuspilti.</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Show a column containing groups and tags next to the room list.</source>
         <translation>Näita jututubade loendi kõrval veergu rühmade ja siltidega.</translation>
     </message>
@@ -2907,7 +2907,12 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
         <translation>LIIDES</translation>
     </message>
     <message>
-        <location line="+179"/>
+        <location line="+133"/>
+        <source>Display an identicon instead of a letter when no avatar is set.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+46"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
         <translation>Esitame liikuvaid GIF ja WEBP pilte vaid siis, kui kursor on pildi kohal.</translation>
     </message>
