@@ -13,6 +13,11 @@
 #include <QStandardPaths>
 #include <QUrl>
 
+#if defined(Q_OS_MACOS)
+// TODO (red_sky): Remove for Qt6.  See other ifdef below
+#include <QTemporaryFile>
+#endif
+
 #include "EventAccessors.h"
 #include "Logging.h"
 #include "MatrixClient.h"
@@ -75,7 +80,7 @@ MxcMediaProxy::startDownload()
 
     QPointer<MxcMediaProxy> self = this;
 
-    auto processBuffer = [this, encryptionInfo, filename, self](QIODevice &device) {
+    auto processBuffer = [this, encryptionInfo, filename, self, suffix](QIODevice &device) {
         if (!self)
             return;
 
@@ -90,10 +95,34 @@ MxcMediaProxy::startDownload()
         buffer.open(QIODevice::ReadOnly);
         buffer.reset();
 
-        QTimer::singleShot(0, this, [this, filename] {
+        QTimer::singleShot(0, this, [this, filename, suffix, encryptionInfo] {
+#if defined(Q_OS_MACOS)
+            if (encryptionInfo) {
+                // macOS has issues reading from a buffer in setMedia for whatever reason.
+                // Instead, write the buffer to a temporary file and read from that.
+                // This should be fixed in Qt6, so update this when we do that!
+                // TODO: REMOVE IN QT6
+                QTemporaryFile tempFile;
+                tempFile.setFileTemplate(tempFile.fileTemplate() + QLatin1Char('.') + suffix);
+                tempFile.open();
+                tempFile.write(buffer.data());
+                tempFile.close();
+                nhlog::ui()->debug("Playing media from temp buffer file: {}.  Remove in QT6!",
+                                   filename.filePath().toStdString());
+                this->setMedia(QUrl::fromLocalFile(tempFile.fileName()));
+            } else {
+                nhlog::ui()->info(
+                  "Playing buffer with size: {}, {}", buffer.bytesAvailable(), buffer.isOpen());
+                this->setMedia(QUrl::fromLocalFile(filename.filePath()));
+            }
+#else
+            Q_UNSUED(suffix)
+            Q_UNUSED(encryptionInfo)
+
             nhlog::ui()->info(
               "Playing buffer with size: {}, {}", buffer.bytesAvailable(), buffer.isOpen());
             this->setMedia(QMediaContent(filename.fileName()), &buffer);
+#endif
             emit loadedChanged();
         });
     };
