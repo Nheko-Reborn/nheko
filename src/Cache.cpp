@@ -3182,9 +3182,11 @@ Cache::clearTimeline(const std::string &room_id)
             break;
     }
 
-    do {
-        lmdb::cursor_del(msgCursor);
-    } while (msgCursor.get(indexVal, val, MDB_PREV));
+    if (!start) {
+        do {
+            lmdb::cursor_del(msgCursor);
+        } while (msgCursor.get(indexVal, val, MDB_PREV));
+    }
 
     cursor.close();
     msgCursor.close();
