@@ -2904,7 +2904,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+133"/>
         <source>Display an identicon instead of a letter when no avatar is set.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kui tunnuspilt on seadistamata, siis kuva tähe asemel identikoni (matemaatilist tunnuspilti).</translation>
     </message>
     <message>
         <location line="+46"/>
