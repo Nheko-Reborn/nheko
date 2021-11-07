@@ -24,7 +24,6 @@ SelfVerificationStatus::SelfVerificationStatus(QObject *o)
                 this,
                 &SelfVerificationStatus::invalidate,
                 Qt::UniqueConnection);
-        invalidate();
     });
 }
 
