@@ -239,7 +239,7 @@ ApplicationWindow {
                 onRejected: {
                     encryptionToggle.checked = false;
                 }
-                buttons: Dialog.Ok | Dialog.Cancel
+                buttons: Platform.MessageDialog.Ok | Platform.MessageDialog.Cancel
             }
 
             MatrixText {

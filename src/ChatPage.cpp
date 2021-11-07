@@ -316,6 +316,65 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
     try {
         cache::init(userid);
 
+        connect(cache::client(), &Cache::databaseReady, this, [this]() {
+            nhlog::db()->info("database ready");
+
+            const bool isInitialized = cache::isInitialized();
+            const auto cacheVersion  = cache::formatVersion();
+
+            try {
+                if (!isInitialized) {
+                    cache::setCurrentFormat();
+                } else {
+                    if (cacheVersion == cache::CacheVersion::Current) {
+                        loadStateFromCache();
+                        return;
+                    } else if (cacheVersion == cache::CacheVersion::Older) {
+                        if (!cache::runMigrations()) {
+                            QMessageBox::critical(
+                              this,
+                              tr("Cache migration failed!"),
+                              tr("Migrating the cache to the current version failed. "
+                                 "This can have different reasons. Please open an "
+                                 "issue and try to use an older version in the mean "
+                                 "time. Alternatively you can try deleting the cache "
+                                 "manually."));
+                            QCoreApplication::quit();
+                        }
+                        loadStateFromCache();
+                        return;
+                    } else if (cacheVersion == cache::CacheVersion::Newer) {
+                        QMessageBox::critical(
+                          this,
+                          tr("Incompatible cache version"),
+                          tr("The cache on your disk is newer than this version of Nheko "
+                             "supports. Please update Nheko or clear your cache."));
+                        QCoreApplication::quit();
+                        return;
+                    }
+                }
+
+                // It's the first time syncing with this device
+                // There isn't a saved olm account to restore.
+                nhlog::crypto()->info("creating new olm account");
+                olm::client()->create_new_account();
+                cache::saveOlmAccount(olm::client()->save(cache::client()->pickleSecret()));
+            } catch (const lmdb::error &e) {
+                nhlog::crypto()->critical("failed to save olm account {}", e.what());
+                emit dropToLoginPageCb(QString::fromStdString(e.what()));
+                return;
+            } catch (const mtx::crypto::olm_exception &e) {
+                nhlog::crypto()->critical("failed to create new olm account {}", e.what());
+                emit dropToLoginPageCb(QString::fromStdString(e.what()));
+                return;
+            }
+
+            getProfileInfo();
+            getBackupVersion();
+            tryInitialSync();
+            callManager_->refreshTurnServer();
+        });
+
         connect(cache::client(),
                 &Cache::newReadReceipts,
                 view_manager_,
@@ -326,66 +385,10 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                 &notificationsManager,
                 &NotificationsManager::removeNotification);
 
-        const bool isInitialized = cache::isInitialized();
-        const auto cacheVersion  = cache::formatVersion();
-
-        callManager_->refreshTurnServer();
-
-        if (!isInitialized) {
-            cache::setCurrentFormat();
-        } else {
-            if (cacheVersion == cache::CacheVersion::Current) {
-                loadStateFromCache();
-                return;
-            } else if (cacheVersion == cache::CacheVersion::Older) {
-                if (!cache::runMigrations()) {
-                    QMessageBox::critical(this,
-                                          tr("Cache migration failed!"),
-                                          tr("Migrating the cache to the current version failed. "
-                                             "This can have different reasons. Please open an "
-                                             "issue and try to use an older version in the mean "
-                                             "time. Alternatively you can try deleting the cache "
-                                             "manually."));
-                    QCoreApplication::quit();
-                }
-                loadStateFromCache();
-                return;
-            } else if (cacheVersion == cache::CacheVersion::Newer) {
-                QMessageBox::critical(
-                  this,
-                  tr("Incompatible cache version"),
-                  tr("The cache on your disk is newer than this version of Nheko "
-                     "supports. Please update or clear your cache."));
-                QCoreApplication::quit();
-                return;
-            }
-        }
-
     } catch (const lmdb::error &e) {
         nhlog::db()->critical("failure during boot: {}", e.what());
-        cache::deleteData();
-        nhlog::net()->info("falling back to initial sync");
+        emit dropToLoginPageCb(tr("Failed to open database, logging out!"));
     }
-
-    try {
-        // It's the first time syncing with this device
-        // There isn't a saved olm account to restore.
-        nhlog::crypto()->info("creating new olm account");
-        olm::client()->create_new_account();
-        cache::saveOlmAccount(olm::client()->save(cache::client()->pickleSecret()));
-    } catch (const lmdb::error &e) {
-        nhlog::crypto()->critical("failed to save olm account {}", e.what());
-        emit dropToLoginPageCb(QString::fromStdString(e.what()));
-        return;
-    } catch (const mtx::crypto::olm_exception &e) {
-        nhlog::crypto()->critical("failed to create new olm account {}", e.what());
-        emit dropToLoginPageCb(QString::fromStdString(e.what()));
-        return;
-    }
-
-    getProfileInfo();
-    getBackupVersion();
-    tryInitialSync();
 }
 
 void

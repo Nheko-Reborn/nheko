@@ -14,6 +14,6 @@ MessageDialog {
     text: CallManager.isOnCall ? qsTr("A call is in progress. Log out?") : qsTr("Are you sure you want to log out?")
     modality: Qt.WindowModal
     flags: Qt.Tool | Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    buttons: Dialog.Ok | Dialog.Cancel
+    buttons: MessageDialog.Ok | MessageDialog.Cancel
     onAccepted: Nheko.logout()
 }
