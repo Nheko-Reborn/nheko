@@ -373,6 +373,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
             getBackupVersion();
             tryInitialSync();
             callManager_->refreshTurnServer();
+            emit MainWindow::instance()->reload();
         });
 
         connect(cache::client(),
