@@ -259,15 +259,20 @@ SelfVerificationStatus::invalidate()
     using namespace mtx::secret_storage;
 
     nhlog::db()->info("Invalidating self verification status");
+    if (cache::isInitialized()) {
+        return;
+    }
+
     this->hasSSSS_ = false;
     emit hasSSSSChanged();
 
     auto keys = cache::client()->userKeys(http::client()->user_id().to_string());
     if (!keys || keys->device_keys.find(http::client()->device_id()) == keys->device_keys.end()) {
-        cache::client()->markUserKeysOutOfDate({http::client()->user_id().to_string()});
-        cache::client()->query_keys(http::client()->user_id().to_string(),
-                                    [](const UserKeyCache &, mtx::http::RequestErr) {});
-        return;
+        QTimer::singleShot(500, [] {
+            cache::client()->markUserKeysOutOfDate({http::client()->user_id().to_string()});
+            cache::client()->query_keys(http::client()->user_id().to_string(),
+                                        [](const UserKeyCache &, mtx::http::RequestErr) {});
+        });
     }
 
     if (keys->master_keys.keys.empty()) {

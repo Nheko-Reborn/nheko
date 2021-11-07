@@ -363,7 +363,7 @@ ScrollView {
 
             anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
             width: chat.delegateMaxWidth
-            height: Math.max(section.active ? section.height + timelinerow.height : timelinerow.height, 10)
+            height: section.active ? section.height + timelinerow.height : timelinerow.height
 
             Rectangle {
                 id: scrollHighlight
@@ -420,7 +420,7 @@ ScrollView {
                 property string day: wrapper.day
                 property string previousMessageDay: wrapper.previousMessageDay
                 property string userName: wrapper.userName
-                property var timestamp: wrapper.timestamp
+                property date timestamp: wrapper.timestamp
 
                 z: 4
                 active: previousMessageUserId !== undefined && previousMessageUserId !== userId || previousMessageDay !== day

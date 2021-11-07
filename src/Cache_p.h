@@ -304,6 +304,7 @@ public:
 
         return get_skey(a).compare(get_skey(b));
     }
+
 signals:
     void newReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
     void roomReadStatus(const std::map<QString, bool> &status);
@@ -312,8 +313,11 @@ signals:
     void verificationStatusChanged(const std::string &userid);
     void selfVerificationStatusChanged();
     void secretChanged(const std::string name);
+    void databaseReady();
 
 private:
+    void loadSecrets(std::vector<std::pair<std::string, bool>> toLoad);
+
     //! Save an invited room.
     void saveInvite(lmdb::txn &txn,
                     lmdb::dbi &statesdb,
@@ -684,6 +688,7 @@ private:
     std::string pickle_secret_;
 
     VerificationStorage verification_storage;
+    SecretsStorage secret_storage;
 
     bool databaseReady_ = false;
 };

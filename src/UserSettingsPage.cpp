@@ -1098,7 +1098,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
             backupSecretCached,
             tr("The key to decrypt online key backups. If it is cached, you can enable online "
                "key backup to store encryption keys securely encrypted on the server."));
-    updateSecretStatus();
+    // updateSecretStatus();
 
     auto scrollArea_ = new QScrollArea{this};
     scrollArea_->setFrameShape(QFrame::NoFrame);
