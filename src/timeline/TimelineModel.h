@@ -367,9 +367,9 @@ private slots:
     void scrollTimerEvent();
 
 signals:
+    void dataAtIdChanged(QString id);
     void currentIndexChanged(int index);
     void redactionFailed(QString id);
-    void eventRedacted(QString id);
     void mediaCached(QString mxcUrl, QString cacheUrl);
     void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
     void typingUsersChanged(std::vector<QString> users);
