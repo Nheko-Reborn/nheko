@@ -593,12 +593,12 @@
     <message>
         <location line="+2"/>
         <source>Verification messages received out of order!</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrolaj mesaĝoj riceviĝis ekster ordo!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown verification error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nekonata eraro de kontrolo.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -799,7 +799,7 @@
     <message>
         <location filename="../qml/dialogs/JoinRoomDialog.qml" line="+14"/>
         <source>Join room</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliĝi al ĉambro</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -942,17 +942,17 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location filename="../qml/dialogs/LogoutDialog.qml" line="+13"/>
         <source>Log out</source>
-        <translation type="unfinished"></translation>
+        <translation>Adiaŭi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A call is in progress. Log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Okazas voko nun. Ĉu tamen adiaŭi?</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Are you sure you want to log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉu vi certas, ke vi volas adiaŭi?</translation>
     </message>
 </context>
 <context>
@@ -1245,7 +1245,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location filename="../qml/NotificationWarning.qml" line="+32"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished"></translation>
+        <translation>Vi atentigos la tutan ĉambron</translation>
     </message>
 </context>
 <context>
@@ -1467,7 +1467,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+11"/>
         <source>Choose custom homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Elekti propran hejmservilon</translation>
     </message>
 </context>
 <context>
@@ -1549,7 +1549,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <location line="+40"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Ĉifrado ne jam agordiĝis</translation>
     </message>
     <message>
         <location line="+3"/>
