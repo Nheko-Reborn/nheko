@@ -131,17 +131,27 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+662"/>
+        <location line="+668"/>
         <source>Invited user: %1</source>
         <translation>Usuario invitado: %1</translation>
     </message>
     <message>
-        <location line="-448"/>
+        <location line="-461"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>La migración de la caché a la versión actual ha fallado. Esto puede deberse a distintos motivos. Por favor, reporte el incidente y mientras tanto intente usar una versión anterior. También puede probar a borrar la caché manualmente.</translation>
     </message>
     <message>
-        <location line="+355"/>
+        <location line="+13"/>
+        <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>Failed to open database, logging out!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+314"/>
         <source>Confirm join</source>
         <translation type="unfinished"></translation>
     </message>
@@ -232,7 +242,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-879"/>
+        <location line="-892"/>
         <source>Cache migration failed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -242,12 +252,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+49"/>
+        <location line="+61"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -264,7 +269,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+34"/>
         <location line="+115"/>
         <source>Please try to login again: %1</source>
         <translation type="unfinished"></translation>
@@ -1465,7 +1470,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4491"/>
+        <location filename="../../src/Cache.cpp" line="+4528"/>
         <source>no version stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1876,7 +1881,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-3725"/>
+        <location filename="../../src/Cache.cpp" line="-4203"/>
         <source>Failed to connect to secret storage</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1939,7 +1944,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>SelfVerificationStatus</name>
     <message>
-        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+40"/>
+        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+42"/>
         <source>Failed to create keys for cross-signing!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1961,6 +1966,11 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+140"/>
+        <source>Identity key changed. This breaks E2EE, so logging out.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2040,12 +2050,13 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1104"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1118"/>
+        <location line="+16"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation type="unfinished"></translation>
@@ -2210,12 +2221,12 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-951"/>
+        <location line="-970"/>
         <source>You joined this room.</source>
         <translation type="unfinished">Te has unido a esta sala.</translation>
     </message>
     <message>
-        <location line="+953"/>
+        <location line="+972"/>
         <source>Rejected the knock from %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2477,7 +2488,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+223"/>
+        <location line="+225"/>
         <source>Select an avatar</source>
         <translation type="unfinished"></translation>
     </message>

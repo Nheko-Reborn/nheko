@@ -131,17 +131,27 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+662"/>
+        <location line="+668"/>
         <source>Invited user: %1</source>
         <translation>Gebruiker uitgenodigd: %1</translation>
     </message>
     <message>
-        <location line="-448"/>
+        <location line="-461"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Het migreren can de cache naar de huidige versie is mislukt. Dit kan verscheidene redenen hebben. Maak a.u.b een issue aan en probeer in de tussentijd een oudere versie. Je kan ook proberen de cache handmatig te verwijderen.</translation>
     </message>
     <message>
-        <location line="+355"/>
+        <location line="+13"/>
+        <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>Failed to open database, logging out!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+314"/>
         <source>Confirm join</source>
         <translation>Bevestig deelname</translation>
     </message>
@@ -232,7 +242,7 @@
         <translation>Weet je zeker dat je een privé chat wil beginnen met %1?</translation>
     </message>
     <message>
-        <location line="-879"/>
+        <location line="-892"/>
         <source>Cache migration failed!</source>
         <translation>Migreren van de cache is mislukt!</translation>
     </message>
@@ -242,12 +252,7 @@
         <translation>Incompatibele cacheversie</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation>De opgeslagen cache is nieuwer dan deze versie van Nheko ondersteunt. Update Nheko, of verwijder je cache.</translation>
-    </message>
-    <message>
-        <location line="+49"/>
+        <location line="+61"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Herstellen van OLM account mislukt. Log a.u.b. opnieuw in.</translation>
     </message>
@@ -264,7 +269,7 @@
         <translation>Instellen van de versleuteling is mislukt. Bericht van server: %1 %2. Probeer het a.u.b. later nog eens.</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+34"/>
         <location line="+115"/>
         <source>Please try to login again: %1</source>
         <translation>Probeer a.u.b. opnieuw in te loggen: %1</translation>
@@ -1469,7 +1474,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4491"/>
+        <location filename="../../src/Cache.cpp" line="+4528"/>
         <source>no version stored</source>
         <translation>geen versie opgeslagen</translation>
     </message>
@@ -1880,7 +1885,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-3725"/>
+        <location filename="../../src/Cache.cpp" line="-4203"/>
         <source>Failed to connect to secret storage</source>
         <translation>Verbinden met geheimopslag mislukt</translation>
     </message>
@@ -1945,7 +1950,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
 <context>
     <name>SelfVerificationStatus</name>
     <message>
-        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+40"/>
+        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+42"/>
         <source>Failed to create keys for cross-signing!</source>
         <translation>Aanmaken van sleutels voor kruisversleuteling mislukt!</translation>
     </message>
@@ -1968,6 +1973,11 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
         <translation>Versleuteling instellen mislukt: %1</translation>
+    </message>
+    <message>
+        <location line="+140"/>
+        <source>Identity key changed. This breaks E2EE, so logging out.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2046,12 +2056,13 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1104"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1118"/>
+        <location line="+16"/>
         <source>Message redaction failed: %1</source>
         <translation>Bericht intrekken mislukt: %1</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation>Kon evenement niet versleutelen, versturen geannuleerd!</translation>
@@ -2206,12 +2217,12 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <translation>%1 heeft het aankloppen ingetrokken.</translation>
     </message>
     <message>
-        <location line="-951"/>
+        <location line="-970"/>
         <source>You joined this room.</source>
         <translation>Je neemt nu deel aan deze kamer.</translation>
     </message>
     <message>
-        <location line="+912"/>
+        <location line="+931"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation>%1 is van avatar veranderd en heet nu %2.</translation>
     </message>
@@ -2483,7 +2494,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <translation>Je hebt dit apparaat afgemeld.</translation>
     </message>
     <message>
-        <location line="+223"/>
+        <location line="+225"/>
         <source>Select an avatar</source>
         <translation>Kies een avatar</translation>
     </message>

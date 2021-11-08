@@ -131,17 +131,27 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+662"/>
+        <location line="+668"/>
         <source>Invited user: %1</source>
         <translation>Utilizator invitat: %1</translation>
     </message>
     <message>
-        <location line="-448"/>
+        <location line="-461"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Nu s-a putut muta cache-ul pe versiunea curentă. Acest lucru poate avea diferite cauze. Vă rugăm să deschideți un issue și încercați să folosiți o versiune mai veche între timp. O altă opțiune ar fi să încercați să ștergeți cache-ul manual.</translation>
     </message>
     <message>
-        <location line="+355"/>
+        <location line="+13"/>
+        <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>Failed to open database, logging out!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+314"/>
         <source>Confirm join</source>
         <translation type="unfinished"></translation>
     </message>
@@ -232,7 +242,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-879"/>
+        <location line="-892"/>
         <source>Cache migration failed!</source>
         <translation>Nu s-a putut migra cache-ul!</translation>
     </message>
@@ -242,12 +252,7 @@
         <translation>Versiune cache incompatibilă</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation>Cache-ul de pe disc este mai nou decât versiunea pe care Nheko o suportă. Vă rugăm actualizați sau ștergeți cache-ul.</translation>
-    </message>
-    <message>
-        <location line="+49"/>
+        <location line="+61"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Nu s-a putut restabili contul OLM. Vă rugăm să vă reconectați.</translation>
     </message>
@@ -264,7 +269,7 @@
         <translation>Nu s-au putut stabili cheile. Răspunsul serverului: %1 %2. Vă rugăm încercați mai târziu.</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+34"/>
         <location line="+115"/>
         <source>Please try to login again: %1</source>
         <translation>Vă rugăm să vă reconectați: %1</translation>
@@ -1469,7 +1474,7 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4491"/>
+        <location filename="../../src/Cache.cpp" line="+4528"/>
         <source>no version stored</source>
         <translation>nicio versiune stocată</translation>
     </message>
@@ -1881,7 +1886,7 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-3725"/>
+        <location filename="../../src/Cache.cpp" line="-4203"/>
         <source>Failed to connect to secret storage</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1944,7 +1949,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>SelfVerificationStatus</name>
     <message>
-        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+40"/>
+        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+42"/>
         <source>Failed to create keys for cross-signing!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1966,6 +1971,11 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+140"/>
+        <source>Identity key changed. This breaks E2EE, so logging out.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2045,12 +2055,13 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1104"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1118"/>
+        <location line="+16"/>
         <source>Message redaction failed: %1</source>
         <translation>Redactare mesaj eșuată: %1</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation type="unfinished"></translation>
@@ -2206,12 +2217,12 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>%1 și-a redactat ciocănitul.</translation>
     </message>
     <message>
-        <location line="-951"/>
+        <location line="-970"/>
         <source>You joined this room.</source>
         <translation>Te-ai alăturat camerei.</translation>
     </message>
     <message>
-        <location line="+912"/>
+        <location line="+931"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2483,7 +2494,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+223"/>
+        <location line="+225"/>
         <source>Select an avatar</source>
         <translation type="unfinished">Selectează un avatar</translation>
     </message>

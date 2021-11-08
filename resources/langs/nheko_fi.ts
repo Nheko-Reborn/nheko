@@ -131,17 +131,27 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+662"/>
+        <location line="+668"/>
         <source>Invited user: %1</source>
         <translation>Kutsuttu käyttäjä: %1</translation>
     </message>
     <message>
-        <location line="-448"/>
+        <location line="-461"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Välimuistin tuominen nykyiseen versioon epäonnistui. Tällä voi olla eri syitä. Luo vikailmoitus ja yritä sillä aikaa käyttää vanhempaa versiota. Voit myös vaihtoehtoisesti koettaa tyhjentää välimuistin käsin.</translation>
     </message>
     <message>
-        <location line="+355"/>
+        <location line="+13"/>
+        <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>Failed to open database, logging out!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+314"/>
         <source>Confirm join</source>
         <translation>Vahvista liittyminen</translation>
     </message>
@@ -232,7 +242,7 @@
         <translation>Haluatko luoda yksityisen keskustelun käyttäjän %1 kanssa?</translation>
     </message>
     <message>
-        <location line="-879"/>
+        <location line="-892"/>
         <source>Cache migration failed!</source>
         <translation>Välimuistin siirto epäonnistui!</translation>
     </message>
@@ -242,12 +252,7 @@
         <translation>Yhteensopimaton välimuistin versio</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation>Levylläsi oleva välimuisti on uudempaa kuin mitä tämä Nhekon versio tukee. Päivitä tai poista välimuistisi.</translation>
-    </message>
-    <message>
-        <location line="+49"/>
+        <location line="+61"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>OLM-tilin palauttaminen epäonnistui. Ole hyvä ja kirjaudu sisään uudelleen.</translation>
     </message>
@@ -264,7 +269,7 @@
         <translation>Salausavainten lähetys epäonnistui. Palvelimen vastaus: %1 %2. Ole hyvä ja yritä uudelleen myöhemmin.</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+34"/>
         <location line="+115"/>
         <source>Please try to login again: %1</source>
         <translation>Ole hyvä ja yritä kirjautua sisään uudelleen: %1</translation>
@@ -1469,7 +1474,7 @@ Esimerkki: https://server.my:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4491"/>
+        <location filename="../../src/Cache.cpp" line="+4528"/>
         <source>no version stored</source>
         <translation>ei tallennettua versiota</translation>
     </message>
@@ -1880,7 +1885,7 @@ Esimerkki: https://server.my:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-3725"/>
+        <location filename="../../src/Cache.cpp" line="-4203"/>
         <source>Failed to connect to secret storage</source>
         <translation>Salattuun tallennustilaan ei saatu yhteyttä</translation>
     </message>
@@ -1943,7 +1948,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>SelfVerificationStatus</name>
     <message>
-        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+40"/>
+        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+42"/>
         <source>Failed to create keys for cross-signing!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1965,6 +1970,11 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+140"/>
+        <source>Identity key changed. This breaks E2EE, so logging out.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2044,12 +2054,13 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1104"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1118"/>
+        <location line="+16"/>
         <source>Message redaction failed: %1</source>
         <translation>Viestin muokkaus epäonnistui: %1</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation>Tapahtuman salaus epäonnistui, lähetys keskeytetään!</translation>
@@ -2204,12 +2215,12 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>%1 perui koputuksensa.</translation>
     </message>
     <message>
-        <location line="-951"/>
+        <location line="-970"/>
         <source>You joined this room.</source>
         <translation>Sinä liityit tähän huoneeseen.</translation>
     </message>
     <message>
-        <location line="+912"/>
+        <location line="+931"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation>%1 vaihtoi avatariaan ja vaihtoi näyttönimekseen %2.</translation>
     </message>
@@ -2481,7 +2492,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+223"/>
+        <location line="+225"/>
         <source>Select an avatar</source>
         <translation>Valitse profiilikuva</translation>
     </message>

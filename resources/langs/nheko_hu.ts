@@ -131,17 +131,27 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+662"/>
+        <location line="+668"/>
         <source>Invited user: %1</source>
         <translation>A felhasználó meg lett hívva: %1</translation>
     </message>
     <message>
-        <location line="-448"/>
+        <location line="-461"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>A gyorsítótár átvitele a jelenlegi verzióhoz nem sikerült. Ennek több oka is lehet. Kérlek, írj egy hibajelentést és egyelőre próbálj meg egy régebbi verziót használni! Alternatív megoldásként megprobálhatod eltávolítani a gyorsítótárat kézzel.</translation>
     </message>
     <message>
-        <location line="+355"/>
+        <location line="+13"/>
+        <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>Failed to open database, logging out!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+314"/>
         <source>Confirm join</source>
         <translation>Csatlakozás megerősítése</translation>
     </message>
@@ -232,7 +242,7 @@
         <translation>Biztosan privát csevegést akarsz indítani %1 felhasználóval?</translation>
     </message>
     <message>
-        <location line="-879"/>
+        <location line="-892"/>
         <source>Cache migration failed!</source>
         <translation>Gyorsítótár migráció nem sikerült!</translation>
     </message>
@@ -242,12 +252,7 @@
         <translation>Inkompatibilis gyorsítótár-verzió</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation>A lemezeden lévő gyorsítótár újabb, mint amit a Nheko jelenlegi verziója támogat. Kérlek, frissítsd vagy töröld a gyorsítótárat!</translation>
-    </message>
-    <message>
-        <location line="+49"/>
+        <location line="+61"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Nem sikerült visszaállítani az OLM fiókot. Kérlek, jelentkezz be ismét!</translation>
     </message>
@@ -264,7 +269,7 @@
         <translation>Nem sikerült beállítani a titkosítási kulcsokat. Válasz a szervertől: %1 %2. Kérlek, próbáld újra később!</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+34"/>
         <location line="+115"/>
         <source>Please try to login again: %1</source>
         <translation>Kérlek, próbálj meg bejelentkezni újra: %1</translation>
@@ -1469,7 +1474,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4491"/>
+        <location filename="../../src/Cache.cpp" line="+4528"/>
         <source>no version stored</source>
         <translation>nincs tárolva verzió</translation>
     </message>
@@ -1879,7 +1884,7 @@ Példa: https://szerver.em:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-3725"/>
+        <location filename="../../src/Cache.cpp" line="-4203"/>
         <source>Failed to connect to secret storage</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1942,7 +1947,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>SelfVerificationStatus</name>
     <message>
-        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+40"/>
+        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+42"/>
         <source>Failed to create keys for cross-signing!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1964,6 +1969,11 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+140"/>
+        <source>Identity key changed. This breaks E2EE, so logging out.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2043,12 +2053,13 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1104"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1118"/>
+        <location line="+16"/>
         <source>Message redaction failed: %1</source>
         <translation>Az üzenet visszavonása nem sikerült: %1</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation>Nem sikerült titkosítani az eseményt, küldés megszakítva!</translation>
@@ -2202,12 +2213,12 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>%1 visszavonta a kopogását.</translation>
     </message>
     <message>
-        <location line="-951"/>
+        <location line="-970"/>
         <source>You joined this room.</source>
         <translation>Csatlakoztál ehhez a szobához.</translation>
     </message>
     <message>
-        <location line="+912"/>
+        <location line="+931"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2479,7 +2490,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+223"/>
+        <location line="+225"/>
         <source>Select an avatar</source>
         <translation>Profilkép kiválasztása</translation>
     </message>

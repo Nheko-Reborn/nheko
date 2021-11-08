@@ -131,17 +131,27 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+662"/>
+        <location line="+668"/>
         <source>Invited user: %1</source>
         <translation>Invitita uzanto: %1</translation>
     </message>
     <message>
-        <location line="-448"/>
+        <location line="-461"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Malsukcesis migrado de kaŝmemoro al nuna versio. Tio povas havi diversajn kialojn. Bonvolu raporti eraron kaj dume provi malpli novan version. Alternative, vi povas provi forigi la kaŝmemoron permane.</translation>
     </message>
     <message>
-        <location line="+355"/>
+        <location line="+13"/>
+        <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>Failed to open database, logging out!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+314"/>
         <source>Confirm join</source>
         <translation>Konfirmu aliĝon</translation>
     </message>
@@ -233,7 +243,7 @@
         <translation>Ĉu vi certe volas komenci privatan babilon kun %1?</translation>
     </message>
     <message>
-        <location line="-879"/>
+        <location line="-892"/>
         <source>Cache migration failed!</source>
         <translation>Malsukcesis migrado de kaŝmemoro!</translation>
     </message>
@@ -243,12 +253,7 @@
         <translation>Neakorda versio de kaŝmemoro</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation>La kaŝmemoro sur via disko estas pli nova ol kiom ĉi tiu versio de Nheko subtenas. Bonvolu ĝisdatigi la programon aŭ vakigi vian kaŝmemoron.</translation>
-    </message>
-    <message>
-        <location line="+49"/>
+        <location line="+61"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Malsukcesis rehavi konton je OLM. Bonvolu resaluti.</translation>
     </message>
@@ -265,7 +270,7 @@
         <translation>Malsukcesis agordi ĉifrajn ŝlosilojn. Respondo de servilo: %1 %2. Bonvolu reprovi poste.</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+34"/>
         <location line="+115"/>
         <source>Please try to login again: %1</source>
         <translation>Bonvolu provi resaluti: %1</translation>
@@ -1473,7 +1478,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4491"/>
+        <location filename="../../src/Cache.cpp" line="+4528"/>
         <source>no version stored</source>
         <translation>neniu versio konservita</translation>
     </message>
@@ -1884,7 +1889,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-3725"/>
+        <location filename="../../src/Cache.cpp" line="-4203"/>
         <source>Failed to connect to secret storage</source>
         <translation>Malsukcesis konektiĝi al sekreta deponejo</translation>
     </message>
@@ -1947,7 +1952,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>SelfVerificationStatus</name>
     <message>
-        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+40"/>
+        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+42"/>
         <source>Failed to create keys for cross-signing!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1969,6 +1974,11 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+140"/>
+        <source>Identity key changed. This breaks E2EE, so logging out.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2049,12 +2059,13 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1104"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1118"/>
+        <location line="+16"/>
         <source>Message redaction failed: %1</source>
         <translation>Malsukcesis redaktado de mesaĝo: %1</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation>Malsukcesis ĉifri okazon; sendado nuliĝis!</translation>
@@ -2211,12 +2222,12 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>%1 forigis sian frapon.</translation>
     </message>
     <message>
-        <location line="-951"/>
+        <location line="-970"/>
         <source>You joined this room.</source>
         <translation>Vi aliĝis ĉi tiun ĉambron.</translation>
     </message>
     <message>
-        <location line="+912"/>
+        <location line="+931"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation>%1 ŝanĝis sian profilbildon kaj sian prezentan nomon al %2.</translation>
     </message>
@@ -2488,7 +2499,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+223"/>
+        <location line="+225"/>
         <source>Select an avatar</source>
         <translation>Elektu profilbildon</translation>
     </message>

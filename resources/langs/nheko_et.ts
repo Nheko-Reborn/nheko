@@ -131,17 +131,27 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+662"/>
+        <location line="+668"/>
         <source>Invited user: %1</source>
         <translation>Kutsutud kasutaja: %1</translation>
     </message>
     <message>
-        <location line="-448"/>
+        <location line="-461"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Puhverdatud andmete muutmine sobivaks rakenduse praeguse versiooniga ei õnnestunud. Sellel võib olla erinevaid põhjuseid. Palun saada meile veateade ja seni kasuta vanemat rakenduse versiooni. Aga kui sa soovid proovida, siis kustuta puhverdatud andmed käsitsi.</translation>
     </message>
     <message>
-        <location line="+355"/>
+        <location line="+13"/>
+        <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>Failed to open database, logging out!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+314"/>
         <source>Confirm join</source>
         <translation>Kinnita liitumine</translation>
     </message>
@@ -232,7 +242,7 @@
         <translation>Kas sa kindlasti soovid alustada otsevestlust kasutajaga %1?</translation>
     </message>
     <message>
-        <location line="-879"/>
+        <location line="-892"/>
         <source>Cache migration failed!</source>
         <translation>Puhvri versiooniuuendus ebaõnnestus!</translation>
     </message>
@@ -242,12 +252,7 @@
         <translation>Mitteühilduv puhvri versioon</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation>Sinu andmekandjale salvestatud puhvri versioon on uuem, kui käesolev Nheko versioon kasutada oskab. Palun tee Nheko uuendus või kustuta puhverdatud andmed.</translation>
-    </message>
-    <message>
-        <location line="+49"/>
+        <location line="+61"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>OLM konto taastamine ei õnnestunud. Palun logi uuesti sisse.</translation>
     </message>
@@ -264,7 +269,7 @@
         <translation>Krüptovõtmete kasutusele võtmine ei õnnestunud. Koduserveri vastus päringule: %1 %2. Palun proovi hiljem uuesti.</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+34"/>
         <location line="+115"/>
         <source>Please try to login again: %1</source>
         <translation>Palun proovi uuesti sisse logida: %1</translation>
@@ -1469,7 +1474,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4491"/>
+        <location filename="../../src/Cache.cpp" line="+4528"/>
         <source>no version stored</source>
         <translation>salvestatud versiooni ei leidu</translation>
     </message>
@@ -1880,7 +1885,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-3725"/>
+        <location filename="../../src/Cache.cpp" line="-4203"/>
         <source>Failed to connect to secret storage</source>
         <translation>Ühenduse loomine võtmehoidlaga ei õnnestunud</translation>
     </message>
@@ -1945,7 +1950,7 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
 <context>
     <name>SelfVerificationStatus</name>
     <message>
-        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+40"/>
+        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+42"/>
         <source>Failed to create keys for cross-signing!</source>
         <translation>Risttunnustamise võtmete loomine ei õnnestunud!</translation>
     </message>
@@ -1968,6 +1973,11 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
         <translation>Krüptimise seadistamine ei õnnestunud: %1</translation>
+    </message>
+    <message>
+        <location line="+140"/>
+        <source>Identity key changed. This breaks E2EE, so logging out.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2046,12 +2056,13 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1104"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1118"/>
+        <location line="+16"/>
         <source>Message redaction failed: %1</source>
         <translation>Sõnumi ümbersõnastamine ebaõnnestus: %1</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation>Sündmuse krüptimine ei õnnestunud, katkestame saatmise!</translation>
@@ -2206,12 +2217,12 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
         <translation>%1 muutis oma koputust jututoa uksele.</translation>
     </message>
     <message>
-        <location line="-951"/>
+        <location line="-970"/>
         <source>You joined this room.</source>
         <translation>Sa liitusid jututoaga.</translation>
     </message>
     <message>
-        <location line="+912"/>
+        <location line="+931"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation>%1 muutis oma tunnuspilti ja seadistas uueks kuvatavaks nimeks %2.</translation>
     </message>
@@ -2483,7 +2494,7 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
         <translation>Sa oled selle seadme võrgust välja loginud.</translation>
     </message>
     <message>
-        <location line="+223"/>
+        <location line="+225"/>
         <source>Select an avatar</source>
         <translation>Vali tunnuspilt</translation>
     </message>

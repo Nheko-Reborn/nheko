@@ -131,17 +131,27 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+662"/>
+        <location line="+668"/>
         <source>Invited user: %1</source>
         <translation>Eingeladener Benutzer: %1</translation>
     </message>
     <message>
-        <location line="-448"/>
+        <location line="-461"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Das Migrieren des Caches auf die aktuelle Version ist fehlgeschlagen. Das kann verschiedene Gründe als Ursache haben. Bitte melde den Fehler und verwende in der Zwischenzeit eine ältere Version. Alternativ kannst du den Cache manuell löschen.</translation>
     </message>
     <message>
-        <location line="+355"/>
+        <location line="+13"/>
+        <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
+        <translation>Das Datenbankformat auf der Festplatte ist neuer als die von dieser Nhekoversion unterstützte Version. Bitte update Nheko oder lösche die Datenbank.</translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>Failed to open database, logging out!</source>
+        <translation>Öffnen der Datenbank fehlgeschlagen, du wirst ausgeloggt!</translation>
+    </message>
+    <message>
+        <location line="+314"/>
         <source>Confirm join</source>
         <translation>Beitritt bestätigen</translation>
     </message>
@@ -232,7 +242,7 @@
         <translation>Möchtest du wirklich eine private Konversation mit %1 beginnen?</translation>
     </message>
     <message>
-        <location line="-879"/>
+        <location line="-892"/>
         <source>Cache migration failed!</source>
         <translation>Migration des Caches fehlgeschlagen!</translation>
     </message>
@@ -242,12 +252,7 @@
         <translation>Inkompatible Version des Caches</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation>Der Cache auf der Festplatte wurde mit einer neueren Nheko - Version angelegt. Bitte aktualisiere Nheko oder entferne den Cache.</translation>
-    </message>
-    <message>
-        <location line="+49"/>
+        <location line="+61"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Wiederherstellung des OLM Accounts fehlgeschlagen. Bitte logge dich erneut ein.</translation>
     </message>
@@ -264,7 +269,7 @@
         <translation>Fehler beim Setup der Verschlüsselungsschlüssel. Servermeldung: %1 %2. Bitte versuche es später erneut.</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+34"/>
         <location line="+115"/>
         <source>Please try to login again: %1</source>
         <translation>Bitte melde dich erneut an: %1</translation>
@@ -1469,7 +1474,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4491"/>
+        <location filename="../../src/Cache.cpp" line="+4528"/>
         <source>no version stored</source>
         <translation>keine Version gespeichert</translation>
     </message>
@@ -1880,7 +1885,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-3725"/>
+        <location filename="../../src/Cache.cpp" line="-4203"/>
         <source>Failed to connect to secret storage</source>
         <translation>Verbindung zum kryptografischen Speicher fehlgeschlagen</translation>
     </message>
@@ -1945,7 +1950,7 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
 <context>
     <name>SelfVerificationStatus</name>
     <message>
-        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+40"/>
+        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+42"/>
         <source>Failed to create keys for cross-signing!</source>
         <translation>Quersignaturschlüssel konnten nicht erzeugt werden!</translation>
     </message>
@@ -1968,6 +1973,11 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
         <translation>Konfiguration der Verschlüsselung fehlgeschlagen: %1</translation>
+    </message>
+    <message>
+        <location line="+140"/>
+        <source>Identity key changed. This breaks E2EE, so logging out.</source>
+        <translation>Die Identitätschlüssel haben sich geändert. Das stört die Verschlüsselung, deswegen wirst du abgemeldet.</translation>
     </message>
 </context>
 <context>
@@ -2046,12 +2056,13 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1104"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1118"/>
+        <location line="+16"/>
         <source>Message redaction failed: %1</source>
         <translation>Nachricht zurückziehen fehlgeschlagen: %1</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation>Event konnte nicht verschlüsselt werden, senden wurde abgebrochen!</translation>
@@ -2206,12 +2217,12 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
         <translation>%1 hat das Anklopfen zurückgezogen.</translation>
     </message>
     <message>
-        <location line="-951"/>
+        <location line="-970"/>
         <source>You joined this room.</source>
         <translation>Du bist dem Raum beigetreten.</translation>
     </message>
     <message>
-        <location line="+912"/>
+        <location line="+931"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation>%1 hat den eigenen Avatar und Namen geändert zu %2.</translation>
     </message>
@@ -2483,7 +2494,7 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
         <translation>Du hast dieses Gerät abgemeldet.</translation>
     </message>
     <message>
-        <location line="+223"/>
+        <location line="+225"/>
         <source>Select an avatar</source>
         <translation>Avatar wählen</translation>
     </message>

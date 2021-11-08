@@ -131,17 +131,27 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+662"/>
+        <location line="+668"/>
         <source>Invited user: %1</source>
         <translation>Pengguna yang diundang: %1</translation>
     </message>
     <message>
-        <location line="-448"/>
+        <location line="-461"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Migrasi cache ke versi saat ini gagal. Ini dapat memiliki alasan yang berbeda. Silakan buka masalah dan coba gunakan versi yang lebih lama untuk sementara. Alternatifnya Anda dapat mencoba menghapus cache secara manual.</translation>
     </message>
     <message>
-        <location line="+355"/>
+        <location line="+13"/>
+        <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>Failed to open database, logging out!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+314"/>
         <source>Confirm join</source>
         <translation>Konfirmasi untuk bergabung</translation>
     </message>
@@ -232,7 +242,7 @@
         <translation>Apakah Anda ingin memulai chat privat dengan %1?</translation>
     </message>
     <message>
-        <location line="-879"/>
+        <location line="-892"/>
         <source>Cache migration failed!</source>
         <translation>Migrasi cache gagal!</translation>
     </message>
@@ -242,12 +252,7 @@
         <translation>Versi cache tidak kompatibel</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation>Cache pada disk Anda lebih baru daripada versi yang didukung Nheko ini. Harap perbarui atau kosongkan cache Anda.</translation>
-    </message>
-    <message>
-        <location line="+49"/>
+        <location line="+61"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Gagal memulihkan akun OLM. Mohon masuk lagi.</translation>
     </message>
@@ -264,7 +269,7 @@
         <translation>Gagal menyiapkan kunci enkripsi. Respons server: %1 %2. Silakan coba lagi nanti.</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+34"/>
         <location line="+115"/>
         <source>Please try to login again: %1</source>
         <translation>Mohon mencoba masuk lagi: %1</translation>
@@ -1469,7 +1474,7 @@ Misalnya: https://server.my:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4491"/>
+        <location filename="../../src/Cache.cpp" line="+4528"/>
         <source>no version stored</source>
         <translation>tidak ada versi yang disimpan</translation>
     </message>
@@ -1879,7 +1884,7 @@ Misalnya: https://server.my:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-3725"/>
+        <location filename="../../src/Cache.cpp" line="-4203"/>
         <source>Failed to connect to secret storage</source>
         <translation>Gagal menghubungkan ke penyimpanan rahasia</translation>
     </message>
@@ -1944,7 +1949,7 @@ Jika Anda memilih verifikasi, Anda harus memiliki perangkat lain yang tersedia. 
 <context>
     <name>SelfVerificationStatus</name>
     <message>
-        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+40"/>
+        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+42"/>
         <source>Failed to create keys for cross-signing!</source>
         <translation>Gagal untuk membuat kunci untuk penandatanganan silang!</translation>
     </message>
@@ -1967,6 +1972,11 @@ Jika Anda memilih verifikasi, Anda harus memiliki perangkat lain yang tersedia. 
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
         <translation>Penyiapan enkripsi gagal: %1</translation>
+    </message>
+    <message>
+        <location line="+140"/>
+        <source>Identity key changed. This breaks E2EE, so logging out.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2045,12 +2055,13 @@ Jika Anda memilih verifikasi, Anda harus memiliki perangkat lain yang tersedia. 
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1104"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1118"/>
+        <location line="+16"/>
         <source>Message redaction failed: %1</source>
         <translation>Reaksi pesan gagal: %1</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation>Gagal mendekripsikan peristiwa, pengiriman dihentikan!</translation>
@@ -2204,12 +2215,12 @@ Jika Anda memilih verifikasi, Anda harus memiliki perangkat lain yang tersedia. 
         <translation>%1 menolak ketukannya.</translation>
     </message>
     <message>
-        <location line="-951"/>
+        <location line="-970"/>
         <source>You joined this room.</source>
         <translation>Anda bergabung ruangan ini.</translation>
     </message>
     <message>
-        <location line="+912"/>
+        <location line="+931"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation>%1 mengubah avatarnya dan ubah nama tampilannya ke %2.</translation>
     </message>
@@ -2481,7 +2492,7 @@ Jika Anda memilih verifikasi, Anda harus memiliki perangkat lain yang tersedia. 
         <translation>Anda mengeluarkan perangkat ini.</translation>
     </message>
     <message>
-        <location line="+223"/>
+        <location line="+225"/>
         <source>Select an avatar</source>
         <translation>Pilih sebuah avatar</translation>
     </message>
