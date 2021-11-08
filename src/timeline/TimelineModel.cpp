@@ -344,6 +344,19 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
       [](const QString &msg) { emit ChatPage::instance()->showNotification(msg); },
       Qt::QueuedConnection);
 
+    connect(this, &TimelineModel::dataAtIdChanged, this, [this](QString id) {
+        relatedEventCacheBuster++;
+
+        auto idx = idToIndex(id);
+        if (idx != -1) {
+            auto pos = index(idx);
+            nhlog::ui()->debug("data changed at {}", id.toStdString());
+            emit dataChanged(pos, pos);
+        } else {
+            nhlog::ui()->debug("id not found {}", id.toStdString());
+        }
+    });
+
     connect(this,
             &TimelineModel::newMessageToSend,
             this,
@@ -1095,7 +1108,8 @@ TimelineModel::showReadReceipts(QString id)
 void
 TimelineModel::redactEvent(QString id)
 {
-    if (!id.isEmpty())
+    if (!id.isEmpty()) {
+        auto edits = events.edits(id.toStdString());
         http::client()->redact_event(
           room_id_.toStdString(),
           id.toStdString(),
@@ -1106,8 +1120,26 @@ TimelineModel::redactEvent(QString id)
                   return;
               }
 
-              emit eventRedacted(id);
+              emit dataAtIdChanged(id);
           });
+
+        // redact all edits to prevent leaks
+        for (const auto &e : edits) {
+            auto id_ = mtx::accessors::event_id(e);
+            http::client()->redact_event(
+              room_id_.toStdString(),
+              id_,
+              [this, id, id_](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+                  if (err) {
+                      emit redactionFailed(tr("Message redaction failed: %1")
+                                             .arg(QString::fromStdString(err->matrix_error.error)));
+                      return;
+                  }
+
+                  emit dataAtIdChanged(id);
+              });
+        }
+    }
 }
 
 int

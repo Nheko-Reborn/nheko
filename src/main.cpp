@@ -174,7 +174,7 @@ main(int argc, char *argv[])
                             SingleApplication::Mode::ExcludeAppVersion |
                             SingleApplication::Mode::SecondaryNotification,
                           100,
-                          userdata);
+                          userdata == "default" ? "" : userdata);
 
     QCommandLineParser parser;
     parser.addHelpOption();
@@ -199,8 +199,9 @@ main(int argc, char *argv[])
     // This check needs to happen _after_ process(), so that we actually print help for --help when
     // Nheko is already running.
     if (app.isSecondary()) {
-        nhlog::ui()->info("Sending Matrix URL to main application: {}", matrixUri.toStdString());
-        // open uri in main instance
+        std::cout << "Sending Matrix URL to main application: " << matrixUri.toStdString()
+                  << std::endl;
+        //  open uri in main instance
         app.sendMessage(matrixUri.toUtf8());
         return 0;
     }

@@ -447,7 +447,8 @@ EventStore::edits(const std::string &event_id)
     auto event_ids = cache::client()->relatedEvents(room_id_, event_id);
 
     auto original_event = get(event_id, "", false, false);
-    if (!original_event)
+    if (!original_event ||
+        std::holds_alternative<mtx::events::RoomEvent<mtx::events::msg::Redacted>>(*original_event))
         return {};
 
     auto original_sender    = mtx::accessors::sender(*original_event);

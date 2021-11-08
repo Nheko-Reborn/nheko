@@ -141,6 +141,14 @@ struct VerificationStorage
     std::mutex verification_storage_mtx;
 };
 
+//! In memory cache of verification status
+struct SecretsStorage
+{
+    //! secret name -> secret
+    std::map<std::string, std::string> secrets;
+    std::mutex mtx;
+};
+
 // this will store the keys of the user with whom a encrypted room is shared with
 struct UserKeyCache
 {

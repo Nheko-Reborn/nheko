@@ -199,7 +199,6 @@ Cache::Cache(const QString &userId, QObject *parent)
   , env_{nullptr}
   , localUserId_{userId}
 {
-    setup();
     connect(this, &Cache::userKeysUpdate, this, &Cache::updateUserKeys, Qt::QueuedConnection);
     connect(
       this,
@@ -212,6 +211,7 @@ Cache::Cache(const QString &userId, QObject *parent)
           }
       },
       Qt::QueuedConnection);
+    setup();
 }
 
 void
@@ -308,7 +308,178 @@ Cache::setup()
 
     txn.commit();
 
-    databaseReady_ = true;
+    loadSecrets({
+      {mtx::secret_storage::secrets::cross_signing_master, false},
+      {mtx::secret_storage::secrets::cross_signing_self_signing, false},
+      {mtx::secret_storage::secrets::cross_signing_user_signing, false},
+      {mtx::secret_storage::secrets::megolm_backup_v1, false},
+      {"pickle_secret", true},
+    });
+}
+
+static void
+fatalSecretError()
+{
+    QMessageBox::critical(
+      ChatPage::instance(),
+      QCoreApplication::translate("SecretStorage", "Failed to connect to secret storage"),
+      QCoreApplication::translate(
+        "SecretStorage",
+        "Nheko could not connect to the secure storage to save encryption secrets to. This can "
+        "have multiple reasons. Check if your D-Bus service is running and you have configured a "
+        "service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If "
+        "you are having trouble, feel free to open an issue here: "
+        "https://github.com/Nheko-Reborn/nheko/issues"));
+
+    QCoreApplication::exit(1);
+    exit(1);
+}
+
+static QString
+secretName(std::string name, bool internal)
+{
+    auto settings = UserSettings::instance();
+    return (internal ? "nheko." : "matrix.") +
+           QString(
+             QCryptographicHash::hash(settings->profile().toUtf8(), QCryptographicHash::Sha256)
+               .toBase64()) +
+           "." + QString::fromStdString(name);
+}
+
+void
+Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
+{
+    if (toLoad.empty()) {
+        this->databaseReady_ = true;
+        emit databaseReady();
+        return;
+    }
+
+    auto [name_, internal] = toLoad.front();
+
+    auto job = new QKeychain::ReadPasswordJob(QCoreApplication::applicationName());
+    job->setAutoDelete(true);
+    job->setInsecureFallback(true);
+    job->setSettings(UserSettings::instance()->qsettings());
+    auto name = secretName(name_, internal);
+    job->setKey(name);
+
+    connect(job,
+            &QKeychain::ReadPasswordJob::finished,
+            this,
+            [this, name, toLoad, job](QKeychain::Job *) mutable {
+                const QString secret = job->textData();
+                if (job->error() && job->error() != QKeychain::Error::EntryNotFound) {
+                    nhlog::db()->error("Restoring secret '{}' failed ({}): {}",
+                                       name.toStdString(),
+                                       job->error(),
+                                       job->errorString().toStdString());
+
+                    fatalSecretError();
+                }
+                if (secret.isEmpty()) {
+                    nhlog::db()->debug("Restored empty secret '{}'.", name.toStdString());
+                } else {
+                    std::unique_lock lock(secret_storage.mtx);
+                    secret_storage.secrets[name.toStdString()] = secret.toStdString();
+                }
+
+                // load next secret
+                toLoad.erase(toLoad.begin());
+
+                // You can't start a job from the finish signal of a job.
+                QTimer::singleShot(0, [this, toLoad] { loadSecrets(toLoad); });
+            });
+    job->start();
+}
+
+std::optional<std::string>
+Cache::secret(const std::string name_, bool internal)
+{
+    auto name = secretName(name_, internal);
+    std::unique_lock lock(secret_storage.mtx);
+    if (auto secret = secret_storage.secrets.find(name.toStdString());
+        secret != secret_storage.secrets.end())
+        return secret->second;
+    else
+        return std::nullopt;
+}
+
+void
+Cache::storeSecret(const std::string name_, const std::string secret, bool internal)
+{
+    auto name = secretName(name_, internal);
+    {
+        std::unique_lock lock(secret_storage.mtx);
+        secret_storage.secrets[name.toStdString()] = secret;
+    }
+
+    auto settings = UserSettings::instance();
+    auto job      = new QKeychain::WritePasswordJob(QCoreApplication::applicationName());
+    job->setAutoDelete(true);
+    job->setInsecureFallback(true);
+    job->setSettings(UserSettings::instance()->qsettings());
+
+    job->setKey(name);
+
+    job->setTextData(QString::fromStdString(secret));
+
+    QObject::connect(
+      job,
+      &QKeychain::WritePasswordJob::finished,
+      this,
+      [name_, this](QKeychain::Job *job) {
+          if (job->error()) {
+              nhlog::db()->warn(
+                "Storing secret '{}' failed: {}", name_, job->errorString().toStdString());
+              fatalSecretError();
+          } else {
+              // if we emit the signal directly, qtkeychain breaks and won't execute new
+              // jobs. You can't start a job from the finish signal of a job.
+              QTimer::singleShot(0, [this, name_] { emit secretChanged(name_); });
+              nhlog::db()->info("Storing secret '{}' successful", name_);
+          }
+      },
+      Qt::ConnectionType::DirectConnection);
+    job->start();
+}
+
+void
+Cache::deleteSecret(const std::string name, bool internal)
+{
+    auto name_ = secretName(name, internal);
+    {
+        std::unique_lock lock(secret_storage.mtx);
+        secret_storage.secrets.erase(name_.toStdString());
+    }
+
+    auto settings = UserSettings::instance();
+    auto job      = new QKeychain::DeletePasswordJob(QCoreApplication::applicationName());
+    job->setAutoDelete(true);
+    job->setInsecureFallback(true);
+    job->setSettings(UserSettings::instance()->qsettings());
+
+    job->setKey(name_);
+
+    job->connect(
+      job, &QKeychain::Job::finished, this, [this, name]() { emit secretChanged(name); });
+    job->start();
+}
+
+std::string
+Cache::pickleSecret()
+{
+    if (pickle_secret_.empty()) {
+        auto s = secret("pickle_secret", true);
+        if (!s) {
+            this->pickle_secret_ = mtx::client::utils::random_token(64, true);
+            storeSecret("pickle_secret", pickle_secret_, true);
+        } else {
+            this->pickle_secret_ = *s;
+        }
+    }
+
+    return pickle_secret_;
 }
 
 void
@@ -756,144 +927,6 @@ Cache::backupVersion()
     } catch (...) {
         return std::nullopt;
     }
-}
-
-static void
-fatalSecretError()
-{
-    QMessageBox::critical(
-      ChatPage::instance(),
-      QCoreApplication::translate("SecretStorage", "Failed to connect to secret storage"),
-      QCoreApplication::translate(
-        "SecretStorage",
-        "Nheko could not connect to the secure storage to save encryption secrets to. This can "
-        "have multiple reasons. Check if your D-Bus service is running and you have configured a "
-        "service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If "
-        "you are having trouble, feel free to open an issue here: "
-        "https://github.com/Nheko-Reborn/nheko/issues"));
-
-    QCoreApplication::exit(1);
-    exit(1);
-}
-
-void
-Cache::storeSecret(const std::string name, const std::string secret, bool internal)
-{
-    auto settings = UserSettings::instance();
-    auto job      = new QKeychain::WritePasswordJob(QCoreApplication::applicationName());
-    job->setAutoDelete(true);
-    job->setInsecureFallback(true);
-    job->setSettings(UserSettings::instance()->qsettings());
-
-    job->setKey(
-      (internal ? "nheko." : "matrix.") +
-      QString(QCryptographicHash::hash(settings->profile().toUtf8(), QCryptographicHash::Sha256)
-                .toBase64()) +
-      "." + QString::fromStdString(name));
-
-    job->setTextData(QString::fromStdString(secret));
-
-    QObject::connect(
-      job,
-      &QKeychain::WritePasswordJob::finished,
-      this,
-      [name, this](QKeychain::Job *job) {
-          if (job->error()) {
-              nhlog::db()->warn(
-                "Storing secret '{}' failed: {}", name, job->errorString().toStdString());
-              fatalSecretError();
-          } else {
-              // if we emit the signal directly, qtkeychain breaks and won't execute new
-              // jobs. You can't start a job from the finish signal of a job.
-              QTimer::singleShot(100, [this, name] { emit secretChanged(name); });
-              nhlog::db()->info("Storing secret '{}' successful", name);
-          }
-      },
-      Qt::ConnectionType::DirectConnection);
-    job->start();
-}
-
-void
-Cache::deleteSecret(const std::string name, bool internal)
-{
-    auto settings = UserSettings::instance();
-    QKeychain::DeletePasswordJob job(QCoreApplication::applicationName());
-    job.setAutoDelete(false);
-    job.setInsecureFallback(true);
-    job.setSettings(UserSettings::instance()->qsettings());
-
-    job.setKey(
-      (internal ? "nheko." : "matrix.") +
-      QString(QCryptographicHash::hash(settings->profile().toUtf8(), QCryptographicHash::Sha256)
-                .toBase64()) +
-      "." + QString::fromStdString(name));
-
-    // FIXME(Nico): Nested event loops are dangerous. Some other slots may resume in the mean
-    // time!
-    QEventLoop loop;
-    job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
-    job.start();
-    loop.exec();
-
-    emit secretChanged(name);
-}
-
-std::optional<std::string>
-Cache::secret(const std::string name, bool internal)
-{
-    auto settings = UserSettings::instance();
-    QKeychain::ReadPasswordJob job(QCoreApplication::applicationName());
-    job.setAutoDelete(false);
-    job.setInsecureFallback(true);
-    job.setSettings(UserSettings::instance()->qsettings());
-
-    job.setKey(
-      (internal ? "nheko." : "matrix.") +
-      QString(QCryptographicHash::hash(settings->profile().toUtf8(), QCryptographicHash::Sha256)
-                .toBase64()) +
-      "." + QString::fromStdString(name));
-
-    // FIXME(Nico): Nested event loops are dangerous. Some other slots may resume in the mean
-    // time!
-    QEventLoop loop;
-    job.connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
-    job.start();
-    loop.exec();
-
-    const QString secret = job.textData();
-    if (job.error()) {
-        if (job.error() == QKeychain::Error::EntryNotFound)
-            return std::nullopt;
-        nhlog::db()->error("Restoring secret '{}' failed ({}): {}",
-                           name,
-                           job.error(),
-                           job.errorString().toStdString());
-
-        fatalSecretError();
-        return std::nullopt;
-    }
-    if (secret.isEmpty()) {
-        nhlog::db()->debug("Restored empty secret '{}'.", name);
-        return std::nullopt;
-    }
-
-    return secret.toStdString();
-}
-
-std::string
-Cache::pickleSecret()
-{
-    if (pickle_secret_.empty()) {
-        auto s = secret("pickle_secret", true);
-        if (!s) {
-            this->pickle_secret_ = mtx::client::utils::random_token(64, true);
-            storeSecret("pickle_secret", pickle_secret_, true);
-        } else {
-            this->pickle_secret_ = *s;
-        }
-    }
-
-    return pickle_secret_;
 }
 
 void
@@ -3182,9 +3215,11 @@ Cache::clearTimeline(const std::string &room_id)
             break;
     }
 
-    do {
-        lmdb::cursor_del(msgCursor);
-    } while (msgCursor.get(indexVal, val, MDB_PREV));
+    if (!start) {
+        do {
+            lmdb::cursor_del(msgCursor);
+        } while (msgCursor.get(indexVal, val, MDB_PREV));
+    }
 
     cursor.close();
     msgCursor.close();
@@ -4066,8 +4101,9 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                 (void)status;
                 emit verificationStatusChanged(user);
             }
+        } else {
+            emit verificationStatusChanged(user_id);
         }
-        emit verificationStatusChanged(user_id);
     }
 }
 
@@ -4276,8 +4312,9 @@ Cache::markDeviceVerified(const std::string &user_id, const std::string &key)
             (void)status;
             emit verificationStatusChanged(user);
         }
+    } else {
+        emit verificationStatusChanged(user_id);
     }
-    emit verificationStatusChanged(user_id);
 }
 
 void

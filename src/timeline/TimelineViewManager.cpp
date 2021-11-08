@@ -248,7 +248,12 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
     qmlRegisterSingletonInstance("im.nheko", 1, 0, "VerificationManager", verificationManager_);
     qmlRegisterSingletonType<SelfVerificationStatus>(
       "im.nheko", 1, 0, "SelfVerificationStatus", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          return new SelfVerificationStatus();
+          auto ptr = new SelfVerificationStatus();
+          QObject::connect(ChatPage::instance(),
+                           &ChatPage::initializeEmptyViews,
+                           ptr,
+                           &SelfVerificationStatus::invalidate);
+          return ptr;
       });
 
     qRegisterMetaType<mtx::events::collections::TimelineEvents>();

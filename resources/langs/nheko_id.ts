@@ -131,17 +131,27 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+662"/>
+        <location line="+668"/>
         <source>Invited user: %1</source>
         <translation>Pengguna yang diundang: %1</translation>
     </message>
     <message>
-        <location line="-448"/>
+        <location line="-461"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Migrasi cache ke versi saat ini gagal. Ini dapat memiliki alasan yang berbeda. Silakan buka masalah dan coba gunakan versi yang lebih lama untuk sementara. Alternatifnya Anda dapat mencoba menghapus cache secara manual.</translation>
     </message>
     <message>
-        <location line="+355"/>
+        <location line="+13"/>
+        <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>Failed to open database, logging out!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+314"/>
         <source>Confirm join</source>
         <translation>Konfirmasi untuk bergabung</translation>
     </message>
@@ -232,7 +242,7 @@
         <translation>Apakah Anda ingin memulai chat privat dengan %1?</translation>
     </message>
     <message>
-        <location line="-879"/>
+        <location line="-892"/>
         <source>Cache migration failed!</source>
         <translation>Migrasi cache gagal!</translation>
     </message>
@@ -242,12 +252,7 @@
         <translation>Versi cache tidak kompatibel</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>The cache on your disk is newer than this version of Nheko supports. Please update or clear your cache.</source>
-        <translation>Cache pada disk Anda lebih baru daripada versi yang didukung Nheko ini. Harap perbarui atau kosongkan cache Anda.</translation>
-    </message>
-    <message>
-        <location line="+49"/>
+        <location line="+61"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>Gagal memulihkan akun OLM. Mohon masuk lagi.</translation>
     </message>
@@ -264,7 +269,7 @@
         <translation>Gagal menyiapkan kunci enkripsi. Respons server: %1 %2. Silakan coba lagi nanti.</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+34"/>
         <location line="+115"/>
         <source>Please try to login again: %1</source>
         <translation>Mohon mencoba masuk lagi: %1</translation>
@@ -592,12 +597,12 @@
     <message>
         <location line="+2"/>
         <source>Verification messages received out of order!</source>
-        <translation type="unfinished"></translation>
+        <translation>Pesan verifikasi diterima secara tidak berurutan!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown verification error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kesalahan verifikasi yang tidak diketahui.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -798,12 +803,12 @@
     <message>
         <location filename="../qml/dialogs/JoinRoomDialog.qml" line="+14"/>
         <source>Join room</source>
-        <translation type="unfinished"></translation>
+        <translation>Gabung ruangan</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished">ID ruangan atau alias</translation>
+        <translation>ID ruangan atau alias</translation>
     </message>
 </context>
 <context>
@@ -811,12 +816,12 @@
     <message>
         <location filename="../qml/dialogs/LeaveRoomDialog.qml" line="+15"/>
         <source>Leave room</source>
-        <translation type="unfinished">Tinggalkan ruangan</translation>
+        <translation>Tinggalkan ruangan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished">Apakah Anda yakin untuk meninggalkan ruangan?</translation>
+        <translation>Apakah Anda yakin untuk keluar?</translation>
     </message>
 </context>
 <context>
@@ -938,17 +943,17 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location filename="../qml/dialogs/LogoutDialog.qml" line="+13"/>
         <source>Log out</source>
-        <translation type="unfinished"></translation>
+        <translation>Keluar</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A call is in progress. Log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sebuah panggilan sedang berjalan. Keluar?</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Are you sure you want to log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Apakah Anda ingin keluar?</translation>
     </message>
 </context>
 <context>
@@ -1188,7 +1193,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+16"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Untuk mengizinkan pengguna lain melihat, perangkat mana yang benar-benar milik Anda, Anda dapat memverifikasinya. Ini juga memungkinkan cadangan kunci bekerja secara otomatis. Verifikasi perangkat yang belum diverifikasi sekarang? (Pastikan Anda memiliki salah satu perangkat tersebut.)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1241,7 +1246,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location filename="../qml/NotificationWarning.qml" line="+32"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished"></translation>
+        <translation>Anda akan memberitahu seluruh ruangan</translation>
     </message>
 </context>
 <context>
@@ -1463,13 +1468,13 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+11"/>
         <source>Choose custom homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih homeserver kustom</translation>
     </message>
 </context>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4491"/>
+        <location filename="../../src/Cache.cpp" line="+4528"/>
         <source>no version stored</source>
         <translation>tidak ada versi yang disimpan</translation>
     </message>
@@ -1545,24 +1550,24 @@ Misalnya: https://server.my:8787</translation>
         <location line="+40"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Enkripsi belum disiapkan</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unverified login</source>
         <extracomment>The user just signed in with this device and hasn&apos;t verified their master key.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Login yang belum diverifikasi</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please verify your other devices</source>
         <extracomment>There are unverified devices signed in to this account.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Mohon verifikasi perangkat Anda yang lain</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Close</source>
-        <translation type="unfinished">Tutup</translation>
+        <translation>Tutup</translation>
     </message>
     <message>
         <location line="+65"/>
@@ -1799,27 +1804,27 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location filename="../qml/Root.qml" line="+255"/>
         <source>Please enter your login password to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mohon masukkan kata sandi login Anda untuk melanjutkan:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid email address to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mohon masukkan sebuah alamat email yang valid untuk melanjutkan:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid phone number to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mohon masukkan sebuah nomor telepon yang valid untuk melanjutkan:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter the token, which has been sent to you:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mohon masukkan tokennya yang telah terkirim ke Anda:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Wait for the confirmation link to arrive, then continue.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tunggu untuk tautan konfirmasinya, lalu lanjutkan.</translation>
     </message>
 </context>
 <context>
@@ -1879,14 +1884,14 @@ Misalnya: https://server.my:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-3725"/>
+        <location filename="../../src/Cache.cpp" line="-4203"/>
         <source>Failed to connect to secret storage</source>
         <translation>Gagal menghubungkan ke penyimpanan rahasia</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko tidak dapat terhubung ke penyimpanan aman untuk menyimpan rahasia enkripsi. Ini dapat memiliki beberapa alasan. Periksa apakah layanan D-Bus Anda berjalan dan Anda telah mengkonfigurasi layanan seperti KWallet, Gnome Keyring, KeePassXC atau yang setara untuk platform Anda. Jika Anda mengalami masalah, jangan ragu untuk membuka masalah di sini: https://github.com/Nheko-Reborn/nheko/issues</translation>
     </message>
 </context>
 <context>
@@ -1894,76 +1899,83 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location filename="../qml/SelfVerificationCheck.qml" line="+39"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ini adalah kunci pemulihan Anda. Anda akan membutuhkannya untuk memulihkan akses ke pesan terenkripsi dan kunci verifikasi Anda. Simpan dengan aman. Jangan bagikan dengan siapa pun dan jangan sampai hilang! Jangan lewat! Jangan mengumpulkan Rp. 200.000!</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Encryption setup successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Penyiapan enkripsi berhasil</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Failed to setup encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal untuk menyiapkan enkripsi: %1</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Setup Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Siapkan Enkripsi</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
-        <translation type="unfinished"></translation>
+        <translation>Halo dan selamat datang di Matrix!
+Sepertinya Anda baru di sini. Sebelum Anda dapat mengenkripsi pesan Anda dengan aman, kami perlu menyiapkan beberapa hal. Anda dapat langsung menekan terima atau menyesuaikan beberapa opsi dasar. Kami juga mencoba menjelaskan beberapa dasar-dasarnya. Anda dapat melewatkan bagian-bagiannya, tetapi mereka mungkin terbukti membantu!</translation>
     </message>
     <message>
         <location line="+124"/>
         <source>Activate Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktifkan Enkripsi</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.
 If you choose verify, you need to have the other device available. If you choose &quot;enter passphrase&quot;, you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sepertinya Anda telah mengkonfigurasi enkripsi untuk akun ini. Agar dapat mengakses pesan terenkripsi dan membuat perangkat ini tepercaya, Anda dapat memverifikasi perangkat yang ada atau (jika punya) memasukkan frasa sandi pemulihan. Silakan pilih salah satu opsi di bawah ini.
+Jika Anda memilih verifikasi, Anda harus memiliki perangkat lain yang tersedia. Jika Anda memilih &quot;masukkan frasa sandi&quot;, Anda memerlukan kunci pemulihan atau frasa sandi. Jika Anda mengklik batal, Anda dapat memilih untuk memverifikasi diri Anda di lain waktu.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>verify</source>
-        <translation type="unfinished"></translation>
+        <translation>verifikasi</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>enter passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>masukkan frasa sandi</translation>
     </message>
 </context>
 <context>
     <name>SelfVerificationStatus</name>
     <message>
-        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+40"/>
+        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+42"/>
         <source>Failed to create keys for cross-signing!</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal untuk membuat kunci untuk penandatanganan silang!</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to create keys for online key backup!</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal untuk membuat kunci untuk cadangan kunci online!</translation>
     </message>
     <message>
         <location line="+29"/>
-        <source>Failed to create keys secure server side secret storage!</source>
-        <translation type="unfinished"></translation>
+        <source>Failed to create keys for secure server side secret storage!</source>
+        <translation>Gagal untuk membuat kunci untuk penyimpanan rahasia aman di server!</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Encryption Setup</source>
-        <translation type="unfinished"></translation>
+        <translation>Penyiapan Enkripsi</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
+        <translation>Penyiapan enkripsi gagal: %1</translation>
+    </message>
+    <message>
+        <location line="+140"/>
+        <source>Identity key changed. This breaks E2EE, so logging out.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2043,12 +2055,13 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1104"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1118"/>
+        <location line="+16"/>
         <source>Message redaction failed: %1</source>
         <translation>Reaksi pesan gagal: %1</translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation>Gagal mendekripsikan peristiwa, pengiriman dihentikan!</translation>
@@ -2202,12 +2215,12 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>%1 menolak ketukannya.</translation>
     </message>
     <message>
-        <location line="-951"/>
+        <location line="-970"/>
         <source>You joined this room.</source>
         <translation>Anda bergabung ruangan ini.</translation>
     </message>
     <message>
-        <location line="+912"/>
+        <location line="+931"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation>%1 mengubah avatarnya dan ubah nama tampilannya ke %2.</translation>
     </message>
@@ -2251,7 +2264,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+137"/>
         <source>No preview available</source>
-        <translation type="unfinished">Tidak ada tampilan yang tersedia</translation>
+        <translation>Tidak ada tampilan yang tersedia</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2304,7 +2317,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+2"/>
         <source>This room contains verified devices and devices which have never changed their master key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruangan ini berisi perangkat yang telah diverifikasi dan perangkat yang belum ganti kunci utama mereka.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2355,24 +2368,24 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../../src/ui/UIA.cpp" line="+59"/>
         <source>No available registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada alur pendaftaran yang tersedia!</translation>
     </message>
     <message>
         <location line="+26"/>
         <location line="+24"/>
         <location line="+17"/>
         <source>Registration aborted</source>
-        <translation type="unfinished"></translation>
+        <translation>Pendaftaran dibatalkan</translation>
     </message>
     <message>
         <location line="-27"/>
         <source>Please enter a valid registration token.</source>
-        <translation type="unfinished">Mohon masukkan token pendaftaran yang valid.</translation>
+        <translation>Mohon masukkan token pendaftaran yang valid.</translation>
     </message>
     <message>
         <location line="+165"/>
         <source>Invalid token</source>
-        <translation type="unfinished"></translation>
+        <translation>Token tidak valid</translation>
     </message>
 </context>
 <context>
@@ -2446,22 +2459,22 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+9"/>
         <source>Refresh device list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muat ulang daftar perangkat.</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Sign out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Keluar dari perangkat ini.</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Change device name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubah nama perangkat.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Last seen %1 from %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Terakhir dilihat %1 dari %2</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -2471,15 +2484,15 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+152"/>
         <source>Sign out device %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Keluarkan perangkat %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>You signed out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Anda mengeluarkan perangkat ini.</translation>
     </message>
     <message>
-        <location line="+223"/>
+        <location line="+225"/>
         <source>Select an avatar</source>
         <translation>Pilih sebuah avatar</translation>
     </message>
@@ -2580,15 +2593,10 @@ MATI - persegi, NYALA - Lingkaran.</translation>
     <message>
         <location line="+1"/>
         <source>Use identicons</source>
-        <translation type="unfinished"></translation>
+        <translation>Gunakan identikon</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Display an identicon instead of a letter when a user has not set an avatar.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Show a column containing groups and tags next to the room list.</source>
         <translation>Menampilkan kolom yang berisi grup dan tanda di sebelah daftar ruangan.</translation>
     </message>
@@ -2903,7 +2911,12 @@ Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</transla
         <translation>ANTARMUKA</translation>
     </message>
     <message>
-        <location line="+179"/>
+        <location line="+133"/>
+        <source>Display an identicon instead of a letter when no avatar is set.</source>
+        <translation>Tampilkan sebuah identikon daripada sebuah huruf ketika tidak ada avatar yang diatur.</translation>
+    </message>
+    <message>
+        <location line="+46"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
         <translation>Memainkan media seperti GIF atau WEBP ketika kursor di atas medianya.</translation>
     </message>
@@ -3020,7 +3033,7 @@ Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</transla
     <message>
         <location filename="../../src/encryption/VerificationManager.cpp" line="+105"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation type="unfinished">Tidak ada chat privat terenkripsi ditemukan dengan pengguna ini. Buat chat privat terenkripsi dengan pengguna ini dan coba lagi.</translation>
+        <translation>Tidak ada chat privat terenkripsi ditemukan dengan pengguna ini. Buat sebuah chat privat terenkripsi dengan pengguna ini dan coba lagi.</translation>
     </message>
 </context>
 <context>

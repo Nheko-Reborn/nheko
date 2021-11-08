@@ -34,7 +34,7 @@ Item {
     required property int encryptionError
     required property int relatedEventCacheBuster
 
-    height: Math.max(chooser.child.height, 20)
+    height: chooser.child ? chooser.child.height : Nheko.paddingLarge
 
     DelegateChooser {
         id: chooser
