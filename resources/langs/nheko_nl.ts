@@ -1957,7 +1957,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
     <message>
         <location line="+29"/>
         <source>Failed to create keys for secure server side secret storage!</source>
-        <translation type="unfinished"></translation>
+        <translation>Aanmaken van sleutels voor beveiligde geheimopslag aan de server kant mislukt!</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -2904,7 +2904,7 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
     <message>
         <location line="+133"/>
         <source>Display an identicon instead of a letter when no avatar is set.</source>
-        <translation type="unfinished"></translation>
+        <translation>Laat een identicon zien in plaats van een letter wanneer er geen avatar is ingesteld.</translation>
     </message>
     <message>
         <location line="+46"/>
