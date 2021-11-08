@@ -188,6 +188,7 @@ UserProfile::fetchDeviceList(const QString &userID)
               nhlog::net()->warn("failed to query device keys: {},{}",
                                  mtx::errors::to_string(err->matrix_error.errcode),
                                  static_cast<int>(err->status_code));
+              return;
           }
 
           // Ensure local key cache is up to date
@@ -201,6 +202,7 @@ UserProfile::fetchDeviceList(const QString &userID)
                     nhlog::net()->warn("failed to query device keys: {},{}",
                                        mtx::errors::to_string(err->matrix_error.errcode),
                                        static_cast<int>(err->status_code));
+                    return;
                 }
 
                 emit verificationStatiChanged();

@@ -526,6 +526,8 @@ ChatPage::tryInitialSync()
           for (const auto &entry : res.one_time_key_counts)
               nhlog::net()->info("uploaded {} {} one-time keys", entry.second, entry.first);
 
+          cache::client()->markUserKeysOutOfDate({http::client()->user_id().to_string()});
+
           startInitialSync();
       });
 }
@@ -1143,7 +1145,7 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
         if (!decrypted.empty()) {
             cache::storeSecret(secretName, decrypted);
 
-            if (deviceKeys &&
+            if (deviceKeys && deviceKeys->device_keys.count(http::client()->device_id()) &&
                 secretName == mtx::secret_storage::secrets::cross_signing_self_signing) {
                 auto myKey = deviceKeys->device_keys.at(http::client()->device_id());
                 if (myKey.user_id == http::client()->user_id().to_string() &&

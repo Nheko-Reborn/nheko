@@ -4,6 +4,8 @@
 
 #include "SelfVerificationStatus.h"
 
+#include <QApplication>
+
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"
@@ -18,12 +20,13 @@
 SelfVerificationStatus::SelfVerificationStatus(QObject *o)
   : QObject(o)
 {
-    connect(MainWindow::instance(), &MainWindow::reload, this, [this] {
+    connect(ChatPage::instance(), &ChatPage::contentLoaded, this, [this] {
         connect(cache::client(),
                 &Cache::selfVerificationStatusChanged,
                 this,
                 &SelfVerificationStatus::invalidate,
                 Qt::UniqueConnection);
+        cache::client()->markUserKeysOutOfDate({http::client()->user_id().to_string()});
     });
 }
 
@@ -268,8 +271,16 @@ SelfVerificationStatus::invalidate()
 
     auto keys = cache::client()->userKeys(http::client()->user_id().to_string());
     if (!keys || keys->device_keys.find(http::client()->device_id()) == keys->device_keys.end()) {
-        QTimer::singleShot(500, [] {
-            cache::client()->markUserKeysOutOfDate({http::client()->user_id().to_string()});
+        if (keys && (keys->seen_device_ids.count(http::client()->device_id()) ||
+                     keys->seen_device_keys.count(olm::client()->identity_keys().curve25519))) {
+            emit ChatPage::instance()->dropToLoginPageCb(
+              tr("Identity key changed. This breaks E2EE, so logging out."));
+            return;
+        }
+
+        cache::client()->markUserKeysOutOfDate({http::client()->user_id().to_string()});
+
+        QTimer::singleShot(1'000, [] {
             cache::client()->query_keys(http::client()->user_id().to_string(),
                                         [](const UserKeyCache &, mtx::http::RequestErr) {});
         });

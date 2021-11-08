@@ -4101,8 +4101,9 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                 (void)status;
                 emit verificationStatusChanged(user);
             }
+        } else {
+            emit verificationStatusChanged(user_id);
         }
-        emit verificationStatusChanged(user_id);
     }
 }
 
@@ -4311,8 +4312,9 @@ Cache::markDeviceVerified(const std::string &user_id, const std::string &key)
             (void)status;
             emit verificationStatusChanged(user);
         }
+    } else {
+        emit verificationStatusChanged(user_id);
     }
-    emit verificationStatusChanged(user_id);
 }
 
 void
