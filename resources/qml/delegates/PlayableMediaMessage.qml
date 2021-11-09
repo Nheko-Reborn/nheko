@@ -39,17 +39,13 @@ ColumnLayout {
 	}
 
     id: content
-    Layout.maximumWidth: parent? parent.width: undefined
+
+    Layout.fillWidth: true
     MxcMedia {
         id: mxcmedia
         // TODO: Show error in overlay or so?
         onError: console.log(error)
         roomm: room
-		onMediaStatusChanged: {
-			if (status == MxcMedia.LoadedMedia) {
-				progress.updatePositionTexts();
-			}
-		}
     }
       
     Rectangle {
@@ -65,9 +61,10 @@ ColumnLayout {
         property double divisor: isReply ? 4 : 2
         property bool tooHigh: tempHeight > timelineRoot.height / divisor
 
-        Layout.maximumWidth: Layout.preferredWidth
         Layout.preferredHeight: tooHigh ? timelineRoot.height / divisor : tempHeight
         Layout.preferredWidth: tooHigh ? (timelineRoot.height / divisor) / proportionalHeight : tempWidth
+        Layout.maximumWidth: Layout.preferredWidth
+
         Image {
             anchors.fill: parent
             source: thumbnailUrl.replace("mxc://", "image://MxcImage/")
