@@ -29,6 +29,7 @@
 
 #include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
+#include "Logging.h"
 
 class Cache : public QObject
 {
@@ -518,8 +519,12 @@ private:
                 while (cursor.get(typeStrV, data, first ? MDB_FIRST_DUP : MDB_NEXT_DUP)) {
                     first = false;
 
-                    if (eventsDb.get(txn, json::parse(data)["id"].get<std::string>(), value))
-                        events.push_back(json::parse(value).get<mtx::events::StateEvent<T>>());
+                    try {
+                        if (eventsDb.get(txn, json::parse(data)["id"].get<std::string>(), value))
+                            events.push_back(json::parse(value).get<mtx::events::StateEvent<T>>());
+                    } catch (std::exception &e) {
+                        nhlog::db()->warn("Failed to parse state event: {}", e.what());
+                    }
                 }
             }
         }

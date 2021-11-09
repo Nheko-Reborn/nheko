@@ -81,6 +81,7 @@ ApplicationWindow {
                             userid: model.mxid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             displayName: model.displayName
+                            enabled: false
                         }
 
                         ColumnLayout {

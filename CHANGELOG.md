@@ -1,5 +1,183 @@
 # Changelog
 
+## [0.9.0] -- Unreleased
+
+### Highlights
+
+- Somewhat stable end to end encryption
+  - Show the room verification status
+  - Configure Nheko to only send to verified users
+  - Store the encryption keys securely in the OS-provided secrets service.
+  - Support online keybackup as well as sharing historical session keys.
+- Crosssigning bootstrapping
+  - Crosssigning is used to simplify the verification process. In this release
+     Nheko can setup crosssigning on a new account without having to use a
+     different client.
+  - Nheko now also prompts you, if there are any unverified devices and asks you to verify them.
+- Room directory (Manu)
+  - Search for rooms on your server and other servers. (Prezu)
+  - If their topic interests you and it has the right amount of members, join
+      the room and the discussion!
+- Custom sticker packs
+  - Add a custom sticker picker, that allows you to send stickers from MSC2545.
+  - Support creating new sticker (and emote) packs.
+  - You can share packs in a room and enable them globally or just for that
+      room.
+- Token authenticated registration (Callum)
+  - Sign up with a token to servers, that have otherwise disabled registration.
+  - This was done as part of GSoC and makes it easier to run private servers for
+      your family and friends!
+
+### Features
+
+- Support email in registration (required on matrix.org for example)
+- Warn, if an @room would mention the whole room, because some people don't like that.
+- Support device removal as well as renaming. (Thulinma)
+- Show your devices without encryption support, when showing your profile.
+    (Thulinma)
+- Move to the next room with unread messages by pressing `Alt-A`. (Symphorien)
+- Support jdenticons as a placeholder for rooms or users without avatars.
+    (LorenDB)
+  - You will need to install https://github.com/Nheko-Reborn/qt-jdenticon
+- Properly sign macOS builds.
+- Support animated images like GIF and WebP.
+  - Optionally just play them on hover.
+- Support accepting knocks in the timeline.
+- Close a room when clicking it again. (LorenDB)
+- Close image overlay with escape.
+- Support .well-known discovery during registration.
+- Limited spaces support.
+  - No nice display of nested spaces.
+  - No previews of unjoined rooms.
+  - No way to edit a space.
+- Render room avatar changes in the timeline. (BShipman)
+- Support pulling out the sidebar to make it wider.
+- Allow editing pending messages instead of blocking until they are sent.
+    (balsoft)
+- Support mnemonics in the context menus. (AppAraat)
+- Support TOFU for encryption. (Trust on first use)
+- Right click -> copy address location.
+- Forward messages. (Jedi18)
+- Alt-F to forward messages.
+
+### Improvements
+
+- Tranlation updates:
+  - French by MayeulC, ISSOtm, Glandos, Carl Schwan
+  - Dutch by Thulinma, Bas van Rossem, Glael, Thijs
+  - Esperanto by Tirifto, Colin
+  - Estonian by Priit
+  - Indonesian by Linerly
+  - German by 123, Konstantin, fnetX, Mr. X, CryptKid
+  - Portuguese (Portugal) by Tnpod, Xenovox, Gabriel R
+  - Portuguese (Brazil) by Terry, zerowhy
+  - Finnish by sdrrespudro, Priit
+  - Polish by Prezu, AXD, stabor
+  - Malayalam by vachan-maker
+  - Italian by Daniele, Lorenzo
+  - Spanish by lluise
+  - Russian by kirillpt
+  - Various wording improvements throughout.
+- Verification status and identity keys should now update properly after login.
+- Clicking the user in a read receipt opens their profile. (LorenDB)
+- Invites should now work properly on mobile.
+- Use the modern notifications on macOS.
+- Decode blurhashes faster.
+- Port various dialogs to Qml. (LorenDB)
+- Improve paste support on Windows, when mimetype detection fails and pasting
+    SVGs (Thulinma)
+- --help and --version now work, even if Nheko is already running somewhere.
+- Update emoji support to version 14.
+- Properly navigate to linked to events. (Thulinma)
+- Lots of smaller bugfixes and refactorings. (LorenDB)
+- Scroll entire profile page and properly trim contents. (Thulinma)
+- Make it easy to switch between global and room specific profiles. (Thulinma)
+- Deduplicate messages sent by the server. (Thulinma)
+- Decrease the margin of blockquotes. (tastytea)
+- Alerts now work, if the homeserver does not implement the notifications
+    endpoint. (Thulinma)
+- Right click menu now works on replies.
+- Decrypt encrypted media only in memory.
+- Don't use CC-BY in the appstream license to not confuse Gnome Software.
+- Document how to sync the repo on Gentoo. (alfasi)
+- Support online key backup.
+- Improve FAQ. (harmathy)
+- Support Backtab/Shift-Tab for moving backwards in completer selections.
+- Clear cache to support the new features.
+- Improve the emoji completer (less jitter and fix places where it didn't open). (Thomaps Karpiniec)
+- Cleanup @room escape logic.
+- Improve performance of timeline rendering.
+- Add fallback for sent stickers, so that they show on iOS.
+- Load rooms somewhat lazily.
+- Properly scale avatars to DPI.
+- Round avatars once in the backend instead of on every render.
+- Request keys of all members, when opening a room the first time.
+- Timeout TCP connections, if heartbeat can't be heard.
+- Change secrets name. You might need to rerequest your secrets after upgrading!
+- Protect against replay attacks where megolm sessions are reused.
+- Add "request keys" button to undecryptable messages.
+- Remove superfluous permissions in Flatpak.
+- Properly set window parents on Wayland.
+- Properly show users and allow opening their profiles in the members and read
+    receipt dialogs. (LorenDB)
+- Use Qt5.15 Connections syntax in Qml.
+- Remove "respond to keyrequests option". We now reply to the right requests
+    automatically and securely.
+- Show confirmation prompt when leaving a room.
+- Add trailing newline to session export for gomuks compatibility.
+- Use a fancy Nheko logo as the loading indicator.
+- Improve how the invite dialog handles users. (LorenDB)
+- Store more data about megolm sessions.
+- Speed up database queries by caching transactions.
+- Use curl for network requests.
+  - This removes the boost dependency.
+  - Proxies now work using the usual curl variables.
+  - Fixes a myriad of crashes.
+  - Faster.
+  - Less CPU load.
+  - Less bandwidth usage.
+- Cleanup user color generation.
+- Show borders around tables.
+- Improve wording of a few menu entries. (absorber)
+- Highlight navigated to message.
+
+### Bugfixes
+
+- Redaction of edited messages should now actually show those messages as removed.
+- Bootstrap after registration should run properly now.
+- Getting logged out after registration should not happen anymore.
+- Removed edgecases where identity keys could get uploaded twice.
+- Fix the event loop when fetching secrets breaking random things like scrolling.
+- Don't crash when clearing an empty timeline.
+- Opening an invite in your browser or a matrix: URI should not crash Nheko anymore or do nothing.
+- When clicking on an item in the roomlist, you don't have to move your mouse anymore, before being able to click again.
+- Don't hide space childs when viewing that specific space and its children are hidden.
+- Only allow specific URI schemes to be followed automatically.
+- Properly hide day change indicator, when loading older messages.
+- Rotate session properly when 'verified only' is set.
+- Handle missing keys in key queries properly.
+- Properly show the window title for Qml dialogs on windows.
+- Don't show decryption errors in replies.
+- Don't crash when storing secrets.
+- Don't send megolm messages to ourselves, if possible.
+- Fix SSSS without a password.
+- Fix a few edge cases with OTK upload.
+- Cache more media properly (i.e. in the Goose Chooser).
+- Inline images in messages now load properly.
+- Don't show verification requests after startup.
+- Emoji picker now follows the theme.
+- Send less newlines in the reply fallback.
+- Fix tags going missing when joining spaces.
+- Handle inline images with single quotes. (Cadair)
+- Delay key requests until a room is opened.
+- Fix rooms not showing, when groups endpoint is missing.
+- Don't use deprecated parameters in /login.
+- Fix encoding issues when translating matrix.to to matrix: URIs.
+
+### Packaging changes
+
+- Removed the AppImage
+
 ## [0.8.2] -- 2021-04-23
 
 ### Highlights
