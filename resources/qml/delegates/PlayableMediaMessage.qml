@@ -67,7 +67,6 @@ ColumnLayout {
         property double divisor: isReply ? 4 : 2
         property bool tooHigh: tempHeight > timelineRoot.height / divisor
 
-        visible: type == MtxEvent.VideoMessage
         color: Nheko.colors.window
         Layout.preferredHeight: tooHigh ? timelineRoot.height / divisor : tempHeight
         Layout.preferredWidth: tooHigh ? (timelineRoot.height / divisor) / proportionalHeight : tempWidth
@@ -109,99 +108,97 @@ ColumnLayout {
 
             VideoOutput {
                 id: videoOutput
-
+                visible: type == MtxEvent.VideoMessage
                 clip: true
                 anchors.fill: parent
                 fillMode: VideoOutput.PreserveAspectFit
                 source: mxcmedia
                 flushMode: VideoOutput.FirstFrame
+            }
 
-                MediaControls {
-                    id: mediaControls
+            MediaControls {
+                id: mediaControls
 
-                    anchors.fill: parent
-                    x: videoOutput.contentRect.x
-                    y: videoOutput.contentRect.y
-                    width: videoOutput.contentRect.width
-                    height: videoOutput.contentRect.height
-                    positionValue: mxcmedia.position
-                    duration: mxcmedia.duration
-                    mediaLoaded: mxcmedia.loaded
-                    mediaState: mxcmedia.state
-                    volumeOrientation: Qt.Vertical
-                    onPositionChanged: mxcmedia.position = position
-                    onActivated: mxcmedia.state == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
-                }
-
+                anchors.fill: parent
+                x: type == MtxEvent.VideoMessage ? videoOutput.contentRect.x : videoContainer.x
+                y: type == MtxEvent.VideoMessage ? videoOutput.contentRect.y : videoContainer.y
+                width: type == MtxEvent.VideoMessage ? videoOutput.contentRect.width : videoContainer.width
+                height: type == MtxEvent.VideoMessage ? videoOutput.contentRect.height : videoContainer.height
+                positionValue: mxcmedia.position
+                duration: mxcmedia.duration
+                mediaLoaded: mxcmedia.loaded
+                mediaState: mxcmedia.state
+                volumeOrientation: Qt.Vertical
+                onPositionChanged: mxcmedia.position = position
+                onActivated: mxcmedia.state == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
             }
 
         }
 
     }
     // Audio player
-
     // TODO: share code with the video player
-    Rectangle {
-        id: audioControlRect
+    // Rectangle {
+    //     id: audioControlRect
 
-        property int controlHeight: 25
+    //     property int controlHeight: 25
 
-        visible: type != MtxEvent.VideoMessage
-        Layout.preferredHeight: 40
+    //     visible: type != MtxEvent.VideoMessage
+    //     Layout.preferredHeight: 40
 
-        RowLayout {
-            anchors.fill: parent
-            width: parent.width
+    //     RowLayout {
+    //         anchors.fill: parent
+    //         width: parent.width
 
-            // Play/pause button
-            Image {
-                id: audioPlaybackStateImage
+    //         // Play/pause button
+    //         Image {
+    //             id: audioPlaybackStateImage
 
-                property color controlColor: (audioPlaybackStateArea.containsMouse) ? Nheko.colors.highlight : Nheko.colors.text
+    //             property color controlColor: (audioPlaybackStateArea.containsMouse) ? Nheko.colors.highlight : Nheko.colors.text
 
-                fillMode: Image.PreserveAspectFit
-                Layout.preferredHeight: controlRect.controlHeight
-                Layout.alignment: Qt.AlignVCenter
-                source: {
-                    if (!mxcmedia.loaded)
-                        return "image://colorimage/:/icons/icons/ui/arrow-pointing-down.png?" + controlColor;
+    //             fillMode: Image.PreserveAspectFit
+    //             Layout.preferredHeight: controlRect.controlHeight
+    //             Layout.alignment: Qt.AlignVCenter
+    //             source: {
+    //                 if (!mxcmedia.loaded)
+    //                     return "image://colorimage/:/icons/icons/ui/arrow-pointing-down.png?" + controlColor;
 
-                    return (mxcmedia.state == MediaPlayer.PlayingState) ? "image://colorimage/:/icons/icons/ui/pause-symbol.png?" + controlColor : "image://colorimage/:/icons/icons/ui/play-sign.png?" + controlColor;
-                }
+    //                 return (mxcmedia.state == MediaPlayer.PlayingState) ? "image://colorimage/:/icons/icons/ui/pause-symbol.png?" + controlColor : "image://colorimage/:/icons/icons/ui/play-sign.png?" + controlColor;
+    //             }
 
-                MouseArea {
-                    id: audioPlaybackStateArea
+    //             MouseArea {
+    //                 id: audioPlaybackStateArea
 
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked: {
-                        if (!mxcmedia.loaded) {
-                            mxcmedia.eventId = eventId;
-                            return ;
-                        }
-                        (mxcmedia.state == MediaPlayer.PlayingState) ? mxcmedia.pause() : mxcmedia.play();
-                    }
-                }
+    //                 anchors.fill: parent
+    //                 hoverEnabled: true
+    //                 onClicked: {
+    //                     if (!mxcmedia.loaded) {
+    //                         mxcmedia.eventId = eventId;
+    //                         return ;
+    //                     }
+    //                     (mxcmedia.state == MediaPlayer.PlayingState) ? mxcmedia.pause() : mxcmedia.play();
+    //                 }
+    //             }
 
-            }
+    //         }
 
-            Label {
-                text: (!mxcmedia.loaded) ? "-/-" : durationToString(mxcmedia.position) + "/" + durationToString(mxcmedia.duration)
-            }
+    //         Label {
+    //             text: (!mxcmedia.loaded) ? "-/-" : durationToString(mxcmedia.position) + "/" + durationToString(mxcmedia.duration)
+    //         }
 
-            Slider {
-                Layout.fillWidth: true
-                Layout.minimumWidth: 50
-                height: controlRect.controlHeight
-                value: mxcmedia.position
-                onMoved: mxcmedia.position = value
-                from: 0
-                to: mxcmedia.duration
-            }
+    //         Slider {
+    //             Layout.fillWidth: true
+    //             Layout.minimumWidth: 50
+    //             height: controlRect.controlHeight
+    //             value: mxcmedia.position
+    //             onMoved: mxcmedia.position = value
+    //             from: 0
+    //             to: mxcmedia.duration
+    //         }
 
-        }
+    //     }
 
-    }
+    // }
 
     Label {
         id: fileInfoLabel
