@@ -11,6 +11,8 @@ import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
 ColumnLayout {
+    id: content
+
     required property double proportionalHeight
     required property int type
     required property int originalWidth
@@ -22,52 +24,51 @@ ColumnLayout {
 
     function durationToString(duration) {
         function maybeZeroPrepend(time) {
-            return (time < 10) ? "0" + time.toString() :
-            time.toString()
+            return (time < 10) ? "0" + time.toString() : time.toString();
         }
-        var totalSeconds = Math.floor(duration / 1000)
-        var seconds = totalSeconds % 60
-        var minutes = (Math.floor(totalSeconds / 60)) % 60
-        var hours = (Math.floor(totalSeconds / (60 * 24))) % 24
-        // Always show minutes and don't prepend zero into the leftmost element
-        var ss = maybeZeroPrepend(seconds)
-        var mm = (hours > 0) ? maybeZeroPrepend(minutes) : minutes.toString()
-        var hh = hours.toString()
 
-        if (hours < 1) {
-        	return mm + ":" + ss
-		}
-        return hh + ":" + mm + ":" + ss
+        var totalSeconds = Math.floor(duration / 1000);
+        var seconds = totalSeconds % 60;
+        var minutes = (Math.floor(totalSeconds / 60)) % 60;
+        var hours = (Math.floor(totalSeconds / (60 * 24))) % 24;
+        // Always show minutes and don't prepend zero into the leftmost element
+        var ss = maybeZeroPrepend(seconds);
+        var mm = (hours > 0) ? maybeZeroPrepend(minutes) : minutes.toString();
+        var hh = hours.toString();
+        if (hours < 1)
+            return mm + ":" + ss;
+
+        return hh + ":" + mm + ":" + ss;
     }
 
-    id: content
-
     Layout.fillWidth: true
+
     MxcMedia {
         id: mxcmedia
+
         // TODO: Show error in overlay or so?
         onError: console.log(error)
         roomm: room
-		// desiredVolume is a float from 0.0 -> 1.0, MediaPlayer volume is an int from 0 to 100
-		// this value automatically gets clamped for us between these two values.
-		volume: volumeSlider.desiredVolume * 100
-        muted: volumeSlider.muted
+        // desiredVolume is a float from 0.0 -> 1.0, MediaPlayer volume is an int from 0 to 100
+        // this value automatically gets clamped for us between these two values.
+        volume: mediaControls.desiredVolume * 100
+        muted: mediaControls.muted
     }
 
     Rectangle {
         id: videoContainer
-        visible: type == MtxEvent.VideoMessage
+
         //property double tempWidth: Math.min(parent ? parent.width : undefined, model.data.width < 1 ? 400 : /////model.data.width)
         // property double tempWidth: (model.data.width < 1) ? 400 : model.data.width
         // property double tempHeight: tempWidth * model.data.proportionalHeight
         //property double tempWidth: Math.min(parent ? parent.width : undefined, originalWidth < 1 ? 400 : originalWidth)
-        property double tempWidth: Math.min(parent ? parent.width: undefined, originalWidth < 1 ? 400 : originalWidth)
+        property double tempWidth: Math.min(parent ? parent.width : undefined, originalWidth < 1 ? 400 : originalWidth)
         property double tempHeight: tempWidth * proportionalHeight
-
         property double divisor: isReply ? 4 : 2
         property bool tooHigh: tempHeight > timelineRoot.height / divisor
-        color: Nheko.colors.window
 
+        visible: type == MtxEvent.VideoMessage
+        color: Nheko.colors.window
         Layout.preferredHeight: tooHigh ? timelineRoot.height / divisor : tempHeight
         Layout.preferredWidth: tooHigh ? (timelineRoot.height / divisor) / proportionalHeight : tempWidth
         Layout.maximumWidth: Layout.preferredWidth
@@ -77,217 +78,144 @@ ColumnLayout {
             source: thumbnailUrl.replace("mxc://", "image://MxcImage/")
             asynchronous: true
             fillMode: Image.PreserveAspectFit
+
             // Button and window colored overlay to cache media
             Item {
                 // Display over video controls
                 z: videoOutput.z + 1
                 visible: !mxcmedia.loaded
                 anchors.fill: parent
+
                 //color: Nheko.colors.window
                 //opacity: 0.5
                 Image {
-                    property color buttonColor: (cacheVideoArea.containsMouse) ? Nheko.colors.highlight :
-                    Nheko.colors.text
+                    property color buttonColor: (cacheVideoArea.containsMouse) ? Nheko.colors.highlight : Nheko.colors.text
 
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    source: "image://colorimage/:/icons/icons/ui/arrow-pointing-down.png?"+buttonColor						
+                    source: "image://colorimage/:/icons/icons/ui/arrow-pointing-down.png?" + buttonColor
                 }
+
                 MouseArea {
                     id: cacheVideoArea
+
                     anchors.fill: parent
                     hoverEnabled: true
                     enabled: !mxcmedia.loaded
                     onClicked: mxcmedia.eventId = eventId
                 }
+
             }
+
             VideoOutput {
                 id: videoOutput
+
                 clip: true
                 anchors.fill: parent
                 fillMode: VideoOutput.PreserveAspectFit
                 source: mxcmedia
                 flushMode: VideoOutput.FirstFrame
 
-                // TODO: once we can use Qt 5.12, use HoverHandler
+                MediaControls {
+                    id: mediaControls
+
+                    anchors.fill: parent
+                    x: videoOutput.contentRect.x
+                    y: videoOutput.contentRect.y
+                    width: videoOutput.contentRect.width
+                    height: videoOutput.contentRect.height
+                    positionValue: mxcmedia.position
+                    duration: mxcmedia.duration
+                    mediaLoaded: mxcmedia.loaded
+                    mediaState: mxcmedia.state
+                    volumeOrientation: Qt.Vertical
+                    onPositionChanged: mxcmedia.position = position
+                    onActivated: mxcmedia.state == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
+                }
+
+            }
+
+        }
+
+    }
+    // Audio player
+
+    // TODO: share code with the video player
+    Rectangle {
+        id: audioControlRect
+
+        property int controlHeight: 25
+
+        visible: type != MtxEvent.VideoMessage
+        Layout.preferredHeight: 40
+
+        RowLayout {
+            anchors.fill: parent
+            width: parent.width
+
+            // Play/pause button
+            Image {
+                id: audioPlaybackStateImage
+
+                property color controlColor: (audioPlaybackStateArea.containsMouse) ? Nheko.colors.highlight : Nheko.colors.text
+
+                fillMode: Image.PreserveAspectFit
+                Layout.preferredHeight: controlRect.controlHeight
+                Layout.alignment: Qt.AlignVCenter
+                source: {
+                    if (!mxcmedia.loaded)
+                        return "image://colorimage/:/icons/icons/ui/arrow-pointing-down.png?" + controlColor;
+
+                    return (mxcmedia.state == MediaPlayer.PlayingState) ? "image://colorimage/:/icons/icons/ui/pause-symbol.png?" + controlColor : "image://colorimage/:/icons/icons/ui/play-sign.png?" + controlColor;
+                }
+
                 MouseArea {
-                    id: playerMouseArea
-                    // Toggle play state on clicks
+                    id: audioPlaybackStateArea
+
+                    anchors.fill: parent
+                    hoverEnabled: true
                     onClicked: {
-                        if (controlRect.shouldShowControls &&
-                        !controlRect.contains(mapToItem(controlRect, mouseX, mouseY))) {
-                            (mxcmedia.state == MediaPlayer.PlayingState) ?
-                            mxcmedia.pause() :
-                            mxcmedia.play()
+                        if (!mxcmedia.loaded) {
+                            mxcmedia.eventId = eventId;
+                            return ;
                         }
+                        (mxcmedia.state == MediaPlayer.PlayingState) ? mxcmedia.pause() : mxcmedia.play();
                     }
-                    Rectangle {
-                        id: controlRect
-                        property int controlHeight: 25
-                        property bool shouldShowControls: playerMouseArea.shouldShowControls ||
-                        volumeSlider.controlsVisible
+                }
 
-                        anchors.bottom: playerMouseArea.bottom
-                        // Window color with 128/255 alpha
-                        color: {
-                            var wc = Nheko.colors.alternateBase
-                            return Qt.rgba(wc.r, wc.g, wc.b, 0.5)
-                        }
-                        height: 40
-                        width: playerMouseArea.width
-                        opacity: shouldShowControls ? 1 : 0
-                        // Fade controls in/out
-                        Behavior on opacity {
-                            OpacityAnimator {
-                                duration: 100
-                            }
-                        }
+            }
 
-                        RowLayout {
-                            anchors.fill: parent
-                            width: parent.width
-                            // Play/pause button
-                            Image {
-                                id: playbackStateImage
-                                fillMode: Image.PreserveAspectFit
-                                Layout.preferredHeight: controlRect.controlHeight
-                                Layout.alignment: Qt.AlignVCenter
-                                property color controlColor: (playbackStateArea.containsMouse) ?
-                                Nheko.colors.highlight : Nheko.colors.text
+            Label {
+                text: (!mxcmedia.loaded) ? "-/-" : durationToString(mxcmedia.position) + "/" + durationToString(mxcmedia.duration)
+            }
 
-                                source: (mxcmedia.state == MediaPlayer.PlayingState) ?
-                                "image://colorimage/:/icons/icons/ui/pause-symbol.png?"+controlColor :
-                                "image://colorimage/:/icons/icons/ui/play-sign.png?"+controlColor
-                                MouseArea {
-                                    id: playbackStateArea
+            Slider {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 50
+                height: controlRect.controlHeight
+                value: mxcmedia.position
+                onMoved: mxcmedia.position = value
+                from: 0
+                to: mxcmedia.duration
+            }
 
-                                    anchors.fill: parent
-                                    hoverEnabled: true
-                                    onClicked: {
-                                        (mxcmedia.state == MediaPlayer.PlayingState) ?
-                                        mxcmedia.pause() :
-                                        mxcmedia.play()
-                                    }
-                                }
-                            }
-                            Label {
-                                text: (!mxcmedia.loaded) ? "-/-" : (durationToString(mxcmedia.position) + "/" + durationToString(mxcmedia.duration))
-                                color: Nheko.colors.text
-                            }
+        }
 
-                            Slider {
-                                Layout.fillWidth: true
-                                Layout.minimumWidth: 50
-                                height: controlRect.controlHeight
-                                value: mxcmedia.position
-                                onMoved: mxcmedia.position = value
-                                from: 0
-                                to: mxcmedia.duration
-                            }
+    }
 
-                            VolumeControl {
-								id: volumeSlider
-								orientation: Qt.Vertical
-                                Layout.rightMargin: 5
-                                Layout.preferredHeight: controlRect.controlHeight
-                            }
+    Label {
+        id: fileInfoLabel
 
-                          }
-                      }
-                      // This breaks separation of concerns but this same thing doesn't work when called from controlRect...
-                      property bool shouldShowControls: (containsMouse && controlHideTimer.running) ||
-                      (mxcmedia.state != MediaPlayer.PlayingState) ||
-                      controlRect.contains(mapToItem(controlRect, mouseX, mouseY))
+        Layout.fillWidth: true
+        text: body + " [" + filesize + "]"
+        textFormat: Text.PlainText
+        elide: Text.ElideRight
+        color: Nheko.colors.text
 
-                      // For hiding controls on stationary cursor
-                      Timer {
-                          id: controlHideTimer
-                          interval: 1500 //ms
-                          repeat: false
-                      }
+        background: Rectangle {
+            color: Nheko.colors.base
+        }
 
-                      hoverEnabled: true
-                      onPositionChanged: controlHideTimer.start()
+    }
 
-                      x: videoOutput.contentRect.x
-                      y: videoOutput.contentRect.y
-                      width: videoOutput.contentRect.width
-                      height: videoOutput.contentRect.height
-                      propagateComposedEvents: true
-                  }
-              }
-          }
-      }
-      // Audio player
-      // TODO: share code with the video player
-      Rectangle {
-          id: audioControlRect
-
-          visible: type != MtxEvent.VideoMessage
-          property int controlHeight: 25
-          Layout.preferredHeight: 40
-          RowLayout {
-              anchors.fill: parent
-              width: parent.width
-              // Play/pause button
-              Image {
-                  id: audioPlaybackStateImage
-                  fillMode: Image.PreserveAspectFit
-                  Layout.preferredHeight: controlRect.controlHeight
-                  Layout.alignment: Qt.AlignVCenter
-                  property color controlColor: (audioPlaybackStateArea.containsMouse) ?
-                  Nheko.colors.highlight : Nheko.colors.text
-
-                  source: {
-                      if (!mxcmedia.loaded)
-                      return "image://colorimage/:/icons/icons/ui/arrow-pointing-down.png?"+controlColor
-                      return (mxcmedia.state == MediaPlayer.PlayingState) ?
-                      "image://colorimage/:/icons/icons/ui/pause-symbol.png?"+controlColor :
-                      "image://colorimage/:/icons/icons/ui/play-sign.png?"+controlColor
-                  }
-                  MouseArea {
-                      id: audioPlaybackStateArea
-
-                      anchors.fill: parent
-                      hoverEnabled: true
-                      onClicked: {
-                          if (!mxcmedia.loaded) {
-                              mxcmedia.eventId = eventId
-                              return
-                          }
-                          (mxcmedia.state == MediaPlayer.PlayingState) ?
-                          mxcmedia.pause() :
-                          mxcmedia.play()
-                      }
-                  }
-              }
-              Label {
-                  text: (!mxcmedia.loaded) ? "-/-" :
-                  durationToString(mxcmedia.position) + "/" + durationToString(mxcmedia.duration)
-              }
-
-              Slider {
-                  Layout.fillWidth: true
-                  Layout.minimumWidth: 50
-                  height: controlRect.controlHeight
-                  value: mxcmedia.position
-                  onMoved: mxcmedia.seek(value)
-                  from: 0
-                  to: mxcmedia.duration
-              }
-          }
-      }
-
-      Label {
-          id: fileInfoLabel
-
-          background: Rectangle {
-              color: Nheko.colors.base
-          }
-          Layout.fillWidth: true
-          text: body + " [" + filesize + "]"
-          textFormat: Text.PlainText
-          elide: Text.ElideRight
-          color: Nheko.colors.text
-      }
-  }
+}
