@@ -1472,7 +1472,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+11"/>
         <source>Choose custom homeserver</source>
-        <translation>Elekti propran hejmservilon</translation>
+        <translation type="unfinished">Elekti propran hejmservilon</translation>
     </message>
 </context>
 <context>
@@ -1560,13 +1560,13 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <location line="+3"/>
         <source>Unverified login</source>
         <extracomment>The user just signed in with this device and hasn&apos;t verified their master key.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Nekontrolita saluto</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please verify your other devices</source>
         <extracomment>There are unverified devices signed in to this account.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Bonvolu kontroli aliajn viajn aparatojn</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1809,27 +1809,27 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location filename="../qml/Root.qml" line="+255"/>
         <source>Please enter your login password to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bonvolu enigi vian pasvorton por daŭrigi:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid email address to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bonvolu enigi validan retpoŝtadreson por daŭrigi:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid phone number to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bonvolu enigi validan telefonnumeron por daŭrigi:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter the token, which has been sent to you:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bonvolu enigi la pecon, kiu sendiĝis al vi:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Wait for the confirmation link to arrive, then continue.</source>
-        <translation type="unfinished"></translation>
+        <translation>Atendu venon de la konfirma ligilo, kaj poste daŭrigu.</translation>
     </message>
 </context>
 <context>
@@ -1904,49 +1904,51 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location filename="../qml/SelfVerificationCheck.qml" line="+39"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jen via rehava ŝlosilo. Vi bezonos ĝin por rehavi aliron al viaj ĉifritaj mesaĝoj kaj kontrolaj ŝlosiloj. Tenu ĝin sekura. Ne havigu ĝin al iu ajn, kaj ne perdu ĝin!</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Encryption setup successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉifrado agordiĝis sukcese</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Failed to setup encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis agordi ĉifradon: %1</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Setup Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Agordi ĉifradon</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
-        <translation type="unfinished"></translation>
+        <translation>Saluton kaj bonvelu al Matrikso!
+Ŝajnas, ke vi novas. Antaŭ ol vi povos sekure ĉifri viajn mesaĝojn, ni bezonas agordi kelkajn aferojn. Vi povas tuj premi la butonon akcepti, aŭ unue agordi kelkajn elektojn. Ni ankaŭ provas komprenigi al vi kelkajn bazajn principojn. Vi povas preterpasi la komprenigon, sed ĝi povus esti utila!</translation>
     </message>
     <message>
         <location line="+124"/>
         <source>Activate Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Ŝalti ĉifradon</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.
 If you choose verify, you need to have the other device available. If you choose &quot;enter passphrase&quot;, you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ŝajnas, ke ĉifrado ne jam estas ŝaltita por ĉi tiu konto. Por ke vi povu aliri viajn ĉifritajn mesaĝojn kaj aperigi la aparaton fidata, vi povas aŭ kontroli per jama aparato (se vi havas tian), aŭ enigi vian rehavan pasfrazon. Bonvolu elekti unu elekteblon sube.
+Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos enigon de pasfrazo, vi bezonos viajn rehavajn ŝlosilon aŭ pasfrazon. Se vi nuligos, vi ankoraŭ povos komenci la kontrolon pli poste.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>verify</source>
-        <translation type="unfinished"></translation>
+        <translation>kontroli</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>enter passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>enigi pasfrazon</translation>
     </message>
 </context>
 <context>
@@ -1954,27 +1956,27 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+42"/>
         <source>Failed to create keys for cross-signing!</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis krei delege subskribajn ŝlosilojn!</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to create keys for online key backup!</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis krei ŝlosilojn por enreta savkopiado de ŝlosiloj!</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Failed to create keys for secure server side secret storage!</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis krei ŝlosilojn por sekura servilflanka sekreta deponejo!</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Encryption Setup</source>
-        <translation type="unfinished"></translation>
+        <translation>Starigo de ĉifrado</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Starigo de ĉifrado malsukcesis: %1</translation>
     </message>
     <message>
         <location line="+140"/>
@@ -2324,7 +2326,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+2"/>
         <source>This room contains verified devices and devices which have never changed their master key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉi tiu ĉambro enhavas kontrolitajn aparatojn kaj aparatojn, kiuj neniam ŝanĝis sian ĉefan ŝlosilon.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2382,7 +2384,7 @@ If you choose verify, you need to have the other device available. If you choose
         <location line="+24"/>
         <location line="+17"/>
         <source>Registration aborted</source>
-        <translation type="unfinished"></translation>
+        <translation>Registriĝo nuliĝis</translation>
     </message>
     <message>
         <location line="-27"/>
@@ -2392,7 +2394,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+165"/>
         <source>Invalid token</source>
-        <translation type="unfinished"></translation>
+        <translation>Nevalida peco</translation>
     </message>
 </context>
 <context>
@@ -2466,22 +2468,22 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+9"/>
         <source>Refresh device list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualigi liston de aparatoj.</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Sign out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Adiaŭigi ĉi tiun aparaton.</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Change device name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ŝanĝi nomon de aparato.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Last seen %1 from %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Lastafoje vidis uzanton %1 je %2</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -2491,12 +2493,12 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+152"/>
         <source>Sign out device %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Adiaŭigi aparaton %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>You signed out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vi adiaŭigis ĉi tiun aparaton.</translation>
     </message>
     <message>
         <location line="+225"/>
