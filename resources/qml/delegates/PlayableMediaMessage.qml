@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "../"
+import "../ui/media"
 import QtMultimedia 5.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
@@ -50,6 +51,7 @@ ColumnLayout {
 		// desiredVolume is a float from 0.0 -> 1.0, MediaPlayer volume is an int from 0 to 100
 		// this value automatically gets clamped for us between these two values.
 		volume: volumeSlider.desiredVolume * 100
+        muted: volumeSlider.muted
     }
 
     Rectangle {
@@ -123,7 +125,7 @@ ColumnLayout {
                         id: controlRect
                         property int controlHeight: 25
                         property bool shouldShowControls: playerMouseArea.shouldShowControls ||
-                        volumeSliderRect.visible
+                        volumeSlider.controlsVisible
 
                         anchors.bottom: playerMouseArea.bottom
                         // Window color with 128/255 alpha
@@ -182,96 +184,13 @@ ColumnLayout {
                                 from: 0
                                 to: mxcmedia.duration
                             }
-                            // Volume slider activator
-                            Image {
-                                property color controlColor: (volumeImageArea.containsMouse) ?
-                                Nheko.colors.highlight : Nheko.colors.text
 
-                                // TODO: add icons for different volume levels
-                                id: volumeImage
-                                source: (mxcmedia.volume > 0 && !mxcmedia.muted) ?
-                                "image://colorimage/:/icons/icons/ui/volume-up.png?"+ controlColor :
-                                "image://colorimage/:/icons/icons/ui/volume-off-indicator.png?"+ controlColor
+                            VolumeControl {
+								id: volumeSlider
+								orientation: Qt.Vertical
                                 Layout.rightMargin: 5
                                 Layout.preferredHeight: controlRect.controlHeight
-                                fillMode: Image.PreserveAspectFit
-                                MouseArea {
-                                    id: volumeImageArea	
-                                    anchors.fill: parent
-                                    hoverEnabled: true
-                                    onClicked: mxcmedia.muted = !mxcmedia.muted
-                                    onExited: volumeSliderHideTimer.start()
-                                    onPositionChanged: volumeSliderHideTimer.start()
-                                    // For hiding volume slider after a while
-                                    Timer {
-                                        id: volumeSliderHideTimer
-                                        interval: 1500
-                                        repeat: false
-                                        running: false
-                                    }
-                                }
-                                Rectangle {
-                                    id: volumeSliderRect
-                                    opacity: (visible) ? 1 : 0
-                                    Behavior on opacity {
-                                        OpacityAnimator {
-                                            duration: 100
-                                        }
-                                    }
-                                    // TODO: figure out a better way to put the slider popup above controlRect
-                                    anchors.bottom: volumeImage.top
-                                    anchors.bottomMargin: 10
-                                    anchors.horizontalCenter: volumeImage.horizontalCenter
-                                    color: {
-                                        var wc = Nheko.colors.window
-                                        return Qt.rgba(wc.r, wc.g, wc.b, 0.5)
-                                    }
-                                    /* TODO: base width on the slider width (some issue with it not having a geometry
-                                     when using the width here?) */
-                                     width: volumeImage.width * 0.7
-                                     radius: volumeSlider.width / 2
-                                     height: controlRect.height * 2 //100
-                                     visible: volumeImageArea.containsMouse ||
-                                     volumeSliderHideTimer.running ||
-                                     volumeSliderRectMouseArea.containsMouse
-                                     Slider {
-                                         // TODO: the slider is slightly off-center on the left for some reason...
-                                         id: volumeSlider
-
-										 value: 1.0
-                                         // Desired value to avoid loop onMoved -> media.volume -> value -> onMoved...
-                                         property real desiredVolume: QtMultimedia.convertVolume(volumeSlider.value,
-                                         QtMultimedia.LogarithmicVolumeScale,
-                                         QtMultimedia.LinearVolumeScale)
-
-                                         anchors.fill: parent
-                                         anchors.bottomMargin: parent.height * 0.1
-                                         anchors.topMargin: parent.height * 0.1
-                                         anchors.horizontalCenter: parent.horizontalCenter
-                                         orientation: Qt.Vertical
-										 onDesiredVolumeChanged: {
-											 mxcmedia.muted = !(desiredVolume > 0.0)
-										 }
-                                      }
-                                      // Used for resetting the timer on mouse moves on volumeSliderRect
-                                      MouseArea {
-                                          id: volumeSliderRectMouseArea
-                                          anchors.fill: parent
-                                          hoverEnabled: true
-                                          propagateComposedEvents: true
-                                          onExited: volumeSliderHideTimer.start()
-
-                                          onClicked: mouse.accepted = false
-                                          onPressed: mouse.accepted = false
-                                          onReleased: mouse.accepted = false
-                                          onPressAndHold: mouse.accepted = false
-                                          onPositionChanged: {
-                                              mouse.accepted = false
-                                              volumeSliderHideTimer.start()
-                                          }
-                                      }
-                                  }
-                              }
+                            }
 
                           }
                       }
