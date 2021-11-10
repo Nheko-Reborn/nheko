@@ -17,6 +17,7 @@
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "DeviceVerificationFlow.h"
+#include "EventAccessors.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "UserSettingsPage.h"
@@ -1124,8 +1125,6 @@ decryptEvent(const MegolmSessionIndex &index,
         return {DecryptionErrorCode::DbError, e.what(), std::nullopt};
     }
 
-    // TODO: Lookup index,event_id,origin_server_ts tuple for replay attack errors
-
     std::string msg_str;
     try {
         auto session = cache::client()->getInboundMegolmSession(index);
@@ -1165,11 +1164,11 @@ decryptEvent(const MegolmSessionIndex &index,
         body["origin_server_ts"] = event.origin_server_ts;
         body["unsigned"]         = event.unsigned_data;
 
-        // relations are unencrypted in content...
-        mtx::common::add_relations(body["content"], event.content.relations);
-
         mtx::events::collections::TimelineEvent te;
         mtx::events::collections::from_json(body, te);
+
+        // relations are unencrypted in content...
+        mtx::accessors::set_relations(te.data, std::move(event.content.relations));
 
         return {DecryptionErrorCode::NoError, std::nullopt, std::move(te.data)};
     } catch (std::exception &e) {
