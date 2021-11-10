@@ -143,7 +143,7 @@
     <message>
         <location line="+13"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>Levylläsi oleva välimuisti on uudempaa kuin mitä tämä Nhekon versio tukee. Päivitä tai poista välimuistisi.</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -803,12 +803,12 @@
     <message>
         <location filename="../qml/dialogs/JoinRoomDialog.qml" line="+14"/>
         <source>Join room</source>
-        <translation type="unfinished"></translation>
+        <translation>Liity huoneeseen</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished">Huoneen tunnus tai osoite</translation>
+        <translation>Huoneen tunnus tai osoite</translation>
     </message>
 </context>
 <context>
@@ -816,12 +816,12 @@
     <message>
         <location filename="../qml/dialogs/LeaveRoomDialog.qml" line="+15"/>
         <source>Leave room</source>
-        <translation type="unfinished">Poistu huoneesta</translation>
+        <translation>Poistu huoneesta</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished">Oletko varma, että haluat poistua?</translation>
+        <translation>Oletko varma, että haluat poistua?</translation>
     </message>
 </context>
 <context>
@@ -943,17 +943,17 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../qml/dialogs/LogoutDialog.qml" line="+13"/>
         <source>Log out</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjaudu ulos</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A call is in progress. Log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Puhelu on käynnissä. Haluatko kirjautua ulos?</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Are you sure you want to log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Haluatko varmasti kirjautua ulos?</translation>
     </message>
 </context>
 <context>
@@ -1567,7 +1567,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+20"/>
         <source>Close</source>
-        <translation type="unfinished">Sulje</translation>
+        <translation>Sulje</translation>
     </message>
     <message>
         <location line="+65"/>
@@ -1892,7 +1892,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko ei pystynyt yhdistämään salattuun tallennustilaan tallentamaan salaukseen kuuluvia salaisuuksia. Tämä voi johtua useasta syystä. Tarkista, onko D-Bus-palvelu käynnissä ja oletko määrittänyt alustallesi palvelun kuten KWallet, Gnome Keyring, KeePassXC tai vastaavan. Jos sinulla on ongelmia, voit luoda vikailmoituksen täällä: https://github.com/Nheko-Reborn/nheko/issues</translation>
     </message>
 </context>
 <context>
@@ -1937,7 +1937,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+7"/>
         <source>verify</source>
-        <translation type="unfinished"></translation>
+        <translation>vahvista</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2264,7 +2264,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+137"/>
         <source>No preview available</source>
-        <translation type="unfinished">Esikatselu ei saatavilla</translation>
+        <translation>Esikatselu ei saatavilla</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2317,7 +2317,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+2"/>
         <source>This room contains verified devices and devices which have never changed their master key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tämä huone sisältää vahvistettuja laitteita ja laitteita, jotka eivät ole koskaan vaihtaneet pääavainta.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2375,17 +2375,17 @@ If you choose verify, you need to have the other device available. If you choose
         <location line="+24"/>
         <location line="+17"/>
         <source>Registration aborted</source>
-        <translation type="unfinished"></translation>
+        <translation>Rekisteröinti keskeytetty</translation>
     </message>
     <message>
         <location line="-27"/>
         <source>Please enter a valid registration token.</source>
-        <translation type="unfinished">Anna kelvollinen rekisteröitymispoletti.</translation>
+        <translation>Anna kelvollinen rekisteröitymispoletti.</translation>
     </message>
     <message>
         <location line="+165"/>
         <source>Invalid token</source>
-        <translation type="unfinished"></translation>
+        <translation>Virheellinen poletti</translation>
     </message>
 </context>
 <context>
@@ -3033,7 +3033,7 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
     <message>
         <location filename="../../src/encryption/VerificationManager.cpp" line="+105"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation type="unfinished">Salattua keskustelua ei löydetty tälle käyttäjälle. Luo salattu yksityiskeskustelu tämän käyttäjän kanssa ja yritä uudestaan.</translation>
+        <translation>Salattua keskustelua ei löydetty tälle käyttäjälle. Luo salattu yksityiskeskustelu tämän käyttäjän kanssa ja yritä uudestaan.</translation>
     </message>
 </context>
 <context>
