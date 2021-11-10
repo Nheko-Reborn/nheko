@@ -22,25 +22,6 @@ ColumnLayout {
     required property string body
     required property string filesize
 
-    function durationToString(duration) {
-        function maybeZeroPrepend(time) {
-            return (time < 10) ? "0" + time.toString() : time.toString();
-        }
-
-        var totalSeconds = Math.floor(duration / 1000);
-        var seconds = totalSeconds % 60;
-        var minutes = (Math.floor(totalSeconds / 60)) % 60;
-        var hours = (Math.floor(totalSeconds / (60 * 24))) % 24;
-        // Always show minutes and don't prepend zero into the leftmost element
-        var ss = maybeZeroPrepend(seconds);
-        var mm = (hours > 0) ? maybeZeroPrepend(minutes) : minutes.toString();
-        var hh = hours.toString();
-        if (hours < 1)
-            return mm + ":" + ss;
-
-        return hh + ":" + mm + ":" + ss;
-    }
-
     Layout.fillWidth: true
 
     MxcMedia {
@@ -58,19 +39,14 @@ ColumnLayout {
     Rectangle {
         id: videoContainer
 
-        //property double tempWidth: Math.min(parent ? parent.width : undefined, model.data.width < 1 ? 400 : /////model.data.width)
-        // property double tempWidth: (model.data.width < 1) ? 400 : model.data.width
-        // property double tempHeight: tempWidth * model.data.proportionalHeight
-        //property double tempWidth: Math.min(parent ? parent.width : undefined, originalWidth < 1 ? 400 : originalWidth)
         property double tempWidth: Math.min(parent ? parent.width : undefined, originalWidth < 1 ? 400 : originalWidth)
         property double tempHeight: tempWidth * proportionalHeight
         property double divisor: isReply ? 4 : 2
         property bool tooHigh: tempHeight > timelineRoot.height / divisor
 
-        color: Nheko.colors.window
-        Layout.preferredHeight: tooHigh ? timelineRoot.height / divisor : tempHeight
+        color: type == MtxEvent.VideoMessage ? Nheko.colors.window : "transparent"
+        Layout.preferredHeight: type == MtxEvent.VideoMessage ? tooHigh ? timelineRoot.height / divisor : tempHeight : 40
         Layout.preferredWidth: tooHigh ? (timelineRoot.height / divisor) / proportionalHeight : tempWidth
-        Layout.maximumWidth: Layout.preferredWidth
 
         Image {
             anchors.fill: parent
@@ -78,36 +54,9 @@ ColumnLayout {
             asynchronous: true
             fillMode: Image.PreserveAspectFit
 
-            // Button and window colored overlay to cache media
-            Item {
-                // Display over video controls
-                z: videoOutput.z + 1
-                visible: !mxcmedia.loaded
-                anchors.fill: parent
-
-                //color: Nheko.colors.window
-                //opacity: 0.5
-                Image {
-                    property color buttonColor: (cacheVideoArea.containsMouse) ? Nheko.colors.highlight : Nheko.colors.text
-
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    source: "image://colorimage/:/icons/icons/ui/arrow-pointing-down.png?" + buttonColor
-                }
-
-                MouseArea {
-                    id: cacheVideoArea
-
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    enabled: !mxcmedia.loaded
-                    onClicked: mxcmedia.eventId = eventId
-                }
-
-            }
-
             VideoOutput {
                 id: videoOutput
+
                 visible: type == MtxEvent.VideoMessage
                 clip: true
                 anchors.fill: parent
@@ -130,76 +79,15 @@ ColumnLayout {
                 mediaState: mxcmedia.state
                 volumeOrientation: Qt.Vertical
                 onPositionChanged: mxcmedia.position = position
-                onActivated: mxcmedia.state == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
+                onPlayPauseActivated: mxcmedia.state == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
+                onLoadActivated: mxcmedia.eventId = eventId
             }
 
         }
 
     }
-    // Audio player
-    // TODO: share code with the video player
-    // Rectangle {
-    //     id: audioControlRect
 
-    //     property int controlHeight: 25
-
-    //     visible: type != MtxEvent.VideoMessage
-    //     Layout.preferredHeight: 40
-
-    //     RowLayout {
-    //         anchors.fill: parent
-    //         width: parent.width
-
-    //         // Play/pause button
-    //         Image {
-    //             id: audioPlaybackStateImage
-
-    //             property color controlColor: (audioPlaybackStateArea.containsMouse) ? Nheko.colors.highlight : Nheko.colors.text
-
-    //             fillMode: Image.PreserveAspectFit
-    //             Layout.preferredHeight: controlRect.controlHeight
-    //             Layout.alignment: Qt.AlignVCenter
-    //             source: {
-    //                 if (!mxcmedia.loaded)
-    //                     return "image://colorimage/:/icons/icons/ui/arrow-pointing-down.png?" + controlColor;
-
-    //                 return (mxcmedia.state == MediaPlayer.PlayingState) ? "image://colorimage/:/icons/icons/ui/pause-symbol.png?" + controlColor : "image://colorimage/:/icons/icons/ui/play-sign.png?" + controlColor;
-    //             }
-
-    //             MouseArea {
-    //                 id: audioPlaybackStateArea
-
-    //                 anchors.fill: parent
-    //                 hoverEnabled: true
-    //                 onClicked: {
-    //                     if (!mxcmedia.loaded) {
-    //                         mxcmedia.eventId = eventId;
-    //                         return ;
-    //                     }
-    //                     (mxcmedia.state == MediaPlayer.PlayingState) ? mxcmedia.pause() : mxcmedia.play();
-    //                 }
-    //             }
-
-    //         }
-
-    //         Label {
-    //             text: (!mxcmedia.loaded) ? "-/-" : durationToString(mxcmedia.position) + "/" + durationToString(mxcmedia.duration)
-    //         }
-
-    //         Slider {
-    //             Layout.fillWidth: true
-    //             Layout.minimumWidth: 50
-    //             height: controlRect.controlHeight
-    //             value: mxcmedia.position
-    //             onMoved: mxcmedia.position = value
-    //             from: 0
-    //             to: mxcmedia.duration
-    //         }
-
-    //     }
-
-    // }
-
+    // information about file name and file size
     Label {
         id: fileInfoLabel
 

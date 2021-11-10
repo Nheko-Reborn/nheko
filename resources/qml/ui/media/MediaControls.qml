@@ -22,7 +22,8 @@ Item {
     property int controlHeight: 25
     property bool shouldShowControls: playerMouseArea.shouldShowControls || volumeSlider.controlsVisible
 
-    signal activated(real mouseX, real mouseY)
+    signal playPauseActivated(real mouseX, real mouseY)
+    signal loadActivated(real mouseX, real mouseY)
 
     function durationToString(duration) {
         function maybeZeroPrepend(time) {
@@ -48,7 +49,9 @@ Item {
 
         property bool shouldShowControls: (containsMouse && controlHideTimer.running) || (control.mediaState != MediaPlayer.PlayingState) || controlRect.contains(mapToItem(controlRect, mouseX, mouseY))
 
-        onClicked: control.activated(mouseX, mouseY)
+        onClicked: {
+            control.mediaLoaded ? control.playPauseActivated(mouseX, mouseY) : control.loadActivated(mouseX, mouseY);
+        }
         hoverEnabled: true
         onPositionChanged: controlHideTimer.start()
         onExited: controlHideTimer.start()
@@ -75,7 +78,7 @@ Item {
             anchors.fill: parent
             width: parent.width
 
-            // Play/pause button
+            // Cache/Play/pause button
             Image {
                 id: playbackStateImage
 
@@ -84,14 +87,25 @@ Item {
                 fillMode: Image.PreserveAspectFit
                 Layout.preferredHeight: control.controlHeight
                 Layout.alignment: Qt.AlignVCenter
-                source: (control.mediaState == MediaPlayer.PlayingState) ? "image://colorimage/:/icons/icons/ui/pause-symbol.png?" + controlColor : "image://colorimage/:/icons/icons/ui/play-sign.png?" + controlColor
+                source: {
+                    if (control.mediaLoaded) {
+                        if (control.mediaState == MediaPlayer.PlayingState)
+                            return "image://colorimage/:/icons/icons/ui/pause-symbol.png?" + controlColor;
+                        else
+                            return "image://colorimage/:/icons/icons/ui/play-sign.png?" + controlColor;
+                    } else {
+                        return "image://colorimage/:/icons/icons/ui/arrow-pointing-down.png?" + controlColor;
+                    }
+                }
 
                 MouseArea {
                     id: playbackStateArea
 
                     anchors.fill: parent
                     hoverEnabled: true
-                    onClicked: control.activated(mouseX, mouseY)
+                    onClicked: {
+                        control.mediaLoaded ? control.playPauseActivated(mouseX, mouseY) : control.loadActivated(mouseX, mouseY);
+                    }
                 }
 
             }
