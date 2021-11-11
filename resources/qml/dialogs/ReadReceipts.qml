@@ -66,9 +66,6 @@ ApplicationWindow {
                     hoverEnabled: true
                     ToolTip.visible: hovered
                     ToolTip.text: model.mxid
-                    background: Rectangle {
-                        color: readReceiptsRoot.color
-                    }
 
                     RowLayout {
                         id: receiptLayout
@@ -111,6 +108,10 @@ ApplicationWindow {
                     CursorShape {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
+                    }
+
+                    background: Rectangle {
+                        color: readReceiptsRoot.color
                     }
 
                 }

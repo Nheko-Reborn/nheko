@@ -8,23 +8,23 @@ import im.nheko 1.0
 
 Slider {
     id: control
-		value: 0
 
-		property color progressColor: Nheko.colors.highlight
+    property color progressColor: Nheko.colors.highlight
     property bool alwaysShowSlider: true
     property int sliderRadius: 16
-    implicitHeight: sliderRadius
 
-		padding: 0
+    value: 0
+    implicitHeight: sliderRadius
+    padding: 0
 
     background: Rectangle {
-        x: control.leftPadding + handle.width/2
+        x: control.leftPadding + handle.width / 2
         y: control.topPadding + control.availableHeight / 2 - height / 2
         implicitWidth: 200
-        implicitHeight: control.sliderRadius/4
+        implicitHeight: control.sliderRadius / 4
         width: control.availableWidth - handle.width
         height: implicitHeight
-        radius: height/2
+        radius: height / 2
         color: Nheko.colors.buttonText
 
         Rectangle {
@@ -33,6 +33,7 @@ Slider {
             color: control.progressColor
             radius: 2
         }
+
     }
 
     handle: Rectangle {
@@ -40,9 +41,10 @@ Slider {
         y: control.topPadding + control.availableHeight / 2 - height / 2
         implicitWidth: control.sliderRadius
         implicitHeight: control.sliderRadius
-        radius: control.sliderRadius/2
-				color: control.progressColor
-        visible:  Settings.mobileMode || control.alwaysShowSlider || control.hovered || control.pressed
+        radius: control.sliderRadius / 2
+        color: control.progressColor
+        visible: Settings.mobileMode || control.alwaysShowSlider || control.hovered || control.pressed
         border.color: control.progressColor
     }
+
 }

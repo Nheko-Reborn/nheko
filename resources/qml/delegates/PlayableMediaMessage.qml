@@ -21,14 +21,13 @@ Item {
     required property string url
     required property string body
     required property string filesize
+    property double tempWidth: Math.min(parent ? parent.width : undefined, originalWidth < 1 ? 400 : originalWidth)
+    property double tempHeight: tempWidth * proportionalHeight
+    property double divisor: isReply ? 4 : 2
+    property bool tooHigh: tempHeight > timelineRoot.height / divisor
 
-        property double tempWidth: Math.min(parent ? parent.width : undefined, originalWidth < 1 ? 400 : originalWidth)
-        property double tempHeight: tempWidth * proportionalHeight
-        property double divisor: isReply ? 4 : 2
-        property bool tooHigh: tempHeight > timelineRoot.height / divisor
-
-        height: (type == MtxEvent.VideoMessage ? tooHigh ? timelineRoot.height / divisor : tempHeight : 80) + fileInfoLabel.height
-        width: type == MtxEvent.VideoMessage ? tooHigh ? (timelineRoot.height / divisor) / proportionalHeight : tempWidth : 250
+    height: (type == MtxEvent.VideoMessage ? tooHigh ? timelineRoot.height / divisor : tempHeight : 80) + fileInfoLabel.height
+    width: type == MtxEvent.VideoMessage ? tooHigh ? (timelineRoot.height / divisor) / proportionalHeight : tempWidth : 250
 
     MxcMedia {
         id: mxcmedia
@@ -44,16 +43,14 @@ Item {
 
     Rectangle {
         id: videoContainer
+
         color: type == MtxEvent.VideoMessage ? Nheko.colors.window : "transparent"
         width: parent.width
         height: parent.height - fileInfoLabel.height
 
-        
-    TapHandler {
-        onTapped: mediaControls.showControls();
-    }
-
-
+        TapHandler {
+            onTapped: mediaControls.showControls()
+        }
 
         Image {
             anchors.fill: parent
@@ -72,34 +69,31 @@ Item {
                 flushMode: VideoOutput.FirstFrame
             }
 
-
         }
 
     }
 
-            MediaControls {
-                id: mediaControls
+    MediaControls {
+        id: mediaControls
 
-                anchors.left: content.left
-                anchors.right: content.right
-                anchors.bottom: fileInfoLabel.top
-
-                playingVideo: type == MtxEvent.VideoMessage
-                positionValue: mxcmedia.position
-                duration: mxcmedia.duration
-                mediaLoaded: mxcmedia.loaded
-                mediaState: mxcmedia.state
-                onPositionChanged: mxcmedia.position = position
-                onPlayPauseActivated: mxcmedia.state == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
-                onLoadActivated: mxcmedia.eventId = eventId
-            }
+        anchors.left: content.left
+        anchors.right: content.right
+        anchors.bottom: fileInfoLabel.top
+        playingVideo: type == MtxEvent.VideoMessage
+        positionValue: mxcmedia.position
+        duration: mxcmedia.duration
+        mediaLoaded: mxcmedia.loaded
+        mediaState: mxcmedia.state
+        onPositionChanged: mxcmedia.position = position
+        onPlayPauseActivated: mxcmedia.state == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
+        onLoadActivated: mxcmedia.eventId = eventId
+    }
 
     // information about file name and file size
     Label {
         id: fileInfoLabel
 
         anchors.bottom: content.bottom
-
         text: body + " [" + filesize + "]"
         textFormat: Text.PlainText
         elide: Text.ElideRight

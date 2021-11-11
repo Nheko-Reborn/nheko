@@ -22,12 +22,6 @@ Rectangle {
     property var positionValue: 0
     property var position
     property bool shouldShowControls: !playingVideo || playerMouseArea.shouldShowControls || volumeSlider.state == "shown"
-    color: {
-        var wc = Nheko.colors.alternateBase;
-        return Qt.rgba(wc.r, wc.g, wc.b, 0.5);
-    }
-    opacity: control.shouldShowControls ? 1 : 0
-    height: controlLayout.implicitHeight
 
     signal playPauseActivated()
     signal loadActivated()
@@ -55,19 +49,25 @@ Rectangle {
         return hh + ":" + mm + ":" + ss;
     }
 
+    color: {
+        var wc = Nheko.colors.alternateBase;
+        return Qt.rgba(wc.r, wc.g, wc.b, 0.5);
+    }
+    opacity: control.shouldShowControls ? 1 : 0
+    height: controlLayout.implicitHeight
+
     HoverHandler {
         id: playerMouseArea
 
         property bool shouldShowControls: hovered || controlHideTimer.running || control.mediaState != MediaPlayer.PlayingState
 
-        onHoveredChanged: showControls();
+        onHoveredChanged: showControls()
     }
 
     ColumnLayout {
-
         id: controlLayout
-        enabled: control.shouldShowControls
 
+        enabled: control.shouldShowControls
         spacing: 0
         anchors.bottom: control.bottom
         anchors.left: control.left
@@ -77,16 +77,13 @@ Rectangle {
             Layout.fillWidth: true
             Layout.leftMargin: Nheko.paddingSmall
             Layout.rightMargin: Nheko.paddingSmall
-
             enabled: control.mediaLoaded
-
             value: control.positionValue
             onMoved: control.position = value
             from: 0
             to: control.duration
             alwaysShowSlider: false
         }
-
 
         RowLayout {
             Layout.margins: Nheko.paddingSmall
@@ -95,95 +92,87 @@ Rectangle {
 
             // Cache/Play/pause button
             ImageButton {
-                Layout.alignment: Qt.AlignLeft
                 id: playbackStateImage
 
+                Layout.alignment: Qt.AlignLeft
                 buttonTextColor: Nheko.colors.text
                 Layout.preferredHeight: 24
                 Layout.preferredWidth: 24
-
                 image: {
                     if (control.mediaLoaded) {
                         if (control.mediaState == MediaPlayer.PlayingState)
-                        return ":/icons/icons/ui/pause-symbol.png";
+                            return ":/icons/icons/ui/pause-symbol.png";
                         else
-                        return ":/icons/icons/ui/play-sign.png";
+                            return ":/icons/icons/ui/play-sign.png";
                     } else {
                         return ":/icons/icons/ui/arrow-pointing-down.png";
                     }
                 }
-
-                onClicked: control.mediaLoaded ? control.playPauseActivated() : control.loadActivated();
-
+                onClicked: control.mediaLoaded ? control.playPauseActivated() : control.loadActivated()
             }
 
             ImageButton {
-                Layout.alignment: Qt.AlignLeft
                 id: volumeButton
 
+                Layout.alignment: Qt.AlignLeft
                 buttonTextColor: Nheko.colors.text
                 Layout.preferredHeight: 24
                 Layout.preferredWidth: 24
-
                 image: {
-                    if (control.muted || control.desiredVolume <= 0) {
+                    if (control.muted || control.desiredVolume <= 0)
                         return ":/icons/icons/ui/volume-off-indicator.png";
-                    } else {
+                    else
                         return ":/icons/icons/ui/volume-up.png";
-                    }
                 }
-
                 onClicked: control.muted = !control.muted
-
             }
 
             NhekoSlider {
+                id: volumeSlider
+
+                property real desiredVolume: QtMultimedia.convertVolume(volumeSlider.value, QtMultimedia.LogarithmicVolumeScale, QtMultimedia.LinearVolumeScale)
+
                 state: ""
-
-                states: State {
-                    name: "shown"
-                    when: Settings.mobileMode || volumeButton.hovered || volumeSlider.hovered || volumeSlider.pressed
-                    PropertyChanges {target: volumeSlider; Layout.preferredWidth: 100}
-                    PropertyChanges {target: volumeSlider; opacity: 1}
-                }
-
                 Layout.alignment: Qt.AlignLeft
                 Layout.preferredWidth: 0
                 opacity: 0
-                id: volumeSlider
                 orientation: Qt.Horizontal
-                property real desiredVolume: QtMultimedia.convertVolume(volumeSlider.value, QtMultimedia.LogarithmicVolumeScale, QtMultimedia.LinearVolumeScale)
                 value: 1
-
                 onDesiredVolumeChanged: {
                     control.muted = !(desiredVolume > 0);
                 }
-
                 transitions: [
                     Transition {
                         from: ""
                         to: "shown"
 
                         SequentialAnimation {
-                            PauseAnimation { duration: 50 }
+                            PauseAnimation {
+                                duration: 50
+                            }
+
                             NumberAnimation {
                                 duration: 100
                                 properties: "opacity"
-                                    easing.type: Easing.InQuad
+                                easing.type: Easing.InQuad
                             }
+
                         }
 
                         NumberAnimation {
                             properties: "Layout.preferredWidth"
                             duration: 150
                         }
+
                     },
                     Transition {
                         from: "shown"
                         to: ""
 
                         SequentialAnimation {
-                            PauseAnimation { duration: 100 }
+                            PauseAnimation {
+                                duration: 100
+                            }
 
                             ParallelAnimation {
                                 NumberAnimation {
@@ -196,16 +185,34 @@ Rectangle {
                                     properties: "Layout.preferredWidth"
                                     duration: 150
                                 }
+
                             }
+
                         }
 
                     }
                 ]
+
+                states: State {
+                    name: "shown"
+                    when: Settings.mobileMode || volumeButton.hovered || volumeSlider.hovered || volumeSlider.pressed
+
+                    PropertyChanges {
+                        target: volumeSlider
+                        Layout.preferredWidth: 100
+                    }
+
+                    PropertyChanges {
+                        target: volumeSlider
+                        opacity: 1
+                    }
+
+                }
+
             }
 
             Label {
                 Layout.alignment: Qt.AlignRight
-
                 text: (!control.mediaLoaded) ? "-- / --" : (durationToString(control.positionValue) + " / " + durationToString(control.duration))
                 color: Nheko.colors.text
             }
@@ -218,20 +225,20 @@ Rectangle {
 
     }
 
-    // Fade controls in/out
-    Behavior on opacity {
-        OpacityAnimator {
-            duration: 100
-        }
-
-    }
-
     // For hiding controls on stationary cursor
     Timer {
         id: controlHideTimer
 
         interval: 1500 //ms
         repeat: false
+    }
+
+    // Fade controls in/out
+    Behavior on opacity {
+        OpacityAnimator {
+            duration: 100
+        }
+
     }
 
 }
