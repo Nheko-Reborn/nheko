@@ -309,7 +309,7 @@ ApplicationWindow {
                             case VerificationStatus.VERIFIED:
                                 return "image://colorimage/:/icons/icons/ui/lock.png?green";
                             case VerificationStatus.UNVERIFIED:
-                                return "image://colorimage/:/icons/icons/ui/unlock.png?yellow";
+                                return "image://colorimage/:/icons/icons/ui/unlock.png?#d6c020";
                             case VerificationStatus.SELF:
                                 return "image://colorimage/:/icons/icons/ui/checkmark.png?green";
                             default:
@@ -390,7 +390,7 @@ ApplicationWindow {
                     case VerificationStatus.VERIFIED:
                         return "image://colorimage/:/icons/icons/ui/lock.png?green";
                     case VerificationStatus.UNVERIFIED:
-                        return "image://colorimage/:/icons/icons/ui/unlock.png?yellow";
+                        return "image://colorimage/:/icons/icons/ui/unlock.png?#d6c020";
                     case VerificationStatus.SELF:
                         return "image://colorimage/:/icons/icons/ui/checkmark.png?green";
                     default:

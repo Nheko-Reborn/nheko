@@ -22,10 +22,10 @@ Image {
             case Crypto.TOFU:
                 return "image://colorimage/:/icons/icons/ui/lock.png?" + Nheko.colors.buttonText;
             default:
-                return "image://colorimage/:/icons/icons/ui/lock.png?#dd3d3d";
+                return "image://colorimage/:/icons/icons/ui/lock.png?#d6c020";
             }
         } else {
-            return "image://colorimage/:/icons/icons/ui/unlock.png?#dd3d3d";
+            return "image://colorimage/:/icons/icons/ui/unlock.png?#d6c020";
         }
     }
     ToolTip.visible: ma.hovered
