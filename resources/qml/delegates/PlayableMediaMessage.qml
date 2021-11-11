@@ -48,6 +48,12 @@ Item {
         width: parent.width
         height: parent.height - fileInfoLabel.height
 
+        
+    TapHandler {
+        onTapped: mediaControls.showControls();
+    }
+
+
 
         Image {
             anchors.fill: parent

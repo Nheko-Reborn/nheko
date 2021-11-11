@@ -21,15 +21,20 @@ Rectangle {
     property var duration
     property var positionValue: 0
     property var position
-    property bool shouldShowControls: !playingVideo || playerMouseArea.shouldShowControls || volumeSlider.controlsVisible
+    property bool shouldShowControls: !playingVideo || playerMouseArea.shouldShowControls || volumeSlider.state == "shown"
     color: {
         var wc = Nheko.colors.alternateBase;
         return Qt.rgba(wc.r, wc.g, wc.b, 0.5);
     }
+    opacity: control.shouldShowControls ? 1 : 0
     height: controlLayout.implicitHeight
 
     signal playPauseActivated()
     signal loadActivated()
+
+    function showControls() {
+        controlHideTimer.restart();
+    }
 
     function durationToString(duration) {
         function maybeZeroPrepend(time) {
@@ -50,26 +55,18 @@ Rectangle {
         return hh + ":" + mm + ":" + ss;
     }
 
-    MouseArea {
+    HoverHandler {
         id: playerMouseArea
 
-        property bool shouldShowControls: (containsMouse && controlHideTimer.running) || (control.mediaState != MediaPlayer.PlayingState) || controlLayout.contains(mapToItem(controlLayout, mouseX, mouseY))
+        property bool shouldShowControls: hovered || controlHideTimer.running || control.mediaState != MediaPlayer.PlayingState
 
-        onClicked: {
-            control.mediaLoaded ? control.playPauseActivated() : control.loadActivated();
-        }
-        hoverEnabled: true
-        onPositionChanged: controlHideTimer.start()
-        onExited: controlHideTimer.start()
-        onEntered: controlHideTimer.start()
-        anchors.fill: control
-        propagateComposedEvents: true
+        onHoveredChanged: showControls();
     }
 
     ColumnLayout {
 
         id: controlLayout
-        opacity: control.shouldShowControls ? 1 : 0
+        enabled: control.shouldShowControls
 
         spacing: 0
         anchors.bottom: control.bottom
@@ -219,13 +216,12 @@ Rectangle {
 
         }
 
+    }
 
-        // Fade controls in/out
-        Behavior on opacity {
-            OpacityAnimator {
-                duration: 100
-            }
-
+    // Fade controls in/out
+    Behavior on opacity {
+        OpacityAnimator {
+            duration: 100
         }
 
     }
