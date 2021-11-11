@@ -247,6 +247,10 @@ MainWindow::showChatPage()
     login_page_->reset();
     chat_page_->bootstrap(userid, homeserver, token);
     connect(cache::client(),
+            &Cache::databaseReady,
+            userSettingsPage_,
+            &UserSettingsPage::updateSecretStatus);
+    connect(cache::client(),
             &Cache::secretChanged,
             userSettingsPage_,
             &UserSettingsPage::updateSecretStatus);
