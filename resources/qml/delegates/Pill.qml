@@ -7,7 +7,7 @@ import QtQuick.Controls 2.1
 import im.nheko 1.0
 
 Label {
-    color: Nheko.colors.brightText
+    color: Nheko.colors.text
     horizontalAlignment: Text.AlignHCenter
     height: contentHeight * 1.2
     width: contentWidth * 1.2
