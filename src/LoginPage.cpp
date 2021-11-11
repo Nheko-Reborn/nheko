@@ -368,6 +368,8 @@ LoginPage::versionOk(bool passwordSupported_, bool ssoSupported_)
     matrixidLayout_->removeWidget(spinner_);
     spinner_->stop();
 
+    password_input_->setVisible(passwordSupported);
+    password_input_->setEnabled(passwordSupported);
     sso_login_button_->setVisible(ssoSupported);
     login_button_->setVisible(passwordSupported);
 
