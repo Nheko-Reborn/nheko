@@ -7,7 +7,7 @@ import "../ui/media"
 import QtMultimedia 5.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.2
+import QtQuick.Layouts 1.15
 import im.nheko 1.0
 
 ColumnLayout {
@@ -45,8 +45,8 @@ ColumnLayout {
         property bool tooHigh: tempHeight > timelineRoot.height / divisor
 
         color: type == MtxEvent.VideoMessage ? Nheko.colors.window : "transparent"
-        Layout.preferredHeight: type == MtxEvent.VideoMessage ? tooHigh ? timelineRoot.height / divisor : tempHeight : 40
-        Layout.preferredWidth: tooHigh ? (timelineRoot.height / divisor) / proportionalHeight : tempWidth
+        Layout.preferredHeight: type == MtxEvent.VideoMessage ? tooHigh ? timelineRoot.height / divisor : tempHeight : 80
+        Layout.preferredWidth: type == MtxEvent.VideoMessage ? tooHigh ? (timelineRoot.height / divisor) / proportionalHeight : tempWidth : 250
 
         Image {
             anchors.fill: parent
@@ -73,11 +73,11 @@ ColumnLayout {
                 y: type == MtxEvent.VideoMessage ? videoOutput.contentRect.y : videoContainer.y
                 width: type == MtxEvent.VideoMessage ? videoOutput.contentRect.width : videoContainer.width
                 height: type == MtxEvent.VideoMessage ? videoOutput.contentRect.height : videoContainer.height
+                playingVideo: type == MtxEvent.VideoMessage
                 positionValue: mxcmedia.position
                 duration: mxcmedia.duration
                 mediaLoaded: mxcmedia.loaded
                 mediaState: mxcmedia.state
-                volumeOrientation: Qt.Vertical
                 onPositionChanged: mxcmedia.position = position
                 onPlayPauseActivated: mxcmedia.state == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
                 onLoadActivated: mxcmedia.eventId = eventId
