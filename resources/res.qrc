@@ -185,7 +185,6 @@
         <file>qml/ui/Spinner.qml</file>
         <file>qml/ui/animations/BlinkAnimation.qml</file>
         <file>qml/ui/media/MediaControls.qml</file>
-        <file>qml/ui/media/VolumeControl.qml</file>
         <file>qml/voip/ActiveCallBar.qml</file>
         <file>qml/voip/CallDevices.qml</file>
         <file>qml/voip/CallInvite.qml</file>

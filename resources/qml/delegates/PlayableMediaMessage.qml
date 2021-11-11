@@ -10,7 +10,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import im.nheko 1.0
 
-ColumnLayout {
+Item {
     id: content
 
     required property double proportionalHeight
@@ -22,7 +22,13 @@ ColumnLayout {
     required property string body
     required property string filesize
 
-    Layout.fillWidth: true
+        property double tempWidth: Math.min(parent ? parent.width : undefined, originalWidth < 1 ? 400 : originalWidth)
+        property double tempHeight: tempWidth * proportionalHeight
+        property double divisor: isReply ? 4 : 2
+        property bool tooHigh: tempHeight > timelineRoot.height / divisor
+
+        height: (type == MtxEvent.VideoMessage ? tooHigh ? timelineRoot.height / divisor : tempHeight : 80) + fileInfoLabel.height
+        width: type == MtxEvent.VideoMessage ? tooHigh ? (timelineRoot.height / divisor) / proportionalHeight : tempWidth : 250
 
     MxcMedia {
         id: mxcmedia
@@ -38,15 +44,10 @@ ColumnLayout {
 
     Rectangle {
         id: videoContainer
-
-        property double tempWidth: Math.min(parent ? parent.width : undefined, originalWidth < 1 ? 400 : originalWidth)
-        property double tempHeight: tempWidth * proportionalHeight
-        property double divisor: isReply ? 4 : 2
-        property bool tooHigh: tempHeight > timelineRoot.height / divisor
-
         color: type == MtxEvent.VideoMessage ? Nheko.colors.window : "transparent"
-        Layout.preferredHeight: type == MtxEvent.VideoMessage ? tooHigh ? timelineRoot.height / divisor : tempHeight : 80
-        Layout.preferredWidth: type == MtxEvent.VideoMessage ? tooHigh ? (timelineRoot.height / divisor) / proportionalHeight : tempWidth : 250
+        width: parent.width
+        height: parent.height - fileInfoLabel.height
+
 
         Image {
             anchors.fill: parent
@@ -65,14 +66,18 @@ ColumnLayout {
                 flushMode: VideoOutput.FirstFrame
             }
 
+
+        }
+
+    }
+
             MediaControls {
                 id: mediaControls
 
-                anchors.fill: parent
-                x: type == MtxEvent.VideoMessage ? videoOutput.contentRect.x : videoContainer.x
-                y: type == MtxEvent.VideoMessage ? videoOutput.contentRect.y : videoContainer.y
-                width: type == MtxEvent.VideoMessage ? videoOutput.contentRect.width : videoContainer.width
-                height: type == MtxEvent.VideoMessage ? videoOutput.contentRect.height : videoContainer.height
+                anchors.left: content.left
+                anchors.right: content.right
+                anchors.bottom: fileInfoLabel.top
+
                 playingVideo: type == MtxEvent.VideoMessage
                 positionValue: mxcmedia.position
                 duration: mxcmedia.duration
@@ -83,15 +88,12 @@ ColumnLayout {
                 onLoadActivated: mxcmedia.eventId = eventId
             }
 
-        }
-
-    }
-
     // information about file name and file size
     Label {
         id: fileInfoLabel
 
-        Layout.fillWidth: true
+        anchors.bottom: content.bottom
+
         text: body + " [" + filesize + "]"
         textFormat: Text.PlainText
         elide: Text.ElideRight
