@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import Qt.labs.platform 1.1 as Platform
-import QtQuick 2.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
@@ -28,12 +28,25 @@ Rectangle {
 
     TapHandler {
         onSingleTapped: {
-            if (room)
-                TimelineManager.openRoomSettings(room.roomId);
+            if (room) {
+                let p = topBar.mapToItem(roomTopicC, eventPoint.position.x, eventPoint.position.y);
+                let link = roomTopicC.linkAt(p.x, p.y);
+
+                if (link) {
+                    Nheko.openLink(link);
+                } else {
+                    TimelineManager.openRoomSettings(room.roomId);
+                }
+            }
 
             eventPoint.accepted = true;
         }
         gesturePolicy: TapHandler.ReleaseWithinBounds
+    }
+
+    HoverHandler {
+        grabPermissions: PointerHandler.TakeOverForbidden | PointerHandler.CanTakeOverFromAnything
+        //cursorShape: Qt.PointingHandCursor
     }
 
     GridLayout {
@@ -51,8 +64,8 @@ Rectangle {
             Layout.row: 0
             Layout.rowSpan: 2
             Layout.alignment: Qt.AlignVCenter
-            width: Nheko.avatarSize
-            height: Nheko.avatarSize
+            Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
+            Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
             visible: showBackButton
             image: ":/icons/icons/ui/angle-pointing-to-left.png"
             ToolTip.visible: hovered
@@ -71,11 +84,7 @@ Rectangle {
             roomid: roomId
             userid: isDirect ? directChatOtherUserId : ""
             displayName: roomName
-            onClicked: {
-                if (room)
-                    TimelineManager.openRoomSettings(roomId);
-
-            }
+            enabled: false
         }
 
         Label {
@@ -91,10 +100,13 @@ Rectangle {
         }
 
         MatrixText {
+            id: roomTopicC
             Layout.fillWidth: true
             Layout.column: 2
             Layout.row: 1
             Layout.maximumHeight: fontMetrics.lineSpacing * 2 // show 2 lines
+            selectByMouse: false
+            enabled: false
             clip: true
             text: roomTopic
         }
@@ -103,6 +115,8 @@ Rectangle {
             Layout.column: 3
             Layout.row: 0
             Layout.rowSpan: 2
+            Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
+            Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
             visible: isEncrypted
             encrypted: isEncrypted
             trust: trustlevel
@@ -129,6 +143,8 @@ Rectangle {
             Layout.row: 0
             Layout.rowSpan: 2
             Layout.alignment: Qt.AlignVCenter
+            Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
+            Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
             image: ":/icons/icons/ui/vertical-ellipsis.png"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Room options")
@@ -162,6 +178,11 @@ Rectangle {
 
         }
 
+    }
+
+    CursorShape {
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
     }
 
 }

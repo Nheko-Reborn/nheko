@@ -480,6 +480,8 @@ Page {
 
                     visible: !collapsed
                     Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredWidth: fontMetrics.lineSpacing * 2
+                    Layout.preferredHeight: fontMetrics.lineSpacing * 2
                     image: ":/icons/icons/ui/power-button-off.png"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Logout")

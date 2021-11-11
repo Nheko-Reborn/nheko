@@ -34,8 +34,8 @@ ApplicationWindow {
         id: contentLayout1
 
         anchors.fill: parent
-        anchors.margins: 10
-        spacing: 10
+        anchors.margins: Nheko.paddingMedium
+        spacing: Nheko.paddingMedium
 
         Avatar {
             url: roomSettings.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
@@ -156,7 +156,7 @@ ApplicationWindow {
 
         GridLayout {
             columns: 2
-            rowSpacing: Nheko.paddingLarge
+            rowSpacing: Nheko.paddingMedium
 
             MatrixText {
                 text: qsTr("SETTINGS")
@@ -278,7 +278,7 @@ ApplicationWindow {
 
             MatrixText {
                 text: roomSettings.roomId
-                font.pixelSize: fontMetrics.font.pixelSize * 1.2
+                font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 0.8)
                 Layout.alignment: Qt.AlignRight
             }
 
@@ -288,7 +288,7 @@ ApplicationWindow {
 
             MatrixText {
                 text: roomSettings.roomVersion
-                font.pixelSize: fontMetrics.font.pixelSize * 1.2
+                font.pixelSize: fontMetrics.font.pixelSize
                 Layout.alignment: Qt.AlignRight
             }
 
