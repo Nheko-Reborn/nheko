@@ -160,15 +160,6 @@ Item {
             eventId: r.eventId
         }
 
-        EncryptionIndicator {
-            visible: room.isEncrypted
-            encrypted: isEncrypted
-            trust: trustlevel
-            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            Layout.preferredHeight: 16
-            Layout.preferredWidth: 16
-        }
-
         Image {
             visible: isEdited || eventId == chat.model.edit
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
@@ -186,6 +177,15 @@ Item {
                 id: editHovered
             }
 
+        }
+
+        EncryptionIndicator {
+            visible: room.isEncrypted
+            encrypted: isEncrypted
+            trust: trustlevel
+            Layout.alignment: Qt.AlignRight | Qt.AlignTop
+            Layout.preferredHeight: 16
+            Layout.preferredWidth: 16
         }
 
         Label {
