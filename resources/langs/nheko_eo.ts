@@ -143,12 +143,12 @@
     <message>
         <location line="+13"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>La kaŝmemoro sur via disko pli novas, ol tio, kion povas subteni ĉi tiu versio de Nheko. Bonvolu ĝisdatigi Nhekon aŭ vakigi vian kaŝmemoron.</translation>
     </message>
     <message>
         <location line="+41"/>
         <source>Failed to open database, logging out!</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis malfermi datumbazon; adiaŭas!</translation>
     </message>
     <message>
         <location line="+314"/>
@@ -809,7 +809,7 @@
     <message>
         <location line="+22"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished">Identigilo aŭ kromnomo de ĉambro</translation>
+        <translation>Identigilo aŭ kromnomo de ĉambro</translation>
     </message>
 </context>
 <context>
@@ -1197,7 +1197,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+16"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Por lasi aliajn uzantojn vidi, kiuj el viaj aparatoj vere apartenas al vi, vi povas kontroli ilin. Tio ankaŭ permesas, ke savkopiado de ŝlosiloj funkciu memage. Ĉu vi volas kontroli nekontrolitan aparaton nun? (Bonvolu certigi, ke unu el tiaj aparatoj disponeblas al vi.)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1472,7 +1472,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+11"/>
         <source>Choose custom homeserver</source>
-        <translation type="unfinished">Elekti propran hejmservilon</translation>
+        <translation>Elekti propran hejmservilon</translation>
     </message>
 </context>
 <context>
@@ -1571,7 +1571,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+20"/>
         <source>Close</source>
-        <translation type="unfinished">Fermi</translation>
+        <translation>Fermi</translation>
     </message>
     <message>
         <location line="+65"/>
@@ -1896,7 +1896,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko ne povis konektiĝi al la sekura deponejo por deponi sekretojn. Tio povas okazi diverskiale. Kontrolu, ke via servo D-Bus funkcias, kaj ke vi havas agorditan servon kiel KWallet, GNOME Keyring, KeePassXC, aŭ similan por via platformo. Se vi tamen havas problemojn, vi povas raporti ilin tie ĉi: https://github.com/Nheko-Reborn/nheko/issues</translation>
     </message>
 </context>
 <context>
@@ -1904,7 +1904,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location filename="../qml/SelfVerificationCheck.qml" line="+39"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation type="unfinished">Jen via rehava ŝlosilo. Vi bezonos ĝin por rehavi aliron al viaj ĉifritaj mesaĝoj kaj kontrolaj ŝlosiloj. Tenu ĝin sekura. Ne havigu ĝin al iu ajn, kaj ne perdu ĝin!</translation>
+        <translation>Jen via rehava ŝlosilo. Vi bezonos ĝin por rehavi aliron al viaj ĉifritaj mesaĝoj kaj kontrolaj ŝlosiloj. Tenu ĝin sekura. Ne havigu ĝin al iu ajn, kaj ne perdu ĝin! Ne paŝu sur la herbotapiŝon!</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -1981,7 +1981,7 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
     <message>
         <location line="+140"/>
         <source>Identity key changed. This breaks E2EE, so logging out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Identiga ŝlosilo ŝanĝiĝis. Tio rompas tutvojan ĉifradon, kaj tial la programo nun adiaŭas.</translation>
     </message>
 </context>
 <context>
@@ -2273,7 +2273,7 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
     <message>
         <location line="+137"/>
         <source>No preview available</source>
-        <translation type="unfinished">Neniu antaŭrigardo disponeblas</translation>
+        <translation>Neniu antaŭrigardo disponeblas</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2377,7 +2377,7 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
     <message>
         <location filename="../../src/ui/UIA.cpp" line="+59"/>
         <source>No available registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Neniuj disponeblaj manieroj de registriĝo!</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -2389,7 +2389,7 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
     <message>
         <location line="-27"/>
         <source>Please enter a valid registration token.</source>
-        <translation type="unfinished">Bonvolu enigi validan registran pecon.</translation>
+        <translation>Bonvolu enigi validan registran pecon.</translation>
     </message>
     <message>
         <location line="+165"/>
@@ -2602,7 +2602,7 @@ NE – kvadrataj, JES – rondaj.</translation>
     <message>
         <location line="+1"/>
         <source>Use identicons</source>
-        <translation type="unfinished"></translation>
+        <translation>Uzi identigajn bildojn</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2929,7 +2929,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+133"/>
         <source>Display an identicon instead of a letter when no avatar is set.</source>
-        <translation type="unfinished"></translation>
+        <translation>Montras identigan bildon anstataŭ litero, kiam ne disponeblas profilbildo.</translation>
     </message>
     <message>
         <location line="+46"/>
