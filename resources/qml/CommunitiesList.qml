@@ -56,15 +56,13 @@ Page {
             property color bubbleBackground: Nheko.colors.highlight
             property color bubbleText: Nheko.colors.highlightedText
 
-            background: Rectangle {
-                color: backgroundColor
-            }
-
             height: avatarSize + 2 * Nheko.paddingMedium
             width: ListView.view.width
             state: "normal"
             ToolTip.visible: hovered && collapsed
             ToolTip.text: model.tooltip
+            onClicked: Communities.setCurrentTagId(model.id)
+            onPressAndHold: communityContextMenu.show(model.id)
             states: [
                 State {
                     name: "highlight"
@@ -108,9 +106,6 @@ Page {
 
             }
 
-            onClicked: Communities.setCurrentTagId(model.id)
-            onPressAndHold: communityContextMenu.show(model.id)
-
             RowLayout {
                 spacing: Nheko.paddingMedium
                 anchors.fill: parent
@@ -147,6 +142,10 @@ Page {
                     Layout.fillWidth: true
                 }
 
+            }
+
+            background: Rectangle {
+                color: backgroundColor
             }
 
         }

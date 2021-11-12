@@ -3,14 +3,15 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "../"
+import "../ui/media"
 import QtMultimedia 5.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.2
+import QtQuick.Layouts 1.15
 import im.nheko 1.0
 
-Rectangle {
-    id: bg
+Item {
+    id: content
 
     required property double proportionalHeight
     required property int type
@@ -20,199 +21,86 @@ Rectangle {
     required property string url
     required property string body
     required property string filesize
+    property double tempWidth: Math.min(parent ? parent.width : undefined, originalWidth < 1 ? 400 : originalWidth)
+    property double tempHeight: tempWidth * proportionalHeight
+    property double divisor: isReply ? 4 : 2
+    property bool tooHigh: tempHeight > timelineRoot.height / divisor
 
-    radius: 10
-    color: Nheko.colors.alternateBase
-    height: Math.round(content.height + 24)
-    width: parent ? parent.width : undefined
-    ListView.onPooled: height = 4
-    ListView.onReused: height = Math.round(content.height + 24)
+    height: (type == MtxEvent.VideoMessage ? tooHigh ? timelineRoot.height / divisor : tempHeight : 80) + fileInfoLabel.height
+    width: type == MtxEvent.VideoMessage ? tooHigh ? (timelineRoot.height / divisor) / proportionalHeight : tempWidth : 250
 
-    Column {
-        id: content
+    MxcMedia {
+        id: mxcmedia
 
-        width: parent.width - 24
-        anchors.centerIn: parent
+        // TODO: Show error in overlay or so?
+        onError: console.log(error)
+        roomm: room
+        // desiredVolume is a float from 0.0 -> 1.0, MediaPlayer volume is an int from 0 to 100
+        // this value automatically gets clamped for us between these two values.
+        volume: mediaControls.desiredVolume * 100
+        muted: mediaControls.muted
+    }
 
-        Rectangle {
-            id: videoContainer
+    Rectangle {
+        id: videoContainer
 
-            property double tempWidth: Math.min(parent ? parent.width : undefined, originalWidth < 1 ? 400 : originalWidth)
-            property double tempHeight: tempWidth * proportionalHeight
-            property double divisor: isReply ? 4 : 2
-            property bool tooHigh: tempHeight > timelineView.height / divisor
+        color: type == MtxEvent.VideoMessage ? Nheko.colors.window : "transparent"
+        width: parent.width
+        height: parent.height - fileInfoLabel.height
 
-            visible: type == MtxEvent.VideoMessage
-            height: tooHigh ? timelineView.height / divisor : tempHeight
-            width: tooHigh ? (timelineView.height / divisor) / proportionalHeight : tempWidth
+        TapHandler {
+            onTapped: mediaControls.showControls()
+        }
 
-            Image {
+        Image {
+            anchors.fill: parent
+            source: thumbnailUrl.replace("mxc://", "image://MxcImage/")
+            asynchronous: true
+            fillMode: Image.PreserveAspectFit
+
+            VideoOutput {
+                id: videoOutput
+
+                visible: type == MtxEvent.VideoMessage
+                clip: true
                 anchors.fill: parent
-                source: thumbnailUrl.replace("mxc://", "image://MxcImage/")
-                asynchronous: true
-                fillMode: Image.PreserveAspectFit
-
-                VideoOutput {
-                    anchors.fill: parent
-                    fillMode: VideoOutput.PreserveAspectFit
-                    flushMode: VideoOutput.FirstFrame
-                    source: mxcmedia
-                }
-
+                fillMode: VideoOutput.PreserveAspectFit
+                source: mxcmedia
+                flushMode: VideoOutput.FirstFrame
             }
 
         }
 
-        RowLayout {
-            width: parent.width
+    }
 
-            Text {
-                id: positionText
+    MediaControls {
+        id: mediaControls
 
-                text: "--:--:--"
-                color: Nheko.colors.text
-            }
+        anchors.left: content.left
+        anchors.right: content.right
+        anchors.bottom: fileInfoLabel.top
+        playingVideo: type == MtxEvent.VideoMessage
+        positionValue: mxcmedia.position
+        duration: mxcmedia.duration
+        mediaLoaded: mxcmedia.loaded
+        mediaState: mxcmedia.state
+        onPositionChanged: mxcmedia.position = position
+        onPlayPauseActivated: mxcmedia.state == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
+        onLoadActivated: mxcmedia.eventId = eventId
+    }
 
-            Slider {
-                id: progress
+    // information about file name and file size
+    Label {
+        id: fileInfoLabel
 
-                //indeterminate: true
-                function updatePositionTexts() {
-                    function formatTime(date) {
-                        var hh = date.getUTCHours();
-                        var mm = date.getUTCMinutes();
-                        var ss = date.getSeconds();
-                        if (hh < 10)
-                            hh = "0" + hh;
+        anchors.bottom: content.bottom
+        text: body + " [" + filesize + "]"
+        textFormat: Text.PlainText
+        elide: Text.ElideRight
+        color: Nheko.colors.text
 
-                        if (mm < 10)
-                            mm = "0" + mm;
-
-                        if (ss < 10)
-                            ss = "0" + ss;
-
-                        return hh + ":" + mm + ":" + ss;
-                    }
-
-                    positionText.text = formatTime(new Date(mxcmedia.position));
-                    durationText.text = formatTime(new Date(mxcmedia.duration));
-                }
-
-                Layout.fillWidth: true
-                value: mxcmedia.position
-                from: 0
-                to: mxcmedia.duration
-                onMoved: mxcmedia.position = value
-                onValueChanged: updatePositionTexts()
-                palette: Nheko.colors
-            }
-
-            Text {
-                id: durationText
-
-                text: "--:--:--"
-                color: Nheko.colors.text
-            }
-
-        }
-
-        RowLayout {
-            width: parent.width
-            spacing: 15
-
-            ImageButton {
-                id: button
-
-                Layout.alignment: Qt.AlignVCenter
-                //color: Nheko.colors.window
-                //radius: 22
-                height: 32
-                width: 32
-                z: 3
-                image: ":/icons/icons/ui/arrow-pointing-down.png"
-                onClicked: {
-                    switch (button.state) {
-                    case "":
-                        mxcmedia.eventId = eventId;
-                        break;
-                    case "stopped":
-                        mxcmedia.play();
-                        console.log("play");
-                        button.state = "playing";
-                        break;
-                    case "playing":
-                        mxcmedia.pause();
-                        console.log("pause");
-                        button.state = "stopped";
-                        break;
-                    }
-                }
-                states: [
-                    State {
-                        name: "stopped"
-
-                        PropertyChanges {
-                            target: button
-                            image: ":/icons/icons/ui/play-sign.png"
-                        }
-
-                    },
-                    State {
-                        name: "playing"
-
-                        PropertyChanges {
-                            target: button
-                            image: ":/icons/icons/ui/pause-symbol.png"
-                        }
-
-                    }
-                ]
-
-                CursorShape {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                }
-
-                MxcMedia {
-                    id: mxcmedia
-
-                    roomm: room
-                    onError: console.log(errorString)
-                    onMediaStatusChanged: {
-                        if (status == MxcMedia.LoadedMedia) {
-                            progress.updatePositionTexts();
-                            button.state = "stopped";
-                        }
-                    }
-                    onStateChanged: {
-                        if (state == MxcMedia.StoppedState)
-                            button.state = "stopped";
-
-                    }
-                }
-
-            }
-
-            ColumnLayout {
-                id: col
-
-                Text {
-                    Layout.fillWidth: true
-                    text: body
-                    elide: Text.ElideRight
-                    color: Nheko.colors.text
-                }
-
-                Text {
-                    Layout.fillWidth: true
-                    text: filesize
-                    textFormat: Text.PlainText
-                    elide: Text.ElideRight
-                    color: Nheko.colors.text
-                }
-
-            }
-
+        background: Rectangle {
+            color: Nheko.colors.base
         }
 
     }

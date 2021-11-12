@@ -1,0 +1,3 @@
+module im.nheko.UI.Media
+VolumeSlider 1.0 VolumeSlider.qml
+MediaControls 1.0 MediaControls.qml
