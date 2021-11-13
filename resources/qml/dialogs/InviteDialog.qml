@@ -147,6 +147,11 @@ ApplicationWindow {
 
                     }
 
+                    CursorShape {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                    }
+
                 }
 
             }
