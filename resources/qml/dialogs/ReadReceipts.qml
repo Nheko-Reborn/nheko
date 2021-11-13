@@ -54,7 +54,6 @@ ApplicationWindow {
                 id: readReceiptsList
 
                 clip: true
-                spacing: Nheko.paddingMedium
                 boundsBehavior: Flickable.StopAtBounds
                 model: readReceipts
 
@@ -64,7 +63,7 @@ ApplicationWindow {
                     onClicked: room.openUserProfile(model.mxid)
                     padding: Nheko.paddingMedium
                     width: ListView.view.width
-                    height: receiptLayout.implicitHeight
+                    height: receiptLayout.implicitHeight + Nheko.paddingSmall * 2
                     hoverEnabled: true
                     ToolTip.visible: hovered
                     ToolTip.text: model.mxid
@@ -76,6 +75,8 @@ ApplicationWindow {
                         id: receiptLayout
 
                         spacing: Nheko.paddingMedium
+                        anchors.verticalCenter: parent.verticalCenter
+                        x: parent.x + Nheko.paddingSmall
 
                         Avatar {
                             width: Nheko.avatarSize

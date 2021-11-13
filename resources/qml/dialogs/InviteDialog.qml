@@ -98,14 +98,13 @@ ApplicationWindow {
             Layout.fillWidth: true
             Layout.fillHeight: true
             model: invitees
-            spacing: Nheko.paddingMedium
 
             delegate: ItemDelegate {
                 id: del
 
                 hoverEnabled: true
                 width: ListView.view.width
-                height: layout.implicitHeight
+                height: layout.implicitHeight + Nheko.paddingSmall * 2
                 onClicked: TimelineManager.openGlobalUserProfile(model.mxid)
                 background: Rectangle {
                     color: del.hovered ? Nheko.colors.dark : inviteDialogRoot.color
@@ -115,6 +114,8 @@ ApplicationWindow {
                     id: layout
 
                     spacing: Nheko.paddingMedium
+                    anchors.verticalCenter: parent.verticalCenter
+                    x: parent.x + Nheko.paddingSmall
 
                     Avatar {
                         width: Nheko.avatarSize

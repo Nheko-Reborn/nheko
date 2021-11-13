@@ -75,7 +75,6 @@ ApplicationWindow {
                 id: memberList
 
                 clip: true
-                spacing: Nheko.paddingMedium
                 boundsBehavior: Flickable.StopAtBounds
                 model: members
 
@@ -91,7 +90,7 @@ ApplicationWindow {
                     onClicked: Rooms.currentRoom.openUserProfile(model.mxid)
                     padding: Nheko.paddingMedium
                     width: ListView.view.width
-                    height: memberLayout.implicitHeight
+                    height: memberLayout.implicitHeight + Nheko.paddingSmall * 2
                     hoverEnabled: true
                     background: Rectangle {
                         color: del.hovered ? Nheko.colors.dark : roomMembersRoot.color
@@ -101,6 +100,8 @@ ApplicationWindow {
                         id: memberLayout
 
                         spacing: Nheko.paddingMedium
+                        anchors.verticalCenter: parent.verticalCenter
+                        x: parent.x + Nheko.paddingSmall
 
                         Avatar {
                             id: avatar
