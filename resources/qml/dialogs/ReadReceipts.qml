@@ -59,13 +59,18 @@ ApplicationWindow {
                 model: readReceipts
 
                 delegate: ItemDelegate {
+                    id: del
+
                     onClicked: room.openUserProfile(model.mxid)
                     padding: Nheko.paddingMedium
-                    width: receiptLayout.implicitWidth
+                    width: ListView.view.width
                     height: receiptLayout.implicitHeight
                     hoverEnabled: true
                     ToolTip.visible: hovered
                     ToolTip.text: model.mxid
+                    background: Rectangle {
+                        color: del.hovered ? Nheko.colors.dark : readReceiptsRoot.color
+                    }
 
                     RowLayout {
                         id: receiptLayout

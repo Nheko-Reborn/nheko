@@ -92,8 +92,9 @@ ApplicationWindow {
                     padding: Nheko.paddingMedium
                     width: ListView.view.width
                     height: memberLayout.implicitHeight
+                    hoverEnabled: true
                     background: Rectangle {
-                        color: roomMembersRoot.color
+                        color: del.hovered ? Nheko.colors.dark : roomMembersRoot.color
                     }
 
                     RowLayout {
