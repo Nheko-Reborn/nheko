@@ -116,6 +116,7 @@ ApplicationWindow {
                     spacing: Nheko.paddingMedium
                     anchors.verticalCenter: parent.verticalCenter
                     x: parent.x + Nheko.paddingSmall
+                    width: del.width - Nheko.paddingSmall * 2
 
                     Avatar {
                         width: Nheko.avatarSize
@@ -148,11 +149,21 @@ ApplicationWindow {
 
                     }
 
-                    CursorShape {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
+                    Item {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
                     }
 
+                    ImageButton {
+                        image: ":/icons/icons/ui/remove-symbol.png"
+                        onClicked: invitees.removeUser(model.mxid)
+                    }
+
+                }
+
+                CursorShape {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
                 }
 
             }

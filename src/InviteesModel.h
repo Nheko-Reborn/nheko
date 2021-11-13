@@ -43,6 +43,7 @@ public:
     InviteesModel(QObject *parent = nullptr);
 
     Q_INVOKABLE void addUser(QString mxid);
+    Q_INVOKABLE void removeUser(QString mxid);
 
     QHash<int, QByteArray> roleNames() const override;
     int rowCount(const QModelIndex & = QModelIndex()) const override

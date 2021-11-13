@@ -30,6 +30,20 @@ InviteesModel::addUser(QString mxid)
     emit countChanged();
 }
 
+void
+InviteesModel::removeUser(QString mxid)
+{
+    for (int i = 0; i < invitees_.length(); ++i) {
+        if (invitees_[i]->mxid_ == mxid) {
+            beginRemoveRows(QModelIndex(), i, i);
+            invitees_.removeAt(i);
+            endRemoveRows();
+            emit countChanged();
+            break;
+        }
+    }
+}
+
 QHash<int, QByteArray>
 InviteesModel::roleNames() const
 {
