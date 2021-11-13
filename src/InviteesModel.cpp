@@ -16,6 +16,10 @@ InviteesModel::InviteesModel(QObject *parent)
 void
 InviteesModel::addUser(QString mxid)
 {
+    for (const auto &invitee : invitees_)
+        if (invitee->mxid_ == mxid)
+            return;
+
     beginInsertRows(QModelIndex(), invitees_.count(), invitees_.count());
 
     auto invitee        = new Invitee{mxid, this};
