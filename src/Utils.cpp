@@ -59,11 +59,14 @@ std::string
 utils::stripReplyFromBody(const std::string &bodyi)
 {
     QString body = QString::fromStdString(bodyi);
-    QRegularExpression plainQuote("^>.*?$\n?", QRegularExpression::MultilineOption);
-    while (body.startsWith(">"))
-        body.remove(plainQuote);
-    if (body.startsWith("\n"))
-        body.remove(0, 1);
+    if (body.startsWith("> <")) {
+        auto segments = body.split('\n');
+        while (!segments.isEmpty() && segments.begin()->startsWith('>'))
+            segments.erase(segments.begin());
+        if (!segments.empty() && segments.first().isEmpty())
+            segments.erase(segments.begin());
+        body = segments.join('\n');
+    }
 
     body.replace("@room", QString::fromUtf8("@\u2060room"));
     return body.toStdString();
