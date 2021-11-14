@@ -482,7 +482,7 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     Layout.preferredWidth: fontMetrics.lineSpacing * 2
                     Layout.preferredHeight: fontMetrics.lineSpacing * 2
-                    image: ":/icons/icons/ui/power-button-off.png"
+                    image: ":/icons/icons/ui/power-off.svg"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Logout")
                     onClicked: Nheko.openLogoutDialog()
@@ -544,11 +544,11 @@ Page {
 
                     Layout.rightMargin: Nheko.paddingMedium
                     Layout.topMargin: Nheko.paddingMedium
-                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    Layout.alignment: Qt.AlignRight | Qt.AlignCenter
                     hoverEnabled: true
                     width: fontMetrics.font.pixelSize
                     height: fontMetrics.font.pixelSize
-                    image: ":/icons/icons/ui/remove-symbol.png"
+                    image: ":/icons/icons/ui/dismiss.svg"
                     ToolTip.visible: closeUnverifiedBubble.hovered
                     ToolTip.text: qsTr("Close")
                     onClicked: unverifiedStuffBubble.visible = false
@@ -613,7 +613,7 @@ Page {
                     hoverEnabled: true
                     width: 22
                     height: 22
-                    image: ":/icons/icons/ui/plus-black-symbol.png"
+                    image: ":/icons/icons/ui/add-square-button.svg"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Start a new chat")
                     Layout.margins: Nheko.paddingMedium
@@ -642,7 +642,7 @@ Page {
                     hoverEnabled: true
                     width: 22
                     height: 22
-                    image: ":/icons/icons/ui/speech-bubbles-comment-option.png"
+                    image: ":/icons/icons/ui/speech-bubbles.svg"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Room directory")
                     Layout.margins: Nheko.paddingMedium
@@ -658,7 +658,7 @@ Page {
                     hoverEnabled: true
                     width: 22
                     height: 22
-                    image: ":/icons/icons/ui/settings.png"
+                    image: ":/icons/icons/ui/settings.svg"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("User settings")
                     Layout.margins: Nheko.paddingMedium

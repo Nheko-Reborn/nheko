@@ -32,7 +32,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
     if (index.row() == 0) {
         switch (role) {
         case CommunitiesModel::Roles::AvatarUrl:
-            return QString(":/icons/icons/ui/world.png");
+            return QString(":/icons/icons/ui/world.svg");
         case CommunitiesModel::Roles::DisplayName:
             return tr("All rooms");
         case CommunitiesModel::Roles::Tooltip:
@@ -64,7 +64,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         if (tag == "m.favourite") {
             switch (role) {
             case CommunitiesModel::Roles::AvatarUrl:
-                return QString(":/icons/icons/ui/star.png");
+                return QString(":/icons/icons/ui/star.svg");
             case CommunitiesModel::Roles::DisplayName:
                 return tr("Favourites");
             case CommunitiesModel::Roles::Tooltip:
@@ -73,7 +73,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         } else if (tag == "m.lowpriority") {
             switch (role) {
             case CommunitiesModel::Roles::AvatarUrl:
-                return QString(":/icons/icons/ui/lowprio.png");
+                return QString(":/icons/icons/ui/lowprio.svg");
             case CommunitiesModel::Roles::DisplayName:
                 return tr("Low Priority");
             case CommunitiesModel::Roles::Tooltip:
@@ -82,7 +82,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         } else if (tag == "m.server_notice") {
             switch (role) {
             case CommunitiesModel::Roles::AvatarUrl:
-                return QString(":/icons/icons/ui/tag.png");
+                return QString(":/icons/icons/ui/tag.svg");
             case CommunitiesModel::Roles::DisplayName:
                 return tr("Server Notices");
             case CommunitiesModel::Roles::Tooltip:
@@ -91,7 +91,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         } else {
             switch (role) {
             case CommunitiesModel::Roles::AvatarUrl:
-                return QString(":/icons/icons/ui/tag.png");
+                return QString(":/icons/icons/ui/tag.svg");
             case CommunitiesModel::Roles::DisplayName:
             case CommunitiesModel::Roles::Tooltip:
                 return tag.mid(2);

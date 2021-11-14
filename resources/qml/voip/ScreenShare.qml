@@ -125,7 +125,7 @@ Popup {
 
             Button {
                 text: qsTr("Share")
-                icon.source: "qrc:/icons/icons/ui/screen-share.png"
+                icon.source: "qrc:/icons/icons/ui/screen-share.svg"
                 onClicked: {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;

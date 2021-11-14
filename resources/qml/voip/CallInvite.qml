@@ -59,7 +59,7 @@ Popup {
             Layout.bottomMargin: msgView.height / 25
 
             Image {
-                property string image: CallManager.callType == CallType.VIDEO ? ":/icons/icons/ui/video-call.png" : ":/icons/icons/ui/place-call.png"
+                property string image: CallManager.callType == CallType.VIDEO ? ":/icons/icons/ui/video.svg" : ":/icons/icons/ui/place-call.svg"
 
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: msgView.height / 10
@@ -90,7 +90,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: deviceCombos.imageSize
                     Layout.preferredHeight: deviceCombos.imageSize
-                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.png?" + Nheko.colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.svg?" + Nheko.colors.windowText
                 }
 
                 ComboBox {
@@ -109,7 +109,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: deviceCombos.imageSize
                     Layout.preferredHeight: deviceCombos.imageSize
-                    source: "image://colorimage/:/icons/icons/ui/video-call.png?" + Nheko.colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/video.svg?" + Nheko.colors.windowText
                 }
 
                 ComboBox {
@@ -132,7 +132,7 @@ Popup {
                 if (CallManager.mics.length == 0) {
                     var dialog = deviceError.createObject(timelineRoot, {
                         "errorString": qsTr("No microphone found."),
-                        "image": ":/icons/icons/ui/place-call.png"
+                        "image": ":/icons/icons/ui/place-call.svg"
                     });
                     dialog.open();
                     return false;
@@ -157,7 +157,7 @@ Popup {
                 }
 
                 contentItem: Image {
-                    source: "image://colorimage/:/icons/icons/ui/end-call.png?#ffffff"
+                    source: "image://colorimage/:/icons/icons/ui/end-call.svg?#ffffff"
                 }
 
             }
@@ -165,7 +165,7 @@ Popup {
             RoundButton {
                 id: acceptButton
 
-                property string image: CallManager.callType == CallType.VIDEO ? ":/icons/icons/ui/video-call.png" : ":/icons/icons/ui/place-call.png"
+                property string image: CallManager.callType == CallType.VIDEO ? ":/icons/icons/ui/video.svg" : ":/icons/icons/ui/place-call.svg"
 
                 implicitWidth: buttonLayout.buttonSize
                 implicitHeight: buttonLayout.buttonSize

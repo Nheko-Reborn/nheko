@@ -90,7 +90,7 @@ Menu {
                     id: clearSearch
 
                     visible: emojiSearch.text !== ''
-                    icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.png?" + (clearSearch.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
+                    icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
                     focusPolicy: Qt.NoFocus
                     onClicked: emojiSearch.clear()
                     hoverEnabled: true
@@ -105,7 +105,7 @@ Menu {
                     Image {
                         height: parent.height - 2 * Nheko.paddingSmall
                         width: height
-                        source: "image://colorimage/:/icons/icons/ui/round-remove-button.png?" + (clearSearch.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
+                        source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
 
                         anchors {
                             verticalCenter: parent.verticalCenter
@@ -204,42 +204,42 @@ Menu {
                     model: ListModel {
                         // TODO: Would like to get 'simple' icons for the categories
                         ListElement {
-                            image: ":/icons/icons/emoji-categories/people.png"
+                            image: ":/icons/icons/emoji-categories/people.svg"
                             category: Emoji.Category.People
                         }
 
                         ListElement {
-                            image: ":/icons/icons/emoji-categories/nature.png"
+                            image: ":/icons/icons/emoji-categories/nature.svg"
                             category: Emoji.Category.Nature
                         }
 
                         ListElement {
-                            image: ":/icons/icons/emoji-categories/foods.png"
+                            image: ":/icons/icons/emoji-categories/foods.svg"
                             category: Emoji.Category.Food
                         }
 
                         ListElement {
-                            image: ":/icons/icons/emoji-categories/activity.png"
+                            image: ":/icons/icons/emoji-categories/activity.svg"
                             category: Emoji.Category.Activity
                         }
 
                         ListElement {
-                            image: ":/icons/icons/emoji-categories/travel.png"
+                            image: ":/icons/icons/emoji-categories/travel.svg"
                             category: Emoji.Category.Travel
                         }
 
                         ListElement {
-                            image: ":/icons/icons/emoji-categories/objects.png"
+                            image: ":/icons/icons/emoji-categories/objects.svg"
                             category: Emoji.Category.Objects
                         }
 
                         ListElement {
-                            image: ":/icons/icons/emoji-categories/symbols.png"
+                            image: ":/icons/icons/emoji-categories/symbols.svg"
                             category: Emoji.Category.Symbols
                         }
 
                         ListElement {
-                            image: ":/icons/icons/emoji-categories/flags.png"
+                            image: ":/icons/icons/emoji-categories/flags.svg"
                             category: Emoji.Category.Flags
                         }
 

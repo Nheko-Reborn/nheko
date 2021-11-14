@@ -33,7 +33,7 @@ Item {
                 id: img
 
                 anchors.centerIn: parent
-                source: "qrc:/icons/icons/ui/arrow-pointing-down.png"
+                source: "qrc:/icons/icons/ui/download.svg"
                 fillMode: Image.Pad
             }
 

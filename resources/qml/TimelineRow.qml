@@ -169,7 +169,7 @@ Item {
             width: 16
             sourceSize.width: 16
             sourceSize.height: 16
-            source: "image://colorimage/:/icons/icons/ui/edit.png?" + ((eventId == chat.model.edit) ? Nheko.colors.highlight : Nheko.colors.buttonText)
+            source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == chat.model.edit) ? Nheko.colors.highlight : Nheko.colors.buttonText)
             ToolTip.visible: editHovered.hovered
             ToolTip.text: qsTr("Edited")
 

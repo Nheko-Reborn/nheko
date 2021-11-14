@@ -12,20 +12,27 @@ Image {
     property bool encrypted: false
     property int trust: Crypto.Unverified
 
+    property string sourceUrl: {
+        if (width <= 16 || height <= 16)
+            return "image://colorimage/:/icons/icons/ui/shield-small-filled.svg?";
+        else
+            return "image://colorimage/:/icons/icons/ui/shield.svg?";
+    }
+
     width: 16
     height: 16
     source: {
         if (encrypted) {
             switch (trust) {
             case Crypto.Verified:
-                return "image://colorimage/:/icons/icons/ui/lock.png?green";
+                return sourceUrl + "green";
             case Crypto.TOFU:
-                return "image://colorimage/:/icons/icons/ui/lock.png?" + Nheko.colors.buttonText;
+                return sourceUrl + Nheko.colors.buttonText;
             default:
-                return "image://colorimage/:/icons/icons/ui/lock.png?" + Nheko.theme.error;
+                return sourceUrl + Nheko.theme.error;
             }
         } else {
-            return "image://colorimage/:/icons/icons/ui/unlock.png?" + Nheko.theme.error;
+            return sourceUrl + Nheko.theme.error;
         }
     }
     ToolTip.visible: ma.hovered

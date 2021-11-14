@@ -67,7 +67,7 @@ Rectangle {
             Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
             Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
             visible: showBackButton
-            image: ":/icons/icons/ui/angle-pointing-to-left.png"
+            image: ":/icons/icons/ui/angle-arrow-left.svg"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Back to room list")
             onClicked: Rooms.resetCurrentRoom()
@@ -145,7 +145,7 @@ Rectangle {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
             Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
-            image: ":/icons/icons/ui/vertical-ellipsis.png"
+            image: ":/icons/icons/ui/options.svg"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Room options")
             onClicked: roomOptionsMenu.open(roomOptionsButton)

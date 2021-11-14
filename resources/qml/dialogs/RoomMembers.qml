@@ -56,7 +56,7 @@ ApplicationWindow {
 
         ImageButton {
             Layout.alignment: Qt.AlignHCenter
-            image: ":/icons/icons/ui/add-square-button.png"
+            image: ":/icons/icons/ui/add-square-button.svg"
             hoverEnabled: true
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Invite more people")

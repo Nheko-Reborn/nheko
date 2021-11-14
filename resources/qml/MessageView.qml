@@ -83,7 +83,7 @@ ScrollView {
                     buttonTextColor: Nheko.colors.buttonText
                     width: 16
                     hoverEnabled: true
-                    image: ":/icons/icons/ui/edit.png"
+                    image: ":/icons/icons/ui/edit.svg"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Edit")
                     onClicked: {
@@ -99,7 +99,7 @@ ScrollView {
                     visible: chat.model ? chat.model.permissions.canSend(MtxEvent.Reaction) : false
                     width: 16
                     hoverEnabled: true
-                    image: ":/icons/icons/ui/smile.png"
+                    image: ":/icons/icons/ui/smile.svg"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("React")
                     onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(reactButton, function(emoji) {
@@ -115,7 +115,7 @@ ScrollView {
                     visible: chat.model ? chat.model.permissions.canSend(MtxEvent.TextMessage) : false
                     width: 16
                     hoverEnabled: true
-                    image: ":/icons/icons/ui/mail-reply.png"
+                    image: ":/icons/icons/ui/reply.svg"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Reply")
                     onClicked: chat.model.replyAction(row.model.eventId)
@@ -126,7 +126,7 @@ ScrollView {
 
                     width: 16
                     hoverEnabled: true
-                    image: ":/icons/icons/ui/vertical-ellipsis.png"
+                    image: ":/icons/icons/ui/options.svg"
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Options")
                     onClicked: messageContextMenu.show(row.model.eventId, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)

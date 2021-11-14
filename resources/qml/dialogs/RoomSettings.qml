@@ -122,7 +122,7 @@ ApplicationWindow {
 
         ImageButton {
             Layout.alignment: Qt.AlignHCenter
-            image: ":/icons/icons/ui/edit.png"
+            image: ":/icons/icons/ui/edit.svg"
             visible: roomSettings.canChangeNameAndTopic
             onClicked: roomSettings.openEditModal()
         }

@@ -101,11 +101,11 @@ Rectangle {
                 image: {
                     if (control.mediaLoaded) {
                         if (control.mediaState == MediaPlayer.PlayingState)
-                            return ":/icons/icons/ui/pause-symbol.png";
+                            return ":/icons/icons/ui/pause-symbol.svg";
                         else
-                            return ":/icons/icons/ui/play-sign.png";
+                            return ":/icons/icons/ui/play-sign.svg";
                     } else {
-                        return ":/icons/icons/ui/arrow-pointing-down.png";
+                        return ":/icons/icons/ui/download.svg";
                     }
                 }
                 onClicked: control.mediaLoaded ? control.playPauseActivated() : control.loadActivated()
@@ -120,9 +120,9 @@ Rectangle {
                 Layout.preferredWidth: 24
                 image: {
                     if (control.muted || control.desiredVolume <= 0)
-                        return ":/icons/icons/ui/volume-off-indicator.png";
+                        return ":/icons/icons/ui/volume-off-indicator.svg";
                     else
-                        return ":/icons/icons/ui/volume-up.png";
+                        return ":/icons/icons/ui/volume-up.svg";
                 }
                 onClicked: control.muted = !control.muted
             }

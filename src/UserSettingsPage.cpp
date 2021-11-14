@@ -715,7 +715,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
     topLayout_ = new QVBoxLayout{this};
 
     QIcon icon;
-    icon.addFile(":/icons/icons/ui/angle-pointing-to-left.png");
+    icon.addFile(":/icons/icons/ui/angle-arrow-left.svg");
 
     auto backBtn_ = new FlatButton{this};
     backBtn_->setMinimumSize(QSize(24, 24));
