@@ -46,15 +46,6 @@ Item {
         smooth: true
         mipmap: true
 
-        TapHandler {
-            enabled: type == MtxEvent.ImageMessage && img.status == Image.Ready
-            onSingleTapped: {
-                TimelineManager.openImageOverlay(url, room.data.eventId);
-                eventPoint.accepted = true;
-            }
-            gesturePolicy: TapHandler.ReleaseWithinBounds
-        }
-
     }
 
     MxcAnimatedImage {
@@ -65,6 +56,16 @@ Item {
         roomm: room
         play: !Settings.animateImagesOnHover || mouseArea.hovered
         eventId: parent.eventId
+    }
+
+    TapHandler {
+        // TODO(Nico): Replace this with a qml thingy, that also can show animated images
+        enabled: type == MtxEvent.ImageMessage && (img.status == Image.Ready || mxcimage.loaded)
+        onSingleTapped: {
+            TimelineManager.openImageOverlay(url, room.data.eventId);
+            eventPoint.accepted = true;
+        }
+        gesturePolicy: TapHandler.ReleaseWithinBounds
     }
 
     HoverHandler {
