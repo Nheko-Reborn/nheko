@@ -27,12 +27,12 @@
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Ativar microfone</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation>Silenciar microfone</translation>
+        <translation>Desativar microfone</translation>
     </message>
 </context>
 <context>
@@ -143,12 +143,12 @@
     <message>
         <location line="+13"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>A cache no seu disco é mais recente do que aquela que esta versão do Nheko suporta. Por favor atualize o Nheko ou limpe a sua cache.</translation>
     </message>
     <message>
         <location line="+41"/>
         <source>Failed to open database, logging out!</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao abrir base de dados. A terminar sessão!</translation>
     </message>
     <message>
         <location line="+314"/>
@@ -310,7 +310,7 @@
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+44"/>
         <source>Hide rooms with this tag or from this space by default.</source>
-        <translation>Ocultar, por defeito, salas com esta etiqueta ou pertencentes a este espaço.</translation>
+        <translation>Ocultar, por norma, salas com esta etiqueta ou pertencentes a este espaço.</translation>
     </message>
 </context>
 <context>
@@ -597,12 +597,12 @@
     <message>
         <location line="+2"/>
         <source>Verification messages received out of order!</source>
-        <translation type="unfinished"></translation>
+        <translation>Mensagens de verificação recebidas fora de ordem!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown verification error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Erro de verificação desconhecido.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -638,7 +638,7 @@
     <message>
         <location line="+61"/>
         <source>State key</source>
-        <translation type="unfinished"></translation>
+        <translation>Chave de estado</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -648,7 +648,7 @@
     <message>
         <location line="+10"/>
         <source>Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation>Atribuição</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -665,12 +665,12 @@
     <message>
         <location line="-30"/>
         <source>Shortcode</source>
-        <translation type="unfinished">Código</translation>
+        <translation>Código</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Body</source>
-        <translation type="unfinished">Corpo</translation>
+        <translation>Corpo</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -803,12 +803,12 @@
     <message>
         <location filename="../qml/dialogs/JoinRoomDialog.qml" line="+14"/>
         <source>Join room</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrar na sala</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished"></translation>
+        <translation>ID ou alcunha da sala</translation>
     </message>
 </context>
 <context>
@@ -816,12 +816,12 @@
     <message>
         <location filename="../qml/dialogs/LeaveRoomDialog.qml" line="+15"/>
         <source>Leave room</source>
-        <translation type="unfinished">Sair da sala</translation>
+        <translation>Sair da sala</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished"></translation>
+        <translation>Tem a certeza que quer sair?</translation>
     </message>
 </context>
 <context>
@@ -865,7 +865,7 @@ Se o Nheko não conseguir encontrar o seu servidor, irá apresentar um campo ond
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation>Um nome para este dispositivo, que será exibido noutros quando os estiver a verificar. Caso nenhum seja fornecido, será usado um pré-definido.</translation>
+        <translation>Um nome para este dispositivo, que será exibido noutros quando os estiver a verificar. Caso nenhum seja fornecido, será usado um predefinido.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -943,17 +943,17 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location filename="../qml/dialogs/LogoutDialog.qml" line="+13"/>
         <source>Log out</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminar sessão</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A call is in progress. Log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Há uma chamada em curso. Terminar sessão?</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Are you sure you want to log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Tem a certeza que quer terminar a sessão?</translation>
     </message>
 </context>
 <context>
@@ -1193,7 +1193,7 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location line="+16"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Para permitir que outros utilizadores vejam que dispositivos realmente lhe pertencem, pode verificá-los. Este processo permite que a cópia de segurança das chaves funcione automaticamente. Verificar um dispositivo não verificado agora? (Por favor, certifique-se que tem um daqueles dispositivos disponíveis)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1246,7 +1246,7 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location filename="../qml/NotificationWarning.qml" line="+32"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished"></translation>
+        <translation>Está prestes a notificar toda a sala</translation>
     </message>
 </context>
 <context>
@@ -1468,7 +1468,7 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location line="+11"/>
         <source>Choose custom homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Escolher servidor personalizado</translation>
     </message>
 </context>
 <context>
@@ -1550,24 +1550,24 @@ Exemplo: https://servidor.meu:8787</translation>
         <location line="+40"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Encriptação não configurada</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unverified login</source>
         <extracomment>The user just signed in with this device and hasn&apos;t verified their master key.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Sessão não verificada</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please verify your other devices</source>
         <extracomment>There are unverified devices signed in to this account.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, verifique os seus outros dispositivos</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Close</source>
-        <translation type="unfinished">Fechar</translation>
+        <translation>Fechar</translation>
     </message>
     <message>
         <location line="+65"/>
@@ -1805,27 +1805,27 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location filename="../qml/Root.qml" line="+255"/>
         <source>Please enter your login password to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, insira a sua palavra-passe para continuar:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid email address to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, insira um endereço de correio eletrónico válido para continuar:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid phone number to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, insira um número de telefone válido para continuar:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter the token, which has been sent to you:</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, insira o código que lhe foi enviado:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Wait for the confirmation link to arrive, then continue.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aguarde pela chegada da ligação de confirmação, depois continue.</translation>
     </message>
 </context>
 <context>
@@ -1892,7 +1892,7 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation type="unfinished"></translation>
+        <translation>O Nheko não se conseguiu ligar ao armazenamento seguro para guardar os segredos de encriptação. Isto pode-se dever a vários motivos. Verifique se o seu serviço D-Bus está a correr e se configurou um serviço como o KWallet, Gnome Keyring, KeePassXC ou o equivalente da sua plataforma. Caso continue a ter problemas, não hesite em abrir um tópico aqui: https://github.com/Nheko-Reborn/nheko/issues</translation>
     </message>
 </context>
 <context>
@@ -1900,49 +1900,51 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location filename="../qml/SelfVerificationCheck.qml" line="+39"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Esta é a sua chave de recuperação. Irá necessitar dela para restabelecer o acesso às suas mensagens encriptadas e chaves de verificação. Mantenha-a segura. Não a partilhe com ninguém e não a perca! Não aceite dinheiro em troca da chave!</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Encryption setup successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Encriptação configurada com sucesso</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Failed to setup encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao configurar encriptação: %1</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Setup Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurar encriptação</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
-        <translation type="unfinished"></translation>
+        <translation>Olá, seja bem-vindo à Matrix!
+Parece que é a sua primeira vez aqui. Antes de poder encriptar as suas mensagens de forma segura, é necessário configurar algumas coisas. Pode premir &quot;Aceitar&quot; logo, ou ajustar algumas opções básicas, que tentaremos explicar como funcionam. Poderá saltar essas partes, mas elas podem vir a ser úteis!</translation>
     </message>
     <message>
         <location line="+124"/>
         <source>Activate Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Ativar encriptação</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.
 If you choose verify, you need to have the other device available. If you choose &quot;enter passphrase&quot;, you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Parece que já possui configurações de encriptação nesta conta. Para poder aceder às suas mensagens encriptadas e fazer este dispositivo aparecer como de confiança, pode ou verificar um dispositivo existente, ou inserir a sua palavra-passe de recuperação, caso a tenha. Por favor, escolha uma das opções abaixo.
+Se escolher a verificação, terá que ter o outro dispositivo disponível. Se escolher a palavra-passe, irá necessitar da chave de recuperação. Também pode cancelar e verificar-se mais tarde.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>verify</source>
-        <translation type="unfinished"></translation>
+        <translation>verificar</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>enter passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>inserir palavra-passe</translation>
     </message>
 </context>
 <context>
@@ -1950,32 +1952,32 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+42"/>
         <source>Failed to create keys for cross-signing!</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao criar chaves para assinatura cruzada!</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to create keys for online key backup!</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao criar chaves para a cópia de segurança de chaves online!</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Failed to create keys for secure server side secret storage!</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao criar chaves para o armazenamento seguro no servidor!</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Encryption Setup</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuração de encriptação</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha na configuração de encriptação: %1</translation>
     </message>
     <message>
         <location line="+140"/>
         <source>Identity key changed. This breaks E2EE, so logging out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Chave de identificação alterada. Isto quebra a encriptação, portanto, a terminar sessão...</translation>
     </message>
 </context>
 <context>
@@ -2264,7 +2266,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+137"/>
         <source>No preview available</source>
-        <translation type="unfinished">Pré-visualização não disponível</translation>
+        <translation>Pré-visualização não disponível</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2317,7 +2319,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+2"/>
         <source>This room contains verified devices and devices which have never changed their master key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Esta sala contém dispositivos verificados e/ou que nunca alteraram a sua chave mestra.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2368,24 +2370,24 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../../src/ui/UIA.cpp" line="+59"/>
         <source>No available registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenhum processo de registo disponível!</translation>
     </message>
     <message>
         <location line="+26"/>
         <location line="+24"/>
         <location line="+17"/>
         <source>Registration aborted</source>
-        <translation type="unfinished"></translation>
+        <translation>Registo abortado</translation>
     </message>
     <message>
         <location line="-27"/>
         <source>Please enter a valid registration token.</source>
-        <translation type="unfinished">Por favor, insira um testemunho de registo válido.</translation>
+        <translation>Por favor, insira um código de registo válido.</translation>
     </message>
     <message>
         <location line="+165"/>
         <source>Invalid token</source>
-        <translation type="unfinished"></translation>
+        <translation>Código inválido</translation>
     </message>
 </context>
 <context>
@@ -2459,22 +2461,22 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+9"/>
         <source>Refresh device list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Atualizar a lista de dispositivos.</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Sign out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminar sessão neste dispositivo.</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Change device name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alterar nome do dispositivo.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Last seen %1 from %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ativo pela última vez a %1 em %2</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -2484,12 +2486,12 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+152"/>
         <source>Sign out device %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminar sessão no dispositivo %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>You signed out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminou a sessão neste dispositivo.</translation>
     </message>
     <message>
         <location line="+225"/>
@@ -2518,7 +2520,7 @@ If you choose verify, you need to have the other device available. If you choose
         <location filename="../../src/UserSettingsPage.cpp" line="+374"/>
         <location filename="../../src/UserSettingsPage.h" line="+204"/>
         <source>Default</source>
-        <translation>Padrão</translation>
+        <translation>Predefinido</translation>
     </message>
 </context>
 <context>
@@ -2526,7 +2528,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+567"/>
         <source>Minimize to tray</source>
-        <translation type="unfinished">Minimizar para bandeja</translation>
+        <translation type="unfinished">Minimizar para a bandeja</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2551,7 +2553,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+104"/>
         <source>Default</source>
-        <translation>Padrão</translation>
+        <translation>Predefinido</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -2566,7 +2568,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+4"/>
         <source>REQUEST</source>
-        <translation type="unfinished"></translation>
+        <translation>PEDIR</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2581,13 +2583,14 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar a aplicação em segundo plano sem mostrar a janela do cliente.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - Circle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alterar a aparência de avatares de utilizador nas conversas.
+DESLIGADO - quadrados, LIGADO - circulares.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2597,18 +2600,19 @@ OFF - square, ON - Circle.</source>
     <message>
         <location line="+5"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar uma coluna contendo grupos e etiquetas ao lado da lista de salas.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Desencriptar mensagens na barra lateral</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Desencriptar mensagens exibidas na barra lateral.
+Apenas afeta mensagens em conversas encriptadas.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2644,7 +2648,7 @@ Defina como 0 para desfocar imediatamente após perder a atenção. Valor máxim
     <message>
         <location line="+2"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar botões para resposta rápida, reações ou acesso a opções adicionais junto de cada mensagem.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2703,17 +2707,18 @@ Estado exibido ao lado da data.</translation>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished"></translation>
+        <translation>Permitir Markdown em mensagens.
+Quando desativada, todas as mensagens serão enviadas em texto simples.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Reproduzir imagens animadas apenas quando lhes passar o rato por cima.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Desktop notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notificações de ambiente de trabalho</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2723,13 +2728,13 @@ When disabled, all messages are sent as a plain text.</source>
     <message>
         <location line="+1"/>
         <source>Alert on notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Alertar para notificações</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar alerta quando é recebida uma mensagem.</translation>
     </message>
     <message>
         <location line="+2"/>
