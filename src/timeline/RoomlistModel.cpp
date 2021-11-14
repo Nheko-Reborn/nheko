@@ -651,14 +651,6 @@ RoomlistModel::setCurrentRoom(QString roomid)
         }
 
         emit currentRoomChanged();
-    } else {
-        currentRoom_ = nullptr;
-
-        RoomPreview p;
-        p.roomid_           = roomid;
-        currentRoomPreview_ = std::move(p);
-        emit currentRoomChanged();
-        nhlog::ui()->debug("Switched to (empty): {}", roomid.toStdString());
     }
 }
 
