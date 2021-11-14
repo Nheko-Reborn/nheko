@@ -3828,17 +3828,24 @@ Cache::getMembersWithKeys(const std::string &room_id, bool verified_only)
 QString
 Cache::displayName(const QString &room_id, const QString &user_id)
 {
-    if (auto info = getMember(room_id.toStdString(), user_id.toStdString());
-        info && !info->name.empty())
-        return QString::fromStdString(info->name);
+    return QString::fromStdString(displayName(room_id.toStdString(), user_id.toStdString()));
+}
 
-    return user_id;
+static bool
+isDisplaynameSafe(const std::string &s)
+{
+    for (QChar c : QString::fromStdString(s).toUcs4()) {
+        if (c.isPrint() && !c.isSpace())
+            return false;
+    }
+
+    return true;
 }
 
 std::string
 Cache::displayName(const std::string &room_id, const std::string &user_id)
 {
-    if (auto info = getMember(room_id, user_id); info && !info->name.empty())
+    if (auto info = getMember(room_id, user_id); info && !isDisplaynameSafe(info->name))
         return info->name;
 
     return user_id;
