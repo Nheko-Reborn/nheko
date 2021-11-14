@@ -59,6 +59,7 @@
 - Right click -> copy address location.
 - Forward messages. (Jedi18)
 - Alt-F to forward messages.
+- A new video and audio player, that should look a bit nicer.
 
 ### Improvements
 
@@ -173,10 +174,13 @@
 - Fix rooms not showing, when groups endpoint is missing.
 - Don't use deprecated parameters in /login.
 - Fix encoding issues when translating matrix.to to matrix: URIs.
+- Prevent edits from stripping the whole message, if it had a quote.
 
 ### Packaging changes
 
 - Removed the AppImage
+- Removed dependency on boost
+- Now depends on [coeurl](https://nheko.im/nheko-reborn/coeurl), which depends on libevent and libcurl.
 
 ## [0.8.2] -- 2021-04-23
 
