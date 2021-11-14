@@ -143,12 +143,12 @@
     <message>
         <location line="+13"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cache pada disk Anda lebih baru daripada versi yang didukung Nheko ini. Harap perbarui Nheko atau bersihkan cache Anda.</translation>
     </message>
     <message>
         <location line="+41"/>
         <source>Failed to open database, logging out!</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal untuk membuka basisdata! Anda telah dikeluarkan.</translation>
     </message>
     <message>
         <location line="+314"/>
@@ -1976,7 +1976,7 @@ Jika Anda memilih verifikasi, Anda harus memiliki perangkat lain yang tersedia. 
     <message>
         <location line="+140"/>
         <source>Identity key changed. This breaks E2EE, so logging out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunci identitas telah diubah. Ini merusak enkripsi ujung-ke-ujung, jadi Anda dikeluarkan.</translation>
     </message>
 </context>
 <context>
