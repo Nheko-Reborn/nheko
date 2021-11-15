@@ -19,11 +19,22 @@ security unlock-keychain -p "${RUNNER_USER_PW}" login.keychain
   # mkdir -p nheko.app/Contents/Frameworks
   # find "${ICU_LIB}" -type l -name "*.dylib" -exec cp -a -n {} nheko.app/Contents/Frameworks/ \; || true
 
-  macdeployqt nheko.app -dmg -always-overwrite -qmldir=../resources/qml/ -sign-for-notarization="${APPLE_DEV_IDENTITY}"
+  #macdeployqt nheko.app -dmg -always-overwrite -qmldir=../resources/qml/ -sign-for-notarization="${APPLE_DEV_IDENTITY}"
+  macdeployqt nheko.app -always-overwrite -qmldir=../resources/qml/
 
-  user=$(id -nu)
-  chown "${user}" nheko.dmg
+  # user=$(id -nu)
+  # chown "${user}" nheko.dmg
 )
+
+echo "[INFO] Signing app contents"
+find "build/nheko.app/Contents"|while read fname; do
+    if [[ -f $fname ]]; then
+        echo "[INFO] Signing $fname"
+        codesign --force --timestamp --options=runtime --sign "${APPLE_DEV_IDENTITY}" "$fname"
+    fi
+done
+
+codesign --force --timestamp --options=runtime --sign "${APPLE_DEV_IDENTITY}" "build/nheko.app"
 
 NOTARIZE_SUBMIT_LOG=$(mktemp -t notarize-submit)
 NOTARIZE_STATUS_LOG=$(mktemp -t notarize-status)
@@ -59,7 +70,7 @@ while sleep 60 && date; do
   if [ -n "${isFailure}" ]; then
       echo "Notarization failed"
       cat "$NOTARIZE_STATUS_LOG" 1>&2
-      return 1
+      exit 1
   fi
   echo "Notarization not finished yet, sleep 1m then check again..."
 done
