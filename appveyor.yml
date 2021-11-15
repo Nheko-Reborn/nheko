@@ -54,12 +54,19 @@ build_script:
 
     - cmake --build build --config Release
 
+    - git clone https://github.com/Nheko-Reborn/qt-jdenticon.git
+    - cd qt-jdenticon
+    - qmake
+    - nmake
+    - cd ..
+
 after_build:
     # Variables
     - set BUILD=%APPVEYOR_BUILD_FOLDER%
     - echo %BUILD%
     - mkdir NhekoRelease
     - copy build\Release\nheko.exe NhekoRelease\nheko.exe
+    - copy qt-jdenticon\release\qtjdenticon0.dll NhekoRelease\qtjdenticon0.dll
     - copy build\_deps\cmark-build\src\Release\cmark.dll NhekoRelease\cmark.dll
     - windeployqt --qmldir resources\qml\ NhekoRelease\nheko.exe
 
