@@ -147,6 +147,16 @@ modules:
         tag: 1.18.3
         type: git
         url: https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad.git
+  - buildsystem: qmake
+    name: qt-jdenticon
+    no-make-install: true
+    build-commands:
+      - mkdir -p /app/bin/
+      - cp libqtjdenticon.so /app/bin/
+    sources:
+      - commit: 77eb0d62441e03bbbfc2b1d2057c4045ac87fb85
+        type: git
+        url: https://github.com/Nheko-Reborn/qt-jdenticon.git
   - buildsystem: meson
     config-opts:
       - -Ddefault_library=static
