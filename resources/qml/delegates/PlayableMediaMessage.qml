@@ -67,6 +67,7 @@ Item {
                 fillMode: VideoOutput.PreserveAspectFit
                 source: mxcmedia
                 flushMode: VideoOutput.FirstFrame
+                orientation: mxcmedia.orientation
             }
 
         }

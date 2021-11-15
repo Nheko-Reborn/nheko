@@ -25,23 +25,10 @@ class MxcMediaProxy : public QMediaPlayer
     Q_PROPERTY(QString eventId READ eventId WRITE setEventId NOTIFY eventIdChanged)
     Q_PROPERTY(QAbstractVideoSurface *videoSurface READ getVideoSurface WRITE setVideoSurface)
     Q_PROPERTY(bool loaded READ loaded NOTIFY loadedChanged)
+    Q_PROPERTY(int orientation READ orientation NOTIFY orientationChanged)
+
 public:
-    MxcMediaProxy(QObject *parent = nullptr)
-      : QMediaPlayer(parent)
-    {
-        connect(this, &MxcMediaProxy::eventIdChanged, &MxcMediaProxy::startDownload);
-        connect(this, &MxcMediaProxy::roomChanged, &MxcMediaProxy::startDownload);
-        connect(this,
-                qOverload<QMediaPlayer::Error>(&MxcMediaProxy::error),
-                [this](QMediaPlayer::Error error) {
-                    nhlog::ui()->info("Media player error {} and errorStr {}",
-                                      error,
-                                      this->errorString().toStdString());
-                });
-        connect(this, &MxcMediaProxy::mediaStatusChanged, [this](QMediaPlayer::MediaStatus status) {
-            nhlog::ui()->info("Media player status {} and error {}", status, this->error());
-        });
-    }
+    MxcMediaProxy(QObject *parent = nullptr);
 
     bool loaded() const { return buffer.size() > 0; }
     QString eventId() const { return eventId_; }
@@ -59,11 +46,15 @@ public:
     void setVideoSurface(QAbstractVideoSurface *surface);
     QAbstractVideoSurface *getVideoSurface();
 
+    int orientation() const;
+
 signals:
     void roomChanged();
     void eventIdChanged();
     void loadedChanged();
     void newBuffer(QMediaContent, QIODevice *buf);
+
+    void orientationChanged();
 
 private slots:
     void startDownload();

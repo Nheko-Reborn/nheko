@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QMediaMetaData>
 #include <QMediaObject>
 #include <QMediaPlayer>
 #include <QMimeDatabase>
@@ -23,6 +24,28 @@
 #include "MatrixClient.h"
 #include "timeline/TimelineModel.h"
 
+MxcMediaProxy::MxcMediaProxy(QObject *parent)
+  : QMediaPlayer(parent)
+{
+    connect(this, &MxcMediaProxy::eventIdChanged, &MxcMediaProxy::startDownload);
+    connect(this, &MxcMediaProxy::roomChanged, &MxcMediaProxy::startDownload);
+    connect(this,
+            qOverload<QMediaPlayer::Error>(&MxcMediaProxy::error),
+            [this](QMediaPlayer::Error error) {
+                nhlog::ui()->info("Media player error {} and errorStr {}",
+                                  error,
+                                  this->errorString().toStdString());
+            });
+    connect(this, &MxcMediaProxy::mediaStatusChanged, [this](QMediaPlayer::MediaStatus status) {
+        nhlog::ui()->info("Media player status {} and error {}", status, this->error());
+    });
+    connect(this,
+            qOverload<const QString &, const QVariant &>(&MxcMediaProxy::metaDataChanged),
+            [this](QString t, QVariant) {
+                if (t == QMediaMetaData::Orientation)
+                    emit orientationChanged();
+            });
+}
 void
 MxcMediaProxy::setVideoSurface(QAbstractVideoSurface *surface)
 {
@@ -35,6 +58,15 @@ QAbstractVideoSurface *
 MxcMediaProxy::getVideoSurface()
 {
     return m_surface;
+}
+
+int
+MxcMediaProxy::orientation() const
+{
+    nhlog::ui()->debug("metadata: {}", availableMetaData().join(",").toStdString());
+    auto orientation = metaData(QMediaMetaData::Orientation).toInt();
+    nhlog::ui()->debug("Video orientation: {}", orientation);
+    return orientation;
 }
 
 void
