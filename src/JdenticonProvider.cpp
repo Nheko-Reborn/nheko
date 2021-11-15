@@ -88,20 +88,16 @@ getJdenticonInterface()
     if (interface == nullptr && interfaceExists) {
         QDir pluginsDir(qApp->applicationDirPath());
 
-        bool plugins = pluginsDir.cd("plugins");
-        if (plugins) {
-            for (const QString &fileName : pluginsDir.entryList(QDir::Files)) {
-                QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
-                QObject *plugin = pluginLoader.instance();
-                if (plugin) {
-                    interface = qobject_cast<JdenticonInterface *>(plugin);
-                    if (interface) {
-                        nhlog::ui()->info("Loaded jdenticon plugin.");
-                        break;
-                    }
-                }
+        QPluginLoader pluginLoader("qtjdenticon");
+        QObject *plugin = pluginLoader.instance();
+        if (plugin) {
+            interface = qobject_cast<JdenticonInterface *>(plugin);
+            if (interface) {
+                nhlog::ui()->info("Loaded jdenticon plugin.");
             }
-        } else {
+        }
+
+        if (!interface) {
             nhlog::ui()->info("jdenticon plugin not found.");
             interfaceExists = false;
         }
