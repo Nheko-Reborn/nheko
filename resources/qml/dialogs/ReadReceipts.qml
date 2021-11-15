@@ -116,10 +116,6 @@ ApplicationWindow {
                         cursorShape: Qt.PointingHandCursor
                     }
 
-                    background: Rectangle {
-                        color: readReceiptsRoot.color
-                    }
-
                 }
 
             }
