@@ -25,8 +25,6 @@
         <file>icons/ui/screen-share.svg</file>
         <file>icons/ui/search.svg</file>
         <file>icons/ui/settings.svg</file>
-        <file>icons/ui/shield-unprotected.svg</file>
-        <file>icons/ui/shield.svg</file>
         <file>icons/ui/speech-bubbles.svg</file>
         <file>icons/ui/star.svg</file>
         <file>icons/ui/tag.svg</file>
@@ -49,7 +47,10 @@
         <file>icons/emoji-categories/people.svg</file>
         <file>icons/emoji-categories/symbols.svg</file>
         <file>icons/emoji-categories/travel.svg</file>
-        <file>icons/ui/shield-small-filled.svg</file>
+        <file>icons/ui/shield-filled.svg</file>
+        <file>icons/ui/shield-filled-exclamation-mark.svg</file>
+        <file>icons/ui/shield-filled-checkmark.svg</file>
+        <file>icons/ui/shield-filled-cross.svg</file>
     </qresource>
     <qresource prefix="/logos">
         <file>nheko.png</file>

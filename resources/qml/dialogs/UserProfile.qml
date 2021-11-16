@@ -213,12 +213,13 @@ ApplicationWindow {
                 onClicked: profile.verify()
             }
 
-            Image {
+            EncryptionIndicator {
                 Layout.preferredHeight: 16
                 Layout.preferredWidth: 16
-                source: "image://colorimage/:/icons/icons/ui/shield-small-filled.svg?" + ((profile.userVerified == Crypto.Verified) ? "green" : Nheko.colors.buttonText)
-                visible: profile.userVerified != Crypto.Unverified
+                encrypted: profile.userVerificationEnabled
+                trust: profile.userVerified
                 Layout.alignment: Qt.AlignHCenter
+                ToolTip.visible: false
             }
 
             RowLayout {
@@ -304,16 +305,18 @@ ApplicationWindow {
                         Layout.preferredHeight: 16
                         Layout.preferredWidth: 16
                         visible: profile.isSelf && verificationStatus != VerificationStatus.NOT_APPLICABLE
+                        sourceSize.height: 16
+                        sourceSize.width: 16
                         source: {
                             switch (verificationStatus) {
                             case VerificationStatus.VERIFIED:
-                                return "image://colorimage/:/icons/icons/ui/shield-small-filled.svg?green";
+                                return "image://colorimage/:/icons/icons/ui/shield-filled-checkmark.svg?green";
                             case VerificationStatus.UNVERIFIED:
-                                return "image://colorimage/:/icons/icons/ui/shield-unprotected.svg?#d6c020";
+                                return "image://colorimage/:/icons/icons/ui/shield-filled-exclamation-mark.svg?#d6c020";
                             case VerificationStatus.SELF:
-                                return "image://colorimage/:/icons/icons/ui/checkmark.svg?green";
+                                return "image://colorimage/:/icons/ui/checkmark.svg?green";
                             default:
-                                return "image://colorimage/:/icons/icons/ui/shield-unprotected.svg?red";
+                                return "image://colorimage/:/icons/ui/shield-filled-cross.svg?#d6c020";
                             }
                         }
                     }
@@ -388,13 +391,13 @@ ApplicationWindow {
                 source: {
                     switch (verificationStatus) {
                     case VerificationStatus.VERIFIED:
-                        return "image://colorimage/:/icons/icons/ui/shield-small-filled.svg?green";
+                        return "image://colorimage/:/icons/icons/ui/shield-filled-checkmark.svg?green";
                     case VerificationStatus.UNVERIFIED:
-                        return "image://colorimage/:/icons/icons/ui/shield-unprotected.svg?#d6c020";
+                        return "image://colorimage/:/icons/icons/ui/shield-filled-exclamation-mark.svg?#d6c020";
                     case VerificationStatus.SELF:
                         return "image://colorimage/:/icons/icons/ui/checkmark.svg?green";
                     default:
-                        return "image://colorimage/:/icons/icons/ui/shield-unprotected.svg?red";
+                        return "image://colorimage/:/icons/icons/ui/shield-filled.svg?red";
                     }
                 }
             }

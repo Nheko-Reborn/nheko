@@ -13,14 +13,25 @@ Image {
     property int trust: Crypto.Unverified
 
     property string sourceUrl: {
-        if (width <= 16 || height <= 16)
-            return "image://colorimage/:/icons/icons/ui/shield-small-filled.svg?";
-        else
-            return "image://colorimage/:/icons/icons/ui/shield.svg?";
+        if (!encrypted)
+        return "image://colorimage/:/icons/icons/ui/shield-filled-cross.svg?";
+
+        switch (trust) {
+            case Crypto.Verified:
+            return "image://colorimage/:/icons/icons/ui/shield-filled-checkmark.svg?";
+            case Crypto.TOFU:
+            return "image://colorimage/:/icons/icons/ui/shield-filled.svg?";
+            case Crypto.Unverified:
+            return "image://colorimage/:/icons/icons/ui/shield-filled-exclamation-mark.svg?";
+            default:
+            return "image://colorimage/:/icons/icons/ui/shield-filled-cross.svg?";
+        }
     }
 
     width: 16
     height: 16
+    sourceSize.height: height
+    sourceSize.width: width
     source: {
         if (encrypted) {
             switch (trust) {

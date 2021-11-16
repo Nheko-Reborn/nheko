@@ -117,6 +117,8 @@ Rectangle {
             Layout.rowSpan: 2
             Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
             Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
+            sourceSize.height: Layout.preferredHeight
+            sourceSize.width: Layout.preferredWidth
             visible: isEncrypted
             encrypted: isEncrypted
             trust: trustlevel
