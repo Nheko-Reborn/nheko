@@ -369,8 +369,8 @@ Here are some screen shots to get a feel for the UI, but things will probably ch
 
 ### Third party
 
-[Single Application for Qt](https://github.com/itay-grudev/SingleApplication)
-[Fluent Icons](https://github.com/microsoft/fluentui-system-icons)
+- [Single Application for Qt](https://github.com/itay-grudev/SingleApplication)
+- [Fluent Icons](https://github.com/microsoft/fluentui-system-icons)
 
 [Matrix]:https://matrix.org
 [Element]:https://element.io
