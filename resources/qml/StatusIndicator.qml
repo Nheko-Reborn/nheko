@@ -40,13 +40,13 @@ ImageButton {
     image: {
         switch (status) {
         case MtxEvent.Failed:
-            return ":/icons/icons/ui/remove-symbol.png";
+            return ":/icons/icons/ui/dismiss.svg";
         case MtxEvent.Sent:
-            return ":/icons/icons/ui/clock.png";
+            return ":/icons/icons/ui/clock.svg";
         case MtxEvent.Received:
-            return ":/icons/icons/ui/checkmark.png";
+            return ":/icons/icons/ui/checkmark.svg";
         case MtxEvent.Read:
-            return ":/icons/icons/ui/double-tick-indicator.png";
+            return ":/icons/icons/ui/double-checkmark.svg";
         default:
             return "";
         }

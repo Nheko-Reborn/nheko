@@ -62,7 +62,7 @@ Popup {
                 if (CallManager.mics.length == 0) {
                     var dialog = deviceError.createObject(timelineRoot, {
                         "errorString": qsTr("No microphone found."),
-                        "image": ":/icons/icons/ui/place-call.png"
+                        "image": ":/icons/icons/ui/place-call.svg"
                     });
                     dialog.open();
                     return false;
@@ -85,7 +85,7 @@ Popup {
 
             Button {
                 text: qsTr("Voice")
-                icon.source: "qrc:/icons/icons/ui/place-call.png"
+                icon.source: "qrc:/icons/icons/ui/place-call.svg"
                 onClicked: {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;
@@ -98,7 +98,7 @@ Popup {
             Button {
                 visible: CallManager.cameras.length > 0
                 text: qsTr("Video")
-                icon.source: "qrc:/icons/icons/ui/video-call.png"
+                icon.source: "qrc:/icons/icons/ui/video.svg"
                 onClicked: {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;
@@ -112,7 +112,7 @@ Popup {
             Button {
                 visible: CallManager.screenShareSupported
                 text: qsTr("Screen")
-                icon.source: "qrc:/icons/icons/ui/screen-share.png"
+                icon.source: "qrc:/icons/icons/ui/screen-share.svg"
                 onClicked: {
                     var dialog = screenShareDialog.createObject(timelineRoot);
                     dialog.open();
@@ -140,7 +140,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.png?" + Nheko.colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.svg?" + Nheko.colors.windowText
                 }
 
                 ComboBox {
@@ -161,7 +161,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/video-call.png?" + Nheko.colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/video-call.svg?" + Nheko.colors.windowText
                 }
 
                 ComboBox {

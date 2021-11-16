@@ -46,7 +46,7 @@ RegisterPage::RegisterPage(QWidget *parent)
     back_button_->setMinimumSize(QSize(30, 30));
 
     QIcon icon;
-    icon.addFile(":/icons/icons/ui/angle-pointing-to-left.png");
+    icon.addFile(":/icons/icons/ui/angle-arrow-left.svg");
 
     back_button_->setIcon(icon);
     back_button_->setIconSize(QSize(32, 32));

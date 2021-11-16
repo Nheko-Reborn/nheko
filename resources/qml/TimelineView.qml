@@ -242,7 +242,7 @@ Item {
         height: Nheko.avatarSize
         visible: (room == null || room.isSpace) && showBackButton
         enabled: visible
-        image: ":/icons/icons/ui/angle-pointing-to-left.png"
+        image: ":/icons/icons/ui/angle-arrow-left.svg"
         ToolTip.visible: hovered
         ToolTip.text: qsTr("Back to room list")
         onClicked: Rooms.resetCurrentRoom()

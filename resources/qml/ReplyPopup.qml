@@ -58,7 +58,7 @@ Rectangle {
         hoverEnabled: true
         width: 16
         height: 16
-        image: ":/icons/icons/ui/remove-symbol.png"
+        image: ":/icons/icons/ui/dismiss.svg"
         ToolTip.visible: closeReplyButton.hovered
         ToolTip.text: qsTr("Close")
         onClicked: room.reply = undefined

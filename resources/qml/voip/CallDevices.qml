@@ -31,7 +31,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.png?" + Nheko.colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.svg?" + Nheko.colors.windowText
                 }
 
                 ComboBox {
@@ -49,7 +49,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/video-call.png?" + Nheko.colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/video-call.svg?" + Nheko.colors.windowText
                 }
 
                 ComboBox {

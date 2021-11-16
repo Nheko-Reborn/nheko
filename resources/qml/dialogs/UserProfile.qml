@@ -80,7 +80,7 @@ ApplicationWindow {
                     anchors.leftMargin: Nheko.paddingMedium
                     anchors.topMargin: Nheko.paddingMedium
                     visible: profile.isSelf
-                    image: ":/icons/icons/ui/edit.png"
+                    image: ":/icons/icons/ui/edit.svg"
                     onClicked: profile.changeAvatar()
                 }
 
@@ -155,7 +155,7 @@ ApplicationWindow {
                     hoverEnabled: true
                     ToolTip.visible: hovered
                     ToolTip.text: profile.isGlobalUserProfile ? qsTr("Change display name globally.") : qsTr("Change display name. Will only apply to this room.")
-                    image: displayUsername.isUsernameEditingAllowed ? ":/icons/icons/ui/checkmark.png" : ":/icons/icons/ui/edit.png"
+                    image: displayUsername.isUsernameEditingAllowed ? ":/icons/icons/ui/checkmark.svg" : ":/icons/icons/ui/edit.svg"
                     onClicked: {
                         if (displayUsername.isUsernameEditingAllowed) {
                             profile.changeUsername(displayUsername.text);
@@ -194,7 +194,7 @@ ApplicationWindow {
                 }
 
                 ImageButton {
-                    image: ":/icons/icons/ui/world.png"
+                    image: ":/icons/icons/ui/world.svg"
                     hoverEnabled: true
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Open the global profile for this user.")
@@ -213,17 +213,18 @@ ApplicationWindow {
                 onClicked: profile.verify()
             }
 
-            Image {
+            EncryptionIndicator {
                 Layout.preferredHeight: 16
                 Layout.preferredWidth: 16
-                source: "image://colorimage/:/icons/icons/ui/lock.png?" + ((profile.userVerified == Crypto.Verified) ? "green" : Nheko.colors.buttonText)
-                visible: profile.userVerified != Crypto.Unverified
+                encrypted: profile.userVerificationEnabled
+                trust: profile.userVerified
                 Layout.alignment: Qt.AlignHCenter
+                ToolTip.visible: false
             }
 
             RowLayout {
                 // ImageButton{
-                //     image:":/icons/icons/ui/volume-off-indicator.png"
+                //     image:":/icons/icons/ui/volume-off-indicator.svg"
                 //     Layout.margins: {
                 //         left: 5
                 //         right: 5
@@ -240,7 +241,7 @@ ApplicationWindow {
                 spacing: Nheko.paddingSmall
 
                 ImageButton {
-                    image: ":/icons/icons/ui/black-bubble-speech.png"
+                    image: ":/icons/icons/ui/chat.svg"
                     hoverEnabled: true
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Start a private chat.")
@@ -248,7 +249,7 @@ ApplicationWindow {
                 }
 
                 ImageButton {
-                    image: ":/icons/icons/ui/round-remove-button.png"
+                    image: ":/icons/icons/ui/round-remove-button.svg"
                     hoverEnabled: true
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Kick the user.")
@@ -257,7 +258,7 @@ ApplicationWindow {
                 }
 
                 ImageButton {
-                    image: ":/icons/icons/ui/do-not-disturb-rounded-sign.png"
+                    image: ":/icons/icons/ui/ban.svg"
                     hoverEnabled: true
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Ban the user.")
@@ -266,7 +267,7 @@ ApplicationWindow {
                 }
 
                 ImageButton {
-                    image: ":/icons/icons/ui/refresh.png"
+                    image: ":/icons/icons/ui/refresh.svg"
                     hoverEnabled: true
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Refresh device list.")
@@ -304,23 +305,25 @@ ApplicationWindow {
                         Layout.preferredHeight: 16
                         Layout.preferredWidth: 16
                         visible: profile.isSelf && verificationStatus != VerificationStatus.NOT_APPLICABLE
+                        sourceSize.height: 16
+                        sourceSize.width: 16
                         source: {
                             switch (verificationStatus) {
                             case VerificationStatus.VERIFIED:
-                                return "image://colorimage/:/icons/icons/ui/lock.png?green";
+                                return "image://colorimage/:/icons/icons/ui/shield-filled-checkmark.svg?green";
                             case VerificationStatus.UNVERIFIED:
-                                return "image://colorimage/:/icons/icons/ui/unlock.png?#d6c020";
+                                return "image://colorimage/:/icons/icons/ui/shield-filled-exclamation-mark.svg?#d6c020";
                             case VerificationStatus.SELF:
-                                return "image://colorimage/:/icons/icons/ui/checkmark.png?green";
+                                return "image://colorimage/:/icons/ui/checkmark.svg?green";
                             default:
-                                return "image://colorimage/:/icons/icons/ui/unlock.png?red";
+                                return "image://colorimage/:/icons/ui/shield-filled-cross.svg?#d6c020";
                             }
                         }
                     }
 
                     ImageButton {
                         Layout.alignment: Qt.AlignTop
-                        image: ":/icons/icons/ui/power-button-off.png"
+                        image: ":/icons/icons/ui/power-off.svg"
                         hoverEnabled: true
                         ToolTip.visible: hovered
                         ToolTip.text: qsTr("Sign out this device.")
@@ -355,7 +358,7 @@ ApplicationWindow {
                         hoverEnabled: true
                         ToolTip.visible: hovered
                         ToolTip.text: qsTr("Change device name.")
-                        image: deviceNameRow.isEditingAllowed ? ":/icons/icons/ui/checkmark.png" : ":/icons/icons/ui/edit.png"
+                        image: deviceNameRow.isEditingAllowed ? ":/icons/icons/ui/checkmark.svg" : ":/icons/icons/ui/edit.svg"
                         onClicked: {
                             if (deviceNameRow.isEditingAllowed) {
                                 profile.changeDeviceName(deviceId, deviceNameField.text);
@@ -388,13 +391,13 @@ ApplicationWindow {
                 source: {
                     switch (verificationStatus) {
                     case VerificationStatus.VERIFIED:
-                        return "image://colorimage/:/icons/icons/ui/lock.png?green";
+                        return "image://colorimage/:/icons/icons/ui/shield-filled-checkmark.svg?green";
                     case VerificationStatus.UNVERIFIED:
-                        return "image://colorimage/:/icons/icons/ui/unlock.png?#d6c020";
+                        return "image://colorimage/:/icons/icons/ui/shield-filled-exclamation-mark.svg?#d6c020";
                     case VerificationStatus.SELF:
-                        return "image://colorimage/:/icons/icons/ui/checkmark.png?green";
+                        return "image://colorimage/:/icons/icons/ui/checkmark.svg?green";
                     default:
-                        return "image://colorimage/:/icons/icons/ui/unlock.png?red";
+                        return "image://colorimage/:/icons/icons/ui/shield-filled.svg?red";
                     }
                 }
             }

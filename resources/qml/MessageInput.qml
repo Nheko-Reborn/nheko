@@ -39,7 +39,7 @@ Rectangle {
             hoverEnabled: true
             width: 22
             height: 22
-            image: CallManager.isOnCall ? ":/icons/icons/ui/end-call.png" : ":/icons/icons/ui/place-call.png"
+            image: CallManager.isOnCall ? ":/icons/icons/ui/end-call.svg" : ":/icons/icons/ui/place-call.svg"
             ToolTip.visible: hovered
             ToolTip.text: CallManager.isOnCall ? qsTr("Hang up") : qsTr("Place a call")
             Layout.margins: 8
@@ -62,7 +62,7 @@ Rectangle {
             hoverEnabled: true
             width: 22
             height: 22
-            image: ":/icons/icons/ui/paper-clip-outline.png"
+            image: ":/icons/icons/ui/attach.svg"
             Layout.margins: 8
             onClicked: room.input.openFileSelection()
             ToolTip.visible: hovered
@@ -372,7 +372,7 @@ Rectangle {
             hoverEnabled: true
             width: 22
             height: 22
-            image: ":/icons/icons/ui/smile.png"
+            image: ":/icons/icons/ui/smile.svg"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Emoji")
             onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
@@ -387,7 +387,7 @@ Rectangle {
             hoverEnabled: true
             width: 22
             height: 22
-            image: ":/icons/icons/ui/cursor.png"
+            image: ":/icons/icons/ui/send.svg"
             Layout.rightMargin: 8
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Send")
