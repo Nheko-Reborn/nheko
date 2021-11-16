@@ -720,7 +720,7 @@ if(NOT MSVC AND NOT HAIKU)
 	endif()
 endif()
 
-set_target_properties(nheko PROPERTIES SKIP_BUILD_RPATH TRUE)
+set_target_properties(nheko PROPERTIES CMAKE_SKIP_INSTALL_RPATH TRUE)
 
 if(UNIX AND NOT APPLE)
 	install (TARGETS nheko RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
