@@ -6,7 +6,7 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+107"/>
         <source>Calling...</source>
-        <translation></translation>
+        <translation>Dzwonię...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -58,7 +58,7 @@
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+72"/>
         <source>Video Call</source>
-        <translation>Połączenie Wideo</translation>
+        <translation>Rozmowa Wideo</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -96,7 +96,7 @@
     <message>
         <location line="+12"/>
         <source>Unknown microphone: %1</source>
-        <translation>Nieznany mikrofon: %1</translation>
+        <translation>Niezidentyfikowany mikrofon: %1</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -158,7 +158,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to join %1?</source>
-        <translation>Czy na pewno chcesz dołączyć&#xa0;do %1?</translation>
+        <translation>Czy na pewno chcesz dołączyć do %1?</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -2658,7 +2658,7 @@ Ustaw na 3 aby rozmywać natychmiast po stracie fokusu. Maksymalna wartość to 
     <message>
         <location line="+2"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation>Ustaw maksymalną szerokość&#xa0;wiadomości w historii (w pikselach). Może to poprawić czytelność gdy Nheko zostanie zmaksymalizowany na szerokim ekranie</translation>
+        <translation>Ustaw maksymalną szerokość wiadomości w historii (w pikselach). Może to poprawić czytelność gdy Nheko zostanie zmaksymalizowany na szerokim ekranie</translation>
     </message>
     <message>
         <location line="+2"/>
