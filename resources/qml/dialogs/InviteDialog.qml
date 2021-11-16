@@ -155,7 +155,7 @@ ApplicationWindow {
                     }
 
                     ImageButton {
-                        image: ":/icons/icons/ui/remove-symbol.png"
+                        image: ":/icons/icons/ui/dismiss.svg"
                         onClicked: invitees.removeUser(model.mxid)
                     }
 

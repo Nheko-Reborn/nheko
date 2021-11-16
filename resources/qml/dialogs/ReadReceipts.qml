@@ -75,8 +75,8 @@ ApplicationWindow {
                         id: receiptLayout
 
                         spacing: Nheko.paddingMedium
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: parent.x + Nheko.paddingSmall
+                        anchors.fill: parent
+                        anchors.margins: Nheko.paddingSmall
 
                         Avatar {
                             width: Nheko.avatarSize
@@ -103,10 +103,14 @@ ApplicationWindow {
                             }
 
                             Item {
-                                Layout.fillHeight: true
                                 Layout.fillWidth: true
                             }
 
+                        }
+
+                        Item {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
 
                     }
