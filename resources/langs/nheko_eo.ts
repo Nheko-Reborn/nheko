@@ -817,12 +817,12 @@
     <message>
         <location filename="../qml/dialogs/LeaveRoomDialog.qml" line="+15"/>
         <source>Leave room</source>
-        <translation type="unfinished">Eliri el ĉambro</translation>
+        <translation>Eliri el ĉambro</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished">Ĉu vi certas, ke vi volas foriri?</translation>
+        <translation>Ĉu vi certas, ke vi volas eliri?</translation>
     </message>
 </context>
 <context>
@@ -3049,7 +3049,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/encryption/VerificationManager.cpp" line="+105"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation type="unfinished">Neniu ĉifrita privata babilo kun ĉi tiu uzanto troviĝis. Kreu ĉifritan privatan babilon kun ĉi tiu uzanto kaj reprovu.</translation>
+        <translation>Neniu ĉifrita privata babilo kun ĉi tiu uzanto troviĝis. Kreu ĉifritan privatan babilon kun ĉi tiu uzanto kaj reprovu.</translation>
     </message>
 </context>
 <context>
