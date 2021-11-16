@@ -2134,17 +2134,17 @@ Se escolher a verificação, terá que ter o outro dispositivo disponível. Se e
     <message>
         <location line="+4"/>
         <source>%1 set the room history visible to members from this point on.</source>
-        <translation type="unfinished">%1 tornou o histórico da sala, a partir deste momento, visível a membros</translation>
+        <translation>%1 tornou o histórico da sala, a partir deste momento, visível a membros.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 set the room history visible to members since they were invited.</source>
-        <translation type="unfinished">%1 tornou o histórico visível a membros desde o seu convite.</translation>
+        <translation>%1 tornou o histórico visível a membros desde o seu convite.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 set the room history visible to members since they joined the room.</source>
-        <translation type="unfinished">%1 tornou o histórico da sala visível ao membros desde a sua entrada.</translation>
+        <translation>%1 tornou o histórico da sala visível ao membros desde a sua entrada.</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -2643,7 +2643,7 @@ Defina como 0 para desfocar imediatamente após perder a atenção. Valor máxim
     <message>
         <location line="+3"/>
         <source>Show buttons in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar botões na cronologia</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2653,12 +2653,12 @@ Defina como 0 para desfocar imediatamente após perder a atenção. Valor máxim
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Limitar largura da cronologia</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation type="unfinished"></translation>
+        <translation>Definir largura máxima das mensagens na cronologia (em pixeis). Isto pode ajudar na legibilidade em ecrãs largos, quando o Nheko está maximizado.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2723,7 +2723,7 @@ Quando desativada, todas as mensagens serão enviadas em texto simples.</transla
     <message>
         <location line="+2"/>
         <source>Notify about received message when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Notificar sobre mensagens recebidas quando o cliente não está focado.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2739,47 +2739,47 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Destacar mensagem quando passar o rato por cima.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alterar a cor de fundo das mensagens quando passar o rato por cima.</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Emojis grandes na cronologia</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aumentar tamanho do tipo de letra quando apenas alguns emojis são exibidos.</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Send encrypted messages to verified users only</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar mensagens encriptadas apenas a utilizadores verificados</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exigir que um utilizador esteja verificado para lhe enviar mensagens encriptadas. Isto melhora a segurança mas torna a encriptação mais entediante.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Share keys with verified users and devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Partilhar chaves com utilizadores e dispositivos verificados</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Automatically replies to key requests from other users, if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished"></translation>
+        <translation>Automaticamente responde a pedidos de chaves de outros utilizadores, se estiverem verificados, mesmo que de outra forma o dispositivo não deveria ter acesso a essas chaves.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Online Key Backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Cópia de segurança de chave online</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2789,72 +2789,72 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+178"/>
         <source>Enable online key backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Ativar cópia de segurança de chave online</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The Nheko authors recommend not enabling online key backup until symmetric online key backup is available. Enable anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Os autores do Nheko recomendam não ativar a cópia de segurança de chave online até que a cópia simétrica esteja disponível. Deseja ativar ainda assim?</translation>
     </message>
     <message>
         <location line="+253"/>
         <source>CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>ARMAZENADO EM CACHE</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>NOT CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>NÃO ARMAZENADO EM CACHE</translation>
     </message>
     <message>
         <location line="-495"/>
         <source>Scale factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Fator de escala</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alterar o fator de escala para toda a interface.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamanho da letra</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo de letra</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Tema</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Ringtone</source>
-        <translation type="unfinished"></translation>
+        <translation>Toque</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation type="unfinished"></translation>
+        <translation>Tocar o som de notificação quando chegar um convite de chamada</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Microphone</source>
-        <translation type="unfinished"></translation>
+        <translation>Microfone</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Câmara</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Camera resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Resolução de câmara</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2864,7 +2864,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+14"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished"></translation>
+        <translation>Permitir servidor assistente de chamada</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2874,42 +2874,42 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+4"/>
         <source>Device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID do dispositivo</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished"></translation>
+        <translation>Impressão digital do dispositivo</translation>
     </message>
     <message>
         <location line="-166"/>
         <source>Session Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Chave de sessão</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>IMPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>IMPORTAR</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>EXPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>EXPORTAR</translation>
     </message>
     <message>
         <location line="-34"/>
         <source>ENCRYPTION</source>
-        <translation type="unfinished"></translation>
+        <translation>ENCRIPTAÇÃO</translation>
     </message>
     <message>
         <location line="-123"/>
         <source>GENERAL</source>
-        <translation type="unfinished"></translation>
+        <translation>GERAL</translation>
     </message>
     <message>
         <location line="+72"/>
         <source>INTERFACE</source>
-        <translation type="unfinished"></translation>
+        <translation>INTERFACE</translation>
     </message>
     <message>
         <location line="+133"/>
@@ -2919,12 +2919,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+46"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Reproduzir média como GIFs e WEBPs apenas quando passar o cursor explicitamente por cima.</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Touchscreen mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modo de toque</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2934,42 +2934,42 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+12"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo de letra para emoji</translation>
     </message>
     <message>
         <location line="+53"/>
         <source>Master signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Chave de assinatura mestra</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>A sua chave mais importante. Não necessita de a armazenar na cache, visto que será menos provável que seja roubada e só é necessária para rodar as outras chaves de assinatura.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>User signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Chave de assinatura de utilizador</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>A chave para verificar outros utilizadores. Se armazenada em cache, verificar um utilizador irá verificar todos os seus dispositivos.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Self signing key</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Chave de auto-assinatura.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users, that have verified you.</source>
-        <translation type="unfinished"></translation>
+        <translation>A chave para verificar os seus dispositivos. Se armazenada em cache, verificar um dos seus dispositivos irá marcá-lo como tal para todos os seus outros dispositivos e utilizadores que o tenham verificado.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Backup key</source>
-        <translation type="unfinished"></translation>
+        <translation>Chave de cópia de segurança</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2979,17 +2979,17 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+54"/>
         <source>Select a file</source>
-        <translation type="unfinished">Selecionar um ficheiro</translation>
+        <translation>Selecionar um ficheiro</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Todos os ficheiros (*)</translation>
+        <translation>Todos os ficheiros (*)</translation>
     </message>
     <message>
         <location line="+265"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir ficheiro de sessões</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2999,34 +2999,34 @@ This usually causes the application icon in the task bar to animate in some fash
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location line="-65"/>
         <location line="+27"/>
         <source>File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Palavra-passe do ficheiro</translation>
     </message>
     <message>
         <location line="-26"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Insira a palavra-passe para desencriptar o ficheiro:</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+27"/>
         <source>The password cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>A palavra-passe não pode estar vazia</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation type="unfinished"></translation>
+        <translation>Insira a palavra-passe para encriptar as suas chaves de sessão:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>File to save the exported session keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Ficheiro onde guardar as chaves de sessão exportadas</translation>
     </message>
 </context>
 <context>
@@ -3034,7 +3034,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/encryption/VerificationManager.cpp" line="+105"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation type="unfinished">Não foi encontrada nenhuma conversa privada e encriptada com este utilizador. Crie uma e tente novamente.</translation>
+        <translation>Não foi encontrada nenhuma conversa privada e encriptada com este utilizador. Crie uma e tente novamente.</translation>
     </message>
 </context>
 <context>
@@ -3062,7 +3062,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+15"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -3070,7 +3070,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+34"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bem-vindo(a) ao Nheko! Um cliente de computador para o protocolo Matrix.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3093,7 +3093,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/Utils.cpp" line="+184"/>
         <source>Yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontem</translation>
     </message>
 </context>
 <context>
@@ -3101,42 +3101,42 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/CreateRoom.cpp" line="+40"/>
         <source>Create room</source>
-        <translation type="unfinished"></translation>
+        <translation>Criar sala</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Name</source>
-        <translation type="unfinished">Nome</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Topic</source>
-        <translation type="unfinished">Tópico</translation>
+        <translation>Tópico</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Alcunha</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Visibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Visibilidade da sala</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Room Preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Predefinição da sala</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Conversa direta</translation>
     </message>
 </context>
 <context>
@@ -3149,12 +3149,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3167,12 +3167,12 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/Logout.cpp" line="+35"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Logout. Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminar sessão. Tem a certeza?</translation>
     </message>
 </context>
 <context>
@@ -3180,19 +3180,21 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+29"/>
         <source>Upload</source>
-        <translation type="unfinished"></translation>
+        <translation>Carregar</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location line="+93"/>
         <source>Media type: %1
 Media size: %2
 </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tipo da mídia: %1
+Tamanho da mídia: %2
+</translation>
     </message>
 </context>
 <context>
@@ -3200,17 +3202,17 @@ Media size: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+35"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished"></translation>
+        <translation>Solucione o reCAPTCHA e clique no botão de confirmação</translation>
     </message>
 </context>
 <context>
@@ -3218,112 +3220,112 @@ Media size: %2
     <message>
         <location filename="../../src/Utils.h" line="+115"/>
         <source>You sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviou uma mensagem áudio</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 enviou uma mensagem áudio</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviou uma imagem</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 enviou uma mensagem</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviou um ficheiro</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 enviou um ficheiro</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviou um vídeo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 enviou um vídeo</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviou um autocolante</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 enviou um autocolante</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviou uma notificação</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 enviou uma notificação</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Você: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1: %2</source>
-        <translation type="unfinished">%1: %2</translation>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>You sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviou uma mensagem encriptada</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
-        <translation type="unfinished">%1 enviou uma mensagem encriptada</translation>
+        <translation>%1 enviou uma mensagem encriptada</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciou uma chamada</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 iniciou uma chamada</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Atendeu uma chamada</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 atendeu uma chamada</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminou uma chamada</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 terminou uma chamada</translation>
     </message>
 </context>
 <context>
@@ -3331,7 +3333,7 @@ Media size: %2
     <message>
         <location line="+3"/>
         <source>Unknown Message Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo de mensagem desconhecido</translation>
     </message>
 </context>
 </TS>
