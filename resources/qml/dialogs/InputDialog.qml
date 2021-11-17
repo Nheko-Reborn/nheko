@@ -21,6 +21,11 @@ ApplicationWindow {
     width: 350
     height: fontMetrics.lineSpacing * 7
 
+    Shortcut {
+        sequence: StandardKey.Cancel
+        onActivated: dbb.rejected()
+    }
+
     ColumnLayout {
         spacing: Nheko.paddingMedium
         anchors.margins: Nheko.paddingMedium
@@ -36,11 +41,15 @@ ApplicationWindow {
             id: statusInput
 
             Layout.fillWidth: true
+            onAccepted: dbb.accepted()
+            focus: true
         }
 
     }
 
     footer: DialogButtonBox {
+        id: dbb
+
         standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
         onAccepted: {
             if (inputDialog.onAccepted)
