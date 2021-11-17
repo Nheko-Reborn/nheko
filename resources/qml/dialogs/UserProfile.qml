@@ -314,9 +314,9 @@ ApplicationWindow {
                             case VerificationStatus.UNVERIFIED:
                                 return "image://colorimage/:/icons/icons/ui/shield-filled-exclamation-mark.svg?#d6c020";
                             case VerificationStatus.SELF:
-                                return "image://colorimage/:/icons/ui/checkmark.svg?green";
+                                return "image://colorimage/:/icons/icons/ui/checkmark.svg?green";
                             default:
-                                return "image://colorimage/:/icons/ui/shield-filled-cross.svg?#d6c020";
+                                return "image://colorimage/:/icons/icons/ui/shield-filled-cross.svg?#d6c020";
                             }
                         }
                     }
