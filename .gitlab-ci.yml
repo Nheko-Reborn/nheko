@@ -6,32 +6,24 @@ variables:
 
 build-gcc7:
   stage: build
-  image: ubuntu:16.04
+  image: ubuntu:20.04
   tags: [docker]
   variables:
-    CXX: g++-7
-    CC: gcc-7
     QT_PKG: 515
     TRAVIS_OS_NAME: linux
   before_script:
     - apt-get update
     - apt-get install -y software-properties-common
     - add-apt-repository ppa:ubuntu-toolchain-r/test -y
-    - add-apt-repository ppa:beineri/opt-qt-5.15.2-xenial -y
-    - apt-get update && apt-get -y install --no-install-recommends g++-7 build-essential ninja-build qt${QT_PKG}{base,declarative,tools,multimedia,script,quickcontrols2,svg} liblmdb-dev libgl1-mesa-dev libssl-dev git ccache
+    - add-apt-repository ppa:beineri/opt-qt-5.15.2-focal -y
+    - apt-get update && apt-get -y install --no-install-recommends build-essential ninja-build qt${QT_PKG}{base,declarative,tools,multimedia,script,quickcontrols2,svg} liblmdb-dev libgl1-mesa-dev libssl-dev git ccache pkg-config libsecret-1-dev cmake
     # need recommended deps for wget
     - apt-get -y install wget
-    - wget https://github.com/Kitware/CMake/releases/download/v3.19.0/cmake-3.19.0-Linux-x86_64.sh && sh cmake-3.19.0-Linux-x86_64.sh  --skip-license  --prefix=/usr/local
     - /usr/sbin/update-ccache-symlinks
-    - update-alternatives --install /usr/bin/gcc gcc "/usr/bin/${CC}" 10
-    - update-alternatives --install /usr/bin/g++ g++ "/usr/bin/${CXX}" 10
-    - update-alternatives --set gcc "/usr/bin/${CC}"
-    - update-alternatives --set g++ "/usr/bin/${CXX}"
     - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
   script:
     - export PATH="/usr/lib/ccache:${PATH}"
     - export CMAKE_BUILD_PARALLEL_LEVEL=$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l)
-    - export PATH="/usr/local/bin/:${PATH}"
     - . "/opt/qt${QT_PKG}/bin/qt${QT_PKG}-env.sh" || true
     - cmake -GNinja -H. -Bbuild
         -DCMAKE_INSTALL_PREFIX=.deps/usr

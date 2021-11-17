@@ -174,7 +174,7 @@ if (USE_BUNDLED_QTKEYCHAIN)
 	FetchContent_Declare(
 		qt5keychain
 		GIT_REPOSITORY https://github.com/frankosterfeld/qtkeychain.git
-		GIT_TAG        v0.12.0
+		GIT_TAG        v0.13.1
 		)
 	if (BUILD_SHARED_LIBS)
 		set(QTKEYCHAIN_STATIC OFF CACHE INTERNAL "")
@@ -388,7 +388,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        bacb7e524ff0f38591b88b248d8d8409b7fd49a0
+		GIT_TAG        v0.6.0
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -401,7 +401,7 @@ if(USE_BUNDLED_OLM)
 	FetchContent_Declare(
 		Olm
 		GIT_REPOSITORY https://gitlab.matrix.org/matrix-org/olm.git
-		GIT_TAG        3.2.4
+		GIT_TAG        3.2.6
 		)
 	set(OLM_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(Olm)
@@ -423,14 +423,14 @@ if(USE_BUNDLED_CMARK)
 	FetchContent_Declare(
 		cmark
 		GIT_REPOSITORY https://github.com/commonmark/cmark.git
-		GIT_TAG        242e277a661ec7e51f34dcaf86c1925d550b1498 #0.29.0 << doesn't work with fetch content yet
+		GIT_TAG        0.30.2
 		CMAKE_ARGS     "CMARK_STATIC=ON CMARK_SHARED=OFF CMARK_TESTS=OFF CMARK_TESTS=OFF"
 		)
 	FetchContent_MakeAvailable(cmark)
 	if (MSVC)
-		add_library(cmark::cmark ALIAS libcmark)
+		add_library(cmark::cmark ALIAS cmark)
 	else()
-		add_library(cmark::cmark ALIAS libcmark_static)
+		add_library(cmark::cmark ALIAS cmark_static)
 	endif()
 else()
 	find_package(cmark REQUIRED 0.29.0)
@@ -691,7 +691,7 @@ if(USE_BUNDLED_COEURL)
 	FetchContent_Declare(
 		coeurl
 		GIT_REPOSITORY https://nheko.im/Nheko-Reborn/coeurl.git
-		GIT_TAG        3901507db25cf3f9364b58cd8c7880640900c992
+		GIT_TAG        v0.1.0
 		)
 	FetchContent_MakeAvailable(coeurl)
 	target_link_libraries(nheko PUBLIC coeurl::coeurl)
