@@ -87,7 +87,7 @@ ApplicationWindow {
 
         Connections {
             target: roomSettings
-            onDisplayError: {
+            function onDisplayError(errorMessage) {
                 errorText.text = errorMessage;
                 errorText.opacity = 1;
                 hideErrorAnimation.restart();
@@ -229,7 +229,7 @@ ApplicationWindow {
                 title: qsTr("End-to-End Encryption")
                 text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br>
                             Please take note that it can't be disabled afterwards.")
-                modality: Qt.Modal
+                modality: Qt.NonModal
                 onAccepted: {
                     if (roomSettings.isEncryptionEnabled)
                         return ;
