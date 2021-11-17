@@ -543,8 +543,7 @@ Page {
                     id: closeUnverifiedBubble
 
                     Layout.rightMargin: Nheko.paddingMedium
-                    Layout.topMargin: Nheko.paddingMedium
-                    Layout.alignment: Qt.AlignRight | Qt.AlignCenter
+                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                     hoverEnabled: true
                     width: fontMetrics.font.pixelSize
                     height: fontMetrics.font.pixelSize
