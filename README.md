@@ -19,10 +19,8 @@ Help us with translations so as many people as possible will be able to use nhek
 
 ### Note regarding End-to-End encryption
 
-The current implementation works in most cases, but you may need to bootstrap
-your cross-signing keys in a different client. The implementation may also still
-have bugs, so don't rely on it for security. Online keybackup isn't supported,
-but you can use offline keybackup. Most other cases should be fine though.
+The current implementation is mostly stable, but it was never audited. If you
+rely on it for security, we can't make any guarantees.
 
 ## Features
 
@@ -172,7 +170,7 @@ choco install nheko-reborn
     - Video call support (optional): compositor, opengl, qmlgl, rtp, vpx
     - [libnice](https://gitlab.freedesktop.org/libnice/libnice)
 - XCB, XCB-EWMH: For screensharing support on X11. VOIP needs to be enabled. Can be disabled with `-DSCREENSHARE_X11=OFF`.
-- [qtkeychain](https://github.com/frankosterfeld/qtkeychain) (You need at least version 0.12 for proper Gnome Keychain support)
+- [qtkeychain](https://github.com/frankosterfeld/qtkeychain) (You need at least version 0.12 for proper Gnome Keychain support. The bundled version requires libsecret, unless you pass `-DLIBSECRET_SUPPORT=OFF`.)
 - A compiler that supports C++ 17:
     - Clang 6 (tested on Travis CI)
     - GCC 7 (tested on Travis CI)
