@@ -102,15 +102,10 @@ ApplicationWindow {
                                 font.pointSize: fontMetrics.font.pointSize * 0.9
                             }
 
-                            Item {
-                                Layout.fillWidth: true
-                            }
-
                         }
 
                         Item {
                             Layout.fillWidth: true
-                            Layout.fillHeight: true
                         }
 
                     }

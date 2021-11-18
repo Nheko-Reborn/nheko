@@ -147,7 +147,7 @@ private:
     CallManager *callManager_                 = nullptr;
     VerificationManager *verificationManager_ = nullptr;
 
-    QHash<QString, QColor> userColors;
+    QHash<QPair<QString, quint64>, QColor> userColors;
 };
 Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationAccept)
 Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationCancel)

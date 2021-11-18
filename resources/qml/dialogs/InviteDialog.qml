@@ -114,8 +114,7 @@ ApplicationWindow {
                     id: layout
 
                     spacing: Nheko.paddingMedium
-                    anchors.verticalCenter: parent.verticalCenter
-                    x: parent.x + Nheko.paddingSmall
+                    anchors.centerIn: parent
                     width: del.width - Nheko.paddingSmall * 2
 
                     Avatar {
@@ -132,26 +131,20 @@ ApplicationWindow {
 
                         Label {
                             text: model.displayName
-                            color: TimelineManager.userColor(model ? model.mxid : "", Nheko.colors.window)
+                            color: TimelineManager.userColor(model ? model.mxid : "", del.background.color)
                             font.pointSize: fontMetrics.font.pointSize
                         }
 
                         Label {
                             text: model.mxid
-                            color: Nheko.colors.buttonText
+                            color: del.hovered ? Nheko.colors.brightText : Nheko.colors.buttonText
                             font.pointSize: fontMetrics.font.pointSize * 0.9
-                        }
-
-                        Item {
-                            Layout.fillHeight: true
-                            Layout.fillWidth: true
                         }
 
                     }
 
                     Item {
                         Layout.fillWidth: true
-                        Layout.fillHeight: true
                     }
 
                     ImageButton {

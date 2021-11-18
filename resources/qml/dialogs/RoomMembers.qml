@@ -100,8 +100,8 @@ ApplicationWindow {
                         id: memberLayout
 
                         spacing: Nheko.paddingMedium
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: parent.x + Nheko.paddingSmall
+                        anchors.centerIn: parent
+                        width: parent.width - Nheko.paddingSmall * 2
 
                         Avatar {
                             id: avatar
@@ -119,23 +119,22 @@ ApplicationWindow {
 
                             ElidedLabel {
                                 fullText: model.displayName
-                                color: TimelineManager.userColor(model ? model.mxid : "", Nheko.colors.window)
+                                color: TimelineManager.userColor(model ? model.mxid : "", del.background.color)
                                 font.pixelSize: fontMetrics.font.pixelSize
                                 elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
                             }
 
                             ElidedLabel {
                                 fullText: model.mxid
-                                color: Nheko.colors.buttonText
+                                color: del.hovered ? Nheko.colors.brightText : Nheko.colors.buttonText
                                 font.pixelSize: Math.ceil(fontMetrics.font.pixelSize * 0.9)
                                 elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
                             }
 
-                            Item {
-                                Layout.fillHeight: true
-                                Layout.fillWidth: true
-                            }
+                        }
 
+                        Item {
+                            Layout.fillWidth: true
                         }
 
                         EncryptionIndicator {
