@@ -116,9 +116,10 @@ TimelineViewManager::updateColorPalette()
 QColor
 TimelineViewManager::userColor(QString id, QColor background)
 {
-    if (!userColors.contains(id))
-        userColors.insert(id, QColor(utils::generateContrastingHexColor(id, background)));
-    return userColors.value(id);
+    QPair<QString, quint64> idx{id, background.rgba64()};
+    if (!userColors.contains(idx))
+        userColors.insert(idx, QColor(utils::generateContrastingHexColor(id, background)));
+    return userColors.value(idx);
 }
 
 QString

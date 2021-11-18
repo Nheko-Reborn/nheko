@@ -16,6 +16,10 @@ InviteesModel::InviteesModel(QObject *parent)
 void
 InviteesModel::addUser(QString mxid)
 {
+    for (const auto &invitee : invitees_)
+        if (invitee->mxid_ == mxid)
+            return;
+
     beginInsertRows(QModelIndex(), invitees_.count(), invitees_.count());
 
     auto invitee        = new Invitee{mxid, this};
@@ -28,6 +32,20 @@ InviteesModel::addUser(QString mxid)
 
     endInsertRows();
     emit countChanged();
+}
+
+void
+InviteesModel::removeUser(QString mxid)
+{
+    for (int i = 0; i < invitees_.length(); ++i) {
+        if (invitees_[i]->mxid_ == mxid) {
+            beginRemoveRows(QModelIndex(), i, i);
+            invitees_.removeAt(i);
+            endRemoveRows();
+            emit countChanged();
+            break;
+        }
+    }
 }
 
 QHash<int, QByteArray>

@@ -99,38 +99,64 @@ ApplicationWindow {
             Layout.fillHeight: true
             model: invitees
 
-            delegate: RowLayout {
-                spacing: Nheko.paddingMedium
+            delegate: ItemDelegate {
+                id: del
 
-                Avatar {
-                    width: Nheko.avatarSize
-                    height: Nheko.avatarSize
-                    userid: model.mxid
-                    url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                    displayName: model.displayName
-                    onClicked: TimelineManager.openGlobalUserProfile(model.mxid)
+                hoverEnabled: true
+                width: ListView.view.width
+                height: layout.implicitHeight + Nheko.paddingSmall * 2
+                onClicked: TimelineManager.openGlobalUserProfile(model.mxid)
+                background: Rectangle {
+                    color: del.hovered ? Nheko.colors.dark : inviteDialogRoot.color
                 }
 
-                ColumnLayout {
-                    spacing: Nheko.paddingSmall
+                RowLayout {
+                    id: layout
 
-                    Label {
-                        text: model.displayName
-                        color: TimelineManager.userColor(model ? model.mxid : "", Nheko.colors.window)
-                        font.pointSize: fontMetrics.font.pointSize
+                    spacing: Nheko.paddingMedium
+                    anchors.centerIn: parent
+                    width: del.width - Nheko.paddingSmall * 2
+
+                    Avatar {
+                        width: Nheko.avatarSize
+                        height: Nheko.avatarSize
+                        userid: model.mxid
+                        url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                        displayName: model.displayName
+                        enabled: false
                     }
 
-                    Label {
-                        text: model.mxid
-                        color: Nheko.colors.buttonText
-                        font.pointSize: fontMetrics.font.pointSize * 0.9
+                    ColumnLayout {
+                        spacing: Nheko.paddingSmall
+
+                        Label {
+                            text: model.displayName
+                            color: TimelineManager.userColor(model ? model.mxid : "", del.background.color)
+                            font.pointSize: fontMetrics.font.pointSize
+                        }
+
+                        Label {
+                            text: model.mxid
+                            color: del.hovered ? Nheko.colors.brightText : Nheko.colors.buttonText
+                            font.pointSize: fontMetrics.font.pointSize * 0.9
+                        }
+
                     }
 
                     Item {
-                        Layout.fillHeight: true
                         Layout.fillWidth: true
                     }
 
+                    ImageButton {
+                        image: ":/icons/icons/ui/dismiss.svg"
+                        onClicked: invitees.removeUser(model.mxid)
+                    }
+
+                }
+
+                CursorShape {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
                 }
 
             }

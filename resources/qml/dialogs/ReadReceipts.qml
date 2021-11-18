@@ -54,23 +54,29 @@ ApplicationWindow {
                 id: readReceiptsList
 
                 clip: true
-                spacing: Nheko.paddingMedium
                 boundsBehavior: Flickable.StopAtBounds
                 model: readReceipts
 
                 delegate: ItemDelegate {
+                    id: del
+
                     onClicked: room.openUserProfile(model.mxid)
                     padding: Nheko.paddingMedium
-                    width: receiptLayout.implicitWidth
-                    height: receiptLayout.implicitHeight
+                    width: ListView.view.width
+                    height: receiptLayout.implicitHeight + Nheko.paddingSmall * 2
                     hoverEnabled: true
                     ToolTip.visible: hovered
                     ToolTip.text: model.mxid
+                    background: Rectangle {
+                        color: del.hovered ? Nheko.colors.dark : readReceiptsRoot.color
+                    }
 
                     RowLayout {
                         id: receiptLayout
 
                         spacing: Nheko.paddingMedium
+                        anchors.fill: parent
+                        anchors.margins: Nheko.paddingSmall
 
                         Avatar {
                             width: Nheko.avatarSize
@@ -96,11 +102,10 @@ ApplicationWindow {
                                 font.pointSize: fontMetrics.font.pointSize * 0.9
                             }
 
-                            Item {
-                                Layout.fillHeight: true
-                                Layout.fillWidth: true
-                            }
+                        }
 
+                        Item {
+                            Layout.fillWidth: true
                         }
 
                     }
@@ -108,10 +113,6 @@ ApplicationWindow {
                     CursorShape {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
-                    }
-
-                    background: Rectangle {
-                        color: readReceiptsRoot.color
                     }
 
                 }

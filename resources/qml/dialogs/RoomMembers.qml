@@ -75,7 +75,6 @@ ApplicationWindow {
                 id: memberList
 
                 clip: true
-                spacing: Nheko.paddingMedium
                 boundsBehavior: Flickable.StopAtBounds
                 model: members
 
@@ -85,67 +84,86 @@ ApplicationWindow {
                     enabled: !Settings.mobileMode
                 }
 
-                delegate: RowLayout {
+                delegate: ItemDelegate {
                     id: del
 
+                    onClicked: Rooms.currentRoom.openUserProfile(model.mxid)
+                    padding: Nheko.paddingMedium
                     width: ListView.view.width
-                    spacing: Nheko.paddingMedium
-
-                    Avatar {
-                        id: avatar
-
-                        width: Nheko.avatarSize
-                        height: Nheko.avatarSize
-                        userid: model.mxid
-                        url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                        displayName: model.displayName
-                        onClicked: Rooms.currentRoom.openUserProfile(model.mxid)
+                    height: memberLayout.implicitHeight + Nheko.paddingSmall * 2
+                    hoverEnabled: true
+                    background: Rectangle {
+                        color: del.hovered ? Nheko.colors.dark : roomMembersRoot.color
                     }
 
-                    ColumnLayout {
-                        spacing: Nheko.paddingSmall
+                    RowLayout {
+                        id: memberLayout
 
-                        ElidedLabel {
-                            fullText: model.displayName
-                            color: TimelineManager.userColor(model ? model.mxid : "", Nheko.colors.window)
-                            font.pixelSize: fontMetrics.font.pixelSize
-                            elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
+                        spacing: Nheko.paddingMedium
+                        anchors.centerIn: parent
+                        width: parent.width - Nheko.paddingSmall * 2
+
+                        Avatar {
+                            id: avatar
+
+                            width: Nheko.avatarSize
+                            height: Nheko.avatarSize
+                            userid: model.mxid
+                            url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                            displayName: model.displayName
+                            enabled: false
                         }
 
-                        ElidedLabel {
-                            fullText: model.mxid
-                            color: Nheko.colors.buttonText
-                            font.pixelSize: Math.ceil(fontMetrics.font.pixelSize * 0.9)
-                            elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
+                        ColumnLayout {
+                            spacing: Nheko.paddingSmall
+
+                            ElidedLabel {
+                                fullText: model.displayName
+                                color: TimelineManager.userColor(model ? model.mxid : "", del.background.color)
+                                font.pixelSize: fontMetrics.font.pixelSize
+                                elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
+                            }
+
+                            ElidedLabel {
+                                fullText: model.mxid
+                                color: del.hovered ? Nheko.colors.brightText : Nheko.colors.buttonText
+                                font.pixelSize: Math.ceil(fontMetrics.font.pixelSize * 0.9)
+                                elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
+                            }
+
                         }
 
                         Item {
-                            Layout.fillHeight: true
                             Layout.fillWidth: true
+                        }
+
+                        EncryptionIndicator {
+                            id: encryptInd
+
+                            Layout.alignment: Qt.AlignRight
+                            visible: room.isEncrypted
+                            encrypted: room.isEncrypted
+                            trust: encrypted ? model.trustlevel : Crypto.Unverified
+                            ToolTip.text: {
+                                if (!encrypted)
+                                    return qsTr("This room is not encrypted!");
+
+                                switch (trust) {
+                                case Crypto.Verified:
+                                    return qsTr("This user is verified.");
+                                case Crypto.TOFU:
+                                    return qsTr("This user isn't verified, but is still using the same master key from the first time you met.");
+                                default:
+                                    return qsTr("This user has unverified devices!");
+                                }
+                            }
                         }
 
                     }
 
-                    EncryptionIndicator {
-                        id: encryptInd
-
-                        Layout.alignment: Qt.AlignRight
-                        visible: room.isEncrypted
-                        encrypted: room.isEncrypted
-                        trust: encrypted ? model.trustlevel : Crypto.Unverified
-                        ToolTip.text: {
-                            if (!encrypted)
-                                return qsTr("This room is not encrypted!");
-
-                            switch (trust) {
-                            case Crypto.Verified:
-                                return qsTr("This user is verified.");
-                            case Crypto.TOFU:
-                                return qsTr("This user isn't verified, but is still using the same master key from the first time you met.");
-                            default:
-                                return qsTr("This user has unverified devices!");
-                            }
-                        }
+                    CursorShape {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
                     }
 
                 }
