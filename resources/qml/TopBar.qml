@@ -49,6 +49,11 @@ Rectangle {
         //cursorShape: Qt.PointingHandCursor
     }
 
+    CursorShape {
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
+    }
+
     GridLayout {
         id: topLayout
 
