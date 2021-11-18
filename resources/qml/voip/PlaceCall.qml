@@ -161,7 +161,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/video-call.svg?" + Nheko.colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/video.svg?" + Nheko.colors.windowText
                 }
 
                 ComboBox {
