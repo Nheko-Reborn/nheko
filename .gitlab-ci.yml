@@ -4,7 +4,7 @@ variables:
   # prevent configure tzdata hanging apt install commands
   DEBIAN_FRONTEND: noninteractive
 
-build-gcc7:
+build-gcc9:
   stage: build
   image: ubuntu:20.04
   tags: [docker]
