@@ -164,13 +164,14 @@ choco install nheko-reborn
 - [cmark](https://github.com/commonmark/cmark) 0.29 or greater.
 - [libolm](https://gitlab.matrix.org/matrix-org/olm)
 - [spdlog](https://github.com/gabime/spdlog)
-- [GStreamer](https://gitlab.freedesktop.org/gstreamer) 1.18.0 or greater (optional, needed for VoIP support).
+- [GStreamer](https://gitlab.freedesktop.org/gstreamer) 1.18.0 or greater (optional, needed for VoIP support. Pass `-DVOIP=OFF` to disable.).
     - Installing the gstreamer core library plus gst-plugins-base, gst-plugins-good & gst-plugins-bad
       is often sufficient. The qmlgl plugin though is often packaged separately. The actual plugin requirements
       are as follows:
     - Voice call support: dtls, opus, rtpmanager, srtp, webrtc
     - Video call support (optional): compositor, opengl, qmlgl, rtp, vpx
     - [libnice](https://gitlab.freedesktop.org/libnice/libnice)
+- XCB, XCB-EWMH: For screensharing support on X11. VOIP needs to be enabled. Can be disabled with `-DSCREENSHARE_X11=OFF`.
 - [qtkeychain](https://github.com/frankosterfeld/qtkeychain) (You need at least version 0.12 for proper Gnome Keychain support)
 - A compiler that supports C++ 17:
     - Clang 6 (tested on Travis CI)

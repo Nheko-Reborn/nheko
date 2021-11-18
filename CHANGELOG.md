@@ -141,6 +141,7 @@
 - Show borders around tables.
 - Improve wording of a few menu entries. (absorber)
 - Highlight navigated to message.
+- Switched to the fluent icon set.
 
 ### Bugfixes
 
@@ -181,6 +182,7 @@
 - Removed the AppImage
 - Removed dependency on boost
 - Now depends on [coeurl](https://nheko.im/nheko-reborn/coeurl), which depends on libevent and libcurl.
+- VOIP support now needs to be explicitly controlled using the VOIP and SCREENSHARE_X11 cmake options.
 
 ## [0.8.2] -- 2021-04-23
 
