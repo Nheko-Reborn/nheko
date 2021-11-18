@@ -487,10 +487,10 @@ if(USE_BUNDLED_LMDBXX)
 		lmdbxx
 		URL "https://raw.githubusercontent.com/hoytech/lmdbxx/1.0.0/lmdb++.h"
 		DOWNLOAD_NO_EXTRACT TRUE
+		CONFIGURE_COMMAND ""
+		BUILD_COMMAND ""
 		)
-	if(NOT lmdbxx_POPULATED)
-		FetchContent_Populate(lmdbxx)
-	endif()
+	FetchContent_Populate(lmdbxx)
 	add_library(lmdbxx INTERFACE)
 	target_include_directories(lmdbxx INTERFACE ${lmdbxx_SOURCE_DIR})
 	add_library(lmdbxx::lmdbxx ALIAS lmdbxx)
