@@ -10,7 +10,7 @@ public:
     virtual QString generate(const QString &message, uint16_t size) = 0;
 };
 
-#define JdenticonInterface_iid "redsky17.Qt.JdenticonInterface"
+#define JdenticonInterface_iid "im.nheko.JdenticonInterface"
 
 Q_DECLARE_INTERFACE(JdenticonInterface, JdenticonInterface_iid)
 
