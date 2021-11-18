@@ -20,9 +20,10 @@ build-gcc9:
     # need recommended deps for wget
     - apt-get -y install wget
     - /usr/sbin/update-ccache-symlinks
+    - wget https://github.com/Kitware/CMake/releases/download/v3.19.0/cmake-3.19.0-Linux-x86_64.sh && sh cmake-3.19.0-Linux-x86_64.sh  --skip-license  --prefix=/usr/local
     - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
   script:
-    - export PATH="/usr/lib/ccache:${PATH}"
+    - export PATH="/usr/local/bin/:/usr/lib/ccache:${PATH}"
     - export CMAKE_BUILD_PARALLEL_LEVEL=$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l)
     - . "/opt/qt${QT_PKG}/bin/qt${QT_PKG}-env.sh" || true
     - cmake -GNinja -H. -Bbuild
@@ -30,7 +31,7 @@ build-gcc9:
         -DHUNTER_ROOT="../.hunter"
         -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON -DUSE_BUNDLED_LMDB=OFF
         -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
-        -DCI_BUILD=ON
+        -DCI_BUILD=ON -DFETCHCONTENT_QUIET=OFF
     - cmake --build build
   after_script:
     - mv ../.hunter .hunter
