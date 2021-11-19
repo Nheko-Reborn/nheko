@@ -288,7 +288,7 @@ ScrollView {
                         id: userName_
 
                         text: TimelineManager.escapeEmoji(userName)
-                        color: TimelineManager.userColor(userId, Nheko.colors.window)
+                        color: TimelineManager.userColor(userId, Nheko.colors.base)
                         textFormat: Text.RichText
                         ToolTip.visible: displayNameHover.hovered
                         ToolTip.text: userId
