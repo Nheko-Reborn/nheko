@@ -996,7 +996,8 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
         g_signal_emit_by_name(webrtcbin, "get-transceivers", &transceivers);
         GstWebRTCRTPTransceiver *transceiver =
           g_array_index(transceivers, GstWebRTCRTPTransceiver *, 1);
-        transceiver->direction = GST_WEBRTC_RTP_TRANSCEIVER_DIRECTION_SENDONLY;
+        g_object_set(
+          transceiver, "direction", GST_WEBRTC_RTP_TRANSCEIVER_DIRECTION_SENDONLY, nullptr);
         g_array_unref(transceivers);
     }
 
