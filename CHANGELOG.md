@@ -98,7 +98,7 @@
 - Alerts now work, if the homeserver does not implement the notifications
     endpoint. (Thulinma)
 - Right click menu now works on replies.
-- Decrypt encrypted media only in memory.
+- Decrypt encrypted media only in memory. (On macOS it still uses a tempfile because of <https://bugreports.qt.io/browse/QTBUG-69101>)
 - Don't use CC-BY in the appstream license to not confuse Gnome Software.
 - Document how to sync the repo on Gentoo. (alfasi)
 - Support online key backup.
@@ -141,7 +141,7 @@
 - Show borders around tables.
 - Improve wording of a few menu entries. (absorber)
 - Highlight navigated to message.
-- Switched to the fluent icon set.
+- Switched to the fluent icon set. (LorenDB)
 
 ### Bugfixes
 
