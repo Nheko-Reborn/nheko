@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.9.0] -- Unreleased
+## [0.9.0] -- 2021-11-19
 
 ### Highlights
 
@@ -63,7 +63,7 @@
 
 ### Improvements
 
-- Tranlation updates:
+- Translation updates:
   - French by MayeulC, ISSOtm, Glandos, Carl Schwan
   - Dutch by Thulinma, Bas van Rossem, Glael, Thijs
   - Esperanto by Tirifto, Colin
