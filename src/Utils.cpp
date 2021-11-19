@@ -32,8 +32,6 @@
 
 using TimelineEvent = mtx::events::collections::TimelineEvents;
 
-QHash<QString, QString> authorColors_;
-
 template<class T, class Event>
 static DescInfo
 createDescriptionInfo(const Event &event, const QString &localUser, const QString &displayName)
@@ -661,7 +659,7 @@ utils::generateContrastingHexColor(const QString &input, const QColor &backgroun
     // create a hue value based on the hash of the input.
     auto userHue = static_cast<int>(hash % 360);
     // start with moderate saturation and lightness values.
-    auto sat       = 220;
+    auto sat       = 230;
     auto lightness = 125;
 
     // converting to a QColor makes the luminance calc easier.
@@ -677,10 +675,10 @@ utils::generateContrastingHexColor(const QString &input, const QColor &backgroun
     // try again and again until they do by modifying first
     // the lightness and then the saturation of the color.
     int iterationCount = 9;
-    while (contrast < 5) {
+    while (contrast < 4.5) {
         // if our lightness is at it's bounds, try changing
         // saturation instead.
-        if (lightness == 242 || lightness == 13) {
+        if (lightness >= 242 || lightness <= 13) {
             qreal newSat = qBound(26.0, sat * 1.25, 242.0);
 
             inputColor.setHsl(userHue, qFloor(newSat), lightness);
