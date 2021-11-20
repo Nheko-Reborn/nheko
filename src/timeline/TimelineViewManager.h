@@ -48,7 +48,7 @@ public:
     TimelineViewManager(CallManager *callManager, ChatPage *parent = nullptr);
     QWidget *getWidget() const { return container; }
 
-    void sync(const mtx::responses::Rooms &rooms);
+    void sync(const mtx::responses::Sync &sync_);
 
     MxcImageProvider *imageProvider() { return imgProvider; }
     CallManager *callManager() { return callManager_; }

@@ -176,7 +176,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
       this,
       &ChatPage::initializeViews,
       view_manager_,
-      [this](const mtx::responses::Rooms &rooms) { view_manager_->sync(rooms); },
+      [this](const mtx::responses::Sync &sync) { view_manager_->sync(sync); },
       Qt::QueuedConnection);
     connect(this,
             &ChatPage::initializeEmptyViews,
@@ -184,12 +184,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
             &TimelineViewManager::initializeRoomlist);
     connect(
       this, &ChatPage::chatFocusChanged, view_manager_, &TimelineViewManager::chatFocusChanged);
-    connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Rooms &rooms) {
-        view_manager_->sync(rooms);
+    connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Sync &sync) {
+        view_manager_->sync(sync);
 
         static unsigned int prevNotificationCount = 0;
         unsigned int notificationCount            = 0;
-        for (const auto &room : rooms.join) {
+        for (const auto &room : sync.rooms.join) {
             notificationCount += room.second.unread_notifications.notification_count;
         }
 
@@ -583,7 +583,7 @@ ChatPage::startInitialSync()
 
             olm::handle_to_device_messages(res.to_device.events);
 
-            emit initializeViews(std::move(res.rooms));
+            emit initializeViews(std::move(res));
             emit initializeMentions(cache::getTimelineMentions());
 
             cache::calculateRoomReadStatus();
@@ -622,7 +622,7 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
 
         auto updates = cache::getRoomInfo(cache::client()->roomsWithStateUpdates(res));
 
-        emit syncUI(res.rooms);
+        emit syncUI(std::move(res));
 
         // if we process a lot of syncs (1 every 200ms), this means we clean the
         // db every 100s

@@ -87,7 +87,7 @@ public:
 
 public slots:
     void initializeRooms();
-    void sync(const mtx::responses::Rooms &rooms);
+    void sync(const mtx::responses::Sync &sync_);
     void clear();
     int roomidToIndex(QString roomid)
     {
@@ -123,6 +123,7 @@ signals:
 private:
     void addRoom(const QString &room_id, bool suppressInsertNotification = false);
     void fetchPreview(QString roomid) const;
+    std::set<QString> updateDMs(mtx::events::AccountDataEvent<mtx::events::account_data::Direct> e);
 
     TimelineViewManager *manager = nullptr;
     std::vector<QString> roomids;
@@ -133,6 +134,8 @@ private:
 
     QSharedPointer<TimelineModel> currentRoom_;
     std::optional<RoomPreview> currentRoomPreview_;
+
+    std::map<QString, std::vector<QString>> directChatToUser;
 
     friend class FilteredRoomlistModel;
 };
@@ -180,6 +183,9 @@ public slots:
         } else if (tagId.startsWith("space:")) {
             filterType = FilterBy::Space;
             filterStr  = tagId.mid(6);
+        } else if (tagId.startsWith("dm")) {
+            filterType = FilterBy::DirectChats;
+            filterStr.clear();
         } else {
             filterType = FilterBy::Nothing;
             filterStr.clear();
@@ -202,9 +208,11 @@ private:
     {
         Tag,
         Space,
+        DirectChats,
         Nothing,
     };
     QString filterStr   = "";
     FilterBy filterType = FilterBy::Nothing;
     QStringList hiddenTags, hiddenSpaces;
+    bool hideDMs = false;
 };

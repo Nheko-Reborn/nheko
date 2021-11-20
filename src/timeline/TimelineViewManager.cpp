@@ -359,10 +359,10 @@ TimelineViewManager::setVideoCallItem()
 }
 
 void
-TimelineViewManager::sync(const mtx::responses::Rooms &rooms_res)
+TimelineViewManager::sync(const mtx::responses::Sync &sync_)
 {
-    this->rooms_->sync(rooms_res);
-    this->communities_->sync(rooms_res);
+    this->rooms_->sync(sync_);
+    this->communities_->sync(sync_);
 
     if (isInitialSync_) {
         this->isInitialSync_ = false;

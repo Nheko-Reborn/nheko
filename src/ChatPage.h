@@ -126,10 +126,10 @@ signals:
     void newRoom(const QString &room_id);
     void changeToRoom(const QString &room_id);
 
-    void initializeViews(const mtx::responses::Rooms &rooms);
+    void initializeViews(const mtx::responses::Sync &rooms);
     void initializeEmptyViews();
     void initializeMentions(const QMap<QString, mtx::responses::Notifications> &notifs);
-    void syncUI(const mtx::responses::Rooms &rooms);
+    void syncUI(const mtx::responses::Sync &sync);
     void dropToLoginPageCb(const QString &msg);
 
     void notifyMessage(const QString &roomid,
