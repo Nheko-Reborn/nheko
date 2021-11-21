@@ -44,8 +44,23 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         case CommunitiesModel::Roles::Id:
             return "";
         }
-    } else if (index.row() - 1 < spaceOrder_.size()) {
-        auto id = spaceOrder_.at(index.row() - 1);
+    } else if (index.row() == 1) {
+        switch (role) {
+        case CommunitiesModel::Roles::AvatarUrl:
+            return QString(":/icons/icons/ui/people.svg");
+        case CommunitiesModel::Roles::DisplayName:
+            return tr("Direct Chats");
+        case CommunitiesModel::Roles::Tooltip:
+            return tr("Show direct chats.");
+        case CommunitiesModel::Roles::ChildrenHidden:
+            return false;
+        case CommunitiesModel::Roles::Hidden:
+            return hiddentTagIds_.contains("dm");
+        case CommunitiesModel::Roles::Id:
+            return "dm";
+        }
+    } else if (index.row() - 2 < spaceOrder_.size()) {
+        auto id = spaceOrder_.at(index.row() - 2);
         switch (role) {
         case CommunitiesModel::Roles::AvatarUrl:
             return QString::fromStdString(spaces_.at(id).avatar_url);
@@ -59,8 +74,8 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         case CommunitiesModel::Roles::Id:
             return "space:" + id;
         }
-    } else if (index.row() - 1 < tags_.size() + spaceOrder_.size()) {
-        auto tag = tags_.at(index.row() - 1 - spaceOrder_.size());
+    } else if (index.row() - 2 < tags_.size() + spaceOrder_.size()) {
+        auto tag = tags_.at(index.row() - 2 - spaceOrder_.size());
         if (tag == "m.favourite") {
             switch (role) {
             case CommunitiesModel::Roles::AvatarUrl:
@@ -156,11 +171,11 @@ CommunitiesModel::clear()
 }
 
 void
-CommunitiesModel::sync(const mtx::responses::Rooms &rooms)
+CommunitiesModel::sync(const mtx::responses::Sync &sync_)
 {
     bool tagsUpdated = false;
 
-    for (const auto &[roomid, room] : rooms.join) {
+    for (const auto &[roomid, room] : sync_.rooms.join) {
         (void)roomid;
         for (const auto &e : room.account_data.events)
             if (std::holds_alternative<
@@ -182,10 +197,17 @@ CommunitiesModel::sync(const mtx::responses::Rooms &rooms)
                 tagsUpdated = true;
             }
     }
-    for (const auto &[roomid, room] : rooms.leave) {
+    for (const auto &[roomid, room] : sync_.rooms.leave) {
         (void)room;
         if (spaceOrder_.contains(QString::fromStdString(roomid)))
             tagsUpdated = true;
+    }
+    for (const auto &e : sync_.account_data.events) {
+        if (std::holds_alternative<
+              mtx::events::AccountDataEvent<mtx::events::account_data::Direct>>(e)) {
+            tagsUpdated = true;
+            break;
+        }
     }
 
     if (tagsUpdated)
@@ -213,6 +235,10 @@ CommunitiesModel::setCurrentTagId(QString tagId)
                 return;
             }
         }
+    } else if (tagId == "dm") {
+        this->currentTagId_ = tagId;
+        emit currentTagIdChanged(currentTagId_);
+        return;
     }
 
     this->currentTagId_ = "";
@@ -239,6 +265,8 @@ CommunitiesModel::toggleTagId(QString tagId)
         auto idx = spaceOrder_.indexOf(tagId.mid(6));
         if (idx != -1)
             emit dataChanged(index(idx + 1), index(idx + 1), {Hidden});
+    } else if (tagId == "dm") {
+        emit dataChanged(index(1), index(1), {Hidden});
     }
 
     emit hiddenTagsChanged();

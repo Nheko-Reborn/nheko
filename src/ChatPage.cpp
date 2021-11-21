@@ -176,7 +176,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
       this,
       &ChatPage::initializeViews,
       view_manager_,
-      [this](const mtx::responses::Rooms &rooms) { view_manager_->sync(rooms); },
+      [this](const mtx::responses::Sync &sync) { view_manager_->sync(sync); },
       Qt::QueuedConnection);
     connect(this,
             &ChatPage::initializeEmptyViews,
@@ -184,12 +184,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
             &TimelineViewManager::initializeRoomlist);
     connect(
       this, &ChatPage::chatFocusChanged, view_manager_, &TimelineViewManager::chatFocusChanged);
-    connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Rooms &rooms) {
-        view_manager_->sync(rooms);
+    connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Sync &sync) {
+        view_manager_->sync(sync);
 
         static unsigned int prevNotificationCount = 0;
         unsigned int notificationCount            = 0;
-        for (const auto &room : rooms.join) {
+        for (const auto &room : sync.rooms.join) {
             notificationCount += room.second.unread_notifications.notification_count;
         }
 
@@ -583,7 +583,7 @@ ChatPage::startInitialSync()
 
             olm::handle_to_device_messages(res.to_device.events);
 
-            emit initializeViews(std::move(res.rooms));
+            emit initializeViews(std::move(res));
             emit initializeMentions(cache::getTimelineMentions());
 
             cache::calculateRoomReadStatus();
@@ -622,7 +622,7 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
 
         auto updates = cache::getRoomInfo(cache::client()->roomsWithStateUpdates(res));
 
-        emit syncUI(res.rooms);
+        emit syncUI(std::move(res));
 
         // if we process a lot of syncs (1 every 200ms), this means we clean the
         // db every 100s
@@ -660,10 +660,8 @@ ChatPage::trySync()
     http::client()->sync(
       opts, [this, since = opts.since](const mtx::responses::Sync &res, mtx::http::RequestErr err) {
           if (err) {
-              const auto error      = QString::fromStdString(err->matrix_error.error);
-              const auto msg        = tr("Please try to login again: %1").arg(error);
-              const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
-              const int status_code = static_cast<int>(err->status_code);
+              const auto error = QString::fromStdString(err->matrix_error.error);
+              const auto msg   = tr("Please try to login again: %1").arg(error);
 
               if ((http::is_logged_in() &&
                    (err->matrix_error.errcode == mtx::errors::ErrorCode::M_UNKNOWN_TOKEN ||
@@ -673,11 +671,7 @@ ChatPage::trySync()
                   return;
               }
 
-              nhlog::net()->error("sync error: {} {} {} {}",
-                                  err->parse_error,
-                                  status_code,
-                                  err->error_code,
-                                  err_code);
+              nhlog::net()->error("sync error: {}", *err);
               emit tryDelayedSyncCb();
               return;
           }

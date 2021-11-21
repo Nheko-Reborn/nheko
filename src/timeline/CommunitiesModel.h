@@ -37,13 +37,13 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override
     {
         (void)parent;
-        return 1 + tags_.size() + spaceOrder_.size();
+        return 2 + tags_.size() + spaceOrder_.size();
     }
     QVariant data(const QModelIndex &index, int role) const override;
 
 public slots:
     void initializeSidebar();
-    void sync(const mtx::responses::Rooms &rooms);
+    void sync(const mtx::responses::Sync &sync_);
     void clear();
     QString currentTagId() const { return currentTagId_; }
     void setCurrentTagId(QString tagId);

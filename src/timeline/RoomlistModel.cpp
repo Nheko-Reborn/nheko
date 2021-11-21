@@ -95,6 +95,10 @@ RoomlistModel::data(const QModelIndex &index, int role) const
             return list;
         } else if (role == Roles::RoomId) {
             return roomid;
+        } else if (role == Roles::IsDirect) {
+            return directChatToUser.count(roomid) > 0;
+        } else if (role == Roles::DirectChatOtherUserId) {
+            return directChatToUser.count(roomid) ? directChatToUser.at(roomid).front() : "";
         }
 
         if (models.contains(roomid)) {
@@ -129,10 +133,6 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                     list.push_back(QString::fromStdString(t));
                 return list;
             }
-            case Roles::IsDirect:
-                return room->isDirect();
-            case Roles::DirectChatOtherUserId:
-                return room->directChatOtherUserId();
             default:
                 return {};
             }
@@ -162,12 +162,6 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                 return false;
             case Roles::Tags:
                 return QStringList();
-            case Roles::IsDirect:
-                // The list of users from the room doesn't contain the invited
-                // users, so we won't factor the invite into the count
-                return room.member_count == 1;
-            case Roles::DirectChatOtherUserId:
-                return cache::getMembersFromInvite(roomid.toStdString(), 0, 1).front().user_id;
             default:
                 return {};
             }
@@ -199,10 +193,6 @@ RoomlistModel::data(const QModelIndex &index, int role) const
                 return true;
             case Roles::Tags:
                 return QStringList();
-            case Roles::IsDirect:
-                return false;
-            case Roles::DirectChatOtherUserId:
-                return QString{}; // should never be reached
             default:
                 return {};
             }
@@ -443,10 +433,69 @@ RoomlistModel::fetchPreview(QString roomid_) const
       });
 }
 
-void
-RoomlistModel::sync(const mtx::responses::Rooms &rooms)
+std::set<QString>
+RoomlistModel::updateDMs(mtx::events::AccountDataEvent<mtx::events::account_data::Direct> event)
 {
-    for (const auto &[room_id, room] : rooms.join) {
+    std::set<QString> roomsToUpdate;
+    std::map<QString, std::vector<QString>> directChatToUserTemp;
+
+    for (const auto &[user, rooms] : event.content.user_to_rooms) {
+        QString u = QString::fromStdString(user);
+
+        for (const auto &r : rooms) {
+            directChatToUserTemp[QString::fromStdString(r)].push_back(u);
+        }
+    }
+
+    for (auto l = directChatToUser.begin(), r = directChatToUserTemp.begin();
+         l != directChatToUser.end() && r != directChatToUserTemp.end();) {
+        if (l == directChatToUser.end()) {
+            while (r != directChatToUserTemp.end()) {
+                roomsToUpdate.insert(r->first);
+                ++r;
+            }
+        } else if (r == directChatToUserTemp.end()) {
+            while (l != directChatToUser.end()) {
+                roomsToUpdate.insert(l->first);
+                ++l;
+            }
+        } else if (l->first == r->first) {
+            if (l->second != r->second)
+                roomsToUpdate.insert(l->first);
+
+            ++l;
+            ++r;
+        } else if (l->first < r->first) {
+            roomsToUpdate.insert(l->first);
+            ++l;
+        } else if (l->first > r->first) {
+            roomsToUpdate.insert(r->first);
+            ++r;
+        } else {
+            throw std::logic_error("Infinite loop when updating DMs!");
+        }
+    }
+
+    this->directChatToUser = directChatToUserTemp;
+
+    return roomsToUpdate;
+}
+
+void
+RoomlistModel::sync(const mtx::responses::Sync &sync_)
+{
+    for (const auto &e : sync_.account_data.events) {
+        if (auto event =
+              std::get_if<mtx::events::AccountDataEvent<mtx::events::account_data::Direct>>(&e)) {
+            auto updatedDMs = updateDMs(*event);
+            for (const auto &r : updatedDMs) {
+                if (auto idx = roomidToIndex(r); idx != -1)
+                    emit dataChanged(index(idx), index(idx), {IsDirect, DirectChatOtherUserId});
+            }
+        }
+    }
+
+    for (const auto &[room_id, room] : sync_.rooms.join) {
         auto qroomid = QString::fromStdString(room_id);
 
         // addRoom will only add the room, if it doesn't exist
@@ -477,7 +526,7 @@ RoomlistModel::sync(const mtx::responses::Rooms &rooms)
         }
     }
 
-    for (const auto &[room_id, room] : rooms.leave) {
+    for (const auto &[room_id, room] : sync_.rooms.leave) {
         (void)room;
         auto qroomid = QString::fromStdString(room_id);
 
@@ -497,7 +546,7 @@ RoomlistModel::sync(const mtx::responses::Rooms &rooms)
         }
     }
 
-    for (const auto &[room_id, room] : rooms.invite) {
+    for (const auto &[room_id, room] : sync_.rooms.invite) {
         (void)room;
         auto qroomid = QString::fromStdString(room_id);
 
@@ -527,9 +576,19 @@ RoomlistModel::initializeRooms()
     invites.clear();
     currentRoom_ = nullptr;
 
+    auto e = cache::client()->getAccountData(mtx::events::EventType::Direct);
+    if (e) {
+        if (auto event =
+              std::get_if<mtx::events::AccountDataEvent<mtx::events::account_data::Direct>>(
+                &e.value())) {
+            updateDMs(*event);
+        }
+    }
+
     invites = cache::client()->invites();
-    for (const auto &id : invites.keys())
+    for (const auto &id : invites.keys()) {
         roomids.push_back(id);
+    }
 
     for (const auto &id : cache::client()->roomIds())
         addRoom(id, true);
@@ -568,6 +627,16 @@ RoomlistModel::acceptInvite(QString roomid)
 {
     if (invites.contains(roomid)) {
         // Don't remove invite yet, so that we can switch to it
+        auto members = cache::getMembersFromInvite(roomid.toStdString(), 0, -1);
+        auto local   = utils::localUser();
+        for (const auto &m : members) {
+            if (m.user_id == local && m.is_direct) {
+                nhlog::db()->info("marking {} as direct", roomid.toStdString());
+                utils::markRoomAsDirect(roomid, members);
+                break;
+            }
+        }
+
         ChatPage::instance()->joinRoom(roomid);
     }
 }
@@ -756,11 +825,14 @@ FilteredRoomlistModel::updateHiddenTagsAndSpaces()
 {
     hiddenTags.clear();
     hiddenSpaces.clear();
+    hideDMs = false;
     for (const auto &t : UserSettings::instance()->hiddenTags()) {
         if (t.startsWith("tag:"))
             hiddenTags.push_back(t.mid(4));
         else if (t.startsWith("space:"))
             hiddenSpaces.push_back(t.mid(6));
+        else if (t == "dm")
+            hideDMs = true;
     }
 
     invalidateFilter();
@@ -801,7 +873,48 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                     return false;
         }
 
+        if (hideDMs) {
+            return !sourceModel()
+                      ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsDirect)
+                      .toBool();
+        }
+
         return true;
+    } else if (filterType == FilterBy::DirectChats) {
+        if (sourceModel()
+              ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsPreview)
+              .toBool()) {
+            return false;
+        }
+
+        if (sourceModel()
+              ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsSpace)
+              .toBool()) {
+            return false;
+        }
+
+        if (!hiddenTags.empty()) {
+            auto tags = sourceModel()
+                          ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
+                          .toStringList();
+
+            for (const auto &t : tags)
+                if (hiddenTags.contains(t))
+                    return false;
+        }
+
+        if (!hiddenSpaces.empty()) {
+            auto parents = sourceModel()
+                             ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
+                             .toStringList();
+            for (const auto &t : parents)
+                if (hiddenSpaces.contains(t))
+                    return false;
+        }
+
+        return sourceModel()
+          ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsDirect)
+          .toBool();
     } else if (filterType == FilterBy::Tag) {
         if (sourceModel()
               ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsPreview)
@@ -835,6 +948,12 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
             for (const auto &t : parents)
                 if (hiddenSpaces.contains(t))
                     return false;
+        }
+
+        if (hideDMs) {
+            return !sourceModel()
+                      ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsDirect)
+                      .toBool();
         }
 
         return true;
@@ -872,6 +991,12 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
               .toBool() &&
             !parents.contains(filterStr)) {
             return false;
+        }
+
+        if (hideDMs) {
+            return !sourceModel()
+                      ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsDirect)
+                      .toBool();
         }
 
         return true;
