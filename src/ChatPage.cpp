@@ -662,8 +662,6 @@ ChatPage::trySync()
           if (err) {
               const auto error      = QString::fromStdString(err->matrix_error.error);
               const auto msg        = tr("Please try to login again: %1").arg(error);
-              const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
-              const int status_code = static_cast<int>(err->status_code);
 
               if ((http::is_logged_in() &&
                    (err->matrix_error.errcode == mtx::errors::ErrorCode::M_UNKNOWN_TOKEN ||
@@ -673,11 +671,7 @@ ChatPage::trySync()
                   return;
               }
 
-              nhlog::net()->error("sync error: {} {} {} {}",
-                                  err->parse_error,
-                                  status_code,
-                                  err->error_code,
-                                  err_code);
+              nhlog::net()->error("sync error: {}", *err);
               emit tryDelayedSyncCb();
               return;
           }

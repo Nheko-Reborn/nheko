@@ -175,8 +175,7 @@ modules:
       - -Ddefault_library=static
     name: coeurl
     sources:
-      - commit: a08f619adaa1ccd34eb6315d6578eddae0d1cc9b
-        tag: v0.1.0
+      - commit: abafd60d7e9f5cce76c9abad3b2b3dc1382e5349
         type: git
         url: https://nheko.im/nheko-reborn/coeurl.git
   - config-opts:
@@ -187,8 +186,7 @@ modules:
     buildsystem: cmake-ninja
     name: mtxclient
     sources:
-      - commit: eecc4e93f2137c658014f17cefd62ad569063769
-        tag: v0.6.0
+      - commit: ffc1d3e13a507fa501966b2d7e9d4eda881f6bf4
         type: git
         url: https://github.com/Nheko-Reborn/mtxclient.git
   - config-opts:
