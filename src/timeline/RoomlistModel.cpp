@@ -586,8 +586,9 @@ RoomlistModel::initializeRooms()
     }
 
     invites = cache::client()->invites();
-    for (const auto &id : invites.keys())
+    for (const auto &id : invites.keys()) {
         roomids.push_back(id);
+    }
 
     for (const auto &id : cache::client()->roomIds())
         addRoom(id, true);
@@ -626,9 +627,17 @@ RoomlistModel::acceptInvite(QString roomid)
 {
     if (invites.contains(roomid)) {
         // Don't remove invite yet, so that we can switch to it
+        auto members = cache::getMembersFromInvite(roomid.toStdString(), 0, -1);
+        auto local   = utils::localUser();
+        for (const auto &m : members) {
+            if (m.user_id == local && m.is_direct) {
+                nhlog::db()->info("marking {} as direct", roomid.toStdString());
+                utils::markRoomAsDirect(roomid, members);
+                break;
+            }
+        }
+
         ChatPage::instance()->joinRoom(roomid);
-        utils::markRoomAsDirect(roomid,
-                                cache::client()->getMembersFromInvite(roomid.toStdString(), 0, -1));
     }
 }
 void

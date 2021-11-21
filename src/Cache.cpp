@@ -1640,7 +1640,7 @@ Cache::saveInvite(lmdb::txn &txn,
             auto display_name =
               msg->content.display_name.empty() ? msg->state_key : msg->content.display_name;
 
-            MemberInfo tmp{display_name, msg->content.avatar_url};
+            MemberInfo tmp{display_name, msg->content.avatar_url, msg->content.is_direct};
 
             membersdb.put(txn, msg->state_key, json(tmp).dump());
         } else {
@@ -2777,7 +2777,8 @@ Cache::getMembersFromInvite(const std::string &room_id, std::size_t startIndex, 
         try {
             MemberInfo tmp = json::parse(user_data);
             members.emplace_back(RoomMember{QString::fromStdString(std::string(user_id)),
-                                            QString::fromStdString(tmp.name)});
+                                            QString::fromStdString(tmp.name),
+                                            tmp.is_direct});
         } catch (const json::exception &e) {
             nhlog::db()->warn("{}", e.what());
         }
@@ -4563,6 +4564,8 @@ to_json(json &j, const MemberInfo &info)
 {
     j["name"]       = info.name;
     j["avatar_url"] = info.avatar_url;
+    if (info.is_direct)
+        j["is_direct"] = info.is_direct;
 }
 
 void
@@ -4570,6 +4573,7 @@ from_json(const json &j, MemberInfo &info)
 {
     info.name       = j.at("name");
     info.avatar_url = j.at("avatar_url");
+    info.is_direct  = j.value("is_direct", false);
 }
 
 void
