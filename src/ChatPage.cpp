@@ -660,8 +660,8 @@ ChatPage::trySync()
     http::client()->sync(
       opts, [this, since = opts.since](const mtx::responses::Sync &res, mtx::http::RequestErr err) {
           if (err) {
-              const auto error      = QString::fromStdString(err->matrix_error.error);
-              const auto msg        = tr("Please try to login again: %1").arg(error);
+              const auto error = QString::fromStdString(err->matrix_error.error);
+              const auto msg   = tr("Please try to login again: %1").arg(error);
 
               if ((http::is_logged_in() &&
                    (err->matrix_error.errcode == mtx::errors::ErrorCode::M_UNKNOWN_TOKEN ||

@@ -627,6 +627,8 @@ RoomlistModel::acceptInvite(QString roomid)
     if (invites.contains(roomid)) {
         // Don't remove invite yet, so that we can switch to it
         ChatPage::instance()->joinRoom(roomid);
+        utils::markRoomAsDirect(roomid,
+                                cache::client()->getMembersFromInvite(roomid.toStdString(), 0, -1));
     }
 }
 void

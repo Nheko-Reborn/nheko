@@ -645,6 +645,11 @@ InputBar::command(QString command, QString args)
             return;
         }
         nhlog::net()->error("Could not resolve goto: {}", args.toStdString());
+    } else if (command == "converttodm") {
+        utils::markRoomAsDirect(this->room->roomId(),
+                                cache::getMembers(this->room->roomId().toStdString(), 0, -1));
+    } else if (command == "converttoroom") {
+        utils::removeDirectFromRoom(this->room->roomId());
     }
 }
 
