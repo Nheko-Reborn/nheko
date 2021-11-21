@@ -16,7 +16,7 @@ public:
     QColor themeColor(const QString &key) const;
 
 private:
-    ThemeManager();
+    ThemeManager() {}
 
     ThemeManager(ThemeManager const &);
     void operator=(ThemeManager const &);

@@ -4,7 +4,7 @@ Standard: c++17
 AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: true
-AllowShortFunctionsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: InlineOnly
 BasedOnStyle: Mozilla
 ColumnLimit: 100
 IndentCaseLabels: false
@@ -12,3 +12,4 @@ IndentWidth: 4
 KeepEmptyLinesAtTheStartOfBlocks: false
 PointerAlignment: Right
 Cpp11BracedListStyle: true
+PenaltyReturnTypeOnItsOwnLine: 0

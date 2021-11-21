@@ -1115,7 +1115,14 @@ WebRTCSession::haveLocalPiP() const
     return false;
 }
 
-bool WebRTCSession::createOffer(webrtc::CallType, uint32_t) { return false; }
+// clang-format off
+// clang-format < 12 is buggy on this
+bool
+WebRTCSession::createOffer(webrtc::CallType, uint32_t)
+{
+    return false;
+}
+// clang-format on
 
 bool
 WebRTCSession::acceptOffer(const std::string &)

@@ -49,8 +49,8 @@ class MxcImageProvider
 {
     Q_OBJECT
 public slots:
-    QQuickImageResponse *requestImageResponse(const QString &id,
-                                              const QSize &requestedSize) override;
+    QQuickImageResponse *
+    requestImageResponse(const QString &id, const QSize &requestedSize) override;
 
     static void addEncryptionInfo(mtx::crypto::EncryptedFile info);
     static void download(const QString &id,

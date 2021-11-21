@@ -47,9 +47,8 @@ public:
     std::string statusMessage(const std::string &user_id);
 
     // user cache stores user keys
-    std::map<std::string, std::optional<UserKeyCache>> getMembersWithKeys(
-      const std::string &room_id,
-      bool verified_only);
+    std::map<std::string, std::optional<UserKeyCache>>
+    getMembersWithKeys(const std::string &room_id, bool verified_only);
     void updateUserKeys(const std::string &sync_token, const mtx::responses::QueryKeys &keyQuery);
     void markUserKeysOutOfDate(const std::vector<std::string> &user_ids);
     void markUserKeysOutOfDate(lmdb::txn &txn,
@@ -90,8 +89,8 @@ public:
 
     //! Get a specific state event
     template<typename T>
-    std::optional<mtx::events::StateEvent<T>> getStateEvent(const std::string &room_id,
-                                                            std::string_view state_key = "")
+    std::optional<mtx::events::StateEvent<T>>
+    getStateEvent(const std::string &room_id, std::string_view state_key = "")
     {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         return getStateEvent<T>(txn, room_id, state_key);
@@ -99,14 +98,12 @@ public:
 
     //! retrieve a specific event from account data
     //! pass empty room_id for global account data
-    std::optional<mtx::events::collections::RoomAccountDataEvents> getAccountData(
-      mtx::events::EventType type,
-      const std::string &room_id = "");
+    std::optional<mtx::events::collections::RoomAccountDataEvents>
+    getAccountData(mtx::events::EventType type, const std::string &room_id = "");
 
     //! Retrieve member info from a room.
-    std::vector<RoomMember> getMembers(const std::string &room_id,
-                                       std::size_t startIndex = 0,
-                                       std::size_t len        = 30);
+    std::vector<RoomMember>
+    getMembers(const std::string &room_id, std::size_t startIndex = 0, std::size_t len = 30);
 
     std::vector<RoomMember> getMembersFromInvite(const std::string &room_id,
                                                  std::size_t startIndex = 0,
@@ -186,8 +183,8 @@ public:
                                  uint64_t index = std::numeric_limits<uint64_t>::max(),
                                  bool forward   = false);
 
-    std::optional<mtx::events::collections::TimelineEvent> getEvent(const std::string &room_id,
-                                                                    const std::string &event_id);
+    std::optional<mtx::events::collections::TimelineEvent>
+    getEvent(const std::string &room_id, const std::string &event_id);
     void storeEvent(const std::string &room_id,
                     const std::string &event_id,
                     const mtx::events::collections::TimelineEvent &event);
@@ -203,9 +200,8 @@ public:
     std::optional<TimelineRange> getTimelineRange(const std::string &room_id);
     std::optional<uint64_t> getTimelineIndex(const std::string &room_id, std::string_view event_id);
     std::optional<uint64_t> getEventIndex(const std::string &room_id, std::string_view event_id);
-    std::optional<std::pair<uint64_t, std::string>> lastInvisibleEventAfter(
-      const std::string &room_id,
-      std::string_view event_id);
+    std::optional<std::pair<uint64_t, std::string>>
+    lastInvisibleEventAfter(const std::string &room_id, std::string_view event_id);
     std::optional<std::string> getTimelineEventId(const std::string &room_id, uint64_t index);
     std::optional<uint64_t> getArrivalIndex(const std::string &room_id, std::string_view event_id);
 
@@ -213,8 +209,8 @@ public:
     uint64_t saveOldMessages(const std::string &room_id, const mtx::responses::Messages &res);
     void savePendingMessage(const std::string &room_id,
                             const mtx::events::collections::TimelineEvent &message);
-    std::optional<mtx::events::collections::TimelineEvent> firstPendingMessage(
-      const std::string &room_id);
+    std::optional<mtx::events::collections::TimelineEvent>
+    firstPendingMessage(const std::string &room_id);
     void removePendingStatus(const std::string &room_id, const std::string &txn_id);
 
     //! clear timeline keeping only the latest batch
@@ -228,14 +224,14 @@ public:
     std::vector<std::string> getParentRoomIds(const std::string &room_id);
     std::vector<std::string> getChildRoomIds(const std::string &room_id);
 
-    std::vector<ImagePackInfo> getImagePacks(const std::string &room_id,
-                                             std::optional<bool> stickers);
+    std::vector<ImagePackInfo>
+    getImagePacks(const std::string &room_id, std::optional<bool> stickers);
 
     //! Mark a room that uses e2e encryption.
     void setEncryptedRoom(lmdb::txn &txn, const std::string &room_id);
     bool isRoomEncrypted(const std::string &room_id);
-    std::optional<mtx::events::state::Encryption> roomEncryptionSettings(
-      const std::string &room_id);
+    std::optional<mtx::events::state::Encryption>
+    roomEncryptionSettings(const std::string &room_id);
 
     //! Check if a user is a member of the room.
     bool isRoomMember(const std::string &user_id, const std::string &room_id);
@@ -273,8 +269,8 @@ public:
                         mtx::crypto::OlmSessionPtr session,
                         uint64_t timestamp);
     std::vector<std::string> getOlmSessions(const std::string &curve25519);
-    std::optional<mtx::crypto::OlmSessionPtr> getOlmSession(const std::string &curve25519,
-                                                            const std::string &session_id);
+    std::optional<mtx::crypto::OlmSessionPtr>
+    getOlmSession(const std::string &curve25519, const std::string &session_id);
     std::optional<mtx::crypto::OlmSessionPtr> getLatestOlmSession(const std::string &curve25519);
 
     void saveOlmAccount(const std::string &pickled);
@@ -331,8 +327,8 @@ private:
                               const QList<mtx::responses::Notification> &res);
 
     //! Get timeline items that a user was mentions in for a given room
-    mtx::responses::Notifications getTimelineMentionsForRoom(lmdb::txn &txn,
-                                                             const std::string &room_id);
+    mtx::responses::Notifications
+    getTimelineMentionsForRoom(lmdb::txn &txn, const std::string &room_id);
 
     QString getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
     QString getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb);
@@ -447,9 +443,8 @@ private:
     }
 
     template<typename T>
-    std::optional<mtx::events::StateEvent<T>> getStateEvent(lmdb::txn &txn,
-                                                            const std::string &room_id,
-                                                            std::string_view state_key = "")
+    std::optional<mtx::events::StateEvent<T>>
+    getStateEvent(lmdb::txn &txn, const std::string &room_id, std::string_view state_key = "")
     {
         try {
             constexpr auto type = mtx::events::state_content_to_type<T>;
@@ -492,8 +487,8 @@ private:
     }
 
     template<typename T>
-    std::vector<mtx::events::StateEvent<T>> getStateEventsWithType(lmdb::txn &txn,
-                                                                   const std::string &room_id)
+    std::vector<mtx::events::StateEvent<T>>
+    getStateEventsWithType(lmdb::txn &txn, const std::string &room_id)
 
     {
         constexpr auto type = mtx::events::state_content_to_type<T>;
@@ -531,16 +526,16 @@ private:
 
         return events;
     }
-    void saveInvites(lmdb::txn &txn,
-                     const std::map<std::string, mtx::responses::InvitedRoom> &rooms);
+    void
+    saveInvites(lmdb::txn &txn, const std::map<std::string, mtx::responses::InvitedRoom> &rooms);
 
     void savePresence(
       lmdb::txn &txn,
       const std::vector<mtx::events::Event<mtx::events::presence::Presence>> &presenceUpdates);
 
     //! Sends signals for the rooms that are removed.
-    void removeLeftRooms(lmdb::txn &txn,
-                         const std::map<std::string, mtx::responses::LeftRoom> &rooms)
+    void
+    removeLeftRooms(lmdb::txn &txn, const std::map<std::string, mtx::responses::LeftRoom> &rooms)
     {
         for (const auto &room : rooms) {
             removeRoom(txn, room.first);

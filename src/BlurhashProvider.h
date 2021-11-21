@@ -42,8 +42,8 @@ class BlurhashProvider
 {
     Q_OBJECT
 public slots:
-    QQuickImageResponse *requestImageResponse(const QString &id,
-                                              const QSize &requestedSize) override
+    QQuickImageResponse *
+    requestImageResponse(const QString &id, const QSize &requestedSize) override
     {
         BlurhashResponse *response = new BlurhashResponse(id, requestedSize);
         pool.start(response);

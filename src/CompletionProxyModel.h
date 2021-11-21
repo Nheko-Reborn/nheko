@@ -163,9 +163,8 @@ public:
     QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
     QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
 
-    QModelIndex index(int row,
-                      int column,
-                      const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex
+    index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &) const override;
 
 public slots:

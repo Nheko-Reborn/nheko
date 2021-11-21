@@ -74,8 +74,6 @@ RaisedButton::RaisedButton(const QString &text, QWidget *parent)
     setText(text);
 }
 
-RaisedButton::~RaisedButton() {}
-
 bool
 RaisedButton::event(QEvent *event)
 {

@@ -6,8 +6,6 @@
 
 #include "ThemeManager.h"
 
-ThemeManager::ThemeManager() {}
-
 QColor
 ThemeManager::themeColor(const QString &key) const
 {

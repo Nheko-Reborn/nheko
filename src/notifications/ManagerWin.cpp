@@ -100,10 +100,19 @@ NotificationsManager::systemPostNotification(const QString &line1,
     WinToast::instance()->showToast(templ, new CustomHandler());
 }
 
-void NotificationsManager::actionInvoked(uint, QString) {}
-void NotificationsManager::notificationReplied(uint, QString) {}
+// clang-format off
+// clang-format < 12 is buggy on this
+void
+NotificationsManager::actionInvoked(uint, QString)
+{}
 
-void NotificationsManager::notificationClosed(uint, uint) {}
+void
+NotificationsManager::notificationReplied(uint, QString)
+{}
+
+void
+NotificationsManager::notificationClosed(uint, uint)
+{}
 
 void
 NotificationsManager::removeNotification(const QString &, const QString &)

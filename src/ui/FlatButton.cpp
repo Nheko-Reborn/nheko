@@ -86,8 +86,6 @@ FlatButton::FlatButton(const QString &text, ui::Role role, QWidget *parent, ui::
     setRole(role);
 }
 
-FlatButton::~FlatButton() {}
-
 void
 FlatButton::applyPreset(ui::ButtonPreset preset)
 {
@@ -614,8 +612,6 @@ FlatButtonStateMachine::FlatButtonStateMachine(FlatButton *parent)
     addTransition(button_, QEvent::Leave, pressed_state_, neutral_focused_state_);
     addTransition(button_, QEvent::FocusOut, pressed_state_, hovered_state_);
 }
-
-FlatButtonStateMachine::~FlatButtonStateMachine() {}
 
 void
 FlatButtonStateMachine::setOverlayOpacity(qreal opacity)

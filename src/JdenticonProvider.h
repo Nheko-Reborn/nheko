@@ -50,8 +50,8 @@ public:
     static bool isAvailable() { return Jdenticon::getJdenticonInterface() != nullptr; }
 
 public slots:
-    QQuickImageResponse *requestImageResponse(const QString &id,
-                                              const QSize &requestedSize) override
+    QQuickImageResponse *
+    requestImageResponse(const QString &id, const QSize &requestedSize) override
     {
         auto id_      = id;
         bool crop     = true;

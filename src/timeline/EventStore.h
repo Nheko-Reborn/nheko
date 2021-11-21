@@ -79,8 +79,8 @@ public:
     QVariantList reactions(const std::string &event_id);
     std::vector<mtx::events::collections::TimelineEvents> edits(const std::string &event_id);
     olm::DecryptionErrorCode decryptionError(std::string id);
-    void requestSession(const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &ev,
-                        bool manual);
+    void
+    requestSession(const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &ev, bool manual);
 
     int size() const
     {
@@ -121,9 +121,9 @@ public slots:
     void enableKeyRequests(bool suppressKeyRequests_);
 
 private:
-    olm::DecryptionResult *decryptEvent(
-      const IdIndex &idx,
-      const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e);
+    olm::DecryptionResult *
+    decryptEvent(const IdIndex &idx,
+                 const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e);
     void handle_room_verification(mtx::events::collections::TimelineEvents event);
 
     std::string room_id_;

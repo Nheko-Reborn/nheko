@@ -27,8 +27,8 @@ public:
     bool haveCamera() const;
     std::vector<std::string> names(bool isVideo, const std::string &defaultDevice) const;
     std::vector<std::string> resolutions(const std::string &cameraName) const;
-    std::vector<std::string> frameRates(const std::string &cameraName,
-                                        const std::string &resolution) const;
+    std::vector<std::string>
+    frameRates(const std::string &cameraName, const std::string &resolution) const;
 
 signals:
     void devicesChanged();

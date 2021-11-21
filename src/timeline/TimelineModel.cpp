@@ -126,43 +126,43 @@ struct RoomEventType
     {
         return qml_mtx_events::EventType::VideoMessage;
     }
-    qml_mtx_events::EventType operator()(
-      const mtx::events::Event<mtx::events::msg::KeyVerificationRequest> &)
+    qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationRequest> &)
     {
         return qml_mtx_events::EventType::KeyVerificationRequest;
     }
-    qml_mtx_events::EventType operator()(
-      const mtx::events::Event<mtx::events::msg::KeyVerificationStart> &)
+    qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationStart> &)
     {
         return qml_mtx_events::EventType::KeyVerificationStart;
     }
-    qml_mtx_events::EventType operator()(
-      const mtx::events::Event<mtx::events::msg::KeyVerificationMac> &)
+    qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationMac> &)
     {
         return qml_mtx_events::EventType::KeyVerificationMac;
     }
-    qml_mtx_events::EventType operator()(
-      const mtx::events::Event<mtx::events::msg::KeyVerificationAccept> &)
+    qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationAccept> &)
     {
         return qml_mtx_events::EventType::KeyVerificationAccept;
     }
-    qml_mtx_events::EventType operator()(
-      const mtx::events::Event<mtx::events::msg::KeyVerificationReady> &)
+    qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationReady> &)
     {
         return qml_mtx_events::EventType::KeyVerificationReady;
     }
-    qml_mtx_events::EventType operator()(
-      const mtx::events::Event<mtx::events::msg::KeyVerificationCancel> &)
+    qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationCancel> &)
     {
         return qml_mtx_events::EventType::KeyVerificationCancel;
     }
-    qml_mtx_events::EventType operator()(
-      const mtx::events::Event<mtx::events::msg::KeyVerificationKey> &)
+    qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationKey> &)
     {
         return qml_mtx_events::EventType::KeyVerificationKey;
     }
-    qml_mtx_events::EventType operator()(
-      const mtx::events::Event<mtx::events::msg::KeyVerificationDone> &)
+    qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationDone> &)
     {
         return qml_mtx_events::EventType::KeyVerificationDone;
     }
@@ -182,8 +182,8 @@ struct RoomEventType
     {
         return qml_mtx_events::EventType::CallHangUp;
     }
-    qml_mtx_events::EventType operator()(
-      const mtx::events::Event<mtx::events::msg::CallCandidates> &)
+    qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::CallCandidates> &)
     {
         return qml_mtx_events::EventType::CallCandidates;
     }

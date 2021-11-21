@@ -662,9 +662,12 @@ DeviceVerificationFlow::sendVerificationRequest()
     } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
         req.to      = this->toClient.to_string();
         req.msgtype = "m.key.verification.request";
+        // clang-format off
+        // clang-format < 12 is buggy on this
         req.body    = "User is requesting to verify keys with you. However, your client does "
-                   "not support this method, so you will need to use the legacy method of "
-                   "key verification.";
+                      "not support this method, so you will need to use the legacy method of "
+                      "key verification.";
+        // clang-format on
     }
 
     send(req);

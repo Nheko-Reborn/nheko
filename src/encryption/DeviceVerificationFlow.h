@@ -103,22 +103,22 @@ public:
     };
     Q_ENUM(Error)
 
-    static QSharedPointer<DeviceVerificationFlow> NewInRoomVerification(
-      QObject *parent_,
-      TimelineModel *timelineModel_,
-      const mtx::events::msg::KeyVerificationRequest &msg,
-      QString other_user_,
-      QString event_id_);
-    static QSharedPointer<DeviceVerificationFlow> NewToDeviceVerification(
-      QObject *parent_,
-      const mtx::events::msg::KeyVerificationRequest &msg,
-      QString other_user_,
-      QString txn_id_);
-    static QSharedPointer<DeviceVerificationFlow> NewToDeviceVerification(
-      QObject *parent_,
-      const mtx::events::msg::KeyVerificationStart &msg,
-      QString other_user_,
-      QString txn_id_);
+    static QSharedPointer<DeviceVerificationFlow>
+    NewInRoomVerification(QObject *parent_,
+                          TimelineModel *timelineModel_,
+                          const mtx::events::msg::KeyVerificationRequest &msg,
+                          QString other_user_,
+                          QString event_id_);
+    static QSharedPointer<DeviceVerificationFlow>
+    NewToDeviceVerification(QObject *parent_,
+                            const mtx::events::msg::KeyVerificationRequest &msg,
+                            QString other_user_,
+                            QString txn_id_);
+    static QSharedPointer<DeviceVerificationFlow>
+    NewToDeviceVerification(QObject *parent_,
+                            const mtx::events::msg::KeyVerificationStart &msg,
+                            QString other_user_,
+                            QString txn_id_);
     static QSharedPointer<DeviceVerificationFlow>
     InitiateUserVerification(QObject *parent_, TimelineModel *timelineModel_, QString userid);
     static QSharedPointer<DeviceVerificationFlow>

@@ -57,16 +57,16 @@ public:
     static MainWindow *instance() { return instance_; }
     void saveCurrentWindowSize();
 
-    void openCreateRoomDialog(
-      std::function<void(const mtx::requests::CreateRoom &request)> callback);
+    void
+    openCreateRoomDialog(std::function<void(const mtx::requests::CreateRoom &request)> callback);
     void openJoinRoomDialog(std::function<void(const QString &room_id)> callback);
     void openLogoutDialog();
 
     void hideOverlay();
     void showSolidOverlayModal(QWidget *content, QFlags<Qt::AlignmentFlag> flags = Qt::AlignCenter);
-    void showTransparentOverlayModal(QWidget *content,
-                                     QFlags<Qt::AlignmentFlag> flags = Qt::AlignTop |
-                                                                       Qt::AlignHCenter);
+    void
+    showTransparentOverlayModal(QWidget *content,
+                                QFlags<Qt::AlignmentFlag> flags = Qt::AlignTop | Qt::AlignHCenter);
 
 protected:
     void closeEvent(QCloseEvent *event) override;
