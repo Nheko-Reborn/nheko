@@ -110,8 +110,8 @@ build-flatpak-amd64:
     - apt-get update && apt-get install -y software-properties-common
     - add-apt-repository ppa:alexlarsson/flatpak && apt-get update && apt-get -y install flatpak-builder git python curl python3-aiohttp python3-tenacity gir1.2-ostree-1.0
     - flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    - flatpak --noninteractive install --user flathub org.kde.Platform//5.15
-    - flatpak --noninteractive install --user flathub org.kde.Sdk//5.15
+    - flatpak --noninteractive install --user flathub org.kde.Platform//5.15-21.08
+    - flatpak --noninteractive install --user flathub org.kde.Sdk//5.15-21.08
   script:
     - export VERSION=$(git describe)
     - mkdir -p build-flatpak
@@ -140,8 +140,8 @@ build-flatpak-arm64:
     - apt-get update && apt-get install -y software-properties-common
     - add-apt-repository ppa:alexlarsson/flatpak && apt-get update && apt-get -y install flatpak-builder git python curl python3-aiohttp python3-tenacity gir1.2-ostree-1.0
     - flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    - flatpak --noninteractive install --user flathub org.kde.Platform//5.15
-    - flatpak --noninteractive install --user flathub org.kde.Sdk//5.15
+    - flatpak --noninteractive install --user flathub org.kde.Platform//5.15-21.08
+    - flatpak --noninteractive install --user flathub org.kde.Sdk//5.15-21.08
   script:
     - export VERSION=$(git describe)
     - mkdir -p build-flatpak

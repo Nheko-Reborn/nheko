@@ -1,7 +1,7 @@
 id: io.github.NhekoReborn.Nheko
 command: nheko
 runtime: org.kde.Platform
-runtime-version: '5.15'
+runtime-version: '5.15-21.08'
 sdk: org.kde.Sdk
 rename-icon: nheko
 rename-desktop-file: nheko.desktop
@@ -90,6 +90,8 @@ modules:
       - -Dvapi=false
       - -Dgtk_doc=false
       - -Dintrospection=false
+      # https://gitlab.gnome.org/GNOME/libsecret/-/issues/49
+      - -Dgcrypt=false
     sources:
       - commit: 3fe635e64efd4b8dbc9ec3548b0bc8034c7665c4
         tag: 0.20.4
