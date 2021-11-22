@@ -82,7 +82,7 @@ Item {
 
             NoticeMessage {
                 formatted: TimelineManager.escapeEmoji(d.userName) + " " + d.formattedBody
-                color: TimelineManager.userColor(d.userId, Nheko.colors.window)
+                color: TimelineManager.userColor(d.userId, Nheko.colors.base)
                 body: d.body
                 isOnlyEmoji: d.isOnlyEmoji
                 isReply: d.isReply
