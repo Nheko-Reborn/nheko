@@ -104,7 +104,7 @@ ApplicationWindow {
             }
 
             MatrixText {
-                text: qsTr("%1 member(s)").arg(roomSettings.memberCount)
+                text: qsTr("%n member(s)", "", roomSettings.memberCount)
                 Layout.alignment: Qt.AlignHCenter
 
                 TapHandler {
