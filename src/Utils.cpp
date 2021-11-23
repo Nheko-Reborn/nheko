@@ -7,6 +7,7 @@
 #include <QApplication>
 #include <QBuffer>
 #include <QComboBox>
+#include <QCryptographicHash>
 #include <QDesktopWidget>
 #include <QGuiApplication>
 #include <QImageReader>
@@ -641,13 +642,9 @@ utils::linkColor()
 uint32_t
 utils::hashQString(const QString &input)
 {
-    uint32_t hash = 0;
+    auto h = QCryptographicHash::hash(input.toUtf8(), QCryptographicHash::Sha1);
 
-    for (int i = 0; i < input.length(); i++) {
-        hash = input.at(i).digitValue() + ((hash << 5) - hash);
-    }
-
-    return hash;
+    return (h[0] << 24) ^ (h[1] << 16) ^ (h[2] << 8) ^ h[3];
 }
 
 QColor
@@ -658,7 +655,10 @@ utils::generateContrastingHexColor(const QString &input, const QColor &backgroun
     // Create a color for the input
     auto hash = hashQString(input);
     // create a hue value based on the hash of the input.
-    auto userHue = static_cast<int>(hash % 360);
+    // Adapted to make Nico blue
+    auto userHue =
+      static_cast<int>(static_cast<double>(hash - static_cast<uint32_t>(0x60'00'00'00)) /
+                       std::numeric_limits<uint32_t>::max() * 360.);
     // start with moderate saturation and lightness values.
     auto sat       = 230;
     auto lightness = 125;
