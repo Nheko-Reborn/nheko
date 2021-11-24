@@ -28,22 +28,20 @@ Q_DECLARE_METATYPE(std::vector<std::string>)
 Q_DECLARE_METATYPE(std::vector<QString>)
 Q_DECLARE_METATYPE(std::set<QString>)
 
-namespace {
-auto client_ = std::make_shared<mtx::http::Client>();
-}
 
 namespace http {
 
 mtx::http::Client *
 client()
 {
+    static auto client_ = std::make_shared<mtx::http::Client>();
     return client_.get();
 }
 
 bool
 is_logged_in()
 {
-    return !client_->access_token().empty();
+    return !client()->access_token().empty();
 }
 
 void
