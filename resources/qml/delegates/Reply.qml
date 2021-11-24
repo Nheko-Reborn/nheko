@@ -48,7 +48,7 @@ Item {
         anchors.top: replyContainer.top
         anchors.bottom: replyContainer.bottom
         width: 4
-        color: TimelineManager.userColor(userId, Nheko.colors.window)
+        color: TimelineManager.userColor(userId, Nheko.colors.base)
     }
 
     Column {
