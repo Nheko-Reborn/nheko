@@ -28,7 +28,6 @@ Q_DECLARE_METATYPE(std::vector<std::string>)
 Q_DECLARE_METATYPE(std::vector<QString>)
 Q_DECLARE_METATYPE(std::set<QString>)
 
-
 namespace http {
 
 mtx::http::Client *
