@@ -96,7 +96,7 @@
     <message>
         <location line="+12"/>
         <source>Unknown microphone: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Microfono sconosciuto: %1</translation>
     </message>
     <message>
         <location line="+8"/>
