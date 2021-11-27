@@ -243,7 +243,8 @@ main(int argc, char *argv[])
 
     app.setFont(font);
 
-    QString lang = QLocale::system().name();
+    if (QLocale().language() == QLocale::C)
+        QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedKingdom));
 
     QTranslator qtTranslator;
     qtTranslator.load(QLocale(), "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
