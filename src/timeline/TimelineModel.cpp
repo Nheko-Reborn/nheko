@@ -1814,11 +1814,13 @@ TimelineModel::formatRedactedEvent(QString id)
     QString reason   = "";
     auto because     = event->unsigned_data.redacted_because;
     // User info about who actually sent the redacted event.
-    QString redactedUser = QString::fromStdString(because->sender).toHtmlEscaped();
-    QString redactedName = utils::replaceEmoji(displayName(redactedUser));
+    QString redactedUser;
+    QString redactedName;
 
     if (because.has_value()) {
-        reason = QString::fromStdString(because->content.reason).toHtmlEscaped();
+        redactedUser = QString::fromStdString(because->sender).toHtmlEscaped();
+        redactedName = utils::replaceEmoji(displayName(redactedUser));
+        reason       = QString::fromStdString(because->content.reason).toHtmlEscaped();
     }
 
     if (reason.isEmpty()) {
