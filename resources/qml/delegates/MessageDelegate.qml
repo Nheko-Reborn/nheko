@@ -170,10 +170,9 @@ Item {
         DelegateChoice {
             roleValue: MtxEvent.Redacted
 
-            Pill {
-                text: qsTr("removed")
+            Redacted {
+                delegateWidth: d.width
             }
-
         }
 
         DelegateChoice {

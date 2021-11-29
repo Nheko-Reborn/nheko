@@ -131,12 +131,12 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+668"/>
+        <location line="+662"/>
         <source>Invited user: %1</source>
         <translation>Gebruiker uitgenodigd: %1</translation>
     </message>
     <message>
-        <location line="-461"/>
+        <location line="-455"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Het migreren can de cache naar de huidige versie is mislukt. Dit kan verscheidene redenen hebben. Maak a.u.b een issue aan en probeer in de tussentijd een oudere versie. Je kan ook proberen de cache handmatig te verwijderen.</translation>
     </message>
@@ -151,7 +151,7 @@
         <translation>Kon database niet openen, je wordt uitgelogd!</translation>
     </message>
     <message>
-        <location line="+314"/>
+        <location line="+308"/>
         <source>Confirm join</source>
         <translation>Bevestig deelname</translation>
     </message>
@@ -242,7 +242,7 @@
         <translation>Weet je zeker dat je een privé chat wil beginnen met %1?</translation>
     </message>
     <message>
-        <location line="-892"/>
+        <location line="-886"/>
         <source>Cache migration failed!</source>
         <translation>Migreren van de cache is mislukt!</translation>
     </message>
@@ -275,7 +275,7 @@
         <translation>Probeer a.u.b. opnieuw in te loggen: %1</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+43"/>
         <source>Failed to join room: %1</source>
         <translation>Kamer binnengaan mislukt: %1</translation>
     </message>
@@ -324,6 +324,16 @@
         <location line="+2"/>
         <source>Shows all rooms without filtering.</source>
         <translation>Laat alles kamers zien zonder filters.</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Direct Chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show direct chats.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+30"/>
@@ -547,7 +557,7 @@
 <context>
     <name>EncryptionIndicator</name>
     <message>
-        <location filename="../qml/EncryptionIndicator.qml" line="+34"/>
+        <location filename="../qml/EncryptionIndicator.qml" line="+52"/>
         <source>This message is not encrypted!</source>
         <translation>Dit bericht is niet versleuteld!</translation>
     </message>
@@ -759,7 +769,7 @@
         <translation>Alle bestanden (*)</translation>
     </message>
     <message>
-        <location line="+474"/>
+        <location line="+479"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Het is niet is gelukt om de media te versturen. Probeer het a.u.b. opnieuw.</translation>
     </message>
@@ -788,7 +798,7 @@
         <translation>Toevoegen</translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+84"/>
         <source>Invite</source>
         <translation>Uitnodigen</translation>
     </message>
@@ -892,13 +902,13 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+83"/>
         <location line="+11"/>
-        <location line="+151"/>
+        <location line="+153"/>
         <location line="+11"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
         <translation>Je hebt een ongeldige Matrix ID ingevuld. Correct voorbeeld: @jan:matrix.org</translation>
     </message>
     <message>
-        <location line="-126"/>
+        <location line="-128"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Automatische herkenning mislukt. Ongeldig antwoord ontvangen.</translation>
     </message>
@@ -928,7 +938,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>SSO INLOGGEN</translation>
     </message>
     <message>
-        <location line="+257"/>
+        <location line="+259"/>
         <source>Empty password</source>
         <translation>Leeg wachtwoord</translation>
     </message>
@@ -959,8 +969,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+174"/>
-        <location line="+9"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+182"/>
         <source>removed</source>
         <translation>verwijderd</translation>
     </message>
@@ -1474,7 +1483,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4528"/>
+        <location filename="../../src/Cache.cpp" line="+4536"/>
         <source>no version stored</source>
         <translation>geen versie opgeslagen</translation>
     </message>
@@ -1542,7 +1551,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Stel statusbericht in</translation>
     </message>
     <message>
-        <location line="+80"/>
+        <location line="+82"/>
         <source>Logout</source>
         <translation>Uitloggen</translation>
     </message>
@@ -1565,7 +1574,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Verifieer a.u.b. je andere apparaten</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+19"/>
         <source>Close</source>
         <translation>Sluiten</translation>
     </message>
@@ -1617,7 +1626,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Nodig meer mensen uit</translation>
     </message>
     <message>
-        <location line="+76"/>
+        <location line="+87"/>
         <source>This room is not encrypted!</source>
         <translation>Deze kamer is niet versleuteld!</translation>
     </message>
@@ -1790,12 +1799,12 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Wachtende uitnodiging.</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+29"/>
         <source>Previewing this room</source>
         <translation>Voorbeeld van deze kamer</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+34"/>
         <source>No preview available</source>
         <translation>Geen voorbeeld beschikbaar</translation>
     </message>
@@ -1885,7 +1894,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4203"/>
+        <location filename="../../src/Cache.cpp" line="-4211"/>
         <source>Failed to connect to secret storage</source>
         <translation>Verbinden met geheimopslag mislukt</translation>
     </message>
@@ -2056,7 +2065,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1118"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1119"/>
         <location line="+16"/>
         <source>Message redaction failed: %1</source>
         <translation>Bericht intrekken mislukt: %1</translation>
@@ -2152,7 +2161,28 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <translation>%1 heeft de rechten van de kamer aangepast.</translation>
     </message>
     <message>
-        <location line="+76"/>
+        <location line="+27"/>
+        <source>Removed by %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 (%2) removed this message at %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Removed by %1 because: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>%1 (%2) removed this message at %3
+Reason: %4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+80"/>
         <source>%1 was invited.</source>
         <translation>%1 is uitgenodigd.</translation>
     </message>
@@ -2217,12 +2247,12 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <translation>%1 heeft het aankloppen ingetrokken.</translation>
     </message>
     <message>
-        <location line="-970"/>
+        <location line="-1006"/>
         <source>You joined this room.</source>
         <translation>Je neemt nu deel aan deze kamer.</translation>
     </message>
     <message>
-        <location line="+931"/>
+        <location line="+967"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation>%1 is van avatar veranderd en heet nu %2.</translation>
     </message>
@@ -2251,7 +2281,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+183"/>
+        <location filename="../qml/TimelineRow.qml" line="+174"/>
         <source>Edited</source>
         <translation>Bewerkt</translation>
     </message>
@@ -2297,17 +2327,17 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+59"/>
+        <location filename="../qml/TopBar.qml" line="+77"/>
         <source>Back to room list</source>
         <translation>Terug naar kamerlijst</translation>
     </message>
     <message>
-        <location line="-44"/>
+        <location line="-62"/>
         <source>No room selected</source>
         <translation>Geen kamer geselecteerd</translation>
     </message>
     <message>
-        <location line="+96"/>
+        <location line="+117"/>
         <source>This room is not encrypted!</source>
         <translation>Deze kamer is niet versleuteld!</translation>
     </message>
@@ -2327,7 +2357,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <translation>Deze kamer bevat ongeverifieerde apparaten!</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+17"/>
         <source>Room options</source>
         <translation>Kameropties</translation>
     </message>
@@ -2439,12 +2469,12 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
     </message>
     <message>
         <location line="+9"/>
-        <location line="+197"/>
+        <location line="+200"/>
         <source>Verify</source>
         <translation>Verifiëren</translation>
     </message>
     <message>
-        <location line="-160"/>
+        <location line="-162"/>
         <source>Start a private chat.</source>
         <translation>Begin een privéchat.</translation>
     </message>
@@ -2464,7 +2494,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <translation>Ververs apparaatlijst.</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+56"/>
         <source>Sign out this device.</source>
         <translation>Meld dit apparaat af.</translation>
     </message>
@@ -3092,7 +3122,7 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+184"/>
+        <location filename="../../src/Utils.cpp" line="+187"/>
         <source>Yesterday</source>
         <translation>Gisteren</translation>
     </message>
@@ -3219,7 +3249,7 @@ Mediagrootte: %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+115"/>
+        <location filename="../../src/Utils.h" line="+116"/>
         <source>You sent an audio clip</source>
         <translation>Je verstuurde een audio clip</translation>
     </message>

@@ -10,6 +10,7 @@
 #include <QHash>
 #include <QSet>
 #include <QTimer>
+#include <QVariant>
 
 #include <mtxclient/http/errors.hpp>
 
@@ -247,6 +248,7 @@ public:
     Q_INVOKABLE QString formatHistoryVisibilityEvent(QString id);
     Q_INVOKABLE QString formatGuestAccessEvent(QString id);
     Q_INVOKABLE QString formatPowerLevelEvent(QString id);
+    Q_INVOKABLE QVariantMap formatRedactedEvent(QString id);
 
     Q_INVOKABLE void viewRawMessage(QString id);
     Q_INVOKABLE void forwardMessage(QString eventId, QString roomId);

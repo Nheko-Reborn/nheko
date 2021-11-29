@@ -11,6 +11,7 @@
         <file>icons/ui/chat.svg</file>
         <file>icons/ui/checkmark.svg</file>
         <file>icons/ui/clock.svg</file>
+        <file>icons/ui/delete.svg</file>
         <file>icons/ui/edit.svg</file>
         <file>icons/ui/end-call.svg</file>
         <file>icons/ui/lowprio.svg</file>
@@ -117,6 +118,7 @@
         <file>qml/delegates/Pill.qml</file>
         <file>qml/delegates/Placeholder.qml</file>
         <file>qml/delegates/PlayableMediaMessage.qml</file>
+        <file>qml/delegates/Redacted.qml</file>
         <file>qml/delegates/Reply.qml</file>
         <file>qml/delegates/TextMessage.qml</file>
         <file>qml/device-verification/DeviceVerification.qml</file>
