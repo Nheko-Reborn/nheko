@@ -754,6 +754,16 @@ ChatPage::leaveRoom(const QString &room_id)
           if (err) {
               emit showNotification(tr("Failed to leave room: %1")
                                       .arg(QString::fromStdString(err->matrix_error.error)));
+              nhlog::net()->error("Failed to leave room '{}': {}", room_id.toStdString(), err);
+
+              if (err->status_code == 404 &&
+                  err->matrix_error.errcode == mtx::errors::ErrorCode::M_UNKNOWN) {
+                  nhlog::db()->debug(
+                    "Removing invite and room for {}, even though we couldn't leave.",
+                    room_id.toStdString());
+                  cache::client()->removeInvite(room_id.toStdString());
+                  cache::client()->removeRoom(room_id.toStdString());
+              }
               return;
           }
 
