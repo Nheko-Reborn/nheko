@@ -17,6 +17,7 @@
 #include <QRegularExpression>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QVariant>
 
 #include "Cache_p.h"
 #include "ChatPage.h"
@@ -1795,6 +1796,42 @@ TimelineModel::formatPowerLevelEvent(QString id)
 
     // TODO: power levels rendering is actually a bit complex. work on this later.
     return tr("%1 has changed the room's permissions.").arg(name);
+}
+
+QVariantMap
+TimelineModel::formatRedactedEvent(QString id)
+{
+    QVariantMap pair{{"first", ""}, {"second", ""}};
+    mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+    if (!e)
+        return pair;
+
+    auto event = std::get_if<mtx::events::RoomEvent<mtx::events::msg::Redacted>>(e);
+    if (!event)
+        return pair;
+
+    QString dateTime = QDateTime::fromMSecsSinceEpoch(event->origin_server_ts).toString();
+    QString reason   = "";
+    auto because     = event->unsigned_data.redacted_because;
+    // User info about who actually sent the redacted event.
+    QString redactedUser = QString::fromStdString(because->sender).toHtmlEscaped();
+    QString redactedName = utils::replaceEmoji(displayName(redactedUser));
+
+    if (because.has_value()) {
+        reason = QString::fromStdString(because->content.reason).toHtmlEscaped();
+    }
+
+    if (reason.isEmpty()) {
+        pair["first"] = tr("Removed by %1").arg(redactedName);
+        pair["second"] =
+          tr("%1 (%2) removed this message at %3").arg(redactedName, redactedUser, dateTime);
+    } else {
+        pair["first"]  = tr("Removed by %1 because: %2").arg(redactedName, reason);
+        pair["second"] = tr("%1 (%2) removed this message at %3\nReason: %4")
+                           .arg(redactedName, redactedUser, dateTime, reason);
+    }
+
+    return pair;
 }
 
 void

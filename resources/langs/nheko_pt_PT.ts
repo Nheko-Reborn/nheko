@@ -131,12 +131,12 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+668"/>
+        <location line="+662"/>
         <source>Invited user: %1</source>
         <translation>Utilizador convidado: %1</translation>
     </message>
     <message>
-        <location line="-461"/>
+        <location line="-455"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>A migração da cache para a versão atual falhou, e existem várias razões possíveis. Por favor abra um problema (&quot;issue&quot;) e experimente usar uma versão mais antiga entretanto. Alternativamente, pode tentar apagar a cache manualmente.</translation>
     </message>
@@ -151,7 +151,7 @@
         <translation>Falha ao abrir base de dados. A terminar sessão!</translation>
     </message>
     <message>
-        <location line="+314"/>
+        <location line="+308"/>
         <source>Confirm join</source>
         <translation>Confirmar entrada</translation>
     </message>
@@ -242,7 +242,7 @@
         <translation>Tem a certeza que quer começar uma conversa privada com %1?</translation>
     </message>
     <message>
-        <location line="-892"/>
+        <location line="-886"/>
         <source>Cache migration failed!</source>
         <translation>Falha ao migrar a cache!</translation>
     </message>
@@ -275,7 +275,7 @@
         <translation>Por favor, tente autenticar-se novamente: %1</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+43"/>
         <source>Failed to join room: %1</source>
         <translation>Falha ao entrar em sala: %1</translation>
     </message>
@@ -324,6 +324,16 @@
         <location line="+2"/>
         <source>Shows all rooms without filtering.</source>
         <translation>Mostra todas as salas sem filtros.</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Direct Chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show direct chats.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+30"/>
@@ -547,7 +557,7 @@
 <context>
     <name>EncryptionIndicator</name>
     <message>
-        <location filename="../qml/EncryptionIndicator.qml" line="+34"/>
+        <location filename="../qml/EncryptionIndicator.qml" line="+52"/>
         <source>This message is not encrypted!</source>
         <translation>Esta mensagem não está encriptada!</translation>
     </message>
@@ -759,7 +769,7 @@
         <translation>Todos os ficheiros (*)</translation>
     </message>
     <message>
-        <location line="+474"/>
+        <location line="+479"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Falha ao carregar mídia. Por favor, tente novamente.</translation>
     </message>
@@ -788,7 +798,7 @@
         <translation>Adicionar</translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+84"/>
         <source>Invite</source>
         <translation>Convidar</translation>
     </message>
@@ -892,13 +902,13 @@ Exemplo: https://servidor.meu:8787</translation>
     <message>
         <location line="+83"/>
         <location line="+11"/>
-        <location line="+151"/>
+        <location line="+153"/>
         <location line="+11"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
         <translation>Inseriu um ID Matrix inválido  p. ex. @ze:matrix.org</translation>
     </message>
     <message>
-        <location line="-126"/>
+        <location line="-128"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Falha na descoberta automática. Reposta mal formatada recebida.</translation>
     </message>
@@ -928,7 +938,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation type="unfinished">ENTRAR COM ISU (SSO)</translation>
     </message>
     <message>
-        <location line="+257"/>
+        <location line="+259"/>
         <source>Empty password</source>
         <translation>Palavra-passe vazia</translation>
     </message>
@@ -959,7 +969,7 @@ Exemplo: https://servidor.meu:8787</translation>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+192"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+191"/>
         <source>Encryption enabled</source>
         <translation>Encriptação ativada</translation>
     </message>
@@ -1024,8 +1034,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>%1 atendeu a chamada.</translation>
     </message>
     <message>
-        <location line="-109"/>
-        <location line="+9"/>
+        <location line="-100"/>
         <source>removed</source>
         <translation>removida</translation>
     </message>
@@ -1474,7 +1483,7 @@ Exemplo: https://servidor.meu:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+4528"/>
+        <location filename="../../src/Cache.cpp" line="+4536"/>
         <source>no version stored</source>
         <translation>nenhuma versão guardada</translation>
     </message>
@@ -1542,7 +1551,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Definir mensagem de estado</translation>
     </message>
     <message>
-        <location line="+80"/>
+        <location line="+82"/>
         <source>Logout</source>
         <translation>Terminar sessão</translation>
     </message>
@@ -1565,7 +1574,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Por favor, verifique os seus outros dispositivos</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+19"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
@@ -1617,7 +1626,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Convidar mais pessoas</translation>
     </message>
     <message>
-        <location line="+76"/>
+        <location line="+87"/>
         <source>This room is not encrypted!</source>
         <translation>Esta sala não está encriptada!</translation>
     </message>
@@ -1790,12 +1799,12 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Convite pendente.</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+29"/>
         <source>Previewing this room</source>
         <translation>A pré-visualizar esta sala</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+34"/>
         <source>No preview available</source>
         <translation>Pré-visualização não disponível</translation>
     </message>
@@ -1885,7 +1894,7 @@ Exemplo: https://servidor.meu:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4203"/>
+        <location filename="../../src/Cache.cpp" line="-4211"/>
         <source>Failed to connect to secret storage</source>
         <translation>Falha ao ligar ao armazenamento secreto</translation>
     </message>
@@ -2056,7 +2065,7 @@ Se escolher a verificação, terá que ter o outro dispositivo disponível. Se e
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1118"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1119"/>
         <location line="+16"/>
         <source>Message redaction failed: %1</source>
         <translation>Falha ao eliminar mensagem: %1</translation>
@@ -2152,7 +2161,28 @@ Se escolher a verificação, terá que ter o outro dispositivo disponível. Se e
         <translation>%1 alterou as permissões da sala.</translation>
     </message>
     <message>
-        <location line="+76"/>
+        <location line="+27"/>
+        <source>Removed by %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 (%2) removed this message at %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Removed by %1 because: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>%1 (%2) removed this message at %3
+Reason: %4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+80"/>
         <source>%1 was invited.</source>
         <translation>%1 foi convidado.</translation>
     </message>
@@ -2217,12 +2247,12 @@ Se escolher a verificação, terá que ter o outro dispositivo disponível. Se e
         <translation>%1 eliminou a sua &quot;batida à porta&quot;.</translation>
     </message>
     <message>
-        <location line="-970"/>
+        <location line="-1006"/>
         <source>You joined this room.</source>
         <translation>Entrou na sala.</translation>
     </message>
     <message>
-        <location line="+931"/>
+        <location line="+967"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation>%1 alterou o seu avatar e também o seu nome de exibição para %2.</translation>
     </message>
@@ -2251,7 +2281,7 @@ Se escolher a verificação, terá que ter o outro dispositivo disponível. Se e
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+183"/>
+        <location filename="../qml/TimelineRow.qml" line="+174"/>
         <source>Edited</source>
         <translation>Editada</translation>
     </message>
@@ -2297,17 +2327,17 @@ Se escolher a verificação, terá que ter o outro dispositivo disponível. Se e
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+59"/>
+        <location filename="../qml/TopBar.qml" line="+77"/>
         <source>Back to room list</source>
         <translation>Voltar à lista de salas</translation>
     </message>
     <message>
-        <location line="-44"/>
+        <location line="-62"/>
         <source>No room selected</source>
         <translation>Nenhuma sala selecionada</translation>
     </message>
     <message>
-        <location line="+96"/>
+        <location line="+117"/>
         <source>This room is not encrypted!</source>
         <translation>Esta sala não é encriptada!</translation>
     </message>
@@ -2327,7 +2357,7 @@ Se escolher a verificação, terá que ter o outro dispositivo disponível. Se e
         <translation>Esta sala contém dispositivos não verificados!</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+17"/>
         <source>Room options</source>
         <translation>Opções da sala</translation>
     </message>
@@ -2439,12 +2469,12 @@ Se escolher a verificação, terá que ter o outro dispositivo disponível. Se e
     </message>
     <message>
         <location line="+9"/>
-        <location line="+197"/>
+        <location line="+200"/>
         <source>Verify</source>
         <translation>Verificar</translation>
     </message>
     <message>
-        <location line="-160"/>
+        <location line="-162"/>
         <source>Start a private chat.</source>
         <translation>Iniciar uma conversa privada.</translation>
     </message>
@@ -2464,7 +2494,7 @@ Se escolher a verificação, terá que ter o outro dispositivo disponível. Se e
         <translation>Atualizar a lista de dispositivos.</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+56"/>
         <source>Sign out this device.</source>
         <translation>Terminar sessão neste dispositivo.</translation>
     </message>
@@ -3091,7 +3121,7 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+184"/>
+        <location filename="../../src/Utils.cpp" line="+187"/>
         <source>Yesterday</source>
         <translation>Ontem</translation>
     </message>
@@ -3218,7 +3248,7 @@ Tamanho da mídia: %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+115"/>
+        <location filename="../../src/Utils.h" line="+116"/>
         <source>You sent an audio clip</source>
         <translation>Enviou uma mensagem áudio</translation>
     </message>

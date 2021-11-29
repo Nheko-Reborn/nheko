@@ -1,0 +1,45 @@
+// SPDX-FileCopyrightText: 2021 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+import im.nheko 1.0
+
+Rectangle{
+
+    required property real delegateWidth
+    height: redactedLayout.implicitHeight + 2 * Nheko.paddingSmall
+    width: redactedLayout.implicitWidth + 2 * Nheko.paddingMedium
+    radius: fontMetrics.lineSpacing / 2 + 2 * Nheko.paddingSmall
+    color: Nheko.colors.alternateBase
+
+    RowLayout {
+        id: redactedLayout
+        anchors.centerIn: parent
+        Image {
+            id: trashImg
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.preferredWidth: fontMetrics.font.pixelSize
+            Layout.preferredHeight: fontMetrics.font.pixelSize
+            source: "image://colorimage/:/icons/icons/ui/delete.svg?" + Nheko.colors.text
+        }
+        Label {
+            id: redactedLabel
+            Layout.margins: Nheko.paddingSmall
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+            Layout.fillWidth: true
+            Layout.maximumWidth: delegateWidth - 4 * Nheko.paddingSmall - trashImg.width - 2 * Nheko.paddingMedium
+            property var redactedPair: room.formatRedactedEvent(eventId)
+            text: redactedPair["first"]
+            wrapMode: Label.WordWrap
+
+            ToolTip.text: redactedPair["second"]
+            ToolTip.visible: hh.hovered
+            HoverHandler {
+                id: hh
+            }
+        }
+    }
+}
