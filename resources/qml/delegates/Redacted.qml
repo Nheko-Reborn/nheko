@@ -10,7 +10,7 @@ import im.nheko 1.0
 Rectangle{
 
     required property real delegateWidth
-    height: redactedLayout.implicitHeight + 2 * Nheko.paddingSmall
+    height: redactedLayout.implicitHeight + Nheko.paddingSmall
     width: redactedLayout.implicitWidth + 2 * Nheko.paddingMedium
     radius: fontMetrics.lineSpacing / 2 + 2 * Nheko.paddingSmall
     color: Nheko.colors.alternateBase
@@ -18,6 +18,8 @@ Rectangle{
     RowLayout {
         id: redactedLayout
         anchors.centerIn: parent
+        spacing: Nheko.paddingSmall
+
         Image {
             id: trashImg
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
@@ -27,13 +29,14 @@ Rectangle{
         }
         Label {
             id: redactedLabel
-            Layout.margins: Nheko.paddingSmall
+            Layout.margins: 0
             Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
             Layout.fillWidth: true
             Layout.maximumWidth: delegateWidth - 4 * Nheko.paddingSmall - trashImg.width - 2 * Nheko.paddingMedium
             property var redactedPair: room.formatRedactedEvent(eventId)
             text: redactedPair["first"]
             wrapMode: Label.WordWrap
+            color: Nheko.colors.text
 
             ToolTip.text: redactedPair["second"]
             ToolTip.visible: hh.hovered
