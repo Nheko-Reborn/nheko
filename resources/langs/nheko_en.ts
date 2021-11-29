@@ -328,12 +328,12 @@
     <message>
         <location line="+13"/>
         <source>Direct Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Direct Chats</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show direct chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Show direct chats.</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -2163,23 +2163,24 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+27"/>
         <source>Removed by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Removed by %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 (%2) removed this message at %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) removed this message at %3</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Removed by %1 because: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Removed by %1 because: %2</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 (%2) removed this message at %3
 Reason: %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) removed this message at %3
+Reason: %4</translation>
     </message>
     <message>
         <location line="+80"/>
