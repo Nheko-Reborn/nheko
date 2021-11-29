@@ -6,18 +6,18 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+107"/>
         <source>Calling...</source>
-        <translation>Calling...</translation>
+        <translation>Calling…</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation>Connecting...</translation>
+        <translation>Connecting…</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>You are screen sharing</translation>
+        <translation>You are screen sharing.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -261,7 +261,7 @@
         <location line="+4"/>
         <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation>Failed to restore save data. Please login again.</translation>
+        <translation>Failed to restore saved data. Please login again.</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -1202,12 +1202,12 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+16"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</translation>
+        <translation>To allow other users to see  which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</translation>
+        <translation>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1336,7 +1336,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location filename="../../src/main.cpp" line="+191"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</translation>
+        <translation>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of Nheko.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1528,7 +1528,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+13"/>
         <source>Create new tag...</source>
-        <translation>Create new tag...</translation>
+        <translation>Create new tag…</translation>
     </message>
     <message>
         <location line="+278"/>
@@ -3102,7 +3102,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+34"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation>Welcome to nheko! The desktop client for the Matrix protocol.</translation>
+        <translation>Welcome to Nheko! The desktop client for the Matrix protocol.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3191,7 +3191,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
-        <translation>Open the fallback, follow the steps and confirm after completing them.</translation>
+        <translation>Open the fallback, follow the steps, and confirm after completing them.</translation>
     </message>
 </context>
 <context>
