@@ -213,9 +213,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
               "",
               [this](const mtx::responses::Notifications &res, mtx::http::RequestErr err) {
                   if (err) {
-                      nhlog::net()->warn("failed to retrieve notifications: {} ({})",
-                                         err->matrix_error.error,
-                                         static_cast<int>(err->status_code));
+                      nhlog::net()->warn("failed to retrieve notifications: {}", err);
                       return;
                   }
 
@@ -509,8 +507,7 @@ ChatPage::tryInitialSync()
                   return startInitialSync();
               }
 
-              nhlog::crypto()->critical(
-                "failed to upload one time keys: {} {}", err->matrix_error.error, status_code);
+              nhlog::crypto()->critical("failed to upload one time keys: {}", err);
 
               QString errorMsg(tr("Failed to setup encryption keys. Server response: "
                                   "%1 %2. Please try again later.")
@@ -550,11 +547,7 @@ ChatPage::startInitialSync()
             const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
             const int status_code = static_cast<int>(err->status_code);
 
-            nhlog::net()->error("initial sync error: {} {} {} {}",
-                                err->parse_error,
-                                status_code,
-                                err->error_code,
-                                err_code);
+            nhlog::net()->error("initial sync error: {}", err);
 
             // non http related errors
             if (status_code <= 0 || status_code >= 600) {
@@ -727,11 +720,10 @@ ChatPage::createRoom(const mtx::requests::CreateRoom &req)
     http::client()->create_room(
       req, [this](const mtx::responses::CreateRoom &res, mtx::http::RequestErr err) {
           if (err) {
-              const auto err_code   = mtx::errors::to_string(err->matrix_error.errcode);
-              const auto error      = err->matrix_error.error;
-              const int status_code = static_cast<int>(err->status_code);
+              const auto err_code = mtx::errors::to_string(err->matrix_error.errcode);
+              const auto error    = err->matrix_error.error;
 
-              nhlog::net()->warn("failed to create room: {} {} ({})", error, err_code, status_code);
+              nhlog::net()->warn("failed to create room: {})", err);
 
               emit showNotification(
                 tr("Room creation failed: %1").arg(QString::fromStdString(error)));
@@ -927,10 +919,7 @@ ChatPage::verifyOneTimeKeyCountAfterStartup()
       olm::client()->create_upload_keys_request(),
       [this](const mtx::responses::UploadKeys &res, mtx::http::RequestErr err) {
           if (err) {
-              nhlog::crypto()->warn("failed to update one-time keys: {} {} {}",
-                                    err->matrix_error.error,
-                                    static_cast<int>(err->status_code),
-                                    static_cast<int>(err->error_code));
+              nhlog::crypto()->warn("failed to update one-time keys: {}", err);
 
               if (err->status_code < 400 || err->status_code >= 500)
                   return;
@@ -970,10 +959,7 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
               olm::client()->create_upload_keys_request(),
               [](const mtx::responses::UploadKeys &, mtx::http::RequestErr err) {
                   if (err) {
-                      nhlog::crypto()->warn("failed to update one-time keys: {} {} {}",
-                                            err->matrix_error.error,
-                                            static_cast<int>(err->status_code),
-                                            static_cast<int>(err->error_code));
+                      nhlog::crypto()->warn("failed to update one-time keys: {}", err);
 
                       if (err->status_code < 400 || err->status_code >= 500)
                           return;
@@ -990,10 +976,7 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
             http::client()->claim_keys(
               req, [](const mtx::responses::ClaimKeys &, mtx::http::RequestErr err) {
                   if (err)
-                      nhlog::crypto()->warn("failed to clear 1 one-time key: {} {} {}",
-                                            err->matrix_error.error,
-                                            static_cast<int>(err->status_code),
-                                            static_cast<int>(err->error_code));
+                      nhlog::crypto()->warn("failed to clear 1 one-time key: {}", err);
                   else
                       nhlog::crypto()->info("cleared 1 one-time key");
               });
@@ -1080,9 +1063,7 @@ ChatPage::initiateLogout()
         if (err) {
             // TODO: handle special errors
             emit contentLoaded();
-            nhlog::net()->warn("failed to logout: {} - {}",
-                               mtx::errors::to_string(err->matrix_error.errcode),
-                               err->matrix_error.error);
+            nhlog::net()->warn("failed to logout: {}", err);
             return;
         }
 
@@ -1200,7 +1181,7 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
               for (const auto &[user_id, tmp] : res.errors)
                   for (const auto &[key_id, e] : tmp)
                       nhlog::net()->error("signature error for user '{}' and key "
-                                          "id {}: {}, {}",
+                                          "id {}: {} {}",
                                           user_id,
                                           key_id,
                                           mtx::errors::to_string(e.errcode),
