@@ -156,7 +156,8 @@ Page {
                     visible: !communitySidebar.collapsed
                     Layout.alignment: Qt.AlignVCenter
                     color: communityItem.importantText
-                    elideWidth: parent.width - avatar.width - r.anchors.leftMargin/2 - Nheko.paddingMedium - fontMetrics.lineSpacing
+                    Layout.fillWidth: true
+                    elideWidth: width
                     fullText: model.displayName
                     textFormat: Text.PlainText
                 }
