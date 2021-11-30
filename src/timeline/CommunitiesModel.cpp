@@ -280,6 +280,7 @@ CommunitiesModel::initializeSidebar()
 
     emit tagsChanged();
     emit hiddenTagsChanged();
+    emit containsSubspacesChanged();
 }
 
 void

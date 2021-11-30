@@ -131,7 +131,7 @@ Page {
 
                 Item {
                     Layout.preferredWidth: fontMetrics.lineSpacing
-                    visible: !communitySidebar.collapsed && !model.collapsible
+                    visible: !communitySidebar.collapsed && !model.collapsible && Communities.containsSubspaces
                 }
 
                 Avatar {

@@ -33,6 +33,7 @@ class CommunitiesModel : public QAbstractListModel
                  currentTagIdChanged RESET resetCurrentTagId)
     Q_PROPERTY(QStringList tags READ tags NOTIFY tagsChanged)
     Q_PROPERTY(QStringList tagsWithDefault READ tagsWithDefault NOTIFY tagsChanged)
+    Q_PROPERTY(bool containsSubspaces READ containsSubspaces NOTIFY containsSubspacesChanged)
 
 public:
     enum Roles
@@ -103,6 +104,14 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
+    bool containsSubspaces() const
+    {
+        for (const auto &e : spaceOrder_.tree)
+            if (e.depth > 0)
+                return true;
+        return false;
+    }
+
 public slots:
     void initializeSidebar();
     void sync(const mtx::responses::Sync &sync_);
@@ -131,6 +140,7 @@ signals:
     void currentTagIdChanged(QString tagId);
     void hiddenTagsChanged();
     void tagsChanged();
+    void containsSubspacesChanged();
 
 private:
     QStringList tags_;
