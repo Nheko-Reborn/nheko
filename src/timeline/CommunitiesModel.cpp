@@ -438,7 +438,6 @@ tagIdToCat(QString tagId)
 bool
 FilteredCommunitiesModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-    nhlog::ui()->debug("lessThan");
     QModelIndex const left_idx  = sourceModel()->index(left.row(), 0, QModelIndex());
     QModelIndex const right_idx = sourceModel()->index(right.row(), 0, QModelIndex());
 

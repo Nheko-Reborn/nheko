@@ -74,7 +74,7 @@ public:
             const auto depth = tree[index].depth;
             int i            = index + 1;
             for (; i < size(); i++)
-                if (tree[i].depth == depth)
+                if (tree[i].depth <= depth)
                     break;
             return i - 1;
         }

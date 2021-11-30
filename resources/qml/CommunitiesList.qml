@@ -112,7 +112,7 @@ Page {
                 spacing: Nheko.paddingMedium
                 anchors.fill: parent
                 anchors.margins: Nheko.paddingMedium
-                anchors.leftMargin: communitySidebar.collapsed ? Nheko.paddingMedium : (Nheko.paddingMedium * (model.depth + 1))
+                anchors.leftMargin: Nheko.paddingMedium + (communitySidebar.collapsed ? 0 : (fontMetrics.lineSpacing * model.depth))
 
                 ImageButton {
                     visible: !communitySidebar.collapsed && model.collapsible
@@ -156,7 +156,7 @@ Page {
                     visible: !communitySidebar.collapsed
                     Layout.alignment: Qt.AlignVCenter
                     color: communityItem.importantText
-                    elideWidth: parent.width - avatar.width - r.anchors.leftMargin - Nheko.paddingMedium - fontMetrics.lineSpacing
+                    elideWidth: parent.width - avatar.width - r.anchors.leftMargin/2 - Nheko.paddingMedium - fontMetrics.lineSpacing
                     fullText: model.displayName
                     textFormat: Text.PlainText
                 }
