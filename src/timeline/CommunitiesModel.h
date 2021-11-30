@@ -6,12 +6,25 @@
 
 #include <QAbstractListModel>
 #include <QHash>
+#include <QSortFilterProxyModel>
 #include <QString>
 #include <QStringList>
 
 #include <mtx/responses/sync.hpp>
 
 #include "CacheStructs.h"
+
+class CommunitiesModel;
+
+class FilteredCommunitiesModel : public QSortFilterProxyModel
+{
+    Q_OBJECT
+
+public:
+    FilteredCommunitiesModel(CommunitiesModel *model, QObject *parent = nullptr);
+    bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &) const override;
+};
 
 class CommunitiesModel : public QAbstractListModel
 {
@@ -27,9 +40,57 @@ public:
         AvatarUrl = Qt::UserRole,
         DisplayName,
         Tooltip,
-        ChildrenHidden,
+        Collapsed,
+        Collapsible,
         Hidden,
+        Parent,
+        Depth,
         Id,
+    };
+
+    struct FlatTree
+    {
+        struct Elem
+        {
+            QString name;
+            int depth      = 0;
+            bool collapsed = false;
+        };
+
+        std::vector<Elem> tree;
+
+        int size() const { return static_cast<int>(tree.size()); }
+        int indexOf(const QString &s) const
+        {
+            for (int i = 0; i < size(); i++)
+                if (tree[i].name == s)
+                    return i;
+            return -1;
+        }
+        int lastChild(int index) const
+        {
+            if (index >= size() || index < 0)
+                return index;
+            const auto depth = tree[index].depth;
+            int i            = index + 1;
+            for (; i < size(); i++)
+                if (tree[i].depth == depth)
+                    break;
+            return i - 1;
+        }
+        int parent(int index) const
+        {
+            if (index >= size() || index < 0)
+                return -1;
+            const auto depth = tree[index].depth;
+            if (depth == 0)
+                return -1;
+            int i = index - 1;
+            for (; i >= 0; i--)
+                if (tree[i].depth < depth)
+                    break;
+            return i;
+        }
     };
 
     CommunitiesModel(QObject *parent = nullptr);
@@ -40,6 +101,7 @@ public:
         return 2 + tags_.size() + spaceOrder_.size();
     }
     QVariant data(const QModelIndex &index, int role) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
 public slots:
     void initializeSidebar();
@@ -63,6 +125,7 @@ public slots:
         return tagsWD;
     }
     void toggleTagId(QString tagId);
+    FilteredCommunitiesModel *filtered() { return new FilteredCommunitiesModel(this, this); }
 
 signals:
     void currentTagIdChanged(QString tagId);
@@ -73,6 +136,8 @@ private:
     QStringList tags_;
     QString currentTagId_;
     QStringList hiddentTagIds_;
-    QStringList spaceOrder_;
+    FlatTree spaceOrder_;
     std::map<QString, RoomInfo> spaces_;
+
+    friend class FilteredCommunitiesModel;
 };

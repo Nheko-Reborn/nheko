@@ -95,6 +95,12 @@ public:
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
         return getStateEvent<T>(txn, room_id, state_key);
     }
+    template<typename T>
+    std::vector<mtx::events::StateEvent<T>> getStateEventsWithType(const std::string &room_id)
+    {
+        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
+        return getStateEventsWithType<T>(txn, room_id);
+    }
 
     //! retrieve a specific event from account data
     //! pass empty room_id for global account data

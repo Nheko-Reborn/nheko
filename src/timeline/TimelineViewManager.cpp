@@ -260,6 +260,13 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
     qRegisterMetaType<mtx::events::collections::TimelineEvents>();
     qRegisterMetaType<std::vector<DeviceInfo>>();
 
+    qmlRegisterUncreatableType<FilteredCommunitiesModel>(
+      "im.nheko",
+      1,
+      0,
+      "FilteredCommunitiesModel",
+      "Use Communities.filtered() to create a FilteredCommunitiesModel");
+
     qmlRegisterType<emoji::EmojiModel>("im.nheko.EmojiModel", 1, 0, "EmojiModel");
     qmlRegisterUncreatableType<emoji::Emoji>(
       "im.nheko.EmojiModel", 1, 0, "Emoji", "Used by emoji models");

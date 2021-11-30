@@ -11,6 +11,7 @@ import QtQuick.Layouts 1.3
 import im.nheko 1.0
 
 Page {
+    id: communitySidebar
     //leftPadding: Nheko.paddingSmall
     //rightPadding: Nheko.paddingSmall
     property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 1.6)
@@ -22,7 +23,7 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
         height: parent.height
-        model: Communities
+        model: Communities.filtered()
 
         ScrollHelper {
             flickable: parent
@@ -107,9 +108,31 @@ Page {
             }
 
             RowLayout {
+                id: r
                 spacing: Nheko.paddingMedium
                 anchors.fill: parent
                 anchors.margins: Nheko.paddingMedium
+                anchors.leftMargin: communitySidebar.collapsed ? Nheko.paddingMedium : (Nheko.paddingMedium * (model.depth + 1))
+
+                ImageButton {
+                    visible: !communitySidebar.collapsed && model.collapsible
+                    Layout.preferredHeight: fontMetrics.lineSpacing
+                    Layout.preferredWidth: fontMetrics.lineSpacing
+                    Layout.alignment: Qt.AlignVCenter
+                    height: fontMetrics.lineSpacing
+                    width: fontMetrics.lineSpacing
+                    image: model.collapsed ? ":/icons/icons/ui/collapsed.svg" : ":/icons/icons/ui/expanded.svg"
+                    ToolTip.visible: hovered
+                    ToolTip.text: model.collapsed ? qsTr("Expand") : qsTr("Collapse")
+                    hoverEnabled: true
+
+                    onClicked: model.collapsed = !model.collapsed
+                }
+
+                Item {
+                    Layout.preferredWidth: fontMetrics.lineSpacing
+                    visible: !communitySidebar.collapsed && !model.collapsible
+                }
 
                 Avatar {
                     id: avatar
@@ -130,10 +153,10 @@ Page {
                 }
 
                 ElidedLabel {
-                    visible: !collapsed
+                    visible: !communitySidebar.collapsed
                     Layout.alignment: Qt.AlignVCenter
                     color: communityItem.importantText
-                    elideWidth: parent.width - avatar.width - Nheko.paddingMedium
+                    elideWidth: parent.width - avatar.width - r.anchors.leftMargin - Nheko.paddingMedium - fontMetrics.lineSpacing
                     fullText: model.displayName
                     textFormat: Text.PlainText
                 }

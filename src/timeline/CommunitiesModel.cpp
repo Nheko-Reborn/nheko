@@ -7,6 +7,8 @@
 #include <set>
 
 #include "Cache.h"
+#include "Cache_p.h"
+#include "Logging.h"
 #include "UserSettingsPage.h"
 
 CommunitiesModel::CommunitiesModel(QObject *parent)
@@ -20,10 +22,27 @@ CommunitiesModel::roleNames() const
       {AvatarUrl, "avatarUrl"},
       {DisplayName, "displayName"},
       {Tooltip, "tooltip"},
-      {ChildrenHidden, "childrenHidden"},
+      {Collapsed, "collapsed"},
+      {Collapsible, "collapsible"},
       {Hidden, "hidden"},
+      {Depth, "depth"},
       {Id, "id"},
     };
+}
+
+bool
+CommunitiesModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (role != CommunitiesModel::Collapsed)
+        return false;
+    else if (index.row() >= 2 || index.row() - 2 < spaceOrder_.size()) {
+        spaceOrder_.tree.at(index.row() - 2).collapsed = value.toBool();
+
+        const auto cindex = spaceOrder_.lastChild(index.row() - 2);
+        emit dataChanged(index, this->index(cindex + 2), {Collapsed, Qt::DisplayRole});
+        return true;
+    } else
+        return false;
 }
 
 QVariant
@@ -37,10 +56,16 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             return tr("All rooms");
         case CommunitiesModel::Roles::Tooltip:
             return tr("Shows all rooms without filtering.");
-        case CommunitiesModel::Roles::ChildrenHidden:
+        case CommunitiesModel::Roles::Collapsed:
+            return false;
+        case CommunitiesModel::Roles::Collapsible:
             return false;
         case CommunitiesModel::Roles::Hidden:
             return false;
+        case CommunitiesModel::Roles::Parent:
+            return "";
+        case CommunitiesModel::Roles::Depth:
+            return 0;
         case CommunitiesModel::Roles::Id:
             return "";
         }
@@ -52,25 +77,43 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             return tr("Direct Chats");
         case CommunitiesModel::Roles::Tooltip:
             return tr("Show direct chats.");
-        case CommunitiesModel::Roles::ChildrenHidden:
+        case CommunitiesModel::Roles::Collapsed:
+            return false;
+        case CommunitiesModel::Roles::Collapsible:
             return false;
         case CommunitiesModel::Roles::Hidden:
             return hiddentTagIds_.contains("dm");
+        case CommunitiesModel::Roles::Parent:
+            return "";
+        case CommunitiesModel::Roles::Depth:
+            return 0;
         case CommunitiesModel::Roles::Id:
             return "dm";
         }
     } else if (index.row() - 2 < spaceOrder_.size()) {
-        auto id = spaceOrder_.at(index.row() - 2);
+        auto id = spaceOrder_.tree.at(index.row() - 2).name;
         switch (role) {
         case CommunitiesModel::Roles::AvatarUrl:
             return QString::fromStdString(spaces_.at(id).avatar_url);
         case CommunitiesModel::Roles::DisplayName:
         case CommunitiesModel::Roles::Tooltip:
             return QString::fromStdString(spaces_.at(id).name);
-        case CommunitiesModel::Roles::ChildrenHidden:
-            return true;
+        case CommunitiesModel::Roles::Collapsed:
+            return spaceOrder_.tree.at(index.row() - 2).collapsed;
+        case CommunitiesModel::Roles::Collapsible: {
+            auto idx = index.row() - 2;
+            return idx != spaceOrder_.lastChild(idx);
+        }
         case CommunitiesModel::Roles::Hidden:
             return hiddentTagIds_.contains("space:" + id);
+        case CommunitiesModel::Roles::Parent: {
+            if (auto p = spaceOrder_.parent(index.row() - 2); p >= 0)
+                return spaceOrder_.tree[p].name;
+
+            return "";
+        }
+        case CommunitiesModel::Roles::Depth:
+            return spaceOrder_.tree.at(index.row() - 2).depth;
         case CommunitiesModel::Roles::Id:
             return "space:" + id;
         }
@@ -116,8 +159,14 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         switch (role) {
         case CommunitiesModel::Roles::Hidden:
             return hiddentTagIds_.contains("tag:" + tag);
-        case CommunitiesModel::Roles::ChildrenHidden:
+        case CommunitiesModel::Roles::Collapsed:
             return true;
+        case CommunitiesModel::Roles::Collapsible:
+            return false;
+        case CommunitiesModel::Roles::Parent:
+            return "";
+        case CommunitiesModel::Roles::Depth:
+            return 0;
         case CommunitiesModel::Roles::Id:
             return "tag:" + tag;
         }
@@ -125,21 +174,67 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+namespace {
+struct temptree
+{
+    std::map<std::string, temptree> children;
+
+    void insert(const std::vector<std::string> &parents, const std::string &child)
+    {
+        temptree *t = this;
+        for (const auto &e : parents)
+            t = &t->children[e];
+        t->children[child];
+    }
+
+    void flatten(CommunitiesModel::FlatTree &to, int i = 0) const
+    {
+        for (const auto &[child, subtree] : children) {
+            to.tree.push_back({QString::fromStdString(child), i, false});
+            subtree.flatten(to, i + 1);
+        }
+    }
+};
+
+void
+addChildren(temptree &t,
+            std::vector<std::string> path,
+            std::string child,
+            const std::map<std::string, std::set<std::string>> &children)
+{
+    if (std::find(path.begin(), path.end(), child) != path.end())
+        return;
+
+    path.push_back(child);
+
+    if (children.count(child)) {
+        for (const auto &c : children.at(child)) {
+            t.insert(path, c);
+            addChildren(t, path, c, children);
+        }
+    }
+}
+}
+
 void
 CommunitiesModel::initializeSidebar()
 {
     beginResetModel();
     tags_.clear();
-    spaceOrder_.clear();
+    spaceOrder_.tree.clear();
     spaces_.clear();
 
     std::set<std::string> ts;
-    std::vector<RoomInfo> tempSpaces;
+
+    std::set<std::string> isSpace;
+    std::map<std::string, std::set<std::string>> spaceChilds;
+    std::map<std::string, std::set<std::string>> spaceParents;
+
     auto infos = cache::roomInfo();
     for (auto it = infos.begin(); it != infos.end(); it++) {
         if (it.value().is_space) {
-            spaceOrder_.push_back(it.key());
             spaces_[it.key()] = it.value();
+            isSpace.insert(it.key().toStdString());
         } else {
             for (const auto &t : it.value().tags) {
                 if (t.find("u.") == 0 || t.find("m." == 0)) {
@@ -148,6 +243,34 @@ CommunitiesModel::initializeSidebar()
             }
         }
     }
+
+    // NOTE(Nico): We build a forrest from the Directed Cyclic(!) Graph of spaces. To do that we
+    // start with orphan spaces at the top. This leaves out some space circles, but there is no good
+    // way to break that cycle imo anyway. Then we carefully walk a tree down from each root in our
+    // forrest, carefully checking not to run in a circle and get lost forever.
+    // TODO(Nico): Optimize this. We can do this with a lot fewer allocations and checks.
+    for (const auto &space : isSpace) {
+        spaceParents[space];
+        for (const auto &p : cache::client()->getParentRoomIds(space)) {
+            spaceParents[space].insert(p);
+            spaceChilds[p].insert(space);
+        }
+    }
+
+    temptree spacetree;
+    std::vector<std::string> path;
+    for (const auto &space : isSpace) {
+        if (!spaceParents[space].empty())
+            continue;
+
+        spacetree.children[space] = {};
+    }
+    for (const auto &space : spacetree.children) {
+        addChildren(spacetree, path, space.first, spaceChilds);
+    }
+
+    // NOTE(Nico): This flattens the tree into a list, preserving the depth at each element.
+    spacetree.flatten(spaceOrder_);
 
     for (const auto &t : ts)
         tags_.push_back(QString::fromStdString(t));
@@ -199,7 +322,7 @@ CommunitiesModel::sync(const mtx::responses::Sync &sync_)
     }
     for (const auto &[roomid, room] : sync_.rooms.leave) {
         (void)room;
-        if (spaceOrder_.contains(QString::fromStdString(roomid)))
+        if (spaces_.count(QString::fromStdString(roomid)))
             tagsUpdated = true;
     }
     for (const auto &e : sync_.account_data.events) {
@@ -228,8 +351,8 @@ CommunitiesModel::setCurrentTagId(QString tagId)
         }
     } else if (tagId.startsWith("space:")) {
         auto tag = tagId.mid(6);
-        for (const auto &t : spaceOrder_) {
-            if (t == tag) {
+        for (const auto &t : spaceOrder_.tree) {
+            if (t.name == tag) {
                 this->currentTagId_ = tagId;
                 emit currentTagIdChanged(currentTagId_);
                 return;
@@ -270,4 +393,89 @@ CommunitiesModel::toggleTagId(QString tagId)
     }
 
     emit hiddenTagsChanged();
+}
+
+FilteredCommunitiesModel::FilteredCommunitiesModel(CommunitiesModel *model, QObject *parent)
+  : QSortFilterProxyModel(parent)
+{
+    setSourceModel(model);
+    setDynamicSortFilter(true);
+    sort(0);
+}
+
+namespace {
+enum Categories
+{
+    World,
+    Direct,
+    Favourites,
+    Server,
+    LowPrio,
+    Space,
+    UserTag,
+};
+
+Categories
+tagIdToCat(QString tagId)
+{
+    if (tagId.isEmpty())
+        return World;
+    else if (tagId == "dm")
+        return Direct;
+    else if (tagId == "tag:m.favourite")
+        return Favourites;
+    else if (tagId == "tag:m.server_notice")
+        return Server;
+    else if (tagId == "tag:m.lowpriority")
+        return LowPrio;
+    else if (tagId.startsWith("space:"))
+        return Space;
+    else
+        return UserTag;
+}
+}
+
+bool
+FilteredCommunitiesModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+    nhlog::ui()->debug("lessThan");
+    QModelIndex const left_idx  = sourceModel()->index(left.row(), 0, QModelIndex());
+    QModelIndex const right_idx = sourceModel()->index(right.row(), 0, QModelIndex());
+
+    Categories leftCat = tagIdToCat(sourceModel()->data(left_idx, CommunitiesModel::Id).toString());
+    Categories rightCat =
+      tagIdToCat(sourceModel()->data(right_idx, CommunitiesModel::Id).toString());
+
+    if (leftCat != rightCat)
+        return leftCat < rightCat;
+
+    if (leftCat == Space) {
+        return left.row() < right.row();
+    }
+
+    QString leftName  = sourceModel()->data(left_idx, CommunitiesModel::DisplayName).toString();
+    QString rightName = sourceModel()->data(right_idx, CommunitiesModel::DisplayName).toString();
+
+    return leftName.compare(rightName, Qt::CaseInsensitive) < 0;
+}
+bool
+FilteredCommunitiesModel::filterAcceptsRow(int sourceRow, const QModelIndex &) const
+{
+    CommunitiesModel *m = qobject_cast<CommunitiesModel *>(this->sourceModel());
+    if (!m)
+        return true;
+
+    if (sourceRow < 2 || sourceRow - 2 >= m->spaceOrder_.size())
+        return true;
+
+    auto idx = sourceRow - 2;
+
+    while (idx >= 0 && m->spaceOrder_.tree[idx].depth > 0) {
+        idx = m->spaceOrder_.parent(idx);
+
+        if (idx >= 0 && m->spaceOrder_.tree.at(idx).collapsed)
+            return false;
+    }
+
+    return true;
 }
