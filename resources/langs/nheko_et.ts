@@ -6,18 +6,18 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+107"/>
         <source>Calling...</source>
-        <translation>Helistan...</translation>
+        <translation>Helistan…</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation>Ühendan...</translation>
+        <translation>Ühendan…</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>Sa jagad ekraani</translation>
+        <translation>Sa jagad ekraani.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -328,12 +328,12 @@
     <message>
         <location line="+13"/>
         <source>Direct Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsevestlused</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show direct chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita otsevestluseid.</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -1528,7 +1528,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+13"/>
         <source>Create new tag...</source>
-        <translation>Loo uus silt...</translation>
+        <translation>Loo uus silt…</translation>
     </message>
     <message>
         <location line="+278"/>
@@ -2163,23 +2163,24 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
     <message>
         <location line="+27"/>
         <source>Removed by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 eemaldas selle</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 (%2) removed this message at %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) eemaldas selle sõnumi %3</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Removed by %1 because: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 eemaldas selle järgneval põhjusel: %2</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 (%2) removed this message at %3
 Reason: %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) removed this message at %3
+Põhjus: %4</translation>
     </message>
     <message>
         <location line="+80"/>
@@ -3101,7 +3102,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+34"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation>Tere tulemast nheko kasutajaks! Töölauarakendus Matrix&apos;i protokolli jaoks.</translation>
+        <translation>Tere tulemast Nheko kasutajaks! Töölauarakendus Matrix&apos;i protokolli jaoks.</translation>
     </message>
     <message>
         <location line="+1"/>
