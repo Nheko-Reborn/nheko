@@ -6,18 +6,18 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+107"/>
         <source>Calling...</source>
-        <translation>Soitetaan...</translation>
+        <translation>Soitetaan…</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation>Yhdistetään...</translation>
+        <translation>Yhdistetään…</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>Olet jakamassa näyttöä</translation>
+        <translation>Olet jakamassa näyttöä.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -328,12 +328,12 @@
     <message>
         <location line="+13"/>
         <source>Direct Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Suorat keskustelut</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show direct chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä suoria keskusteluja.</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -1336,7 +1336,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../../src/main.cpp" line="+191"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation>Luo uniikki profili, joka mahdollistaa kirjautumisen usealle tilille samanaikaisesti ja useamman nheko-instanssin aloittamisen.</translation>
+        <translation>Luo uniikki profili, joka mahdollistaa kirjautumisen usealle tilille samanaikaisesti ja useamman Nheko-instanssin aloittamisen.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1528,7 +1528,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+13"/>
         <source>Create new tag...</source>
-        <translation>Luo uusi tagi...</translation>
+        <translation>Luo uusi tagi…</translation>
     </message>
     <message>
         <location line="+278"/>
@@ -3099,7 +3099,7 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+34"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation>Tervetuloa nhekoon! Työpöytäsovellus Matrix-protokollalle.</translation>
+        <translation>Tervetuloa Nhekoon! Työpöytäsovellus Matrix-protokollalle.</translation>
     </message>
     <message>
         <location line="+1"/>
