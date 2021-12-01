@@ -92,6 +92,9 @@ public:
                     break;
             return i;
         }
+
+        void storeCollapsed();
+        void restoreCollapsed();
     };
 
     CommunitiesModel(QObject *parent = nullptr);

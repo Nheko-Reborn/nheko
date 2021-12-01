@@ -69,7 +69,6 @@ UserSettings::load(std::optional<QString> profile)
     hasDesktopNotifications_ = settings.value("user/desktop_notifications", true).toBool();
     hasAlertOnNotification_  = settings.value("user/alert_on_notification", false).toBool();
     groupView_               = settings.value("user/group_view", true).toBool();
-    hiddenTags_              = settings.value("user/hidden_tags", QStringList{}).toStringList();
     buttonsInTimeline_       = settings.value("user/timeline/buttons", true).toBool();
     timelineMaxWidth_        = settings.value("user/timeline/max_width", 0).toInt();
     messageHoverHighlight_ =
@@ -117,6 +116,12 @@ UserSettings::load(std::optional<QString> profile)
     homeserver_    = settings.value(prefix + "auth/home_server", "").toString();
     userId_        = settings.value(prefix + "auth/user_id", "").toString();
     deviceId_      = settings.value(prefix + "auth/device_id", "").toString();
+    hiddenTags_    = settings.value(prefix + "user/hidden_tags", QStringList{}).toStringList();
+
+    collapsedSpaces_.clear();
+    for (const auto &e :
+         settings.value(prefix + "user/collapsed_spaces", QList<QVariant>{}).toList())
+        collapsedSpaces_.push_back(e.toStringList());
 
     shareKeysWithTrustedUsers_ =
       settings.value(prefix + "user/automatically_share_keys_with_trusted_users", false).toBool();
@@ -192,6 +197,13 @@ void
 UserSettings::setHiddenTags(QStringList hiddenTags)
 {
     hiddenTags_ = hiddenTags;
+    save();
+}
+
+void
+UserSettings::setCollapsedSpaces(QList<QStringList> spaces)
+{
+    collapsedSpaces_ = spaces;
     save();
 }
 
@@ -658,7 +670,6 @@ UserSettings::save()
     settings.setValue("minor_events", sortByImportance_);
     settings.setValue("read_receipts", readReceipts_);
     settings.setValue("group_view", groupView_);
-    settings.setValue("hidden_tags", hiddenTags_);
     settings.setValue("markdown_enabled", markdown_);
     settings.setValue("animate_images_on_hover", animateImagesOnHover_);
     settings.setValue("desktop_notifications", hasDesktopNotifications_);
@@ -695,6 +706,12 @@ UserSettings::save()
     settings.setValue(prefix + "user/only_share_keys_with_verified_users",
                       onlyShareKeysWithVerifiedUsers_);
     settings.setValue(prefix + "user/online_key_backup", useOnlineKeyBackup_);
+    settings.setValue(prefix + "user/hidden_tags", hiddenTags_);
+
+    QVariantList v;
+    for (const auto &e : collapsedSpaces_)
+        v.push_back(e);
+    settings.setValue(prefix + "user/collapsed_spaces", v);
 
     settings.setValue("disable_certificate_validation", disableCertificateValidation_);
 

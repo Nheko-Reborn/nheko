@@ -172,6 +172,7 @@ public:
     void setDisableCertificateValidation(bool disabled);
     void setHiddenTags(QStringList hiddenTags);
     void setUseIdenticon(bool state);
+    void setCollapsedSpaces(QList<QStringList> spaces);
 
     QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
     bool messageHoverHighlight() const { return messageHoverHighlight_; }
@@ -228,6 +229,7 @@ public:
     bool disableCertificateValidation() const { return disableCertificateValidation_; }
     QStringList hiddenTags() const { return hiddenTags_; }
     bool useIdenticon() const { return useIdenticon_ && JdenticonProvider::isAvailable(); }
+    QList<QStringList> collapsedSpaces() const { return collapsedSpaces_; }
 
 signals:
     void groupViewStateChanged(bool state);
@@ -329,6 +331,7 @@ private:
     QString deviceId_;
     QString homeserver_;
     QStringList hiddenTags_;
+    QList<QStringList> collapsedSpaces_;
     bool useIdenticon_;
 
     QSettings settings;

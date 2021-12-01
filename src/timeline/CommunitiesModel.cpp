@@ -40,6 +40,7 @@ CommunitiesModel::setData(const QModelIndex &index, const QVariant &value, int r
 
         const auto cindex = spaceOrder_.lastChild(index.row() - 2);
         emit dataChanged(index, this->index(cindex + 2), {Collapsed, Qt::DisplayRole});
+        spaceOrder_.storeCollapsed();
         return true;
     } else
         return false;
@@ -276,11 +277,61 @@ CommunitiesModel::initializeSidebar()
         tags_.push_back(QString::fromStdString(t));
 
     hiddentTagIds_ = UserSettings::instance()->hiddenTags();
+    spaceOrder_.restoreCollapsed();
     endResetModel();
 
     emit tagsChanged();
     emit hiddenTagsChanged();
     emit containsSubspacesChanged();
+}
+
+void
+CommunitiesModel::FlatTree::storeCollapsed()
+{
+    QList<QStringList> elements;
+
+    int depth = -1;
+
+    QStringList current;
+
+    for (const auto &e : tree) {
+        if (e.depth > depth) {
+            current.push_back(e.name);
+        } else if (e.depth == depth) {
+            current.back() = e.name;
+        } else {
+            current.pop_back();
+            current.back() = e.name;
+        }
+
+        if (e.collapsed)
+            elements.push_back(current);
+    }
+
+    UserSettings::instance()->setCollapsedSpaces(elements);
+}
+void
+CommunitiesModel::FlatTree::restoreCollapsed()
+{
+    QList<QStringList> elements = UserSettings::instance()->collapsedSpaces();
+
+    int depth = -1;
+
+    QStringList current;
+
+    for (auto &e : tree) {
+        if (e.depth > depth) {
+            current.push_back(e.name);
+        } else if (e.depth == depth) {
+            current.back() = e.name;
+        } else {
+            current.pop_back();
+            current.back() = e.name;
+        }
+
+        if (elements.contains(current))
+            e.collapsed = true;
+    }
 }
 
 void
