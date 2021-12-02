@@ -143,6 +143,10 @@ Page {
             ToolTip.text: roomName
             onClicked: {
                 console.log("tapped " + roomId);
+
+                if (isSpace && Communities.currentTagId != "space:"+roomId)
+                    Communities.currentTagId = "space:"+roomId;
+
                 if (!Rooms.currentRoom || Rooms.currentRoom.roomId !== roomId)
                     Rooms.setCurrentRoom(roomId);
                 else
