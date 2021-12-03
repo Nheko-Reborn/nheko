@@ -59,6 +59,9 @@ ui_*.h
 *.swo
 *.swn
 
+# CLion
+/.idea
+
 #####=== CMake ===#####
 
 CMakeCache.txt
