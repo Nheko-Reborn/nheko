@@ -324,13 +324,13 @@ InputBar::message(const QString& msg, MarkdownOverride useMarkdown, bool rainbow
         for (const auto &line : related.quoted_body.split("\n")) {
             if (firstLine) {
                 firstLine = false;
-                body      = QString("> <%1> %2\n").arg(related.quoted_user).arg(line);
+                body      = QString("> <%1> %2\n").arg(related.quoted_user, line);
             } else {
                 body += QString("> %1\n").arg(line);
             }
         }
 
-        text.body = QString("%1\n%2").arg(body).arg(msg).toStdString();
+        text.body = QString("%1\n%2").arg(body, msg).toStdString();
 
         // NOTE(Nico): rich replies always need a formatted_body!
         text.format = "org.matrix.custom.html";
