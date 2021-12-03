@@ -82,7 +82,7 @@ InputBar::insertMimeData(const QMimeData *md)
             }
         }
 
-        if (!path.isEmpty() && QFileInfo{path}.exists()) {
+        if (!path.isEmpty() && QFileInfo::exists(path)) {
             showPreview(*md, path, formats);
         } else {
             nhlog::ui()->warn("Clipboard does not contain any valid file paths.");
