@@ -45,19 +45,19 @@ public:
     }
 
 public slots:
-    QString text() const;
+    [[nodiscard]] QString text() const;
     QString previousText();
     QString nextText();
     void setText(const QString& newText);
 
-    bool containsAtRoom() const { return containsAtRoom_; }
+    [[nodiscard]] bool containsAtRoom() const { return containsAtRoom_; }
 
     void send();
     void paste(bool fromMouse);
     void insertMimeData(const QMimeData *data);
     void updateState(int selectionStart, int selectionEnd, int cursorPosition, const QString& text);
     void openFileSelection();
-    bool uploading() const { return uploading_; }
+    [[nodiscard]] bool uploading() const { return uploading_; }
     void message(const QString& body,
                  MarkdownOverride useMarkdown = MarkdownOverride::NOT_SPECIFIED,
                  bool rainbowify              = false);
