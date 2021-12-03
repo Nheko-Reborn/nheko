@@ -652,7 +652,7 @@ InputBar::command(const QString& command, QString args)
 void
 InputBar::showPreview(const QMimeData &source, const QString& path, const QStringList &formats)
 {
-    dialogs::PreviewUploadOverlay *previewDialog_ =
+    auto *previewDialog_ =
       new dialogs::PreviewUploadOverlay(ChatPage::instance());
     previewDialog_->setAttribute(Qt::WA_DeleteOnClose);
 
