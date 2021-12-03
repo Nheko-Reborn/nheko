@@ -48,17 +48,17 @@ public slots:
     QString text() const;
     QString previousText();
     QString nextText();
-    void setText(QString newText);
+    void setText(const QString& newText);
 
     bool containsAtRoom() const { return containsAtRoom_; }
 
     void send();
     void paste(bool fromMouse);
     void insertMimeData(const QMimeData *data);
-    void updateState(int selectionStart, int selectionEnd, int cursorPosition, QString text);
+    void updateState(int selectionStart, int selectionEnd, int cursorPosition, const QString& text);
     void openFileSelection();
     bool uploading() const { return uploading_; }
-    void message(QString body,
+    void message(const QString& body,
                  MarkdownOverride useMarkdown = MarkdownOverride::NOT_SPECIFIED,
                  bool rainbowify              = false);
     void reaction(const QString &reactedEvent, const QString &reactionKey);
@@ -75,9 +75,9 @@ signals:
     void containsAtRoomChanged();
 
 private:
-    void emote(QString body, bool rainbowify);
-    void notice(QString body, bool rainbowify);
-    void command(QString name, QString args);
+    void emote(const QString& body, bool rainbowify);
+    void notice(const QString& body, bool rainbowify);
+    void command(const QString& name, QString args);
     void image(const QString &filename,
                const std::optional<mtx::crypto::EncryptedFile> &file,
                const QString &url,
@@ -101,7 +101,7 @@ private:
                const QString &mime,
                uint64_t dsize);
 
-    void showPreview(const QMimeData &source, QString path, const QStringList &formats);
+    void showPreview(const QMimeData &source, const QString& path, const QStringList &formats);
     void setUploading(bool value)
     {
         if (value != uploading_) {

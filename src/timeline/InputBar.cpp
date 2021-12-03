@@ -155,7 +155,7 @@ InputBar::updateAtRoom(const QString &t)
 }
 
 void
-InputBar::setText(QString newText)
+InputBar::setText(const QString& newText)
 {
     if (history_.empty())
         history_.push_front(newText);
@@ -170,7 +170,7 @@ InputBar::setText(QString newText)
     emit textChanged(newText);
 }
 void
-InputBar::updateState(int selectionStart_, int selectionEnd_, int cursorPosition_, QString text_)
+InputBar::updateState(int selectionStart_, int selectionEnd_, int cursorPosition_, const QString& text_)
 {
     if (text_.isEmpty())
         stopTyping();
@@ -288,7 +288,7 @@ InputBar::openFileSelection()
 }
 
 void
-InputBar::message(QString msg, MarkdownOverride useMarkdown, bool rainbowify)
+InputBar::message(const QString& msg, MarkdownOverride useMarkdown, bool rainbowify)
 {
     mtx::events::msg::Text text = {};
     text.body                   = msg.trimmed().toStdString();
@@ -352,7 +352,7 @@ InputBar::message(QString msg, MarkdownOverride useMarkdown, bool rainbowify)
 }
 
 void
-InputBar::emote(QString msg, bool rainbowify)
+InputBar::emote(const QString& msg, bool rainbowify)
 {
     auto html = utils::markdownToHtml(msg, rainbowify);
 
@@ -380,7 +380,7 @@ InputBar::emote(QString msg, bool rainbowify)
 }
 
 void
-InputBar::notice(QString msg, bool rainbowify)
+InputBar::notice(const QString& msg, bool rainbowify)
 {
     auto html = utils::markdownToHtml(msg, rainbowify);
 
@@ -562,7 +562,7 @@ InputBar::sticker(CombinedImagePackModel *model, int row)
 }
 
 void
-InputBar::command(QString command, QString args)
+InputBar::command(const QString& command, QString args)
 {
     if (command == "me") {
         emote(args, false);
@@ -594,7 +594,7 @@ InputBar::command(QString command, QString args)
         http::client()->send_state_event(room->roomId().toStdString(),
                                          http::client()->user_id().to_string(),
                                          member,
-                                         [](mtx::responses::EventId, mtx::http::RequestErr err) {
+                                         [](const mtx::responses::EventId&, mtx::http::RequestErr err) {
                                              if (err)
                                                  nhlog::net()->error(
                                                    "Failed to set room displayname: {}",
@@ -650,7 +650,7 @@ InputBar::command(QString command, QString args)
 }
 
 void
-InputBar::showPreview(const QMimeData &source, QString path, const QStringList &formats)
+InputBar::showPreview(const QMimeData &source, const QString& path, const QStringList &formats)
 {
     dialogs::PreviewUploadOverlay *previewDialog_ =
       new dialogs::PreviewUploadOverlay(ChatPage::instance());
@@ -668,7 +668,7 @@ InputBar::showPreview(const QMimeData &source, QString path, const QStringList &
     } else if (!path.isEmpty())
         previewDialog_->setPreview(path);
     else if (!formats.isEmpty()) {
-        auto mime = formats.first();
+        const auto& mime = formats.first();
         previewDialog_->setPreview(source.data(mime), mime);
     } else {
         setUploading(false);
@@ -684,7 +684,7 @@ InputBar::showPreview(const QMimeData &source, QString path, const QStringList &
       previewDialog_,
       &dialogs::PreviewUploadOverlay::confirmUpload,
       this,
-      [this](const QByteArray data, const QString &mime, const QString &fn) {
+      [this](const QByteArray& data, const QString &mime, const QString &fn) {
           if (!data.size()) {
               nhlog::ui()->warn("Attempted to upload zero-byte file?! Mimetype {}, filename {}",
                                 mime.toStdString(),
