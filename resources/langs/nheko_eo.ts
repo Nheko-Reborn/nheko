@@ -17,7 +17,7 @@
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>Vi vidigas vian ekranon</translation>
+        <translation>Vi vidigas vian ekranon.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -329,12 +329,12 @@
     <message>
         <location line="+13"/>
         <source>Direct Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Individuaj ĉambroj</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show direct chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Montri individuajn ĉambrojn.</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -1340,7 +1340,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location filename="../../src/main.cpp" line="+191"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation>Krei unikan profilon, kiu permesos al vi saluti kelkajn kontojn samtempe, kaj startigi plurajn nhekojn.</translation>
+        <translation>Krei unikan profilon, kiu permesos al vi saluti kelkajn kontojn samtempe, kaj startigi plurajn Nhekojn.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2168,23 +2168,24 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
     <message>
         <location line="+27"/>
         <source>Removed by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Forigita de %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 (%2) removed this message at %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) forigis ĉi tiun mesaĝon je %3</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Removed by %1 because: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Forigita de %1 ĉar: %2</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 (%2) removed this message at %3
 Reason: %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) forigis ĉi tiun mesaĝon je %3
+Kialo: %4</translation>
     </message>
     <message>
         <location line="+80"/>
@@ -3116,7 +3117,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <location filename="../../src/WelcomePage.cpp" line="+34"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
         <translatorcomment>Should &quot;Matrico&quot; be &quot;Matrica&quot;? (I don&apos;t think so)</translatorcomment>
-        <translation>Bonvenon al nheko! La labortabla kliento por la protokolo Matrikso.</translation>
+        <translation>Bonvenu al Nheko! La labortabla kliento por la protokolo Matrikso.</translation>
     </message>
     <message>
         <location line="+1"/>
