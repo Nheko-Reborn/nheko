@@ -657,8 +657,8 @@ InputBar::showPreview(const QMimeData &source, const QString& path, const QStrin
     previewDialog_->setAttribute(Qt::WA_DeleteOnClose);
 
     // Force SVG to _not_ be handled as an image, but as raw data
-    if (source.hasImage() && (!formats.size() || formats.front() != "image/svg+xml")) {
-        if (formats.size() && formats.front().startsWith("image/")) {
+    if (source.hasImage() && (formats.empty() || formats.front() != "image/svg+xml")) {
+        if (!formats.empty() && formats.front().startsWith("image/")) {
             // known format, keep as-is
             previewDialog_->setPreview(qvariant_cast<QImage>(source.imageData()), formats.front());
         } else {
