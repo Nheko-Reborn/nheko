@@ -32,7 +32,7 @@ class InputBar : public QObject
     Q_PROPERTY(QString text READ text NOTIFY textChanged)
 
 public:
-    InputBar(TimelineModel *parent)
+    explicit InputBar(TimelineModel *parent)
       : QObject()
       , room(parent)
     {
