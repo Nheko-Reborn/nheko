@@ -1857,16 +1857,12 @@ Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id, uint64_t 
 
     auto cursor = lmdb::cursor::open(txn, orderDb);
     if (index == std::numeric_limits<uint64_t>::max()) {
-        if (cursor.get(indexVal, event_id, forward ? MDB_FIRST : MDB_LAST)) {
-            index = lmdb::from_sv<uint64_t>(indexVal);
-        } else {
+        if (!cursor.get(indexVal, event_id, forward ? MDB_FIRST : MDB_LAST)) {
             messages.end_of_cache = true;
             return messages;
         }
     } else {
-        if (cursor.get(indexVal, event_id, MDB_SET)) {
-            index = lmdb::from_sv<uint64_t>(indexVal);
-        } else {
+        if (!cursor.get(indexVal, event_id, MDB_SET)) {
             messages.end_of_cache = true;
             return messages;
         }

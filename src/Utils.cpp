@@ -476,11 +476,9 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
         // create iterator over node
         cmark_iter *iter = cmark_iter_new(node);
 
-        cmark_event_type ev_type;
-
         // First loop to get total text length
         int textLen = 0;
-        while ((ev_type = cmark_iter_next(iter)) != CMARK_EVENT_DONE) {
+        while (cmark_iter_next(iter) != CMARK_EVENT_DONE) {
             cmark_node *cur = cmark_iter_get_node(iter);
             // only text nodes (no code or semilar)
             if (cmark_node_get_type(cur) != CMARK_NODE_TEXT)
@@ -498,7 +496,7 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
 
         // Second loop to rainbowify
         int charIdx = 0;
-        while ((ev_type = cmark_iter_next(iter)) != CMARK_EVENT_DONE) {
+        while (cmark_iter_next(iter) != CMARK_EVENT_DONE) {
             cmark_node *cur = cmark_iter_get_node(iter);
             // only text nodes (no code or semilar)
             if (cmark_node_get_type(cur) != CMARK_NODE_TEXT)

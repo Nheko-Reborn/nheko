@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     instance_ = this;
 
-    setWindowTitle(0);
+    QMainWindow::setWindowTitle(0);
     setObjectName("MainWindow");
 
     modal_ = new OverlayModal(this);
@@ -353,7 +353,7 @@ MainWindow::showSolidOverlayModal(QWidget *content, QFlags<Qt::AlignmentFlag> fl
 bool
 MainWindow::hasActiveDialogs() const
 {
-    return !modal_ && modal_->isVisible();
+    return modal_ && modal_->isVisible();
 }
 
 bool
