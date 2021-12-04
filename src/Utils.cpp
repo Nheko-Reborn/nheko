@@ -644,7 +644,8 @@ utils::hashQString(const QString &input)
 {
     auto h = QCryptographicHash::hash(input.toUtf8(), QCryptographicHash::Sha1);
 
-    return (h[0] << 24) ^ (h[1] << 16) ^ (h[2] << 8) ^ h[3];
+    return (static_cast<uint32_t>(h[0]) << 24) ^ (static_cast<uint32_t>(h[1]) << 16) ^
+           (static_cast<uint32_t>(h[2]) << 8) ^ static_cast<uint32_t>(h[3]);
 }
 
 QColor
