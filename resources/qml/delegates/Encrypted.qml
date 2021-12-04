@@ -14,7 +14,7 @@ Rectangle {
     required property int encryptionError
     required property string eventId
 
-    radius: height / 4
+    radius: fontMetrics.xHeight + Nheko.paddingMedium
     width: parent ? parent.width : undefined
     height: contents.implicitHeight + Nheko.paddingMedium * 2
     color: Nheko.colors.alternateBase
