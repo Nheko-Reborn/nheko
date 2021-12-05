@@ -6,18 +6,18 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+107"/>
         <source>Calling...</source>
-        <translation>Bellen...</translation>
+        <translation>Bellen…</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation>Verbinden...</translation>
+        <translation>Verbinden…</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>Scherm wordt gedeeld</translation>
+        <translation>Scherm wordt gedeeld.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -328,12 +328,12 @@
     <message>
         <location line="+13"/>
         <source>Direct Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Één op één gesprekken</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show direct chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Laat één op één gesprekken zien.</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -1528,7 +1528,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+13"/>
         <source>Create new tag...</source>
-        <translation>Maak nieuwe markering...</translation>
+        <translation>Maak nieuwe markering…</translation>
     </message>
     <message>
         <location line="+278"/>
@@ -2163,23 +2163,24 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
     <message>
         <location line="+27"/>
         <source>Removed by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijderd door %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 (%2) removed this message at %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) verwijderde dit bericht op %3</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Removed by %1 because: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijderd door %1. Reden: %2</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 (%2) removed this message at %3
 Reason: %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) verwijderde dit bericht op %3
+Reden: %4</translation>
     </message>
     <message>
         <location line="+80"/>
