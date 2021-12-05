@@ -34,7 +34,7 @@
 #include "ui/ToggleButton.h"
 #include "voip/CallDevices.h"
 
-#include "config/nheko.h"
+#include "config_nheko.h"
 
 QSharedPointer<UserSettings> UserSettings::instance_;
 

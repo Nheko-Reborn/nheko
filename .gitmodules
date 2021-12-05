@@ -1,0 +1,6 @@
+[submodule "subprojects/mtxclient"]
+	path = subprojects/mtxclient
+	url = https://nheko.im/nheko-reborn/mtxclient.git
+[submodule "subprojects/blurhash"]
+	path = subprojects/blurhash
+	url = https://nheko.im/nheko-reborn/blurhash.git

@@ -27,7 +27,7 @@
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "Utils.h"
-#include "config/nheko.h"
+#include "config_nheko.h"
 #include "singleapplication.h"
 
 #if defined(Q_OS_MAC)
