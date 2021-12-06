@@ -16,9 +16,11 @@ Container {
 
     property bool singlePageMode: width < 800
     property int splitterGrabMargin: Nheko.paddingSmall
-    property int pageIndex: 0
+    property alias pageIndex: view.currentIndex
     property Component handle
     property Component handleToucharea
+
+    onSinglePageModeChanged: if (!singlePageMode) pageIndex = 0
 
     anchors.fill: parent
     Component.onCompleted: {
@@ -103,9 +105,7 @@ Container {
             xAxis.minimum: splitter.minimumWidth - 1
             xAxis.maximum: splitter.maximumWidth
             margin: container.splitterGrabMargin
-            //dragThreshold: 0
             grabPermissions: PointerHandler.CanTakeOverFromAnything | PointerHandler.ApprovesTakeOverByHandlersOfSameType
-            //cursorShape: Qt.SizeHorCursor
             onActiveChanged: {
                 if (!active)
                     splitter.parent.preferredWidth = splitter.x;
@@ -114,8 +114,6 @@ Container {
         }
 
         HoverHandler {
-            //cursorShape: Qt.SizeHorCursor
-
             enabled: !container.singlePageMode
             margin: container.splitterGrabMargin
         }
@@ -129,7 +127,7 @@ Container {
         snapMode: ListView.SnapOneItem
         orientation: ListView.Horizontal
         highlightRangeMode: ListView.StrictlyEnforceRange
-        interactive: false
+        interactive: singlePageMode
         highlightMoveDuration: container.singlePageMode ? 200 : 0
         currentIndex: container.singlePageMode ? container.pageIndex : 0
     }

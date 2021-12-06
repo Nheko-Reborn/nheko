@@ -21,7 +21,39 @@ Rectangle {
 
         anchors.fill: parent
         singlePageMode: communityListC.preferredWidth + roomListC.preferredWidth + timlineViewC.minimumWidth > width
-        pageIndex: (Rooms.currentRoom || Rooms.currentRoomPreview.roomid) ? 2 : 1
+        pageIndex: 1
+
+        Component.onCompleted: initializePageIndex()
+        onSinglePageModeChanged: initializePageIndex()
+
+        function initializePageIndex() {
+            if (!singlePageMode)
+                adaptiveView.pageIndex = 0;
+            else if (Rooms.currentRoom || Rooms.currentRoomPreview.roomid)
+                adaptiveView.pageIndex = 2;
+            else
+                adaptiveView.pageIndex = 1;
+        }
+
+        Connections {
+            target: Rooms
+            function onCurrentRoomChanged() {
+                adaptiveView.initializePageIndex();
+            }
+        }
+
+        Connections {
+            target: Communities
+            function onCurrentTagIdChanged() {
+                adaptiveView.initializePageIndex();
+            }
+        }
+
+        onPageIndexChanged: {
+            if (adaptiveView.pageIndex == 1 && (Rooms.currentRoom || Rooms.currentRoomPreview.roomid)) {
+                Rooms.resetCurrentRoom();
+            }
+        }
 
         AdaptiveLayoutElement {
             id: communityListC
