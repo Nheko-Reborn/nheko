@@ -1,0 +1,13 @@
+<RCC>
+ <qresource prefix="/translations">
+  <file>nheko_de.qm</file>
+  <file>nheko_el.qm</file>
+  <file>nheko_en.qm</file>
+  <file>nheko_fi.qm</file>
+  <file>nheko_fr.qm</file>
+  <file>nheko_nl.qm</file>
+  <file>nheko_pl.qm</file>
+  <file>nheko_ru.qm</file>
+  <file>nheko_zh_CN.qm</file>
+ </qresource>
+</RCC>

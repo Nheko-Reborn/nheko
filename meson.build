@@ -248,10 +248,11 @@ else
 	sources += ['src/notifications/ManagerLinux.cpp']
 endif
 
+subdir('resources/langs')
 resources = qt5.compile_resources(name: 'res', sources: 'resources/res.qrc')
 
 executable('nheko',
-	sources, moc_files, resources,
+	sources, moc_files, resources, translations,
 	cpp_args: '-DQAPPLICATION_CLASS=QApplication',
 	include_directories: inc,
 	dependencies : deps,
