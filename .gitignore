@@ -8,6 +8,25 @@ cscope*
 .gdb_history
 .hunter
 
+# subprojects
+
+subprojects/Olm.wrap
+subprojects/Olm/
+subprojects/coeurl.wrap
+subprojects/coeurl/
+subprojects/curl-7.77.0/
+subprojects/curl.wrap
+subprojects/libevent-2.1.12-stable/
+subprojects/libevent.wrap
+subprojects/lmdb++/
+subprojects/lmdb-LMDB_0.9.29/
+subprojects/nlohmann_json-3.9.1/
+subprojects/nlohmann_json.wrap
+subprojects/openssl-1.1.1l/
+subprojects/openssl.wrap
+subprojects/packagecache/
+subprojects/spdlog-1.9.2/
+
 # GTAGS
 GTAGS
 GRTAGS

@@ -3,8 +3,11 @@ project(
   'cpp',
 	license: 'GPL-3.0-or-later',
 	version: '0.9.0',
-	default_options: ['cpp_std=c++17', 'b_pie=true', 'default_library=static']
+	default_options: ['cpp_std=c++17', 'b_pie=true', 'default_library=static'],
+	meson_version: '>=0.59.0'
 )
+
+compiler = meson.get_compiler('cpp')
 
 qt5 = import('qt5')
 qt5_dep = dependency('qt5', modules: ['Core', 'Qml', 'Quick', 'QuickWidgets', 'Widgets', 'DBus', 'Multimedia', 'Svg'], include_type: 'system')
@@ -16,7 +19,7 @@ deps = [
  dependency('blurhash'),
  dependency('spdlog'),
  dependency('cmark'),
- dependency('lmdb'),
+ dependency('lmdb', fallback: ['lmdb', 'lmdb_dep']),
  dependency('Qt5Keychain'),
  dependency('threads'),
 ]
@@ -25,7 +28,24 @@ single_app_dep = subproject('SingleApplication-3.3.0').get_variable('singleappli
 
 deps += [single_app_dep]
 
-compiler = meson.get_compiler('cpp')
+lmdbxx_dep = dependency('', required : false)
+if compiler.has_header('lmdb++.h')
+	lmdbxx_dep = declare_dependency()
+elif compiler.has_header('lmdbxx/lmdb++.h')
+	lmdbxx_dep = declare_dependency(include_directories: 'lmdbxx')
+endif
+
+if (not lmdbxx_dep.found()
+  or get_option('wrap_mode') == 'forcefallback'
+  or 'lmdbxx' in get_option('force_fallback_for'))
+    lmdbxx_dep = dependency('lmdb++', fallback: 'lmdb++')
+endif
+
+if not lmdbxx_dep.found()
+	error('lmdb++ not found and fallback was disabled. Check https://github.com/hoytech/lmdbxx')
+endif
+deps += lmdbxx_dep
+
 backtrace_check = '''#include<execinfo.h>
 #ifndef HAVE_BACKTRACE_SYMBOLS_FD
 #error "No backtrace support"

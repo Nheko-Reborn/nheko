@@ -1,0 +1,9 @@
+[wrap-file]
+directory = lmdb-LMDB_0.9.29
+
+source_url = https://github.com/LMDB/lmdb/archive/refs/tags/LMDB_0.9.29.tar.gz
+source_filename = lmdb-LMDB_0.9.29.tar.gz
+source_hash = 22054926b426c66d8f2bc22071365df6e35f3aacf19ad943bc6167d4cae3bebb
+
+patch_directory = lmdb
+
