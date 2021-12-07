@@ -8,24 +8,59 @@
 #include <QQuickImageResponse>
 
 #include <QImage>
-#include <QThreadPool>
+//#include <QThreadPool>
 
 #include <functional>
 
 #include <mtx/common.hpp>
 
-class MxcImageResponse
-  : public QQuickImageResponse
-  , public QRunnable
+class MxcImageRunnable
+  : public QObject
 {
+    Q_OBJECT
+
+signals:
+    void done(QImage image);
+    void error(QString error);
+
 public:
-    MxcImageResponse(const QString &id, bool crop, double radius, const QSize &requestedSize)
+    MxcImageRunnable(const QString &id, bool crop, double radius, const QSize &requestedSize)
       : m_id(id)
       , m_requestedSize(requestedSize)
       , m_crop(crop)
       , m_radius(radius)
     {
-        setAutoDelete(false);
+    }
+
+    void run();
+
+    QString m_id;
+    QSize m_requestedSize;
+    bool m_crop;
+    double m_radius;
+};
+class MxcImageResponse
+  : public QQuickImageResponse
+{
+public:
+    MxcImageResponse(const QString &id, bool crop, double radius, const QSize &requestedSize)
+
+    {
+        auto runnable = new MxcImageRunnable(id, crop, radius, requestedSize);
+        connect(runnable, &MxcImageRunnable::done, this, &MxcImageResponse::handleDone);
+        connect(runnable, &MxcImageRunnable::error, this, &MxcImageResponse::handleError);
+        runnable->run();
+    }
+
+    void handleDone(QImage image)
+    {
+        m_image = image;
+        emit finished();
+    }
+    void handleError(QString error)
+    {
+        m_error = error;
+        emit finished();
     }
 
     QQuickTextureFactory *textureFactory() const override
@@ -34,13 +69,8 @@ public:
     }
     QString errorString() const override { return m_error; }
 
-    void run() override;
-
-    QString m_id, m_error;
-    QSize m_requestedSize;
+    QString m_error;
     QImage m_image;
-    bool m_crop;
-    double m_radius;
 };
 
 class MxcImageProvider
@@ -60,5 +90,5 @@ public slots:
                          double radius = 0);
 
 private:
-    QThreadPool pool;
+    // QThreadPool pool;
 };

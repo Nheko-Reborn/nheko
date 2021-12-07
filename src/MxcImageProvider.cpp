@@ -43,9 +43,7 @@ MxcImageProvider::requestImageResponse(const QString &id, const QSize &requested
         }
     }
 
-    MxcImageResponse *response = new MxcImageResponse(id_, crop, radius, requestedSize);
-    pool.start(response);
-    return response;
+    return new MxcImageResponse(id_, crop, radius, requestedSize);
 }
 
 void
@@ -54,18 +52,18 @@ MxcImageProvider::addEncryptionInfo(mtx::crypto::EncryptedFile info)
     infos.insert(QString::fromStdString(info.url), info);
 }
 void
-MxcImageResponse::run()
+MxcImageRunnable::run()
 {
     MxcImageProvider::download(
       m_id,
       m_requestedSize,
       [this](QString, QSize, QImage image, QString) {
           if (image.isNull()) {
-              m_error = "Failed to download image.";
+              emit error("Failed to download image.");
           } else {
-              m_image = image;
+              emit done(image);
           }
-          emit finished();
+          this->deleteLater();
       },
       m_crop,
       m_radius);

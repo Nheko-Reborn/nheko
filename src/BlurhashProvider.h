@@ -16,7 +16,6 @@ class BlurhashResponse
 {
 public:
     BlurhashResponse(const QString &id, const QSize &requestedSize)
-
       : m_id(id)
       , m_requestedSize(requestedSize)
     {
