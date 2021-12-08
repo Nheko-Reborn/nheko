@@ -100,7 +100,11 @@ MxcImageProvider::download(const QString &id,
     if (temp != infos.end())
         encryptionInfo = *temp;
 
-    if (requestedSize.isValid() && !encryptionInfo) {
+    if (requestedSize.isValid() &&
+        !encryptionInfo
+        // Protect against synapse not following the spec:
+        // https://github.com/matrix-org/synapse/issues/5302
+        && requestedSize.height() <= 600 && requestedSize.width() <= 800) {
         QString fileName = QString("%1_%2x%3_%4_radius%5")
                              .arg(QString::fromUtf8(id.toUtf8().toBase64(
                                QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals)))
