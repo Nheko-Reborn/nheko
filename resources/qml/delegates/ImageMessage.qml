@@ -2,7 +2,8 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtQuick 2.12
+import QtQuick 2.15
+import QtQuick.Window 2.15
 import im.nheko 1.0
 
 Item {
@@ -46,6 +47,8 @@ Item {
         smooth: true
         mipmap: true
 
+        sourceSize.width: Math.min(Screen.desktopAvailableWidth, originalWidth || undefined)
+        sourceSize.height: Math.min(Screen.desktopAvailableHeight, originalWidth*proportionalHeight || undefined)
     }
 
     MxcAnimatedImage {
