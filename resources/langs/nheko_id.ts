@@ -6,18 +6,18 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+107"/>
         <source>Calling...</source>
-        <translation>Memanggil...</translation>
+        <translation>Memanggil…</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation>Menghubungkan...</translation>
+        <translation>Menghubungkan…</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>Anda sedang membagikan layar</translation>
+        <translation>Anda sedang membagikan layar.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -261,7 +261,7 @@
         <location line="+4"/>
         <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation>Gagal memulihkan data simpanan. Mohon masuk lagi.</translation>
+        <translation>Gagal memulihkan data yang tersimpan. Mohon masuk lagi.</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -328,12 +328,12 @@
     <message>
         <location line="+13"/>
         <source>Direct Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Pesan Langsung</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show direct chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan pesan langsung.</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -1202,12 +1202,12 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+16"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation>Untuk mengizinkan pengguna lain melihat, perangkat mana yang benar-benar milik Anda, Anda dapat memverifikasinya. Ini juga memungkinkan cadangan kunci bekerja secara otomatis. Verifikasi perangkat yang belum diverifikasi sekarang? (Pastikan Anda memiliki salah satu perangkat tersebut.)</translation>
+        <translation>Untuk mengizinkan pengguna lain melihat  perangkat mana yang benar-benar milik Anda, Anda dapat memverifikasinya. Ini juga memungkinkan cadangan kunci bekerja secara otomatis. Verifikasi perangkat yang belum diverifikasi sekarang? (Pastikan Anda memiliki salah satu perangkat tersebut.)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation>Untuk mengizinkan pengguna yang lain untuk melihat, perangkat apa saja yang sebenarnya milik Anda, verifiksi mereka. Ini juga dapat membuat kunci cadangan bekerja secara otomatis. Verifikasi %1 sekarang?</translation>
+        <translation>Untuk mengizinkan pengguna yang lain untuk melihat perangkat apa saja yang sebenarnya milik Anda, lakukan verifikasi pada perangkatnya. Ini juga dapat membuat kunci cadangan bekerja secara otomatis. Verifikasi %1 sekarang?</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1336,7 +1336,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location filename="../../src/main.cpp" line="+191"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation>Membuat profil yang unik, yang mengizinkan Anda untuk masuk ke beberapa akun pada waktu bersamaan dan mulai beberapa instansi nheko.</translation>
+        <translation>Buat profil yang unik, yang mengizinkan Anda untuk masuk ke beberapa akun pada waktu bersamaan dan mulai beberapa instansi Nheko.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2161,23 +2161,24 @@ Jika Anda memilih verifikasi, Anda harus memiliki perangkat lain yang tersedia. 
     <message>
         <location line="+27"/>
         <source>Removed by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Dihapus oleh %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 (%2) removed this message at %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) menghapus pesan ini pada %3</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Removed by %1 because: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Dihapus oleh %1 karena: %2</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 (%2) removed this message at %3
 Reason: %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) menghapus pesan ini pada %3
+Alasan: %4</translation>
     </message>
     <message>
         <location line="+80"/>
@@ -3099,7 +3100,7 @@ Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</transla
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+34"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation>Selamat datang di nheko! Sebuah klien desktop untuk protokol Matrix.</translation>
+        <translation>Selamat datang di Nheko! Sebuah klien desktop untuk protokol Matrix.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3188,7 +3189,7 @@ Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</transla
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
-        <translation>Buka fallbacknya, ikuti petunjuknya dan konfirmasi setelah menyelesaikannya.</translation>
+        <translation>Buka fallbacknya, ikuti petunjuknya, dan konfirmasi setelah menyelesaikannya.</translation>
     </message>
 </context>
 <context>
