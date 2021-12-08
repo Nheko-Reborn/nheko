@@ -96,7 +96,7 @@ Item {
 
         anchors.bottom: content.bottom
         text: body + " [" + filesize + "]"
-        textFormat: Text.PlainText
+        textFormat: Text.RichText
         elide: Text.ElideRight
         color: Nheko.colors.text
 
