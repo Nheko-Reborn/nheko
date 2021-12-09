@@ -14,18 +14,19 @@ subprojects/Olm.wrap
 subprojects/Olm/
 subprojects/coeurl.wrap
 subprojects/coeurl/
-subprojects/curl-7.77.0/
+subprojects/curl-*/
 subprojects/curl.wrap
-subprojects/libevent-2.1.12-stable/
+subprojects/libevent-*/
 subprojects/libevent.wrap
 subprojects/lmdb++/
-subprojects/lmdb-LMDB_0.9.29/
-subprojects/nlohmann_json-3.9.1/
+subprojects/lmdb-LMDB_*/
+subprojects/nlohmann_json-*/
 subprojects/nlohmann_json.wrap
-subprojects/openssl-1.1.1l/
+subprojects/openssl-*/
 subprojects/openssl.wrap
 subprojects/packagecache/
-subprojects/spdlog-1.9.2/
+subprojects/spdlog-*/
+subprojects/cmark-*/
 
 # GTAGS
 GTAGS
@@ -143,3 +144,11 @@ package.dir
 
 # Archives
 *.bz2
+
+# analyzer stuff
+heaptrack.*
+massif.out.*
+*.dump
+.cache/
+.flatpak-builder/
+.hunter-emscripen/

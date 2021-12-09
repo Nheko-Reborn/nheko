@@ -19,7 +19,7 @@ deps = [
  dependency('blurhash'),
  dependency('spdlog'),
  dependency('cmark'),
- dependency('lmdb', fallback: ['lmdb', 'lmdb_dep']),
+ dependency('lmdb'),
  dependency('Qt5Keychain'),
  dependency('threads'),
 ]

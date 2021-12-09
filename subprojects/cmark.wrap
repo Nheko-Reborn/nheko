@@ -1,0 +1,9 @@
+[wrap-file]
+directory = cmark-0.30.2
+
+source_url = https://github.com/commonmark/cmark/archive/refs/tags/0.30.2.tar.gz
+source_filename = cmark-0.30.2.tar.gz
+source_hash = 6c7d2bcaea1433d977d8fed0b55b71c9d045a7cdf616e3cd2dce9007da753db3
+
+patch_directory = cmark
+
