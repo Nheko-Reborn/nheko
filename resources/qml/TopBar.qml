@@ -30,7 +30,7 @@ Rectangle {
 
     TapHandler {
         onSingleTapped: {
-            if (eventPoint.position.y > topBar.height - pinnedMessages.height) {
+            if (eventPoint.position.y > topBar.height - (pinnedMessages.visible ? pinnedMessages.height : 0)) {
                 eventPoint.accepted = true
                 return;
             }
@@ -61,12 +61,6 @@ Rectangle {
 
     HoverHandler {
         grabPermissions: PointerHandler.TakeOverForbidden | PointerHandler.CanTakeOverFromAnything
-    }
-
-    CursorShape {
-        anchors.fill: parent
-        anchors.bottomMargin: pinnedMessages.height
-        cursorShape: Qt.PointingHandCursor
     }
 
     GridLayout {
@@ -306,5 +300,11 @@ Rectangle {
                 }
             }
         }
+    }
+
+    CursorShape {
+        anchors.fill: parent
+        anchors.bottomMargin: pinnedMessages.visible ? pinnedMessages.height : 0
+        cursorShape: Qt.PointingHandCursor
     }
 }
