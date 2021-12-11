@@ -171,13 +171,13 @@ SelfVerificationStatus::setupCrosssigning(bool useSSSS, QString password, bool u
                         }
 
                         for (const auto &[user_id, tmp] : res.errors)
-                            for (const auto &[key_id, e] : tmp)
+                            for (const auto &[key_id, e_] : tmp)
                                 nhlog::net()->error("signature error for user {} and key "
                                                     "id {}: {}, {}",
                                                     user_id,
                                                     key_id,
-                                                    mtx::errors::to_string(e.errcode),
-                                                    e.error);
+                                                    mtx::errors::to_string(e_.errcode),
+                                                    e_.error);
                     });
               }
           }
@@ -244,8 +244,8 @@ SelfVerificationStatus::verifyUnverifiedDevices()
         return;
 
     std::vector<QString> devices;
-    for (const auto &[device, keys] : keys->device_keys) {
-        (void)keys;
+    for (const auto &[device, keys_] : keys->device_keys) {
+        (void)keys_;
         if (!verif.verified_devices.count(device))
             devices.push_back(QString::fromStdString(device));
     }

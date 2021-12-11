@@ -1617,8 +1617,8 @@ download_cross_signing_keys()
                                        [secrets::cross_signing_user_signing] =
                                          user_signing_key->encrypted.begin()->second;
 
-                            for (const auto &[key, secrets] : secrets)
-                                unlock_secrets(key, secrets);
+                            for (const auto &[key, secret_] : secrets)
+                                unlock_secrets(key, secret_);
                         });
                   });
             });

@@ -46,10 +46,10 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
     this->sas           = olm::client()->sas_init();
     this->isMacVerified = false;
 
-    auto user_id   = userID.toStdString();
-    this->toClient = mtx::identifiers::parse<mtx::identifiers::User>(user_id);
+    auto user_id_  = userID.toStdString();
+    this->toClient = mtx::identifiers::parse<mtx::identifiers::User>(user_id_);
     cache::client()->query_keys(
-      user_id, [user_id, this](const UserKeyCache &res, mtx::http::RequestErr err) {
+      user_id_, [user_id_, this](const UserKeyCache &res, mtx::http::RequestErr err) {
           if (err) {
               nhlog::net()->warn("failed to query device keys: {},{}",
                                  mtx::errors::to_string(err->matrix_error.errcode),
@@ -59,7 +59,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
 
           if (!this->deviceId.isEmpty() &&
               (res.device_keys.find(deviceId.toStdString()) == res.device_keys.end())) {
-              nhlog::net()->warn("no devices retrieved {}", user_id);
+              nhlog::net()->warn("no devices retrieved {}", user_id_);
               return;
           }
 
