@@ -237,7 +237,7 @@ Rectangle {
 
             Layout.row: 2
             Layout.column: 2
-            Layout.columnSpan: 1
+            Layout.columnSpan: 3
 
             Layout.fillWidth: true
             Layout.preferredHeight: Math.min(contentHeight, Nheko.avatarSize * 4)
