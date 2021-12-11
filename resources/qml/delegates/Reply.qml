@@ -60,7 +60,14 @@ Item {
 
         TapHandler {
             acceptedButtons: Qt.LeftButton
-            onSingleTapped: room.showEvent(r.eventId)
+            onSingleTapped: {
+                let link = reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight);
+                if (link) {
+                    Nheko.openLink(link)
+                } else {
+                    room.showEvent(r.eventId)
+                }
+            }
             gesturePolicy: TapHandler.ReleaseWithinBounds
         }
 
