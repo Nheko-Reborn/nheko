@@ -93,6 +93,10 @@ struct RoomEventType
             return qml_mtx_events::EventType::Sticker;
         case EventType::Tag:
             return qml_mtx_events::EventType::Tag;
+        case EventType::SpaceParent:
+            return qml_mtx_events::EventType::SpaceParent;
+        case EventType::SpaceChild:
+            return qml_mtx_events::EventType::SpaceChild;
         case EventType::Unsupported:
             return qml_mtx_events::EventType::Unsupported;
         default:
@@ -286,6 +290,12 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
     // m.tag
     case qml_mtx_events::Tag:
         return mtx::events::EventType::Tag;
+    // m.space.parent
+    case qml_mtx_events::SpaceParent:
+        return mtx::events::EventType::SpaceParent;
+    // m.space.child
+    case qml_mtx_events::SpaceChild:
+        return mtx::events::EventType::SpaceChild;
     /// m.room.message
     case qml_mtx_events::AudioMessage:
     case qml_mtx_events::EmoteMessage:
@@ -808,7 +818,9 @@ TimelineModel::syncState(const mtx::responses::State &s)
             emit roomNameChanged();
         else if (std::holds_alternative<StateEvent<state::Topic>>(e))
             emit roomTopicChanged();
-        else if (std::holds_alternative<StateEvent<state::Topic>>(e)) {
+        else if (std::holds_alternative<StateEvent<state::PinnedEvents>>(e))
+            emit pinnedMessagesChanged();
+        else if (std::holds_alternative<StateEvent<state::PowerLevels>>(e)) {
             permissions_.invalidate();
             emit permissionsChanged();
         } else if (std::holds_alternative<StateEvent<state::Member>>(e)) {
@@ -870,6 +882,8 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
             emit roomNameChanged();
         else if (std::holds_alternative<StateEvent<state::Topic>>(e))
             emit roomTopicChanged();
+        else if (std::holds_alternative<StateEvent<state::PinnedEvents>>(e))
+            emit pinnedMessagesChanged();
         else if (std::holds_alternative<StateEvent<state::PowerLevels>>(e)) {
             permissions_.invalidate();
             emit permissionsChanged();
@@ -1082,6 +1096,60 @@ void
 TimelineModel::replyAction(QString id)
 {
     setReply(id);
+}
+
+void
+TimelineModel::unpin(QString id)
+{
+    auto pinned =
+      cache::client()->getStateEvent<mtx::events::state::PinnedEvents>(room_id_.toStdString());
+
+    mtx::events::state::PinnedEvents content{};
+    if (pinned)
+        content = pinned->content;
+
+    auto idStr = id.toStdString();
+
+    for (auto it = content.pinned.begin(); it != content.pinned.end(); ++it) {
+        if (*it == idStr) {
+            content.pinned.erase(it);
+            break;
+        }
+    }
+
+    http::client()->send_state_event(
+      room_id_.toStdString(),
+      content,
+      [idStr](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+          if (err)
+              nhlog::net()->error("Failed to unpin {}: {}", idStr, *err);
+          else
+              nhlog::net()->debug("Unpinned {}", idStr);
+      });
+}
+
+void
+TimelineModel::pin(QString id)
+{
+    auto pinned =
+      cache::client()->getStateEvent<mtx::events::state::PinnedEvents>(room_id_.toStdString());
+
+    mtx::events::state::PinnedEvents content{};
+    if (pinned)
+        content = pinned->content;
+
+    auto idStr = id.toStdString();
+    content.pinned.push_back(idStr);
+
+    http::client()->send_state_event(
+      room_id_.toStdString(),
+      content,
+      [idStr](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+          if (err)
+              nhlog::net()->error("Failed to pin {}: {}", idStr, *err);
+          else
+              nhlog::net()->debug("Pinned {}", idStr);
+      });
 }
 
 void
@@ -2106,6 +2174,23 @@ TimelineModel::roomTopic() const
     else
         return utils::replaceEmoji(
           utils::linkifyMessage(QString::fromStdString(info[room_id_].topic).toHtmlEscaped()));
+}
+
+QStringList
+TimelineModel::pinnedMessages() const
+{
+    auto pinned =
+      cache::client()->getStateEvent<mtx::events::state::PinnedEvents>(room_id_.toStdString());
+
+    if (!pinned || pinned->content.pinned.empty())
+        return {};
+
+    QStringList list;
+    list.reserve(pinned->content.pinned.size());
+    for (const auto &p : pinned->content.pinned)
+        list.push_back(QString::fromStdString(p));
+
+    return list;
 }
 
 crypto::Trust

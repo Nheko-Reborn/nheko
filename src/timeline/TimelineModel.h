@@ -115,6 +115,10 @@ enum EventType
     ImagePackInAccountData,
     //! m.image_pack.rooms, currently im.ponies.emote_rooms
     ImagePackRooms,
+    // m.space.parent
+    SpaceParent,
+    // m.space.child
+    SpaceChild,
 };
 Q_ENUM_NS(EventType)
 mtx::events::EventType fromRoomEventType(qml_mtx_events::EventType);
@@ -172,6 +176,7 @@ class TimelineModel : public QAbstractListModel
     Q_PROPERTY(QString plainRoomName READ plainRoomName NOTIFY plainRoomNameChanged)
     Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY roomAvatarUrlChanged)
     Q_PROPERTY(QString roomTopic READ roomTopic NOTIFY roomTopicChanged)
+    Q_PROPERTY(QStringList pinnedMessages READ pinnedMessages NOTIFY pinnedMessagesChanged)
     Q_PROPERTY(int roomMemberCount READ roomMemberCount NOTIFY roomMemberCountChanged)
     Q_PROPERTY(bool isEncrypted READ isEncrypted NOTIFY encryptionChanged)
     Q_PROPERTY(bool isSpace READ isSpace CONSTANT)
@@ -256,6 +261,8 @@ public:
     Q_INVOKABLE void openUserProfile(QString userid);
     Q_INVOKABLE void editAction(QString id);
     Q_INVOKABLE void replyAction(QString id);
+    Q_INVOKABLE void unpin(QString id);
+    Q_INVOKABLE void pin(QString id);
     Q_INVOKABLE void showReadReceipts(QString id);
     Q_INVOKABLE void redactEvent(QString id);
     Q_INVOKABLE int idToIndex(QString id) const;
@@ -354,6 +361,7 @@ public slots:
     QString roomName() const;
     QString plainRoomName() const;
     QString roomTopic() const;
+    QStringList pinnedMessages() const;
     InputBar *input() { return &input_; }
     Permissions *permissions() { return &permissions_; }
     QString roomAvatarUrl() const;
@@ -395,6 +403,7 @@ signals:
     void roomNameChanged();
     void plainRoomNameChanged();
     void roomTopicChanged();
+    void pinnedMessagesChanged();
     void roomAvatarUrlChanged();
     void roomMemberCountChanged();
     void isDirectChanged();

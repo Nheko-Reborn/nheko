@@ -60,7 +60,7 @@ Item {
 
         TapHandler {
             acceptedButtons: Qt.LeftButton
-            onSingleTapped: chat.model.showEvent(r.eventId)
+            onSingleTapped: room.showEvent(r.eventId)
             gesturePolicy: TapHandler.ReleaseWithinBounds
         }
 
@@ -79,7 +79,7 @@ Item {
             textFormat: Text.RichText
 
             TapHandler {
-                onSingleTapped: chat.model.openUserProfile(userId)
+                onSingleTapped: room.openUserProfile(userId)
                 gesturePolicy: TapHandler.ReleaseWithinBounds
             }
 

@@ -105,6 +105,8 @@ class UserSettings : public QObject
                  setDisableCertificateValidation NOTIFY disableCertificateValidationChanged)
     Q_PROPERTY(bool useIdenticon READ useIdenticon WRITE setUseIdenticon NOTIFY useIdenticonChanged)
 
+    Q_PROPERTY(QStringList hiddenPins READ hiddenPins WRITE setHiddenPins NOTIFY hiddenPinsChanged)
+
     UserSettings();
 
 public:
@@ -171,6 +173,7 @@ public:
     void setHomeserver(QString homeserver);
     void setDisableCertificateValidation(bool disabled);
     void setHiddenTags(QStringList hiddenTags);
+    void setHiddenPins(QStringList hiddenTags);
     void setUseIdenticon(bool state);
     void setCollapsedSpaces(QList<QStringList> spaces);
 
@@ -228,6 +231,7 @@ public:
     QString homeserver() const { return homeserver_; }
     bool disableCertificateValidation() const { return disableCertificateValidation_; }
     QStringList hiddenTags() const { return hiddenTags_; }
+    QStringList hiddenPins() const { return hiddenPins_; }
     bool useIdenticon() const { return useIdenticon_ && JdenticonProvider::isAvailable(); }
     QList<QStringList> collapsedSpaces() const { return collapsedSpaces_; }
 
@@ -278,6 +282,7 @@ signals:
     void homeserverChanged(QString homeserver);
     void disableCertificateValidationChanged(bool disabled);
     void useIdenticonChanged(bool state);
+    void hiddenPinsChanged();
 
 private:
     // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
@@ -331,6 +336,7 @@ private:
     QString deviceId_;
     QString homeserver_;
     QStringList hiddenTags_;
+    QStringList hiddenPins_;
     QList<QStringList> collapsedSpaces_;
     bool useIdenticon_;
 

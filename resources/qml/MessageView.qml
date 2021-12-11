@@ -583,6 +583,13 @@ ScrollView {
         }
 
         Platform.MenuItem {
+            visible: (room ? room.permissions.canChange(MtxEvent.PinnedEvents) : false)
+            enabled: visible
+            text: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? qsTr("Un&pin") : qsTr("&Pin")
+            onTriggered: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? room.unpin(messageContextMenu.eventId) : room.pin(messageContextMenu.eventId)
+        }
+
+        Platform.MenuItem {
             text: qsTr("Read receip&ts")
             onTriggered: room.showReadReceipts(messageContextMenu.eventId)
         }

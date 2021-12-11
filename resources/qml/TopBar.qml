@@ -8,6 +8,8 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
+import "./delegates"
+
 Rectangle {
     id: topBar
 
@@ -28,6 +30,19 @@ Rectangle {
 
     TapHandler {
         onSingleTapped: {
+            if (eventPoint.position.y > topBar.height - pinnedMessages.height) {
+                eventPoint.accepted = true
+                return;
+            }
+            if (showBackButton && eventPoint.position.x < Nheko.paddingMedium + backToRoomsButton.width) {
+                eventPoint.accepted = true
+                return;
+            }
+            if (eventPoint.position.x > topBar.width - Nheko.paddingMedium - roomOptionsButton.width) {
+                eventPoint.accepted = true
+                return;
+            }
+
             if (room) {
                 let p = topBar.mapToItem(roomTopicC, eventPoint.position.x, eventPoint.position.y);
                 let link = roomTopicC.linkAt(p.x, p.y);
@@ -46,11 +61,11 @@ Rectangle {
 
     HoverHandler {
         grabPermissions: PointerHandler.TakeOverForbidden | PointerHandler.CanTakeOverFromAnything
-        //cursorShape: Qt.PointingHandCursor
     }
 
     CursorShape {
         anchors.fill: parent
+        anchors.bottomMargin: pinnedMessages.height
         cursorShape: Qt.PointingHandCursor
     }
 
@@ -61,6 +76,8 @@ Rectangle {
         anchors.right: parent.right
         anchors.margins: Nheko.paddingMedium
         anchors.verticalCenter: parent.verticalCenter
+        columnSpacing: Nheko.paddingSmall
+        rowSpacing: Nheko.paddingSmall
 
         ImageButton {
             id: backToRoomsButton
@@ -129,24 +146,54 @@ Rectangle {
             trust: trustlevel
             ToolTip.text: {
                 if (!encrypted)
-                    return qsTr("This room is not encrypted!");
+                return qsTr("This room is not encrypted!");
 
                 switch (trust) {
-                case Crypto.Verified:
+                    case Crypto.Verified:
                     return qsTr("This room contains only verified devices.");
-                case Crypto.TOFU:
+                    case Crypto.TOFU:
                     return qsTr("This room contains verified devices and devices which have never changed their master key.");
-                default:
+                    default:
                     return qsTr("This room contains unverified devices!");
                 }
             }
         }
 
         ImageButton {
+            id: pinButton
+
+            property bool pinsShown: !Settings.hiddenPins.includes(roomId)
+
+            visible: !!room && room.pinnedMessages.length > 0
+            Layout.column: 4
+            Layout.row: 0
+            Layout.rowSpan: 2
+            Layout.alignment: Qt.AlignVCenter
+            Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
+            Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
+            image: pinsShown ? ":/icons/icons/ui/pin.svg" : ":/icons/icons/ui/pin-off.svg"
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Show or hide pinned messages")
+            onClicked: {
+                var ps = Settings.hiddenPins;
+                if (pinsShown) {
+                    ps.push(roomId);
+                } else {
+                    const index = ps.indexOf(roomId);
+                    if (index > -1) {
+                        ps.splice(index, 1);
+                    }
+                }
+                Settings.hiddenPins = ps;
+            }
+
+        }
+
+        ImageButton {
             id: roomOptionsButton
 
             visible: !!room
-            Layout.column: 4
+            Layout.column: 5
             Layout.row: 0
             Layout.rowSpan: 2
             Layout.alignment: Qt.AlignVCenter
@@ -185,11 +232,79 @@ Rectangle {
 
         }
 
-    }
+        ScrollView {
+            id: pinnedMessages
 
-    CursorShape {
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-    }
+            Layout.row: 2
+            Layout.column: 2
+            Layout.columnSpan: 1
 
+            Layout.fillWidth: true
+            Layout.preferredHeight: Math.min(contentHeight, Nheko.avatarSize * 4)
+
+            visible: !!room && room.pinnedMessages.length > 0 && !Settings.hiddenPins.includes(roomId)
+            clip: true
+
+            palette: Nheko.colors
+            ScrollBar.horizontal.visible: false
+
+            ListView {
+
+                spacing: Nheko.paddingSmall
+                model: room ? room.pinnedMessages : undefined
+                delegate: RowLayout {
+                    required property string modelData
+
+                    width: ListView.view.width
+                    height: implicitHeight
+
+                    Reply {
+                        property var e: room ? room.getDump(modelData, "") : {}
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: height
+
+                        userColor: TimelineManager.userColor(e.userId, Nheko.colors.window)
+                        blurhash: e.blurhash ?? ""
+                        body: e.body ?? ""
+                        formattedBody: e.formattedBody ?? ""
+                        eventId: e.eventId ?? ""
+                        filename: e.filename ?? ""
+                        filesize: e.filesize ?? ""
+                        proportionalHeight: e.proportionalHeight ?? 1
+                        type: e.type ?? MtxEvent.UnknownMessage
+                        typeString: e.typeString ?? ""
+                        url: e.url ?? ""
+                        originalWidth: e.originalWidth ?? 0
+                        isOnlyEmoji: e.isOnlyEmoji ?? false
+                        userId: e.userId ?? ""
+                        userName: e.userName ?? ""
+                        encryptionError: e.encryptionError ?? ""
+                    }
+
+                    ImageButton {
+                        id: deletePinButton
+
+                        Layout.preferredHeight: 16
+                        Layout.preferredWidth: 16
+                        Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+                        visible: room.permissions.canChange(MtxEvent.PinnedEvents)
+
+                        hoverEnabled: true
+                        image: ":/icons/icons/ui/dismiss.svg"
+                        ToolTip.visible: hovered
+                        ToolTip.text: qsTr("Unpin")
+
+                        onClicked: room.unpin(modelData)
+                    }
+                }
+
+
+                ScrollHelper {
+                    flickable: parent
+                    anchors.fill: parent
+                    enabled: !Settings.mobileMode
+                }
+            }
+        }
+    }
 }

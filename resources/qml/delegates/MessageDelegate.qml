@@ -240,6 +240,54 @@ Item {
         }
 
         DelegateChoice {
+            roleValue: MtxEvent.PinnedEvents
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: qsTr("%1 changed the pinned messages.").arg(d.userName)
+            }
+
+        }
+
+        DelegateChoice {
+            roleValue: MtxEvent.ImagePackInRoom
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: qsTr("%1 changed the stickers and emotes in this room.").arg(d.userName)
+            }
+
+        }
+
+        DelegateChoice {
+            roleValue: MtxEvent.CanonicalAlias
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: qsTr("%1 changed the addresses for this room.").arg(d.userName)
+            }
+
+        }
+
+        DelegateChoice {
+            roleValue: MtxEvent.SpaceParent
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                formatted: qsTr("%1 changed the parent spaces for this room.").arg(d.userName)
+            }
+
+        }
+
+        DelegateChoice {
             roleValue: MtxEvent.RoomCreate
 
             NoticeMessage {

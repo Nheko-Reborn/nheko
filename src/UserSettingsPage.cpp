@@ -117,6 +117,7 @@ UserSettings::load(std::optional<QString> profile)
     userId_        = settings.value(prefix + "auth/user_id", "").toString();
     deviceId_      = settings.value(prefix + "auth/device_id", "").toString();
     hiddenTags_    = settings.value(prefix + "user/hidden_tags", QStringList{}).toStringList();
+    hiddenPins_    = settings.value(prefix + "user/hidden_pins", QStringList{}).toStringList();
 
     collapsedSpaces_.clear();
     for (const auto &e :
@@ -198,6 +199,14 @@ UserSettings::setHiddenTags(QStringList hiddenTags)
 {
     hiddenTags_ = hiddenTags;
     save();
+}
+
+void
+UserSettings::setHiddenPins(QStringList hiddenTags)
+{
+    hiddenPins_ = hiddenTags;
+    save();
+    emit hiddenPinsChanged();
 }
 
 void
@@ -707,6 +716,7 @@ UserSettings::save()
                       onlyShareKeysWithVerifiedUsers_);
     settings.setValue(prefix + "user/online_key_backup", useOnlineKeyBackup_);
     settings.setValue(prefix + "user/hidden_tags", hiddenTags_);
+    settings.setValue(prefix + "user/hidden_pins", hiddenPins_);
 
     QVariantList v;
     for (const auto &e : collapsedSpaces_)
