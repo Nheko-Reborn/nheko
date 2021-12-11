@@ -85,7 +85,9 @@ Rectangle {
             id: roomListC
 
             minimumWidth: roomlist.avatarSize * 4 + Nheko.paddingSmall * 2
-            preferredWidth: Settings.roomListWidth >= minimumWidth ? Settings.roomListWidth : roomlist.avatarSize * 5 + Nheko.paddingSmall * 2
+            preferredWidth: (Settings.roomListWidth == - 1)
+                ? (roomlist.avatarSize * 5 + Nheko.paddingSmall * 2)
+                : (Settings.roomListWidth >= minimumWidth ? Settings.roomListWidth : collapsedWidth)
             maximumWidth: roomlist.avatarSize * 10 + Nheko.paddingSmall * 2
             collapsedWidth: roomlist.avatarSize + 2 * Nheko.paddingMedium
 

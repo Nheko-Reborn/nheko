@@ -82,7 +82,6 @@ Container {
                 return (collapsible && x < minimumWidth) ? collapsedWidth : x;
         }
 
-        //visible: !container.singlePageMode
         enabled: !container.singlePageMode
         height: container.height
         width: 1
@@ -107,8 +106,10 @@ Container {
             margin: container.splitterGrabMargin
             grabPermissions: PointerHandler.CanTakeOverFromAnything | PointerHandler.ApprovesTakeOverByHandlersOfSameType
             onActiveChanged: {
-                if (!active)
-                    splitter.parent.preferredWidth = splitter.x;
+                if (!active) {
+                    splitter.x = splitter.calculatedWidth;
+                    splitter.parent.preferredWidth = splitter.calculatedWidth;
+                }
 
             }
         }
