@@ -85,7 +85,7 @@ Rectangle {
         ScrollView {
             id: textInput
 
-            Layout.alignment: Qt.AlignBottom // | Qt.AlignHCenter
+            Layout.alignment: Qt.AlignVCenter
             Layout.maximumHeight: Window.height / 4
             Layout.minimumHeight: Settings.fontSize
             implicitWidth: inputBar.width - 5 * (22 + 16) - 24
@@ -120,6 +120,7 @@ Rectangle {
                 placeholderTextColor: Nheko.colors.buttonText
                 color: Nheko.colors.text
                 width: textInput.width
+                verticalAlignment: TextEdit.AlignVCenter
                 wrapMode: TextEdit.Wrap
                 padding: 8
                 focus: true
