@@ -57,18 +57,23 @@ version_file = configure_file(input: 'src/cmark_version.h.in',
   format: 'cmake@',
 )
 
+export_file = configure_file(input: 'cmark_export.h.in', output: 'cmark_export.h', copy: true)
+
+
 install_headers(
   'src/cmark.h',
   config_file,
   version_file,
+  export_file,
 )
 
-inc = include_directories('src')
+inc = include_directories('src', '.')
 cmark = library(
   'cmark',
   sources,
   config_file,
   version_file,
+  export_file,
   include_directories: inc,
 )
 
