@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import "./components"
 import "./delegates"
 import "./emoji"
 import "./ui"
@@ -49,7 +50,7 @@ ScrollView {
             property alias model: row.model
             // use comma to update on scroll
             property var attachedPos: chat.contentY, attached ? chat.mapFromItem(attached, attached ? attached.width - width : 0, -height) : null
-            readonly property int padding: 4
+            readonly property int padding: Nheko.paddingSmall
 
             visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || messageActionHover.hovered)
             x: attached ? attachedPos.x : 0
@@ -75,6 +76,25 @@ ScrollView {
 
                 anchors.centerIn: parent
                 spacing: messageActions.padding
+
+                Repeater {
+                    model: Settings.recentReactions
+
+                    delegate: TextButton {
+                        required property string modelData
+
+                        visible: chat.model ? chat.model.permissions.canSend(MtxEvent.Reaction) : false
+
+                        height: fontMetrics.height
+                        font.family: Settings.emojiFont
+
+                        text: modelData
+                        onClicked: {
+                            room.input.reaction(row.model.eventId, modelData);
+                            TimelineManager.focusMessageInput();
+                        }
+                    }
+                }
 
                 ImageButton {
                     id: editButton

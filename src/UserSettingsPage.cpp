@@ -118,6 +118,8 @@ UserSettings::load(std::optional<QString> profile)
     deviceId_      = settings.value(prefix + "auth/device_id", "").toString();
     hiddenTags_    = settings.value(prefix + "user/hidden_tags", QStringList{}).toStringList();
     hiddenPins_    = settings.value(prefix + "user/hidden_pins", QStringList{}).toStringList();
+    recentReactions_ =
+      settings.value(prefix + "user/recent_reactions", QStringList{}).toStringList();
 
     collapsedSpaces_.clear();
     for (const auto &e :
@@ -207,6 +209,14 @@ UserSettings::setHiddenPins(QStringList hiddenTags)
     hiddenPins_ = hiddenTags;
     save();
     emit hiddenPinsChanged();
+}
+
+void
+UserSettings::setRecentReactions(QStringList recent)
+{
+    recentReactions_ = recent;
+    save();
+    emit recentReactionsChanged();
 }
 
 void
@@ -717,6 +727,7 @@ UserSettings::save()
     settings.setValue(prefix + "user/online_key_backup", useOnlineKeyBackup_);
     settings.setValue(prefix + "user/hidden_tags", hiddenTags_);
     settings.setValue(prefix + "user/hidden_pins", hiddenPins_);
+    settings.setValue(prefix + "user/recent_reactions", recentReactions_);
 
     QVariantList v;
     for (const auto &e : collapsedSpaces_)

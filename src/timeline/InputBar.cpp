@@ -829,6 +829,14 @@ InputBar::reaction(const QString &reactedEvent, const QString &reactionKey)
         reaction.relations.relations.push_back(rel);
 
         room->sendMessageEvent(reaction, mtx::events::EventType::Reaction);
+
+        auto recents = UserSettings::instance()->recentReactions();
+        if (recents.contains(reactionKey))
+            recents.removeOne(reactionKey);
+        else if (recents.size() >= 6)
+            recents.removeLast();
+        recents.push_front(reactionKey);
+        UserSettings::instance()->setRecentReactions(recents);
         // Otherwise, we have previously reacted and the reaction should be redacted
     } else {
         room->redactEvent(selfReactedEvent);

@@ -114,6 +114,7 @@
         <file>qml/components/AvatarListTile.qml</file>
         <file>qml/components/FlatButton.qml</file>
         <file>qml/components/MainWindowDialog.qml</file>
+        <file>qml/components/TextButton.qml</file>
         <file>qml/delegates/Encrypted.qml</file>
         <file>qml/delegates/FileMessage.qml</file>
         <file>qml/delegates/ImageMessage.qml</file>
