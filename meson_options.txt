@@ -1,0 +1,2 @@
+option('voip', type: 'feature', value: 'auto', description: 'Enable voice call support')
+option('screenshare_x11', type: 'feature', value: 'auto', description: 'Enable screensharing on X11')

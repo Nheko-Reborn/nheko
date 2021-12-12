@@ -10,7 +10,15 @@ project(
 compiler = meson.get_compiler('cpp')
 
 qt5 = import('qt5')
-qt5_dep = dependency('qt5', modules: ['Core', 'Qml', 'Quick', 'QuickWidgets', 'Widgets', 'DBus', 'Multimedia', 'Svg'], include_type: 'system')
+qt5_modules = ['Core', 'Qml', 'Quick', 'QuickWidgets', 'Widgets', 'Multimedia', 'Svg']
+if target_machine.system() == 'windows'
+	qt5_modules += 'WinMain'
+elif target_machine.system() == 'darwin'
+	qt5_modules += 'MacExtras'
+else
+	qt5_modules += 'DBus'
+endif
+qt5_dep = dependency('qt5', modules: qt5_modules, include_type: 'system')
 inc = include_directories('src', 'includes', 'third_party/cpp-httplib-0.5.12')
 
 deps = [
@@ -69,6 +77,20 @@ if (not qtkeychain_dep.found()
 		endif
 endif
 deps += qtkeychain_dep
+
+sdp_dep = dependency('gstreamer-sdp-1.0', version: '>=1.18', required: get_option('voip'))
+webrtc_dep = dependency('gstreamer-webrtc-1.0', version: '>=1.18', required: get_option('voip'))
+if sdp_dep.found() and webrtc_dep.found()
+	deps += [sdp_dep, webrtc_dep]
+	add_project_arguments('-DGSTREAMER_AVAILABLE', language: 'cpp')
+
+	xcb_dep = dependency('xcb', required: get_option('screenshare_x11'))
+	xcb_ewmh_dep = dependency('xcb-ewmh', required: get_option('screenshare_x11'))
+	if xcb_dep.found() and xcb_ewmh_dep.found()
+		deps += [xcb_dep, xcb_ewmh_dep]
+		add_project_arguments('-DXCB_AVAILABLE', language: 'cpp')
+	endif
+endif
 
 backtrace_check = '''#include<execinfo.h>
 #ifndef HAVE_BACKTRACE_SYMBOLS_FD
@@ -285,9 +307,14 @@ sources = [
     ]
 
 if host_machine.system() == 'darwin'
+	add_languages('objcpp')
 	sources += ['src/notifications/ManagerMac.mm', 'src/notifications/ManagerMac.cpp', 'src/emoji/MacHelper.mm']
+	deps += dependency('Foundation', method: 'extraframework')
+	deps += dependency('Cocoa', method: 'extraframework')
+	deps += dependency('UserNotifications', method: 'extraframework')
 elif host_machine.system() == 'windows'
 	sources += ['src/notifications/ManagerWin.cpp', 'src/wintoastlib.cpp']
+	add_project_arguments('-D_WIN32_WINNT=0x0601', '-DNOMINMAX WIN32_LEAN_AND_MEAN', '-DSTRICT', '/Zc:__cplusplus', language: 'cpp')
 else
 	sources += ['src/notifications/ManagerLinux.cpp']
 endif
@@ -301,4 +328,29 @@ executable('nheko',
 	include_directories: inc,
 	dependencies : deps,
 	install: true)
+
+if target_machine.system() != 'windows' and target_machine.system() != 'darwin'
+	install_data([
+			'resources/nheko-16.png',
+			'resources/nheko-32.png',
+			'resources/nheko-48.png',
+			'resources/nheko-64.png',
+			'resources/nheko-128.png',
+			'resources/nheko-256.png',
+			'resources/nheko-512.png',
+			'resources/nheko.svg',
+		],
+		rename: [
+			'16x16/apps/nheko.png',
+			'32x32/apps/nheko.png',
+			'48x48/apps/nheko.png',
+			'64x64/apps/nheko.png',
+			'128x128/apps/nheko.png',
+			'256x256/apps/nheko.png',
+			'512x512/apps/nheko.png',
+			'scalable/apps/nheko.svg',
+		], install_dir: 'share/icons/hicolor')
+	install_data('resources/nheko.desktop', install_dir: 'share/applications')
+	install_data('resources/nheko.appdata.xml', install_dir: 'share/metainfo')
+endif
 
