@@ -20,7 +20,6 @@ deps = [
  dependency('spdlog'),
  dependency('cmark'),
  dependency('lmdb'),
- dependency('Qt5Keychain'),
  dependency('threads'),
 ]
 
@@ -45,6 +44,31 @@ if not lmdbxx_dep.found()
 	error('lmdb++ not found and fallback was disabled. Check https://github.com/hoytech/lmdbxx')
 endif
 deps += lmdbxx_dep
+
+qtkeychain_dep = dependency('Qt5Keychain', required: get_option('wrap_mode') == 'nofallback')
+if (not qtkeychain_dep.found()
+  or get_option('wrap_mode') == 'forcefallback'
+  or 'QtKeychain' in get_option('force_fallback_for'))
+		cmake = import('cmake')
+		qtkeychain_options = cmake.subproject_options()
+    qtkeychain_options.add_cmake_defines({
+      'BUILD_SHARED_LIBS': false,
+      })
+    if target_machine.system() != 'windows'
+        qtkeychain_options.add_cmake_defines({
+          'CMAKE_C_FLAGS':  '-fPIC',
+        })
+    endif
+    qtkeychain_options.set_override_option('werror', 'false')
+    qtkeychain_options.set_override_option('warning_level', '0')
+    qtkeychain_proj = cmake.subproject('QtKeychain', options: qtkeychain_options)
+    qtkeychain_dep = qtkeychain_proj.dependency('qt5keychain')
+
+    if target_machine.system() == 'linux' or target_machine.system() == 'freebsd' or target_machine.system() == 'netbsd' or target_machine.system() == 'openbsd' or target_machine.system() == 'dragonfly'
+			deps += dependency('libsecret-1', default_options: ['manpage=false', 'vapi=false', 'gtk_doc=false', 'introspection=false',]) # 'bash_completion=disabled'])
+		endif
+endif
+deps += qtkeychain_dep
 
 backtrace_check = '''#include<execinfo.h>
 #ifndef HAVE_BACKTRACE_SYMBOLS_FD

@@ -12,12 +12,14 @@ cscope*
 
 subprojects/Olm.wrap
 subprojects/Olm/
+subprojects/cmark-*/
 subprojects/coeurl.wrap
 subprojects/coeurl/
 subprojects/curl-*/
 subprojects/curl.wrap
 subprojects/libevent-*/
 subprojects/libevent.wrap
+subprojects/libsecret-*/
 subprojects/lmdb++/
 subprojects/lmdb-LMDB_*/
 subprojects/nlohmann_json-*/
@@ -25,8 +27,8 @@ subprojects/nlohmann_json.wrap
 subprojects/openssl-*/
 subprojects/openssl.wrap
 subprojects/packagecache/
+subprojects/qtkeychain-*/
 subprojects/spdlog-*/
-subprojects/cmark-*/
 
 # GTAGS
 GTAGS

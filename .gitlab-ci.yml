@@ -41,6 +41,7 @@ build-gcc9-meson:
     - meson compile -C builddir
   cache:
     key: "$CI_JOB_NAME"
+    when: 'always'
     paths:
       - .ccache
       - subprojects/packagecache/
@@ -74,6 +75,7 @@ build-gcc9:
     - mv ../.hunter .hunter
   cache:
     key: "$CI_JOB_NAME"
+    when: 'always'
     paths:
       - .hunter/
       - .ccache
@@ -111,6 +113,7 @@ build-macos:
     public: false
   cache:
     key: "${CI_JOB_NAME}"
+    when: 'always'
     paths:
       - .hunter/
       - "${CCACHE_DIR}"
@@ -161,6 +164,7 @@ build-flatpak-amd64:
     - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-amd64.flatpak
   cache:
     key: "$CI_JOB_NAME"
+    when: 'always'
     paths:
       - build-flatpak/.flatpak-builder/
   artifacts:
@@ -192,6 +196,7 @@ build-flatpak-arm64:
     - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-arm64.flatpak
   cache:
     key: "$CI_JOB_NAME"
+    when: 'always'
     paths:
       - build-flatpak/.flatpak-builder/
   artifacts:

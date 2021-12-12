@@ -1,0 +1,6 @@
+[wrap-file]
+directory = qtkeychain-0.13.2
+
+source_url = https://github.com/frankosterfeld/qtkeychain/archive/refs/tags/v0.13.2.tar.gz
+source_filename = qtkeychain-0.13.2.tar.gz
+source_hash = 20beeb32de7c4eb0af9039b21e18370faf847ac8697ab3045906076afbc4caa5
