@@ -49,7 +49,7 @@ public:
     QString statekey() const { return QString::fromStdString(statekey_); }
     QString packname() const { return QString::fromStdString(pack.pack->display_name); }
     QString attribution() const { return QString::fromStdString(pack.pack->attribution); }
-    QString avatarUrl() const { return QString::fromStdString(pack.pack->avatar_url); }
+    QString avatarUrl() const;
     bool isStickerPack() const { return pack.pack->is_sticker(); }
     bool isEmotePack() const { return pack.pack->is_emoji(); }
 
@@ -67,6 +67,7 @@ public:
     Q_INVOKABLE void save();
     Q_INVOKABLE void addStickers(QList<QUrl> files);
     Q_INVOKABLE void remove(int index);
+    Q_INVOKABLE void setAvatar(QUrl file);
 
 signals:
     void globallyEnabledChanged();
@@ -78,6 +79,7 @@ signals:
     void isStickerPackChanged();
 
     void addImage(std::string uri, std::string filename, mtx::common::ImageInfo info);
+    void avatarUploaded(QString uri);
 
 private slots:
     void addImageCb(std::string uri, std::string filename, mtx::common::ImageInfo info);

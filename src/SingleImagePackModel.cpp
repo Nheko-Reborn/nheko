@@ -33,6 +33,7 @@ SingleImagePackModel::SingleImagePackModel(ImagePackInfo pack_, QObject *parent)
         shortcodes.push_back(e.first);
 
     connect(this, &SingleImagePackModel::addImage, this, &SingleImagePackModel::addImageCb);
+    connect(this, &SingleImagePackModel::avatarUploaded, this, &SingleImagePackModel::setAvatarUrl);
 }
 
 int
@@ -215,6 +216,17 @@ SingleImagePackModel::setAvatarUrl(QString val)
     }
 }
 
+QString
+SingleImagePackModel::avatarUrl() const
+{
+    if (!pack.pack->avatar_url.empty())
+        return QString::fromStdString(pack.pack->avatar_url);
+    else if (!pack.images.empty())
+        return QString::fromStdString(pack.images.begin()->second.url);
+    else
+        return "";
+}
+
 void
 SingleImagePackModel::setStatekey(QString val)
 {
@@ -332,6 +344,35 @@ SingleImagePackModel::addStickers(QList<QUrl> files)
 }
 
 void
+SingleImagePackModel::setAvatar(QUrl f)
+{
+    auto file = QFile(f.toLocalFile());
+    if (!file.open(QFile::ReadOnly)) {
+        ChatPage::instance()->showNotification(tr("Failed to open image: %1").arg(f.toLocalFile()));
+        return;
+    }
+
+    auto bytes = file.readAll();
+    auto img   = utils::readImage(bytes);
+
+    auto filename = f.fileName().toStdString();
+    http::client()->upload(
+      bytes.toStdString(),
+      QMimeDatabase().mimeTypeForFile(f.toLocalFile()).name().toStdString(),
+      filename,
+      [this, filename](const mtx::responses::ContentURI &uri, mtx::http::RequestErr e) {
+          if (e) {
+              ChatPage::instance()->showNotification(
+                tr("Failed to upload image: %1")
+                  .arg(QString::fromStdString(e->matrix_error.error)));
+              return;
+          }
+
+          emit avatarUploaded(QString::fromStdString(uri.content_uri));
+      });
+}
+
+void
 SingleImagePackModel::remove(int idx)
 {
     if (idx < (int)shortcodes.size() && idx >= 0) {
@@ -356,4 +397,7 @@ SingleImagePackModel::addImageCb(std::string uri, std::string filename, mtx::com
     shortcodes.push_back(filename);
 
     endInsertRows();
+
+    if (this->pack.pack->avatar_url.empty())
+        this->setAvatarUrl(QString::fromStdString(uri));
 }

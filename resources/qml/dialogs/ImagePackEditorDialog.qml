@@ -148,6 +148,27 @@ ApplicationWindow {
                         width: 130
                         crop: false
                         Layout.alignment: Qt.AlignHCenter
+
+                        ImageButton {
+                            hoverEnabled: true
+                            ToolTip.visible: hovered
+                            ToolTip.text: qsTr("Change the overview image for this pack")
+                            anchors.left: parent.left
+                            anchors.top: parent.top
+                            anchors.leftMargin: Nheko.paddingMedium
+                            anchors.topMargin: Nheko.paddingMedium
+                            image: ":/icons/icons/ui/edit.svg"
+                            onClicked: addAvatarDialog.open()
+
+                            FileDialog {
+                                id: addAvatarDialog
+
+                                folder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
+                                fileMode: FileDialog.OpenFile
+                                nameFilters: [qsTr("Overview Image (*.png *.webp *.jpg *.jpeg)")]
+                                onAccepted: imagePack.setAvatar(file)
+                            }
+                        }
                     }
 
                     MatrixText {
