@@ -7,6 +7,7 @@ import QtGraphicalEffects 1.0
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
+import QtQuick.Window 2.15
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
 
@@ -287,8 +288,8 @@ Menu {
                             horizontalAlignment: Image.AlignHCenter
                             verticalAlignment: Image.AlignVCenter
                             fillMode: Image.Pad
-                            sourceSize.width: 32
-                            sourceSize.height: 32
+                            sourceSize.width: 32 * Screen.devicePixelRatio
+                            sourceSize.height: 32 * Screen.devicePixelRatio
                             source: "image://colorimage/" + model.image + "?" + (hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
                         }
 

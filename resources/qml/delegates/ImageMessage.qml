@@ -32,8 +32,8 @@ Item {
         source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + Nheko.colors.buttonText)
         asynchronous: true
         fillMode: Image.PreserveAspectFit
-        sourceSize.width: parent.width
-        sourceSize.height: parent.height
+        sourceSize.width: parent.width * Screen.devicePixelRatio
+        sourceSize.height: parent.height * Screen.devicePixelRatio
     }
 
     Image {
@@ -47,8 +47,8 @@ Item {
         smooth: true
         mipmap: true
 
-        sourceSize.width: Math.min(Screen.desktopAvailableWidth, originalWidth || undefined)
-        sourceSize.height: Math.min(Screen.desktopAvailableHeight, originalWidth*proportionalHeight || undefined)
+        sourceSize.width: Math.min(Screen.desktopAvailableWidth, originalWidth || undefined) * Screen.devicePixelRatio
+        sourceSize.height: Math.min(Screen.desktopAvailableHeight, originalWidth*proportionalHeight || undefined) * Screen.devicePixelRatio
     }
 
     MxcAnimatedImage {

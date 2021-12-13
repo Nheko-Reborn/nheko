@@ -6,6 +6,7 @@ import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
+import QtQuick.Window 2.15
 import im.nheko 1.0
 
 import "./delegates"
@@ -133,8 +134,8 @@ Rectangle {
             Layout.rowSpan: 2
             Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
             Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
-            sourceSize.height: Layout.preferredHeight
-            sourceSize.width: Layout.preferredWidth
+            sourceSize.height: Layout.preferredHeight * Screen.devicePixelRatio
+            sourceSize.width: Layout.preferredWidth * Screen.devicePixelRatio
             visible: isEncrypted
             encrypted: isEncrypted
             trust: trustlevel

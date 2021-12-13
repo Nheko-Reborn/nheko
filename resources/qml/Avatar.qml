@@ -5,6 +5,7 @@
 import "./ui"
 import QtQuick 2.6
 import QtQuick.Controls 2.3
+import QtQuick.Window 2.15
 import im.nheko 1.0
 
 Rectangle {
@@ -67,8 +68,8 @@ Rectangle {
         fillMode: avatar.crop ? Image.PreserveAspectCrop : Image.PreserveAspectFit
         mipmap: true
         smooth: true
-        sourceSize.width: avatar.width
-        sourceSize.height: avatar.height
+        sourceSize.width: avatar.width * Screen.devicePixelRatio
+        sourceSize.height: avatar.height * Screen.devicePixelRatio
         source: avatar.url ? (avatar.url + "?radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale")) : ""
 
         MouseArea {

@@ -4,6 +4,7 @@
 
 import QtQuick 2.12
 import QtQuick.Controls 2.1
+import QtQuick.Window 2.15
 import im.nheko 1.0
 
 Image {
@@ -30,8 +31,8 @@ Image {
 
     width: 16
     height: 16
-    sourceSize.height: height
-    sourceSize.width: width
+    sourceSize.height: height * Screen.devicePixelRatio
+    sourceSize.width: width * Screen.devicePixelRatio
     source: {
         if (encrypted) {
             switch (trust) {

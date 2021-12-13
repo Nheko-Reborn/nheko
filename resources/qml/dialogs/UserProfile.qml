@@ -305,8 +305,8 @@ ApplicationWindow {
                         Layout.preferredHeight: 16
                         Layout.preferredWidth: 16
                         visible: profile.isSelf && verificationStatus != VerificationStatus.NOT_APPLICABLE
-                        sourceSize.height: 16
-                        sourceSize.width: 16
+                        sourceSize.height: 16 * Screen.devicePixelRatio
+                        sourceSize.width: 16 * Screen.devicePixelRatio
                         source: {
                             switch (verificationStatus) {
                             case VerificationStatus.VERIFIED:
