@@ -71,7 +71,7 @@ ApplicationWindow {
                             });
                             dialog.show();
                         }
-                        width: packlist.width
+                        width: packlistC.width
                         visible: !packlist.containsAccountPack
                         text: qsTr("Create account pack")
                     }
@@ -84,7 +84,7 @@ ApplicationWindow {
                             });
                             dialog.show();
                         }
-                        width: packlist.width
+                        width: packlistC.width
                         text: qsTr("New room pack")
                     }
 

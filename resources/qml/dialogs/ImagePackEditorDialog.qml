@@ -91,7 +91,9 @@ ApplicationWindow {
 
                         folder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
                         fileMode: FileDialog.OpenFiles
-                        nameFilters: [qsTr("Stickers (*.png *.webp *.gif *.jpg *.jpeg)")]
+                        nameFilters: [qsTr("Images (*.png *.webp *.gif *.jpg *.jpeg)")]
+                        title: qsTr("Select images for pack")
+                        acceptLabel: qsTr("Add to pack")
                         onAccepted: imagePack.addStickers(files)
                     }
 
@@ -166,6 +168,7 @@ ApplicationWindow {
                                 folder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
                                 fileMode: FileDialog.OpenFile
                                 nameFilters: [qsTr("Overview Image (*.png *.webp *.jpg *.jpeg)")]
+                                title: qsTr("Select overview image for pack")
                                 onAccepted: imagePack.setAvatar(file)
                             }
                         }

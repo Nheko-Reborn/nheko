@@ -713,12 +713,12 @@
     <message>
         <location line="+54"/>
         <source>Create account pack</source>
-        <translation>Neue Packung erstellen</translation>
+        <translation>Neue private Packung</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>New room pack</source>
-        <translation>Neue Packung</translation>
+        <translation>Neue raumspezifische Packung</translation>
     </message>
     <message>
         <location line="+21"/>
