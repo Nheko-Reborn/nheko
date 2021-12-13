@@ -427,6 +427,7 @@ ChatPage::loadStateFromCache()
     getProfileInfo();
     getBackupVersion();
     verifyOneTimeKeyCountAfterStartup();
+    callManager_->refreshTurnServer();
 
     emit contentLoaded();
 
