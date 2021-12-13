@@ -91,7 +91,7 @@ signals:
     void openRoomSettingsDialog(RoomSettings *settings);
     void openInviteUsersDialog(InviteesModel *invitees);
     void openProfile(UserProfile *profile);
-    void showImagePackSettings(ImagePackListModel *packlist);
+    void showImagePackSettings(TimelineModel *room, ImagePackListModel *packlist);
     void openLeaveRoomDialog(QString roomid);
 
 public slots:

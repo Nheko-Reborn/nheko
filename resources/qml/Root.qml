@@ -192,8 +192,9 @@ Page {
             userProfile.show();
         }
 
-        function onShowImagePackSettings(packlist) {
+        function onShowImagePackSettings(room, packlist) {
             var packSet = packSettingsComponent.createObject(timelineRoot, {
+                "room": room,
                 "packlist": packlist
             });
             packSet.show();

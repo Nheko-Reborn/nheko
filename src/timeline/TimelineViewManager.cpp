@@ -418,7 +418,8 @@ TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId)
 void
 TimelineViewManager::openImagePackSettings(QString roomid)
 {
-    emit showImagePackSettings(new ImagePackListModel(roomid.toStdString(), this));
+    auto room = rooms_->getRoomById(roomid).get();
+    emit showImagePackSettings(room, new ImagePackListModel(roomid.toStdString(), this));
 }
 
 void

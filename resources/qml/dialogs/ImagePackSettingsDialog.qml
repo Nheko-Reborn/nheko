@@ -12,6 +12,7 @@ import im.nheko 1.0
 ApplicationWindow {
     id: win
 
+    property Room room
     property ImagePackListModel packlist
     property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.3)
     property SingleImagePackModel currentPack: packlist.packAt(currentPackIndex)
@@ -85,6 +86,7 @@ ApplicationWindow {
                             dialog.show();
                         }
                         width: packlistC.width
+                        visible: room.permissions.canChange(MtxEvent.ImagePackInRoom)
                         text: qsTr("New room pack")
                     }
 
