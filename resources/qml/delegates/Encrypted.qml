@@ -14,7 +14,7 @@ Rectangle {
     required property int encryptionError
     required property string eventId
 
-    radius: fontMetrics.xHeight + Nheko.paddingMedium
+    radius: fontMetrics.lineSpacing / 2 + Nheko.paddingMedium
     width: parent ? parent.width : undefined
     height: contents.implicitHeight + Nheko.paddingMedium * 2
     color: Nheko.colors.alternateBase
@@ -56,7 +56,7 @@ Rectangle {
                         return qsTr("Unknown decryption error");
                     }
                 }
-                color: Nheko.colors.buttonText
+                color: Nheko.colors.text
                 width: parent ? parent.width : undefined
             }
 

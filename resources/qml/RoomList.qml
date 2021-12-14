@@ -31,7 +31,7 @@ Page {
         anchors.right: parent.right
         height: parent.height
         model: Rooms
-        reuseItems: false
+        reuseItems: true
 
         ScrollHelper {
             flickable: parent
@@ -139,7 +139,7 @@ Page {
             height: avatarSize + 2 * Nheko.paddingMedium
             width: ListView.view.width
             state: "normal"
-            ToolTip.visible: hovered && collapsed && !collapsedBubbleHover.hovered && !notificationBubbleHover.hovered
+            ToolTip.visible: hovered && collapsed
             ToolTip.text: roomName
             onClicked: {
                 console.log("tapped " + roomId);
@@ -239,8 +239,6 @@ Page {
                         width: Math.min(Math.max(collapsedBubbleText.width + Nheko.paddingMedium, height), parent.width)
                         radius: height / 2
                         color: hasLoudNotification ? Nheko.theme.red : roomItem.bubbleBackground
-                        ToolTip.text: notificationCount
-                        ToolTip.visible: collapsedBubbleHover.hovered && (notificationCount > 9999)
 
                         Label {
                             id: collapsedBubbleText
@@ -253,10 +251,6 @@ Page {
                             font.pixelSize: fontMetrics.font.pixelSize * 0.8
                             color: hasLoudNotification ? "white" : roomItem.bubbleText
                             text: notificationCount > 9999 ? "9999+" : notificationCount
-                        }
-
-                        HoverHandler {
-                            id: collapsedBubbleHover
                         }
 
                     }
@@ -344,12 +338,6 @@ Page {
                                 font.pixelSize: fontMetrics.font.pixelSize * 0.8
                                 color: hasLoudNotification ? "white" : roomItem.bubbleText
                                 text: notificationCount > 9999 ? "9999+" : notificationCount
-
-                                onTextChanged: {
-                                    let old = parent.width
-                                    parent.width = Math.max(probableWidth + Nheko.paddingMedium, parent.height)
-                                    console.log(old + " changed to " + parent.width)
-                                }
 
                                 HoverHandler {
                                     id: notificationBubbleHover
