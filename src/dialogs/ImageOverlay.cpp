@@ -23,6 +23,7 @@ ImageOverlay::ImageOverlay(QPixmap image, QWidget *parent)
     setParent(nullptr);
 
     setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
+    setWindowRole("imageoverlay");
 
     setAttribute(Qt::WA_NoSystemBackground, true);
     setAttribute(Qt::WA_TranslucentBackground, true);
