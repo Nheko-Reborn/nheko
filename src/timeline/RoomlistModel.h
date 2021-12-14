@@ -170,7 +170,10 @@ public slots:
     RoomPreview currentRoomPreview() const { return roomlistmodel->currentRoomPreview(); }
     void setCurrentRoom(QString roomid) { roomlistmodel->setCurrentRoom(std::move(roomid)); }
     void resetCurrentRoom() { roomlistmodel->resetCurrentRoom(); }
-    TimelineModel *getRoomById(const QString &id) const { return roomlistmodel->getRoomById(id).data(); }
+    TimelineModel *getRoomById(const QString &id) const
+    {
+        return roomlistmodel->getRoomById(id).data();
+    }
 
     void nextRoomWithActivity();
     void nextRoom();
