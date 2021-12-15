@@ -1103,7 +1103,13 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
     if (text.isEmpty())
         return;
 
-    auto decryptionKey = mtx::crypto::key_from_recoverykey(text.toStdString(), keyDesc);
+    // strip space chars from a recovery key. It can't contain those, but some clients insert them
+    // to make them easier to read.
+    QString stripped = text;
+    stripped.remove(' ');
+    stripped.remove('\n');
+    stripped.remove('\t');
+    auto decryptionKey = mtx::crypto::key_from_recoverykey(stripped.toStdString(), keyDesc);
 
     if (!decryptionKey && keyDesc.passphrase) {
         try {
