@@ -204,6 +204,22 @@ build-flatpak-arm64:
     paths: ['build-flatpak/nheko-arm64.flatpak']
     name: flatpak-${CI_COMMIT_REF_NAME}-${VERSION}-arm64
 
+build-windows-meson:
+  stage: build
+  image: win10-base
+  tags: [windows]
+  variables:
+    BUILD: ${CI_BUILDS_DIR}
+  script:
+    - PATH=${PATH##/usr/local/bin:/usr/bin:/bin:} ./.ci/windows/build-meson.cmd
+    - ls -la
+  after_script:
+    - PATH=${PATH##/usr/local/bin:/usr/bin:/bin:} ./.ci/windows/deploy-meson.cmd
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - subprojects
+
 linting:
   stage: build
   image: alpine:latest
