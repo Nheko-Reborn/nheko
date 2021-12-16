@@ -14,7 +14,7 @@ install_headers(
 inc = include_directories('src')
 wintoastlib = library(
   'wintoast',
-  'wintoastlib.cpp',
+  'src/wintoastlib.cpp',
   include_directories: inc,
 )
 

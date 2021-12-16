@@ -12,7 +12,7 @@ compiler = meson.get_compiler('cpp')
 qt5 = import('qt5')
 qt5_modules = ['Core', 'Qml', 'Quick', 'QuickWidgets', 'Widgets', 'Multimedia', 'Svg']
 if target_machine.system() == 'windows'
-	qt5_modules += 'WinMain'
+	#qt5_modules += 'WinMain'
 elif target_machine.system() == 'darwin'
 	qt5_modules += 'MacExtras'
 else
@@ -320,8 +320,8 @@ if host_machine.system() == 'darwin'
 	deps += dependency('UserNotifications', method: 'extraframework')
 elif host_machine.system() == 'windows'
 	sources += ['src/notifications/ManagerWin.cpp']
-	add_project_arguments('-D_WIN32_WINNT=0x0601', '-DNOMINMAX WIN32_LEAN_AND_MEAN', '-DSTRICT', '/Zc:__cplusplus', language: 'cpp')
-	deps += dependency('wintoastlib')
+	add_project_arguments('-DNOMINMAX WIN32_LEAN_AND_MEAN', '-DSTRICT', '/Zc:__cplusplus', language: 'cpp')
+	deps += dependency('wintoast')
 else
 	sources += ['src/notifications/ManagerLinux.cpp']
 endif
@@ -334,6 +334,7 @@ executable('nheko',
 	cpp_args: '-DQAPPLICATION_CLASS=QApplication',
 	include_directories: inc,
 	dependencies : deps,
+	win_subsystem: 'windows,6.1',
 	install: true)
 
 if target_machine.system() != 'windows' and target_machine.system() != 'darwin'
