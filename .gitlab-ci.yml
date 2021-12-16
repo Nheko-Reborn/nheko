@@ -45,7 +45,7 @@ build-gcc9-meson:
     when: 'always'
     paths:
       - .ccache
-      #- subprojects/packagecache/
+      - subprojects/packagecache/
 
 build-gcc9:
   stage: build
