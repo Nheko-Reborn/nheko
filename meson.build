@@ -23,13 +23,19 @@ inc = include_directories('src', 'includes', 'third_party/cpp-httplib-0.5.12')
 
 deps = [
 	qt5_dep,
- dependency('mtxclient', static: true, version : '>=0.6.0', fallback: ['mtxclient', 'matrix_client_dep']),
- dependency('blurhash'),
- dependency('spdlog'),
- dependency('cmark'),
- dependency('lmdb'),
- dependency('threads'),
+	dependency('mtxclient', static: true, version : '>=0.6.0', fallback: ['mtxclient', 'matrix_client_dep']),
+	dependency('blurhash'),
+	dependency('spdlog'),
+	dependency('lmdb'),
+	dependency('threads'),
 ]
+
+# Older cmark versions only provide the libcmark pkgconfig name, but meson only supports multiple names since 0.60.0
+if meson.version().version_compare('>=0.60.0')
+	deps += dependency('cmark', 'libcmark', version: '>=0.29.0')
+else
+	deps += dependency('cmark', version: '>=0.29.0')
+endif
 
 single_app_dep = subproject('SingleApplication-3.3.0').get_variable('singleapplication_dep')
 
