@@ -1,0 +1,5 @@
+[wrap-git]
+url = https://github.com/mohabouje/WinToast.git
+revision = 5e441fd03543b999edb663caf8df7be37c0d575c
+
+patch_directory = wintoast

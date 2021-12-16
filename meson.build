@@ -310,7 +310,7 @@ sources = [
 	'src/main.cpp',
 
 	'third_party/blurhash/blurhash.cpp',
-    ]
+]
 
 if host_machine.system() == 'darwin'
 	add_languages('objcpp')
@@ -319,8 +319,9 @@ if host_machine.system() == 'darwin'
 	deps += dependency('Cocoa', method: 'extraframework')
 	deps += dependency('UserNotifications', method: 'extraframework')
 elif host_machine.system() == 'windows'
-	sources += ['src/notifications/ManagerWin.cpp', 'src/wintoastlib.cpp']
+	sources += ['src/notifications/ManagerWin.cpp']
 	add_project_arguments('-D_WIN32_WINNT=0x0601', '-DNOMINMAX WIN32_LEAN_AND_MEAN', '-DSTRICT', '/Zc:__cplusplus', language: 'cpp')
+	deps += dependency('wintoastlib')
 else
 	sources += ['src/notifications/ManagerLinux.cpp']
 endif
