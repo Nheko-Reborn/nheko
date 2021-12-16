@@ -104,11 +104,11 @@ ApplicationWindow {
             }
 
             MatrixText {
-                text: qsTr("%1 member(s)").arg(roomSettings.memberCount)
+                text: qsTr("%n member(s)", "", roomSettings.memberCount)
                 Layout.alignment: Qt.AlignHCenter
 
                 TapHandler {
-                    onTapped: TimelineManager.openRoomMembers(roomSettings.roomId)
+                    onSingleTapped: TimelineManager.openRoomMembers(Rooms.getRoomById(roomSettings.roomId))
                 }
 
                 CursorShape {
