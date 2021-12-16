@@ -41,11 +41,11 @@ build-gcc9-meson:
     - meson setup builddir
     - meson compile -C builddir
   cache:
-    key: "$CI_JOB_NAME"
+    key: "a$CI_JOB_NAME"
     when: 'always'
     paths:
       - .ccache
-      - subprojects/packagecache/
+      #- subprojects/packagecache/
 
 build-gcc9:
   stage: build
