@@ -236,7 +236,7 @@ Page {
                         enabled: false
                         Layout.alignment: Qt.AlignRight
                         height: fontMetrics.averageCharacterWidth * 3
-                        width: Math.min(Math.max(collapsedBubbleText.width + Nheko.paddingMedium, height), parent.width)
+                        width: Math.max(collapsedBubbleText.width, height)
                         radius: height / 2
                         color: hasLoudNotification ? Nheko.theme.red : roomItem.bubbleBackground
 
@@ -246,7 +246,7 @@ Page {
                             anchors.centerIn: parent
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
-                            fontSizeMode: Text.Fit
+                            width: Math.max(implicitWidth + Nheko.paddingMedium, parent.height)
                             font.bold: true
                             font.pixelSize: fontMetrics.font.pixelSize * 0.8
                             color: hasLoudNotification ? "white" : roomItem.bubbleText
@@ -321,7 +321,7 @@ Page {
                             visible: notificationCount > 0
                             Layout.alignment: Qt.AlignRight
                             height: notificationBubbleText.height + Nheko.paddingMedium
-                            Layout.preferredWidth: Math.max(notificationBubbleText.width + Nheko.paddingMedium, height)
+                            Layout.preferredWidth: Math.max(notificationBubbleText.width, height)
                             radius: height / 2
                             color: hasLoudNotification ? Nheko.theme.red : roomItem.bubbleBackground
                             ToolTip.text: notificationCount
@@ -333,7 +333,7 @@ Page {
                                 anchors.centerIn: parent
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
-                                fontSizeMode: Text.Fit
+                                width: Math.max(implicitWidth + Nheko.paddingMedium, parent.height)
                                 font.bold: true
                                 font.pixelSize: fontMetrics.font.pixelSize * 0.8
                                 color: hasLoudNotification ? "white" : roomItem.bubbleText
