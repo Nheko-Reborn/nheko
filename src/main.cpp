@@ -277,22 +277,28 @@ main(int argc, char *argv[])
         w.activateWindow();
     });
 
+    // It seems like handling the message in a blocking manner is a no-go. I have no idea how to
+    // fix that, so just use a queued connection for now...  (ASAN does not cooperate and just
+    // hides the crash D:)
     QObject::connect(
       &app,
       &SingleApplication::receivedMessage,
       ChatPage::instance(),
-      [&](quint32, QByteArray message) { ChatPage::instance()->handleMatrixUri(message); });
+      [&](quint32, QByteArray message) {
+          QString m = QString::fromUtf8(message);
+          ChatPage::instance()->handleMatrixUri(m);
+      },
+      Qt::QueuedConnection);
 
     QMetaObject::Connection uriConnection;
     if (app.isPrimary() && !matrixUri.isEmpty()) {
-        uriConnection =
-          QObject::connect(ChatPage::instance(),
-                           &ChatPage::contentLoaded,
-                           ChatPage::instance(),
-                           [&uriConnection, matrixUri]() {
-                               ChatPage::instance()->handleMatrixUri(matrixUri.toUtf8());
-                               QObject::disconnect(uriConnection);
-                           });
+        uriConnection = QObject::connect(ChatPage::instance(),
+                                         &ChatPage::contentLoaded,
+                                         ChatPage::instance(),
+                                         [&uriConnection, matrixUri]() {
+                                             ChatPage::instance()->handleMatrixUri(matrixUri);
+                                             QObject::disconnect(uriConnection);
+                                         });
     }
     QDesktopServices::setUrlHandler("matrix", ChatPage::instance(), "handleMatrixUri");
 

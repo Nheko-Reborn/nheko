@@ -1252,10 +1252,10 @@ mxidFromSegments(QStringRef sigil, QStringRef mxid)
 }
 
 bool
-ChatPage::handleMatrixUri(const QByteArray &uri)
+ChatPage::handleMatrixUri(QString uri)
 {
     nhlog::ui()->info("Received uri! {}", uri.toStdString());
-    QUrl uri_{QString::fromUtf8(uri)};
+    QUrl uri_{uri};
 
     // Convert matrix.to URIs to proper format
     if (uri_.scheme() == "https" && uri_.host() == "matrix.to") {
@@ -1324,7 +1324,8 @@ ChatPage::handleMatrixUri(const QByteArray &uri)
     std::vector<std::string> vias;
     QString action;
 
-    for (QString item : uri_.query(QUrl::ComponentFormattingOption::FullyEncoded).split('&')) {
+    for (QString item :
+         uri_.query(QUrl::ComponentFormattingOption::FullyEncoded).split('&', Qt::SkipEmptyParts)) {
         nhlog::ui()->info("item: {}", item.toStdString());
 
         if (item.startsWith("action=")) {
