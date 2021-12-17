@@ -6,18 +6,18 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+107"/>
         <source>Calling...</source>
-        <translation>Wählt...</translation>
+        <translation>Wählt…</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation>Verbindet...</translation>
+        <translation>Verbindet…</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>Bildschirm wird geteilt</translation>
+        <translation>Bildschirm wird geteilt.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1401,7 +1401,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../../src/main.cpp" line="+191"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation>Benutze ein separates profil, wodurch mehrere Accounts und Nhekoinstanzen zur gleichen Zeit verwendet werden können.</translation>
+        <translation>Benutze ein separates Profil, wodurch mehrere Accounts und Nheko-Instanzen zur gleichen Zeit verwendet werden können.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1593,7 +1593,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+13"/>
         <source>Create new tag...</source>
-        <translation>Neuen Tag erstellen...</translation>
+        <translation>Neuen Tag erstellen…</translation>
     </message>
     <message>
         <location line="+289"/>
@@ -3181,7 +3181,7 @@ Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</
     <message>
         <location filename="../../src/WelcomePage.cpp" line="+34"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation>Willkommen bei nheko! Ein Desktop-Client für das Matrix-Protokoll.</translation>
+        <translation>Willkommen bei Nheko! Ein Desktop-Client für das Matrix-Protokoll.</translation>
     </message>
     <message>
         <location line="+1"/>
