@@ -315,12 +315,12 @@
     <message>
         <location line="+81"/>
         <source>Expand</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitvouwen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Collapse</source>
-        <translation type="unfinished"></translation>
+        <translation>Invouwen</translation>
     </message>
 </context>
 <context>
@@ -653,32 +653,32 @@
     <message>
         <location line="+7"/>
         <source>Images (*.png *.webp *.gif *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Afbeeldingen (*.png *.webp *.gif *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select images for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecteer afbeeldingen voor pakket</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Add to pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Toevoegen aan pakket</translation>
     </message>
     <message>
         <location line="+61"/>
         <source>Change the overview image for this pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas het icoon voor dit pakket aan</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Overview Image (*.png *.webp *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Icoon afbeelding (*.png *.webp *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select overview image for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Kies icoon afbeelding voor pakket</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1041,22 +1041,22 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+12"/>
         <source>%1 changed the pinned messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft de vastgeprikte berichten aangepast.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 changed the stickers and emotes in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft de stickers en emoji in deze kamer aangepast.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 changed the addresses for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft de adressen voor deze kamer aangepast.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 changed the parent spaces for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft de groepen voor deze kamer aangepast.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1194,12 +1194,12 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+7"/>
         <source>Un&amp;pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Vast%prikken ongedaan maken</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>&amp;Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Vast%prikken</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1721,9 +1721,9 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message numerus="yes">
         <location line="+81"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n deelnemer</numerusform>
+            <numerusform>%n deelnemers</numerusform>
         </translation>
     </message>
     <message>
@@ -2430,7 +2430,7 @@ Reden: %4</translation>
     <message>
         <location line="+19"/>
         <source>Show or hide pinned messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Toon of verberg vastgeprikte berichten</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -2460,7 +2460,7 @@ Reden: %4</translation>
     <message>
         <location line="+68"/>
         <source>Unpin</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastprikken ongedaan maken</translation>
     </message>
 </context>
 <context>
