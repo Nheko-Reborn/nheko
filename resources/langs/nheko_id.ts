@@ -315,12 +315,12 @@
     <message>
         <location line="+81"/>
         <source>Expand</source>
-        <translation type="unfinished"></translation>
+        <translation>Besarkan</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Collapse</source>
-        <translation type="unfinished"></translation>
+        <translation>Kecilkan</translation>
     </message>
 </context>
 <context>
@@ -653,32 +653,32 @@
     <message>
         <location line="+7"/>
         <source>Images (*.png *.webp *.gif *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gambar (*.png *.webp *.gif *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select images for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>PIlih gambar untuk paket</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Add to pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahkan ke paket</translation>
     </message>
     <message>
         <location line="+61"/>
         <source>Change the overview image for this pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubah gambar ikhtisar untuk paket ini</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Overview Image (*.png *.webp *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gambar ikhtisar (*.png *.webp *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select overview image for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih gambar ikhtisar untuk paket</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1036,17 +1036,17 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+12"/>
         <source>%1 changed the pinned messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 mengubah pesan-pesan yang dipasangi pin.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 changed the stickers and emotes in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 mengubah stiker dan emote untuk ruangan ini.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 changed the addresses for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 mengubah alamat-alamat untuk ruangan ini.</translation>
     </message>
     <message>
         <location line="+12"/>
