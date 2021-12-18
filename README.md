@@ -95,6 +95,15 @@ Make sure you have the testing repositories from `edge` enabled. Note that this 
 sudo apk add nheko
 ```
 
+#### openSUSE (Leap or Tumbleweed)
+```bash
+sudo zypper in nheko
+# If you want to add identicon support and are using Tumbleweed, run these as well
+sudo zypper addrepo https://download.opensuse.org/repositories/home:LorenDB/openSUSE_Tumbleweed/home:LorenDB.repo
+sudo zypper refresh
+sudo zypper install qt-jdenticon
+```
+
 #### Flatpak
 
 ```
