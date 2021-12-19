@@ -9,3 +9,4 @@ Categories=Network;InstantMessaging;Qt;
 StartupWMClass=nheko
 Terminal=false
 MimeType=x-scheme-handler/matrix;
+X-GNOME-UsesNotifications=true
