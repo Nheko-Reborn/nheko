@@ -209,6 +209,11 @@ main(int argc, char *argv[])
 #if !defined(Q_OS_MAC)
     app.setWindowIcon(QIcon::fromTheme("nheko", QIcon{":/logos/nheko.png"}));
 #endif
+    if (userdata.isEmpty() || userdata == "default")
+        app.setDesktopFileName("nheko");
+    else
+        app.setDesktopFileName("nheko[" + userdata + "]");
+
     http::init();
 
     createStandardDirectory(QStandardPaths::CacheLocation);
