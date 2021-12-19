@@ -147,6 +147,7 @@ NotificationsManager::systemPostNotification(const QString &room_id,
     hints["image-data"]    = icon;
     hints["sound-name"]    = "message-new-instant";
     hints["desktop-entry"] = "nheko";
+    hints["category"]      = "im.received";
 
     QList<QVariant> argumentList;
     argumentList << "nheko";  // app_name

@@ -1527,6 +1527,8 @@ Cache::saveState(const mtx::responses::Sync &res)
                 if (auto fr = std::get_if<
                       mtx::events::AccountDataEvent<mtx::events::account_data::FullyRead>>(&evt)) {
                     nhlog::db()->debug("Fully read: {}", fr->content.event_id);
+                    emit removeNotification(QString::fromStdString(room.first),
+                                            QString::fromStdString(fr->content.event_id));
                 }
             }
         }
