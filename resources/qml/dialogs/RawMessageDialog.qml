@@ -35,6 +35,7 @@ ApplicationWindow {
             font: Nheko.monospaceFont()
             color: Nheko.colors.text
             readOnly: true
+            textFormat: Text.PlainText
 
             background: Rectangle {
                 color: Nheko.colors.base
