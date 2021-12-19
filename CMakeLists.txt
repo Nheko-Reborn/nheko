@@ -413,20 +413,20 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        ec7cd5285117e3d3079f186a179e701496b62485
+		GIT_TAG        v0.6.1
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(MatrixClient)
 else()
-	find_package(MatrixClient 0.6.0 REQUIRED)
+	find_package(MatrixClient 0.6.1 REQUIRED)
 endif()
 if(USE_BUNDLED_OLM)
 	include(FetchContent)
 	FetchContent_Declare(
 		Olm
 		GIT_REPOSITORY https://gitlab.matrix.org/matrix-org/olm.git
-		GIT_TAG        3.2.6
+		GIT_TAG        3.2.8
 		)
 	set(OLM_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(Olm)
@@ -710,7 +710,7 @@ if(USE_BUNDLED_COEURL)
 	FetchContent_Declare(
 		coeurl
 		GIT_REPOSITORY https://nheko.im/Nheko-Reborn/coeurl.git
-		GIT_TAG        abafd60d7e9f5cce76c9abad3b2b3dc1382e5349
+		GIT_TAG        v0.1.1
 		)
 	FetchContent_MakeAvailable(coeurl)
 	target_link_libraries(nheko PUBLIC coeurl::coeurl)
@@ -719,7 +719,7 @@ elseif(coeurl_DIR)
 	target_link_libraries(nheko PUBLIC coeurl::coeurl)
 else()
 	find_package(PkgConfig REQUIRED)
-	pkg_check_modules(coeurl REQUIRED IMPORTED_TARGET coeurl)
+	pkg_check_modules(coeurl REQUIRED IMPORTED_TARGET coeurl>=0.1.1)
 	target_link_libraries(nheko PUBLIC PkgConfig::coeurl)
 endif()
 
