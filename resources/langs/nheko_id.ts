@@ -1051,7 +1051,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+12"/>
         <source>%1 changed the parent spaces for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 mengubah induk space untuk ruangan ini.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1194,12 +1194,12 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+7"/>
         <source>Un&amp;pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Lepaska&amp;n pin</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>&amp;Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Pasangi pin</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1720,8 +1720,8 @@ Misalnya: https://server.my:8787</translation>
     <message numerus="yes">
         <location line="+81"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n anggota</numerusform>
         </translation>
     </message>
     <message>
@@ -2427,7 +2427,7 @@ Alasan: %4</translation>
     <message>
         <location line="+19"/>
         <source>Show or hide pinned messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan atau sembunyikan pesan yang dipasangi pin</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -2457,7 +2457,7 @@ Alasan: %4</translation>
     <message>
         <location line="+68"/>
         <source>Unpin</source>
-        <translation type="unfinished"></translation>
+        <translation>Lepaskan pin</translation>
     </message>
 </context>
 <context>
