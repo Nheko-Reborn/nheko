@@ -1,5 +1,61 @@
 # Changelog
 
+## [0.9.1] -- 2021-12-22
+
+### Highlights
+
+- Support pinned messages.
+
+### Features
+
+- Add recently used reactions. (LorenDB)
+- Show spaces as a tree, that allows you to collapse sections.
+- Add a filter for direct chats
+
+### Improvements
+
+- Set the app_id on Wayland. Useful for custom WM rules.
+- Set notification category on Linux.
+- Make Nheko show up in system notification settings on Linux.
+- Make notification count bubbles expand some more. (LorenDB)
+- Strip space chars from recovery passphrase. Should make them easier to enter.
+- Make it obvious that undecryptable messages are a notification and not the actual message. (LorenDB)
+- Added window role to image overlay. (Thulinma)
+- Only show room pack button, when you can actually create one.
+- Show some avatar for image packs.
+- Allow clicking links in replies.
+- Limit max memory usage of images.
+- Allow swiping between views in single page mode Allows access to spaces on mobile for example.
+- Get rid of a few clang-tidy warnings. (Marcus Hoffmann)
+- Navigate to subspaces by clicking on them.
+- Delete rooms even if we fail to leave.
+- Change QML UI for redactions.
+- If the locale is set to C, force english locale This fixes date formatting as well as count based translations.
+- Use a more random hash to generate user colors.
+- Mark rooms as direct chats in the proper places.
+- Update macOS icon package to macOS-y style. (Quinn)
+- Preliminary gstreamer 1.20 compatibility.
+
+### Translations
+
+- Indonesian (Linerly)
+- Estonian (Priit Jõerüüt)
+- French (Eldred HABERT)
+- Dutch (Thulinma)
+- Esperanto (Tirifto)
+- Finnish (Priit Jõerüüt)
+- Italian (Elia Tomasi)
+- French (Mayeul Cantan)
+
+### Bugfixes
+
+- Fix crash when receiving matrix uri.
+- Make opening room members from rooms settings dialog work. (LorenDB)
+- Fix turnserver check not being started when restoring from cache.
+- Vertically align message input.
+- Properly set position of resize handler after letting it go.
+- Fix escaped html showing up in playable media message labels.
+
 ## [0.9.0] -- 2021-11-19
 
 ### Highlights
