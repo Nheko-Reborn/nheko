@@ -82,8 +82,14 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
     const auto event_id  = QString::fromStdString(mtx::accessors::event_id(notification.event));
     const auto room_name = QString::fromStdString(cache::singleRoomInfo(notification.room_id).name);
 
-    auto postNotif = [this, room_id, event_id, room_name, icon](QString text) {
-        emit systemPostNotificationCb(room_id, event_id, room_name, text, icon);
+    const auto replaces_event_id =
+      QString::fromStdString(mtx::accessors::relations(notification.event).replaces().value_or(""));
+
+    auto postNotif = [this, room_id, event_id, room_name, icon, replaces_event_id](QString text) {
+        if (replaces_event_id.isEmpty())
+            emit systemPostNotificationCb(room_id, event_id, room_name, text, icon);
+        else
+            emit systemPostNotificationCb(room_id, replaces_event_id, room_name, text, icon);
     };
 
     QString template_ = getMessageTemplate(notification);
@@ -149,12 +155,25 @@ NotificationsManager::systemPostNotification(const QString &room_id,
     hints["desktop-entry"] = "nheko";
     hints["category"]      = "im.received";
 
+    uint replace_id = 0;
+    if (!event_id.isEmpty()) {
+        for (auto elem = notificationIds.begin(); elem != notificationIds.end(); ++elem) {
+            if (elem.value().roomId != room_id)
+                continue;
+
+            if (elem.value().eventId == event_id) {
+                replace_id = elem.key();
+                break;
+            }
+        }
+    }
+
     QList<QVariant> argumentList;
-    argumentList << "nheko";  // app_name
-    argumentList << (uint)0;  // replace_id
-    argumentList << "";       // app_icon
-    argumentList << roomName; // summary
-    argumentList << text;     // body
+    argumentList << "nheko";          // app_name
+    argumentList << (uint)replace_id; // replace_id
+    argumentList << "";               // app_icon
+    argumentList << roomName;         // summary
+    argumentList << text;             // body
 
     // The list of actions has always the action name and then a localized version of that
     // action. Currently we just use an empty string for that.
