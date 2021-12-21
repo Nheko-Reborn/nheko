@@ -36,11 +36,7 @@ private:
 class JdenticonResponse : public QQuickImageResponse
 {
 public:
-    JdenticonResponse(const QString &key,
-                      bool crop,
-                      double radius,
-                      const QSize &requestedSize,
-                      QThreadPool *pool);
+    JdenticonResponse(const QString &key, bool crop, double radius, const QSize &requestedSize);
 
     QQuickTextureFactory *textureFactory() const override
     {
@@ -86,9 +82,6 @@ public slots:
             }
         }
 
-        return new JdenticonResponse(id_, crop, radius, requestedSize, &pool);
+        return new JdenticonResponse(id_, crop, radius, requestedSize);
     }
-
-private:
-    QThreadPool pool;
 };

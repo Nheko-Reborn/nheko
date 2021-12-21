@@ -70,12 +70,11 @@ clipRadius(QPixmap img, double radius)
 JdenticonResponse::JdenticonResponse(const QString &key,
                                      bool crop,
                                      double radius,
-                                     const QSize &requestedSize,
-                                     QThreadPool *pool)
+                                     const QSize &requestedSize)
 {
     auto runnable = new JdenticonRunnable(key, crop, radius, requestedSize);
     connect(runnable, &JdenticonRunnable::done, this, &JdenticonResponse::handleDone);
-    pool->start(runnable);
+    QThreadPool::globalInstance()->start(runnable);
 }
 
 JdenticonRunnable::JdenticonRunnable(const QString &key,

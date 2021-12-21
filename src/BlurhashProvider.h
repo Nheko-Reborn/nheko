@@ -34,12 +34,12 @@ private:
 class BlurhashResponse : public QQuickImageResponse
 {
 public:
-    BlurhashResponse(const QString &id, const QSize &requestedSize, QThreadPool *pool)
+    BlurhashResponse(const QString &id, const QSize &requestedSize)
     {
         auto runnable = new BlurhashRunnable(id, requestedSize);
         connect(runnable, &BlurhashRunnable::done, this, &BlurhashResponse::handleDone);
         connect(runnable, &BlurhashRunnable::error, this, &BlurhashResponse::handleError);
-        pool->start(runnable);
+        QThreadPool::globalInstance()->start(runnable);
     }
 
     QQuickTextureFactory *textureFactory() const override
@@ -72,9 +72,6 @@ public slots:
     QQuickImageResponse *
     requestImageResponse(const QString &id, const QSize &requestedSize) override
     {
-        return new BlurhashResponse(id, requestedSize, &pool);
+        return new BlurhashResponse(id, requestedSize);
     }
-
-private:
-    QThreadPool pool;
 };
