@@ -11,17 +11,16 @@
 #include "blurhash.hpp"
 
 void
-BlurhashResponse::run()
+BlurhashRunnable::run()
 {
     if (m_requestedSize.width() < 0 || m_requestedSize.height() < 0) {
-        m_error = QStringLiteral("Blurhash needs size request");
-        emit finished();
+        emit error("Blurhash needs size request");
         return;
     }
     if (m_requestedSize.width() == 0 || m_requestedSize.height() == 0) {
-        m_image = QImage(m_requestedSize, QImage::Format_RGB32);
-        m_image.fill(QColor(0, 0, 0));
-        emit finished();
+        auto image = QImage(m_requestedSize, QImage::Format_RGB32);
+        image.fill(QColor(0, 0, 0));
+        emit done(image);
         return;
     }
 
@@ -29,8 +28,7 @@ BlurhashResponse::run()
                                     m_requestedSize.width(),
                                     m_requestedSize.height());
     if (decoded.image.empty()) {
-        m_error = QStringLiteral("Failed decode!");
-        emit finished();
+        emit error(QStringLiteral("Failed decode!"));
         return;
     }
 
@@ -40,6 +38,5 @@ BlurhashResponse::run()
                  (int)decoded.width * 3,
                  QImage::Format_RGB888);
 
-    m_image = image.copy();
-    emit finished();
+    emit done(std::move(image));
 }

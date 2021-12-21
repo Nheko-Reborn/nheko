@@ -10,16 +10,38 @@
 #include <QImage>
 #include <QThreadPool>
 
-class BlurhashResponse
-  : public QQuickImageResponse
+class BlurhashRunnable
+  : public QObject
   , public QRunnable
 {
+    Q_OBJECT
 public:
-    BlurhashResponse(const QString &id, const QSize &requestedSize)
+    BlurhashRunnable(const QString &id, const QSize &requestedSize)
       : m_id(id)
       , m_requestedSize(requestedSize)
     {
-        setAutoDelete(false);
+    }
+
+    void run() override;
+signals:
+    void done(QImage);
+    void error(QString);
+
+private:
+    QString m_id;
+    QSize m_requestedSize;
+};
+
+class BlurhashResponse
+  : public QQuickImageResponse
+{
+public:
+    BlurhashResponse(const QString &id, const QSize &requestedSize, QThreadPool *pool)
+    {
+        auto runnable = new BlurhashRunnable(id, requestedSize);
+        connect(runnable, &BlurhashRunnable::done, this, &BlurhashResponse::handleDone);
+        connect(runnable, &BlurhashRunnable::error, this, &BlurhashResponse::handleError);
+        pool->start(runnable);
     }
 
     QQuickTextureFactory *textureFactory() const override
@@ -28,10 +50,18 @@ public:
     }
     QString errorString() const override { return m_error; }
 
-    void run() override;
+    void handleDone(QImage image)
+    {
+        m_image = image;
+        emit finished();
+    }
+    void handleError(QString error)
+    {
+        m_error = error;
+        emit finished();
+    }
 
-    QString m_id, m_error;
-    QSize m_requestedSize;
+    QString m_error;
     QImage m_image;
 };
 
@@ -44,9 +74,7 @@ public slots:
     QQuickImageResponse *
     requestImageResponse(const QString &id, const QSize &requestedSize) override
     {
-        BlurhashResponse *response = new BlurhashResponse(id, requestedSize);
-        pool.start(response);
-        return response;
+        return new BlurhashResponse(id, requestedSize, &pool);
     }
 
 private:
