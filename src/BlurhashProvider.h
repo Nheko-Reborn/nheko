@@ -19,8 +19,7 @@ public:
     BlurhashRunnable(const QString &id, const QSize &requestedSize)
       : m_id(id)
       , m_requestedSize(requestedSize)
-    {
-    }
+    {}
 
     void run() override;
 signals:
@@ -32,8 +31,7 @@ private:
     QSize m_requestedSize;
 };
 
-class BlurhashResponse
-  : public QQuickImageResponse
+class BlurhashResponse : public QQuickImageResponse
 {
 public:
     BlurhashResponse(const QString &id, const QSize &requestedSize, QThreadPool *pool)
