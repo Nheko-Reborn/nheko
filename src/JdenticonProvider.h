@@ -13,31 +13,47 @@
 
 #include "jdenticoninterface.h"
 
-namespace Jdenticon {
-JdenticonInterface *
-getJdenticonInterface();
-}
-
-class JdenticonResponse
-  : public QQuickImageResponse
+class JdenticonRunnable
+  : public QObject
   , public QRunnable
 {
+    Q_OBJECT
 public:
-    JdenticonResponse(const QString &key, bool crop, double radius, const QSize &requestedSize);
-
-    QQuickTextureFactory *textureFactory() const override
-    {
-        return QQuickTextureFactory::textureFactoryForImage(m_pixmap.toImage());
-    }
+    JdenticonRunnable(const QString &key, bool crop, double radius, const QSize &requestedSize);
 
     void run() override;
 
+signals:
+    void done(QImage img);
+
+private:
     QString m_key;
     bool m_crop;
     double m_radius;
     QSize m_requestedSize;
-    QPixmap m_pixmap;
-    JdenticonInterface *jdenticonInterface_ = nullptr;
+};
+
+class JdenticonResponse : public QQuickImageResponse
+{
+public:
+    JdenticonResponse(const QString &key,
+                      bool crop,
+                      double radius,
+                      const QSize &requestedSize,
+                      QThreadPool *pool);
+
+    QQuickTextureFactory *textureFactory() const override
+    {
+        return QQuickTextureFactory::textureFactoryForImage(m_pixmap);
+    }
+
+    void handleDone(QImage img)
+    {
+        m_pixmap = std::move(img);
+        emit finished();
+    }
+
+    QImage m_pixmap;
 };
 
 class JdenticonProvider
@@ -47,7 +63,7 @@ class JdenticonProvider
     Q_OBJECT
 
 public:
-    static bool isAvailable() { return Jdenticon::getJdenticonInterface() != nullptr; }
+    static bool isAvailable();
 
 public slots:
     QQuickImageResponse *
@@ -70,9 +86,7 @@ public slots:
             }
         }
 
-        JdenticonResponse *response = new JdenticonResponse(id_, crop, radius, requestedSize);
-        pool.start(response);
-        return response;
+        return new JdenticonResponse(id_, crop, radius, requestedSize, &pool);
     }
 
 private:

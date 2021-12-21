@@ -50,7 +50,7 @@ public:
 
     void handleDone(QImage image)
     {
-        m_image = image;
+        m_image = std::move(image);
         emit finished();
     }
     void handleError(QString error)

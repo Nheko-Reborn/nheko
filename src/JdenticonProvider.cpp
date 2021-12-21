@@ -19,65 +19,6 @@
 #include "Utils.h"
 #include "jdenticoninterface.h"
 
-static QPixmap
-clipRadius(QPixmap img, double radius)
-{
-    QPixmap out(img.size());
-    out.fill(Qt::transparent);
-
-    QPainter painter(&out);
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-
-    QPainterPath ppath;
-    ppath.addRoundedRect(img.rect(), radius, radius, Qt::SizeMode::RelativeSize);
-
-    painter.setClipPath(ppath);
-    painter.drawPixmap(img.rect(), img);
-
-    return out;
-}
-
-JdenticonResponse::JdenticonResponse(const QString &key,
-                                     bool crop,
-                                     double radius,
-                                     const QSize &requestedSize)
-  : m_key(key)
-  , m_crop{crop}
-  , m_radius{radius}
-  , m_requestedSize(requestedSize.isValid() ? requestedSize : QSize(100, 100))
-  , m_pixmap{m_requestedSize}
-  , jdenticonInterface_{Jdenticon::getJdenticonInterface()}
-{
-    setAutoDelete(false);
-}
-
-void
-JdenticonResponse::run()
-{
-    m_pixmap.fill(Qt::transparent);
-
-    QPainter painter;
-    painter.begin(&m_pixmap);
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-
-    try {
-        QSvgRenderer renderer{
-          jdenticonInterface_->generate(m_key, m_requestedSize.width()).toUtf8()};
-        renderer.render(&painter);
-    } catch (std::exception &e) {
-        nhlog::ui()->error(
-          "caught {} in jdenticonprovider, key '{}'", e.what(), m_key.toStdString());
-    }
-
-    painter.end();
-
-    m_pixmap = clipRadius(m_pixmap, m_radius);
-
-    emit finished();
-}
-
 namespace Jdenticon {
 JdenticonInterface *
 getJdenticonInterface()
@@ -105,4 +46,82 @@ getJdenticonInterface()
 
     return interface;
 }
+}
+
+static QPixmap
+clipRadius(QPixmap img, double radius)
+{
+    QPixmap out(img.size());
+    out.fill(Qt::transparent);
+
+    QPainter painter(&out);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+
+    QPainterPath ppath;
+    ppath.addRoundedRect(img.rect(), radius, radius, Qt::SizeMode::RelativeSize);
+
+    painter.setClipPath(ppath);
+    painter.drawPixmap(img.rect(), img);
+
+    return out;
+}
+
+JdenticonResponse::JdenticonResponse(const QString &key,
+                                     bool crop,
+                                     double radius,
+                                     const QSize &requestedSize,
+                                     QThreadPool *pool)
+{
+    auto runnable = new JdenticonRunnable(key, crop, radius, requestedSize);
+    connect(runnable, &JdenticonRunnable::done, this, &JdenticonResponse::handleDone);
+    pool->start(runnable);
+}
+
+JdenticonRunnable::JdenticonRunnable(const QString &key,
+                                     bool crop,
+                                     double radius,
+                                     const QSize &requestedSize)
+  : m_key(key)
+  , m_crop{crop}
+  , m_radius{radius}
+  , m_requestedSize(requestedSize.isValid() ? requestedSize : QSize(100, 100))
+{}
+
+void
+JdenticonRunnable::run()
+{
+    QPixmap pixmap(m_requestedSize);
+    pixmap.fill(Qt::transparent);
+
+    auto jdenticon = Jdenticon::getJdenticonInterface();
+    if (!jdenticon) {
+        emit done(pixmap.toImage());
+        return;
+    }
+
+    QPainter painter;
+    painter.begin(&pixmap);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+
+    try {
+        QSvgRenderer renderer{jdenticon->generate(m_key, m_requestedSize.width()).toUtf8()};
+        renderer.render(&painter);
+    } catch (std::exception &e) {
+        nhlog::ui()->error(
+          "caught {} in jdenticonprovider, key '{}'", e.what(), m_key.toStdString());
+    }
+
+    painter.end();
+
+    pixmap = clipRadius(pixmap, m_radius);
+
+    emit done(pixmap.toImage());
+}
+
+bool
+JdenticonProvider::isAvailable()
+{
+    return Jdenticon::getJdenticonInterface() != nullptr;
 }
