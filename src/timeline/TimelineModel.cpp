@@ -1934,11 +1934,248 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
     if (!event)
         return QString();
 
-    QString user = QString::fromStdString(event->sender);
-    QString name = utils::replaceEmoji(displayName(user));
+    mtx::events::StateEvent<mtx::events::state::PowerLevels> *prevEvent = nullptr;
+    if (!event->unsigned_data.replaces_state.empty()) {
+        auto tempPrevEvent = events.get(event->unsigned_data.replaces_state, event->event_id);
+        if (tempPrevEvent) {
+            prevEvent =
+              std::get_if<mtx::events::StateEvent<mtx::events::state::PowerLevels>>(tempPrevEvent);
+        }
+    }
 
-    // TODO: power levels rendering is actually a bit complex. work on this later.
-    return tr("%1 has changed the room's permissions.").arg(name);
+    QString user        = QString::fromStdString(event->sender);
+    QString sender_name = utils::replaceEmoji(displayName(user));
+    // Get the rooms levels for redactions and powerlevel changes to determine "Administrator" and
+    // "Moderator" powerlevels.
+    // auto administrator_power_level = event->content.state_level("m.room.power_levels");
+    // auto amoderator_power_level         = event->content.redact;
+    auto default_powerlevel = event->content.users_default;
+    if (!prevEvent)
+        return "";
+
+    // These affect only a few people. Therefor we can print who is affected.
+    if (event->content.kick != prevEvent->content.kick) {
+        auto default_message = tr("%1 has changed the room's kick powerlevel from %2 to %3.")
+                                 .arg(sender_name)
+                                 .arg(prevEvent->content.kick)
+                                 .arg(event->content.kick);
+
+        // We only calculate affected users if we change to a level above the default users PL to
+        // not accidentially have a DoS vector
+        if (event->content.kick > default_powerlevel) {
+            QStringList affected{};
+            auto number_of_affected = 0;
+            // We do only compare to people with explicit PL. Usually others are not going to be
+            // affected either way and this is cheaper to iterate over.
+            for (auto const &[key, val] : event->content.users) {
+                if (val == event->content.kick) {
+                    number_of_affected++;
+                    if (number_of_affected <= 2) {
+                        affected.push_back(QString::fromStdString(key));
+                    }
+                }
+            }
+
+            if (number_of_affected != 0) {
+                auto true_affected_rest = number_of_affected - affected.size();
+                if (number_of_affected > 2) {
+                    return default_message + QString::fromStdString(" ") +
+                           tr("%1 and %2 and %n other(s) can now kick room members.")
+                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
+                             .arg(utils::replaceEmoji(displayName(affected.at(1))))
+                             .arg(true_affected_rest);
+                } else if (number_of_affected == 2) {
+                    return default_message + QString::fromStdString(" ") +
+                           tr("%1 and %2 can now kick room members.")
+
+                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
+                             .arg(utils::replaceEmoji(displayName(affected.at(1))));
+                } else if (number_of_affected == 1) {
+                    return default_message + QString::fromStdString(" ") +
+                           tr("%1 can now kick room members.")
+                             .arg(utils::replaceEmoji(displayName(affected.at(0))));
+                }
+            }
+        }
+
+        return default_message;
+    }
+
+    if (event->content.redact != prevEvent->content.redact) {
+        auto default_message = tr("%1 has changed the room's redact powerlevel from %2 to %3.")
+                                 .arg(sender_name)
+                                 .arg(prevEvent->content.redact)
+                                 .arg(event->content.redact);
+
+        // We only calculate affected users if we change to a level above the default users PL to
+        // not accidentially have a DoS vector
+        if (event->content.redact > default_powerlevel) {
+            QStringList affected{};
+            auto number_of_affected = 0;
+            // We do only compare to people with explicit PL. Usually others are not going to be
+            // affected either way and this is cheaper to iterate over.
+            for (auto const &[key, val] : event->content.users) {
+                if (val == event->content.redact) {
+                    number_of_affected++;
+                    if (number_of_affected <= 2) {
+                        affected.push_back(QString::fromStdString(key));
+                    }
+                }
+            }
+
+            if (number_of_affected != 0) {
+                auto true_affected_rest = number_of_affected - affected.size();
+                if (number_of_affected > 2) {
+                    return default_message + QString::fromStdString(" ") +
+                           tr("%1 and %2 and %n other(s) can now redact room messages.")
+                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
+                             .arg(utils::replaceEmoji(displayName(affected.at(1))))
+                             .arg(true_affected_rest);
+                } else if (number_of_affected == 2) {
+                    return default_message + QString::fromStdString(" ") +
+                           tr("%1 and %2 can now redact room messages.")
+
+                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
+                             .arg(utils::replaceEmoji(displayName(affected.at(1))));
+                } else if (number_of_affected == 1) {
+                    return default_message + QString::fromStdString(" ") +
+                           tr("%1 can now redact room messages.")
+                             .arg(utils::replaceEmoji(displayName(affected.at(0))));
+                }
+            }
+        }
+
+        return default_message;
+    }
+
+    if (event->content.ban != prevEvent->content.ban) {
+        auto default_message = tr("%1 has changed the room's ban powerlevel from %2 to %3.")
+                                 .arg(sender_name)
+                                 .arg(prevEvent->content.ban)
+                                 .arg(event->content.ban);
+
+        // We only calculate affected users if we change to a level above the default users PL to
+        // not accidentially have a DoS vector
+        if (event->content.ban > default_powerlevel) {
+            QStringList affected{};
+            auto number_of_affected = 0;
+            // We do only compare to people with explicit PL. Usually others are not going to be
+            // affected either way and this is cheaper to iterate over.
+            for (auto const &[key, val] : event->content.users) {
+                if (val == event->content.ban) {
+                    number_of_affected++;
+                    if (number_of_affected <= 2) {
+                        affected.push_back(QString::fromStdString(key));
+                    }
+                }
+            }
+
+            if (number_of_affected != 0) {
+                auto true_affected_rest = number_of_affected - affected.size();
+                if (number_of_affected > 2) {
+                    return default_message + QString::fromStdString(" ") +
+                           tr("%1 and %2 and %n other(s) can now ban room members.")
+                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
+                             .arg(utils::replaceEmoji(displayName(affected.at(1))))
+                             .arg(true_affected_rest);
+                } else if (number_of_affected == 2) {
+                    return default_message + QString::fromStdString(" ") +
+                           tr("%1 and %2 can now ban room members.")
+
+                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
+                             .arg(utils::replaceEmoji(displayName(affected.at(1))));
+                } else if (number_of_affected == 1) {
+                    return default_message + QString::fromStdString(" ") +
+                           tr("%1 can now ban room members.")
+                             .arg(utils::replaceEmoji(displayName(affected.at(0))));
+                }
+            }
+        }
+
+        return default_message;
+    }
+
+    if (event->content.state_default != prevEvent->content.state_default) {
+        auto default_message =
+          tr("%1 has changed the room's state_default powerlevel from %2 to %3.")
+            .arg(sender_name)
+            .arg(prevEvent->content.state_default)
+            .arg(event->content.state_default);
+
+        // We only calculate affected users if we change to a level above the default users PL to
+        // not accidentially have a DoS vector
+        if (event->content.state_default > default_powerlevel) {
+            QStringList affected{};
+            auto number_of_affected = 0;
+            // We do only compare to people with explicit PL. Usually others are not going to be
+            // affected either way and this is cheaper to iterate over.
+            for (auto const &[key, val] : event->content.users) {
+                if (val == event->content.state_default) {
+                    number_of_affected++;
+                    if (number_of_affected <= 2) {
+                        affected.push_back(QString::fromStdString(key));
+                    }
+                }
+            }
+
+            if (number_of_affected != 0) {
+                auto true_affected_rest = number_of_affected - affected.size();
+                if (number_of_affected > 2) {
+                    return default_message + QString::fromStdString(" ") +
+                           tr("%1 and %2 and %n other(s) can now send state events.")
+                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
+                             .arg(utils::replaceEmoji(displayName(affected.at(1))))
+                             .arg(true_affected_rest);
+                } else if (number_of_affected == 2) {
+                    return default_message + QString::fromStdString(" ") +
+                           tr("%1 and %2 can now send state events.")
+
+                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
+                             .arg(utils::replaceEmoji(displayName(affected.at(1))));
+                } else if (number_of_affected == 1) {
+                    return default_message + QString::fromStdString(" ") +
+                           tr("%1 can now send state events.")
+                             .arg(utils::replaceEmoji(displayName(affected.at(0))));
+                }
+            }
+        }
+
+        return default_message;
+    }
+
+    // These affect potentially the whole room. We there for do not calculate who gets affected by
+    // this to prevent huge lists of people.
+    if (event->content.invite != prevEvent->content.invite) {
+        return tr("%1 has changed the room's invite powerlevel from %2 to %3.")
+          .arg(sender_name,
+               QString::number(prevEvent->content.invite),
+               QString::number(event->content.invite));
+    }
+
+    if (event->content.events_default != prevEvent->content.events_default) {
+        if ((event->content.events_default > default_powerlevel) &&
+            !(prevEvent->content.events_default > default_powerlevel)) {
+            return tr("%1 has changed the room's events_default powerlevel from %2 to %3. New "
+                      "users can now not send any events.")
+              .arg(sender_name,
+                   QString::number(prevEvent->content.events_default),
+                   QString::number(event->content.events_default));
+        } else if ((event->content.events_default < prevEvent->content.events_default) &&
+                   (event->content.events_default < default_powerlevel) &&
+                   (prevEvent->content.events_default > default_powerlevel)) {
+            return tr("%1 has changed the room's events_default powerlevel from %2 to %3. New "
+                      "users can now send events that are not otherwise restricted.")
+              .arg(sender_name,
+                   QString::number(prevEvent->content.events_default),
+                   QString::number(event->content.events_default));
+        }
+        return tr("%1 has changed the room's events_default powerlevel from %2 to %3.")
+          .arg(sender_name,
+               QString::number(prevEvent->content.events_default),
+               QString::number(event->content.events_default));
+    }
+
+    return tr("%1 has changed the room's permissions.").arg(sender_name);
 }
 
 QVariantMap
