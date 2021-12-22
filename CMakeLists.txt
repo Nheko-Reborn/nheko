@@ -5,6 +5,11 @@ option(CI_BUILD "Set when building in CI. Enables -Werror where possible" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
 option(QML_DEBUGGING "Enable qml debugging" OFF)
 option(COMPILE_QML "Compile Qml. It will make Nheko faster, but you will need to recompile it, when you update Qt." OFF)
+if(UNIX AND NOT APPLE)
+	option(MAN "Build man page" ON)
+else()
+	option(MAN "Build man page" OFF)
+endif()
 
 set(
 	CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/toolchain.cmake"
@@ -737,6 +742,10 @@ if(NOT MSVC AND NOT HAIKU)
 	if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" OR CI_BUILD)
 		target_compile_options(nheko PRIVATE "-Werror")
 	endif()
+endif()
+
+if(MAN)
+	add_subdirectory(man)
 endif()
 
 set_target_properties(nheko PROPERTIES CMAKE_SKIP_INSTALL_RPATH TRUE)

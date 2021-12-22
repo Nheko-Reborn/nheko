@@ -1,0 +1,196 @@
+= nheko(1)
+:doctype:       manpage
+:Date:          2021-12-22
+:Revision:      @PROJECT_VERSION@
+:man source:    nheko
+:man manual:    General Commands Manual
+
+== NAME
+
+nheko - Desktop client for Matrix using Qt and C++17
+
+== SYNOPSIS
+
+*nheko* [_OPTIONS_]
+
+== DESCRIPTION
+
+The motivation behind the project is to provide a native desktop app for Matrix
+that feels more like a mainstream chat app (Element, Telegram etc) and less like
+an IRC client.
+
+== OPTIONS
+
+*-h*, *--help*::
+Displays help on commandline options.
+
+*--help-all*::
+Displays help including Qt specific options.
+
+*-v*, *--version*::
+Displays version information.
+
+*--debug*::
+Enables debug output.
+
+*-p*, *--profile*::
+Creates a unique profile, which allows you to log into several accounts at the
+same time and start multiple instances of nheko.
+
+== Keyboard shortcuts
+
+=== Room list
+
+*Ctrl-Up/Ctrl-Down*::
+Navigate within the room list.
+
+*Ctrl-K*::
+Search and select rooms from the room list.
+
+*Alt-A*, *Ctrl-Shift-A*::
+Select next room with activity.
+
+=== Timeline/Messaging
+
+*PgUp/PgDn*::
+Scroll timeline per page.
+
+*Alt-Up/Alt-Down*::
+Reply to a message.
+
+*Up/Down*::
+Edit a message.
+
+*Ctrl-E*::
+Edit message currently selected as reply.
+
+*Alt-F*::
+Forward message currently selected as reply.
+
+*Ctrl-P/Ctrl-N*::
+Reenter previous/next message.
+
+*Ctrl-U*::
+Delete everything in the input line.
+
+*Ctrl-Left/Ctrl-Right*::
+Jump one word left/right in the input line.
+
+*Shift-Enter*::
+Insert line break.
+
+*Enter*::
+Submit message.
+
+== Commands
+
+=== Custom messages
+
+*/me* _<message>_::
+Send a message as an emote, where your username is prefixed.
+
+*/react* _<text>_::
+Send a message as a reaction when you’re replying to a message.
+
+*/md* _<message>_::
+Force Markdown when sending the current message.
+
+*/plain* _<message>_::
+Force plain text when sending the current message.
+
+*/rainbow* _<message>_::
+Send a message in rainbow colors.
+
+*/rainbowme* _<message>_::
+Send a message as a rainbow-colored emote, where your username is prefixed.
+
+*/notice* _<message>_::
+Send a message as a notice.
+
+*/rainbownotice* _<notice>_::
+Send a message as a rainbow-colored notice.
+
+=== Room management
+
+*/join* _<roomname>_::
+Join a room.
+
+*/part*, */leave*::
+Leave the current room.
+
+*/invite* _<username>_::
+Invite a user into the current room.
+
+*/kick* _<username>_::
+Kick a user from the current room.
+
+*/ban* _<username>_::
+Ban a user from the current room.
+
+*/unban* _<username>_::
+Unban a user.
+
+*/roomnick* _<roomname>_::
+Change your nickname in a single room.
+
+=== Emoticons
+
+*/shrug*::
+Inserts `¯\_(ツ)_/¯`
+
+*/fliptable*::
+Inserts `(╯°□°)╯︵ ┻━┻`
+
+*/unfliptable*::
+Inserts `┯━┯╭( º _ º╭)`
+
+*/sovietflip*::
+Inserts `ノ┬─┬ノ ︵ ( \\o°o)\\`
+
+=== Advanced
+
+*/clear-timeline*::
+Removes all but the most recent messages from the currently rendered timeline
+and then refetches it from the server; can be used to fix some cache issues.
+
+*/rotate-megolm-session*::
+Rotates the encryption key used to send encrypted messages in a room.
+
+*/goto* _<address>_::
+
+_address_ can be one of:
+
+    _<event ID>_;;
+    Jumpd to event with the specified ID and highlights it.
+
+    _<message index>_;;
+    Jumpd to the message with the specified index and highlights it.
+
+    _<Matrix URI>_;;
+    Handles Matrix URI as if you clicked on it.
+
+*/converttodm*::
+Converts a room to a direct conversation.
+
+*/converttoroom*::
+Converts a direct conversation to a normal room.
+
+== FILES
+
+*Configuration file*::
+`${XDG_CONFIG_HOME:-~/.config}/nheko/nheko.conf`
+
+*Log file*::
+`${XDG_CACHE_HOME:-~/.cache}/nheko/nheko/nheko.log`
+
+*Database*::
+`${XDG_DATA_HOME:-~/.local/share}/nheko/nheko/*/data.mdb`
+
+*Media cache*::
+`${XDG_CACHE_HOME:-~/.cache}/nheko/nheko/media_cache`
+
+
+== REPORTING BUGS
+
+Please report issues on our bug tracker at
+<https://github.com/Nheko-Reborn/nheko/issues>.

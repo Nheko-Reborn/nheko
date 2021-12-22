@@ -199,6 +199,7 @@ modules:
       - -DCMAKE_BUILD_TYPE=Release
       - -DLMDBXX_INCLUDE_DIR=.deps/lmdbxx
       - -DCOMPILE_QML=ON
+      - -DMAN=OFF
     buildsystem: cmake-ninja
     name: nheko
     sources:

@@ -16,7 +16,7 @@ build-gcc9:
     - apt-get install -y software-properties-common
     - add-apt-repository ppa:ubuntu-toolchain-r/test -y
     - add-apt-repository ppa:beineri/opt-qt-5.15.2-focal -y
-    - apt-get update && apt-get -y install --no-install-recommends build-essential ninja-build qt${QT_PKG}{base,declarative,tools,multimedia,script,quickcontrols2,svg} liblmdb-dev libgl1-mesa-dev libssl-dev git ccache pkg-config libsecret-1-dev cmake
+    - apt-get update && apt-get -y install --no-install-recommends build-essential ninja-build qt${QT_PKG}{base,declarative,tools,multimedia,script,quickcontrols2,svg} liblmdb-dev libgl1-mesa-dev libssl-dev git ccache pkg-config libsecret-1-dev cmake asciidoc xsltproc
     # need recommended deps for wget
     - apt-get -y install wget
     - /usr/sbin/update-ccache-symlinks
