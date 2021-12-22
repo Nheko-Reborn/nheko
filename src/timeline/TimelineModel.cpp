@@ -1953,6 +1953,23 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
     if (!prevEvent)
         return "";
 
+    // Calculate the affected people
+    auto calc_affected = [&event](int64_t level) -> std::pair<QStringList, int> {
+        QStringList affected{};
+        auto number_of_affected = 0;
+        // We do only compare to people with explicit PL. Usually others are not going to be
+        // affected either way and this is cheaper to iterate over.
+        for (auto const &[key, val] : event->content.users) {
+            if (val == level) {
+                number_of_affected++;
+                if (number_of_affected <= 2) {
+                    affected.push_back(QString::fromStdString(key));
+                }
+            }
+        }
+        return {affected, number_of_affected};
+    };
+
     // These affect only a few people. Therefor we can print who is affected.
     if (event->content.kick != prevEvent->content.kick) {
         auto default_message = tr("%1 has changed the room's kick powerlevel from %2 to %3.")
@@ -1960,21 +1977,10 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
                                  .arg(prevEvent->content.kick)
                                  .arg(event->content.kick);
 
-        // We only calculate affected users if we change to a level above the default users PL to
-        // not accidentially have a DoS vector
+        // We only calculate affected users if we change to a level above the default users PL
+        // to not accidentially have a DoS vector
         if (event->content.kick > default_powerlevel) {
-            QStringList affected{};
-            auto number_of_affected = 0;
-            // We do only compare to people with explicit PL. Usually others are not going to be
-            // affected either way and this is cheaper to iterate over.
-            for (auto const &[key, val] : event->content.users) {
-                if (val == event->content.kick) {
-                    number_of_affected++;
-                    if (number_of_affected <= 2) {
-                        affected.push_back(QString::fromStdString(key));
-                    }
-                }
-            }
+            auto [affected, number_of_affected] = calc_affected(event->content.kick);
 
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
@@ -2007,21 +2013,10 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
                                  .arg(prevEvent->content.redact)
                                  .arg(event->content.redact);
 
-        // We only calculate affected users if we change to a level above the default users PL to
-        // not accidentially have a DoS vector
+        // We only calculate affected users if we change to a level above the default users PL
+        // to not accidentially have a DoS vector
         if (event->content.redact > default_powerlevel) {
-            QStringList affected{};
-            auto number_of_affected = 0;
-            // We do only compare to people with explicit PL. Usually others are not going to be
-            // affected either way and this is cheaper to iterate over.
-            for (auto const &[key, val] : event->content.users) {
-                if (val == event->content.redact) {
-                    number_of_affected++;
-                    if (number_of_affected <= 2) {
-                        affected.push_back(QString::fromStdString(key));
-                    }
-                }
-            }
+            auto [affected, number_of_affected] = calc_affected(event->content.kick);
 
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
@@ -2054,21 +2049,10 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
                                  .arg(prevEvent->content.ban)
                                  .arg(event->content.ban);
 
-        // We only calculate affected users if we change to a level above the default users PL to
-        // not accidentially have a DoS vector
+        // We only calculate affected users if we change to a level above the default users PL
+        // to not accidentially have a DoS vector
         if (event->content.ban > default_powerlevel) {
-            QStringList affected{};
-            auto number_of_affected = 0;
-            // We do only compare to people with explicit PL. Usually others are not going to be
-            // affected either way and this is cheaper to iterate over.
-            for (auto const &[key, val] : event->content.users) {
-                if (val == event->content.ban) {
-                    number_of_affected++;
-                    if (number_of_affected <= 2) {
-                        affected.push_back(QString::fromStdString(key));
-                    }
-                }
-            }
+            auto [affected, number_of_affected] = calc_affected(event->content.kick);
 
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
@@ -2102,21 +2086,10 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
             .arg(prevEvent->content.state_default)
             .arg(event->content.state_default);
 
-        // We only calculate affected users if we change to a level above the default users PL to
-        // not accidentially have a DoS vector
+        // We only calculate affected users if we change to a level above the default users PL
+        // to not accidentially have a DoS vector
         if (event->content.state_default > default_powerlevel) {
-            QStringList affected{};
-            auto number_of_affected = 0;
-            // We do only compare to people with explicit PL. Usually others are not going to be
-            // affected either way and this is cheaper to iterate over.
-            for (auto const &[key, val] : event->content.users) {
-                if (val == event->content.state_default) {
-                    number_of_affected++;
-                    if (number_of_affected <= 2) {
-                        affected.push_back(QString::fromStdString(key));
-                    }
-                }
-            }
+            auto [affected, number_of_affected] = calc_affected(event->content.kick);
 
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
@@ -2143,8 +2116,8 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
         return default_message;
     }
 
-    // These affect potentially the whole room. We there for do not calculate who gets affected by
-    // this to prevent huge lists of people.
+    // These affect potentially the whole room. We there for do not calculate who gets affected
+    // by this to prevent huge lists of people.
     if (event->content.invite != prevEvent->content.invite) {
         return tr("%1 has changed the room's invite powerlevel from %2 to %3.")
           .arg(sender_name,
