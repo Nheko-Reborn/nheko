@@ -44,10 +44,10 @@ same time and start multiple instances of nheko.
 *Ctrl-Up/Ctrl-Down*::
 Navigate within the room list.
 
-*Ctrl+K*::
+*Ctrl-K*::
 Search and select rooms from the room list.
 
-*Alt+A*, *Ctrl+Shift+A*::
+*Alt-A*, *Ctrl-Shift-A*::
 Select next room with activity.
 
 === Timeline/Messaging
@@ -64,7 +64,7 @@ Edit a message.
 *Ctrl-E*::
 Edit message currently selected as reply.
 
-*Alt+F*::
+*Alt-F*::
 Forward message currently selected as reply.
 
 *Ctrl-P/Ctrl-N*::
@@ -186,7 +186,7 @@ Converts a direct conversation to a normal room.
 *Database*::
 `${XDG_DATA_HOME:-~/.local/share}/nheko/nheko/*/data.mdb`
 
-*media cache*::
+*Media cache*::
 `${XDG_CACHE_HOME:-~/.cache}/nheko/nheko/media_cache`
 
 
