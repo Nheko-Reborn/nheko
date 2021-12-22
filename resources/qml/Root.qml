@@ -145,7 +145,9 @@ Page {
     }
 
     Shortcut {
-        sequence: "Alt+A"
+        // Add alternative shortcut, because sometimes Alt+A is stolen by the TextEdit
+        sequences: ["Alt+A", "Ctrl+Shift+A"]
+        context: Qt.ApplicationShortcut
         onActivated: Rooms.nextRoomWithActivity()
     }
 
