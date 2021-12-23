@@ -1948,7 +1948,7 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
     // Get the rooms levels for redactions and powerlevel changes to determine "Administrator" and
     // "Moderator" powerlevels.
     // auto administrator_power_level = event->content.state_level("m.room.power_levels");
-    // auto amoderator_power_level         = event->content.redact;
+    // auto moderator_power_level         = event->content.redact;
     auto default_powerlevel = event->content.users_default;
     if (!prevEvent)
         return "";
@@ -1978,7 +1978,7 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
                                  .arg(event->content.kick);
 
         // We only calculate affected users if we change to a level above the default users PL
-        // to not accidentially have a DoS vector
+        // to not accidentally have a DoS vector
         if (event->content.kick > default_powerlevel) {
             auto [affected, number_of_affected] = calc_affected(event->content.kick);
 
@@ -1993,7 +1993,6 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
                 } else if (number_of_affected == 2) {
                     return default_message + QString::fromStdString(" ") +
                            tr("%1 and %2 can now kick room members.")
-
                              .arg(utils::replaceEmoji(displayName(affected.at(0))))
                              .arg(utils::replaceEmoji(displayName(affected.at(1))));
                 } else if (number_of_affected == 1) {
@@ -2014,7 +2013,7 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
                                  .arg(event->content.redact);
 
         // We only calculate affected users if we change to a level above the default users PL
-        // to not accidentially have a DoS vector
+        // to not accidentally have a DoS vector
         if (event->content.redact > default_powerlevel) {
             auto [affected, number_of_affected] = calc_affected(event->content.kick);
 
@@ -2029,7 +2028,6 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
                 } else if (number_of_affected == 2) {
                     return default_message + QString::fromStdString(" ") +
                            tr("%1 and %2 can now redact room messages.")
-
                              .arg(utils::replaceEmoji(displayName(affected.at(0))))
                              .arg(utils::replaceEmoji(displayName(affected.at(1))));
                 } else if (number_of_affected == 1) {
@@ -2065,7 +2063,6 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
                 } else if (number_of_affected == 2) {
                     return default_message + QString::fromStdString(" ") +
                            tr("%1 and %2 can now ban room members.")
-
                              .arg(utils::replaceEmoji(displayName(affected.at(0))))
                              .arg(utils::replaceEmoji(displayName(affected.at(1))));
                 } else if (number_of_affected == 1) {
@@ -2087,7 +2084,7 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
             .arg(event->content.state_default);
 
         // We only calculate affected users if we change to a level above the default users PL
-        // to not accidentially have a DoS vector
+        // to not accidentally have a DoS vector
         if (event->content.state_default > default_powerlevel) {
             auto [affected, number_of_affected] = calc_affected(event->content.kick);
 
@@ -2102,7 +2099,6 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
                 } else if (number_of_affected == 2) {
                     return default_message + QString::fromStdString(" ") +
                            tr("%1 and %2 can now send state events.")
-
                              .arg(utils::replaceEmoji(displayName(affected.at(0))))
                              .arg(utils::replaceEmoji(displayName(affected.at(1))));
                 } else if (number_of_affected == 1) {
@@ -2127,7 +2123,7 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
 
     if (event->content.events_default != prevEvent->content.events_default) {
         if ((event->content.events_default > default_powerlevel) &&
-            !(prevEvent->content.events_default > default_powerlevel)) {
+            prevEvent->content.events_default <= default_powerlevel) {
             return tr("%1 has changed the room's events_default powerlevel from %2 to %3. New "
                       "users can now not send any events.")
               .arg(sender_name,
