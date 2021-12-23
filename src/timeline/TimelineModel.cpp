@@ -1947,13 +1947,14 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
     QString sender_name = utils::replaceEmoji(displayName(user));
     // Get the rooms levels for redactions and powerlevel changes to determine "Administrator" and
     // "Moderator" powerlevels.
-    // auto administrator_power_level = event->content.state_level("m.room.power_levels");
-    // auto moderator_power_level         = event->content.redact;
-    auto default_powerlevel = event->content.users_default;
+    auto administrator_power_level = event->content.state_level("m.room.power_levels");
+    auto moderator_power_level     = event->content.redact;
+    auto default_powerlevel        = event->content.users_default;
     if (!prevEvent)
         return "";
 
-    // Calculate the affected people
+    // FIXME don't return directly as there may be multiple changes. Instead append to a string and
+    // return at the end. Calculate the affected people
     auto calc_affected = [&event](int64_t level) -> std::pair<QStringList, int> {
         QStringList affected{};
         auto number_of_affected = 0;
@@ -2142,6 +2143,26 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
           .arg(sender_name,
                QString::number(prevEvent->content.events_default),
                QString::number(event->content.events_default));
+    }
+
+    // Compare if a Powerlevel of a user changed
+    for (auto const &[mxid, powerlevel] : event->content.users) {
+        if (prevEvent->content.user_level(mxid) != powerlevel) {
+            // TODO Return change of PL
+            if (powerlevel == administrator_power_level) {
+                return tr("%1 has made %2 and administrator of this room.")
+                  .arg(sender_name, QString::fromStdString(mxid));
+            } else if (powerlevel == moderator_power_level) {
+                return tr("%1 has made %2 and administrator of this room.")
+                  .arg(sender_name, QString::fromStdString(mxid));
+            } else {
+                return tr("%1 has changed the powerlevel of %2 from %3 to %4.")
+                  .arg(sender_name,
+                       QString::fromStdString(mxid),
+                       QString::number(prevEvent->content.events_default),
+                       QString::number(event->content.events_default));
+            }
+        }
     }
 
     return tr("%1 has changed the room's permissions.").arg(sender_name);
