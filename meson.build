@@ -320,7 +320,7 @@ if host_machine.system() == 'darwin'
 	deps += dependency('UserNotifications', method: 'extraframework')
 elif host_machine.system() == 'windows'
 	sources += ['src/notifications/ManagerWin.cpp']
-	add_project_arguments('-DNOMINMAX WIN32_LEAN_AND_MEAN', '-DSTRICT', '/Zc:__cplusplus', language: 'cpp')
+	add_project_arguments('-DNOMINMAX', '-DWIN32_LEAN_AND_MEAN', '-DSTRICT', '/Zc:__cplusplus', language: 'cpp')
 	deps += dependency('wintoast')
 else
 	sources += ['src/notifications/ManagerLinux.cpp']
