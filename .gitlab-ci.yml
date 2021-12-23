@@ -41,7 +41,7 @@ build-gcc9-meson:
     - meson setup builddir
     - meson compile -C builddir
   cache:
-    key: "a$CI_JOB_NAME"
+    key: "$CI_JOB_NAME"
     when: 'always'
     paths:
       - .ccache
@@ -243,6 +243,7 @@ build-windows-meson:
     - PATH=${PATH##/usr/local/bin:/usr/bin:/bin:} ./.ci/windows/deploy-meson.cmd
   cache:
     key: "$CI_JOB_NAME"
+    when: 'always'
     paths:
       - subprojects/packagecache/
 
