@@ -1027,13 +1027,13 @@ TimelineModel::readEvent(const std::string &id)
 }
 
 QString
-TimelineModel::displayName(QString id) const
+TimelineModel::displayName(const QString &id) const
 {
     return cache::displayName(room_id_, id).toHtmlEscaped();
 }
 
 QString
-TimelineModel::avatarUrl(QString id) const
+TimelineModel::avatarUrl(const QString &id) const
 {
     return cache::avatarUrl(room_id_, id);
 }
@@ -1093,9 +1093,9 @@ TimelineModel::openUserProfile(QString userid)
 }
 
 void
-TimelineModel::replyAction(QString id)
+TimelineModel::replyAction(const QString &id)
 {
-    setReply(std::move(id));
+    setReply(id);
 }
 
 void

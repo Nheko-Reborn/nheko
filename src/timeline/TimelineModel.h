@@ -242,8 +242,8 @@ public:
     bool canFetchMore(const QModelIndex &) const override;
     void fetchMore(const QModelIndex &) override;
 
-    Q_INVOKABLE QString displayName(QString id) const;
-    Q_INVOKABLE QString avatarUrl(QString id) const;
+    Q_INVOKABLE QString displayName(const QString &id) const;
+    Q_INVOKABLE QString avatarUrl(const QString &id) const;
     Q_INVOKABLE QString formatDateSeparator(QDate date) const;
     Q_INVOKABLE QString formatTypingUsers(const std::vector<QString> &users, const QColor &bg);
     Q_INVOKABLE bool showAcceptKnockButton(const QString &id);
@@ -260,7 +260,7 @@ public:
     Q_INVOKABLE void viewDecryptedRawMessage(const QString &id);
     Q_INVOKABLE void openUserProfile(QString userid);
     Q_INVOKABLE void editAction(QString id);
-    Q_INVOKABLE void replyAction(QString id);
+    Q_INVOKABLE void replyAction(const QString &id);
     Q_INVOKABLE void unpin(const QString &id);
     Q_INVOKABLE void pin(const QString &id);
     Q_INVOKABLE void showReadReceipts(QString id);
@@ -367,8 +367,8 @@ public slots:
     QString roomAvatarUrl() const;
     QString roomId() const { return room_id_; }
 
-    bool hasMentions() { return highlight_count > 0; }
-    int notificationCount() { return notification_count; }
+    bool hasMentions() const { return highlight_count > 0; }
+    int notificationCount() const { return notification_count; }
 
     QString scrollTarget() const;
 
