@@ -1955,6 +1955,8 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
 
     // FIXME don't return directly as there may be multiple changes. Instead append to a string and
     // return at the end. Calculate the affected people
+    // TODO also check if the person on the list previously was already high enough to do the action
+    // and exclude them from the list in that case
     auto calc_affected = [&event](int64_t level) -> std::pair<QStringList, int> {
         QStringList affected{};
         auto number_of_affected = 0;
@@ -2147,18 +2149,19 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
 
     // Compare if a Powerlevel of a user changed
     for (auto const &[mxid, powerlevel] : event->content.users) {
+        auto nameOfChangedUser = utils::replaceEmoji(displayName(QString::fromStdString(mxid)));
         if (prevEvent->content.user_level(mxid) != powerlevel) {
             // TODO Return change of PL
             if (powerlevel == administrator_power_level) {
                 return tr("%1 has made %2 and administrator of this room.")
-                  .arg(sender_name, QString::fromStdString(mxid));
+                  .arg(sender_name, nameOfChangedUser);
             } else if (powerlevel == moderator_power_level) {
-                return tr("%1 has made %2 and administrator of this room.")
-                  .arg(sender_name, QString::fromStdString(mxid));
+                return tr("%1 has made %2 and moderator of this room.")
+                  .arg(sender_name, nameOfChangedUser);
             } else {
                 return tr("%1 has changed the powerlevel of %2 from %3 to %4.")
                   .arg(sender_name,
-                       QString::fromStdString(mxid),
+                       nameOfChangedUser,
                        QString::number(prevEvent->content.events_default),
                        QString::number(event->content.events_default));
             }
