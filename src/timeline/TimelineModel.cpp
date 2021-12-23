@@ -15,7 +15,6 @@
 #include <QGuiApplication>
 #include <QMimeDatabase>
 #include <QRegularExpression>
-#include <QSettings>
 #include <QStandardPaths>
 #include <QVariant>
 
@@ -330,7 +329,7 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
     };
 }
 
-TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObject *parent)
+TimelineModel::TimelineModel(TimelineViewManager *manager, const QString &room_id, QObject *parent)
   : QAbstractListModel(parent)
   , events(room_id.toStdString(), this)
   , room_id_(room_id)
@@ -355,7 +354,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
       [](const QString &msg) { emit ChatPage::instance()->showNotification(msg); },
       Qt::QueuedConnection);
 
-    connect(this, &TimelineModel::dataAtIdChanged, this, [this](QString id) {
+    connect(this, &TimelineModel::dataAtIdChanged, this, [this](const QString &id) {
         relatedEventCacheBuster++;
 
         auto idx = idToIndex(id);
@@ -404,7 +403,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
     connect(&events,
             &EventStore::startDMVerification,
             this,
-            [this](mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> msg) {
+            [this](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &msg) {
                 ChatPage::instance()->receivedRoomDeviceVerificationRequest(msg, this);
             });
     connect(&events, &EventStore::updateFlowEventId, this, [this](std::string event_id) {
@@ -414,7 +413,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
     // When a message is sent, check if the current edit/reply relates to that message,
     // and update the event_id so that it points to the sent message and not the pending one.
     connect(
-      &events, &EventStore::messageSent, this, [this](std::string txn_id, std::string event_id) {
+      &events, &EventStore::messageSent, this, [this](const std::string &txn_id, const std::string &event_id) {
           if (edit_.toStdString() == txn_id) {
               edit_ = QString::fromStdString(event_id);
               emit editChanged(edit_);
@@ -486,7 +485,7 @@ TimelineModel::rowCount(const QModelIndex &parent) const
 }
 
 QVariantMap
-TimelineModel::getDump(QString eventId, QString relatedTo) const
+TimelineModel::getDump(const QString &eventId, const QString &relatedTo) const
 {
     if (auto event = events.get(eventId.toStdString(), relatedTo.toStdString()))
         return data(*event, Dump).toMap();
@@ -747,7 +746,7 @@ TimelineModel::data(const QModelIndex &index, int role) const
 }
 
 QVariant
-TimelineModel::dataById(QString id, int role, QString relatedTo)
+TimelineModel::dataById(const QString &id, int role, const QString &relatedTo)
 {
     if (auto event = events.get(id.toStdString(), relatedTo.toStdString()))
         return data(*event, role);
@@ -1054,7 +1053,7 @@ TimelineModel::formatDateSeparator(QDate date) const
 }
 
 void
-TimelineModel::viewRawMessage(QString id)
+TimelineModel::viewRawMessage(const QString &id)
 {
     auto e = events.get(id.toStdString(), "", false);
     if (!e)
@@ -1064,7 +1063,7 @@ TimelineModel::viewRawMessage(QString id)
 }
 
 void
-TimelineModel::forwardMessage(QString eventId, QString roomId)
+TimelineModel::forwardMessage(const QString & eventId, QString roomId)
 {
     auto e = events.get(eventId.toStdString(), "");
     if (!e)
@@ -1099,7 +1098,7 @@ TimelineModel::replyAction(QString id)
 }
 
 void
-TimelineModel::unpin(QString id)
+TimelineModel::unpin(const QString &id)
 {
     auto pinned =
       cache::client()->getStateEvent<mtx::events::state::PinnedEvents>(room_id_.toStdString());
@@ -1129,7 +1128,7 @@ TimelineModel::unpin(QString id)
 }
 
 void
-TimelineModel::pin(QString id)
+TimelineModel::pin(const QString &id)
 {
     auto pinned =
       cache::client()->getStateEvent<mtx::events::state::PinnedEvents>(room_id_.toStdString());
@@ -1159,7 +1158,7 @@ TimelineModel::editAction(QString id)
 }
 
 RelatedInfo
-TimelineModel::relatedInfo(QString id)
+TimelineModel::relatedInfo(const QString &id)
 {
     auto event = events.get(id.toStdString(), "");
     if (!event)
@@ -1175,7 +1174,7 @@ TimelineModel::showReadReceipts(QString id)
 }
 
 void
-TimelineModel::redactEvent(QString id)
+TimelineModel::redactEvent(const QString &id)
 {
     if (!id.isEmpty()) {
         auto edits = events.edits(id.toStdString());
@@ -1212,7 +1211,7 @@ TimelineModel::redactEvent(QString id)
 }
 
 int
-TimelineModel::idToIndex(QString id) const
+TimelineModel::idToIndex(const QString &id) const
 {
     if (id.isEmpty())
         return -1;
@@ -1427,11 +1426,11 @@ void
 TimelineModel::openMedia(QString eventId)
 {
     cacheMedia(eventId,
-               [](QString filename) { QDesktopServices::openUrl(QUrl::fromLocalFile(filename)); });
+               [](const QString &filename) { QDesktopServices::openUrl(QUrl::fromLocalFile(filename)); });
 }
 
 bool
-TimelineModel::saveMedia(QString eventId) const
+TimelineModel::saveMedia(const QString &eventId) const
 {
     mtx::events::collections::TimelineEvents *event = events.get(eventId.toStdString(), "");
     if (!event)
@@ -1505,7 +1504,7 @@ TimelineModel::saveMedia(QString eventId) const
 }
 
 void
-TimelineModel::cacheMedia(QString eventId, std::function<void(const QString)> callback)
+TimelineModel::cacheMedia(const QString &eventId, const std::function<void(const QString)> &callback)
 {
     mtx::events::collections::TimelineEvents *event = events.get(eventId.toStdString(), "");
     if (!event)
@@ -1594,7 +1593,7 @@ TimelineModel::cacheMedia(QString eventId, std::function<void(const QString)> ca
 }
 
 void
-TimelineModel::cacheMedia(QString eventId)
+TimelineModel::cacheMedia(const QString &eventId)
 {
     cacheMedia(eventId, NULL);
 }
@@ -1650,7 +1649,7 @@ TimelineModel::scrollTimerEvent()
 }
 
 void
-TimelineModel::requestKeyForEvent(QString id)
+TimelineModel::requestKeyForEvent(const QString &id)
 {
     auto encrypted_event = events.get(id.toStdString(), "", false);
     if (encrypted_event) {
@@ -1661,7 +1660,7 @@ TimelineModel::requestKeyForEvent(QString id)
 }
 
 void
-TimelineModel::copyLinkToEvent(QString eventId) const
+TimelineModel::copyLinkToEvent(const QString &eventId) const
 {
     QStringList vias;
 
@@ -1755,7 +1754,7 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, QColor bg)
 }
 
 QString
-TimelineModel::formatJoinRuleEvent(QString id)
+TimelineModel::formatJoinRuleEvent(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
@@ -1793,7 +1792,7 @@ TimelineModel::formatJoinRuleEvent(QString id)
 }
 
 QString
-TimelineModel::formatGuestAccessEvent(QString id)
+TimelineModel::formatGuestAccessEvent(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
@@ -1817,7 +1816,7 @@ TimelineModel::formatGuestAccessEvent(QString id)
 }
 
 QString
-TimelineModel::formatHistoryVisibilityEvent(QString id)
+TimelineModel::formatHistoryVisibilityEvent(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
@@ -1849,7 +1848,7 @@ TimelineModel::formatHistoryVisibilityEvent(QString id)
 }
 
 QString
-TimelineModel::formatPowerLevelEvent(QString id)
+TimelineModel::formatPowerLevelEvent(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
@@ -1867,7 +1866,7 @@ TimelineModel::formatPowerLevelEvent(QString id)
 }
 
 QVariantMap
-TimelineModel::formatRedactedEvent(QString id)
+TimelineModel::formatRedactedEvent(const QString &id)
 {
     QVariantMap pair{{"first", ""}, {"second", ""}};
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
@@ -1905,7 +1904,7 @@ TimelineModel::formatRedactedEvent(QString id)
 }
 
 void
-TimelineModel::acceptKnock(QString id)
+TimelineModel::acceptKnock(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
@@ -1929,7 +1928,7 @@ TimelineModel::acceptKnock(QString id)
 }
 
 bool
-TimelineModel::showAcceptKnockButton(QString id)
+TimelineModel::showAcceptKnockButton(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
@@ -1950,7 +1949,7 @@ TimelineModel::showAcceptKnockButton(QString id)
 }
 
 QString
-TimelineModel::formatMemberEvent(QString id)
+TimelineModel::formatMemberEvent(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
@@ -2054,7 +2053,7 @@ TimelineModel::formatMemberEvent(QString id)
 }
 
 void
-TimelineModel::setEdit(QString newEdit)
+TimelineModel::setEdit(const QString &newEdit)
 {
     if (newEdit.isEmpty()) {
         resetEdit();
@@ -2213,7 +2212,7 @@ TimelineModel::directChatOtherUserId() const
 {
     if (roomMemberCount() < 3) {
         QString id;
-        for (auto member : cache::getMembers(room_id_.toStdString()))
+        for (const auto &member : cache::getMembers(room_id_.toStdString()))
             if (member.user_id != UserSettings::instance()->userId())
                 id = member.user_id;
         return id;

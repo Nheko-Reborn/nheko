@@ -189,7 +189,7 @@ class TimelineModel : public QAbstractListModel
 
 public:
     explicit TimelineModel(TimelineViewManager *manager,
-                           QString room_id,
+                           const QString& room_id,
                            QObject *parent = nullptr);
 
     enum Roles
@@ -237,7 +237,7 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QVariant data(const mtx::events::collections::TimelineEvents &event, int role) const;
-    Q_INVOKABLE QVariant dataById(QString id, int role, QString relatedTo);
+    Q_INVOKABLE QVariant dataById(const QString &id, int role, const QString &relatedTo);
 
     bool canFetchMore(const QModelIndex &) const override;
     void fetchMore(const QModelIndex &) override;
@@ -246,40 +246,40 @@ public:
     Q_INVOKABLE QString avatarUrl(QString id) const;
     Q_INVOKABLE QString formatDateSeparator(QDate date) const;
     Q_INVOKABLE QString formatTypingUsers(const std::vector<QString> &users, QColor bg);
-    Q_INVOKABLE bool showAcceptKnockButton(QString id);
-    Q_INVOKABLE void acceptKnock(QString id);
-    Q_INVOKABLE QString formatMemberEvent(QString id);
-    Q_INVOKABLE QString formatJoinRuleEvent(QString id);
-    Q_INVOKABLE QString formatHistoryVisibilityEvent(QString id);
-    Q_INVOKABLE QString formatGuestAccessEvent(QString id);
-    Q_INVOKABLE QString formatPowerLevelEvent(QString id);
-    Q_INVOKABLE QVariantMap formatRedactedEvent(QString id);
+    Q_INVOKABLE bool showAcceptKnockButton(const QString &id);
+    Q_INVOKABLE void acceptKnock(const QString &id);
+    Q_INVOKABLE QString formatMemberEvent(const QString &id);
+    Q_INVOKABLE QString formatJoinRuleEvent(const QString &id);
+    Q_INVOKABLE QString formatHistoryVisibilityEvent(const QString &id);
+    Q_INVOKABLE QString formatGuestAccessEvent(const QString &id);
+    Q_INVOKABLE QString formatPowerLevelEvent(const QString &id);
+    Q_INVOKABLE QVariantMap formatRedactedEvent(const QString &id);
 
-    Q_INVOKABLE void viewRawMessage(QString id);
-    Q_INVOKABLE void forwardMessage(QString eventId, QString roomId);
+    Q_INVOKABLE void viewRawMessage(const QString &id);
+    Q_INVOKABLE void forwardMessage(const QString &eventId, QString roomId);
     Q_INVOKABLE void viewDecryptedRawMessage(QString id);
     Q_INVOKABLE void openUserProfile(QString userid);
     Q_INVOKABLE void editAction(QString id);
     Q_INVOKABLE void replyAction(QString id);
-    Q_INVOKABLE void unpin(QString id);
-    Q_INVOKABLE void pin(QString id);
+    Q_INVOKABLE void unpin(const QString &id);
+    Q_INVOKABLE void pin(const QString &id);
     Q_INVOKABLE void showReadReceipts(QString id);
-    Q_INVOKABLE void redactEvent(QString id);
-    Q_INVOKABLE int idToIndex(QString id) const;
+    Q_INVOKABLE void redactEvent(const QString &id);
+    Q_INVOKABLE int idToIndex(const QString &id) const;
     Q_INVOKABLE QString indexToId(int index) const;
     Q_INVOKABLE void openMedia(QString eventId);
-    Q_INVOKABLE void cacheMedia(QString eventId);
-    Q_INVOKABLE bool saveMedia(QString eventId) const;
+    Q_INVOKABLE void cacheMedia(const QString &eventId);
+    Q_INVOKABLE bool saveMedia(const QString &eventId) const;
     Q_INVOKABLE void showEvent(QString eventId);
-    Q_INVOKABLE void copyLinkToEvent(QString eventId) const;
-    void cacheMedia(QString eventId, std::function<void(const QString filename)> callback);
+    Q_INVOKABLE void copyLinkToEvent(const QString &eventId) const;
+    void cacheMedia(const QString &eventId, const std::function<void(const QString filename)> &callback);
     Q_INVOKABLE void sendReset()
     {
         beginResetModel();
         endResetModel();
     }
 
-    Q_INVOKABLE void requestKeyForEvent(QString id);
+    Q_INVOKABLE void requestKeyForEvent(const QString &id);
 
     std::vector<::Reaction> reactions(const std::string &event_id)
     {
@@ -296,7 +296,7 @@ public:
     void syncState(const mtx::responses::State &state);
     template<class T>
     void sendMessageEvent(const T &content, mtx::events::EventType eventType);
-    RelatedInfo relatedInfo(QString id);
+    RelatedInfo relatedInfo(const QString &id);
 
     DescInfo lastMessage() const { return lastMessage_; }
     bool isSpace() const { return isSpace_; }
@@ -320,7 +320,7 @@ public slots:
     int currentIndex() const { return idToIndex(currentId); }
     void eventShown();
     void markEventsAsRead(const std::vector<QString> &event_ids);
-    QVariantMap getDump(QString eventId, QString relatedTo) const;
+    QVariantMap getDump(const QString &eventId, const QString &relatedTo) const;
     void updateTypingUsers(const std::vector<QString> &users)
     {
         if (this->typingUsers_ != users) {
@@ -349,7 +349,7 @@ public slots:
         }
     }
     QString edit() const { return edit_; }
-    void setEdit(QString newEdit);
+    void setEdit(const QString &newEdit);
     void resetEdit();
     void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
     void clearTimeline() { events.clearTimeline(); }
