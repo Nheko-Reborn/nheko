@@ -10,7 +10,7 @@ project(
 compiler = meson.get_compiler('cpp')
 
 qt5 = import('qt5')
-qt5_modules = ['Core', 'Qml', 'Quick', 'QuickWidgets', 'Widgets', 'Multimedia', 'Svg']
+qt5_modules = ['Core', 'Gui', 'Qml', 'Quick', 'QuickWidgets', 'Widgets', 'Multimedia', 'Svg']
 if target_machine.system() == 'windows'
 	#qt5_modules += 'WinMain'
 elif target_machine.system() == 'darwin'
