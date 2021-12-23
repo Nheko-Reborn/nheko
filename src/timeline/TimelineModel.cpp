@@ -17,6 +17,7 @@
 #include <QRegularExpression>
 #include <QStandardPaths>
 #include <QVariant>
+#include <utility>
 
 #include "Cache_p.h"
 #include "ChatPage.h"
@@ -407,7 +408,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, const QString &room_i
                 ChatPage::instance()->receivedRoomDeviceVerificationRequest(msg, this);
             });
     connect(&events, &EventStore::updateFlowEventId, this, [this](std::string event_id) {
-        this->updateFlowEventId(event_id);
+        this->updateFlowEventId(std::move(event_id));
     });
 
     // When a message is sent, check if the current edit/reply relates to that message,
@@ -1069,11 +1070,11 @@ TimelineModel::forwardMessage(const QString & eventId, QString roomId)
     if (!e)
         return;
 
-    emit forwardToRoom(e, roomId);
+    emit forwardToRoom(e, std::move(roomId));
 }
 
 void
-TimelineModel::viewDecryptedRawMessage(QString id)
+TimelineModel::viewDecryptedRawMessage(const QString &id)
 {
     auto e = events.get(id.toStdString(), "");
     if (!e)
@@ -1086,7 +1087,7 @@ TimelineModel::viewDecryptedRawMessage(QString id)
 void
 TimelineModel::openUserProfile(QString userid)
 {
-    UserProfile *userProfile = new UserProfile(room_id_, userid, manager_, this);
+    UserProfile *userProfile = new UserProfile(room_id_, std::move(userid), manager_, this);
     connect(this, &TimelineModel::roomAvatarUrlChanged, userProfile, &UserProfile::updateAvatarUrl);
     emit manager_->openProfile(userProfile);
 }
@@ -1094,7 +1095,7 @@ TimelineModel::openUserProfile(QString userid)
 void
 TimelineModel::replyAction(QString id)
 {
-    setReply(id);
+    setReply(std::move(id));
 }
 
 void
@@ -1423,7 +1424,7 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
 }
 
 void
-TimelineModel::openMedia(QString eventId)
+TimelineModel::openMedia(const QString &eventId)
 {
     cacheMedia(eventId,
                [](const QString &filename) { QDesktopServices::openUrl(QUrl::fromLocalFile(filename)); });
@@ -1700,7 +1701,7 @@ TimelineModel::copyLinkToEvent(const QString &eventId) const
 }
 
 QString
-TimelineModel::formatTypingUsers(const std::vector<QString> &users, QColor bg)
+TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor &bg)
 {
     QString temp =
       tr("%1 and %2 are typing.",

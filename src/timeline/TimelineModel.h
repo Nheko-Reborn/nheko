@@ -245,7 +245,7 @@ public:
     Q_INVOKABLE QString displayName(QString id) const;
     Q_INVOKABLE QString avatarUrl(QString id) const;
     Q_INVOKABLE QString formatDateSeparator(QDate date) const;
-    Q_INVOKABLE QString formatTypingUsers(const std::vector<QString> &users, QColor bg);
+    Q_INVOKABLE QString formatTypingUsers(const std::vector<QString> &users, const QColor &bg);
     Q_INVOKABLE bool showAcceptKnockButton(const QString &id);
     Q_INVOKABLE void acceptKnock(const QString &id);
     Q_INVOKABLE QString formatMemberEvent(const QString &id);
@@ -257,7 +257,7 @@ public:
 
     Q_INVOKABLE void viewRawMessage(const QString &id);
     Q_INVOKABLE void forwardMessage(const QString &eventId, QString roomId);
-    Q_INVOKABLE void viewDecryptedRawMessage(QString id);
+    Q_INVOKABLE void viewDecryptedRawMessage(const QString &id);
     Q_INVOKABLE void openUserProfile(QString userid);
     Q_INVOKABLE void editAction(QString id);
     Q_INVOKABLE void replyAction(QString id);
@@ -267,7 +267,7 @@ public:
     Q_INVOKABLE void redactEvent(const QString &id);
     Q_INVOKABLE int idToIndex(const QString &id) const;
     Q_INVOKABLE QString indexToId(int index) const;
-    Q_INVOKABLE void openMedia(QString eventId);
+    Q_INVOKABLE void openMedia(const QString &eventId);
     Q_INVOKABLE void cacheMedia(const QString &eventId);
     Q_INVOKABLE bool saveMedia(const QString &eventId) const;
     Q_INVOKABLE void showEvent(QString eventId);
@@ -331,7 +331,7 @@ public slots:
     std::vector<QString> typingUsers() const { return typingUsers_; }
     bool paginationInProgress() const { return m_paginationInProgress; }
     QString reply() const { return reply_; }
-    void setReply(QString newReply)
+    void setReply(const QString &newReply)
     {
         if (edit_.startsWith('m'))
             return;
