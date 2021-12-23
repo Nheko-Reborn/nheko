@@ -1953,26 +1953,27 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
     if (!prevEvent)
         return "";
 
-    // FIXME don't return directly as there may be multiple changes. Instead append to a string and
-    // return at the end. Calculate the affected people
     // TODO also check if the person on the list previously was already high enough to do the action
     // and exclude them from the list in that case
-    auto calc_affected = [&event](int64_t level) -> std::pair<QStringList, int> {
+    auto calc_affected = [&event,
+                          &prevEvent](int64_t newPowerlevelSetting) -> std::pair<QStringList, int> {
         QStringList affected{};
-        auto number_of_affected = 0;
+        auto numberOfAffected = 0;
         // We do only compare to people with explicit PL. Usually others are not going to be
         // affected either way and this is cheaper to iterate over.
-        for (auto const &[key, val] : event->content.users) {
-            if (val == level) {
-                number_of_affected++;
-                if (number_of_affected <= 2) {
-                    affected.push_back(QString::fromStdString(key));
+        for (auto const &[mxid, currentPowerlevel] : event->content.users) {
+            if (currentPowerlevel == newPowerlevelSetting &&
+                prevEvent->content.user_level(mxid) < newPowerlevelSetting) {
+                numberOfAffected++;
+                if (numberOfAffected <= 2) {
+                    affected.push_back(QString::fromStdString(mxid));
                 }
             }
         }
-        return {affected, number_of_affected};
+        return {affected, numberOfAffected};
     };
 
+    QStringList resultingMessage{};
     // These affect only a few people. Therefor we can print who is affected.
     if (event->content.kick != prevEvent->content.kick) {
         auto default_message = tr("%1 has changed the room's kick powerlevel from %2 to %3.")
@@ -1988,25 +1989,30 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
                 if (number_of_affected > 2) {
-                    return default_message + QString::fromStdString(" ") +
-                           tr("%1 and %2 and %n other(s) can now kick room members.")
-                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
-                             .arg(utils::replaceEmoji(displayName(affected.at(1))))
-                             .arg(true_affected_rest);
+                    resultingMessage.append(
+                      default_message + QString::fromStdString(" ") +
+                      tr("%1 and %2 and %n other(s) can now kick room members.")
+                        .arg(utils::replaceEmoji(displayName(affected.at(0))),
+                             utils::replaceEmoji(displayName(affected.at(1))))
+                        .arg(true_affected_rest));
                 } else if (number_of_affected == 2) {
-                    return default_message + QString::fromStdString(" ") +
-                           tr("%1 and %2 can now kick room members.")
-                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
-                             .arg(utils::replaceEmoji(displayName(affected.at(1))));
+                    resultingMessage.append(
+                      default_message + QString::fromStdString(" ") +
+                      tr("%1 and %2 can now kick room members.")
+                        .arg(utils::replaceEmoji(displayName(affected.at(0))),
+                             utils::replaceEmoji(displayName(affected.at(1)))));
                 } else if (number_of_affected == 1) {
-                    return default_message + QString::fromStdString(" ") +
-                           tr("%1 can now kick room members.")
-                             .arg(utils::replaceEmoji(displayName(affected.at(0))));
+                    resultingMessage.append(
+                      default_message + QString::fromStdString(" ") +
+                      tr("%1 can now kick room members.")
+                        .arg(utils::replaceEmoji(displayName(affected.at(0)))));
                 }
+            } else {
+                resultingMessage.append(default_message);
             }
+        } else {
+            resultingMessage.append(default_message);
         }
-
-        return default_message;
     }
 
     if (event->content.redact != prevEvent->content.redact) {
@@ -2023,25 +2029,30 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
                 if (number_of_affected > 2) {
-                    return default_message + QString::fromStdString(" ") +
-                           tr("%1 and %2 and %n other(s) can now redact room messages.")
-                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
-                             .arg(utils::replaceEmoji(displayName(affected.at(1))))
-                             .arg(true_affected_rest);
+                    resultingMessage.append(
+                      default_message + QString::fromStdString(" ") +
+                      tr("%1 and %2 and %n other(s) can now redact room messages.")
+                        .arg(utils::replaceEmoji(displayName(affected.at(0))),
+                             utils::replaceEmoji(displayName(affected.at(1))))
+                        .arg(true_affected_rest));
                 } else if (number_of_affected == 2) {
-                    return default_message + QString::fromStdString(" ") +
-                           tr("%1 and %2 can now redact room messages.")
-                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
-                             .arg(utils::replaceEmoji(displayName(affected.at(1))));
+                    resultingMessage.append(
+                      default_message + QString::fromStdString(" ") +
+                      tr("%1 and %2 can now redact room messages.")
+                        .arg(utils::replaceEmoji(displayName(affected.at(0))),
+                             utils::replaceEmoji(displayName(affected.at(1)))));
                 } else if (number_of_affected == 1) {
-                    return default_message + QString::fromStdString(" ") +
-                           tr("%1 can now redact room messages.")
-                             .arg(utils::replaceEmoji(displayName(affected.at(0))));
+                    resultingMessage.append(
+                      default_message + QString::fromStdString(" ") +
+                      tr("%1 can now redact room messages.")
+                        .arg(utils::replaceEmoji(displayName(affected.at(0)))));
                 }
+            } else {
+                resultingMessage.append(default_message);
             }
+        } else {
+            resultingMessage.append(default_message);
         }
-
-        return default_message;
     }
 
     if (event->content.ban != prevEvent->content.ban) {
@@ -2051,32 +2062,37 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
                                  .arg(event->content.ban);
 
         // We only calculate affected users if we change to a level above the default users PL
-        // to not accidentially have a DoS vector
+        // to not accidentally have a DoS vector
         if (event->content.ban > default_powerlevel) {
             auto [affected, number_of_affected] = calc_affected(event->content.kick);
 
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
                 if (number_of_affected > 2) {
-                    return default_message + QString::fromStdString(" ") +
-                           tr("%1 and %2 and %n other(s) can now ban room members.")
-                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
-                             .arg(utils::replaceEmoji(displayName(affected.at(1))))
-                             .arg(true_affected_rest);
+                    resultingMessage.append(
+                      default_message + QString::fromStdString(" ") +
+                      tr("%1 and %2 and %n other(s) can now ban room members.")
+                        .arg(utils::replaceEmoji(displayName(affected.at(0))),
+                             utils::replaceEmoji(displayName(affected.at(1))))
+                        .arg(true_affected_rest));
                 } else if (number_of_affected == 2) {
-                    return default_message + QString::fromStdString(" ") +
-                           tr("%1 and %2 can now ban room members.")
-                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
-                             .arg(utils::replaceEmoji(displayName(affected.at(1))));
+                    resultingMessage.append(
+                      default_message + QString::fromStdString(" ") +
+                      tr("%1 and %2 can now ban room members.")
+                        .arg(utils::replaceEmoji(displayName(affected.at(0))),
+                             utils::replaceEmoji(displayName(affected.at(1)))));
                 } else if (number_of_affected == 1) {
-                    return default_message + QString::fromStdString(" ") +
-                           tr("%1 can now ban room members.")
-                             .arg(utils::replaceEmoji(displayName(affected.at(0))));
+                    resultingMessage.append(
+                      default_message + QString::fromStdString(" ") +
+                      tr("%1 can now ban room members.")
+                        .arg(utils::replaceEmoji(displayName(affected.at(0)))));
                 }
+            } else {
+                resultingMessage.append(default_message);
             }
+        } else {
+            resultingMessage.append(default_message);
         }
-
-        return default_message;
     }
 
     if (event->content.state_default != prevEvent->content.state_default) {
@@ -2094,57 +2110,66 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
                 if (number_of_affected > 2) {
-                    return default_message + QString::fromStdString(" ") +
-                           tr("%1 and %2 and %n other(s) can now send state events.")
-                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
-                             .arg(utils::replaceEmoji(displayName(affected.at(1))))
-                             .arg(true_affected_rest);
+                    resultingMessage.append(
+                      default_message + QString::fromStdString(" ") +
+                      tr("%1 and %2 and %n other(s) can now send state events.")
+                        .arg(utils::replaceEmoji(displayName(affected.at(0))),
+                             utils::replaceEmoji(displayName(affected.at(1))))
+                        .arg(true_affected_rest));
                 } else if (number_of_affected == 2) {
-                    return default_message + QString::fromStdString(" ") +
-                           tr("%1 and %2 can now send state events.")
-                             .arg(utils::replaceEmoji(displayName(affected.at(0))))
-                             .arg(utils::replaceEmoji(displayName(affected.at(1))));
+                    resultingMessage.append(
+                      default_message + QString::fromStdString(" ") +
+                      tr("%1 and %2 can now send state events.")
+                        .arg(utils::replaceEmoji(displayName(affected.at(0))),
+                             utils::replaceEmoji(displayName(affected.at(1)))));
                 } else if (number_of_affected == 1) {
-                    return default_message + QString::fromStdString(" ") +
-                           tr("%1 can now send state events.")
-                             .arg(utils::replaceEmoji(displayName(affected.at(0))));
+                    resultingMessage.append(
+                      default_message + QString::fromStdString(" ") +
+                      tr("%1 can now send state events.")
+                        .arg(utils::replaceEmoji(displayName(affected.at(0)))));
                 }
+            } else {
+                resultingMessage.append(default_message);
             }
+        } else {
+            resultingMessage.append(default_message);
         }
-
-        return default_message;
     }
 
     // These affect potentially the whole room. We there for do not calculate who gets affected
     // by this to prevent huge lists of people.
     if (event->content.invite != prevEvent->content.invite) {
-        return tr("%1 has changed the room's invite powerlevel from %2 to %3.")
-          .arg(sender_name,
-               QString::number(prevEvent->content.invite),
-               QString::number(event->content.invite));
+        resultingMessage.append(tr("%1 has changed the room's invite powerlevel from %2 to %3.")
+                                  .arg(sender_name,
+                                       QString::number(prevEvent->content.invite),
+                                       QString::number(event->content.invite)));
     }
 
     if (event->content.events_default != prevEvent->content.events_default) {
         if ((event->content.events_default > default_powerlevel) &&
             prevEvent->content.events_default <= default_powerlevel) {
-            return tr("%1 has changed the room's events_default powerlevel from %2 to %3. New "
-                      "users can now not send any events.")
-              .arg(sender_name,
-                   QString::number(prevEvent->content.events_default),
-                   QString::number(event->content.events_default));
+            resultingMessage.append(
+              tr("%1 has changed the room's events_default powerlevel from %2 to %3. New "
+                 "users can now not send any events.")
+                .arg(sender_name,
+                     QString::number(prevEvent->content.events_default),
+                     QString::number(event->content.events_default)));
         } else if ((event->content.events_default < prevEvent->content.events_default) &&
                    (event->content.events_default < default_powerlevel) &&
                    (prevEvent->content.events_default > default_powerlevel)) {
-            return tr("%1 has changed the room's events_default powerlevel from %2 to %3. New "
-                      "users can now send events that are not otherwise restricted.")
-              .arg(sender_name,
-                   QString::number(prevEvent->content.events_default),
-                   QString::number(event->content.events_default));
+            resultingMessage.append(
+              tr("%1 has changed the room's events_default powerlevel from %2 to %3. New "
+                 "users can now send events that are not otherwise restricted.")
+                .arg(sender_name,
+                     QString::number(prevEvent->content.events_default),
+                     QString::number(event->content.events_default)));
+        } else {
+            resultingMessage.append(
+              tr("%1 has changed the room's events_default powerlevel from %2 to %3.")
+                .arg(sender_name,
+                     QString::number(prevEvent->content.events_default),
+                     QString::number(event->content.events_default)));
         }
-        return tr("%1 has changed the room's events_default powerlevel from %2 to %3.")
-          .arg(sender_name,
-               QString::number(prevEvent->content.events_default),
-               QString::number(event->content.events_default));
     }
 
     // Compare if a Powerlevel of a user changed
@@ -2153,22 +2178,28 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
         if (prevEvent->content.user_level(mxid) != powerlevel) {
             // TODO Return change of PL
             if (powerlevel == administrator_power_level) {
-                return tr("%1 has made %2 and administrator of this room.")
-                  .arg(sender_name, nameOfChangedUser);
+                resultingMessage.append(tr("%1 has made %2 and administrator of this room.")
+                                          .arg(sender_name, nameOfChangedUser));
             } else if (powerlevel == moderator_power_level) {
-                return tr("%1 has made %2 and moderator of this room.")
-                  .arg(sender_name, nameOfChangedUser);
+                resultingMessage.append(tr("%1 has made %2 and moderator of this room.")
+                                          .arg(sender_name, nameOfChangedUser));
             } else {
-                return tr("%1 has changed the powerlevel of %2 from %3 to %4.")
-                  .arg(sender_name,
-                       nameOfChangedUser,
-                       QString::number(prevEvent->content.user_level(mxid)),
-                       QString::number(powerlevel));
+                resultingMessage.append(tr("%1 has changed the powerlevel of %2 from %3 to %4.")
+                                          .arg(sender_name,
+                                               nameOfChangedUser,
+                                               QString::number(prevEvent->content.user_level(mxid)),
+                                               QString::number(powerlevel)));
             }
         }
     }
 
-    return tr("%1 has changed the room's permissions.").arg(sender_name);
+    // TODO handle added/removed/changed event types
+
+    if (!resultingMessage.isEmpty()) {
+        return resultingMessage.join('\n');
+    } else {
+        return tr("%1 has changed the room's permissions.").arg(sender_name);
+    }
 }
 
 QVariantMap
