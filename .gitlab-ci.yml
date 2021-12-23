@@ -34,6 +34,7 @@ build-gcc9-meson:
   variables:
     QT_PKG: 515
     TRAVIS_OS_NAME: linux
+    GIT_SUBMODULE_STRATEGY: normal
   before_script:
     - . "/opt/qt${QT_PKG}/bin/qt${QT_PKG}-env.sh" || true
   script:
@@ -210,6 +211,7 @@ build-windows-meson:
   tags: [windows]
   variables:
     BUILD: ${CI_BUILDS_DIR}
+    GIT_SUBMODULE_STRATEGY: normal
   script:
     - PATH=${PATH##/usr/local/bin:/usr/bin:/bin:} ./.ci/windows/build-meson.cmd
     - ls -la
@@ -218,7 +220,7 @@ build-windows-meson:
   cache:
     key: "$CI_JOB_NAME"
     paths:
-      - subprojects
+      - subprojects/packagecache/
 
 linting:
   stage: build
