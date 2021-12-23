@@ -66,7 +66,7 @@ if cc.get_id() == 'msvc'
   lmdb_name_suffix = 'lib'
 endif
 
-lmdb_inc = include_directories('.')
+lmdb_inc = include_directories('.', 'libraries/liblmdb')
 lmdb = library(
   'lmdb',
   [ lmdb_public_headers, lmdb_headers, lmdb_sources ],
