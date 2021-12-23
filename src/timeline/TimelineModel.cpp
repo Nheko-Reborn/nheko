@@ -2162,8 +2162,8 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
                 return tr("%1 has changed the powerlevel of %2 from %3 to %4.")
                   .arg(sender_name,
                        nameOfChangedUser,
-                       QString::number(prevEvent->content.events_default),
-                       QString::number(event->content.events_default));
+                       QString::number(prevEvent->content.user_level(mxid)),
+                       QString::number(powerlevel));
             }
         }
     }
