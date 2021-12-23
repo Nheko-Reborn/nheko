@@ -14,7 +14,7 @@ dir \Qt\5.15.2\msvc2019_64\
 dir \Qt\5.15.2\msvc2019_64\bin
 
 REM Build nheko
-pip install --upgrade meson || exit /b
+pip install --upgrade --verbose meson || exit /b
 
 meson setup builddir || exit /b
 meson compile -C builddir || exit /b
