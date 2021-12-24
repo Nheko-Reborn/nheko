@@ -154,7 +154,7 @@ codesign-macos:
   after_script:
     - ./.ci/upload-nightly-gitlab.sh artifacts/nheko-${CI_COMMIT_SHORT_SHA}.dmg
   needs:
-    - build-macos
+    - build-macos-meson
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
     - if : $CI_COMMIT_TAG
