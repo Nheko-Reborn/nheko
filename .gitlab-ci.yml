@@ -127,14 +127,12 @@ build-macos-meson:
     GIT_SUBMODULE_STRATEGY: normal
   script:
     - export PATH=/usr/local/opt/qt@5/bin/:${PATH}
-    - meson setup --prefix=${PWD}/build/nheko.app --bindir=Contents/MacOS build
+    - meson setup --prefix=${PWD}/build/nheko.app --bindir=Contents/MacOS --buildtype=debugoptimized build
     - meson compile -C build
     - meson install --skip-subprojects -C build
   artifacts:
     paths:
       - build/nheko.app
-      - build/meson-logs/meson-log.txt
-    when: always
     name: nheko-${CI_COMMIT_SHORT_SHA}-macos-app
     expose_as: 'macos-app'
     public: false
