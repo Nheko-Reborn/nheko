@@ -18,7 +18,9 @@ elif target_machine.system() == 'darwin'
 else
 	qt5_modules += 'DBus'
 endif
+
 qt5_dep = dependency('qt5', modules: qt5_modules, include_type: 'system')
+
 inc = include_directories('src', 'includes', 'third_party/cpp-httplib-0.5.12')
 
 deps = [
@@ -79,8 +81,8 @@ if (not qtkeychain_dep.found()
     qtkeychain_dep = qtkeychain_proj.dependency('qt5keychain')
 
     if target_machine.system() == 'linux' or target_machine.system() == 'freebsd' or target_machine.system() == 'netbsd' or target_machine.system() == 'openbsd' or target_machine.system() == 'dragonfly'
-			deps += dependency('libsecret-1', default_options: ['manpage=false', 'vapi=false', 'gtk_doc=false', 'introspection=false',]) # 'bash_completion=disabled'])
-		endif
+		deps += dependency('libsecret-1', default_options: ['manpage=false', 'vapi=false', 'gtk_doc=false', 'introspection=false',]) # 'bash_completion=disabled'])
+	endif
 endif
 deps += qtkeychain_dep
 
@@ -90,11 +92,13 @@ if sdp_dep.found() and webrtc_dep.found()
 	deps += [sdp_dep, webrtc_dep]
 	add_project_arguments('-DGSTREAMER_AVAILABLE', language: 'cpp')
 
-	xcb_dep = dependency('xcb', required: get_option('screenshare_x11'))
-	xcb_ewmh_dep = dependency('xcb-ewmh', required: get_option('screenshare_x11'))
-	if xcb_dep.found() and xcb_ewmh_dep.found()
-		deps += [xcb_dep, xcb_ewmh_dep]
-		add_project_arguments('-DXCB_AVAILABLE', language: 'cpp')
+	if target_machine.system() != 'darwin'
+		xcb_dep = dependency('xcb', required: get_option('screenshare_x11'))
+		xcb_ewmh_dep = dependency('xcb-ewmh', required: get_option('screenshare_x11'))
+		if xcb_dep.found() and xcb_ewmh_dep.found()
+			deps += [xcb_dep, xcb_ewmh_dep]
+			add_project_arguments('-DXCB_AVAILABLE', language: 'cpp')
+		endif
 	endif
 endif
 
@@ -118,6 +122,20 @@ conf_data.set10('SPDLOG_DEBUG_ON', get_option('buildtype') == 'debug')
 configure_file(input : 'meson/nheko.h',
                output : 'config_nheko.h',
                configuration : conf_data)
+
+if host_machine.system() == 'darwin'
+    # Identify MacOS bundle
+	macos_bundle_data = configuration_data()
+    macos_bundle_data.set('MACOSX_BUNDLE_BUNDLE_NAME', meson.project_name())
+	macos_bundle_data.set('MACOSX_BUNDLE_EXECUTABLE_NAME', meson.project_name())
+    macos_bundle_data.set('MACOSX_BUNDLE_INFO_STRING', meson.project_version())
+    macos_bundle_data.set('MACOSX_BUNDLE_BUNDLE_VERSION', meson.project_version())
+    macos_bundle_data.set('MACOSX_BUNDLE_LONG_VERSION_STRING', meson.project_version())
+    macos_bundle_data.set('MACOSX_BUNDLE_SHORT_VERSION_STRING', meson.project_version())
+    macos_bundle_data.set('MACOSX_BUNDLE_COPYRIGHT', 'Copyright (c) 2021 Nheko Contributors')
+    macos_bundle_data.set('MACOSX_BUNDLE_GUI_IDENTIFIER', 'io.github.nheko-reborn.nheko')
+    macos_bundle_data.set('MACOSX_BUNDLE_ICON_FILE', 'nheko')
+endif
 
 vcs_tag(input: 'meson/version.h', output: 'nheko_version.h', replace_string: '@PROJECT_VERSION@')
 
@@ -329,13 +347,20 @@ endif
 subdir('resources/langs')
 resources = qt5.compile_resources(name: 'res', sources: 'resources/res.qrc')
 
+cpp_args = ['-DQAPPLICATION_CLASS=QApplication']
+
+if target_machine.system() == 'darwin'
+    cpp_args += ['-DMACOS_USE_BUNDLE']
+endif
+
 executable('nheko',
 	sources, moc_files, resources, translations,
-	cpp_args: '-DQAPPLICATION_CLASS=QApplication',
+	cpp_args: cpp_args,
 	include_directories: inc,
 	dependencies : deps,
 	win_subsystem: 'windows,6.1',
 	install: true)
+
 
 if target_machine.system() != 'windows' and target_machine.system() != 'darwin'
 	install_data([
@@ -360,5 +385,14 @@ if target_machine.system() != 'windows' and target_machine.system() != 'darwin'
 		], install_dir: 'share/icons/hicolor')
 	install_data('resources/nheko.desktop', install_dir: 'share/applications')
 	install_data('resources/nheko.appdata.xml', install_dir: 'share/metainfo')
+elif target_machine.system() == 'darwin'
+    install_data('resources/nheko.icns', install_dir : 'Contents/Resources')
+    configure_file(
+        input : 'meson/MacOSXBundleInfo.plist.in',
+        output : 'Info.plist',
+        configuration : macos_bundle_data,
+        install : true,
+        install_dir : 'Contents'
+    )
 endif
 
