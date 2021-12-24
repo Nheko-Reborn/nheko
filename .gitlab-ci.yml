@@ -133,6 +133,8 @@ build-macos-meson:
   artifacts:
     paths:
       - build/nheko.app
+      - build/meson-logs/meson-log.txt
+    when: always
     name: nheko-${CI_COMMIT_SHORT_SHA}-macos-app
     expose_as: 'macos-app'
     public: false
