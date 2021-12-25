@@ -2176,12 +2176,16 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
     for (auto const &[mxid, powerlevel] : event->content.users) {
         auto nameOfChangedUser = utils::replaceEmoji(displayName(QString::fromStdString(mxid)));
         if (prevEvent->content.user_level(mxid) != powerlevel) {
-            // TODO Return change of PL
             if (powerlevel == administrator_power_level) {
-                resultingMessage.append(tr("%1 has made %2 and administrator of this room.")
+                resultingMessage.append(tr("%1 has made %2 an administrator of this room.")
                                           .arg(sender_name, nameOfChangedUser));
-            } else if (powerlevel == moderator_power_level) {
-                resultingMessage.append(tr("%1 has made %2 and moderator of this room.")
+            } else if (powerlevel == moderator_power_level &&
+                       powerlevel > prevEvent->content.user_level(mxid)) {
+                resultingMessage.append(tr("%1 has made %2 a moderator of this room.")
+                                          .arg(sender_name, nameOfChangedUser));
+            } else if (powerlevel == moderator_power_level &&
+                       powerlevel < prevEvent->content.user_level(mxid)) {
+                resultingMessage.append(tr("%1 has downgraded %2 to moderator of this room.")
                                           .arg(sender_name, nameOfChangedUser));
             } else {
                 resultingMessage.append(tr("%1 has changed the powerlevel of %2 from %3 to %4.")
