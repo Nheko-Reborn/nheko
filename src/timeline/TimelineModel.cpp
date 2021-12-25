@@ -1953,8 +1953,6 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
     if (!prevEvent)
         return "";
 
-    // TODO also check if the person on the list previously was already high enough to do the action
-    // and exclude them from the list in that case
     auto calc_affected = [&event,
                           &prevEvent](int64_t newPowerlevelSetting) -> std::pair<QStringList, int> {
         QStringList affected{};
