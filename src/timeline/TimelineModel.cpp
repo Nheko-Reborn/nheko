@@ -561,14 +561,36 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         }
 
         // TODO(Nico): Don't parse html with a regex
-        const static QRegularExpression matchImgUri("(<img [^>]*)src=\"mxc://([^\"]*)\"([^>]*>)");
-        formattedBody_.replace(matchImgUri, "\\1 src=\"image://mxcImage/\\2\"\\3");
-        // Same regex but for single quotes around the src
-        const static QRegularExpression matchImgUri2("(<img [^>]*)src=\'mxc://([^\']*)\'([^>]*>)");
-        formattedBody_.replace(matchImgUri2, "\\1 src=\"image://mxcImage/\\2\"\\3");
         const static QRegularExpression matchEmoticonHeight(
           "(<img data-mx-emoticon [^>]*)height=\"([^\"]*)\"([^>]*>)");
         formattedBody_.replace(matchEmoticonHeight, QString("\\1 height=\"%1\"\\3").arg(ascent));
+
+        const static QRegularExpression matchIsImg("<img [^>]+>");
+        auto itIsImg = matchIsImg.globalMatch(formattedBody_);
+        while (itIsImg.hasNext()) {
+            const QString curImg = itIsImg.next().captured(0);
+
+            // Construct image parameters later used by MxcImageProvider.
+            QString imgParams;
+            if (curImg.contains("height")) {
+                const static QRegularExpression matchImgHeight("height=[\"\']?(\\d+)[\"\']?");
+                const auto height = matchImgHeight.match(curImg).captured(1).toInt();
+                imgParams         = QString("?scale&height=%1").arg(height);
+            }
+
+            // Replace src in current <img>.
+            auto imgReplacement = curImg;
+            const static QRegularExpression matchImgUri("src=\"mxc://([^\"]*)\"");
+            imgReplacement.replace(matchImgUri,
+                                   QString("src=\"image://mxcImage/\\1%1\"").arg(imgParams));
+            // Same regex but for single quotes around the src
+            const static QRegularExpression matchImgUri2("src=\'mxc://([^\']*)\'");
+            imgReplacement.replace(matchImgUri2,
+                                   QString("src=\'image://mxcImage/\\1%1\'").arg(imgParams));
+
+            // Replace <img> in formattedBody_ with our new <img>.
+            formattedBody_.replace(curImg, imgReplacement);
+        }
 
         return QVariant(
           utils::replaceEmoji(utils::linkifyMessage(utils::escapeBlacklistedHtml(formattedBody_))));

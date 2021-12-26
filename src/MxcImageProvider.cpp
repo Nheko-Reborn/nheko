@@ -27,6 +27,7 @@ MxcImageProvider::requestImageResponse(const QString &id, const QSize &requested
     auto id_      = id;
     bool crop     = true;
     double radius = 0;
+    auto size     = requestedSize;
 
     auto queryStart = id.lastIndexOf('?');
     if (queryStart != -1) {
@@ -39,11 +40,14 @@ MxcImageProvider::requestImageResponse(const QString &id, const QSize &requested
                 crop = false;
             } else if (b.startsWith("radius=")) {
                 radius = b.mid(7).toDouble();
+            } else if (b.startsWith("height=")) {
+                size.setHeight(b.mid(7).toInt());
+                size.setWidth(0);
             }
         }
     }
 
-    return new MxcImageResponse(id_, crop, radius, requestedSize);
+    return new MxcImageResponse(id_, crop, radius, size);
 }
 
 void
@@ -120,7 +124,9 @@ MxcImageProvider::download(const QString &id,
         if (fileInfo.exists()) {
             QImage image = utils::readImageFromFile(fileInfo.absoluteFilePath());
             if (!image.isNull()) {
-                image = image.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                if (requestedSize != image.size()) {
+                    image = image.scaledToHeight(requestedSize.height(), Qt::SmoothTransformation);
+                }
 
                 if (radius != 0) {
                     image = clipRadius(std::move(image), radius);
@@ -151,8 +157,10 @@ MxcImageProvider::download(const QString &id,
               auto data    = QByteArray(res.data(), (int)res.size());
               QImage image = utils::readImage(data);
               if (!image.isNull()) {
-                  image =
-                    image.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                  if (requestedSize != image.size()) {
+                      image =
+                        image.scaledToHeight(requestedSize.height(), Qt::SmoothTransformation);
+                  }
 
                   if (radius != 0) {
                       image = clipRadius(std::move(image), radius);
