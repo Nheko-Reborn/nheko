@@ -561,25 +561,28 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         }
 
         // TODO(Nico): Don't parse html with a regex
-        const static QRegularExpression matchEmoticonHeight(
-          "(<img data-mx-emoticon [^>]*)height=\"([^\"]*)\"([^>]*>)");
-        formattedBody_.replace(matchEmoticonHeight, QString("\\1 height=\"%1\"\\3").arg(ascent));
-
         const static QRegularExpression matchIsImg("<img [^>]+>");
         auto itIsImg = matchIsImg.globalMatch(formattedBody_);
         while (itIsImg.hasNext()) {
+            // The current <img> tag.
             const QString curImg = itIsImg.next().captured(0);
+            // The replacement for the current <img>.
+            auto imgReplacement = curImg;
 
             // Construct image parameters later used by MxcImageProvider.
             QString imgParams;
             if (curImg.contains("height")) {
-                const static QRegularExpression matchImgHeight("height=[\"\']?(\\d+)[\"\']?");
-                const auto height = matchImgHeight.match(curImg).captured(1).toInt();
+                const static QRegularExpression matchImgHeight("height=([\"\']?)(\\d+)([\"\']?)");
+                // Make emoticons twice as high as the font.
+                if (curImg.contains("data-mx-emoticon")) {
+                    imgReplacement =
+                      imgReplacement.replace(matchImgHeight, "height=\\1%1\\3").arg(ascent * 2);
+                }
+                const auto height = matchImgHeight.match(imgReplacement).captured(2).toInt();
                 imgParams         = QString("?scale&height=%1").arg(height);
             }
 
             // Replace src in current <img>.
-            auto imgReplacement = curImg;
             const static QRegularExpression matchImgUri("src=\"mxc://([^\"]*)\"");
             imgReplacement.replace(matchImgUri,
                                    QString("src=\"image://mxcImage/\\1%1\"").arg(imgParams));
