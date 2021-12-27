@@ -69,7 +69,7 @@ Popup {
 
     onCompleterNameChanged: {
         if (completerName) {
-            completer = TimelineManager.completerFor(completerName, room.roomId);
+            completer = TimelineManager.completerFor(completerName, completerName == "room" ? "" : room.roomId);
             completer.setSearchString("");
         } else {
             completer = undefined;

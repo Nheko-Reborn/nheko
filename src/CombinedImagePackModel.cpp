@@ -58,7 +58,7 @@ CombinedImagePackModel::data(const QModelIndex &index, int role) const
         case CompletionModel::CompletionRole:
             return QString("<img data-mx-emoticon height=32 src=\"%1\" alt=\"%2\" title=\"%2\">")
               .arg(QString::fromStdString(images[index.row()].image.url).toHtmlEscaped(),
-                   images[index.row()].shortcode);
+                   QString::fromStdString(images[index.row()].image.body));
         case Roles::Url:
             return QString::fromStdString(images[index.row()].image.url);
         case CompletionModel::SearchRole:
