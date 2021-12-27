@@ -71,8 +71,6 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
       &CompletionProxyModel::newSearchString,
       this,
       [this](QString s) {
-          s.remove(":");
-          s.remove("@");
           searchString_ = s.toLower();
           invalidate();
       },
