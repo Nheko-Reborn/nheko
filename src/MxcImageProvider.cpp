@@ -124,8 +124,11 @@ MxcImageProvider::download(const QString &id,
         if (fileInfo.exists()) {
             QImage image = utils::readImageFromFile(fileInfo.absoluteFilePath());
             if (!image.isNull()) {
-                if (requestedSize != image.size()) {
+                if (requestedSize.width() <= 0) {
                     image = image.scaledToHeight(requestedSize.height(), Qt::SmoothTransformation);
+                } else {
+                    image =
+                      image.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
                 }
 
                 if (radius != 0) {
@@ -157,9 +160,12 @@ MxcImageProvider::download(const QString &id,
               auto data    = QByteArray(res.data(), (int)res.size());
               QImage image = utils::readImage(data);
               if (!image.isNull()) {
-                  if (requestedSize != image.size()) {
+                  if (requestedSize.width() <= 0) {
                       image =
                         image.scaledToHeight(requestedSize.height(), Qt::SmoothTransformation);
+                  } else {
+                      image =
+                        image.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
                   }
 
                   if (radius != 0) {
