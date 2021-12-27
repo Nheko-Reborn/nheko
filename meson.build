@@ -27,16 +27,16 @@ deps = [
 	qt5_dep,
 	dependency('mtxclient', static: true, version : '>=0.6.0', fallback: ['mtxclient', 'matrix_client_dep']),
 	dependency('blurhash'),
-	dependency('spdlog'),
-	dependency('lmdb'),
+	dependency('spdlog', include_type: 'system'),
+	dependency('lmdb', include_type: 'system'),
 	dependency('threads'),
 ]
 
 # Older cmark versions only provide the libcmark pkgconfig name, but meson only supports multiple names since 0.60.0
 if meson.version().version_compare('>=0.60.0')
-	deps += dependency('cmark', 'libcmark', version: '>=0.29.0')
+	deps += dependency('cmark', 'libcmark', version: '>=0.29.0', include_type: 'system')
 else
-	deps += dependency('cmark', version: '>=0.29.0')
+	deps += dependency('cmark', version: '>=0.29.0', include_type: 'system')
 endif
 
 single_app_dep = subproject('SingleApplication-3.3.0').get_variable('singleapplication_dep')
@@ -53,7 +53,7 @@ endif
 if (not lmdbxx_dep.found()
   or get_option('wrap_mode') == 'forcefallback'
   or 'lmdbxx' in get_option('force_fallback_for'))
-    lmdbxx_dep = dependency('lmdb++', fallback: 'lmdb++')
+    lmdbxx_dep = dependency('lmdb++', fallback: 'lmdb++', include_type: 'system')
 endif
 
 if not lmdbxx_dep.found()
@@ -80,21 +80,21 @@ if (not qtkeychain_dep.found()
     qtkeychain_proj = cmake.subproject('QtKeychain', options: qtkeychain_options)
     qtkeychain_dep = qtkeychain_proj.dependency('qt5keychain')
 
-    if target_machine.system() == 'linux' or target_machine.system() == 'freebsd' or target_machine.system() == 'netbsd' or target_machine.system() == 'openbsd' or target_machine.system() == 'dragonfly'
-		deps += dependency('libsecret-1', default_options: ['manpage=false', 'vapi=false', 'gtk_doc=false', 'introspection=false',]) # 'bash_completion=disabled'])
-	endif
+		if target_machine.system() == 'linux' or target_machine.system() == 'freebsd' or target_machine.system() == 'netbsd' or target_machine.system() == 'openbsd' or target_machine.system() == 'dragonfly'
+			deps += dependency('libsecret-1', default_options: ['manpage=false', 'vapi=false', 'gtk_doc=false', 'introspection=false',], include_type: 'system') # 'bash_completion=disabled'])
+		endif
 endif
 deps += qtkeychain_dep
 
-sdp_dep = dependency('gstreamer-sdp-1.0', version: '>=1.18', required: get_option('voip'))
-webrtc_dep = dependency('gstreamer-webrtc-1.0', version: '>=1.18', required: get_option('voip'))
+sdp_dep = dependency('gstreamer-sdp-1.0', version: '>=1.18', required: get_option('voip'), include_type: 'system')
+webrtc_dep = dependency('gstreamer-webrtc-1.0', version: '>=1.18', required: get_option('voip'), include_type: 'system')
 if sdp_dep.found() and webrtc_dep.found()
 	deps += [sdp_dep, webrtc_dep]
 	add_project_arguments('-DGSTREAMER_AVAILABLE', language: 'cpp')
 
 	if target_machine.system() != 'darwin'
-		xcb_dep = dependency('xcb', required: get_option('screenshare_x11'))
-		xcb_ewmh_dep = dependency('xcb-ewmh', required: get_option('screenshare_x11'))
+		xcb_dep = dependency('xcb', required: get_option('screenshare_x11'), include_type: 'system')
+		xcb_ewmh_dep = dependency('xcb-ewmh', required: get_option('screenshare_x11'), include_type: 'system')
 		if xcb_dep.found() and xcb_ewmh_dep.found()
 			deps += [xcb_dep, xcb_ewmh_dep]
 			add_project_arguments('-DXCB_AVAILABLE', language: 'cpp')
