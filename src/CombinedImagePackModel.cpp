@@ -56,7 +56,9 @@ CombinedImagePackModel::data(const QModelIndex &index, int role) const
     if (hasIndex(index.row(), index.column(), index.parent())) {
         switch (role) {
         case CompletionModel::CompletionRole:
-            return QString::fromStdString(images[index.row()].image.url);
+            return QString("<img data-mx-emoticon height=32 src=\"%1\" alt=\"%2\" title=\"%2\">")
+              .arg(QString::fromStdString(images[index.row()].image.url).toHtmlEscaped(),
+                   images[index.row()].shortcode);
         case Roles::Url:
             return QString::fromStdString(images[index.row()].image.url);
         case CompletionModel::SearchRole:

@@ -3580,24 +3580,26 @@ Cache::getImagePacks(const std::string &room_id, std::optional<bool> stickers)
     auto addPack = [&infos, stickers](const mtx::events::msc2545::ImagePack &pack,
                                       const std::string &source_room,
                                       const std::string &state_key) {
-        if (!pack.pack || !stickers.has_value() ||
-            (stickers.value() ? pack.pack->is_sticker() : pack.pack->is_emoji())) {
-            ImagePackInfo info;
-            info.source_room = source_room;
-            info.state_key   = state_key;
-            info.pack.pack   = pack.pack;
+        bool pack_matches = !stickers.has_value() ||
+                            (stickers.value() ? pack.pack->is_sticker() : pack.pack->is_emoji());
 
-            for (const auto &img : pack.images) {
-                if (stickers.has_value() && img.second.overrides_usage() &&
-                    (stickers ? !img.second.is_sticker() : !img.second.is_emoji()))
-                    continue;
+        ImagePackInfo info;
+        info.source_room = source_room;
+        info.state_key   = state_key;
+        info.pack.pack   = pack.pack;
 
-                info.pack.images.insert(img);
-            }
+        for (const auto &img : pack.images) {
+            if (stickers.has_value() &&
+                (img.second.overrides_usage()
+                   ? (!stickers.value() ? img.second.is_sticker() : img.second.is_emoji())
+                   : !pack_matches))
+                continue;
 
-            if (!info.pack.images.empty())
-                infos.push_back(std::move(info));
+            info.pack.images.insert(img);
         }
+
+        if (!info.pack.images.empty())
+            infos.push_back(std::move(info));
     };
 
     // packs from account data

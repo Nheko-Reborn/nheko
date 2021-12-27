@@ -550,6 +550,11 @@ TimelineViewManager::completerFor(QString completerName, QString roomId)
         auto proxy        = new CompletionProxyModel(stickerModel, 1, static_cast<size_t>(-1) / 4);
         stickerModel->setParent(proxy);
         return proxy;
+    } else if (completerName == "customEmoji") {
+        auto stickerModel = new CombinedImagePackModel(roomId.toStdString(), false);
+        auto proxy        = new CompletionProxyModel(stickerModel);
+        stickerModel->setParent(proxy);
+        return proxy;
     }
     return nullptr;
 }

@@ -69,10 +69,7 @@ Popup {
 
     onCompleterNameChanged: {
         if (completerName) {
-            if (completerName == "user")
-                completer = TimelineManager.completerFor(completerName, room.roomId);
-            else
-                completer = TimelineManager.completerFor(completerName);
+            completer = TimelineManager.completerFor(completerName, room.roomId);
             completer.setSearchString("");
         } else {
             completer = undefined;
@@ -176,6 +173,39 @@ Popup {
                         Label {
                             text: model.shortName
                             color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                        }
+
+                    }
+
+                }
+
+                DelegateChoice {
+                    roleValue: "customEmoji"
+
+                    RowLayout {
+                        id: del
+
+                        anchors.centerIn: parent
+                        spacing: rowSpacing
+
+                        Avatar {
+                            height: popup.avatarHeight
+                            width: popup.avatarWidth
+                            displayName: model.shortcode
+                            //userid: model.shortcode
+                            url: model.url.replace("mxc://", "image://MxcImage/")
+                            onClicked: popup.completionClicked(completer.completionAt(model.index))
+                            crop: false
+                        }
+
+                        Label {
+                            text: model.shortcode
+                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                        }
+
+                        Label {
+                            text: "(" + model.packname + ")"
+                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
                         }
 
                     }

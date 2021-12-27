@@ -101,6 +101,7 @@ Rectangle {
                 }
 
                 function openCompleter(pos, type) {
+                    if (popup.opened) return;
                     completerTriggeredAt = pos;
                     popup.completerName = type;
                     popup.open();
@@ -166,13 +167,12 @@ Rectangle {
                         messageInput.text = room.input.nextText();
                     } else if (event.key == Qt.Key_At) {
                         messageInput.openCompleter(selectionStart, "user");
-                        popup.open();
                     } else if (event.key == Qt.Key_Colon) {
                         messageInput.openCompleter(selectionStart, "emoji");
-                        popup.open();
                     } else if (event.key == Qt.Key_NumberSign) {
                         messageInput.openCompleter(selectionStart, "roomAliases");
-                        popup.open();
+                    } else if (event.text == "~") {
+                        messageInput.openCompleter(selectionStart, "customEmoji");
                     } else if (event.key == Qt.Key_Escape && popup.opened) {
                         popup.completerName = "";
                         popup.close();
@@ -213,6 +213,9 @@ Rectangle {
                                     return ;
                                 } else if (t == ':') {
                                     messageInput.openCompleter(pos, "emoji");
+                                    return ;
+                                } else if (t == '~') {
+                                    messageInput.openCompleter(pos, "customEmoji");
                                     return ;
                                 }
                                 pos = pos - 1;
