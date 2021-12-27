@@ -189,7 +189,7 @@ class TimelineModel : public QAbstractListModel
 
 public:
     explicit TimelineModel(TimelineViewManager *manager,
-                           const QString& room_id,
+                           const QString &room_id,
                            QObject *parent = nullptr);
 
     enum Roles
@@ -272,7 +272,8 @@ public:
     Q_INVOKABLE bool saveMedia(const QString &eventId) const;
     Q_INVOKABLE void showEvent(QString eventId);
     Q_INVOKABLE void copyLinkToEvent(const QString &eventId) const;
-    void cacheMedia(const QString &eventId, const std::function<void(const QString filename)> &callback);
+    void
+    cacheMedia(const QString &eventId, const std::function<void(const QString filename)> &callback);
     Q_INVOKABLE void sendReset()
     {
         beginResetModel();
