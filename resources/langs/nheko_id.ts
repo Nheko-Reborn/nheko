@@ -2778,7 +2778,7 @@ Tetapkan ke 0 untuk memburamkan secara langsung setelah kehilangan fokus. Nilai 
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
         <translation>Tampilkan siapa yang sedang mengetik dalam ruangan.
-Ini akan mengaktifkan atau menonaktifkan pengiriman notifikasi pengetikan ke yang lain.</translation>
+Ini akan mengaktifkan atau menonaktifkan pengiriman pemberitahuan pengetikan ke yang lain.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3379,12 +3379,12 @@ Ukuran media: %2
     <message>
         <location line="+4"/>
         <source>You sent a notification</source>
-        <translation>Anda mengirim sebuah notifikasi</translation>
+        <translation>Anda mengirim sebuah pemberitahuan</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a notification</source>
-        <translation>%1 mengirim sebuah notifikasi</translation>
+        <translation>%1 mengirim sebuah pemberitahuan</translation>
     </message>
     <message>
         <location line="+5"/>
