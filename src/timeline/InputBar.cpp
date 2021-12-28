@@ -140,7 +140,7 @@ InputBar::updateAtRoom(const QString &t)
             auto start = finder.position();
             finder.toNextBoundary();
             auto end = finder.position();
-            if (start > 0 && end - start >= 4 && t.midRef(start, end - start) == "room" &&
+            if (start > 0 && end - start >= 4 && t.mid(start, end - start) == "room" &&
                 t.at(start - 1) == QChar('@')) {
                 roomMention = true;
                 break;

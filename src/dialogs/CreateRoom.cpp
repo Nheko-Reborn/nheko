@@ -32,7 +32,10 @@ CreateRoom::CreateRoom(QWidget *parent)
 
     auto layout = new QVBoxLayout(this);
     layout->setSpacing(conf::modals::WIDGET_SPACING);
-    layout->setMargin(conf::modals::WIDGET_MARGIN);
+    layout->setContentsMargins(conf::modals::WIDGET_MARGIN,
+                               conf::modals::WIDGET_MARGIN,
+                               conf::modals::WIDGET_MARGIN,
+                               conf::modals::WIDGET_MARGIN);
 
     auto buttonLayout = new QHBoxLayout();
     buttonLayout->setSpacing(15);

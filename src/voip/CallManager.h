@@ -10,6 +10,7 @@
 #include <QMediaPlayer>
 #include <QObject>
 #include <QString>
+#include <QStringList>
 #include <QTimer>
 
 #include "CallDevices.h"
@@ -21,7 +22,6 @@ namespace mtx::responses {
 struct TurnServer;
 }
 
-class QStringList;
 class QUrl;
 
 class CallManager : public QObject

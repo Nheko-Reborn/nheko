@@ -12,6 +12,7 @@
 #include <mtx/responses/common.hpp>
 
 #include "CacheCryptoStructs.h"
+#include "timeline/TimelineModel.h"
 
 namespace verification {
 Q_NAMESPACE
@@ -28,7 +29,6 @@ Q_ENUM_NS(Status)
 }
 
 class DeviceVerificationFlow;
-class TimelineModel;
 class TimelineViewManager;
 
 class DeviceInfo

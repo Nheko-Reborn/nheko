@@ -5,8 +5,6 @@
 #pragma once
 
 #include <QGraphicsDropShadowEffect>
-#include <QState>
-#include <QStateMachine>
 
 #include "FlatButton.h"
 
@@ -23,9 +21,4 @@ protected:
 
 private:
     void init();
-
-    QStateMachine *shadow_state_machine_;
-    QState *normal_state_;
-    QState *pressed_state_;
-    QGraphicsDropShadowEffect *effect_;
 };

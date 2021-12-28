@@ -33,7 +33,6 @@ PreviewUploadOverlay::PreviewUploadOverlay(QWidget *parent)
     hlayout->addStretch(1);
     hlayout->addWidget(&cancel_);
     hlayout->addWidget(&upload_);
-    hlayout->setMargin(0);
 
     auto vlayout = new QVBoxLayout{this};
     vlayout->addWidget(&titleLabel_);
@@ -41,7 +40,10 @@ PreviewUploadOverlay::PreviewUploadOverlay(QWidget *parent)
     vlayout->addWidget(&fileName_);
     vlayout->addLayout(hlayout);
     vlayout->setSpacing(conf::modals::WIDGET_SPACING);
-    vlayout->setMargin(conf::modals::WIDGET_MARGIN);
+    vlayout->setContentsMargins(conf::modals::WIDGET_MARGIN,
+                                conf::modals::WIDGET_MARGIN,
+                                conf::modals::WIDGET_MARGIN,
+                                conf::modals::WIDGET_MARGIN);
 
     upload_.setDefault(true);
     connect(&upload_, &QPushButton::clicked, [this]() {

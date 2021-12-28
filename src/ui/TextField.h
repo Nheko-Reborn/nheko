@@ -9,12 +9,10 @@
 #include <QPaintEvent>
 #include <QPropertyAnimation>
 #include <QRegularExpression>
-#include <QStateMachine>
 #include <QtGlobal>
 
 class TextField;
 class TextFieldLabel;
-class TextFieldStateMachine;
 
 class TextField : public QLineEdit
 {
@@ -60,7 +58,6 @@ private:
     QColor underline_color_;
     QString label_text_;
     TextFieldLabel *label_;
-    TextFieldStateMachine *state_machine_;
     bool show_label_;
     QRegularExpression regexp_;
     bool is_valid_;
@@ -136,45 +133,3 @@ TextFieldLabel::color() const
     return color_;
 }
 
-class TextFieldStateMachine : public QStateMachine
-{
-    Q_OBJECT
-
-    Q_PROPERTY(qreal progress WRITE setProgress READ progress)
-
-public:
-    TextFieldStateMachine(TextField *parent);
-
-    inline void setProgress(qreal progress);
-    void setLabel(TextFieldLabel *label);
-
-    inline qreal progress() const;
-
-public slots:
-    void setupProperties();
-
-private:
-    QPropertyAnimation *color_anim_;
-    QPropertyAnimation *offset_anim_;
-
-    QState *focused_state_;
-    QState *normal_state_;
-
-    TextField *text_field_;
-    TextFieldLabel *label_;
-
-    qreal progress_;
-};
-
-inline void
-TextFieldStateMachine::setProgress(qreal progress)
-{
-    progress_ = progress;
-    text_field_->update();
-}
-
-inline qreal
-TextFieldStateMachine::progress() const
-{
-    return progress_;
-}

@@ -9,7 +9,7 @@ project(
 
 compiler = meson.get_compiler('cpp')
 
-qt5 = import('qt5')
+qt5 = import('qt6')
 qt5_modules = ['Core', 'Gui', 'Qml', 'Quick', 'QuickWidgets', 'Widgets', 'Multimedia', 'Svg']
 if target_machine.system() == 'windows'
 	#qt5_modules += 'WinMain'
@@ -19,7 +19,7 @@ else
 	qt5_modules += 'DBus'
 endif
 
-qt5_dep = dependency('qt5', modules: qt5_modules, include_type: 'system')
+qt5_dep = dependency('qt6', modules: qt5_modules, include_type: 'system')
 
 inc = include_directories('src', 'includes', 'third_party/cpp-httplib-0.5.12')
 
@@ -61,28 +61,9 @@ if not lmdbxx_dep.found()
 endif
 deps += lmdbxx_dep
 
-qtkeychain_dep = dependency('Qt5Keychain', required: get_option('wrap_mode') == 'nofallback')
-if (not qtkeychain_dep.found()
-  or get_option('wrap_mode') == 'forcefallback'
-  or 'QtKeychain' in get_option('force_fallback_for'))
-		cmake = import('cmake')
-		qtkeychain_options = cmake.subproject_options()
-    qtkeychain_options.add_cmake_defines({
-      'BUILD_SHARED_LIBS': false,
-      })
-    if target_machine.system() != 'windows'
-        qtkeychain_options.add_cmake_defines({
-          'CMAKE_C_FLAGS':  '-fPIC',
-        })
-    endif
-    qtkeychain_options.set_override_option('werror', 'false')
-    qtkeychain_options.set_override_option('warning_level', '0')
-    qtkeychain_proj = cmake.subproject('QtKeychain', options: qtkeychain_options)
-    qtkeychain_dep = qtkeychain_proj.dependency('qt5keychain')
-
-		if target_machine.system() == 'linux' or target_machine.system() == 'freebsd' or target_machine.system() == 'netbsd' or target_machine.system() == 'openbsd' or target_machine.system() == 'dragonfly'
-			deps += dependency('libsecret-1', default_options: ['manpage=false', 'vapi=false', 'gtk_doc=false', 'introspection=false',], include_type: 'system') # 'bash_completion=disabled'])
-		endif
+qtkeychain_dep = dependency('Qt6Keychain', required: get_option('wrap_mode') == 'nofallback')
+if (not qtkeychain_dep.found())
+	qtkeychain_dep = dependency('qtkeychain')
 endif
 deps += qtkeychain_dep
 

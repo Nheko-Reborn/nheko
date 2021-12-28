@@ -771,7 +771,6 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
     topBarLayout_ = new QHBoxLayout;
     topBarLayout_->setSpacing(0);
-    topBarLayout_->setMargin(0);
     topBarLayout_->addWidget(backBtn_, 1, Qt::AlignLeft | Qt::AlignVCenter);
     topBarLayout_->addStretch(1);
 
@@ -1443,7 +1442,7 @@ void
 UserSettingsPage::paintEvent(QPaintEvent *)
 {
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

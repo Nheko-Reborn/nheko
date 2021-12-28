@@ -63,9 +63,7 @@ public:
     QImage m_image;
 };
 
-class BlurhashProvider
-  : public QObject
-  , public QQuickAsyncImageProvider
+class BlurhashProvider : public QQuickAsyncImageProvider
 {
     Q_OBJECT
 public slots:

@@ -31,13 +31,13 @@ MxcImageProvider::requestImageResponse(const QString &id, const QSize &requested
     auto queryStart = id.lastIndexOf('?');
     if (queryStart != -1) {
         id_            = id.left(queryStart);
-        auto query     = id.midRef(queryStart + 1);
+        auto query     = QStringView(id).mid(queryStart + 1);
         auto queryBits = query.split('&');
 
         for (auto b : queryBits) {
-            if (b == "scale") {
+            if (b == QAnyStringView("scale")) {
                 crop = false;
-            } else if (b.startsWith("radius=")) {
+            } else if (b.startsWith(QLatin1String("radius="))) {
                 radius = b.mid(7).toDouble();
             }
         }

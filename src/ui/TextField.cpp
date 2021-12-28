@@ -5,7 +5,6 @@
 #include "TextField.h"
 
 #include <QCoreApplication>
-#include <QEventTransition>
 #include <QFontDatabase>
 #include <QPaintEvent>
 #include <QPainter>
@@ -20,7 +19,6 @@ TextField::TextField(QWidget *parent)
 
     QPalette pal;
 
-    state_machine_    = new TextFieldStateMachine(this);
     label_            = nullptr;
     label_font_size_  = 15;
     show_label_       = false;
@@ -32,7 +30,6 @@ TextField::TextField(QWidget *parent)
     setMouseTracking(true);
     setTextMargins(0, 4, 0, 6);
 
-    state_machine_->start();
     QCoreApplication::processEvents();
 }
 
@@ -59,7 +56,6 @@ TextField::setShowLabel(bool value)
 
     if (!label_ && value) {
         label_ = new TextFieldLabel(this);
-        state_machine_->setLabel(label_);
     }
 
     if (value) {
@@ -211,7 +207,6 @@ TextField::paintEvent(QPaintEvent *event)
     QPainter painter(this);
 
     if (text().isEmpty()) {
-        painter.setOpacity(1 - state_machine_->progress());
         painter.fillRect(rect(), backgroundColor());
     }
 
@@ -228,150 +223,4 @@ TextField::paintEvent(QPaintEvent *event)
     QBrush brush;
     brush.setStyle(Qt::SolidPattern);
     brush.setColor(inkColor());
-
-    const qreal progress = state_machine_->progress();
-
-    if (progress > 0) {
-        painter.setPen(Qt::NoPen);
-        painter.setBrush(brush);
-        const int w = (1 - progress) * static_cast<qreal>(wd / 2);
-        painter.drawRect(w + 2.5, height() - 2, wd - 2 * w, 2);
-    }
-}
-
-TextFieldStateMachine::TextFieldStateMachine(TextField *parent)
-  : QStateMachine(parent)
-  , text_field_(parent)
-{
-    normal_state_  = new QState;
-    focused_state_ = new QState;
-
-    label_       = nullptr;
-    offset_anim_ = nullptr;
-    color_anim_  = nullptr;
-    progress_    = 0.0;
-
-    addState(normal_state_);
-    addState(focused_state_);
-
-    setInitialState(normal_state_);
-
-    QEventTransition *transition;
-    QPropertyAnimation *animation;
-
-    transition = new QEventTransition(parent, QEvent::FocusIn);
-    transition->setTargetState(focused_state_);
-    normal_state_->addTransition(transition);
-
-    animation = new QPropertyAnimation(this, "progress", this);
-    animation->setEasingCurve(QEasingCurve::InCubic);
-    animation->setDuration(310);
-    transition->addAnimation(animation);
-
-    transition = new QEventTransition(parent, QEvent::FocusOut);
-    transition->setTargetState(normal_state_);
-    focused_state_->addTransition(transition);
-
-    animation = new QPropertyAnimation(this, "progress", this);
-    animation->setEasingCurve(QEasingCurve::OutCubic);
-    animation->setDuration(310);
-    transition->addAnimation(animation);
-
-    normal_state_->assignProperty(this, "progress", 0);
-    focused_state_->assignProperty(this, "progress", 1);
-
-    setupProperties();
-
-    connect(text_field_, SIGNAL(textChanged(QString)), this, SLOT(setupProperties()));
-}
-
-void
-TextFieldStateMachine::setLabel(TextFieldLabel *label)
-{
-    if (label_) {
-        delete label_;
-    }
-
-    if (offset_anim_) {
-        removeDefaultAnimation(offset_anim_);
-        delete offset_anim_;
-    }
-
-    if (color_anim_) {
-        removeDefaultAnimation(color_anim_);
-        delete color_anim_;
-    }
-
-    label_ = label;
-
-    if (label_) {
-        offset_anim_ = new QPropertyAnimation(label_, "offset", this);
-        offset_anim_->setDuration(210);
-        offset_anim_->setEasingCurve(QEasingCurve::OutCubic);
-        addDefaultAnimation(offset_anim_);
-
-        color_anim_ = new QPropertyAnimation(label_, "color", this);
-        color_anim_->setDuration(210);
-        addDefaultAnimation(color_anim_);
-    }
-
-    setupProperties();
-}
-
-void
-TextFieldStateMachine::setupProperties()
-{
-    if (label_) {
-        const int m = text_field_->textMargins().top();
-
-        if (text_field_->text().isEmpty()) {
-            normal_state_->assignProperty(label_, "offset", QPointF(0, 26));
-        } else {
-            normal_state_->assignProperty(label_, "offset", QPointF(0, 0 - m));
-        }
-
-        focused_state_->assignProperty(label_, "offset", QPointF(0, 0 - m));
-        focused_state_->assignProperty(label_, "color", text_field_->inkColor());
-        normal_state_->assignProperty(label_, "color", text_field_->labelColor());
-
-        if (0 != label_->offset().y() && !text_field_->text().isEmpty()) {
-            label_->setOffset(QPointF(0, 0 - m));
-        } else if (!text_field_->hasFocus() && label_->offset().y() <= 0 &&
-                   text_field_->text().isEmpty()) {
-            label_->setOffset(QPointF(0, 26));
-        }
-    }
-
-    text_field_->update();
-}
-
-TextFieldLabel::TextFieldLabel(TextField *parent)
-  : QWidget(parent)
-  , text_field_(parent)
-{
-    x_     = 0;
-    y_     = 26;
-    scale_ = 1;
-    color_ = parent->labelColor();
-
-    QFont font;
-    font.setWeight(60);
-    font.setLetterSpacing(QFont::PercentageSpacing, 102);
-    setFont(font);
-}
-
-void
-TextFieldLabel::paintEvent(QPaintEvent *)
-{
-    if (!text_field_->hasLabel())
-        return;
-
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.scale(scale_, scale_);
-    painter.setPen(color_);
-    painter.setOpacity(1);
-
-    QPointF pos(2 + x_, height() - 36 + y_);
-    painter.drawText(pos.x(), pos.y(), text_field_->label());
 }

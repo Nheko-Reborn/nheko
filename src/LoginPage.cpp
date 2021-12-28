@@ -40,7 +40,6 @@ LoginPage::LoginPage(QWidget *parent)
 
     top_bar_layout_ = new QHBoxLayout();
     top_bar_layout_->setSpacing(0);
-    top_bar_layout_->setMargin(0);
 
     back_button_ = new FlatButton(this);
     back_button_->setMinimumSize(QSize(30, 30));
@@ -497,7 +496,7 @@ void
 LoginPage::paintEvent(QPaintEvent *)
 {
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

@@ -5,6 +5,7 @@
 #pragma once
 
 #include <QObject>
+#include <QStringList>
 #include <QTimer>
 #include <deque>
 
@@ -15,7 +16,6 @@ class TimelineModel;
 class CombinedImagePackModel;
 class QMimeData;
 class QDropEvent;
-class QStringList;
 
 enum class MarkdownOverride
 {

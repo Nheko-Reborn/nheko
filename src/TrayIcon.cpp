@@ -69,7 +69,7 @@ MsgCountComposedIcon::clone() const
 }
 
 QList<QSize>
-MsgCountComposedIcon::availableSizes(QIcon::Mode mode, QIcon::State state) const
+MsgCountComposedIcon::availableSizes(QIcon::Mode mode, QIcon::State state)
 {
     Q_UNUSED(mode);
     Q_UNUSED(state);

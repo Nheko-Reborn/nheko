@@ -2,7 +2,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include <QEventTransition>
 #include <QFontDatabase>
 #include <QIcon>
 #include <QMouseEvent>
@@ -10,7 +9,6 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QResizeEvent>
-#include <QSignalTransition>
 
 #include "FlatButton.h"
 #include "Ripple.h"
@@ -37,7 +35,6 @@ void
 FlatButton::init()
 {
     ripple_overlay_          = new RippleOverlay(this);
-    state_machine_           = new FlatButtonStateMachine(this);
     role_                    = ui::Role::Default;
     ripple_style_            = ui::RippleStyle::PositionedRipple;
     icon_placement_          = ui::ButtonIconPlacement::LeftIcon;
@@ -59,9 +56,6 @@ FlatButton::init()
 
     ripple_overlay_->setClipPath(path);
     ripple_overlay_->setClipping(true);
-
-    state_machine_->setupProperties();
-    state_machine_->startAnimations();
 }
 
 FlatButton::FlatButton(QWidget *parent, ui::ButtonPreset preset)
@@ -106,7 +100,6 @@ void
 FlatButton::setRole(ui::Role role)
 {
     role_ = role;
-    state_machine_->setupProperties();
 }
 
 ui::Role
@@ -290,7 +283,6 @@ void
 FlatButton::setBackgroundMode(Qt::BGMode mode)
 {
     bg_mode_ = mode;
-    state_machine_->setupProperties();
 }
 
 Qt::BGMode
@@ -303,7 +295,6 @@ void
 FlatButton::setBaseOpacity(qreal opacity)
 {
     base_opacity_ = opacity;
-    state_machine_->setupProperties();
 }
 
 qreal
@@ -315,9 +306,6 @@ FlatButton::baseOpacity() const
 void
 FlatButton::setCheckable(bool value)
 {
-    state_machine_->updateCheckedStatus();
-    state_machine_->setCheckedOverlayProgress(0);
-
     QPushButton::setCheckable(value);
 }
 
@@ -361,7 +349,6 @@ FlatButton::sizeHint() const
 void
 FlatButton::checkStateSet()
 {
-    state_machine_->updateCheckedStatus();
     QPushButton::checkStateSet();
 }
 
@@ -402,7 +389,6 @@ void
 FlatButton::mouseReleaseEvent(QMouseEvent *event)
 {
     QPushButton::mouseReleaseEvent(event);
-    state_machine_->updateCheckedStatus();
 }
 
 void
@@ -441,9 +427,6 @@ FlatButton::paintEvent(QPaintEvent *event)
 void
 FlatButton::paintBackground(QPainter *painter)
 {
-    const qreal overlayOpacity  = state_machine_->overlayOpacity();
-    const qreal checkedProgress = state_machine_->checkedOverlayProgress();
-
     if (Qt::OpaqueMode == bg_mode_) {
         QBrush brush;
         brush.setStyle(Qt::SolidPattern);
@@ -468,27 +451,6 @@ FlatButton::paintBackground(QPainter *painter)
         return;
     }
 
-    if ((ui::OverlayStyle::NoOverlay != overlay_style_) && (overlayOpacity > 0)) {
-        if (ui::OverlayStyle::TintedOverlay == overlay_style_) {
-            brush.setColor(overlayColor());
-        } else {
-            brush.setColor(Qt::gray);
-        }
-
-        painter->setOpacity(overlayOpacity);
-        painter->setBrush(brush);
-        painter->drawRect(rect());
-    }
-
-    if (isCheckable() && checkedProgress > 0) {
-        const qreal q = Qt::TransparentMode == bg_mode_ ? 0.45 : 0.7;
-        brush.setColor(foregroundColor());
-        painter->setOpacity(q * checkedProgress);
-        painter->setBrush(brush);
-        QRect r(rect());
-        r.setHeight(static_cast<qreal>(r.height()) * checkedProgress);
-        painter->drawRect(r);
-    }
 }
 
 #define COLOR_INTERPOLATE(CH) (1 - progress) * source.CH() + progress *dest.CH()
@@ -498,20 +460,6 @@ FlatButton::paintForeground(QPainter *painter)
 {
     if (isEnabled()) {
         painter->setPen(foregroundColor());
-        const qreal progress = state_machine_->checkedOverlayProgress();
-
-        if (isCheckable() && progress > 0) {
-            QColor source = foregroundColor();
-            QColor dest   = Qt::TransparentMode == bg_mode_ ? Qt::white : backgroundColor();
-            if (qFuzzyCompare(1, progress)) {
-                painter->setPen(dest);
-            } else {
-                painter->setPen(QColor(COLOR_INTERPOLATE(red),
-                                       COLOR_INTERPOLATE(green),
-                                       COLOR_INTERPOLATE(blue),
-                                       COLOR_INTERPOLATE(alpha)));
-            }
-        }
     } else {
         painter->setPen(disabledForegroundColor());
     }
@@ -555,166 +503,3 @@ FlatButton::updateClipPath()
     ripple_overlay_->setClipPath(path);
 }
 
-FlatButtonStateMachine::FlatButtonStateMachine(FlatButton *parent)
-  : QStateMachine(parent)
-  , button_(parent)
-  , top_level_state_(new QState(QState::ParallelStates))
-  , config_state_(new QState(top_level_state_))
-  , checkable_state_(new QState(top_level_state_))
-  , checked_state_(new QState(checkable_state_))
-  , unchecked_state_(new QState(checkable_state_))
-  , neutral_state_(new QState(config_state_))
-  , neutral_focused_state_(new QState(config_state_))
-  , hovered_state_(new QState(config_state_))
-  , hovered_focused_state_(new QState(config_state_))
-  , pressed_state_(new QState(config_state_))
-  , overlay_opacity_(0)
-  , checked_overlay_progress_(parent->isChecked() ? 1 : 0)
-  , was_checked_(false)
-{
-    Q_ASSERT(parent);
-
-    parent->installEventFilter(this);
-
-    config_state_->setInitialState(neutral_state_);
-    addState(top_level_state_);
-    setInitialState(top_level_state_);
-
-    checkable_state_->setInitialState(parent->isChecked() ? checked_state_ : unchecked_state_);
-    QSignalTransition *transition;
-    QPropertyAnimation *animation;
-
-    transition = new QSignalTransition(this, SIGNAL(buttonChecked()));
-    transition->setTargetState(checked_state_);
-    unchecked_state_->addTransition(transition);
-
-    animation = new QPropertyAnimation(this, "checkedOverlayProgress", this);
-    animation->setDuration(200);
-    transition->addAnimation(animation);
-
-    transition = new QSignalTransition(this, SIGNAL(buttonUnchecked()));
-    transition->setTargetState(unchecked_state_);
-    checked_state_->addTransition(transition);
-
-    animation = new QPropertyAnimation(this, "checkedOverlayProgress", this);
-    animation->setDuration(200);
-    transition->addAnimation(animation);
-
-    addTransition(button_, QEvent::FocusIn, neutral_state_, neutral_focused_state_);
-    addTransition(button_, QEvent::FocusOut, neutral_focused_state_, neutral_state_);
-    addTransition(button_, QEvent::Enter, neutral_state_, hovered_state_);
-    addTransition(button_, QEvent::Leave, hovered_state_, neutral_state_);
-    addTransition(button_, QEvent::Enter, neutral_focused_state_, hovered_focused_state_);
-    addTransition(button_, QEvent::Leave, hovered_focused_state_, neutral_focused_state_);
-    addTransition(button_, QEvent::FocusIn, hovered_state_, hovered_focused_state_);
-    addTransition(button_, QEvent::FocusOut, hovered_focused_state_, hovered_state_);
-    addTransition(this, SIGNAL(buttonPressed()), hovered_state_, pressed_state_);
-    addTransition(button_, QEvent::Leave, pressed_state_, neutral_focused_state_);
-    addTransition(button_, QEvent::FocusOut, pressed_state_, hovered_state_);
-}
-
-void
-FlatButtonStateMachine::setOverlayOpacity(qreal opacity)
-{
-    overlay_opacity_ = opacity;
-    button_->update();
-}
-
-void
-FlatButtonStateMachine::setCheckedOverlayProgress(qreal opacity)
-{
-    checked_overlay_progress_ = opacity;
-    button_->update();
-}
-
-void
-FlatButtonStateMachine::startAnimations()
-{
-    start();
-}
-
-void
-FlatButtonStateMachine::setupProperties()
-{
-    QColor overlayColor;
-
-    if (Qt::TransparentMode == button_->backgroundMode()) {
-        overlayColor = button_->backgroundColor();
-    } else {
-        overlayColor = button_->foregroundColor();
-    }
-
-    const qreal baseOpacity = button_->baseOpacity();
-
-    neutral_state_->assignProperty(this, "overlayOpacity", 0);
-    neutral_focused_state_->assignProperty(this, "overlayOpacity", 0);
-    hovered_state_->assignProperty(this, "overlayOpacity", baseOpacity);
-    hovered_focused_state_->assignProperty(this, "overlayOpacity", baseOpacity);
-    pressed_state_->assignProperty(this, "overlayOpacity", baseOpacity);
-    checked_state_->assignProperty(this, "checkedOverlayProgress", 1);
-    unchecked_state_->assignProperty(this, "checkedOverlayProgress", 0);
-
-    button_->update();
-}
-
-void
-FlatButtonStateMachine::updateCheckedStatus()
-{
-    const bool checked = button_->isChecked();
-    if (was_checked_ != checked) {
-        was_checked_ = checked;
-        if (checked) {
-            emit buttonChecked();
-        } else {
-            emit buttonUnchecked();
-        }
-    }
-}
-
-bool
-FlatButtonStateMachine::eventFilter(QObject *watched, QEvent *event)
-{
-    if (QEvent::FocusIn == event->type()) {
-        QFocusEvent *focusEvent = static_cast<QFocusEvent *>(event);
-        if (focusEvent && Qt::MouseFocusReason == focusEvent->reason()) {
-            emit buttonPressed();
-            return true;
-        }
-    }
-
-    return QStateMachine::eventFilter(watched, event);
-}
-
-void
-FlatButtonStateMachine::addTransition(QObject *object,
-                                      const char *signal,
-                                      QState *fromState,
-                                      QState *toState)
-{
-    addTransition(new QSignalTransition(object, signal), fromState, toState);
-}
-
-void
-FlatButtonStateMachine::addTransition(QObject *object,
-                                      QEvent::Type eventType,
-                                      QState *fromState,
-                                      QState *toState)
-{
-    addTransition(new QEventTransition(object, eventType), fromState, toState);
-}
-
-void
-FlatButtonStateMachine::addTransition(QAbstractTransition *transition,
-                                      QState *fromState,
-                                      QState *toState)
-{
-    transition->setTargetState(toState);
-
-    QPropertyAnimation *animation;
-
-    animation = new QPropertyAnimation(this, "overlayOpacity", this);
-    animation->setDuration(150);
-    transition->addAnimation(animation);
-
-    fromState->addTransition(transition);
-}

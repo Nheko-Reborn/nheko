@@ -61,7 +61,6 @@ RegisterPage::RegisterPage(QWidget *parent)
     logo_->setPixmap(logo.pixmap(128));
 
     logo_layout_ = new QHBoxLayout();
-    logo_layout_->setMargin(0);
     logo_layout_->addWidget(logo_, 0, Qt::AlignHCenter);
 
     form_wrapper_ = new QHBoxLayout();
@@ -128,7 +127,6 @@ RegisterPage::RegisterPage(QWidget *parent)
 
     button_layout_ = new QHBoxLayout();
     button_layout_->setSpacing(0);
-    button_layout_->setMargin(0);
 
     error_label_ = new QLabel(this);
     error_label_->setWordWrap(true);
@@ -406,7 +404,7 @@ void
 RegisterPage::paintEvent(QPaintEvent *)
 {
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

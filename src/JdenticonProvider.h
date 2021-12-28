@@ -52,9 +52,7 @@ public:
     QImage m_pixmap;
 };
 
-class JdenticonProvider
-  : public QObject
-  , public QQuickAsyncImageProvider
+class JdenticonProvider : public QQuickAsyncImageProvider
 {
     Q_OBJECT
 
@@ -72,7 +70,7 @@ public slots:
         auto queryStart = id.lastIndexOf('?');
         if (queryStart != -1) {
             id_            = id.left(queryStart);
-            auto query     = id.midRef(queryStart + 1);
+            auto query     = id.mid(queryStart + 1);
             auto queryBits = query.split('&');
 
             for (auto b : queryBits) {

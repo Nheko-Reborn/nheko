@@ -8,7 +8,6 @@
 #include <QBuffer>
 #include <QComboBox>
 #include <QCryptographicHash>
-#include <QDesktopWidget>
 #include <QGuiApplication>
 #include <QImageReader>
 #include <QProcessEnvironment>
@@ -389,7 +388,7 @@ utils::humanReadableFingerprint(const QString &ed25519)
 {
     QString fingerprint;
     for (int i = 0; i < ed25519.length(); i = i + 4) {
-        fingerprint.append(ed25519.midRef(i, 4));
+        fingerprint.append(QStringView(ed25519).mid(i, 4));
         if (i > 0 && i % 16 == 12)
             fingerprint.append('\n');
         else if (i < ed25519.length())
@@ -513,7 +512,8 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
             while ((boundaryEnd = tbf.toNextBoundary()) != -1) {
                 charIdx++;
                 // Split text to get current char
-                auto curChar  = nodeText.midRef(boundaryStart, boundaryEnd - boundaryStart);
+                auto curChar =
+                  QStringView(nodeText).mid(boundaryStart, boundaryEnd - boundaryStart);
                 boundaryStart = boundaryEnd;
                 // Don't rainbowify whitespaces
                 if (curChar.trimmed().isEmpty() || codepointIsEmoji(curChar.toUcs4().first())) {

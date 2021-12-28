@@ -62,7 +62,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
     topLayout_ = new QHBoxLayout(this);
     topLayout_->setSpacing(0);
-    topLayout_->setMargin(0);
 
     view_manager_ = new TimelineViewManager(callManager_, this);
 
@@ -1231,18 +1230,18 @@ ChatPage::startChat(QString userid)
 }
 
 static QString
-mxidFromSegments(QStringRef sigil, QStringRef mxid)
+mxidFromSegments(QStringView sigil, QStringView mxid)
 {
     if (mxid.isEmpty())
         return "";
 
     auto mxid_ = QUrl::fromPercentEncoding(mxid.toUtf8());
 
-    if (sigil == "u") {
+    if (sigil == QAnyStringView("u")) {
         return "@" + mxid_;
-    } else if (sigil == "roomid") {
+    } else if (sigil == QAnyStringView("roomid")) {
         return "!" + mxid_;
-    } else if (sigil == "r") {
+    } else if (sigil == QAnyStringView("r")) {
         return "#" + mxid_;
         //} else if (sigil == "group") {
         //        return "+" + mxid_;
@@ -1303,7 +1302,7 @@ ChatPage::handleMatrixUri(QString uri)
     auto tempPath = uri_.path(QUrl::ComponentFormattingOption::FullyEncoded);
     if (tempPath.startsWith('/'))
         tempPath.remove(0, 1);
-    auto segments = tempPath.splitRef('/');
+    auto segments = QStringView(tempPath).split('/');
 
     if (segments.size() != 2 && segments.size() != 4)
         return false;
@@ -1314,7 +1313,7 @@ ChatPage::handleMatrixUri(QString uri)
         return false;
 
     QString mxid2;
-    if (segments.size() == 4 && segments[2] == "e") {
+    if (segments.size() == 4 && segments[2] == QAnyStringView("e")) {
         if (segments[3].isEmpty())
             return false;
         else
@@ -1335,7 +1334,7 @@ ChatPage::handleMatrixUri(QString uri)
         }
     }
 
-    if (sigil1 == "u") {
+    if (sigil1 == QAnyStringView("u")) {
         if (action.isEmpty()) {
             auto t = view_manager_->rooms()->currentRoom();
             if (t && cache::isRoomMember(mxid1.toStdString(), t->roomId().toStdString())) {
@@ -1347,7 +1346,7 @@ ChatPage::handleMatrixUri(QString uri)
             this->startChat(mxid1);
         }
         return true;
-    } else if (sigil1 == "roomid") {
+    } else if (sigil1 == QAnyStringView("roomid")) {
         auto joined_rooms = cache::joinedRooms();
         auto targetRoomId = mxid1.toStdString();
 
@@ -1365,7 +1364,7 @@ ChatPage::handleMatrixUri(QString uri)
             return true;
         }
         return false;
-    } else if (sigil1 == "r") {
+    } else if (sigil1 == QAnyStringView("r")) {
         auto joined_rooms    = cache::joinedRooms();
         auto targetRoomAlias = mxid1.toStdString();
 

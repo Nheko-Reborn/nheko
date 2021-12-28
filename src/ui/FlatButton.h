@@ -5,77 +5,11 @@
 #pragma once
 
 #include <QPushButton>
-#include <QStateMachine>
 
 #include "Theme.h"
 
 class RippleOverlay;
-class FlatButton;
 
-class FlatButtonStateMachine : public QStateMachine
-{
-    Q_OBJECT
-
-    Q_PROPERTY(qreal overlayOpacity WRITE setOverlayOpacity READ overlayOpacity)
-    Q_PROPERTY(
-      qreal checkedOverlayProgress WRITE setCheckedOverlayProgress READ checkedOverlayProgress)
-
-public:
-    explicit FlatButtonStateMachine(FlatButton *parent);
-
-    void setOverlayOpacity(qreal opacity);
-    void setCheckedOverlayProgress(qreal opacity);
-
-    inline qreal overlayOpacity() const;
-    inline qreal checkedOverlayProgress() const;
-
-    void startAnimations();
-    void setupProperties();
-    void updateCheckedStatus();
-
-signals:
-    void buttonPressed();
-    void buttonChecked();
-    void buttonUnchecked();
-
-protected:
-    bool eventFilter(QObject *watched, QEvent *event) override;
-
-private:
-    void addTransition(QObject *object, const char *signal, QState *fromState, QState *toState);
-    void addTransition(QObject *object, QEvent::Type eventType, QState *fromState, QState *toState);
-    void addTransition(QAbstractTransition *transition, QState *fromState, QState *toState);
-
-    FlatButton *const button_;
-
-    QState *const top_level_state_;
-    QState *const config_state_;
-    QState *const checkable_state_;
-    QState *const checked_state_;
-    QState *const unchecked_state_;
-    QState *const neutral_state_;
-    QState *const neutral_focused_state_;
-    QState *const hovered_state_;
-    QState *const hovered_focused_state_;
-    QState *const pressed_state_;
-
-    qreal overlay_opacity_;
-    qreal checked_overlay_progress_;
-
-    bool was_checked_;
-};
-
-inline qreal
-FlatButtonStateMachine::overlayOpacity() const
-{
-    return overlay_opacity_;
-}
-
-inline qreal
-FlatButtonStateMachine::checkedOverlayProgress() const
-{
-    return checked_overlay_progress_;
-}
 
 class FlatButton : public QPushButton
 {
@@ -158,7 +92,6 @@ protected:
 
 private:
     RippleOverlay *ripple_overlay_;
-    FlatButtonStateMachine *state_machine_;
 
     ui::Role role_;
     ui::RippleStyle ripple_style_;
