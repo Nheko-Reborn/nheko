@@ -132,7 +132,8 @@ DelegateChooser::DelegateIncubator::statusChanged(QQmlIncubator::Status status)
         emit chooser.childChanged();
 
     } else if (status == QQmlIncubator::Error) {
-        for (const auto &e : errors())
+        auto errors_ = errors();
+        for (const auto &e : qAsConst(errors_))
             nhlog::ui()->error("Error instantiating delegate: {}", e.toString().toStdString());
     }
 }

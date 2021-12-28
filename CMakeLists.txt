@@ -311,7 +311,6 @@ set(SRC_FILES
 	src/dialogs/CreateRoom.cpp
 	src/dialogs/FallbackAuth.cpp
 	src/dialogs/ImageOverlay.cpp
-	src/dialogs/Logout.cpp
 	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
 
@@ -332,10 +331,8 @@ set(SRC_FILES
 	src/timeline/RoomlistModel.cpp
 
 	# UI components
-	src/ui/Badge.cpp
 	src/ui/DropShadow.cpp
 	src/ui/FlatButton.cpp
-	src/ui/InfoMessage.cpp
 	src/ui/Label.cpp
 	src/ui/LoadingIndicator.cpp
 	src/ui/MxcAnimatedImage.cpp
@@ -522,7 +519,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/dialogs/CreateRoom.h
 	src/dialogs/FallbackAuth.h
 	src/dialogs/ImageOverlay.h
-	src/dialogs/Logout.h
 	src/dialogs/PreviewUploadOverlay.h
 	src/dialogs/ReCaptcha.h
 
@@ -542,9 +538,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/timeline/RoomlistModel.h
 
 	# UI components
-	src/ui/Badge.h
 	src/ui/FlatButton.h
-	src/ui/InfoMessage.h
 	src/ui/Label.h
 	src/ui/LoadingIndicator.h
 	src/ui/MxcAnimatedImage.h

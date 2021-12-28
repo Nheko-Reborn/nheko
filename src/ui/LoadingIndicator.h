@@ -13,7 +13,7 @@ class QPaintEvent;
 class LoadingIndicator : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(QColor color READ color WRITE setColor)
+    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
 
 public:
     LoadingIndicator(QWidget *parent = nullptr);
@@ -24,13 +24,20 @@ public:
     void stop();
 
     QColor color() { return color_; }
-    void setColor(QColor color) { color_ = color; }
+    void setColor(QColor color)
+    {
+        color_ = color;
+        emit colorChanged();
+    }
 
     int interval() { return interval_; }
     void setInterval(int interval) { interval_ = interval; }
 
 private slots:
     void onTimeout();
+
+signals:
+    void colorChanged();
 
 private:
     int interval_;

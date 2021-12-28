@@ -39,8 +39,7 @@ MxcAnimatedImage::startDownload()
     if (!animatable_)
         return;
 
-    QString mxcUrl           = QString::fromStdString(mtx::accessors::url(*event));
-    QString originalFilename = QString::fromStdString(mtx::accessors::filename(*event));
+    QString mxcUrl = QString::fromStdString(mtx::accessors::url(*event));
 
     auto encryptionInfo = mtx::accessors::file(*event);
 
@@ -53,10 +52,9 @@ MxcAnimatedImage::startDownload()
 
     const auto url  = mxcUrl.toStdString();
     const auto name = QString(mxcUrl).remove("mxc://");
-    QFileInfo filename(QString("%1/media_cache/media/%2.%3")
-                         .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-                         .arg(name)
-                         .arg(suffix));
+    QFileInfo filename(
+      QStringLiteral("%1/media_cache/media/%2.%3")
+        .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation), name, suffix));
     if (QDir::cleanPath(name) != name) {
         nhlog::net()->warn("mxcUrl '{}' is not safe, not downloading file", url);
         return;

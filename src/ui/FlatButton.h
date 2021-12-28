@@ -16,9 +16,10 @@ class FlatButtonStateMachine : public QStateMachine
 {
     Q_OBJECT
 
-    Q_PROPERTY(qreal overlayOpacity WRITE setOverlayOpacity READ overlayOpacity)
     Q_PROPERTY(
-      qreal checkedOverlayProgress WRITE setCheckedOverlayProgress READ checkedOverlayProgress)
+      qreal overlayOpacity WRITE setOverlayOpacity READ overlayOpacity NOTIFY overlayOpacityChanged)
+    Q_PROPERTY(qreal checkedOverlayProgress WRITE setCheckedOverlayProgress READ
+                 checkedOverlayProgress NOTIFY checkedOverlayProgressChanged)
 
 public:
     explicit FlatButtonStateMachine(FlatButton *parent);
@@ -37,6 +38,9 @@ signals:
     void buttonPressed();
     void buttonChecked();
     void buttonUnchecked();
+
+    void overlayOpacityChanged();
+    void checkedOverlayProgressChanged();
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
@@ -81,14 +85,17 @@ class FlatButton : public QPushButton
 {
     Q_OBJECT
 
-    Q_PROPERTY(QColor foregroundColor WRITE setForegroundColor READ foregroundColor)
-    Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor READ backgroundColor)
-    Q_PROPERTY(QColor overlayColor WRITE setOverlayColor READ overlayColor)
+    Q_PROPERTY(QColor foregroundColor WRITE setForegroundColor READ foregroundColor NOTIFY
+                 foregroundColorChanged)
+    Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor READ backgroundColor NOTIFY
+                 backgroundColorChanged)
     Q_PROPERTY(
-      QColor disabledForegroundColor WRITE setDisabledForegroundColor READ disabledForegroundColor)
-    Q_PROPERTY(
-      QColor disabledBackgroundColor WRITE setDisabledBackgroundColor READ disabledBackgroundColor)
-    Q_PROPERTY(qreal fontSize WRITE setFontSize READ fontSize)
+      QColor overlayColor WRITE setOverlayColor READ overlayColor NOTIFY overlayColorChanged)
+    Q_PROPERTY(QColor disabledForegroundColor WRITE setDisabledForegroundColor READ
+                 disabledForegroundColor NOTIFY disabledForegroundColorChanged)
+    Q_PROPERTY(QColor disabledBackgroundColor WRITE setDisabledBackgroundColor READ
+                 disabledBackgroundColor NOTIFY disabledBackgroundColorChanged)
+    Q_PROPERTY(qreal fontSize WRITE setFontSize READ fontSize NOTIFY fontSizeChanged)
 
 public:
     explicit FlatButton(QWidget *parent         = nullptr,
@@ -155,6 +162,14 @@ protected:
     virtual void updateClipPath();
 
     void init();
+
+signals:
+    void foregroundColorChanged();
+    void backgroundColorChanged();
+    void overlayColorChanged();
+    void disabledForegroundColorChanged();
+    void disabledBackgroundColorChanged();
+    void fontSizeChanged();
 
 private:
     RippleOverlay *ripple_overlay_;

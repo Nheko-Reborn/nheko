@@ -39,6 +39,8 @@ Ripple::setRadius(qreal radius)
 
     radius_ = radius;
     overlay_->update();
+
+    emit radiusChanged();
 }
 
 void
@@ -51,6 +53,8 @@ Ripple::setOpacity(qreal opacity)
 
     opacity_ = opacity;
     overlay_->update();
+
+    emit opacityChanged();
 }
 
 void

@@ -16,8 +16,8 @@ class Ripple : public QParallelAnimationGroup
 {
     Q_OBJECT
 
-    Q_PROPERTY(qreal radius WRITE setRadius READ radius)
-    Q_PROPERTY(qreal opacity WRITE setOpacity READ opacity)
+    Q_PROPERTY(qreal radius WRITE setRadius READ radius NOTIFY radiusChanged)
+    Q_PROPERTY(qreal opacity WRITE setOpacity READ opacity NOTIFY opacityChanged)
 
 public:
     explicit Ripple(const QPoint &center, QObject *parent = nullptr);
@@ -47,6 +47,10 @@ public:
 
 protected slots:
     void destroy();
+
+signals:
+    void radiusChanged();
+    void opacityChanged();
 
 private:
     Q_DISABLE_COPY(Ripple)

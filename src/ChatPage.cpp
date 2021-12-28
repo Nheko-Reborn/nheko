@@ -62,6 +62,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
     topLayout_ = new QHBoxLayout(this);
     topLayout_->setSpacing(0);
+    topLayout_->setContentsMargins(0, 0, 0, 0);
 
     view_manager_ = new TimelineViewManager(callManager_, this);
 
@@ -777,8 +778,7 @@ ChatPage::inviteUser(QString userid, QString reason)
     if (QMessageBox::question(this,
                               tr("Confirm invite"),
                               tr("Do you really want to invite %1 (%2)?")
-                                .arg(cache::displayName(room, userid))
-                                .arg(userid)) != QMessageBox::Yes)
+                                .arg(cache::displayName(room, userid), userid)) != QMessageBox::Yes)
         return;
 
     http::client()->invite_user(
@@ -786,10 +786,9 @@ ChatPage::inviteUser(QString userid, QString reason)
       userid.toStdString(),
       [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
           if (err) {
-              emit showNotification(tr("Failed to invite %1 to %2: %3")
-                                      .arg(userid)
-                                      .arg(room)
-                                      .arg(QString::fromStdString(err->matrix_error.error)));
+              emit showNotification(
+                tr("Failed to invite %1 to %2: %3")
+                  .arg(userid, room, QString::fromStdString(err->matrix_error.error)));
           } else
               emit showNotification(tr("Invited user: %1").arg(userid));
       },
@@ -803,8 +802,7 @@ ChatPage::kickUser(QString userid, QString reason)
     if (QMessageBox::question(this,
                               tr("Confirm kick"),
                               tr("Do you really want to kick %1 (%2)?")
-                                .arg(cache::displayName(room, userid))
-                                .arg(userid)) != QMessageBox::Yes)
+                                .arg(cache::displayName(room, userid), userid)) != QMessageBox::Yes)
         return;
 
     http::client()->kick_user(
@@ -812,10 +810,9 @@ ChatPage::kickUser(QString userid, QString reason)
       userid.toStdString(),
       [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
           if (err) {
-              emit showNotification(tr("Failed to kick %1 from %2: %3")
-                                      .arg(userid)
-                                      .arg(room)
-                                      .arg(QString::fromStdString(err->matrix_error.error)));
+              emit showNotification(
+                tr("Failed to kick %1 from %2: %3")
+                  .arg(userid, room, QString::fromStdString(err->matrix_error.error)));
           } else
               emit showNotification(tr("Kicked user: %1").arg(userid));
       },
@@ -826,11 +823,11 @@ ChatPage::banUser(QString userid, QString reason)
 {
     auto room = currentRoom();
 
-    if (QMessageBox::question(this,
-                              tr("Confirm ban"),
-                              tr("Do you really want to ban %1 (%2)?")
-                                .arg(cache::displayName(room, userid))
-                                .arg(userid)) != QMessageBox::Yes)
+    if (QMessageBox::question(
+          this,
+          tr("Confirm ban"),
+          tr("Do you really want to ban %1 (%2)?").arg(cache::displayName(room, userid), userid)) !=
+        QMessageBox::Yes)
         return;
 
     http::client()->ban_user(
@@ -838,10 +835,9 @@ ChatPage::banUser(QString userid, QString reason)
       userid.toStdString(),
       [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
           if (err) {
-              emit showNotification(tr("Failed to ban %1 in %2: %3")
-                                      .arg(userid)
-                                      .arg(room)
-                                      .arg(QString::fromStdString(err->matrix_error.error)));
+              emit showNotification(
+                tr("Failed to ban %1 in %2: %3")
+                  .arg(userid, room, QString::fromStdString(err->matrix_error.error)));
           } else
               emit showNotification(tr("Banned user: %1").arg(userid));
       },
@@ -855,8 +851,7 @@ ChatPage::unbanUser(QString userid, QString reason)
     if (QMessageBox::question(this,
                               tr("Confirm unban"),
                               tr("Do you really want to unban %1 (%2)?")
-                                .arg(cache::displayName(room, userid))
-                                .arg(userid)) != QMessageBox::Yes)
+                                .arg(cache::displayName(room, userid), userid)) != QMessageBox::Yes)
         return;
 
     http::client()->unban_user(
@@ -864,10 +859,9 @@ ChatPage::unbanUser(QString userid, QString reason)
       userid.toStdString(),
       [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
           if (err) {
-              emit showNotification(tr("Failed to unban %1 in %2: %3")
-                                      .arg(userid)
-                                      .arg(room)
-                                      .arg(QString::fromStdString(err->matrix_error.error)));
+              emit showNotification(
+                tr("Failed to unban %1 in %2: %3")
+                  .arg(userid, room, QString::fromStdString(err->matrix_error.error)));
           } else
               emit showNotification(tr("Unbanned user: %1").arg(userid));
       },
@@ -1201,7 +1195,7 @@ ChatPage::startChat(QString userid)
     auto joined_rooms = cache::joinedRooms();
     auto room_infos   = cache::getRoomInfo(joined_rooms);
 
-    for (std::string room_id : joined_rooms) {
+    for (const std::string &room_id : joined_rooms) {
         if (room_infos[QString::fromStdString(room_id)].member_count == 2) {
             auto room_members = cache::roomMembers(room_id);
             if (std::find(room_members.begin(), room_members.end(), (userid).toStdString()) !=
@@ -1323,8 +1317,9 @@ ChatPage::handleMatrixUri(QString uri)
     std::vector<std::string> vias;
     QString action;
 
-    for (QString item :
-         uri_.query(QUrl::ComponentFormattingOption::FullyEncoded).split('&', Qt::SkipEmptyParts)) {
+    auto items =
+      uri_.query(QUrl::ComponentFormattingOption::FullyEncoded).split('&', Qt::SkipEmptyParts);
+    for (QString item : qAsConst(items)) {
         nhlog::ui()->info("item: {}", item.toStdString());
 
         if (item.startsWith("action=")) {
@@ -1350,7 +1345,7 @@ ChatPage::handleMatrixUri(QString uri)
         auto joined_rooms = cache::joinedRooms();
         auto targetRoomId = mxid1.toStdString();
 
-        for (auto roomid : joined_rooms) {
+        for (const auto &roomid : joined_rooms) {
             if (roomid == targetRoomId) {
                 view_manager_->rooms()->setCurrentRoom(mxid1);
                 if (!mxid2.isEmpty())
@@ -1368,7 +1363,7 @@ ChatPage::handleMatrixUri(QString uri)
         auto joined_rooms    = cache::joinedRooms();
         auto targetRoomAlias = mxid1.toStdString();
 
-        for (auto roomid : joined_rooms) {
+        for (const auto &roomid : joined_rooms) {
             auto aliases = cache::client()->getRoomAliases(roomid);
             if (aliases) {
                 if (aliases->alias == targetRoomAlias) {

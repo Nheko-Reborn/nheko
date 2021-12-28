@@ -324,7 +324,8 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
 
         QString body;
         bool firstLine = true;
-        for (auto line : related.quoted_body.splitRef(u'\n')) {
+        auto lines     = related.quoted_body.splitRef(u'\n');
+        for (auto line : qAsConst(lines)) {
             if (firstLine) {
                 firstLine = false;
                 body      = QString("> <%1> %2\n").arg(related.quoted_user, line);

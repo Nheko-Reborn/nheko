@@ -119,6 +119,7 @@ void
 FlatButton::setForegroundColor(const QColor &color)
 {
     foreground_color_ = color;
+    emit foregroundColorChanged();
 }
 
 QColor
@@ -147,6 +148,7 @@ void
 FlatButton::setBackgroundColor(const QColor &color)
 {
     background_color_ = color;
+    emit backgroundColorChanged();
 }
 
 QColor
@@ -172,6 +174,7 @@ FlatButton::setOverlayColor(const QColor &color)
 {
     overlay_color_ = color;
     setOverlayStyle(ui::OverlayStyle::TintedOverlay);
+    emit overlayColorChanged();
 }
 
 QColor
@@ -188,6 +191,7 @@ void
 FlatButton::setDisabledForegroundColor(const QColor &color)
 {
     disabled_color_ = color;
+    emit disabledForegroundColorChanged();
 }
 
 QColor
@@ -204,6 +208,7 @@ void
 FlatButton::setDisabledBackgroundColor(const QColor &color)
 {
     disabled_background_color_ = color;
+    emit disabledBackgroundColorChanged();
 }
 
 QColor
@@ -224,6 +229,8 @@ FlatButton::setFontSize(qreal size)
     QFont f(font());
     f.setPointSizeF(size);
     setFont(f);
+
+    emit fontSizeChanged();
 
     update();
 }
@@ -617,6 +624,7 @@ void
 FlatButtonStateMachine::setOverlayOpacity(qreal opacity)
 {
     overlay_opacity_ = opacity;
+    emit overlayOpacityChanged();
     button_->update();
 }
 
@@ -624,6 +632,7 @@ void
 FlatButtonStateMachine::setCheckedOverlayProgress(qreal opacity)
 {
     checked_overlay_progress_ = opacity;
+    emit checkedOverlayProgressChanged();
     button_->update();
 }
 

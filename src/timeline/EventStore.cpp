@@ -185,7 +185,7 @@ EventStore::EventStore(std::string room_id, QObject *)
 
           // FIXME (introduced by balsoft): this doesn't work for encrypted events, but
           // allegedly it's hard to fix so I'll leave my first contribution at that
-          for (auto related_event_id : cache::client()->relatedEvents(room_id_, txn_id)) {
+          for (const auto &related_event_id : cache::client()->relatedEvents(room_id_, txn_id)) {
               if (cache::client()->getEvent(room_id_, related_event_id)) {
                   auto related_event =
                     cache::client()->getEvent(room_id_, related_event_id).value();
@@ -717,7 +717,8 @@ void
 EventStore::enableKeyRequests(bool suppressKeyRequests_)
 {
     if (!suppressKeyRequests_) {
-        for (const auto &key : decryptedEvents_.keys())
+        auto keys = decryptedEvents_.keys();
+        for (const auto &key : qAsConst(keys))
             if (key.room == this->room_id_)
                 decryptedEvents_.remove(key);
         suppressKeyRequests = false;

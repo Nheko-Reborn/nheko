@@ -22,8 +22,9 @@ class SnackBar : public OverlayWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(QColor bgColor READ backgroundColor WRITE setBackgroundColor)
-    Q_PROPERTY(QColor textColor READ textColor WRITE setTextColor)
+    Q_PROPERTY(
+      QColor bgColor READ backgroundColor WRITE setBackgroundColor NOTIFY backgroundColorChanged)
+    Q_PROPERTY(QColor textColor READ textColor WRITE setTextColor NOTIFY textColorChanged)
     Q_PROPERTY(double offset READ offset WRITE setOffset NOTIFY offsetChanged)
 
 public:
@@ -34,6 +35,7 @@ public:
     {
         bgColor_ = color;
         update();
+        emit backgroundColorChanged();
     }
 
     QColor textColor() const { return textColor_; }
@@ -41,6 +43,7 @@ public:
     {
         textColor_ = color;
         update();
+        emit textColorChanged();
     }
     void setPosition(SnackBarPosition pos)
     {
@@ -62,6 +65,8 @@ public slots:
 
 signals:
     void offsetChanged();
+    void backgroundColorChanged();
+    void textColorChanged();
 
 protected:
     void paintEvent(QPaintEvent *event) override;

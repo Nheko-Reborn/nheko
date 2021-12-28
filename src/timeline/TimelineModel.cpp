@@ -36,7 +36,7 @@
 Q_DECLARE_METATYPE(QModelIndex)
 
 namespace std {
-inline uint
+inline uint // clazy:exclude=qhash-namespace
 qHash(const std::string &key, uint seed = 0)
 {
     return qHash(QByteArray::fromRawData(key.data(), (int)key.length()), seed);
@@ -1540,9 +1540,8 @@ TimelineModel::cacheMedia(const QString &eventId,
     if (!event)
         return;
 
-    QString mxcUrl           = QString::fromStdString(mtx::accessors::url(*event));
-    QString originalFilename = QString::fromStdString(mtx::accessors::filename(*event));
-    QString mimeType         = QString::fromStdString(mtx::accessors::mimetype(*event));
+    QString mxcUrl   = QString::fromStdString(mtx::accessors::url(*event));
+    QString mimeType = QString::fromStdString(mtx::accessors::mimetype(*event));
 
     auto encryptionInfo = mtx::accessors::file(*event);
 
@@ -1556,10 +1555,9 @@ TimelineModel::cacheMedia(const QString &eventId,
 
     const auto url  = mxcUrl.toStdString();
     const auto name = QString(mxcUrl).remove("mxc://");
-    QFileInfo filename(QString("%1/media_cache/%2.%3")
-                         .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-                         .arg(name)
-                         .arg(suffix));
+    QFileInfo filename(
+      QString("%1/media_cache/%2.%3")
+        .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation), name, suffix));
     if (QDir::cleanPath(name) != name) {
         nhlog::net()->warn("mxcUrl '{}' is not safe, not downloading file", url);
         return;
@@ -1780,7 +1778,7 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor
         uidWithoutLast.append(formatUser(users[i]));
     }
 
-    return temp.arg(uidWithoutLast.join(", ")).arg(formatUser(users.back()));
+    return temp.arg(uidWithoutLast.join(", "), formatUser(users.back()));
 }
 
 QString
@@ -1812,8 +1810,7 @@ TimelineModel::formatJoinRuleEvent(const QString &id)
         }
         return tr("%1 allowed members of the following rooms to automatically join this "
                   "room: %2")
-          .arg(name)
-          .arg(rooms.join(", "));
+          .arg(name, rooms.join(", "));
     }
     default:
         // Currently, knock and private are reserved keywords and not implemented in Matrix.
@@ -2035,8 +2032,8 @@ TimelineModel::formatMemberEvent(const QString &id)
             else
                 rendered =
                   tr("%1 joined via authorisation from %2's server.")
-                    .arg(name)
-                    .arg(QString::fromStdString(event->content.join_authorised_via_users_server));
+                    .arg(name,
+                         QString::fromStdString(event->content.join_authorised_via_users_server));
         }
         break;
     case Membership::Leave:

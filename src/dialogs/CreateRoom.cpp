@@ -85,7 +85,7 @@ CreateRoom::CreateRoom(QWidget *parent)
 
     auto directLabel_ = new QLabel(tr("Direct Chat"), this);
     directToggle_     = new Toggle(this);
-    directToggle_->setActiveColor(QColor("#38A3D8"));
+    directToggle_->setActiveColor(QColor(0x38, 0xA3, 0xD8));
     directToggle_->setInactiveColor(QColor("gray"));
     directToggle_->setState(false);
 
@@ -120,6 +120,7 @@ CreateRoom::CreateRoom(QWidget *parent)
 
     connect(visibilityCombo_,
             static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+            this,
             [this](const QString &text) {
                 if (text == "Private") {
                     request_.visibility = mtx::common::RoomVisibility::Private;
@@ -130,6 +131,7 @@ CreateRoom::CreateRoom(QWidget *parent)
 
     connect(presetCombo_,
             static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+            this,
             [this](const QString &text) {
                 if (text == "Private Chat") {
                     request_.preset = mtx::requests::Preset::PrivateChat;

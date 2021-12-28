@@ -69,6 +69,7 @@ Toggle::setDisabledColor(const QColor &color)
 {
     disabledColor_ = color;
     setupProperties();
+    emit disabledColorChanged();
 }
 
 void
@@ -76,6 +77,7 @@ Toggle::setActiveColor(const QColor &color)
 {
     activeColor_ = color;
     setupProperties();
+    emit activeColorChanged();
 }
 
 void
@@ -83,6 +85,7 @@ Toggle::setInactiveColor(const QColor &color)
 {
     inactiveColor_ = color;
     setupProperties();
+    emit inactiveColorChanged();
 }
 
 void
@@ -90,6 +93,7 @@ Toggle::setTrackColor(const QColor &color)
 {
     trackColor_ = color;
     setupProperties();
+    emit trackColorChanged();
 }
 
 ToggleThumb::ToggleThumb(Toggle *parent)
@@ -174,6 +178,7 @@ void
 ToggleTrack::setTrackColor(const QColor &color)
 {
     trackColor_ = color;
+    emit trackColorChanged();
     update();
 }
 

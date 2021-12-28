@@ -79,7 +79,7 @@ public slots:
             auto query     = id.mid(queryStart + 1);
             auto queryBits = query.splitRef('&');
 
-            for (auto b : queryBits) {
+            for (const auto &b : queryBits) {
                 if (b.startsWith(QStringView(u"radius="))) {
                     radius = b.mid(7).toDouble();
                 }

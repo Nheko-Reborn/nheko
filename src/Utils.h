@@ -155,10 +155,9 @@ messageDescription(const QString &username = "",
             return QCoreApplication::translate("message-description sent:", "You: %1").arg(body);
         else
             return QCoreApplication::translate("message-description sent:", "%1: %2")
-              .arg(username)
-              .arg(body);
+              .arg(username, body);
     } else if (std::is_same<T, Emote>::value) {
-        return QString("* %1 %2").arg(username).arg(body);
+        return QString("* %1 %2").arg(username, body);
     } else if (std::is_same<T, Encrypted>::value) {
         if (isLocal)
             return QCoreApplication::translate("message-description sent:",

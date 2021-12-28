@@ -394,7 +394,7 @@ CommunitiesModel::setCurrentTagId(QString tagId)
 {
     if (tagId.startsWith("tag:")) {
         auto tag = tagId.mid(4);
-        for (const auto &t : tags_) {
+        for (const auto &t : qAsConst(tags_)) {
             if (t == tag) {
                 this->currentTagId_ = tagId;
                 emit currentTagIdChanged(currentTagId_);

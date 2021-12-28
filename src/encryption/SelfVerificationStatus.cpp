@@ -280,7 +280,7 @@ SelfVerificationStatus::invalidate()
 
         cache::client()->markUserKeysOutOfDate({http::client()->user_id().to_string()});
 
-        QTimer::singleShot(1'000, [] {
+        QTimer::singleShot(1'000, this, [] {
             cache::client()->query_keys(http::client()->user_id().to_string(),
                                         [](const UserKeyCache &, mtx::http::RequestErr) {});
         });

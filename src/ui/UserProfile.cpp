@@ -175,8 +175,6 @@ UserProfile::refreshDevices()
 void
 UserProfile::fetchDeviceList(const QString &userID)
 {
-    auto localUser = utils::localUser();
-
     if (!cache::client() || !cache::client()->isDatabaseReady())
         return;
 

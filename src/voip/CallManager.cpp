@@ -143,6 +143,7 @@ CallManager::CallManager(QObject *parent)
 
     connect(&player_,
             QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
+            this,
             [this](QMediaPlayer::Error error) {
                 stopRingtone();
                 switch (error) {

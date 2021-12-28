@@ -771,6 +771,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
     topBarLayout_ = new QHBoxLayout;
     topBarLayout_->setSpacing(0);
+    topBarLayout_->setContentsMargins(0, 0, 0, 0);
     topBarLayout_->addWidget(backBtn_, 1, Qt::AlignLeft | Qt::AlignVCenter);
     topBarLayout_->addStretch(1);
 

@@ -30,6 +30,7 @@ PreviewUploadOverlay::PreviewUploadOverlay(QWidget *parent)
   , cancel_{tr("Cancel"), this}
 {
     auto hlayout = new QHBoxLayout;
+    hlayout->setContentsMargins(0, 0, 0, 0);
     hlayout->addStretch(1);
     hlayout->addWidget(&cancel_);
     hlayout->addWidget(&upload_);
@@ -46,7 +47,7 @@ PreviewUploadOverlay::PreviewUploadOverlay(QWidget *parent)
                                 conf::modals::WIDGET_MARGIN);
 
     upload_.setDefault(true);
-    connect(&upload_, &QPushButton::clicked, [this]() {
+    connect(&upload_, &QPushButton::clicked, this, [this]() {
         emit confirmUpload(data_, mediaType_, fileName_.text());
         close();
     });
@@ -124,8 +125,7 @@ PreviewUploadOverlay::setLabels(const QString &type, const QString &mime, uint64
     } else {
         auto const info = QString{tr("Media type: %1\n"
                                      "Media size: %2\n")}
-                            .arg(mime)
-                            .arg(utils::humanReadableFileSize(upload_size));
+                            .arg(mime, utils::humanReadableFileSize(upload_size));
 
         titleLabel_.setText(QString{tr(DEFAULT)}.arg("file"));
         infoLabel_.setText(info);

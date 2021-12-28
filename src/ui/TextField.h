@@ -20,10 +20,12 @@ class TextField : public QLineEdit
 {
     Q_OBJECT
 
-    Q_PROPERTY(QColor inkColor WRITE setInkColor READ inkColor)
-    Q_PROPERTY(QColor labelColor WRITE setLabelColor READ labelColor)
-    Q_PROPERTY(QColor underlineColor WRITE setUnderlineColor READ underlineColor)
-    Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor READ backgroundColor)
+    Q_PROPERTY(QColor inkColor WRITE setInkColor READ inkColor NOTIFY inkColorChanged)
+    Q_PROPERTY(QColor labelColor WRITE setLabelColor READ labelColor NOTIFY labelColorChanged)
+    Q_PROPERTY(QColor underlineColor WRITE setUnderlineColor READ underlineColor NOTIFY
+                 underlineColorChanged)
+    Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor READ backgroundColor NOTIFY
+                 backgroundColorChanged)
 
 public:
     explicit TextField(QWidget *parent = nullptr);
@@ -51,6 +53,12 @@ protected:
     bool event(QEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
 
+signals:
+    void inkColorChanged();
+    void labelColorChanged();
+    void underlineColorChanged();
+    void backgroundColorChanged();
+
 private:
     void init();
 
@@ -71,9 +79,9 @@ class TextFieldLabel : public QWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(qreal scale WRITE setScale READ scale)
-    Q_PROPERTY(QPointF offset WRITE setOffset READ offset)
-    Q_PROPERTY(QColor color WRITE setColor READ color)
+    Q_PROPERTY(qreal scale WRITE setScale READ scale NOTIFY scaleChanged)
+    Q_PROPERTY(QPointF offset WRITE setOffset READ offset NOTIFY offsetChanged)
+    Q_PROPERTY(QColor color WRITE setColor READ color NOTIFY colorChanged)
 
 public:
     TextFieldLabel(TextField *parent);
@@ -89,6 +97,11 @@ public:
 protected:
     void paintEvent(QPaintEvent *event) override;
 
+signals:
+    void scaleChanged();
+    void offsetChanged();
+    void colorChanged();
+
 private:
     TextField *const text_field_;
 
@@ -102,6 +115,7 @@ inline void
 TextFieldLabel::setColor(const QColor &color)
 {
     color_ = color;
+    emit colorChanged();
     update();
 }
 
@@ -110,6 +124,7 @@ TextFieldLabel::setOffset(const QPointF &pos)
 {
     x_ = pos.x();
     y_ = pos.y();
+    emit offsetChanged();
     update();
 }
 
@@ -117,6 +132,7 @@ inline void
 TextFieldLabel::setScale(qreal scale)
 {
     scale_ = scale;
+    emit scaleChanged();
     update();
 }
 
@@ -140,7 +156,7 @@ class TextFieldStateMachine : public QStateMachine
 {
     Q_OBJECT
 
-    Q_PROPERTY(qreal progress WRITE setProgress READ progress)
+    Q_PROPERTY(qreal progress WRITE setProgress READ progress NOTIFY progressChanged)
 
 public:
     TextFieldStateMachine(TextField *parent);
@@ -152,6 +168,9 @@ public:
 
 public slots:
     void setupProperties();
+
+signals:
+    void progressChanged();
 
 private:
     QPropertyAnimation *color_anim_;
@@ -170,6 +189,7 @@ inline void
 TextFieldStateMachine::setProgress(qreal progress)
 {
     progress_ = progress;
+    emit progressChanged();
     text_field_->update();
 }
 

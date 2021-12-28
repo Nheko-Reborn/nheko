@@ -273,7 +273,7 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
             }
 
             bool from_their_device = false;
-            for (auto [device_id, key] : otherUserDeviceKeys.device_keys) {
+            for (const auto &[device_id, key] : otherUserDeviceKeys.device_keys) {
                 auto c_key = key.keys.find("curve25519:" + device_id);
                 auto e_key = key.keys.find("ed25519:" + device_id);
 
@@ -406,7 +406,7 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
     if (failed_decryption) {
         try {
             std::map<std::string, std::vector<std::string>> targets;
-            for (auto [device_id, key] : otherUserDeviceKeys.device_keys) {
+            for (const auto &[device_id, key] : otherUserDeviceKeys.device_keys) {
                 if (key.keys.at("curve25519:" + device_id) == msg.sender_key)
                     targets[msg.sender].push_back(device_id);
             }
@@ -1522,7 +1522,7 @@ request_cross_signing_keys()
         }
 
         // timeout after 15 min
-        QTimer::singleShot(15 * 60 * 1000, [secretRequest, body]() {
+        QTimer::singleShot(15 * 60 * 1000, ChatPage::instance(), [secretRequest, body]() {
             if (request_id_to_secret_name.count(secretRequest.request_id)) {
                 request_id_to_secret_name.erase(secretRequest.request_id);
                 http::client()->send_to_device<mtx::events::msg::SecretRequest>(

@@ -79,7 +79,7 @@ VerificationManager::verifyUser(QString userid)
     auto joined_rooms = cache::joinedRooms();
     auto room_infos   = cache::getRoomInfo(joined_rooms);
 
-    for (std::string room_id : joined_rooms) {
+    for (const std::string &room_id : joined_rooms) {
         if ((room_infos[QString::fromStdString(room_id)].member_count == 2) &&
             cache::isRoomEncrypted(room_id)) {
             auto room_members = cache::roomMembers(room_id);

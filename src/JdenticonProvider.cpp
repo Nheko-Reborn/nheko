@@ -5,7 +5,6 @@
 #include "JdenticonProvider.h"
 
 #include <QApplication>
-#include <QDir>
 #include <QPainter>
 #include <QPainterPath>
 #include <QPluginLoader>
@@ -27,8 +26,6 @@ getJdenticonInterface()
     static bool interfaceExists{true};
 
     if (interface == nullptr && interfaceExists) {
-        QDir pluginsDir(qApp->applicationDirPath());
-
         QPluginLoader pluginLoader("qtjdenticon");
         QObject *plugin = pluginLoader.instance();
         if (plugin) {

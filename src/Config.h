@@ -7,10 +7,11 @@
 #include <QRegularExpression>
 #include <QString>
 
+// clazy:excludeall=non-pod-global-static
+
 // Non-theme app configuration. Layouts, fonts spacing etc.
 //
 // Font sizes are in pixels.
-
 namespace conf {
 // Global settings.
 constexpr int fontSize                   = 14;
@@ -54,16 +55,18 @@ constexpr auto LABEL_BIG_SIZE_RATIO    = 2;
 }
 
 namespace strings {
-const QString url_html = "<a href=\"\\1\">\\1</a>";
+const QString url_html = QStringLiteral("<a href=\"\\1\">\\1</a>");
 const QRegularExpression url_regex(
   // match an URL, that is not quoted, i.e.
   // vvvvvv match quote via negative lookahead/lookbehind                              vv
   //          vvvv atomic match url -> fail if there is a " before or after        vvv
-  R"((?<!["'])(?>((www\.(?!\.)|[a-z][a-z0-9+.-]*://)[^\s<>'"]+[^!,\.\s<>'"\]\)\:]))(?!["']))");
+  QStringLiteral(
+    R"((?<!["'])(?>((www\.(?!\.)|[a-z][a-z0-9+.-]*://)[^\s<>'"]+[^!,\.\s<>'"\]\)\:]))(?!["']))"));
 // match any markdown matrix.to link. Capture group 1 is the link name, group 2 is the target.
-static const QRegularExpression
-  matrixToMarkdownLink(R"(\[(.*?)(?<!\\)\]\((https://matrix.to/#/.*?\)))");
-static const QRegularExpression matrixToLink(R"(<a href=\"(https://matrix.to/#/.*?)\">(.*?)</a>)");
+static const QRegularExpression matrixToMarkdownLink(
+  R"(\[(.*?)(?<!\\)\]\((https://matrix.to/#/.*?\)))"); // clazy:exclude=non-pod-global-static
+static const QRegularExpression matrixToLink(
+  R"(<a href=\"(https://matrix.to/#/.*?)\">(.*?)</a>)"); // clazy:exclude=non-pod-global-static
 }
 
 // Window geometry.

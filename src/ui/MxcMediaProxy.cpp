@@ -49,9 +49,12 @@ MxcMediaProxy::MxcMediaProxy(QObject *parent)
 void
 MxcMediaProxy::setVideoSurface(QAbstractVideoSurface *surface)
 {
-    qDebug() << "Changing surface";
-    m_surface = surface;
-    setVideoOutput(m_surface);
+    if (surface != m_surface) {
+        qDebug() << "Changing surface";
+        m_surface = surface;
+        setVideoOutput(m_surface);
+        emit videoSurfaceChanged();
+    }
 }
 
 QAbstractVideoSurface *
@@ -84,9 +87,8 @@ MxcMediaProxy::startDownload()
         return;
     }
 
-    QString mxcUrl           = QString::fromStdString(mtx::accessors::url(*event));
-    QString originalFilename = QString::fromStdString(mtx::accessors::filename(*event));
-    QString mimeType         = QString::fromStdString(mtx::accessors::mimetype(*event));
+    QString mxcUrl   = QString::fromStdString(mtx::accessors::url(*event));
+    QString mimeType = QString::fromStdString(mtx::accessors::mimetype(*event));
 
     auto encryptionInfo = mtx::accessors::file(*event);
 
@@ -99,10 +101,9 @@ MxcMediaProxy::startDownload()
 
     const auto url  = mxcUrl.toStdString();
     const auto name = QString(mxcUrl).remove("mxc://");
-    QFileInfo filename(QString("%1/media_cache/media/%2.%3")
-                         .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-                         .arg(name)
-                         .arg(suffix));
+    QFileInfo filename(
+      QString("%1/media_cache/media/%2.%3")
+        .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation), name, suffix));
     if (QDir::cleanPath(name) != name) {
         nhlog::net()->warn("mxcUrl '{}' is not safe, not downloading file", url);
         return;

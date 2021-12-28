@@ -100,7 +100,7 @@ DropShadow::draw(QPainter &painter,
     painter.drawRoundedRect(QRectF(topright0, topright1), 0.0, 0.0);
 
     // Widget
-    painter.setBrush(QBrush("#FFFFFF"));
+    painter.setBrush(QBrush(QColor(0xff, 0xff, 0xff)));
     painter.setRenderHint(QPainter::Antialiasing);
     painter.drawRoundedRect(
       QRectF(QPointF(margin, margin), QPointF(width - margin, height - margin)), radius, radius);

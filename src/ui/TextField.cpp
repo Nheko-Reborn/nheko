@@ -40,6 +40,7 @@ void
 TextField::setBackgroundColor(const QColor &color)
 {
     background_color_ = color;
+    emit backgroundColorChanged();
 }
 
 QColor
@@ -130,6 +131,7 @@ void
 TextField::setLabelColor(const QColor &color)
 {
     label_color_ = color;
+    emit labelColorChanged();
     update();
 }
 
@@ -147,6 +149,7 @@ void
 TextField::setInkColor(const QColor &color)
 {
     ink_color_ = color;
+    emit inkColorChanged();
     update();
 }
 
@@ -164,6 +167,7 @@ void
 TextField::setUnderlineColor(const QColor &color)
 {
     underline_color_ = color;
+    emit underlineColorChanged();
     update();
 }
 

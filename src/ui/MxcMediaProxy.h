@@ -23,7 +23,8 @@ class MxcMediaProxy : public QMediaPlayer
     Q_OBJECT
     Q_PROPERTY(TimelineModel *roomm READ room WRITE setRoom NOTIFY roomChanged REQUIRED)
     Q_PROPERTY(QString eventId READ eventId WRITE setEventId NOTIFY eventIdChanged)
-    Q_PROPERTY(QAbstractVideoSurface *videoSurface READ getVideoSurface WRITE setVideoSurface)
+    Q_PROPERTY(QAbstractVideoSurface *videoSurface READ getVideoSurface WRITE setVideoSurface NOTIFY
+                 videoSurfaceChanged)
     Q_PROPERTY(bool loaded READ loaded NOTIFY loadedChanged)
     Q_PROPERTY(int orientation READ orientation NOTIFY orientationChanged)
 
@@ -55,6 +56,7 @@ signals:
     void newBuffer(QMediaContent, QIODevice *buf);
 
     void orientationChanged();
+    void videoSurfaceChanged();
 
 private slots:
     void startDownload();

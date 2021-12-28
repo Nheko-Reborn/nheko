@@ -32,6 +32,7 @@ FallbackAuth::FallbackAuth(const QString &authType, const QString &session, QWid
 
     auto buttonLayout = new QHBoxLayout();
     buttonLayout->setSpacing(8);
+    buttonLayout->setContentsMargins(0, 0, 0, 0);
 
     openBtn_    = new QPushButton(tr("Open Fallback in Browser"), this);
     cancelBtn_  = new QPushButton(tr("Cancel"), this);
@@ -58,8 +59,7 @@ FallbackAuth::FallbackAuth(const QString &authType, const QString &session, QWid
                                  "fallback/web?session=%3")
                            .arg(QString::fromStdString(http::client()->server()))
                            .arg(http::client()->port())
-                           .arg(session)
-                           .arg(authType);
+                           .arg(session, authType);
 
         QDesktopServices::openUrl(url);
     });

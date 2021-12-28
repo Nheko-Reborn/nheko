@@ -203,7 +203,7 @@ MainWindow::removeOverlayProgressBar()
     QTimer *timer = new QTimer(this);
     timer->setSingleShot(true);
 
-    connect(timer, &QTimer::timeout, [this, timer]() {
+    connect(timer, &QTimer::timeout, this, [this, timer]() {
         timer->deleteLater();
 
         if (modal_)

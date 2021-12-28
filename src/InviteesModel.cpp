@@ -16,7 +16,7 @@ InviteesModel::InviteesModel(QObject *parent)
 void
 InviteesModel::addUser(QString mxid)
 {
-    for (const auto &invitee : invitees_)
+    for (const auto &invitee : qAsConst(invitees_))
         if (invitee->mxid_ == mxid)
             return;
 
