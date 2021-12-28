@@ -222,15 +222,15 @@ Cache::setup()
     nhlog::db()->debug("setting up cache");
 
     // Previous location of the cache directory
-    auto oldCache = QString("%1/%2%3")
-                      .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-                      .arg(QString::fromUtf8(localUserId_.toUtf8().toHex()))
-                      .arg(QString::fromUtf8(settings->profile().toUtf8().toHex()));
+    auto oldCache =
+      QString("%1/%2%3").arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation),
+                             QString::fromUtf8(localUserId_.toUtf8().toHex()),
+                             QString::fromUtf8(settings->profile().toUtf8().toHex()));
 
-    cacheDirectory_ = QString("%1/%2%3")
-                        .arg(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation))
-                        .arg(QString::fromUtf8(localUserId_.toUtf8().toHex()))
-                        .arg(QString::fromUtf8(settings->profile().toUtf8().toHex()));
+    cacheDirectory_ =
+      QString("%1/%2%3").arg(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation),
+                             QString::fromUtf8(localUserId_.toUtf8().toHex()),
+                             QString::fromUtf8(settings->profile().toUtf8().toHex()));
 
     bool isInitial = !QFile::exists(cacheDirectory_);
 
@@ -276,7 +276,8 @@ Cache::setup()
 
         QDir stateDir(cacheDirectory_);
 
-        for (const auto &file : stateDir.entryList(QDir::NoDotAndDotDot)) {
+        auto eList = stateDir.entryList(QDir::NoDotAndDotDot);
+        for (const auto &file : qAsConst(eList)) {
             if (!stateDir.remove(file))
                 throw std::runtime_error(("Unable to delete file " + file).toStdString().c_str());
         }
