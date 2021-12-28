@@ -951,7 +951,7 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
           "Updated server key count {} {}", count->second, mtx::crypto::SIGNED_CURVE25519);
 
         if (count->second < MAX_ONETIME_KEYS) {
-            const int nkeys = MAX_ONETIME_KEYS - count->second;
+            const size_t nkeys = MAX_ONETIME_KEYS - count->second;
 
             nhlog::crypto()->info("uploading {} {} keys", nkeys, mtx::crypto::SIGNED_CURVE25519);
             olm::client()->generate_one_time_keys(nkeys);
@@ -1231,18 +1231,18 @@ ChatPage::startChat(QString userid)
 }
 
 static QString
-mxidFromSegments(QStringRef sigil, QStringRef mxid)
+mxidFromSegments(QStringView sigil, QStringView mxid)
 {
     if (mxid.isEmpty())
         return "";
 
     auto mxid_ = QUrl::fromPercentEncoding(mxid.toUtf8());
 
-    if (sigil == "u") {
+    if (sigil == u"u") {
         return "@" + mxid_;
-    } else if (sigil == "roomid") {
+    } else if (sigil == u"roomid") {
         return "!" + mxid_;
-    } else if (sigil == "r") {
+    } else if (sigil == u"r") {
         return "#" + mxid_;
         //} else if (sigil == "group") {
         //        return "+" + mxid_;
@@ -1335,7 +1335,7 @@ ChatPage::handleMatrixUri(QString uri)
         }
     }
 
-    if (sigil1 == "u") {
+    if (sigil1 == u"u") {
         if (action.isEmpty()) {
             auto t = view_manager_->rooms()->currentRoom();
             if (t && cache::isRoomMember(mxid1.toStdString(), t->roomId().toStdString())) {
@@ -1343,11 +1343,11 @@ ChatPage::handleMatrixUri(QString uri)
                 return true;
             }
             emit view_manager_->openGlobalUserProfile(mxid1);
-        } else if (action == "chat") {
+        } else if (action == u"chat") {
             this->startChat(mxid1);
         }
         return true;
-    } else if (sigil1 == "roomid") {
+    } else if (sigil1 == u"roomid") {
         auto joined_rooms = cache::joinedRooms();
         auto targetRoomId = mxid1.toStdString();
 
@@ -1360,12 +1360,12 @@ ChatPage::handleMatrixUri(QString uri)
             }
         }
 
-        if (action == "join" || action.isEmpty()) {
+        if (action == u"join" || action.isEmpty()) {
             joinRoomVia(targetRoomId, vias);
             return true;
         }
         return false;
-    } else if (sigil1 == "r") {
+    } else if (sigil1 == u"r") {
         auto joined_rooms    = cache::joinedRooms();
         auto targetRoomAlias = mxid1.toStdString();
 
@@ -1381,7 +1381,7 @@ ChatPage::handleMatrixUri(QString uri)
             }
         }
 
-        if (action == "join" || action.isEmpty()) {
+        if (action == u"join" || action.isEmpty()) {
             joinRoomVia(mxid1.toStdString(), vias);
             return true;
         }

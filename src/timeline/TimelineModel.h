@@ -427,7 +427,6 @@ private:
 
     mutable EventStore events;
 
-
     QString currentId, currentReadId;
     QString reply_, edit_;
     QString textBeforeEdit, replyBeforeEdit;
