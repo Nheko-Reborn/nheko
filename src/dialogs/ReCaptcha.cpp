@@ -34,7 +34,7 @@ ReCaptcha::ReCaptcha(const QString &session, QWidget *parent)
     buttonLayout->setContentsMargins(0, 0, 0, 0);
     buttonLayout->setSpacing(8);
 
-    openCaptchaBtn_ = new QPushButton("Open reCAPTCHA", this);
+    openCaptchaBtn_ = new QPushButton(tr("Open reCAPTCHA"), this);
     cancelBtn_      = new QPushButton(tr("Cancel"), this);
     confirmBtn_     = new QPushButton(tr("Confirm"), this);
     confirmBtn_->setDefault(true);

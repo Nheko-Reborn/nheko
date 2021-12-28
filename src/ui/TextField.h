@@ -87,7 +87,7 @@ public:
     TextFieldLabel(TextField *parent);
 
     inline void setColor(const QColor &color);
-    inline void setOffset(const QPointF &pos);
+    inline void setOffset(QPointF pos);
     inline void setScale(qreal scale);
 
     inline QColor color() const;
@@ -120,7 +120,7 @@ TextFieldLabel::setColor(const QColor &color)
 }
 
 inline void
-TextFieldLabel::setOffset(const QPointF &pos)
+TextFieldLabel::setOffset(QPointF pos)
 {
     x_ = pos.x();
     y_ = pos.y();

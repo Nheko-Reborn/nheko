@@ -14,7 +14,7 @@
 
 using namespace dialogs;
 
-ImageOverlay::ImageOverlay(QPixmap image, QWidget *parent)
+ImageOverlay::ImageOverlay(const QPixmap &image, QWidget *parent)
   : QWidget{parent}
   , originalImage_{image}
 {
@@ -22,7 +22,7 @@ ImageOverlay::ImageOverlay(QPixmap image, QWidget *parent)
     setParent(nullptr);
 
     setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
-    setWindowRole("imageoverlay");
+    setWindowRole(QStringLiteral("imageoverlay"));
 
     setAttribute(Qt::WA_NoSystemBackground, true);
     setAttribute(Qt::WA_TranslucentBackground, true);

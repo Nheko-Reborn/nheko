@@ -68,17 +68,17 @@ CreateRoom::CreateRoom(QWidget *parent)
 
     auto visibilityLabel = new QLabel(tr("Room Visibility"), this);
     visibilityCombo_     = new QComboBox(this);
-    visibilityCombo_->addItem("Private");
-    visibilityCombo_->addItem("Public");
+    visibilityCombo_->addItem(tr("Private"));
+    visibilityCombo_->addItem(tr("Public"));
 
     visibilityLayout->addWidget(visibilityLabel);
     visibilityLayout->addWidget(visibilityCombo_, 0, Qt::AlignBottom | Qt::AlignRight);
 
     auto presetLabel = new QLabel(tr("Room Preset"), this);
     presetCombo_     = new QComboBox(this);
-    presetCombo_->addItem("Private Chat");
-    presetCombo_->addItem("Public Chat");
-    presetCombo_->addItem("Trusted Private Chat");
+    presetCombo_->addItem(tr("Private Chat"));
+    presetCombo_->addItem(tr("Public Chat"));
+    presetCombo_->addItem(tr("Trusted Private Chat"));
 
     presetLayout->addWidget(presetLabel);
     presetLayout->addWidget(presetCombo_, 0, Qt::AlignBottom | Qt::AlignRight);
@@ -119,10 +119,10 @@ CreateRoom::CreateRoom(QWidget *parent)
     });
 
     connect(visibilityCombo_,
-            static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this,
-            [this](const QString &text) {
-                if (text == "Private") {
+            [this](int idx) {
+                if (idx == 0) {
                     request_.visibility = mtx::common::RoomVisibility::Private;
                 } else {
                     request_.visibility = mtx::common::RoomVisibility::Public;
@@ -130,12 +130,12 @@ CreateRoom::CreateRoom(QWidget *parent)
             });
 
     connect(presetCombo_,
-            static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this,
-            [this](const QString &text) {
-                if (text == "Private Chat") {
+            [this](int idx) {
+                if (idx == 0) {
                     request_.preset = mtx::requests::Preset::PrivateChat;
-                } else if (text == "Public Chat") {
+                } else if (idx == 1) {
                     request_.preset = mtx::requests::Preset::PublicChat;
                 } else {
                     request_.preset = mtx::requests::Preset::TrustedPrivateChat;

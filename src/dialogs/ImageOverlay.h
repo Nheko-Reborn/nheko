@@ -16,7 +16,7 @@ class ImageOverlay : public QWidget
 {
     Q_OBJECT
 public:
-    ImageOverlay(QPixmap image, QWidget *parent = nullptr);
+    ImageOverlay(const QPixmap &image, QWidget *parent = nullptr);
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

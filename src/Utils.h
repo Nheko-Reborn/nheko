@@ -94,8 +94,8 @@ event_body(const mtx::events::collections::TimelineEvents &event);
 //! Match widgets/events with a description message.
 template<class T>
 QString
-messageDescription(const QString &username = "",
-                   const QString &body     = "",
+messageDescription(const QString &username = QString(),
+                   const QString &body     = QString(),
                    const bool isLocal      = false)
 {
     using Audio      = mtx::events::RoomEvent<mtx::events::msg::Audio>;
@@ -157,7 +157,7 @@ messageDescription(const QString &username = "",
             return QCoreApplication::translate("message-description sent:", "%1: %2")
               .arg(username, body);
     } else if (std::is_same<T, Emote>::value) {
-        return QString("* %1 %2").arg(username, body);
+        return QStringLiteral("* %1 %2").arg(username, body);
     } else if (std::is_same<T, Encrypted>::value) {
         if (isLocal)
             return QCoreApplication::translate("message-description sent:",

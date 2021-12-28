@@ -63,10 +63,10 @@ const QRegularExpression url_regex(
   QStringLiteral(
     R"((?<!["'])(?>((www\.(?!\.)|[a-z][a-z0-9+.-]*://)[^\s<>'"]+[^!,\.\s<>'"\]\)\:]))(?!["']))"));
 // match any markdown matrix.to link. Capture group 1 is the link name, group 2 is the target.
-static const QRegularExpression matrixToMarkdownLink(
-  R"(\[(.*?)(?<!\\)\]\((https://matrix.to/#/.*?\)))"); // clazy:exclude=non-pod-global-static
-static const QRegularExpression matrixToLink(
-  R"(<a href=\"(https://matrix.to/#/.*?)\">(.*?)</a>)"); // clazy:exclude=non-pod-global-static
+static const QRegularExpression
+  matrixToMarkdownLink(QStringLiteral(R"(\[(.*?)(?<!\\)\]\((https://matrix.to/#/.*?\)))"));
+static const QRegularExpression
+  matrixToLink(QStringLiteral(R"(<a href=\"(https://matrix.to/#/.*?)\">(.*?)</a>)"));
 }
 
 // Window geometry.
