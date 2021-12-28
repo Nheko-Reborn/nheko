@@ -122,8 +122,8 @@ UserSettings::load(std::optional<QString> profile)
       settings.value(prefix + "user/recent_reactions", QStringList{}).toStringList();
 
     collapsedSpaces_.clear();
-    for (const auto &e :
-         settings.value(prefix + "user/collapsed_spaces", QList<QVariant>{}).toList())
+    auto tempSpaces = settings.value(prefix + "user/collapsed_spaces", QList<QVariant>{}).toList();
+    for (const auto &e : qAsConst(tempSpaces))
         collapsedSpaces_.push_back(e.toStringList());
 
     shareKeysWithTrustedUsers_ =
@@ -730,7 +730,7 @@ UserSettings::save()
     settings.setValue(prefix + "user/recent_reactions", recentReactions_);
 
     QVariantList v;
-    for (const auto &e : collapsedSpaces_)
+    for (const auto &e : qAsConst(collapsedSpaces_))
         v.push_back(e);
     settings.setValue(prefix + "user/collapsed_spaces", v);
 
@@ -763,7 +763,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
     QFont font;
     font.setPointSizeF(font.pointSizeF() * 1.1);
 
-    auto versionInfo = new QLabel(QString("%1 | %2").arg(nheko::version).arg(nheko::build_os));
+    auto versionInfo = new QLabel(QString("%1 | %2").arg(nheko::version, nheko::build_os));
     if (QCoreApplication::applicationName() != "nheko")
         versionInfo->setText(versionInfo->text() + " | " +
                              tr("profile: %1").arg(QCoreApplication::applicationName()));
@@ -1164,25 +1164,31 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
     connect(themeCombo_,
             static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+            this,
             [this](const QString &text) {
                 settings_->setTheme(text.toLower());
                 emit themeChanged();
             });
     connect(scaleFactorCombo_,
             static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+            this,
             [](const QString &factor) { utils::setScaleFactor(factor.toFloat()); });
     connect(fontSizeCombo_,
             static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+            this,
             [this](const QString &size) { settings_->setFontSize(size.trimmed().toDouble()); });
     connect(fontSelectionCombo_,
             static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+            this,
             [this](const QString &family) { settings_->setFontFamily(family.trimmed()); });
     connect(emojiFontSelectionCombo_,
             static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+            this,
             [this](const QString &family) { settings_->setEmojiFontFamily(family.trimmed()); });
 
     connect(ringtoneCombo_,
             static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+            this,
             [this](const QString &ringtone) {
                 if (ringtone == "Other...") {
                     QString homeFolder =
@@ -1209,10 +1215,12 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
     connect(microphoneCombo_,
             static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+            this,
             [this](const QString &microphone) { settings_->setMicrophone(microphone); });
 
     connect(cameraCombo_,
             static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+            this,
             [this](const QString &camera) {
                 settings_->setCamera(camera);
                 std::vector<std::string> resolutions =
@@ -1224,6 +1232,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
     connect(cameraResolutionCombo_,
             static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+            this,
             [this](const QString &resolution) {
                 settings_->setCameraResolution(resolution);
                 std::vector<std::string> frameRates = CallDevices::instance().frameRates(
@@ -1235,6 +1244,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
 
     connect(cameraFrameRateCombo_,
             static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
+            this,
             [this](const QString &frameRate) { settings_->setCameraFrameRate(frameRate); });
 
     connect(trayToggle_, &Toggle::toggled, this, [this](bool enabled) {
@@ -1509,7 +1519,7 @@ UserSettingsPage::exportSessionKeys()
     // Open file dialog to save the file.
     const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     const QString fileName =
-      QFileDialog::getSaveFileName(this, tr("File to save the exported session keys"), "", "");
+      QFileDialog::getSaveFileName(this, tr("File to save the exported session keys"), homeFolder);
 
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {

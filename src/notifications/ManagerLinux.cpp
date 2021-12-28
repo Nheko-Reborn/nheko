@@ -34,13 +34,15 @@ NotificationsManager::NotificationsManager(QObject *parent)
          QDBusConnection::sessionBus(),
          this)
   , hasMarkup_{std::invoke([this]() -> bool {
-      for (auto x : dbus.call("GetCapabilities").arguments())
+      auto caps = dbus.call("GetCapabilities").arguments();
+      for (const auto &x : qAsConst(caps))
           if (x.toStringList().contains("body-markup"))
               return true;
       return false;
   })}
   , hasImages_{std::invoke([this]() -> bool {
-      for (auto x : dbus.call("GetCapabilities").arguments())
+      auto caps = dbus.call("GetCapabilities").arguments();
+      for (const auto &x : qAsConst(caps))
           if (x.toStringList().contains("body-images"))
               return true;
       return false;
@@ -48,24 +50,26 @@ NotificationsManager::NotificationsManager(QObject *parent)
 {
     qDBusRegisterMetaType<QImage>();
 
+    // clang-format off
     QDBusConnection::sessionBus().connect("org.freedesktop.Notifications",
                                           "/org/freedesktop/Notifications",
                                           "org.freedesktop.Notifications",
                                           "ActionInvoked",
                                           this,
-                                          SLOT(actionInvoked(uint, QString)));
+                                          SLOT(actionInvoked(uint,QString)));
     QDBusConnection::sessionBus().connect("org.freedesktop.Notifications",
                                           "/org/freedesktop/Notifications",
                                           "org.freedesktop.Notifications",
                                           "NotificationClosed",
                                           this,
-                                          SLOT(notificationClosed(uint, uint)));
+                                          SLOT(notificationClosed(uint,uint)));
     QDBusConnection::sessionBus().connect("org.freedesktop.Notifications",
                                           "/org/freedesktop/Notifications",
                                           "org.freedesktop.Notifications",
                                           "NotificationReplied",
                                           this,
-                                          SLOT(notificationReplied(uint, QString)));
+                                          SLOT(notificationReplied(uint,QString)));
+    // clang-format on
 
     connect(this,
             &NotificationsManager::systemPostNotificationCb,

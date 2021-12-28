@@ -353,7 +353,6 @@ SingleImagePackModel::setAvatar(QUrl f)
     }
 
     auto bytes = file.readAll();
-    auto img   = utils::readImage(bytes);
 
     auto filename = f.fileName().toStdString();
     http::client()->upload(

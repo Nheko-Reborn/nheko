@@ -256,7 +256,7 @@ utils::firstChar(const QString &input)
     if (input.isEmpty())
         return input;
 
-    for (auto const &c : input.toUcs4()) {
+    for (auto const &c : input.toStdU32String()) {
         if (QString::fromUcs4(&c, 1) != QString("#"))
             return QString::fromUcs4(&c, 1).toUpper();
     }
@@ -374,8 +374,7 @@ utils::mxcToHttp(const QUrl &url, const QString &server, int port)
     return QString("https://%1:%2/_matrix/media/r0/download/%3/%4")
       .arg(server)
       .arg(port)
-      .arg(QString::fromStdString(mxcParts.server))
-      .arg(QString::fromStdString(mxcParts.media_id));
+      .arg(QString::fromStdString(mxcParts.server), QString::fromStdString(mxcParts.media_id));
 }
 
 QString
@@ -516,7 +515,7 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                   QStringView(nodeText).mid(boundaryStart, boundaryEnd - boundaryStart);
                 boundaryStart = boundaryEnd;
                 // Don't rainbowify whitespaces
-                if (curChar.trimmed().isEmpty() || codepointIsEmoji(curChar.toUcs4().first())) {
+                if (curChar.trimmed().isEmpty() || codepointIsEmoji(curChar.toUcs4().at(0))) {
                     buf.append(curChar);
                     continue;
                 }

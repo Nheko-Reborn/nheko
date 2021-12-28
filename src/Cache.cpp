@@ -372,7 +372,7 @@ Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
             }
         }
         // if we emit the databaseReady signal directly it won't be received
-        QTimer::singleShot(0, [this] { loadSecrets({}); });
+        QTimer::singleShot(0, this, [this] { loadSecrets({}); });
         return;
     }
 
@@ -410,7 +410,7 @@ Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
                 toLoad.erase(toLoad.begin());
 
                 // You can't start a job from the finish signal of a job.
-                QTimer::singleShot(0, [this, toLoad] { loadSecrets(toLoad); });
+                QTimer::singleShot(0, this, [this, toLoad] { loadSecrets(toLoad); });
             });
     job->start();
 }
@@ -440,7 +440,7 @@ Cache::storeSecret(const std::string name_, const std::string secret, bool inter
     if (settings->value("run_without_secure_secrets_service", false).toBool()) {
       settings->setValue("secrets/" + name, QString::fromStdString(secret));
       // if we emit the signal directly it won't be received
-      QTimer::singleShot(0, [this, name_] { emit secretChanged(name_); });
+      QTimer::singleShot(0, this, [this, name_] { emit secretChanged(name_); });
       nhlog::db()->info("Storing secret '{}' successful", name_);
       return;
     }
@@ -466,7 +466,7 @@ Cache::storeSecret(const std::string name_, const std::string secret, bool inter
           } else {
               // if we emit the signal directly, qtkeychain breaks and won't execute new
               // jobs. You can't start a job from the finish signal of a job.
-              QTimer::singleShot(0, [this, name_] { emit secretChanged(name_); });
+              QTimer::singleShot(0, this, [this, name_] { emit secretChanged(name_); });
               nhlog::db()->info("Storing secret '{}' successful", name_);
           }
       },
@@ -487,7 +487,7 @@ Cache::deleteSecret(const std::string name, bool internal)
     if (settings->value("run_without_secure_secrets_service", false).toBool()) {
       settings->remove("secrets/" + name_);
       // if we emit the signal directly it won't be received
-      QTimer::singleShot(0, [this, name] { emit secretChanged(name); });
+      QTimer::singleShot(0, this, [this, name] { emit secretChanged(name); });
       return;
     }
 
@@ -1985,7 +1985,7 @@ Cache::replaceEvent(const std::string &room_id,
     {
         eventsDb.del(txn, event_id);
         eventsDb.put(txn, event_id, event_json);
-        for (auto relation : mtx::accessors::relations(event.data).relations) {
+        for (const auto &relation : mtx::accessors::relations(event.data).relations) {
             relationsDb.put(txn, relation.event_id, event_id);
         }
     }
@@ -3872,7 +3872,7 @@ Cache::displayName(const QString &room_id, const QString &user_id)
 static bool
 isDisplaynameSafe(const std::string &s)
 {
-    for (QChar c : QString::fromStdString(s)) {
+    for (QChar c : QString::fromStdString(s).toStdU32String()) {
         if (c.isPrint() && !c.isSpace())
             return false;
     }
@@ -4454,7 +4454,7 @@ Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
 
     auto updateUnverifiedDevices = [&status](auto &theirDeviceKeys) {
         int currentVerifiedDevices = 0;
-        for (auto device_id : status.verified_devices) {
+        for (const auto &device_id : status.verified_devices) {
             if (theirDeviceKeys.count(device_id))
                 currentVerifiedDevices++;
         }
