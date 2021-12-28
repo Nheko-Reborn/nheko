@@ -350,7 +350,6 @@ secretName(std::string name, bool internal)
 void
 Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
 {
-
     auto settings = UserSettings::instance()->qsettings();
 
     if (toLoad.empty()) {
@@ -362,7 +361,7 @@ Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
 
     if (settings->value("run_without_secure_secrets_service", false).toBool()) {
         for (auto &[name_, internal] : toLoad) {
-            auto name = secretName(name_, internal);
+            auto name  = secretName(name_, internal);
             auto value = settings->value("secrets/" + name).toString();
             if (value.isEmpty()) {
                 nhlog::db()->info("Restored empty secret '{}'.", name.toStdString());
@@ -375,7 +374,6 @@ Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
         QTimer::singleShot(0, this, [this] { loadSecrets({}); });
         return;
     }
-
 
     auto [name_, internal] = toLoad.front();
 
@@ -438,11 +436,11 @@ Cache::storeSecret(const std::string name_, const std::string secret, bool inter
 
     auto settings = UserSettings::instance()->qsettings();
     if (settings->value("run_without_secure_secrets_service", false).toBool()) {
-      settings->setValue("secrets/" + name, QString::fromStdString(secret));
-      // if we emit the signal directly it won't be received
-      QTimer::singleShot(0, this, [this, name_] { emit secretChanged(name_); });
-      nhlog::db()->info("Storing secret '{}' successful", name_);
-      return;
+        settings->setValue("secrets/" + name, QString::fromStdString(secret));
+        // if we emit the signal directly it won't be received
+        QTimer::singleShot(0, this, [this, name_] { emit secretChanged(name_); });
+        nhlog::db()->info("Storing secret '{}' successful", name_);
+        return;
     }
 
     auto job = new QKeychain::WritePasswordJob(QCoreApplication::applicationName());
@@ -485,10 +483,10 @@ Cache::deleteSecret(const std::string name, bool internal)
 
     auto settings = UserSettings::instance()->qsettings();
     if (settings->value("run_without_secure_secrets_service", false).toBool()) {
-      settings->remove("secrets/" + name_);
-      // if we emit the signal directly it won't be received
-      QTimer::singleShot(0, this, [this, name] { emit secretChanged(name); });
-      return;
+        settings->remove("secrets/" + name_);
+        // if we emit the signal directly it won't be received
+        QTimer::singleShot(0, this, [this, name] { emit secretChanged(name); });
+        return;
     }
 
     auto job = new QKeychain::DeletePasswordJob(QCoreApplication::applicationName());
