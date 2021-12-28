@@ -350,18 +350,39 @@ secretName(std::string name, bool internal)
 void
 Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
 {
+
+    auto settings = UserSettings::instance()->qsettings();
+
     if (toLoad.empty()) {
         this->databaseReady_ = true;
         emit databaseReady();
+        nhlog::db()->debug("Database ready");
         return;
     }
+
+    if (settings->value("run_without_secure_secrets_service", false).toBool()) {
+        for (auto &[name_, internal] : toLoad) {
+            auto name = secretName(name_, internal);
+            auto value = settings->value("secrets/" + name).toString();
+            if (value.isEmpty()) {
+                nhlog::db()->info("Restored empty secret '{}'.", name.toStdString());
+            } else {
+                std::unique_lock lock(secret_storage.mtx);
+                secret_storage.secrets[name.toStdString()] = value.toStdString();
+            }
+        }
+        // if we emit the databaseReady signal directly it won't be received
+        QTimer::singleShot(0, [this] { loadSecrets({}); });
+        return;
+    }
+
 
     auto [name_, internal] = toLoad.front();
 
     auto job = new QKeychain::ReadPasswordJob(QCoreApplication::applicationName());
     job->setAutoDelete(true);
     job->setInsecureFallback(true);
-    job->setSettings(UserSettings::instance()->qsettings());
+    job->setSettings(settings);
     auto name = secretName(name_, internal);
     job->setKey(name);
 
@@ -415,11 +436,19 @@ Cache::storeSecret(const std::string name_, const std::string secret, bool inter
         secret_storage.secrets[name.toStdString()] = secret;
     }
 
-    auto settings = UserSettings::instance();
-    auto job      = new QKeychain::WritePasswordJob(QCoreApplication::applicationName());
+    auto settings = UserSettings::instance()->qsettings();
+    if (settings->value("run_without_secure_secrets_service", false).toBool()) {
+      settings->setValue("secrets/" + name, QString::fromStdString(secret));
+      // if we emit the signal directly it won't be received
+      QTimer::singleShot(0, [this, name_] { emit secretChanged(name_); });
+      nhlog::db()->info("Storing secret '{}' successful", name_);
+      return;
+    }
+
+    auto job = new QKeychain::WritePasswordJob(QCoreApplication::applicationName());
     job->setAutoDelete(true);
     job->setInsecureFallback(true);
-    job->setSettings(UserSettings::instance()->qsettings());
+    job->setSettings(settings);
 
     job->setKey(name);
 
@@ -454,11 +483,18 @@ Cache::deleteSecret(const std::string name, bool internal)
         secret_storage.secrets.erase(name_.toStdString());
     }
 
-    auto settings = UserSettings::instance();
-    auto job      = new QKeychain::DeletePasswordJob(QCoreApplication::applicationName());
+    auto settings = UserSettings::instance()->qsettings();
+    if (settings->value("run_without_secure_secrets_service", false).toBool()) {
+      settings->remove("secrets/" + name_);
+      // if we emit the signal directly it won't be received
+      QTimer::singleShot(0, [this, name] { emit secretChanged(name); });
+      return;
+    }
+
+    auto job = new QKeychain::DeletePasswordJob(QCoreApplication::applicationName());
     job->setAutoDelete(true);
     job->setInsecureFallback(true);
-    job->setSettings(UserSettings::instance()->qsettings());
+    job->setSettings(settings);
 
     job->setKey(name_);
 
