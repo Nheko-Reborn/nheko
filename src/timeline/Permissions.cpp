@@ -10,7 +10,7 @@
 
 Permissions::Permissions(QString roomId, QObject *parent)
   : QObject(parent)
-  , roomId_(roomId)
+  , roomId_(std::move(roomId))
 {
     invalidate();
 }

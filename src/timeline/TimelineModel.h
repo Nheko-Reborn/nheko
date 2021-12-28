@@ -189,7 +189,7 @@ class TimelineModel : public QAbstractListModel
 
 public:
     explicit TimelineModel(TimelineViewManager *manager,
-                           const QString &room_id,
+                           QString room_id,
                            QObject *parent = nullptr);
 
     enum Roles
@@ -421,11 +421,12 @@ private:
 
     void setPaginationInProgress(const bool paginationInProgress);
 
+    QString room_id_;
+
     QSet<QString> read;
 
     mutable EventStore events;
 
-    QString room_id_;
 
     QString currentId, currentReadId;
     QString reply_, edit_;

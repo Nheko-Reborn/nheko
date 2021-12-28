@@ -330,17 +330,17 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
     };
 }
 
-TimelineModel::TimelineModel(TimelineViewManager *manager, const QString &room_id, QObject *parent)
+TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObject *parent)
   : QAbstractListModel(parent)
-  , events(room_id.toStdString(), this)
-  , room_id_(room_id)
+  , room_id_(std::move(room_id))
+  , events(room_id_.toStdString(), this)
   , manager_(manager)
-  , permissions_{room_id}
+  , permissions_{room_id_}
 {
     lastMessage_.timestamp = 0;
 
     if (auto create =
-          cache::client()->getStateEvent<mtx::events::state::Create>(room_id.toStdString()))
+          cache::client()->getStateEvent<mtx::events::state::Create>(room_id_.toStdString()))
         this->isSpace_ = create->content.type == mtx::events::state::room_type::space;
     this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
 
