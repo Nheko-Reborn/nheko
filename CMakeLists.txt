@@ -335,7 +335,6 @@ set(SRC_FILES
 	src/ui/Badge.cpp
 	src/ui/DropShadow.cpp
 	src/ui/FlatButton.cpp
-	src/ui/FloatingButton.cpp
 	src/ui/InfoMessage.cpp
 	src/ui/Label.cpp
 	src/ui/LoadingIndicator.cpp
@@ -545,7 +544,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	# UI components
 	src/ui/Badge.h
 	src/ui/FlatButton.h
-	src/ui/FloatingButton.h
 	src/ui/InfoMessage.h
 	src/ui/Label.h
 	src/ui/LoadingIndicator.h
