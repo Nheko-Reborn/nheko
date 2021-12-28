@@ -71,8 +71,12 @@ public:
 };
 
 class MxcImageProvider
-  : public QObject
-  , public QQuickAsyncImageProvider
+  :
+#if QT_VERSION < 0x60000
+  public QObject
+  ,
+#endif
+  public QQuickAsyncImageProvider
 {
     Q_OBJECT
 public slots:
@@ -85,7 +89,4 @@ public slots:
                          std::function<void(QString, QSize, QImage, QString)> then,
                          bool crop     = true,
                          double radius = 0);
-
-private:
-    // QThreadPool pool;
 };

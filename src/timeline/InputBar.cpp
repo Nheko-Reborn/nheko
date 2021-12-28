@@ -140,7 +140,7 @@ InputBar::updateAtRoom(const QString &t)
             auto start = finder.position();
             finder.toNextBoundary();
             auto end = finder.position();
-            if (start > 0 && end - start >= 4 && t.midRef(start, end - start) == "room" &&
+            if (start > 0 && end - start >= 4 && t.mid(start, end - start) == "room" &&
                 t.at(start - 1) == QChar('@')) {
                 roomMention = true;
                 break;
@@ -324,7 +324,7 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
 
         QString body;
         bool firstLine = true;
-        for (const auto &line : related.quoted_body.split("\n")) {
+        for (auto line : related.quoted_body.splitRef(u'\n')) {
             if (firstLine) {
                 firstLine = false;
                 body      = QString("> <%1> %2\n").arg(related.quoted_user, line);
@@ -707,9 +707,9 @@ InputBar::showPreview(const QMimeData &source, const QString &path, const QStrin
 
           QSize dimensions;
           QString blurhash;
-          auto mimeClass = mime.split("/")[0];
+          auto mimeClass = mime.splitRef(u'/')[0];
           nhlog::ui()->debug("Mime: {}", mime.toStdString());
-          if (mimeClass == "image") {
+          if (mimeClass == u"image") {
               QImage img = utils::readImage(data);
 
               dimensions = img.size();

@@ -17,7 +17,7 @@ SnackBar::SnackBar(QWidget *parent)
 {
     QFont font;
     font.setPointSizeF(font.pointSizeF() * 1.2);
-    font.setWeight(50);
+    font.setWeight(QFont::Weight::Thin);
     setFont(font);
 
     boxHeight_ = QFontMetrics(font).height() * 2;

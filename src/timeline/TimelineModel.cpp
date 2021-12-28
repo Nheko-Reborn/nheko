@@ -643,7 +643,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         // only show read receipts for messages not from us
         if (acc::sender(event) != http::client()->user_id().to_string())
             return qml_mtx_events::Empty;
-        else if (!id.isEmpty() && id[0] == "m")
+        else if (!id.isEmpty() && id[0] == 'm')
             return qml_mtx_events::Sent;
         else if (read.contains(id) || containsOthers(cache::readReceipts(id, room_id_)))
             return qml_mtx_events::Read;
@@ -1029,7 +1029,7 @@ TimelineModel::setCurrentIndex(int index)
     if (!ChatPage::instance()->isActiveWindow())
         return;
 
-    if (!currentId.startsWith("m")) {
+    if (!currentId.startsWith('m')) {
         auto oldReadIndex =
           cache::getEventIndex(roomId().toStdString(), currentReadId.toStdString());
         auto nextEventIndexAndId =
@@ -1759,16 +1759,16 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor
 
             if (startIndex - index != 0)
                 coloredUsername +=
-                  prefix +
-                  uncoloredUsername.midRef(index, startIndex > 0 ? startIndex - index : -1) +
-                  "</font>";
+                  prefix + uncoloredUsername.mid(index, startIndex > 0 ? startIndex - index : -1) +
+                  QStringLiteral("</font>");
 
             auto endIndex = uncoloredUsername.indexOf("</font>", startIndex);
             if (endIndex > 0)
                 endIndex += sizeof("</font>") - 1;
 
             if (endIndex - startIndex != 0)
-                coloredUsername += uncoloredUsername.midRef(startIndex, endIndex - startIndex);
+                coloredUsername +=
+                  QStringView(uncoloredUsername).mid(startIndex, endIndex - startIndex);
 
             index = endIndex;
         } while (index > 0 && index < uncoloredUsername.size());

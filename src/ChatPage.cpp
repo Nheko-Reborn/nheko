@@ -62,7 +62,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
 
     topLayout_ = new QHBoxLayout(this);
     topLayout_->setSpacing(0);
-    topLayout_->setMargin(0);
 
     view_manager_ = new TimelineViewManager(callManager_, this);
 
@@ -1303,7 +1302,7 @@ ChatPage::handleMatrixUri(QString uri)
     auto tempPath = uri_.path(QUrl::ComponentFormattingOption::FullyEncoded);
     if (tempPath.startsWith('/'))
         tempPath.remove(0, 1);
-    auto segments = tempPath.splitRef('/');
+    auto segments = QStringView(tempPath).split('/');
 
     if (segments.size() != 2 && segments.size() != 4)
         return false;
@@ -1314,7 +1313,7 @@ ChatPage::handleMatrixUri(QString uri)
         return false;
 
     QString mxid2;
-    if (segments.size() == 4 && segments[2] == "e") {
+    if (segments.size() == 4 && segments[2] == QStringView(u"e")) {
         if (segments[3].isEmpty())
             return false;
         else

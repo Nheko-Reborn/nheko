@@ -8,7 +8,6 @@
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDesktopServices>
-#include <QDesktopWidget>
 #include <QDir>
 #include <QFile>
 #include <QFontDatabase>

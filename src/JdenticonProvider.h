@@ -53,8 +53,12 @@ public:
 };
 
 class JdenticonProvider
-  : public QObject
-  , public QQuickAsyncImageProvider
+  :
+#if QT_VERSION < 0x60000
+  public QObject
+  ,
+#endif
+  public QQuickAsyncImageProvider
 {
     Q_OBJECT
 
@@ -72,11 +76,11 @@ public slots:
         auto queryStart = id.lastIndexOf('?');
         if (queryStart != -1) {
             id_            = id.left(queryStart);
-            auto query     = id.midRef(queryStart + 1);
-            auto queryBits = query.split('&');
+            auto query     = id.mid(queryStart + 1);
+            auto queryBits = query.splitRef('&');
 
             for (auto b : queryBits) {
-                if (b.startsWith("radius=")) {
+                if (b.startsWith(QStringView(u"radius="))) {
                     radius = b.mid(7).toDouble();
                 }
             }

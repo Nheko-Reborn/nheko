@@ -69,7 +69,10 @@ MsgCountComposedIcon::clone() const
 }
 
 QList<QSize>
-MsgCountComposedIcon::availableSizes(QIcon::Mode mode, QIcon::State state) const
+MsgCountComposedIcon::availableSizes(QIcon::Mode mode, QIcon::State state)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+  const
+#endif
 {
     Q_UNUSED(mode);
     Q_UNUSED(state);

@@ -25,11 +25,13 @@ Logout::Logout(QWidget *parent)
 
     auto layout = new QVBoxLayout(this);
     layout->setSpacing(conf::modals::WIDGET_SPACING);
-    layout->setMargin(conf::modals::WIDGET_MARGIN);
+    layout->setContentsMargins(conf::modals::WIDGET_MARGIN,
+                               conf::modals::WIDGET_MARGIN,
+                               conf::modals::WIDGET_MARGIN,
+                               conf::modals::WIDGET_MARGIN);
 
     auto buttonLayout = new QHBoxLayout();
     buttonLayout->setSpacing(0);
-    buttonLayout->setMargin(0);
 
     confirmBtn_ = new QPushButton("Logout", this);
     cancelBtn_  = new QPushButton(tr("Cancel"), this);

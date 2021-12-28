@@ -26,6 +26,8 @@ GPATH
 *.dylib
 
 vgcore.*
+heaptrack.*
+massif.*
 
 # Qt-es
 

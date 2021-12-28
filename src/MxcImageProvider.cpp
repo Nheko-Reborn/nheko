@@ -32,15 +32,15 @@ MxcImageProvider::requestImageResponse(const QString &id, const QSize &requested
     auto queryStart = id.lastIndexOf('?');
     if (queryStart != -1) {
         id_            = id.left(queryStart);
-        auto query     = id.midRef(queryStart + 1);
+        auto query     = QStringView(id).mid(queryStart + 1);
         auto queryBits = query.split('&');
 
         for (auto b : queryBits) {
-            if (b == "scale") {
+            if (b == QStringView(u"scale")) {
                 crop = false;
-            } else if (b.startsWith("radius=")) {
+            } else if (b.startsWith(QStringView(u"radius="))) {
                 radius = b.mid(7).toDouble();
-            } else if (b.startsWith("height=")) {
+            } else if (b.startsWith(u"height=")) {
                 size.setHeight(b.mid(7).toInt());
                 size.setWidth(0);
             }
@@ -109,7 +109,7 @@ MxcImageProvider::download(const QString &id,
         // Protect against synapse not following the spec:
         // https://github.com/matrix-org/synapse/issues/5302
         && requestedSize.height() <= 600 && requestedSize.width() <= 800) {
-        QString fileName = QString("%1_%2x%3_%4_radius%5")
+        QString fileName = QStringLiteral("%1_%2x%3_%4_radius%5")
                              .arg(QString::fromUtf8(id.toUtf8().toBase64(
                                QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals)))
                              .arg(requestedSize.width())

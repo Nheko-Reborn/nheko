@@ -64,8 +64,12 @@ public:
 };
 
 class BlurhashProvider
-  : public QObject
-  , public QQuickAsyncImageProvider
+  :
+#if QT_VERSION < 0x60000
+  public QObject
+  ,
+#endif
+  public QQuickAsyncImageProvider
 {
     Q_OBJECT
 public slots:
