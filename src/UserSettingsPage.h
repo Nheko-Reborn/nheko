@@ -207,7 +207,7 @@ public:
     QString font() const { return font_; }
     QString emojiFont() const
     {
-        if (emojiFont_ == "Default") {
+        if (emojiFont_ == QLatin1String("Default")) {
             return tr("Default");
         }
 
@@ -292,7 +292,7 @@ signals:
 private:
     // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
     QString defaultTheme_ =
-      QProcessEnvironment::systemEnvironment().value("QT_QPA_PLATFORMTHEME", "").isEmpty()
+      QProcessEnvironment::systemEnvironment().value(QStringLiteral("QT_QPA_PLATFORMTHEME"), QLatin1String("")).isEmpty()
         ? "light"
         : "system";
     QString theme_;

@@ -26,7 +26,7 @@ getJdenticonInterface()
     static bool interfaceExists{true};
 
     if (interface == nullptr && interfaceExists) {
-        QPluginLoader pluginLoader("qtjdenticon");
+        QPluginLoader pluginLoader(QStringLiteral("qtjdenticon"));
         QObject *plugin = pluginLoader.instance();
         if (plugin) {
             interface = qobject_cast<JdenticonInterface *>(plugin);

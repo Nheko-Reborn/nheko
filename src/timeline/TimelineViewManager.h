@@ -116,7 +116,7 @@ public slots:
 
     void setVideoCallItem();
 
-    QObject *completerFor(QString completerName, QString roomId = "");
+    QObject *completerFor(QString completerName, QString roomId = QLatin1String(QLatin1String("")));
     void forwardMessageToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 
     RoomlistModel *rooms() { return rooms_; }

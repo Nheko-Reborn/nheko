@@ -235,7 +235,7 @@ QString
 RoomSettings::roomTopic() const
 {
     return utils::replaceEmoji(utils::linkifyMessage(
-      QString::fromStdString(info_.topic).toHtmlEscaped().replace("\n", "<br>")));
+      QString::fromStdString(info_.topic).toHtmlEscaped().replace(QLatin1String("\n"), QLatin1String("<br>"))));
 }
 
 QString
@@ -563,10 +563,10 @@ RoomSettings::updateAvatar()
     QMimeDatabase db;
     QMimeType mime = db.mimeTypeForFile(fileName, QMimeDatabase::MatchContent);
 
-    const auto format = mime.name().split("/")[0];
+    const auto format = mime.name().split(QStringLiteral("/"))[0];
 
     QFile file{fileName, this};
-    if (format != "image") {
+    if (format != QLatin1String("image")) {
         emit displayError(tr("The selected file is not an image"));
         return;
     }

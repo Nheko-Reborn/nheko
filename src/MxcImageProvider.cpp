@@ -63,7 +63,7 @@ MxcImageRunnable::run()
       m_requestedSize,
       [this](QString, QSize, QImage image, QString) {
           if (image.isNull()) {
-              emit error("Failed to download image.");
+              emit error(QStringLiteral("Failed to download image."));
           } else {
               emit done(image);
           }
@@ -172,7 +172,7 @@ MxcImageProvider::download(const QString &id,
                       image = clipRadius(std::move(image), radius);
                   }
               }
-              image.setText("mxc url", "mxc://" + id);
+              image.setText(QStringLiteral("mxc url"), "mxc://" + id);
               if (image.save(fileInfo.absoluteFilePath(), "png"))
                   nhlog::ui()->debug("Wrote: {}", fileInfo.absoluteFilePath().toStdString());
               else
@@ -183,7 +183,7 @@ MxcImageProvider::download(const QString &id,
           });
     } else {
         try {
-            QString fileName = QString("%1_radius%2")
+            QString fileName = QStringLiteral("%1_radius%2")
                                  .arg(QString::fromUtf8(id.toUtf8().toBase64(
                                    QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals)))
                                  .arg(radius);
@@ -203,7 +203,7 @@ MxcImageProvider::download(const QString &id,
                       mtx::crypto::decrypt_file(fileData.toStdString(), encryptionInfo.value()));
                     auto data    = QByteArray(tempData.data(), (int)tempData.size());
                     QImage image = utils::readImage(data);
-                    image.setText("mxc url", "mxc://" + id);
+                    image.setText(QStringLiteral("mxc url"), "mxc://" + id);
                     if (!image.isNull()) {
                         if (radius != 0) {
                             image = clipRadius(std::move(image), radius);
@@ -233,14 +233,14 @@ MxcImageProvider::download(const QString &id,
                 const std::string &originalFilename,
                 mtx::http::RequestErr err) {
                   if (err) {
-                      then(id, QSize(), {}, "");
+                      then(id, QSize(), {}, QLatin1String(""));
                       return;
                   }
 
                   auto tempData = res;
                   QFile f(fileInfo.absoluteFilePath());
                   if (!f.open(QIODevice::Truncate | QIODevice::WriteOnly)) {
-                      then(id, QSize(), {}, "");
+                      then(id, QSize(), {}, QLatin1String(""));
                       return;
                   }
                   f.write(tempData.data(), tempData.size());
@@ -255,8 +255,8 @@ MxcImageProvider::download(const QString &id,
                           image = clipRadius(std::move(image), radius);
                       }
 
-                      image.setText("original filename", QString::fromStdString(originalFilename));
-                      image.setText("mxc url", "mxc://" + id);
+                      image.setText(QStringLiteral("original filename"), QString::fromStdString(originalFilename));
+                      image.setText(QStringLiteral("mxc url"), "mxc://" + id);
                       then(id, requestedSize, image, fileInfo.absoluteFilePath());
                       return;
                   }
@@ -266,8 +266,8 @@ MxcImageProvider::download(const QString &id,
                       image = clipRadius(std::move(image), radius);
                   }
 
-                  image.setText("original filename", QString::fromStdString(originalFilename));
-                  image.setText("mxc url", "mxc://" + id);
+                  image.setText(QStringLiteral("original filename"), QString::fromStdString(originalFilename));
+                  image.setText(QStringLiteral("mxc url"), "mxc://" + id);
                   then(id, requestedSize, image, fileInfo.absoluteFilePath());
               });
         } catch (std::exception &e) {

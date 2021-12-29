@@ -49,13 +49,13 @@ LoginPage::LoginPage(QWidget *parent)
     top_bar_layout_->addStretch(1);
 
     QIcon icon;
-    icon.addFile(":/icons/icons/ui/angle-arrow-left.svg");
+    icon.addFile(QStringLiteral(":/icons/icons/ui/angle-arrow-left.svg"));
 
     back_button_->setIcon(icon);
     back_button_->setIconSize(QSize(32, 32));
 
     QIcon logo;
-    logo.addFile(":/logos/login.png");
+    logo.addFile(QStringLiteral(":/logos/login.png"));
 
     logo_ = new QLabel(this);
     logo_->setPixmap(logo.pixmap(128));
@@ -79,7 +79,7 @@ LoginPage::LoginPage(QWidget *parent)
 
     matrixid_input_ = new TextField(this);
     matrixid_input_->setLabel(tr("Matrix ID"));
-    matrixid_input_->setRegexp(QRegularExpression("@.+?:.{3,}"));
+    matrixid_input_->setRegexp(QRegularExpression(QStringLiteral("@.+?:.{3,}")));
     matrixid_input_->setPlaceholderText(tr("e.g @joe:matrix.org"));
     matrixid_input_->setToolTip(
       tr("Your login name. A mxid should start with @ followed by the user id. After the user "
@@ -94,7 +94,7 @@ LoginPage::LoginPage(QWidget *parent)
     spinner_->hide();
 
     errorIcon_ = new QLabel(this);
-    errorIcon_->setPixmap(QPixmap(":/icons/icons/error.png"));
+    errorIcon_->setPixmap(QPixmap(QStringLiteral(":/icons/icons/error.png")));
     errorIcon_->hide();
 
     matrixidLayout_ = new QHBoxLayout();
@@ -215,7 +215,7 @@ LoginPage::showError(QLabel *label, const QString &msg)
 void
 LoginPage::onMatrixIdEntered()
 {
-    error_label_->setText("");
+    error_label_->setText(QLatin1String(""));
 
     User user;
 
@@ -225,7 +225,7 @@ LoginPage::onMatrixIdEntered()
                   tr("You have entered an invalid Matrix ID  e.g @joe:matrix.org"));
         return;
     } else {
-        error_matrixid_label_->setText("");
+        error_matrixid_label_->setText(QLatin1String(""));
         error_matrixid_label_->hide();
     }
 
@@ -334,7 +334,7 @@ LoginPage::checkHomeserverVersion()
 void
 LoginPage::onServerAddressEntered()
 {
-    error_label_->setText("");
+    error_label_->setText(QLatin1String(""));
     http::client()->verify_certificates(!UserSettings::instance()->disableCertificateValidation());
     http::client()->set_server(serverInput_->text().toStdString());
     checkHomeserverVersion();
@@ -380,7 +380,7 @@ LoginPage::versionOk(bool passwordSupported_, bool ssoSupported_)
 void
 LoginPage::onLoginButtonClicked(LoginMethod loginMethod)
 {
-    error_label_->setText("");
+    error_label_->setText(QLatin1String(""));
     User user;
 
     if (!matrixid_input_->isValid()) {
@@ -389,7 +389,7 @@ LoginPage::onLoginButtonClicked(LoginMethod loginMethod)
                   tr("You have entered an invalid Matrix ID  e.g @joe:matrix.org"));
         return;
     } else {
-        error_matrixid_label_->setText("");
+        error_matrixid_label_->setText(QLatin1String(""));
         error_matrixid_label_->hide();
     }
 

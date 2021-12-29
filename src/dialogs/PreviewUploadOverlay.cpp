@@ -115,7 +115,7 @@ PreviewUploadOverlay::init()
 void
 PreviewUploadOverlay::setLabels(const QString &type, const QString &mime, uint64_t upload_size)
 {
-    if (mediaType_.split('/')[0] == "image") {
+    if (mediaType_.split('/')[0] == QLatin1String("image")) {
         if (!image_.loadFromData(data_)) {
             titleLabel_.setText(QString{tr(ERR_MSG)}.arg(type));
         } else {
@@ -127,7 +127,7 @@ PreviewUploadOverlay::setLabels(const QString &type, const QString &mime, uint64
                                      "Media size: %2\n")}
                             .arg(mime, utils::humanReadableFileSize(upload_size));
 
-        titleLabel_.setText(QString{tr(DEFAULT)}.arg("file"));
+        titleLabel_.setText(QString{tr(DEFAULT)}.arg(QStringLiteral("file")));
         infoLabel_.setText(info);
     }
 }
@@ -144,7 +144,7 @@ PreviewUploadOverlay::setPreview(const QImage &src, const QString &mime)
     QBuffer buffer(&data_);
     buffer.open(QIODevice::WriteOnly);
     if (src.save(&buffer, type.toStdString().c_str()))
-        titleLabel_.setText(QString{tr(DEFAULT)}.arg("image"));
+        titleLabel_.setText(QString{tr(DEFAULT)}.arg(QStringLiteral("image")));
     else
         titleLabel_.setText(QString{tr(ERR_MSG)}.arg(type));
 
@@ -153,7 +153,7 @@ PreviewUploadOverlay::setPreview(const QImage &src, const QString &mime)
     image_.convertFromImage(src);
     isImage_ = true;
 
-    titleLabel_.setText(QString{tr(DEFAULT)}.arg("image"));
+    titleLabel_.setText(QString{tr(DEFAULT)}.arg(QStringLiteral("image")));
     init();
 }
 
@@ -170,7 +170,7 @@ PreviewUploadOverlay::setPreview(const QByteArray data, const QString &mime)
     filePath_  = "clipboard." + type;
     isImage_   = false;
 
-    if (mime == "image/svg+xml") {
+    if (mime == QLatin1String("image/svg+xml")) {
         isImage_ = true;
         image_.loadFromData(data_, mediaType_.toStdString().c_str());
     }

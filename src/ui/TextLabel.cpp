@@ -29,7 +29,7 @@ TextLabel::TextLabel(QWidget *parent)
 TextLabel::TextLabel(const QString &text, QWidget *parent)
   : QTextBrowser(parent)
 {
-    document()->setDefaultStyleSheet(QString("a {color: %1; }").arg(utils::linkColor()));
+    document()->setDefaultStyleSheet(QStringLiteral("a {color: %1; }").arg(utils::linkColor()));
 
     setText(text);
     setOpenExternalLinks(true);
@@ -108,7 +108,7 @@ TextLabel::handleLinkActivation(const QUrl &url)
     auto parts          = url.toString().split('/');
     auto defaultHandler = [](const QUrl &url) { QDesktopServices::openUrl(url); };
 
-    if (url.host() != "matrix.to" || parts.isEmpty())
+    if (url.host() != QLatin1String("matrix.to") || parts.isEmpty())
         return defaultHandler(url);
 
     try {

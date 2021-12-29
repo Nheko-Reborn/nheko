@@ -66,7 +66,7 @@ MxcMediaProxy::getVideoSurface()
 int
 MxcMediaProxy::orientation() const
 {
-    nhlog::ui()->debug("metadata: {}", availableMetaData().join(",").toStdString());
+    nhlog::ui()->debug("metadata: {}", availableMetaData().join(QStringLiteral(",")).toStdString());
     auto orientation = metaData(QMediaMetaData::Orientation).toInt();
     nhlog::ui()->debug("Video orientation: {}", orientation);
     return orientation;
@@ -93,16 +93,16 @@ MxcMediaProxy::startDownload()
     auto encryptionInfo = mtx::accessors::file(*event);
 
     // If the message is a link to a non mxcUrl, don't download it
-    if (!mxcUrl.startsWith("mxc://")) {
+    if (!mxcUrl.startsWith(QLatin1String("mxc://"))) {
         return;
     }
 
     QString suffix = QMimeDatabase().mimeTypeForName(mimeType).preferredSuffix();
 
     const auto url  = mxcUrl.toStdString();
-    const auto name = QString(mxcUrl).remove("mxc://");
+    const auto name = QString(mxcUrl).remove(QStringLiteral("mxc://"));
     QFileInfo filename(
-      QString("%1/media_cache/media/%2.%3")
+      QStringLiteral("%1/media_cache/media/%2.%3")
         .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation), name, suffix));
     if (QDir::cleanPath(name) != name) {
         nhlog::net()->warn("mxcUrl '{}' is not safe, not downloading file", url);

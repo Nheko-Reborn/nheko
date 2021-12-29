@@ -58,7 +58,7 @@ std::string
 utils::stripReplyFromBody(const std::string &bodyi)
 {
     QString body = QString::fromStdString(bodyi);
-    if (body.startsWith("> <")) {
+    if (body.startsWith(QLatin1String("> <"))) {
         auto segments = body.split('\n');
         while (!segments.isEmpty() && segments.begin()->startsWith('>'))
             segments.erase(segments.begin());
@@ -67,7 +67,7 @@ utils::stripReplyFromBody(const std::string &bodyi)
         body = segments.join('\n');
     }
 
-    body.replace("@room", QString::fromUtf8("@\u2060room"));
+    body.replace(QLatin1String("@room"), QString::fromUtf8("@\u2060room"));
     return body.toStdString();
 }
 
@@ -75,9 +75,9 @@ std::string
 utils::stripReplyFromFormattedBody(const std::string &formatted_bodyi)
 {
     QString formatted_body = QString::fromStdString(formatted_bodyi);
-    formatted_body.remove(QRegularExpression("<mx-reply>.*</mx-reply>",
+    formatted_body.remove(QRegularExpression(QStringLiteral("<mx-reply>.*</mx-reply>"),
                                              QRegularExpression::DotMatchesEverythingOption));
-    formatted_body.replace("@room", QString::fromUtf8("@\u2060room"));
+    formatted_body.replace(QLatin1String("@room"), QString::fromUtf8("@\u2060room"));
     return formatted_body.toStdString();
 }
 
@@ -164,14 +164,14 @@ utils::setScaleFactor(float factor)
         return;
 
     QSettings settings;
-    settings.setValue("settings/scale_factor", factor);
+    settings.setValue(QStringLiteral("settings/scale_factor"), factor);
 }
 
 float
 utils::scaleFactor()
 {
     QSettings settings;
-    return settings.value("settings/scale_factor", -1).toFloat();
+    return settings.value(QStringLiteral("settings/scale_factor"), -1).toFloat();
 }
 
 QString
@@ -185,7 +185,7 @@ utils::descriptiveTime(const QDateTime &then)
     else if (days < 2)
         return QString(QCoreApplication::translate("descriptiveTime", "Yesterday"));
     else if (days < 7)
-        return then.toString("dddd");
+        return then.toString(QStringLiteral("dddd"));
 
     return QLocale::system().toString(then.date(), QLocale::ShortFormat);
 }
@@ -238,7 +238,7 @@ utils::getMessageDescription(const TimelineEvent &event,
         DescInfo info;
         info.userid = sender;
         info.body =
-          QString(" %1").arg(messageDescription<Encrypted>(username, "", sender == localUser));
+          QStringLiteral(" %1").arg(messageDescription<Encrypted>(username, QLatin1String(""), sender == localUser));
         info.timestamp       = msg->origin_server_ts;
         info.descriptiveTime = utils::descriptiveTime(ts);
         info.event_id        = QString::fromStdString(msg->event_id);
@@ -257,7 +257,7 @@ utils::firstChar(const QString &input)
         return input;
 
     for (auto const &c : input.toStdU32String()) {
-        if (QString::fromUcs4(&c, 1) != QString("#"))
+        if (QString::fromUcs4(&c, 1) != QStringLiteral("#"))
             return QString::fromUcs4(&c, 1).toUpper();
     }
 
@@ -326,7 +326,7 @@ utils::event_body(const mtx::events::collections::TimelineEvents &e)
     if (auto ev = std::get_if<RoomEvent<msg::Video>>(&e); ev != nullptr)
         return QString::fromStdString(ev->content.body);
 
-    return "";
+    return QString();
 }
 
 QPixmap
@@ -371,7 +371,7 @@ utils::mxcToHttp(const QUrl &url, const QString &server, int port)
 {
     auto mxcParts = mtx::client::utils::parse_mxc_url(url.toString().toStdString());
 
-    return QString("https://%1:%2/_matrix/media/r0/download/%3/%4")
+    return QStringLiteral("https://%1:%2/_matrix/media/r0/download/%3/%4")
       .arg(server)
       .arg(port)
       .arg(QString::fromStdString(mxcParts.server), QString::fromStdString(mxcParts.media_id));
@@ -402,7 +402,7 @@ utils::linkifyMessage(const QString &body)
     // Convert to valid XML.
     auto doc = body;
     doc.replace(conf::strings::url_regex, conf::strings::url_html);
-    doc.replace(QRegularExpression("\\b(?<![\"'])(?>(matrix:[\\S]{5,}))(?![\"'])\\b"),
+    doc.replace(QRegularExpression(QStringLiteral("\\b(?<![\"'])(?>(matrix:[\\S]{5,}))(?![\"'])\\b")),
                 conf::strings::url_html);
 
     return doc;
@@ -528,7 +528,7 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
                 auto colorString = color.name(QColor::NameFormat::HexRgb);
                 // create HTML element for current char
                 auto curCharColored =
-                  QString("<font color=\"%0\">%1</font>").arg(colorString).arg(curChar);
+                  QStringLiteral("<font color=\"%0\">%1</font>").arg(colorString).arg(curChar);
                 // append colored HTML element to buffer
                 buf.append(curCharColored);
             }
@@ -555,7 +555,7 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
 
     auto result = linkifyMessage(escapeBlacklistedHtml(QString::fromStdString(html))).trimmed();
 
-    if (result.count("<p>") == 1 && result.startsWith("<p>") && result.endsWith("</p>")) {
+    if (result.count(QStringLiteral("<p>")) == 1 && result.startsWith(QLatin1String("<p>")) && result.endsWith(QLatin1String("</p>"))) {
         result = result.mid(3, result.size() - 3 - 4);
     }
 
@@ -570,16 +570,16 @@ utils::getFormattedQuoteBody(const RelatedInfo &related, const QString &html)
 
         switch (related.type) {
         case MsgType::File: {
-            return "sent a file.";
+            return QStringLiteral("sent a file.");
         }
         case MsgType::Image: {
-            return "sent an image.";
+            return QStringLiteral("sent an image.");
         }
         case MsgType::Audio: {
-            return "sent an audio file.";
+            return QStringLiteral("sent an audio file.");
         }
         case MsgType::Video: {
-            return "sent a video";
+            return QStringLiteral("sent a video");
         }
         default: {
             return related.quoted_formatted_body;
@@ -605,16 +605,16 @@ utils::getQuoteBody(const RelatedInfo &related)
 
     switch (related.type) {
     case MsgType::File: {
-        return "sent a file.";
+        return QStringLiteral("sent a file.");
     }
     case MsgType::Image: {
-        return "sent an image.";
+        return QStringLiteral("sent an image.");
     }
     case MsgType::Audio: {
-        return "sent an audio file.";
+        return QStringLiteral("sent an audio file.");
     }
     case MsgType::Video: {
-        return "sent a video";
+        return QStringLiteral("sent a video");
     }
     default: {
         return related.quoted_body;
@@ -627,10 +627,10 @@ utils::linkColor()
 {
     const auto theme = UserSettings::instance()->theme();
 
-    if (theme == "light") {
-        return "#0077b5";
-    } else if (theme == "dark") {
-        return "#38A3D8";
+    if (theme == QLatin1String("light")) {
+        return QStringLiteral("#0077b5");
+    } else if (theme == QLatin1String("dark")) {
+        return QStringLiteral("#38A3D8");
     } else {
         return QPalette().color(QPalette::Link).name();
     }

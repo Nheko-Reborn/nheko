@@ -98,7 +98,7 @@ RoomlistModel::data(const QModelIndex &index, int role) const
         } else if (role == Roles::IsDirect) {
             return directChatToUser.count(roomid) > 0;
         } else if (role == Roles::DirectChatOtherUserId) {
-            return directChatToUser.count(roomid) ? directChatToUser.at(roomid).front() : "";
+            return directChatToUser.count(roomid) ? directChatToUser.at(roomid).front() : QLatin1String("");
         }
 
         if (models.contains(roomid)) {
@@ -833,7 +833,7 @@ FilteredRoomlistModel::updateHiddenTagsAndSpaces()
             hiddenTags.push_back(t.mid(4));
         else if (t.startsWith(u"space:"))
             hiddenSpaces.push_back(t.mid(6));
-        else if (t == "dm")
+        else if (t == QLatin1String("dm"))
             hideDMs = true;
     }
 

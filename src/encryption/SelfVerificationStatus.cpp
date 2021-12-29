@@ -211,8 +211,8 @@ SelfVerificationStatus::verifyMasterKey()
         (void)sig;
 
         auto d = QString::fromStdString(dev);
-        if (d.startsWith("ed25519:")) {
-            d.remove("ed25519:");
+        if (d.startsWith(QLatin1String("ed25519:"))) {
+            d.remove(QStringLiteral("ed25519:"));
 
             if (keys->device_keys.count(d.toStdString()))
                 devices.push_back(std::move(d));

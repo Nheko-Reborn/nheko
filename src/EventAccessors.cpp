@@ -396,7 +396,7 @@ mtx::accessors::formattedBodyWithFallback(const mtx::events::collections::Timeli
     if (!formatted.empty())
         return QString::fromStdString(formatted);
     else
-        return QString::fromStdString(body(event)).toHtmlEscaped().replace("\n", "<br>");
+        return QString::fromStdString(body(event)).toHtmlEscaped().replace(QLatin1String("\n"), QLatin1String("<br>"));
 }
 
 std::optional<mtx::crypto::EncryptedFile>

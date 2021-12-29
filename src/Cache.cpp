@@ -223,12 +223,12 @@ Cache::setup()
 
     // Previous location of the cache directory
     auto oldCache =
-      QString("%1/%2%3").arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation),
+      QStringLiteral("%1/%2%3").arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation),
                              QString::fromUtf8(localUserId_.toUtf8().toHex()),
                              QString::fromUtf8(settings->profile().toUtf8().toHex()));
 
     cacheDirectory_ =
-      QString("%1/%2%3").arg(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation),
+      QStringLiteral("%1/%2%3").arg(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation),
                              QString::fromUtf8(localUserId_.toUtf8().toHex()),
                              QString::fromUtf8(settings->profile().toUtf8().toHex()));
 
@@ -359,7 +359,7 @@ Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
         return;
     }
 
-    if (settings->value("run_without_secure_secrets_service", false).toBool()) {
+    if (settings->value(QStringLiteral("run_without_secure_secrets_service"), false).toBool()) {
         for (auto &[name_, internal] : toLoad) {
             auto name  = secretName(name_, internal);
             auto value = settings->value("secrets/" + name).toString();
@@ -435,7 +435,7 @@ Cache::storeSecret(const std::string name_, const std::string secret, bool inter
     }
 
     auto settings = UserSettings::instance()->qsettings();
-    if (settings->value("run_without_secure_secrets_service", false).toBool()) {
+    if (settings->value(QStringLiteral("run_without_secure_secrets_service"), false).toBool()) {
         settings->setValue("secrets/" + name, QString::fromStdString(secret));
         // if we emit the signal directly it won't be received
         QTimer::singleShot(0, this, [this, name_] { emit secretChanged(name_); });
@@ -482,7 +482,7 @@ Cache::deleteSecret(const std::string name, bool internal)
     }
 
     auto settings = UserSettings::instance()->qsettings();
-    if (settings->value("run_without_secure_secrets_service", false).toBool()) {
+    if (settings->value(QStringLiteral("run_without_secure_secrets_service"), false).toBool()) {
         settings->remove("secrets/" + name_);
         // if we emit the signal directly it won't be received
         QTimer::singleShot(0, this, [this, name] { emit secretChanged(name); });
@@ -2442,9 +2442,9 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
     if (total == 2)
         return first_member;
     else if (total > 2)
-        return QString("%1 and %2 others").arg(first_member).arg(total - 1);
+        return tr("%1 and %2 others").arg(first_member).arg(total - 1);
 
-    return "Empty Room";
+    return tr("Empty Room");
 }
 
 mtx::events::state::JoinRule
@@ -2531,7 +2531,7 @@ Cache::getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb)
     }
 
     nhlog::db()->warn("m.room.create event is missing room version, assuming version \"1\"");
-    return QString("1");
+    return QStringLiteral("1");
 }
 
 bool
@@ -2619,7 +2619,7 @@ Cache::getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &members
 
     cursor.close();
 
-    return QString("Empty Room");
+    return tr("Empty Room");
 }
 
 QString
@@ -3894,7 +3894,7 @@ Cache::avatarUrl(const QString &room_id, const QString &user_id)
         info && !info->avatar_url.empty())
         return QString::fromStdString(info->avatar_url);
 
-    return "";
+    return QString();
 }
 
 mtx::presence::PresenceState

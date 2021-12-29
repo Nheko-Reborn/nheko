@@ -32,7 +32,7 @@ RoomsModel::RoomsModel(bool showOnlyRoomWithAliases, QObject *parent)
         } else {
             roomids.push_back(QString::fromStdString(r));
             roomAliases.push_back(roomAliasesList ? QString::fromStdString(roomAliasesList->alias)
-                                                  : "");
+                                                  : QLatin1String(""));
         }
     }
 }
@@ -57,7 +57,7 @@ RoomsModel::data(const QModelIndex &index, int role) const
         case CompletionModel::CompletionRole: {
             if (UserSettings::instance()->markdown()) {
                 QString percentEncoding = QUrl::toPercentEncoding(roomAliases[index.row()]);
-                return QString("[%1](https://matrix.to/#/%2)")
+                return QStringLiteral("[%1](https://matrix.to/#/%2)")
                   .arg(roomAliases[index.row()], percentEncoding);
             } else {
                 return roomAliases[index.row()];

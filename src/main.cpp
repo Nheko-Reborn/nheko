@@ -124,9 +124,9 @@ createStandardDirectory(QStandardPaths::StandardLocation path)
 int
 main(int argc, char *argv[])
 {
-    QCoreApplication::setApplicationName("nheko");
+    QCoreApplication::setApplicationName(QStringLiteral("nheko"));
     QCoreApplication::setApplicationVersion(nheko::version);
-    QCoreApplication::setOrganizationName("nheko");
+    QCoreApplication::setOrganizationName(QStringLiteral("nheko"));
     QCoreApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -144,24 +144,24 @@ main(int argc, char *argv[])
 
     // This is some hacky programming, but it's necessary (AFAIK?) to get the unique config name
     // parsed before the SingleApplication userdata is set.
-    QString userdata{""};
+    QString userdata{QLatin1String("")};
     QString matrixUri;
     for (int i = 1; i < argc; ++i) {
         QString arg{argv[i]};
-        if (arg.startsWith("--profile=")) {
-            arg.remove("--profile=");
+        if (arg.startsWith(QLatin1String("--profile="))) {
+            arg.remove(QStringLiteral("--profile="));
             userdata = arg;
-        } else if (arg.startsWith("--p=")) {
-            arg.remove("-p=");
+        } else if (arg.startsWith(QLatin1String("--p="))) {
+            arg.remove(QStringLiteral("-p="));
             userdata = arg;
-        } else if (arg == "--profile" || arg == "-p") {
+        } else if (arg == QLatin1String("--profile") || arg == QLatin1String("-p")) {
             if (i < argc - 1) // if i is less than argc - 1, we still have a parameter
                               // left to process as the name
             {
                 ++i; // the next arg is the name, so increment
                 userdata = QString{argv[i]};
             }
-        } else if (arg.startsWith("matrix:")) {
+        } else if (arg.startsWith(QLatin1String("matrix:"))) {
             matrixUri = arg;
         }
     }
@@ -173,20 +173,20 @@ main(int argc, char *argv[])
                             SingleApplication::Mode::ExcludeAppVersion |
                             SingleApplication::Mode::SecondaryNotification,
                           100,
-                          userdata == "default" ? "" : userdata);
+                          userdata == QLatin1String("default") ? QLatin1String("") : userdata);
 
     QCommandLineParser parser;
     parser.addHelpOption();
     parser.addVersionOption();
-    QCommandLineOption debugOption("debug", "Enable debug output");
+    QCommandLineOption debugOption(QStringLiteral("debug"), QStringLiteral("Enable debug output"));
     parser.addOption(debugOption);
 
     // This option is not actually parsed via Qt due to the need to parse it before the app
     // name is set. It only exists to keep Qt from complaining about the --profile/-p
     // option and thereby crashing the app.
     QCommandLineOption configName(
-      QStringList() << "p"
-                    << "profile",
+      QStringList() << QStringLiteral("p")
+                    << QStringLiteral("profile"),
       QCoreApplication::tr("Create a unique profile, which allows you to log into several "
                            "accounts at the same time and start multiple instances of nheko."),
       QCoreApplication::tr("profile"),
@@ -206,10 +206,10 @@ main(int argc, char *argv[])
     }
 
 #if !defined(Q_OS_MAC)
-    app.setWindowIcon(QIcon::fromTheme("nheko", QIcon{":/logos/nheko.png"}));
+    app.setWindowIcon(QIcon::fromTheme(QStringLiteral("nheko"), QIcon{":/logos/nheko.png"}));
 #endif
-    if (userdata.isEmpty() || userdata == "default")
-        app.setDesktopFileName("nheko");
+    if (userdata.isEmpty() || userdata == QLatin1String("default"))
+        app.setDesktopFileName(QStringLiteral("nheko"));
     else
         app.setDesktopFileName("nheko[" + userdata + "]");
 
@@ -224,7 +224,7 @@ main(int argc, char *argv[])
         nhlog::enable_debug_log_from_commandline = true;
 
     try {
-        nhlog::init(QString("%1/nheko.log")
+        nhlog::init(QStringLiteral("%1/nheko.log")
                       .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
                       .toStdString());
     } catch (const spdlog::spdlog_ex &ex) {
@@ -241,7 +241,7 @@ main(int argc, char *argv[])
 
     QFont font;
     QString userFontFamily = settings.lock()->font();
-    if (!userFontFamily.isEmpty() && userFontFamily != "default") {
+    if (!userFontFamily.isEmpty() && userFontFamily != QLatin1String("default")) {
         font.setFamily(userFontFamily);
     }
     font.setPointSizeF(settings.lock()->fontSize());
@@ -252,11 +252,11 @@ main(int argc, char *argv[])
         QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedKingdom));
 
     QTranslator qtTranslator;
-    qtTranslator.load(QLocale(), "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    qtTranslator.load(QLocale(), QStringLiteral("qt"), QStringLiteral("_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     app.installTranslator(&qtTranslator);
 
     QTranslator appTranslator;
-    appTranslator.load(QLocale(), "nheko", "_", ":/translations");
+    appTranslator.load(QLocale(), QStringLiteral("nheko"), QStringLiteral("_"), QStringLiteral(":/translations"));
     app.installTranslator(&appTranslator);
 
     MainWindow w;
@@ -304,7 +304,7 @@ main(int argc, char *argv[])
                                              QObject::disconnect(uriConnection);
                                          });
     }
-    QDesktopServices::setUrlHandler("matrix", ChatPage::instance(), "handleMatrixUri");
+    QDesktopServices::setUrlHandler(QStringLiteral("matrix"), ChatPage::instance(), "handleMatrixUri");
 
 #if defined(Q_OS_MAC)
     // Temporary solution for the emoji picker until

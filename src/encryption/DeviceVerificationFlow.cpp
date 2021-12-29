@@ -429,23 +429,23 @@ DeviceVerificationFlow::state()
 {
     switch (state_) {
     case PromptStartVerification:
-        return "PromptStartVerification";
+        return QStringLiteral("PromptStartVerification");
     case CompareEmoji:
-        return "CompareEmoji";
+        return QStringLiteral("CompareEmoji");
     case CompareNumber:
-        return "CompareNumber";
+        return QStringLiteral("CompareNumber");
     case WaitingForKeys:
-        return "WaitingForKeys";
+        return QStringLiteral("WaitingForKeys");
     case WaitingForOtherToAccept:
-        return "WaitingForOtherToAccept";
+        return QStringLiteral("WaitingForOtherToAccept");
     case WaitingForMac:
-        return "WaitingForMac";
+        return QStringLiteral("WaitingForMac");
     case Success:
-        return "Success";
+        return QStringLiteral("Success");
     case Failed:
-        return "Failed";
+        return QStringLiteral("Failed");
     default:
-        return "";
+        return QString();
     }
 }
 

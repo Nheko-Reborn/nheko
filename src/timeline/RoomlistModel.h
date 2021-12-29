@@ -159,7 +159,7 @@ public slots:
     }
     void joinPreview(QString roomid)
     {
-        roomlistmodel->joinPreview(roomid, filterType == FilterBy::Space ? filterStr : "");
+        roomlistmodel->joinPreview(roomid, filterType == FilterBy::Space ? filterStr : QLatin1String(""));
     }
     void acceptInvite(QString roomid) { roomlistmodel->acceptInvite(roomid); }
     void declineInvite(QString roomid) { roomlistmodel->declineInvite(roomid); }
@@ -181,13 +181,13 @@ public slots:
 
     void updateFilterTag(QString tagId)
     {
-        if (tagId.startsWith("tag:")) {
+        if (tagId.startsWith(QLatin1String("tag:"))) {
             filterType = FilterBy::Tag;
             filterStr  = tagId.mid(4);
-        } else if (tagId.startsWith("space:")) {
+        } else if (tagId.startsWith(QLatin1String("space:"))) {
             filterType = FilterBy::Space;
             filterStr  = tagId.mid(6);
-        } else if (tagId.startsWith("dm")) {
+        } else if (tagId.startsWith(QLatin1String("dm"))) {
             filterType = FilterBy::DirectChats;
             filterStr.clear();
         } else {
@@ -215,7 +215,7 @@ private:
         DirectChats,
         Nothing,
     };
-    QString filterStr   = "";
+    QString filterStr   = QLatin1String("");
     FilterBy filterType = FilterBy::Nothing;
     QStringList hiddenTags, hiddenSpaces;
     bool hideDMs = false;

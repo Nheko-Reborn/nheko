@@ -44,14 +44,14 @@ MxcAnimatedImage::startDownload()
     auto encryptionInfo = mtx::accessors::file(*event);
 
     // If the message is a link to a non mxcUrl, don't download it
-    if (!mxcUrl.startsWith("mxc://")) {
+    if (!mxcUrl.startsWith(QLatin1String("mxc://"))) {
         return;
     }
 
     QString suffix = QMimeDatabase().mimeTypeForName(mimeType).preferredSuffix();
 
     const auto url  = mxcUrl.toStdString();
-    const auto name = QString(mxcUrl).remove("mxc://");
+    const auto name = QString(mxcUrl).remove(QStringLiteral("mxc://"));
     QFileInfo filename(
       QStringLiteral("%1/media_cache/media/%2.%3")
         .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation), name, suffix));

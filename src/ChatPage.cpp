@@ -50,7 +50,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
   , notificationsManager(this)
   , callManager_(new CallManager(this))
 {
-    setObjectName("chatPage");
+    setObjectName(QStringLiteral("chatPage"));
 
     instance_ = this;
 
@@ -279,12 +279,12 @@ ChatPage::deleteConfigs()
 {
     auto settings = UserSettings::instance()->qsettings();
 
-    if (UserSettings::instance()->profile() != "") {
-        settings->beginGroup("profile");
+    if (UserSettings::instance()->profile() != QLatin1String("")) {
+        settings->beginGroup(QStringLiteral("profile"));
         settings->beginGroup(UserSettings::instance()->profile());
     }
-    settings->beginGroup("auth");
-    settings->remove("");
+    settings->beginGroup(QStringLiteral("auth"));
+    settings->remove(QLatin1String(""));
     settings->endGroup(); // auth
 
     http::client()->shutdown();
@@ -1227,7 +1227,7 @@ static QString
 mxidFromSegments(QStringView sigil, QStringView mxid)
 {
     if (mxid.isEmpty())
-        return "";
+        return QString();
 
     auto mxid_ = QUrl::fromPercentEncoding(mxid.toUtf8());
 
@@ -1240,7 +1240,7 @@ mxidFromSegments(QStringView sigil, QStringView mxid)
         //} else if (sigil == "group") {
         //        return "+" + mxid_;
     } else {
-        return "";
+        return QString();
     }
 }
 
@@ -1251,33 +1251,33 @@ ChatPage::handleMatrixUri(QString uri)
     QUrl uri_{uri};
 
     // Convert matrix.to URIs to proper format
-    if (uri_.scheme() == "https" && uri_.host() == "matrix.to") {
+    if (uri_.scheme() == QLatin1String("https") && uri_.host() == QLatin1String("matrix.to")) {
         QString p = uri_.fragment(QUrl::FullyEncoded);
-        if (p.startsWith("/"))
+        if (p.startsWith(QLatin1String("/")))
             p.remove(0, 1);
 
-        auto temp = p.split("?");
+        auto temp = p.split(QStringLiteral("?"));
         QString query;
         if (temp.size() >= 2)
             query = QUrl::fromPercentEncoding(temp.takeAt(1).toUtf8());
 
-        temp            = temp.first().split("/");
+        temp            = temp.first().split(QStringLiteral("/"));
         auto identifier = QUrl::fromPercentEncoding(temp.takeFirst().toUtf8());
         QString eventId = QUrl::fromPercentEncoding(temp.join('/').toUtf8());
         if (!identifier.isEmpty()) {
-            if (identifier.startsWith("@")) {
+            if (identifier.startsWith(QLatin1String("@"))) {
                 QByteArray newUri = "matrix:u/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
                 if (!query.isEmpty())
                     newUri.append("?" + query.toUtf8());
                 return handleMatrixUri(QUrl::fromEncoded(newUri));
-            } else if (identifier.startsWith("#")) {
+            } else if (identifier.startsWith(QLatin1String("#"))) {
                 QByteArray newUri = "matrix:r/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
                 if (!eventId.isEmpty())
                     newUri.append("/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
                 if (!query.isEmpty())
                     newUri.append("?" + query.toUtf8());
                 return handleMatrixUri(QUrl::fromEncoded(newUri));
-            } else if (identifier.startsWith("!")) {
+            } else if (identifier.startsWith(QLatin1String("!"))) {
                 QByteArray newUri =
                   "matrix:roomid/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
                 if (!eventId.isEmpty())
@@ -1290,7 +1290,7 @@ ChatPage::handleMatrixUri(QString uri)
     }
 
     // non-matrix URIs are not handled by us, return false
-    if (uri_.scheme() != "matrix")
+    if (uri_.scheme() != QLatin1String("matrix"))
         return false;
 
     auto tempPath = uri_.path(QUrl::ComponentFormattingOption::FullyEncoded);
@@ -1322,10 +1322,10 @@ ChatPage::handleMatrixUri(QString uri)
     for (QString item : qAsConst(items)) {
         nhlog::ui()->info("item: {}", item.toStdString());
 
-        if (item.startsWith("action=")) {
-            action = item.remove("action=");
-        } else if (item.startsWith("via=")) {
-            vias.push_back(QUrl::fromPercentEncoding(item.remove("via=").toUtf8()).toStdString());
+        if (item.startsWith(QLatin1String("action="))) {
+            action = item.remove(QStringLiteral("action="));
+        } else if (item.startsWith(QLatin1String("via="))) {
+            vias.push_back(QUrl::fromPercentEncoding(item.remove(QStringLiteral("via=")).toUtf8()).toStdString());
         }
     }
 
@@ -1402,5 +1402,5 @@ ChatPage::currentRoom() const
     if (view_manager_->rooms()->currentRoom())
         return view_manager_->rooms()->currentRoom()->roomId();
     else
-        return "";
+        return QString();
 }

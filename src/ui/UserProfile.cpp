@@ -28,7 +28,7 @@ UserProfile::UserProfile(QString roomid,
   , manager(manager_)
   , model(parent)
 {
-    globalAvatarUrl = "";
+    globalAvatarUrl = QLatin1String("");
 
     connect(this,
             &UserProfile::globalUsernameRetrieved,
@@ -124,7 +124,7 @@ UserProfile::avatarUrl()
 bool
 UserProfile::isGlobalUserProfile() const
 {
-    return roomid_ == "";
+    return roomid_ == QLatin1String("");
 }
 
 crypto::Trust
@@ -297,7 +297,7 @@ UserProfile::updateVerificationStatus()
 void
 UserProfile::banUser()
 {
-    ChatPage::instance()->banUser(this->userid_, "");
+    ChatPage::instance()->banUser(this->userid_, QLatin1String(""));
 }
 
 // void ignoreUser(){
@@ -307,7 +307,7 @@ UserProfile::banUser()
 void
 UserProfile::kickUser()
 {
-    ChatPage::instance()->kickUser(this->userid_, "");
+    ChatPage::instance()->kickUser(this->userid_, QLatin1String(""));
 }
 
 void
@@ -390,10 +390,10 @@ UserProfile::changeAvatar()
     QMimeDatabase db;
     QMimeType mime = db.mimeTypeForFile(fileName, QMimeDatabase::MatchContent);
 
-    const auto format = mime.name().split("/")[0];
+    const auto format = mime.name().split(QStringLiteral("/"))[0];
 
     QFile file{fileName, this};
-    if (format != "image") {
+    if (format != QLatin1String("image")) {
         emit displayError(tr("The selected file is not an image"));
         return;
     }

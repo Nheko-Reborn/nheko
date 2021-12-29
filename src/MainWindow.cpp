@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
     instance_ = this;
 
     QMainWindow::setWindowTitle(0);
-    setObjectName("MainWindow");
+    setObjectName(QStringLiteral("MainWindow"));
 
     modal_ = new OverlayModal(this);
 
@@ -53,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
     font.setStyleStrategy(QFont::PreferAntialias);
     setFont(font);
 
-    trayIcon_ = new TrayIcon(":/logos/nheko.svg", this);
+    trayIcon_ = new TrayIcon(QStringLiteral(":/logos/nheko.svg"), this);
 
     welcome_page_     = new WelcomePage(this);
     login_page_       = new LoginPage(this);
@@ -150,12 +150,12 @@ MainWindow::MainWindow(QWidget *parent)
 void
 MainWindow::setWindowTitle(int notificationCount)
 {
-    QString name = "nheko";
+    QString name = QStringLiteral("nheko");
 
     if (!userSettings_.data()->profile().isEmpty())
         name += " | " + userSettings_.data()->profile();
     if (notificationCount > 0) {
-        name.append(QString{" (%1)"}.arg(notificationCount));
+        name.append(QString{QStringLiteral(" (%1)")}.arg(notificationCount));
     }
     QMainWindow::setWindowTitle(name);
 }
@@ -176,8 +176,8 @@ MainWindow::event(QEvent *event)
 void
 MainWindow::restoreWindowSize()
 {
-    int savedWidth  = userSettings_->qsettings()->value("window/width").toInt();
-    int savedheight = userSettings_->qsettings()->value("window/height").toInt();
+    int savedWidth  = userSettings_->qsettings()->value(QStringLiteral("window/width")).toInt();
+    int savedheight = userSettings_->qsettings()->value(QStringLiteral("window/height")).toInt();
 
     nhlog::ui()->info("Restoring window size {}x{}", savedWidth, savedheight);
 
@@ -193,8 +193,8 @@ MainWindow::saveCurrentWindowSize()
     auto settings = userSettings_->qsettings();
     QSize current = size();
 
-    settings->setValue("window/width", current.width());
-    settings->setValue("window/height", current.height());
+    settings->setValue(QStringLiteral("window/width"), current.width());
+    settings->setValue(QStringLiteral("window/height"), current.height());
 }
 
 void
@@ -261,7 +261,7 @@ void
 MainWindow::closeEvent(QCloseEvent *event)
 {
     if (WebRTCSession::instance().state() != webrtc::State::DISCONNECTED) {
-        if (QMessageBox::question(this, "nheko", "A call is in progress. Quit?") !=
+        if (QMessageBox::question(this, QStringLiteral("nheko"), QStringLiteral("A call is in progress. Quit?")) !=
             QMessageBox::Yes) {
             event->ignore();
             return;
@@ -295,7 +295,7 @@ MainWindow::hasActiveUser()
 {
     auto settings = userSettings_->qsettings();
     QString prefix;
-    if (userSettings_->profile() != "")
+    if (userSettings_->profile() != QLatin1String(""))
         prefix = "profile/" + userSettings_->profile() + "/";
 
     return settings->contains(prefix + "auth/access_token") &&
@@ -309,7 +309,7 @@ MainWindow::showOverlayProgressBar()
     spinner_ = new LoadingIndicator(this);
     spinner_->setFixedHeight(100);
     spinner_->setFixedWidth(100);
-    spinner_->setObjectName("ChatPageLoadSpinner");
+    spinner_->setObjectName(QStringLiteral("ChatPageLoadSpinner"));
     spinner_->start();
 
     showSolidOverlayModal(spinner_);

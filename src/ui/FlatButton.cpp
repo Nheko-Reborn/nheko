@@ -127,17 +127,17 @@ FlatButton::foregroundColor() const
 {
     if (!foreground_color_.isValid()) {
         if (bg_mode_ == Qt::OpaqueMode) {
-            return ThemeManager::instance().themeColor("BrightWhite");
+            return ThemeManager::instance().themeColor(QStringLiteral("BrightWhite"));
         }
 
         switch (role_) {
         case ui::Role::Primary:
-            return ThemeManager::instance().themeColor("Blue");
+            return ThemeManager::instance().themeColor(QStringLiteral("Blue"));
         case ui::Role::Secondary:
-            return ThemeManager::instance().themeColor("Gray");
+            return ThemeManager::instance().themeColor(QStringLiteral("Gray"));
         case ui::Role::Default:
         default:
-            return ThemeManager::instance().themeColor("Black");
+            return ThemeManager::instance().themeColor(QStringLiteral("Black"));
         }
     }
 
@@ -157,12 +157,12 @@ FlatButton::backgroundColor() const
     if (!background_color_.isValid()) {
         switch (role_) {
         case ui::Role::Primary:
-            return ThemeManager::instance().themeColor("Blue");
+            return ThemeManager::instance().themeColor(QStringLiteral("Blue"));
         case ui::Role::Secondary:
-            return ThemeManager::instance().themeColor("Gray");
+            return ThemeManager::instance().themeColor(QStringLiteral("Gray"));
         case ui::Role::Default:
         default:
-            return ThemeManager::instance().themeColor("Black");
+            return ThemeManager::instance().themeColor(QStringLiteral("Black"));
         }
     }
 
@@ -198,7 +198,7 @@ QColor
 FlatButton::disabledForegroundColor() const
 {
     if (!disabled_color_.isValid()) {
-        return ThemeManager::instance().themeColor("FadedWhite");
+        return ThemeManager::instance().themeColor(QStringLiteral("FadedWhite"));
     }
 
     return disabled_color_;
@@ -215,7 +215,7 @@ QColor
 FlatButton::disabledBackgroundColor() const
 {
     if (!disabled_background_color_.isValid()) {
-        return ThemeManager::instance().themeColor("FadedWhite");
+        return ThemeManager::instance().themeColor(QStringLiteral("FadedWhite"));
     }
 
     return disabled_background_color_;

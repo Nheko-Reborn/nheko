@@ -537,7 +537,7 @@ EventStore::reactions(const std::string &event_id)
             if (firstReaction)
                 firstReaction = false;
             else
-                reaction.users_ += ", ";
+                reaction.users_ += QLatin1String(", ");
 
             reaction.users_ += QString::fromStdString(user);
         }

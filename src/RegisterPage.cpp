@@ -46,7 +46,7 @@ RegisterPage::RegisterPage(QWidget *parent)
     back_button_->setMinimumSize(QSize(30, 30));
 
     QIcon icon;
-    icon.addFile(":/icons/icons/ui/angle-arrow-left.svg");
+    icon.addFile(QStringLiteral(":/icons/icons/ui/angle-arrow-left.svg"));
 
     back_button_->setIcon(icon);
     back_button_->setIconSize(QSize(32, 32));
@@ -55,7 +55,7 @@ RegisterPage::RegisterPage(QWidget *parent)
     back_layout_->addStretch(1);
 
     QIcon logo;
-    logo.addFile(":/logos/register.png");
+    logo.addFile(QStringLiteral(":/logos/register.png"));
 
     logo_ = new QLabel(this);
     logo_->setPixmap(logo.pixmap(128));
@@ -79,13 +79,13 @@ RegisterPage::RegisterPage(QWidget *parent)
 
     username_input_ = new TextField();
     username_input_->setLabel(tr("Username"));
-    username_input_->setRegexp(QRegularExpression("[a-z0-9._=/-]+"));
+    username_input_->setRegexp(QRegularExpression(QStringLiteral("[a-z0-9._=/-]+")));
     username_input_->setToolTip(tr("The username must not be empty, and must contain only the "
                                    "characters a-z, 0-9, ., _, =, -, and /."));
 
     password_input_ = new TextField();
     password_input_->setLabel(tr("Password"));
-    password_input_->setRegexp(QRegularExpression("^.{8,}$"));
+    password_input_->setRegexp(QRegularExpression(QStringLiteral("^.{8,}$")));
     password_input_->setEchoMode(QLineEdit::Password);
     password_input_->setToolTip(tr("Please choose a secure password. The exact requirements "
                                    "for password strength may depend on your server."));
@@ -96,7 +96,7 @@ RegisterPage::RegisterPage(QWidget *parent)
 
     server_input_ = new TextField();
     server_input_->setLabel(tr("Homeserver"));
-    server_input_->setRegexp(QRegularExpression(".+"));
+    server_input_->setRegexp(QRegularExpression(QStringLiteral(".+")));
     server_input_->setToolTip(
       tr("A server that allows registration. Since matrix is decentralized, you need to first "
          "find a server you can register on or host your own."));
@@ -364,7 +364,7 @@ RegisterPage::doRegistration()
             disconnect(UIA::instance(), &UIA::error, this, nullptr);
         });
         http::client()->registration(
-          username, password, ::UIA::instance()->genericHandler("Registration"), registrationCb());
+          username, password, ::UIA::instance()->genericHandler(QStringLiteral("Registration")), registrationCb());
     }
 }
 

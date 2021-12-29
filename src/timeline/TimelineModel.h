@@ -345,7 +345,7 @@ public slots:
     void resetReply()
     {
         if (!reply_.isEmpty()) {
-            reply_ = "";
+            reply_ = QLatin1String("");
             emit replyChanged(reply_);
         }
     }

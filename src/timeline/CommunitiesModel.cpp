@@ -52,7 +52,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
     if (index.row() == 0) {
         switch (role) {
         case CommunitiesModel::Roles::AvatarUrl:
-            return QString(":/icons/icons/ui/world.svg");
+            return QStringLiteral(":/icons/icons/ui/world.svg");
         case CommunitiesModel::Roles::DisplayName:
             return tr("All rooms");
         case CommunitiesModel::Roles::Tooltip:
@@ -73,7 +73,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
     } else if (index.row() == 1) {
         switch (role) {
         case CommunitiesModel::Roles::AvatarUrl:
-            return QString(":/icons/icons/ui/people.svg");
+            return QStringLiteral(":/icons/icons/ui/people.svg");
         case CommunitiesModel::Roles::DisplayName:
             return tr("Direct Chats");
         case CommunitiesModel::Roles::Tooltip:
@@ -83,7 +83,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         case CommunitiesModel::Roles::Collapsible:
             return false;
         case CommunitiesModel::Roles::Hidden:
-            return hiddentTagIds_.contains("dm");
+            return hiddentTagIds_.contains(QStringLiteral("dm"));
         case CommunitiesModel::Roles::Parent:
             return "";
         case CommunitiesModel::Roles::Depth:
@@ -120,28 +120,28 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         }
     } else if (index.row() - 2 < tags_.size() + spaceOrder_.size()) {
         auto tag = tags_.at(index.row() - 2 - spaceOrder_.size());
-        if (tag == "m.favourite") {
+        if (tag == QLatin1String("m.favourite")) {
             switch (role) {
             case CommunitiesModel::Roles::AvatarUrl:
-                return QString(":/icons/icons/ui/star.svg");
+                return QStringLiteral(":/icons/icons/ui/star.svg");
             case CommunitiesModel::Roles::DisplayName:
                 return tr("Favourites");
             case CommunitiesModel::Roles::Tooltip:
                 return tr("Rooms you have favourited.");
             }
-        } else if (tag == "m.lowpriority") {
+        } else if (tag == QLatin1String("m.lowpriority")) {
             switch (role) {
             case CommunitiesModel::Roles::AvatarUrl:
-                return QString(":/icons/icons/ui/lowprio.svg");
+                return QStringLiteral(":/icons/icons/ui/lowprio.svg");
             case CommunitiesModel::Roles::DisplayName:
                 return tr("Low Priority");
             case CommunitiesModel::Roles::Tooltip:
                 return tr("Rooms with low priority.");
             }
-        } else if (tag == "m.server_notice") {
+        } else if (tag == QLatin1String("m.server_notice")) {
             switch (role) {
             case CommunitiesModel::Roles::AvatarUrl:
-                return QString(":/icons/icons/ui/tag.svg");
+                return QStringLiteral(":/icons/icons/ui/tag.svg");
             case CommunitiesModel::Roles::DisplayName:
                 return tr("Server Notices");
             case CommunitiesModel::Roles::Tooltip:
@@ -150,7 +150,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         } else {
             switch (role) {
             case CommunitiesModel::Roles::AvatarUrl:
-                return QString(":/icons/icons/ui/tag.svg");
+                return QStringLiteral(":/icons/icons/ui/tag.svg");
             case CommunitiesModel::Roles::DisplayName:
             case CommunitiesModel::Roles::Tooltip:
                 return tag.mid(2);
@@ -392,7 +392,7 @@ CommunitiesModel::sync(const mtx::responses::Sync &sync_)
 void
 CommunitiesModel::setCurrentTagId(QString tagId)
 {
-    if (tagId.startsWith("tag:")) {
+    if (tagId.startsWith(QLatin1String("tag:"))) {
         auto tag = tagId.mid(4);
         for (const auto &t : qAsConst(tags_)) {
             if (t == tag) {
@@ -401,7 +401,7 @@ CommunitiesModel::setCurrentTagId(QString tagId)
                 return;
             }
         }
-    } else if (tagId.startsWith("space:")) {
+    } else if (tagId.startsWith(QLatin1String("space:"))) {
         auto tag = tagId.mid(6);
         for (const auto &t : spaceOrder_.tree) {
             if (t.name == tag) {
@@ -410,13 +410,13 @@ CommunitiesModel::setCurrentTagId(QString tagId)
                 return;
             }
         }
-    } else if (tagId == "dm") {
+    } else if (tagId == QLatin1String("dm")) {
         this->currentTagId_ = tagId;
         emit currentTagIdChanged(currentTagId_);
         return;
     }
 
-    this->currentTagId_ = "";
+    this->currentTagId_ = QLatin1String("");
     emit currentTagIdChanged(currentTagId_);
 }
 
@@ -431,16 +431,16 @@ CommunitiesModel::toggleTagId(QString tagId)
         UserSettings::instance()->setHiddenTags(hiddentTagIds_);
     }
 
-    if (tagId.startsWith("tag:")) {
+    if (tagId.startsWith(QLatin1String("tag:"))) {
         auto idx = tags_.indexOf(tagId.mid(4));
         if (idx != -1)
             emit dataChanged(
               index(idx + 1 + spaceOrder_.size()), index(idx + 1 + spaceOrder_.size()), {Hidden});
-    } else if (tagId.startsWith("space:")) {
+    } else if (tagId.startsWith(QLatin1String("space:"))) {
         auto idx = spaceOrder_.indexOf(tagId.mid(6));
         if (idx != -1)
             emit dataChanged(index(idx + 1), index(idx + 1), {Hidden});
-    } else if (tagId == "dm") {
+    } else if (tagId == QLatin1String("dm")) {
         emit dataChanged(index(1), index(1), {Hidden});
     }
 
@@ -472,15 +472,15 @@ tagIdToCat(QString tagId)
 {
     if (tagId.isEmpty())
         return World;
-    else if (tagId == "dm")
+    else if (tagId == QLatin1String("dm"))
         return Direct;
-    else if (tagId == "tag:m.favourite")
+    else if (tagId == QLatin1String("tag:m.favourite"))
         return Favourites;
-    else if (tagId == "tag:m.server_notice")
+    else if (tagId == QLatin1String("tag:m.server_notice"))
         return Server;
-    else if (tagId == "tag:m.lowpriority")
+    else if (tagId == QLatin1String("tag:m.lowpriority"))
         return LowPrio;
-    else if (tagId.startsWith("space:"))
+    else if (tagId.startsWith(QLatin1String("space:")))
         return Space;
     else
         return UserTag;

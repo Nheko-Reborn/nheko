@@ -23,12 +23,12 @@ NotificationsManager::getMessageTemplate(const mtx::responses::Notification &not
     }
 
     if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Emote) {
-        return QString("* %1 %2").arg(sender);
+        return QStringLiteral("* %1 %2").arg(sender);
     } else if (utils::isReply(notification.event)) {
         return tr("%1 replied: %2",
                   "Format a reply in a notification. %1 is the sender, %2 the message")
           .arg(sender);
     } else {
-        return QString("%1: %2").arg(sender);
+        return QStringLiteral("%1: %2").arg(sender);
     }
 }

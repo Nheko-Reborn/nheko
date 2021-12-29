@@ -130,9 +130,9 @@ public slots:
     QStringList tagsWithDefault() const
     {
         QStringList tagsWD = tags_;
-        tagsWD.prepend("m.lowpriority");
-        tagsWD.prepend("m.favourite");
-        tagsWD.removeOne("m.server_notice");
+        tagsWD.prepend(QStringLiteral("m.lowpriority"));
+        tagsWD.prepend(QStringLiteral("m.favourite"));
+        tagsWD.removeOne(QStringLiteral("m.server_notice"));
         tagsWD.removeDuplicates();
         return tagsWD;
     }

@@ -70,7 +70,7 @@ CallManager::CallManager(QObject *parent)
           QTimer::singleShot(timeoutms_, this, [this, callid]() {
               if (session_.state() == webrtc::State::OFFERSENT && callid == callid_) {
                   hangUp(CallHangUp::Reason::InviteTimeOut);
-                  emit ChatPage::instance()->showNotification("The remote side failed to pick up.");
+                  emit ChatPage::instance()->showNotification(QStringLiteral("The remote side failed to pick up."));
               }
           });
       });
@@ -115,13 +115,13 @@ CallManager::CallManager(QObject *parent)
     connect(&session_, &WebRTCSession::stateChanged, this, [this](webrtc::State state) {
         switch (state) {
         case webrtc::State::DISCONNECTED:
-            playRingtone(QUrl("qrc:/media/media/callend.ogg"), false);
+            playRingtone(QUrl(QStringLiteral("qrc:/media/media/callend.ogg")), false);
             clear();
             break;
         case webrtc::State::ICEFAILED: {
-            QString error("Call connection failed.");
+            QString error(QStringLiteral("Call connection failed."));
             if (turnURIs_.empty())
-                error += " Your homeserver has no configured TURN server.";
+                error += QLatin1String(" Your homeserver has no configured TURN server.");
             emit ChatPage::instance()->showNotification(error);
             hangUp(CallHangUp::Reason::ICEFailed);
             break;
@@ -177,7 +177,7 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
 
     auto roomInfo = cache::singleRoomInfo(roomid.toStdString());
     if (roomInfo.member_count != 2) {
-        emit ChatPage::instance()->showNotification("Calls are limited to 1:1 rooms.");
+        emit ChatPage::instance()->showNotification(QStringLiteral("Calls are limited to 1:1 rooms."));
         return;
     }
 
@@ -203,10 +203,10 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     callPartyDisplayName_ = callee.display_name.isEmpty() ? callee.user_id : callee.display_name;
     callPartyAvatarUrl_   = QString::fromStdString(roomInfo.avatar_url);
     emit newInviteState();
-    playRingtone(QUrl("qrc:/media/media/ringback.ogg"), true);
+    playRingtone(QUrl(QStringLiteral("qrc:/media/media/ringback.ogg")), true);
     if (!session_.createOffer(callType,
                               callType == CallType::SCREEN ? windows_[windowIndex].second : 0)) {
-        emit ChatPage::instance()->showNotification("Problem setting up call.");
+        emit ChatPage::instance()->showNotification(QStringLiteral("Problem setting up call."));
         endCall();
     }
 }
@@ -290,8 +290,8 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
     }
 
     const QString &ringtone = ChatPage::instance()->userSettings()->ringtone();
-    if (ringtone != "Mute")
-        playRingtone(ringtone == "Default" ? QUrl("qrc:/media/media/ring.ogg")
+    if (ringtone != QLatin1String("Mute"))
+        playRingtone(ringtone == QLatin1String("Default") ? QUrl(QStringLiteral("qrc:/media/media/ring.ogg"))
                                            : QUrl::fromLocalFile(ringtone),
                      true);
     roomid_ = QString::fromStdString(callInviteEvent.room_id);
@@ -328,7 +328,7 @@ CallManager::acceptInvite()
 
     session_.setTurnServers(turnURIs_);
     if (!session_.acceptOffer(inviteSDP_)) {
-        emit ChatPage::instance()->showNotification("Problem setting up call.");
+        emit ChatPage::instance()->showNotification(QStringLiteral("Problem setting up call."));
         hangUp();
         return;
     }
@@ -370,7 +370,7 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
     if (callAnswerEvent.sender == utils::localUser().toStdString() &&
         callid_ == callAnswerEvent.content.call_id) {
         if (!isOnCall()) {
-            emit ChatPage::instance()->showNotification("Call answered on another device.");
+            emit ChatPage::instance()->showNotification(QStringLiteral("Call answered on another device."));
             stopRingtone();
             haveCallInvite_ = false;
             emit newInviteState();
@@ -381,7 +381,7 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
     if (isOnCall() && callid_ == callAnswerEvent.content.call_id) {
         stopRingtone();
         if (!session_.acceptAnswer(callAnswerEvent.content.sdp)) {
-            emit ChatPage::instance()->showNotification("Problem setting up call.");
+            emit ChatPage::instance()->showNotification(QStringLiteral("Problem setting up call."));
             hangUp();
         }
     }

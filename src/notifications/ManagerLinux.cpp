@@ -28,9 +28,9 @@
 
 NotificationsManager::NotificationsManager(QObject *parent)
   : QObject(parent)
-  , dbus("org.freedesktop.Notifications",
-         "/org/freedesktop/Notifications",
-         "org.freedesktop.Notifications",
+  , dbus(QStringLiteral("org.freedesktop.Notifications"),
+         QStringLiteral("/org/freedesktop/Notifications"),
+         QStringLiteral("org.freedesktop.Notifications"),
          QDBusConnection::sessionBus(),
          this)
   , hasMarkup_{std::invoke([this]() -> bool {
@@ -51,22 +51,22 @@ NotificationsManager::NotificationsManager(QObject *parent)
     qDBusRegisterMetaType<QImage>();
 
     // clang-format off
-    QDBusConnection::sessionBus().connect("org.freedesktop.Notifications",
-                                          "/org/freedesktop/Notifications",
-                                          "org.freedesktop.Notifications",
-                                          "ActionInvoked",
+    QDBusConnection::sessionBus().connect(QStringLiteral("org.freedesktop.Notifications"),
+                                          QStringLiteral("/org/freedesktop/Notifications"),
+                                          QStringLiteral("org.freedesktop.Notifications"),
+                                          QStringLiteral("ActionInvoked"),
                                           this,
                                           SLOT(actionInvoked(uint,QString)));
-    QDBusConnection::sessionBus().connect("org.freedesktop.Notifications",
-                                          "/org/freedesktop/Notifications",
-                                          "org.freedesktop.Notifications",
-                                          "NotificationClosed",
+    QDBusConnection::sessionBus().connect(QStringLiteral("org.freedesktop.Notifications"),
+                                          QStringLiteral("/org/freedesktop/Notifications"),
+                                          QStringLiteral("org.freedesktop.Notifications"),
+                                          QStringLiteral("NotificationClosed"),
                                           this,
                                           SLOT(notificationClosed(uint,uint)));
-    QDBusConnection::sessionBus().connect("org.freedesktop.Notifications",
-                                          "/org/freedesktop/Notifications",
-                                          "org.freedesktop.Notifications",
-                                          "NotificationReplied",
+    QDBusConnection::sessionBus().connect(QStringLiteral("org.freedesktop.Notifications"),
+                                          QStringLiteral("/org/freedesktop/Notifications"),
+                                          QStringLiteral("org.freedesktop.Notifications"),
+                                          QStringLiteral("NotificationReplied"),
                                           this,
                                           SLOT(notificationReplied(uint,QString)));
     // clang-format on
@@ -108,17 +108,17 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         if (hasImages_ &&
             mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image) {
             MxcImageProvider::download(
-              QString::fromStdString(mtx::accessors::url(notification.event)).remove("mxc://"),
+              QString::fromStdString(mtx::accessors::url(notification.event)).remove(QStringLiteral("mxc://")),
               QSize(200, 80),
               [postNotif, notification, template_](QString, QSize, QImage, QString imgPath) {
                   if (imgPath.isEmpty())
                       postNotif(template_
                                   .arg(utils::stripReplyFallbacks(notification.event, {}, {})
                                          .quoted_formatted_body)
-                                  .replace("<em>", "<i>")
-                                  .replace("</em>", "</i>")
-                                  .replace("<strong>", "<b>")
-                                  .replace("</strong>", "</b>"));
+                                  .replace(QLatin1String("<em>"), QLatin1String("<i>"))
+                                  .replace(QLatin1String("</em>"), QLatin1String("</i>"))
+                                  .replace(QLatin1String("<strong>"), QLatin1String("<b>"))
+                                  .replace(QLatin1String("</strong>"), QLatin1String("</b>")));
                   else
                       postNotif(template_.arg(
                         QStringLiteral("<br><img src=\"file:///") % imgPath % "\" alt=\"" %
@@ -130,10 +130,10 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         postNotif(
           template_
             .arg(utils::stripReplyFallbacks(notification.event, {}, {}).quoted_formatted_body)
-            .replace("<em>", "<i>")
-            .replace("</em>", "</i>")
-            .replace("<strong>", "<b>")
-            .replace("</strong>", "</b>"));
+            .replace(QLatin1String("<em>"), QLatin1String("<i>"))
+            .replace(QLatin1String("</em>"), QLatin1String("</i>"))
+            .replace(QLatin1String("<strong>"), QLatin1String("<b>"))
+            .replace(QLatin1String("</strong>"), QLatin1String("</b>")));
         return;
     }
 
@@ -154,10 +154,10 @@ NotificationsManager::systemPostNotification(const QString &room_id,
                                              const QImage &icon)
 {
     QVariantMap hints;
-    hints["image-data"]    = icon;
-    hints["sound-name"]    = "message-new-instant";
-    hints["desktop-entry"] = "nheko";
-    hints["category"]      = "im.received";
+    hints[QStringLiteral("image-data")]    = icon;
+    hints[QStringLiteral("sound-name")]    = "message-new-instant";
+    hints[QStringLiteral("desktop-entry")] = "nheko";
+    hints[QStringLiteral("category")]      = "im.received";
 
     uint replace_id = 0;
     if (!event_id.isEmpty()) {
@@ -182,13 +182,13 @@ NotificationsManager::systemPostNotification(const QString &room_id,
     // The list of actions has always the action name and then a localized version of that
     // action. Currently we just use an empty string for that.
     // TODO(Nico): Look into what to actually put there.
-    argumentList << (QStringList("default") << ""
-                                            << "inline-reply"
-                                            << ""); // actions
+    argumentList << (QStringList(QStringLiteral("default"))
+                     << QLatin1String("") << QStringLiteral("inline-reply")
+                     << QLatin1String(""));         // actions
     argumentList << hints;                          // hints
     argumentList << (int)-1;                        // timeout in ms
 
-    QDBusPendingCall call = dbus.asyncCallWithArgumentList("Notify", argumentList);
+    QDBusPendingCall call = dbus.asyncCallWithArgumentList(QStringLiteral("Notify"), argumentList);
     auto watcher          = new QDBusPendingCallWatcher{call, this};
     connect(
       watcher, &QDBusPendingCallWatcher::finished, this, [watcher, this, room_id, event_id]() {
@@ -204,7 +204,7 @@ NotificationsManager::systemPostNotification(const QString &room_id,
 void
 NotificationsManager::closeNotification(uint id)
 {
-    auto call    = dbus.asyncCall("CloseNotification", (uint)id); // replace_id
+    auto call    = dbus.asyncCall(QStringLiteral("CloseNotification"), (uint)id); // replace_id
     auto watcher = new QDBusPendingCallWatcher{call, this};
     connect(watcher, &QDBusPendingCallWatcher::finished, this, [watcher]() {
         if (watcher->reply().type() == QDBusMessage::ErrorMessage) {
@@ -242,7 +242,7 @@ NotificationsManager::actionInvoked(uint id, QString action)
 {
     if (notificationIds.contains(id)) {
         roomEventId idEntry = notificationIds[id];
-        if (action == "default") {
+        if (action == QLatin1String("default")) {
             emit notificationClicked(idEntry.roomId, idEntry.eventId);
         }
     }

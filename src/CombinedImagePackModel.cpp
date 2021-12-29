@@ -17,7 +17,7 @@ CombinedImagePackModel::CombinedImagePackModel(const std::string &roomId,
 
     for (const auto &pack : packs) {
         QString packname =
-          pack.pack.pack ? QString::fromStdString(pack.pack.pack->display_name) : "";
+          pack.pack.pack ? QString::fromStdString(pack.pack.pack->display_name) : QString();
 
         for (const auto &img : pack.pack.images) {
             ImageDesc i{};
@@ -56,7 +56,7 @@ CombinedImagePackModel::data(const QModelIndex &index, int role) const
     if (hasIndex(index.row(), index.column(), index.parent())) {
         switch (role) {
         case CompletionModel::CompletionRole:
-            return QString("<img data-mx-emoticon height=32 src=\"%1\" alt=\"%2\" title=\"%2\">")
+            return QStringLiteral("<img data-mx-emoticon height=32 src=\"%1\" alt=\"%2\" title=\"%2\">")
               .arg(QString::fromStdString(images[index.row()].image.url).toHtmlEscaped(),
                    QString::fromStdString(images[index.row()].image.body));
         case Roles::Url:

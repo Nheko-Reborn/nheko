@@ -22,7 +22,7 @@ namespace AvatarProvider {
 void
 resolve(QString avatarUrl, int size, QObject *receiver, AvatarCallback callback)
 {
-    const auto cacheKey = QString("%1_size_%2").arg(avatarUrl).arg(size);
+    const auto cacheKey = QStringLiteral("%1_size_%2").arg(avatarUrl).arg(size);
 
     QPixmap pixmap;
     if (avatarUrl.isEmpty()) {

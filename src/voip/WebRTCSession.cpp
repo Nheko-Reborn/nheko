@@ -45,11 +45,11 @@ WebRTCSession::WebRTCSession()
 {
     qRegisterMetaType<webrtc::CallType>();
     qmlRegisterUncreatableMetaObject(
-      webrtc::staticMetaObject, "im.nheko", 1, 0, "CallType", "Can't instantiate enum");
+      webrtc::staticMetaObject, "im.nheko", 1, 0, "CallType", QStringLiteral("Can't instantiate enum"));
 
     qRegisterMetaType<webrtc::State>();
     qmlRegisterUncreatableMetaObject(
-      webrtc::staticMetaObject, "im.nheko", 1, 0, "WebRTCState", "Can't instantiate enum");
+      webrtc::staticMetaObject, "im.nheko", 1, 0, "WebRTCState", QStringLiteral("Can't instantiate enum"));
 
     connect(this, &WebRTCSession::stateChanged, this, &WebRTCSession::setState);
     init();

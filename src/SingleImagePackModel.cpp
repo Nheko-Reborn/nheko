@@ -224,7 +224,7 @@ SingleImagePackModel::avatarUrl() const
     else if (!pack.images.empty())
         return QString::fromStdString(pack.images.begin()->second.url);
     else
-        return "";
+        return QString();
 }
 
 void

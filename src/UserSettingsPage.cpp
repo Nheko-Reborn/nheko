@@ -60,58 +60,58 @@ UserSettings::initialize(std::optional<QString> profile)
 void
 UserSettings::load(std::optional<QString> profile)
 {
-    tray_        = settings.value("user/window/tray", false).toBool();
-    startInTray_ = settings.value("user/window/start_in_tray", false).toBool();
+    tray_        = settings.value(QStringLiteral("user/window/tray"), false).toBool();
+    startInTray_ = settings.value(QStringLiteral("user/window/start_in_tray"), false).toBool();
 
-    roomListWidth_      = settings.value("user/sidebar/room_list_width", -1).toInt();
-    communityListWidth_ = settings.value("user/sidebar/community_list_width", -1).toInt();
+    roomListWidth_      = settings.value(QStringLiteral("user/sidebar/room_list_width"), -1).toInt();
+    communityListWidth_ = settings.value(QStringLiteral("user/sidebar/community_list_width"), -1).toInt();
 
-    hasDesktopNotifications_ = settings.value("user/desktop_notifications", true).toBool();
-    hasAlertOnNotification_  = settings.value("user/alert_on_notification", false).toBool();
-    groupView_               = settings.value("user/group_view", true).toBool();
-    buttonsInTimeline_       = settings.value("user/timeline/buttons", true).toBool();
-    timelineMaxWidth_        = settings.value("user/timeline/max_width", 0).toInt();
+    hasDesktopNotifications_ = settings.value(QStringLiteral("user/desktop_notifications"), true).toBool();
+    hasAlertOnNotification_  = settings.value(QStringLiteral("user/alert_on_notification"), false).toBool();
+    groupView_               = settings.value(QStringLiteral("user/group_view"), true).toBool();
+    buttonsInTimeline_       = settings.value(QStringLiteral("user/timeline/buttons"), true).toBool();
+    timelineMaxWidth_        = settings.value(QStringLiteral("user/timeline/max_width"), 0).toInt();
     messageHoverHighlight_ =
-      settings.value("user/timeline/message_hover_highlight", false).toBool();
+      settings.value(QStringLiteral("user/timeline/message_hover_highlight"), false).toBool();
     enlargeEmojiOnlyMessages_ =
-      settings.value("user/timeline/enlarge_emoji_only_msg", false).toBool();
-    markdown_             = settings.value("user/markdown_enabled", true).toBool();
-    animateImagesOnHover_ = settings.value("user/animate_images_on_hover", false).toBool();
-    typingNotifications_  = settings.value("user/typing_notifications", true).toBool();
-    sortByImportance_     = settings.value("user/sort_by_unread", true).toBool();
-    readReceipts_         = settings.value("user/read_receipts", true).toBool();
-    theme_                = settings.value("user/theme", defaultTheme_).toString();
-    font_                 = settings.value("user/font_family", "default").toString();
-    avatarCircles_        = settings.value("user/avatar_circles", true).toBool();
-    useIdenticon_         = settings.value("user/use_identicon", true).toBool();
-    decryptSidebar_       = settings.value("user/decrypt_sidebar", true).toBool();
-    privacyScreen_        = settings.value("user/privacy_screen", false).toBool();
-    privacyScreenTimeout_ = settings.value("user/privacy_screen_timeout", 0).toInt();
-    mobileMode_           = settings.value("user/mobile_mode", false).toBool();
-    emojiFont_            = settings.value("user/emoji_font_family", "default").toString();
-    baseFontSize_         = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
-    auto tempPresence     = settings.value("user/presence", "").toString().toStdString();
+      settings.value(QStringLiteral("user/timeline/enlarge_emoji_only_msg"), false).toBool();
+    markdown_             = settings.value(QStringLiteral("user/markdown_enabled"), true).toBool();
+    animateImagesOnHover_ = settings.value(QStringLiteral("user/animate_images_on_hover"), false).toBool();
+    typingNotifications_  = settings.value(QStringLiteral("user/typing_notifications"), true).toBool();
+    sortByImportance_     = settings.value(QStringLiteral("user/sort_by_unread"), true).toBool();
+    readReceipts_         = settings.value(QStringLiteral("user/read_receipts"), true).toBool();
+    theme_                = settings.value(QStringLiteral("user/theme"), defaultTheme_).toString();
+    font_                 = settings.value(QStringLiteral("user/font_family"), "default").toString();
+    avatarCircles_        = settings.value(QStringLiteral("user/avatar_circles"), true).toBool();
+    useIdenticon_         = settings.value(QStringLiteral("user/use_identicon"), true).toBool();
+    decryptSidebar_       = settings.value(QStringLiteral("user/decrypt_sidebar"), true).toBool();
+    privacyScreen_        = settings.value(QStringLiteral("user/privacy_screen"), false).toBool();
+    privacyScreenTimeout_ = settings.value(QStringLiteral("user/privacy_screen_timeout"), 0).toInt();
+    mobileMode_           = settings.value(QStringLiteral("user/mobile_mode"), false).toBool();
+    emojiFont_            = settings.value(QStringLiteral("user/emoji_font_family"), "default").toString();
+    baseFontSize_         = settings.value(QStringLiteral("user/font_size"), QFont().pointSizeF()).toDouble();
+    auto tempPresence     = settings.value(QStringLiteral("user/presence"), "").toString().toStdString();
     auto presenceValue    = QMetaEnum::fromType<Presence>().keyToValue(tempPresence.c_str());
     if (presenceValue < 0)
         presenceValue = 0;
     presence_               = static_cast<Presence>(presenceValue);
-    ringtone_               = settings.value("user/ringtone", "Default").toString();
-    microphone_             = settings.value("user/microphone", QString()).toString();
-    camera_                 = settings.value("user/camera", QString()).toString();
-    cameraResolution_       = settings.value("user/camera_resolution", QString()).toString();
-    cameraFrameRate_        = settings.value("user/camera_frame_rate", QString()).toString();
-    screenShareFrameRate_   = settings.value("user/screen_share_frame_rate", 5).toInt();
-    screenSharePiP_         = settings.value("user/screen_share_pip", true).toBool();
-    screenShareRemoteVideo_ = settings.value("user/screen_share_remote_video", false).toBool();
-    screenShareHideCursor_  = settings.value("user/screen_share_hide_cursor", false).toBool();
-    useStunServer_          = settings.value("user/use_stun_server", false).toBool();
+    ringtone_               = settings.value(QStringLiteral("user/ringtone"), "Default").toString();
+    microphone_             = settings.value(QStringLiteral("user/microphone"), QString()).toString();
+    camera_                 = settings.value(QStringLiteral("user/camera"), QString()).toString();
+    cameraResolution_       = settings.value(QStringLiteral("user/camera_resolution"), QString()).toString();
+    cameraFrameRate_        = settings.value(QStringLiteral("user/camera_frame_rate"), QString()).toString();
+    screenShareFrameRate_   = settings.value(QStringLiteral("user/screen_share_frame_rate"), 5).toInt();
+    screenSharePiP_         = settings.value(QStringLiteral("user/screen_share_pip"), true).toBool();
+    screenShareRemoteVideo_ = settings.value(QStringLiteral("user/screen_share_remote_video"), false).toBool();
+    screenShareHideCursor_  = settings.value(QStringLiteral("user/screen_share_hide_cursor"), false).toBool();
+    useStunServer_          = settings.value(QStringLiteral("user/use_stun_server"), false).toBool();
 
     if (profile) // set to "" if it's the default to maintain compatibility
-        profile_ = (*profile == "default") ? "" : *profile;
+        profile_ = (*profile == QLatin1String("default")) ? QLatin1String("") : *profile;
     else
-        profile_ = settings.value("user/currentProfile", "").toString();
+        profile_ = settings.value(QStringLiteral("user/currentProfile"), "").toString();
 
-    QString prefix = (profile_ != "" && profile_ != "default") ? "profile/" + profile_ + "/" : "";
+    QString prefix = (profile_ != QLatin1String("") && profile_ != QLatin1String("default")) ? "profile/" + profile_ + "/" : QLatin1String("");
     accessToken_   = settings.value(prefix + "auth/access_token", "").toString();
     homeserver_    = settings.value(prefix + "auth/home_server", "").toString();
     userId_        = settings.value(prefix + "auth/user_id", "").toString();
@@ -133,7 +133,7 @@ UserSettings::load(std::optional<QString> profile)
     useOnlineKeyBackup_ = settings.value(prefix + "user/online_key_backup", false).toBool();
 
     disableCertificateValidation_ =
-      settings.value("disable_certificate_validation", false).toBool();
+      settings.value(QStringLiteral("disable_certificate_validation"), false).toBool();
 
     applyTheme();
 }
@@ -403,7 +403,7 @@ UserSettings::setEmojiFontFamily(QString family)
         return;
 
     if (family == tr("Default")) {
-        emojiFont_ = "default";
+        emojiFont_ = QStringLiteral("default");
     } else {
         emojiFont_ = family;
     }
@@ -641,12 +641,12 @@ UserSettings::applyTheme()
 {
     QFile stylefile;
 
-    if (this->theme() == "light") {
-        stylefile.setFileName(":/styles/styles/nheko.qss");
-    } else if (this->theme() == "dark") {
-        stylefile.setFileName(":/styles/styles/nheko-dark.qss");
+    if (this->theme() == QLatin1String("light")) {
+        stylefile.setFileName(QStringLiteral(":/styles/styles/nheko.qss"));
+    } else if (this->theme() == QLatin1String("dark")) {
+        stylefile.setFileName(QStringLiteral(":/styles/styles/nheko-dark.qss"));
     } else {
-        stylefile.setFileName(":/styles/styles/system.qss");
+        stylefile.setFileName(QStringLiteral(":/styles/styles/system.qss"));
     }
     QApplication::setPalette(Theme::paletteFromTheme(this->theme().toStdString()));
 
@@ -659,62 +659,62 @@ UserSettings::applyTheme()
 void
 UserSettings::save()
 {
-    settings.beginGroup("user");
+    settings.beginGroup(QStringLiteral("user"));
 
-    settings.beginGroup("window");
-    settings.setValue("tray", tray_);
-    settings.setValue("start_in_tray", startInTray_);
+    settings.beginGroup(QStringLiteral("window"));
+    settings.setValue(QStringLiteral("tray"), tray_);
+    settings.setValue(QStringLiteral("start_in_tray"), startInTray_);
     settings.endGroup(); // window
 
-    settings.beginGroup("sidebar");
-    settings.setValue("community_list_width", communityListWidth_);
-    settings.setValue("room_list_width", roomListWidth_);
+    settings.beginGroup(QStringLiteral("sidebar"));
+    settings.setValue(QStringLiteral("community_list_width"), communityListWidth_);
+    settings.setValue(QStringLiteral("room_list_width"), roomListWidth_);
     settings.endGroup(); // window
 
-    settings.beginGroup("timeline");
-    settings.setValue("buttons", buttonsInTimeline_);
-    settings.setValue("message_hover_highlight", messageHoverHighlight_);
-    settings.setValue("enlarge_emoji_only_msg", enlargeEmojiOnlyMessages_);
-    settings.setValue("max_width", timelineMaxWidth_);
+    settings.beginGroup(QStringLiteral("timeline"));
+    settings.setValue(QStringLiteral("buttons"), buttonsInTimeline_);
+    settings.setValue(QStringLiteral("message_hover_highlight"), messageHoverHighlight_);
+    settings.setValue(QStringLiteral("enlarge_emoji_only_msg"), enlargeEmojiOnlyMessages_);
+    settings.setValue(QStringLiteral("max_width"), timelineMaxWidth_);
     settings.endGroup(); // timeline
 
-    settings.setValue("avatar_circles", avatarCircles_);
-    settings.setValue("decrypt_sidebar", decryptSidebar_);
-    settings.setValue("privacy_screen", privacyScreen_);
-    settings.setValue("privacy_screen_timeout", privacyScreenTimeout_);
-    settings.setValue("mobile_mode", mobileMode_);
-    settings.setValue("font_size", baseFontSize_);
-    settings.setValue("typing_notifications", typingNotifications_);
-    settings.setValue("sort_by_unread", sortByImportance_);
-    settings.setValue("minor_events", sortByImportance_);
-    settings.setValue("read_receipts", readReceipts_);
-    settings.setValue("group_view", groupView_);
-    settings.setValue("markdown_enabled", markdown_);
-    settings.setValue("animate_images_on_hover", animateImagesOnHover_);
-    settings.setValue("desktop_notifications", hasDesktopNotifications_);
-    settings.setValue("alert_on_notification", hasAlertOnNotification_);
-    settings.setValue("theme", theme());
-    settings.setValue("font_family", font_);
-    settings.setValue("emoji_font_family", emojiFont_);
+    settings.setValue(QStringLiteral("avatar_circles"), avatarCircles_);
+    settings.setValue(QStringLiteral("decrypt_sidebar"), decryptSidebar_);
+    settings.setValue(QStringLiteral("privacy_screen"), privacyScreen_);
+    settings.setValue(QStringLiteral("privacy_screen_timeout"), privacyScreenTimeout_);
+    settings.setValue(QStringLiteral("mobile_mode"), mobileMode_);
+    settings.setValue(QStringLiteral("font_size"), baseFontSize_);
+    settings.setValue(QStringLiteral("typing_notifications"), typingNotifications_);
+    settings.setValue(QStringLiteral("sort_by_unread"), sortByImportance_);
+    settings.setValue(QStringLiteral("minor_events"), sortByImportance_);
+    settings.setValue(QStringLiteral("read_receipts"), readReceipts_);
+    settings.setValue(QStringLiteral("group_view"), groupView_);
+    settings.setValue(QStringLiteral("markdown_enabled"), markdown_);
+    settings.setValue(QStringLiteral("animate_images_on_hover"), animateImagesOnHover_);
+    settings.setValue(QStringLiteral("desktop_notifications"), hasDesktopNotifications_);
+    settings.setValue(QStringLiteral("alert_on_notification"), hasAlertOnNotification_);
+    settings.setValue(QStringLiteral("theme"), theme());
+    settings.setValue(QStringLiteral("font_family"), font_);
+    settings.setValue(QStringLiteral("emoji_font_family"), emojiFont_);
     settings.setValue(
-      "presence",
+      QStringLiteral("presence"),
       QString::fromUtf8(QMetaEnum::fromType<Presence>().valueToKey(static_cast<int>(presence_))));
-    settings.setValue("ringtone", ringtone_);
-    settings.setValue("microphone", microphone_);
-    settings.setValue("camera", camera_);
-    settings.setValue("camera_resolution", cameraResolution_);
-    settings.setValue("camera_frame_rate", cameraFrameRate_);
-    settings.setValue("screen_share_frame_rate", screenShareFrameRate_);
-    settings.setValue("screen_share_pip", screenSharePiP_);
-    settings.setValue("screen_share_remote_video", screenShareRemoteVideo_);
-    settings.setValue("screen_share_hide_cursor", screenShareHideCursor_);
-    settings.setValue("use_stun_server", useStunServer_);
-    settings.setValue("currentProfile", profile_);
-    settings.setValue("use_identicon", useIdenticon_);
+    settings.setValue(QStringLiteral("ringtone"), ringtone_);
+    settings.setValue(QStringLiteral("microphone"), microphone_);
+    settings.setValue(QStringLiteral("camera"), camera_);
+    settings.setValue(QStringLiteral("camera_resolution"), cameraResolution_);
+    settings.setValue(QStringLiteral("camera_frame_rate"), cameraFrameRate_);
+    settings.setValue(QStringLiteral("screen_share_frame_rate"), screenShareFrameRate_);
+    settings.setValue(QStringLiteral("screen_share_pip"), screenSharePiP_);
+    settings.setValue(QStringLiteral("screen_share_remote_video"), screenShareRemoteVideo_);
+    settings.setValue(QStringLiteral("screen_share_hide_cursor"), screenShareHideCursor_);
+    settings.setValue(QStringLiteral("use_stun_server"), useStunServer_);
+    settings.setValue(QStringLiteral("currentProfile"), profile_);
+    settings.setValue(QStringLiteral("use_identicon"), useIdenticon_);
 
     settings.endGroup(); // user
 
-    QString prefix = (profile_ != "" && profile_ != "default") ? "profile/" + profile_ + "/" : "";
+    QString prefix = (profile_ != QLatin1String("") && profile_ != QLatin1String("default")) ? "profile/" + profile_ + "/" : QLatin1String("");
     settings.setValue(prefix + "auth/access_token", accessToken_);
     settings.setValue(prefix + "auth/home_server", homeserver_);
     settings.setValue(prefix + "auth/user_id", userId_);
@@ -734,7 +734,7 @@ UserSettings::save()
         v.push_back(e);
     settings.setValue(prefix + "user/collapsed_spaces", v);
 
-    settings.setValue("disable_certificate_validation", disableCertificateValidation_);
+    settings.setValue(QStringLiteral("disable_certificate_validation"), disableCertificateValidation_);
 
     settings.sync();
 }
@@ -753,7 +753,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
     topLayout_ = new QVBoxLayout{this};
 
     QIcon icon;
-    icon.addFile(":/icons/icons/ui/angle-arrow-left.svg");
+    icon.addFile(QStringLiteral(":/icons/icons/ui/angle-arrow-left.svg"));
 
     auto backBtn_ = new FlatButton{this};
     backBtn_->setMinimumSize(QSize(24, 24));
@@ -763,8 +763,8 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
     QFont font;
     font.setPointSizeF(font.pointSizeF() * 1.1);
 
-    auto versionInfo = new QLabel(QString("%1 | %2").arg(nheko::version, nheko::build_os));
-    if (QCoreApplication::applicationName() != "nheko")
+    auto versionInfo = new QLabel(QStringLiteral("%1 | %2").arg(nheko::version, nheko::build_os));
+    if (QCoreApplication::applicationName() != QLatin1String("nheko"))
         versionInfo->setText(versionInfo->text() + " | " +
                              tr("profile: %1").arg(QCoreApplication::applicationName()));
     versionInfo->setTextInteractionFlags(Qt::TextBrowserInteraction);
@@ -863,7 +863,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
     for (double option = 1; option <= 3; option += 0.25)
         scaleFactorCombo_->addItem(QString::number(option));
     for (double option = 6; option <= 24; option += 0.5)
-        fontSizeCombo_->addItem(QString("%1 ").arg(QString::number(option)));
+        fontSizeCombo_->addItem(QStringLiteral("%1 ").arg(QString::number(option)));
 
     QFontDatabase fontDb;
 
@@ -876,7 +876,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
     }
 
     QString currentFont = settings_->font();
-    if (currentFont != "default" || currentFont != "") {
+    if (currentFont != QLatin1String("default") || currentFont != QLatin1String("")) {
         fontSelectionCombo_->setCurrentIndex(fontSelectionCombo_->findText(currentFont));
     }
 
@@ -884,9 +884,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
       emojiFontSelectionCombo_->findText(settings_->emojiFont()));
 
     themeCombo_ = new QComboBox{this};
-    themeCombo_->addItem("Light");
-    themeCombo_->addItem("Dark");
-    themeCombo_->addItem("System");
+    themeCombo_->addItem(QStringLiteral("Light"));
+    themeCombo_->addItem(QStringLiteral("Dark"));
+    themeCombo_->addItem(QStringLiteral("System"));
 
     QString themeStr = settings_->theme();
     themeStr.replace(0, 1, themeStr[0].toUpper());
@@ -912,7 +912,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
     encryptionLabel_->setFont(font);
 
     QFont monospaceFont;
-    monospaceFont.setFamily("Monospace");
+    monospaceFont.setFamily(QStringLiteral("Monospace"));
     monospaceFont.setStyleHint(QFont::Monospace);
     monospaceFont.setPointSizeF(monospaceFont.pointSizeF() * 0.9);
 
@@ -943,7 +943,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
     auto sessionKeysExportBtn = new QPushButton{tr("EXPORT"), this};
 
     auto sessionKeysLayout = new QHBoxLayout;
-    sessionKeysLayout->addWidget(new QLabel{"", this}, 1, Qt::AlignRight);
+    sessionKeysLayout->addWidget(new QLabel{QLatin1String(""), this}, 1, Qt::AlignRight);
     sessionKeysLayout->addWidget(sessionKeysExportBtn, 0, Qt::AlignRight);
     sessionKeysLayout->addWidget(sessionKeysImportBtn, 0, Qt::AlignRight);
 
@@ -955,11 +955,11 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
     auto crossSigningDownloadBtn = new QPushButton{tr("DOWNLOAD"), this};
 
     auto crossSigningKeysLayout = new QHBoxLayout;
-    crossSigningKeysLayout->addWidget(new QLabel{"", this}, 1, Qt::AlignRight);
+    crossSigningKeysLayout->addWidget(new QLabel{QLatin1String(""), this}, 1, Qt::AlignRight);
     crossSigningKeysLayout->addWidget(crossSigningRequestBtn, 0, Qt::AlignRight);
     crossSigningKeysLayout->addWidget(crossSigningDownloadBtn, 0, Qt::AlignRight);
 
-    auto boxWrap = [this, &font](QString labelText, QWidget *field, QString tooltipText = "") {
+    auto boxWrap = [this, &font](QString labelText, QWidget *field, QString tooltipText = QLatin1String("")) {
         auto label = new QLabel{labelText, this};
         label->setFont(font);
         label->setMargin(OptionMargin);
@@ -1083,11 +1083,11 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
     boxWrap(tr("Camera frame rate"), cameraFrameRateCombo_);
 
     ringtoneCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    ringtoneCombo_->addItem("Mute");
-    ringtoneCombo_->addItem("Default");
-    ringtoneCombo_->addItem("Other...");
+    ringtoneCombo_->addItem(QStringLiteral("Mute"));
+    ringtoneCombo_->addItem(QStringLiteral("Default"));
+    ringtoneCombo_->addItem(QStringLiteral("Other..."));
     const QString &ringtone = settings_->ringtone();
-    if (!ringtone.isEmpty() && ringtone != "Mute" && ringtone != "Default")
+    if (!ringtone.isEmpty() && ringtone != QLatin1String("Mute") && ringtone != QLatin1String("Default"))
         ringtoneCombo_->addItem(ringtone);
     microphoneCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     cameraCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
@@ -1153,7 +1153,7 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
     spacingAroundForm->addStretch(1);
 
     auto scrollAreaContents_ = new QWidget{this};
-    scrollAreaContents_->setObjectName("UserSettingScrollWidget");
+    scrollAreaContents_->setObjectName(QStringLiteral("UserSettingScrollWidget"));
     scrollAreaContents_->setLayout(spacingAroundForm);
 
     scrollArea_->setWidget(scrollAreaContents_);
@@ -1190,14 +1190,14 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
             static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
             this,
             [this](const QString &ringtone) {
-                if (ringtone == "Other...") {
+                if (ringtone == QLatin1String("Other...")) {
                     QString homeFolder =
                       QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
                     auto filepath = QFileDialog::getOpenFileName(
                       this, tr("Select a file"), homeFolder, tr("All Files (*)"));
                     if (!filepath.isEmpty()) {
                         const auto &oldSetting = settings_->ringtone();
-                        if (oldSetting != "Mute" && oldSetting != "Default")
+                        if (oldSetting != QLatin1String("Mute") && oldSetting != QLatin1String("Default"))
                             ringtoneCombo_->removeItem(ringtoneCombo_->findText(oldSetting));
                         settings_->setRingtone(filepath);
                         ringtoneCombo_->addItem(filepath);
@@ -1205,9 +1205,9 @@ UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidge
                     } else {
                         ringtoneCombo_->setCurrentText(settings_->ringtone());
                     }
-                } else if (ringtone == "Mute" || ringtone == "Default") {
+                } else if (ringtone == QLatin1String("Mute") || ringtone == QLatin1String("Default")) {
                     const auto &oldSetting = settings_->ringtone();
-                    if (oldSetting != "Mute" && oldSetting != "Default")
+                    if (oldSetting != QLatin1String("Mute") && oldSetting != QLatin1String("Default"))
                         ringtoneCombo_->removeItem(ringtoneCombo_->findText(oldSetting));
                     settings_->setRingtone(ringtone);
                 }
@@ -1463,7 +1463,7 @@ UserSettingsPage::importSessionKeys()
 {
     const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     const QString fileName =
-      QFileDialog::getOpenFileName(this, tr("Open Sessions File"), homeFolder, "");
+      QFileDialog::getOpenFileName(this, tr("Open Sessions File"), homeFolder, QLatin1String(""));
 
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -1479,7 +1479,7 @@ UserSettingsPage::importSessionKeys()
                                           tr("File Password"),
                                           tr("Enter the passphrase to decrypt the file:"),
                                           QLineEdit::Password,
-                                          "",
+                                          QLatin1String(""),
                                           &ok);
     if (!ok)
         return;
@@ -1506,7 +1506,7 @@ UserSettingsPage::exportSessionKeys()
                                           tr("File Password"),
                                           tr("Enter passphrase to encrypt your session keys:"),
                                           QLineEdit::Password,
-                                          "",
+                                          QLatin1String(""),
                                           &ok);
     if (!ok)
         return;
@@ -1534,9 +1534,9 @@ UserSettingsPage::exportSessionKeys()
 
         QString b64 = QString::fromStdString(mtx::crypto::bin2base64(encrypted_blob));
 
-        QString prefix("-----BEGIN MEGOLM SESSION DATA-----");
-        QString suffix("-----END MEGOLM SESSION DATA-----");
-        QString newline("\n");
+        QString prefix(QStringLiteral("-----BEGIN MEGOLM SESSION DATA-----"));
+        QString suffix(QStringLiteral("-----END MEGOLM SESSION DATA-----"));
+        QString newline(QStringLiteral("\n"));
         QTextStream out(&file);
         out << prefix << newline << b64 << newline << suffix << newline;
         file.close();
@@ -1548,8 +1548,8 @@ UserSettingsPage::exportSessionKeys()
 void
 UserSettingsPage::updateSecretStatus()
 {
-    QString ok      = "QLabel { color : #00cc66; }";
-    QString notSoOk = "QLabel { color : #ff9933; }";
+    QString ok      = QStringLiteral("QLabel { color : #00cc66; }");
+    QString notSoOk = QStringLiteral("QLabel { color : #ff9933; }");
 
     auto updateLabel = [&ok, &notSoOk](QLabel *label, const std::string &secretName) {
         if (cache::secret(secretName)) {

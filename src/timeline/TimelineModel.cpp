@@ -540,7 +540,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         return QVariant(utils::replaceEmoji(QString::fromStdString(body(event)).toHtmlEscaped()));
     case FormattedBody: {
         const static QRegularExpression replyFallback(
-          "<mx-reply>.*</mx-reply>", QRegularExpression::DotMatchesEverythingOption);
+          QStringLiteral("<mx-reply>.*</mx-reply>"), QRegularExpression::DotMatchesEverythingOption);
 
         auto ascent = QFontMetrics(UserSettings::instance()->font()).ascent();
 
@@ -551,19 +551,19 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
             auto body_ = QString::fromStdString(body(event));
 
             if (isReply) {
-                while (body_.startsWith("> "))
+                while (body_.startsWith(QLatin1String("> ")))
                     body_ = body_.right(body_.size() - body_.indexOf('\n') - 1);
                 if (body_.startsWith('\n'))
                     body_ = body_.right(body_.size() - 1);
             }
-            formattedBody_ = body_.toHtmlEscaped().replace('\n', "<br>");
+            formattedBody_ = body_.toHtmlEscaped().replace('\n', QLatin1String("<br>"));
         } else {
             if (isReply)
                 formattedBody_ = formattedBody_.remove(replyFallback);
         }
 
         // TODO(Nico): Don't parse html with a regex
-        const static QRegularExpression matchIsImg("<img [^>]+>");
+        const static QRegularExpression matchIsImg(QStringLiteral("<img [^>]+>"));
         auto itIsImg = matchIsImg.globalMatch(formattedBody_);
         while (itIsImg.hasNext()) {
             // The current <img> tag.
@@ -573,23 +573,23 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
 
             // Construct image parameters later used by MxcImageProvider.
             QString imgParams;
-            if (curImg.contains("height")) {
-                const static QRegularExpression matchImgHeight("height=([\"\']?)(\\d+)([\"\']?)");
+            if (curImg.contains(QLatin1String("height"))) {
+                const static QRegularExpression matchImgHeight(QStringLiteral("height=([\"\']?)(\\d+)([\"\']?)"));
                 // Make emoticons twice as high as the font.
-                if (curImg.contains("data-mx-emoticon")) {
+                if (curImg.contains(QLatin1String("data-mx-emoticon"))) {
                     imgReplacement =
                       imgReplacement.replace(matchImgHeight, "height=\\1%1\\3").arg(ascent * 2);
                 }
                 const auto height = matchImgHeight.match(imgReplacement).captured(2).toInt();
-                imgParams         = QString("?scale&height=%1").arg(height);
+                imgParams         = QStringLiteral("?scale&height=%1").arg(height);
             }
 
             // Replace src in current <img>.
-            const static QRegularExpression matchImgUri("src=\"mxc://([^\"]*)\"");
+            const static QRegularExpression matchImgUri(QStringLiteral("src=\"mxc://([^\"]*)\""));
             imgReplacement.replace(matchImgUri,
                                    QString("src=\"image://mxcImage/\\1%1\"").arg(imgParams));
             // Same regex but for single quotes around the src
-            const static QRegularExpression matchImgUri2("src=\'mxc://([^\']*)\'");
+            const static QRegularExpression matchImgUri2(QStringLiteral("src=\'mxc://([^\']*)\'"));
             imgReplacement.replace(matchImgUri2,
                                    QString("src=\'image://mxcImage/\\1%1\'").arg(imgParams));
 
@@ -694,7 +694,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
           utils::replaceEmoji(QString::fromStdString(room_name(event)).toHtmlEscaped()));
     case RoomTopic:
         return QVariant(utils::replaceEmoji(utils::linkifyMessage(
-          QString::fromStdString(room_topic(event)).toHtmlEscaped().replace("\n", "<br>"))));
+          QString::fromStdString(room_topic(event)).toHtmlEscaped().replace(QLatin1String("\n"), QLatin1String("<br>")))));
     case CallType:
         return QVariant(QString::fromStdString(call_type(event)));
     case Dump: {
@@ -1073,7 +1073,7 @@ TimelineModel::formatDateSeparator(QDate date) const
     QString fmt = QLocale::system().dateFormat(QLocale::LongFormat);
 
     if (now.date().year() == date.year()) {
-        QRegularExpression rx("[^a-zA-Z]*y+[^a-zA-Z]*");
+        QRegularExpression rx(QStringLiteral("[^a-zA-Z]*y+[^a-zA-Z]*"));
         fmt = fmt.remove(rx);
     }
 
@@ -1255,7 +1255,7 @@ QString
 TimelineModel::indexToId(int index) const
 {
     auto id = events.indexToId(events.size() - index - 1);
-    return id ? QString::fromStdString(*id) : "";
+    return id ? QString::fromStdString(*id) : QLatin1String("");
 }
 
 // Note: this will only be called for our messages
@@ -1546,7 +1546,7 @@ TimelineModel::cacheMedia(const QString &eventId,
     auto encryptionInfo = mtx::accessors::file(*event);
 
     // If the message is a link to a non mxcUrl, don't download it
-    if (!mxcUrl.startsWith("mxc://")) {
+    if (!mxcUrl.startsWith(QLatin1String("mxc://"))) {
         emit mediaCached(mxcUrl, mxcUrl);
         return;
     }
@@ -1554,9 +1554,9 @@ TimelineModel::cacheMedia(const QString &eventId,
     QString suffix = QMimeDatabase().mimeTypeForName(mimeType).preferredSuffix();
 
     const auto url  = mxcUrl.toStdString();
-    const auto name = QString(mxcUrl).remove("mxc://");
+    const auto name = QString(mxcUrl).remove(QStringLiteral("mxc://"));
     QFileInfo filename(
-      QString("%1/media_cache/%2.%3")
+      QStringLiteral("%1/media_cache/%2.%3")
         .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation), name, suffix));
     if (QDir::cleanPath(name) != name) {
         nhlog::net()->warn("mxcUrl '{}' is not safe, not downloading file", url);
@@ -1704,7 +1704,7 @@ TimelineModel::copyLinkToEvent(const QString &eventId) const
     if (room.isEmpty())
         room = room_id_;
 
-    vias.push_back(QString("via=%1").arg(QString(
+    vias.push_back(QStringLiteral("via=%1").arg(QString(
       QUrl::toPercentEncoding(QString::fromStdString(http::client()->user_id().hostname())))));
     auto members = cache::getMembers(room_id_.toStdString(), 0, 100);
     for (const auto &m : members) {
@@ -1712,14 +1712,14 @@ TimelineModel::copyLinkToEvent(const QString &eventId) const
             break;
 
         auto user_id   = mtx::identifiers::parse<mtx::identifiers::User>(m.user_id.toStdString());
-        QString server = QString("via=%1").arg(
+        QString server = QStringLiteral("via=%1").arg(
           QString(QUrl::toPercentEncoding(QString::fromStdString(user_id.hostname()))));
 
         if (!vias.contains(server))
             vias.push_back(server);
     }
 
-    auto link = QString("https://matrix.to/#/%1/%2?%3")
+    auto link = QStringLiteral("https://matrix.to/#/%1/%2?%3")
                   .arg(QString(QUrl::toPercentEncoding(room)),
                        QString(QUrl::toPercentEncoding(eventId)),
                        vias.join('&'));
@@ -1739,7 +1739,7 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor
          (int)users.size());
 
     if (users.empty()) {
-        return "";
+        return QString();
     }
 
     QStringList uidWithoutLast;
@@ -1747,20 +1747,20 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor
     auto formatUser = [this, bg](const QString &user_id) -> QString {
         auto uncoloredUsername = utils::replaceEmoji(displayName(user_id));
         QString prefix =
-          QString("<font color=\"%1\">").arg(manager_->userColor(user_id, bg).name());
+          QStringLiteral("<font color=\"%1\">").arg(manager_->userColor(user_id, bg).name());
 
         // color only parts that don't have a font already specified
         QString coloredUsername;
         int index = 0;
         do {
-            auto startIndex = uncoloredUsername.indexOf("<font", index);
+            auto startIndex = uncoloredUsername.indexOf(QLatin1String("<font"), index);
 
             if (startIndex - index != 0)
                 coloredUsername +=
                   prefix + uncoloredUsername.mid(index, startIndex > 0 ? startIndex - index : -1) +
                   QStringLiteral("</font>");
 
-            auto endIndex = uncoloredUsername.indexOf("</font>", startIndex);
+            auto endIndex = uncoloredUsername.indexOf(QLatin1String("</font>"), startIndex);
             if (endIndex > 0)
                 endIndex += sizeof("</font>") - 1;
 
@@ -1778,7 +1778,7 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor
         uidWithoutLast.append(formatUser(users[i]));
     }
 
-    return temp.arg(uidWithoutLast.join(", "), formatUser(users.back()));
+    return temp.arg(uidWithoutLast.join(QStringLiteral(", ")), formatUser(users.back()));
 }
 
 QString
@@ -1786,11 +1786,11 @@ TimelineModel::formatJoinRuleEvent(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
-        return "";
+        return QString();
 
     auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::JoinRules>>(e);
     if (!event)
-        return "";
+        return QString();
 
     QString user = QString::fromStdString(event->sender);
     QString name = utils::replaceEmoji(displayName(user));
@@ -1810,11 +1810,11 @@ TimelineModel::formatJoinRuleEvent(const QString &id)
         }
         return tr("%1 allowed members of the following rooms to automatically join this "
                   "room: %2")
-          .arg(name, rooms.join(", "));
+          .arg(name, rooms.join(QStringLiteral(", ")));
     }
     default:
         // Currently, knock and private are reserved keywords and not implemented in Matrix.
-        return "";
+        return QString();
     }
 }
 
@@ -1823,11 +1823,11 @@ TimelineModel::formatGuestAccessEvent(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
-        return "";
+        return QString();
 
     auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::GuestAccess>>(e);
     if (!event)
-        return "";
+        return QString();
 
     QString user = QString::fromStdString(event->sender);
     QString name = utils::replaceEmoji(displayName(user));
@@ -1838,7 +1838,7 @@ TimelineModel::formatGuestAccessEvent(const QString &id)
     case mtx::events::state::AccessState::Forbidden:
         return tr("%1 has closed the room to guest access.").arg(name);
     default:
-        return "";
+        return QString();
     }
 }
 
@@ -1847,12 +1847,12 @@ TimelineModel::formatHistoryVisibilityEvent(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
-        return "";
+        return QString();
 
     auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::HistoryVisibility>>(e);
 
     if (!event)
-        return "";
+        return QString();
 
     QString user = QString::fromStdString(event->sender);
     QString name = utils::replaceEmoji(displayName(user));
@@ -1870,7 +1870,7 @@ TimelineModel::formatHistoryVisibilityEvent(const QString &id)
         return tr("%1 set the room history visible to members since they joined the room.")
           .arg(name);
     default:
-        return "";
+        return QString();
     }
 }
 
@@ -1879,11 +1879,11 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
-        return "";
+        return QString();
 
     auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::PowerLevels>>(e);
     if (!event)
-        return "";
+        return QString();
 
     QString user = QString::fromStdString(event->sender);
     QString name = utils::replaceEmoji(displayName(user));
@@ -1905,7 +1905,7 @@ TimelineModel::formatRedactedEvent(const QString &id)
         return pair;
 
     QString dateTime = QDateTime::fromMSecsSinceEpoch(event->origin_server_ts).toString();
-    QString reason   = "";
+    QString reason   = QLatin1String("");
     auto because     = event->unsigned_data.redacted_because;
     // User info about who actually sent the redacted event.
     QString redactedUser;
@@ -1918,12 +1918,12 @@ TimelineModel::formatRedactedEvent(const QString &id)
     }
 
     if (reason.isEmpty()) {
-        pair["first"] = tr("Removed by %1").arg(redactedName);
-        pair["second"] =
+        pair[QStringLiteral("first")] = tr("Removed by %1").arg(redactedName);
+        pair[QStringLiteral("second")] =
           tr("%1 (%2) removed this message at %3").arg(redactedName, redactedUser, dateTime);
     } else {
-        pair["first"]  = tr("Removed by %1 because: %2").arg(redactedName, reason);
-        pair["second"] = tr("%1 (%2) removed this message at %3\nReason: %4")
+        pair[QStringLiteral("first")]  = tr("Removed by %1 because: %2").arg(redactedName, reason);
+        pair[QStringLiteral("second")] = tr("%1 (%2) removed this message at %3\nReason: %4")
                            .arg(redactedName, redactedUser, dateTime, reason);
     }
 
@@ -1951,7 +1951,7 @@ TimelineModel::acceptKnock(const QString &id)
     if (event->content.membership != Membership::Knock)
         return;
 
-    ChatPage::instance()->inviteUser(QString::fromStdString(event->state_key), "");
+    ChatPage::instance()->inviteUser(QString::fromStdString(event->state_key), QLatin1String(""));
 }
 
 bool
@@ -1980,11 +1980,11 @@ TimelineModel::formatMemberEvent(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
-        return "";
+        return QString();
 
     auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::Member>>(e);
     if (!event)
-        return "";
+        return QString();
 
     mtx::events::StateEvent<mtx::events::state::Member> *prevEvent = nullptr;
     if (!event->unsigned_data.replaces_state.empty()) {
@@ -2038,7 +2038,7 @@ TimelineModel::formatMemberEvent(const QString &id)
         break;
     case Membership::Leave:
         if (!prevEvent) // Should only ever happen temporarily
-            return "";
+            return QString();
 
         if (prevEvent->content.membership == Membership::Invite) {
             if (event->state_key == event->sender)
@@ -2126,15 +2126,15 @@ TimelineModel::setEdit(const QString &newEdit)
                 else
                     input()->setText(editText);
             } else {
-                input()->setText("");
+                input()->setText(QLatin1String(""));
             }
 
             edit_ = newEdit;
         } else {
             resetReply();
 
-            input()->setText("");
-            edit_ = "";
+            input()->setText(QLatin1String(""));
+            edit_ = QLatin1String("");
         }
         emit editChanged(edit_);
     }
@@ -2144,7 +2144,7 @@ void
 TimelineModel::resetEdit()
 {
     if (!edit_.isEmpty()) {
-        edit_ = "";
+        edit_ = QLatin1String("");
         emit editChanged(edit_);
         nhlog::ui()->debug("Restoring: {}", textBeforeEdit.toStdString());
         input()->setText(textBeforeEdit);
@@ -2163,7 +2163,7 @@ TimelineModel::roomName() const
     auto info = cache::getRoomInfo({room_id_.toStdString()});
 
     if (!info.count(room_id_))
-        return "";
+        return QString();
     else
         return utils::replaceEmoji(QString::fromStdString(info[room_id_].name).toHtmlEscaped());
 }
@@ -2174,7 +2174,7 @@ TimelineModel::plainRoomName() const
     auto info = cache::getRoomInfo({room_id_.toStdString()});
 
     if (!info.count(room_id_))
-        return "";
+        return QString();
     else
         return QString::fromStdString(info[room_id_].name);
 }
@@ -2185,7 +2185,7 @@ TimelineModel::roomAvatarUrl() const
     auto info = cache::getRoomInfo({room_id_.toStdString()});
 
     if (!info.count(room_id_))
-        return "";
+        return QString();
     else
         return QString::fromStdString(info[room_id_].avatar_url);
 }
@@ -2196,7 +2196,7 @@ TimelineModel::roomTopic() const
     auto info = cache::getRoomInfo({room_id_.toStdString()});
 
     if (!info.count(room_id_))
-        return "";
+        return QString();
     else
         return utils::replaceEmoji(
           utils::linkifyMessage(QString::fromStdString(info[room_id_].topic).toHtmlEscaped()));
@@ -2244,5 +2244,5 @@ TimelineModel::directChatOtherUserId() const
                 id = member.user_id;
         return id;
     } else
-        return "";
+        return QString();
 }

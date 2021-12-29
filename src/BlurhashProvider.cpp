@@ -14,7 +14,7 @@ void
 BlurhashRunnable::run()
 {
     if (m_requestedSize.width() < 0 || m_requestedSize.height() < 0) {
-        emit error("Blurhash needs size request");
+        emit error(QStringLiteral("Blurhash needs size request"));
         return;
     }
     if (m_requestedSize.width() == 0 || m_requestedSize.height() == 0) {

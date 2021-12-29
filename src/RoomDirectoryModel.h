@@ -71,7 +71,7 @@ signals:
     void reachedEndOfPaginationChanged();
 
 public slots:
-    void setMatrixServer(const QString &s = "");
+    void setMatrixServer(const QString &s = QLatin1String(""));
     void setSearchTerm(const QString &f);
 
 private slots:

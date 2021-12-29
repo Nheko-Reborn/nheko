@@ -29,7 +29,7 @@ Nheko::updateUserProfile()
 {
     if (cache::client() && cache::client()->isInitialized())
         currentUser_.reset(
-          new UserProfile("", utils::localUser(), ChatPage::instance()->timelineManager()));
+          new UserProfile(QLatin1String(""), utils::localUser(), ChatPage::instance()->timelineManager()));
     else
         currentUser_.reset();
     emit profileChanged();

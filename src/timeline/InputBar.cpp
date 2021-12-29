@@ -56,22 +56,22 @@ InputBar::insertMimeData(const QMimeData *md)
     if (!md)
         return;
 
-    nhlog::ui()->debug("Got mime formats: {}", md->formats().join(", ").toStdString());
-    const auto formats = md->formats().filter("/");
-    const auto image   = formats.filter("image/", Qt::CaseInsensitive);
-    const auto audio   = formats.filter("audio/", Qt::CaseInsensitive);
-    const auto video   = formats.filter("video/", Qt::CaseInsensitive);
+    nhlog::ui()->debug("Got mime formats: {}", md->formats().join(QStringLiteral(", ")).toStdString());
+    const auto formats = md->formats().filter(QStringLiteral("/"));
+    const auto image   = formats.filter(QStringLiteral("image/"), Qt::CaseInsensitive);
+    const auto audio   = formats.filter(QStringLiteral("audio/"), Qt::CaseInsensitive);
+    const auto video   = formats.filter(QStringLiteral("video/"), Qt::CaseInsensitive);
 
     if (md->hasImage()) {
-        if (formats.contains("image/svg+xml", Qt::CaseInsensitive)) {
-            showPreview(*md, "", QStringList("image/svg+xml"));
+        if (formats.contains(QStringLiteral("image/svg+xml"), Qt::CaseInsensitive)) {
+            showPreview(*md, QLatin1String(""), QStringList(QStringLiteral("image/svg+xml")));
         } else {
-            showPreview(*md, "", image);
+            showPreview(*md, QLatin1String(""), image);
         }
     } else if (!audio.empty()) {
-        showPreview(*md, "", audio);
+        showPreview(*md, QLatin1String(""), audio);
     } else if (!video.empty()) {
-        showPreview(*md, "", video);
+        showPreview(*md, QLatin1String(""), video);
     } else if (md->hasUrls()) {
         // Generic file path for any platform.
         QString path;
@@ -87,7 +87,7 @@ InputBar::insertMimeData(const QMimeData *md)
         } else {
             nhlog::ui()->warn("Clipboard does not contain any valid file paths.");
         }
-    } else if (md->hasFormat("x-special/gnome-copied-files")) {
+    } else if (md->hasFormat(QStringLiteral("x-special/gnome-copied-files"))) {
         // Special case for X11 users. See "Notes for X11 Users" in md.
         // Source: http://doc.qt.io/qt-5/qclipboard.html
 
@@ -99,7 +99,7 @@ InputBar::insertMimeData(const QMimeData *md)
         // nautilus_clipboard_get_uri_list_from_selection_data()
         // https://github.com/GNOME/nautilus/blob/master/src/nautilus-clipboard.c
 
-        auto data = md->data("x-special/gnome-copied-files").split('\n');
+        auto data = md->data(QStringLiteral("x-special/gnome-copied-files")).split('\n');
         if (data.size() < 2) {
             nhlog::ui()->warn("MIME format is malformed, cannot perform paste.");
             return;
@@ -123,7 +123,7 @@ InputBar::insertMimeData(const QMimeData *md)
     } else if (md->hasText()) {
         emit insertText(md->text());
     } else {
-        nhlog::ui()->debug("formats: {}", md->formats().join(", ").toStdString());
+        nhlog::ui()->debug("formats: {}", md->formats().join(QStringLiteral(", ")).toStdString());
     }
 }
 
@@ -140,7 +140,7 @@ InputBar::updateAtRoom(const QString &t)
             auto start = finder.position();
             finder.toNextBoundary();
             auto end = finder.position();
-            if (start > 0 && end - start >= 4 && t.mid(start, end - start) == "room" &&
+            if (start > 0 && end - start >= 4 && t.mid(start, end - start) == QLatin1String("room") &&
                 t.at(start - 1) == QChar('@')) {
                 roomMention = true;
                 break;
@@ -166,7 +166,7 @@ InputBar::setText(const QString &newText)
     if (history_.size() == INPUT_HISTORY_SIZE)
         history_.pop_back();
 
-    updateAtRoom("");
+    updateAtRoom(QLatin1String(""));
     emit textChanged(newText);
 }
 void
@@ -201,7 +201,7 @@ InputBar::text() const
     if (history_index_ < history_.size())
         return history_.at(history_index_);
 
-    return "";
+    return QString();
 }
 
 QString
@@ -239,12 +239,12 @@ InputBar::send()
     auto wasEdit = !room->edit().isEmpty();
 
     if (text().startsWith('/')) {
-        int command_end = text().indexOf(QRegularExpression("\\s"));
+        int command_end = text().indexOf(QRegularExpression(QStringLiteral("\\s")));
         if (command_end == -1)
             command_end = text().size();
         auto name = text().mid(1, command_end - 1);
         auto args = text().mid(command_end + 1);
-        if (name.isEmpty() || name == "/") {
+        if (name.isEmpty() || name == QLatin1String("/")) {
             message(args);
         } else {
             command(name, args);
@@ -254,8 +254,8 @@ InputBar::send()
     }
 
     if (!wasEdit) {
-        history_.push_front("");
-        setText("");
+        history_.push_front(QLatin1String(""));
+        setText(QLatin1String(""));
     }
 }
 
@@ -276,7 +276,7 @@ InputBar::openFileSelection()
 
     if (!file.open(QIODevice::ReadOnly)) {
         emit ChatPage::instance()->showNotification(
-          QString("Error while reading media: %1").arg(file.errorString()));
+          QStringLiteral("Error while reading media: %1").arg(file.errorString()));
         return;
     }
 
@@ -328,13 +328,13 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
         for (auto line : qAsConst(lines)) {
             if (firstLine) {
                 firstLine = false;
-                body      = QString("> <%1> %2\n").arg(related.quoted_user, line);
+                body      = QStringLiteral("> <%1> %2\n").arg(related.quoted_user, line);
             } else {
-                body += QString("> %1\n").arg(line);
+                body += QStringLiteral("> %1\n").arg(line);
             }
         }
 
-        text.body = QString("%1\n%2").arg(body, msg).toStdString();
+        text.body = QStringLiteral("%1\n%2").arg(body, msg).toStdString();
 
         // NOTE(Nico): rich replies always need a formatted_body!
         text.format = "org.matrix.custom.html";
@@ -568,25 +568,25 @@ InputBar::sticker(CombinedImagePackModel *model, int row)
 void
 InputBar::command(const QString &command, QString args)
 {
-    if (command == "me") {
+    if (command == QLatin1String("me")) {
         emote(args, false);
-    } else if (command == "react") {
+    } else if (command == QLatin1String("react")) {
         auto eventId = room->reply();
         if (!eventId.isEmpty())
             reaction(eventId, args.trimmed());
-    } else if (command == "join") {
+    } else if (command == QLatin1String("join")) {
         ChatPage::instance()->joinRoom(args);
-    } else if (command == "part" || command == "leave") {
+    } else if (command == QLatin1String("part") || command == QLatin1String("leave")) {
         ChatPage::instance()->timelineManager()->openLeaveRoomDialog(room->roomId());
-    } else if (command == "invite") {
+    } else if (command == QLatin1String("invite")) {
         ChatPage::instance()->inviteUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
-    } else if (command == "kick") {
+    } else if (command == QLatin1String("kick")) {
         ChatPage::instance()->kickUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
-    } else if (command == "ban") {
+    } else if (command == QLatin1String("ban")) {
         ChatPage::instance()->banUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
-    } else if (command == "unban") {
+    } else if (command == QLatin1String("unban")) {
         ChatPage::instance()->unbanUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
-    } else if (command == "roomnick") {
+    } else if (command == QLatin1String("roomnick")) {
         mtx::events::state::Member member;
         member.display_name = args.toStdString();
         member.avatar_url =
@@ -604,31 +604,31 @@ InputBar::command(const QString &command, QString args)
                   nhlog::net()->error("Failed to set room displayname: {}",
                                       err->matrix_error.error);
           });
-    } else if (command == "shrug") {
-        message("¯\\_(ツ)_/¯" + (args.isEmpty() ? "" : " " + args));
-    } else if (command == "fliptable") {
-        message("(╯°□°)╯︵ ┻━┻");
-    } else if (command == "unfliptable") {
-        message(" ┯━┯╭( º _ º╭)");
-    } else if (command == "sovietflip") {
-        message("ノ┬─┬ノ ︵ ( \\o°o)\\");
-    } else if (command == "clear-timeline") {
+    } else if (command == QLatin1String("shrug")) {
+        message("¯\\_(ツ)_/¯" + (args.isEmpty() ? QLatin1String("") : " " + args));
+    } else if (command == QLatin1String("fliptable")) {
+        message(QStringLiteral("(╯°□°)╯︵ ┻━┻"));
+    } else if (command == QLatin1String("unfliptable")) {
+        message(QStringLiteral(" ┯━┯╭( º _ º╭)"));
+    } else if (command == QLatin1String("sovietflip")) {
+        message(QStringLiteral("ノ┬─┬ノ ︵ ( \\o°o)\\"));
+    } else if (command == QLatin1String("clear-timeline")) {
         room->clearTimeline();
-    } else if (command == "rotate-megolm-session") {
+    } else if (command == QLatin1String("rotate-megolm-session")) {
         cache::dropOutboundMegolmSession(room->roomId().toStdString());
-    } else if (command == "md") {
+    } else if (command == QLatin1String("md")) {
         message(args, MarkdownOverride::ON);
-    } else if (command == "plain") {
+    } else if (command == QLatin1String("plain")) {
         message(args, MarkdownOverride::OFF);
-    } else if (command == "rainbow") {
+    } else if (command == QLatin1String("rainbow")) {
         message(args, MarkdownOverride::ON, true);
-    } else if (command == "rainbowme") {
+    } else if (command == QLatin1String("rainbowme")) {
         emote(args, true);
-    } else if (command == "notice") {
+    } else if (command == QLatin1String("notice")) {
         notice(args, false);
-    } else if (command == "rainbownotice") {
+    } else if (command == QLatin1String("rainbownotice")) {
         notice(args, true);
-    } else if (command == "goto") {
+    } else if (command == QLatin1String("goto")) {
         // Goto has three different modes:
         // 1 - Going directly to a given event ID
         if (args[0] == '$') {
@@ -645,10 +645,10 @@ InputBar::command(const QString &command, QString args)
             return;
         }
         nhlog::net()->error("Could not resolve goto: {}", args.toStdString());
-    } else if (command == "converttodm") {
+    } else if (command == QLatin1String("converttodm")) {
         utils::markRoomAsDirect(this->room->roomId(),
                                 cache::getMembers(this->room->roomId().toStdString(), 0, -1));
-    } else if (command == "converttoroom") {
+    } else if (command == QLatin1String("converttoroom")) {
         utils::removeDirectFromRoom(this->room->roomId());
     }
 }
@@ -660,13 +660,13 @@ InputBar::showPreview(const QMimeData &source, const QString &path, const QStrin
     previewDialog_->setAttribute(Qt::WA_DeleteOnClose);
 
     // Force SVG to _not_ be handled as an image, but as raw data
-    if (source.hasImage() && (formats.empty() || formats.front() != "image/svg+xml")) {
-        if (!formats.empty() && formats.front().startsWith("image/")) {
+    if (source.hasImage() && (formats.empty() || formats.front() != QLatin1String("image/svg+xml"))) {
+        if (!formats.empty() && formats.front().startsWith(QLatin1String("image/"))) {
             // known format, keep as-is
             previewDialog_->setPreview(qvariant_cast<QImage>(source.imageData()), formats.front());
         } else {
             // unknown image format, default to image/png
-            previewDialog_->setPreview(qvariant_cast<QImage>(source.imageData()), "image/png");
+            previewDialog_->setPreview(qvariant_cast<QImage>(source.imageData()), QStringLiteral("image/png"));
         }
     } else if (!path.isEmpty())
         previewDialog_->setPreview(path);
@@ -696,7 +696,7 @@ InputBar::showPreview(const QMimeData &source, const QString &path, const QStrin
           }
           setUploading(true);
 
-          setText("");
+          setText(QLatin1String(""));
 
           auto payload = std::string(data.data(), data.size());
           std::optional<mtx::crypto::EncryptedFile> encryptedFile;
@@ -817,7 +817,7 @@ InputBar::reaction(const QString &reactedEvent, const QString &reactionKey)
         }
     }
 
-    if (selfReactedEvent.startsWith("m"))
+    if (selfReactedEvent.startsWith(QLatin1String("m")))
         return;
 
     // If selfReactedEvent is empty, that means we haven't previously reacted

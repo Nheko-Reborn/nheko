@@ -101,15 +101,15 @@ TimelineViewManager::updateColorPalette()
 {
     userColors.clear();
 
-    if (ChatPage::instance()->userSettings()->theme() == "light") {
-        view->rootContext()->setContextProperty("currentActivePalette", QPalette());
-        view->rootContext()->setContextProperty("currentInactivePalette", QPalette());
-    } else if (ChatPage::instance()->userSettings()->theme() == "dark") {
-        view->rootContext()->setContextProperty("currentActivePalette", QPalette());
-        view->rootContext()->setContextProperty("currentInactivePalette", QPalette());
+    if (ChatPage::instance()->userSettings()->theme() == QLatin1String("light")) {
+        view->rootContext()->setContextProperty(QStringLiteral("currentActivePalette"), QPalette());
+        view->rootContext()->setContextProperty(QStringLiteral("currentInactivePalette"), QPalette());
+    } else if (ChatPage::instance()->userSettings()->theme() == QLatin1String("dark")) {
+        view->rootContext()->setContextProperty(QStringLiteral("currentActivePalette"), QPalette());
+        view->rootContext()->setContextProperty(QStringLiteral("currentInactivePalette"), QPalette());
     } else {
-        view->rootContext()->setContextProperty("currentActivePalette", QPalette());
-        view->rootContext()->setContextProperty("currentInactivePalette", nullptr);
+        view->rootContext()->setContextProperty(QStringLiteral("currentActivePalette"), QPalette());
+        view->rootContext()->setContextProperty(QStringLiteral("currentInactivePalette"), nullptr);
     }
 }
 
@@ -126,7 +126,7 @@ QString
 TimelineViewManager::userPresence(QString id) const
 {
     if (id.isEmpty())
-        return "";
+        return QString();
     else
         return QString::fromStdString(
           mtx::presence::to_string(cache::presenceState(id.toStdString())));
@@ -162,17 +162,17 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
     qRegisterMetaType<std::vector<mtx::responses::PublicRoomsChunk>>();
 
     qmlRegisterUncreatableMetaObject(
-      qml_mtx_events::staticMetaObject, "im.nheko", 1, 0, "MtxEvent", "Can't instantiate enum!");
+      qml_mtx_events::staticMetaObject, "im.nheko", 1, 0, "MtxEvent", QStringLiteral("Can't instantiate enum!"));
     qmlRegisterUncreatableMetaObject(
-      olm::staticMetaObject, "im.nheko", 1, 0, "Olm", "Can't instantiate enum!");
+      olm::staticMetaObject, "im.nheko", 1, 0, "Olm", QStringLiteral("Can't instantiate enum!"));
     qmlRegisterUncreatableMetaObject(
-      crypto::staticMetaObject, "im.nheko", 1, 0, "Crypto", "Can't instantiate enum!");
+      crypto::staticMetaObject, "im.nheko", 1, 0, "Crypto", QStringLiteral("Can't instantiate enum!"));
     qmlRegisterUncreatableMetaObject(verification::staticMetaObject,
                                      "im.nheko",
                                      1,
                                      0,
                                      "VerificationStatus",
-                                     "Can't instantiate enum!");
+                                     QStringLiteral("Can't instantiate enum!"));
 
     qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
     qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
@@ -181,39 +181,39 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
     qmlRegisterType<MxcAnimatedImage>("im.nheko", 1, 0, "MxcAnimatedImage");
     qmlRegisterType<MxcMediaProxy>("im.nheko", 1, 0, "MxcMedia");
     qmlRegisterUncreatableType<DeviceVerificationFlow>(
-      "im.nheko", 1, 0, "DeviceVerificationFlow", "Can't create verification flow from QML!");
+      "im.nheko", 1, 0, "DeviceVerificationFlow", QStringLiteral("Can't create verification flow from QML!"));
     qmlRegisterUncreatableType<UserProfile>(
-      "im.nheko", 1, 0, "UserProfileModel", "UserProfile needs to be instantiated on the C++ side");
+      "im.nheko", 1, 0, "UserProfileModel", QStringLiteral("UserProfile needs to be instantiated on the C++ side"));
     qmlRegisterUncreatableType<MemberList>(
-      "im.nheko", 1, 0, "MemberList", "MemberList needs to be instantiated on the C++ side");
+      "im.nheko", 1, 0, "MemberList", QStringLiteral("MemberList needs to be instantiated on the C++ side"));
     qmlRegisterUncreatableType<RoomSettings>(
       "im.nheko",
       1,
       0,
       "RoomSettingsModel",
-      "Room Settings needs to be instantiated on the C++ side");
+      QStringLiteral("Room Settings needs to be instantiated on the C++ side"));
     qmlRegisterUncreatableType<TimelineModel>(
-      "im.nheko", 1, 0, "Room", "Room needs to be instantiated on the C++ side");
+      "im.nheko", 1, 0, "Room", QStringLiteral("Room needs to be instantiated on the C++ side"));
     qmlRegisterUncreatableType<ImagePackListModel>(
       "im.nheko",
       1,
       0,
       "ImagePackListModel",
-      "ImagePackListModel needs to be instantiated on the C++ side");
+      QStringLiteral("ImagePackListModel needs to be instantiated on the C++ side"));
     qmlRegisterUncreatableType<SingleImagePackModel>(
       "im.nheko",
       1,
       0,
       "SingleImagePackModel",
-      "SingleImagePackModel needs to be instantiated on the C++ side");
+      QStringLiteral("SingleImagePackModel needs to be instantiated on the C++ side"));
     qmlRegisterUncreatableType<InviteesModel>(
-      "im.nheko", 1, 0, "InviteesModel", "InviteesModel needs to be instantiated on the C++ side");
+      "im.nheko", 1, 0, "InviteesModel", QStringLiteral("InviteesModel needs to be instantiated on the C++ side"));
     qmlRegisterUncreatableType<ReadReceiptsProxy>(
       "im.nheko",
       1,
       0,
       "ReadReceiptsProxy",
-      "ReadReceiptsProxy needs to be instantiated on the C++ side");
+      QStringLiteral("ReadReceiptsProxy needs to be instantiated on the C++ side"));
 
     static auto self = this;
     qmlRegisterSingletonInstance("im.nheko", 1, 0, "MainWindow", MainWindow::instance());
@@ -265,13 +265,13 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
       1,
       0,
       "FilteredCommunitiesModel",
-      "Use Communities.filtered() to create a FilteredCommunitiesModel");
+      QStringLiteral("Use Communities.filtered() to create a FilteredCommunitiesModel"));
 
     qmlRegisterType<emoji::EmojiModel>("im.nheko.EmojiModel", 1, 0, "EmojiModel");
     qmlRegisterUncreatableType<emoji::Emoji>(
-      "im.nheko.EmojiModel", 1, 0, "Emoji", "Used by emoji models");
+      "im.nheko.EmojiModel", 1, 0, "Emoji", QStringLiteral("Used by emoji models"));
     qmlRegisterUncreatableMetaObject(
-      emoji::staticMetaObject, "im.nheko.EmojiModel", 1, 0, "EmojiCategory", "Error: Only enums");
+      emoji::staticMetaObject, "im.nheko.EmojiModel", 1, 0, "EmojiCategory", QStringLiteral("Error: Only enums"));
 
     qmlRegisterType<RoomDirectoryModel>("im.nheko", 1, 0, "RoomDirectoryModel");
 
@@ -290,12 +290,12 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
 #endif
     container->setMinimumSize(200, 200);
     updateColorPalette();
-    view->engine()->addImageProvider("MxcImage", imgProvider);
-    view->engine()->addImageProvider("colorimage", colorImgProvider);
-    view->engine()->addImageProvider("blurhash", blurhashProvider);
+    view->engine()->addImageProvider(QStringLiteral("MxcImage"), imgProvider);
+    view->engine()->addImageProvider(QStringLiteral("colorimage"), colorImgProvider);
+    view->engine()->addImageProvider(QStringLiteral("blurhash"), blurhashProvider);
     if (JdenticonProvider::isAvailable())
-        view->engine()->addImageProvider("jdenticon", jdenticonProvider);
-    view->setSource(QUrl("qrc:///qml/Root.qml"));
+        view->engine()->addImageProvider(QStringLiteral("jdenticon"), jdenticonProvider);
+    view->setSource(QUrl(QStringLiteral("qrc:///qml/Root.qml")));
 
     connect(parent, &ChatPage::themeChanged, this, &TimelineViewManager::updateColorPalette);
     connect(dynamic_cast<ChatPage *>(parent),
@@ -362,7 +362,7 @@ void
 TimelineViewManager::setVideoCallItem()
 {
     WebRTCSession::instance().setVideoItem(
-      view->rootObject()->findChild<QQuickItem *>("videoCallItem"));
+      view->rootObject()->findChild<QQuickItem *>(QStringLiteral("videoCallItem")));
 }
 
 void
@@ -405,7 +405,7 @@ TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId)
     }
 
     MxcImageProvider::download(
-      mxcUrl.remove("mxc://"), QSize(), [this, eventId](QString, QSize, QImage img, QString) {
+      mxcUrl.remove(QStringLiteral("mxc://")), QSize(), [this, eventId](QString, QSize, QImage img, QString) {
           if (img.isNull()) {
               nhlog::ui()->error("Error when retrieving image for overlay.");
               return;
@@ -520,37 +520,37 @@ TimelineViewManager::focusMessageInput()
 QObject *
 TimelineViewManager::completerFor(QString completerName, QString roomId)
 {
-    if (completerName == "user") {
+    if (completerName == QLatin1String("user")) {
         auto userModel = new UsersModel(roomId.toStdString());
         auto proxy     = new CompletionProxyModel(userModel);
         userModel->setParent(proxy);
         return proxy;
-    } else if (completerName == "emoji") {
+    } else if (completerName == QLatin1String("emoji")) {
         auto emojiModel = new emoji::EmojiModel();
         auto proxy      = new CompletionProxyModel(emojiModel);
         emojiModel->setParent(proxy);
         return proxy;
-    } else if (completerName == "allemoji") {
+    } else if (completerName == QLatin1String("allemoji")) {
         auto emojiModel = new emoji::EmojiModel();
         auto proxy      = new CompletionProxyModel(emojiModel, 1, static_cast<size_t>(-1) / 4);
         emojiModel->setParent(proxy);
         return proxy;
-    } else if (completerName == "room") {
+    } else if (completerName == QLatin1String("room")) {
         auto roomModel = new RoomsModel(false);
         auto proxy     = new CompletionProxyModel(roomModel, 4);
         roomModel->setParent(proxy);
         return proxy;
-    } else if (completerName == "roomAliases") {
+    } else if (completerName == QLatin1String("roomAliases")) {
         auto roomModel = new RoomsModel(true);
         auto proxy     = new CompletionProxyModel(roomModel);
         roomModel->setParent(proxy);
         return proxy;
-    } else if (completerName == "stickers") {
+    } else if (completerName == QLatin1String("stickers")) {
         auto stickerModel = new CombinedImagePackModel(roomId.toStdString(), true);
         auto proxy        = new CompletionProxyModel(stickerModel, 1, static_cast<size_t>(-1) / 4);
         stickerModel->setParent(proxy);
         return proxy;
-    } else if (completerName == "customEmoji") {
+    } else if (completerName == QLatin1String("customEmoji")) {
         auto stickerModel = new CombinedImagePackModel(roomId.toStdString(), false);
         auto proxy        = new CompletionProxyModel(stickerModel);
         stickerModel->setParent(proxy);
