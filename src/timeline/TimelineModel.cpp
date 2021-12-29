@@ -441,7 +441,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
 QHash<int, QByteArray>
 TimelineModel::roleNames() const
 {
-    return {
+    static QHash<int, QByteArray> roles{
       {Type, "type"},
       {TypeString, "typeString"},
       {IsOnlyEmoji, "isOnlyEmoji"},
@@ -479,6 +479,8 @@ TimelineModel::roleNames() const
       {Dump, "dump"},
       {RelatedEventCacheBuster, "relatedEventCacheBuster"},
     };
+
+    return roles;
 }
 int
 TimelineModel::rowCount(const QModelIndex &parent) const
@@ -658,16 +660,14 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         return {!is_state_event(event) &&
                 mtx::accessors::sender(event) == http::client()->user_id().to_string()};
     case IsEncrypted: {
-        auto id              = event_id(event);
-        auto encrypted_event = events.get(id, "", false);
+        auto encrypted_event = events.get(event_id(event), "", false);
         return encrypted_event &&
                std::holds_alternative<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
                  *encrypted_event);
     }
 
     case Trustlevel: {
-        auto id              = event_id(event);
-        auto encrypted_event = events.get(id, "", false);
+        auto encrypted_event = events.get(event_id(event), "", false);
         if (encrypted_event) {
             if (auto encrypted =
                   std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
@@ -1225,7 +1225,7 @@ TimelineModel::redactEvent(const QString &id)
 
         // redact all edits to prevent leaks
         for (const auto &e : edits) {
-            auto id_ = mtx::accessors::event_id(e);
+            const auto &id_ = mtx::accessors::event_id(e);
             http::client()->redact_event(
               room_id_.toStdString(),
               id_,

@@ -87,7 +87,7 @@ struct CallType
                      ? "video"
                      : "voice";
         }
-        return std::string();
+        return "";
     }
 };
 
@@ -243,15 +243,17 @@ struct EventFilesize
 
 struct EventRelations
 {
+    inline const static mtx::common::Relations empty;
+
     template<class Content>
     using related_ev_id_t = decltype(Content::relations);
     template<class T>
-    mtx::common::Relations operator()(const mtx::events::Event<T> &e)
+    const mtx::common::Relations &operator()(const mtx::events::Event<T> &e)
     {
         if constexpr (is_detected<related_ev_id_t, T>::value) {
             return e.content.relations;
         }
-        return {};
+        return empty;
     }
 };
 
@@ -325,28 +327,28 @@ eventPropHeight(const mtx::events::RoomEvent<T> &e)
 }
 }
 
-std::string
+const std::string &
 mtx::accessors::event_id(const mtx::events::collections::TimelineEvents &event)
 {
-    return std::visit([](const auto e) { return e.event_id; }, event);
+    return std::visit([](const auto &e) -> const std::string & { return e.event_id; }, event);
 }
-std::string
+const std::string &
 mtx::accessors::room_id(const mtx::events::collections::TimelineEvents &event)
 {
-    return std::visit([](const auto e) { return e.room_id; }, event);
+    return std::visit([](const auto &e) -> const std::string & { return e.room_id; }, event);
 }
 
-std::string
+const std::string &
 mtx::accessors::sender(const mtx::events::collections::TimelineEvents &event)
 {
-    return std::visit([](const auto e) { return e.sender; }, event);
+    return std::visit([](const auto &e) -> const std::string & { return e.sender; }, event);
 }
 
 QDateTime
 mtx::accessors::origin_server_ts(const mtx::events::collections::TimelineEvents &event)
 {
     return QDateTime::fromMSecsSinceEpoch(
-      std::visit([](const auto e) { return e.origin_server_ts; }, event));
+      std::visit([](const auto &e) { return e.origin_server_ts; }, event));
 }
 
 std::string
@@ -427,7 +429,7 @@ mtx::accessors::mimetype(const mtx::events::collections::TimelineEvents &event)
 {
     return std::visit(EventMimeType{}, event);
 }
-mtx::common::Relations
+const mtx::common::Relations &
 mtx::accessors::relations(const mtx::events::collections::TimelineEvents &event)
 {
     return std::visit(EventRelations{}, event);

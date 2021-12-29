@@ -106,8 +106,8 @@ EventStore::EventStore(std::string room_id, QObject *)
         }
 
         std::visit(
-          [this](auto e) {
-              auto txn_id       = e.event_id;
+          [this](const auto &e) {
+              const auto &txn_id = e.event_id;
               this->current_txn = txn_id;
 
               if (txn_id.empty() || txn_id[0] != 'm') {
@@ -207,7 +207,7 @@ EventStore::EventStore(std::string room_id, QObject *)
                           rel.event_id = event_id;
                   }
 
-                  mtx::accessors::set_relations(related_event.data, relations);
+                  mtx::accessors::set_relations(related_event.data, std::move(relations));
 
                   cache::client()->replaceEvent(room_id_, related_event_id, related_event);
 
@@ -451,8 +451,8 @@ EventStore::edits(const std::string &event_id)
         std::holds_alternative<mtx::events::RoomEvent<mtx::events::msg::Redacted>>(*original_event))
         return {};
 
-    auto original_sender    = mtx::accessors::sender(*original_event);
-    auto original_relations = mtx::accessors::relations(*original_event);
+    const auto &original_sender = mtx::accessors::sender(*original_event);
+    const auto &original_relations = mtx::accessors::relations(*original_event);
 
     std::vector<mtx::events::collections::TimelineEvents> edits;
     for (const auto &id : event_ids) {
@@ -460,15 +460,15 @@ EventStore::edits(const std::string &event_id)
         if (!related_event)
             continue;
 
-        auto related_ev = *related_event;
-
-        auto edit_rel = mtx::accessors::relations(related_ev);
+        const auto &edit_rel = mtx::accessors::relations(*related_event);
         if (edit_rel.replaces() == event_id &&
-            original_sender == mtx::accessors::sender(related_ev)) {
+            original_sender == mtx::accessors::sender(*related_event)) {
+            auto related_ev = *related_event;
             if (edit_rel.synthesized && original_relations.reply_to() && !edit_rel.reply_to()) {
-                edit_rel.relations.push_back(
+                auto edit_rel_copy = edit_rel;
+                edit_rel_copy.relations.push_back(
                   {mtx::common::RelationType::InReplyTo, original_relations.reply_to().value()});
-                mtx::accessors::set_relations(related_ev, std::move(edit_rel));
+                mtx::accessors::set_relations(related_ev, std::move(edit_rel_copy));
             }
             edits.push_back(std::move(related_ev));
         }
@@ -728,7 +728,10 @@ EventStore::enableKeyRequests(bool suppressKeyRequests_)
 }
 
 mtx::events::collections::TimelineEvents *
-EventStore::get(std::string id, std::string_view related_to, bool decrypt, bool resolve_edits)
+EventStore::get(const std::string &id,
+                std::string_view related_to,
+                bool decrypt,
+                bool resolve_edits)
 {
     if (this->thread() != QThread::currentThread())
         nhlog::db()->warn("{} called from a different thread!", __func__);
@@ -736,7 +739,7 @@ EventStore::get(std::string id, std::string_view related_to, bool decrypt, bool 
     if (id.empty())
         return nullptr;
 
-    IdIndex index{room_id_, std::move(id)};
+    IdIndex index{room_id_, id};
     if (resolve_edits) {
         auto edits_ = edits(index.id);
         if (!edits_.empty()) {

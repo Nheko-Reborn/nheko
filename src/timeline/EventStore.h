@@ -69,7 +69,7 @@ public:
 
     // optionally returns the event or nullptr and fetches it, after which it emits a
     // relatedFetched event
-    mtx::events::collections::TimelineEvents *get(std::string id,
+    mtx::events::collections::TimelineEvents *get(const std::string &id,
                                                   std::string_view related_to,
                                                   bool decrypt       = true,
                                                   bool resolve_edits = true);

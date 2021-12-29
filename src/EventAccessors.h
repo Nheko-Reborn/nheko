@@ -38,13 +38,13 @@ struct detector<Default, std::void_t<Op<Args...>>, Op, Args...>
 }
 
 namespace mtx::accessors {
-std::string
+const std::string &
 event_id(const mtx::events::collections::TimelineEvents &event);
 
-std::string
+const std::string &
 room_id(const mtx::events::collections::TimelineEvents &event);
 
-std::string
+const std::string &
 sender(const mtx::events::collections::TimelineEvents &event);
 
 bool
@@ -86,7 +86,7 @@ std::string
 blurhash(const mtx::events::collections::TimelineEvents &event);
 std::string
 mimetype(const mtx::events::collections::TimelineEvents &event);
-mtx::common::Relations
+const mtx::common::Relations &
 relations(const mtx::events::collections::TimelineEvents &event);
 void
 set_relations(mtx::events::collections::TimelineEvents &event, mtx::common::Relations relations);
