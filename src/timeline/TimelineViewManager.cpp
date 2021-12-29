@@ -128,10 +128,17 @@ QString
 TimelineViewManager::userPresence(QString id) const
 {
     if (id.isEmpty())
-        return QString();
+        return {};
     else
-        return QString::fromStdString(
-          mtx::presence::to_string(cache::presenceState(id.toStdString())));
+        switch (cache::presenceState(id.toStdString())) {
+        case mtx::presence::PresenceState::offline:
+            return QStringLiteral("offline");
+        case mtx::presence::PresenceState::unavailable:
+            return QStringLiteral("unavailable");
+        case mtx::presence::PresenceState::online:
+        default:
+            return QStringLiteral("online");
+        }
 }
 
 QString
