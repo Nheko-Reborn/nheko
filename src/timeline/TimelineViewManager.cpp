@@ -328,15 +328,15 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
     view->setSource(QUrl(QStringLiteral("qrc:///qml/Root.qml")));
 
     connect(parent, &ChatPage::themeChanged, this, &TimelineViewManager::updateColorPalette);
-    connect(dynamic_cast<ChatPage *>(parent),
+    connect(parent,
             &ChatPage::receivedRoomDeviceVerificationRequest,
             verificationManager_,
             &VerificationManager::receivedRoomDeviceVerificationRequest);
-    connect(dynamic_cast<ChatPage *>(parent),
+    connect(parent,
             &ChatPage::receivedDeviceVerificationRequest,
             verificationManager_,
             &VerificationManager::receivedDeviceVerificationRequest);
-    connect(dynamic_cast<ChatPage *>(parent),
+    connect(parent,
             &ChatPage::receivedDeviceVerificationStart,
             verificationManager_,
             &VerificationManager::receivedDeviceVerificationStart);
