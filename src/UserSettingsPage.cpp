@@ -663,7 +663,7 @@ UserSettings::applyTheme()
     } else {
         stylefile.setFileName(QStringLiteral(":/styles/styles/system.qss"));
     }
-    QApplication::setPalette(Theme::paletteFromTheme(this->theme().toStdString()));
+    QApplication::setPalette(Theme::paletteFromTheme(this->theme()));
 
     stylefile.open(QFile::ReadOnly);
     QString stylesheet = QString(stylefile.readAll());

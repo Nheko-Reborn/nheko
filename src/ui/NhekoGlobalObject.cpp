@@ -38,21 +38,41 @@ Nheko::updateUserProfile()
 QPalette
 Nheko::colors() const
 {
-    return Theme::paletteFromTheme(UserSettings::instance()->theme().toStdString());
+    return Theme::paletteFromTheme(UserSettings::instance()->theme());
 }
 
 QPalette
 Nheko::inactiveColors() const
 {
-    auto p = colors();
-    p.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
-    return p;
+    auto theme = UserSettings::instance()->theme();
+    if (theme == QLatin1String("light")) {
+        static QPalette lightInactive = [] {
+            auto lightInactive = Theme::paletteFromTheme(u"light");
+            lightInactive.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
+            return lightInactive;
+        }();
+        return lightInactive;
+    } else if (theme == QLatin1String("dark")) {
+        static QPalette darkInactive = [] {
+            auto darkInactive = Theme::paletteFromTheme(u"dark");
+            darkInactive.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
+            return darkInactive;
+        }();
+        return darkInactive;
+    } else {
+        static QPalette originalInactive = [] {
+            auto originalInactive = Theme::paletteFromTheme(u"system");
+            originalInactive.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
+            return originalInactive;
+        }();
+        return originalInactive;
+    }
 }
 
 Theme
 Nheko::theme() const
 {
-    return Theme(UserSettings::instance()->theme().toStdString());
+    return Theme(UserSettings::instance()->theme());
 }
 
 void
@@ -61,10 +81,10 @@ Nheko::openLink(QString link) const
     QUrl url(link);
     // Open externally if we couldn't handle it internally
     if (!ChatPage::instance()->handleMatrixUri(url)) {
-        const QStringList allowedUrlSchemes = {
-          "http",
-          "https",
-          "mailto",
+        static const QStringList allowedUrlSchemes = {
+          QStringLiteral("http"),
+          QStringLiteral("https"),
+          QStringLiteral("mailto"),
         };
 
         if (allowedUrlSchemes.contains(url.scheme()))

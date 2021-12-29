@@ -7,11 +7,11 @@
 Q_DECLARE_METATYPE(Theme)
 
 QPalette
-Theme::paletteFromTheme(std::string_view theme)
+Theme::paletteFromTheme(QStringView theme)
 {
     [[maybe_unused]] static auto meta = qRegisterMetaType<Theme>("Theme");
     static QPalette original;
-    if (theme == "light") {
+    if (theme == u"light") {
         static QPalette lightActive = [] {
             QPalette lightActive(
               /*windowText*/ QColor(0x33, 0x33, 0x33),
@@ -33,7 +33,7 @@ Theme::paletteFromTheme(std::string_view theme)
             return lightActive;
         }();
         return lightActive;
-    } else if (theme == "dark") {
+    } else if (theme == u"dark") {
         static QPalette darkActive = [] {
             QPalette darkActive(
               /*windowText*/ QColor(0xca, 0xcc, 0xd1),
@@ -60,16 +60,16 @@ Theme::paletteFromTheme(std::string_view theme)
     }
 }
 
-Theme::Theme(std::string_view theme)
+Theme::Theme(QStringView theme)
 {
     auto p     = paletteFromTheme(theme);
     separator_ = p.mid().color();
-    if (theme == "light") {
+    if (theme == u"light") {
         sidebarBackground_ = QColor(0x23, 0x36, 0x49);
         alternateButton_   = QColor(0xcc, 0xcc, 0xcc);
         red_               = QColor(0xa8, 0x23, 0x53);
         orange_            = QColor(0xfc, 0xbe, 0x05);
-    } else if (theme == "dark") {
+    } else if (theme == u"dark") {
         sidebarBackground_ = QColor(0x2d, 0x31, 0x39);
         alternateButton_   = QColor(0x41, 0x4A, 0x59);
         red_               = QColor(0xa8, 0x23, 0x53);

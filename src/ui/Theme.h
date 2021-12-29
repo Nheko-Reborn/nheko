@@ -66,8 +66,8 @@ class Theme : public QPalette
     Q_PROPERTY(QColor orange READ orange CONSTANT)
 public:
     Theme() {}
-    explicit Theme(std::string_view theme);
-    static QPalette paletteFromTheme(std::string_view theme);
+    explicit Theme(QStringView theme);
+    static QPalette paletteFromTheme(QStringView theme);
 
     QColor sidebarBackground() const { return sidebarBackground_; }
     QColor alternateButton() const { return alternateButton_; }
