@@ -108,7 +108,7 @@ EventStore::EventStore(std::string room_id, QObject *)
         std::visit(
           [this](const auto &e) {
               const auto &txn_id = e.event_id;
-              this->current_txn = txn_id;
+              this->current_txn  = txn_id;
 
               if (txn_id.empty() || txn_id[0] != 'm') {
                   nhlog::ui()->debug("Invalid txn id '{}'", txn_id);
@@ -451,7 +451,7 @@ EventStore::edits(const std::string &event_id)
         std::holds_alternative<mtx::events::RoomEvent<mtx::events::msg::Redacted>>(*original_event))
         return {};
 
-    const auto &original_sender = mtx::accessors::sender(*original_event);
+    const auto &original_sender    = mtx::accessors::sender(*original_event);
     const auto &original_relations = mtx::accessors::relations(*original_event);
 
     std::vector<mtx::events::collections::TimelineEvents> edits;
