@@ -33,7 +33,8 @@ MxcAnimatedImage::startDownload()
 
     QByteArray mimeType = QString::fromStdString(mtx::accessors::mimetype(*event)).toUtf8();
 
-    animatable_ = QMovie::supportedFormats().contains(mimeType.split('/').back());
+    static const auto formats = QMovie::supportedFormats();
+    animatable_               = formats.contains(mimeType.split('/').back());
     animatableChanged();
 
     if (!animatable_)
