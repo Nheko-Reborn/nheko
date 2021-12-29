@@ -1220,6 +1220,7 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
         auto deviceTargets = devices;
         if (devices.empty()) {
             deviceTargets.clear();
+            deviceTargets.reserve(deviceKeys->device_keys.size());
             for (const auto &[device, keys] : deviceKeys->device_keys) {
                 (void)keys;
                 deviceTargets.push_back(device);

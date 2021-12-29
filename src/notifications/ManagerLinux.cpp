@@ -108,7 +108,8 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         if (hasImages_ &&
             mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image) {
             MxcImageProvider::download(
-              QString::fromStdString(mtx::accessors::url(notification.event)).remove(QStringLiteral("mxc://")),
+              QString::fromStdString(mtx::accessors::url(notification.event))
+                .remove(QStringLiteral("mxc://")),
               QSize(200, 80),
               [postNotif, notification, template_](QString, QSize, QImage, QString imgPath) {
                   if (imgPath.isEmpty())
@@ -184,9 +185,9 @@ NotificationsManager::systemPostNotification(const QString &room_id,
     // TODO(Nico): Look into what to actually put there.
     argumentList << (QStringList(QStringLiteral("default"))
                      << QLatin1String("") << QStringLiteral("inline-reply")
-                     << QLatin1String(""));         // actions
-    argumentList << hints;                          // hints
-    argumentList << (int)-1;                        // timeout in ms
+                     << QLatin1String("")); // actions
+    argumentList << hints;                  // hints
+    argumentList << (int)-1;                // timeout in ms
 
     QDBusPendingCall call = dbus.asyncCallWithArgumentList(QStringLiteral("Notify"), argumentList);
     auto watcher          = new QDBusPendingCallWatcher{call, this};

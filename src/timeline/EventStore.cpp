@@ -527,6 +527,7 @@ EventStore::reactions(const std::string &event_id)
     }
 
     QVariantList temp;
+    temp.reserve(static_cast<int>(reactions.size()));
     for (auto &reaction : reactions) {
         const auto &agg            = aggregation[reaction.key_.toStdString()];
         reaction.count_            = agg.count;

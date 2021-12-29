@@ -237,8 +237,8 @@ utils::getMessageDescription(const TimelineEvent &event,
 
         DescInfo info;
         info.userid = sender;
-        info.body =
-          QStringLiteral(" %1").arg(messageDescription<Encrypted>(username, QLatin1String(""), sender == localUser));
+        info.body   = QStringLiteral(" %1").arg(
+          messageDescription<Encrypted>(username, QLatin1String(""), sender == localUser));
         info.timestamp       = msg->origin_server_ts;
         info.descriptiveTime = utils::descriptiveTime(ts);
         info.event_id        = QString::fromStdString(msg->event_id);
@@ -402,8 +402,9 @@ utils::linkifyMessage(const QString &body)
     // Convert to valid XML.
     auto doc = body;
     doc.replace(conf::strings::url_regex, conf::strings::url_html);
-    doc.replace(QRegularExpression(QStringLiteral("\\b(?<![\"'])(?>(matrix:[\\S]{5,}))(?![\"'])\\b")),
-                conf::strings::url_html);
+    doc.replace(
+      QRegularExpression(QStringLiteral("\\b(?<![\"'])(?>(matrix:[\\S]{5,}))(?![\"'])\\b")),
+      conf::strings::url_html);
 
     return doc;
 }
@@ -555,7 +556,8 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
 
     auto result = linkifyMessage(escapeBlacklistedHtml(QString::fromStdString(html))).trimmed();
 
-    if (result.count(QStringLiteral("<p>")) == 1 && result.startsWith(QLatin1String("<p>")) && result.endsWith(QLatin1String("</p>"))) {
+    if (result.count(QStringLiteral("<p>")) == 1 && result.startsWith(QLatin1String("<p>")) &&
+        result.endsWith(QLatin1String("</p>"))) {
         result = result.mid(3, result.size() - 3 - 4);
     }
 

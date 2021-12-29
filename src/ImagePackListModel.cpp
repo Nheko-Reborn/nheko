@@ -15,6 +15,7 @@ ImagePackListModel::ImagePackListModel(const std::string &roomId, QObject *paren
 {
     auto packs_ = cache::client()->getImagePacks(room_id, std::nullopt);
 
+    packs.reserve(packs_.size());
     for (const auto &pack : packs_) {
         packs.push_back(QSharedPointer<SingleImagePackModel>(new SingleImagePackModel(pack)));
     }

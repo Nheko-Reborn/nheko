@@ -232,6 +232,7 @@ UserProfile::updateVerificationStatus()
     this->isUserVerified = verificationStatus.user_verified;
     emit userStatusChanged();
 
+    deviceInfo.reserve(devices.size());
     for (const auto &d : devices) {
         auto device = d.second;
         verification::Status verified =
@@ -244,9 +245,9 @@ UserProfile::updateVerificationStatus()
         if (isSelf() && device.device_id == ::http::client()->device_id())
             verified = verification::Status::SELF;
 
-        deviceInfo.push_back({QString::fromStdString(d.first),
-                              QString::fromStdString(device.unsigned_info.device_display_name),
-                              verified});
+        deviceInfo.emplace_back(QString::fromStdString(d.first),
+                                QString::fromStdString(device.unsigned_info.device_display_name),
+                                verified);
     }
 
     // For self, also query devices without keys
@@ -270,17 +271,17 @@ UserProfile::updateVerificationStatus()
                           found = true;
                           // Gottem! Let's fill in the blanks
                           e.lastIp = QString::fromStdString(d.last_seen_ip);
-                          e.lastTs = d.last_seen_ts;
+                          e.lastTs = static_cast<qlonglong>(d.last_seen_ts);
                           break;
                       }
                   }
                   // No entry? Let's add one.
                   if (!found) {
-                      deviceInfo.push_back({QString::fromStdString(d.device_id),
-                                            QString::fromStdString(d.display_name),
-                                            verification::NOT_APPLICABLE,
-                                            QString::fromStdString(d.last_seen_ip),
-                                            d.last_seen_ts});
+                      deviceInfo.emplace_back(QString::fromStdString(d.device_id),
+                                              QString::fromStdString(d.display_name),
+                                              verification::NOT_APPLICABLE,
+                                              QString::fromStdString(d.last_seen_ip),
+                                              d.last_seen_ts);
                   }
               }
 

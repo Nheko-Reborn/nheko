@@ -185,8 +185,7 @@ main(int argc, char *argv[])
     // name is set. It only exists to keep Qt from complaining about the --profile/-p
     // option and thereby crashing the app.
     QCommandLineOption configName(
-      QStringList() << QStringLiteral("p")
-                    << QStringLiteral("profile"),
+      QStringList() << QStringLiteral("p") << QStringLiteral("profile"),
       QCoreApplication::tr("Create a unique profile, which allows you to log into several "
                            "accounts at the same time and start multiple instances of nheko."),
       QCoreApplication::tr("profile"),
@@ -252,11 +251,15 @@ main(int argc, char *argv[])
         QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedKingdom));
 
     QTranslator qtTranslator;
-    qtTranslator.load(QLocale(), QStringLiteral("qt"), QStringLiteral("_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    qtTranslator.load(QLocale(),
+                      QStringLiteral("qt"),
+                      QStringLiteral("_"),
+                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     app.installTranslator(&qtTranslator);
 
     QTranslator appTranslator;
-    appTranslator.load(QLocale(), QStringLiteral("nheko"), QStringLiteral("_"), QStringLiteral(":/translations"));
+    appTranslator.load(
+      QLocale(), QStringLiteral("nheko"), QStringLiteral("_"), QStringLiteral(":/translations"));
     app.installTranslator(&appTranslator);
 
     MainWindow w;
@@ -304,7 +307,8 @@ main(int argc, char *argv[])
                                              QObject::disconnect(uriConnection);
                                          });
     }
-    QDesktopServices::setUrlHandler(QStringLiteral("matrix"), ChatPage::instance(), "handleMatrixUri");
+    QDesktopServices::setUrlHandler(
+      QStringLiteral("matrix"), ChatPage::instance(), "handleMatrixUri");
 
 #if defined(Q_OS_MAC)
     // Temporary solution for the emoji picker until

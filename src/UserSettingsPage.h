@@ -291,10 +291,11 @@ signals:
 
 private:
     // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
-    QString defaultTheme_ =
-      QProcessEnvironment::systemEnvironment().value(QStringLiteral("QT_QPA_PLATFORMTHEME"), QLatin1String("")).isEmpty()
-        ? "light"
-        : "system";
+    QString defaultTheme_ = QProcessEnvironment::systemEnvironment()
+                                .value(QStringLiteral("QT_QPA_PLATFORMTHEME"), QLatin1String(""))
+                                .isEmpty()
+                              ? "light"
+                              : "system";
     QString theme_;
     bool messageHoverHighlight_;
     bool enlargeEmojiOnlyMessages_;

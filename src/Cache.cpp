@@ -224,13 +224,13 @@ Cache::setup()
     // Previous location of the cache directory
     auto oldCache =
       QStringLiteral("%1/%2%3").arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation),
-                             QString::fromUtf8(localUserId_.toUtf8().toHex()),
-                             QString::fromUtf8(settings->profile().toUtf8().toHex()));
+                                    QString::fromUtf8(localUserId_.toUtf8().toHex()),
+                                    QString::fromUtf8(settings->profile().toUtf8().toHex()));
 
-    cacheDirectory_ =
-      QStringLiteral("%1/%2%3").arg(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation),
-                             QString::fromUtf8(localUserId_.toUtf8().toHex()),
-                             QString::fromUtf8(settings->profile().toUtf8().toHex()));
+    cacheDirectory_ = QStringLiteral("%1/%2%3").arg(
+      QStandardPaths::writableLocation(QStandardPaths::AppDataLocation),
+      QString::fromUtf8(localUserId_.toUtf8().toHex()),
+      QString::fromUtf8(settings->profile().toUtf8().toHex()));
 
     bool isInitial = !QFile::exists(cacheDirectory_);
 

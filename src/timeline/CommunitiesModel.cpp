@@ -293,6 +293,7 @@ CommunitiesModel::FlatTree::storeCollapsed()
     int depth = -1;
 
     QStringList current;
+    elements.reserve(static_cast<int>(tree.size()));
 
     for (const auto &e : tree) {
         if (e.depth > depth) {

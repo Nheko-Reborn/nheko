@@ -103,10 +103,12 @@ TimelineViewManager::updateColorPalette()
 
     if (ChatPage::instance()->userSettings()->theme() == QLatin1String("light")) {
         view->rootContext()->setContextProperty(QStringLiteral("currentActivePalette"), QPalette());
-        view->rootContext()->setContextProperty(QStringLiteral("currentInactivePalette"), QPalette());
+        view->rootContext()->setContextProperty(QStringLiteral("currentInactivePalette"),
+                                                QPalette());
     } else if (ChatPage::instance()->userSettings()->theme() == QLatin1String("dark")) {
         view->rootContext()->setContextProperty(QStringLiteral("currentActivePalette"), QPalette());
-        view->rootContext()->setContextProperty(QStringLiteral("currentInactivePalette"), QPalette());
+        view->rootContext()->setContextProperty(QStringLiteral("currentInactivePalette"),
+                                                QPalette());
     } else {
         view->rootContext()->setContextProperty(QStringLiteral("currentActivePalette"), QPalette());
         view->rootContext()->setContextProperty(QStringLiteral("currentInactivePalette"), nullptr);
@@ -161,12 +163,20 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
 
     qRegisterMetaType<std::vector<mtx::responses::PublicRoomsChunk>>();
 
-    qmlRegisterUncreatableMetaObject(
-      qml_mtx_events::staticMetaObject, "im.nheko", 1, 0, "MtxEvent", QStringLiteral("Can't instantiate enum!"));
+    qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
+                                     "im.nheko",
+                                     1,
+                                     0,
+                                     "MtxEvent",
+                                     QStringLiteral("Can't instantiate enum!"));
     qmlRegisterUncreatableMetaObject(
       olm::staticMetaObject, "im.nheko", 1, 0, "Olm", QStringLiteral("Can't instantiate enum!"));
-    qmlRegisterUncreatableMetaObject(
-      crypto::staticMetaObject, "im.nheko", 1, 0, "Crypto", QStringLiteral("Can't instantiate enum!"));
+    qmlRegisterUncreatableMetaObject(crypto::staticMetaObject,
+                                     "im.nheko",
+                                     1,
+                                     0,
+                                     "Crypto",
+                                     QStringLiteral("Can't instantiate enum!"));
     qmlRegisterUncreatableMetaObject(verification::staticMetaObject,
                                      "im.nheko",
                                      1,
@@ -181,11 +191,23 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
     qmlRegisterType<MxcAnimatedImage>("im.nheko", 1, 0, "MxcAnimatedImage");
     qmlRegisterType<MxcMediaProxy>("im.nheko", 1, 0, "MxcMedia");
     qmlRegisterUncreatableType<DeviceVerificationFlow>(
-      "im.nheko", 1, 0, "DeviceVerificationFlow", QStringLiteral("Can't create verification flow from QML!"));
+      "im.nheko",
+      1,
+      0,
+      "DeviceVerificationFlow",
+      QStringLiteral("Can't create verification flow from QML!"));
     qmlRegisterUncreatableType<UserProfile>(
-      "im.nheko", 1, 0, "UserProfileModel", QStringLiteral("UserProfile needs to be instantiated on the C++ side"));
+      "im.nheko",
+      1,
+      0,
+      "UserProfileModel",
+      QStringLiteral("UserProfile needs to be instantiated on the C++ side"));
     qmlRegisterUncreatableType<MemberList>(
-      "im.nheko", 1, 0, "MemberList", QStringLiteral("MemberList needs to be instantiated on the C++ side"));
+      "im.nheko",
+      1,
+      0,
+      "MemberList",
+      QStringLiteral("MemberList needs to be instantiated on the C++ side"));
     qmlRegisterUncreatableType<RoomSettings>(
       "im.nheko",
       1,
@@ -207,7 +229,11 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
       "SingleImagePackModel",
       QStringLiteral("SingleImagePackModel needs to be instantiated on the C++ side"));
     qmlRegisterUncreatableType<InviteesModel>(
-      "im.nheko", 1, 0, "InviteesModel", QStringLiteral("InviteesModel needs to be instantiated on the C++ side"));
+      "im.nheko",
+      1,
+      0,
+      "InviteesModel",
+      QStringLiteral("InviteesModel needs to be instantiated on the C++ side"));
     qmlRegisterUncreatableType<ReadReceiptsProxy>(
       "im.nheko",
       1,
@@ -270,8 +296,12 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
     qmlRegisterType<emoji::EmojiModel>("im.nheko.EmojiModel", 1, 0, "EmojiModel");
     qmlRegisterUncreatableType<emoji::Emoji>(
       "im.nheko.EmojiModel", 1, 0, "Emoji", QStringLiteral("Used by emoji models"));
-    qmlRegisterUncreatableMetaObject(
-      emoji::staticMetaObject, "im.nheko.EmojiModel", 1, 0, "EmojiCategory", QStringLiteral("Error: Only enums"));
+    qmlRegisterUncreatableMetaObject(emoji::staticMetaObject,
+                                     "im.nheko.EmojiModel",
+                                     1,
+                                     0,
+                                     "EmojiCategory",
+                                     QStringLiteral("Error: Only enums"));
 
     qmlRegisterType<RoomDirectoryModel>("im.nheko", 1, 0, "RoomDirectoryModel");
 
@@ -404,15 +434,17 @@ TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId)
         return;
     }
 
-    MxcImageProvider::download(
-      mxcUrl.remove(QStringLiteral("mxc://")), QSize(), [this, eventId](QString, QSize, QImage img, QString) {
-          if (img.isNull()) {
-              nhlog::ui()->error("Error when retrieving image for overlay.");
-              return;
-          }
+    MxcImageProvider::download(mxcUrl.remove(QStringLiteral("mxc://")),
+                               QSize(),
+                               [this, eventId](QString, QSize, QImage img, QString) {
+                                   if (img.isNull()) {
+                                       nhlog::ui()->error(
+                                         "Error when retrieving image for overlay.");
+                                       return;
+                                   }
 
-          emit openImageOverlayInternalCb(eventId, std::move(img));
-      });
+                                   emit openImageOverlayInternalCb(eventId, std::move(img));
+                               });
 }
 
 void

@@ -503,7 +503,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
 
     switch (role) {
     case IsSender:
-        return QVariant(acc::sender(event) == http::client()->user_id().to_string());
+        return {acc::sender(event) == http::client()->user_id().to_string()};
     case UserId:
         return QVariant(QString::fromStdString(acc::sender(event)));
     case UserName:
@@ -512,12 +512,12 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
     case Day: {
         QDateTime prevDate = origin_server_ts(event);
         prevDate.setTime(QTime());
-        return QVariant(prevDate.toMSecsSinceEpoch());
+        return {prevDate.toMSecsSinceEpoch()};
     }
     case Timestamp:
         return QVariant(origin_server_ts(event));
     case Type:
-        return QVariant(toRoomEventType(event));
+        return {toRoomEventType(event)};
     case TypeString:
         return QVariant(toRoomEventTypeString(event));
     case IsOnlyEmoji: {
@@ -530,17 +530,18 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
             if (utils::codepointIsEmoji(code)) {
                 emojiCount++;
             } else {
-                return QVariant(0);
+                return {0};
             }
         }
 
-        return QVariant(emojiCount);
+        return {emojiCount};
     }
     case Body:
         return QVariant(utils::replaceEmoji(QString::fromStdString(body(event)).toHtmlEscaped()));
     case FormattedBody: {
         const static QRegularExpression replyFallback(
-          QStringLiteral("<mx-reply>.*</mx-reply>"), QRegularExpression::DotMatchesEverythingOption);
+          QStringLiteral("<mx-reply>.*</mx-reply>"),
+          QRegularExpression::DotMatchesEverythingOption);
 
         auto ascent = QFontMetrics(UserSettings::instance()->font()).ascent();
 
@@ -574,7 +575,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
             // Construct image parameters later used by MxcImageProvider.
             QString imgParams;
             if (curImg.contains(QLatin1String("height"))) {
-                const static QRegularExpression matchImgHeight(QStringLiteral("height=([\"\']?)(\\d+)([\"\']?)"));
+                const static QRegularExpression matchImgHeight(
+                  QStringLiteral("height=([\"\']?)(\\d+)([\"\']?)"));
                 // Make emoticons twice as high as the font.
                 if (curImg.contains(QLatin1String("data-mx-emoticon"))) {
                     imgReplacement =
@@ -587,11 +589,11 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
             // Replace src in current <img>.
             const static QRegularExpression matchImgUri(QStringLiteral("src=\"mxc://([^\"]*)\""));
             imgReplacement.replace(matchImgUri,
-                                   QString("src=\"image://mxcImage/\\1%1\"").arg(imgParams));
+                                   QStringLiteral(R"(src="image://mxcImage/\1%1")").arg(imgParams));
             // Same regex but for single quotes around the src
             const static QRegularExpression matchImgUri2(QStringLiteral("src=\'mxc://([^\']*)\'"));
             imgReplacement.replace(matchImgUri2,
-                                   QString("src=\'image://mxcImage/\\1%1\'").arg(imgParams));
+                                   QStringLiteral("src=\'image://mxcImage/\\1%1\'").arg(imgParams));
 
             // Replace <img> in formattedBody_ with our new <img>.
             formattedBody_.replace(curImg, imgReplacement);
@@ -623,7 +625,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
 
         double prop = media_height(event) / (double)w;
 
-        return QVariant(prop > 0 ? prop : 1.);
+        return {prop > 0 ? prop : 1.};
     }
     case EventId: {
         if (auto replaces = relations(event).replaces())
@@ -651,10 +653,10 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
             return qml_mtx_events::Received;
     }
     case IsEdited:
-        return QVariant(relations(event).replaces().has_value());
+        return {relations(event).replaces().has_value()};
     case IsEditable:
-        return QVariant(!is_state_event(event) &&
-                        mtx::accessors::sender(event) == http::client()->user_id().to_string());
+        return {!is_state_event(event) &&
+                mtx::accessors::sender(event) == http::client()->user_id().to_string()};
     case IsEncrypted: {
         auto id              = event_id(event);
         auto encrypted_event = events.get(id, "", false);
@@ -693,8 +695,10 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         return QVariant(
           utils::replaceEmoji(QString::fromStdString(room_name(event)).toHtmlEscaped()));
     case RoomTopic:
-        return QVariant(utils::replaceEmoji(utils::linkifyMessage(
-          QString::fromStdString(room_topic(event)).toHtmlEscaped().replace(QLatin1String("\n"), QLatin1String("<br>")))));
+        return QVariant(utils::replaceEmoji(
+          utils::linkifyMessage(QString::fromStdString(room_topic(event))
+                                  .toHtmlEscaped()
+                                  .replace(QLatin1String("\n"), QLatin1String("<br>")))));
     case CallType:
         return QVariant(QString::fromStdString(call_type(event)));
     case Dump: {
@@ -736,7 +740,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
     case RelatedEventCacheBuster:
         return relatedEventCacheBuster;
     default:
-        return QVariant();
+        return {};
     }
 }
 
@@ -746,7 +750,7 @@ TimelineModel::data(const QModelIndex &index, int role) const
     using namespace mtx::accessors;
     namespace acc = mtx::accessors;
     if (index.row() < 0 && index.row() >= rowCount())
-        return QVariant();
+        return {};
 
     // HACK(Nico): fetchMore likes to break with dynamically sized delegates and reuseItems
     if (index.row() + 1 == rowCount() && !m_paginationInProgress)
@@ -760,10 +764,10 @@ TimelineModel::data(const QModelIndex &index, int role) const
     if (role == PreviousMessageDay || role == PreviousMessageUserId) {
         int prevIdx = rowCount() - index.row() - 2;
         if (prevIdx < 0)
-            return QVariant();
+            return {};
         auto tempEv = events.get(prevIdx);
         if (!tempEv)
-            return QVariant();
+            return {};
         if (role == PreviousMessageUserId)
             return data(*tempEv, UserId);
         else
@@ -778,7 +782,7 @@ TimelineModel::dataById(const QString &id, int role, const QString &relatedTo)
 {
     if (auto event = events.get(id.toStdString(), relatedTo.toStdString()))
         return data(*event, role);
-    return QVariant();
+    return {};
 }
 
 bool
@@ -1623,7 +1627,7 @@ TimelineModel::cacheMedia(const QString &eventId,
 void
 TimelineModel::cacheMedia(const QString &eventId)
 {
-    cacheMedia(eventId, NULL);
+    cacheMedia(eventId, nullptr);
 }
 
 void
@@ -1739,7 +1743,7 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor
          (int)users.size());
 
     if (users.empty()) {
-        return QString();
+        return {};
     }
 
     QStringList uidWithoutLast;
@@ -1774,6 +1778,7 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor
         return coloredUsername;
     };
 
+    uidWithoutLast.reserve(static_cast<int>(users.size()));
     for (size_t i = 0; i + 1 < users.size(); i++) {
         uidWithoutLast.append(formatUser(users[i]));
     }
@@ -1786,11 +1791,11 @@ TimelineModel::formatJoinRuleEvent(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
-        return QString();
+        return {};
 
     auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::JoinRules>>(e);
     if (!event)
-        return QString();
+        return {};
 
     QString user = QString::fromStdString(event->sender);
     QString name = utils::replaceEmoji(displayName(user));
@@ -1814,7 +1819,7 @@ TimelineModel::formatJoinRuleEvent(const QString &id)
     }
     default:
         // Currently, knock and private are reserved keywords and not implemented in Matrix.
-        return QString();
+        return {};
     }
 }
 
@@ -1823,11 +1828,11 @@ TimelineModel::formatGuestAccessEvent(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
-        return QString();
+        return {};
 
     auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::GuestAccess>>(e);
     if (!event)
-        return QString();
+        return {};
 
     QString user = QString::fromStdString(event->sender);
     QString name = utils::replaceEmoji(displayName(user));
@@ -1838,7 +1843,7 @@ TimelineModel::formatGuestAccessEvent(const QString &id)
     case mtx::events::state::AccessState::Forbidden:
         return tr("%1 has closed the room to guest access.").arg(name);
     default:
-        return QString();
+        return {};
     }
 }
 
@@ -1847,12 +1852,12 @@ TimelineModel::formatHistoryVisibilityEvent(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
-        return QString();
+        return {};
 
     auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::HistoryVisibility>>(e);
 
     if (!event)
-        return QString();
+        return {};
 
     QString user = QString::fromStdString(event->sender);
     QString name = utils::replaceEmoji(displayName(user));
@@ -1870,7 +1875,7 @@ TimelineModel::formatHistoryVisibilityEvent(const QString &id)
         return tr("%1 set the room history visible to members since they joined the room.")
           .arg(name);
     default:
-        return QString();
+        return {};
     }
 }
 
@@ -1879,7 +1884,7 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
-        return QString();
+        return {};
 
     auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::PowerLevels>>(e);
     if (!event)
@@ -1924,7 +1929,7 @@ TimelineModel::formatRedactedEvent(const QString &id)
     } else {
         pair[QStringLiteral("first")]  = tr("Removed by %1 because: %2").arg(redactedName, reason);
         pair[QStringLiteral("second")] = tr("%1 (%2) removed this message at %3\nReason: %4")
-                           .arg(redactedName, redactedUser, dateTime, reason);
+                                           .arg(redactedName, redactedUser, dateTime, reason);
     }
 
     return pair;
@@ -1980,11 +1985,11 @@ TimelineModel::formatMemberEvent(const QString &id)
 {
     mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
     if (!e)
-        return QString();
+        return {};
 
     auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::Member>>(e);
     if (!event)
-        return QString();
+        return {};
 
     mtx::events::StateEvent<mtx::events::state::Member> *prevEvent = nullptr;
     if (!event->unsigned_data.replaces_state.empty()) {
@@ -2038,7 +2043,7 @@ TimelineModel::formatMemberEvent(const QString &id)
         break;
     case Membership::Leave:
         if (!prevEvent) // Should only ever happen temporarily
-            return QString();
+            return {};
 
         if (prevEvent->content.membership == Membership::Invite) {
             if (event->state_key == event->sender)
@@ -2163,7 +2168,7 @@ TimelineModel::roomName() const
     auto info = cache::getRoomInfo({room_id_.toStdString()});
 
     if (!info.count(room_id_))
-        return QString();
+        return {};
     else
         return utils::replaceEmoji(QString::fromStdString(info[room_id_].name).toHtmlEscaped());
 }
@@ -2174,7 +2179,7 @@ TimelineModel::plainRoomName() const
     auto info = cache::getRoomInfo({room_id_.toStdString()});
 
     if (!info.count(room_id_))
-        return QString();
+        return {};
     else
         return QString::fromStdString(info[room_id_].name);
 }
@@ -2185,7 +2190,7 @@ TimelineModel::roomAvatarUrl() const
     auto info = cache::getRoomInfo({room_id_.toStdString()});
 
     if (!info.count(room_id_))
-        return QString();
+        return {};
     else
         return QString::fromStdString(info[room_id_].avatar_url);
 }
@@ -2196,7 +2201,7 @@ TimelineModel::roomTopic() const
     auto info = cache::getRoomInfo({room_id_.toStdString()});
 
     if (!info.count(room_id_))
-        return QString();
+        return {};
     else
         return utils::replaceEmoji(
           utils::linkifyMessage(QString::fromStdString(info[room_id_].topic).toHtmlEscaped()));
@@ -2244,5 +2249,5 @@ TimelineModel::directChatOtherUserId() const
                 id = member.user_id;
         return id;
     } else
-        return QString();
+        return {};
 }

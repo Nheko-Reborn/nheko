@@ -364,7 +364,10 @@ RegisterPage::doRegistration()
             disconnect(UIA::instance(), &UIA::error, this, nullptr);
         });
         http::client()->registration(
-          username, password, ::UIA::instance()->genericHandler(QStringLiteral("Registration")), registrationCb());
+          username,
+          password,
+          ::UIA::instance()->genericHandler(QStringLiteral("Registration")),
+          registrationCb());
     }
 }
 

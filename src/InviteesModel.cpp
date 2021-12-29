@@ -76,14 +76,15 @@ QStringList
 InviteesModel::mxids()
 {
     QStringList mxidList;
-    for (int i = 0; i < invitees_.length(); ++i)
-        mxidList.push_back(invitees_[i]->mxid_);
+    mxidList.reserve(invitees_.size());
+    for (auto &invitee : qAsConst(invitees_))
+        mxidList.push_back(invitee->mxid_);
     return mxidList;
 }
 
-Invitee::Invitee(const QString &mxid, QObject *parent)
+Invitee::Invitee(QString mxid, QObject *parent)
   : QObject{parent}
-  , mxid_{mxid}
+  , mxid_{std::move(mxid)}
 {
     http::client()->get_profile(
       mxid_.toStdString(), [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {

@@ -159,7 +159,8 @@ public slots:
     }
     void joinPreview(QString roomid)
     {
-        roomlistmodel->joinPreview(roomid, filterType == FilterBy::Space ? filterStr : QLatin1String(""));
+        roomlistmodel->joinPreview(roomid,
+                                   filterType == FilterBy::Space ? filterStr : QLatin1String(""));
     }
     void acceptInvite(QString roomid) { roomlistmodel->acceptInvite(roomid); }
     void declineInvite(QString roomid) { roomlistmodel->declineInvite(roomid); }

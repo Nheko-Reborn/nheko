@@ -13,7 +13,7 @@ class Invitee : public QObject
     Q_OBJECT
 
 public:
-    Invitee(const QString &mxid, QObject *parent = nullptr);
+    Invitee(QString mxid, QObject *parent = nullptr);
 
 signals:
     void userInfoLoaded();
@@ -45,12 +45,13 @@ public:
     Q_INVOKABLE void addUser(QString mxid);
     Q_INVOKABLE void removeUser(QString mxid);
 
-    QHash<int, QByteArray> roleNames() const override;
-    int rowCount(const QModelIndex & = QModelIndex()) const override
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
+    [[nodiscard]] int rowCount(const QModelIndex & = QModelIndex()) const override
     {
         return (int)invitees_.size();
     }
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] QVariant
+    data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QStringList mxids();
 
 signals:

@@ -286,6 +286,7 @@ public:
     {
         auto list = events.reactions(event_id);
         std::vector<::Reaction> vec;
+        vec.reserve(list.size());
         for (const auto &r : list)
             vec.push_back(r.value<Reaction>());
         return vec;

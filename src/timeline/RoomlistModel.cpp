@@ -90,6 +90,7 @@ RoomlistModel::data(const QModelIndex &index, int role) const
         if (role == Roles::ParentSpaces) {
             auto parents = cache::client()->getParentRoomIds(roomid.toStdString());
             QStringList list;
+            list.reserve(static_cast<int>(parents.size()));
             for (const auto &t : parents)
                 list.push_back(QString::fromStdString(t));
             return list;
@@ -98,7 +99,8 @@ RoomlistModel::data(const QModelIndex &index, int role) const
         } else if (role == Roles::IsDirect) {
             return directChatToUser.count(roomid) > 0;
         } else if (role == Roles::DirectChatOtherUserId) {
-            return directChatToUser.count(roomid) ? directChatToUser.at(roomid).front() : QLatin1String("");
+            return directChatToUser.count(roomid) ? directChatToUser.at(roomid).front()
+                                                  : QLatin1String("");
         }
 
         if (models.contains(roomid)) {
@@ -113,7 +115,7 @@ RoomlistModel::data(const QModelIndex &index, int role) const
             case Roles::Time:
                 return room->lastMessage().descriptiveTime;
             case Roles::Timestamp:
-                return QVariant(static_cast<quint64>(room->lastMessage().timestamp));
+                return QVariant{static_cast<quint64>(room->lastMessage().timestamp)};
             case Roles::HasUnreadMessages:
                 return this->roomReadStatus.count(roomid) && this->roomReadStatus.at(roomid);
             case Roles::HasLoudNotification:
@@ -129,6 +131,7 @@ RoomlistModel::data(const QModelIndex &index, int role) const
             case Roles::Tags: {
                 auto info = cache::singleRoomInfo(roomid.toStdString());
                 QStringList list;
+                list.reserve(static_cast<int>(info.tags.size()));
                 for (const auto &t : info.tags)
                     list.push_back(QString::fromStdString(t));
                 return list;
@@ -148,7 +151,7 @@ RoomlistModel::data(const QModelIndex &index, int role) const
             case Roles::Time:
                 return QString();
             case Roles::Timestamp:
-                return QVariant(static_cast<quint64>(0));
+                return QVariant{static_cast<quint64>(0)};
             case Roles::HasUnreadMessages:
             case Roles::HasLoudNotification:
                 return false;
@@ -177,7 +180,7 @@ RoomlistModel::data(const QModelIndex &index, int role) const
             case Roles::Time:
                 return QString();
             case Roles::Timestamp:
-                return QVariant(static_cast<quint64>(0));
+                return QVariant{static_cast<quint64>(0)};
             case Roles::HasUnreadMessages:
             case Roles::HasLoudNotification:
                 return false;

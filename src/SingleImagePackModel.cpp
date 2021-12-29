@@ -29,6 +29,7 @@ SingleImagePackModel::SingleImagePackModel(ImagePackInfo pack_, QObject *parent)
     if (!pack.pack)
         pack.pack = mtx::events::msc2545::ImagePack::PackDescription{};
 
+    shortcodes.reserve(pack.images.size());
     for (const auto &e : pack.images)
         shortcodes.push_back(e.first);
 

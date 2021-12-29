@@ -261,7 +261,8 @@ void
 MainWindow::closeEvent(QCloseEvent *event)
 {
     if (WebRTCSession::instance().state() != webrtc::State::DISCONNECTED) {
-        if (QMessageBox::question(this, QStringLiteral("nheko"), QStringLiteral("A call is in progress. Quit?")) !=
+        if (QMessageBox::question(
+              this, QStringLiteral("nheko"), QStringLiteral("A call is in progress. Quit?")) !=
             QMessageBox::Yes) {
             event->ignore();
             return;

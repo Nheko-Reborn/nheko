@@ -56,7 +56,8 @@ InputBar::insertMimeData(const QMimeData *md)
     if (!md)
         return;
 
-    nhlog::ui()->debug("Got mime formats: {}", md->formats().join(QStringLiteral(", ")).toStdString());
+    nhlog::ui()->debug("Got mime formats: {}",
+                       md->formats().join(QStringLiteral(", ")).toStdString());
     const auto formats = md->formats().filter(QStringLiteral("/"));
     const auto image   = formats.filter(QStringLiteral("image/"), Qt::CaseInsensitive);
     const auto audio   = formats.filter(QStringLiteral("audio/"), Qt::CaseInsensitive);
@@ -140,7 +141,8 @@ InputBar::updateAtRoom(const QString &t)
             auto start = finder.position();
             finder.toNextBoundary();
             auto end = finder.position();
-            if (start > 0 && end - start >= 4 && t.mid(start, end - start) == QLatin1String("room") &&
+            if (start > 0 && end - start >= 4 &&
+                t.mid(start, end - start) == QLatin1String("room") &&
                 t.at(start - 1) == QChar('@')) {
                 roomMention = true;
                 break;
@@ -660,13 +662,15 @@ InputBar::showPreview(const QMimeData &source, const QString &path, const QStrin
     previewDialog_->setAttribute(Qt::WA_DeleteOnClose);
 
     // Force SVG to _not_ be handled as an image, but as raw data
-    if (source.hasImage() && (formats.empty() || formats.front() != QLatin1String("image/svg+xml"))) {
+    if (source.hasImage() &&
+        (formats.empty() || formats.front() != QLatin1String("image/svg+xml"))) {
         if (!formats.empty() && formats.front().startsWith(QLatin1String("image/"))) {
             // known format, keep as-is
             previewDialog_->setPreview(qvariant_cast<QImage>(source.imageData()), formats.front());
         } else {
             // unknown image format, default to image/png
-            previewDialog_->setPreview(qvariant_cast<QImage>(source.imageData()), QStringLiteral("image/png"));
+            previewDialog_->setPreview(qvariant_cast<QImage>(source.imageData()),
+                                       QStringLiteral("image/png"));
         }
     } else if (!path.isEmpty())
         previewDialog_->setPreview(path);

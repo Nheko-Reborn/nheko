@@ -1325,7 +1325,8 @@ ChatPage::handleMatrixUri(QString uri)
         if (item.startsWith(QLatin1String("action="))) {
             action = item.remove(QStringLiteral("action="));
         } else if (item.startsWith(QLatin1String("via="))) {
-            vias.push_back(QUrl::fromPercentEncoding(item.remove(QStringLiteral("via=")).toUtf8()).toStdString());
+            vias.push_back(QUrl::fromPercentEncoding(item.remove(QStringLiteral("via=")).toUtf8())
+                             .toStdString());
         }
     }
 

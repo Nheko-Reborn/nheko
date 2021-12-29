@@ -255,7 +255,8 @@ MxcImageProvider::download(const QString &id,
                           image = clipRadius(std::move(image), radius);
                       }
 
-                      image.setText(QStringLiteral("original filename"), QString::fromStdString(originalFilename));
+                      image.setText(QStringLiteral("original filename"),
+                                    QString::fromStdString(originalFilename));
                       image.setText(QStringLiteral("mxc url"), "mxc://" + id);
                       then(id, requestedSize, image, fileInfo.absoluteFilePath());
                       return;
@@ -266,7 +267,8 @@ MxcImageProvider::download(const QString &id,
                       image = clipRadius(std::move(image), radius);
                   }
 
-                  image.setText(QStringLiteral("original filename"), QString::fromStdString(originalFilename));
+                  image.setText(QStringLiteral("original filename"),
+                                QString::fromStdString(originalFilename));
                   image.setText(QStringLiteral("mxc url"), "mxc://" + id);
                   then(id, requestedSize, image, fileInfo.absoluteFilePath());
               });

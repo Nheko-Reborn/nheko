@@ -70,7 +70,8 @@ CallManager::CallManager(QObject *parent)
           QTimer::singleShot(timeoutms_, this, [this, callid]() {
               if (session_.state() == webrtc::State::OFFERSENT && callid == callid_) {
                   hangUp(CallHangUp::Reason::InviteTimeOut);
-                  emit ChatPage::instance()->showNotification(QStringLiteral("The remote side failed to pick up."));
+                  emit ChatPage::instance()->showNotification(
+                    QStringLiteral("The remote side failed to pick up."));
               }
           });
       });
@@ -177,7 +178,8 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
 
     auto roomInfo = cache::singleRoomInfo(roomid.toStdString());
     if (roomInfo.member_count != 2) {
-        emit ChatPage::instance()->showNotification(QStringLiteral("Calls are limited to 1:1 rooms."));
+        emit ChatPage::instance()->showNotification(
+          QStringLiteral("Calls are limited to 1:1 rooms."));
         return;
     }
 
@@ -291,8 +293,9 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
 
     const QString &ringtone = ChatPage::instance()->userSettings()->ringtone();
     if (ringtone != QLatin1String("Mute"))
-        playRingtone(ringtone == QLatin1String("Default") ? QUrl(QStringLiteral("qrc:/media/media/ring.ogg"))
-                                           : QUrl::fromLocalFile(ringtone),
+        playRingtone(ringtone == QLatin1String("Default")
+                       ? QUrl(QStringLiteral("qrc:/media/media/ring.ogg"))
+                       : QUrl::fromLocalFile(ringtone),
                      true);
     roomid_ = QString::fromStdString(callInviteEvent.room_id);
     callid_ = callInviteEvent.content.call_id;
@@ -370,7 +373,8 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
     if (callAnswerEvent.sender == utils::localUser().toStdString() &&
         callid_ == callAnswerEvent.content.call_id) {
         if (!isOnCall()) {
-            emit ChatPage::instance()->showNotification(QStringLiteral("Call answered on another device."));
+            emit ChatPage::instance()->showNotification(
+              QStringLiteral("Call answered on another device."));
             stopRingtone();
             haveCallInvite_ = false;
             emit newInviteState();

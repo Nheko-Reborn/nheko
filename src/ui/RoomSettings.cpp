@@ -234,8 +234,10 @@ RoomSettings::roomName() const
 QString
 RoomSettings::roomTopic() const
 {
-    return utils::replaceEmoji(utils::linkifyMessage(
-      QString::fromStdString(info_.topic).toHtmlEscaped().replace(QLatin1String("\n"), QLatin1String("<br>"))));
+    return utils::replaceEmoji(
+      utils::linkifyMessage(QString::fromStdString(info_.topic)
+                              .toHtmlEscaped()
+                              .replace(QLatin1String("\n"), QLatin1String("<br>"))));
 }
 
 QString
