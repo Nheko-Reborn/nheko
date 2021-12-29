@@ -53,7 +53,8 @@ DelegateChooser::setRoleValue(const QVariant &value)
 {
     if (value != roleValue_) {
         roleValue_ = value;
-        recalcChild();
+        if (isComponentComplete())
+            recalcChild();
         emit roleValueChanged();
     }
 }
@@ -96,8 +97,8 @@ void
 DelegateChooser::recalcChild()
 {
     for (const auto choice : qAsConst(choices_)) {
-        auto choiceValue = choice->roleValue();
-        if (!roleValue_.isValid() || !choiceValue.isValid() || choiceValue == roleValue_) {
+        const auto &choiceValue = choice->roleValueRef();
+        if (choiceValue == roleValue_ || (!choiceValue.isValid() && !roleValue_.isValid())) {
             if (child_) {
                 child_->setParentItem(nullptr);
                 child_ = nullptr;

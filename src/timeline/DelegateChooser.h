@@ -25,10 +25,11 @@ public:
     Q_PROPERTY(QVariant roleValue READ roleValue WRITE setRoleValue NOTIFY roleValueChanged)
     Q_PROPERTY(QQmlComponent *delegate READ delegate WRITE setDelegate NOTIFY delegateChanged)
 
-    QQmlComponent *delegate() const;
+    [[nodiscard]] QQmlComponent *delegate() const;
     void setDelegate(QQmlComponent *delegate);
 
-    QVariant roleValue() const;
+    [[nodiscard]] QVariant roleValue() const;
+    [[nodiscard]] const QVariant &roleValueRef() const { return roleValue_; }
     void setRoleValue(const QVariant &value);
 
 signals:
@@ -53,10 +54,10 @@ public:
 
     QQmlListProperty<DelegateChoice> choices();
 
-    QVariant roleValue() const;
+    [[nodiscard]] QVariant roleValue() const;
     void setRoleValue(const QVariant &value);
 
-    QQuickItem *child() const { return child_; }
+    [[nodiscard]] QQuickItem *child() const { return child_; }
 
     void recalcChild();
     void componentComplete() override;
