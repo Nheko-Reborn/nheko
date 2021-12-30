@@ -151,7 +151,7 @@ class CompletionProxyModel : public QAbstractProxyModel
 public:
     CompletionProxyModel(QAbstractItemModel *model,
                          int max_mistakes       = 2,
-                         size_t max_completions = 7,
+                         size_t max_completions = 30,
                          QObject *parent        = nullptr);
 
     void invalidate();

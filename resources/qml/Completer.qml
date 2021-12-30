@@ -3,15 +3,15 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "./ui"
-import QtQuick 2.9
-import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.2
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 import im.nheko 1.0
 
 Popup {
     id: popup
 
-    property int currentIndex: -1
+    property alias currentIndex: listView.currentIndex
     property string completerName
     property var completer
     property bool bottomToTop: true
@@ -77,43 +77,61 @@ Popup {
     }
     padding: 1
     onAboutToShow: currentIndex = -1
-    height: listView.contentHeight + 2 // + 2 for the padding on top and bottom
+    // If we have fewer than 7 items, just use the list view's content height.  
+    // Otherwise, we want to show 7 items.  Each item consists of row spacing between rows, row margins
+    // on each side of a row, 1px of padding above the first item and below the last item, and nominally
+    // some kind of content height.  avatarHeight is used for just about every delegate, so we're using
+    // that until we find something better.  Put is all together and you have the formula below!
+    height: Math.min(listView.contentHeight + 2, 6*rowSpacing + 7*(popup.avatarHeight + 2*rowMargin) + 2)
 
     ListView {
         id: listView
 
+        clip: true 
+        ScrollHelper {
+            flickable: parent
+            anchors.fill: parent
+            enabled: !Settings.mobileMode
+        }
+
+        Timer {
+            id: deadTimer
+            interval: 50
+        }
+
+        onContentYChanged: deadTimer.restart()
+
+        reuseItems: true
         anchors.fill: parent
         implicitWidth: fullWidth ? parent.width : contentItem.childrenRect.width
         model: completer
         verticalLayoutDirection: popup.bottomToTop ? ListView.BottomToTop : ListView.TopToBottom
         spacing: rowSpacing
         pixelAligned: true
+        highlightFollowsCurrentItem: true
 
         delegate: Rectangle {
             property variant modelData: model
 
             color: model.index == popup.currentIndex ? Nheko.colors.highlight : Nheko.colors.base
-            height: chooser.childrenRect.height + 2 * popup.rowMargin
-            implicitWidth: fullWidth ? popup.width : chooser.childrenRect.width + 4
+            height: chooser.child.implicitHeight + 2 * popup.rowMargin
+            implicitWidth: fullWidth ? popup.contentWidth : chooser.child.implicitWidth + 4
 
             MouseArea {
                 id: mouseArea
 
                 anchors.fill: parent
                 hoverEnabled: true
-                onPositionChanged: popup.currentIndex = model.index
+                onPositionChanged: if (!listView.moving && !deadTimer.running) popup.currentIndex = model.index
                 onClicked: {
-                    popup.completionClicked(completer.completionAt(model.index));
-                    if (popup.completerName == "room")
-                        popup.completionSelected(model.roomid);
-
+                     popup.completionClicked(completer.completionAt(model.index));
+                     if (popup.completerName == "room")
+                         popup.completionSelected(model.roomid);
                 }
-
                 Ripple {
                     rippleTarget: mouseArea
                     color: Qt.rgba(Nheko.colors.base.r, Nheko.colors.base.g, Nheko.colors.base.b, 0.5)
-                }
-
+                 }
             }
 
             DelegateChooser {
@@ -122,6 +140,7 @@ Popup {
                 roleValue: popup.completerName
                 anchors.fill: parent
                 anchors.margins: popup.rowMargin
+                enabled: false
 
                 DelegateChoice {
                     roleValue: "user"
