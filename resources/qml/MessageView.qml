@@ -105,6 +105,7 @@ ScrollView {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/edit.svg"
                     ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Edit")
                     onClicked: {
                         if (row.model.isEditable)
@@ -121,6 +122,7 @@ ScrollView {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/smile.svg"
                     ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("React")
                     onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(reactButton, function(emoji) {
                         var event_id = row.model ? row.model.eventId : "";
@@ -137,6 +139,7 @@ ScrollView {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/reply.svg"
                     ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Reply")
                     onClicked: chat.model.replyAction(row.model.eventId)
                 }
@@ -148,6 +151,7 @@ ScrollView {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/options.svg"
                     ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Options")
                     onClicked: messageContextMenu.show(row.model.eventId, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
                 }
@@ -284,6 +288,7 @@ ScrollView {
                         userid: userId
                         onClicked: room.openUserProfile(userId)
                         ToolTip.visible: avatarHover.hovered
+                    ToolTip.delay: Nheko.tooltipDelay
                         ToolTip.text: userid
 
                         HoverHandler {
@@ -311,6 +316,7 @@ ScrollView {
                         color: TimelineManager.userColor(userId, Nheko.colors.base)
                         textFormat: Text.RichText
                         ToolTip.visible: displayNameHover.hovered
+                    ToolTip.delay: Nheko.tooltipDelay
                         ToolTip.text: userId
 
                         TapHandler {

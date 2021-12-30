@@ -171,6 +171,7 @@ Item {
             sourceSize.height: 16 * Screen.devicePixelRatio
             source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == chat.model.edit) ? Nheko.colors.highlight : Nheko.colors.buttonText)
             ToolTip.visible: editHovered.hovered
+            ToolTip.delay: Nheko.tooltipDelay
             ToolTip.text: qsTr("Edited")
 
             HoverHandler {
@@ -194,6 +195,7 @@ Item {
             width: Math.max(implicitWidth, text.length * fontMetrics.maximumCharacterWidth)
             color: Nheko.inactiveColors.text
             ToolTip.visible: ma.hovered
+            ToolTip.delay: Nheko.tooltipDelay
             ToolTip.text: Qt.formatDateTime(timestamp, Qt.DefaultLocaleLongDate)
 
             HoverHandler {

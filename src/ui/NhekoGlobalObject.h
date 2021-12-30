@@ -24,6 +24,7 @@ class Nheko : public QObject
     Q_PROPERTY(int paddingSmall READ paddingSmall CONSTANT)
     Q_PROPERTY(int paddingMedium READ paddingMedium CONSTANT)
     Q_PROPERTY(int paddingLarge READ paddingLarge CONSTANT)
+    Q_PROPERTY(int tooltipDelay READ tooltipDelay CONSTANT)
 
     Q_PROPERTY(UserProfile *currentUser READ currentUser NOTIFY profileChanged)
 
@@ -39,6 +40,9 @@ public:
     int paddingSmall() const { return 4; }
     int paddingMedium() const { return 8; }
     int paddingLarge() const { return 20; }
+
+    int tooltipDelay() const;
+
     UserProfile *currentUser() const;
 
     Q_INVOKABLE QFont monospaceFont() const

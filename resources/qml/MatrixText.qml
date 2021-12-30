@@ -19,7 +19,9 @@ TextEdit {
     color: Nheko.colors.text
     onLinkActivated: Nheko.openLink(link)
     ToolTip.visible: hoveredLink || false
-    ToolTip.text: hoveredLink || ""
+    ToolTip.text: hoveredLink
+    // Setting a tooltip delay makes the hover text empty .-.
+    //ToolTip.delay: Nheko.tooltipDelay
     Component.onCompleted: {
         TimelineManager.fixImageRendering(r.textDocument, r);
     }

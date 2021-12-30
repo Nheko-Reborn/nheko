@@ -4,7 +4,9 @@
 
 #include "NhekoGlobalObject.h"
 
+#include <QApplication>
 #include <QDesktopServices>
+#include <QStyle>
 #include <QUrl>
 #include <QWindow>
 
@@ -73,6 +75,12 @@ Theme
 Nheko::theme() const
 {
     return Theme(UserSettings::instance()->theme());
+}
+
+int
+Nheko::tooltipDelay() const
+{
+    return QApplication::style()->styleHint(QStyle::StyleHint::SH_ToolTip_WakeUpDelay);
 }
 
 void

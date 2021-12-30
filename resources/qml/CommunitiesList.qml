@@ -62,6 +62,7 @@ Page {
             state: "normal"
             ToolTip.visible: hovered && collapsed
             ToolTip.text: model.tooltip
+            ToolTip.delay: Nheko.tooltipDelay
             onClicked: Communities.setCurrentTagId(model.id)
             onPressAndHold: communityContextMenu.show(model.id)
             states: [
@@ -123,6 +124,7 @@ Page {
                     width: fontMetrics.lineSpacing
                     image: model.collapsed ? ":/icons/icons/ui/collapsed.svg" : ":/icons/icons/ui/expanded.svg"
                     ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: model.collapsed ? qsTr("Expand") : qsTr("Collapse")
                     hoverEnabled: true
 

@@ -140,6 +140,7 @@ Page {
             width: ListView.view.width
             state: "normal"
             ToolTip.visible: hovered && collapsed
+            ToolTip.delay: Nheko.tooltipDelay
             ToolTip.text: roomName
             onClicked: {
                 console.log("tapped " + roomId);
@@ -325,6 +326,7 @@ Page {
                             radius: height / 2
                             color: hasLoudNotification ? Nheko.theme.red : roomItem.bubbleBackground
                             ToolTip.text: notificationCount
+                            ToolTip.delay: Nheko.tooltipDelay
                             ToolTip.visible: notificationBubbleHover.hovered && (notificationCount > 9999)
 
                             Label {
@@ -495,6 +497,7 @@ Page {
                     Layout.preferredHeight: fontMetrics.lineSpacing * 2
                     image: ":/icons/icons/ui/power-off.svg"
                     ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Logout")
                     onClicked: Nheko.openLogoutDialog()
                 }
@@ -560,6 +563,7 @@ Page {
                     height: fontMetrics.font.pixelSize
                     image: ":/icons/icons/ui/dismiss.svg"
                     ToolTip.visible: closeUnverifiedBubble.hovered
+                    ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Close")
                     onClicked: unverifiedStuffBubble.visible = false
                 }
@@ -625,6 +629,7 @@ Page {
                     height: 22
                     image: ":/icons/icons/ui/add-square-button.svg"
                     ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Start a new chat")
                     Layout.margins: Nheko.paddingMedium
                     onClicked: roomJoinCreateMenu.open(parent)
@@ -654,6 +659,7 @@ Page {
                     height: 22
                     image: ":/icons/icons/ui/speech-bubbles.svg"
                     ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Room directory")
                     Layout.margins: Nheko.paddingMedium
                     onClicked: {
@@ -670,6 +676,7 @@ Page {
                     height: 22
                     image: ":/icons/icons/ui/settings.svg"
                     ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("User settings")
                     Layout.margins: Nheko.paddingMedium
                     onClicked: Nheko.showUserSettingsPage()
