@@ -179,7 +179,7 @@
     <message>
         <location line="+10"/>
         <source>Failed to invite %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>No se pudo invitar %1 a %2: %3</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -266,7 +266,7 @@
     <message>
         <location line="+93"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>No se han podido configurar las llaves de encriptación. Respuesta del servidor: %1 %2. Por favor intentalo de nuevo más tarde.</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -282,7 +282,7 @@
     <message>
         <location line="+4"/>
         <source>You joined the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Te has unido a la sala</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -409,7 +409,7 @@
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+11"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Codigo de verificación</translation>
     </message>
     <message>
         <location line="+10"/>
