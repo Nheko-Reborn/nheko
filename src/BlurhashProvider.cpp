@@ -38,5 +38,5 @@ BlurhashRunnable::run()
                  (int)decoded.width * 3,
                  QImage::Format_RGB888);
 
-    emit done(std::move(image));
+    emit done(image.convertToFormat(QImage::Format_RGB32));
 }
