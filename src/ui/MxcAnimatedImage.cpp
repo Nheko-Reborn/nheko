@@ -91,6 +91,10 @@ MxcAnimatedImage::startDownload()
               "Playing movie with size: {}, {}", buffer.bytesAvailable(), buffer.isOpen());
             movie.setFormat(mimeType);
             movie.setDevice(&buffer);
+            movie.setScaledSize(this->size().toSize());
+            if (buffer.bytesAvailable() <
+                4LL * 1024 * 1024 * 1024) // cache images smaller than 4MB in RAM
+                movie.setCacheMode(QMovie::CacheAll);
             if (play_)
                 movie.start();
             else
@@ -158,17 +162,17 @@ MxcAnimatedImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeD
 
     // n->setTexture(nullptr);
     auto img = movie.currentImage();
+    n->setSourceRect(img.rect());
     if (!img.isNull())
-        n->setTexture(window()->createTextureFromImage(img));
+        n->setTexture(window()->createTextureFromImage(std::move(img)));
     else {
         delete n;
         return nullptr;
     }
 
-    n->setSourceRect(img.rect());
     n->setRect(QRect(0, 0, width(), height()));
-    n->setFiltering(QSGTexture::Linear);
-    n->setMipmapFiltering(QSGTexture::Linear);
+    n->setFiltering(QSGTexture::Nearest);
+    n->setMipmapFiltering(QSGTexture::None);
 
     return n;
 }
