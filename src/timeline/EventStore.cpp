@@ -543,10 +543,6 @@ EventStore::reactions(const std::string &event_id)
             reaction.users_ += QString::fromStdString(user);
         }
 
-        nhlog::db()->debug("key: {}, count: {}, users: {}",
-                           reaction.key_.toStdString(),
-                           reaction.count_,
-                           reaction.users_.toStdString());
         temp.append(QVariant::fromValue(reaction));
     }
 

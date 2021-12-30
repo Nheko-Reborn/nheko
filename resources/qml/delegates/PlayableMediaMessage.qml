@@ -21,7 +21,7 @@ Item {
     required property string url
     required property string body
     required property string filesize
-    property double tempWidth: Math.min(parent ? parent.width : undefined, originalWidth < 1 ? 400 : originalWidth)
+    property double tempWidth: Math.min(parent.width, originalWidth < 1 ? 400 : originalWidth)
     property double tempHeight: tempWidth * proportionalHeight
     property double divisor: isReply ? 4 : 2
     property bool tooHigh: tempHeight > timelineRoot.height / divisor

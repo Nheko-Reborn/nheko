@@ -15,7 +15,7 @@ Rectangle {
     required property string eventId
 
     radius: fontMetrics.lineSpacing / 2 + Nheko.paddingMedium
-    width: parent ? parent.width : undefined
+    width: parent.width
     height: contents.implicitHeight + Nheko.paddingMedium * 2
     color: Nheko.colors.alternateBase
 
@@ -57,7 +57,7 @@ Rectangle {
                     }
                 }
                 color: Nheko.colors.text
-                width: parent ? parent.width : undefined
+                width: parent.width
             }
 
             Button {

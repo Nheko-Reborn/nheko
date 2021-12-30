@@ -16,7 +16,7 @@ Item {
     required property string filename
     required property bool isReply
     required property string eventId
-    property double tempWidth: Math.min(parent ? parent.width : undefined, originalWidth < 1 ? 200 : originalWidth)
+    property double tempWidth: Math.min(parent.width, originalWidth < 1 ? 200 : originalWidth)
     property double tempHeight: tempWidth * proportionalHeight
     property double divisor: isReply ? 5 : 3
     property bool tooHigh: tempHeight > timelineView.height / divisor

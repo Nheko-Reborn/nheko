@@ -12,7 +12,7 @@ Item {
     required property string filesize
 
     height: row.height + 24
-    width: parent ? parent.width : undefined
+    width: parent.width
 
     RowLayout {
         id: row
