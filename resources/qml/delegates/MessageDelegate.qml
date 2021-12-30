@@ -415,6 +415,7 @@ Item {
                     body: formatted
                     isOnlyEmoji: false
                     isReply: d.isReply
+                    Layout.fillWidth: true
                     formatted: d.relatedEventCacheBuster, room.formatMemberEvent(d.eventId)
                 }
 
