@@ -24,6 +24,7 @@
 #include "emoji/Provider.h"
 #include "encryption/VerificationManager.h"
 #include "timeline/CommunitiesModel.h"
+#include "timeline/PresenceEmitter.h"
 #include "timeline/RoomlistModel.h"
 #include "voip/CallManager.h"
 #include "voip/WebRTCSession.h"
@@ -63,9 +64,6 @@ public:
     Q_INVOKABLE QColor userColor(QString id, QColor background);
     Q_INVOKABLE QString escapeEmoji(QString str) const;
     Q_INVOKABLE QString htmlEscape(QString str) const { return str.toHtmlEscaped(); }
-
-    Q_INVOKABLE QString userPresence(QString id) const;
-    Q_INVOKABLE QString userStatus(QString id) const;
 
     Q_INVOKABLE void openRoomMembers(TimelineModel *room);
     Q_INVOKABLE void openRoomSettings(QString room_id);
@@ -146,6 +144,7 @@ private:
     // don't move this above the rooms_
     CallManager *callManager_                 = nullptr;
     VerificationManager *verificationManager_ = nullptr;
+    PresenceEmitter *presenceEmitter          = nullptr;
 
     QHash<QPair<QString, quint64>, QColor> userColors;
 };

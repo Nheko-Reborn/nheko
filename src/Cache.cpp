@@ -3897,53 +3897,26 @@ Cache::avatarUrl(const QString &room_id, const QString &user_id)
     return QString();
 }
 
-mtx::presence::PresenceState
-Cache::presenceState(const std::string &user_id)
+mtx::events::presence::Presence
+Cache::presence(const std::string &user_id)
 {
     if (user_id.empty())
         return {};
 
     std::string_view presenceVal;
 
-    auto txn = lmdb::txn::begin(env_);
+    auto txn = ro_txn(env_);
     auto db  = getPresenceDb(txn);
     auto res = db.get(txn, user_id, presenceVal);
 
-    mtx::presence::PresenceState state = mtx::presence::offline;
+    mtx::events::presence::Presence presence_{};
+    presence_.presence = mtx::presence::PresenceState::offline;
 
     if (res) {
-        mtx::events::presence::Presence presence =
-          json::parse(std::string_view(presenceVal.data(), presenceVal.size()));
-        state = presence.presence;
+        presence_ = json::parse(std::string_view(presenceVal.data(), presenceVal.size()));
     }
 
-    txn.commit();
-
-    return state;
-}
-
-std::string
-Cache::statusMessage(const std::string &user_id)
-{
-    if (user_id.empty())
-        return {};
-
-    std::string_view presenceVal;
-
-    auto txn = lmdb::txn::begin(env_);
-    auto db  = getPresenceDb(txn);
-    auto res = db.get(txn, user_id, presenceVal);
-
-    std::string status_msg;
-
-    if (res) {
-        mtx::events::presence::Presence presence = json::parse(presenceVal);
-        status_msg                               = presence.status_msg;
-    }
-
-    txn.commit();
-
-    return status_msg;
+    return presence_;
 }
 
 void
@@ -4747,17 +4720,12 @@ avatarUrl(const QString &room_id, const QString &user_id)
     return instance_->avatarUrl(room_id, user_id);
 }
 
-mtx::presence::PresenceState
-presenceState(const std::string &user_id)
+mtx::events::presence::Presence
+presence(const std::string &user_id)
 {
     if (!instance_)
         return {};
-    return instance_->presenceState(user_id);
-}
-std::string
-statusMessage(const std::string &user_id)
-{
-    return instance_->statusMessage(user_id);
+    return instance_->presence(user_id);
 }
 
 // user cache stores user keys

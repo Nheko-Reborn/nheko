@@ -329,12 +329,21 @@ ScrollView {
                     }
 
                     Label {
+                        id: statusMsg
                         color: Nheko.colors.buttonText
-                        text: TimelineManager.userStatus(userId)
+                        text: Presence.userStatus(userId)
                         textFormat: Text.PlainText
                         elide: Text.ElideRight
                         width: chat.delegateMaxWidth - parent.spacing * 2 - userName.implicitWidth - Nheko.avatarSize
                         font.italic: true
+
+                        Connections {
+                            target: Presence
+
+                            function onPresenceChanged(id) {
+                                if (id == userId) statusMsg.text = Presence.userStatus(userId);
+                            }
+                        }
                     }
 
                 }

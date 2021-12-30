@@ -43,8 +43,7 @@ public:
     QString avatarUrl(const QString &room_id, const QString &user_id);
 
     // presence
-    mtx::presence::PresenceState presenceState(const std::string &user_id);
-    std::string statusMessage(const std::string &user_id);
+    mtx::events::presence::Presence presence(const std::string &user_id);
 
     // user cache stores user keys
     std::map<std::string, std::optional<UserKeyCache>>

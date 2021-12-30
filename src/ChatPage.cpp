@@ -877,7 +877,7 @@ ChatPage::receivedSessionKey(const std::string &room_id, const std::string &sess
 QString
 ChatPage::status() const
 {
-    return QString::fromStdString(cache::statusMessage(utils::localUser().toStdString()));
+    return QString::fromStdString(cache::presence(utils::localUser().toStdString()).status_msg);
 }
 
 void

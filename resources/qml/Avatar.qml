@@ -87,14 +87,18 @@ Rectangle {
     }
 
     Rectangle {
+        id: onlineIndicator
+
         anchors.bottom: avatar.bottom
         anchors.right: avatar.right
         visible: !!userid
         height: avatar.height / 6
         width: height
         radius: Settings.avatarCircles ? height / 2 : height / 8
-        color: {
-            switch (TimelineManager.userPresence(userid)) {
+        color: updatePresence()
+
+        function updatePresence() {
+            switch (Presence.userPresence(userid)) {
             case "online":
                 return "#00cc66";
             case "unavailable":
@@ -102,7 +106,15 @@ Rectangle {
             case "offline":
             default:
                 // return "#a82353" don't show anything if offline, since it is confusing, if presence is disabled
-                "transparent";
+                return "transparent";
+            }
+        }
+
+        Connections {
+            target: Presence
+
+            function onPresenceChanged(id) {
+                if (id == userid) onlineIndicator.color = onlineIndicator.updatePresence();
             }
         }
     }

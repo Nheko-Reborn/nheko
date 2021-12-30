@@ -124,29 +124,6 @@ TimelineViewManager::userColor(QString id, QColor background)
     return userColors.value(idx);
 }
 
-QString
-TimelineViewManager::userPresence(QString id) const
-{
-    if (id.isEmpty())
-        return {};
-    else
-        switch (cache::presenceState(id.toStdString())) {
-        case mtx::presence::PresenceState::offline:
-            return QStringLiteral("offline");
-        case mtx::presence::PresenceState::unavailable:
-            return QStringLiteral("unavailable");
-        case mtx::presence::PresenceState::online:
-        default:
-            return QStringLiteral("online");
-        }
-}
-
-QString
-TimelineViewManager::userStatus(QString id) const
-{
-    return QString::fromStdString(cache::statusMessage(id.toStdString()));
-}
-
 TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *parent)
   : QObject(parent)
   , imgProvider(new MxcImageProvider())
@@ -157,6 +134,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
   , communities_(new CommunitiesModel(this))
   , callManager_(callManager)
   , verificationManager_(new VerificationManager(this))
+  , presenceEmitter(new PresenceEmitter(this))
 {
     qRegisterMetaType<mtx::events::msg::KeyVerificationAccept>();
     qRegisterMetaType<mtx::events::msg::KeyVerificationCancel>();
@@ -280,6 +258,7 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           return new Nheko();
       });
     qmlRegisterSingletonInstance("im.nheko", 1, 0, "VerificationManager", verificationManager_);
+    qmlRegisterSingletonInstance("im.nheko", 1, 0, "Presence", presenceEmitter);
     qmlRegisterSingletonType<SelfVerificationStatus>(
       "im.nheko", 1, 0, "SelfVerificationStatus", [](QQmlEngine *, QJSEngine *) -> QObject * {
           auto ptr = new SelfVerificationStatus();
@@ -407,6 +386,7 @@ TimelineViewManager::sync(const mtx::responses::Sync &sync_)
 {
     this->rooms_->sync(sync_);
     this->communities_->sync(sync_);
+    this->presenceEmitter->sync(sync_.presence);
 
     if (isInitialSync_) {
         this->isInitialSync_ = false;
