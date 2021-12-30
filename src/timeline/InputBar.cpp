@@ -712,7 +712,7 @@ InputBar::showPreview(const QMimeData &source, const QString &path, const QStrin
 
           QSize dimensions;
           QString blurhash;
-          auto mimeClass = mime.splitRef(u'/')[0];
+          auto mimeClass = mime.left(mime.indexOf(u'/'));
           nhlog::ui()->debug("Mime: {}", mime.toStdString());
           if (mimeClass == u"image") {
               QImage img = utils::readImage(data);
@@ -760,11 +760,11 @@ InputBar::showPreview(const QMimeData &source, const QString &path, const QStrin
                 if (encryptedFile)
                     encryptedFile->url = res.content_uri;
 
-                if (mimeClass == "image")
+                if (mimeClass == u"image")
                     image(filename, encryptedFile, url, mime, size, dimensions, blurhash);
-                else if (mimeClass == "audio")
+                else if (mimeClass == u"audio")
                     audio(filename, encryptedFile, url, mime, size);
-                else if (mimeClass == "video")
+                else if (mimeClass == u"video")
                     video(filename, encryptedFile, url, mime, size);
                 else
                     file(filename, encryptedFile, url, mime, size);
