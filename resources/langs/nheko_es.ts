@@ -17,7 +17,7 @@
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>Estás compartiendo tu pantalla</translation>
+        <translation>Estás compartiendo tu pantalla.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -153,12 +153,12 @@
     <message>
         <location line="+304"/>
         <source>Confirm join</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar ingreso</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to join %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>¿Seguro que desea unirse a %1?</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -199,7 +199,7 @@
     <message>
         <location line="+10"/>
         <source>Confirm ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar ban</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -209,7 +209,7 @@
     <message>
         <location line="+10"/>
         <source>Failed to ban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Error al banear a %1 en %2:%3</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -249,7 +249,7 @@
     <message>
         <location line="+13"/>
         <source>Incompatible cache version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versión de cache incompatible</translation>
     </message>
     <message>
         <location line="+61"/>
@@ -261,7 +261,7 @@
         <location line="+4"/>
         <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Error al restaurar los datos guardados. Por favor inicie sesión nuevamente.</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -315,12 +315,12 @@
     <message>
         <location line="+81"/>
         <source>Expand</source>
-        <translation type="unfinished"></translation>
+        <translation>Expandir</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Collapse</source>
-        <translation type="unfinished"></translation>
+        <translation>Colapsar</translation>
     </message>
 </context>
 <context>
@@ -328,17 +328,17 @@
     <message>
         <location filename="../../src/timeline/CommunitiesModel.cpp" line="+57"/>
         <source>All rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Todas las salas</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Shows all rooms without filtering.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar todas las salas sin filtros.</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Direct Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Chats Directos</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -348,32 +348,32 @@
     <message>
         <location line="+48"/>
         <source>Favourites</source>
-        <translation type="unfinished"></translation>
+        <translation>Favoritos</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rooms you have favourited.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salas que has marcado como favoritas.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Low Priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Baja prioridad</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rooms with low priority.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salas con baja prioridad.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Server Notices</source>
-        <translation type="unfinished"></translation>
+        <translation>Avisos del servidor</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Messages from your server or administrator.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mensajes de tu servidor o administrador.</translation>
     </message>
 </context>
 <context>
