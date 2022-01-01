@@ -3259,11 +3259,6 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>dialogs::Logout</name>
     <message>
-        <location filename="../../src/dialogs/Logout.cpp" line="+35"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location line="+8"/>
         <source>Logout. Are you sure?</source>
         <translation type="unfinished"></translation>
