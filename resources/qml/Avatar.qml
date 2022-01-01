@@ -4,8 +4,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "./ui"
-import QtQuick 2.6
-import QtQuick.Controls 2.3
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Window 2.15
 import im.nheko 1.0
 
@@ -25,12 +25,11 @@ Rectangle {
     height: 48
     radius: Settings.avatarCircles ? height / 2 : height / 8
     color: Nheko.colors.alternateBase
-    Component.onCompleted: {
-        mouseArea.clicked.connect(clicked);
-    }
 
     Label {
         id: label
+
+        enabled: false
 
         anchors.fill: parent
         text: TimelineManager.escapeEmoji(displayName ? String.fromCodePoint(displayName.codePointAt(0)) : "")
@@ -73,18 +72,6 @@ Rectangle {
         sourceSize.height: avatar.height * Screen.devicePixelRatio
         source: avatar.url ? (avatar.url + "?radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale")) : ""
 
-        MouseArea {
-            id: mouseArea
-
-            anchors.fill: parent
-
-            Ripple {
-                rippleTarget: mouseArea
-                color: Qt.rgba(Nheko.colors.alternateBase.r, Nheko.colors.alternateBase.g, Nheko.colors.alternateBase.b, 0.5)
-            }
-
-        }
-
     }
 
     Rectangle {
@@ -123,6 +110,12 @@ Rectangle {
     CursorShape {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
+    }
+
+    TapHandler {
+        id: mouseArea
+
+        onSingleTapped: avatar.clicked(eventPoint)
     }
 
 }
