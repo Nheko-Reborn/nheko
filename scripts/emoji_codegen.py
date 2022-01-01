@@ -8,7 +8,7 @@ from jinja2 import Template
 
 class Emoji(object):
     def __init__(self, code, shortname):
-        self.code = repr(code.encode('utf-8'))[1:].strip("'")
+        self.code = ''.join(['\\U'+c.rjust(8, '0') for c in code.strip().split(' ')])
         self.shortname = shortname
 
 def generate_qml_list(**kwargs):
@@ -17,7 +17,7 @@ const QVector<Emoji> emoji::Provider::emoji = {
     {%- for c in kwargs.items() %}
     // {{ c[0].capitalize() }}
     {%- for e in c[1] %}
-    Emoji{QString::fromUtf8("{{ e.code }}"), "{{ e.shortname }}", emoji::Emoji::Category::{{ c[0].capitalize() }}},
+    Emoji{QStringLiteral(u"{{ e.code }}"), QStringLiteral(u"{{ e.shortname }}"), emoji::Emoji::Category::{{ c[0].capitalize() }}},
     {%- endfor %}
     {%- endfor %}
 };
@@ -67,8 +67,8 @@ if __name__ == '__main__':
 
         code, qualification, charAndName = segments
 
-        # skip fully qualified versions of same unicode
-        if code.endswith('FE0F'):
+        # skip unqualified versions of same unicode
+        if qualification == 'unqualified':
             continue
 
         if qualification == 'component':
@@ -76,7 +76,7 @@ if __name__ == '__main__':
 
         char, name = re.match(r'^(\S+) E\d+\.\d+ (.*)$', charAndName).groups()
 
-        categories[current_category].append(Emoji(char, name))
+        categories[current_category].append(Emoji(code, name))
 
     # Use xclip to pipe the output to clipboard.
     # e.g ./codegen.py emoji.json | xclip -sel clip
