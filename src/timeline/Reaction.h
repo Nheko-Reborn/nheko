@@ -11,13 +11,15 @@
 struct Reaction
 {
     Q_GADGET
-    Q_PROPERTY(QString key READ key)
-    Q_PROPERTY(QString users READ users)
-    Q_PROPERTY(QString selfReactedEvent READ selfReactedEvent)
-    Q_PROPERTY(int count READ count)
+    Q_PROPERTY(QString key READ key CONSTANT)
+    Q_PROPERTY(QString displayKey READ displayKey CONSTANT)
+    Q_PROPERTY(QString users READ users CONSTANT)
+    Q_PROPERTY(QString selfReactedEvent READ selfReactedEvent CONSTANT)
+    Q_PROPERTY(int count READ count CONSTANT)
 
 public:
-    QString key() const { return key_.toHtmlEscaped(); }
+    QString key() const { return key_; }
+    QString displayKey() const { return key_.toHtmlEscaped().remove(QStringLiteral(u"\ufe0f")); }
     QString users() const { return users_.toHtmlEscaped(); }
     QString selfReactedEvent() const { return selfReactedEvent_; }
     int count() const { return count_; }

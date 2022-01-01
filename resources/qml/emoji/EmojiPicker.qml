@@ -166,7 +166,7 @@ Menu {
                         verticalAlignment: Text.AlignVCenter
                         font.family: Settings.emojiFont
                         font.pixelSize: 36
-                        text: model.unicode
+                        text: model.unicode.replace('\ufe0f', '')
                         color: Nheko.colors.text
                     }
 

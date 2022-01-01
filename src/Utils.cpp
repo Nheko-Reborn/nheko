@@ -135,8 +135,13 @@ utils::replaceEmoji(const QString &body)
                 fmtBody += QStringLiteral("<font face=\"") % UserSettings::instance()->emojiFont() %
                            QStringLiteral("\">");
                 insideFontBlock = true;
+            } else if (code == 0xfe0f) {
+                // BUG(Nico):
+                // Workaround https://bugreports.qt.io/browse/QTBUG-97401
+                // See also https://github.com/matrix-org/matrix-react-sdk/pull/1458/files
+                // Nheko bug: https://github.com/Nheko-Reborn/nheko/issues/439
+                continue;
             }
-
         } else {
             if (insideFontBlock) {
                 fmtBody += QStringLiteral("</font>");

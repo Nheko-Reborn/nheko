@@ -34,6 +34,7 @@ Flow {
             implicitHeight: contentItem.childrenRect.height
             ToolTip.visible: hovered
             ToolTip.text: modelData.users
+            ToolTip.delay: Nheko.tooltipDelay
             onClicked: {
                 console.debug("Picked " + modelData.key + "in response to " + reactionFlow.eventId + ". selfReactedEvent: " + modelData.selfReactedEvent);
                 room.input.reaction(reactionFlow.eventId, modelData.key);
@@ -51,14 +52,14 @@ Flow {
                     font.family: Settings.emojiFont
                     elide: Text.ElideRight
                     elideWidth: 150
-                    text: modelData.key
+                    text: modelData.displayKey
                 }
 
                 Text {
                     id: reactionText
 
                     anchors.baseline: reactionCounter.baseline
-                    text: textMetrics.elidedText + (textMetrics.elidedText == modelData.key ? "" : "…")
+                    text: textMetrics.elidedText + (textMetrics.elidedText == modelData.displayKey ? "" : "…")
                     font.family: Settings.emojiFont
                     color: reaction.hovered ? Nheko.colors.highlight : Nheko.colors.text
                     maximumLineCount: 1
