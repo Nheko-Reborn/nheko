@@ -7,7 +7,11 @@
 #include <stdexcept>
 
 #ifdef DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#if __has_include(<doctest.h>)
 #include <doctest.h>
+#else
+#include <doctest/doctest.h>
+#endif
 #endif
 
 using namespace std::literals;
@@ -279,15 +283,30 @@ decode(std::string_view blurhash, size_t width, size_t height, size_t bytesPerPi
 
         i.image.reserve(height * width * bytesPerPixel);
 
+        std::vector<float> basis_x(width * components.x, 0.f);
+        std::vector<float> basis_y(height * components.y, 0.f);
+
+        for (size_t x = 0; x < width; x++) {
+                for (size_t nx = 0; nx < size_t(components.x); nx++) {
+                        basis_x[x * components.x + nx] =
+                          std::cos(pi<float> * float(nx * x) / float(width));
+                }
+        }
+        for (size_t y = 0; y < height; y++) {
+                for (size_t ny = 0; ny < size_t(components.y); ny++) {
+                        basis_y[y * components.y + ny] =
+                          std::cos(pi<float> * float(ny * y) / float(height));
+                }
+        }
+
         for (size_t y = 0; y < height; y++) {
                 for (size_t x = 0; x < width; x++) {
                         Color c{};
 
                         for (size_t nx = 0; nx < size_t(components.x); nx++) {
                                 for (size_t ny = 0; ny < size_t(components.y); ny++) {
-                                        float basis =
-                                          std::cos(pi<float> * float(nx * x) / float(width)) *
-                                          std::cos(pi<float> * float(ny * y) / float(height));
+                                        float basis = basis_x[x * components.x + nx] *
+                                                      basis_y[y * components.y + ny];
                                         c += values[nx + ny * components.x] * basis;
                                 }
                         }
