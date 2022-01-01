@@ -1,6 +1,6 @@
 = nheko(1)
 :doctype:       manpage
-:Date:          2021-12-22
+:Date:          2022-01-01
 :Revision:      @PROJECT_VERSION@
 :man source:    nheko
 :man manual:    General Commands Manual
@@ -37,7 +37,7 @@ Enables debug output.
 Creates a unique profile, which allows you to log into several accounts at the
 same time and start multiple instances of nheko.
 
-== Keyboard shortcuts
+== KEYBOARD SHORTCUTS
 
 === Room list
 
@@ -82,7 +82,7 @@ Insert line break.
 *Enter*::
 Submit message.
 
-== Commands
+== COMMANDS
 
 === Custom messages
 
@@ -161,10 +161,10 @@ Rotates the encryption key used to send encrypted messages in a room.
 _address_ can be one of:
 
     _<event ID>_;;
-    Jumpd to event with the specified ID and highlights it.
+    Jumps to event with the specified ID and highlights it.
 
     _<message index>_;;
-    Jumpd to the message with the specified index and highlights it.
+    Jumps to the message with the specified index and highlights it.
 
     _<Matrix URI>_;;
     Handles Matrix URI as if you clicked on it.
