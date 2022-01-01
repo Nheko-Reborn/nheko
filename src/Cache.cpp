@@ -2442,7 +2442,7 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
     if (total == 2)
         return first_member;
     else if (total > 2)
-        return tr("%1 and %2 others").arg(first_member).arg(total - 1);
+        return tr("%1 and %n other(s)", "", (int)total - 1).arg(first_member);
 
     return tr("Empty Room");
 }
