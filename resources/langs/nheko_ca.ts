@@ -3258,11 +3258,6 @@ This usually causes the application icon in the task bar to animate in some fash
 </context>
 <context>
     <name>dialogs::Logout</name>
-    <message>
-        <location line="+8"/>
-        <source>Logout. Are you sure?</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>dialogs::PreviewUploadOverlay</name>
