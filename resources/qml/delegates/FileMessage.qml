@@ -33,6 +33,11 @@ Item {
             Image {
                 id: img
 
+                height: 40
+                width: 40
+                sourceSize.height: 40
+                sourceSize.width: 40
+
                 anchors.centerIn: parent
                 source: "qrc:/icons/icons/ui/download.svg"
                 fillMode: Image.Pad
