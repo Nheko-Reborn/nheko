@@ -3287,7 +3287,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location line="+1"/>
         <source>Trusted Private Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Discussion privée de confiance</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3345,7 +3345,7 @@ Taille du média : %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+37"/>
         <source>Open reCAPTCHA</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir reCAPTCHA</translation>
     </message>
     <message>
         <location line="+1"/>
