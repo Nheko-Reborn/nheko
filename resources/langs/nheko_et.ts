@@ -58,16 +58,16 @@
     <message numerus="yes">
         <location filename="../../src/Cache.cpp" line="+2445"/>
         <source>%1 and %n other(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 ja veel %n teine kasutaja</numerusform>
+            <numerusform>%1 ja veel %n teist kasutajat</numerusform>
         </translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+175"/>
         <source>Empty Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühi jututuba</translation>
     </message>
 </context>
 <context>
@@ -3260,12 +3260,12 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+2"/>
         <source>Private</source>
-        <translation type="unfinished"></translation>
+        <translation>Privaatne jututuba</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Public</source>
-        <translation type="unfinished"></translation>
+        <translation>Avalik jututuba</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3275,17 +3275,17 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+2"/>
         <source>Private Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Privaatne vestlus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Public Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Avalik vestlus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Trusted Private Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Usalduslik privaatne vestlus</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3343,7 +3343,7 @@ Meedia suurus: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+37"/>
         <source>Open reCAPTCHA</source>
-        <translation type="unfinished"></translation>
+        <translation>Ava reCAPTCHA</translation>
     </message>
     <message>
         <location line="+1"/>
