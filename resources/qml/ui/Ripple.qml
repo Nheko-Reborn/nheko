@@ -110,7 +110,7 @@ Item {
                                 NumberAnimation {
                                     id: opacity_animation
 
-                                    target: ripple
+                                    target: circle
                                     properties: "opacity"
                                     to: 0
                                     duration: ripple.opacityAnimationDuration
