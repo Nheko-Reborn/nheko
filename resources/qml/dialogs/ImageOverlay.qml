@@ -4,6 +4,7 @@
 
 import QtQuick 2.15
 import QtQuick.Window 2.15
+import Qt.labs.animation 1.0
 
 import ".."
 
@@ -55,14 +56,46 @@ Window {
             eventId: imageOverlay.eventId
         }
 
+        BoundaryRule on scale {
+            enabled: img.loaded
+            id: sbr
+            minimum: 0.1
+            maximum: 100
+            minimumOvershoot: 0.02; maximumOvershoot: 100
+        }
+
+        //BoundaryRule on x {
+        //    enabled: img.loaded
+        //    id: xbr
+        //    minimum: -100
+        //    maximum: imageOverlay.width - img.width + 100
+        //    minimumOvershoot: 100; maximumOvershoot: 100
+        //    overshootFilter: BoundaryRule.Peak
+        //}
+
+        //BoundaryRule on y {
+        //    enabled: img.loaded
+        //    id: ybr
+        //    minimum: -100
+        //    maximum: imageOverlay.height - img.height + 100
+        //    minimumOvershoot: 100; maximumOvershoot: 100
+        //    overshootFilter: BoundaryRule.Peak
+        //}
+
         PinchHandler {
+            onActiveChanged: if (!active) sbr.returnToBounds();
         }
 
         WheelHandler {
             property: "scale"
+            onActiveChanged: if (!active) sbr.returnToBounds();
         }
 
         DragHandler {
+            //onActiveChanged: if (!active) {
+            //    xbr.returnToBounds();
+            //    ybr.returnToBounds();
+            //}
         }
 
         HoverHandler {

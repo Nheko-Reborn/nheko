@@ -20,12 +20,10 @@
 void
 MxcAnimatedImage::startDownload()
 {
-    nhlog::ui()->debug("START DOWNLOAD!!!");
     if (!room_)
         return;
     if (eventId_.isEmpty())
         return;
-    nhlog::ui()->debug("START DOWNLOAD2!!!");
 
     auto event = room_->eventById(eventId_);
     if (!event) {
