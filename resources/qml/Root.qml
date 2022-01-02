@@ -136,6 +136,14 @@ Page {
 
     }
 
+    Component {
+        id: imageOverlay
+
+        ImageOverlay {
+        }
+
+    }
+
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
@@ -232,6 +240,15 @@ Page {
                 "roomId": roomid
             });
             dialog.open();
+        }
+
+        function onShowImageOverlay(room, eventId, url, proportionalHeight, originalWidth) {
+            var dialog = imageOverlay.createObject(timelineRoot, {
+                "room": room,
+                "eventId": eventId,
+                "url": url
+            });
+            dialog.showFullScreen();
         }
 
         target: TimelineManager

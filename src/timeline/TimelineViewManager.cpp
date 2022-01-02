@@ -6,10 +6,12 @@
 #include "TimelineViewManager.h"
 
 #include <QDropEvent>
+#include <QFileDialog>
 #include <QMetaType>
 #include <QPalette>
 #include <QQmlContext>
 #include <QQmlEngine>
+#include <QStandardPaths>
 #include <QString>
 
 #include "BlurhashProvider.h"
@@ -32,7 +34,6 @@
 #include "SingleImagePackModel.h"
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
-#include "dialogs/ImageOverlay.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
 #include "encryption/DeviceVerificationFlow.h"
@@ -331,11 +332,6 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
         isInitialSync_ = true;
         emit initialSyncChanged(true);
     });
-
-    connect(this,
-            &TimelineViewManager::openImageOverlayInternalCb,
-            this,
-            &TimelineViewManager::openImageOverlayInternal);
 }
 
 void
@@ -416,23 +412,13 @@ TimelineViewManager::escapeEmoji(QString str) const
 }
 
 void
-TimelineViewManager::openImageOverlay(QString mxcUrl, QString eventId)
+TimelineViewManager::openImageOverlay(TimelineModel *room, QString mxcUrl, QString eventId)
 {
     if (mxcUrl.isEmpty()) {
         return;
     }
 
-    MxcImageProvider::download(mxcUrl.remove(QStringLiteral("mxc://")),
-                               QSize(),
-                               [this, eventId](QString, QSize, QImage img, QString) {
-                                   if (img.isNull()) {
-                                       nhlog::ui()->error(
-                                         "Error when retrieving image for overlay.");
-                                       return;
-                                   }
-
-                                   emit openImageOverlayInternalCb(eventId, std::move(img));
-                               });
+    emit showImageOverlay(room, eventId, mxcUrl);
 }
 
 void
@@ -443,25 +429,46 @@ TimelineViewManager::openImagePackSettings(QString roomid)
 }
 
 void
-TimelineViewManager::openImageOverlayInternal(QString eventId, QImage img)
+TimelineViewManager::saveMedia(QString mxcUrl)
 {
-    auto pixmap = QPixmap::fromImage(img);
+    const QString downloadsFolder =
+      QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+    const QString openLocation = downloadsFolder + "/" + mxcUrl.splitRef(u'/').constLast();
 
-    auto imgDialog = new dialogs::ImageOverlay(pixmap);
-    imgDialog->showFullScreen();
+    const QString filename = QFileDialog::getSaveFileName(getWidget(), {}, openLocation);
 
-    auto room = rooms_->currentRoom();
-    connect(imgDialog, &dialogs::ImageOverlay::saving, room, [eventId, imgDialog, room]() {
-        // hide the overlay while presenting the save dialog for better
-        // cross platform support.
-        imgDialog->hide();
+    if (filename.isEmpty())
+        return;
 
-        if (!room->saveMedia(eventId)) {
-            imgDialog->show();
-        } else {
-            imgDialog->close();
-        }
-    });
+    const auto url = mxcUrl.toStdString();
+
+    http::client()->download(url,
+                             [filename, url](const std::string &data,
+                                             const std::string &,
+                                             const std::string &,
+                                             mtx::http::RequestErr err) {
+                                 if (err) {
+                                     nhlog::net()->warn("failed to retrieve image {}: {} {}",
+                                                        url,
+                                                        err->matrix_error.error,
+                                                        static_cast<int>(err->status_code));
+                                     return;
+                                 }
+
+                                 try {
+                                     QFile file(filename);
+
+                                     if (!file.open(QIODevice::WriteOnly))
+                                         return;
+
+                                     file.write(QByteArray(data.data(), (int)data.size()));
+                                     file.close();
+
+                                     return;
+                                 } catch (const std::exception &e) {
+                                     nhlog::ui()->warn("Error while saving file to: {}", e.what());
+                                 }
+                             });
 }
 
 void

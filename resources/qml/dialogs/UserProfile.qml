@@ -70,7 +70,7 @@ ApplicationWindow {
                 displayName: profile.displayName
                 userid: profile.userid
                 Layout.alignment: Qt.AlignHCenter
-                onClicked: TimelineManager.openImageOverlay(profile.avatarUrl, "")
+                onClicked: TimelineManager.openImageOverlay(null, profile.avatarUrl, "")
 
                 ImageButton {
                     hoverEnabled: true

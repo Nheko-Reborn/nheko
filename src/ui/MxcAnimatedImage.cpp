@@ -20,10 +20,12 @@
 void
 MxcAnimatedImage::startDownload()
 {
+    nhlog::ui()->debug("START DOWNLOAD!!!");
     if (!room_)
         return;
     if (eventId_.isEmpty())
         return;
+    nhlog::ui()->debug("START DOWNLOAD2!!!");
 
     auto event = room_->eventById(eventId_);
     if (!event) {
@@ -92,7 +94,9 @@ MxcAnimatedImage::startDownload()
               "Playing movie with size: {}, {}", buffer.bytesAvailable(), buffer.isOpen());
             movie.setFormat(mimeType);
             movie.setDevice(&buffer);
-            movie.setScaledSize(this->size().toSize());
+
+            if (height() != 0 && width() != 0)
+                movie.setScaledSize(this->size().toSize());
             if (buffer.bytesAvailable() <
                 4LL * 1024 * 1024 * 1024) // cache images smaller than 4MB in RAM
                 movie.setCacheMode(QMovie::CacheAll);
@@ -145,6 +149,17 @@ MxcAnimatedImage::startDownload()
                              });
 }
 
+void
+MxcAnimatedImage::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    QQuickItem::geometryChanged(newGeometry, oldGeometry);
+
+    if (newGeometry.size() != oldGeometry.size()) {
+        if (height() != 0 && width() != 0)
+            movie.setScaledSize(newGeometry.size().toSize());
+    }
+}
+
 QSGNode *
 MxcAnimatedImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
 {
@@ -171,8 +186,8 @@ MxcAnimatedImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeD
         return nullptr;
     }
 
-    n->setRect(QRect(0, 0, width(), height()));
-    n->setFiltering(QSGTexture::Nearest);
+    n->setRect(0, 0, width(), height());
+    n->setFiltering(QSGTexture::Linear);
     n->setMipmapFiltering(QSGTexture::None);
 
     return n;

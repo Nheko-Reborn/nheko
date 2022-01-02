@@ -60,6 +60,7 @@ public:
         }
     }
 
+    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry) override;
     QSGNode *updatePaintNode(QSGNode *oldNode,
                              QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;
 

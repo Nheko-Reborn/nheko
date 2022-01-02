@@ -310,7 +310,6 @@ set(SRC_FILES
 	# Dialogs
 	src/dialogs/CreateRoom.cpp
 	src/dialogs/FallbackAuth.cpp
-	src/dialogs/ImageOverlay.cpp
 	src/dialogs/PreviewUploadOverlay.cpp
 	src/dialogs/ReCaptcha.cpp
 
@@ -519,7 +518,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	# Dialogs
 	src/dialogs/CreateRoom.h
 	src/dialogs/FallbackAuth.h
-	src/dialogs/ImageOverlay.h
 	src/dialogs/PreviewUploadOverlay.h
 	src/dialogs/ReCaptcha.h
 

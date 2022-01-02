@@ -63,10 +63,9 @@ Item {
     }
 
     TapHandler {
-        // TODO(Nico): Replace this with a qml thingy, that also can show animated images
-        enabled: type == MtxEvent.ImageMessage && (img.status == Image.Ready || mxcimage.loaded)
+        //enabled: type == MtxEvent.ImageMessage && (img.status == Image.Ready || mxcimage.loaded)
         onSingleTapped: {
-            TimelineManager.openImageOverlay(url, room.data.eventId);
+            TimelineManager.openImageOverlay(room, url, eventId);
             eventPoint.accepted = true;
         }
         gesturePolicy: TapHandler.ReleaseWithinBounds

@@ -60,8 +60,9 @@ public:
 
     Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
     bool isWindowFocused() const { return isWindowFocused_; }
-    Q_INVOKABLE void openImageOverlay(QString mxcUrl, QString eventId);
+    Q_INVOKABLE void openImageOverlay(TimelineModel *room, QString mxcUrl, QString eventId);
     Q_INVOKABLE void openImagePackSettings(QString roomid);
+    Q_INVOKABLE void saveMedia(QString mxcUrl);
     Q_INVOKABLE QColor userColor(QString id, QColor background);
     Q_INVOKABLE QString escapeEmoji(QString str) const;
     Q_INVOKABLE QString htmlEscape(QString str) const { return str.toHtmlEscaped(); }
@@ -85,13 +86,13 @@ signals:
     void narrowViewChanged();
     void focusChanged();
     void focusInput();
-    void openImageOverlayInternalCb(QString eventId, QImage img);
     void openRoomMembersDialog(MemberList *members, TimelineModel *room);
     void openRoomSettingsDialog(RoomSettings *settings);
     void openInviteUsersDialog(InviteesModel *invitees);
     void openProfile(UserProfile *profile);
     void showImagePackSettings(TimelineModel *room, ImagePackListModel *packlist);
     void openLeaveRoomDialog(QString roomid);
+    void showImageOverlay(TimelineModel *room, QString eventId, QString url);
 
 public slots:
     void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
@@ -119,9 +120,6 @@ public slots:
     void forwardMessageToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 
     RoomlistModel *rooms() { return rooms_; }
-
-private slots:
-    void openImageOverlayInternal(QString eventId, QImage img);
 
 private:
 #ifdef USE_QUICK_VIEW
