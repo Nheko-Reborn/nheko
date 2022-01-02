@@ -230,25 +230,17 @@ decodeAC(std::string_view value, float maximumValue)
         return decodeAC(decode83(value), maximumValue);
 }
 
-Color
-multiplyBasisFunction(Components components, int width, int height, unsigned char *pixels)
+std::vector<float>
+bases_for(size_t dimension, size_t components)
 {
-        Color c{};
-        float normalisation = (components.x == 0 && components.y == 0) ? 1 : 2;
-
-        for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
-                        float basis = std::cos(pi<float> * components.x * x / float(width)) *
-                                      std::cos(pi<float> * components.y * y / float(height));
-                        c.r += basis * srgbToLinear(pixels[3 * x + 0 + y * width * 3]);
-                        c.g += basis * srgbToLinear(pixels[3 * x + 1 + y * width * 3]);
-                        c.b += basis * srgbToLinear(pixels[3 * x + 2 + y * width * 3]);
+        std::vector<float> bases(dimension * components, 0.f);
+        auto scale = pi<float> / float(dimension);
+        for (size_t x = 0; x < dimension; x++) {
+                for (size_t nx = 0; nx < size_t(components); nx++) {
+                        bases[x * components + nx] = std::cos(scale * float(nx * x));
                 }
         }
-
-        float scale = normalisation / (width * height);
-        c *= scale;
-        return c;
+        return bases;
 }
 }
 
@@ -281,23 +273,10 @@ decode(std::string_view blurhash, size_t width, size_t height, size_t bytesPerPi
                 return {};
         }
 
-        i.image.reserve(height * width * bytesPerPixel);
+        i.image = decltype(i.image)(height * width * bytesPerPixel, 255);
 
-        std::vector<float> basis_x(width * components.x, 0.f);
-        std::vector<float> basis_y(height * components.y, 0.f);
-
-        for (size_t x = 0; x < width; x++) {
-                for (size_t nx = 0; nx < size_t(components.x); nx++) {
-                        basis_x[x * components.x + nx] =
-                          std::cos(pi<float> * float(nx * x) / float(width));
-                }
-        }
-        for (size_t y = 0; y < height; y++) {
-                for (size_t ny = 0; ny < size_t(components.y); ny++) {
-                        basis_y[y * components.y + ny] =
-                          std::cos(pi<float> * float(ny * y) / float(height));
-                }
-        }
+        std::vector<float> basis_x = bases_for(width, components.x);
+        std::vector<float> basis_y = bases_for(height, components.y);
 
         for (size_t y = 0; y < height; y++) {
                 for (size_t x = 0; x < width; x++) {
@@ -311,12 +290,12 @@ decode(std::string_view blurhash, size_t width, size_t height, size_t bytesPerPi
                                 }
                         }
 
-                        i.image.push_back(static_cast<unsigned char>(linearToSrgb(c.r)));
-                        i.image.push_back(static_cast<unsigned char>(linearToSrgb(c.g)));
-                        i.image.push_back(static_cast<unsigned char>(linearToSrgb(c.b)));
-
-                        for (size_t p = 3; p < bytesPerPixel; p++)
-                                i.image.push_back(255);
+                        i.image[(y * width + x) * bytesPerPixel + 0] =
+                          static_cast<unsigned char>(linearToSrgb(c.r));
+                        i.image[(y * width + x) * bytesPerPixel + 1] =
+                          static_cast<unsigned char>(linearToSrgb(c.g));
+                        i.image[(y * width + x) * bytesPerPixel + 2] =
+                          static_cast<unsigned char>(linearToSrgb(c.b));
                 }
         }
 
@@ -333,12 +312,35 @@ encode(unsigned char *image, size_t width, size_t height, int components_x, int 
             components_y > 9 || !image)
                 return "";
 
-        std::vector<Color> factors;
-        factors.reserve(components_x * components_y);
-        for (int y = 0; y < components_y; y++) {
-                for (int x = 0; x < components_x; x++) {
-                        factors.push_back(multiplyBasisFunction({x, y}, width, height, image));
+        std::vector<float> basis_x = bases_for(width, components_x);
+        std::vector<float> basis_y = bases_for(height, components_y);
+
+        std::vector<Color> factors(components_x * components_y, Color{});
+        for (size_t y = 0; y < height; y++) {
+                for (size_t x = 0; x < width; x++) {
+                        Color linear{srgbToLinear(image[3 * x + 0 + y * width * 3]),
+                                     srgbToLinear(image[3 * x + 1 + y * width * 3]),
+                                     srgbToLinear(image[3 * x + 2 + y * width * 3])};
+
+                        // other half of normalization.
+                        linear *= 1.f / width;
+
+                        for (size_t ny = 0; ny < size_t(components_y); ny++) {
+                                for (size_t nx = 0; nx < size_t(components_x); nx++) {
+                                        float basis = basis_x[x * size_t(components_x) + nx] *
+                                                      basis_y[y * size_t(components_y) + ny];
+                                        factors[ny * components_x + nx] += linear * basis;
+                                }
+                        }
                 }
+        }
+
+        // scale by normalization. Half the scaling is done in the previous loop to prevent going
+        // too far outside the float range.
+        for (size_t i = 0; i < factors.size(); i++) {
+                float normalisation = (i == 0) ? 1 : 2;
+                float scale         = normalisation / (height);
+                factors[i] *= scale;
         }
 
         assert(factors.size() > 0);
