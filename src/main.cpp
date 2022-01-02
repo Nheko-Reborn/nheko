@@ -34,6 +34,11 @@
 #include "emoji/MacHelper.h"
 #endif
 
+#if defined(GSTREAMER_AVAILABLE) && (defined(Q_OS_MAC) || defined(Q_OS_WINDOWS))
+#include <QAbstractEventDispatcher>
+#include <gst/gst.h>
+#endif
+
 #ifdef QML_DEBUGGING
 #include <QQmlDebuggingEnabler>
 QQmlDebuggingEnabler enabler;
@@ -98,6 +103,23 @@ void
 registerSignalHandlers()
 {}
 
+#endif
+
+#if defined(GSTREAMER_AVAILABLE) && (defined(Q_OS_MAC) || defined(Q_OS_WINDOWS))
+GMainLoop *gloop = 0;
+GThread *gthread = 0;
+
+extern "C"
+{
+    static gpointer glibMainLoopThreadFunc(gpointer)
+    {
+        gloop = g_main_loop_new(0, false);
+        g_main_loop_run(gloop);
+        g_main_loop_unref(gloop);
+        gloop = 0;
+        return 0;
+    }
+} // extern "C"
 #endif
 
 QPoint
@@ -219,6 +241,16 @@ main(int argc, char *argv[])
     createStandardDirectory(QStandardPaths::AppDataLocation);
 
     registerSignalHandlers();
+
+#if defined(GSTREAMER_AVAILABLE) && (defined(Q_OS_MAC) || defined(Q_OS_WINDOWS))
+    // If the version of Qt we're running in does not use GLib, we need to
+    // start a GMainLoop so that gstreamer can dispatch events.
+    const QMetaObject *mo = QAbstractEventDispatcher::instance(qApp->thread())->metaObject();
+    if (gloop == 0 && strcmp(mo->className(), "QEventDispatcherGlib") != 0 &&
+        strcmp(mo->superClass()->className(), "QEventDispatcherGlib") != 0) {
+        gthread = g_thread_new(0, glibMainLoopThreadFunc, 0);
+    }
+#endif
 
     if (parser.isSet(debugOption))
         nhlog::enable_debug_log_from_commandline = true;

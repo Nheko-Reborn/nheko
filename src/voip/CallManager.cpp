@@ -292,7 +292,7 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
         return;
     }
 
-    const QString &ringtone = ChatPage::instance()->userSettings()->ringtone();
+    const QString &ringtone = UserSettings::instance()->ringtone();
     if (ringtone != QLatin1String("Mute"))
         playRingtone(ringtone == QLatin1String("Default")
                        ? QUrl(QStringLiteral("qrc:/media/media/ring.ogg"))
@@ -431,8 +431,8 @@ QStringList
 CallManager::devices(bool isVideo) const
 {
     QStringList ret;
-    const QString &defaultDevice = isVideo ? ChatPage::instance()->userSettings()->camera()
-                                           : ChatPage::instance()->userSettings()->microphone();
+    const QString &defaultDevice =
+      isVideo ? UserSettings::instance()->camera() : UserSettings::instance()->microphone();
     std::vector<std::string> devices =
       CallDevices::instance().names(isVideo, defaultDevice.toStdString());
     ret.reserve(devices.size());

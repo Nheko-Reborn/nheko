@@ -8,7 +8,6 @@
 #include <string_view>
 
 #include "CallDevices.h"
-#include "ChatPage.h"
 #include "Logging.h"
 #include "UserSettingsPage.h"
 
@@ -70,7 +69,7 @@ addFrameRate(std::vector<std::string> &rates, const FrameRate &rate)
 void
 setDefaultDevice(bool isVideo)
 {
-    auto settings = ChatPage::instance()->userSettings();
+    auto settings = UserSettings::instance();
     if (isVideo && settings->camera().isEmpty()) {
         const VideoSource &camera = videoSources_.front();
         settings->setCamera(QString::fromStdString(camera.name));
@@ -320,7 +319,7 @@ CallDevices::frameRates(const std::string &cameraName, const std::string &resolu
 GstDevice *
 CallDevices::audioDevice() const
 {
-    std::string name = ChatPage::instance()->userSettings()->microphone().toStdString();
+    std::string name = UserSettings::instance()->microphone().toStdString();
     if (auto it = std::find_if(audioSources_.cbegin(),
                                audioSources_.cend(),
                                [&name](const auto &s) { return s.name == name; });
@@ -336,7 +335,7 @@ CallDevices::audioDevice() const
 GstDevice *
 CallDevices::videoDevice(std::pair<int, int> &resolution, std::pair<int, int> &frameRate) const
 {
-    auto settings    = ChatPage::instance()->userSettings();
+    auto settings    = UserSettings::instance();
     std::string name = settings->camera().toStdString();
     if (auto s = getVideoSource(name); s) {
         nhlog::ui()->debug("WebRTC: camera: {}", name);
