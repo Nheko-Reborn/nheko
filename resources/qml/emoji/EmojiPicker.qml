@@ -289,6 +289,10 @@ Menu {
                             horizontalAlignment: Image.AlignHCenter
                             verticalAlignment: Image.AlignVCenter
                             fillMode: Image.Pad
+                            height: 32
+                            width: 32
+                            smooth: true
+                            mipmap: true
                             sourceSize.width: 32 * Screen.devicePixelRatio
                             sourceSize.height: 32 * Screen.devicePixelRatio
                             source: "image://colorimage/" + model.image + "?" + (hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
