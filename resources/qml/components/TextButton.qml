@@ -42,8 +42,6 @@ AbstractButton {
 
     Ripple {
         color: Qt.rgba(buttonTextColor.r, buttonTextColor.g, buttonTextColor.b, 0.5)
-        clip: false
-        rippleTarget: button
     }
 
 }

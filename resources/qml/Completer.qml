@@ -129,10 +129,9 @@ Popup {
                      if (popup.completerName == "room")
                          popup.completionSelected(model.roomid);
                 }
-                Ripple {
-                    rippleTarget: mouseArea
-                    color: Qt.rgba(Nheko.colors.base.r, Nheko.colors.base.g, Nheko.colors.base.b, 0.5)
-                 }
+            }
+            Ripple {
+                color: Qt.rgba(Nheko.colors.base.r, Nheko.colors.base.g, Nheko.colors.base.b, 0.5)
             }
 
             DelegateChooser {

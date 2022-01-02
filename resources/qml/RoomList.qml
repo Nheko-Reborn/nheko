@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "./dialogs"
+import "./ui"
 import Qt.labs.platform 1.1 as Platform
 import QtQml 2.12
 import QtQuick 2.15
@@ -136,6 +137,10 @@ Page {
             required property bool hasUnreadMessages
             required property bool isDirect
             required property string directChatOtherUserId
+
+            Ripple {
+                color: Qt.rgba(Nheko.colors.dark.r, Nheko.colors.dark.g, Nheko.colors.dark.b, 0.5)
+            }
 
             height: avatarSize + 2 * Nheko.paddingMedium
             width: ListView.view.width

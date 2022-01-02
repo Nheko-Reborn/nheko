@@ -47,17 +47,6 @@ Rectangle {
         anchors.fill: parent
         visible: Settings.useIdenticon && img.status != Image.Ready
         source: Settings.useIdenticon ? ("image://jdenticon/" + (userid !== "" ? userid : roomid) + "?radius=" + (Settings.avatarCircles ? 100 : 25)) : ""
-
-        MouseArea {
-            anchors.fill: parent
-
-            Ripple {
-                rippleTarget: parent
-                color: Qt.rgba(Nheko.colors.alternateBase.r, Nheko.colors.alternateBase.g, Nheko.colors.alternateBase.b, 0.5)
-            }
-
-        }
-
     }
 
     Image {
@@ -116,6 +105,10 @@ Rectangle {
         id: mouseArea
 
         onSingleTapped: avatar.clicked(eventPoint)
+    }
+
+    Ripple {
+        color: Qt.rgba(Nheko.colors.alternateBase.r, Nheko.colors.alternateBase.g, Nheko.colors.alternateBase.b, 0.5)
     }
 
 }
