@@ -66,6 +66,7 @@ constexpr auto SYNC_STATE_DB("sync_state");
 //! Read receipts per room/event.
 constexpr auto READ_RECEIPTS_DB("read_receipts");
 constexpr auto NOTIFICATIONS_DB("sent_notifications");
+constexpr auto PRESENCE_DB("presence");
 
 //! Encryption related databases.
 
@@ -293,6 +294,7 @@ Cache::setup()
     invitesDb_        = lmdb::dbi::open(txn, INVITES_DB, MDB_CREATE);
     readReceiptsDb_   = lmdb::dbi::open(txn, READ_RECEIPTS_DB, MDB_CREATE);
     notificationsDb_  = lmdb::dbi::open(txn, NOTIFICATIONS_DB, MDB_CREATE);
+    presenceDb_       = lmdb::dbi::open(txn, PRESENCE_DB, MDB_CREATE);
 
     // Device management
     devicesDb_    = lmdb::dbi::open(txn, DEVICES_DB, MDB_CREATE);
@@ -1701,9 +1703,7 @@ Cache::savePresence(
   const std::vector<mtx::events::Event<mtx::events::presence::Presence>> &presenceUpdates)
 {
     for (const auto &update : presenceUpdates) {
-        auto presenceDb = getPresenceDb(txn);
-
-        presenceDb.put(txn, update.sender, json(update.content).dump());
+        presenceDb_.put(txn, update.sender, json(update.content).dump());
     }
 }
 
@@ -3905,17 +3905,16 @@ Cache::avatarUrl(const QString &room_id, const QString &user_id)
 mtx::events::presence::Presence
 Cache::presence(const std::string &user_id)
 {
+    mtx::events::presence::Presence presence_{};
+    presence_.presence = mtx::presence::PresenceState::offline;
+
     if (user_id.empty())
-        return {};
+        return presence_;
 
     std::string_view presenceVal;
 
     auto txn = ro_txn(env_);
-    auto db  = getPresenceDb(txn);
-    auto res = db.get(txn, user_id, presenceVal);
-
-    mtx::events::presence::Presence presence_{};
-    presence_.presence = mtx::presence::PresenceState::offline;
+    auto res = presenceDb_.get(txn, user_id, presenceVal);
 
     if (res) {
         presence_ = json::parse(std::string_view(presenceVal.data(), presenceVal.size()));

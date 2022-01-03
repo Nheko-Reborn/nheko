@@ -638,8 +638,6 @@ private:
         return lmdb::dbi::open(txn, std::string(room_id + "/mentions").c_str(), MDB_CREATE);
     }
 
-    lmdb::dbi getPresenceDb(lmdb::txn &txn) { return lmdb::dbi::open(txn, "presence", MDB_CREATE); }
-
     lmdb::dbi getUserKeysDb(lmdb::txn &txn) { return lmdb::dbi::open(txn, "user_key", MDB_CREATE); }
 
     lmdb::dbi getVerificationDb(lmdb::txn &txn)
@@ -678,6 +676,7 @@ private:
     lmdb::dbi invitesDb_;
     lmdb::dbi readReceiptsDb_;
     lmdb::dbi notificationsDb_;
+    lmdb::dbi presenceDb_;
 
     lmdb::dbi devicesDb_;
     lmdb::dbi deviceKeysDb_;
