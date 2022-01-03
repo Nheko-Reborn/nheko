@@ -2788,39 +2788,43 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
 std::vector<RoomMember>
 Cache::getMembersFromInvite(const std::string &room_id, std::size_t startIndex, std::size_t len)
 {
-    auto txn    = ro_txn(env_);
-    auto db     = getInviteMembersDb(txn, room_id);
-    auto cursor = lmdb::cursor::open(txn, db);
-
-    std::size_t currentIndex = 0;
-
-    const auto endIndex = std::min(startIndex + len, db.size(txn));
-
+    auto txn = ro_txn(env_);
     std::vector<RoomMember> members;
 
-    std::string_view user_id, user_data;
-    while (cursor.get(user_id, user_data, MDB_NEXT)) {
-        if (currentIndex < startIndex) {
+    try {
+        auto db     = getInviteMembersDb(txn, room_id);
+        auto cursor = lmdb::cursor::open(txn, db);
+
+        std::size_t currentIndex = 0;
+
+        const auto endIndex = std::min(startIndex + len, db.size(txn));
+
+        std::string_view user_id, user_data;
+        while (cursor.get(user_id, user_data, MDB_NEXT)) {
+            if (currentIndex < startIndex) {
+                currentIndex += 1;
+                continue;
+            }
+
+            if (currentIndex >= endIndex)
+                break;
+
+            try {
+                MemberInfo tmp = json::parse(user_data);
+                members.emplace_back(RoomMember{QString::fromStdString(std::string(user_id)),
+                                                QString::fromStdString(tmp.name),
+                                                tmp.is_direct});
+            } catch (const json::exception &e) {
+                nhlog::db()->warn("{}", e.what());
+            }
+
             currentIndex += 1;
-            continue;
         }
 
-        if (currentIndex >= endIndex)
-            break;
-
-        try {
-            MemberInfo tmp = json::parse(user_data);
-            members.emplace_back(RoomMember{QString::fromStdString(std::string(user_id)),
-                                            QString::fromStdString(tmp.name),
-                                            tmp.is_direct});
-        } catch (const json::exception &e) {
-            nhlog::db()->warn("{}", e.what());
-        }
-
-        currentIndex += 1;
+        cursor.close();
+    } catch (const lmdb::error &e) {
+        nhlog::db()->warn("Failed to retrieve members {}", e.what());
     }
-
-    cursor.close();
 
     return members;
 }
