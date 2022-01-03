@@ -4,7 +4,7 @@
 <context>
     <name>ActiveCallBar</name>
     <message>
-        <location filename="../qml/voip/ActiveCallBar.qml" line="+107"/>
+        <location filename="../qml/voip/ActiveCallBar.qml" line="+108"/>
         <source>Calling...</source>
         <translation>Appel en cours…</translation>
     </message>
@@ -38,7 +38,7 @@
 <context>
     <name>AwaitingVerificationConfirmation</name>
     <message>
-        <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+12"/>
+        <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+13"/>
         <source>Awaiting Confirmation</source>
         <translation>Attente de confirmation</translation>
     </message>
@@ -56,7 +56,7 @@
 <context>
     <name>Cache</name>
     <message numerus="yes">
-        <location filename="../../src/Cache.cpp" line="+2445"/>
+        <location filename="../../src/Cache.cpp" line="+2446"/>
         <source>%1 and %n other(s)</source>
         <translation>
             <numerusform>%1 et %n autre</numerusform>
@@ -73,7 +73,7 @@
 <context>
     <name>CallInvite</name>
     <message>
-        <location filename="../qml/voip/CallInvite.qml" line="+72"/>
+        <location filename="../qml/voip/CallInvite.qml" line="+73"/>
         <source>Video Call</source>
         <translation>Appel vidéo</translation>
     </message>
@@ -91,7 +91,7 @@
 <context>
     <name>CallInviteBar</name>
     <message>
-        <location filename="../qml/voip/CallInviteBar.qml" line="+65"/>
+        <location filename="../qml/voip/CallInviteBar.qml" line="+66"/>
         <source>Video Call</source>
         <translation>Appel vidéo</translation>
     </message>
@@ -113,12 +113,12 @@
     <message>
         <location line="+12"/>
         <source>Unknown microphone: %1</source>
-        <translation>Microphone inconnu : %1</translation>
+        <translation>Microphone inconnu&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Unknown camera: %1</source>
-        <translation>Caméra inconnue : %1</translation>
+        <translation>Caméra inconnue&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -134,7 +134,7 @@
 <context>
     <name>CallManager</name>
     <message>
-        <location filename="../../src/voip/CallManager.cpp" line="+518"/>
+        <location filename="../../src/voip/CallManager.cpp" line="+519"/>
         <source>Entire screen</source>
         <translation>Tout l&apos;écran</translation>
     </message>
@@ -142,7 +142,7 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+126"/>
+        <location filename="../../src/ChatPage.cpp" line="+127"/>
         <source>Failed to invite user: %1</source>
         <translation>Échec lors de l&apos;invitation de %1</translation>
     </message>
@@ -165,7 +165,7 @@
     <message>
         <location line="+41"/>
         <source>Failed to open database, logging out!</source>
-        <translation>Impossible d&apos;ouvrir la base de données, déconnexion !</translation>
+        <translation>Impossible d&apos;ouvrir la base de données, déconnexion&#x202f;!</translation>
     </message>
     <message>
         <location line="+304"/>
@@ -191,12 +191,12 @@
     <message>
         <location line="-432"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation>Voulez-vous vraiment inviter %1 (%2) ?</translation>
+        <translation>Voulez-vous vraiment inviter %1 (%2)&#x202f;?</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Failed to invite %1 to %2: %3</source>
-        <translation>Échec de l&apos;invitation de %1 dans %2 : %3</translation>
+        <translation>Échec de l&apos;invitation de %1 dans %2&#xa0;: %3</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -206,7 +206,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to kick %1 (%2)?</source>
-        <translation>Voulez-vous vraiment expulser %1 (%2) ?</translation>
+        <translation>Voulez-vous vraiment expulser %1 (%2)&#x202f;?</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -221,7 +221,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to ban %1 (%2)?</source>
-        <translation>Voulez-vous vraiment bannir %1 (%2) ?</translation>
+        <translation>Voulez-vous vraiment bannir %1 (%2)&#x202f;?</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -241,12 +241,12 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to unban %1 (%2)?</source>
-        <translation>Voulez-vous vraiment annuler le bannissement de %1 (%2) ?</translation>
+        <translation>Voulez-vous vraiment annuler le bannissement de %1 (%2)&#x202f;?</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Failed to unban %1 in %2: %3</source>
-        <translation>Échec de l&apos;annulation du bannissement de %1 dans %2 : %3</translation>
+        <translation>Échec de l&apos;annulation du bannissement de %1 dans %2&#xa0;: %3</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -261,7 +261,7 @@
     <message>
         <location line="-879"/>
         <source>Cache migration failed!</source>
-        <translation>Échec de la migration du cache !</translation>
+        <translation>Échec de la migration du cache&#x202f;!</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -283,18 +283,18 @@
     <message>
         <location line="+93"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation>Échec de la configuration des clés de chiffrement. Réponse du serveur : %1 %2. Veuillez réessayer plus tard.</translation>
+        <translation>Échec de la configuration des clés de chiffrement. Réponse du serveur&#xa0;: %1 %2. Veuillez réessayer plus tard.</translation>
     </message>
     <message>
         <location line="+34"/>
         <location line="+111"/>
         <source>Please try to login again: %1</source>
-        <translation>Veuillez re-tenter vous reconnecter : %1</translation>
+        <translation>Veuillez re-tenter vous reconnecter&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>Failed to join room: %1</source>
-        <translation>Impossible de rejoindre le salon : %1</translation>
+        <translation>Impossible de rejoindre le salon&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -304,28 +304,28 @@
     <message>
         <location line="+6"/>
         <source>Failed to remove invite: %1</source>
-        <translation>Impossible de supprimer l&apos;invitation : %1</translation>
+        <translation>Impossible de supprimer l&apos;invitation&#x202f;: %1</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Room creation failed: %1</source>
-        <translation>Échec de la création du salon : %1</translation>
+        <translation>Échec de la création du salon&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to leave room: %1</source>
-        <translation>Impossible de quitter le salon : %1</translation>
+        <translation>Impossible de quitter le salon&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+66"/>
         <source>Failed to kick %1 from %2: %3</source>
-        <translation>Échec de l&apos;expulsion de %1 de %2  : %3</translation>
+        <translation>Échec de l&apos;expulsion de %1 de %2&#x202f;&#x202f;: %3</translation>
     </message>
 </context>
 <context>
     <name>CommunitiesList</name>
     <message>
-        <location filename="../qml/CommunitiesList.qml" line="+45"/>
+        <location filename="../qml/CommunitiesList.qml" line="+46"/>
         <source>Hide rooms with this tag or from this space by default.</source>
         <translation>Cacher par défaut les salons avec cette étiquette ou de cet espace.</translation>
     </message>
@@ -343,7 +343,7 @@
 <context>
     <name>CommunitiesModel</name>
     <message>
-        <location filename="../../src/timeline/CommunitiesModel.cpp" line="+57"/>
+        <location filename="../../src/timeline/CommunitiesModel.cpp" line="+58"/>
         <source>All rooms</source>
         <translation>Tous les salons</translation>
     </message>
@@ -403,12 +403,12 @@
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase to decrypt your secrets:</source>
-        <translation>Entrez votre clé de récupération ou phrase de passe pour déchiffrer vos secrets :</translation>
+        <translation>Entrez votre clé de récupération ou phrase de passe pour déchiffrer vos secrets&#xa0;:</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase called %1 to decrypt your secrets:</source>
-        <translation>Entrez votre clé de récupération ou votre phrase de passe nommée %1 pour déchiffrer vos secrets :</translation>
+        <translation>Entrez votre clé de récupération ou votre phrase de passe nommée %1 pour déchiffrer vos secrets&#xa0;:</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -424,30 +424,30 @@
 <context>
     <name>DigitVerification</name>
     <message>
-        <location filename="../qml/device-verification/DigitVerification.qml" line="+11"/>
+        <location filename="../qml/device-verification/DigitVerification.qml" line="+12"/>
         <source>Verification Code</source>
         <translation>Code de vérification</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>Veuillez vérifier les chiffres suivants. Vous devriez voir les mêmes chiffres des deux côtés. Si ceux-ci diffèrent, veuillez choisir « Ils sont différents ! » pour annuler la vérification !</translation>
+        <translation>Veuillez vérifier les chiffres suivants. Vous devriez voir les mêmes chiffres des deux côtés. Si ceux-ci diffèrent, veuillez choisir «&#x202f;Ils sont différents&#x202f;!&#x202f;» pour annuler la vérification&#x202f;!</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>They do not match!</source>
-        <translation>Ils sont différents !</translation>
+        <translation>Ils sont différents&#x202f;!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation>Ils sont identiques !</translation>
+        <translation>Ils sont identiques&#x202f;!</translation>
     </message>
 </context>
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+42"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+43"/>
         <source>Apply</source>
         <translation>Appliquer</translation>
     </message>
@@ -470,7 +470,7 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+69"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+70"/>
         <source>Search</source>
         <translation>Chercher</translation>
     </message>
@@ -518,30 +518,30 @@
 <context>
     <name>EmojiVerification</name>
     <message>
-        <location filename="../qml/device-verification/EmojiVerification.qml" line="+11"/>
+        <location filename="../qml/device-verification/EmojiVerification.qml" line="+12"/>
         <source>Verification Code</source>
         <translation>Code de vérification</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>Veuillez vérifier les émoji suivants. Vous devriez voir les mêmes émoji des deux côtés. S&apos;ils diffèrent, veuillez choisir « Ils sont différents ! » pour annuler la vérification !</translation>
+        <translation>Veuillez vérifier les émoji suivants. Vous devriez voir les mêmes émoji des deux côtés. S&apos;ils diffèrent, veuillez choisir « Ils sont différents&#x202f;!&#x202f;» pour annuler la vérification&#x202f;!</translation>
     </message>
     <message>
         <location line="+376"/>
         <source>They do not match!</source>
-        <translation>Ils sont différents !</translation>
+        <translation>Ils sont différents&#x202f;!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation>Ils sont identiques !</translation>
+        <translation>Ils sont identiques&#x202f;!</translation>
     </message>
 </context>
 <context>
     <name>Encrypted</name>
     <message>
-        <location filename="../qml/delegates/Encrypted.qml" line="+44"/>
+        <location filename="../qml/delegates/Encrypted.qml" line="+45"/>
         <source>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</source>
         <translation>Il n&apos;y a pas de clé pour déverrouiller ce message. Nous avons demandé la clé automatiquement, mais vous pouvez tenter de la demander à nouveau si vous êtes impatient.</translation>
     </message>
@@ -584,9 +584,9 @@
 <context>
     <name>EncryptionIndicator</name>
     <message>
-        <location filename="../qml/EncryptionIndicator.qml" line="+53"/>
+        <location filename="../qml/EncryptionIndicator.qml" line="+54"/>
         <source>This message is not encrypted!</source>
-        <translation>Ce message n&apos;est pas chiffré !</translation>
+        <translation>Ce message n&apos;est pas chiffré&#x202f;!</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -607,7 +607,7 @@
 <context>
     <name>Failed</name>
     <message>
-        <location filename="../qml/device-verification/Failed.qml" line="+11"/>
+        <location filename="../qml/device-verification/Failed.qml" line="+12"/>
         <source>Verification failed</source>
         <translation>Échec de la vérification</translation>
     </message>
@@ -619,7 +619,7 @@
     <message>
         <location line="+4"/>
         <source>Key mismatch detected!</source>
-        <translation>Clés non correspondantes détectées !</translation>
+        <translation>Clés non correspondantes détectées&#x202f;!</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -634,7 +634,7 @@
     <message>
         <location line="+2"/>
         <source>Verification messages received out of order!</source>
-        <translation>Messages de vérification reçus dans le désordre !</translation>
+        <translation>Messages de vérification reçus dans le désordre&#x202f;!</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -650,7 +650,7 @@
 <context>
     <name>ForwardCompleter</name>
     <message>
-        <location filename="../qml/ForwardCompleter.qml" line="+44"/>
+        <location filename="../qml/ForwardCompleter.qml" line="+45"/>
         <source>Forward Message</source>
         <translation>Transférer le message</translation>
     </message>
@@ -658,7 +658,7 @@
 <context>
     <name>ImagePackEditorDialog</name>
     <message>
-        <location filename="../qml/dialogs/ImagePackEditorDialog.qml" line="+24"/>
+        <location filename="../qml/dialogs/ImagePackEditorDialog.qml" line="+25"/>
         <source>Editing image pack</source>
         <translation>Modification du paquet d&apos;images</translation>
     </message>
@@ -758,7 +758,7 @@
 <context>
     <name>ImagePackSettingsDialog</name>
     <message>
-        <location filename="../qml/dialogs/ImagePackSettingsDialog.qml" line="+23"/>
+        <location filename="../qml/dialogs/ImagePackSettingsDialog.qml" line="+24"/>
         <source>Image pack settings</source>
         <translation>Paramètres des paquets d&apos;images</translation>
     </message>
@@ -811,7 +811,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+269"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+270"/>
         <source>Select a file</source>
         <translation>Sélectionnez un fichier</translation>
     </message>
@@ -829,7 +829,7 @@
 <context>
     <name>InviteDialog</name>
     <message>
-        <location filename="../qml/dialogs/InviteDialog.qml" line="+33"/>
+        <location filename="../qml/dialogs/InviteDialog.qml" line="+34"/>
         <source>Invite users to %1</source>
         <translation>Inviter des utilisateurs dans %1</translation>
     </message>
@@ -863,7 +863,7 @@
 <context>
     <name>JoinRoomDialog</name>
     <message>
-        <location filename="../qml/dialogs/JoinRoomDialog.qml" line="+14"/>
+        <location filename="../qml/dialogs/JoinRoomDialog.qml" line="+15"/>
         <source>Join room</source>
         <translation>Rejoindre le salon</translation>
     </message>
@@ -876,7 +876,7 @@
 <context>
     <name>LeaveRoomDialog</name>
     <message>
-        <location filename="../qml/dialogs/LeaveRoomDialog.qml" line="+15"/>
+        <location filename="../qml/dialogs/LeaveRoomDialog.qml" line="+16"/>
         <source>Leave room</source>
         <translation>Quitter le salon</translation>
     </message>
@@ -889,7 +889,7 @@
 <context>
     <name>LoginPage</name>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+81"/>
+        <location filename="../../src/LoginPage.cpp" line="+82"/>
         <source>Matrix ID</source>
         <translation>Identifiant Matrix</translation>
     </message>
@@ -904,9 +904,9 @@
 You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation>Votre nom de connexion. Un mxid doit commencer par un « @ » suivi de l&apos;identifiant. L&apos;identifiant doit être suivi du nom de serveur, séparé de celui-ci par « : ».
+        <translation>Votre nom de connexion. Un mxid doit commencer par un «&#x202f;@&#x202f;» suivi de l&apos;identifiant. L&apos;identifiant doit être suivi du nom de serveur, séparé de celui-ci par «&#x202f;:&#x202f;».
 Vous pouvez également spécifier l&apos;adresse de votre serveur ici, si votre serveur ne supporte pas l&apos;identification .well-known.
-Exemple : @utilisateur :monserveur.example.com
+Exemple&#x202f;: @utilisateur&#x202f;:monserveur.example.com
 Si Nheko n&apos;arrive pas à trouver votre serveur, il vous proposera de l&apos;indiquer manuellement.</translation>
     </message>
     <message>
@@ -944,7 +944,7 @@ Si Nheko n&apos;arrive pas à trouver votre serveur, il vous proposera de l&apos
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation>L&apos;adresse qui peut être utilisée pour joindre l&apos;API client de votre serveur.
-Exemple : https ://monserveur.example.com:8787</translation>
+Exemple&#xa0;: https&#x202f;://monserveur.example.com:8787</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -957,7 +957,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
         <location line="+153"/>
         <location line="+11"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
-        <translation>Vous avez entré un identifiant Matrix invalide  exemple correct : @moi:monserveur.example.com)</translation>
+        <translation>Vous avez entré un identifiant Matrix invalide  exemple correct&#x202f;: @moi:monserveur.example.com)</translation>
     </message>
     <message>
         <location line="-128"/>
@@ -1003,25 +1003,25 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>LogoutDialog</name>
     <message>
-        <location filename="../qml/dialogs/LogoutDialog.qml" line="+13"/>
+        <location filename="../qml/dialogs/LogoutDialog.qml" line="+14"/>
         <source>Log out</source>
         <translation>Se déconnecter</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A call is in progress. Log out?</source>
-        <translation>Un appel est en cours. Se déconnecter ?</translation>
+        <translation>Un appel est en cours. Se déconnecter&#x202f;?</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Are you sure you want to log out?</source>
-        <translation>Êtes-vous certain de vouloir vous déconnecter ?</translation>
+        <translation>Êtes-vous certain de vouloir vous déconnecter&#x202f;?</translation>
     </message>
 </context>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+182"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+183"/>
         <source>removed</source>
         <translation>retiré</translation>
     </message>
@@ -1033,7 +1033,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+22"/>
         <source>room name changed to: %1</source>
-        <translation>nom du salon changé en : %1</translation>
+        <translation>nom du salon changé en&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -1043,7 +1043,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+12"/>
         <source>topic changed to: %1</source>
-        <translation>sujet changé en : %1</translation>
+        <translation>sujet changé en&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -1078,7 +1078,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+12"/>
         <source>%1 created and configured room: %2</source>
-        <translation>%1 a créé et configuré le salon : %2</translation>
+        <translation>%1 a créé et configuré le salon&#xa0;: %2</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1119,7 +1119,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+44"/>
+        <location filename="../qml/MessageInput.qml" line="+45"/>
         <source>Hang up</source>
         <translation>Raccrocher</translation>
     </message>
@@ -1162,7 +1162,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+109"/>
+        <location filename="../qml/MessageView.qml" line="+110"/>
         <source>Edit</source>
         <translation>Modifier</translation>
     </message>
@@ -1272,7 +1272,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>NewVerificationRequest</name>
     <message>
-        <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+11"/>
+        <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+12"/>
         <source>Send Verification Request</source>
         <translation>Envoyer la demande de vérification</translation>
     </message>
@@ -1284,12 +1284,12 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+16"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation>Pour permettre à d&apos;autres utilisateurs de confirmer qu&apos;un appareil est vraiment le vôtre, vous pouvez le vérifier. Cela permet également aux sauvegardes de clés de déchiffrement de fonctionner automatiquement sur ces appareils, pour ne pas perdre vos messages chiffrés. Vérifier un appareil maintenant ? (Vérifiez que celui-ci est à proximité).</translation>
+        <translation>Pour permettre à d&apos;autres utilisateurs de confirmer qu&apos;un appareil est vraiment le vôtre, vous pouvez le vérifier. Cela permet également aux sauvegardes de clés de déchiffrement de fonctionner automatiquement sur ces appareils, pour ne pas perdre vos messages chiffrés. Vérifier un appareil maintenant&#x202f;? (Vérifiez que celui-ci est à proximité).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation>Pour permettre aux autres utilisateurs de vérifier quels appareils de votre compte sont réellement les vôtres, vous pouvez les vérifier. Cela permet également à la sauvegarde des clés de fonctionner automatiquement. Vérifier %1 maintenant ?</translation>
+        <translation>Pour permettre aux autres utilisateurs de vérifier quels appareils de votre compte sont réellement les vôtres, vous pouvez les vérifier. Cela permet également à la sauvegarde des clés de fonctionner automatiquement. Vérifier %1 maintenant&#x202f;?</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1335,7 +1335,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>NotificationWarning</name>
     <message>
-        <location filename="../qml/NotificationWarning.qml" line="+32"/>
+        <location filename="../qml/NotificationWarning.qml" line="+33"/>
         <source>You are about to notify the whole room</source>
         <translation>Vous allez envoyer une notification à tous les membres du salon</translation>
     </message>
@@ -1343,9 +1343,9 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>NotificationsManager</name>
     <message>
-        <location filename="../../src/notifications/Manager.cpp" line="+22"/>
-        <location filename="../../src/notifications/ManagerMac.cpp" line="+45"/>
-        <location filename="../../src/notifications/ManagerWin.cpp" line="+74"/>
+        <location filename="../../src/notifications/Manager.cpp" line="+23"/>
+        <location filename="../../src/notifications/ManagerMac.cpp" line="+46"/>
+        <location filename="../../src/notifications/ManagerWin.cpp" line="+75"/>
         <source>%1 sent an encrypted message</source>
         <translation>%1 a envoyé un message chiffré</translation>
     </message>
@@ -1375,9 +1375,9 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>PlaceCall</name>
     <message>
-        <location filename="../qml/voip/PlaceCall.qml" line="+48"/>
+        <location filename="../qml/voip/PlaceCall.qml" line="+49"/>
         <source>Place a call to %1?</source>
-        <translation>Appeler %1 ?</translation>
+        <translation>Appeler %1&#x202f;?</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1408,15 +1408,15 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>Placeholder</name>
     <message>
-        <location filename="../qml/delegates/Placeholder.qml" line="+11"/>
+        <location filename="../qml/delegates/Placeholder.qml" line="+12"/>
         <source>unimplemented event: </source>
-        <translation>Évènement non implémenté : </translation>
+        <translation>Évènement non implémenté&#xa0;: </translation>
     </message>
 </context>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+189"/>
+        <location filename="../../src/main.cpp" line="+212"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Créer un profil unique, vous permettant de vous connecter simultanément à plusieurs comptes et de lancer plusieurs instances de Nheko.</translation>
     </message>
@@ -1434,7 +1434,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>ReadReceipts</name>
     <message>
-        <location filename="../qml/dialogs/ReadReceipts.qml" line="+41"/>
+        <location filename="../qml/dialogs/ReadReceipts.qml" line="+42"/>
         <source>Read receipts</source>
         <translation>Accusés de lecture</translation>
     </message>
@@ -1442,7 +1442,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>ReadReceiptsModel</name>
     <message>
-        <location filename="../../src/ReadReceiptsModel.cpp" line="+110"/>
+        <location filename="../../src/ReadReceiptsModel.cpp" line="+111"/>
         <source>Yesterday, %1</source>
         <translation>Hier, %1</translation>
     </message>
@@ -1450,7 +1450,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+81"/>
+        <location filename="../../src/RegisterPage.cpp" line="+82"/>
         <source>Username</source>
         <translation>Nom d&apos;utilisateur</translation>
     </message>
@@ -1534,7 +1534,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../qml/ReplyPopup.qml" line="+63"/>
+        <location filename="../qml/ReplyPopup.qml" line="+64"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
@@ -1547,7 +1547,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>RoomDirectory</name>
     <message>
-        <location filename="../qml/dialogs/RoomDirectory.qml" line="+25"/>
+        <location filename="../qml/dialogs/RoomDirectory.qml" line="+26"/>
         <source>Explore Public Rooms</source>
         <translation>Explorer les salons publics</translation>
     </message>
@@ -1565,7 +1565,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1922"/>
+        <location filename="../../src/Cache.cpp" line="+1926"/>
         <source>no version stored</source>
         <translation>pas de version enregistrée</translation>
     </message>
@@ -1573,7 +1573,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+67"/>
+        <location filename="../qml/RoomList.qml" line="+69"/>
         <source>New tag</source>
         <translation>Nouvelle étiquette</translation>
     </message>
@@ -1590,7 +1590,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+5"/>
         <source>Tag room as:</source>
-        <translation>Étiqueter le salon comme :</translation>
+        <translation>Étiqueter le salon comme&#xa0;:</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1613,7 +1613,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
         <translation>Créer une nouvelle étiquette…</translation>
     </message>
     <message>
-        <location line="+291"/>
+        <location line="+295"/>
         <source>Status Message</source>
         <translation>Message de statut</translation>
     </message>
@@ -1689,7 +1689,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>RoomMembers</name>
     <message>
-        <location filename="../qml/dialogs/RoomMembers.qml" line="+19"/>
+        <location filename="../qml/dialogs/RoomMembers.qml" line="+20"/>
         <source>Members of %1</source>
         <translation>Membres de %1</translation>
     </message>
@@ -1731,7 +1731,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>RoomSettings</name>
     <message>
-        <location filename="../qml/dialogs/RoomSettings.qml" line="+26"/>
+        <location filename="../qml/dialogs/RoomSettings.qml" line="+27"/>
         <source>Room Settings</source>
         <translation>Configuration du salon</translation>
     </message>
@@ -1847,7 +1847,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+256"/>
         <source>Failed to enable encryption: %1</source>
-        <translation>Échec de l&apos;activation du chiffrement : %1</translation>
+        <translation>Échec de l&apos;activation du chiffrement&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+249"/>
@@ -1867,19 +1867,19 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation>Erreur lors de la lecture du fichier : %1</translation>
+        <translation>Erreur lors de la lecture du fichier&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+32"/>
         <location line="+19"/>
         <source>Failed to upload image: %s</source>
-        <translation>Échec de l&apos;envoi de l&apos;image : %s</translation>
+        <translation>Échec de l&apos;envoi de l&apos;image&#xa0;: %s</translation>
     </message>
 </context>
 <context>
     <name>RoomlistModel</name>
     <message>
-        <location filename="../../src/timeline/RoomlistModel.cpp" line="+150"/>
+        <location filename="../../src/timeline/RoomlistModel.cpp" line="+151"/>
         <source>Pending invite.</source>
         <translation>Invitation en attente.</translation>
     </message>
@@ -1897,24 +1897,24 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>Root</name>
     <message>
-        <location filename="../qml/Root.qml" line="+258"/>
+        <location filename="../qml/Root.qml" line="+276"/>
         <source>Please enter your login password to continue:</source>
-        <translation>Veuillez saisir votre mot de passe pour continuer :</translation>
+        <translation>Veuillez saisir votre mot de passe pour continuer&#xa0;:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid email address to continue:</source>
-        <translation>Veuillez saisir un courriel valide pour continuer :</translation>
+        <translation>Veuillez saisir un courriel valide pour continuer&#xa0;:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid phone number to continue:</source>
-        <translation>Veuillez saisir un numéro de téléphone valide pour continuer :</translation>
+        <translation>Veuillez saisir un numéro de téléphone valide pour continuer&#xa0;:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter the token, which has been sent to you:</source>
-        <translation>Veuillez entrer le jeton qui vous a été envoyé :</translation>
+        <translation>Veuillez entrer le jeton qui vous a été envoyé&#xa0;:</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1925,19 +1925,19 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>ScreenShare</name>
     <message>
-        <location filename="../qml/voip/ScreenShare.qml" line="+30"/>
+        <location filename="../qml/voip/ScreenShare.qml" line="+31"/>
         <source>Share desktop with %1?</source>
-        <translation>Partager le bureau avec %1  ?</translation>
+        <translation>Partager le bureau avec %1&#x202f;&#x202f;?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Window:</source>
-        <translation>Fenêtre :</translation>
+        <translation>Fenêtre&#x202f;:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Frame rate:</source>
-        <translation>Fréquence d&apos;images :</translation>
+        <translation>Fréquence d&apos;images&#x202f;:</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -1979,22 +1979,22 @@ Exemple : https ://monserveur.example.com:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4218"/>
+        <location filename="../../src/Cache.cpp" line="-4222"/>
         <source>Failed to connect to secret storage</source>
         <translation>Échec de la connexion au stockage des secrets</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation>Nheko n&apos;a pas pu se connecter au stockage sécurisé afin d&apos;y sauvegarder les clés de chiffrement. Cela peut avoir différentes causes. Vérifiez si votre service D-Bus est lancé, et si vous avez configuré un service tel que KWallet ; Gnome Keyring ; KeePassXC ou l&apos;équivalent pour votre système. Si vous n&apos;arrivez pas à résoudre le problème, n&apos;hésitez pas à nous en faire part ici : https ://github.com/Nheko-Reborn/nheko/issues</translation>
+        <translation>Nheko n&apos;a pas pu se connecter au stockage sécurisé afin d&apos;y sauvegarder les clés de chiffrement. Cela peut avoir différentes causes. Vérifiez si votre service D-Bus est lancé, et si vous avez configuré un service tel que KWallet&#x202f;; Gnome Keyring&#x202f;; KeePassXC ou l&apos;équivalent pour votre système. Si vous n&apos;arrivez pas à résoudre le problème, n&apos;hésitez pas à nous en faire part ici&#x202f;: https&#x202f;://github.com/Nheko-Reborn/nheko/issues</translation>
     </message>
 </context>
 <context>
     <name>SelfVerificationCheck</name>
     <message>
-        <location filename="../qml/SelfVerificationCheck.qml" line="+39"/>
+        <location filename="../qml/SelfVerificationCheck.qml" line="+40"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation>Ceci est votre clé de récupération. Vous en aurez besoin afin de restaurer l&apos;accès à vos messages chiffrés et à vos clés de vérification. Gardez cette clé en sûreté. Ne la partagez pas avec qui que ce soit et ne la perdez pas ! Ne passez pas par la case départ et ne recevez pas 20 000 francs !</translation>
+        <translation>Ceci est votre clé de récupération. Vous en aurez besoin afin de restaurer l&apos;accès à vos messages chiffrés et à vos clés de vérification. Gardez cette clé en sûreté. Ne la partagez pas avec qui que ce soit et ne la perdez pas&#x202f;! Ne passez pas par la case départ et ne recevez pas 20 000 francs&#x202f;!</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -2004,7 +2004,7 @@ Exemple : https ://monserveur.example.com:8787</translation>
     <message>
         <location line="+9"/>
         <source>Failed to setup encryption: %1</source>
-        <translation>Échec de la configuration du chiffrement : %1</translation>
+        <translation>Échec de la configuration du chiffrement&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -2015,8 +2015,8 @@ Exemple : https ://monserveur.example.com:8787</translation>
         <location line="+10"/>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
-        <translation>Bonjour et bienvenue sur le réseau Matrix !
-Il semblerait que ce soit votre première fois ici. Avant de pouvoir chiffrer vos messages de manière sécurisée, nous devons configurer quelques détails. Vous pouvez soit accepter immédiatement, soit ajuster quelques options basiques. Nous essayons également d&apos;expliquer le fonctionnement de certains mécanismes. Vous pouvez sauter ces étapes, mais celles-ci pourraient se montrer utiles par la suite !</translation>
+        <translation>Bonjour et bienvenue sur le réseau Matrix&#x202f;!
+Il semblerait que ce soit votre première fois ici. Avant de pouvoir chiffrer vos messages de manière sécurisée, nous devons configurer quelques détails. Vous pouvez soit accepter immédiatement, soit ajuster quelques options basiques. Nous essayons également d&apos;expliquer le fonctionnement de certains mécanismes. Vous pouvez sauter ces étapes, mais celles-ci pourraient se montrer utiles par la suite&#x202f;!</translation>
     </message>
     <message>
         <location line="+124"/>
@@ -2044,19 +2044,19 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
 <context>
     <name>SelfVerificationStatus</name>
     <message>
-        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+42"/>
+        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+43"/>
         <source>Failed to create keys for cross-signing!</source>
-        <translation>Échec de la création des clés pour l&apos;auto-vérification (cross-signing) !</translation>
+        <translation>Échec de la création des clés pour l&apos;auto-vérification (cross-signing)&#x202f;!</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to create keys for online key backup!</source>
-        <translation>Échec de la création de clés pour la sauvegarde en ligne !</translation>
+        <translation>Échec de la création de clés pour la sauvegarde en ligne&#x202f;!</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Failed to create keys for secure server side secret storage!</source>
-        <translation>Échec de la création des clés pour le stockage sécurisé côté serveur !</translation>
+        <translation>Échec de la création des clés pour le stockage sécurisé côté serveur&#x202f;!</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -2066,7 +2066,7 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
     <message>
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
-        <translation>Échec de la configuration du chiffrement : %1</translation>
+        <translation>Échec de la configuration du chiffrement&#x202f;: %1</translation>
     </message>
     <message>
         <location line="+140"/>
@@ -2077,7 +2077,7 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
 <context>
     <name>SingleImagePackModel</name>
     <message>
-        <location filename="../../src/SingleImagePackModel.cpp" line="+268"/>
+        <location filename="../../src/SingleImagePackModel.cpp" line="+269"/>
         <location line="+25"/>
         <source>Failed to update image pack: %1</source>
         <translation>Échec de la mise à jour du paquet d&apos;images : %1</translation>
@@ -2103,7 +2103,7 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
 <context>
     <name>StatusIndicator</name>
     <message>
-        <location filename="../qml/StatusIndicator.qml" line="+24"/>
+        <location filename="../qml/StatusIndicator.qml" line="+25"/>
         <source>Failed</source>
         <translation>Échec</translation>
     </message>
@@ -2126,7 +2126,7 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
 <context>
     <name>StickerPicker</name>
     <message>
-        <location filename="../qml/emoji/StickerPicker.qml" line="+70"/>
+        <location filename="../qml/emoji/StickerPicker.qml" line="+71"/>
         <source>Search</source>
         <translation>Rechercher</translation>
     </message>
@@ -2134,14 +2134,14 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
 <context>
     <name>Success</name>
     <message>
-        <location filename="../qml/device-verification/Success.qml" line="+11"/>
+        <location filename="../qml/device-verification/Success.qml" line="+12"/>
         <source>Successful Verification</source>
         <translation>Vérification réussie</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Verification successful! Both sides verified their devices!</source>
-        <translation>Vérification réussie !  Les deux côtés ont vérifié leur appareil !</translation>
+        <translation>Vérification réussie&#x202f;!  Les deux côtés ont vérifié leur appareil&#x202f;!</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2152,16 +2152,16 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1218"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1219"/>
         <location line="+16"/>
         <source>Message redaction failed: %1</source>
-        <translation>Échec de la suppression du message : %1</translation>
+        <translation>Échec de la suppression du message&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+73"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
-        <translation>Échec du chiffrement de l&apos;évènement, envoi abandonné !</translation>
+        <translation>Échec du chiffrement de l&apos;évènement, envoi abandonné&#x202f;!</translation>
     </message>
     <message>
         <location line="+170"/>
@@ -2358,7 +2358,7 @@ Raison : %4</translation>
         <location line="+2"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation>%1 a quitté le salon après l&apos;avoir déjà quitté !</translation>
+        <translation>%1 a quitté le salon après l&apos;avoir déjà quitté&#x202f;!</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2369,7 +2369,7 @@ Raison : %4</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+175"/>
+        <location filename="../qml/TimelineRow.qml" line="+176"/>
         <source>Edited</source>
         <translation>Modifié</translation>
     </message>
@@ -2377,7 +2377,7 @@ Raison : %4</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+29"/>
+        <location filename="../qml/TimelineView.qml" line="+30"/>
         <source>No room open</source>
         <translation>Aucun salon ouvert</translation>
     </message>
@@ -2415,7 +2415,7 @@ Raison : %4</translation>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+89"/>
+        <location filename="../qml/TopBar.qml" line="+90"/>
         <source>Back to room list</source>
         <translation>Revenir à la liste des salons</translation>
     </message>
@@ -2483,7 +2483,7 @@ Raison : %4</translation>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+115"/>
+        <location filename="../../src/TrayIcon.cpp" line="+116"/>
         <source>Show</source>
         <translation>Montrer</translation>
     </message>
@@ -2496,7 +2496,7 @@ Raison : %4</translation>
 <context>
     <name>UIA</name>
     <message>
-        <location filename="../../src/ui/UIA.cpp" line="+59"/>
+        <location filename="../../src/ui/UIA.cpp" line="+60"/>
         <source>No available registration flows!</source>
         <translation>Aucun mécanisme de création de compte disponible !</translation>
     </message>
@@ -2521,7 +2521,7 @@ Raison : %4</translation>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/dialogs/UserProfile.qml" line="+28"/>
+        <location filename="../qml/dialogs/UserProfile.qml" line="+29"/>
         <source>Global User Profile</source>
         <translation>Profil général de l&apos;utilisateur</translation>
     </message>
@@ -2612,7 +2612,7 @@ Raison : %4</translation>
         <translation>Dé-vérifier</translation>
     </message>
     <message>
-        <location filename="../../src/ui/UserProfile.cpp" line="+152"/>
+        <location filename="../../src/ui/UserProfile.cpp" line="+153"/>
         <source>Sign out device %1</source>
         <translation>Déconnecter l&apos;appareil %1</translation>
     </message>
@@ -2639,14 +2639,14 @@ Raison : %4</translation>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation>Erreur lors de la lecture du fichier  : %1</translation>
+        <translation>Erreur lors de la lecture du fichier&#xa0;&#xa0;: %1</translation>
     </message>
 </context>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+420"/>
-        <location filename="../../src/UserSettingsPage.h" line="+211"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+421"/>
+        <location filename="../../src/UserSettingsPage.h" line="+212"/>
         <source>Default</source>
         <translation>Défaut</translation>
     </message>
@@ -2676,7 +2676,7 @@ Raison : %4</translation>
     <message>
         <location line="-218"/>
         <source>profile: %1</source>
-        <translation>profil : %1</translation>
+        <translation>profil&#x202f;: %1</translation>
     </message>
     <message>
         <location line="+104"/>
@@ -3141,7 +3141,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location line="-26"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation>Entrez la phrase de passe pour déchiffrer le fichier :</translation>
+        <translation>Entrez la phrase de passe pour déchiffrer le fichier&#xa0;:</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -3152,7 +3152,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation>Entrez une phrase de passe pour chiffrer vos clés de session :</translation>
+        <translation>Entrez une phrase de passe pour chiffrer vos clés de session&#xa0;:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -3163,7 +3163,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
 <context>
     <name>VerificationManager</name>
     <message>
-        <location filename="../../src/encryption/VerificationManager.cpp" line="+105"/>
+        <location filename="../../src/encryption/VerificationManager.cpp" line="+106"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>Aucune discussion privée chiffrée trouvée avec cet utilisateur. Créez-en une et réessayez.</translation>
     </message>
@@ -3171,7 +3171,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
 <context>
     <name>Waiting</name>
     <message>
-        <location filename="../qml/device-verification/Waiting.qml" line="+12"/>
+        <location filename="../qml/device-verification/Waiting.qml" line="+13"/>
         <source>Waiting for other party…</source>
         <translation>Attente du correspondant…</translation>
     </message>
@@ -3199,7 +3199,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
 <context>
     <name>WelcomePage</name>
     <message>
-        <location filename="../../src/WelcomePage.cpp" line="+34"/>
+        <location filename="../../src/WelcomePage.cpp" line="+35"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
         <translation>Bienvenue sur Nheko ! Le client de bureau pour le protocole Matrix.</translation>
     </message>
@@ -3222,7 +3222,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+186"/>
+        <location filename="../../src/Utils.cpp" line="+192"/>
         <source>Yesterday</source>
         <translation>Hier</translation>
     </message>
@@ -3230,7 +3230,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
 <context>
     <name>dialogs::CreateRoom</name>
     <message>
-        <location filename="../../src/dialogs/CreateRoom.cpp" line="+43"/>
+        <location filename="../../src/dialogs/CreateRoom.cpp" line="+44"/>
         <source>Create room</source>
         <translation>Créer un salon</translation>
     </message>
@@ -3298,7 +3298,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
 <context>
     <name>dialogs::FallbackAuth</name>
     <message>
-        <location filename="../../src/dialogs/FallbackAuth.cpp" line="+37"/>
+        <location filename="../../src/dialogs/FallbackAuth.cpp" line="+38"/>
         <source>Open Fallback in Browser</source>
         <translation>Ouvrir la solution de remplacement dans le navigateur</translation>
     </message>
@@ -3321,7 +3321,7 @@ Cela met l&apos;application en évidence dans la barre des tâches.</translation
 <context>
     <name>dialogs::PreviewUploadOverlay</name>
     <message>
-        <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+29"/>
+        <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+30"/>
         <source>Upload</source>
         <translation>Envoyer</translation>
     </message>
@@ -3343,7 +3343,7 @@ Taille du média : %2
 <context>
     <name>dialogs::ReCaptcha</name>
     <message>
-        <location filename="../../src/dialogs/ReCaptcha.cpp" line="+37"/>
+        <location filename="../../src/dialogs/ReCaptcha.cpp" line="+38"/>
         <source>Open reCAPTCHA</source>
         <translation>Ouvrir reCAPTCHA</translation>
     </message>
@@ -3366,7 +3366,7 @@ Taille du média : %2
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+116"/>
+        <location filename="../../src/Utils.h" line="+117"/>
         <source>You sent an audio clip</source>
         <translation>Vous avez envoyé un message audio</translation>
     </message>
@@ -3428,12 +3428,12 @@ Taille du média : %2
     <message>
         <location line="+5"/>
         <source>You: %1</source>
-        <translation>Vous : %1</translation>
+        <translation>Vous&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1: %2</source>
-        <translation>%1 : %2</translation>
+        <translation>%1&#xa0;: %2</translation>
     </message>
     <message>
         <location line="+6"/>
