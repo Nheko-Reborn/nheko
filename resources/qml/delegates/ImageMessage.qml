@@ -48,8 +48,8 @@ Item {
         smooth: true
         mipmap: true
 
-        sourceSize.width: Math.min(Screen.desktopAvailableWidth, originalWidth || undefined) * Screen.devicePixelRatio
-        sourceSize.height: Math.min(Screen.desktopAvailableHeight, originalWidth*proportionalHeight || undefined) * Screen.devicePixelRatio
+        sourceSize.width: Math.min(Screen.desktopAvailableWidth, originalWidth < 1 ? Screen.desktopAvailableWidth : originalWidth) * Screen.devicePixelRatio
+        sourceSize.height: Math.min(Screen.desktopAvailableHeight, (originalWidth < 1 ? Screen.desktopAvailableHeight : originalWidth*proportionalHeight)) * Screen.devicePixelRatio
     }
 
     MxcAnimatedImage {

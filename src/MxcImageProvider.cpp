@@ -30,6 +30,9 @@ MxcImageProvider::requestImageResponse(const QString &id, const QSize &requested
     double radius = 0;
     auto size     = requestedSize;
 
+    if (requestedSize.width() == 0 && requestedSize.height() == 0)
+        size = QSize();
+
     auto queryStart = id.lastIndexOf('?');
     if (queryStart != -1) {
         id_            = id.left(queryStart);
