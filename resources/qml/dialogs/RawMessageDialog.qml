@@ -38,6 +38,8 @@ ApplicationWindow {
             readOnly: true
             textFormat: Text.PlainText
 
+            anchors.fill: parent
+
             background: Rectangle {
                 color: Nheko.colors.base
             }

@@ -44,6 +44,7 @@ Window {
             fillMode: Image.PreserveAspectFit
             smooth: true
             mipmap: true
+            property bool loaded: status == Image.Ready
         }
 
         MxcAnimatedImage {
@@ -57,30 +58,30 @@ Window {
         }
 
         BoundaryRule on scale {
-            enabled: img.loaded
+            enabled: img.loaded || mxcimage.loaded
             id: sbr
             minimum: 0.1
-            maximum: 100
-            minimumOvershoot: 0.02; maximumOvershoot: 100
+            maximum: 10
+            minimumOvershoot: 0.02; maximumOvershoot: 10.02
         }
 
-        //BoundaryRule on x {
-        //    enabled: img.loaded
-        //    id: xbr
-        //    minimum: -100
-        //    maximum: imageOverlay.width - img.width + 100
-        //    minimumOvershoot: 100; maximumOvershoot: 100
-        //    overshootFilter: BoundaryRule.Peak
-        //}
+        BoundaryRule on x {
+           enabled: img.loaded || mxcimage.loaded
+           id: xbr
+           minimum: -100
+           maximum: imageOverlay.width - img.width + 100
+           minimumOvershoot: 100; maximumOvershoot: 100
+           overshootFilter: BoundaryRule.Peak
+        }
 
-        //BoundaryRule on y {
-        //    enabled: img.loaded
-        //    id: ybr
-        //    minimum: -100
-        //    maximum: imageOverlay.height - img.height + 100
-        //    minimumOvershoot: 100; maximumOvershoot: 100
-        //    overshootFilter: BoundaryRule.Peak
-        //}
+        BoundaryRule on y {
+           enabled: img.loaded || mxcimage.loaded
+           id: ybr
+           minimum: -100
+           maximum: imageOverlay.height - img.height + 100
+           minimumOvershoot: 100; maximumOvershoot: 100
+           overshootFilter: BoundaryRule.Peak
+        }
 
         PinchHandler {
             onActiveChanged: if (!active) sbr.returnToBounds();
@@ -92,10 +93,10 @@ Window {
         }
 
         DragHandler {
-            //onActiveChanged: if (!active) {
-            //    xbr.returnToBounds();
-            //    ybr.returnToBounds();
-            //}
+            onActiveChanged: if (!active) {
+               xbr.returnToBounds();
+               ybr.returnToBounds();
+            }
         }
 
         HoverHandler {
