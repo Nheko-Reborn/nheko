@@ -144,6 +144,14 @@ Page {
 
     }
 
+    Component {
+        id: userSettingsPage
+
+        UserSettingsPage {
+        }
+
+    }
+
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
@@ -353,8 +361,13 @@ Page {
         target: UIA
     }
 
-    ChatPage {
+    StackView {
+        id: mainWindow
+
         anchors.fill: parent
+        initialItem: ChatPage {
+            //anchors.fill: parent
+        }
     }
 
 }

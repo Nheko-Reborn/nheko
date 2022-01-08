@@ -185,7 +185,7 @@ ApplicationWindow {
                         ToggleButton {
                             ToolTip.text: qsTr("Enables this pack to be used in all rooms")
                             checked: currentPack ? currentPack.isGloballyEnabled : false
-                            onClicked: currentPack.isGloballyEnabled = !currentPack.isGloballyEnabled
+                            onCheckedChanged: currentPack.isGloballyEnabled = checked
                             Layout.alignment: Qt.AlignRight
                         }
 

@@ -56,11 +56,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     trayIcon_ = new TrayIcon(QStringLiteral(":/logos/nheko.svg"), this);
 
-    welcome_page_     = new WelcomePage(this);
-    login_page_       = new LoginPage(this);
-    register_page_    = new RegisterPage(this);
-    chat_page_        = new ChatPage(userSettings_, this);
-    userSettingsPage_ = new UserSettingsPage(userSettings_, this);
+    welcome_page_  = new WelcomePage(this);
+    login_page_    = new LoginPage(this);
+    register_page_ = new RegisterPage(this);
+    chat_page_     = new ChatPage(userSettings_, this);
 
     // Initialize sliding widget manager.
     pageStack_ = new QStackedWidget(this);
@@ -68,7 +67,6 @@ MainWindow::MainWindow(QWidget *parent)
     pageStack_->addWidget(login_page_);
     pageStack_->addWidget(register_page_);
     pageStack_->addWidget(chat_page_);
-    pageStack_->addWidget(userSettingsPage_);
 
     setCentralWidget(pageStack_);
 
@@ -93,13 +91,7 @@ MainWindow::MainWindow(QWidget *parent)
         showLoginPage();
     });
 
-    connect(userSettingsPage_, &UserSettingsPage::moveBack, this, [this]() {
-        pageStack_->setCurrentWidget(chat_page_);
-    });
-
-    connect(userSettingsPage_, SIGNAL(trayOptionChanged(bool)), trayIcon_, SLOT(setVisible(bool)));
-    connect(
-      userSettingsPage_, &UserSettingsPage::themeChanged, chat_page_, &ChatPage::themeChanged);
+    connect(userSettings_.get(), &UserSettings::trayChanged, trayIcon_, &TrayIcon::setVisible);
     connect(trayIcon_,
             SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this,
@@ -108,8 +100,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(chat_page_, SIGNAL(contentLoaded()), this, SLOT(removeOverlayProgressBar()));
 
     connect(this, &MainWindow::focusChanged, chat_page_, &ChatPage::chatFocusChanged);
-
-    connect(chat_page_, &ChatPage::showUserSettingsPage, this, &MainWindow::showUserSettingsPage);
 
     connect(login_page_, &LoginPage::loginOk, this, [this](const mtx::responses::Login &res) {
         http::client()->set_user(res.user_id);
@@ -247,14 +237,8 @@ MainWindow::showChatPage()
 
     login_page_->reset();
     chat_page_->bootstrap(userid, homeserver, token);
-    connect(cache::client(),
-            &Cache::databaseReady,
-            userSettingsPage_,
-            &UserSettingsPage::updateSecretStatus);
-    connect(cache::client(),
-            &Cache::secretChanged,
-            userSettingsPage_,
-            &UserSettingsPage::updateSecretStatus);
+    connect(cache::client(), &Cache::databaseReady, this, &MainWindow::secretsChanged);
+    connect(cache::client(), &Cache::secretChanged, this, &MainWindow::secretsChanged);
     emit reload();
 }
 
@@ -402,10 +386,4 @@ MainWindow::showRegisterPage()
 {
     pageStack_->addWidget(register_page_);
     pageStack_->setCurrentWidget(register_page_);
-}
-
-void
-MainWindow::showUserSettingsPage()
-{
-    pageStack_->setCurrentWidget(userSettingsPage_);
 }

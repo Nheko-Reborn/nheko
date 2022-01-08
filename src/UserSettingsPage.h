@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <QAbstractListModel>
 #include <QFontDatabase>
 #include <QFrame>
 #include <QProcessEnvironment>
@@ -353,89 +354,125 @@ private:
     static QSharedPointer<UserSettings> instance_;
 };
 
-class HorizontalLine : public QFrame
+class UserSettingsModel : public QAbstractListModel
 {
     Q_OBJECT
 
+    enum Indices
+    {
+        GeneralSection,
+        Theme,
+        MobileMode,
+#ifndef Q_OS_MAC
+        ScaleFactor,
+#endif
+        Font,
+        FontSize,
+        EmojiFont,
+        AvatarCircles,
+        UseIdenticon,
+        PrivacyScreen,
+        PrivacyScreenTimeout,
+
+        TimelineSection,
+        TimelineMaxWidth,
+        MessageHoverHighlight,
+        EnlargeEmojiOnlyMessages,
+        AnimateImagesOnHover,
+        TypingNotifications,
+        ReadReceipts,
+        ButtonsInTimeline,
+        Markdown,
+
+        SidebarSection,
+        GroupView,
+        SortByImportance,
+        DecryptSidebar,
+
+        TraySection,
+        Tray,
+        StartInTray,
+
+        NotificationsSection,
+        DesktopNotifications,
+        AlertOnNotification,
+
+        VoipSection,
+        UseStunServer,
+        Microphone,
+        Camera,
+        CameraResolution,
+        CameraFrameRate,
+        Ringtone,
+
+        EncryptionSection,
+        OnlyShareKeysWithVerifiedUsers,
+        ShareKeysWithTrustedUsers,
+        SessionKeys,
+        UseOnlineKeyBackup,
+        OnlineBackupKey,
+        SelfSigningKey,
+        UserSigningKey,
+        MasterKey,
+        CrossSigningSecrets,
+        DeviceId,
+        DeviceFingerprint,
+
+        LoginInfoSection,
+        UserId,
+        Homeserver,
+        Profile,
+        Version,
+        Platform,
+        COUNT,
+        // hidden for now
+        AccessToken,
+#ifdef Q_OS_MAC
+        ScaleFactor,
+#endif
+    };
+
 public:
-    HorizontalLine(QWidget *parent = nullptr);
-};
+    enum Types
+    {
+        Toggle,
+        ReadOnlyText,
+        Options,
+        Number,
+        SectionTitle,
+        SectionBar,
+        KeyStatus,
+        SessionKeyImportExport,
+        XSignKeysRequestDownload,
+    };
+    Q_ENUM(Types);
 
-class UserSettingsPage : public QWidget
-{
-    Q_OBJECT
+    enum Roles
+    {
+        Name,
+        Description,
+        Value,
+        Type,
+        ValueLowerBound,
+        ValueUpperBound,
+        ValueStep,
+        Values,
+        Good,
+        Enabled,
+    };
 
-public:
-    UserSettingsPage(QSharedPointer<UserSettings> settings, QWidget *parent = nullptr);
+    UserSettingsModel(QObject *parent = nullptr);
+    QHash<int, QByteArray> roleNames() const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override
+    {
+        (void)parent;
+        return (int)COUNT;
+    }
+    QVariant data(const QModelIndex &index, int role) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
-protected:
-    void showEvent(QShowEvent *event) override;
-    void paintEvent(QPaintEvent *event) override;
-
-signals:
-    void moveBack();
-    void trayOptionChanged(bool value);
-    void themeChanged();
-    void decryptSidebarChanged();
-
-public slots:
-    void updateSecretStatus();
-
-private slots:
-    void importSessionKeys();
-    void exportSessionKeys();
-
-private:
-    // Layouts
-    QVBoxLayout *topLayout_;
-    QHBoxLayout *topBarLayout_;
-    QFormLayout *formLayout_;
-
-    // Shared settings object.
-    QSharedPointer<UserSettings> settings_;
-
-    Toggle *trayToggle_;
-    Toggle *startInTrayToggle_;
-    Toggle *groupViewToggle_;
-    Toggle *timelineButtonsToggle_;
-    Toggle *typingNotifications_;
-    Toggle *messageHoverHighlight_;
-    Toggle *enlargeEmojiOnlyMessages_;
-    Toggle *sortByImportance_;
-    Toggle *readReceipts_;
-    Toggle *markdown_;
-    Toggle *animateImagesOnHover_;
-    Toggle *desktopNotifications_;
-    Toggle *alertOnNotification_;
-    Toggle *avatarCircles_;
-    Toggle *useIdenticon_;
-    Toggle *useStunServer_;
-    Toggle *decryptSidebar_;
-    Toggle *privacyScreen_;
-    QSpinBox *privacyScreenTimeout_;
-    Toggle *shareKeysWithTrustedUsers_;
-    Toggle *onlyShareKeysWithVerifiedUsers_;
-    Toggle *useOnlineKeyBackup_;
-    Toggle *mobileMode_;
-    QLabel *deviceFingerprintValue_;
-    QLabel *deviceIdValue_;
-    QLabel *backupSecretCached;
-    QLabel *masterSecretCached;
-    QLabel *selfSigningSecretCached;
-    QLabel *userSigningSecretCached;
-
-    QComboBox *themeCombo_;
-    QComboBox *scaleFactorCombo_;
-    QComboBox *fontSizeCombo_;
-    QFontComboBox *fontSelectionCombo_;
-    QComboBox *emojiFontSelectionCombo_;
-    QComboBox *ringtoneCombo_;
-    QComboBox *microphoneCombo_;
-    QComboBox *cameraCombo_;
-    QComboBox *cameraResolutionCombo_;
-    QComboBox *cameraFrameRateCombo_;
-
-    QSpinBox *timelineMaxWidthSpin_;
-
-    int sideMargin_ = 0;
+    Q_INVOKABLE void importSessionKeys();
+    Q_INVOKABLE void exportSessionKeys();
+    Q_INVOKABLE void requestCrossSigningSecrets();
+    Q_INVOKABLE void downloadCrossSigningSecrets();
 };
