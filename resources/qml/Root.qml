@@ -7,6 +7,7 @@ import "./delegates"
 import "./device-verification"
 import "./dialogs"
 import "./emoji"
+import "./pages"
 import "./voip"
 import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15

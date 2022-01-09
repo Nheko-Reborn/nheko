@@ -86,7 +86,6 @@
         <file>qml/CommunitiesList.qml</file>
         <file>qml/RoomList.qml</file>
         <file>qml/TimelineView.qml</file>
-        <file>qml/UserSettingsPage.qml</file>
         <file>qml/Avatar.qml</file>
         <file>qml/Completer.qml</file>
         <file>qml/EncryptionIndicator.qml</file>
@@ -110,6 +109,7 @@
         <file>qml/SelfVerificationCheck.qml</file>
         <file>qml/TypingIndicator.qml</file>
         <file>qml/NotificationWarning.qml</file>
+        <file>qml/pages/UserSettingsPage.qml</file>
         <file>qml/components/AdaptiveLayout.qml</file>
         <file>qml/components/AdaptiveLayoutElement.qml</file>
         <file>qml/components/AvatarListTile.qml</file>
