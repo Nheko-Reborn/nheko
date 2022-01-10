@@ -58,16 +58,16 @@
     <message numerus="yes">
         <location filename="../../src/Cache.cpp" line="+2446"/>
         <source>%1 and %n other(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 en %n ander</numerusform>
+            <numerusform>%1 en %n anderen</numerusform>
         </translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+175"/>
         <source>Empty Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Lege kamer</translation>
     </message>
 </context>
 <context>
@@ -3260,12 +3260,12 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
     <message>
         <location line="+2"/>
         <source>Private</source>
-        <translation type="unfinished"></translation>
+        <translation>Privé</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Public</source>
-        <translation type="unfinished"></translation>
+        <translation>Publiek</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3275,17 +3275,17 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
     <message>
         <location line="+2"/>
         <source>Private Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Privégesprek</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Public Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Publiek gesprek</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Trusted Private Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertrouwd privégesprek</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3343,7 +3343,7 @@ Mediagrootte: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+38"/>
         <source>Open reCAPTCHA</source>
-        <translation type="unfinished"></translation>
+        <translation>Open reCAPTCHA</translation>
     </message>
     <message>
         <location line="+1"/>
