@@ -254,6 +254,22 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignRight
             }
 
+            MatrixText {
+                text: qsTr("Hidden events")
+            }
+
+            HiddenEventsDialog {
+                id: hiddenEventsDialog
+                prompt: qsTr("Select the events you want to hide from %1").arg(roomSettings.roomName)
+            }
+
+            Button {
+                text: qsTr("Configure")
+                ToolTip.text: qsTr("Change which events are hidden in this room")
+                onClicked: hiddenEventsDialog.show()
+                Layout.alignment: Qt.AlignRight
+            }
+
             Item {
                 // for adding extra space between sections
                 Layout.fillWidth: true
@@ -302,5 +318,4 @@ ApplicationWindow {
         }
 
     }
-
 }

@@ -11,6 +11,7 @@
 #include <QString>
 
 #include <mtx/events/guest_access.hpp>
+#include <vector>
 
 #include "CacheStructs.h"
 
@@ -107,8 +108,11 @@ public:
     Q_INVOKABLE void enableEncryption();
     Q_INVOKABLE void updateAvatar();
     Q_INVOKABLE void openEditModal();
+    Q_INVOKABLE void
+    saveHiddenEventsSettings(bool toggleRoomMember, bool toggleRoomPowerLevels, bool toggleSticker);
     Q_INVOKABLE void changeAccessRules(int index);
     Q_INVOKABLE void changeNotifications(int currentIndex);
+    Q_INVOKABLE bool eventHidden(int index);
 
 signals:
     void loadingChanged();
@@ -137,4 +141,5 @@ private:
     RoomInfo info_;
     int notifications_ = 0;
     int accessRules_   = 0;
+    std::vector<bool> hiddenEvents_;
 };
