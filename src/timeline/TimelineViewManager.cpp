@@ -259,6 +259,10 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
       "im.nheko", 1, 0, "Nheko", [](QQmlEngine *, QJSEngine *) -> QObject * {
           return new Nheko();
       });
+    qmlRegisterSingletonType<UserSettingsModel>(
+      "im.nheko", 1, 0, "UserSettingsModel", [](QQmlEngine *, QJSEngine *) -> QObject * {
+          return new UserSettingsModel();
+      });
     qmlRegisterSingletonInstance("im.nheko", 1, 0, "VerificationManager", verificationManager_);
     qmlRegisterSingletonInstance("im.nheko", 1, 0, "Presence", presenceEmitter);
     qmlRegisterSingletonType<SelfVerificationStatus>(

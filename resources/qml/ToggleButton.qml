@@ -36,7 +36,7 @@ Switch {
             width: parent.height
             height: width
             radius: width / 2
-            color: toggleButton.down ? "whitesmoke" : "whitesmoke"
+            color: toggleButton.enabled ? "whitesmoke" : "#cccccc"
             border.color: "#ebebeb"
         }
 

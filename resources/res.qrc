@@ -86,6 +86,7 @@
         <file>qml/CommunitiesList.qml</file>
         <file>qml/RoomList.qml</file>
         <file>qml/TimelineView.qml</file>
+        <file>qml/UserSettingsPage.qml</file>
         <file>qml/Avatar.qml</file>
         <file>qml/Completer.qml</file>
         <file>qml/EncryptionIndicator.qml</file>

@@ -16,6 +16,7 @@ AbstractButton {
     property color highlightColor: Nheko.colors.highlight
     property color buttonTextColor: Nheko.colors.buttonText
     property bool changeColorOnHover: true
+    property bool ripple: true
 
     focusPolicy: Qt.NoFocus
     width: 16
@@ -38,6 +39,7 @@ AbstractButton {
     }
 
     Ripple {
+        enabled: button.ripple
         color: Qt.rgba(buttonTextColor.r, buttonTextColor.g, buttonTextColor.b, 0.5)
     }
 

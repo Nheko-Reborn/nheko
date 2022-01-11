@@ -678,6 +678,7 @@ Page {
                     visible: !collapsed
                     Layout.fillWidth: true
                     hoverEnabled: true
+                    ripple: false
                     width: 22
                     height: 22
                     image: ":/icons/icons/ui/settings.svg"
@@ -685,7 +686,7 @@ Page {
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("User settings")
                     Layout.margins: Nheko.paddingMedium
-                    onClicked: Nheko.showUserSettingsPage()
+                    onClicked: mainWindow.push(userSettingsPage);
                 }
 
             }

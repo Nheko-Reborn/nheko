@@ -84,9 +84,6 @@ private slots:
     //! Show the register page in the main window.
     void showRegisterPage();
 
-    //! Show user settings page.
-    void showUserSettingsPage();
-
     //! Show the chat page and start communicating with the given access token.
     void showChatPage();
 
@@ -98,6 +95,7 @@ private slots:
 signals:
     void focusChanged(const bool focused);
     void reload();
+    void secretsChanged();
 
 private:
     void showDialog(QWidget *dialog);
@@ -120,7 +118,6 @@ private:
     QStackedWidget *pageStack_;
     //! The main chat area.
     ChatPage *chat_page_;
-    UserSettingsPage *userSettingsPage_;
     QSharedPointer<UserSettings> userSettings_;
     //! Tray icon that shows the unread message count.
     TrayIcon *trayIcon_;

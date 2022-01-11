@@ -214,7 +214,7 @@ ApplicationWindow {
                 id: encryptionToggle
 
                 checked: roomSettings.isEncryptionEnabled
-                onClicked: {
+                onCheckedChanged: {
                     if (roomSettings.isEncryptionEnabled) {
                         checked = true;
                         return ;

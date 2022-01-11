@@ -213,7 +213,7 @@ ApplicationWindow {
 
                     ToggleButton {
                         checked: imagePack.isEmotePack
-                        onClicked: imagePack.isEmotePack = checked
+                        onCheckedChanged: imagePack.isEmotePack = checked
                         Layout.alignment: Qt.AlignRight
                     }
 
@@ -223,7 +223,7 @@ ApplicationWindow {
 
                     ToggleButton {
                         checked: imagePack.isStickerPack
-                        onClicked: imagePack.isStickerPack = checked
+                        onCheckedChanged: imagePack.isStickerPack = checked
                         Layout.alignment: Qt.AlignRight
                     }
 
@@ -279,7 +279,7 @@ ApplicationWindow {
 
                     ToggleButton {
                         checked: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.IsEmote)
-                        onClicked: imagePack.setData(imagePack.index(currentImageIndex, 0), checked, SingleImagePackModel.IsEmote)
+                        onCheckedChanged: imagePack.setData(imagePack.index(currentImageIndex, 0), checked, SingleImagePackModel.IsEmote)
                         Layout.alignment: Qt.AlignRight
                     }
 
@@ -289,7 +289,7 @@ ApplicationWindow {
 
                     ToggleButton {
                         checked: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.IsSticker)
-                        onClicked: imagePack.setData(imagePack.index(currentImageIndex, 0), checked, SingleImagePackModel.IsSticker)
+                        onCheckedChanged: imagePack.setData(imagePack.index(currentImageIndex, 0), checked, SingleImagePackModel.IsSticker)
                         Layout.alignment: Qt.AlignRight
                     }
 

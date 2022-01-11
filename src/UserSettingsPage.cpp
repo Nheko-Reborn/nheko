@@ -24,9 +24,11 @@
 #include <QString>
 #include <QTextStream>
 #include <QtQml>
+#include <mtx/secret_storage.hpp>
 
 #include "Cache.h"
 #include "Config.h"
+#include "MainWindow.h"
 #include "MatrixClient.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
@@ -759,737 +761,849 @@ UserSettings::save()
     settings.sync();
 }
 
-HorizontalLine::HorizontalLine(QWidget *parent)
-  : QFrame{parent}
+QHash<int, QByteArray>
+UserSettingsModel::roleNames() const
 {
-    setFrameShape(QFrame::HLine);
-    setFrameShadow(QFrame::Sunken);
+    static QHash<int, QByteArray> roles{
+      {Name, "name"},
+      {Description, "description"},
+      {Value, "value"},
+      {Type, "type"},
+      {ValueLowerBound, "valueLowerBound"},
+      {ValueUpperBound, "valueUpperBound"},
+      {ValueStep, "valueStep"},
+      {Values, "values"},
+      {Good, "good"},
+      {Enabled, "enabled"},
+    };
+
+    return roles;
 }
 
-UserSettingsPage::UserSettingsPage(QSharedPointer<UserSettings> settings, QWidget *parent)
-  : QWidget{parent}
-  , settings_{settings}
+QVariant
+UserSettingsModel::data(const QModelIndex &index, int role) const
 {
-    topLayout_ = new QVBoxLayout{this};
+    if (index.row() >= COUNT)
+        return {};
 
-    QIcon icon;
-    icon.addFile(QStringLiteral(":/icons/icons/ui/angle-arrow-left.svg"));
+    auto i = UserSettings::instance();
+    if (!i)
+        return {};
 
-    auto backBtn_ = new FlatButton{this};
-    backBtn_->setMinimumSize(QSize(24, 24));
-    backBtn_->setIcon(icon);
-    backBtn_->setIconSize(QSize(24, 24));
-
-    QFont font;
-    font.setPointSizeF(font.pointSizeF() * 1.1);
-
-    auto versionInfo = new QLabel(QStringLiteral("%1 | %2").arg(nheko::version, nheko::build_os));
-    if (QCoreApplication::applicationName() != QLatin1String("nheko"))
-        versionInfo->setText(versionInfo->text() + " | " +
-                             tr("profile: %1").arg(QCoreApplication::applicationName()));
-    versionInfo->setTextInteractionFlags(Qt::TextBrowserInteraction);
-
-    topBarLayout_ = new QHBoxLayout;
-    topBarLayout_->setSpacing(0);
-    topBarLayout_->setContentsMargins(0, 0, 0, 0);
-    topBarLayout_->addWidget(backBtn_, 1, Qt::AlignLeft | Qt::AlignVCenter);
-    topBarLayout_->addStretch(1);
-
-    formLayout_ = new QFormLayout;
-
-    formLayout_->setLabelAlignment(Qt::AlignLeft);
-    formLayout_->setFormAlignment(Qt::AlignRight);
-    formLayout_->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
-    formLayout_->setRowWrapPolicy(QFormLayout::WrapLongRows);
-    formLayout_->setHorizontalSpacing(0);
-
-    auto general_ = new QLabel{tr("GENERAL"), this};
-    general_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
-    general_->setFont(font);
-
-    trayToggle_                     = new Toggle{this};
-    startInTrayToggle_              = new Toggle{this};
-    avatarCircles_                  = new Toggle{this};
-    useIdenticon_                   = new Toggle{this};
-    decryptSidebar_                 = new Toggle(this);
-    privacyScreen_                  = new Toggle{this};
-    onlyShareKeysWithVerifiedUsers_ = new Toggle(this);
-    shareKeysWithTrustedUsers_      = new Toggle(this);
-    useOnlineKeyBackup_             = new Toggle(this);
-    groupViewToggle_                = new Toggle{this};
-    timelineButtonsToggle_          = new Toggle{this};
-    typingNotifications_            = new Toggle{this};
-    messageHoverHighlight_          = new Toggle{this};
-    enlargeEmojiOnlyMessages_       = new Toggle{this};
-    sortByImportance_               = new Toggle{this};
-    readReceipts_                   = new Toggle{this};
-    markdown_                       = new Toggle{this};
-    animateImagesOnHover_           = new Toggle{this};
-    desktopNotifications_           = new Toggle{this};
-    alertOnNotification_            = new Toggle{this};
-    useStunServer_                  = new Toggle{this};
-    mobileMode_                     = new Toggle{this};
-    scaleFactorCombo_               = new QComboBox{this};
-    fontSizeCombo_                  = new QComboBox{this};
-    fontSelectionCombo_             = new QFontComboBox{this};
-    emojiFontSelectionCombo_        = new QComboBox{this};
-    ringtoneCombo_                  = new QComboBox{this};
-    microphoneCombo_                = new QComboBox{this};
-    cameraCombo_                    = new QComboBox{this};
-    cameraResolutionCombo_          = new QComboBox{this};
-    cameraFrameRateCombo_           = new QComboBox{this};
-    timelineMaxWidthSpin_           = new QSpinBox{this};
-    privacyScreenTimeout_           = new QSpinBox{this};
-
-    trayToggle_->setChecked(settings_->tray());
-    startInTrayToggle_->setChecked(settings_->startInTray());
-    avatarCircles_->setChecked(settings_->avatarCircles());
-    useIdenticon_->setChecked(settings_->useIdenticon());
-    decryptSidebar_->setChecked(settings_->decryptSidebar());
-    privacyScreen_->setChecked(settings_->privacyScreen());
-    onlyShareKeysWithVerifiedUsers_->setChecked(settings_->onlyShareKeysWithVerifiedUsers());
-    shareKeysWithTrustedUsers_->setChecked(settings_->shareKeysWithTrustedUsers());
-    useOnlineKeyBackup_->setChecked(settings_->useOnlineKeyBackup());
-    groupViewToggle_->setChecked(settings_->groupView());
-    timelineButtonsToggle_->setChecked(settings_->buttonsInTimeline());
-    typingNotifications_->setChecked(settings_->typingNotifications());
-    messageHoverHighlight_->setChecked(settings_->messageHoverHighlight());
-    enlargeEmojiOnlyMessages_->setChecked(settings_->enlargeEmojiOnlyMessages());
-    sortByImportance_->setChecked(settings_->sortByImportance());
-    readReceipts_->setChecked(settings_->readReceipts());
-    markdown_->setChecked(settings_->markdown());
-    animateImagesOnHover_->setChecked(settings_->animateImagesOnHover());
-    desktopNotifications_->setChecked(settings_->hasDesktopNotifications());
-    alertOnNotification_->setChecked(settings_->hasAlertOnNotification());
-    useStunServer_->setChecked(settings_->useStunServer());
-    mobileMode_->setChecked(settings_->mobileMode());
-
-    if (!settings_->tray()) {
-        startInTrayToggle_->setState(false);
-        startInTrayToggle_->setDisabled(true);
-    }
-
-    if (!settings_->privacyScreen()) {
-        privacyScreenTimeout_->setDisabled(true);
-    }
-
-    avatarCircles_->setFixedSize(64, 48);
-
-    auto uiLabel_ = new QLabel{tr("INTERFACE"), this};
-    uiLabel_->setFixedHeight(uiLabel_->minimumHeight() + LayoutTopMargin);
-    uiLabel_->setAlignment(Qt::AlignBottom);
-    uiLabel_->setFont(font);
-
-    for (double option = 1; option <= 3; option += 0.25)
-        scaleFactorCombo_->addItem(QString::number(option));
-    for (double option = 6; option <= 24; option += 0.5)
-        fontSizeCombo_->addItem(QStringLiteral("%1 ").arg(QString::number(option)));
-
-    QFontDatabase fontDb;
-
-    // TODO: Is there a way to limit to just emojis, rather than
-    // all emoji fonts?
-    auto emojiFamilies = fontDb.families(QFontDatabase::Symbol);
-    emojiFontSelectionCombo_->addItem(tr("Default"));
-    for (const auto &family : emojiFamilies) {
-        emojiFontSelectionCombo_->addItem(family);
-    }
-
-    QString currentFont = settings_->font();
-    if (currentFont != QLatin1String("default") || currentFont != QLatin1String("")) {
-        fontSelectionCombo_->setCurrentIndex(fontSelectionCombo_->findText(currentFont));
-    }
-
-    emojiFontSelectionCombo_->setCurrentIndex(
-      emojiFontSelectionCombo_->findText(settings_->emojiFont()));
-
-    themeCombo_ = new QComboBox{this};
-    themeCombo_->addItem(QStringLiteral("Light"));
-    themeCombo_->addItem(QStringLiteral("Dark"));
-    themeCombo_->addItem(QStringLiteral("System"));
-
-    QString themeStr = settings_->theme();
-    themeStr.replace(0, 1, themeStr[0].toUpper());
-    int themeIndex = themeCombo_->findText(themeStr);
-    themeCombo_->setCurrentIndex(themeIndex);
-
-    timelineMaxWidthSpin_->setMinimum(0);
-    timelineMaxWidthSpin_->setMaximum(100'000'000);
-    timelineMaxWidthSpin_->setSingleStep(10);
-
-    privacyScreenTimeout_->setMinimum(0);
-    privacyScreenTimeout_->setMaximum(3600);
-    privacyScreenTimeout_->setSingleStep(10);
-
-    auto callsLabel = new QLabel{tr("CALLS"), this};
-    callsLabel->setFixedHeight(callsLabel->minimumHeight() + LayoutTopMargin);
-    callsLabel->setAlignment(Qt::AlignBottom);
-    callsLabel->setFont(font);
-
-    auto encryptionLabel_ = new QLabel{tr("ENCRYPTION"), this};
-    encryptionLabel_->setFixedHeight(encryptionLabel_->minimumHeight() + LayoutTopMargin);
-    encryptionLabel_->setAlignment(Qt::AlignBottom);
-    encryptionLabel_->setFont(font);
-
-    QFont monospaceFont;
-    monospaceFont.setFamily(QStringLiteral("Monospace"));
-    monospaceFont.setStyleHint(QFont::Monospace);
-    monospaceFont.setPointSizeF(monospaceFont.pointSizeF() * 0.9);
-
-    deviceIdValue_ = new QLabel{this};
-    deviceIdValue_->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    deviceIdValue_->setFont(monospaceFont);
-
-    deviceFingerprintValue_ = new QLabel{this};
-    deviceFingerprintValue_->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    deviceFingerprintValue_->setFont(monospaceFont);
-
-    deviceFingerprintValue_->setText(utils::humanReadableFingerprint(QString(44, 'X')));
-
-    backupSecretCached      = new QLabel{this};
-    masterSecretCached      = new QLabel{this};
-    selfSigningSecretCached = new QLabel{this};
-    userSigningSecretCached = new QLabel{this};
-    backupSecretCached->setFont(monospaceFont);
-    masterSecretCached->setFont(monospaceFont);
-    selfSigningSecretCached->setFont(monospaceFont);
-    userSigningSecretCached->setFont(monospaceFont);
-
-    auto sessionKeysLabel = new QLabel{tr("Session Keys"), this};
-    sessionKeysLabel->setFont(font);
-    sessionKeysLabel->setMargin(OptionMargin);
-
-    auto sessionKeysImportBtn = new QPushButton{tr("IMPORT"), this};
-    auto sessionKeysExportBtn = new QPushButton{tr("EXPORT"), this};
-
-    auto sessionKeysLayout = new QHBoxLayout;
-    sessionKeysLayout->addWidget(new QLabel{QLatin1String(""), this}, 1, Qt::AlignRight);
-    sessionKeysLayout->addWidget(sessionKeysExportBtn, 0, Qt::AlignRight);
-    sessionKeysLayout->addWidget(sessionKeysImportBtn, 0, Qt::AlignRight);
-
-    auto crossSigningKeysLabel = new QLabel{tr("Cross Signing Keys"), this};
-    crossSigningKeysLabel->setFont(font);
-    crossSigningKeysLabel->setMargin(OptionMargin);
-
-    auto crossSigningRequestBtn  = new QPushButton{tr("REQUEST"), this};
-    auto crossSigningDownloadBtn = new QPushButton{tr("DOWNLOAD"), this};
-
-    auto crossSigningKeysLayout = new QHBoxLayout;
-    crossSigningKeysLayout->addWidget(new QLabel{QLatin1String(""), this}, 1, Qt::AlignRight);
-    crossSigningKeysLayout->addWidget(crossSigningRequestBtn, 0, Qt::AlignRight);
-    crossSigningKeysLayout->addWidget(crossSigningDownloadBtn, 0, Qt::AlignRight);
-
-    auto boxWrap =
-      [this, &font](QString labelText, QWidget *field, QString tooltipText = QLatin1String("")) {
-          auto label = new QLabel{labelText, this};
-          label->setFont(font);
-          label->setMargin(OptionMargin);
-
-          if (!tooltipText.isEmpty()) {
-              label->setToolTip(tooltipText);
-          }
-
-          auto layout = new QHBoxLayout;
-          layout->addWidget(field, 0, Qt::AlignRight);
-
-          formLayout_->addRow(label, layout);
-      };
-
-    formLayout_->addRow(general_);
-    formLayout_->addRow(new HorizontalLine{this});
-    boxWrap(tr("Minimize to tray"),
-            trayToggle_,
-            tr("Keep the application running in the background after closing the client window."));
-    boxWrap(tr("Start in tray"),
-            startInTrayToggle_,
-            tr("Start the application in the background without showing the client window."));
-    formLayout_->addRow(new HorizontalLine{this});
-    boxWrap(tr("Circular Avatars"),
-            avatarCircles_,
-            tr("Change the appearance of user avatars in chats.\nOFF - square, ON - Circle."));
-    boxWrap(tr("Use identicons"),
-            useIdenticon_,
-            tr("Display an identicon instead of a letter when no avatar is set."));
-    boxWrap(tr("Group's sidebar"),
-            groupViewToggle_,
-            tr("Show a column containing groups and tags next to the room list."));
-    boxWrap(tr("Decrypt messages in sidebar"),
-            decryptSidebar_,
-            tr("Decrypt the messages shown in the sidebar.\nOnly affects messages in "
-               "encrypted chats."));
-    boxWrap(tr("Privacy Screen"),
-            privacyScreen_,
-            tr("When the window loses focus, the timeline will\nbe blurred."));
-    boxWrap(tr("Privacy screen timeout (in seconds [0 - 3600])"),
-            privacyScreenTimeout_,
-            tr("Set timeout (in seconds) for how long after window loses\nfocus before the screen"
-               " will be blurred.\nSet to 0 to blur immediately after focus loss. Max value of 1 "
-               "hour (3600 seconds)"));
-    boxWrap(tr("Show buttons in timeline"),
-            timelineButtonsToggle_,
-            tr("Show buttons to quickly reply, react or access additional options next to each "
-               "message."));
-    boxWrap(tr("Limit width of timeline"),
-            timelineMaxWidthSpin_,
-            tr("Set the max width of messages in the timeline (in pixels). This can help "
-               "readability on wide screen, when Nheko is maximised"));
-    boxWrap(tr("Typing notifications"),
-            typingNotifications_,
-            tr("Show who is typing in a room.\nThis will also enable or disable sending typing "
-               "notifications to others."));
-    boxWrap(
-      tr("Sort rooms by unreads"),
-      sortByImportance_,
-      tr("Display rooms with new messages first.\nIf this is off, the list of rooms will only "
-         "be sorted by the timestamp of the last message in a room.\nIf this is on, rooms which "
-         "have active notifications (the small circle with a number in it) will be sorted on "
-         "top. Rooms, that you have muted, will still be sorted by timestamp, since you don't "
-         "seem to consider them as important as the other rooms."));
-    formLayout_->addRow(new HorizontalLine{this});
-    boxWrap(tr("Read receipts"),
-            readReceipts_,
-            tr("Show if your message was read.\nStatus is displayed next to timestamps."));
-    boxWrap(tr("Send messages as Markdown"),
-            markdown_,
-            tr("Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
-               "text."));
-    boxWrap(tr("Play animated images only on hover"),
-            animateImagesOnHover_,
-            tr("Plays media like GIFs or WEBPs only when explicitly hovering over them."));
-    boxWrap(tr("Desktop notifications"),
-            desktopNotifications_,
-            tr("Notify about received message when the client is not currently focused."));
-    boxWrap(tr("Alert on notification"),
-            alertOnNotification_,
-            tr("Show an alert when a message is received.\nThis usually causes the application "
-               "icon in the task bar to animate in some fashion."));
-    boxWrap(tr("Highlight message on hover"),
-            messageHoverHighlight_,
-            tr("Change the background color of messages when you hover over them."));
-    boxWrap(tr("Large Emoji in timeline"),
-            enlargeEmojiOnlyMessages_,
-            tr("Make font size larger if messages with only a few emojis are displayed."));
-    formLayout_->addRow(uiLabel_);
-    formLayout_->addRow(new HorizontalLine{this});
-
-    boxWrap(tr("Touchscreen mode"),
-            mobileMode_,
-            tr("Will prevent text selection in the timeline to make touch scrolling easier."));
-#if !defined(Q_OS_MAC)
-    boxWrap(tr("Scale factor"),
-            scaleFactorCombo_,
-            tr("Change the scale factor of the whole user interface."));
-#else
-    scaleFactorCombo_->hide();
-#endif
-    boxWrap(tr("Font size"), fontSizeCombo_);
-    boxWrap(tr("Font Family"), fontSelectionCombo_);
-
-#if !defined(Q_OS_MAC)
-    boxWrap(tr("Emoji Font Family"), emojiFontSelectionCombo_);
-#else
-    emojiFontSelectionCombo_->hide();
-#endif
-
-    boxWrap(tr("Theme"), themeCombo_);
-
-    formLayout_->addRow(callsLabel);
-    formLayout_->addRow(new HorizontalLine{this});
-    boxWrap(tr("Ringtone"),
-            ringtoneCombo_,
-            tr("Set the notification sound to play when a call invite arrives"));
-    boxWrap(tr("Microphone"), microphoneCombo_);
-    boxWrap(tr("Camera"), cameraCombo_);
-    boxWrap(tr("Camera resolution"), cameraResolutionCombo_);
-    boxWrap(tr("Camera frame rate"), cameraFrameRateCombo_);
-
-    ringtoneCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    ringtoneCombo_->addItem(QStringLiteral("Mute"));
-    ringtoneCombo_->addItem(QStringLiteral("Default"));
-    ringtoneCombo_->addItem(QStringLiteral("Other..."));
-    const QString &ringtone = settings_->ringtone();
-    if (!ringtone.isEmpty() && ringtone != QLatin1String("Mute") &&
-        ringtone != QLatin1String("Default"))
-        ringtoneCombo_->addItem(ringtone);
-    microphoneCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    cameraCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    cameraResolutionCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    cameraFrameRateCombo_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-
-    boxWrap(tr("Allow fallback call assist server"),
-            useStunServer_,
-            tr("Will use turn.matrix.org as assist when your home server does not offer one."));
-
-    formLayout_->addRow(encryptionLabel_);
-    formLayout_->addRow(new HorizontalLine{this});
-    boxWrap(tr("Device ID"), deviceIdValue_);
-    boxWrap(tr("Device Fingerprint"), deviceFingerprintValue_);
-    boxWrap(tr("Send encrypted messages to verified users only"),
-            onlyShareKeysWithVerifiedUsers_,
-            tr("Requires a user to be verified to send encrypted messages to them. This "
-               "improves safety but makes E2EE more tedious."));
-    boxWrap(tr("Share keys with verified users and devices"),
-            shareKeysWithTrustedUsers_,
-            tr("Automatically replies to key requests from other users, if they are verified, "
-               "even if that device shouldn't have access to those keys otherwise."));
-    boxWrap(tr("Online Key Backup"),
-            useOnlineKeyBackup_,
-            tr("Download message encryption keys from and upload to the encrypted online key "
-               "backup."));
-    formLayout_->addRow(new HorizontalLine{this});
-    formLayout_->addRow(sessionKeysLabel, sessionKeysLayout);
-    formLayout_->addRow(crossSigningKeysLabel, crossSigningKeysLayout);
-
-    boxWrap(tr("Master signing key"),
-            masterSecretCached,
-            tr("Your most important key. You don't need to have it cached, since not caching "
-               "it makes it less likely it can be stolen and it is only needed to rotate your "
-               "other signing keys."));
-    boxWrap(tr("User signing key"),
-            userSigningSecretCached,
-            tr("The key to verify other users. If it is cached, verifying a user will verify "
-               "all their devices."));
-    boxWrap(tr("Self signing key"),
-            selfSigningSecretCached,
-            tr("The key to verify your own devices. If it is cached, verifying one of your devices "
-               "will mark it verified for all your other devices and for users, that have verified "
-               "you."));
-    boxWrap(tr("Backup key"),
-            backupSecretCached,
-            tr("The key to decrypt online key backups. If it is cached, you can enable online "
-               "key backup to store encryption keys securely encrypted on the server."));
-    // updateSecretStatus();
-
-    auto scrollArea_ = new QScrollArea{this};
-    scrollArea_->setFrameShape(QFrame::NoFrame);
-    scrollArea_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    scrollArea_->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
-    scrollArea_->setWidgetResizable(true);
-    scrollArea_->setAlignment(Qt::AlignTop | Qt::AlignVCenter);
-
-    QScroller::grabGesture(scrollArea_, QScroller::TouchGesture);
-
-    auto spacingAroundForm = new QHBoxLayout;
-    spacingAroundForm->addStretch(1);
-    spacingAroundForm->addLayout(formLayout_, 0);
-    spacingAroundForm->addStretch(1);
-
-    auto scrollAreaContents_ = new QWidget{this};
-    scrollAreaContents_->setObjectName(QStringLiteral("UserSettingScrollWidget"));
-    scrollAreaContents_->setLayout(spacingAroundForm);
-
-    scrollArea_->setWidget(scrollAreaContents_);
-    topLayout_->addLayout(topBarLayout_);
-    topLayout_->addWidget(scrollArea_, Qt::AlignTop);
-    topLayout_->addStretch(1);
-    topLayout_->addWidget(versionInfo);
-
-    connect(themeCombo_,
-            static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
-            this,
-            [this](const QString &text) {
-                settings_->setTheme(text.toLower());
-                emit themeChanged();
-            });
-    connect(scaleFactorCombo_,
-            static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
-            this,
-            [](const QString &factor) { utils::setScaleFactor(factor.toFloat()); });
-    connect(fontSizeCombo_,
-            static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
-            this,
-            [this](const QString &size) { settings_->setFontSize(size.trimmed().toDouble()); });
-    connect(fontSelectionCombo_,
-            static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
-            this,
-            [this](const QString &family) { settings_->setFontFamily(family.trimmed()); });
-    connect(emojiFontSelectionCombo_,
-            static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
-            this,
-            [this](const QString &family) { settings_->setEmojiFontFamily(family.trimmed()); });
-
-    connect(
-      ringtoneCombo_,
-      static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
-      this,
-      [this](const QString &ringtone) {
-          if (ringtone == QLatin1String("Other...")) {
-              QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-              auto filepath      = QFileDialog::getOpenFileName(
-                this, tr("Select a file"), homeFolder, tr("All Files (*)"));
-              if (!filepath.isEmpty()) {
-                  const auto &oldSetting = settings_->ringtone();
-                  if (oldSetting != QLatin1String("Mute") && oldSetting != QLatin1String("Default"))
-                      ringtoneCombo_->removeItem(ringtoneCombo_->findText(oldSetting));
-                  settings_->setRingtone(filepath);
-                  ringtoneCombo_->addItem(filepath);
-                  ringtoneCombo_->setCurrentText(filepath);
-              } else {
-                  ringtoneCombo_->setCurrentText(settings_->ringtone());
-              }
-          } else if (ringtone == QLatin1String("Mute") || ringtone == QLatin1String("Default")) {
-              const auto &oldSetting = settings_->ringtone();
-              if (oldSetting != QLatin1String("Mute") && oldSetting != QLatin1String("Default"))
-                  ringtoneCombo_->removeItem(ringtoneCombo_->findText(oldSetting));
-              settings_->setRingtone(ringtone);
-          }
-      });
-
-    connect(microphoneCombo_,
-            static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
-            this,
-            [this](const QString &microphone) { settings_->setMicrophone(microphone); });
-
-    connect(cameraCombo_,
-            static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
-            this,
-            [this](const QString &camera) {
-                settings_->setCamera(camera);
-                std::vector<std::string> resolutions =
-                  CallDevices::instance().resolutions(camera.toStdString());
-                cameraResolutionCombo_->clear();
-                for (const auto &resolution : resolutions)
-                    cameraResolutionCombo_->addItem(QString::fromStdString(resolution));
-            });
-
-    connect(cameraResolutionCombo_,
-            static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
-            this,
-            [this](const QString &resolution) {
-                settings_->setCameraResolution(resolution);
-                std::vector<std::string> frameRates = CallDevices::instance().frameRates(
-                  settings_->camera().toStdString(), resolution.toStdString());
-                cameraFrameRateCombo_->clear();
-                for (const auto &frameRate : frameRates)
-                    cameraFrameRateCombo_->addItem(QString::fromStdString(frameRate));
-            });
-
-    connect(cameraFrameRateCombo_,
-            static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentTextChanged),
-            this,
-            [this](const QString &frameRate) { settings_->setCameraFrameRate(frameRate); });
-
-    connect(trayToggle_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setTray(enabled);
-        if (enabled) {
-            startInTrayToggle_->setChecked(false);
-            startInTrayToggle_->setEnabled(true);
-            startInTrayToggle_->setState(false);
-            settings_->setStartInTray(false);
-        } else {
-            startInTrayToggle_->setChecked(false);
-            startInTrayToggle_->setState(false);
-            startInTrayToggle_->setDisabled(true);
-            settings_->setStartInTray(false);
+    if (role == Name) {
+        switch (index.row()) {
+        case Theme:
+            return tr("Theme");
+        case ScaleFactor:
+            return tr("Scale factor");
+        case MessageHoverHighlight:
+            return tr("Highlight message on hover");
+        case EnlargeEmojiOnlyMessages:
+            return tr("Large Emoji in timeline");
+        case Tray:
+            return tr("Minimize to tray");
+        case StartInTray:
+            return tr("Start in tray");
+        case GroupView:
+            return tr("Group's sidebar");
+        case Markdown:
+            return tr("Send messages as Markdown");
+        case AnimateImagesOnHover:
+            return tr("Play animated images only on hover");
+        case TypingNotifications:
+            return tr("Typing notifications");
+        case SortByImportance:
+            return tr("Sort rooms by unreads");
+        case ButtonsInTimeline:
+            return tr("Show buttons in timeline");
+        case TimelineMaxWidth:
+            return tr("Limit width of timeline");
+        case ReadReceipts:
+            return tr("Read receipts");
+        case DesktopNotifications:
+            return tr("Desktop notifications");
+        case AlertOnNotification:
+            return tr("Alert on notification");
+        case AvatarCircles:
+            return tr("Circular Avatars");
+        case UseIdenticon:
+            return tr("Use identicons");
+        case DecryptSidebar:
+            return tr("Decrypt messages in sidebar");
+        case PrivacyScreen:
+            return tr("Privacy Screen");
+        case PrivacyScreenTimeout:
+            return tr("Privacy screen timeout (in seconds [0 - 3600])");
+        case MobileMode:
+            return tr("Touchscreen mode");
+        case FontSize:
+            return tr("Font size");
+        case Font:
+            return tr("Font Family");
+        case EmojiFont:
+            return tr("Emoji Font Family");
+        case Ringtone:
+            return tr("Ringtone");
+        case Microphone:
+            return tr("Microphone");
+        case Camera:
+            return tr("Camera");
+        case CameraResolution:
+            return tr("Camera resolution");
+        case CameraFrameRate:
+            return tr("Camera frame rate");
+        case UseStunServer:
+            return tr("Allow fallback call assist server");
+        case OnlyShareKeysWithVerifiedUsers:
+            return tr("Send encrypted messages to verified users only");
+        case ShareKeysWithTrustedUsers:
+            return tr("Share keys with verified users and devices");
+        case UseOnlineKeyBackup:
+            return tr("Online Key Backup");
+        case Profile:
+            return tr("Profile");
+        case UserId:
+            return tr("User ID");
+        case AccessToken:
+            return tr("Accesstoken");
+        case DeviceId:
+            return tr("Device ID");
+        case DeviceFingerprint:
+            return tr("Device Fingerprint");
+        case Homeserver:
+            return tr("Homeserver");
+        case Version:
+            return tr("Version");
+        case Platform:
+            return tr("Platform");
+        case GeneralSection:
+            return tr("GENERAL");
+        case TimelineSection:
+            return tr("TIMELINE");
+        case SidebarSection:
+            return tr("SIDEBAR");
+        case TraySection:
+            return tr("TRAY");
+        case NotificationsSection:
+            return tr("NOTIFICATIONS");
+        case VoipSection:
+            return tr("CALLS");
+        case EncryptionSection:
+            return tr("ENCRYPTION");
+        case LoginInfoSection:
+            return tr("INFO");
+        case SessionKeys:
+            return tr("Session Keys");
+        case CrossSigningSecrets:
+            return tr("Cross Signing Secrets");
+        case OnlineBackupKey:
+            return tr("Online backup key");
+        case SelfSigningKey:
+            return tr("Self signing key");
+        case UserSigningKey:
+            return tr("User signing key");
+        case MasterKey:
+            return tr("Master signing key");
         }
-        emit trayOptionChanged(enabled);
-    });
-
-    connect(startInTrayToggle_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setStartInTray(enabled);
-    });
-
-    connect(mobileMode_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setMobileMode(enabled);
-    });
-
-    connect(groupViewToggle_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setGroupView(enabled);
-    });
-
-    connect(decryptSidebar_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setDecryptSidebar(enabled);
-    });
-
-    connect(privacyScreen_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setPrivacyScreen(enabled);
-        if (enabled) {
-            privacyScreenTimeout_->setEnabled(true);
-        } else {
-            privacyScreenTimeout_->setDisabled(true);
-        }
-    });
-
-    connect(onlyShareKeysWithVerifiedUsers_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setOnlyShareKeysWithVerifiedUsers(enabled);
-    });
-
-    connect(shareKeysWithTrustedUsers_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setShareKeysWithTrustedUsers(enabled);
-    });
-
-    connect(useOnlineKeyBackup_, &Toggle::toggled, this, [this](bool enabled) {
-        if (enabled) {
-            if (QMessageBox::question(
-                  this,
-                  tr("Enable online key backup"),
-                  tr("The Nheko authors recommend not enabling online key backup until "
-                     "symmetric online key backup is available. Enable anyway?")) !=
-                QMessageBox::StandardButton::Yes) {
-                useOnlineKeyBackup_->setState(false);
-                return;
+    } else if (role == Value) {
+        switch (index.row()) {
+        case Theme:
+            return QStringList{
+              QStringLiteral("light"),
+              QStringLiteral("dark"),
+              QStringLiteral("system"),
             }
+              .indexOf(i->theme());
+        case ScaleFactor:
+            return utils::scaleFactor();
+        case MessageHoverHighlight:
+            return i->messageHoverHighlight();
+        case EnlargeEmojiOnlyMessages:
+            return i->enlargeEmojiOnlyMessages();
+        case Tray:
+            return i->tray();
+        case StartInTray:
+            return i->startInTray();
+        case GroupView:
+            return i->groupView();
+        case Markdown:
+            return i->markdown();
+        case AnimateImagesOnHover:
+            return i->animateImagesOnHover();
+        case TypingNotifications:
+            return i->typingNotifications();
+        case SortByImportance:
+            return i->sortByImportance();
+        case ButtonsInTimeline:
+            return i->buttonsInTimeline();
+        case TimelineMaxWidth:
+            return i->timelineMaxWidth();
+        case ReadReceipts:
+            return i->readReceipts();
+        case DesktopNotifications:
+            return i->hasDesktopNotifications();
+        case AlertOnNotification:
+            return i->hasAlertOnNotification();
+        case AvatarCircles:
+            return i->avatarCircles();
+        case UseIdenticon:
+            return i->useIdenticon();
+        case DecryptSidebar:
+            return i->decryptSidebar();
+        case PrivacyScreen:
+            return i->privacyScreen();
+        case PrivacyScreenTimeout:
+            return i->privacyScreenTimeout();
+        case MobileMode:
+            return i->mobileMode();
+        case FontSize:
+            return i->fontSize();
+        case Font:
+            return data(index, Values).toStringList().indexOf(i->font());
+        case EmojiFont:
+            return data(index, Values).toStringList().indexOf(i->emojiFont());
+        case Ringtone: {
+            auto v = i->ringtone();
+            if (v == QStringView(u"Mute"))
+                return 0;
+            else if (v == QStringView(u"Default"))
+                return 1;
+            else if (v == QStringView(u"Other"))
+                return 2;
+            else
+                return 3;
         }
-        settings_->setUseOnlineKeyBackup(enabled);
-    });
+        case Microphone:
+            return data(index, Values).toStringList().indexOf(i->microphone());
+        case Camera:
+            return data(index, Values).toStringList().indexOf(i->camera());
+        case CameraResolution:
+            return data(index, Values).toStringList().indexOf(i->cameraResolution());
+        case CameraFrameRate:
+            return data(index, Values).toStringList().indexOf(i->cameraFrameRate());
+        case UseStunServer:
+            return i->useStunServer();
+        case OnlyShareKeysWithVerifiedUsers:
+            return i->onlyShareKeysWithVerifiedUsers();
+        case ShareKeysWithTrustedUsers:
+            return i->shareKeysWithTrustedUsers();
+        case UseOnlineKeyBackup:
+            return i->useOnlineKeyBackup();
+        case Profile:
+            return i->profile().isEmpty() ? tr("Default") : i->profile();
+        case UserId:
+            return i->userId();
+        case AccessToken:
+            return i->accessToken();
+        case DeviceId:
+            return i->deviceId();
+        case DeviceFingerprint:
+            return utils::humanReadableFingerprint(olm::client()->identity_keys().ed25519);
+        case Homeserver:
+            return i->homeserver();
+        case Version:
+            return QString::fromStdString(nheko::version);
+        case Platform:
+            return QString::fromStdString(nheko::build_os);
+        case OnlineBackupKey:
+            return cache::secret(mtx::secret_storage::secrets::megolm_backup_v1).has_value();
+        case SelfSigningKey:
+            return cache::secret(mtx::secret_storage::secrets::cross_signing_self_signing)
+              .has_value();
+        case UserSigningKey:
+            return cache::secret(mtx::secret_storage::secrets::cross_signing_user_signing)
+              .has_value();
+        case MasterKey:
+            return cache::secret(mtx::secret_storage::secrets::cross_signing_master).has_value();
+        }
+    } else if (role == Description) {
+        switch (index.row()) {
+        case Theme:
+        case Font:
+        case EmojiFont:
+            return {};
+        case Microphone:
+            return tr("Set the notification sound to play when a call invite arrives");
+        case Camera:
+        case CameraResolution:
+        case CameraFrameRate:
+        case Ringtone:
+            return {};
+        case TimelineMaxWidth:
+            return tr("Set the max width of messages in the timeline (in pixels). This can help "
+                      "readability on wide screen, when Nheko is maximised");
+        case PrivacyScreenTimeout:
+            return tr(
+              "Set timeout (in seconds) for how long after window loses\nfocus before the screen"
+              " will be blurred.\nSet to 0 to blur immediately after focus loss. Max value of 1 "
+              "hour (3600 seconds)");
+        case FontSize:
+            return {};
+        case MessageHoverHighlight:
+            return tr("Change the background color of messages when you hover over them.");
+        case EnlargeEmojiOnlyMessages:
+            return tr("Make font size larger if messages with only a few emojis are displayed.");
+        case Tray:
+            return tr(
+              "Keep the application running in the background after closing the client window.");
+        case StartInTray:
+            return tr("Start the application in the background without showing the client window.");
+        case GroupView:
+            return tr("Show a column containing groups and tags next to the room list.");
+        case Markdown:
+            return tr(
+              "Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
+              "text.");
+        case AnimateImagesOnHover:
+            return tr("Plays media like GIFs or WEBPs only when explicitly hovering over them.");
+        case TypingNotifications:
+            return tr(
+              "Show who is typing in a room.\nThis will also enable or disable sending typing "
+              "notifications to others.");
+        case SortByImportance:
+            return tr(
+              "Display rooms with new messages first.\nIf this is off, the list of rooms will only "
+              "be sorted by the timestamp of the last message in a room.\nIf this is on, rooms "
+              "which "
+              "have active notifications (the small circle with a number in it) will be sorted on "
+              "top. Rooms, that you have muted, will still be sorted by timestamp, since you don't "
+              "seem to consider them as important as the other rooms.");
+        case ButtonsInTimeline:
+            return tr(
+              "Show buttons to quickly reply, react or access additional options next to each "
+              "message.");
+        case ReadReceipts:
+            return tr("Show if your message was read.\nStatus is displayed next to timestamps.");
+        case DesktopNotifications:
+            return tr("Notify about received message when the client is not currently focused.");
+        case AlertOnNotification:
+            return tr(
+              "Show an alert when a message is received.\nThis usually causes the application "
+              "icon in the task bar to animate in some fashion.");
+        case AvatarCircles:
+            return tr(
+              "Change the appearance of user avatars in chats.\nOFF - square, ON - Circle.");
+        case UseIdenticon:
+            return tr("Display an identicon instead of a letter when no avatar is set.");
+        case DecryptSidebar:
+            return tr("Decrypt the messages shown in the sidebar.\nOnly affects messages in "
+                      "encrypted chats.");
+        case PrivacyScreen:
+            return tr("When the window loses focus, the timeline will\nbe blurred.");
+        case MobileMode:
+            return tr(
+              "Will prevent text selection in the timeline to make touch scrolling easier.");
+        case ScaleFactor:
+            return tr("Change the scale factor of the whole user interface.");
+        case UseStunServer:
+            return tr(
+              "Will use turn.matrix.org as assist when your home server does not offer one.");
+        case OnlyShareKeysWithVerifiedUsers:
+            return tr("Requires a user to be verified to send encrypted messages to them. This "
+                      "improves safety but makes E2EE more tedious.");
+        case ShareKeysWithTrustedUsers:
+            return tr(
+              "Automatically replies to key requests from other users, if they are verified, "
+              "even if that device shouldn't have access to those keys otherwise.");
+        case UseOnlineKeyBackup:
+            return tr(
+              "Download message encryption keys from and upload to the encrypted online key "
+              "backup.");
+        case Profile:
+        case UserId:
+        case AccessToken:
+        case DeviceId:
+        case DeviceFingerprint:
+        case Homeserver:
+        case Version:
+        case Platform:
+        case GeneralSection:
+        case TimelineSection:
+        case SidebarSection:
+        case TraySection:
+        case NotificationsSection:
+        case VoipSection:
+        case EncryptionSection:
+        case LoginInfoSection:
+        case SessionKeys:
+        case CrossSigningSecrets:
+            return {};
+        case OnlineBackupKey:
+            return tr(
+              "The key to decrypt online key backups. If it is cached, you can enable online "
+              "key backup to store encryption keys securely encrypted on the server.");
+        case SelfSigningKey:
+            return tr(
+              "The key to verify your own devices. If it is cached, verifying one of your devices "
+              "will mark it verified for all your other devices and for users, that have verified "
+              "you.");
+        case UserSigningKey:
+            return tr(
+              "The key to verify other users. If it is cached, verifying a user will verify "
+              "all their devices.");
+        case MasterKey:
+            return tr(
+              "Your most important key. You don't need to have it cached, since not caching "
+              "it makes it less likely it can be stolen and it is only needed to rotate your "
+              "other signing keys.");
+        }
+    } else if (role == Type) {
+        switch (index.row()) {
+        case Theme:
+        case Font:
+        case EmojiFont:
+        case Microphone:
+        case Camera:
+        case CameraResolution:
+        case CameraFrameRate:
+        case Ringtone:
+            return Options;
+        case TimelineMaxWidth:
+        case PrivacyScreenTimeout:
+        case FontSize:
+        case ScaleFactor:
+            return Number;
+        case MessageHoverHighlight:
+        case EnlargeEmojiOnlyMessages:
+        case Tray:
+        case StartInTray:
+        case GroupView:
+        case Markdown:
+        case AnimateImagesOnHover:
+        case TypingNotifications:
+        case SortByImportance:
+        case ButtonsInTimeline:
+        case ReadReceipts:
+        case DesktopNotifications:
+        case AlertOnNotification:
+        case AvatarCircles:
+        case UseIdenticon:
+        case DecryptSidebar:
+        case PrivacyScreen:
+        case MobileMode:
+        case UseStunServer:
+        case OnlyShareKeysWithVerifiedUsers:
+        case ShareKeysWithTrustedUsers:
+        case UseOnlineKeyBackup:
+            return Toggle;
+        case Profile:
+        case UserId:
+        case AccessToken:
+        case DeviceId:
+        case DeviceFingerprint:
+        case Homeserver:
+        case Version:
+        case Platform:
+            return ReadOnlyText;
+        case GeneralSection:
+        case TimelineSection:
+        case SidebarSection:
+        case TraySection:
+        case NotificationsSection:
+        case VoipSection:
+        case EncryptionSection:
+        case LoginInfoSection:
+            return SectionTitle;
+        case SessionKeys:
+            return SessionKeyImportExport;
+        case CrossSigningSecrets:
+            return XSignKeysRequestDownload;
+        case OnlineBackupKey:
+        case SelfSigningKey:
+        case UserSigningKey:
+        case MasterKey:
+            return KeyStatus;
+        }
+    } else if (role == ValueLowerBound) {
+        switch (index.row()) {
+        case TimelineMaxWidth:
+            return 0;
+        case PrivacyScreenTimeout:
+            return 0;
+        case FontSize:
+            return 8.0;
+        case ScaleFactor:
+            return 1.0;
+        }
+    } else if (role == ValueUpperBound) {
+        switch (index.row()) {
+        case TimelineMaxWidth:
+            return 20000;
+        case PrivacyScreenTimeout:
+            return 3600;
+        case FontSize:
+            return 24.0;
+        case ScaleFactor:
+            return 3.0;
+        }
+    } else if (role == ValueStep) {
+        switch (index.row()) {
+        case TimelineMaxWidth:
+            return 20;
+        case PrivacyScreenTimeout:
+            return 10;
+        case FontSize:
+            return 0.5;
+        case ScaleFactor:
+            return .25;
+        }
+    } else if (role == Values) {
+        auto vecToList = [](const std::vector<std::string> &vec) {
+            QStringList l;
+            for (const auto &d : vec)
+                l.push_back(QString::fromStdString(d));
+            return l;
+        };
+        static QFontDatabase fontDb;
 
-    connect(avatarCircles_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setAvatarCircles(enabled);
-    });
+        switch (index.row()) {
+        case Theme:
+            return QStringList{
+              QStringLiteral("Light"),
+              QStringLiteral("Dark"),
+              QStringLiteral("System"),
+            };
+        case Microphone:
+            return vecToList(CallDevices::instance().names(false, i->microphone().toStdString()));
+        case Camera:
+            return vecToList(CallDevices::instance().names(true, i->camera().toStdString()));
+        case CameraResolution:
+            return vecToList(CallDevices::instance().resolutions(i->camera().toStdString()));
+        case CameraFrameRate:
+            return vecToList(CallDevices::instance().frameRates(
+              i->camera().toStdString(), i->cameraResolution().toStdString()));
 
-    if (JdenticonProvider::isAvailable())
-        connect(useIdenticon_, &Toggle::toggled, this, [this](bool enabled) {
-            settings_->setUseIdenticon(enabled);
-        });
-    else
-        useIdenticon_->setDisabled(true);
+        case Font:
+            return fontDb.families();
+        case EmojiFont:
+            return fontDb.families(QFontDatabase::WritingSystem::Symbol);
+        case Ringtone:
+            QStringList l{
+              QStringLiteral("Mute"),
+              QStringLiteral("Default"),
+              QStringLiteral("Other"),
+            };
+            if (!l.contains(i->ringtone()))
+                l.push_back(i->ringtone());
+            return l;
+        }
+    } else if (role == Good) {
+        switch (index.row()) {
+        case OnlineBackupKey:
+            return cache::secret(mtx::secret_storage::secrets::megolm_backup_v1).has_value();
+        case SelfSigningKey:
+            return cache::secret(mtx::secret_storage::secrets::cross_signing_self_signing)
+              .has_value();
+        case UserSigningKey:
+            return cache::secret(mtx::secret_storage::secrets::cross_signing_user_signing)
+              .has_value();
+        case MasterKey:
+            return true;
+        }
+    } else if (role == Enabled) {
+        switch (index.row()) {
+        case StartInTray:
+            return i->tray();
+        case PrivacyScreenTimeout:
+            return i->privacyScreen();
+        case UseIdenticon:
+            return JdenticonProvider::isAvailable();
+        default:
+            return true;
+        }
+    }
 
-    connect(
-      markdown_, &Toggle::toggled, this, [this](bool enabled) { settings_->setMarkdown(enabled); });
-
-    connect(animateImagesOnHover_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setAnimateImagesOnHover(enabled);
-    });
-
-    connect(typingNotifications_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setTypingNotifications(enabled);
-    });
-
-    connect(sortByImportance_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setSortByImportance(enabled);
-    });
-
-    connect(timelineButtonsToggle_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setButtonsInTimeline(enabled);
-    });
-
-    connect(readReceipts_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setReadReceipts(enabled);
-    });
-
-    connect(desktopNotifications_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setDesktopNotifications(enabled);
-    });
-
-    connect(alertOnNotification_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setAlertOnNotification(enabled);
-    });
-
-    connect(messageHoverHighlight_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setMessageHoverHighlight(enabled);
-    });
-
-    connect(enlargeEmojiOnlyMessages_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setEnlargeEmojiOnlyMessages(enabled);
-    });
-
-    connect(useStunServer_, &Toggle::toggled, this, [this](bool enabled) {
-        settings_->setUseStunServer(enabled);
-    });
-
-    connect(timelineMaxWidthSpin_,
-            qOverload<int>(&QSpinBox::valueChanged),
-            this,
-            [this](int newValue) { settings_->setTimelineMaxWidth(newValue); });
-
-    connect(privacyScreenTimeout_,
-            qOverload<int>(&QSpinBox::valueChanged),
-            this,
-            [this](int newValue) { settings_->setPrivacyScreenTimeout(newValue); });
-
-    connect(
-      sessionKeysImportBtn, &QPushButton::clicked, this, &UserSettingsPage::importSessionKeys);
-
-    connect(
-      sessionKeysExportBtn, &QPushButton::clicked, this, &UserSettingsPage::exportSessionKeys);
-
-    connect(crossSigningRequestBtn, &QPushButton::clicked, this, []() {
-        olm::request_cross_signing_keys();
-    });
-
-    connect(crossSigningDownloadBtn, &QPushButton::clicked, this, []() {
-        olm::download_cross_signing_keys();
-    });
-
-    connect(backBtn_, &QPushButton::clicked, this, [this]() {
-        settings_->save();
-        emit moveBack();
-    });
+    return {};
 }
 
-void
-UserSettingsPage::showEvent(QShowEvent *)
+bool
+UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    // FIXME macOS doesn't show the full option unless a space is added.
-    utils::restoreCombobox(fontSizeCombo_, QString::number(settings_->fontSize()) + " ");
-    utils::restoreCombobox(scaleFactorCombo_, QString::number(utils::scaleFactor()));
-    utils::restoreCombobox(themeCombo_, settings_->theme());
-    utils::restoreCombobox(ringtoneCombo_, settings_->ringtone());
+    static QFontDatabase fontDb;
 
-    trayToggle_->setState(settings_->tray());
-    startInTrayToggle_->setState(settings_->startInTray());
-    groupViewToggle_->setState(settings_->groupView());
-    decryptSidebar_->setState(settings_->decryptSidebar());
-    privacyScreen_->setState(settings_->privacyScreen());
-    onlyShareKeysWithVerifiedUsers_->setState(settings_->onlyShareKeysWithVerifiedUsers());
-    shareKeysWithTrustedUsers_->setState(settings_->shareKeysWithTrustedUsers());
-    useOnlineKeyBackup_->setState(settings_->useOnlineKeyBackup());
-    avatarCircles_->setState(settings_->avatarCircles());
-    typingNotifications_->setState(settings_->typingNotifications());
-    sortByImportance_->setState(settings_->sortByImportance());
-    timelineButtonsToggle_->setState(settings_->buttonsInTimeline());
-    mobileMode_->setState(settings_->mobileMode());
-    readReceipts_->setState(settings_->readReceipts());
-    markdown_->setState(settings_->markdown());
-    desktopNotifications_->setState(settings_->hasDesktopNotifications());
-    alertOnNotification_->setState(settings_->hasAlertOnNotification());
-    messageHoverHighlight_->setState(settings_->messageHoverHighlight());
-    enlargeEmojiOnlyMessages_->setState(settings_->enlargeEmojiOnlyMessages());
-    deviceIdValue_->setText(QString::fromStdString(http::client()->device_id()));
-    timelineMaxWidthSpin_->setValue(settings_->timelineMaxWidth());
-    privacyScreenTimeout_->setValue(settings_->privacyScreenTimeout());
+    auto i = UserSettings::instance();
+    if (role == Value) {
+        switch (index.row()) {
+        case Theme: {
+            if (value == 0) {
+                i->setTheme("light");
+                return true;
+            } else if (value == 1) {
+                i->setTheme("dark");
+                return true;
+            } else if (value == 2) {
+                i->setTheme("system");
+                return true;
+            } else
+                return false;
+        }
+        case MessageHoverHighlight: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setMessageHoverHighlight(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case ScaleFactor: {
+            if (value.canConvert<double>()) {
+                utils::setScaleFactor(static_cast<float>(value.toDouble()));
+                return true;
+            } else
+                return false;
+        }
+        case EnlargeEmojiOnlyMessages: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setEnlargeEmojiOnlyMessages(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case Tray: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setTray(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case StartInTray: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setStartInTray(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case GroupView: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setGroupView(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case Markdown: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setMarkdown(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case AnimateImagesOnHover: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setAnimateImagesOnHover(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case TypingNotifications: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setTypingNotifications(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case SortByImportance: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setSortByImportance(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case ButtonsInTimeline: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setButtonsInTimeline(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case TimelineMaxWidth: {
+            if (value.userType() == QMetaType::Int) {
+                i->setTimelineMaxWidth(value.toInt());
+                return true;
+            } else
+                return false;
+        }
+        case ReadReceipts: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setReadReceipts(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case DesktopNotifications: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setDesktopNotifications(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case AlertOnNotification: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setAlertOnNotification(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case AvatarCircles: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setAvatarCircles(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case UseIdenticon: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setUseIdenticon(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case DecryptSidebar: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setDecryptSidebar(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+            return i->decryptSidebar();
+        case PrivacyScreen: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setPrivacyScreen(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case PrivacyScreenTimeout: {
+            if (value.userType() == QMetaType::Int) {
+                i->setPrivacyScreenTimeout(value.toInt());
+                return true;
+            } else
+                return false;
+        }
+        case MobileMode: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setMobileMode(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case FontSize: {
+            if (value.userType() == QMetaType::Double) {
+                i->setFontSize(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case Font: {
+            if (value.userType() == QMetaType::Int) {
+                i->setFontFamily(fontDb.families().at(value.toInt()));
+                return true;
+            } else
+                return false;
+        }
+        case EmojiFont: {
+            if (value.userType() == QMetaType::QString) {
+                i->setFontFamily(
+                  fontDb.families(QFontDatabase::WritingSystem::Symbol).at(value.toInt()));
+                return true;
+            } else
+                return false;
+        }
+        case Ringtone: {
+            if (value.userType() == QMetaType::Int) {
+                int ringtone = value.toInt();
 
-    auto mics = CallDevices::instance().names(false, settings_->microphone().toStdString());
-    microphoneCombo_->clear();
-    for (const auto &m : mics)
-        microphoneCombo_->addItem(QString::fromStdString(m));
-
-    auto cameraResolution = settings_->cameraResolution();
-    auto cameraFrameRate  = settings_->cameraFrameRate();
-
-    auto cameras = CallDevices::instance().names(true, settings_->camera().toStdString());
-    cameraCombo_->clear();
-    for (const auto &c : cameras)
-        cameraCombo_->addItem(QString::fromStdString(c));
-
-    utils::restoreCombobox(cameraResolutionCombo_, cameraResolution);
-    utils::restoreCombobox(cameraFrameRateCombo_, cameraFrameRate);
-
-    useStunServer_->setState(settings_->useStunServer());
-
-    deviceFingerprintValue_->setText(
-      utils::humanReadableFingerprint(olm::client()->identity_keys().ed25519));
+                // setRingtone is called twice, because updating the list breaks the set value,
+                // because it does not exist yet!
+                if (ringtone == 2) {
+                    QString homeFolder =
+                      QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+                    auto filepath = QFileDialog::getOpenFileName(
+                      MainWindow::instance(), tr("Select a file"), homeFolder, tr("All Files (*)"));
+                    if (!filepath.isEmpty()) {
+                        i->setRingtone(filepath);
+                        i->setRingtone(filepath);
+                    }
+                } else if (ringtone == 0) {
+                    i->setRingtone(QStringLiteral("Mute"));
+                    i->setRingtone(QStringLiteral("Mute"));
+                } else if (ringtone == 1) {
+                    i->setRingtone(QStringLiteral("Default"));
+                    i->setRingtone(QStringLiteral("Default"));
+                }
+                return true;
+            }
+            return false;
+        }
+        case Microphone: {
+            if (value.userType() == QMetaType::Int) {
+                i->setMicrophone(data(index, Values).toStringList().at(value.toInt()));
+                return true;
+            } else
+                return false;
+        }
+        case Camera: {
+            if (value.userType() == QMetaType::Int) {
+                i->setCamera(data(index, Values).toStringList().at(value.toInt()));
+                return true;
+            } else
+                return false;
+        }
+        case CameraResolution: {
+            if (value.userType() == QMetaType::Int) {
+                i->setCameraResolution(data(index, Values).toStringList().at(value.toInt()));
+                return true;
+            } else
+                return false;
+        }
+        case CameraFrameRate: {
+            if (value.userType() == QMetaType::Int) {
+                i->setCameraFrameRate(data(index, Values).toStringList().at(value.toInt()));
+                return true;
+            } else
+                return false;
+        }
+        case UseStunServer: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setUseStunServer(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case OnlyShareKeysWithVerifiedUsers: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setOnlyShareKeysWithVerifiedUsers(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case ShareKeysWithTrustedUsers: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setShareKeysWithTrustedUsers(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case UseOnlineKeyBackup: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setUseOnlineKeyBackup(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        }
+    }
+    return false;
 }
 
 void
-UserSettingsPage::paintEvent(QPaintEvent *)
-{
-    QStyleOption opt;
-    opt.initFrom(this);
-    QPainter p(this);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-}
-
-void
-UserSettingsPage::importSessionKeys()
+UserSettingsModel::importSessionKeys()
 {
     const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    const QString fileName =
-      QFileDialog::getOpenFileName(this, tr("Open Sessions File"), homeFolder, QLatin1String(""));
+    const QString fileName   = QFileDialog::getOpenFileName(
+      MainWindow::instance(), tr("Open Sessions File"), homeFolder, QLatin1String(""));
 
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
-        QMessageBox::warning(this, tr("Error"), file.errorString());
+        QMessageBox::warning(MainWindow::instance(), tr("Error"), file.errorString());
         return;
     }
 
@@ -1497,7 +1611,7 @@ UserSettingsPage::importSessionKeys()
     auto payload = std::string(bin.data(), bin.size());
 
     bool ok;
-    auto password = QInputDialog::getText(this,
+    auto password = QInputDialog::getText(MainWindow::instance(),
                                           tr("File Password"),
                                           tr("Enter the passphrase to decrypt the file:"),
                                           QLineEdit::Password,
@@ -1507,7 +1621,8 @@ UserSettingsPage::importSessionKeys()
         return;
 
     if (password.isEmpty()) {
-        QMessageBox::warning(this, tr("Error"), tr("The password cannot be empty"));
+        QMessageBox::warning(
+          MainWindow::instance(), tr("Error"), tr("The password cannot be empty"));
         return;
     }
 
@@ -1515,16 +1630,15 @@ UserSettingsPage::importSessionKeys()
         auto sessions = mtx::crypto::decrypt_exported_sessions(payload, password.toStdString());
         cache::importSessionKeys(std::move(sessions));
     } catch (const std::exception &e) {
-        QMessageBox::warning(this, tr("Error"), e.what());
+        QMessageBox::warning(MainWindow::instance(), tr("Error"), e.what());
     }
 }
-
 void
-UserSettingsPage::exportSessionKeys()
+UserSettingsModel::exportSessionKeys()
 {
     // Open password dialog.
     bool ok;
-    auto password = QInputDialog::getText(this,
+    auto password = QInputDialog::getText(MainWindow::instance(),
                                           tr("File Password"),
                                           tr("Enter passphrase to encrypt your session keys:"),
                                           QLineEdit::Password,
@@ -1534,18 +1648,19 @@ UserSettingsPage::exportSessionKeys()
         return;
 
     if (password.isEmpty()) {
-        QMessageBox::warning(this, tr("Error"), tr("The password cannot be empty"));
+        QMessageBox::warning(
+          MainWindow::instance(), tr("Error"), tr("The password cannot be empty"));
         return;
     }
 
     // Open file dialog to save the file.
     const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    const QString fileName =
-      QFileDialog::getSaveFileName(this, tr("File to save the exported session keys"), homeFolder);
+    const QString fileName   = QFileDialog::getSaveFileName(
+      MainWindow::instance(), tr("File to save the exported session keys"), homeFolder);
 
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QMessageBox::warning(this, tr("Error"), file.errorString());
+        QMessageBox::warning(MainWindow::instance(), tr("Error"), file.errorString());
         return;
     }
 
@@ -1563,31 +1678,135 @@ UserSettingsPage::exportSessionKeys()
         out << prefix << newline << b64 << newline << suffix << newline;
         file.close();
     } catch (const std::exception &e) {
-        QMessageBox::warning(this, tr("Error"), e.what());
+        QMessageBox::warning(MainWindow::instance(), tr("Error"), e.what());
     }
 }
-
 void
-UserSettingsPage::updateSecretStatus()
+UserSettingsModel::requestCrossSigningSecrets()
 {
-    QString ok      = QStringLiteral("QLabel { color : #00cc66; }");
-    QString notSoOk = QStringLiteral("QLabel { color : #ff9933; }");
+    olm::request_cross_signing_keys();
+}
+void
+UserSettingsModel::downloadCrossSigningSecrets()
+{
+    olm::download_cross_signing_keys();
+}
 
-    auto updateLabel = [&ok, &notSoOk](QLabel *label, const std::string &secretName) {
-        if (cache::secret(secretName)) {
-            label->setStyleSheet(ok);
-            label->setText(tr("CACHED"));
-        } else {
-            if (secretName == mtx::secret_storage::secrets::cross_signing_master)
-                label->setStyleSheet(ok);
-            else
-                label->setStyleSheet(notSoOk);
-            label->setText(tr("NOT CACHED"));
-        }
-    };
+UserSettingsModel::UserSettingsModel(QObject *p)
+  : QAbstractListModel(p)
+{
+    auto s = UserSettings::instance();
+    connect(s.get(), &UserSettings::themeChanged, this, [this]() {
+        emit dataChanged(index(Theme), index(Theme), {Value});
+    });
+    connect(s.get(), &UserSettings::mobileModeChanged, this, [this]() {
+        emit dataChanged(index(MobileMode), index(MobileMode), {Value});
+    });
 
-    updateLabel(masterSecretCached, mtx::secret_storage::secrets::cross_signing_master);
-    updateLabel(userSigningSecretCached, mtx::secret_storage::secrets::cross_signing_user_signing);
-    updateLabel(selfSigningSecretCached, mtx::secret_storage::secrets::cross_signing_self_signing);
-    updateLabel(backupSecretCached, mtx::secret_storage::secrets::megolm_backup_v1);
+    connect(s.get(), &UserSettings::fontChanged, this, [this]() {
+        emit dataChanged(index(Font), index(Font), {Value});
+    });
+    connect(s.get(), &UserSettings::fontSizeChanged, this, [this]() {
+        emit dataChanged(index(FontSize), index(FontSize), {Value});
+    });
+    connect(s.get(), &UserSettings::emojiFontChanged, this, [this]() {
+        emit dataChanged(index(EmojiFont), index(EmojiFont), {Value});
+    });
+    connect(s.get(), &UserSettings::avatarCirclesChanged, this, [this]() {
+        emit dataChanged(index(AvatarCircles), index(AvatarCircles), {Value});
+    });
+    connect(s.get(), &UserSettings::useIdenticonChanged, this, [this]() {
+        emit dataChanged(index(UseIdenticon), index(UseIdenticon), {Value});
+    });
+    connect(s.get(), &UserSettings::privacyScreenChanged, this, [this]() {
+        emit dataChanged(index(PrivacyScreen), index(PrivacyScreen), {Value});
+        emit dataChanged(index(PrivacyScreenTimeout), index(PrivacyScreenTimeout), {Enabled});
+    });
+    connect(s.get(), &UserSettings::privacyScreenTimeoutChanged, this, [this]() {
+        emit dataChanged(index(PrivacyScreenTimeout), index(PrivacyScreenTimeout), {Value});
+    });
+
+    connect(s.get(), &UserSettings::timelineMaxWidthChanged, this, [this]() {
+        emit dataChanged(index(TimelineMaxWidth), index(TimelineMaxWidth), {Value});
+    });
+    connect(s.get(), &UserSettings::messageHoverHighlightChanged, this, [this]() {
+        emit dataChanged(index(MessageHoverHighlight), index(MessageHoverHighlight), {Value});
+    });
+    connect(s.get(), &UserSettings::enlargeEmojiOnlyMessagesChanged, this, [this]() {
+        emit dataChanged(index(EnlargeEmojiOnlyMessages), index(EnlargeEmojiOnlyMessages), {Value});
+    });
+    connect(s.get(), &UserSettings::animateImagesOnHoverChanged, this, [this]() {
+        emit dataChanged(index(AnimateImagesOnHover), index(AnimateImagesOnHover), {Value});
+    });
+    connect(s.get(), &UserSettings::typingNotificationsChanged, this, [this]() {
+        emit dataChanged(index(TypingNotifications), index(TypingNotifications), {Value});
+    });
+    connect(s.get(), &UserSettings::readReceiptsChanged, this, [this]() {
+        emit dataChanged(index(ReadReceipts), index(ReadReceipts), {Value});
+    });
+    connect(s.get(), &UserSettings::buttonInTimelineChanged, this, [this]() {
+        emit dataChanged(index(ButtonsInTimeline), index(ButtonsInTimeline), {Value});
+    });
+    connect(s.get(), &UserSettings::markdownChanged, this, [this]() {
+        emit dataChanged(index(Markdown), index(Markdown), {Value});
+    });
+
+    connect(s.get(), &UserSettings::groupViewStateChanged, this, [this]() {
+        emit dataChanged(index(GroupView), index(GroupView), {Value});
+    });
+    connect(s.get(), &UserSettings::roomSortingChanged, this, [this]() {
+        emit dataChanged(index(SortByImportance), index(SortByImportance), {Value});
+    });
+    connect(s.get(), &UserSettings::decryptSidebarChanged, this, [this]() {
+        emit dataChanged(index(DecryptSidebar), index(DecryptSidebar), {Value});
+    });
+
+    connect(s.get(), &UserSettings::trayChanged, this, [this]() {
+        emit dataChanged(index(Tray), index(Tray), {Value});
+        emit dataChanged(index(StartInTray), index(StartInTray), {Enabled});
+    });
+    connect(s.get(), &UserSettings::startInTrayChanged, this, [this]() {
+        emit dataChanged(index(StartInTray), index(StartInTray), {Value});
+    });
+
+    connect(s.get(), &UserSettings::desktopNotificationsChanged, this, [this]() {
+        emit dataChanged(index(DesktopNotifications), index(DesktopNotifications), {Value});
+    });
+    connect(s.get(), &UserSettings::alertOnNotificationChanged, this, [this]() {
+        emit dataChanged(index(AlertOnNotification), index(AlertOnNotification), {Value});
+    });
+
+    connect(s.get(), &UserSettings::useStunServerChanged, this, [this]() {
+        emit dataChanged(index(UseStunServer), index(UseStunServer), {Value});
+    });
+    connect(s.get(), &UserSettings::microphoneChanged, this, [this]() {
+        emit dataChanged(index(Microphone), index(Microphone), {Value, Values});
+    });
+    connect(s.get(), &UserSettings::cameraChanged, this, [this]() {
+        emit dataChanged(index(Camera), index(Camera), {Value, Values});
+    });
+    connect(s.get(), &UserSettings::cameraResolutionChanged, this, [this]() {
+        emit dataChanged(index(CameraResolution), index(CameraResolution), {Value, Values});
+    });
+    connect(s.get(), &UserSettings::cameraFrameRateChanged, this, [this]() {
+        emit dataChanged(index(CameraFrameRate), index(CameraFrameRate), {Value, Values});
+    });
+    connect(s.get(), &UserSettings::ringtoneChanged, this, [this]() {
+        emit dataChanged(index(Ringtone), index(Ringtone), {Values, Value});
+    });
+
+    connect(s.get(), &UserSettings::onlyShareKeysWithVerifiedUsersChanged, this, [this]() {
+        emit dataChanged(
+          index(OnlyShareKeysWithVerifiedUsers), index(OnlyShareKeysWithVerifiedUsers), {Value});
+    });
+    connect(s.get(), &UserSettings::shareKeysWithTrustedUsersChanged, this, [this]() {
+        emit dataChanged(
+          index(ShareKeysWithTrustedUsers), index(ShareKeysWithTrustedUsers), {Value});
+    });
+    connect(s.get(), &UserSettings::useOnlineKeyBackupChanged, this, [this]() {
+        emit dataChanged(index(UseOnlineKeyBackup), index(UseOnlineKeyBackup), {Value});
+    });
+    connect(MainWindow::instance(), &MainWindow::secretsChanged, this, [this]() {
+        emit dataChanged(index(OnlineBackupKey), index(MasterKey), {Value, Good});
+    });
 }

@@ -394,7 +394,7 @@ utils::humanReadableFingerprint(const QString &ed25519)
     QString fingerprint;
     for (int i = 0; i < ed25519.length(); i = i + 4) {
         fingerprint.append(QStringView(ed25519).mid(i, 4));
-        if (i > 0 && i % 16 == 12)
+        if (i > 0 && i == 20)
             fingerprint.append('\n');
         else if (i < ed25519.length())
             fingerprint.append(' ');

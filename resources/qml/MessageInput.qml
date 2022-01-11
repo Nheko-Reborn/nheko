@@ -194,7 +194,7 @@ Rectangle {
                         }
                         room.input.send();
                         event.accepted = true;
-                    } else if (event.key == Qt.Key_Tab) {
+                    } else if (event.key == Qt.Key_Tab && (event.modifiers == Qt.NoModifier || event.modifiers == Qt.ShiftModifier)) {
                         event.accepted = true;
                         if (popup.opened) {
                             if (event.modifiers & Qt.ShiftModifier)
