@@ -964,7 +964,6 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return data(index, Values).toStringList().indexOf(i->emojiFont());
         case Ringtone: {
             auto v = i->ringtone();
-            nhlog::ui()->critical("ringtone: {}", v.toStdString());
             if (v == QStringView(u"Mute"))
                 return 0;
             else if (v == QStringView(u"Default"))

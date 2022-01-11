@@ -6,21 +6,17 @@
 import "ui"
 import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
-import QtQuick.Controls 2.3
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
-import QtQuick.Window 2.13
+import QtQuick.Window 2.15
 import im.nheko 1.0
 
 Rectangle {
     id: userSettingsDialog
 
-    property bool collapsed: width < 800
+    property int collapsePoint: 800
+    property bool collapsed: width < collapsePoint
     color: Nheko.colors.window
-
-    Shortcut {
-        sequence: StandardKey.Cancel
-        onActivated: userSettingsDialog.close()
-    }
 
     ScrollView {
         id: scroll
@@ -51,8 +47,8 @@ Rectangle {
             columnSpacing: Nheko.paddingMedium
 
             anchors.fill: parent
-            anchors.leftMargin: userSettingsDialog.collapsed ? Nheko.paddingLarge : (userSettingsDialog.width-600) * 0.4
-            anchors.rightMargin: userSettingsDialog.collapsed ? Nheko.paddingLarge : (userSettingsDialog.width-600) * 0.4
+            anchors.leftMargin: userSettingsDialog.collapsed ? Nheko.paddingLarge : (userSettingsDialog.width-userSettingsDialog.collapsePoint) * 0.4
+            anchors.rightMargin: anchors.leftMargin
 
             Repeater {
                 model: UserSettingsModel
@@ -63,7 +59,6 @@ Rectangle {
 
                     Component.onCompleted: {
                         while (children.length) { 
-                            console.log("Reparenting: " + children[0]);
                             children[0].parent = grid;
                         }
                     }
@@ -79,7 +74,7 @@ Rectangle {
                         Layout.minimumWidth: implicitWidth
                         Layout.leftMargin: model.type == UserSettingsModel.SectionTitle ? 0 : Nheko.paddingMedium
                         Layout.topMargin: model.type == UserSettingsModel.SectionTitle ? Nheko.paddingLarge : 0
-                        font.pointSize: 1.1 * fontInfo.pointSize
+                        font.pointSize: 1.1 * fontMetrics.font.pointSize
 
                         HoverHandler {
                             id: hovered

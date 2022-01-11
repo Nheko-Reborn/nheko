@@ -8,6 +8,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.5
 import im.nheko 1.0
 
+// FIXME(Nico): Don't use hardcoded colors.
 Button {
     id: control
 
