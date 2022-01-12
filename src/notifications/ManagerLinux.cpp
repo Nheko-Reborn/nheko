@@ -25,6 +25,7 @@
 #include "Cache.h"
 #include "EventAccessors.h"
 #include "MxcImageProvider.h"
+#include "UserSettingsPage.h"
 #include "Utils.h"
 
 NotificationsManager::NotificationsManager(QObject *parent)
@@ -160,6 +161,9 @@ NotificationsManager::systemPostNotification(const QString &room_id,
     hints[QStringLiteral("sound-name")]    = "message-new-instant";
     hints[QStringLiteral("desktop-entry")] = "nheko";
     hints[QStringLiteral("category")]      = "im.received";
+
+    if (auto profile = UserSettings::instance()->profile(); !profile.isEmpty())
+        hints[QStringLiteral("x-kde-origin-name")] = profile;
 
     uint replace_id = 0;
     if (!event_id.isEmpty()) {
