@@ -15,7 +15,7 @@ ApplicationWindow {
     property var onAccepted: undefined
 
     modality: Qt.NonModal
-    flags: Qt.Dialog
+    flags: Qt.Dialog | Qt.WindowTitleHint
     minimumWidth: 250
     minimumHeight: 220
     Component.onCompleted: Nheko.reparent(hiddenEventsDialog)
@@ -57,7 +57,7 @@ ApplicationWindow {
 
             ToggleButton {
                 id: toggleRoomMember
-                checked: roomSettings.eventHidden(0)
+                checked: !roomSettings.eventHidden("m.room.member")
                 Layout.alignment: Qt.AlignRight
             }
 
@@ -74,7 +74,7 @@ ApplicationWindow {
 
             ToggleButton {
                 id: toggleRoomPowerLevels
-                checked: roomSettings.eventHidden(1)
+                checked: !roomSettings.eventHidden("m.room.power_levels")
                 Layout.alignment: Qt.AlignRight
             }
 
@@ -86,7 +86,7 @@ ApplicationWindow {
             ToggleButton {
                 id: toggleSticker
                 Layout.alignment: Qt.AlignRight
-                checked: roomSettings.eventHidden(2)
+                checked: !roomSettings.eventHidden("m.sticker")
             }
         }
     }
@@ -96,7 +96,17 @@ ApplicationWindow {
 
         standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
         onAccepted: {
-            roomSettings.saveHiddenEventsSettings(toggleRoomMember.checked, toggleRoomPowerLevels.checked, toggleSticker.checked);
+            let events = new Array;
+            if (!toggleRoomMember.checked) {
+                events.push("m.room.member");
+            }
+            if (!toggleRoomPowerLevels.checked) {
+                events.push("m.room.power_levels");
+            }
+            if (!toggleSticker.checked) {
+                events.push("m.sticker");
+            }
+            roomSettings.saveHiddenEventsSettings(events);
 
             hiddenEventsDialog.close();
         }

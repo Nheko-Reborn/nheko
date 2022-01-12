@@ -260,12 +260,12 @@ ApplicationWindow {
 
             HiddenEventsDialog {
                 id: hiddenEventsDialog
-                prompt: qsTr("Select the events you want to hide from %1").arg(roomSettings.roomName)
+                prompt: qsTr("These events will be be <b>shown</b> in %1:").arg(roomSettings.roomName)
             }
 
             Button {
                 text: qsTr("Configure")
-                ToolTip.text: qsTr("Change which events are hidden in this room")
+                ToolTip.text: qsTr("Select events to hide in this room")
                 onClicked: hiddenEventsDialog.show()
                 Layout.alignment: Qt.AlignRight
             }

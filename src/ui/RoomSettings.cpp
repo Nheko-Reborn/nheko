@@ -13,8 +13,11 @@
 #include <QStandardPaths>
 #include <QVBoxLayout>
 #include <algorithm>
+#include <mtx/events/event_type.hpp>
+#include <mtx/events/nheko_extensions/hidden_events.hpp>
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/media.hpp>
+#include <mtxclient/http/client.hpp>
 
 #include "Cache.h"
 #include "Cache_p.h"
@@ -22,9 +25,6 @@
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "Utils.h"
-#include "mtx/events/event_type.hpp"
-#include "mtx/events/nheko_extensions/hidden_events.hpp"
-#include "mtxclient/http/client.hpp"
 #include "ui/TextField.h"
 
 using namespace mtx::events;
@@ -231,21 +231,13 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
     emit accessJoinRulesChanged();
 
     // Get room's hidden events and store it in member variable.
-    using mtx::events::EventType;
-    if (auto hiddenEvents =
-          cache::client()->getAccountData(EventType::NhekoHiddenEvents, roomid_.toStdString())) {
+    if (auto hiddenEvents = cache::client()->getAccountData(
+          mtx::events::EventType::NhekoHiddenEvents, roomid_.toStdString())) {
         if (auto tmp = std::get_if<mtx::events::EphemeralEvent<
               mtx::events::account_data::nheko_extensions::HiddenEvents>>(&*hiddenEvents)) {
-            const auto &types = tmp->content.hidden_event_types;
-            auto is_hidden{[&types](EventType searchFor) {
-                return std::find_if(types.begin(), types.end(), [&searchFor](const auto curType) {
-                           return curType == searchFor;
-                       }) != types.end();
-            }};
-
-            hiddenEvents_ = {is_hidden(EventType::RoomMember),
-                             is_hidden(EventType::RoomPowerLevels),
-                             is_hidden(EventType::Sticker)};
+            for (const auto event : tmp->content.hidden_event_types) {
+                hiddenEvents_.insert(mtx::events::to_string(event).data());
+            }
         }
     }
 }
@@ -319,17 +311,9 @@ RoomSettings::accessJoinRules()
 }
 
 bool
-RoomSettings::eventHidden(int index)
+RoomSettings::eventHidden(const QString event) const
 {
-    try {
-        // Is empty if there are no preferences stored for this room.
-        if (!hiddenEvents_.empty()) {
-            return hiddenEvents_.at(index);
-        }
-    } catch (...) {
-        nhlog::db()->warn("Failed to retrieve hidden event setting at {}", index);
-    }
-    return false;
+    return hiddenEvents_.contains(event);
 }
 
 void
@@ -443,30 +427,18 @@ RoomSettings::openEditModal()
 }
 
 void
-RoomSettings::saveHiddenEventsSettings(const bool toggleRoomMember,
-                                       const bool toggleRoomPowerLevels,
-                                       const bool toggleSticker)
+RoomSettings::saveHiddenEventsSettings(const QSet<QString> events)
 {
-    const auto roomid = roomid_.toStdString();
-    nhlog::ui()->debug("Setting events to hidden in room {}: m.room.member={}, "
-                       "m.room.power_levels={}, m.sticker={}",
-                       roomid,
-                       toggleRoomMember,
-                       toggleRoomPowerLevels,
-                       toggleSticker);
-
+    // TODO: Make this reusable for global account settings.
     mtx::events::account_data::nheko_extensions::HiddenEvents hiddenEvents;
     hiddenEvents.hidden_event_types = {
       EventType::Reaction, EventType::CallCandidates, EventType::Unsupported};
-    if (toggleRoomMember) {
-        hiddenEvents.hidden_event_types.emplace_back(mtx::events::EventType::RoomMember);
+    for (const auto &event : events) {
+        hiddenEvents.hidden_event_types.emplace_back(
+          mtx::events::getEventType(event.toStdString()));
     }
-    if (toggleRoomPowerLevels) {
-        hiddenEvents.hidden_event_types.emplace_back(mtx::events::EventType::RoomPowerLevels);
-    }
-    if (toggleSticker) {
-        hiddenEvents.hidden_event_types.emplace_back(mtx::events::EventType::Sticker);
-    }
+
+    const auto roomid = roomid_.toStdString();
     http::client()->put_room_account_data(roomid, hiddenEvents, [&roomid](mtx::http::RequestErr e) {
         if (e) {
             nhlog::net()->error("Failed to update room account data in {}: {}", roomid, *e);
