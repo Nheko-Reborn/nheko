@@ -11,15 +11,18 @@ import im.nheko 1.0
 
 Pane {
     property string title: qsTr("Waiting for other party…")
+    background: Rectangle {
+        color: Nheko.colors.window
+    }
 
     ColumnLayout {
+        anchors.fill: parent
         spacing: 16
 
         Label {
             id: content
 
-            Layout.maximumWidth: 400
-            Layout.fillHeight: true
+            Layout.preferredWidth: 400
             Layout.fillWidth: true
             wrapMode: Text.Wrap
             text: {
@@ -36,10 +39,12 @@ Pane {
             verticalAlignment: Text.AlignVCenter
         }
 
+        Item { Layout.fillHeight: true; }
         Spinner {
             Layout.alignment: Qt.AlignHCenter
             foreground: Nheko.colors.mid
         }
+        Item { Layout.fillHeight: true; }
 
         RowLayout {
             Button {

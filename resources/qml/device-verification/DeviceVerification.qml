@@ -14,10 +14,11 @@ ApplicationWindow {
     property var flow
 
     onClosing: VerificationManager.removeVerificationFlow(flow)
-    title: stack.currentItem.title
+    title: stack.currentItem.title_
     modality: Qt.NonModal
     palette: Nheko.colors
-    height: stack.implicitHeight
+    color: Nheko.colors.window
+    minimumHeight: stack.implicitHeight
     width: stack.implicitWidth
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     Component.onCompleted: Nheko.reparent(dialog)
@@ -25,6 +26,7 @@ ApplicationWindow {
     StackView {
         id: stack
 
+        anchors.fill: parent
         initialItem: newVerificationRequest
         implicitWidth: currentItem.implicitWidth
         implicitHeight: currentItem.implicitHeight

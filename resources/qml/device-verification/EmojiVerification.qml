@@ -10,13 +10,16 @@ import im.nheko 1.0
 
 Pane {
     property string title: qsTr("Verification Code")
+    background: Rectangle {
+        color: Nheko.colors.window
+    }
 
     ColumnLayout {
+        anchors.fill: parent
         spacing: 16
 
         Label {
-            Layout.maximumWidth: 400
-            Layout.fillHeight: true
+            Layout.preferredWidth: 400
             Layout.fillWidth: true
             wrapMode: Text.Wrap
             text: qsTr("Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press 'They do not match!' to abort verification!")
@@ -24,6 +27,7 @@ Pane {
             verticalAlignment: Text.AlignVCenter
         }
 
+        Item { Layout.fillHeight: true; }
         RowLayout {
             id: emojis
 
@@ -391,6 +395,7 @@ Pane {
             }
 
         }
+        Item { Layout.fillHeight: true; }
 
         RowLayout {
             Button {

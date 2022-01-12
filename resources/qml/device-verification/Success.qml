@@ -10,21 +10,26 @@ import im.nheko 1.0
 
 Pane {
     property string title: qsTr("Successful Verification")
+    background: Rectangle {
+        color: Nheko.colors.window
+    }
 
     ColumnLayout {
+        anchors.fill: parent
         spacing: 16
 
         Label {
             id: content
 
-            Layout.maximumWidth: 400
-            Layout.fillHeight: true
+            Layout.preferredWidth: 400
             Layout.fillWidth: true
             wrapMode: Text.Wrap
             text: qsTr("Verification successful! Both sides verified their devices!")
             color: Nheko.colors.text
             verticalAlignment: Text.AlignVCenter
         }
+
+        Item { Layout.fillHeight: true; }
 
         RowLayout {
             Item {
