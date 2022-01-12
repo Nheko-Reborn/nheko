@@ -46,7 +46,7 @@ ApplicationWindow {
 
             MatrixText {
                 text: qsTr("User events")
-                ToolTip.text: qsTr("Joins, leaves, invites, knocks and bans")
+                ToolTip.text: qsTr("Joins, leaves, avatar and name changes, bans, …")
                 ToolTip.visible: hh1.hovered
                 Layout.fillWidth: true
 
@@ -63,7 +63,7 @@ ApplicationWindow {
 
             MatrixText {
                 text: qsTr("Power level changes")
-                ToolTip.text: qsTr("Is sent when a moderator is added or removed or the permissions of a room are changed (happens a lot in some IRC rooms)")
+                ToolTip.text: qsTr("Sent when a moderator is added/removed or the permissions of a room are changed.")
                 ToolTip.visible: hh2.hovered
                 Layout.fillWidth: true
 
