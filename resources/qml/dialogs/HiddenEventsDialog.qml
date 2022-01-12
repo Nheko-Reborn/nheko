@@ -121,7 +121,7 @@ ApplicationWindow {
             if (!toggleSticker.checked) {
                 events.push("m.sticker");
             }
-            roomSettings.saveHiddenEventsSettings(events);
+            roomSettings.saveHiddenEventsSettings(events, roomSettings.roomId);
 
             hiddenEventsDialog.close();
         }

@@ -427,9 +427,8 @@ RoomSettings::openEditModal()
 }
 
 void
-RoomSettings::saveHiddenEventsSettings(const QSet<QString> events)
+RoomSettings::saveHiddenEventsSettings(const QSet<QString> &events, const QString &roomId)
 {
-    // TODO: Make this reusable for global account settings.
     mtx::events::account_data::nheko_extensions::HiddenEvents hiddenEvents;
     hiddenEvents.hidden_event_types = {
       EventType::Reaction, EventType::CallCandidates, EventType::Unsupported};
@@ -438,12 +437,21 @@ RoomSettings::saveHiddenEventsSettings(const QSet<QString> events)
           mtx::events::getEventType(event.toStdString()));
     }
 
-    const auto roomid = roomid_.toStdString();
-    http::client()->put_room_account_data(roomid, hiddenEvents, [&roomid](mtx::http::RequestErr e) {
-        if (e) {
-            nhlog::net()->error("Failed to update room account data in {}: {}", roomid, *e);
-        }
-    });
+    if (!roomId.isEmpty()) {
+        const auto rid = roomId.toStdString();
+        http::client()->put_room_account_data(rid, hiddenEvents, [&rid](mtx::http::RequestErr e) {
+            if (e) {
+                nhlog::net()->error(
+                  "Failed to update room account data with hidden events in {}: {}", rid, *e);
+            }
+        });
+    } else {
+        http::client()->put_account_data(hiddenEvents, [](mtx::http::RequestErr e) {
+            if (e) {
+                nhlog::net()->error("Failed to update account data with hidden events: {}", *e);
+            }
+        });
+    }
 }
 
 void
