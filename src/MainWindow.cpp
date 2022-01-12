@@ -13,77 +13,108 @@
 #include <mtx/requests.hpp>
 #include <mtx/responses/login.hpp>
 
+#include "BlurhashProvider.h"
 #include "Cache.h"
 #include "Cache_p.h"
 #include "ChatPage.h"
+#include "Clipboard.h"
+#include "ColorImageProvider.h"
+#include "CombinedImagePackModel.h"
+#include "CompletionProxyModel.h"
 #include "Config.h"
+#include "EventAccessors.h"
+#include "ImagePackListModel.h"
+#include "InviteesModel.h"
 #include "JdenticonProvider.h"
 #include "Logging.h"
 #include "LoginPage.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "MemberList.h"
+#include "MxcImageProvider.h"
+#include "ReadReceiptsModel.h"
 #include "RegisterPage.h"
+#include "RoomDirectoryModel.h"
+#include "RoomsModel.h"
+#include "SingleImagePackModel.h"
 #include "TrayIcon.h"
 #include "UserSettingsPage.h"
+#include "UsersModel.h"
 #include "Utils.h"
 #include "WelcomePage.h"
+#include "emoji/EmojiModel.h"
+#include "emoji/Provider.h"
+#include "encryption/DeviceVerificationFlow.h"
+#include "encryption/SelfVerificationStatus.h"
+#include "timeline/DelegateChooser.h"
+#include "timeline/TimelineViewManager.h"
 #include "ui/LoadingIndicator.h"
+#include "ui/MxcAnimatedImage.h"
+#include "ui/MxcMediaProxy.h"
+#include "ui/NhekoCursorShape.h"
+#include "ui/NhekoDropArea.h"
+#include "ui/NhekoGlobalObject.h"
 #include "ui/OverlayModal.h"
 #include "ui/SnackBar.h"
+#include "ui/UIA.h"
 #include "voip/WebRTCSession.h"
 
 #include "dialogs/CreateRoom.h"
 
+Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
+Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
+Q_DECLARE_METATYPE(std::vector<mtx::responses::PublicRoomsChunk>)
+
 MainWindow *MainWindow::instance_ = nullptr;
 
-MainWindow::MainWindow(QWidget *parent)
-  : QMainWindow(parent)
+MainWindow::MainWindow(QWindow *parent)
+  : QQuickView(parent)
   , userSettings_{UserSettings::instance()}
 {
     instance_ = this;
 
-    QMainWindow::setWindowTitle(0);
+    MainWindow::setWindowTitle(0);
     setObjectName(QStringLiteral("MainWindow"));
-
-    modal_ = new OverlayModal(this);
-
+    setResizeMode(QQuickView::SizeRootObjectToView);
+    setMinimumHeight(400);
+    setMinimumWidth(400);
     restoreWindowSize();
 
-    QFont font;
-    font.setStyleStrategy(QFont::PreferAntialias);
-    setFont(font);
+    chat_page_ = new ChatPage(userSettings_, this);
+    registerQmlTypes();
+
+    setColor(Theme::paletteFromTheme(userSettings_->theme()).window().color());
+    setSource(QUrl(QStringLiteral("qrc:///qml/Root.qml")));
+    // modal_ = new OverlayModal(this);
+
+
+    // QFont font;
+    // font.setStyleStrategy(QFont::PreferAntialias);
+    // setFont(font);
 
     trayIcon_ = new TrayIcon(QStringLiteral(":/logos/nheko.svg"), this);
 
-    welcome_page_  = new WelcomePage(this);
-    login_page_    = new LoginPage(this);
-    register_page_ = new RegisterPage(this);
-    chat_page_     = new ChatPage(userSettings_, this);
+    // welcome_page_  = new WelcomePage(this);
+    // login_page_    = new LoginPage(this);
+    // register_page_ = new RegisterPage(this);
 
-    // Initialize sliding widget manager.
-    pageStack_ = new QStackedWidget(this);
-    pageStack_->addWidget(welcome_page_);
-    pageStack_->addWidget(login_page_);
-    pageStack_->addWidget(register_page_);
-    pageStack_->addWidget(chat_page_);
+    //// Initialize sliding widget manager.
 
-    setCentralWidget(pageStack_);
+    // connect(welcome_page_, SIGNAL(userLogin()), this, SLOT(showLoginPage()));
+    // connect(welcome_page_, SIGNAL(userRegister()), this, SLOT(showRegisterPage()));
 
-    connect(welcome_page_, SIGNAL(userLogin()), this, SLOT(showLoginPage()));
-    connect(welcome_page_, SIGNAL(userRegister()), this, SLOT(showRegisterPage()));
-
-    connect(login_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
-    connect(login_page_, &LoginPage::loggingIn, this, &MainWindow::showOverlayProgressBar);
-    connect(register_page_, &RegisterPage::registering, this, &MainWindow::showOverlayProgressBar);
-    connect(login_page_, &LoginPage::errorOccurred, this, [this]() { removeOverlayProgressBar(); });
-    connect(
-      register_page_, &RegisterPage::errorOccurred, this, [this]() { removeOverlayProgressBar(); });
-    connect(register_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
+    // connect(login_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
+    // connect(login_page_, &LoginPage::loggingIn, this, &MainWindow::showOverlayProgressBar);
+    // connect(register_page_, &RegisterPage::registering, this,
+    // &MainWindow::showOverlayProgressBar); connect(login_page_, &LoginPage::errorOccurred, this,
+    // [this]() { removeOverlayProgressBar(); }); connect(
+    //   register_page_, &RegisterPage::errorOccurred, this, [this]() { removeOverlayProgressBar();
+    //   });
+    // connect(register_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
 
     connect(chat_page_, &ChatPage::closing, this, &MainWindow::showWelcomePage);
-    connect(
-      chat_page_, &ChatPage::showOverlayProgressBar, this, &MainWindow::showOverlayProgressBar);
+    // connect(
+    //   chat_page_, &ChatPage::showOverlayProgressBar, this, &MainWindow::showOverlayProgressBar);
     connect(chat_page_, &ChatPage::unreadMessages, this, &MainWindow::setWindowTitle);
     connect(chat_page_, SIGNAL(unreadMessages(int)), trayIcon_, SLOT(setUnreadCount(int)));
     connect(chat_page_, &ChatPage::showLoginPage, this, [this](const QString &msg) {
@@ -101,15 +132,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(this, &MainWindow::focusChanged, chat_page_, &ChatPage::chatFocusChanged);
 
-    connect(login_page_, &LoginPage::loginOk, this, [this](const mtx::responses::Login &res) {
-        http::client()->set_user(res.user_id);
-        showChatPage();
-    });
+    // connect(login_page_, &LoginPage::loginOk, this, [this](const mtx::responses::Login &res) {
+    //     http::client()->set_user(res.user_id);
+    //     showChatPage();
+    // });
 
-    connect(register_page_, &RegisterPage::registerOk, this, &MainWindow::showChatPage);
-
-    QShortcut *quitShortcut = new QShortcut(QKeySequence::Quit, this);
-    connect(quitShortcut, &QShortcut::activated, this, QApplication::quit);
+    // connect(register_page_, &RegisterPage::registerOk, this, &MainWindow::showChatPage);
 
     trayIcon_->setVisible(userSettings_->tray());
 
@@ -133,9 +161,165 @@ MainWindow::MainWindow(QWidget *parent)
                                       user_id.toStdString());
             }
 
+            nhlog::ui()->info("User already signed in, showing chat page");
             showChatPage();
         }
     });
+}
+
+void
+MainWindow::registerQmlTypes()
+{
+    qRegisterMetaType<mtx::events::msg::KeyVerificationAccept>();
+    qRegisterMetaType<mtx::events::msg::KeyVerificationCancel>();
+    qRegisterMetaType<mtx::events::msg::KeyVerificationDone>();
+    qRegisterMetaType<mtx::events::msg::KeyVerificationKey>();
+    qRegisterMetaType<mtx::events::msg::KeyVerificationMac>();
+    qRegisterMetaType<mtx::events::msg::KeyVerificationReady>();
+    qRegisterMetaType<mtx::events::msg::KeyVerificationRequest>();
+    qRegisterMetaType<mtx::events::msg::KeyVerificationStart>();
+    qRegisterMetaType<CombinedImagePackModel *>();
+    qRegisterMetaType<mtx::events::collections::TimelineEvents>();
+    qRegisterMetaType<std::vector<DeviceInfo>>();
+
+    qRegisterMetaType<std::vector<mtx::responses::PublicRoomsChunk>>();
+
+    qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
+                                     "im.nheko",
+                                     1,
+                                     0,
+                                     "MtxEvent",
+                                     QStringLiteral("Can't instantiate enum!"));
+    qmlRegisterUncreatableMetaObject(
+      olm::staticMetaObject, "im.nheko", 1, 0, "Olm", QStringLiteral("Can't instantiate enum!"));
+    qmlRegisterUncreatableMetaObject(crypto::staticMetaObject,
+                                     "im.nheko",
+                                     1,
+                                     0,
+                                     "Crypto",
+                                     QStringLiteral("Can't instantiate enum!"));
+    qmlRegisterUncreatableMetaObject(verification::staticMetaObject,
+                                     "im.nheko",
+                                     1,
+                                     0,
+                                     "VerificationStatus",
+                                     QStringLiteral("Can't instantiate enum!"));
+
+    qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
+    qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
+    qmlRegisterType<NhekoDropArea>("im.nheko", 1, 0, "NhekoDropArea");
+    qmlRegisterType<NhekoCursorShape>("im.nheko", 1, 0, "CursorShape");
+    qmlRegisterType<MxcAnimatedImage>("im.nheko", 1, 0, "MxcAnimatedImage");
+    qmlRegisterType<MxcMediaProxy>("im.nheko", 1, 0, "MxcMedia");
+    qmlRegisterType<RoomDirectoryModel>("im.nheko", 1, 0, "RoomDirectoryModel");
+    qmlRegisterUncreatableType<DeviceVerificationFlow>(
+      "im.nheko",
+      1,
+      0,
+      "DeviceVerificationFlow",
+      QStringLiteral("Can't create verification flow from QML!"));
+    qmlRegisterUncreatableType<UserProfile>(
+      "im.nheko",
+      1,
+      0,
+      "UserProfileModel",
+      QStringLiteral("UserProfile needs to be instantiated on the C++ side"));
+    qmlRegisterUncreatableType<MemberList>(
+      "im.nheko",
+      1,
+      0,
+      "MemberList",
+      QStringLiteral("MemberList needs to be instantiated on the C++ side"));
+    qmlRegisterUncreatableType<RoomSettings>(
+      "im.nheko",
+      1,
+      0,
+      "RoomSettingsModel",
+      QStringLiteral("Room Settings needs to be instantiated on the C++ side"));
+    qmlRegisterUncreatableType<TimelineModel>(
+      "im.nheko", 1, 0, "Room", QStringLiteral("Room needs to be instantiated on the C++ side"));
+    qmlRegisterUncreatableType<ImagePackListModel>(
+      "im.nheko",
+      1,
+      0,
+      "ImagePackListModel",
+      QStringLiteral("ImagePackListModel needs to be instantiated on the C++ side"));
+    qmlRegisterUncreatableType<SingleImagePackModel>(
+      "im.nheko",
+      1,
+      0,
+      "SingleImagePackModel",
+      QStringLiteral("SingleImagePackModel needs to be instantiated on the C++ side"));
+    qmlRegisterUncreatableType<InviteesModel>(
+      "im.nheko",
+      1,
+      0,
+      "InviteesModel",
+      QStringLiteral("InviteesModel needs to be instantiated on the C++ side"));
+    qmlRegisterUncreatableType<ReadReceiptsProxy>(
+      "im.nheko",
+      1,
+      0,
+      "ReadReceiptsProxy",
+      QStringLiteral("ReadReceiptsProxy needs to be instantiated on the C++ side"));
+
+    qmlRegisterSingletonType<Clipboard>(
+      "im.nheko", 1, 0, "Clipboard", [](QQmlEngine *, QJSEngine *) -> QObject * {
+          return new Clipboard();
+      });
+    qmlRegisterSingletonType<Nheko>(
+      "im.nheko", 1, 0, "Nheko", [](QQmlEngine *, QJSEngine *) -> QObject * {
+          return new Nheko();
+      });
+    qmlRegisterSingletonType<UserSettingsModel>(
+      "im.nheko", 1, 0, "UserSettingsModel", [](QQmlEngine *, QJSEngine *) -> QObject * {
+          return new UserSettingsModel();
+      });
+
+    qmlRegisterSingletonInstance("im.nheko", 1, 0, "Settings", userSettings_.data());
+
+    qRegisterMetaType<mtx::events::collections::TimelineEvents>();
+    qRegisterMetaType<std::vector<DeviceInfo>>();
+
+    qmlRegisterUncreatableType<FilteredCommunitiesModel>(
+      "im.nheko",
+      1,
+      0,
+      "FilteredCommunitiesModel",
+      QStringLiteral("Use Communities.filtered() to create a FilteredCommunitiesModel"));
+
+    qmlRegisterType<emoji::EmojiModel>("im.nheko.EmojiModel", 1, 0, "EmojiModel");
+    qmlRegisterUncreatableType<emoji::Emoji>(
+      "im.nheko.EmojiModel", 1, 0, "Emoji", QStringLiteral("Used by emoji models"));
+    qmlRegisterUncreatableMetaObject(emoji::staticMetaObject,
+                                     "im.nheko.EmojiModel",
+                                     1,
+                                     0,
+                                     "EmojiCategory",
+                                     QStringLiteral("Error: Only enums"));
+
+    qmlRegisterType<RoomDirectoryModel>("im.nheko", 1, 0, "RoomDirectoryModel");
+
+    qmlRegisterSingletonType<SelfVerificationStatus>(
+      "im.nheko", 1, 0, "SelfVerificationStatus", [](QQmlEngine *, QJSEngine *) -> QObject * {
+          auto ptr = new SelfVerificationStatus();
+          QObject::connect(ChatPage::instance(),
+                           &ChatPage::initializeEmptyViews,
+                           ptr,
+                           &SelfVerificationStatus::invalidate);
+          return ptr;
+      });
+    qmlRegisterSingletonInstance("im.nheko", 1, 0, "MainWindow", this);
+    qmlRegisterSingletonInstance("im.nheko", 1, 0, "UIA", UIA::instance());
+    qmlRegisterSingletonInstance(
+      "im.nheko", 1, 0, "CallManager", ChatPage::instance()->callManager());
+
+    imgProvider = new MxcImageProvider();
+    engine()->addImageProvider(QStringLiteral("MxcImage"), imgProvider);
+    engine()->addImageProvider(QStringLiteral("colorimage"), new ColorImageProvider());
+    engine()->addImageProvider(QStringLiteral("blurhash"), new BlurhashProvider());
+    if (JdenticonProvider::isAvailable())
+        engine()->addImageProvider(QStringLiteral("jdenticon"), new JdenticonProvider());
 }
 
 void
@@ -148,20 +332,23 @@ MainWindow::setWindowTitle(int notificationCount)
     if (notificationCount > 0) {
         name.append(QString{QStringLiteral(" (%1)")}.arg(notificationCount));
     }
-    QMainWindow::setWindowTitle(name);
+    QQuickView::setTitle(name);
 }
 
 bool
 MainWindow::event(QEvent *event)
 {
     auto type = event->type();
-    if (type == QEvent::WindowActivate) {
+
+    if (type == QEvent::Close) {
+        closeEvent(static_cast<QCloseEvent *>(event));
+    } else if (type == QEvent::WindowActivate) {
         emit focusChanged(true);
     } else if (type == QEvent::WindowDeactivate) {
         emit focusChanged(false);
     }
 
-    return QMainWindow::event(event);
+    return QQuickView::event(event);
 }
 
 void
@@ -196,19 +383,13 @@ MainWindow::removeOverlayProgressBar()
 
     connect(timer, &QTimer::timeout, this, [this, timer]() {
         timer->deleteLater();
-
-        if (modal_)
-            modal_->hide();
-
-        if (spinner_)
-            spinner_->stop();
     });
 
     // FIXME:  Snackbar doesn't work if it's initialized in the constructor.
-    QTimer::singleShot(0, this, [this]() {
-        snackBar_ = new SnackBar(this);
-        connect(chat_page_, &ChatPage::showNotification, snackBar_, &SnackBar::showMessage);
-    });
+    // QTimer::singleShot(0, this, [this]() {
+    //    snackBar_ = new SnackBar(this);
+    //    connect(chat_page_, &ChatPage::showNotification, snackBar_, &SnackBar::showMessage);
+    //});
 
     timer->start(50);
 }
@@ -229,17 +410,14 @@ MainWindow::showChatPage()
 
     showOverlayProgressBar();
 
-    pageStack_->setCurrentWidget(chat_page_);
-
-    pageStack_->removeWidget(welcome_page_);
-    pageStack_->removeWidget(login_page_);
-    pageStack_->removeWidget(register_page_);
-
-    login_page_->reset();
+    // login_page_->reset();
     chat_page_->bootstrap(userid, homeserver, token);
     connect(cache::client(), &Cache::databaseReady, this, &MainWindow::secretsChanged);
     connect(cache::client(), &Cache::secretChanged, this, &MainWindow::secretsChanged);
+
     emit reload();
+    nhlog::ui()->info("Switching to chat page");
+    emit switchToChatPage();
 }
 
 void
@@ -247,7 +425,7 @@ MainWindow::closeEvent(QCloseEvent *event)
 {
     if (WebRTCSession::instance().state() != webrtc::State::DISCONNECTED) {
         if (QMessageBox::question(
-              this, QStringLiteral("nheko"), QStringLiteral("A call is in progress. Quit?")) !=
+              nullptr, QStringLiteral("nheko"), QStringLiteral("A call is in progress. Quit?")) !=
             QMessageBox::Yes) {
             event->ignore();
             return;
@@ -292,20 +470,13 @@ MainWindow::hasActiveUser()
 void
 MainWindow::showOverlayProgressBar()
 {
-    spinner_ = new LoadingIndicator(this);
-    spinner_->setFixedHeight(100);
-    spinner_->setFixedWidth(100);
-    spinner_->setObjectName(QStringLiteral("ChatPageLoadSpinner"));
-    spinner_->start();
-
-    showSolidOverlayModal(spinner_);
 }
 
 void
 MainWindow::openCreateRoomDialog(
   std::function<void(const mtx::requests::CreateRoom &request)> callback)
 {
-    auto dialog = new dialogs::CreateRoom(this);
+    auto dialog = new dialogs::CreateRoom(nullptr);
     connect(dialog,
             &dialogs::CreateRoom::createRoom,
             this,
@@ -315,50 +486,36 @@ MainWindow::openCreateRoomDialog(
 }
 
 void
-MainWindow::showTransparentOverlayModal(QWidget *content, QFlags<Qt::AlignmentFlag> flags)
-{
-    modal_->setWidget(content);
-    modal_->setColor(QColor(30, 30, 30, 150));
-    modal_->setDismissible(true);
-    modal_->setContentAlignment(flags);
-    modal_->raise();
-    modal_->show();
-}
+MainWindow::showTransparentOverlayModal(QWidget *, QFlags<Qt::AlignmentFlag>)
+{}
 
 void
-MainWindow::showSolidOverlayModal(QWidget *content, QFlags<Qt::AlignmentFlag> flags)
+MainWindow::showSolidOverlayModal(QWidget *, QFlags<Qt::AlignmentFlag>)
 {
-    modal_->setWidget(content);
-    modal_->setColor(QColor(30, 30, 30));
-    modal_->setDismissible(false);
-    modal_->setContentAlignment(flags);
-    modal_->raise();
-    modal_->show();
 }
 
 bool
 MainWindow::hasActiveDialogs() const
 {
-    return modal_ && modal_->isVisible();
+    return false;
 }
 
 bool
 MainWindow::pageSupportsTray() const
 {
-    return !welcome_page_->isVisible() && !login_page_->isVisible() && !register_page_->isVisible();
+    return false; //! welcome_page_->isVisible() && !login_page_->isVisible() &&
+                  //! !register_page_->isVisible();
 }
 
 void
 MainWindow::hideOverlay()
 {
-    if (modal_)
-        modal_->hide();
 }
 
 inline void
 MainWindow::showDialog(QWidget *dialog)
 {
-    utils::centerWidget(dialog, this);
+    // utils::centerWidget(dialog, this);
     dialog->raise();
     dialog->show();
 }
@@ -367,23 +524,13 @@ void
 MainWindow::showWelcomePage()
 {
     removeOverlayProgressBar();
-    pageStack_->addWidget(welcome_page_);
-    pageStack_->setCurrentWidget(welcome_page_);
 }
 
 void
 MainWindow::showLoginPage()
 {
-    if (modal_)
-        modal_->hide();
-
-    pageStack_->addWidget(login_page_);
-    pageStack_->setCurrentWidget(login_page_);
 }
 
 void
 MainWindow::showRegisterPage()
-{
-    pageStack_->addWidget(register_page_);
-    pageStack_->setCurrentWidget(register_page_);
-}
+{}

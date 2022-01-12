@@ -8,6 +8,7 @@
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"
+#include "MainWindow.h"
 #include "MatrixClient.h"
 #include "MxcImageProvider.h"
 #include "TimelineModel.h"
@@ -275,7 +276,7 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
 
         connect(newRoom.data(),
                 &TimelineModel::newEncryptedImage,
-                manager->imageProvider(),
+                MainWindow::instance()->imageProvider(),
                 &MxcImageProvider::addEncryptionInfo);
         connect(newRoom.data(),
                 &TimelineModel::forwardToRoom,
@@ -509,7 +510,7 @@ RoomlistModel::sync(const mtx::responses::Sync &sync_)
         // room_model->addEvents(room.timeline);
         connect(room_model.data(),
                 &TimelineModel::newCallEvent,
-                manager->callManager(),
+                ChatPage::instance()->callManager(),
                 &CallManager::syncEvent,
                 Qt::UniqueConnection);
 

@@ -1031,7 +1031,7 @@ TimelineModel::setCurrentIndex(int index)
     if (index != oldIndex)
         emit currentIndexChanged(index);
 
-    if (!ChatPage::instance()->isActiveWindow())
+    if (!MainWindow::instance()->isActive())
         return;
 
     if (!currentId.startsWith('m')) {
@@ -1495,7 +1495,7 @@ TimelineModel::saveMedia(const QString &eventId) const
     const QString openLocation = downloadsFolder + "/" + originalFilename;
 
     const QString filename =
-      QFileDialog::getSaveFileName(manager_->getWidget(), dialogTitle, openLocation, filterString);
+      QFileDialog::getSaveFileName(nullptr, dialogTitle, openLocation, filterString);
 
     if (filename.isEmpty())
         return false;

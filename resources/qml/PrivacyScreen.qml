@@ -5,6 +5,7 @@
 
 import QtGraphicalEffects 1.0
 import QtQuick 2.12
+import QtQuick.Window 2.2
 import im.nheko 1.0
 
 Item {
@@ -15,7 +16,7 @@ Item {
 
     Connections {
         function onFocusChanged() {
-            if (TimelineManager.isWindowFocused) {
+            if (MainWindow.active) {
                 screenSaverTimer.stop();
                 screenSaver.state = "Invisible";
             } else {
@@ -25,14 +26,14 @@ Item {
             }
         }
 
-        target: TimelineManager
+        target: MainWindow
     }
 
     Timer {
         id: screenSaverTimer
 
         interval: screenTimeout * 1000
-        running: true
+        running: !MainWindow.active
         onTriggered: {
             screenSaver.state = "Visible";
         }

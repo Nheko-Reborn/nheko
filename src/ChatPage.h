@@ -51,12 +51,12 @@ struct Rooms;
 
 using SecretsToDecrypt = std::map<std::string, mtx::secret_storage::AesHmacSha2EncryptedData>;
 
-class ChatPage : public QWidget
+class ChatPage : public QObject
 {
     Q_OBJECT
 
 public:
-    ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent = nullptr);
+    ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent = nullptr);
 
     // Initialize all the components of the UI.
     void bootstrap(QString userid, QString homeserver, QString token);

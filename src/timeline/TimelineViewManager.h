@@ -8,8 +8,6 @@
 #include <QHash>
 #include <QQuickItem>
 #include <QQuickTextDocument>
-#include <QQuickView>
-#include <QQuickWidget>
 #include <QWidget>
 
 #include <mtx/common.hpp>
@@ -48,12 +46,9 @@ class TimelineViewManager : public QObject
 
 public:
     TimelineViewManager(CallManager *callManager, ChatPage *parent = nullptr);
-    QWidget *getWidget() const { return container; }
 
     void sync(const mtx::responses::Sync &sync_);
 
-    MxcImageProvider *imageProvider() { return imgProvider; }
-    CallManager *callManager() { return callManager_; }
     VerificationManager *verificationManager() { return verificationManager_; }
 
     void clearAll() { rooms_->clear(); }
@@ -105,7 +100,6 @@ public slots:
     }
 
     void showEvent(const QString &room_id, const QString &event_id);
-    void focusTimeline();
 
     void updateColorPalette();
     void queueReply(const QString &roomid, const QString &repliedToEvent, const QString &replyBody);
@@ -122,18 +116,6 @@ public slots:
     RoomlistModel *rooms() { return rooms_; }
 
 private:
-#ifdef USE_QUICK_VIEW
-    QQuickView *view;
-#else
-    QQuickWidget *view;
-#endif
-    QWidget *container;
-
-    MxcImageProvider *imgProvider;
-    ColorImageProvider *colorImgProvider;
-    BlurhashProvider *blurhashProvider;
-    JdenticonProvider *jdenticonProvider;
-
     bool isInitialSync_   = true;
     bool isWindowFocused_ = false;
 
@@ -141,7 +123,6 @@ private:
     CommunitiesModel *communities_ = nullptr;
 
     // don't move this above the rooms_
-    CallManager *callManager_                 = nullptr;
     VerificationManager *verificationManager_ = nullptr;
     PresenceEmitter *presenceEmitter          = nullptr;
 

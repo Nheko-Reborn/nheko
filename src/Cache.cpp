@@ -325,7 +325,7 @@ static void
 fatalSecretError()
 {
     QMessageBox::critical(
-      ChatPage::instance(),
+      nullptr,
       QCoreApplication::translate("SecretStorage", "Failed to connect to secret storage"),
       QCoreApplication::translate(
         "SecretStorage",

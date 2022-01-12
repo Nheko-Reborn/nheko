@@ -17,6 +17,7 @@
 #include <QLibraryInfo>
 #include <QMessageBox>
 #include <QPoint>
+#include <QQuickView>
 #include <QScreen>
 #include <QStandardPaths>
 #include <QTranslator>
@@ -279,6 +280,7 @@ main(int argc, char *argv[])
     font.setPointSizeF(settings.lock()->fontSize());
 
     app.setFont(font);
+    settings.lock()->applyTheme();
 
     if (QLocale().language() == QLocale::C)
         QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedKingdom));
@@ -296,15 +298,16 @@ main(int argc, char *argv[])
     app.installTranslator(&appTranslator);
 
     MainWindow w;
+    // QQuickView w;
 
     // Move the MainWindow to the center
-    w.move(screenCenter(w.width(), w.height()));
+    // w.move(screenCenter(w.width(), w.height()));
 
     if (!(settings.lock()->startInTray() && settings.lock()->tray()))
         w.show();
 
     QObject::connect(&app, &QApplication::aboutToQuit, &w, [&w]() {
-        w.saveCurrentWindowSize();
+        // w.saveCurrentWindowSize();
         if (http::client() != nullptr) {
             nhlog::net()->debug("shutting down all I/O threads & open connections");
             http::client()->close(true);
@@ -314,7 +317,7 @@ main(int argc, char *argv[])
     QObject::connect(&app, &SingleApplication::instanceStarted, &w, [&w]() {
         w.show();
         w.raise();
-        w.activateWindow();
+        w.requestActivate();
     });
 
     // It seems like handling the message in a blocking manner is a no-go. I have no idea how to

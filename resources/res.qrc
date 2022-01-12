@@ -110,6 +110,7 @@
         <file>qml/TypingIndicator.qml</file>
         <file>qml/NotificationWarning.qml</file>
         <file>qml/pages/UserSettingsPage.qml</file>
+        <file>qml/pages/WelcomePage.qml</file>
         <file>qml/components/AdaptiveLayout.qml</file>
         <file>qml/components/AdaptiveLayoutElement.qml</file>
         <file>qml/components/AvatarListTile.qml</file>

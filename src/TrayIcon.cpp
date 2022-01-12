@@ -10,6 +10,7 @@
 #include <QMenu>
 #include <QPainter>
 #include <QTimer>
+#include <QWindow>
 
 #include "TrayIcon.h"
 
@@ -100,7 +101,7 @@ MsgCountComposedIcon::pixmap(const QSize &size, QIcon::Mode mode, QIcon::State s
     return result;
 }
 
-TrayIcon::TrayIcon(const QString &filename, QWidget *parent)
+TrayIcon::TrayIcon(const QString &filename, QWindow *parent)
   : QSystemTrayIcon(parent)
 {
 #if defined(Q_OS_MAC) || defined(Q_OS_WIN)
@@ -110,13 +111,13 @@ TrayIcon::TrayIcon(const QString &filename, QWidget *parent)
     setIcon(QIcon(icon_));
 #endif
 
-    QMenu *menu = new QMenu(parent);
+    QMenu *menu = new QMenu();
     setContextMenu(menu);
 
     viewAction_ = new QAction(tr("Show"), this);
     quitAction_ = new QAction(tr("Quit"), this);
 
-    connect(viewAction_, SIGNAL(triggered()), parent, SLOT(show()));
+    connect(viewAction_, &QAction::triggered, parent, &QWindow::show);
     connect(quitAction_, &QAction::triggered, this, QApplication::quit);
 
     menu->addAction(viewAction_);

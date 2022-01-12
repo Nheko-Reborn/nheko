@@ -139,5 +139,5 @@ Nheko::openCreateRoomDialog() const
 void
 Nheko::reparent(QWindow *win) const
 {
-    win->setTransientParent(MainWindow::instance()->windowHandle());
+    win->setTransientParent(MainWindow::instance());
 }

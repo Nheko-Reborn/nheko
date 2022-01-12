@@ -8,7 +8,7 @@
 
 #include <functional>
 
-#include <QMainWindow>
+#include <QQuickView>
 #include <QSharedPointer>
 #include <QStackedWidget>
 #include <QSystemTrayIcon>
@@ -28,6 +28,7 @@ class OverlayModal;
 class SnackBar;
 class TrayIcon;
 class UserSettings;
+class MxcImageProvider;
 
 namespace mtx {
 namespace requests {
@@ -42,17 +43,12 @@ class MemberList;
 class ReCaptcha;
 }
 
-class MainWindow : public QMainWindow
+class MainWindow : public QQuickView
 {
     Q_OBJECT
 
-    Q_PROPERTY(int x READ x CONSTANT)
-    Q_PROPERTY(int y READ y CONSTANT)
-    Q_PROPERTY(int width READ width CONSTANT)
-    Q_PROPERTY(int height READ height CONSTANT)
-
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWindow *parent = nullptr);
 
     static MainWindow *instance() { return instance_; }
     void saveCurrentWindowSize();
@@ -67,8 +63,10 @@ public:
     showTransparentOverlayModal(QWidget *content,
                                 QFlags<Qt::AlignmentFlag> flags = Qt::AlignTop | Qt::AlignHCenter);
 
+    MxcImageProvider *imageProvider() { return imgProvider; }
+
 protected:
-    void closeEvent(QCloseEvent *event) override;
+    void closeEvent(QCloseEvent *event);
     bool event(QEvent *event) override;
 
 private slots:
@@ -97,6 +95,9 @@ signals:
     void reload();
     void secretsChanged();
 
+    void switchToChatPage();
+    void switchToWelcomePage();
+
 private:
     void showDialog(QWidget *dialog);
     bool hasActiveUser();
@@ -106,6 +107,8 @@ private:
     //! Check if the current page supports the "minimize to tray" functionality.
     bool pageSupportsTray() const;
 
+    void registerQmlTypes();
+
     static MainWindow *instance_;
 
     //! The initial welcome screen.
@@ -114,16 +117,11 @@ private:
     LoginPage *login_page_;
     //! The register page.
     RegisterPage *register_page_;
-    //! A stacked widget that handles the transitions between widgets.
-    QStackedWidget *pageStack_;
     //! The main chat area.
     ChatPage *chat_page_;
     QSharedPointer<UserSettings> userSettings_;
     //! Tray icon that shows the unread message count.
     TrayIcon *trayIcon_;
-    //! Notifications display.
-    SnackBar *snackBar_ = nullptr;
-    //! Overlay modal used to project other widgets.
-    OverlayModal *modal_       = nullptr;
-    LoadingIndicator *spinner_ = nullptr;
+
+    MxcImageProvider *imgProvider = nullptr;
 };

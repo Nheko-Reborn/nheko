@@ -8,7 +8,6 @@
 #include <QDropEvent>
 #include <QFileDialog>
 #include <QMetaType>
-#include <QPalette>
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QStandardPaths>
@@ -44,10 +43,6 @@
 #include "ui/NhekoDropArea.h"
 #include "ui/NhekoGlobalObject.h"
 #include "ui/UIA.h"
-
-Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
-Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
-Q_DECLARE_METATYPE(std::vector<mtx::responses::PublicRoomsChunk>)
 
 namespace msgs = mtx::events::msg;
 
@@ -102,19 +97,6 @@ void
 TimelineViewManager::updateColorPalette()
 {
     userColors.clear();
-
-    if (ChatPage::instance()->userSettings()->theme() == QLatin1String("light")) {
-        view->rootContext()->setContextProperty(QStringLiteral("currentActivePalette"), QPalette());
-        view->rootContext()->setContextProperty(QStringLiteral("currentInactivePalette"),
-                                                QPalette());
-    } else if (ChatPage::instance()->userSettings()->theme() == QLatin1String("dark")) {
-        view->rootContext()->setContextProperty(QStringLiteral("currentActivePalette"), QPalette());
-        view->rootContext()->setContextProperty(QStringLiteral("currentInactivePalette"),
-                                                QPalette());
-    } else {
-        view->rootContext()->setContextProperty(QStringLiteral("currentActivePalette"), QPalette());
-        view->rootContext()->setContextProperty(QStringLiteral("currentInactivePalette"), nullptr);
-    }
 }
 
 QColor
@@ -126,112 +108,15 @@ TimelineViewManager::userColor(QString id, QColor background)
     return userColors.value(idx);
 }
 
-TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *parent)
+TimelineViewManager::TimelineViewManager(CallManager *, ChatPage *parent)
   : QObject(parent)
-  , imgProvider(new MxcImageProvider())
-  , colorImgProvider(new ColorImageProvider())
-  , blurhashProvider(new BlurhashProvider())
-  , jdenticonProvider(new JdenticonProvider())
   , rooms_(new RoomlistModel(this))
   , communities_(new CommunitiesModel(this))
-  , callManager_(callManager)
   , verificationManager_(new VerificationManager(this))
   , presenceEmitter(new PresenceEmitter(this))
 {
-    qRegisterMetaType<mtx::events::msg::KeyVerificationAccept>();
-    qRegisterMetaType<mtx::events::msg::KeyVerificationCancel>();
-    qRegisterMetaType<mtx::events::msg::KeyVerificationDone>();
-    qRegisterMetaType<mtx::events::msg::KeyVerificationKey>();
-    qRegisterMetaType<mtx::events::msg::KeyVerificationMac>();
-    qRegisterMetaType<mtx::events::msg::KeyVerificationReady>();
-    qRegisterMetaType<mtx::events::msg::KeyVerificationRequest>();
-    qRegisterMetaType<mtx::events::msg::KeyVerificationStart>();
-    qRegisterMetaType<CombinedImagePackModel *>();
-
-    qRegisterMetaType<std::vector<mtx::responses::PublicRoomsChunk>>();
-
-    qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
-                                     "im.nheko",
-                                     1,
-                                     0,
-                                     "MtxEvent",
-                                     QStringLiteral("Can't instantiate enum!"));
-    qmlRegisterUncreatableMetaObject(
-      olm::staticMetaObject, "im.nheko", 1, 0, "Olm", QStringLiteral("Can't instantiate enum!"));
-    qmlRegisterUncreatableMetaObject(crypto::staticMetaObject,
-                                     "im.nheko",
-                                     1,
-                                     0,
-                                     "Crypto",
-                                     QStringLiteral("Can't instantiate enum!"));
-    qmlRegisterUncreatableMetaObject(verification::staticMetaObject,
-                                     "im.nheko",
-                                     1,
-                                     0,
-                                     "VerificationStatus",
-                                     QStringLiteral("Can't instantiate enum!"));
-
-    qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
-    qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
-    qmlRegisterType<NhekoDropArea>("im.nheko", 1, 0, "NhekoDropArea");
-    qmlRegisterType<NhekoCursorShape>("im.nheko", 1, 0, "CursorShape");
-    qmlRegisterType<MxcAnimatedImage>("im.nheko", 1, 0, "MxcAnimatedImage");
-    qmlRegisterType<MxcMediaProxy>("im.nheko", 1, 0, "MxcMedia");
-    qmlRegisterUncreatableType<DeviceVerificationFlow>(
-      "im.nheko",
-      1,
-      0,
-      "DeviceVerificationFlow",
-      QStringLiteral("Can't create verification flow from QML!"));
-    qmlRegisterUncreatableType<UserProfile>(
-      "im.nheko",
-      1,
-      0,
-      "UserProfileModel",
-      QStringLiteral("UserProfile needs to be instantiated on the C++ side"));
-    qmlRegisterUncreatableType<MemberList>(
-      "im.nheko",
-      1,
-      0,
-      "MemberList",
-      QStringLiteral("MemberList needs to be instantiated on the C++ side"));
-    qmlRegisterUncreatableType<RoomSettings>(
-      "im.nheko",
-      1,
-      0,
-      "RoomSettingsModel",
-      QStringLiteral("Room Settings needs to be instantiated on the C++ side"));
-    qmlRegisterUncreatableType<TimelineModel>(
-      "im.nheko", 1, 0, "Room", QStringLiteral("Room needs to be instantiated on the C++ side"));
-    qmlRegisterUncreatableType<ImagePackListModel>(
-      "im.nheko",
-      1,
-      0,
-      "ImagePackListModel",
-      QStringLiteral("ImagePackListModel needs to be instantiated on the C++ side"));
-    qmlRegisterUncreatableType<SingleImagePackModel>(
-      "im.nheko",
-      1,
-      0,
-      "SingleImagePackModel",
-      QStringLiteral("SingleImagePackModel needs to be instantiated on the C++ side"));
-    qmlRegisterUncreatableType<InviteesModel>(
-      "im.nheko",
-      1,
-      0,
-      "InviteesModel",
-      QStringLiteral("InviteesModel needs to be instantiated on the C++ side"));
-    qmlRegisterUncreatableType<ReadReceiptsProxy>(
-      "im.nheko",
-      1,
-      0,
-      "ReadReceiptsProxy",
-      QStringLiteral("ReadReceiptsProxy needs to be instantiated on the C++ side"));
-
     static auto self = this;
-    qmlRegisterSingletonInstance("im.nheko", 1, 0, "MainWindow", MainWindow::instance());
     qmlRegisterSingletonInstance("im.nheko", 1, 0, "TimelineManager", self);
-    qmlRegisterSingletonInstance("im.nheko", 1, 0, "UIA", UIA::instance());
     qmlRegisterSingletonType<RoomlistModel>(
       "im.nheko", 1, 0, "Rooms", [](QQmlEngine *, QJSEngine *) -> QObject * {
           auto ptr = new FilteredRoomlistModel(self->rooms_);
@@ -247,79 +132,15 @@ TimelineViewManager::TimelineViewManager(CallManager *callManager, ChatPage *par
           return ptr;
       });
     qmlRegisterSingletonInstance("im.nheko", 1, 0, "Communities", self->communities_);
-    qmlRegisterSingletonInstance(
-      "im.nheko", 1, 0, "Settings", ChatPage::instance()->userSettings().data());
-    qmlRegisterSingletonInstance(
-      "im.nheko", 1, 0, "CallManager", ChatPage::instance()->callManager());
-    qmlRegisterSingletonType<Clipboard>(
-      "im.nheko", 1, 0, "Clipboard", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          return new Clipboard();
-      });
-    qmlRegisterSingletonType<Nheko>(
-      "im.nheko", 1, 0, "Nheko", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          return new Nheko();
-      });
-    qmlRegisterSingletonType<UserSettingsModel>(
-      "im.nheko", 1, 0, "UserSettingsModel", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          return new UserSettingsModel();
-      });
     qmlRegisterSingletonInstance("im.nheko", 1, 0, "VerificationManager", verificationManager_);
     qmlRegisterSingletonInstance("im.nheko", 1, 0, "Presence", presenceEmitter);
-    qmlRegisterSingletonType<SelfVerificationStatus>(
-      "im.nheko", 1, 0, "SelfVerificationStatus", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          auto ptr = new SelfVerificationStatus();
-          QObject::connect(ChatPage::instance(),
-                           &ChatPage::initializeEmptyViews,
-                           ptr,
-                           &SelfVerificationStatus::invalidate);
-          return ptr;
-      });
 
-    qRegisterMetaType<mtx::events::collections::TimelineEvents>();
-    qRegisterMetaType<std::vector<DeviceInfo>>();
-
-    qmlRegisterUncreatableType<FilteredCommunitiesModel>(
-      "im.nheko",
-      1,
-      0,
-      "FilteredCommunitiesModel",
-      QStringLiteral("Use Communities.filtered() to create a FilteredCommunitiesModel"));
-
-    qmlRegisterType<emoji::EmojiModel>("im.nheko.EmojiModel", 1, 0, "EmojiModel");
-    qmlRegisterUncreatableType<emoji::Emoji>(
-      "im.nheko.EmojiModel", 1, 0, "Emoji", QStringLiteral("Used by emoji models"));
-    qmlRegisterUncreatableMetaObject(emoji::staticMetaObject,
-                                     "im.nheko.EmojiModel",
-                                     1,
-                                     0,
-                                     "EmojiCategory",
-                                     QStringLiteral("Error: Only enums"));
-
-    qmlRegisterType<RoomDirectoryModel>("im.nheko", 1, 0, "RoomDirectoryModel");
-
-#ifdef USE_QUICK_VIEW
-    view      = new QQuickView(parent);
-    container = QWidget::createWindowContainer(view, parent);
-#else
-    view      = new QQuickWidget(parent);
-    container = view;
-    view->setResizeMode(QQuickWidget::SizeRootObjectToView);
-    container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    connect(view, &QQuickWidget::statusChanged, this, [](QQuickWidget::Status status) {
-        nhlog::ui()->debug("Status changed to {}", status);
-    });
-#endif
-    container->setMinimumSize(200, 200);
     updateColorPalette();
-    view->engine()->addImageProvider(QStringLiteral("MxcImage"), imgProvider);
-    view->engine()->addImageProvider(QStringLiteral("colorimage"), colorImgProvider);
-    view->engine()->addImageProvider(QStringLiteral("blurhash"), blurhashProvider);
-    if (JdenticonProvider::isAvailable())
-        view->engine()->addImageProvider(QStringLiteral("jdenticon"), jdenticonProvider);
-    view->setSource(QUrl(QStringLiteral("qrc:///qml/Root.qml")));
 
-    connect(parent, &ChatPage::themeChanged, this, &TimelineViewManager::updateColorPalette);
+    connect(UserSettings::instance().get(),
+            &UserSettings::themeChanged,
+            this,
+            &TimelineViewManager::updateColorPalette);
     connect(parent,
             &ChatPage::receivedRoomDeviceVerificationRequest,
             verificationManager_,
@@ -379,7 +200,8 @@ void
 TimelineViewManager::setVideoCallItem()
 {
     WebRTCSession::instance().setVideoItem(
-      view->rootObject()->findChild<QQuickItem *>(QStringLiteral("videoCallItem")));
+      MainWindow::instance()->rootObject()->findChild<QQuickItem *>(
+        QStringLiteral("videoCallItem")));
 }
 
 void
@@ -401,7 +223,7 @@ TimelineViewManager::showEvent(const QString &room_id, const QString &event_id)
     if (auto room = rooms_->getRoomById(room_id)) {
         if (rooms_->currentRoom() != room) {
             rooms_->setCurrentRoom(room_id);
-            container->setFocus();
+            MainWindow::instance()->requestActivate();
             nhlog::ui()->info("Activated room {}", room_id.toStdString());
         }
 
@@ -439,7 +261,7 @@ TimelineViewManager::saveMedia(QString mxcUrl)
       QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
     const QString openLocation = downloadsFolder + "/" + mxcUrl.splitRef(u'/').constLast();
 
-    const QString filename = QFileDialog::getSaveFileName(getWidget(), {}, openLocation);
+    const QString filename = QFileDialog::getSaveFileName(nullptr, {}, openLocation);
 
     if (filename.isEmpty())
         return;
@@ -588,12 +410,6 @@ TimelineViewManager::completerFor(QString completerName, QString roomId)
         return proxy;
     }
     return nullptr;
-}
-
-void
-TimelineViewManager::focusTimeline()
-{
-    getWidget()->setFocus();
 }
 
 void

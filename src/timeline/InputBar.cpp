@@ -266,8 +266,8 @@ void
 InputBar::openFileSelection()
 {
     const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    const auto fileName      = QFileDialog::getOpenFileName(
-      ChatPage::instance(), tr("Select a file"), homeFolder, tr("All Files (*)"));
+    const auto fileName =
+      QFileDialog::getOpenFileName(nullptr, tr("Select a file"), homeFolder, tr("All Files (*)"));
 
     if (fileName.isEmpty())
         return;
@@ -659,7 +659,7 @@ InputBar::command(const QString &command, QString args)
 void
 InputBar::showPreview(const QMimeData &source, const QString &path, const QStringList &formats)
 {
-    auto *previewDialog_ = new dialogs::PreviewUploadOverlay(ChatPage::instance());
+    auto *previewDialog_ = new dialogs::PreviewUploadOverlay(nullptr);
     previewDialog_->setAttribute(Qt::WA_DeleteOnClose);
 
     // Force SVG to _not_ be handled as an image, but as raw data
