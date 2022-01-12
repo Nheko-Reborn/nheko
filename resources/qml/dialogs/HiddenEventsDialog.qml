@@ -11,7 +11,7 @@ import im.nheko 1.0
 ApplicationWindow {
     id: hiddenEventsDialog
 
-    property alias prompt: promptLabel.text
+    property var isRoomSetting: false
     property var onAccepted: undefined
 
     modality: Qt.NonModal
@@ -19,7 +19,14 @@ ApplicationWindow {
     minimumWidth: 250
     minimumHeight: 220
     Component.onCompleted: Nheko.reparent(hiddenEventsDialog)
-    title: qsTr("Hidden events settings for %1").arg(roomSettings.roomName)
+    title: {
+        if (isRoomSetting) {
+            return qsTr("Hidden events for %1").arg(roomSettings.roomName);
+        }
+        else {
+            return qsTr("Hidden events");
+        }
+    }
 
     Shortcut {
         sequence: StandardKey.Cancel
@@ -33,6 +40,14 @@ ApplicationWindow {
 
         MatrixText {
             id: promptLabel
+            text: {
+                if (isRoomSetting) {
+                    return qsTr("These events will be be <b>shown</b> in %1:").arg(roomSettings.roomName);
+                }
+                else {
+                    return qsTr("These events will be be <b>shown</b>:");
+                }
+            }
             font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.2)
             Layout.fillWidth: true
             Layout.fillHeight: false

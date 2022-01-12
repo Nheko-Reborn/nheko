@@ -260,7 +260,7 @@ ApplicationWindow {
 
             HiddenEventsDialog {
                 id: hiddenEventsDialog
-                prompt: qsTr("These events will be be <b>shown</b> in %1:").arg(roomSettings.roomName)
+                isRoomSetting: true
             }
 
             Button {
