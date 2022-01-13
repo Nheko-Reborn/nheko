@@ -109,10 +109,10 @@ public:
     Q_INVOKABLE void enableEncryption();
     Q_INVOKABLE void updateAvatar();
     Q_INVOKABLE void openEditModal();
-    Q_INVOKABLE void
-    saveHiddenEventsSettings(const QSet<QString> &events, const QString &roomId = {});
     Q_INVOKABLE void changeAccessRules(int index);
     Q_INVOKABLE void changeNotifications(int currentIndex);
+    Q_INVOKABLE void
+    saveHiddenEventsSettings(const QSet<QString> &events, const QString &roomId = {});
     Q_INVOKABLE bool eventHidden(QString event) const;
 
 signals:

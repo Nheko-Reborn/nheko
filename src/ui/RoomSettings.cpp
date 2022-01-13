@@ -12,7 +12,6 @@
 #include <QMimeDatabase>
 #include <QStandardPaths>
 #include <QVBoxLayout>
-#include <algorithm>
 #include <mtx/events/event_type.hpp>
 #include <mtx/events/nheko_extensions/hidden_events.hpp>
 #include <mtx/responses/common.hpp>
@@ -230,7 +229,6 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
     }
     emit accessJoinRulesChanged();
 
-    // Get room's hidden events and store it in member variable.
     if (auto hiddenEvents = cache::client()->getAccountData(
           mtx::events::EventType::NhekoHiddenEvents, roomid_.toStdString())) {
         if (auto tmp = std::get_if<mtx::events::EphemeralEvent<
@@ -308,12 +306,6 @@ int
 RoomSettings::accessJoinRules()
 {
     return accessRules_;
-}
-
-bool
-RoomSettings::eventHidden(const QString event) const
-{
-    return hiddenEvents_.contains(event);
 }
 
 void
@@ -424,34 +416,6 @@ RoomSettings::openEditModal()
         info_.topic = newTopic.toStdString();
         emit roomTopicChanged();
     });
-}
-
-void
-RoomSettings::saveHiddenEventsSettings(const QSet<QString> &events, const QString &roomId)
-{
-    mtx::events::account_data::nheko_extensions::HiddenEvents hiddenEvents;
-    hiddenEvents.hidden_event_types = {
-      EventType::Reaction, EventType::CallCandidates, EventType::Unsupported};
-    for (const auto &event : events) {
-        hiddenEvents.hidden_event_types.emplace_back(
-          mtx::events::getEventType(event.toStdString()));
-    }
-
-    if (!roomId.isEmpty()) {
-        const auto rid = roomId.toStdString();
-        http::client()->put_room_account_data(rid, hiddenEvents, [&rid](mtx::http::RequestErr e) {
-            if (e) {
-                nhlog::net()->error(
-                  "Failed to update room account data with hidden events in {}: {}", rid, *e);
-            }
-        });
-    } else {
-        http::client()->put_account_data(hiddenEvents, [](mtx::http::RequestErr e) {
-            if (e) {
-                nhlog::net()->error("Failed to update account data with hidden events: {}", *e);
-            }
-        });
-    }
 }
 
 void
@@ -684,4 +648,37 @@ RoomSettings::updateAvatar()
                 emit proxy->stopLoading();
             });
       });
+}
+
+void
+RoomSettings::saveHiddenEventsSettings(const QSet<QString> &events, const QString &roomId)
+{
+    account_data::nheko_extensions::HiddenEvents hiddenEvents;
+    hiddenEvents.hidden_event_types = {
+      EventType::Reaction, EventType::CallCandidates, EventType::Unsupported};
+    for (const auto &event : events) {
+        hiddenEvents.hidden_event_types.emplace_back(getEventType(event.toStdString()));
+    }
+
+    if (!roomId.isEmpty()) {
+        const auto rid = roomId.toStdString();
+        http::client()->put_room_account_data(rid, hiddenEvents, [&rid](mtx::http::RequestErr e) {
+            if (e) {
+                nhlog::net()->error(
+                  "Failed to update room account data with hidden events in {}: {}", rid, *e);
+            }
+        });
+    } else {
+        http::client()->put_account_data(hiddenEvents, [](mtx::http::RequestErr e) {
+            if (e) {
+                nhlog::net()->error("Failed to update account data with hidden events: {}", *e);
+            }
+        });
+    }
+}
+
+bool
+RoomSettings::eventHidden(const QString event) const
+{
+    return hiddenEvents_.contains(event);
 }
