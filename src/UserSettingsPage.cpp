@@ -1160,9 +1160,10 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return Options;
         case TimelineMaxWidth:
         case PrivacyScreenTimeout:
+            return Integer;
         case FontSize:
         case ScaleFactor:
-            return Number;
+            return Double;
         case MessageHoverHighlight:
         case EnlargeEmojiOnlyMessages:
         case Tray:
@@ -1345,7 +1346,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 return false;
         }
         case ScaleFactor: {
-            if (value.canConvert<double>()) {
+            if (value.canConvert(QMetaType::Double)) {
                 utils::setScaleFactor(static_cast<float>(value.toDouble()));
                 return true;
             } else
@@ -1415,7 +1416,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 return false;
         }
         case TimelineMaxWidth: {
-            if (value.userType() == QMetaType::Int) {
+            if (value.canConvert(QMetaType::Int)) {
                 i->setTimelineMaxWidth(value.toInt());
                 return true;
             } else
@@ -1472,7 +1473,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 return false;
         }
         case PrivacyScreenTimeout: {
-            if (value.userType() == QMetaType::Int) {
+            if (value.canConvert(QMetaType::Int)) {
                 i->setPrivacyScreenTimeout(value.toInt());
                 return true;
             } else
@@ -1486,8 +1487,8 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 return false;
         }
         case FontSize: {
-            if (value.userType() == QMetaType::Double) {
-                i->setFontSize(value.toBool());
+            if (value.canConvert(QMetaType::Double)) {
+                i->setFontSize(value.toDouble());
                 return true;
             } else
                 return false;

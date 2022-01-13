@@ -118,7 +118,7 @@ Rectangle {
                             }
                         }
                         DelegateChoice {
-                            roleValue: UserSettingsModel.Number
+                            roleValue: UserSettingsModel.Integer
 
                             SpinBox {
                                 anchors.right: parent.right
@@ -129,6 +129,42 @@ Rectangle {
                                 stepSize: model.valueStep
                                 value: model.value
                                 onValueChanged: model.value = value
+                                editable: true
+                            }
+                        }
+                        DelegateChoice {
+                            roleValue: UserSettingsModel.Double
+
+                            SpinBox {
+                                id: spinbox
+
+                                readonly property double div: 100
+                                readonly property int decimals: 2
+
+                                anchors.right: parent.right
+                                width: Math.min(parent.width, implicitWidth)
+                                enabled: !deadTimer.running && model.enabled
+                                from: model.valueLowerBound * div
+                                to: model.valueUpperBound * div
+                                stepSize: model.valueStep * div
+                                value: model.value * div
+                                onValueChanged: model.value = value/div
+                                editable: true
+
+                                property real realValue: value / div
+
+                                validator: DoubleValidator {
+                                    bottom: Math.min(spinbox.from/spinbox.div, spinbox.to/spinbox.div)
+                                    top:  Math.max(spinbox.from/spinbox.div, spinbox.to/spinbox.div)
+                                }
+
+                                textFromValue: function(value, locale) {
+                                    return Number(value / spinbox.div).toLocaleString(locale, 'f', spinbox.decimals)
+                                }
+
+                                valueFromText: function(text, locale) {
+                                    return Number.fromLocaleString(locale, text) * spinbox.div
+                                }
                             }
                         }
                         DelegateChoice {
