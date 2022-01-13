@@ -26,7 +26,7 @@ Item {
             }
         }
 
-        target: MainWindow
+        target: TimelineManager
     }
 
     Timer {

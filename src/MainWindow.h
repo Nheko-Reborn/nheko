@@ -91,7 +91,6 @@ private slots:
     virtual void setWindowTitle(int notificationCount);
 
 signals:
-    void focusChanged(const bool focused);
     void reload();
     void secretsChanged();
 

@@ -12,8 +12,6 @@ import QtQuick.Layouts 1.12
 import im.nheko 1.0
 
 ApplicationWindow {
-    //Component.onCompleted: Nheko.reparent(win)
-
     id: win
 
     property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.3)

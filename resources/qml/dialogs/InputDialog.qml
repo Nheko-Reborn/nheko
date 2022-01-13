@@ -18,7 +18,6 @@ ApplicationWindow {
 
     modality: Qt.NonModal
     flags: Qt.Dialog
-    Component.onCompleted: Nheko.reparent(inputDialog)
     width: 350
     height: fontMetrics.lineSpacing * 7
 

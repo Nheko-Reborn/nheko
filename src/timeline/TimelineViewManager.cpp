@@ -5,6 +5,7 @@
 
 #include "TimelineViewManager.h"
 
+#include <QApplication>
 #include <QDropEvent>
 #include <QFileDialog>
 #include <QMetaType>
@@ -157,6 +158,16 @@ TimelineViewManager::TimelineViewManager(CallManager *, ChatPage *parent)
         isInitialSync_ = true;
         emit initialSyncChanged(true);
     });
+    connect(qobject_cast<QApplication *>(QApplication::instance()),
+            &QApplication::focusWindowChanged,
+            this,
+            &TimelineViewManager::focusChanged);
+}
+
+bool
+TimelineViewManager::isWindowFocused() const
+{
+    return MainWindow::instance() == QApplication::focusWindow();
 }
 
 void

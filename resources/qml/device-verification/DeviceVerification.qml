@@ -21,7 +21,6 @@ ApplicationWindow {
     minimumHeight: stack.implicitHeight
     width: stack.implicitWidth
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    Component.onCompleted: Nheko.reparent(dialog)
 
     StackView {
         id: stack

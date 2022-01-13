@@ -22,7 +22,6 @@ ApplicationWindow {
     color: Nheko.colors.window
     modality: Qt.WindowModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    Component.onCompleted: Nheko.reparent(roomDirectoryWindow)
     title: qsTr("Explore Public Rooms")
 
     Shortcut {

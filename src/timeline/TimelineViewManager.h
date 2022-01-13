@@ -41,8 +41,7 @@ class TimelineViewManager : public QObject
 
     Q_PROPERTY(
       bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
-    Q_PROPERTY(
-      bool isWindowFocused MEMBER isWindowFocused_ READ isWindowFocused NOTIFY focusChanged)
+    Q_PROPERTY(bool isWindowFocused READ isWindowFocused NOTIFY focusChanged)
 
 public:
     TimelineViewManager(CallManager *callManager, ChatPage *parent = nullptr);
@@ -54,7 +53,7 @@ public:
     void clearAll() { rooms_->clear(); }
 
     Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
-    bool isWindowFocused() const { return isWindowFocused_; }
+    bool isWindowFocused() const;
     Q_INVOKABLE void openImageOverlay(TimelineModel *room, QString mxcUrl, QString eventId);
     Q_INVOKABLE void openImagePackSettings(QString roomid);
     Q_INVOKABLE void saveMedia(QString mxcUrl);
@@ -93,11 +92,6 @@ public slots:
     void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
     void receivedSessionKey(const std::string &room_id, const std::string &session_id);
     void initializeRoomlist();
-    void chatFocusChanged(bool focused)
-    {
-        isWindowFocused_ = focused;
-        emit focusChanged();
-    }
 
     void showEvent(const QString &room_id, const QString &event_id);
 
@@ -117,7 +111,6 @@ public slots:
 
 private:
     bool isInitialSync_   = true;
-    bool isWindowFocused_ = false;
 
     RoomlistModel *rooms_          = nullptr;
     CommunitiesModel *communities_ = nullptr;

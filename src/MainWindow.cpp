@@ -130,8 +130,6 @@ MainWindow::MainWindow(QWindow *parent)
 
     connect(chat_page_, SIGNAL(contentLoaded()), this, SLOT(removeOverlayProgressBar()));
 
-    connect(this, &MainWindow::focusChanged, chat_page_, &ChatPage::chatFocusChanged);
-
     // connect(login_page_, &LoginPage::loginOk, this, [this](const mtx::responses::Login &res) {
     //     http::client()->set_user(res.user_id);
     //     showChatPage();
@@ -342,10 +340,6 @@ MainWindow::event(QEvent *event)
 
     if (type == QEvent::Close) {
         closeEvent(static_cast<QCloseEvent *>(event));
-    } else if (type == QEvent::WindowActivate) {
-        emit focusChanged(true);
-    } else if (type == QEvent::WindowDeactivate) {
-        emit focusChanged(false);
     }
 
     return QQuickView::event(event);

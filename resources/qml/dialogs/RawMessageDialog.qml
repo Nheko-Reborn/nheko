@@ -17,7 +17,6 @@ ApplicationWindow {
     palette: Nheko.colors
     color: Nheko.colors.window
     flags: Qt.Tool | Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    Component.onCompleted: Nheko.reparent(rawMessageRoot)
 
     Shortcut {
         sequence: StandardKey.Cancel

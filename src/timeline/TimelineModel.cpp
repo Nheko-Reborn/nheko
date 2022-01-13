@@ -1031,7 +1031,7 @@ TimelineModel::setCurrentIndex(int index)
     if (index != oldIndex)
         emit currentIndexChanged(index);
 
-    if (!MainWindow::instance()->isActive())
+    if (MainWindow::instance() != QGuiApplication::focusWindow())
         return;
 
     if (!currentId.startsWith('m')) {

@@ -175,8 +175,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
             &ChatPage::initializeEmptyViews,
             view_manager_,
             &TimelineViewManager::initializeRoomlist);
-    connect(
-      this, &ChatPage::chatFocusChanged, view_manager_, &TimelineViewManager::chatFocusChanged);
     connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Sync &sync) {
         view_manager_->sync(sync);
 

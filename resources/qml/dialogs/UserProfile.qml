@@ -13,9 +13,6 @@ import QtQuick.Window 2.13
 import im.nheko 1.0
 
 ApplicationWindow {
-    // this does not work in ApplicationWindow, just in Window
-    //transientParent: Nheko.mainwindow()
-
     id: userProfileDialog
 
     property var profile
@@ -29,7 +26,6 @@ ApplicationWindow {
     title: profile.isGlobalUserProfile ? qsTr("Global User Profile") : qsTr("Room User Profile")
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    Component.onCompleted: Nheko.reparent(userProfileDialog)
 
     Shortcut {
         sequence: StandardKey.Cancel
