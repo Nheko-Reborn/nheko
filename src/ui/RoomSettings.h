@@ -134,6 +134,7 @@ private:
     void updateAccessRules(const std::string &room_id,
                            const mtx::events::state::JoinRules &,
                            const mtx::events::state::GuestAccess &);
+    void readHiddenEventsSettings(const QString &roomId = {});
 
 private:
     QString roomid_;

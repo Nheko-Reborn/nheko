@@ -229,15 +229,7 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
     }
     emit accessJoinRulesChanged();
 
-    if (auto hiddenEvents = cache::client()->getAccountData(
-          mtx::events::EventType::NhekoHiddenEvents, roomid_.toStdString())) {
-        if (auto tmp = std::get_if<mtx::events::EphemeralEvent<
-              mtx::events::account_data::nheko_extensions::HiddenEvents>>(&*hiddenEvents)) {
-            for (const auto event : tmp->content.hidden_event_types) {
-                hiddenEvents_.insert(mtx::events::to_string(event).data());
-            }
-        }
-    }
+    readHiddenEventsSettings(roomid_);
 }
 
 QString
@@ -681,4 +673,18 @@ bool
 RoomSettings::eventHidden(const QString event) const
 {
     return hiddenEvents_.contains(event);
+}
+
+void
+RoomSettings::readHiddenEventsSettings(const QString &roomId)
+{
+    if (auto hiddenEvents = cache::client()->getAccountData(
+          mtx::events::EventType::NhekoHiddenEvents, roomId.toStdString())) {
+        if (auto tmp = std::get_if<mtx::events::EphemeralEvent<
+              mtx::events::account_data::nheko_extensions::HiddenEvents>>(&*hiddenEvents)) {
+            for (const auto event : tmp->content.hidden_event_types) {
+                hiddenEvents_.insert(mtx::events::to_string(event).data());
+            }
+        }
+    }
 }
