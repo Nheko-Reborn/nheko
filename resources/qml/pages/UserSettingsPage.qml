@@ -92,12 +92,10 @@ Rectangle {
                         roleValue: model.type
                         Layout.alignment: Qt.AlignRight
 
-                        //Layout.column: model.type == UserSettingsModel.SectionTitle ? 0 : 1
                         Layout.columnSpan: (model.type == UserSettingsModel.SectionTitle && !userSettingsDialog.collapsed) ? 2 : 1
-                        //Layout.row: model.index
                         Layout.preferredHeight: child.height
                         Layout.preferredWidth: Math.min(child.implicitWidth, child.width || 1000)
-                        Layout.fillWidth: model.type == UserSettingsModel.SectionTitle
+                        Layout.fillWidth: model.type == UserSettingsModel.SectionTitle || model.type == UserSettingsModel.Options || model.type == UserSettingsModel.Number
                         Layout.rightMargin: model.type == UserSettingsModel.SectionTitle ? 0 : Nheko.paddingMedium
 
                         DelegateChoice {
@@ -111,8 +109,8 @@ Rectangle {
                         DelegateChoice {
                             roleValue: UserSettingsModel.Options
                             ComboBox {
-                                Layout.preferredWidth: Math.min(200, implicitWidth)
-                                width: Math.min(200, implicitWidth)
+                                anchors.right: parent.right
+                                width: Math.min(parent.width, implicitWidth)
                                 model: r.model.values
                                 currentIndex: r.model.value
                                 enabled: !deadTimer.running
@@ -123,7 +121,8 @@ Rectangle {
                             roleValue: UserSettingsModel.Number
 
                             SpinBox {
-                                //implicitWidth: 100
+                                anchors.right: parent.right
+                                width: Math.min(parent.width, implicitWidth)
                                 enabled: !deadTimer.running && model.enabled
                                 from: model.valueLowerBound
                                 to: model.valueUpperBound
@@ -134,9 +133,12 @@ Rectangle {
                         }
                         DelegateChoice {
                             roleValue: UserSettingsModel.ReadOnlyText
-                            Text {
+                            TextEdit {
                                 color: Nheko.colors.text
                                 text: model.value
+                                readOnly: true
+                                selectByMouse: !Settings.mobileMode
+                                textFormat: Text.PlainText
                             }
                         }
                         DelegateChoice {
