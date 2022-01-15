@@ -58,15 +58,15 @@
     <message numerus="yes">
         <location filename="../../src/Cache.cpp" line="+2446"/>
         <source>%1 and %n other(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 dan %n lainnya</numerusform>
         </translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+175"/>
         <source>Empty Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruangan Kosong</translation>
     </message>
 </context>
 <context>
@@ -2565,7 +2565,7 @@ Alasan: %4</translation>
         <location line="+9"/>
         <location line="+200"/>
         <source>Verify</source>
-        <translation>Verifikasi</translation>
+        <translation>Lakukan verifikasi</translation>
     </message>
     <message>
         <location line="-162"/>
@@ -2605,7 +2605,7 @@ Alasan: %4</translation>
     <message>
         <location line="+27"/>
         <source>Unverify</source>
-        <translation>Hilangkan verifikasi</translation>
+        <translation>Hapus verifikasi</translation>
     </message>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+153"/>
@@ -3256,12 +3256,12 @@ Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</transla
     <message>
         <location line="+2"/>
         <source>Private</source>
-        <translation type="unfinished"></translation>
+        <translation>Privat</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Public</source>
-        <translation type="unfinished"></translation>
+        <translation>Publik</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3271,17 +3271,17 @@ Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</transla
     <message>
         <location line="+2"/>
         <source>Private Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat Privat</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Public Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat Publik</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Trusted Private Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat Privat Terpercaya</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3339,7 +3339,7 @@ Ukuran media: %2
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+38"/>
         <source>Open reCAPTCHA</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka reCAPTCHA</translation>
     </message>
     <message>
         <location line="+1"/>
