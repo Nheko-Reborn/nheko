@@ -4909,7 +4909,7 @@ roomMembers(const std::string &room_id)
     return instance_->roomMembers(room_id);
 }
 
-//! Check if the given user has power leve greater than than
+//! Check if the given user has power level greater than
 //! lowest power level of the given events.
 bool
 hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes,
