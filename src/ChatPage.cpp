@@ -463,7 +463,7 @@ ChatPage::sendNotifications(const mtx::responses::Notifications &res)
             if (!cache::isNotificationSent(event_id)) {
                 const auto room_id = QString::fromStdString(item.room_id);
 
-                // We should only sent one notification per event.
+                // We should only send one notification per event.
                 cache::markSentNotification(event_id);
 
                 // Don't send a notification when the current room is opened.
