@@ -87,7 +87,6 @@ MainWindow::MainWindow(QWindow *parent)
     setSource(QUrl(QStringLiteral("qrc:///qml/Root.qml")));
     // modal_ = new OverlayModal(this);
 
-
     // QFont font;
     // font.setStyleStrategy(QFont::PreferAntialias);
     // setFont(font);
@@ -95,31 +94,19 @@ MainWindow::MainWindow(QWindow *parent)
     trayIcon_ = new TrayIcon(QStringLiteral(":/logos/nheko.svg"), this);
 
     // welcome_page_  = new WelcomePage(this);
-    // login_page_    = new LoginPage(this);
     // register_page_ = new RegisterPage(this);
 
     //// Initialize sliding widget manager.
 
-    // connect(welcome_page_, SIGNAL(userLogin()), this, SLOT(showLoginPage()));
     // connect(welcome_page_, SIGNAL(userRegister()), this, SLOT(showRegisterPage()));
 
-    // connect(login_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
-    // connect(login_page_, &LoginPage::loggingIn, this, &MainWindow::showOverlayProgressBar);
-    // connect(register_page_, &RegisterPage::registering, this,
-    // &MainWindow::showOverlayProgressBar); connect(login_page_, &LoginPage::errorOccurred, this,
-    // [this]() { removeOverlayProgressBar(); }); connect(
-    //   register_page_, &RegisterPage::errorOccurred, this, [this]() { removeOverlayProgressBar();
-    //   });
-    // connect(register_page_, SIGNAL(backButtonClicked()), this, SLOT(showWelcomePage()));
-
-    connect(chat_page_, &ChatPage::closing, this, &MainWindow::showWelcomePage);
+    connect(chat_page_, &ChatPage::closing, this, [this] { switchToLoginPage(""); });
     // connect(
     //   chat_page_, &ChatPage::showOverlayProgressBar, this, &MainWindow::showOverlayProgressBar);
     connect(chat_page_, &ChatPage::unreadMessages, this, &MainWindow::setWindowTitle);
     connect(chat_page_, SIGNAL(unreadMessages(int)), trayIcon_, SLOT(setUnreadCount(int)));
     connect(chat_page_, &ChatPage::showLoginPage, this, [this](const QString &msg) {
-        login_page_->showError(msg);
-        showLoginPage();
+        switchToLoginPage(msg);
     });
 
     connect(userSettings_.get(), &UserSettings::trayChanged, trayIcon_, &TrayIcon::setVisible);
@@ -210,6 +197,7 @@ MainWindow::registerQmlTypes()
     qmlRegisterType<MxcAnimatedImage>("im.nheko", 1, 0, "MxcAnimatedImage");
     qmlRegisterType<MxcMediaProxy>("im.nheko", 1, 0, "MxcMedia");
     qmlRegisterType<RoomDirectoryModel>("im.nheko", 1, 0, "RoomDirectoryModel");
+    qmlRegisterType<LoginPage>("im.nheko", 1, 0, "Login");
     qmlRegisterUncreatableType<DeviceVerificationFlow>(
       "im.nheko",
       1,
@@ -375,9 +363,7 @@ MainWindow::removeOverlayProgressBar()
     QTimer *timer = new QTimer(this);
     timer->setSingleShot(true);
 
-    connect(timer, &QTimer::timeout, this, [this, timer]() {
-        timer->deleteLater();
-    });
+    connect(timer, &QTimer::timeout, this, [this, timer]() { timer->deleteLater(); });
 
     // FIXME:  Snackbar doesn't work if it's initialized in the constructor.
     // QTimer::singleShot(0, this, [this]() {
@@ -404,7 +390,6 @@ MainWindow::showChatPage()
 
     showOverlayProgressBar();
 
-    // login_page_->reset();
     chat_page_->bootstrap(userid, homeserver, token);
     connect(cache::client(), &Cache::databaseReady, this, &MainWindow::secretsChanged);
     connect(cache::client(), &Cache::secretChanged, this, &MainWindow::secretsChanged);
@@ -463,8 +448,7 @@ MainWindow::hasActiveUser()
 
 void
 MainWindow::showOverlayProgressBar()
-{
-}
+{}
 
 void
 MainWindow::openCreateRoomDialog(
@@ -485,8 +469,7 @@ MainWindow::showTransparentOverlayModal(QWidget *, QFlags<Qt::AlignmentFlag>)
 
 void
 MainWindow::showSolidOverlayModal(QWidget *, QFlags<Qt::AlignmentFlag>)
-{
-}
+{}
 
 bool
 MainWindow::hasActiveDialogs() const
@@ -503,8 +486,7 @@ MainWindow::pageSupportsTray() const
 
 void
 MainWindow::hideOverlay()
-{
-}
+{}
 
 inline void
 MainWindow::showDialog(QWidget *dialog)
@@ -518,11 +500,6 @@ void
 MainWindow::showWelcomePage()
 {
     removeOverlayProgressBar();
-}
-
-void
-MainWindow::showLoginPage()
-{
 }
 
 void

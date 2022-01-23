@@ -110,7 +110,7 @@ public slots:
     RoomlistModel *rooms() { return rooms_; }
 
 private:
-    bool isInitialSync_   = true;
+    bool isInitialSync_ = true;
 
     RoomlistModel *rooms_          = nullptr;
     CommunitiesModel *communities_ = nullptr;

@@ -156,6 +156,11 @@ Pane {
     }
 
     Shortcut {
+        sequence: StandardKey.Quit
+        onActivated: Qt.quit()
+    }
+
+    Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
             var quickSwitch = quickSwitcherComponent.createObject(timelineRoot);
@@ -366,8 +371,13 @@ Pane {
         id: mainWindow
 
         anchors.fill: parent
-        initialItem: WelcomePage {
-            //anchors.fill: parent
+        initialItem: welcomePage
+    }
+
+    Component {
+        id: welcomePage
+
+        WelcomePage {
         }
     }
 
@@ -378,10 +388,19 @@ Pane {
         }
     }
 
+    Component {
+        id: loginPage
+
+        LoginPage {
+        }
+    }
+
     Connections {
         function onSwitchToChatPage() {
-            console.log("AAAA");
-            mainWindow.replace(chatPage);
+            mainWindow.replace(null, chatPage);
+        }
+        function onSwitchToLoginPage(error) {
+            mainWindow.replace(welcomePage, {}, loginPage, {"error": error}, StackView.PopTransition);
         }
         target: MainWindow
     }

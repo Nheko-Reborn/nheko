@@ -8,29 +8,131 @@ import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 import im.nheko 1.0
 
-TextField {
-    id: input
 
-    property alias backgroundColor: backgroundRect.color
+ColumnLayout {
+    id: c
+    property color backgroundColor: Nheko.colors.base
+    property alias color: labelC.color
+    property alias textPadding: input.padding
+    property alias text: input.text
+    property alias label: labelC.text
+    property alias placeholderText: input.placeholderText
+    property alias font: input.font
+    property alias echoMode: input.echoMode
+    property alias selectByMouse: input.selectByMouse
 
-    palette: Nheko.colors
-    color: Nheko.colors.text
+    signal textEdited
+    signal accepted
+    signal editingFinished
+
+    function forceActiveFocus() {
+        input.forceActiveFocus();
+    }
+
+    ToolTip.delay: Nheko.tooltipDelay
+    ToolTip.visible: hover.hovered
+
+    spacing: 0
+
+    Item {
+        Layout.fillWidth: true
+        Layout.preferredHeight: labelC.contentHeight
+        Layout.margins: input.padding
+        Layout.bottomMargin: Nheko.paddingSmall
+        visible: labelC.text
+
+        z: 1
+
+        Label {
+            id: labelC
+
+            y: contentHeight + input.padding + Nheko.paddingSmall
+            enabled: false
+
+            palette: Nheko.colors
+            color: Nheko.colors.text
+            font.pixelSize: input.font.pixelSize
+            font.weight: Font.DemiBold
+            font.letterSpacing: input.font.pixelSize * 0.02
+            width: parent.width
+
+            state: labelC.text && (input.activeFocus == true || input.text) ? "focused" : ""
+
+            states: State {
+                name: "focused"
+
+                PropertyChanges {
+                    target: labelC
+                    y: 0
+                }
+
+                PropertyChanges {
+                    target: input
+                    opacity: 1
+                }
+
+            }
+
+            transitions: Transition {
+                from: ""
+                to: "focused"
+                reversible: true
+
+                NumberAnimation {
+                    target: labelC
+                    properties: "y"
+                    duration: 210
+                    easing.type: Easing.InCubic
+                    alwaysRunToEnd: true
+                }
+
+                NumberAnimation {
+                    target: input
+                    properties: "opacity"
+                    duration: 210
+                    easing.type: Easing.InCubic
+                    alwaysRunToEnd: true
+                }
+
+            }
+        }
+    }
+
+    TextField {
+        id: input
+        Layout.fillWidth: true
+
+        palette: Nheko.colors
+        color: labelC.color
+        opacity: labelC.text ? 0 : 1
+
+        onTextEdited: c.textEdited()
+        onAccepted: c.accepted()
+        onEditingFinished: c.editingFinished()
+
+
+        background: Rectangle {
+            id: backgroundRect
+
+            color: labelC.text ? "transparent" : backgroundColor
+        }
+
+    }
 
     Rectangle {
         id: blueBar
 
-        anchors.top: parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
+        Layout.fillWidth: true
+
         color: Nheko.colors.highlight
         height: 1
-        width: parent.width
 
         Rectangle {
             id: blackBar
 
-            anchors.verticalCenter: blueBar.verticalCenter
+            anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
-            height: parent.height + 1
+            height: parent.height*2
             width: 0
             color: Nheko.colors.text
 
@@ -50,11 +152,12 @@ TextField {
                 to: "focused"
                 reversible: true
 
+
                 NumberAnimation {
                     target: blackBar
                     properties: "width"
-                    duration: 500
-                    easing.type: Easing.InOutQuad
+                    duration: 310
+                    easing.type: Easing.InCubic
                     alwaysRunToEnd: true
                 }
 
@@ -64,10 +167,8 @@ TextField {
 
     }
 
-    background: Rectangle {
-        id: backgroundRect
-
-        color: Nheko.colors.base
+    HoverHandler {
+        id: hover
+        enabled: c.ToolTip.text
     }
-
 }

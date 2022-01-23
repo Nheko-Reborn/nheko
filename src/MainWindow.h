@@ -20,7 +20,6 @@
 
 class ChatPage;
 class RegisterPage;
-class LoginPage;
 class WelcomePage;
 
 class LoadingIndicator;
@@ -65,6 +64,9 @@ public:
 
     MxcImageProvider *imageProvider() { return imgProvider; }
 
+    //! Show the chat page and start communicating with the given access token.
+    void showChatPage();
+
 protected:
     void closeEvent(QCloseEvent *event);
     bool event(QEvent *event) override;
@@ -76,14 +78,8 @@ private slots:
     //! Show the welcome page in the main window.
     void showWelcomePage();
 
-    //! Show the login page in the main window.
-    void showLoginPage();
-
     //! Show the register page in the main window.
     void showRegisterPage();
-
-    //! Show the chat page and start communicating with the given access token.
-    void showChatPage();
 
     void showOverlayProgressBar();
     void removeOverlayProgressBar();
@@ -96,6 +92,7 @@ signals:
 
     void switchToChatPage();
     void switchToWelcomePage();
+    void switchToLoginPage(QString error);
 
 private:
     void showDialog(QWidget *dialog);
@@ -112,8 +109,6 @@ private:
 
     //! The initial welcome screen.
     WelcomePage *welcome_page_;
-    //! The login screen.
-    LoginPage *login_page_;
     //! The register page.
     RegisterPage *register_page_;
     //! The main chat area.

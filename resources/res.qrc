@@ -111,6 +111,7 @@
         <file>qml/NotificationWarning.qml</file>
         <file>qml/pages/UserSettingsPage.qml</file>
         <file>qml/pages/WelcomePage.qml</file>
+        <file>qml/pages/LoginPage.qml</file>
         <file>qml/components/AdaptiveLayout.qml</file>
         <file>qml/components/AdaptiveLayoutElement.qml</file>
         <file>qml/components/AvatarListTile.qml</file>

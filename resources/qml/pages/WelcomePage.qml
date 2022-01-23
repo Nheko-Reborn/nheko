@@ -6,15 +6,6 @@ import im.nheko 1.0
 import "../components/"
 
 ColumnLayout {
-    FontMetrics {
-        id: fontMetrics
-    }
-
-    Shortcut {
-        sequence: StandardKey.Quit
-        onActivated: Qt.quit()
-    }
-
     Item {
         Layout.fillHeight: true
     }
@@ -49,27 +40,28 @@ ColumnLayout {
     }
 
     RowLayout {
-    Item {
-        Layout.fillWidth: true
-    }
-    FlatButton {
-        Layout.margins: Nheko.paddingLarge
-        Layout.alignment: Qt.AlignHCenter
-        text: qsTr("REGISTER")
-        onClicked: {
+        Item {
+            Layout.fillWidth: true
+        }
+        FlatButton {
+            Layout.margins: Nheko.paddingLarge
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("REGISTER")
+            onClicked: {
+            }
+        }
+        FlatButton {
+            Layout.margins: Nheko.paddingLarge
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("LOGIN")
+            onClicked: {
+                mainWindow.push(loginPage);
+            }
+        }
+        Item {
+            Layout.fillWidth: true
         }
     }
-    FlatButton {
-        Layout.margins: Nheko.paddingLarge
-        Layout.alignment: Qt.AlignHCenter
-        text: qsTr("LOGIN")
-        onClicked: {
-        }
-    }
-    Item {
-        Layout.fillWidth: true
-    }
-}
     Item {
         Layout.fillHeight: true
     }
