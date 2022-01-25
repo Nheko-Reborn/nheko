@@ -56,12 +56,6 @@ public:
     openCreateRoomDialog(std::function<void(const mtx::requests::CreateRoom &request)> callback);
     void openJoinRoomDialog(std::function<void(const QString &room_id)> callback);
 
-    void hideOverlay();
-    void showSolidOverlayModal(QWidget *content, QFlags<Qt::AlignmentFlag> flags = Qt::AlignCenter);
-    void
-    showTransparentOverlayModal(QWidget *content,
-                                QFlags<Qt::AlignmentFlag> flags = Qt::AlignTop | Qt::AlignHCenter);
-
     MxcImageProvider *imageProvider() { return imgProvider; }
 
     //! Show the chat page and start communicating with the given access token.
@@ -75,14 +69,8 @@ private slots:
     //! Handle interaction with the tray icon.
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
-    //! Show the welcome page in the main window.
-    void showWelcomePage();
-
     //! Show the register page in the main window.
     void showRegisterPage();
-
-    void showOverlayProgressBar();
-    void removeOverlayProgressBar();
 
     virtual void setWindowTitle(int notificationCount);
 

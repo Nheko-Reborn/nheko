@@ -358,23 +358,6 @@ MainWindow::saveCurrentWindowSize()
 }
 
 void
-MainWindow::removeOverlayProgressBar()
-{
-    QTimer *timer = new QTimer(this);
-    timer->setSingleShot(true);
-
-    connect(timer, &QTimer::timeout, this, [this, timer]() { timer->deleteLater(); });
-
-    // FIXME:  Snackbar doesn't work if it's initialized in the constructor.
-    // QTimer::singleShot(0, this, [this]() {
-    //    snackBar_ = new SnackBar(this);
-    //    connect(chat_page_, &ChatPage::showNotification, snackBar_, &SnackBar::showMessage);
-    //});
-
-    timer->start(50);
-}
-
-void
 MainWindow::showChatPage()
 {
     auto userid     = QString::fromStdString(http::client()->user_id().to_string());
@@ -387,8 +370,6 @@ MainWindow::showChatPage()
     userSettings_.data()->setAccessToken(token);
     userSettings_.data()->setDeviceId(device_id);
     userSettings_.data()->setHomeserver(homeserver);
-
-    showOverlayProgressBar();
 
     chat_page_->bootstrap(userid, homeserver, token);
     connect(cache::client(), &Cache::databaseReady, this, &MainWindow::secretsChanged);
@@ -447,10 +428,6 @@ MainWindow::hasActiveUser()
 }
 
 void
-MainWindow::showOverlayProgressBar()
-{}
-
-void
 MainWindow::openCreateRoomDialog(
   std::function<void(const mtx::requests::CreateRoom &request)> callback)
 {
@@ -462,14 +439,6 @@ MainWindow::openCreateRoomDialog(
 
     showDialog(dialog);
 }
-
-void
-MainWindow::showTransparentOverlayModal(QWidget *, QFlags<Qt::AlignmentFlag>)
-{}
-
-void
-MainWindow::showSolidOverlayModal(QWidget *, QFlags<Qt::AlignmentFlag>)
-{}
 
 bool
 MainWindow::hasActiveDialogs() const
@@ -484,22 +453,12 @@ MainWindow::pageSupportsTray() const
                   //! !register_page_->isVisible();
 }
 
-void
-MainWindow::hideOverlay()
-{}
-
 inline void
 MainWindow::showDialog(QWidget *dialog)
 {
     // utils::centerWidget(dialog, this);
     dialog->raise();
     dialog->show();
-}
-
-void
-MainWindow::showWelcomePage()
-{
-    removeOverlayProgressBar();
 }
 
 void

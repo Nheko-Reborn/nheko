@@ -777,6 +777,8 @@ ChatPage::inviteUser(QString userid, QString reason)
       userid.toStdString(),
       [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
           if (err) {
+              nhlog::net()->error(
+                "Failed to invite {} to {}: {}", userid.toStdString(), room.toStdString(), *err);
               emit showNotification(
                 tr("Failed to invite %1 to %2: %3")
                   .arg(userid, room, QString::fromStdString(err->matrix_error.error)));
