@@ -289,33 +289,17 @@ operator<<(QDBusArgument &arg, const QImage &image)
         return arg;
     }
 
-    QImage scaled = image.scaledToHeight(100, Qt::SmoothTransformation);
-    scaled        = scaled.convertToFormat(QImage::Format_ARGB32);
-
-#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-    // ABGR -> ARGB
-    QImage i = scaled.rgbSwapped();
-#else
-    // ABGR -> GBAR
-    QImage i(scaled.size(), scaled.format());
-    for (int y = 0; y < i.height(); ++y) {
-        QRgb *p   = (QRgb *)scaled.scanLine(y);
-        QRgb *q   = (QRgb *)i.scanLine(y);
-        QRgb *end = p + scaled.width();
-        while (p < end) {
-            *q = qRgba(qGreen(*p), qBlue(*p), qAlpha(*p), qRed(*p));
-            p++;
-            q++;
-        }
-    }
-#endif
+    QImage i = image.height() > 100 || image.width() > 100
+                 ? image.scaledToHeight(100, Qt::SmoothTransformation)
+                 : image;
+    i        = std::move(i).convertToFormat(QImage::Format_RGBA8888);
 
     arg.beginStructure();
     arg << i.width();
     arg << i.height();
     arg << i.bytesPerLine();
     arg << i.hasAlphaChannel();
-    int channels = i.isGrayscale() ? 1 : (i.hasAlphaChannel() ? 4 : 3);
+    int channels = i.hasAlphaChannel() ? 4 : 3;
     arg << i.depth() / channels;
     arg << channels;
     arg << QByteArray(reinterpret_cast<const char *>(i.bits()), i.sizeInBytes());
