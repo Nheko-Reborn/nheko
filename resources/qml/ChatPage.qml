@@ -17,111 +17,118 @@ Rectangle {
 
     color: Nheko.colors.window
 
-    AdaptiveLayout {
-        id: adaptiveView
-
+    ColumnLayout {
+        spacing: 0
         anchors.fill: parent
-        singlePageMode: communityListC.preferredWidth + roomListC.preferredWidth + timlineViewC.minimumWidth > width
-        pageIndex: 1
 
-        Component.onCompleted: initializePageIndex()
-        onSinglePageModeChanged: initializePageIndex()
+        Rectangle {
+            id: offlineIndicator
 
-        function initializePageIndex() {
-            if (!singlePageMode)
-                adaptiveView.pageIndex = 0;
-            else if (Rooms.currentRoom || Rooms.currentRoomPreview.roomid)
-                adaptiveView.pageIndex = 2;
-            else
-                adaptiveView.pageIndex = 1;
-        }
+            color: Nheko.theme.error
+            visible: !TimelineManager.isConnected
+            Layout.preferredHeight: fontMetrics.height + Nheko.paddingMedium
+            Layout.fillWidth: true
 
-        Connections {
-            target: Rooms
-            function onCurrentRoomChanged() {
-                adaptiveView.initializePageIndex();
+            Label {
+                anchors.centerIn: parent
+                text: qsTr("No network connection")
             }
         }
 
-        Connections {
-            target: Communities
-            function onCurrentTagIdChanged() {
-                adaptiveView.initializePageIndex();
-            }
-        }
+        AdaptiveLayout {
+            id: adaptiveView
 
-        onPageIndexChanged: {
-            if (adaptiveView.pageIndex == 1 && (Rooms.currentRoom || Rooms.currentRoomPreview.roomid)) {
-                Rooms.resetCurrentRoom();
-            }
-        }
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            singlePageMode: communityListC.preferredWidth + roomListC.preferredWidth + timlineViewC.minimumWidth > width
+            pageIndex: 1
 
-        AdaptiveLayoutElement {
-            id: communityListC
+            Component.onCompleted: initializePageIndex()
+            onSinglePageModeChanged: initializePageIndex()
 
-            visible: Settings.groupView
-            minimumWidth: communitiesList.avatarSize * 4 + Nheko.paddingMedium * 2
-            collapsedWidth: communitiesList.avatarSize + 2 * Nheko.paddingMedium
-            preferredWidth: Settings.communityListWidth >= minimumWidth ? Settings.communityListWidth : collapsedWidth
-            maximumWidth: communitiesList.avatarSize * 10 + 2 * Nheko.paddingMedium
-
-            CommunitiesList {
-                id: communitiesList
-
-                collapsed: parent.collapsed
+            function initializePageIndex() {
+                if (!singlePageMode)
+                    adaptiveView.pageIndex = 0;
+                else if (Rooms.currentRoom || Rooms.currentRoomPreview.roomid)
+                    adaptiveView.pageIndex = 2;
+                else
+                    adaptiveView.pageIndex = 1;
             }
 
-            Binding {
-                target: Settings
-                property: 'communityListWidth'
-                value: communityListC.preferredWidth
-                when: !adaptiveView.singlePageMode
-                delayed: true
-                restoreMode: Binding.RestoreBindingOrValue
+            Connections {
+                target: Rooms
+                function onCurrentRoomChanged() {
+                    adaptiveView.initializePageIndex();
+                }
             }
 
-        }
+            AdaptiveLayoutElement {
+                id: communityListC
 
-        AdaptiveLayoutElement {
-            id: roomListC
+                visible: Settings.groupView
+                minimumWidth: communitiesList.avatarSize * 4 + Nheko.paddingMedium * 2
+                collapsedWidth: communitiesList.avatarSize + 2 * Nheko.paddingMedium
+                preferredWidth: Settings.communityListWidth >= minimumWidth ? Settings.communityListWidth : collapsedWidth
+                maximumWidth: communitiesList.avatarSize * 10 + 2 * Nheko.paddingMedium
 
-            minimumWidth: roomlist.avatarSize * 4 + Nheko.paddingSmall * 2
-            preferredWidth: (Settings.roomListWidth == - 1)
-                ? (roomlist.avatarSize * 5 + Nheko.paddingSmall * 2)
-                : (Settings.roomListWidth >= minimumWidth ? Settings.roomListWidth : collapsedWidth)
-            maximumWidth: roomlist.avatarSize * 10 + Nheko.paddingSmall * 2
-            collapsedWidth: roomlist.avatarSize + 2 * Nheko.paddingMedium
+                CommunitiesList {
+                    id: communitiesList
 
-            RoomList {
-                id: roomlist
+                    collapsed: parent.collapsed
+                }
 
-                implicitHeight: chatPage.height
-                collapsed: parent.collapsed
-                anchors.fill: parent
+                Binding {
+                    target: Settings
+                    property: 'communityListWidth'
+                    value: communityListC.preferredWidth
+                    when: !adaptiveView.singlePageMode
+                    delayed: true
+                    restoreMode: Binding.RestoreBindingOrValue
+                }
+
             }
 
-            Binding {
-                target: Settings
-                property: 'roomListWidth'
-                value: roomListC.preferredWidth
-                when: !adaptiveView.singlePageMode
-                delayed: true
-                restoreMode: Binding.RestoreBindingOrValue
+            AdaptiveLayoutElement {
+                id: roomListC
+
+                minimumWidth: roomlist.avatarSize * 4 + Nheko.paddingSmall * 2
+                preferredWidth: (Settings.roomListWidth == - 1)
+                    ? (roomlist.avatarSize * 5 + Nheko.paddingSmall * 2)
+                    : (Settings.roomListWidth >= minimumWidth ? Settings.roomListWidth : collapsedWidth)
+                maximumWidth: roomlist.avatarSize * 10 + Nheko.paddingSmall * 2
+                collapsedWidth: roomlist.avatarSize + 2 * Nheko.paddingMedium
+
+                RoomList {
+                    id: roomlist
+
+                    height: adaptiveView.height
+                    collapsed: parent.collapsed
+                }
+
+                Binding {
+                    target: Settings
+                    property: 'roomListWidth'
+                    value: roomListC.preferredWidth
+                    when: !adaptiveView.singlePageMode
+                    delayed: true
+                    restoreMode: Binding.RestoreBindingOrValue
+                }
+
             }
 
-        }
+            AdaptiveLayoutElement {
+                id: timlineViewC
 
-        AdaptiveLayoutElement {
-            id: timlineViewC
+                minimumWidth: fontMetrics.averageCharacterWidth * 40 + Nheko.avatarSize + 2 * Nheko.paddingMedium
 
-            minimumWidth: fontMetrics.averageCharacterWidth * 40 + Nheko.avatarSize + 2 * Nheko.paddingMedium
+                TimelineView {
+                    id: timeline
 
-            TimelineView {
-                id: timeline
+                    showBackButton: adaptiveView.singlePageMode
+                    room: Rooms.currentRoom
+                    roomPreview: Rooms.currentRoomPreview.roomid ? Rooms.currentRoomPreview : null
+                }
 
-                showBackButton: adaptiveView.singlePageMode
-                room: Rooms.currentRoom
-                roomPreview: Rooms.currentRoomPreview.roomid ? Rooms.currentRoomPreview : null
             }
 
         }

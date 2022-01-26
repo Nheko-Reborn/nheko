@@ -23,7 +23,6 @@ Container {
 
     onSinglePageModeChanged: if (!singlePageMode) pageIndex = 0
 
-    anchors.fill: parent
     Component.onCompleted: {
         for (var i = 0; i < count - 1; i++) {
             let handle_ = handle.createObject(contentChildren[i]);

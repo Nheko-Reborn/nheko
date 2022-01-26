@@ -42,6 +42,7 @@ class TimelineViewManager : public QObject
     Q_PROPERTY(
       bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
     Q_PROPERTY(bool isWindowFocused READ isWindowFocused NOTIFY focusChanged)
+    Q_PROPERTY(bool isConnected READ isConnected NOTIFY isConnectedChanged)
 
 public:
     TimelineViewManager(CallManager *callManager, ChatPage *parent = nullptr);
@@ -54,6 +55,7 @@ public:
 
     Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
     bool isWindowFocused() const;
+    bool isConnected() const { return isConnected_; }
     Q_INVOKABLE void openImageOverlay(TimelineModel *room, QString mxcUrl, QString eventId);
     Q_INVOKABLE void openImagePackSettings(QString roomid);
     Q_INVOKABLE void saveMedia(QString mxcUrl);
@@ -73,6 +75,7 @@ public:
 signals:
     void activeTimelineChanged(TimelineModel *timeline);
     void initialSyncChanged(bool isInitialSync);
+    void isConnectedChanged(bool state);
     void replyingEventChanged(QString replyingEvent);
     void replyClosed();
     void inviteUsers(QString roomId, QStringList users);
@@ -111,6 +114,7 @@ public slots:
 
 private:
     bool isInitialSync_ = true;
+    bool isConnected_   = true;
 
     RoomlistModel *rooms_          = nullptr;
     CommunitiesModel *communities_ = nullptr;
