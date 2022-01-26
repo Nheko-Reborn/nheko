@@ -1,6 +1,6 @@
 = nheko(1)
 :doctype:       manpage
-:Date:          2022-01-01
+:Date:          2022-01-27
 :Revision:      @PROJECT_VERSION@
 :man source:    nheko
 :man manual:    General Commands Manual
@@ -33,9 +33,28 @@ Displays version information.
 *--debug*::
 Enables debug output.
 
-*-p*, *--profile*::
+*-p* _<profile>_, *--profile* _<profile>_::
 Creates a unique profile, which allows you to log into several accounts at the
-same time and start multiple instances of nheko.
+same time and start multiple instances of nheko. Use _default_ to start with the
+default profile.
+
+== COMPLETERS
+
+Completers spawn a popup with completion candidates when you type them in
+the input line.
+
+*@*::
+Open username completer.
+
+*#*::
+Open room completer.
+
+*:*::
+Open unicode emoji picker.
+
+*~*::
+Open custom emoji picker. Requires an image pack with custom emojis. Selecting
+an emoji will add HTML code for the inline image into the input line.
 
 == KEYBOARD SHORTCUTS
 
@@ -83,6 +102,8 @@ Insert line break.
 Submit message.
 
 == COMMANDS
+
+Commands only work when they are used at the beginning of text.
 
 === Custom messages
 
