@@ -2,7 +2,7 @@
 
 include(GNUInstallDirs)
 
-configure_file("${PROJECT_NAME}.1.adoc.in" "${PROJECT_NAME}.1.adoc" @ONLY)
+configure_file("${PROJECT_NAME}.1.adoc" "${PROJECT_NAME}.1.adoc" @ONLY)
 
 find_program (ASCIIDOC_COMPILER a2x)
 if (NOT ASCIIDOC_COMPILER)
