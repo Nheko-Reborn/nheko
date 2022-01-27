@@ -135,6 +135,12 @@ Menu {
                 currentIndex: -1 // prevent sorting from stealing focus
                 cacheBuffer: 500
 
+                ScrollHelper {
+                    flickable: parent
+                    anchors.fill: parent
+                    enabled: !Settings.mobileMode
+                }
+
                 // Individual emoji
                 delegate: AbstractButton {
                     width: 48
@@ -150,16 +156,16 @@ Menu {
                     }
 
                     // give the emoji a little oomf
-                    DropShadow {
-                        width: parent.width
-                        height: parent.height
-                        horizontalOffset: 3
-                        verticalOffset: 3
-                        radius: 8
-                        samples: 17
-                        color: "#80000000"
-                        source: parent.contentItem
-                    }
+                    // DropShadow {
+                    //     width: parent.width
+                    //     height: parent.height
+                    //     horizontalOffset: 3
+                    //     verticalOffset: 3
+                    //     radius: 8
+                    //     samples: 17
+                    //     color: "#80000000"
+                    //     source: parent.contentItem
+                    // }
 
                     contentItem: Text {
                         horizontalAlignment: Text.AlignHCenter
