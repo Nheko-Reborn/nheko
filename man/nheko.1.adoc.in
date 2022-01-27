@@ -1,6 +1,6 @@
 = nheko(1)
 :doctype:       manpage
-:Date:          2022-01-01
+:Date:          2022-01-27
 :Revision:      @PROJECT_VERSION@
 :man source:    nheko
 :man manual:    General Commands Manual
@@ -33,9 +33,49 @@ Displays version information.
 *--debug*::
 Enables debug output.
 
-*-p*, *--profile*::
+*-p* _<profile>_, *--profile* _<profile>_::
 Creates a unique profile, which allows you to log into several accounts at the
-same time and start multiple instances of nheko.
+same time and start multiple instances of nheko. Use _default_ to start with the
+default profile.
+
+== FAQ
+
+=== How do I add stickers and custom emojis?
+
+Stickers and custom emojis are organized in image packs. There is one user image
+pack that only your account has access to and there are room image packs that
+are accessible by everyone in the room they are defined in. You can activate a
+room image pack globally to use it in any room.
+
+To manage image packs in nheko, go to the room settings and enter the Sticker &
+Emote Settings. You will see the Private pack (your user image pack) and can
+edit it there. The Shortcode is a unique identifier you use to select the image
+with and the Body is the alternate text that is displayed on clients that don't
+support images (like the alt tag in HTML images).
+
+If you have the necessary permissions you can create new room packs with the
+button at the bottom of the image pack list. They are the same as the user pack
+but you can create as many as you want and everyone in the room can use them. It
+might be a good idea to create an extra room just for your image packs to make
+sharing easier.
+
+== COMPLETERS
+
+Completers spawn a popup with completion candidates when you type them in
+the input line.
+
+*@*::
+Open username completer.
+
+*#*::
+Open room completer.
+
+*:*::
+Open unicode emoji picker.
+
+*~*::
+Open custom emoji picker. Requires an image pack with custom emojis. Selecting
+an emoji will add HTML code for the inline image into the input line.
 
 == KEYBOARD SHORTCUTS
 
@@ -83,6 +123,8 @@ Insert line break.
 Submit message.
 
 == COMMANDS
+
+Commands only work when they are used at the beginning of text.
 
 === Custom messages
 
