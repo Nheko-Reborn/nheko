@@ -67,6 +67,22 @@ public:
             onMatrixIdEntered();
         }
     }
+
+    static std::string initialDeviceName_()
+    {
+#if defined(Q_OS_MAC)
+        return "Nheko on macOS";
+#elif defined(Q_OS_LINUX)
+        return "Nheko on Linux";
+#elif defined(Q_OS_WIN)
+        return "Nheko on Windows";
+#elif defined(Q_OS_FREEBSD)
+        return "Nheko on FreeBSD";
+#else
+        return "Nheko";
+#endif
+    }
+
 signals:
     void loggingInChanged();
     void errorOccurred();
@@ -105,20 +121,6 @@ public slots:
 private:
     void checkHomeserverVersion();
     void onMatrixIdEntered();
-    std::string initialDeviceName_() const
-    {
-#if defined(Q_OS_MAC)
-        return "Nheko on macOS";
-#elif defined(Q_OS_LINUX)
-        return "Nheko on Linux";
-#elif defined(Q_OS_WIN)
-        return "Nheko on Windows";
-#elif defined(Q_OS_FREEBSD)
-        return "Nheko on FreeBSD";
-#else
-        return "Nheko";
-#endif
-    }
     void clearErrors()
     {
         error_.clear();

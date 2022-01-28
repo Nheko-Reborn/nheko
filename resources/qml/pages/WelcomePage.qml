@@ -48,6 +48,7 @@ ColumnLayout {
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("REGISTER")
             onClicked: {
+                mainWindow.push(registerPage);
             }
         }
         FlatButton {

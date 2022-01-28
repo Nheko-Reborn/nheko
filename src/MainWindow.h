@@ -69,9 +69,6 @@ private slots:
     //! Handle interaction with the tray icon.
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
-    //! Show the register page in the main window.
-    void showRegisterPage();
-
     virtual void setWindowTitle(int notificationCount);
 
 signals:

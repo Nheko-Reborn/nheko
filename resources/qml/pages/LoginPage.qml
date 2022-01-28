@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
@@ -9,7 +13,7 @@ import "../"
 
 Item {
     id: loginPage
-    property int maxExpansion: 800
+    property int maxExpansion: 400
 
     property string error: login.error
 

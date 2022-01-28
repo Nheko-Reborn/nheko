@@ -58,7 +58,7 @@ Popup {
         id: completerPopup
 
         x: roomTextInput.x
-        y: roomTextInput.y + roomTextInput.height
+        y: roomTextInput.y + quickSwitcher.textHeight
         visible: roomTextInput.length > 0
         width: parent.width
         completerName: "room"

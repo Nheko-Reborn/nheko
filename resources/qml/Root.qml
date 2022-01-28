@@ -395,6 +395,13 @@ Pane {
         }
     }
 
+    Component {
+        id: registerPage
+
+        RegistrationPage {
+        }
+    }
+
     Connections {
         function onSwitchToChatPage() {
             mainWindow.replace(null, chatPage);

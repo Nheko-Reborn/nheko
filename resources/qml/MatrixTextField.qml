@@ -21,6 +21,14 @@ ColumnLayout {
     property alias echoMode: input.echoMode
     property alias selectByMouse: input.selectByMouse
 
+    Timer {
+        id: timer
+        interval: 350
+        onTriggered: editingFinished()
+    }
+
+    onTextChanged: timer.restart()
+
     signal textEdited
     signal accepted
     signal editingFinished

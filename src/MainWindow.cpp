@@ -85,24 +85,10 @@ MainWindow::MainWindow(QWindow *parent)
 
     setColor(Theme::paletteFromTheme(userSettings_->theme()).window().color());
     setSource(QUrl(QStringLiteral("qrc:///qml/Root.qml")));
-    // modal_ = new OverlayModal(this);
-
-    // QFont font;
-    // font.setStyleStrategy(QFont::PreferAntialias);
-    // setFont(font);
 
     trayIcon_ = new TrayIcon(QStringLiteral(":/logos/nheko.svg"), this);
 
-    // welcome_page_  = new WelcomePage(this);
-    // register_page_ = new RegisterPage(this);
-
-    //// Initialize sliding widget manager.
-
-    // connect(welcome_page_, SIGNAL(userRegister()), this, SLOT(showRegisterPage()));
-
     connect(chat_page_, &ChatPage::closing, this, [this] { switchToLoginPage(""); });
-    // connect(
-    //   chat_page_, &ChatPage::showOverlayProgressBar, this, &MainWindow::showOverlayProgressBar);
     connect(chat_page_, &ChatPage::unreadMessages, this, &MainWindow::setWindowTitle);
     connect(chat_page_, SIGNAL(unreadMessages(int)), trayIcon_, SLOT(setUnreadCount(int)));
     connect(chat_page_, &ChatPage::showLoginPage, this, [this](const QString &msg) {
@@ -116,13 +102,6 @@ MainWindow::MainWindow(QWindow *parent)
             SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
     connect(chat_page_, SIGNAL(contentLoaded()), this, SLOT(removeOverlayProgressBar()));
-
-    // connect(login_page_, &LoginPage::loginOk, this, [this](const mtx::responses::Login &res) {
-    //     http::client()->set_user(res.user_id);
-    //     showChatPage();
-    // });
-
-    // connect(register_page_, &RegisterPage::registerOk, this, &MainWindow::showChatPage);
 
     trayIcon_->setVisible(userSettings_->tray());
 
@@ -198,6 +177,7 @@ MainWindow::registerQmlTypes()
     qmlRegisterType<MxcMediaProxy>("im.nheko", 1, 0, "MxcMedia");
     qmlRegisterType<RoomDirectoryModel>("im.nheko", 1, 0, "RoomDirectoryModel");
     qmlRegisterType<LoginPage>("im.nheko", 1, 0, "Login");
+    qmlRegisterType<RegisterPage>("im.nheko", 1, 0, "Registration");
     qmlRegisterUncreatableType<DeviceVerificationFlow>(
       "im.nheko",
       1,
@@ -460,7 +440,3 @@ MainWindow::showDialog(QWidget *dialog)
     dialog->raise();
     dialog->show();
 }
-
-void
-MainWindow::showRegisterPage()
-{}

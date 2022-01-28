@@ -6,88 +6,67 @@
 
 #pragma once
 
-#include <QWidget>
-
-#include <memory>
+#include <QObject>
+#include <QString>
 
 #include <mtx/user_interactive.hpp>
 #include <mtxclient/http/client.hpp>
 
-class FlatButton;
-class RaisedButton;
-class TextField;
-class QLabel;
-class QVBoxLayout;
-class QHBoxLayout;
-
-class RegisterPage : public QWidget
+class RegisterPage : public QObject
 {
     Q_OBJECT
 
-public:
-    RegisterPage(QWidget *parent = nullptr);
+    Q_PROPERTY(QString error READ error NOTIFY errorChanged)
+    Q_PROPERTY(QString hsError READ hsError NOTIFY hsErrorChanged)
+    Q_PROPERTY(QString usernameError READ usernameError NOTIFY lookingUpUsernameChanged)
+    Q_PROPERTY(bool registering READ registering NOTIFY registeringChanged)
+    Q_PROPERTY(bool supported READ supported NOTIFY lookingUpHsChanged)
+    Q_PROPERTY(bool lookingUpHs READ lookingUpHs NOTIFY lookingUpHsChanged)
+    Q_PROPERTY(bool lookingUpUsername READ lookingUpUsername NOTIFY lookingUpUsernameChanged)
+    Q_PROPERTY(bool usernameAvailable READ usernameAvailable NOTIFY lookingUpUsernameChanged)
+    Q_PROPERTY(bool usernameUnavailable READ usernameUnavailable NOTIFY lookingUpUsernameChanged)
 
-protected:
-    void paintEvent(QPaintEvent *event) override;
+public:
+    RegisterPage(QObject *parent = nullptr);
+
+    Q_INVOKABLE void setServer(QString server);
+    Q_INVOKABLE void checkUsername(QString name);
+    Q_INVOKABLE void startRegistration(QString username, QString password, QString deviceName);
+    Q_INVOKABLE QString initialDeviceName() const;
+
+    bool registering() const { return registering_; }
+    bool supported() const { return supported_; }
+    bool lookingUpHs() const { return lookingUpHs_; }
+    bool lookingUpUsername() const { return lookingUpUsername_; }
+    bool usernameAvailable() const { return usernameAvailable_; }
+    bool usernameUnavailable() const { return usernameUnavailable_; }
+
+    QString error() const { return registrationError_; }
+    QString usernameError() const { return usernameError_; }
+    QString hsError() const { return hsError_; }
 
 signals:
-    void backButtonClicked();
-    void errorOccurred();
+    void errorChanged();
+    void hsErrorChanged();
 
-    //! Used to trigger the corresponding slot outside of the main thread.
-    void serverError(const QString &err);
-
-    void wellKnownLookup();
-    void versionsCheck();
-    void registration();
-
-    void registering();
-    void registerOk();
-
-private slots:
-    void onBackButtonClicked();
-    void onRegisterButtonClicked();
-
-    // function for showing different errors
-    void showError(const QString &msg);
-    void showError(QLabel *label, const QString &msg);
-
-    bool checkOneField(QLabel *label, const TextField *t_field, const QString &msg);
-    bool checkUsername();
-    bool checkPassword();
-    bool checkPasswordConfirmation();
-    bool checkServer();
-
-    void doWellKnownLookup();
-    void doVersionsCheck();
-    void doRegistration();
-    mtx::http::Callback<mtx::responses::Register> registrationCb();
+    void registeringChanged();
+    void lookingUpHsChanged();
+    void lookingUpUsernameChanged();
 
 private:
-    QVBoxLayout *top_layout_;
+    void versionsCheck();
 
-    QHBoxLayout *back_layout_;
-    QHBoxLayout *logo_layout_;
-    QHBoxLayout *button_layout_;
+    void setHsError(QString err);
+    void setError(QString err);
 
-    QLabel *logo_;
-    QLabel *error_label_;
-    QLabel *error_username_label_;
-    QLabel *error_password_label_;
-    QLabel *error_password_confirmation_label_;
-    QLabel *error_server_label_;
-    QLabel *error_registration_token_label_;
+    QString registrationError_, hsError_, usernameError_;
 
-    FlatButton *back_button_;
-    RaisedButton *register_button_;
+    bool registering_;
+    bool supported_;
+    bool lookingUpHs_;
+    bool lookingUpUsername_;
+    bool usernameAvailable_;
+    bool usernameUnavailable_;
 
-    QWidget *form_widget_;
-    QHBoxLayout *form_wrapper_;
-    QVBoxLayout *form_layout_;
-
-    TextField *username_input_;
-    TextField *password_input_;
-    TextField *password_confirmation_;
-    TextField *server_input_;
-    TextField *registration_token_input_;
+    QString lastServer;
 };
