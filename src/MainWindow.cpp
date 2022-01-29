@@ -286,6 +286,8 @@ MainWindow::registerQmlTypes()
     engine()->addImageProvider(QStringLiteral("blurhash"), new BlurhashProvider());
     if (JdenticonProvider::isAvailable())
         engine()->addImageProvider(QStringLiteral("jdenticon"), new JdenticonProvider());
+
+    QObject::connect(engine(), &QQmlEngine::quit, &QGuiApplication::quit);
 }
 
 void
