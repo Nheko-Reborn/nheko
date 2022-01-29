@@ -159,12 +159,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                 MainWindow::instance()->requestActivate();
             });
 
-    connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, [this]() {
-        // ensure the qml context is shutdown before we destroy all other singletons
-        // Otherwise Qml will try to access the room list or settings, after they have been
-        // destroyed
-    });
-
     connect(
       this,
       &ChatPage::initializeViews,
