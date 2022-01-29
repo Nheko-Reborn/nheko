@@ -171,16 +171,16 @@ LoginPage::checkHomeserverVersion()
               if (err || flows.flows.empty())
                   emit versionOkCb(true, false);
 
-              bool ssoSupported_      = false;
-              bool passwordSupported_ = false;
+              bool ssoSupported      = false;
+              bool passwordSupported = false;
               for (const auto &flow : flows.flows) {
                   if (flow.type == mtx::user_interactive::auth_types::sso) {
-                      ssoSupported_ = true;
+                      ssoSupported = true;
                   } else if (flow.type == mtx::user_interactive::auth_types::password) {
-                      passwordSupported_ = true;
+                      passwordSupported = true;
                   }
               }
-              emit versionOkCb(passwordSupported_, ssoSupported_);
+              emit versionOkCb(passwordSupported, ssoSupported);
           });
     });
 }
