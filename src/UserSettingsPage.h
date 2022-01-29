@@ -115,6 +115,10 @@ class UserSettings : public QObject
                  recentReactionsChanged)
     Q_PROPERTY(QStringList hiddenWidgets READ hiddenWidgets WRITE setHiddenWidgets NOTIFY
                  hiddenWidgetsChanged)
+#ifdef NHEKO_DBUS_SYS
+    Q_PROPERTY(
+      bool exposeDBusApi READ exposeDBusApi WRITE setExposeDBusApi NOTIFY exposeDBusApiChanged)
+#endif
 
     UserSettings();
 
@@ -191,6 +195,9 @@ public:
     void setOpenImageExternal(bool state);
     void setOpenVideoExternal(bool state);
     void setCollapsedSpaces(QList<QStringList> spaces);
+#ifdef NHEKO_DBUS_SYS
+    void setExposeDBusApi(bool state);
+#endif
 
     QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
     bool messageHoverHighlight() const { return messageHoverHighlight_; }
@@ -255,6 +262,9 @@ public:
     bool openImageExternal() const { return openImageExternal_; }
     bool openVideoExternal() const { return openVideoExternal_; }
     QList<QStringList> collapsedSpaces() const { return collapsedSpaces_; }
+#ifdef NHEKO_DBUS_SYS
+    bool exposeDBusApi() const { return exposeDBusApi_; }
+#endif
 
 signals:
     void groupViewStateChanged(bool state);
@@ -310,6 +320,9 @@ signals:
     void hiddenPinsChanged();
     void hiddenWidgetsChanged();
     void recentReactionsChanged();
+#ifdef NHEKO_DBUS_SYS
+    void exposeDBusApiChanged(bool state);
+#endif
 
 private:
     // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
@@ -373,6 +386,9 @@ private:
     bool useIdenticon_;
     bool openImageExternal_;
     bool openVideoExternal_;
+#ifdef NHEKO_DBUS_SYS
+    bool exposeDBusApi_;
+#endif
 
     QSettings settings;
 
@@ -398,6 +414,9 @@ class UserSettingsModel : public QAbstractListModel
         UseIdenticon,
         PrivacyScreen,
         PrivacyScreenTimeout,
+#ifdef NHEKO_DBUS_SYS
+        ExposeDBusApi,
+#endif
 
         TimelineSection,
         TimelineMaxWidth,

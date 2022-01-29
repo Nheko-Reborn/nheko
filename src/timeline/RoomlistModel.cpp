@@ -15,6 +15,10 @@
 #include "TimelineViewManager.h"
 #include "UserSettingsPage.h"
 
+#ifdef DBUS_AVAILABLE
+#include <QDBusConnection>
+#endif
+
 RoomlistModel::RoomlistModel(TimelineViewManager *parent)
   : QAbstractListModel(parent)
   , manager(parent)
@@ -59,6 +63,20 @@ RoomlistModel::RoomlistModel(TimelineViewManager *parent)
           }
       },
       Qt::QueuedConnection);
+
+#ifdef NHEKO_DBUS_SYS
+    if (UserSettings::instance()->exposeDBusApi()) {
+        if (QDBusConnection::sessionBus().isConnected() &&
+            QDBusConnection::sessionBus().registerService(NHEKO_DBUS_SERVICE_NAME)) {
+            RoomInfoItem::init();
+            dbusInterface_ = new RoomListDBusInterface{this};
+            QDBusConnection::sessionBus().registerObject(
+              "/", dbusInterface_, QDBusConnection::ExportAllSlots);
+            nhlog::ui()->info("Initialized D-Bus");
+        } else
+            nhlog::ui()->warn("Could not connect to D-Bus!");
+    }
+#endif
 }
 
 QHash<int, QByteArray>
@@ -1108,3 +1126,65 @@ FilteredRoomlistModel::previousRoom()
         }
     }
 }
+
+#ifdef NHEKO_DBUS_SYS
+RoomListDBusInterface::RoomListDBusInterface(RoomlistModel *parent)
+  : QObject{parent}
+  , m_parent{parent}
+{}
+
+QVector<RoomInfoItem>
+RoomListDBusInterface::getRooms(const QDBusMessage &message)
+{
+    message.setDelayedReply(true);
+
+    m_modifyDataMutex.lock();
+    m_roomInfoItems.clear();
+
+    auto reply = message.createReply();
+
+    nhlog::ui()->debug("Beginning D-Bus room provide...");
+
+    for (const auto &model : std::as_const(m_parent->models)) {
+        MainWindow::instance()->imageProvider()->download(
+          model->roomAvatarUrl().remove("mxc://"),
+          {32, 32},
+          [this, &model, reply](
+            const QString &, const QSize &, const QImage &image, const QString &) mutable {
+              const auto aliases = cache::client()->getRoomAliases(model->roomId().toStdString());
+              QString alias;
+              if (aliases.has_value()) {
+                  const auto &val = aliases.value();
+                  if (!val.alias.empty())
+                      alias = QString::fromStdString(val.alias);
+                  else if (val.alt_aliases.size() > 0)
+                      alias = QString::fromStdString(val.alt_aliases.front());
+              }
+
+              m_addItemsMutex.lock();
+              m_roomInfoItems.push_back(RoomInfoItem{
+                model->roomId(), model->roomName(), alias, QIcon{QPixmap::fromImage(image)}});
+
+              if (m_roomInfoItems.length() == m_parent->models.size()) {
+                  nhlog::ui()->debug("Sending rooms over D-Bus...");
+                  reply << QVariant::fromValue(m_roomInfoItems);
+                  m_modifyDataMutex.unlock();
+                  QDBusConnection::sessionBus().send(reply);
+                  nhlog::ui()->debug("Rooms successfully sent to D-Bus.");
+              }
+              m_addItemsMutex.unlock();
+          },
+          false);
+    }
+
+    return {};
+}
+
+void
+RoomListDBusInterface::activateRoom(const QString &roomid)
+{
+    m_parent->setCurrentRoom(roomid);
+    MainWindow::instance()->show();
+    MainWindow::instance()->raise();
+}
+#endif

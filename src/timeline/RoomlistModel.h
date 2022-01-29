@@ -17,6 +17,13 @@
 
 #include "TimelineModel.h"
 
+#ifdef NHEKO_DBUS_SYS
+#include "NhekoDBusInterface.h"
+#include <QDBusMessage>
+#include <QDBusMetaType>
+#include <QMutex>
+#endif
+
 class TimelineViewManager;
 
 class RoomPreview
@@ -40,6 +47,29 @@ public:
     QString roomid_, roomName_, roomAvatarUrl_, roomTopic_;
     bool isInvite_ = false;
 };
+
+class RoomlistModel;
+
+#ifdef NHEKO_DBUS_SYS
+class RoomListDBusInterface : public QObject
+{
+    Q_OBJECT
+
+public:
+    RoomListDBusInterface(RoomlistModel *parent);
+
+public slots:
+    QVector<RoomInfoItem> getRooms(const QDBusMessage &message);
+    void activateRoom(const QString &roomid);
+
+private:
+    RoomlistModel *m_parent;
+    QVector<RoomInfoItem> m_roomInfoItems;
+    QMutex m_modifyDataMutex;
+    QMutex m_addItemsMutex;
+};
+// Q_DECLARE_METATYPE(RoomListDBusInterface)
+#endif
 
 class RoomlistModel : public QAbstractListModel
 {
@@ -137,6 +167,11 @@ private:
     std::optional<RoomPreview> currentRoomPreview_;
 
     std::map<QString, std::vector<QString>> directChatToUser;
+
+#ifdef NHEKO_DBUS_SYS
+    RoomListDBusInterface *dbusInterface_;
+    friend class RoomListDBusInterface;
+#endif
 
     friend class FilteredRoomlistModel;
 };

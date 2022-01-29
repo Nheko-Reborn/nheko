@@ -11,12 +11,8 @@
 
 #include <mtx/responses/notifications.hpp>
 
-// convenience definition
-#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD) || defined(Q_OS_HAIKU)
-#define NHEKO_DBUS_SYS
-#endif
-
-#if defined(NHEKO_DBUS_SYS)
+#if (defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD) || defined(Q_OS_HAIKU)) && defined(NHEKO_DBUS_SYS)
+#define USE_DBUS_NOTIFS
 #include <QtDBus/QDBusArgument>
 #include <QtDBus/QDBusInterface>
 #endif
@@ -103,7 +99,7 @@ private:
     QString getMessageTemplate(const mtx::responses::Notification &notification);
 };
 
-#if defined(NHEKO_DBUS_SYS)
+#if defined(USE_DBUS_NOTIFS)
 QDBusArgument &
 operator<<(QDBusArgument &arg, const QImage &image);
 const QDBusArgument &
