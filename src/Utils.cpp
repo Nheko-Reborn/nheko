@@ -17,6 +17,7 @@
 #include <QStringBuilder>
 #include <QTextBoundaryFinder>
 #include <QTextDocument>
+#include <QWindow>
 #include <QXmlStreamReader>
 
 #include <array>
@@ -770,20 +771,17 @@ utils::luminance(const QColor &col)
 }
 
 void
-utils::centerWidget(QWidget *widget, QWidget *parent)
+utils::centerWidget(QWidget *widget, QWindow *parent)
 {
+    if (parent) {
+        widget->window()->windowHandle()->setTransientParent(parent);
+        return;
+    }
+
     auto findCenter = [childRect = widget->rect()](QRect hostRect) -> QPoint {
         return QPoint(hostRect.center().x() - (childRect.width() * 0.5),
                       hostRect.center().y() - (childRect.height() * 0.5));
     };
-
-    if (parent) {
-        widget->move(parent->window()->frameGeometry().topLeft() +
-                     parent->window()->rect().center() - widget->rect().center());
-        return;
-    }
-
-    // Deprecated in 5.13: widget->move(findCenter(QApplication::desktop()->screenGeometry()));
     widget->move(findCenter(QGuiApplication::primaryScreen()->geometry()));
 }
 

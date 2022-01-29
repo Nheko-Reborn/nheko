@@ -290,7 +290,7 @@ luminance(const QColor &col);
 
 //! Center a widget in relation to another widget.
 void
-centerWidget(QWidget *widget, QWidget *parent);
+centerWidget(QWidget *widget, QWindow *parent);
 
 void
 restoreCombobox(QComboBox *combo, const QString &value);

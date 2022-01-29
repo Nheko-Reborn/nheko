@@ -83,8 +83,6 @@ private:
     void showDialog(QWidget *dialog);
     bool hasActiveUser();
     void restoreWindowSize();
-    //! Check if there is an open dialog.
-    bool hasActiveDialogs() const;
     //! Check if the current page supports the "minimize to tray" functionality.
     bool pageSupportsTray() const;
 

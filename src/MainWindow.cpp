@@ -423,22 +423,18 @@ MainWindow::openCreateRoomDialog(
 }
 
 bool
-MainWindow::hasActiveDialogs() const
-{
-    return false;
-}
-
-bool
 MainWindow::pageSupportsTray() const
 {
-    return false; //! welcome_page_->isVisible() && !login_page_->isVisible() &&
-                  //! !register_page_->isVisible();
+    return !http::client()->access_token().empty();
 }
 
 inline void
 MainWindow::showDialog(QWidget *dialog)
 {
-    // utils::centerWidget(dialog, this);
+    dialog->setWindowFlags(Qt::WindowType::Dialog | Qt::WindowType::WindowCloseButtonHint |
+                           Qt::WindowType::WindowTitleHint);
     dialog->raise();
     dialog->show();
+    utils::centerWidget(dialog, this);
+    dialog->window()->windowHandle()->setTransientParent(this);
 }
