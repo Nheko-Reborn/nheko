@@ -398,7 +398,7 @@ Pane {
     Component {
         id: registerPage
 
-        RegistrationPage {
+        RegisterPage {
         }
     }
 
