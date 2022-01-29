@@ -19,7 +19,9 @@
 
 RegisterPage::RegisterPage(QObject *parent)
   : QObject(parent)
-{}
+{
+    connect(this, &RegisterPage::registerOk, this, [] { MainWindow::instance()->showChatPage(); });
+}
 
 void
 RegisterPage::setError(QString err)
@@ -199,7 +201,7 @@ RegisterPage::startRegistration(QString username, QString password, QString devi
               if (!err) {
                   http::client()->set_user(res.user_id);
                   http::client()->set_access_token(res.access_token);
-                  MainWindow::instance()->showChatPage();
+                  emit registerOk();
                   disconnect(UIA::instance(), &UIA::error, this, nullptr);
                   return;
               }

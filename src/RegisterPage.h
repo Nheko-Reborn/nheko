@@ -53,6 +53,8 @@ signals:
     void lookingUpHsChanged();
     void lookingUpUsernameChanged();
 
+    void registerOk();
+
 private:
     void versionsCheck();
 
