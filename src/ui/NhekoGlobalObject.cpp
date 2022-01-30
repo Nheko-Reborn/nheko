@@ -10,6 +10,7 @@
 #include <QStyle>
 #include <QUrl>
 #include <QWindow>
+#include <QtPlatformHeaders/QXcbWindowFunctions>
 
 #include "Cache_p.h"
 #include "ChatPage.h"
@@ -18,6 +19,7 @@
 #include "UserSettingsPage.h"
 #include "Utils.h"
 #include "voip/WebRTCSession.h"
+
 
 Nheko::Nheko()
 {
@@ -134,6 +136,12 @@ Nheko::openCreateRoomDialog() const
 {
     MainWindow::instance()->openCreateRoomDialog(
       [](const mtx::requests::CreateRoom &req) { ChatPage::instance()->createRoom(req); });
+}
+
+void
+Nheko::setWindowRole(QWindow *win, QString newRole) const
+{
+    QXcbWindowFunctions::setWmWindowRole(win, newRole.toUtf8());
 }
 
 void
