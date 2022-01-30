@@ -331,24 +331,13 @@ set(SRC_FILES
 	src/timeline/RoomlistModel.cpp
 
 	# UI components
-	src/ui/DropShadow.cpp
-	src/ui/FlatButton.cpp
-	src/ui/Label.cpp
-	src/ui/LoadingIndicator.cpp
 	src/ui/MxcAnimatedImage.cpp
 	src/ui/MxcMediaProxy.cpp
 	src/ui/NhekoCursorShape.cpp
 	src/ui/NhekoDropArea.cpp
 	src/ui/NhekoGlobalObject.cpp
-	src/ui/OverlayModal.cpp
-	src/ui/OverlayWidget.cpp
-	src/ui/RaisedButton.cpp
-	src/ui/Ripple.cpp
-	src/ui/RippleOverlay.cpp
 	src/ui/RoomSettings.cpp
-	src/ui/SnackBar.cpp
 	src/ui/TextField.cpp
-	src/ui/TextLabel.cpp
 	src/ui/Theme.cpp
 	src/ui/ThemeManager.cpp
 	src/ui/ToggleButton.cpp
@@ -395,7 +384,6 @@ set(SRC_FILES
 	src/RoomDirectoryModel.cpp
 	src/RoomsModel.cpp
 	src/Utils.cpp
-	src/WelcomePage.cpp
 	src/main.cpp
 
 	third_party/blurhash/blurhash.cpp
@@ -414,7 +402,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        6a7eaa5006b1a18e132be7655e490d9819158dca
+		GIT_TAG        9781553b0186f2db9036d2abbde83c28828eb2b9
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -538,23 +526,13 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/timeline/RoomlistModel.h
 
 	# UI components
-	src/ui/FlatButton.h
-	src/ui/Label.h
-	src/ui/LoadingIndicator.h
 	src/ui/MxcAnimatedImage.h
 	src/ui/MxcMediaProxy.h
-	src/ui/Menu.h
 	src/ui/NhekoCursorShape.h
 	src/ui/NhekoDropArea.h
 	src/ui/NhekoGlobalObject.h
-	src/ui/OverlayWidget.h
-	src/ui/RaisedButton.h
-	src/ui/Ripple.h
-	src/ui/RippleOverlay.h
 	src/ui/RoomSettings.h
-	src/ui/SnackBar.h
 	src/ui/TextField.h
-	src/ui/TextLabel.h
 	src/ui/Theme.h
 	src/ui/ThemeManager.h
 	src/ui/ToggleButton.h
@@ -596,7 +574,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/UsersModel.h
 	src/RoomDirectoryModel.h
 	src/RoomsModel.h
-	src/WelcomePage.h
 	src/ReadReceiptsModel.h
 )
 

@@ -12,7 +12,7 @@ import im.nheko 1.0
 Button {
     id: control
 
-    implicitHeight: Math.ceil(control.contentItem.implicitHeight * 1.5)
+    implicitHeight: Math.ceil(control.contentItem.implicitHeight * 1.70)
     implicitWidth: Math.ceil(control.contentItem.implicitWidth + control.contentItem.implicitHeight)
     hoverEnabled: true
 
@@ -42,7 +42,7 @@ Button {
     background: Rectangle {
         //height: control.contentItem.implicitHeight * 2
         //width: control.contentItem.implicitWidth * 2
-        radius: height / 6
+        radius: height / 8
         color: Qt.lighter(Nheko.colors.dark, control.down ? 1.4 : (control.hovered ? 1.2 : 1))
     }
 

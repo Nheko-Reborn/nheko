@@ -8,8 +8,6 @@
 #include <QHash>
 #include <QQuickItem>
 #include <QQuickTextDocument>
-#include <QQuickView>
-#include <QQuickWidget>
 #include <QWidget>
 
 #include <mtx/common.hpp>
@@ -43,23 +41,19 @@ class TimelineViewManager : public QObject
 
     Q_PROPERTY(
       bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
-    Q_PROPERTY(
-      bool isWindowFocused MEMBER isWindowFocused_ READ isWindowFocused NOTIFY focusChanged)
+    Q_PROPERTY(bool isWindowFocused READ isWindowFocused NOTIFY focusChanged)
 
 public:
     TimelineViewManager(CallManager *callManager, ChatPage *parent = nullptr);
-    QWidget *getWidget() const { return container; }
 
     void sync(const mtx::responses::Sync &sync_);
 
-    MxcImageProvider *imageProvider() { return imgProvider; }
-    CallManager *callManager() { return callManager_; }
     VerificationManager *verificationManager() { return verificationManager_; }
 
     void clearAll() { rooms_->clear(); }
 
     Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
-    bool isWindowFocused() const { return isWindowFocused_; }
+    bool isWindowFocused() const;
     Q_INVOKABLE void openImageOverlay(TimelineModel *room, QString mxcUrl, QString eventId);
     Q_INVOKABLE void openImagePackSettings(QString roomid);
     Q_INVOKABLE void saveMedia(QString mxcUrl);
@@ -98,14 +92,8 @@ public slots:
     void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
     void receivedSessionKey(const std::string &room_id, const std::string &session_id);
     void initializeRoomlist();
-    void chatFocusChanged(bool focused)
-    {
-        isWindowFocused_ = focused;
-        emit focusChanged();
-    }
 
     void showEvent(const QString &room_id, const QString &event_id);
-    void focusTimeline();
 
     void updateColorPalette();
     void queueReply(const QString &roomid, const QString &repliedToEvent, const QString &replyBody);
@@ -122,26 +110,12 @@ public slots:
     RoomlistModel *rooms() { return rooms_; }
 
 private:
-#ifdef USE_QUICK_VIEW
-    QQuickView *view;
-#else
-    QQuickWidget *view;
-#endif
-    QWidget *container;
-
-    MxcImageProvider *imgProvider;
-    ColorImageProvider *colorImgProvider;
-    BlurhashProvider *blurhashProvider;
-    JdenticonProvider *jdenticonProvider;
-
-    bool isInitialSync_   = true;
-    bool isWindowFocused_ = false;
+    bool isInitialSync_ = true;
 
     RoomlistModel *rooms_          = nullptr;
     CommunitiesModel *communities_ = nullptr;
 
     // don't move this above the rooms_
-    CallManager *callManager_                 = nullptr;
     VerificationManager *verificationManager_ = nullptr;
     PresenceEmitter *presenceEmitter          = nullptr;
 

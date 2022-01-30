@@ -40,7 +40,7 @@ class TrayIcon : public QSystemTrayIcon
 {
     Q_OBJECT
 public:
-    TrayIcon(const QString &filename, QWidget *parent);
+    TrayIcon(const QString &filename, QWindow *parent);
 
 public slots:
     void setUnreadCount(int count);

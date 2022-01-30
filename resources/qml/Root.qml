@@ -9,6 +9,7 @@ import "./dialogs"
 import "./emoji"
 import "./pages"
 import "./voip"
+import "./ui"
 import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.15
@@ -17,10 +18,12 @@ import QtQuick.Window 2.15
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
 
-Page {
+Pane {
     id: timelineRoot
 
     palette: Nheko.colors
+    background: null
+    padding: 0
 
     FontMetrics {
         id: fontMetrics
@@ -154,10 +157,14 @@ Page {
     }
 
     Shortcut {
+        sequence: StandardKey.Quit
+        onActivated: Qt.quit()
+    }
+
+    Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
             var quickSwitch = quickSwitcherComponent.createObject(timelineRoot);
-            TimelineManager.focusTimeline();
             quickSwitch.open();
         }
     }
@@ -165,7 +172,6 @@ Page {
     Shortcut {
         // Add alternative shortcut, because sometimes Alt+A is stolen by the TextEdit
         sequences: ["Alt+A", "Ctrl+Shift+A"]
-        context: Qt.ApplicationShortcut
         onActivated: Rooms.nextRoomWithActivity()
     }
 
@@ -366,9 +372,51 @@ Page {
         id: mainWindow
 
         anchors.fill: parent
-        initialItem: ChatPage {
-            //anchors.fill: parent
+        initialItem: welcomePage
+    }
+
+    Component {
+        id: welcomePage
+
+        WelcomePage {
         }
+    }
+
+    Component {
+        id: chatPage
+
+        ChatPage {
+        }
+    }
+
+    Component {
+        id: loginPage
+
+        LoginPage {
+        }
+    }
+
+    Component {
+        id: registerPage
+
+        RegisterPage {
+        }
+    }
+
+    Snackbar { id: snackbar }
+
+    Connections {
+        function onSwitchToChatPage() {
+            mainWindow.replace(null, chatPage);
+        }
+        function onSwitchToLoginPage(error) {
+            mainWindow.replace(welcomePage, {}, loginPage, {"error": error}, StackView.PopTransition);
+        }
+        function onShowNotification(msg) {
+            snackbar.showNotification(msg);
+            console.log("New snack: " + msg);
+        }
+        target: MainWindow
     }
 
 }

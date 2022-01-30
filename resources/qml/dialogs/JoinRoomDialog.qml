@@ -17,7 +17,6 @@ ApplicationWindow {
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     palette: Nheko.colors
     color: Nheko.colors.window
-    Component.onCompleted: Nheko.reparent(joinRoomRoot)
     width: 350
     height: fontMetrics.lineSpacing * 7
 

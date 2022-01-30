@@ -22,7 +22,6 @@
 #include "Utils.h"
 #include "encryption/DeviceVerificationFlow.h"
 #include "encryption/Olm.h"
-#include "ui/OverlayModal.h"
 #include "ui/Theme.h"
 #include "ui/UserProfile.h"
 #include "voip/CallManager.h"
@@ -44,8 +43,8 @@ Q_DECLARE_METATYPE(mtx::presence::PresenceState)
 Q_DECLARE_METATYPE(mtx::secret_storage::AesHmacSha2KeyDescription)
 Q_DECLARE_METATYPE(SecretsToDecrypt)
 
-ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
-  : QWidget(parent)
+ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
+  : QObject(parent)
   , isConnected_(true)
   , userSettings_{userSettings}
   , notificationsManager(this)
@@ -61,13 +60,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
     qRegisterMetaType<mtx::secret_storage::AesHmacSha2KeyDescription>();
     qRegisterMetaType<SecretsToDecrypt>();
 
-    topLayout_ = new QHBoxLayout(this);
-    topLayout_->setSpacing(0);
-    topLayout_->setContentsMargins(0, 0, 0, 0);
-
     view_manager_ = new TimelineViewManager(callManager_, this);
-
-    topLayout_->addWidget(view_manager_->getWidget());
 
     connect(this,
             &ChatPage::downloadedSecrets,
@@ -154,7 +147,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
             [this](const QString &roomid, const QString &eventid) {
                 Q_UNUSED(eventid)
                 view_manager_->rooms()->setCurrentRoom(roomid);
-                activateWindow();
+                MainWindow::instance()->requestActivate();
             });
     connect(&notificationsManager,
             &NotificationsManager::sendNotificationReply,
@@ -162,16 +155,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
             [this](const QString &roomid, const QString &eventid, const QString &body) {
                 view_manager_->rooms()->setCurrentRoom(roomid);
                 view_manager_->queueReply(roomid, eventid, body);
-                activateWindow();
+                MainWindow::instance()->requestActivate();
             });
-
-    connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, [this]() {
-        // ensure the qml context is shutdown before we destroy all other singletons
-        // Otherwise Qml will try to access the room list or settings, after they have been
-        // destroyed
-        topLayout_->removeWidget(view_manager_->getWidget());
-        delete view_manager_->getWidget();
-    });
 
     connect(
       this,
@@ -183,8 +168,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
             &ChatPage::initializeEmptyViews,
             view_manager_,
             &TimelineViewManager::initializeRoomlist);
-    connect(
-      this, &ChatPage::chatFocusChanged, view_manager_, &TimelineViewManager::chatFocusChanged);
     connect(this, &ChatPage::syncUI, this, [this](const mtx::responses::Sync &sync) {
         view_manager_->sync(sync);
 
@@ -201,7 +184,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent)
         // TODO: Replace this once we have proper pushrules support. This is a horrible hack
         if (prevNotificationCount < notificationCount) {
             if (userSettings_->hasAlertOnNotification())
-                QApplication::alert(this);
+                MainWindow::instance()->alert(0);
         }
         prevNotificationCount = notificationCount;
 
@@ -331,7 +314,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                     } else if (cacheVersion == cache::CacheVersion::Older) {
                         if (!cache::runMigrations()) {
                             QMessageBox::critical(
-                              this,
+                              nullptr,
                               tr("Cache migration failed!"),
                               tr("Migrating the cache to the current version failed. "
                                  "This can have different reasons. Please open an "
@@ -344,7 +327,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                         return;
                     } else if (cacheVersion == cache::CacheVersion::Newer) {
                         QMessageBox::critical(
-                          this,
+                          nullptr,
                           tr("Incompatible cache version"),
                           tr("The cache on your disk is newer than this version of Nheko "
                              "supports. Please update Nheko or clear your cache."));
@@ -690,7 +673,7 @@ ChatPage::joinRoomVia(const std::string &room_id,
     if (promptForConfirmation &&
         QMessageBox::Yes !=
           QMessageBox::question(
-            this,
+            nullptr,
             tr("Confirm join"),
             tr("Do you really want to join %1?").arg(QString::fromStdString(room_id))))
         return;
@@ -776,7 +759,7 @@ ChatPage::inviteUser(QString userid, QString reason)
 {
     auto room = currentRoom();
 
-    if (QMessageBox::question(this,
+    if (QMessageBox::question(nullptr,
                               tr("Confirm invite"),
                               tr("Do you really want to invite %1 (%2)?")
                                 .arg(cache::displayName(room, userid), userid)) != QMessageBox::Yes)
@@ -787,6 +770,8 @@ ChatPage::inviteUser(QString userid, QString reason)
       userid.toStdString(),
       [this, userid, room](const mtx::responses::Empty &, mtx::http::RequestErr err) {
           if (err) {
+              nhlog::net()->error(
+                "Failed to invite {} to {}: {}", userid.toStdString(), room.toStdString(), *err);
               emit showNotification(
                 tr("Failed to invite %1 to %2: %3")
                   .arg(userid, room, QString::fromStdString(err->matrix_error.error)));
@@ -800,7 +785,7 @@ ChatPage::kickUser(QString userid, QString reason)
 {
     auto room = currentRoom();
 
-    if (QMessageBox::question(this,
+    if (QMessageBox::question(nullptr,
                               tr("Confirm kick"),
                               tr("Do you really want to kick %1 (%2)?")
                                 .arg(cache::displayName(room, userid), userid)) != QMessageBox::Yes)
@@ -825,7 +810,7 @@ ChatPage::banUser(QString userid, QString reason)
     auto room = currentRoom();
 
     if (QMessageBox::question(
-          this,
+          nullptr,
           tr("Confirm ban"),
           tr("Do you really want to ban %1 (%2)?").arg(cache::displayName(room, userid), userid)) !=
         QMessageBox::Yes)
@@ -849,7 +834,7 @@ ChatPage::unbanUser(QString userid, QString reason)
 {
     auto room = currentRoom();
 
-    if (QMessageBox::question(this,
+    if (QMessageBox::question(nullptr,
                               tr("Confirm unban"),
                               tr("Do you really want to unban %1 (%2)?")
                                 .arg(cache::displayName(room, userid), userid)) != QMessageBox::Yes)
@@ -1064,8 +1049,6 @@ ChatPage::initiateLogout()
 
         emit loggedOut();
     });
-
-    emit showOverlayProgressBar();
 }
 
 template<typename T>
@@ -1083,7 +1066,7 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
                                    const SecretsToDecrypt &secrets)
 {
     QString text = QInputDialog::getText(
-      ChatPage::instance(),
+      nullptr,
       QCoreApplication::translate("CrossSigningSecrets", "Decrypt secrets"),
       keyDesc.name.empty()
         ? QCoreApplication::translate(
@@ -1115,7 +1098,7 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
 
     if (!decryptionKey) {
         QMessageBox::information(
-          ChatPage::instance(),
+          nullptr,
           QCoreApplication::translate("CrossSigningSecrets", "Decryption failed"),
           QCoreApplication::translate("CrossSigningSecrets",
                                       "Failed to decrypt secrets with the "
@@ -1209,7 +1192,7 @@ ChatPage::startChat(QString userid)
 
     if (QMessageBox::Yes !=
         QMessageBox::question(
-          this,
+          nullptr,
           tr("Confirm invite"),
           tr("Do you really want to start a private chat with %1?").arg(userid)))
         return;
@@ -1395,7 +1378,7 @@ ChatPage::handleMatrixUri(const QUrl &uri)
 bool
 ChatPage::isRoomActive(const QString &room_id)
 {
-    return isActiveWindow() && currentRoom() == room_id;
+    return MainWindow::instance()->isActive() && currentRoom() == room_id;
 }
 
 QString

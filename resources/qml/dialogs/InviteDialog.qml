@@ -37,7 +37,6 @@ ApplicationWindow {
     palette: Nheko.colors
     color: Nheko.colors.window
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    Component.onCompleted: Nheko.reparent(inviteDialogRoot)
 
     Shortcut {
         sequence: "Ctrl+Enter"

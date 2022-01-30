@@ -110,6 +110,9 @@
         <file>qml/TypingIndicator.qml</file>
         <file>qml/NotificationWarning.qml</file>
         <file>qml/pages/UserSettingsPage.qml</file>
+        <file>qml/pages/WelcomePage.qml</file>
+        <file>qml/pages/LoginPage.qml</file>
+        <file>qml/pages/RegisterPage.qml</file>
         <file>qml/components/AdaptiveLayout.qml</file>
         <file>qml/components/AdaptiveLayoutElement.qml</file>
         <file>qml/components/AvatarListTile.qml</file>
@@ -154,6 +157,7 @@
         <file>qml/ui/NhekoSlider.qml</file>
         <file>qml/ui/Ripple.qml</file>
         <file>qml/ui/Spinner.qml</file>
+        <file>qml/ui/Snackbar.qml</file>
         <file>qml/ui/animations/BlinkAnimation.qml</file>
         <file>qml/ui/media/MediaControls.qml</file>
         <file>qml/voip/ActiveCallBar.qml</file>

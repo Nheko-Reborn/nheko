@@ -6,16 +6,7 @@
 
 #pragma once
 
-#include <QWidget>
-
-class FlatButton;
-class LoadingIndicator;
-class OverlayModal;
-class RaisedButton;
-class TextField;
-class QLabel;
-class QVBoxLayout;
-class QHBoxLayout;
+#include <QObject>
 
 namespace mtx {
 namespace responses {
@@ -23,9 +14,21 @@ struct Login;
 }
 }
 
-class LoginPage : public QWidget
+class LoginPage : public QObject
 {
     Q_OBJECT
+
+    Q_PROPERTY(QString mxid READ mxid WRITE setMxid NOTIFY matrixIdChanged)
+    Q_PROPERTY(QString homeserver READ homeserver WRITE setHomeserver NOTIFY homeserverChanged)
+
+    Q_PROPERTY(QString mxidError READ mxidError NOTIFY mxidErrorChanged)
+    Q_PROPERTY(QString error READ error NOTIFY errorOccurred)
+    Q_PROPERTY(bool lookingUpHs READ lookingUpHs NOTIFY lookingUpHsChanged)
+    Q_PROPERTY(bool homeserverValid READ homeserverValid NOTIFY lookingUpHsChanged)
+    Q_PROPERTY(bool loggingIn READ loggingIn NOTIFY loggingInChanged)
+    Q_PROPERTY(bool passwordSupported READ passwordSupported NOTIFY versionLookedUp)
+    Q_PROPERTY(bool ssoSupported READ ssoSupported NOTIFY versionLookedUp)
+    Q_PROPERTY(bool homeserverNeeded READ homeserverNeeded NOTIFY versionLookedUp)
 
 public:
     enum class LoginMethod
@@ -33,52 +36,39 @@ public:
         Password,
         SSO,
     };
+    Q_ENUM(LoginMethod)
 
-    LoginPage(QWidget *parent = nullptr);
+    LoginPage(QObject *parent = nullptr);
 
-    void reset();
+    Q_INVOKABLE QString initialDeviceName() const
+    {
+        return QString::fromStdString(initialDeviceName_());
+    }
 
-signals:
-    void backButtonClicked();
-    void loggingIn();
-    void errorOccurred();
+    bool lookingUpHs() const { return lookingUpHs_; }
+    bool loggingIn() const { return loggingIn_; }
+    bool passwordSupported() const { return passwordSupported_; }
+    bool ssoSupported() const { return ssoSupported_; }
+    bool homeserverNeeded() const { return homeserverNeeded_; }
+    bool homeserverValid() const { return homeserverValid_; }
 
-    //! Used to trigger the corresponding slot outside of the main thread.
-    void versionErrorCb(const QString &err);
-    void versionOkCb(bool passwordSupported, bool ssoSupported);
+    QString homeserver() { return homeserver_; }
+    QString mxid() { return mxid_; }
 
-    void loginOk(const mtx::responses::Login &res);
-    void showErrorMessage(QLabel *label, const QString &msg);
+    QString error() { return error_; }
+    QString mxidError() { return mxidError_; }
 
-protected:
-    void paintEvent(QPaintEvent *event) override;
+    void setHomeserver(QString hs);
+    void setMxid(QString id)
+    {
+        if (id != mxid_) {
+            mxid_ = id;
+            emit matrixIdChanged();
+            onMatrixIdEntered();
+        }
+    }
 
-public slots:
-    // Displays errors produced during the login.
-    void showError(const QString &msg);
-    void showError(QLabel *label, const QString &msg);
-
-private slots:
-    // Callback for the back button.
-    void onBackButtonClicked();
-
-    // Callback for the login button.
-    void onLoginButtonClicked(LoginMethod loginMethod);
-
-    // Callback for probing the server found in the mxid
-    void onMatrixIdEntered();
-
-    // Callback for probing the manually entered server
-    void onServerAddressEntered();
-
-    // Callback for errors produced during server probing
-    void versionError(const QString &error_message);
-    // Callback for successful server probing
-    void versionOk(bool passwordSupported, bool ssoSupported);
-
-private:
-    void checkHomeserverVersion();
-    std::string initialDeviceName()
+    static std::string initialDeviceName_()
     {
 #if defined(Q_OS_MAC)
         return "Nheko on macOS";
@@ -93,33 +83,65 @@ private:
 #endif
     }
 
-    QVBoxLayout *top_layout_;
+signals:
+    void loggingInChanged();
+    void errorOccurred();
 
-    QHBoxLayout *top_bar_layout_;
-    QHBoxLayout *logo_layout_;
-    QHBoxLayout *button_layout_;
+    //! Used to trigger the corresponding slot outside of the main thread.
+    void versionErrorCb(const QString &err);
+    void versionOkCb(bool passwordSupported, bool ssoSupported);
 
-    QLabel *logo_;
-    QLabel *error_label_;
-    QLabel *error_matrixid_label_;
+    void loginOk(const mtx::responses::Login &res);
 
-    QHBoxLayout *serverLayout_;
-    QHBoxLayout *matrixidLayout_;
-    LoadingIndicator *spinner_;
-    QLabel *errorIcon_;
+    void onServerAddressEntered();
+
+    void matrixIdChanged();
+    void homeserverChanged();
+
+    void mxidErrorChanged();
+    void lookingUpHsChanged();
+    void versionLookedUp();
+    void versionLookupFinished();
+
+public slots:
+    // Displays errors produced during the login.
+    void showError(const QString &msg);
+
+    // Callback for the login button.
+    void onLoginButtonClicked(LoginMethod loginMethod,
+                              QString userid,
+                              QString password,
+                              QString deviceName);
+
+    // Callback for errors produced during server probing
+    void versionError(const QString &error_message);
+    // Callback for successful server probing
+    void versionOk(bool passwordSupported, bool ssoSupported);
+
+private:
+    void checkHomeserverVersion();
+    void onMatrixIdEntered();
+    void clearErrors()
+    {
+        error_.clear();
+        mxidError_.clear();
+        emit errorOccurred();
+        emit mxidErrorChanged();
+    }
+
     QString inferredServerAddress_;
 
-    FlatButton *back_button_;
-    RaisedButton *login_button_, *sso_login_button_;
+    QString mxid_;
+    QString homeserver_;
 
-    QWidget *form_widget_;
-    QHBoxLayout *form_wrapper_;
-    QVBoxLayout *form_layout_;
+    QString mxidError_;
+    QString error_;
 
-    TextField *matrixid_input_;
-    TextField *password_input_;
-    TextField *deviceName_;
-    TextField *serverInput_;
-    bool passwordSupported = true;
-    bool ssoSupported      = false;
+    bool passwordSupported_ = true;
+    bool ssoSupported_      = false;
+
+    bool lookingUpHs_      = false;
+    bool loggingIn_        = false;
+    bool homeserverNeeded_ = false;
+    bool homeserverValid_  = false;
 };

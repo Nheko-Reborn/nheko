@@ -12,8 +12,6 @@ import QtQuick.Layouts 1.12
 import im.nheko 1.0
 
 ApplicationWindow {
-    //Component.onCompleted: Nheko.reparent(win)
-
     id: win
 
     property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.3)
@@ -175,39 +173,37 @@ ApplicationWindow {
                         }
                     }
 
-                    MatrixText {
-                        visible: imagePack.roomid
-                        text: qsTr("State key")
-                    }
-
                     MatrixTextField {
+                        id: statekeyField
+
                         visible: imagePack.roomid
                         Layout.fillWidth: true
+                        Layout.columnSpan: 2
+                        label: qsTr("State key")
                         text: imagePack.statekey
                         onTextEdited: imagePack.statekey = text
                     }
 
-                    MatrixText {
-                        text: qsTr("Packname")
-                    }
-
                     MatrixTextField {
                         Layout.fillWidth: true
+                        Layout.columnSpan: 2
+                        label: qsTr("Packname")
                         text: imagePack.packname
                         onTextEdited: imagePack.packname = text
                     }
 
-                    MatrixText {
-                        text: qsTr("Attribution")
-                    }
-
                     MatrixTextField {
                         Layout.fillWidth: true
+                        Layout.columnSpan: 2
+                        label: qsTr("Attribution")
                         text: imagePack.attribution
                         onTextEdited: imagePack.attribution = text
                     }
 
                     MatrixText {
+                        Layout.margins: statekeyField.textPadding
+                        font.weight: Font.DemiBold
+                        font.letterSpacing: font.pixelSize * 0.02
                         text: qsTr("Use as Emoji")
                     }
 
@@ -218,6 +214,9 @@ ApplicationWindow {
                     }
 
                     MatrixText {
+                        Layout.margins: statekeyField.textPadding
+                        font.weight: Font.DemiBold
+                        font.letterSpacing: font.pixelSize * 0.02
                         text: qsTr("Use as Sticker")
                     }
 
@@ -253,27 +252,28 @@ ApplicationWindow {
                         Layout.alignment: Qt.AlignHCenter
                     }
 
-                    MatrixText {
-                        text: qsTr("Shortcode")
-                    }
-
                     MatrixTextField {
                         Layout.fillWidth: true
+                        Layout.columnSpan: 2
+                        label: qsTr("Shortcode")
                         text: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.ShortCode)
                         onTextEdited: imagePack.setData(imagePack.index(currentImageIndex, 0), text, SingleImagePackModel.ShortCode)
                     }
 
-                    MatrixText {
-                        text: qsTr("Body")
-                    }
-
                     MatrixTextField {
+                        id: bodyField
+
                         Layout.fillWidth: true
+                        Layout.columnSpan: 2
+                        label: qsTr("Body")
                         text: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.Body)
                         onTextEdited: imagePack.setData(imagePack.index(currentImageIndex, 0), text, SingleImagePackModel.Body)
                     }
 
                     MatrixText {
+                        Layout.margins: bodyField.textPadding
+                        font.weight: Font.DemiBold
+                        font.letterSpacing: font.pixelSize * 0.02
                         text: qsTr("Use as Emoji")
                     }
 
@@ -284,6 +284,9 @@ ApplicationWindow {
                     }
 
                     MatrixText {
+                        Layout.margins: bodyField.textPadding
+                        font.weight: Font.DemiBold
+                        font.letterSpacing: font.pixelSize * 0.02
                         text: qsTr("Use as Sticker")
                     }
 
@@ -294,6 +297,9 @@ ApplicationWindow {
                     }
 
                     MatrixText {
+                        Layout.margins: bodyField.textPadding
+                        font.weight: Font.DemiBold
+                        font.letterSpacing: font.pixelSize * 0.02
                         text: qsTr("Remove from pack")
                     }
 

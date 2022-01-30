@@ -5,25 +5,14 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include <QApplication>
-#include <QComboBox>
 #include <QCoreApplication>
 #include <QFileDialog>
-#include <QFontComboBox>
-#include <QFormLayout>
+#include <QFontDatabase>
 #include <QInputDialog>
-#include <QLabel>
-#include <QLineEdit>
 #include <QMessageBox>
-#include <QPainter>
-#include <QPushButton>
-#include <QResizeEvent>
-#include <QScrollArea>
-#include <QScroller>
-#include <QSpinBox>
 #include <QStandardPaths>
 #include <QString>
 #include <QTextStream>
-#include <QtQml>
 #include <mtx/secret_storage.hpp>
 
 #include "Cache.h"
@@ -33,8 +22,7 @@
 #include "UserSettingsPage.h"
 #include "Utils.h"
 #include "encryption/Olm.h"
-#include "ui/FlatButton.h"
-#include "ui/ToggleButton.h"
+#include "ui/Theme.h"
 #include "voip/CallDevices.h"
 
 #include "config/nheko.h"
@@ -1518,7 +1506,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                     QString homeFolder =
                       QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
                     auto filepath = QFileDialog::getOpenFileName(
-                      MainWindow::instance(), tr("Select a file"), homeFolder, tr("All Files (*)"));
+                      nullptr, tr("Select a file"), homeFolder, tr("All Files (*)"));
                     if (!filepath.isEmpty()) {
                         i->setRingtone(filepath);
                         i->setRingtone(filepath);
@@ -1600,11 +1588,11 @@ UserSettingsModel::importSessionKeys()
 {
     const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     const QString fileName   = QFileDialog::getOpenFileName(
-      MainWindow::instance(), tr("Open Sessions File"), homeFolder, QLatin1String(""));
+      nullptr, tr("Open Sessions File"), homeFolder, QLatin1String(""));
 
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
-        QMessageBox::warning(MainWindow::instance(), tr("Error"), file.errorString());
+        QMessageBox::warning(nullptr, tr("Error"), file.errorString());
         return;
     }
 
@@ -1612,7 +1600,7 @@ UserSettingsModel::importSessionKeys()
     auto payload = std::string(bin.data(), bin.size());
 
     bool ok;
-    auto password = QInputDialog::getText(MainWindow::instance(),
+    auto password = QInputDialog::getText(nullptr,
                                           tr("File Password"),
                                           tr("Enter the passphrase to decrypt the file:"),
                                           QLineEdit::Password,
@@ -1622,8 +1610,7 @@ UserSettingsModel::importSessionKeys()
         return;
 
     if (password.isEmpty()) {
-        QMessageBox::warning(
-          MainWindow::instance(), tr("Error"), tr("The password cannot be empty"));
+        QMessageBox::warning(nullptr, tr("Error"), tr("The password cannot be empty"));
         return;
     }
 
@@ -1631,7 +1618,7 @@ UserSettingsModel::importSessionKeys()
         auto sessions = mtx::crypto::decrypt_exported_sessions(payload, password.toStdString());
         cache::importSessionKeys(std::move(sessions));
     } catch (const std::exception &e) {
-        QMessageBox::warning(MainWindow::instance(), tr("Error"), e.what());
+        QMessageBox::warning(nullptr, tr("Error"), e.what());
     }
 }
 void
@@ -1639,7 +1626,7 @@ UserSettingsModel::exportSessionKeys()
 {
     // Open password dialog.
     bool ok;
-    auto password = QInputDialog::getText(MainWindow::instance(),
+    auto password = QInputDialog::getText(nullptr,
                                           tr("File Password"),
                                           tr("Enter passphrase to encrypt your session keys:"),
                                           QLineEdit::Password,
@@ -1649,19 +1636,18 @@ UserSettingsModel::exportSessionKeys()
         return;
 
     if (password.isEmpty()) {
-        QMessageBox::warning(
-          MainWindow::instance(), tr("Error"), tr("The password cannot be empty"));
+        QMessageBox::warning(nullptr, tr("Error"), tr("The password cannot be empty"));
         return;
     }
 
     // Open file dialog to save the file.
     const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     const QString fileName   = QFileDialog::getSaveFileName(
-      MainWindow::instance(), tr("File to save the exported session keys"), homeFolder);
+      nullptr, tr("File to save the exported session keys"), homeFolder);
 
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QMessageBox::warning(MainWindow::instance(), tr("Error"), file.errorString());
+        QMessageBox::warning(nullptr, tr("Error"), file.errorString());
         return;
     }
 
@@ -1679,7 +1665,7 @@ UserSettingsModel::exportSessionKeys()
         out << prefix << newline << b64 << newline << suffix << newline;
         file.close();
     } catch (const std::exception &e) {
-        QMessageBox::warning(MainWindow::instance(), tr("Error"), e.what());
+        QMessageBox::warning(nullptr, tr("Error"), e.what());
     }
 }
 void

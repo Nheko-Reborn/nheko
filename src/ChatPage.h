@@ -8,7 +8,6 @@
 
 #include <atomic>
 #include <optional>
-#include <stack>
 #include <variant>
 
 #include <mtx/common.hpp>
@@ -18,17 +17,15 @@
 #include <mtx/events/presence.hpp>
 #include <mtx/secret_storage.hpp>
 
-#include <QHBoxLayout>
 #include <QMap>
 #include <QPoint>
+#include <QSharedPointer>
 #include <QTimer>
-#include <QWidget>
 
 #include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
 #include "notifications/Manager.h"
 
-class OverlayModal;
 class TimelineViewManager;
 class UserSettings;
 class NotificationsManager;
@@ -51,12 +48,12 @@ struct Rooms;
 
 using SecretsToDecrypt = std::map<std::string, mtx::secret_storage::AesHmacSha2EncryptedData>;
 
-class ChatPage : public QWidget
+class ChatPage : public QObject
 {
     Q_OBJECT
 
 public:
-    ChatPage(QSharedPointer<UserSettings> userSettings, QWidget *parent = nullptr);
+    ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent = nullptr);
 
     // Initialize all the components of the UI.
     void bootstrap(QString userid, QString homeserver, QString token);
@@ -112,7 +109,6 @@ signals:
     void showNotification(const QString &msg);
     void showLoginPage(const QString &msg);
     void showUserSettingsPage();
-    void showOverlayProgressBar();
 
     void ownProfileOk();
     void setUserDisplayName(const QString &name);
@@ -143,7 +139,6 @@ signals:
     void retrievedPresence(const QString &statusMsg, mtx::presence::PresenceState state);
     void themeChanged();
     void decryptSidebarChanged();
-    void chatFocusChanged(const bool focused);
 
     //! Signals for device verificaiton
     void receivedDeviceVerificationAccept(const mtx::events::msg::KeyVerificationAccept &message);
@@ -200,8 +195,6 @@ private:
 
     template<typename T>
     void connectCallMessage();
-
-    QHBoxLayout *topLayout_;
 
     TimelineViewManager *view_manager_;
 

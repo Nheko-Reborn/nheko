@@ -24,7 +24,6 @@ ApplicationWindow {
     palette: Nheko.colors
     color: Nheko.colors.window
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    Component.onCompleted: Nheko.reparent(roomMembersRoot)
 
     Shortcut {
         sequence: StandardKey.Cancel

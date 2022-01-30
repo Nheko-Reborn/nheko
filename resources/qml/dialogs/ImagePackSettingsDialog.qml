@@ -28,7 +28,6 @@ ApplicationWindow {
     color: Nheko.colors.base
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    Component.onCompleted: Nheko.reparent(win)
 
     Component {
         id: packEditor

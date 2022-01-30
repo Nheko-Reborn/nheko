@@ -8,26 +8,21 @@
 
 #include <functional>
 
-#include <QMainWindow>
+#include <QQuickView>
 #include <QSharedPointer>
-#include <QStackedWidget>
 #include <QSystemTrayIcon>
 
 #include "UserSettingsPage.h"
-#include "ui/OverlayModal.h"
 
 #include "jdenticoninterface.h"
 
 class ChatPage;
 class RegisterPage;
-class LoginPage;
 class WelcomePage;
 
-class LoadingIndicator;
-class OverlayModal;
-class SnackBar;
 class TrayIcon;
 class UserSettings;
+class MxcImageProvider;
 
 namespace mtx {
 namespace requests {
@@ -42,17 +37,12 @@ class MemberList;
 class ReCaptcha;
 }
 
-class MainWindow : public QMainWindow
+class MainWindow : public QQuickView
 {
     Q_OBJECT
 
-    Q_PROPERTY(int x READ x CONSTANT)
-    Q_PROPERTY(int y READ y CONSTANT)
-    Q_PROPERTY(int width READ width CONSTANT)
-    Q_PROPERTY(int height READ height CONSTANT)
-
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWindow *parent = nullptr);
 
     static MainWindow *instance() { return instance_; }
     void saveCurrentWindowSize();
@@ -61,69 +51,51 @@ public:
     openCreateRoomDialog(std::function<void(const mtx::requests::CreateRoom &request)> callback);
     void openJoinRoomDialog(std::function<void(const QString &room_id)> callback);
 
-    void hideOverlay();
-    void showSolidOverlayModal(QWidget *content, QFlags<Qt::AlignmentFlag> flags = Qt::AlignCenter);
-    void
-    showTransparentOverlayModal(QWidget *content,
-                                QFlags<Qt::AlignmentFlag> flags = Qt::AlignTop | Qt::AlignHCenter);
+    MxcImageProvider *imageProvider() { return imgProvider; }
+
+    //! Show the chat page and start communicating with the given access token.
+    void showChatPage();
 
 protected:
-    void closeEvent(QCloseEvent *event) override;
+    void closeEvent(QCloseEvent *event);
     bool event(QEvent *event) override;
 
 private slots:
     //! Handle interaction with the tray icon.
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
-    //! Show the welcome page in the main window.
-    void showWelcomePage();
-
-    //! Show the login page in the main window.
-    void showLoginPage();
-
-    //! Show the register page in the main window.
-    void showRegisterPage();
-
-    //! Show the chat page and start communicating with the given access token.
-    void showChatPage();
-
-    void showOverlayProgressBar();
-    void removeOverlayProgressBar();
-
     virtual void setWindowTitle(int notificationCount);
 
 signals:
-    void focusChanged(const bool focused);
     void reload();
     void secretsChanged();
+
+    void showNotification(QString msg);
+
+    void switchToChatPage();
+    void switchToWelcomePage();
+    void switchToLoginPage(QString error);
 
 private:
     void showDialog(QWidget *dialog);
     bool hasActiveUser();
     void restoreWindowSize();
-    //! Check if there is an open dialog.
-    bool hasActiveDialogs() const;
     //! Check if the current page supports the "minimize to tray" functionality.
     bool pageSupportsTray() const;
+
+    void registerQmlTypes();
 
     static MainWindow *instance_;
 
     //! The initial welcome screen.
     WelcomePage *welcome_page_;
-    //! The login screen.
-    LoginPage *login_page_;
     //! The register page.
     RegisterPage *register_page_;
-    //! A stacked widget that handles the transitions between widgets.
-    QStackedWidget *pageStack_;
     //! The main chat area.
     ChatPage *chat_page_;
     QSharedPointer<UserSettings> userSettings_;
     //! Tray icon that shows the unread message count.
     TrayIcon *trayIcon_;
-    //! Notifications display.
-    SnackBar *snackBar_ = nullptr;
-    //! Overlay modal used to project other widgets.
-    OverlayModal *modal_       = nullptr;
-    LoadingIndicator *spinner_ = nullptr;
+
+    MxcImageProvider *imgProvider = nullptr;
 };

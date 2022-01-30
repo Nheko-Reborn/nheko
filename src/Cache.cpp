@@ -325,7 +325,7 @@ static void
 fatalSecretError()
 {
     QMessageBox::critical(
-      ChatPage::instance(),
+      nullptr,
       QCoreApplication::translate("SecretStorage", "Failed to connect to secret storage"),
       QCoreApplication::translate(
         "SecretStorage",
@@ -391,6 +391,7 @@ Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
             &QKeychain::ReadPasswordJob::finished,
             this,
             [this, name, toLoad, job](QKeychain::Job *) mutable {
+                nhlog::db()->debug("Finished reading '{}'", toLoad.begin()->first);
                 const QString secret = job->textData();
                 if (job->error() && job->error() != QKeychain::Error::EntryNotFound) {
                     nhlog::db()->error("Restoring secret '{}' failed ({}): {}",
@@ -413,6 +414,7 @@ Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
                 // You can't start a job from the finish signal of a job.
                 QTimer::singleShot(0, this, [this, toLoad] { loadSecrets(toLoad); });
             });
+    nhlog::db()->debug("Reading '{}'", name_);
     job->start();
 }
 

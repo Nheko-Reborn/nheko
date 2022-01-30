@@ -22,7 +22,6 @@ ApplicationWindow {
     color: Nheko.colors.window
     modality: Qt.WindowModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    Component.onCompleted: Nheko.reparent(roomDirectoryWindow)
     title: qsTr("Explore Public Rooms")
 
     Shortcut {
@@ -189,7 +188,6 @@ ApplicationWindow {
             Layout.fillWidth: true
             selectByMouse: true
             font.pixelSize: fontMetrics.font.pixelSize
-            padding: Nheko.paddingMedium
             color: Nheko.colors.text
             placeholderText: qsTr("Search for public rooms")
             onTextChanged: searchTimer.restart()
@@ -200,7 +198,6 @@ ApplicationWindow {
 
             Layout.minimumWidth: 0.3 * header.width
             Layout.maximumWidth: 0.3 * header.width
-            padding: Nheko.paddingMedium
             color: Nheko.colors.text
             placeholderText: qsTr("Choose custom homeserver")
             onTextChanged: publicRooms.setMatrixServer(text)

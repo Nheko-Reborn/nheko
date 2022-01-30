@@ -23,7 +23,6 @@ ApplicationWindow {
     color: Nheko.colors.window
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    Component.onCompleted: Nheko.reparent(roomSettingsDialog)
     title: qsTr("Room Settings")
 
     Shortcut {

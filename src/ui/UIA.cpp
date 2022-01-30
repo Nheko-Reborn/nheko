@@ -13,7 +13,6 @@
 #include <mtx/responses/common.hpp>
 
 #include "Logging.h"
-#include "MainWindow.h"
 #include "dialogs/FallbackAuth.h"
 #include "dialogs/ReCaptcha.h"
 
@@ -71,7 +70,7 @@ UIA::genericHandler(QString context)
                 emit phoneNumber();
             } else if (current_stage == mtx::user_interactive::auth_types::recaptcha) {
                 auto captchaDialog =
-                  new dialogs::ReCaptcha(QString::fromStdString(u.session), MainWindow::instance());
+                  new dialogs::ReCaptcha(QString::fromStdString(u.session), nullptr);
                 captchaDialog->setWindowTitle(context);
 
                 connect(
@@ -95,7 +94,7 @@ UIA::genericHandler(QString context)
             } else if (current_stage == mtx::user_interactive::auth_types::registration_token) {
                 bool ok;
                 QString token =
-                  QInputDialog::getText(MainWindow::instance(),
+                  QInputDialog::getText(nullptr,
                                         context,
                                         tr("Please enter a valid registration token."),
                                         QLineEdit::Normal,
@@ -113,7 +112,7 @@ UIA::genericHandler(QString context)
                 // use fallback
                 auto dialog = new dialogs::FallbackAuth(QString::fromStdString(current_stage),
                                                         QString::fromStdString(u.session),
-                                                        MainWindow::instance());
+                                                        nullptr);
                 dialog->setWindowTitle(context);
 
                 connect(dialog, &dialogs::FallbackAuth::confirmation, this, [h, u, dialog]() {

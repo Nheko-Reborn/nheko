@@ -319,7 +319,7 @@
     <message>
         <location line="+66"/>
         <source>Failed to kick %1 from %2: %3</source>
-        <translation>Kontte %1 nicht aus %2 entfernen: %3</translation>
+        <translation>Konnte %1 nicht aus %2 entfernen: %3</translation>
     </message>
 </context>
 <context>

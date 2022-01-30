@@ -11,7 +11,6 @@ Popup {
     id: quickSwitcher
 
     property int textHeight: Math.round(Qt.application.font.pixelSize * 2.4)
-    property int textMargin: Math.round(textHeight / 8)
 
     background: null
     width: Math.round(parent.width / 2)
@@ -34,7 +33,6 @@ Popup {
 
         anchors.fill: parent
         font.pixelSize: Math.ceil(quickSwitcher.textHeight * 0.6)
-        padding: textMargin
         color: Nheko.colors.text
         onTextEdited: {
             completerPopup.completer.searchString = text;
@@ -60,7 +58,7 @@ Popup {
         id: completerPopup
 
         x: roomTextInput.x
-        y: roomTextInput.y + quickSwitcher.textHeight + quickSwitcher.textMargin
+        y: roomTextInput.y + quickSwitcher.textHeight
         visible: roomTextInput.length > 0
         width: parent.width
         completerName: "room"
