@@ -5,10 +5,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include <QApplication>
-#include <QLayout>
 #include <QMessageBox>
-#include <QPluginLoader>
-#include <QShortcut>
 
 #include <mtx/requests.hpp>
 #include <mtx/responses/login.hpp>

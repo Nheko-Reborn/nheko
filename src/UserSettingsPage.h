@@ -7,12 +7,9 @@
 #pragma once
 
 #include <QAbstractListModel>
-#include <QFontDatabase>
-#include <QFrame>
 #include <QProcessEnvironment>
 #include <QSettings>
 #include <QSharedPointer>
-#include <QWidget>
 
 #include "JdenticonProvider.h"
 #include <optional>

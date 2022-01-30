@@ -8,7 +8,6 @@
 
 #include <atomic>
 #include <optional>
-#include <stack>
 #include <variant>
 
 #include <mtx/common.hpp>
@@ -18,11 +17,10 @@
 #include <mtx/events/presence.hpp>
 #include <mtx/secret_storage.hpp>
 
-#include <QHBoxLayout>
 #include <QMap>
 #include <QPoint>
+#include <QSharedPointer>
 #include <QTimer>
-#include <QWidget>
 
 #include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
@@ -197,8 +195,6 @@ private:
 
     template<typename T>
     void connectCallMessage();
-
-    QHBoxLayout *topLayout_;
 
     TimelineViewManager *view_manager_;
 

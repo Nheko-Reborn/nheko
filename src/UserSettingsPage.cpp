@@ -5,25 +5,14 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include <QApplication>
-#include <QComboBox>
 #include <QCoreApplication>
 #include <QFileDialog>
-#include <QFontComboBox>
-#include <QFormLayout>
+#include <QFontDatabase>
 #include <QInputDialog>
-#include <QLabel>
-#include <QLineEdit>
 #include <QMessageBox>
-#include <QPainter>
-#include <QPushButton>
-#include <QResizeEvent>
-#include <QScrollArea>
-#include <QScroller>
-#include <QSpinBox>
 #include <QStandardPaths>
 #include <QString>
 #include <QTextStream>
-#include <QtQml>
 #include <mtx/secret_storage.hpp>
 
 #include "Cache.h"
