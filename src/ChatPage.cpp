@@ -22,7 +22,6 @@
 #include "Utils.h"
 #include "encryption/DeviceVerificationFlow.h"
 #include "encryption/Olm.h"
-#include "ui/OverlayModal.h"
 #include "ui/Theme.h"
 #include "ui/UserProfile.h"
 #include "voip/CallManager.h"
@@ -1050,8 +1049,6 @@ ChatPage::initiateLogout()
 
         emit loggedOut();
     });
-
-    emit showOverlayProgressBar();
 }
 
 template<typename T>

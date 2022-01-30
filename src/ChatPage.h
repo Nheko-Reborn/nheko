@@ -28,7 +28,6 @@
 #include "CacheStructs.h"
 #include "notifications/Manager.h"
 
-class OverlayModal;
 class TimelineViewManager;
 class UserSettings;
 class NotificationsManager;
@@ -112,7 +111,6 @@ signals:
     void showNotification(const QString &msg);
     void showLoginPage(const QString &msg);
     void showUserSettingsPage();
-    void showOverlayProgressBar();
 
     void ownProfileOk();
     void setUserDisplayName(const QString &name);

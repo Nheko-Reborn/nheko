@@ -41,21 +41,17 @@
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
 #include "Utils.h"
-#include "WelcomePage.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
 #include "encryption/DeviceVerificationFlow.h"
 #include "encryption/SelfVerificationStatus.h"
 #include "timeline/DelegateChooser.h"
 #include "timeline/TimelineViewManager.h"
-#include "ui/LoadingIndicator.h"
 #include "ui/MxcAnimatedImage.h"
 #include "ui/MxcMediaProxy.h"
 #include "ui/NhekoCursorShape.h"
 #include "ui/NhekoDropArea.h"
 #include "ui/NhekoGlobalObject.h"
-#include "ui/OverlayModal.h"
-#include "ui/SnackBar.h"
 #include "ui/UIA.h"
 #include "voip/WebRTCSession.h"
 
@@ -100,8 +96,6 @@ MainWindow::MainWindow(QWindow *parent)
             SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this,
             SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
-
-    connect(chat_page_, SIGNAL(contentLoaded()), this, SLOT(removeOverlayProgressBar()));
 
     trayIcon_->setVisible(userSettings_->tray());
 

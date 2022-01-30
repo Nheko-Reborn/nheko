@@ -10,11 +10,9 @@
 
 #include <QQuickView>
 #include <QSharedPointer>
-#include <QStackedWidget>
 #include <QSystemTrayIcon>
 
 #include "UserSettingsPage.h"
-#include "ui/OverlayModal.h"
 
 #include "jdenticoninterface.h"
 
@@ -22,9 +20,6 @@ class ChatPage;
 class RegisterPage;
 class WelcomePage;
 
-class LoadingIndicator;
-class OverlayModal;
-class SnackBar;
 class TrayIcon;
 class UserSettings;
 class MxcImageProvider;

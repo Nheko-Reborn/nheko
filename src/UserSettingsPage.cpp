@@ -33,8 +33,7 @@
 #include "UserSettingsPage.h"
 #include "Utils.h"
 #include "encryption/Olm.h"
-#include "ui/FlatButton.h"
-#include "ui/ToggleButton.h"
+#include "ui/Theme.h"
 #include "voip/CallDevices.h"
 
 #include "config/nheko.h"
