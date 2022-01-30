@@ -385,7 +385,7 @@ Page {
     header: ColumnLayout {
         spacing: 0
 
-        Rectangle {
+        Pane {
             id: userInfoPanel
 
             function openUserProfile() {
@@ -396,11 +396,14 @@ Page {
                 userProfile.show();
             }
 
-            color: Nheko.colors.window
+
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBottom
-            Layout.preferredHeight: userInfoGrid.implicitHeight + 2 * Nheko.paddingMedium
+            //Layout.preferredHeight: userInfoGrid.implicitHeight + 2 * Nheko.paddingMedium
+            padding: Nheko.paddingMedium
             Layout.minimumHeight: 40
+
+            background: Rectangle {color: Nheko.colors.window}
 
             InputDialog {
                 id: statusDialog
@@ -442,14 +445,12 @@ Page {
                 gesturePolicy: TapHandler.ReleaseWithinBounds
             }
 
-            RowLayout {
+            contentItem: RowLayout {
                 id: userInfoGrid
 
                 property var profile: Nheko.currentUser
 
                 spacing: Nheko.paddingMedium
-                anchors.fill: parent
-                anchors.margins: Nheko.paddingMedium
 
                 Avatar {
                     id: avatar
@@ -614,19 +615,17 @@ Page {
             Layout.fillWidth: true
         }
 
-        Rectangle {
-            color: Nheko.colors.window
+        Pane {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBottom
-            Layout.preferredHeight: buttonRow.implicitHeight
             Layout.minimumHeight: 40
 
-            RowLayout {
-                id: buttonRow
+            horizontalPadding: Nheko.paddingMedium
+            verticalPadding: 0
 
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.margins: Nheko.paddingMedium
+            background: Rectangle {color: Nheko.colors.window}
+            contentItem: RowLayout {
+                id: buttonRow
 
                 ImageButton {
                     Layout.fillWidth: true

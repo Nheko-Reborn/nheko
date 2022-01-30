@@ -97,6 +97,7 @@ Rectangle {
 
                 implicitHeight: chatPage.height
                 collapsed: parent.collapsed
+                anchors.fill: parent
             }
 
             Binding {
