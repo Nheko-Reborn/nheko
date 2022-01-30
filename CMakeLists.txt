@@ -336,7 +336,6 @@ set(SRC_FILES
 	src/ui/NhekoCursorShape.cpp
 	src/ui/NhekoDropArea.cpp
 	src/ui/NhekoGlobalObject.cpp
-	src/ui/OverlayWidget.cpp
 	src/ui/RoomSettings.cpp
 	src/ui/TextField.cpp
 	src/ui/Theme.cpp
@@ -532,7 +531,6 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/NhekoCursorShape.h
 	src/ui/NhekoDropArea.h
 	src/ui/NhekoGlobalObject.h
-	src/ui/OverlayWidget.h
 	src/ui/RoomSettings.h
 	src/ui/TextField.h
 	src/ui/Theme.h

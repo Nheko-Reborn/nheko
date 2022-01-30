@@ -70,6 +70,8 @@ signals:
     void reload();
     void secretsChanged();
 
+    void showNotification(QString msg);
+
     void switchToChatPage();
     void switchToWelcomePage();
     void switchToLoginPage(QString error);

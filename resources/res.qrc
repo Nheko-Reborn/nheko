@@ -157,6 +157,7 @@
         <file>qml/ui/NhekoSlider.qml</file>
         <file>qml/ui/Ripple.qml</file>
         <file>qml/ui/Spinner.qml</file>
+        <file>qml/ui/Snackbar.qml</file>
         <file>qml/ui/animations/BlinkAnimation.qml</file>
         <file>qml/ui/media/MediaControls.qml</file>
         <file>qml/voip/ActiveCallBar.qml</file>
