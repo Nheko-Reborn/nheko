@@ -9,7 +9,6 @@
 #include <QDesktopServices>
 #include <QStyle>
 #include <QUrl>
-#include <QWindow>
 
 #include "Cache_p.h"
 #include "ChatPage.h"
@@ -134,10 +133,4 @@ Nheko::openCreateRoomDialog() const
 {
     MainWindow::instance()->openCreateRoomDialog(
       [](const mtx::requests::CreateRoom &req) { ChatPage::instance()->createRoom(req); });
-}
-
-void
-Nheko::reparent(QWindow *win) const
-{
-    win->setTransientParent(MainWindow::instance());
 }

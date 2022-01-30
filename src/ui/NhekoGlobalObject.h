@@ -12,8 +12,6 @@
 #include "Theme.h"
 #include "UserProfile.h"
 
-class QWindow;
-
 class Nheko : public QObject
 {
     Q_OBJECT
@@ -55,7 +53,6 @@ public:
     Q_INVOKABLE void showUserSettingsPage() const;
     Q_INVOKABLE void logout() const;
     Q_INVOKABLE void openCreateRoomDialog() const;
-    Q_INVOKABLE void reparent(QWindow *win) const;
 
 public slots:
     void updateUserProfile();
