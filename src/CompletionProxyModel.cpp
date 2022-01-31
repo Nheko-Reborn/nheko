@@ -6,6 +6,7 @@
 #include "CompletionProxyModel.h"
 
 #include <QRegularExpression>
+#include <QTextBoundaryFinder>
 
 #include "CompletionModelRoles.h"
 #include "Logging.h"
@@ -44,27 +45,31 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
 
     // insert the partial matches
     for (int i = 0; i < sourceModel()->rowCount(); i++) {
-        auto string1 = sourceModel()
-                         ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole)
-                         .toString()
-                         .toLower();
+        auto insertParts = [i, this](const QString &str) {
+            if (str.isEmpty())
+                return;
 
-        auto split1 = QStringView(string1).split(splitPoints, Qt::SkipEmptyParts);
-        for (const auto &e : qAsConst(split1)) {
-            trie_.insert(e.toUcs4(), i);
-        }
+            QTextBoundaryFinder finder(QTextBoundaryFinder::BoundaryType::Word, str);
+            finder.toStart();
+            do {
+                auto start = finder.position();
+                finder.toNextBoundary();
+                auto end = finder.position();
 
-        auto string2 = sourceModel()
-                         ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole2)
-                         .toString()
-                         .toLower();
+                auto ref = str.midRef(start, end - start).trimmed();
+                if (!ref.isEmpty())
+                    trie_.insert(ref.toUcs4(), i);
+            } while (finder.position() < str.size());
+        };
 
-        if (!string2.isEmpty()) {
-            auto split2 = QStringView(string2).split(splitPoints, Qt::SkipEmptyParts);
-            for (const auto &e : qAsConst(split2)) {
-                trie_.insert(e.toUcs4(), i);
-            }
-        }
+        insertParts(sourceModel()
+                      ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole)
+                      .toString()
+                      .toLower());
+        insertParts(sourceModel()
+                      ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole2)
+                      .toString()
+                      .toLower());
     }
 
     connect(
