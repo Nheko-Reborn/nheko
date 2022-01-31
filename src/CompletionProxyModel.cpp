@@ -21,7 +21,6 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
   , max_completions_(max_completions)
 {
     setSourceModel(model);
-    QChar splitPoints(' ');
 
     // insert all the full texts
     for (int i = 0; i < sourceModel()->rowCount(); i++) {
