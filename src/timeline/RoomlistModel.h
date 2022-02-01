@@ -61,14 +61,16 @@ public:
 public slots:
     QVector<RoomInfoItem> getRooms(const QDBusMessage &message);
     void activateRoom(const QString &roomid);
+    void joinRoom(const QString &roomid);
 
 private:
+    void bringWindowToTop();
+
     RoomlistModel *m_parent;
     QVector<RoomInfoItem> m_roomInfoItems;
     QMutex m_modifyDataMutex;
     QMutex m_addItemsMutex;
 };
-// Q_DECLARE_METATYPE(RoomListDBusInterface)
 #endif
 
 class RoomlistModel : public QAbstractListModel

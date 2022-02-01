@@ -1183,7 +1183,20 @@ RoomListDBusInterface::getRooms(const QDBusMessage &message)
 void
 RoomListDBusInterface::activateRoom(const QString &roomid)
 {
+    bringWindowToTop();
     m_parent->setCurrentRoom(roomid);
+}
+
+void
+RoomListDBusInterface::joinRoom(const QString &roomid)
+{
+    bringWindowToTop();
+    ChatPage::instance()->joinRoom(roomid);
+}
+
+void
+RoomListDBusInterface::bringWindowToTop()
+{
     MainWindow::instance()->show();
     MainWindow::instance()->raise();
 }
