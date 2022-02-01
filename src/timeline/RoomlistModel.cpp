@@ -71,7 +71,7 @@ RoomlistModel::RoomlistModel(TimelineViewManager *parent)
             RoomInfoItem::init();
             dbusInterface_ = new RoomListDBusInterface{this};
             QDBusConnection::sessionBus().registerObject(
-              "/", dbusInterface_, QDBusConnection::ExportAllSlots);
+              "/", dbusInterface_, QDBusConnection::ExportScriptableSlots);
             nhlog::ui()->info("Initialized D-Bus");
         } else
             nhlog::ui()->warn("Could not connect to D-Bus!");
@@ -1131,51 +1131,25 @@ FilteredRoomlistModel::previousRoom()
 RoomListDBusInterface::RoomListDBusInterface(RoomlistModel *parent)
   : QObject{parent}
   , m_parent{parent}
-{}
+{
+    prepareModel();
+    connect(m_parent, &RoomlistModel::rowsInserted, this, &RoomListDBusInterface::prepareModel);
+    connect(m_parent, &RoomlistModel::rowsRemoved, this, &RoomListDBusInterface::prepareModel);
+}
 
 QVector<RoomInfoItem>
 RoomListDBusInterface::getRooms(const QDBusMessage &message)
 {
+    // I'm leaving this as a delayed reply because it works a ton better with the mutex setup
     message.setDelayedReply(true);
-
-    m_modifyDataMutex.lock();
-    m_roomInfoItems.clear();
-
     auto reply = message.createReply();
 
-    nhlog::ui()->debug("Beginning D-Bus room provide...");
-
-    for (const auto &model : std::as_const(m_parent->models)) {
-        MainWindow::instance()->imageProvider()->download(
-          model->roomAvatarUrl().remove("mxc://"),
-          {32, 32},
-          [this, &model, reply](
-            const QString &, const QSize &, const QImage &image, const QString &) mutable {
-              const auto aliases = cache::client()->getRoomAliases(model->roomId().toStdString());
-              QString alias;
-              if (aliases.has_value()) {
-                  const auto &val = aliases.value();
-                  if (!val.alias.empty())
-                      alias = QString::fromStdString(val.alias);
-                  else if (val.alt_aliases.size() > 0)
-                      alias = QString::fromStdString(val.alt_aliases.front());
-              }
-
-              m_addItemsMutex.lock();
-              m_roomInfoItems.push_back(RoomInfoItem{
-                model->roomId(), model->roomName(), alias, image});
-
-              if (m_roomInfoItems.length() == m_parent->models.size()) {
-                  nhlog::ui()->debug("Sending rooms over D-Bus...");
-                  reply << QVariant::fromValue(m_roomInfoItems);
-                  m_modifyDataMutex.unlock();
-                  QDBusConnection::sessionBus().send(reply);
-                  nhlog::ui()->debug("Rooms successfully sent to D-Bus.");
-              }
-              m_addItemsMutex.unlock();
-          },
-          false);
-    }
+    m_modelAccess.lock();
+    nhlog::ui()->debug("Sending rooms over D-Bus...");
+    reply << QVariant::fromValue(*m_model);
+    QDBusConnection::sessionBus().send(reply);
+    nhlog::ui()->debug("Rooms successfully sent to D-Bus.");
+    m_modelAccess.unlock();
 
     return {};
 }
@@ -1192,6 +1166,45 @@ RoomListDBusInterface::joinRoom(const QString &roomid)
 {
     bringWindowToTop();
     ChatPage::instance()->joinRoom(roomid);
+}
+
+void
+RoomListDBusInterface::prepareModel()
+{
+    m_modifyStagingDataMutex.lock();
+
+    for (const auto &model : std::as_const(m_parent->models)) {
+        MainWindow::instance()->imageProvider()->download(
+          model->roomAvatarUrl().remove("mxc://"),
+          {32, 32},
+          [this, &model](
+            const QString &, const QSize &, const QImage &image, const QString &) mutable {
+              const auto aliases = cache::client()->getRoomAliases(model->roomId().toStdString());
+              QString alias;
+              if (aliases.has_value()) {
+                  const auto &val = aliases.value();
+                  if (!val.alias.empty())
+                      alias = QString::fromStdString(val.alias);
+                  else if (val.alt_aliases.size() > 0)
+                      alias = QString::fromStdString(val.alt_aliases.front());
+              }
+
+              m_addItemsToStagingData.lock();
+              m_stagingModel->push_back(
+                RoomInfoItem{model->roomId(), model->roomName(), alias, image});
+              m_addItemsToStagingData.unlock();
+
+              if (m_stagingModel->length() == m_parent->models.size()) {
+                  m_modelAccess.lock();
+                  std::swap(m_model, m_stagingModel);
+                  m_modelAccess.unlock();
+
+                  m_stagingModel->clear();
+                  m_modifyStagingDataMutex.unlock();
+              }
+          },
+          false);
+    }
 }
 
 void

@@ -59,17 +59,33 @@ public:
     RoomListDBusInterface(RoomlistModel *parent);
 
 public slots:
-    QVector<RoomInfoItem> getRooms(const QDBusMessage &message);
-    void activateRoom(const QString &roomid);
-    void joinRoom(const QString &roomid);
+    //! Call this function to get a list of all joined rooms.
+    Q_SCRIPTABLE QVector<RoomInfoItem> getRooms(const QDBusMessage &message);
+    //! Activates a currently joined room.
+    Q_SCRIPTABLE void activateRoom(const QString &roomid);
+    //! Joins a room. It is your responsibility to ask for confirmation (if desired).
+    Q_SCRIPTABLE void joinRoom(const QString &roomid);
+
+private slots:
+    void prepareModel();
 
 private:
     void bringWindowToTop();
 
     RoomlistModel *m_parent;
-    QVector<RoomInfoItem> m_roomInfoItems;
-    QMutex m_modifyDataMutex;
-    QMutex m_addItemsMutex;
+
+    // this is a QSharedPointer so that copy ops are less expensive (see below)
+    QSharedPointer<QVector<RoomInfoItem>> m_model{new QVector<RoomInfoItem>};
+    // Use this to lock the entire model for access. This prevents potentially interesting race
+    // conditions when copying from the staging area.
+    QMutex m_modelAccess;
+
+    // use this to store data while generating a new model; then copy it to m_model
+    QSharedPointer<QVector<RoomInfoItem>> m_stagingModel{new QVector<RoomInfoItem>};
+    // this locks the entire staging model during a refresh
+    QMutex m_modifyStagingDataMutex;
+    // use this to guard while adding individual items to the staging model
+    QMutex m_addItemsToStagingData;
 };
 #endif
 
