@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #ifndef NHEKODBUSINTERFACE_H
 #define NHEKODBUSINTERFACE_H
 
