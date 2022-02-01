@@ -13,7 +13,7 @@ public:
     RoomInfoItem(const QString &mxid  = QString{},
                  const QString &alias = QString{},
                  const QString &title = QString{},
-                 const QIcon &icon    = QIcon{},
+                 const QImage &image  = QImage{},
                  QObject *parent      = nullptr);
 
     RoomInfoItem(const RoomInfoItem &other);
@@ -21,7 +21,7 @@ public:
     const QString &roomId() const { return roomId_; }
     const QString &alias() const { return alias_; }
     const QString &roomName() const { return roomName_; }
-    const QIcon &icon() const { return icon_; }
+    const QImage &image() const { return image_; }
 
     //! Registers all necessary classes with D-Bus. Call this before using RoomInfoItem with D-Bus.
     static void init();
@@ -34,7 +34,7 @@ private:
     QString roomId_;
     QString alias_;
     QString roomName_;
-    QIcon icon_;
+    QImage image_;
 };
 Q_DECLARE_METATYPE(RoomInfoItem)
 

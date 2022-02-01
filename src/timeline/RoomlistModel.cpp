@@ -1163,7 +1163,7 @@ RoomListDBusInterface::getRooms(const QDBusMessage &message)
 
               m_addItemsMutex.lock();
               m_roomInfoItems.push_back(RoomInfoItem{
-                model->roomId(), model->roomName(), alias, QIcon{QPixmap::fromImage(image)}});
+                model->roomId(), model->roomName(), alias, image});
 
               if (m_roomInfoItems.length() == m_parent->models.size()) {
                   nhlog::ui()->debug("Sending rooms over D-Bus...");
