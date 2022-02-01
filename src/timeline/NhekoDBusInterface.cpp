@@ -71,7 +71,6 @@ operator>>(const QDBusArgument &arg, RoomInfoItem &item)
     return arg;
 }
 
-
 /**
  * Automatic marshaling of a QImage for org.freedesktop.Notifications.Notify
  *
