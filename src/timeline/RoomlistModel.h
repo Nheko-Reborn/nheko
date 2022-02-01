@@ -59,6 +59,8 @@ public:
     RoomListDBusInterface(RoomlistModel *parent);
 
 public slots:
+    //! Get the nheko D-Bus API version.
+    Q_SCRIPTABLE QString apiVersion() const { return RoomInfoItem::apiVersion; }
     //! Call this function to get a list of all joined rooms.
     Q_SCRIPTABLE QVector<RoomInfoItem> getRooms(const QDBusMessage &message);
     //! Activates a currently joined room.

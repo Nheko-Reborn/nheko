@@ -30,6 +30,9 @@ public:
     //! Registers all necessary classes with D-Bus. Call this before using RoomInfoItem with D-Bus.
     static void init();
 
+    //! The current nheko D-Bus API version.
+    inline static const auto apiVersion{QStringLiteral("0.0.1")};
+
     RoomInfoItem &operator=(const RoomInfoItem &other);
     friend QDBusArgument &operator<<(QDBusArgument &arg, const RoomInfoItem &item);
     friend const QDBusArgument &operator>>(const QDBusArgument &arg, RoomInfoItem &item);
