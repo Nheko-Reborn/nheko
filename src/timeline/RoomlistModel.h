@@ -64,15 +64,15 @@ public slots:
     //! Call this function to get a list of all joined rooms.
     Q_SCRIPTABLE QVector<RoomInfoItem> getRooms(const QDBusMessage &message);
     //! Activates a currently joined room.
-    Q_SCRIPTABLE void activateRoom(const QString &roomid);
+    Q_SCRIPTABLE void activateRoom(const QString &roomid) const;
     //! Joins a room. It is your responsibility to ask for confirmation (if desired).
-    Q_SCRIPTABLE void joinRoom(const QString &roomid);
+    Q_SCRIPTABLE void joinRoom(const QString &roomid) const;
 
 private slots:
     void prepareModel();
 
 private:
-    void bringWindowToTop();
+    void bringWindowToTop() const;
 
     RoomlistModel *m_parent;
 

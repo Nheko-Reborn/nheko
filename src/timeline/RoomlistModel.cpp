@@ -1155,14 +1155,14 @@ RoomListDBusInterface::getRooms(const QDBusMessage &message)
 }
 
 void
-RoomListDBusInterface::activateRoom(const QString &roomid)
+RoomListDBusInterface::activateRoom(const QString &roomid) const
 {
     bringWindowToTop();
     m_parent->setCurrentRoom(roomid);
 }
 
 void
-RoomListDBusInterface::joinRoom(const QString &roomid)
+RoomListDBusInterface::joinRoom(const QString &roomid) const
 {
     bringWindowToTop();
     ChatPage::instance()->joinRoom(roomid);
@@ -1208,7 +1208,7 @@ RoomListDBusInterface::prepareModel()
 }
 
 void
-RoomListDBusInterface::bringWindowToTop()
+RoomListDBusInterface::bringWindowToTop() const
 {
     MainWindow::instance()->show();
     MainWindow::instance()->raise();
