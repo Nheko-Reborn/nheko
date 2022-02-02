@@ -12,17 +12,17 @@
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>连接中…</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation type="unfinished"></translation>
+        <translation>你正在分享屏幕</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation type="unfinished"></translation>
+        <translation>隐藏/展示 画中画</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -40,12 +40,12 @@
     <message>
         <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+13"/>
         <source>Awaiting Confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>等待确认</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Waiting for other side to complete verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>等待对方完成确认</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -66,7 +66,7 @@
         <location line="+2"/>
         <location line="+175"/>
         <source>Empty Room</source>
-        <translation type="unfinished"></translation>
+        <translation>空房间</translation>
     </message>
 </context>
 <context>
@@ -74,12 +74,12 @@
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+73"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>视频通话</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>语音通话</translation>
     </message>
     <message>
         <location line="+62"/>
@@ -92,12 +92,12 @@
     <message>
         <location filename="../qml/voip/CallInviteBar.qml" line="+66"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>视频通话</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>语音通话</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -112,12 +112,12 @@
     <message>
         <location line="+12"/>
         <source>Unknown microphone: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>未知的麦克风：%1</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Unknown camera: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>未知的摄像头：%1</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -135,7 +135,7 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+519"/>
         <source>Entire screen</source>
-        <translation type="unfinished"></translation>
+        <translation>整个屏幕</translation>
     </message>
 </context>
 <context>
@@ -169,12 +169,12 @@
     <message>
         <location line="+304"/>
         <source>Confirm join</source>
-        <translation type="unfinished"></translation>
+        <translation>确认加入</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to join %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>你真的想要加入 %1 吗？</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -185,12 +185,12 @@
         <location line="+44"/>
         <location line="+433"/>
         <source>Confirm invite</source>
-        <translation type="unfinished"></translation>
+        <translation>确认邀请</translation>
     </message>
     <message>
         <location line="-432"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>你真的想要邀请 %1 (%2) 吗？</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -235,7 +235,7 @@
     <message>
         <location line="+10"/>
         <source>Confirm unban</source>
-        <translation type="unfinished"></translation>
+        <translation>确认解封</translation>
     </message>
     <message>
         <location line="+1"/>
