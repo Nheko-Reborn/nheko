@@ -1132,9 +1132,8 @@ RoomListDBusInterface::RoomListDBusInterface(RoomlistModel *parent)
   : QObject{parent}
   , m_parent{parent}
 {
-    prepareModel();
-    connect(m_parent, &RoomlistModel::rowsInserted, this, &RoomListDBusInterface::prepareModel);
-    connect(m_parent, &RoomlistModel::rowsRemoved, this, &RoomListDBusInterface::prepareModel);
+    connect(ChatPage::instance(), &ChatPage::newRoom, this, &RoomListDBusInterface::prepareModel);
+    connect(ChatPage::instance(), &ChatPage::leftRoom, this, &RoomListDBusInterface::prepareModel);
 }
 
 QVector<RoomInfoItem>
@@ -1145,7 +1144,7 @@ RoomListDBusInterface::getRooms(const QDBusMessage &message)
     auto reply = message.createReply();
 
     m_modelAccess.lock();
-    nhlog::ui()->debug("Sending rooms over D-Bus...");
+    nhlog::ui()->debug("Sending {} rooms over D-Bus...", m_model->size());
     reply << QVariant::fromValue(*m_model);
     QDBusConnection::sessionBus().send(reply);
     nhlog::ui()->debug("Rooms successfully sent to D-Bus.");
@@ -1172,6 +1171,12 @@ void
 RoomListDBusInterface::prepareModel()
 {
     m_modifyStagingDataMutex.lock();
+    static int modelSize;
+    modelSize = m_parent->models.size();
+    if (modelSize == 0) {
+        m_modifyStagingDataMutex.unlock();
+        return;
+    }
 
     for (const auto &model : std::as_const(m_parent->models)) {
         MainWindow::instance()->imageProvider()->download(
@@ -1194,13 +1199,18 @@ RoomListDBusInterface::prepareModel()
                 RoomInfoItem{model->roomId(), model->roomName(), alias, image});
               m_addItemsToStagingData.unlock();
 
-              if (m_stagingModel->length() == m_parent->models.size()) {
+              if (m_stagingModel->length() == modelSize) {
                   m_modelAccess.lock();
                   std::swap(m_model, m_stagingModel);
                   m_modelAccess.unlock();
 
                   m_stagingModel->clear();
                   m_modifyStagingDataMutex.unlock();
+
+                  // If necessary, retrigger reloading of model. This is primarily aimed at startup
+                  // scenarios.
+                  if (m_model->size() != m_parent->models.size())
+                      prepareModel();
               }
           },
           false);
