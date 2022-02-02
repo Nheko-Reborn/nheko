@@ -7,11 +7,6 @@
 
 #include <QDBusMetaType>
 
-const QDBusArgument &
-operator>>(const QDBusArgument &arg, QImage &image);
-QDBusArgument &
-operator<<(QDBusArgument &arg, const QImage &image);
-
 RoomInfoItem::RoomInfoItem(const QString &mxid,
                            const QString &alias,
                            const QString &title,
