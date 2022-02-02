@@ -123,7 +123,7 @@ signals:
 
 private:
     void addRoom(const QString &room_id, bool suppressInsertNotification = false);
-    void fetchPreview(QString roomid) const;
+    void fetchPreviews(QString roomid, const std::string &from = "");
     std::set<QString> updateDMs(mtx::events::AccountDataEvent<mtx::events::account_data::Direct> e);
 
     TimelineViewManager *manager = nullptr;
@@ -189,6 +189,7 @@ public slots:
         } else if (tagId.startsWith(QLatin1String("space:"))) {
             filterType = FilterBy::Space;
             filterStr  = tagId.mid(6);
+            roomlistmodel->fetchPreviews(filterStr);
         } else if (tagId.startsWith(QLatin1String("dm"))) {
             filterType = FilterBy::DirectChats;
             filterStr.clear();

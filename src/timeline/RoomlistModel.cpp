@@ -207,7 +207,6 @@ RoomlistModel::data(const QModelIndex &index, int role) const
             else if (role == Roles::IsPreviewFetched)
                 return false;
 
-            fetchPreview(roomid);
             switch (role) {
             case Roles::AvatarUrl:
                 return QString();
@@ -386,56 +385,60 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
 }
 
 void
-RoomlistModel::fetchPreview(QString roomid_) const
+RoomlistModel::fetchPreviews(QString roomid_, const std::string &from)
 {
-    std::string roomid = roomid_.toStdString();
-    http::client()->get_state_event<mtx::events::state::Create>(
-      roomid, "", [this, roomid](const mtx::events::state::Create &c, mtx::http::RequestErr err) {
-          bool is_space = false;
-          if (!err) {
-              is_space = c.type == mtx::events::state::room_type::space;
+    auto roomid = roomid_.toStdString();
+    if (from.empty()) {
+        // check if we need to fetch anything
+        auto children = cache::client()->getChildRoomIds(roomid);
+        bool fetch    = false;
+        for (const auto &c : children) {
+            auto id = QString::fromStdString(c);
+            if (invites.contains(id) || models.contains(id) ||
+                (previewedRooms.contains(id) && previewedRooms.value(id).has_value()))
+                continue;
+            else {
+                fetch = true;
+                break;
+            }
+        }
+        if (!fetch) {
+            nhlog::net()->info("Not feching previews for children of {}", roomid);
+            return;
+        }
+    }
+
+    nhlog::net()->info("Feching previews for children of {}", roomid);
+    http::client()->get_hierarchy(
+      roomid,
+      [this, roomid, roomid_](const mtx::responses::HierarchyRooms &h, mtx::http::RequestErr err) {
+          if (err) {
+              nhlog::net()->error("Failed to fetch previews for children of {}: {}", roomid, *err);
+              return;
           }
 
-          http::client()->get_state_event<mtx::events::state::Avatar>(
-            roomid,
-            "",
-            [this, roomid, is_space](const mtx::events::state::Avatar &a, mtx::http::RequestErr) {
-                auto avatar_url = a.url;
+          nhlog::net()->info("Feched previews for children of {}: {}", roomid, h.rooms.size());
 
-                http::client()->get_state_event<mtx::events::state::Topic>(
-                  roomid,
-                  "",
-                  [this, roomid, avatar_url, is_space](const mtx::events::state::Topic &t,
-                                                       mtx::http::RequestErr) {
-                      auto topic = t.topic;
-                      http::client()->get_state_event<mtx::events::state::Name>(
-                        roomid,
-                        "",
-                        [this, roomid, topic, avatar_url, is_space](
-                          const mtx::events::state::Name &n, mtx::http::RequestErr err) {
-                            if (err) {
-                                nhlog::net()->warn("Failed to fetch name event to "
-                                                   "create preview for {}",
-                                                   roomid);
-                            }
+          for (const auto &e : h.rooms) {
+              RoomInfo info{};
+              info.name         = e.name;
+              info.is_space     = e.room_type == mtx::events::state::room_type::space;
+              info.avatar_url   = e.avatar_url;
+              info.topic        = e.topic;
+              info.guest_access = e.guest_can_join;
+              info.join_rule    = e.join_rule;
+              info.member_count = e.num_joined_members;
 
-                            // don't even add a preview, if we got not a single
-                            // response
-                            if (n.name.empty() && avatar_url.empty() && topic.empty())
-                                return;
+              emit fetchedPreview(QString::fromStdString(e.room_id), info);
+          }
 
-                            RoomInfo info{};
-                            info.name       = n.name;
-                            info.is_space   = is_space;
-                            info.avatar_url = avatar_url;
-                            info.topic      = topic;
-
-                            const_cast<RoomlistModel *>(this)->fetchedPreview(
-                              QString::fromStdString(roomid), info);
-                        });
-                  });
-            });
-      });
+          if (!h.next_batch.empty())
+              fetchPreviews(roomid_, h.next_batch);
+      },
+      from,
+      50,
+      1,
+      false);
 }
 
 std::set<QString>
