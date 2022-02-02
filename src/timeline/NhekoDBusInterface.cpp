@@ -7,6 +7,7 @@
 
 #include <QDBusMetaType>
 
+namespace nheko {
 RoomInfoItem::RoomInfoItem(const QString &mxid,
                            const QString &alias,
                            const QString &title,
@@ -65,6 +66,7 @@ operator>>(const QDBusArgument &arg, RoomInfoItem &item)
     arg.endStructure();
     return arg;
 }
+} // nheko
 
 /**
  * Automatic marshaling of a QImage for org.freedesktop.Notifications.Notify

@@ -9,6 +9,8 @@
 #include <QIcon>
 #include <QObject>
 
+namespace nheko {
+
 class RoomInfoItem : public QObject
 {
     Q_OBJECT
@@ -34,8 +36,8 @@ public:
     inline static const auto apiVersion{QStringLiteral("0.0.1")};
 
     RoomInfoItem &operator=(const RoomInfoItem &other);
-    friend QDBusArgument &operator<<(QDBusArgument &arg, const RoomInfoItem &item);
-    friend const QDBusArgument &operator>>(const QDBusArgument &arg, RoomInfoItem &item);
+    friend QDBusArgument &operator<<(QDBusArgument &arg, const nheko::RoomInfoItem &item);
+    friend const QDBusArgument &operator>>(const QDBusArgument &arg, nheko::RoomInfoItem &item);
 
 private:
     QString roomId_;
@@ -43,12 +45,13 @@ private:
     QString roomName_;
     QImage image_;
 };
-Q_DECLARE_METATYPE(RoomInfoItem)
 
 QDBusArgument &
 operator<<(QDBusArgument &arg, const RoomInfoItem &item);
 const QDBusArgument &
 operator>>(const QDBusArgument &arg, RoomInfoItem &item);
+} // nheko
+Q_DECLARE_METATYPE(nheko::RoomInfoItem)
 
 QDBusArgument &
 operator<<(QDBusArgument &arg, const QImage &image);
