@@ -26,10 +26,12 @@ Rectangle {
 
             color: Nheko.theme.error
             visible: !TimelineManager.isConnected
-            Layout.preferredHeight: fontMetrics.height + Nheko.paddingMedium
+            Layout.preferredHeight: offlineLabel.height + Nheko.paddingMedium
             Layout.fillWidth: true
 
             Label {
+                id: offlineLabel
+
                 anchors.centerIn: parent
                 text: qsTr("No network connection")
             }
