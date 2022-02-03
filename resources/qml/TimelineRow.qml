@@ -71,27 +71,39 @@ Item {
         gesturePolicy: TapHandler.ReleaseWithinBounds
     }
 
-    RowLayout {
+    Item {
         id: row
 
         anchors.rightMargin: 1
         anchors.leftMargin: Nheko.avatarSize + 16
         anchors.left: parent.left
         anchors.right: parent.right
-
-        Column {
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignTop
-            spacing: 4
-            Layout.topMargin: 1
-            Layout.bottomMargin: 1
+        height: msg.height+reactionRow.height+2
+        GridLayout {
+            id: msg
+            anchors {
+                right: parent.right
+                left: parent.left
+                top: parent.top
+                topMargin: 1
+                bottomMargin: 1
+            }
+            rowSpacing: 0
+            columnSpacing: 0
+            columns: 2
+            rows: 2
 
             // fancy reply, if this is a reply
             Reply {
+                Layout.row: 0
+                Layout.column: 0
+                Layout.fillWidth: true
+                Layout.margins: 0
+                id: reply
+
                 function fromModel(role) {
                     return replyTo != "" ? room.dataById(replyTo, role, r.eventId) : null;
                 }
-
                 visible: replyTo
                 userColor: r.relatedEventCacheBuster, TimelineManager.userColor(userId, Nheko.colors.base)
                 blurhash: r.relatedEventCacheBuster, fromModel(Room.Blurhash) ?? ""
@@ -118,9 +130,12 @@ Item {
 
             // actual message content
             MessageDelegate {
+                Layout.row: 1
+                Layout.column: 0
+                Layout.fillWidth: true
+                Layout.margins: 2
                 id: contentItem
 
-                width: parent.width
                 blurhash: r.blurhash
                 body: r.body
                 formattedBody: r.formattedBody
@@ -144,67 +159,76 @@ Item {
                 isReply: false
             }
 
-            Reactions {
-                id: reactionRow
+            RowLayout {
+                Layout.column: 1
+                Layout.row: 0
+                Layout.rowSpan: 2
+                Layout.alignment: Qt.AlignTop | Qt.AlignRight
 
-                reactions: r.reactions
-                eventId: r.eventId
+                StatusIndicator {
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    Layout.preferredHeight: 16
+                    width: 16
+                    status: r.status
+                    eventId: r.eventId
+                }
+
+                Image {
+                    visible: isEdited || eventId == chat.model.edit
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    Layout.preferredHeight: 16
+                    Layout.preferredWidth: 16
+                    height: 16
+                    width: 16
+                    sourceSize.width: 16 * Screen.devicePixelRatio
+                    sourceSize.height: 16 * Screen.devicePixelRatio
+                    source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == chat.model.edit) ? Nheko.colors.highlight : Nheko.colors.buttonText)
+                    ToolTip.visible: editHovered.hovered
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: qsTr("Edited")
+
+                    HoverHandler {
+                        id: editHovered
+                    }
+
+                }
+
+                EncryptionIndicator {
+                    visible: room.isEncrypted
+                    encrypted: isEncrypted
+                    trust: trustlevel
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    Layout.preferredHeight: 16
+                    Layout.preferredWidth: 16
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    text: timestamp.toLocaleTimeString(Locale.ShortFormat)
+                    width: Math.max(implicitWidth, text.length * fontMetrics.maximumCharacterWidth)
+                    color: Nheko.inactiveColors.text
+                    ToolTip.visible: ma.hovered
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: Qt.formatDateTime(timestamp, Qt.DefaultLocaleLongDate)
+
+                    HoverHandler {
+                        id: ma
+                    }
+
+                }
             }
-
         }
 
-        StatusIndicator {
-            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            Layout.preferredHeight: 16
-            width: 16
-            status: r.status
+        Reactions {
+            anchors {
+                top: msg.bottom
+                left: parent.left
+            }
+
+            id: reactionRow
+
+            reactions: r.reactions
             eventId: r.eventId
         }
-
-        Image {
-            visible: isEdited || eventId == chat.model.edit
-            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            Layout.preferredHeight: 16
-            Layout.preferredWidth: 16
-            height: 16
-            width: 16
-            sourceSize.width: 16 * Screen.devicePixelRatio
-            sourceSize.height: 16 * Screen.devicePixelRatio
-            source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == chat.model.edit) ? Nheko.colors.highlight : Nheko.colors.buttonText)
-            ToolTip.visible: editHovered.hovered
-            ToolTip.delay: Nheko.tooltipDelay
-            ToolTip.text: qsTr("Edited")
-
-            HoverHandler {
-                id: editHovered
-            }
-
-        }
-
-        EncryptionIndicator {
-            visible: room.isEncrypted
-            encrypted: isEncrypted
-            trust: trustlevel
-            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            Layout.preferredHeight: 16
-            Layout.preferredWidth: 16
-        }
-
-        Label {
-            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            text: timestamp.toLocaleTimeString(Locale.ShortFormat)
-            width: Math.max(implicitWidth, text.length * fontMetrics.maximumCharacterWidth)
-            color: Nheko.inactiveColors.text
-            ToolTip.visible: ma.hovered
-            ToolTip.delay: Nheko.tooltipDelay
-            ToolTip.text: Qt.formatDateTime(timestamp, Qt.DefaultLocaleLongDate)
-
-            HoverHandler {
-                id: ma
-            }
-
-        }
-
     }
-
 }

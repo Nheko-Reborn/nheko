@@ -13,7 +13,7 @@ Item {
 
     required property bool isReply
     property alias child: chooser.child
-    property real implicitWidth: (chooser.child && chooser.child.implicitWidth) ? chooser.child.implicitWidth : width
+//    property real implicitWidth: (chooser.child && chooser.child.implicitWidth) ? chooser.child.implicitWidth : width
     required property double proportionalHeight
     required property int type
     required property string typeString
@@ -35,14 +35,17 @@ Item {
     required property int encryptionError
     required property int relatedEventCacheBuster
 
-    height: chooser.child ? chooser.child.height : Nheko.paddingLarge
+    Layout.preferredHeight: chooser.child ? chooser.child.height : Nheko.paddingLarge
 
     DelegateChooser {
         id: chooser
 
         //role: "type" //< not supported in our custom implementation, have to use roleValue
         roleValue: type
-        anchors.fill: parent
+        //anchors.fill: parent
+
+        anchors.left: parent.left
+        anchors.right: parent.right
 
         DelegateChoice {
             roleValue: MtxEvent.UnknownMessage

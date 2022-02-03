@@ -35,7 +35,7 @@ Item {
     property int encryptionError
     property int relatedEventCacheBuster
 
-    width: parent.width
+    Layout.preferredHeight: replyContainer.height
     height: replyContainer.height
 
     CursorShape {
@@ -52,12 +52,12 @@ Item {
         color: TimelineManager.userColor(userId, Nheko.colors.base)
     }
 
-    Column {
+    ColumnLayout {
         id: replyContainer
 
         anchors.left: colorLine.right
-        anchors.leftMargin: 4
         width: parent.width - 8
+        spacing: 0
 
         TapHandler {
             acceptedButtons: Qt.LeftButton
@@ -80,6 +80,7 @@ Item {
         }
 
         Text {
+            Layout.leftMargin: 4
             id: userName_
 
             text: TimelineManager.escapeEmoji(userName)
@@ -94,8 +95,8 @@ Item {
         }
 
         MessageDelegate {
+            Layout.leftMargin: 4
             id: reply
-
             blurhash: r.blurhash
             body: r.body
             formattedBody: r.formattedBody
@@ -118,7 +119,7 @@ Item {
             encryptionError: r.encryptionError
             // This is disabled so that left clicking the reply goes to its location
             enabled: false
-            width: parent.width
+            Layout.fillWidth: true
             isReply: true
         }
 
@@ -128,8 +129,7 @@ Item {
         id: backgroundItem
 
         z: -1
-        height: replyContainer.height
-        width: Math.min(Math.max(reply.implicitWidth, userName_.implicitWidth) + 8 + 4, parent.width)
+        anchors.fill: replyContainer
         color: Qt.rgba(userColor.r, userColor.g, userColor.b, 0.1)
     }
 
