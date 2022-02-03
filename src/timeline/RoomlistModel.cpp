@@ -1140,8 +1140,6 @@ RoomListDBusInterface::RoomListDBusInterface(RoomlistModel *parent)
 QVector<nheko::dbus::RoomInfoItem>
 RoomListDBusInterface::getRooms(const QDBusMessage &message)
 {
-    // I'm leaving this as a delayed reply because it works a ton better with the mutex setup
-    message.setDelayedReply(true);
     auto reply = message.createReply();
 
     m_modelAccess.lock();
