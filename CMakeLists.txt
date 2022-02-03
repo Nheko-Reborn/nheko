@@ -200,10 +200,6 @@ find_package(Qt5 5.15 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multi
 find_package(Qt5QuickCompiler)
 find_package(Qt5DBus)
 
-if (Qt5DBus_FOUND)
-	add_compile_definitions(NHEKO_DBUS_SYS)
-endif()
-
 if (USE_BUNDLED_QTKEYCHAIN)
 	include(FetchContent)
 	FetchContent_Declare(
@@ -603,13 +599,13 @@ elseif (WIN32)
 
 	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerWin.cpp src/wintoastlib.cpp)
 else ()
-	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerLinux.cpp)
+	add_compile_definitions(NHEKO_DBUS_SYS)
+	set(SRC_FILES ${SRC_FILES}
+		src/notifications/ManagerLinux.cpp
+		src/timeline/NhekoDBusInterface.cpp
+	)
+    qt5_wrap_cpp(MOC_HEADERS src/timeline/NhekoDBusInterface.h)
 endif ()
-
-if(Qt5DBus_FOUND)
-	set(SRC_FILES ${SRC_FILES} src/timeline/NhekoDBusInterface.cpp)
-	qt5_wrap_cpp(MOC_HEADERS src/timeline/NhekoDBusInterface.h)
-endif()
 
 set(NHEKO_DEPS
 	${SRC_FILES}

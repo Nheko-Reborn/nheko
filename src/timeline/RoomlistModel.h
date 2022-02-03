@@ -48,9 +48,9 @@ public:
     bool isInvite_ = false;
 };
 
+#ifdef NHEKO_DBUS_SYS
 class RoomlistModel;
 
-#ifdef NHEKO_DBUS_SYS
 class RoomListDBusInterface : public QObject
 {
     Q_OBJECT

@@ -11,8 +11,7 @@
 
 #include <mtx/responses/notifications.hpp>
 
-#if (defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD) || defined(Q_OS_HAIKU)) && defined(NHEKO_DBUS_SYS)
-#define USE_DBUS_NOTIFS
+#if defined(NHEKO_DBUS_SYS)
 #include <QtDBus/QDBusArgument>
 #include <QtDBus/QDBusInterface>
 #endif
@@ -49,7 +48,7 @@ signals:
 public slots:
     void removeNotification(const QString &roomId, const QString &eventId);
 
-#if defined(USE_DBUS_NOTIFS)
+#if defined(NHEKO_DBUS_SYS)
 public:
     void closeNotifications(QString roomId);
 
@@ -99,7 +98,7 @@ private:
     QString getMessageTemplate(const mtx::responses::Notification &notification);
 };
 
-#if defined(USE_DBUS_NOTIFS)
+#if defined(NHEKO_DBUS_SYS)
 QDBusArgument &
 operator<<(QDBusArgument &arg, const QImage &image);
 const QDBusArgument &
