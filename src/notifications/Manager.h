@@ -49,7 +49,7 @@ signals:
 public slots:
     void removeNotification(const QString &roomId, const QString &eventId);
 
-#if defined(NHEKO_DBUS_SYS)
+#if defined(USE_DBUS_NOTIFS)
 public:
     void closeNotifications(QString roomId);
 
