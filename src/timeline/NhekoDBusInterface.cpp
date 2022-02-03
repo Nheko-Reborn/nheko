@@ -107,8 +107,7 @@ operator<<(QDBusArgument &arg, const QImage &image)
 }
 
 // This function, however, was merely reverse-engineered from the above function
-// and is not from the Clementine project (except for the byte-order block, which
-// was more or less copied from the above function.
+// and is not from the Clementine project.
 const QDBusArgument &
 operator>>(const QDBusArgument &arg, QImage &image)
 {
