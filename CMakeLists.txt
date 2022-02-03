@@ -325,7 +325,6 @@ set(SRC_FILES
 	src/timeline/CommunitiesModel.cpp
 	src/timeline/EventStore.cpp
 	src/timeline/InputBar.cpp
-	src/timeline/NhekoDBusInterface.cpp
 	src/timeline/Reaction.cpp
 	src/timeline/TimelineViewManager.cpp
 	src/timeline/TimelineModel.cpp
