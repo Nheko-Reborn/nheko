@@ -63,20 +63,6 @@ RoomlistModel::RoomlistModel(TimelineViewManager *parent)
           }
       },
       Qt::QueuedConnection);
-
-#ifdef NHEKO_DBUS_SYS
-    if (UserSettings::instance()->exposeDBusApi()) {
-        if (QDBusConnection::sessionBus().isConnected() &&
-            QDBusConnection::sessionBus().registerService(NHEKO_DBUS_SERVICE_NAME)) {
-            nheko::dbus::init();
-            dbusInterface_ = new RoomListDBusInterface{this};
-            QDBusConnection::sessionBus().registerObject(
-              "/", dbusInterface_, QDBusConnection::ExportScriptableSlots);
-            nhlog::ui()->info("Initialized D-Bus");
-        } else
-            nhlog::ui()->warn("Could not connect to D-Bus!");
-    }
-#endif
 }
 
 QHash<int, QByteArray>
@@ -622,6 +608,20 @@ RoomlistModel::initializeRooms()
     nhlog::db()->info("Restored {} rooms from cache", rowCount());
 
     endResetModel();
+
+#ifdef NHEKO_DBUS_SYS
+    if (UserSettings::instance()->exposeDBusApi()) {
+        if (QDBusConnection::sessionBus().isConnected() &&
+            QDBusConnection::sessionBus().registerService(NHEKO_DBUS_SERVICE_NAME)) {
+            nheko::dbus::init();
+            dbusInterface_ = new RoomListDBusInterface{this};
+            QDBusConnection::sessionBus().registerObject(
+              "/", dbusInterface_, QDBusConnection::ExportScriptableSlots);
+            nhlog::ui()->info("Initialized D-Bus");
+        } else
+            nhlog::ui()->warn("Could not connect to D-Bus!");
+    }
+#endif
 }
 
 void
@@ -1134,6 +1134,7 @@ RoomListDBusInterface::RoomListDBusInterface(RoomlistModel *parent)
 {
     connect(ChatPage::instance(), &ChatPage::newRoom, this, &RoomListDBusInterface::prepareModel);
     connect(ChatPage::instance(), &ChatPage::leftRoom, this, &RoomListDBusInterface::prepareModel);
+    prepareModel();
 }
 
 QVector<nheko::dbus::RoomInfoItem>
