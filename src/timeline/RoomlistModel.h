@@ -77,13 +77,15 @@ private:
     RoomlistModel *m_parent;
 
     // this is a QSharedPointer so that copy ops are less expensive (see below)
-    QSharedPointer<QVector<nheko::dbus::RoomInfoItem>> m_model{new QVector<nheko::dbus::RoomInfoItem>};
+    QSharedPointer<QVector<nheko::dbus::RoomInfoItem>> m_model{
+      new QVector<nheko::dbus::RoomInfoItem>};
     // Use this to lock the entire model for access. This prevents potentially interesting race
     // conditions when copying from the staging area.
     QMutex m_modelAccess;
 
     // use this to store data while generating a new model; then copy it to m_model
-    QSharedPointer<QVector<nheko::dbus::RoomInfoItem>> m_stagingModel{new QVector<nheko::dbus::RoomInfoItem>};
+    QSharedPointer<QVector<nheko::dbus::RoomInfoItem>> m_stagingModel{
+      new QVector<nheko::dbus::RoomInfoItem>};
     // this locks the entire staging model during a refresh
     QMutex m_modifyStagingDataMutex;
     // use this to guard while adding individual items to the staging model

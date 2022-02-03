@@ -12,7 +12,8 @@
 namespace nheko::dbus {
 
 //! Registers all necessary classes with D-Bus. Call this before using any nheko D-Bus classes.
-void init();
+void
+init();
 
 //! The current nheko D-Bus API version.
 const auto apiVersion{QStringLiteral("0.0.1")};
@@ -37,7 +38,8 @@ public:
 
     RoomInfoItem &operator=(const RoomInfoItem &other);
     friend QDBusArgument &operator<<(QDBusArgument &arg, const nheko::dbus::RoomInfoItem &item);
-    friend const QDBusArgument &operator>>(const QDBusArgument &arg, nheko::dbus::RoomInfoItem &item);
+    friend const QDBusArgument &
+    operator>>(const QDBusArgument &arg, nheko::dbus::RoomInfoItem &item);
 
 private:
     QString roomId_;
