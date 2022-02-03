@@ -75,7 +75,8 @@ Menu {
                 onVisibleChanged: {
                     if (visible)
                         forceActiveFocus();
-
+                    else
+                        clear();
                 }
 
                 Timer {
