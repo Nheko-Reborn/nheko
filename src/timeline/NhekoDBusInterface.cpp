@@ -7,7 +7,15 @@
 
 #include <QDBusMetaType>
 
-namespace nheko {
+namespace nheko::dbus {
+void
+init()
+{
+    qDBusRegisterMetaType<RoomInfoItem>();
+    qDBusRegisterMetaType<QVector<RoomInfoItem>>();
+    qDBusRegisterMetaType<QImage>();
+}
+
 RoomInfoItem::RoomInfoItem(const QString &mxid,
                            const QString &alias,
                            const QString &title,
@@ -27,14 +35,6 @@ RoomInfoItem::RoomInfoItem(const RoomInfoItem &other)
   , roomName_{other.roomName_}
   , image_{other.image_}
 {}
-
-void
-RoomInfoItem::init()
-{
-    qDBusRegisterMetaType<RoomInfoItem>();
-    qDBusRegisterMetaType<QVector<RoomInfoItem>>();
-    qDBusRegisterMetaType<QImage>();
-}
 
 RoomInfoItem &
 RoomInfoItem::operator=(const RoomInfoItem &other)
@@ -66,7 +66,7 @@ operator>>(const QDBusArgument &arg, RoomInfoItem &item)
     arg.endStructure();
     return arg;
 }
-} // nheko
+} // nheko::dbus
 
 /**
  * Automatic marshaling of a QImage for org.freedesktop.Notifications.Notify

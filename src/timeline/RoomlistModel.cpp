@@ -68,7 +68,7 @@ RoomlistModel::RoomlistModel(TimelineViewManager *parent)
     if (UserSettings::instance()->exposeDBusApi()) {
         if (QDBusConnection::sessionBus().isConnected() &&
             QDBusConnection::sessionBus().registerService(NHEKO_DBUS_SERVICE_NAME)) {
-            nheko::RoomInfoItem::init();
+            nheko::dbus::init();
             dbusInterface_ = new RoomListDBusInterface{this};
             QDBusConnection::sessionBus().registerObject(
               "/", dbusInterface_, QDBusConnection::ExportScriptableSlots);
@@ -1136,7 +1136,7 @@ RoomListDBusInterface::RoomListDBusInterface(RoomlistModel *parent)
     connect(ChatPage::instance(), &ChatPage::leftRoom, this, &RoomListDBusInterface::prepareModel);
 }
 
-QVector<nheko::RoomInfoItem>
+QVector<nheko::dbus::RoomInfoItem>
 RoomListDBusInterface::getRooms(const QDBusMessage &message)
 {
     // I'm leaving this as a delayed reply because it works a ton better with the mutex setup
@@ -1196,7 +1196,7 @@ RoomListDBusInterface::prepareModel()
 
               m_addItemsToStagingData.lock();
               m_stagingModel->push_back(
-                nheko::RoomInfoItem{model->roomId(), model->roomName(), alias, image});
+                nheko::dbus::RoomInfoItem{model->roomId(), model->roomName(), alias, image});
               m_addItemsToStagingData.unlock();
 
               if (m_stagingModel->length() == modelSize) {

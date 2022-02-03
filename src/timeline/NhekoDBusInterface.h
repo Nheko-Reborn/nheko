@@ -9,7 +9,13 @@
 #include <QIcon>
 #include <QObject>
 
-namespace nheko {
+namespace nheko::dbus {
+
+//! Registers all necessary classes with D-Bus. Call this before using any nheko D-Bus classes.
+void init();
+
+//! The current nheko D-Bus API version.
+const auto apiVersion{QStringLiteral("0.0.1")};
 
 class RoomInfoItem : public QObject
 {
@@ -29,15 +35,9 @@ public:
     const QString &roomName() const { return roomName_; }
     const QImage &image() const { return image_; }
 
-    //! Registers all necessary classes with D-Bus. Call this before using RoomInfoItem with D-Bus.
-    static void init();
-
-    //! The current nheko D-Bus API version.
-    inline static const auto apiVersion{QStringLiteral("0.0.1")};
-
     RoomInfoItem &operator=(const RoomInfoItem &other);
-    friend QDBusArgument &operator<<(QDBusArgument &arg, const nheko::RoomInfoItem &item);
-    friend const QDBusArgument &operator>>(const QDBusArgument &arg, nheko::RoomInfoItem &item);
+    friend QDBusArgument &operator<<(QDBusArgument &arg, const nheko::dbus::RoomInfoItem &item);
+    friend const QDBusArgument &operator>>(const QDBusArgument &arg, nheko::dbus::RoomInfoItem &item);
 
 private:
     QString roomId_;
@@ -50,8 +50,8 @@ QDBusArgument &
 operator<<(QDBusArgument &arg, const RoomInfoItem &item);
 const QDBusArgument &
 operator>>(const QDBusArgument &arg, RoomInfoItem &item);
-} // nheko
-Q_DECLARE_METATYPE(nheko::RoomInfoItem)
+} // nheko::dbus
+Q_DECLARE_METATYPE(nheko::dbus::RoomInfoItem)
 
 QDBusArgument &
 operator<<(QDBusArgument &arg, const QImage &image);
