@@ -91,6 +91,8 @@ enum EventType
     Sticker,
     // m.tag
     Tag,
+    // m.widget
+    Widget,
     /// m.room.message
     AudioMessage,
     EmoteMessage,
@@ -178,6 +180,7 @@ class TimelineModel : public QAbstractListModel
     Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY roomAvatarUrlChanged)
     Q_PROPERTY(QString roomTopic READ roomTopic NOTIFY roomTopicChanged)
     Q_PROPERTY(QStringList pinnedMessages READ pinnedMessages NOTIFY pinnedMessagesChanged)
+    Q_PROPERTY(QStringList widgetLinks READ widgetLinks NOTIFY widgetLinksChanged)
     Q_PROPERTY(int roomMemberCount READ roomMemberCount NOTIFY roomMemberCountChanged)
     Q_PROPERTY(bool isEncrypted READ isEncrypted NOTIFY encryptionChanged)
     Q_PROPERTY(bool isSpace READ isSpace CONSTANT)
@@ -365,6 +368,7 @@ public slots:
     QString plainRoomName() const;
     QString roomTopic() const;
     QStringList pinnedMessages() const;
+    QStringList widgetLinks() const;
     InputBar *input() { return &input_; }
     Permissions *permissions() { return &permissions_; }
     QString roomAvatarUrl() const;
@@ -407,6 +411,7 @@ signals:
     void plainRoomNameChanged();
     void roomTopicChanged();
     void pinnedMessagesChanged();
+    void widgetLinksChanged();
     void roomAvatarUrlChanged();
     void roomMemberCountChanged();
     void isDirectChanged();

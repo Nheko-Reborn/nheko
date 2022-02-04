@@ -36,7 +36,7 @@ Pane {
 
     TapHandler {
         onSingleTapped: {
-            if (eventPoint.position.y > topBar.height - (pinnedMessages.visible ? pinnedMessages.height : 0)) {
+            if (eventPoint.position.y > topBar.height - (pinnedMessages.visible ? pinnedMessages.height : 0) - (widgets.visible ? widgets.height : 0)) {
                 eventPoint.accepted = true
                 return;
             }
@@ -307,11 +307,47 @@ Pane {
                     }
                 }
             }
+
+            ScrollView {
+                id: widgets
+
+                Layout.row: 3
+                Layout.column: 2
+                Layout.columnSpan: 3
+
+                Layout.fillWidth: true
+                Layout.preferredHeight: Math.min(contentHeight, Nheko.avatarSize * 1.5)
+
+                visible: !!room && room.widgetLinks.length > 0 && !Settings.hiddenWidgets.includes(roomId)
+                clip: true
+
+                palette: Nheko.colors
+                ScrollBar.horizontal.visible: false
+
+                ListView {
+
+                    spacing: Nheko.paddingSmall
+                    model: room ? room.widgetLinks : undefined
+                    delegate: MatrixText {
+                        required property var modelData
+
+                        color: Nheko.colors.text
+                        text: modelData
+                    }
+
+
+                    ScrollHelper {
+                        flickable: parent
+                        anchors.fill: parent
+                        enabled: !Settings.mobileMode
+                    }
+                }
+            }
         }
 
         CursorShape {
             anchors.fill: parent
-            anchors.bottomMargin: pinnedMessages.visible ? pinnedMessages.height : 0
+            anchors.bottomMargin: (pinnedMessages.visible ? pinnedMessages.height : 0) + (widgets.visible ? widgets.height : 0)
             cursorShape: Qt.PointingHandCursor
         }
     }

@@ -285,6 +285,9 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
     /// m.room.pinned_events
     case qml_mtx_events::PinnedEvents:
         return mtx::events::EventType::RoomPinnedEvents;
+    /// m.widget
+    case qml_mtx_events::Widget:
+        return mtx::events::EventType::Widget;
     // m.sticker
     case qml_mtx_events::Sticker:
         return mtx::events::EventType::Sticker;
@@ -852,6 +855,8 @@ TimelineModel::syncState(const mtx::responses::State &s)
             emit roomTopicChanged();
         else if (std::holds_alternative<StateEvent<state::PinnedEvents>>(e))
             emit pinnedMessagesChanged();
+        else if (std::holds_alternative<StateEvent<state::Widget>>(e))
+            emit widgetLinksChanged();
         else if (std::holds_alternative<StateEvent<state::PowerLevels>>(e)) {
             permissions_.invalidate();
             emit permissionsChanged();
@@ -916,6 +921,8 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
             emit roomTopicChanged();
         else if (std::holds_alternative<StateEvent<state::PinnedEvents>>(e))
             emit pinnedMessagesChanged();
+        else if (std::holds_alternative<StateEvent<state::Widget>>(e))
+            emit widgetLinksChanged();
         else if (std::holds_alternative<StateEvent<state::PowerLevels>>(e)) {
             permissions_.invalidate();
             emit permissionsChanged();
@@ -2221,6 +2228,59 @@ TimelineModel::pinnedMessages() const
     list.reserve(pinned->content.pinned.size());
     for (const auto &p : pinned->content.pinned)
         list.push_back(QString::fromStdString(p));
+
+    return list;
+}
+
+QStringList
+TimelineModel::widgetLinks() const
+{
+    auto evs =
+      cache::client()->getStateEventsWithType<mtx::events::state::Widget>(room_id_.toStdString());
+
+    if (evs.empty())
+        return {};
+
+    QStringList list;
+
+    auto user  = utils::localUser();
+    auto av    = QUrl::toPercentEncoding(avatarUrl(user));
+    auto disp  = QUrl::toPercentEncoding(displayName(user));
+    auto theme = UserSettings::instance()->theme();
+    if (theme == QStringLiteral("system"))
+        theme.clear();
+    user = QUrl::toPercentEncoding(user);
+
+    list.reserve(evs.size());
+    for (const auto &p : evs) {
+        auto url = QString::fromStdString(p.content.url);
+        for (const auto &[k, v] : p.content.data)
+            url.replace("$" + QString::fromStdString(k),
+                        QUrl::toPercentEncoding(QString::fromStdString(v)));
+
+        url.replace("$matrix_user_id", user);
+        url.replace("$matrix_room_id", QUrl::toPercentEncoding(room_id_));
+        url.replace("$matrix_display_name", disp);
+        url.replace("$matrix_avatar_url", av);
+
+        url.replace("$matrix_widget_id",
+                    QUrl::toPercentEncoding(QString::fromStdString(p.content.id)));
+
+        // url.replace("$matrix_client_theme", theme);
+        url.replace("$org.matrix.msc2873.client_theme", theme);
+        url.replace("$org.matrix.msc2873.client_id", "im.nheko");
+
+        // compat with some widgets, i.e. FOSDEM
+        url.replace("$theme", theme);
+
+        url = QUrl::toPercentEncoding(url, "/:?&@=%");
+
+        list.push_back(
+          QLatin1String("<a href='%1'>%2</a>")
+            .arg(url,
+                 QString::fromStdString(p.content.name.empty() ? p.state_key : p.content.name)
+                   .toHtmlEscaped()));
+    }
 
     return list;
 }
