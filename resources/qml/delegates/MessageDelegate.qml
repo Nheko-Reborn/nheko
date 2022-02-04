@@ -13,7 +13,7 @@ Item {
 
     required property bool isReply
     property alias child: chooser.child
-//    property real implicitWidth: (chooser.child && chooser.child.implicitWidth) ? chooser.child.implicitWidth : width
+    property real implicitWidth: (chooser.child && chooser.child.implicitWidth) ? chooser.child.implicitWidth : width
     required property double proportionalHeight
     required property int type
     required property string typeString
