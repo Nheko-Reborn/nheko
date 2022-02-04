@@ -162,6 +162,14 @@ TimelineViewManager::TimelineViewManager(CallManager *, ChatPage *parent)
             &QApplication::focusWindowChanged,
             this,
             &TimelineViewManager::focusChanged);
+    connect(parent, &ChatPage::connectionLost, this, [this] {
+        isConnected_ = false;
+        emit isConnectedChanged(false);
+    });
+    connect(parent, &ChatPage::connectionRestored, this, [this] {
+        isConnected_ = true;
+        emit isConnectedChanged(true);
+    });
 }
 
 bool
