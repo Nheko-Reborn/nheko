@@ -107,6 +107,8 @@ class UserSettings : public QObject
     Q_PROPERTY(QStringList hiddenPins READ hiddenPins WRITE setHiddenPins NOTIFY hiddenPinsChanged)
     Q_PROPERTY(QStringList recentReactions READ recentReactions WRITE setRecentReactions NOTIFY
                  recentReactionsChanged)
+    Q_PROPERTY(QStringList hiddenWidgets READ hiddenWidgets WRITE setHiddenWidgets NOTIFY
+                 hiddenWidgetsChanged)
 
     UserSettings();
 
@@ -175,6 +177,7 @@ public:
     void setDisableCertificateValidation(bool disabled);
     void setHiddenTags(QStringList hiddenTags);
     void setHiddenPins(QStringList hiddenTags);
+    void setHiddenWidgets(QStringList hiddenTags);
     void setRecentReactions(QStringList recent);
     void setUseIdenticon(bool state);
     void setCollapsedSpaces(QList<QStringList> spaces);
@@ -234,6 +237,7 @@ public:
     bool disableCertificateValidation() const { return disableCertificateValidation_; }
     QStringList hiddenTags() const { return hiddenTags_; }
     QStringList hiddenPins() const { return hiddenPins_; }
+    QStringList hiddenWidgets() const { return hiddenWidgets_; }
     QStringList recentReactions() const { return recentReactions_; }
     bool useIdenticon() const { return useIdenticon_ && JdenticonProvider::isAvailable(); }
     QList<QStringList> collapsedSpaces() const { return collapsedSpaces_; }
@@ -286,6 +290,7 @@ signals:
     void disableCertificateValidationChanged(bool disabled);
     void useIdenticonChanged(bool state);
     void hiddenPinsChanged();
+    void hiddenWidgetsChanged();
     void recentReactionsChanged();
 
 private:
@@ -342,6 +347,7 @@ private:
     QString homeserver_;
     QStringList hiddenTags_;
     QStringList hiddenPins_;
+    QStringList hiddenWidgets_;
     QStringList recentReactions_;
     QList<QStringList> collapsedSpaces_;
     bool useIdenticon_;

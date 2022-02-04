@@ -96,10 +96,12 @@ public:
         return getStateEvent<T>(txn, room_id, state_key);
     }
     template<typename T>
-    std::vector<mtx::events::StateEvent<T>> getStateEventsWithType(const std::string &room_id)
+    std::vector<mtx::events::StateEvent<T>>
+    getStateEventsWithType(const std::string &room_id,
+                           mtx::events::EventType type = mtx::events::state_content_to_type<T>)
     {
         auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        return getStateEventsWithType<T>(txn, room_id);
+        return getStateEventsWithType<T>(txn, room_id, type);
     }
 
     //! retrieve a specific event from account data
@@ -494,13 +496,11 @@ private:
 
     template<typename T>
     std::vector<mtx::events::StateEvent<T>>
-    getStateEventsWithType(lmdb::txn &txn, const std::string &room_id)
+    getStateEventsWithType(lmdb::txn &txn,
+                           const std::string &room_id,
+                           mtx::events::EventType type = mtx::events::state_content_to_type<T>)
 
     {
-        constexpr auto type = mtx::events::state_content_to_type<T>;
-        static_assert(type != mtx::events::EventType::Unsupported,
-                      "Not a supported type in state events.");
-
         if (room_id.empty())
             return {};
 
