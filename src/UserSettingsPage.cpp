@@ -70,6 +70,7 @@ UserSettings::load(std::optional<QString> profile)
     enlargeEmojiOnlyMessages_ =
       settings.value(QStringLiteral("user/timeline/enlarge_emoji_only_msg"), false).toBool();
     markdown_ = settings.value(QStringLiteral("user/markdown_enabled"), true).toBool();
+    bubbles_ = settings.value(QStringLiteral("user/bubbles_enabled"), true).toBool();
     animateImagesOnHover_ =
       settings.value(QStringLiteral("user/animate_images_on_hover"), false).toBool();
     typingNotifications_ =
@@ -239,6 +240,16 @@ UserSettings::setMarkdown(bool state)
         return;
     markdown_ = state;
     emit markdownChanged(state);
+    save();
+}
+
+void
+UserSettings::setBubbles(bool state)
+{
+    if (state == bubbles_)
+        return;
+    bubbles_ = state;
+    emit bubblesChanged(state);
     save();
 }
 
@@ -696,6 +707,7 @@ UserSettings::save()
     settings.setValue(QStringLiteral("read_receipts"), readReceipts_);
     settings.setValue(QStringLiteral("group_view"), groupView_);
     settings.setValue(QStringLiteral("markdown_enabled"), markdown_);
+    settings.setValue(QStringLiteral("bubbles_enabled"), bubbles_);
     settings.setValue(QStringLiteral("animate_images_on_hover"), animateImagesOnHover_);
     settings.setValue(QStringLiteral("desktop_notifications"), hasDesktopNotifications_);
     settings.setValue(QStringLiteral("alert_on_notification"), hasAlertOnNotification_);
@@ -796,6 +808,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Group's sidebar");
         case Markdown:
             return tr("Send messages as Markdown");
+        case Bubbles:
+            return tr("Enable Message bubbles");
         case AnimateImagesOnHover:
             return tr("Play animated images only on hover");
         case TypingNotifications:
@@ -916,6 +930,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->groupView();
         case Markdown:
             return i->markdown();
+        case Bubbles:
+            return i->bubbles();
         case AnimateImagesOnHover:
             return i->animateImagesOnHover();
         case TypingNotifications:
@@ -1042,6 +1058,9 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr(
               "Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
               "text.");
+        case Bubbles:
+            return tr(
+              "Messages received a bubble background.");
         case AnimateImagesOnHover:
             return tr("Plays media like GIFs or WEBPs only when explicitly hovering over them.");
         case TypingNotifications:
@@ -1158,6 +1177,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case StartInTray:
         case GroupView:
         case Markdown:
+        case Bubbles:
         case AnimateImagesOnHover:
         case TypingNotifications:
         case SortByImportance:
@@ -1371,6 +1391,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         case Markdown: {
             if (value.userType() == QMetaType::Bool) {
                 i->setMarkdown(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case Bubbles: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setBubbles(value.toBool());
                 return true;
             } else
                 return false;
@@ -1736,6 +1763,9 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::markdownChanged, this, [this]() {
         emit dataChanged(index(Markdown), index(Markdown), {Value});
+    });
+    connect(s.get(), &UserSettings::bubblesChanged, this, [this]() {
+        emit dataChanged(index(Bubbles), index(Bubbles), {Value});
     });
 
     connect(s.get(), &UserSettings::groupViewStateChanged, this, [this]() {

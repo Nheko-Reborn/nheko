@@ -130,7 +130,9 @@ Item {
 
         z: -1
         anchors.fill: replyContainer
-        color: Qt.rgba(userColor.r, userColor.g, userColor.b, 0.1)
+        property color userColor: TimelineManager.userColor(userId, Nheko.colors.base)
+        property color bgColor: Nheko.colors.base
+        color: Qt.rgba(userColor.r*0.1+bgColor.r*0.9,userColor.g*0.1+bgColor.g*0.9,userColor.b*0.1+bgColor.b*0.9,1) // alpha makes this mix with the bubble color
     }
 
 }

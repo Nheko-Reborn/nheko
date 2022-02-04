@@ -75,10 +75,19 @@ Item {
         id: row
 
         anchors.rightMargin: 1
-        anchors.leftMargin: Nheko.avatarSize + 16
+        anchors.leftMargin: Nheko.avatarSize + 12
         anchors.left: parent.left
         anchors.right: parent.right
-        height: msg.height+reactionRow.height+2
+        height: msg.height+(reactionRow.height> 0 ? reactionRow.height-4 : 0)
+        Rectangle {
+            anchors.fill: msg
+            property color userColor: TimelineManager.userColor(userId, Nheko.colors.base)
+            property color bgColor: Nheko.colors.base
+            color: Qt.rgba(userColor.r*0.1+bgColor.r*0.9,userColor.g*0.1+bgColor.g*0.9,userColor.b*0.1+bgColor.b*0.9,1) //TimelineManager.userColor(userId, Nheko.colors.base)
+            radius: 4
+            visible: Settings.bubbles
+        }
+
         GridLayout {
             id: msg
             anchors {
@@ -98,7 +107,9 @@ Item {
                 Layout.row: 0
                 Layout.column: 0
                 Layout.fillWidth: true
-                Layout.margins: 0
+                Layout.margins: visible? 4 : 0
+                Layout.bottomMargin: 0
+                Layout.topMargin: visible? (Settings.bubbles? 4 : 2) : 0
                 id: reply
 
                 function fromModel(role) {
@@ -133,7 +144,10 @@ Item {
                 Layout.row: 1
                 Layout.column: 0
                 Layout.fillWidth: true
-                Layout.margins: 2
+                Layout.leftMargin: 4
+                Layout.rightMargin: 4
+                Layout.topMargin: reply.visible ? 2 : 4
+                Layout.bottomMargin: Settings.bubbles? 4: 2
                 id: contentItem
 
                 blurhash: r.blurhash
@@ -164,6 +178,8 @@ Item {
                 Layout.row: 0
                 Layout.rowSpan: 2
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                Layout.topMargin: 4
+                Layout.rightMargin: Settings.bubbles? 4 : 0
 
                 StatusIndicator {
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
@@ -221,7 +237,7 @@ Item {
 
         Reactions {
             anchors {
-                top: msg.bottom
+                bottom: parent.bottom
                 left: parent.left
             }
 
