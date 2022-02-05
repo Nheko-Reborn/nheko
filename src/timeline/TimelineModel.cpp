@@ -2298,7 +2298,7 @@ TimelineModel::widgetLinks() const
         // compat with some widgets, i.e. FOSDEM
         url.replace("$theme", theme);
 
-        url = QUrl::toPercentEncoding(url, "/:?&@=%");
+        url = QUrl::toPercentEncoding(url, "/:@?#&=%");
 
         list.push_back(
           QLatin1String("<a href='%1'>%2</a>")
