@@ -100,7 +100,8 @@ ApplicationWindow {
             MatrixText {
                 text: roomSettings.roomName
                 font.pixelSize: fontMetrics.font.pixelSize * 2
-                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+                horizontalAlignment: TextEdit.AlignHCenter
             }
 
             MatrixText {

@@ -138,6 +138,9 @@ ApplicationWindow {
                 color: TimelineManager.userColor(profile.userid, Nheko.colors.window)
                 font.bold: true
                 Layout.alignment: Qt.AlignHCenter
+                Layout.maximumWidth: parent.width - (Nheko.paddingSmall * 2) - usernameChangeButton.anchors.leftMargin - (usernameChangeButton.width * 2)
+                horizontalAlignment: TextInput.AlignHCenter
+                wrapMode: TextInput.Wrap
                 selectByMouse: true
                 onAccepted: {
                     profile.changeUsername(displayUsername.text);
@@ -145,6 +148,7 @@ ApplicationWindow {
                 }
 
                 ImageButton {
+                    id: usernameChangeButton
                     visible: profile.isSelf
                     anchors.leftMargin: Nheko.paddingSmall
                     anchors.left: displayUsername.right
@@ -183,6 +187,8 @@ ApplicationWindow {
                     text: qsTr("Room: %1").arg(profile.room ? profile.room.roomName : "")
                     ToolTip.text: qsTr("This is a room-specific profile. The user's name and avatar may be different from their global versions.")
                     ToolTip.visible: ma.hovered
+                    Layout.maximumWidth: parent.parent.width - (parent.spacing * 3) - 16
+                    horizontalAlignment: TextEdit.AlignHCenter
 
                     HoverHandler {
                         id: ma
