@@ -64,9 +64,9 @@ public slots:
     //! Call this function to get a list of all joined rooms.
     Q_SCRIPTABLE QVector<nheko::dbus::RoomInfoItem> getRooms(const QDBusMessage &message);
     //! Activates a currently joined room.
-    Q_SCRIPTABLE void activateRoom(const QString &roomid) const;
+    Q_SCRIPTABLE void activateRoom(const QString &alias) const;
     //! Joins a room. It is your responsibility to ask for confirmation (if desired).
-    Q_SCRIPTABLE void joinRoom(const QString &roomid) const;
+    Q_SCRIPTABLE void joinRoom(const QString &alias) const;
 
 private slots:
     void prepareModel();

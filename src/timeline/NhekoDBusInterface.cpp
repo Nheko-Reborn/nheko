@@ -16,13 +16,13 @@ init()
     qDBusRegisterMetaType<QImage>();
 }
 
-RoomInfoItem::RoomInfoItem(const QString &mxid,
+RoomInfoItem::RoomInfoItem(const QString &roomId,
                            const QString &alias,
                            const QString &title,
                            const QImage &image,
                            QObject *parent)
   : QObject{parent}
-  , roomId_{mxid}
+  , roomId_{roomId}
   , alias_{alias}
   , roomName_{title}
   , image_{image}

@@ -1153,17 +1153,17 @@ RoomListDBusInterface::getRooms(const QDBusMessage &message)
 }
 
 void
-RoomListDBusInterface::activateRoom(const QString &roomid) const
+RoomListDBusInterface::activateRoom(const QString &alias) const
 {
     bringWindowToTop();
-    m_parent->setCurrentRoom(roomid);
+    m_parent->setCurrentRoom(alias);
 }
 
 void
-RoomListDBusInterface::joinRoom(const QString &roomid) const
+RoomListDBusInterface::joinRoom(const QString &alias) const
 {
     bringWindowToTop();
-    ChatPage::instance()->joinRoom(roomid);
+    ChatPage::instance()->joinRoom(alias);
 }
 
 void
@@ -1180,7 +1180,7 @@ RoomListDBusInterface::prepareModel()
     for (const auto &model : std::as_const(m_parent->models)) {
         MainWindow::instance()->imageProvider()->download(
           model->roomAvatarUrl().remove("mxc://"),
-          {32, 32},
+          {128, 128},
           [this,
            &model](const QString &, const QSize &, const QImage &image, const QString &) mutable {
               const auto aliases = cache::client()->getRoomAliases(model->roomId().toStdString());
