@@ -46,7 +46,7 @@ Item {
 
     anchors.left: parent.left
     anchors.right: parent.right
-    height: row.height
+    height: row.height+reactionRow.height+(Settings.bubbles? 8 : 4)
 
     Rectangle {
         color: (Settings.messageHoverHighlight && hoverHandler.hovered) ? Nheko.colors.alternateBase : "transparent"
@@ -71,16 +71,20 @@ Item {
         gesturePolicy: TapHandler.ReleaseWithinBounds
     }
 
-    Item {
+    Control {
         id: row
 
         anchors.rightMargin: 1
-        anchors.leftMargin: Nheko.avatarSize + 12
+        anchors.leftMargin: Nheko.avatarSize + 12 // align bubble with section header
         anchors.left: parent.left
         anchors.right: parent.right
-        height: msg.height+(reactionRow.height> 0 ? reactionRow.height-4 : 0)
-        Rectangle {
-            anchors.fill: msg
+        height: msg.height
+        topInset: -4
+        bottomInset: -4
+        leftInset: -4
+        rightInset: -4
+        background: Rectangle {
+            //anchors.fill: msg
             property color userColor: TimelineManager.userColor(userId, Nheko.colors.base)
             property color bgColor: Nheko.colors.base
             color: Qt.rgba(userColor.r*0.1+bgColor.r*0.9,userColor.g*0.1+bgColor.g*0.9,userColor.b*0.1+bgColor.b*0.9,1) //TimelineManager.userColor(userId, Nheko.colors.base)
@@ -94,12 +98,10 @@ Item {
                 right: parent.right
                 left: parent.left
                 top: parent.top
-                topMargin: 1
-                bottomMargin: 1
             }
             property bool narrowLayout: (row.width < 350) && Settings.bubbles
             rowSpacing: 0
-            columnSpacing: 0
+            columnSpacing: 2
             columns: narrowLayout? 1 : 2
             rows: narrowLayout? 3 : 2
 
@@ -108,9 +110,7 @@ Item {
                 Layout.row: 0
                 Layout.column: 0
                 Layout.fillWidth: true
-                Layout.margins: visible? 4 : 0
-                Layout.bottomMargin: 0
-                Layout.topMargin: visible? (Settings.bubbles? 4 : 2) : 0
+                Layout.bottomMargin: visible? 2 : 0
                 id: reply
 
                 function fromModel(role) {
@@ -145,10 +145,6 @@ Item {
                 Layout.row: 1
                 Layout.column: 0
                 Layout.fillWidth: true
-                Layout.leftMargin: 4
-                Layout.rightMargin: 4
-                Layout.topMargin: reply.visible ? 2 : 4
-                Layout.bottomMargin: Settings.bubbles? (msg.narrowLayout? 0 : 4) : 2
                 id: contentItem
 
                 blurhash: r.blurhash
@@ -178,9 +174,9 @@ Item {
                 Layout.column: msg.narrowLayout? 0 : 1
                 Layout.row: msg.narrowLayout? 2 : 0
                 Layout.rowSpan: msg.narrowLayout? 1 : 2
+                Layout.bottomMargin: msg.narrowLayout? -4 : 0
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
-                Layout.topMargin: msg.narrowLayout? 0 : 4
-                Layout.rightMargin: Settings.bubbles? 4 : 0
+
                 property double scaling: msg.narrowLayout? 0.75 : 1
                 StatusIndicator {
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
@@ -235,17 +231,17 @@ Item {
                 }
             }
         }
-
-        Reactions {
-            anchors {
-                bottom: parent.bottom
-                left: parent.left
-            }
-
-            id: reactionRow
-
-            reactions: r.reactions
-            eventId: r.eventId
+    }
+    Reactions {
+        anchors {
+            top: row.bottom
+            left: parent.left
+            leftMargin: Nheko.avatarSize + 16
         }
+
+        id: reactionRow
+
+        reactions: r.reactions
+        eventId: r.eventId
     }
 }

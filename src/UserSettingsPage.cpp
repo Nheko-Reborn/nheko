@@ -809,7 +809,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case Markdown:
             return tr("Send messages as Markdown");
         case Bubbles:
-            return tr("Enable Message bubbles");
+            return tr("Enable message bubbles");
         case AnimateImagesOnHover:
             return tr("Play animated images only on hover");
         case TypingNotifications:
@@ -1059,7 +1059,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               "Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
               "text.");
         case Bubbles:
-            return tr("Messages received a bubble background.");
+            return tr(
+              "Messages get a bubble background. This also triggers some layout changes (WIP).");
         case AnimateImagesOnHover:
             return tr("Plays media like GIFs or WEBPs only when explicitly hovering over them.");
         case TypingNotifications:

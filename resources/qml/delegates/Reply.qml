@@ -56,7 +56,7 @@ Item {
         id: replyContainer
 
         anchors.left: colorLine.right
-        width: parent.width - 8
+        width: parent.width - 4
         spacing: 0
 
         TapHandler {
