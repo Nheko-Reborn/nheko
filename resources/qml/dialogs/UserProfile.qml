@@ -187,6 +187,8 @@ ApplicationWindow {
                     text: qsTr("Room: %1").arg(profile.room ? profile.room.roomName : "")
                     ToolTip.text: qsTr("This is a room-specific profile. The user's name and avatar may be different from their global versions.")
                     ToolTip.visible: ma.hovered
+                    Layout.maximumWidth: parent.parent.width - (parent.spacing * 3) - 16
+                    horizontalAlignment: TextEdit.AlignHCenter
 
                     HoverHandler {
                         id: ma
