@@ -70,7 +70,7 @@ UserSettings::load(std::optional<QString> profile)
     enlargeEmojiOnlyMessages_ =
       settings.value(QStringLiteral("user/timeline/enlarge_emoji_only_msg"), false).toBool();
     markdown_ = settings.value(QStringLiteral("user/markdown_enabled"), true).toBool();
-    bubbles_ = settings.value(QStringLiteral("user/bubbles_enabled"), true).toBool();
+    bubbles_  = settings.value(QStringLiteral("user/bubbles_enabled"), true).toBool();
     animateImagesOnHover_ =
       settings.value(QStringLiteral("user/animate_images_on_hover"), false).toBool();
     typingNotifications_ =
@@ -1059,8 +1059,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               "Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
               "text.");
         case Bubbles:
-            return tr(
-              "Messages received a bubble background.");
+            return tr("Messages received a bubble background.");
         case AnimateImagesOnHover:
             return tr("Plays media like GIFs or WEBPs only when explicitly hovering over them.");
         case TypingNotifications:

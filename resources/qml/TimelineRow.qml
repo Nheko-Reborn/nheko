@@ -97,10 +97,11 @@ Item {
                 topMargin: 1
                 bottomMargin: 1
             }
+            property bool narrowLayout: (row.width < 350) && Settings.bubbles
             rowSpacing: 0
             columnSpacing: 0
-            columns: 2
-            rows: 2
+            columns: narrowLayout? 1 : 2
+            rows: narrowLayout? 3 : 2
 
             // fancy reply, if this is a reply
             Reply {
@@ -147,7 +148,7 @@ Item {
                 Layout.leftMargin: 4
                 Layout.rightMargin: 4
                 Layout.topMargin: reply.visible ? 2 : 4
-                Layout.bottomMargin: Settings.bubbles? 4: 2
+                Layout.bottomMargin: Settings.bubbles? (msg.narrowLayout? 0 : 4) : 2
                 id: contentItem
 
                 blurhash: r.blurhash
@@ -174,17 +175,17 @@ Item {
             }
 
             RowLayout {
-                Layout.column: 1
-                Layout.row: 0
-                Layout.rowSpan: 2
+                Layout.column: msg.narrowLayout? 0 : 1
+                Layout.row: msg.narrowLayout? 2 : 0
+                Layout.rowSpan: msg.narrowLayout? 1 : 2
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
-                Layout.topMargin: 4
+                Layout.topMargin: msg.narrowLayout? 0 : 4
                 Layout.rightMargin: Settings.bubbles? 4 : 0
-
+                property double scaling: msg.narrowLayout? 0.75 : 1
                 StatusIndicator {
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
-                    Layout.preferredHeight: 16
-                    width: 16
+                    Layout.preferredHeight: 16*parent.scaling
+                    width: 16*parent.scaling
                     status: r.status
                     eventId: r.eventId
                 }
@@ -192,12 +193,12 @@ Item {
                 Image {
                     visible: isEdited || eventId == chat.model.edit
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
-                    Layout.preferredHeight: 16
-                    Layout.preferredWidth: 16
-                    height: 16
-                    width: 16
-                    sourceSize.width: 16 * Screen.devicePixelRatio
-                    sourceSize.height: 16 * Screen.devicePixelRatio
+                    Layout.preferredHeight: 16*parent.scaling
+                    Layout.preferredWidth: 16*parent.scaling
+                    height: 16*parent.scaling
+                    width: 16*parent.scaling
+                    sourceSize.width: 16 * Screen.devicePixelRatio*parent.scaling
+                    sourceSize.height: 16 * Screen.devicePixelRatio*parent.scaling
                     source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == chat.model.edit) ? Nheko.colors.highlight : Nheko.colors.buttonText)
                     ToolTip.visible: editHovered.hovered
                     ToolTip.delay: Nheko.tooltipDelay
@@ -214,8 +215,8 @@ Item {
                     encrypted: isEncrypted
                     trust: trustlevel
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
-                    Layout.preferredHeight: 16
-                    Layout.preferredWidth: 16
+                    Layout.preferredHeight: 16*parent.scaling
+                    Layout.preferredWidth: 16*parent.scaling
                 }
 
                 Label {
@@ -226,7 +227,7 @@ Item {
                     ToolTip.visible: ma.hovered
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: Qt.formatDateTime(timestamp, Qt.DefaultLocaleLongDate)
-
+                    font.pointSize: 10*parent.scaling
                     HoverHandler {
                         id: ma
                     }
