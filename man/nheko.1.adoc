@@ -195,6 +195,10 @@ Inserts `ノ┬─┬ノ ︵ ( \\o°o)\\`
 Removes all but the most recent messages from the currently rendered timeline
 and then refetches it from the server; can be used to fix some cache issues.
 
+*/reset-state*::
+Fetches all the state events in the current room again; can be used to fix some
+cache issues.
+
 */rotate-megolm-session*::
 Rotates the encryption key used to send encrypted messages in a room.
 

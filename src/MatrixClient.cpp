@@ -20,6 +20,7 @@ Q_DECLARE_METATYPE(mtx::responses::Messages)
 Q_DECLARE_METATYPE(mtx::responses::Notifications)
 Q_DECLARE_METATYPE(mtx::responses::Rooms)
 Q_DECLARE_METATYPE(mtx::responses::Sync)
+Q_DECLARE_METATYPE(mtx::responses::StateEvents)
 Q_DECLARE_METATYPE(mtx::responses::JoinedGroups)
 Q_DECLARE_METATYPE(mtx::responses::GroupProfile)
 
@@ -52,6 +53,7 @@ init()
     qRegisterMetaType<mtx::responses::Notifications>();
     qRegisterMetaType<mtx::responses::Rooms>();
     qRegisterMetaType<mtx::responses::Sync>();
+    qRegisterMetaType<mtx::responses::StateEvents>();
     qRegisterMetaType<mtx::responses::JoinedGroups>();
     qRegisterMetaType<mtx::responses::GroupProfile>();
     qRegisterMetaType<std::string>();

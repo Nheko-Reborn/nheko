@@ -617,6 +617,8 @@ InputBar::command(const QString &command, QString args)
         message(QStringLiteral("ノ┬─┬ノ ︵ ( \\o°o)\\"));
     } else if (command == QLatin1String("clear-timeline")) {
         room->clearTimeline();
+    } else if (command == QLatin1String("reset-state")) {
+        room->resetState();
     } else if (command == QLatin1String("rotate-megolm-session")) {
         cache::dropOutboundMegolmSession(room->roomId().toStdString());
     } else if (command == QLatin1String("md")) {

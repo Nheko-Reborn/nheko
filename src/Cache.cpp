@@ -1461,6 +1461,44 @@ Cache::calculateRoomReadStatus(const std::string &room_id)
 }
 
 void
+Cache::updateState(const std::string &room, const mtx::responses::StateEvents &state)
+{
+    auto txn         = lmdb::txn::begin(env_);
+    auto statesdb    = getStatesDb(txn, room);
+    auto stateskeydb = getStatesKeyDb(txn, room);
+    auto membersdb   = getMembersDb(txn, room);
+    auto eventsDb    = getEventsDb(txn, room);
+
+    saveStateEvents(txn, statesdb, stateskeydb, membersdb, eventsDb, room, state.events);
+
+    RoomInfo updatedInfo;
+    updatedInfo.name       = getRoomName(txn, statesdb, membersdb).toStdString();
+    updatedInfo.topic      = getRoomTopic(txn, statesdb).toStdString();
+    updatedInfo.avatar_url = getRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
+    updatedInfo.version    = getRoomVersion(txn, statesdb).toStdString();
+    updatedInfo.is_space   = getRoomIsSpace(txn, statesdb);
+
+    {
+        std::string_view data;
+        if (roomsDb_.get(txn, room, data)) {
+            try {
+                RoomInfo tmp     = json::parse(std::string_view(data.data(), data.size()));
+                updatedInfo.tags = tmp.tags;
+            } catch (const json::exception &e) {
+                nhlog::db()->warn("failed to parse room info: room_id ({}), {}: {}",
+                                  room,
+                                  std::string(data.data(), data.size()),
+                                  e.what());
+            }
+        }
+    }
+
+    roomsDb_.put(txn, room, json(updatedInfo).dump());
+    updateSpaces(txn, {room}, {room});
+    txn.commit();
+}
+
+void
 Cache::saveState(const mtx::responses::Sync &res)
 {
     using namespace mtx::events;

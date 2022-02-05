@@ -440,6 +440,11 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
       cache::client(), &Cache::verificationStatusChanged, this, &TimelineModel::trustlevelChanged);
 
     showEventTimer.callOnTimeout(this, &TimelineModel::scrollTimerEvent);
+
+    connect(this, &TimelineModel::newState, this, [this](mtx::responses::StateEvents events_) {
+        cache::client()->updateState(room_id_.toStdString(), events_);
+        this->syncState({std::move(events_.events)});
+    });
 }
 
 QHash<int, QByteArray>
@@ -2170,6 +2175,21 @@ TimelineModel::resetEdit()
     }
 }
 
+void
+TimelineModel::resetState()
+{
+    http::client()->get_state(
+      room_id_.toStdString(),
+      [this](const mtx::responses::StateEvents &events_, mtx::http::RequestErr e) {
+          if (e) {
+              nhlog::net()->error("Failed to retrive current room state: {}", *e);
+              return;
+          }
+
+          emit newState(events_);
+      });
+}
+
 QString
 TimelineModel::roomName() const
 {
@@ -2247,8 +2267,9 @@ TimelineModel::widgetLinks() const
 
     QStringList list;
 
-    auto user  = utils::localUser();
-    auto av    = QUrl::toPercentEncoding(QString::fromStdString(http::client()->mxc_to_download_url(avatarUrl(user).toStdString())));
+    auto user = utils::localUser();
+    auto av   = QUrl::toPercentEncoding(
+      QString::fromStdString(http::client()->mxc_to_download_url(avatarUrl(user).toStdString())));
     auto disp  = QUrl::toPercentEncoding(displayName(user));
     auto theme = UserSettings::instance()->theme();
     if (theme == QStringLiteral("system"))

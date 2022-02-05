@@ -359,6 +359,7 @@ public slots:
     void resetEdit();
     void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
     void clearTimeline() { events.clearTimeline(); }
+    void resetState();
     void receivedSessionKey(const std::string &session_key)
     {
         events.receivedSessionKey(session_key);
@@ -400,6 +401,8 @@ signals:
 
     void lastMessageChanged();
     void notificationsChanged();
+
+    void newState(mtx::responses::StateEvents events);
 
     void newMessageToSend(mtx::events::collections::TimelineEvents event);
     void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);
