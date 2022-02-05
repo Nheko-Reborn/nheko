@@ -606,8 +606,12 @@ else ()
 	set(SRC_FILES ${SRC_FILES}
 		src/notifications/ManagerLinux.cpp
 		src/timeline/NhekoDBusInterface.cpp
+		src/timeline/RoomListDBusInterface.cpp
 	)
-    qt5_wrap_cpp(MOC_HEADERS src/timeline/NhekoDBusInterface.h)
+    qt5_wrap_cpp(MOC_HEADERS
+		src/timeline/NhekoDBusInterface.h
+		src/timeline/RoomListDBusInterface.h
+	)
 endif ()
 
 set(NHEKO_DEPS
