@@ -31,6 +31,7 @@ Item {
     required property bool isEncrypted
     required property bool isEditable
     required property bool isEdited
+    required property bool isStateEvent
     required property string replyTo
     required property string userId
     required property string userName
@@ -89,7 +90,7 @@ Item {
             property color bgColor: Nheko.colors.base
             color: Qt.rgba(userColor.r*0.1+bgColor.r*0.9,userColor.g*0.1+bgColor.g*0.9,userColor.b*0.1+bgColor.b*0.9,1) //TimelineManager.userColor(userId, Nheko.colors.base)
             radius: 4
-            visible: Settings.bubbles
+            visible: Settings.bubbles && !isStateEvent
         }
 
         GridLayout {
@@ -130,6 +131,7 @@ Item {
                 url: r.relatedEventCacheBuster, fromModel(Room.Url) ?? ""
                 originalWidth: r.relatedEventCacheBuster, fromModel(Room.OriginalWidth) ?? 0
                 isOnlyEmoji: r.relatedEventCacheBuster, fromModel(Room.IsOnlyEmoji) ?? false
+                isStateEvent: r.relatedEventCacheBuster, fromModel(Room.IsStateEvent) ?? false
                 userId: r.relatedEventCacheBuster, fromModel(Room.UserId) ?? ""
                 userName: r.relatedEventCacheBuster, fromModel(Room.UserName) ?? ""
                 thumbnailUrl: r.relatedEventCacheBuster, fromModel(Room.ThumbnailUrl) ?? ""
@@ -160,6 +162,7 @@ Item {
                 thumbnailUrl: r.thumbnailUrl
                 originalWidth: r.originalWidth
                 isOnlyEmoji: r.isOnlyEmoji
+                isStateEvent: r.isStateEvent
                 userId: r.userId
                 userName: r.userName
                 roomTopic: r.roomTopic
@@ -176,6 +179,7 @@ Item {
                 Layout.rowSpan: msg.narrowLayout? 1 : 2
                 Layout.bottomMargin: msg.narrowLayout? -4 : 0
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                visible: !isStateEvent
 
                 property double scaling: msg.narrowLayout? 0.75 : 1
                 StatusIndicator {

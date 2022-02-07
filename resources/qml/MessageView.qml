@@ -252,9 +252,9 @@ ScrollView {
                 topPadding: 4
                 bottomPadding: 4
                 spacing: 8
-                visible: (previousMessageUserId !== userId || previousMessageDay !== day)
+                visible: (previousMessageUserId !== userId || previousMessageDay !== day || previousMessageIsStateEvent) && !isStateEvent
                 width: parentWidth
-                height: ((previousMessageDay !== day) ? dateBubble.height + 8 + userName.height : userName.height) + 8
+                height: ((previousMessageDay !== day) ? dateBubble.height : 0) + (isStateEvent? 0 : userName.height +8 )
 
                 Label {
                     id: dateBubble
@@ -317,7 +317,7 @@ ScrollView {
                         color: TimelineManager.userColor(userId, Nheko.colors.base)
                         textFormat: Text.RichText
                         ToolTip.visible: displayNameHover.hovered
-                    ToolTip.delay: Nheko.tooltipDelay
+                        ToolTip.delay: Nheko.tooltipDelay
                         ToolTip.text: userId
 
                         TapHandler {
@@ -379,6 +379,8 @@ ScrollView {
             required property bool isEncrypted
             required property bool isEditable
             required property bool isEdited
+            required property bool isStateEvent
+            required property bool previousMessageIsStateEvent
             required property string replyTo
             required property string userId
             required property string roomTopic
@@ -455,6 +457,8 @@ ScrollView {
                 property string previousMessageUserId: wrapper.previousMessageUserId
                 property string day: wrapper.day
                 property string previousMessageDay: wrapper.previousMessageDay
+                property bool previousMessageIsStateEvent: wrapper.previousMessageIsStateEvent
+                property bool isStateEvent: wrapper.isStateEvent
                 property string userName: wrapper.userName
                 property date timestamp: wrapper.timestamp
 
@@ -487,6 +491,7 @@ ScrollView {
                 isEncrypted: wrapper.isEncrypted
                 isEditable: wrapper.isEditable
                 isEdited: wrapper.isEdited
+                isStateEvent: wrapper.isStateEvent
                 replyTo: wrapper.replyTo
                 userId: wrapper.userId
                 userName: wrapper.userName

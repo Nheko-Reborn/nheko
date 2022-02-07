@@ -26,6 +26,7 @@ Item {
     property string filesize
     property string url
     property bool isOnlyEmoji
+    property bool isStateEvent
     property string userId
     property string userName
     property string thumbnailUrl
@@ -110,6 +111,7 @@ Item {
             thumbnailUrl: r.thumbnailUrl
             originalWidth: r.originalWidth
             isOnlyEmoji: r.isOnlyEmoji
+            isStateEvent: r.isStateEvent
             userId: r.userId
             userName: r.userName
             roomTopic: r.roomTopic

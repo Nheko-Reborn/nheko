@@ -5,7 +5,10 @@
 
 import im.nheko 1.0
 
+
 TextMessage {
+    property bool isStateEvent
     font.italic: true
     color: Nheko.colors.buttonText
+    font.pointSize: isStateEvent? 0.75*fontMetrics.font.pointSize : 1*fontMetrics.font.pointSize
 }
