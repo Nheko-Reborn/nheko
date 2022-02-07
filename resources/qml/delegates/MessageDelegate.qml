@@ -186,7 +186,7 @@ Item {
             roleValue: MtxEvent.Redaction
 
             Pill {
-                text: qsTr("removed")
+                text: qsTr("%1 removed a message").arg(d.userName)
                 isStateEvent: d.isStateEvent
             }
 
@@ -196,7 +196,7 @@ Item {
             roleValue: MtxEvent.Encryption
 
             Pill {
-                text: qsTr("Encryption enabled")
+                text: qsTr("%1 enabled encryption").arg(d.userName)
                 isStateEvent: d.isStateEvent
             }
 
@@ -220,7 +220,7 @@ Item {
                 isOnlyEmoji: false
                 isReply: d.isReply
                 isStateEvent: d.isStateEvent
-                formatted: d.roomName ? qsTr("room name changed to: %1").arg(d.roomName) : qsTr("removed room name")
+                formatted: d.roomName ? qsTr("%2 changed the room name to: %1").arg(d.roomName).arg(d.userName) : qsTr("%1 removed the room name").arg(d.userName)
             }
 
         }
@@ -233,7 +233,7 @@ Item {
                 isOnlyEmoji: false
                 isReply: d.isReply
                 isStateEvent: d.isStateEvent
-                formatted: d.roomTopic ? qsTr("topic changed to: %1").arg(d.roomTopic) : qsTr("removed topic")
+                formatted: d.roomTopic ? qsTr("%2 changed the topic to: %1").arg(d.roomTopic).arg(d.userName): qsTr("%1 removed the topic").arg(d.userName)
             }
 
         }
@@ -372,7 +372,7 @@ Item {
                 isOnlyEmoji: false
                 isReply: d.isReply
                 isStateEvent: d.isStateEvent
-                formatted: qsTr("Negotiating call...")
+                formatted: qsTr("% is negotiating the call...").arg(d.userName)
             }
 
         }

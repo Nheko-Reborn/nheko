@@ -252,7 +252,7 @@ ScrollView {
                 topPadding: 4
                 bottomPadding: 4
                 spacing: 8
-                visible: (previousMessageUserId !== userId || previousMessageDay !== day || previousMessageIsStateEvent) && !isStateEvent
+                visible: (previousMessageUserId !== userId || previousMessageDay !== day || isStateEvent !== previousMessageIsStateEvent)
                 width: parentWidth
                 height: ((previousMessageDay !== day) ? dateBubble.height : 0) + (isStateEvent? 0 : userName.height +8 )
 
@@ -278,6 +278,7 @@ ScrollView {
                 Row {
                     height: userName_.height
                     spacing: 8
+                    visible: !isStateEvent
 
                     Avatar {
                         id: messageUserAvatar
@@ -289,7 +290,7 @@ ScrollView {
                         userid: userId
                         onClicked: room.openUserProfile(userId)
                         ToolTip.visible: avatarHover.hovered
-                    ToolTip.delay: Nheko.tooltipDelay
+                        ToolTip.delay: Nheko.tooltipDelay
                         ToolTip.text: userid
 
                         HoverHandler {
