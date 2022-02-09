@@ -78,7 +78,9 @@ Item {
         anchors.rightMargin: 1
         anchors.leftMargin: Nheko.avatarSize + 12 // align bubble with section header
         anchors.left: parent.left
-        anchors.right: parent.right
+        //anchors.right: parent.right
+        property int maxWidth: parent.width-anchors.leftMargin-anchors.rightMargin
+        width: Math.min(maxWidth,msg.implicitWidth)
         height: msg.height
         topInset: -4
         bottomInset: -4
@@ -100,7 +102,7 @@ Item {
                 left: parent.left
                 top: parent.top
             }
-            property bool narrowLayout: (row.width < 350) && Settings.bubbles
+            property bool narrowLayout: (r.width < 500) && Settings.bubbles
             rowSpacing: 0
             columnSpacing: 2
             columns: narrowLayout? 1 : 2
@@ -174,18 +176,21 @@ Item {
             }
 
             RowLayout {
+                id: metadata
                 Layout.column: msg.narrowLayout? 0 : 1
                 Layout.row: msg.narrowLayout? 2 : 0
                 Layout.rowSpan: msg.narrowLayout? 1 : 2
                 Layout.bottomMargin: msg.narrowLayout? -4 : 0
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                Layout.preferredWidth: implicitWidth
                 visible: !isStateEvent
 
                 property double scaling: msg.narrowLayout? 0.75 : 1
+
                 StatusIndicator {
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
                     Layout.preferredHeight: 16*parent.scaling
-                    width: 16*parent.scaling
+                    Layout.preferredWidth: 16*parent.scaling
                     status: r.status
                     eventId: r.eventId
                 }
@@ -195,8 +200,6 @@ Item {
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
                     Layout.preferredHeight: 16*parent.scaling
                     Layout.preferredWidth: 16*parent.scaling
-                    height: 16*parent.scaling
-                    width: 16*parent.scaling
                     sourceSize.width: 16 * Screen.devicePixelRatio*parent.scaling
                     sourceSize.height: 16 * Screen.devicePixelRatio*parent.scaling
                     source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == chat.model.edit) ? Nheko.colors.highlight : Nheko.colors.buttonText)
@@ -217,12 +220,14 @@ Item {
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
                     Layout.preferredHeight: 16*parent.scaling
                     Layout.preferredWidth: 16*parent.scaling
+                    sourceSize.width: 16 * Screen.devicePixelRatio*parent.scaling
+                    sourceSize.height: 16 * Screen.devicePixelRatio*parent.scaling
                 }
 
                 Label {
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    Layout.preferredWidth: implicitWidth
                     text: timestamp.toLocaleTimeString(Locale.ShortFormat)
-                    width: Math.max(implicitWidth, text.length * fontMetrics.maximumCharacterWidth)
                     color: Nheko.inactiveColors.text
                     ToolTip.visible: ma.hovered
                     ToolTip.delay: Nheko.tooltipDelay

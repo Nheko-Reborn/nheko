@@ -38,6 +38,7 @@ Item {
 
     Layout.preferredHeight: replyContainer.height
     height: replyContainer.height
+    implicitWidth: visible? colorLine.width+replyContainer.implicitWidth : 0
 
     CursorShape {
         anchors.fill: parent
