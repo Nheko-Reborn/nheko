@@ -231,10 +231,11 @@ main(int argc, char *argv[])
 #if !defined(Q_OS_MAC)
     app.setWindowIcon(QIcon::fromTheme(QStringLiteral("nheko"), QIcon{":/logos/nheko.png"}));
 #endif
-    if (userdata.isEmpty() || userdata == QLatin1String("default"))
-        app.setDesktopFileName(QStringLiteral("nheko"));
-    else
-        app.setDesktopFileName("nheko[" + userdata + "]");
+#ifdef NHEKO_FLATPAK
+    app.setDesktopFileName(QStringLiteral("io.github.NhekoReborn.Nheko"));
+#else
+    app.setDesktopFileName(QStringLiteral("nheko"));
+#endif
 
     http::init();
 

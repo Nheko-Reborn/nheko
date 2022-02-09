@@ -200,6 +200,7 @@ modules:
       - -DLMDBXX_INCLUDE_DIR=.deps/lmdbxx
       - -DCOMPILE_QML=ON
       - -DMAN=OFF
+      - -DFLATPAK=ON
     buildsystem: cmake-ninja
     name: nheko
     sources:

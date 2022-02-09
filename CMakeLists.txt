@@ -10,6 +10,7 @@ if(UNIX AND NOT APPLE)
 else()
 	option(MAN "Build man page" OFF)
 endif()
+option(FLATPAK "Set this only if Nheko is built as a flatpak" OFF)
 
 set(
 	CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/toolchain.cmake"
@@ -637,6 +638,9 @@ elseif(WIN32)
 	endif()
 else()
 	target_link_libraries (nheko PRIVATE Qt5::DBus)
+	if (FLATPAK)
+		target_compile_definitions(nheko PRIVATE NHEKO_FLATPAK)
+	endif()
 endif()
 target_include_directories(nheko PRIVATE src includes third_party/blurhash third_party/cpp-httplib-0.5.12)
 
