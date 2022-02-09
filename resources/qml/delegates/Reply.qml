@@ -35,6 +35,7 @@ Item {
     property string callType
     property int encryptionError
     property int relatedEventCacheBuster
+    property int maxWidth
 
     Layout.preferredHeight: replyContainer.height
     height: replyContainer.height
@@ -124,6 +125,7 @@ Item {
             enabled: false
             Layout.fillWidth: true
             isReply: true
+            maxWidth: r.maxWidth-4
         }
 
     }

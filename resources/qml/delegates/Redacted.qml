@@ -13,6 +13,7 @@ Rectangle{
     required property real delegateWidth
     height: redactedLayout.implicitHeight + Nheko.paddingSmall
     width: redactedLayout.implicitWidth + 2 * Nheko.paddingMedium
+    implicitWidth: width
     radius: fontMetrics.lineSpacing / 2 + 2 * Nheko.paddingSmall
     color: Nheko.colors.alternateBase
 

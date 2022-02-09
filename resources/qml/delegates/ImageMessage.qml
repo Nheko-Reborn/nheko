@@ -17,13 +17,16 @@ Item {
     required property string filename
     required property bool isReply
     required property string eventId
-    property double tempWidth: Math.min(parent.width, originalWidth < 1 ? 200 : originalWidth)
+    property int maxWidth
+    property double tempWidth: Math.min(maxWidth, originalWidth < 1 ? 200 : originalWidth)
     property double tempHeight: tempWidth * proportionalHeight
     property double divisor: isReply ? 5 : 3
     property bool tooHigh: tempHeight > timelineView.height / divisor
 
     height: Math.round(tooHigh ? timelineView.height / divisor : tempHeight)
     width: Math.round(tooHigh ? (timelineView.height / divisor) / proportionalHeight : tempWidth)
+    implicitHeight: height
+    implicitWidth: width
 
     Image {
         id: blurhash_

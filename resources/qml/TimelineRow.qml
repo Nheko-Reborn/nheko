@@ -102,7 +102,7 @@ Item {
                 left: parent.left
                 top: parent.top
             }
-            property bool narrowLayout: (r.width < 500) && Settings.bubbles
+            property bool narrowLayout: Settings.bubbles //&& (timelineView.width < 500) // timelineView causes fewew binding loops than r. But maybe it shouldn't depend on width anyway
             rowSpacing: 0
             columnSpacing: 2
             columns: narrowLayout? 1 : 2
@@ -142,6 +142,7 @@ Item {
                 callType: r.relatedEventCacheBuster, fromModel(Room.CallType) ?? ""
                 encryptionError: r.relatedEventCacheBuster, fromModel(Room.EncryptionError) ?? ""
                 relatedEventCacheBuster: r.relatedEventCacheBuster, fromModel(Room.RelatedEventCacheBuster) ?? 0
+                maxWidth: row.maxWidth
             }
 
             // actual message content
@@ -173,6 +174,7 @@ Item {
                 encryptionError: r.encryptionError
                 relatedEventCacheBuster: r.relatedEventCacheBuster
                 isReply: false
+                maxWidth: row.maxWidth
             }
 
             RowLayout {

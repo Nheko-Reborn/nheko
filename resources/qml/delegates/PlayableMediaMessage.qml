@@ -22,13 +22,16 @@ Item {
     required property string url
     required property string body
     required property string filesize
-    property double tempWidth: Math.min(parent.width, originalWidth < 1 ? 400 : originalWidth)
+    property int maxWidth
+    property double tempWidth: Math.min(maxWidth, originalWidth < 1 ? 400 : originalWidth)
     property double tempHeight: tempWidth * proportionalHeight
     property double divisor: isReply ? 4 : 2
     property bool tooHigh: tempHeight > timelineRoot.height / divisor
 
     height: (type == MtxEvent.VideoMessage ? tooHigh ? timelineRoot.height / divisor : tempHeight : 80) + fileInfoLabel.height
     width: type == MtxEvent.VideoMessage ? tooHigh ? (timelineRoot.height / divisor) / proportionalHeight : tempWidth : 250
+    implicitHeight: height
+    implicitWidth: width
 
     MxcMedia {
         id: mxcmedia

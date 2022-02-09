@@ -13,7 +13,7 @@ Item {
 
     required property bool isReply
     property alias child: chooser.child
-    implicitWidth: (chooser.child && chooser.child.implicitWidth) ? chooser.child.implicitWidth : width
+    implicitWidth: (chooser.child && chooser.child.implicitWidth) ? chooser.child.implicitWidth : 0
     required property double proportionalHeight
     required property int type
     required property string typeString
@@ -35,6 +35,7 @@ Item {
     required property string callType
     required property int encryptionError
     required property int relatedEventCacheBuster
+    property int maxWidth
 
     Layout.preferredHeight: chooser.child ? chooser.child.height : Nheko.paddingLarge
 
@@ -110,6 +111,7 @@ Item {
                 filename: d.filename
                 isReply: d.isReply
                 eventId: d.eventId
+                maxWidth: d.maxWidth
             }
 
         }
@@ -127,6 +129,7 @@ Item {
                 filename: d.filename
                 isReply: d.isReply
                 eventId: d.eventId
+                maxWidth: d.maxWidth
             }
 
         }
@@ -138,6 +141,7 @@ Item {
                 eventId: d.eventId
                 filename: d.filename
                 filesize: d.filesize
+                maxWidth: d.maxWidth
             }
 
         }
@@ -154,6 +158,7 @@ Item {
                 url: d.url
                 body: d.body
                 filesize: d.filesize
+                maxWidth: d.maxWidth
             }
 
         }
@@ -170,6 +175,7 @@ Item {
                 url: d.url
                 body: d.body
                 filesize: d.filesize
+                maxWidth: d.maxWidth
             }
 
         }
@@ -372,7 +378,7 @@ Item {
                 isOnlyEmoji: false
                 isReply: d.isReply
                 isStateEvent: d.isStateEvent
-                formatted: qsTr("% is negotiating the call...").arg(d.userName)
+                formatted: qsTr("%1 is negotiating the call...").arg(d.userName)
             }
 
         }
