@@ -47,7 +47,7 @@ Item {
 
     anchors.left: parent.left
     anchors.right: parent.right
-    height: row.height+reactionRow.height+(Settings.bubbles? 8 : 4)
+    height: row.height+reactionRow.height
 
     Rectangle {
         color: (Settings.messageHoverHighlight && hoverHandler.hovered) ? Nheko.colors.alternateBase : "transparent"
@@ -78,30 +78,19 @@ Item {
         anchors.rightMargin: 1
         anchors.leftMargin: Nheko.avatarSize + 12 // align bubble with section header
         anchors.left: parent.left
-        //anchors.right: parent.right
         property int maxWidth: parent.width-anchors.leftMargin-anchors.rightMargin
-        width: Math.min(maxWidth,msg.implicitWidth)
-        height: msg.height
-        topInset: -4
-        bottomInset: -4
-        leftInset: -4
-        rightInset: -4
+        width: Settings.bubbles? Math.min(maxWidth,implicitWidth+metadata.width) : maxWidth
+        padding: isStateEvent? 0 : 3
         background: Rectangle {
-            //anchors.fill: msg
             property color userColor: TimelineManager.userColor(userId, Nheko.colors.base)
             property color bgColor: Nheko.colors.base
-            color: Qt.rgba(userColor.r*0.1+bgColor.r*0.9,userColor.g*0.1+bgColor.g*0.9,userColor.b*0.1+bgColor.b*0.9,1) //TimelineManager.userColor(userId, Nheko.colors.base)
-            radius: 4
+            color: Qt.tint(bgColor, Qt.rgba(userColor.r, userColor.g, userColor.b, 0.2))
+            radius: parent.padding*2
             visible: Settings.bubbles && !isStateEvent
         }
 
-        GridLayout {
+        contentItem: GridLayout {
             id: msg
-            anchors {
-                right: parent.right
-                left: parent.left
-                top: parent.top
-            }
             property bool narrowLayout: Settings.bubbles //&& (timelineView.width < 500) // timelineView causes fewew binding loops than r. But maybe it shouldn't depend on width anyway
             rowSpacing: 0
             columnSpacing: 2
@@ -114,6 +103,8 @@ Item {
                 Layout.column: 0
                 Layout.fillWidth: true
                 Layout.bottomMargin: visible? 2 : 0
+                Layout.preferredHeight: height
+                Layout.maximumWidth: implicitWidth
                 id: reply
 
                 function fromModel(role) {
@@ -142,7 +133,6 @@ Item {
                 callType: r.relatedEventCacheBuster, fromModel(Room.CallType) ?? ""
                 encryptionError: r.relatedEventCacheBuster, fromModel(Room.EncryptionError) ?? ""
                 relatedEventCacheBuster: r.relatedEventCacheBuster, fromModel(Room.RelatedEventCacheBuster) ?? 0
-                maxWidth: row.maxWidth
             }
 
             // actual message content
@@ -150,6 +140,8 @@ Item {
                 Layout.row: 1
                 Layout.column: 0
                 Layout.fillWidth: true
+                Layout.preferredHeight: height
+                Layout.maximumWidth: implicitWidth
                 id: contentItem
 
                 blurhash: r.blurhash
@@ -174,7 +166,6 @@ Item {
                 encryptionError: r.encryptionError
                 relatedEventCacheBuster: r.relatedEventCacheBuster
                 isReply: false
-                maxWidth: row.maxWidth
             }
 
             RowLayout {
@@ -182,7 +173,7 @@ Item {
                 Layout.column: msg.narrowLayout? 0 : 1
                 Layout.row: msg.narrowLayout? 2 : 0
                 Layout.rowSpan: msg.narrowLayout? 1 : 2
-                Layout.bottomMargin: msg.narrowLayout? -4 : 0
+                Layout.bottomMargin: -4
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
                 Layout.preferredWidth: implicitWidth
                 visible: !isStateEvent

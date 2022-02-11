@@ -11,8 +11,8 @@ Label {
     property bool isStateEvent
     color: Nheko.colors.text
     horizontalAlignment: Text.AlignHCenter
-    height: contentHeight * 1.2
-    width: contentWidth * 1.2
+    //height: contentHeight * 1.2
+    //width: contentWidth * 1.2
     font.pointSize: isStateEvent? 0.75*fontMetrics.font.pointSize : 1*fontMetrics.font.pointSize
 
     background: Rectangle {

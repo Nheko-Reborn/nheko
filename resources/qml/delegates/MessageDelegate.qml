@@ -35,9 +35,8 @@ Item {
     required property string callType
     required property int encryptionError
     required property int relatedEventCacheBuster
-    property int maxWidth
 
-    Layout.preferredHeight: chooser.child ? chooser.child.height : Nheko.paddingLarge
+    height: chooser.child ? chooser.child.height : Nheko.paddingLarge
 
     DelegateChooser {
         id: chooser
@@ -46,8 +45,7 @@ Item {
         roleValue: type
         //anchors.fill: parent
 
-        anchors.left: parent.left
-        anchors.right: parent.right
+        width: parent.width? parent.width: 0 // this should get rid of "cannot read property 'width' of null"
 
         DelegateChoice {
             roleValue: MtxEvent.UnknownMessage
@@ -111,7 +109,6 @@ Item {
                 filename: d.filename
                 isReply: d.isReply
                 eventId: d.eventId
-                maxWidth: d.maxWidth
             }
 
         }
@@ -129,7 +126,6 @@ Item {
                 filename: d.filename
                 isReply: d.isReply
                 eventId: d.eventId
-                maxWidth: d.maxWidth
             }
 
         }
@@ -141,7 +137,6 @@ Item {
                 eventId: d.eventId
                 filename: d.filename
                 filesize: d.filesize
-                maxWidth: d.maxWidth
             }
 
         }
@@ -158,7 +153,6 @@ Item {
                 url: d.url
                 body: d.body
                 filesize: d.filesize
-                maxWidth: d.maxWidth
             }
 
         }
@@ -175,7 +169,6 @@ Item {
                 url: d.url
                 body: d.body
                 filesize: d.filesize
-                maxWidth: d.maxWidth
             }
 
         }
@@ -184,7 +177,7 @@ Item {
             roleValue: MtxEvent.Redacted
 
             Redacted {
-                delegateWidth: d.width
+                //delegateWidth: d.width
             }
         }
 

@@ -37,8 +37,8 @@ Item {
     property int relatedEventCacheBuster
     property int maxWidth
 
-    Layout.preferredHeight: replyContainer.height
     height: replyContainer.height
+    implicitHeight: replyContainer.height
     implicitWidth: visible? colorLine.width+replyContainer.implicitWidth : 0
 
     CursorShape {
@@ -99,6 +99,7 @@ Item {
 
         MessageDelegate {
             Layout.leftMargin: 4
+            Layout.preferredHeight: height
             id: reply
             blurhash: r.blurhash
             body: r.body
@@ -125,7 +126,6 @@ Item {
             enabled: false
             Layout.fillWidth: true
             isReply: true
-            maxWidth: r.maxWidth-4
         }
 
     }

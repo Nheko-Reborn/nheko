@@ -33,7 +33,7 @@ ScrollView {
         //reuseItems: true
         boundsBehavior: Flickable.StopAtBounds
         pixelAligned: true
-        spacing: 4
+        spacing: 2
         verticalLayoutDirection: ListView.BottomToTop
         onCountChanged: {
             // Mark timeline as read
@@ -464,7 +464,7 @@ ScrollView {
                 property date timestamp: wrapper.timestamp
 
                 z: 4
-                active: previousMessageUserId !== undefined && previousMessageUserId !== userId || previousMessageDay !== day
+                active: previousMessageUserId !== undefined && previousMessageUserId !== userId || previousMessageDay !== day || previousMessageIsStateEvent !== isStateEvent
                 //asynchronous: true
                 sourceComponent: sectionHeader
                 visible: status == Loader.Ready

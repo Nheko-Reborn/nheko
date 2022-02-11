@@ -11,11 +11,10 @@ Item {
     required property string eventId
     required property string filename
     required property string filesize
-    property int maxWidth
 
     height: row.height + 24
-    width: maxWidth
-    implicitWidth: maxWidth
+    width: parent.width
+    implicitWidth: row.implicitWidth
 
     RowLayout {
         id: row
