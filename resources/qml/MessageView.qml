@@ -249,8 +249,8 @@ ScrollView {
             id: sectionHeader
 
             Column {
-                topPadding: 4
-                bottomPadding: 4
+                topPadding: 0
+                bottomPadding: 0
                 spacing: 8
                 visible: (previousMessageUserId !== userId || previousMessageDay !== day || isStateEvent !== previousMessageIsStateEvent)
                 width: parentWidth
@@ -278,13 +278,13 @@ ScrollView {
                 Row {
                     height: userName_.height
                     spacing: 8
-                    visible: !isStateEvent
+                    visible: !isStateEvent && (!isSender || !Settings.bubbles)
 
                     Avatar {
                         id: messageUserAvatar
 
-                        width: Nheko.avatarSize
-                        height: Nheko.avatarSize
+                        width: Nheko.avatarSize * (Settings.bubbles? 0.5 : 1)
+                        height: Nheko.avatarSize * (Settings.bubbles? 0.5 : 1)
                         url: !room ? "" : room.avatarUrl(userId).replace("mxc://", "image://MxcImage/")
                         displayName: userName
                         userid: userId
@@ -460,6 +460,7 @@ ScrollView {
                 property string previousMessageDay: wrapper.previousMessageDay
                 property bool previousMessageIsStateEvent: wrapper.previousMessageIsStateEvent
                 property bool isStateEvent: wrapper.isStateEvent
+                property bool isSender: wrapper.isSender
                 property string userName: wrapper.userName
                 property date timestamp: wrapper.timestamp
 

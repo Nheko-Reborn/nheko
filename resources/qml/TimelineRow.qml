@@ -45,9 +45,8 @@ Item {
     required property int status
     required property int relatedEventCacheBuster
 
-    anchors.left: parent.left
-    anchors.right: parent.right
-    height: row.height+reactionRow.height
+    width: parent.width
+    height: childrenRect.height
 
     Rectangle {
         color: (Settings.messageHoverHighlight && hoverHandler.hovered) ? Nheko.colors.alternateBase : "transparent"
@@ -74,13 +73,14 @@ Item {
 
     Control {
         id: row
-
-        anchors.rightMargin: 1
-        anchors.leftMargin: Nheko.avatarSize + 12 // align bubble with section header
-        anchors.left: parent.left
+        property bool bubbleOnRight : isSender && Settings.bubbles
+        anchors.rightMargin: isSender || !Settings.bubbles? 0 : parent.width/8
+        anchors.leftMargin: (Settings.bubbles? 0 : Nheko.avatarSize) + (bubbleOnRight? parent.width/8 : 8) // align bubble with section header
+        anchors.left: bubbleOnRight? undefined : parent.left
+        anchors.right: bubbleOnRight? parent.right : undefined
         property int maxWidth: parent.width-anchors.leftMargin-anchors.rightMargin
         width: Settings.bubbles? Math.min(maxWidth,implicitWidth+metadata.width) : maxWidth
-        padding: isStateEvent? 0 : 3
+        padding: isStateEvent? 0 : 2
         background: Rectangle {
             property color userColor: TimelineManager.userColor(userId, Nheko.colors.base)
             property color bgColor: Nheko.colors.base
@@ -237,6 +237,7 @@ Item {
     Reactions {
         anchors {
             top: row.bottom
+            topMargin: -2
             left: parent.left
             leftMargin: Nheko.avatarSize + 16
         }
