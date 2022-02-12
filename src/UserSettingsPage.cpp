@@ -1499,8 +1499,8 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 return false;
         }
         case EmojiFont: {
-            if (value.userType() == QMetaType::QString) {
-                i->setFontFamily(
+            if (value.userType() == QMetaType::Int) {
+                i->setEmojiFontFamily(
                   fontDb.families(QFontDatabase::WritingSystem::Symbol).at(value.toInt()));
                 return true;
             } else
