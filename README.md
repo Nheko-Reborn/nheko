@@ -108,11 +108,9 @@ sudo zypper ref
 sudo zypper in nheko
 ```
 
-If you want to add jdenticon support, run these commands as well:
+If you want to add jdenticon support:
 
 ```bash
-sudo zypper addrepo https://download.opensuse.org/repositories/home:LorenDB/openSUSE_Tumbleweed/home:LorenDB.repo
-sudo zypper refresh
 sudo zypper install qt-jdenticon
 ```
 
