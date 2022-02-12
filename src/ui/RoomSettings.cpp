@@ -12,10 +12,13 @@
 #include <QMimeDatabase>
 #include <QStandardPaths>
 #include <QVBoxLayout>
+#include <mtx/events/event_type.hpp>
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/media.hpp>
+#include <mtxclient/http/client.hpp>
 
 #include "Cache.h"
+#include "Cache_p.h"
 #include "Config.h"
 #include "Logging.h"
 #include "MatrixClient.h"

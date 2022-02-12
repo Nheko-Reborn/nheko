@@ -8,8 +8,10 @@
 #include <QLabel>
 #include <QObject>
 #include <QPushButton>
+#include <QSet>
 #include <QString>
 
+#include <mtx/events/event_type.hpp>
 #include <mtx/events/guest_access.hpp>
 
 #include "CacheStructs.h"

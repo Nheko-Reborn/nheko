@@ -332,6 +332,7 @@ set(SRC_FILES
 	src/timeline/RoomlistModel.cpp
 
 	# UI components
+	src/ui/HiddenEvents.cpp
 	src/ui/MxcAnimatedImage.cpp
 	src/ui/MxcMediaProxy.cpp
 	src/ui/NhekoCursorShape.cpp
@@ -403,7 +404,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        8c03d9ac58274695a71d0eb32519ebce29bc536e
+		GIT_TAG        31a703c9febdfcaaf4e8a74abd424b6fc462e573
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -527,6 +528,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/timeline/RoomlistModel.h
 
 	# UI components
+	src/ui/HiddenEvents.h
 	src/ui/MxcAnimatedImage.h
 	src/ui/MxcMediaProxy.h
 	src/ui/NhekoCursorShape.h
