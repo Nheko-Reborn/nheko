@@ -44,6 +44,7 @@
 #include "encryption/SelfVerificationStatus.h"
 #include "timeline/DelegateChooser.h"
 #include "timeline/TimelineViewManager.h"
+#include "ui/HiddenEvents.h"
 #include "ui/MxcAnimatedImage.h"
 #include "ui/MxcMediaProxy.h"
 #include "ui/NhekoCursorShape.h"
@@ -168,6 +169,7 @@ MainWindow::registerQmlTypes()
     qmlRegisterType<RoomDirectoryModel>("im.nheko", 1, 0, "RoomDirectoryModel");
     qmlRegisterType<LoginPage>("im.nheko", 1, 0, "Login");
     qmlRegisterType<RegisterPage>("im.nheko", 1, 0, "Registration");
+    qmlRegisterType<HiddenEvents>("im.nheko", 1, 0, "HiddenEvents");
     qmlRegisterUncreatableType<DeviceVerificationFlow>(
       "im.nheko",
       1,

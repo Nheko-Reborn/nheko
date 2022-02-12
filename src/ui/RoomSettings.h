@@ -111,9 +111,6 @@ public:
     Q_INVOKABLE void openEditModal();
     Q_INVOKABLE void changeAccessRules(int index);
     Q_INVOKABLE void changeNotifications(int currentIndex);
-    Q_INVOKABLE void
-    saveHiddenEventsSettings(const QSet<QString> &events, const QString &roomId = {});
-    Q_INVOKABLE bool eventHidden(QString event) const;
 
 signals:
     void loadingChanged();
@@ -134,7 +131,6 @@ private:
     void updateAccessRules(const std::string &room_id,
                            const mtx::events::state::JoinRules &,
                            const mtx::events::state::GuestAccess &);
-    void readHiddenEventsSettings(const QString &roomId = {});
 
 private:
     QString roomid_;
@@ -143,5 +139,4 @@ private:
     RoomInfo info_;
     int notifications_ = 0;
     int accessRules_   = 0;
-    QSet<QString> hiddenEvents_;
 };

@@ -11,17 +11,24 @@ import im.nheko 1.0
 ApplicationWindow {
     id: hiddenEventsDialog
 
-    property var isRoomSetting: false
+    property string roomid: ""
+    property string roomName: ""
     property var onAccepted: undefined
 
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowTitleHint
     minimumWidth: 250
     minimumHeight: 220
-    Component.onCompleted: Nheko.reparent(hiddenEventsDialog)
+
+    HiddenEvents {
+        id: hiddenEvents
+
+        roomid: hiddenEventsDialog.roomid
+    }
+
     title: {
-        if (isRoomSetting) {
-            return qsTr("Hidden events for %1").arg(roomSettings.roomName);
+        if (roomid) {
+            return qsTr("Hidden events for %1").arg(roomName);
         }
         else {
             return qsTr("Hidden events");
@@ -41,8 +48,8 @@ ApplicationWindow {
         MatrixText {
             id: promptLabel
             text: {
-                if (isRoomSetting) {
-                    return qsTr("These events will be be <b>shown</b> in %1:").arg(roomSettings.roomName);
+                if (roomid) {
+                    return qsTr("These events will be be <b>shown</b> in %1:").arg(roomName);
                 }
                 else {
                     return qsTr("These events will be be <b>shown</b> in all rooms:");
@@ -71,9 +78,9 @@ ApplicationWindow {
             }
 
             ToggleButton {
-                id: toggleRoomMember
-                checked: !roomSettings.eventHidden("m.room.member")
                 Layout.alignment: Qt.AlignRight
+                checked: !hiddenEvents.hiddenEvents.includes(MtxEvent.Member)
+                onToggled: hiddenEvents.toggle(MtxEvent.Member)
             }
 
             MatrixText {
@@ -88,9 +95,9 @@ ApplicationWindow {
             }
 
             ToggleButton {
-                id: toggleRoomPowerLevels
-                checked: !roomSettings.eventHidden("m.room.power_levels")
                 Layout.alignment: Qt.AlignRight
+                checked: !hiddenEvents.hiddenEvents.includes(MtxEvent.PowerLevels)
+                onToggled: hiddenEvents.toggle(MtxEvent.PowerLevels)
             }
 
             MatrixText {
@@ -99,9 +106,9 @@ ApplicationWindow {
             }
 
             ToggleButton {
-                id: toggleSticker
                 Layout.alignment: Qt.AlignRight
-                checked: !roomSettings.eventHidden("m.sticker")
+                checked: !hiddenEvents.hiddenEvents.includes(MtxEvent.Sticker)
+                onToggled: hiddenEvents.toggle(MtxEvent.Sticker)
             }
         }
     }
@@ -111,23 +118,10 @@ ApplicationWindow {
 
         standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
         onAccepted: {
-            let events = new Array;
-            if (!toggleRoomMember.checked) {
-                events.push("m.room.member");
-            }
-            if (!toggleRoomPowerLevels.checked) {
-                events.push("m.room.power_levels");
-            }
-            if (!toggleSticker.checked) {
-                events.push("m.sticker");
-            }
-            roomSettings.saveHiddenEventsSettings(events, roomSettings.roomId);
-
+            hiddenEvents.save();
             hiddenEventsDialog.close();
         }
-        onRejected: {
-            hiddenEventsDialog.close();
-        }
+        onRejected: hiddenEventsDialog.close();
     }
 
 }

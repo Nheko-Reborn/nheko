@@ -260,7 +260,8 @@ ApplicationWindow {
 
             HiddenEventsDialog {
                 id: hiddenEventsDialog
-                isRoomSetting: true
+                roomid: roomSettings.roomId
+                roomName: roomSettings.roomName
             }
 
             Button {

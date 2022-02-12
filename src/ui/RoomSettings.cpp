@@ -13,7 +13,6 @@
 #include <QStandardPaths>
 #include <QVBoxLayout>
 #include <mtx/events/event_type.hpp>
-#include <mtx/events/nheko_extensions/hidden_events.hpp>
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/media.hpp>
 #include <mtxclient/http/client.hpp>
@@ -228,8 +227,6 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
         accessRules_ = 4;
     }
     emit accessJoinRulesChanged();
-
-    readHiddenEventsSettings(roomid_);
 }
 
 QString
@@ -640,51 +637,4 @@ RoomSettings::updateAvatar()
                 emit proxy->stopLoading();
             });
       });
-}
-
-void
-RoomSettings::saveHiddenEventsSettings(const QSet<QString> &events, const QString &roomId)
-{
-    account_data::nheko_extensions::HiddenEvents hiddenEvents;
-    hiddenEvents.hidden_event_types = {
-      EventType::Reaction, EventType::CallCandidates, EventType::Unsupported};
-    for (const auto &event : events) {
-        hiddenEvents.hidden_event_types.emplace_back(getEventType(event.toStdString()));
-    }
-
-    if (!roomId.isEmpty()) {
-        const auto rid = roomId.toStdString();
-        http::client()->put_room_account_data(rid, hiddenEvents, [&rid](mtx::http::RequestErr e) {
-            if (e) {
-                nhlog::net()->error(
-                  "Failed to update room account data with hidden events in {}: {}", rid, *e);
-            }
-        });
-    } else {
-        http::client()->put_account_data(hiddenEvents, [](mtx::http::RequestErr e) {
-            if (e) {
-                nhlog::net()->error("Failed to update account data with hidden events: {}", *e);
-            }
-        });
-    }
-}
-
-bool
-RoomSettings::eventHidden(const QString event) const
-{
-    return hiddenEvents_.contains(event);
-}
-
-void
-RoomSettings::readHiddenEventsSettings(const QString &roomId)
-{
-    if (auto hiddenEvents = cache::client()->getAccountData(
-          mtx::events::EventType::NhekoHiddenEvents, roomId.toStdString())) {
-        if (auto tmp = std::get_if<mtx::events::EphemeralEvent<
-              mtx::events::account_data::nheko_extensions::HiddenEvents>>(&*hiddenEvents)) {
-            for (const auto event : tmp->content.hidden_event_types) {
-                hiddenEvents_.insert(mtx::events::to_string(event).data());
-            }
-        }
-    }
 }

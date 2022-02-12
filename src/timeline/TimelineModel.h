@@ -125,6 +125,8 @@ enum EventType
 };
 Q_ENUM_NS(EventType)
 mtx::events::EventType fromRoomEventType(qml_mtx_events::EventType);
+qml_mtx_events::EventType
+toRoomEventType(mtx::events::EventType e);
 
 enum EventState
 {

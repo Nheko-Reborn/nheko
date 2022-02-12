@@ -173,24 +173,31 @@ Cache::isHiddenEvent(lmdb::txn &txn,
     }
 
     mtx::events::account_data::nheko_extensions::HiddenEvents hiddenEvents;
-    hiddenEvents.hidden_event_types = {
-      EventType::Reaction, EventType::CallCandidates, EventType::Unsupported};
+    hiddenEvents.hidden_event_types = std::vector{
+      EventType::Reaction,
+      EventType::CallCandidates,
+      EventType::Unsupported,
+    };
 
-    if (auto temp = getAccountData(txn, mtx::events::EventType::NhekoHiddenEvents, ""))
-        hiddenEvents =
-          std::move(std::get<mtx::events::AccountDataEvent<
-                      mtx::events::account_data::nheko_extensions::HiddenEvents>>(*temp)
-                      .content);
-    if (auto temp = getAccountData(txn, mtx::events::EventType::NhekoHiddenEvents, room_id))
-        hiddenEvents =
-          std::move(std::get<mtx::events::AccountDataEvent<
-                      mtx::events::account_data::nheko_extensions::HiddenEvents>>(*temp)
-                      .content);
+    if (auto temp = getAccountData(txn, mtx::events::EventType::NhekoHiddenEvents, "")) {
+        auto h = std::get<
+          mtx::events::AccountDataEvent<mtx::events::account_data::nheko_extensions::HiddenEvents>>(
+          *temp);
+        if (h.content.hidden_event_types)
+            hiddenEvents = std::move(h.content);
+    }
+    if (auto temp = getAccountData(txn, mtx::events::EventType::NhekoHiddenEvents, room_id)) {
+        auto h = std::get<
+          mtx::events::AccountDataEvent<mtx::events::account_data::nheko_extensions::HiddenEvents>>(
+          *temp);
+        if (h.content.hidden_event_types)
+            hiddenEvents = std::move(h.content);
+    }
 
     return std::visit(
       [hiddenEvents](const auto &ev) {
-          return std::any_of(hiddenEvents.hidden_event_types.begin(),
-                             hiddenEvents.hidden_event_types.end(),
+          return std::any_of(hiddenEvents.hidden_event_types->begin(),
+                             hiddenEvents.hidden_event_types->end(),
                              [ev](EventType type) { return type == ev.type; });
       },
       e);
@@ -1515,6 +1522,16 @@ Cache::saveState(const mtx::responses::Sync &res)
         for (const auto &ev : res.account_data.events)
             std::visit(
               [&txn, &accountDataDb](const auto &event) {
+                  if constexpr (std::is_same_v<
+                                  std::remove_cv_t<std::remove_reference_t<decltype(event)>>,
+                                  AccountDataEvent<
+                                    mtx::events::account_data::nheko_extensions::HiddenEvents>>) {
+                      if (!event.content.hidden_event_types) {
+                          accountDataDb.del(txn, "im.nheko.hidden_events");
+                          return;
+                      }
+                  }
+
                   auto j = json(event);
                   accountDataDb.put(txn, j["type"].get<std::string>(), j.dump());
               },
@@ -1589,6 +1606,15 @@ Cache::saveState(const mtx::responses::Sync &res)
             for (const auto &evt : room.second.account_data.events) {
                 std::visit(
                   [&txn, &accountDataDb](const auto &event) {
+                      if constexpr (std::is_same_v<
+                                      std::remove_cv_t<std::remove_reference_t<decltype(event)>>,
+                                      AccountDataEvent<mtx::events::account_data::nheko_extensions::
+                                                         HiddenEvents>>) {
+                          if (!event.content.hidden_event_types) {
+                              accountDataDb.del(txn, "im.nheko.hidden_events");
+                              return;
+                          }
+                      }
                       auto j = json(event);
                       accountDataDb.put(txn, j["type"].get<std::string>(), j.dump());
                   },
