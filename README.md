@@ -97,12 +97,20 @@ Make sure you have the testing repositories from `edge` enabled. Note that this 
 sudo apk add nheko
 ```
 
-#### openSUSE (Leap or Tumbleweed)
+#### openSUSE
+
+Note: these instructions have only been tested on Tumbleweed.
+
+First, install nheko:
 ```bash
+sudo zypper addrepo https://download.opensuse.org/repositories/network:messaging:matrix/openSUSE_Tumbleweed/network:messaging:matrix.repo
+sudo zypper ref
 sudo zypper in nheko
-# If you want to add identicon support and are using Tumbleweed, run these as well
-sudo zypper addrepo https://download.opensuse.org/repositories/home:LorenDB/openSUSE_Tumbleweed/home:LorenDB.repo
-sudo zypper refresh
+```
+
+If you want to add jdenticon support:
+
+```bash
 sudo zypper install qt-jdenticon
 ```
 
