@@ -69,9 +69,9 @@ UserSettings::load(std::optional<QString> profile)
       settings.value(QStringLiteral("user/timeline/message_hover_highlight"), false).toBool();
     enlargeEmojiOnlyMessages_ =
       settings.value(QStringLiteral("user/timeline/enlarge_emoji_only_msg"), false).toBool();
-    markdown_ = settings.value(QStringLiteral("user/markdown_enabled"), true).toBool();
-    bubbles_  = settings.value(QStringLiteral("user/bubbles_enabled"), true).toBool();
-    smallAvatars_  = settings.value(QStringLiteral("user/small_avatars_enabled"), true).toBool();
+    markdown_     = settings.value(QStringLiteral("user/markdown_enabled"), true).toBool();
+    bubbles_      = settings.value(QStringLiteral("user/bubbles_enabled"), true).toBool();
+    smallAvatars_ = settings.value(QStringLiteral("user/small_avatars_enabled"), true).toBool();
     animateImagesOnHover_ =
       settings.value(QStringLiteral("user/animate_images_on_hover"), false).toBool();
     typingNotifications_ =
@@ -1078,8 +1078,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr(
               "Messages get a bubble background. This also triggers some layout changes (WIP).");
         case SmallAvatars:
-            return tr(
-              "Avatars are resized to fit above the message.");
+            return tr("Avatars are resized to fit above the message.");
         case AnimateImagesOnHover:
             return tr("Plays media like GIFs or WEBPs only when explicitly hovering over them.");
         case TypingNotifications:
