@@ -74,28 +74,31 @@ Item {
     Control {
         id: row
         property bool bubbleOnRight : isSender && Settings.bubbles
-        anchors.rightMargin: isSender || !Settings.bubbles? 0 : parent.width/8
-        anchors.leftMargin: (Settings.bubbles? 0 : Nheko.avatarSize) + (bubbleOnRight? parent.width/8 : 8) // align bubble with section header
+        property int bubblePadding: (parent.width-(Settings.smallAvatars? 0 : Nheko.avatarSize+8))/10
+        anchors.rightMargin: isSender || !Settings.bubbles? 0 : bubblePadding
+        anchors.leftMargin: (Settings.smallAvatars? 0 : Nheko.avatarSize+8) + (bubbleOnRight? bubblePadding : 0) // align bubble with section header
         anchors.left: bubbleOnRight? undefined : parent.left
         anchors.right: bubbleOnRight? parent.right : undefined
         property int maxWidth: parent.width-anchors.leftMargin-anchors.rightMargin
         width: Settings.bubbles? Math.min(maxWidth,implicitWidth+metadata.width) : maxWidth
-        padding: isStateEvent? 0 : 2
+        leftPadding: 4
+        rightPadding: (Settings.bubbles && !isStateEvent)? 4: 2
+        topPadding: (Settings.bubbles && !isStateEvent)? 4: 2
+        bottomPadding: topPadding
         background: Rectangle {
             property color userColor: TimelineManager.userColor(userId, Nheko.colors.base)
             property color bgColor: Nheko.colors.base
-            color: Qt.tint(bgColor, Qt.rgba(userColor.r, userColor.g, userColor.b, 0.2))
-            radius: parent.padding*2
+            color: Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2))
+            radius: 4
             visible: Settings.bubbles && !isStateEvent
         }
 
         contentItem: GridLayout {
             id: msg
-            property bool narrowLayout: Settings.bubbles //&& (timelineView.width < 500) // timelineView causes fewew binding loops than r. But maybe it shouldn't depend on width anyway
             rowSpacing: 0
             columnSpacing: 2
-            columns: narrowLayout? 1 : 2
-            rows: narrowLayout? 3 : 2
+            columns: Settings.bubbles? 1 : 2
+            rows: Settings.bubbles? 3 : 2
 
             // fancy reply, if this is a reply
             Reply {
@@ -170,15 +173,15 @@ Item {
 
             RowLayout {
                 id: metadata
-                Layout.column: msg.narrowLayout? 0 : 1
-                Layout.row: msg.narrowLayout? 2 : 0
-                Layout.rowSpan: msg.narrowLayout? 1 : 2
-                Layout.bottomMargin: -4
+                Layout.column: Settings.bubbles? 0 : 1
+                Layout.row: Settings.bubbles? 2 : 0
+                Layout.rowSpan: Settings.bubbles? 1 : 2
+                Layout.bottomMargin: -2
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
                 Layout.preferredWidth: implicitWidth
                 visible: !isStateEvent
 
-                property double scaling: msg.narrowLayout? 0.75 : 1
+                property double scaling: Settings.bubbles? 0.75 : 1
 
                 StatusIndicator {
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
@@ -238,8 +241,7 @@ Item {
         anchors {
             top: row.bottom
             topMargin: -2
-            left: parent.left
-            leftMargin: Nheko.avatarSize + 16
+            left: row.left
         }
 
         id: reactionRow

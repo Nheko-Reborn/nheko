@@ -249,8 +249,8 @@ ScrollView {
             id: sectionHeader
 
             Column {
-                topPadding: 0
-                bottomPadding: 0
+                topPadding: userName_.visible? 4: 0
+                bottomPadding: Settings.bubbles? 0 : 3
                 spacing: 8
                 visible: (previousMessageUserId !== userId || previousMessageDay !== day || isStateEvent !== previousMessageIsStateEvent)
                 width: parentWidth
@@ -283,8 +283,8 @@ ScrollView {
                     Avatar {
                         id: messageUserAvatar
 
-                        width: Nheko.avatarSize * (Settings.bubbles? 0.5 : 1)
-                        height: Nheko.avatarSize * (Settings.bubbles? 0.5 : 1)
+                        width: Nheko.avatarSize * (Settings.smallAvatars? 0.5 : 1)
+                        height: Nheko.avatarSize * (Settings.smallAvatars? 0.5 : 1)
                         url: !room ? "" : room.avatarUrl(userId).replace("mxc://", "image://MxcImage/")
                         displayName: userName
                         userid: userId

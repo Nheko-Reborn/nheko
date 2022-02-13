@@ -137,7 +137,7 @@ Item {
         anchors.fill: replyContainer
         property color userColor: TimelineManager.userColor(userId, Nheko.colors.base)
         property color bgColor: Nheko.colors.base
-        color: Qt.tint(bgColor, Qt.rgba(userColor.r, userColor.g, userColor.b, 0.1))
+        color: Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.1))
     }
 
 }
