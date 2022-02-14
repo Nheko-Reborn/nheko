@@ -25,9 +25,12 @@ Item {
     property double divisor: isReply ? 4 : 2
     property int tempWidth: originalWidth < 1? 400: originalWidth
     implicitWidth: type == MtxEvent.VideoMessage ? Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1)) : 500
-    width: parent.width
+    width: Math.min(parent.width, implicitWidth)
     height: (type == MtxEvent.VideoMessage ? width*proportionalHeight : 80) + fileInfoLabel.height
     implicitHeight: height
+
+    property int metadataWidth
+    property bool fitsMetadata: (parent.width - fileInfoLabel.width) > metadataWidth+4
 
     MxcMedia {
         id: mxcmedia

@@ -35,6 +35,8 @@ Item {
     required property string callType
     required property int encryptionError
     required property int relatedEventCacheBuster
+    property bool fitsMetadata: (chooser.child && chooser.child.fitsMetadata) ? chooser.child.fitsMetadata : false
+    property int metadataWidth
 
     height: chooser.child ? chooser.child.height : Nheko.paddingLarge
 
@@ -65,6 +67,7 @@ Item {
                 body: d.body
                 isOnlyEmoji: d.isOnlyEmoji
                 isReply: d.isReply
+                metadataWidth: d.metadataWidth
             }
 
         }
@@ -109,6 +112,7 @@ Item {
                 filename: d.filename
                 isReply: d.isReply
                 eventId: d.eventId
+                metadataWidth: d.metadataWidth
             }
 
         }
@@ -126,6 +130,7 @@ Item {
                 filename: d.filename
                 isReply: d.isReply
                 eventId: d.eventId
+                metadataWidth: d.metadataWidth
             }
 
         }
@@ -137,6 +142,7 @@ Item {
                 eventId: d.eventId
                 filename: d.filename
                 filesize: d.filesize
+                metadataWidth: d.metadataWidth
             }
 
         }
@@ -153,6 +159,7 @@ Item {
                 url: d.url
                 body: d.body
                 filesize: d.filesize
+                metadataWidth: d.metadataWidth
             }
 
         }
@@ -169,6 +176,7 @@ Item {
                 url: d.url
                 body: d.body
                 filesize: d.filesize
+                metadataWidth: d.metadataWidth
             }
 
         }
@@ -177,7 +185,7 @@ Item {
             roleValue: MtxEvent.Redacted
 
             Redacted {
-                //delegateWidth: d.width
+                metadataWidth: d.metadataWidth
             }
         }
 

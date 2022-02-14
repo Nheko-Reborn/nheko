@@ -12,15 +12,17 @@ Item {
     required property string filename
     required property string filesize
 
-    height: row.height + 24
+    height: row.height + (Settings.bubbles? 16: 24)
     width: parent.width
-    implicitWidth: row.implicitWidth
+    implicitWidth: row.implicitWidth+metadataWidth
+    property int metadataWidth
+    property bool fitsMetadata: true
 
     RowLayout {
         id: row
 
         anchors.centerIn: parent
-        width: parent.width - 24
+        width: parent.width - (Settings.bubbles? 16 : 24)
         spacing: 15
 
         Rectangle {
@@ -88,6 +90,7 @@ Item {
         z: -1
         radius: 10
         anchors.fill: parent
+        visible: !Settings.bubbles // the bubble in a bubble looks odd
     }
 
 }

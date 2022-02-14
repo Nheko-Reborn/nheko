@@ -80,7 +80,7 @@ Item {
         anchors.left: bubbleOnRight? undefined : parent.left
         anchors.right: bubbleOnRight? parent.right : undefined
         property int maxWidth: parent.width-anchors.leftMargin-anchors.rightMargin
-        width: Settings.bubbles? Math.min(maxWidth,implicitWidth+4) : maxWidth
+        width: Settings.bubbles? Math.min(maxWidth,implicitWidth+metadata.width+12) : maxWidth
         leftPadding: 4
         rightPadding: (Settings.bubbles && !isStateEvent)? 4: 2
         topPadding: (Settings.bubbles && !isStateEvent)? 4: 2
@@ -107,7 +107,6 @@ Item {
                 Layout.fillWidth: true
                 Layout.bottomMargin: visible? 2 : 0
                 Layout.preferredHeight: height
-                Layout.maximumWidth: implicitWidth
                 id: reply
 
                 function fromModel(role) {
@@ -144,7 +143,6 @@ Item {
                 Layout.column: 0
                 Layout.fillWidth: true
                 Layout.preferredHeight: height
-                Layout.maximumWidth: implicitWidth
                 id: contentItem
 
                 blurhash: r.blurhash
@@ -169,6 +167,7 @@ Item {
                 encryptionError: r.encryptionError
                 relatedEventCacheBuster: r.relatedEventCacheBuster
                 isReply: false
+                metadataWidth: metadata.width
             }
 
             RowLayout {
@@ -177,6 +176,7 @@ Item {
                 Layout.row: Settings.bubbles? 2 : 0
                 Layout.rowSpan: Settings.bubbles? 1 : 2
                 Layout.bottomMargin: -2
+                Layout.topMargin: contentItem.fitsMetadata? -height-Layout.bottomMargin : 0
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
                 Layout.preferredWidth: implicitWidth
                 visible: !isStateEvent
