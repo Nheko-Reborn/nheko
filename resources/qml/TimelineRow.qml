@@ -80,7 +80,7 @@ Item {
         anchors.left: bubbleOnRight? undefined : parent.left
         anchors.right: bubbleOnRight? parent.right : undefined
         property int maxWidth: parent.width-anchors.leftMargin-anchors.rightMargin
-        width: Settings.bubbles? Math.min(maxWidth,implicitWidth+metadata.width) : maxWidth
+        width: Settings.bubbles? Math.min(maxWidth,implicitWidth+4) : maxWidth
         leftPadding: 4
         rightPadding: (Settings.bubbles && !isStateEvent)? 4: 2
         topPadding: (Settings.bubbles && !isStateEvent)? 4: 2
