@@ -4,6 +4,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "VerificationManager.h"
+
+#include <chrono>
+
 #include "Cache.h"
 #include "ChatPage.h"
 #include "DeviceVerificationFlow.h"
@@ -14,12 +17,29 @@ VerificationManager::VerificationManager(TimelineViewManager *o)
   , rooms_(o->rooms())
 {}
 
+static bool
+isValidTime(std::optional<uint64_t> t)
+{
+    if (!t)
+        return false;
+
+    using namespace std::chrono_literals;
+
+    std::chrono::time_point<std::chrono::system_clock> time{std::chrono::milliseconds(*t)};
+    auto diff = std::chrono::system_clock::now() - time;
+
+    return diff < 10min && diff > -5min;
+}
+
 void
 VerificationManager::receivedRoomDeviceVerificationRequest(
   const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &message,
   TimelineModel *model)
 {
     if (this->isInitialSync_)
+        return;
+
+    if (!isValidTime(message.origin_server_ts))
         return;
 
     auto event_id = QString::fromStdString(message.event_id);
@@ -38,6 +58,9 @@ VerificationManager::receivedDeviceVerificationRequest(
   std::string sender)
 {
     if (this->isInitialSync_)
+        return;
+
+    if (!isValidTime(msg.timestamp))
         return;
 
     if (!msg.transaction_id)
@@ -60,6 +83,10 @@ VerificationManager::receivedDeviceVerificationStart(
 {
     if (this->isInitialSync_)
         return;
+
+    // can't do this for start messages sent as to_device...
+    // if (!isValidTime(msg.timestamp))
+    //    return;
 
     if (!msg.transaction_id)
         return;
