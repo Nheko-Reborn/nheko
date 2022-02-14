@@ -32,7 +32,7 @@ MatrixText {
     }
     blockquote { margin-left: 1em; }
     </style>
-    " + formatted.replace("<pre>", "<pre style='white-space: pre-wrap; background-color: " + Nheko.colors.alternateBase + "'>").replace("<del>", "<s>").replace("</del>", "</s>").replace("<strike>", "<s>").replace("</strike>", "</s>")
+    " + formatted.replace(/<pre>/g, "<pre style='white-space: pre-wrap; background-color: " + Nheko.colors.alternateBase + "'>").replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
     width: parent.width
     height: isReply ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : implicitHeight
     clip: isReply
