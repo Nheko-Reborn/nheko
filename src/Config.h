@@ -39,9 +39,6 @@ constexpr int labelSize = 15;
 }
 
 namespace modals {
-constexpr int MIN_WIDGET_WIDTH  = 400;
-constexpr int MIN_WIDGET_HEIGHT = 400;
-
 constexpr int WIDGET_MARGIN     = 20;
 constexpr int WIDGET_SPACING    = 15;
 constexpr int WIDGET_TOP_MARGiN = 2 * WIDGET_MARGIN;
@@ -76,8 +73,8 @@ constexpr int height        = 600;
 constexpr int width         = 1066;
 constexpr int minModalWidth = 340;
 
-constexpr int minHeight = height;
-constexpr int minWidth  = 950;
+constexpr int minHeight = 340;
+constexpr int minWidth  = 340;
 } // namespace window
 
 namespace textInput {

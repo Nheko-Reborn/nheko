@@ -32,6 +32,7 @@ Rectangle {
 
         visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
         anchors.fill: parent
+        spacing: 0
 
         ImageButton {
             visible: CallManager.callsSupported
@@ -88,8 +89,13 @@ Rectangle {
 
             Layout.alignment: Qt.AlignVCenter
             Layout.maximumHeight: Window.height / 4
-            Layout.minimumHeight: Settings.fontSize
-            implicitWidth: inputBar.width - 5 * (22 + 16) - 24
+            Layout.minimumHeight: fontMetrics.lineSpacing
+            Layout.preferredHeight: contentHeight
+            Layout.fillWidth: true
+
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+
+            contentWidth: availableWidth
 
             TextArea {
                 id: messageInput
@@ -121,10 +127,12 @@ Rectangle {
                 placeholderText: qsTr("Write a message...")
                 placeholderTextColor: Nheko.colors.buttonText
                 color: Nheko.colors.text
-                width: textInput.width
+                width: textInput.width 
                 verticalAlignment: TextEdit.AlignVCenter
                 wrapMode: TextEdit.Wrap
-                padding: 8
+                padding: 0
+                topPadding: 8
+                bottomPadding: 8
                 focus: true
                 onTextChanged: {
                     if (room)

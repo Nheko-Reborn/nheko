@@ -70,8 +70,8 @@ MainWindow::MainWindow(QWindow *parent)
     MainWindow::setWindowTitle(0);
     setObjectName(QStringLiteral("MainWindow"));
     setResizeMode(QQuickView::SizeRootObjectToView);
-    setMinimumHeight(400);
-    setMinimumWidth(400);
+    setMinimumHeight(conf::window::minHeight);
+    setMinimumWidth(conf::window::minWidth);
     restoreWindowSize();
 
     chat_page_ = new ChatPage(userSettings_, this);

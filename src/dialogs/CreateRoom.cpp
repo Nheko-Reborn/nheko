@@ -28,7 +28,7 @@ CreateRoom::CreateRoom(QWidget *parent)
     largeFont.setPointSizeF(largeFont.pointSizeF() * 1.5);
 
     setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    setMinimumHeight(conf::modals::MIN_WIDGET_HEIGHT);
+    setMinimumHeight(conf::window::minHeight);
     setMinimumWidth(conf::window::minModalWidth);
 
     auto layout = new QVBoxLayout(this);
