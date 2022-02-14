@@ -19,6 +19,7 @@ Rectangle{
     RowLayout {
         id: redactedLayout
         anchors.centerIn: parent
+        width: parent.width
         spacing: Nheko.paddingSmall
 
         Image {
@@ -33,8 +34,7 @@ Rectangle{
             Layout.margins: 0
             Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
             Layout.preferredWidth: implicitWidth
-            //Layout.fillWidth: true
-            //Layout.maximumWidth: delegateWidth - 4 * Nheko.paddingSmall - trashImg.width - 2 * Nheko.paddingMedium
+            Layout.fillWidth: true
             property var redactedPair: room.formatRedactedEvent(eventId)
             text: redactedPair["first"]
             wrapMode: Label.WordWrap
