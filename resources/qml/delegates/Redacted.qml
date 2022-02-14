@@ -10,10 +10,9 @@ import im.nheko 1.0
 
 Rectangle{
 
-    //required property real delegateWidth
     height: redactedLayout.implicitHeight + Nheko.paddingSmall
     implicitWidth: redactedLayout.implicitWidth + 2 * Nheko.paddingMedium
-    //implicitWidth: width
+    width: parent.width
     radius: fontMetrics.lineSpacing / 2 + 2 * Nheko.paddingSmall
     color: Nheko.colors.alternateBase
 

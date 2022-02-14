@@ -87,8 +87,7 @@ Item {
         color: Nheko.colors.alternateBase
         z: -1
         radius: 10
-        height: row.height + 24
-        width: 44 + 24 + 24 + Math.max(Math.min(filesize_.width, filesize_.implicitWidth), Math.min(filename_.width, filename_.implicitWidth))
+        anchors.fill: parent
     }
 
 }

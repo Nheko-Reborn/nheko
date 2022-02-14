@@ -70,8 +70,8 @@ UserSettings::load(std::optional<QString> profile)
     enlargeEmojiOnlyMessages_ =
       settings.value(QStringLiteral("user/timeline/enlarge_emoji_only_msg"), false).toBool();
     markdown_     = settings.value(QStringLiteral("user/markdown_enabled"), true).toBool();
-    bubbles_      = settings.value(QStringLiteral("user/bubbles_enabled"), true).toBool();
-    smallAvatars_ = settings.value(QStringLiteral("user/small_avatars_enabled"), true).toBool();
+    bubbles_      = settings.value(QStringLiteral("user/bubbles_enabled"), false).toBool();
+    smallAvatars_ = settings.value(QStringLiteral("user/small_avatars_enabled"), false).toBool();
     animateImagesOnHover_ =
       settings.value(QStringLiteral("user/animate_images_on_hover"), false).toBool();
     typingNotifications_ =

@@ -23,7 +23,8 @@ Item {
     required property string body
     required property string filesize
     property double divisor: isReply ? 4 : 2
-    implicitWidth: type == MtxEvent.VideoMessage ? Math.round(originalWidth*Math.min((timelineView.height/divisor)/(originalWidth*proportionalHeight), 1)) : 500
+    property int tempWidth: originalWidth < 1? 400: originalWidth
+    implicitWidth: type == MtxEvent.VideoMessage ? Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1)) : 500
     width: parent.width
     height: (type == MtxEvent.VideoMessage ? width*proportionalHeight : 80) + fileInfoLabel.height
     implicitHeight: height
