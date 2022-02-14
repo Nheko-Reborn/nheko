@@ -19,7 +19,7 @@ Rectangle{
     RowLayout {
         id: redactedLayout
         anchors.centerIn: parent
-        width: parent.width
+        width: parent.width - 2 * Nheko.paddingMedium
         spacing: Nheko.paddingSmall
 
         Image {
