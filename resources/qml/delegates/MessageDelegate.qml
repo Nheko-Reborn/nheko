@@ -81,6 +81,7 @@ Item {
                 isOnlyEmoji: d.isOnlyEmoji
                 isReply: d.isReply
                 isStateEvent: d.isStateEvent
+                metadataWidth: d.metadataWidth
             }
 
         }
@@ -95,6 +96,7 @@ Item {
                 isOnlyEmoji: d.isOnlyEmoji
                 isReply: d.isReply
                 isStateEvent: d.isStateEvent
+                metadataWidth: d.metadataWidth
             }
 
         }
