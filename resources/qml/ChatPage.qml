@@ -28,6 +28,7 @@ Rectangle {
             visible: !TimelineManager.isConnected
             Layout.preferredHeight: offlineLabel.height + Nheko.paddingMedium
             Layout.fillWidth: true
+            z: 1
 
             Label {
                 id: offlineLabel
