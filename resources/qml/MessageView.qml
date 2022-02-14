@@ -360,7 +360,7 @@ ScrollView {
 
         }
 
-        delegate: Item {
+        delegate: ItemDelegate {
             id: wrapper
 
             required property double proportionalHeight
@@ -404,12 +404,11 @@ ScrollView {
             width: chat.delegateMaxWidth
             height: section.active ? section.height + timelinerow.height : timelinerow.height
 
-            Rectangle {
+            background: Rectangle {
                 id: scrollHighlight
 
                 opacity: 0
                 visible: true
-                anchors.fill: timelinerow
                 color: Nheko.colors.highlight
 
                 states: State {
@@ -474,7 +473,7 @@ ScrollView {
             TimelineRow {
                 id: timelinerow
 
-                property alias hovered: hoverHandler.hovered
+                hovered: wrapper.hovered
 
                 proportionalHeight: wrapper.proportionalHeight
                 type: chat.model, wrapper.type
@@ -507,21 +506,15 @@ ScrollView {
                 status: wrapper.status
                 relatedEventCacheBuster: wrapper.relatedEventCacheBuster
                 y: section.visible && section.active ? section.y + section.height : 0
+            }
 
-                HoverHandler {
-                    id: hoverHandler
-
-                    enabled: !Settings.mobileMode
-                    onHoveredChanged: {
-                        if (hovered) {
-                            if (!messageActionHover.hovered) {
-                                messageActions.attached = timelinerow;
-                                messageActions.model = timelinerow;
-                            }
-                        }
+            onHoveredChanged: {
+                if (!Settings.mobileMode && hovered) {
+                    if (!messageActionHover.hovered) {
+                        messageActions.attached = timelinerow;
+                        messageActions.model = timelinerow;
                     }
                 }
-
             }
 
             Connections {

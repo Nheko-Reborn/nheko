@@ -45,18 +45,14 @@ Item {
     required property int status
     required property int relatedEventCacheBuster
 
+    property bool hovered: false
+
     width: parent.width
     height: childrenRect.height
 
     Rectangle {
-        color: (Settings.messageHoverHighlight && hoverHandler.hovered) ? Nheko.colors.alternateBase : "transparent"
+        color: (Settings.messageHoverHighlight && hovered) ? Nheko.colors.alternateBase : "transparent"
         anchors.fill: row
-    }
-
-    HoverHandler {
-        id: hoverHandler
-
-        acceptedDevices: PointerDevice.GenericPointer
     }
 
     TapHandler {
