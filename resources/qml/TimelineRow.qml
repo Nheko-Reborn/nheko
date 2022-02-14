@@ -176,7 +176,7 @@ Item {
                 Layout.row: Settings.bubbles? 2 : 0
                 Layout.rowSpan: Settings.bubbles? 1 : 2
                 Layout.bottomMargin: -2
-                Layout.topMargin: contentItem.fitsMetadata? -height-Layout.bottomMargin : 0
+                Layout.topMargin: (contentItem.fitsMetadata && Settings.bubbles)? -height-Layout.bottomMargin : 0
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
                 Layout.preferredWidth: implicitWidth
                 visible: !isStateEvent
