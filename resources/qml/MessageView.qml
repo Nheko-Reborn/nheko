@@ -33,7 +33,7 @@ ScrollView {
         //reuseItems: true
         boundsBehavior: Flickable.StopAtBounds
         pixelAligned: true
-        spacing: 4
+        spacing: 2
         verticalLayoutDirection: ListView.BottomToTop
         onCountChanged: {
             // Mark timeline as read
@@ -249,12 +249,12 @@ ScrollView {
             id: sectionHeader
 
             Column {
-                topPadding: 4
-                bottomPadding: 4
+                topPadding: userName_.visible? 4: 0
+                bottomPadding: Settings.bubbles? (isSender? 0 : 2) : 3
                 spacing: 8
-                visible: (previousMessageUserId !== userId || previousMessageDay !== day)
+                visible: (previousMessageUserId !== userId || previousMessageDay !== day || isStateEvent !== previousMessageIsStateEvent)
                 width: parentWidth
-                height: ((previousMessageDay !== day) ? dateBubble.height + 8 + userName.height : userName.height) + 8
+                height: ((previousMessageDay !== day) ? dateBubble.height : 0) + (isStateEvent? 0 : userName.height +8 )
 
                 Label {
                     id: dateBubble
@@ -278,18 +278,19 @@ ScrollView {
                 Row {
                     height: userName_.height
                     spacing: 8
+                    visible: !isStateEvent && (!isSender || !Settings.bubbles)
 
                     Avatar {
                         id: messageUserAvatar
 
-                        width: Nheko.avatarSize
-                        height: Nheko.avatarSize
+                        width: Nheko.avatarSize * (Settings.smallAvatars? 0.5 : 1)
+                        height: Nheko.avatarSize * (Settings.smallAvatars? 0.5 : 1)
                         url: !room ? "" : room.avatarUrl(userId).replace("mxc://", "image://MxcImage/")
                         displayName: userName
                         userid: userId
                         onClicked: room.openUserProfile(userId)
                         ToolTip.visible: avatarHover.hovered
-                    ToolTip.delay: Nheko.tooltipDelay
+                        ToolTip.delay: Nheko.tooltipDelay
                         ToolTip.text: userid
 
                         HoverHandler {
@@ -317,7 +318,7 @@ ScrollView {
                         color: TimelineManager.userColor(userId, Nheko.colors.base)
                         textFormat: Text.RichText
                         ToolTip.visible: displayNameHover.hovered
-                    ToolTip.delay: Nheko.tooltipDelay
+                        ToolTip.delay: Nheko.tooltipDelay
                         ToolTip.text: userId
 
                         TapHandler {
@@ -379,6 +380,8 @@ ScrollView {
             required property bool isEncrypted
             required property bool isEditable
             required property bool isEdited
+            required property bool isStateEvent
+            required property bool previousMessageIsStateEvent
             required property string replyTo
             required property string userId
             required property string roomTopic
@@ -455,11 +458,14 @@ ScrollView {
                 property string previousMessageUserId: wrapper.previousMessageUserId
                 property string day: wrapper.day
                 property string previousMessageDay: wrapper.previousMessageDay
+                property bool previousMessageIsStateEvent: wrapper.previousMessageIsStateEvent
+                property bool isStateEvent: wrapper.isStateEvent
+                property bool isSender: wrapper.isSender
                 property string userName: wrapper.userName
                 property date timestamp: wrapper.timestamp
 
                 z: 4
-                active: previousMessageUserId !== undefined && previousMessageUserId !== userId || previousMessageDay !== day
+                active: previousMessageUserId !== undefined && previousMessageUserId !== userId || previousMessageDay !== day || previousMessageIsStateEvent !== isStateEvent
                 //asynchronous: true
                 sourceComponent: sectionHeader
                 visible: status == Loader.Ready
@@ -487,6 +493,7 @@ ScrollView {
                 isEncrypted: wrapper.isEncrypted
                 isEditable: wrapper.isEditable
                 isEdited: wrapper.isEdited
+                isStateEvent: wrapper.isStateEvent
                 replyTo: wrapper.replyTo
                 userId: wrapper.userId
                 userName: wrapper.userName

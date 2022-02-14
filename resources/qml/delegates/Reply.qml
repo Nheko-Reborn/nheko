@@ -26,6 +26,7 @@ Item {
     property string filesize
     property string url
     property bool isOnlyEmoji
+    property bool isStateEvent
     property string userId
     property string userName
     property string thumbnailUrl
@@ -34,9 +35,11 @@ Item {
     property string callType
     property int encryptionError
     property int relatedEventCacheBuster
+    property int maxWidth
 
-    width: parent.width
     height: replyContainer.height
+    implicitHeight: replyContainer.height
+    implicitWidth: visible? colorLine.width+replyContainer.implicitWidth : 0
 
     CursorShape {
         anchors.fill: parent
@@ -52,12 +55,12 @@ Item {
         color: TimelineManager.userColor(userId, Nheko.colors.base)
     }
 
-    Column {
+    ColumnLayout {
         id: replyContainer
 
         anchors.left: colorLine.right
-        anchors.leftMargin: 4
-        width: parent.width - 8
+        width: parent.width - 4
+        spacing: 0
 
         TapHandler {
             acceptedButtons: Qt.LeftButton
@@ -80,6 +83,7 @@ Item {
         }
 
         Text {
+            Layout.leftMargin: 4
             id: userName_
 
             text: TimelineManager.escapeEmoji(userName)
@@ -94,8 +98,9 @@ Item {
         }
 
         MessageDelegate {
+            Layout.leftMargin: 4
+            Layout.preferredHeight: height
             id: reply
-
             blurhash: r.blurhash
             body: r.body
             formattedBody: r.formattedBody
@@ -109,6 +114,7 @@ Item {
             thumbnailUrl: r.thumbnailUrl
             originalWidth: r.originalWidth
             isOnlyEmoji: r.isOnlyEmoji
+            isStateEvent: r.isStateEvent
             userId: r.userId
             userName: r.userName
             roomTopic: r.roomTopic
@@ -118,7 +124,7 @@ Item {
             encryptionError: r.encryptionError
             // This is disabled so that left clicking the reply goes to its location
             enabled: false
-            width: parent.width
+            Layout.fillWidth: true
             isReply: true
         }
 
@@ -128,9 +134,10 @@ Item {
         id: backgroundItem
 
         z: -1
-        height: replyContainer.height
-        width: Math.min(Math.max(reply.implicitWidth, userName_.implicitWidth) + 8 + 4, parent.width)
-        color: Qt.rgba(userColor.r, userColor.g, userColor.b, 0.1)
+        anchors.fill: replyContainer
+        property color userColor: TimelineManager.userColor(userId, Nheko.colors.base)
+        property color bgColor: Nheko.colors.base
+        color: Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.1))
     }
 
 }

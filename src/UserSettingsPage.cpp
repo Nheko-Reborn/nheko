@@ -69,7 +69,9 @@ UserSettings::load(std::optional<QString> profile)
       settings.value(QStringLiteral("user/timeline/message_hover_highlight"), false).toBool();
     enlargeEmojiOnlyMessages_ =
       settings.value(QStringLiteral("user/timeline/enlarge_emoji_only_msg"), false).toBool();
-    markdown_ = settings.value(QStringLiteral("user/markdown_enabled"), true).toBool();
+    markdown_     = settings.value(QStringLiteral("user/markdown_enabled"), true).toBool();
+    bubbles_      = settings.value(QStringLiteral("user/bubbles_enabled"), false).toBool();
+    smallAvatars_ = settings.value(QStringLiteral("user/small_avatars_enabled"), false).toBool();
     animateImagesOnHover_ =
       settings.value(QStringLiteral("user/animate_images_on_hover"), false).toBool();
     typingNotifications_ =
@@ -248,6 +250,26 @@ UserSettings::setMarkdown(bool state)
         return;
     markdown_ = state;
     emit markdownChanged(state);
+    save();
+}
+
+void
+UserSettings::setBubbles(bool state)
+{
+    if (state == bubbles_)
+        return;
+    bubbles_ = state;
+    emit bubblesChanged(state);
+    save();
+}
+
+void
+UserSettings::setSmallAvatars(bool state)
+{
+    if (state == smallAvatars_)
+        return;
+    smallAvatars_ = state;
+    emit smallAvatarsChanged(state);
     save();
 }
 
@@ -705,6 +727,8 @@ UserSettings::save()
     settings.setValue(QStringLiteral("read_receipts"), readReceipts_);
     settings.setValue(QStringLiteral("group_view"), groupView_);
     settings.setValue(QStringLiteral("markdown_enabled"), markdown_);
+    settings.setValue(QStringLiteral("bubbles_enabled"), bubbles_);
+    settings.setValue(QStringLiteral("small_avatars_enabled"), smallAvatars_);
     settings.setValue(QStringLiteral("animate_images_on_hover"), animateImagesOnHover_);
     settings.setValue(QStringLiteral("desktop_notifications"), hasDesktopNotifications_);
     settings.setValue(QStringLiteral("alert_on_notification"), hasAlertOnNotification_);
@@ -806,6 +830,10 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Group's sidebar");
         case Markdown:
             return tr("Send messages as Markdown");
+        case Bubbles:
+            return tr("Enable message bubbles");
+        case SmallAvatars:
+            return tr("Enable small Avatars");
         case AnimateImagesOnHover:
             return tr("Play animated images only on hover");
         case TypingNotifications:
@@ -926,6 +954,10 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->groupView();
         case Markdown:
             return i->markdown();
+        case Bubbles:
+            return i->bubbles();
+        case SmallAvatars:
+            return i->smallAvatars();
         case AnimateImagesOnHover:
             return i->animateImagesOnHover();
         case TypingNotifications:
@@ -1052,6 +1084,11 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr(
               "Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
               "text.");
+        case Bubbles:
+            return tr(
+              "Messages get a bubble background. This also triggers some layout changes (WIP).");
+        case SmallAvatars:
+            return tr("Avatars are resized to fit above the message.");
         case AnimateImagesOnHover:
             return tr("Plays media like GIFs or WEBPs only when explicitly hovering over them.");
         case TypingNotifications:
@@ -1168,6 +1205,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case StartInTray:
         case GroupView:
         case Markdown:
+        case Bubbles:
+        case SmallAvatars:
         case AnimateImagesOnHover:
         case TypingNotifications:
         case SortByImportance:
@@ -1381,6 +1420,20 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         case Markdown: {
             if (value.userType() == QMetaType::Bool) {
                 i->setMarkdown(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case Bubbles: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setBubbles(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case SmallAvatars: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setSmallAvatars(value.toBool());
                 return true;
             } else
                 return false;
@@ -1747,7 +1800,12 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     connect(s.get(), &UserSettings::markdownChanged, this, [this]() {
         emit dataChanged(index(Markdown), index(Markdown), {Value});
     });
-
+    connect(s.get(), &UserSettings::bubblesChanged, this, [this]() {
+        emit dataChanged(index(Bubbles), index(Bubbles), {Value});
+    });
+    connect(s.get(), &UserSettings::smallAvatarsChanged, this, [this]() {
+        emit dataChanged(index(SmallAvatars), index(SmallAvatars), {Value});
+    });
     connect(s.get(), &UserSettings::groupViewStateChanged, this, [this]() {
         emit dataChanged(index(GroupView), index(GroupView), {Value});
     });

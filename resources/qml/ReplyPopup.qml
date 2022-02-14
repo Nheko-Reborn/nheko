@@ -47,6 +47,7 @@ Rectangle {
         userId: modelData.userId ?? ""
         userName: modelData.userName ?? ""
         encryptionError: modelData.encryptionError ?? ""
+        width: parent.width
     }
 
     ImageButton {

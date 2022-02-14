@@ -40,6 +40,8 @@ class UserSettings : public QObject
     Q_PROPERTY(bool startInTray READ startInTray WRITE setStartInTray NOTIFY startInTrayChanged)
     Q_PROPERTY(bool groupView READ groupView WRITE setGroupView NOTIFY groupViewStateChanged)
     Q_PROPERTY(bool markdown READ markdown WRITE setMarkdown NOTIFY markdownChanged)
+    Q_PROPERTY(bool bubbles READ bubbles WRITE setBubbles NOTIFY bubblesChanged)
+    Q_PROPERTY(bool smallAvatars READ smallAvatars WRITE setSmallAvatars NOTIFY smallAvatarsChanged)
     Q_PROPERTY(bool animateImagesOnHover READ animateImagesOnHover WRITE setAnimateImagesOnHover
                  NOTIFY animateImagesOnHoverChanged)
     Q_PROPERTY(bool typingNotifications READ typingNotifications WRITE setTypingNotifications NOTIFY
@@ -141,6 +143,8 @@ public:
     void setEmojiFontFamily(QString family);
     void setGroupView(bool state);
     void setMarkdown(bool state);
+    void setBubbles(bool state);
+    void setSmallAvatars(bool state);
     void setAnimateImagesOnHover(bool state);
     void setReadReceipts(bool state);
     void setTypingNotifications(bool state);
@@ -193,6 +197,8 @@ public:
     bool privacyScreen() const { return privacyScreen_; }
     int privacyScreenTimeout() const { return privacyScreenTimeout_; }
     bool markdown() const { return markdown_; }
+    bool bubbles() const { return bubbles_; }
+    bool smallAvatars() const { return smallAvatars_; }
     bool animateImagesOnHover() const { return animateImagesOnHover_; }
     bool typingNotifications() const { return typingNotifications_; }
     bool sortByImportance() const { return sortByImportance_; }
@@ -251,6 +257,8 @@ signals:
     void trayChanged(bool state);
     void startInTrayChanged(bool state);
     void markdownChanged(bool state);
+    void bubblesChanged(bool state);
+    void smallAvatarsChanged(bool state);
     void animateImagesOnHoverChanged(bool state);
     void typingNotificationsChanged(bool state);
     void buttonInTimelineChanged(bool state);
@@ -307,6 +315,8 @@ private:
     bool startInTray_;
     bool groupView_;
     bool markdown_;
+    bool bubbles_;
+    bool smallAvatars_;
     bool animateImagesOnHover_;
     bool typingNotifications_;
     bool sortByImportance_;
@@ -386,7 +396,8 @@ class UserSettingsModel : public QAbstractListModel
         ReadReceipts,
         ButtonsInTimeline,
         Markdown,
-
+        Bubbles,
+        SmallAvatars,
         SidebarSection,
         GroupView,
         SortByImportance,

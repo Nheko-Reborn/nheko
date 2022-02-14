@@ -13,7 +13,7 @@ Item {
 
     required property bool isReply
     property alias child: chooser.child
-    property real implicitWidth: (chooser.child && chooser.child.implicitWidth) ? chooser.child.implicitWidth : width
+    implicitWidth: (chooser.child && chooser.child.implicitWidth) ? chooser.child.implicitWidth : 0
     required property double proportionalHeight
     required property int type
     required property string typeString
@@ -27,6 +27,7 @@ Item {
     required property string url
     required property string thumbnailUrl
     required property bool isOnlyEmoji
+    required property bool isStateEvent
     required property string userId
     required property string userName
     required property string roomTopic
@@ -42,7 +43,9 @@ Item {
 
         //role: "type" //< not supported in our custom implementation, have to use roleValue
         roleValue: type
-        anchors.fill: parent
+        //anchors.fill: parent
+
+        width: parent.width? parent.width: 0 // this should get rid of "cannot read property 'width' of null"
 
         DelegateChoice {
             roleValue: MtxEvent.UnknownMessage
@@ -74,6 +77,7 @@ Item {
                 body: d.body
                 isOnlyEmoji: d.isOnlyEmoji
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
             }
 
         }
@@ -87,6 +91,7 @@ Item {
                 body: d.body
                 isOnlyEmoji: d.isOnlyEmoji
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
             }
 
         }
@@ -172,7 +177,7 @@ Item {
             roleValue: MtxEvent.Redacted
 
             Redacted {
-                delegateWidth: d.width
+                //delegateWidth: d.width
             }
         }
 
@@ -180,7 +185,8 @@ Item {
             roleValue: MtxEvent.Redaction
 
             Pill {
-                text: qsTr("removed")
+                text: qsTr("%1 removed a message").arg(d.userName)
+                isStateEvent: d.isStateEvent
             }
 
         }
@@ -189,7 +195,8 @@ Item {
             roleValue: MtxEvent.Encryption
 
             Pill {
-                text: qsTr("Encryption enabled")
+                text: qsTr("%1 enabled encryption").arg(d.userName)
+                isStateEvent: d.isStateEvent
             }
 
         }
@@ -211,7 +218,8 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: d.roomName ? qsTr("room name changed to: %1").arg(d.roomName) : qsTr("removed room name")
+                isStateEvent: d.isStateEvent
+                formatted: d.roomName ? qsTr("%2 changed the room name to: %1").arg(d.roomName).arg(d.userName) : qsTr("%1 removed the room name").arg(d.userName)
             }
 
         }
@@ -223,7 +231,8 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: d.roomTopic ? qsTr("topic changed to: %1").arg(d.roomTopic) : qsTr("removed topic")
+                isStateEvent: d.isStateEvent
+                formatted: d.roomTopic ? qsTr("%2 changed the topic to: %1").arg(d.roomTopic).arg(d.userName): qsTr("%1 removed the topic").arg(d.userName)
             }
 
         }
@@ -235,6 +244,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 changed the room avatar").arg(d.userName)
             }
 
@@ -247,6 +257,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 changed the pinned messages.").arg(d.userName)
             }
 
@@ -259,6 +270,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 changed the stickers and emotes in this room.").arg(d.userName)
             }
 
@@ -271,6 +283,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 changed the addresses for this room.").arg(d.userName)
             }
 
@@ -283,6 +296,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 changed the parent spaces for this room.").arg(d.userName)
             }
 
@@ -295,6 +309,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 created and configured room: %2").arg(d.userName).arg(room.roomId)
             }
 
@@ -307,6 +322,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: {
                     switch (d.callType) {
                     case "voice":
@@ -328,6 +344,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 answered the call.").arg(d.userName)
             }
 
@@ -340,6 +357,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 ended the call.").arg(d.userName)
             }
 
@@ -352,7 +370,8 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
-                formatted: qsTr("Negotiating call...")
+                isStateEvent: d.isStateEvent
+                formatted: qsTr("%1 is negotiating the call...").arg(d.userName)
             }
 
         }
@@ -365,6 +384,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: d.relatedEventCacheBuster, room.formatPowerLevelEvent(d.eventId)
             }
 
@@ -377,6 +397,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: d.relatedEventCacheBuster, room.formatJoinRuleEvent(d.eventId)
             }
 
@@ -389,6 +410,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: d.relatedEventCacheBuster, room.formatHistoryVisibilityEvent(d.eventId)
             }
 
@@ -401,6 +423,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: d.relatedEventCacheBuster, room.formatGuestAccessEvent(d.eventId)
             }
 
@@ -416,6 +439,7 @@ Item {
                     body: formatted
                     isOnlyEmoji: false
                     isReply: d.isReply
+                    isStateEvent: d.isStateEvent
                     Layout.fillWidth: true
                     formatted: d.relatedEventCacheBuster, room.formatMemberEvent(d.eventId)
                 }
@@ -438,6 +462,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationRequest"
             }
 
@@ -450,6 +475,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationStart"
             }
 
@@ -462,6 +488,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationReady"
             }
 
@@ -474,6 +501,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationCancel"
             }
 
@@ -486,6 +514,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationKey"
             }
 
@@ -498,6 +527,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationMac"
             }
 
@@ -510,6 +540,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationDone"
             }
 
@@ -522,6 +553,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationDone"
             }
 
@@ -534,6 +566,7 @@ Item {
                 body: formatted
                 isOnlyEmoji: false
                 isReply: d.isReply
+                isStateEvent: d.isStateEvent
                 formatted: "KeyVerificationAccept"
             }
 

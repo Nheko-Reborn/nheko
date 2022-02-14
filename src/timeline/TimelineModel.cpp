@@ -467,6 +467,7 @@ TimelineModel::roleNames() const
       {UserId, "userId"},
       {UserName, "userName"},
       {PreviousMessageDay, "previousMessageDay"},
+      {PreviousMessageIsStateEvent, "previousMessageIsStateEvent"},
       {Day, "day"},
       {Timestamp, "timestamp"},
       {Url, "url"},
@@ -483,6 +484,7 @@ TimelineModel::roleNames() const
       {IsEdited, "isEdited"},
       {IsEditable, "isEditable"},
       {IsEncrypted, "isEncrypted"},
+      {IsStateEvent, "isStateEvent"},
       {Trustlevel, "trustlevel"},
       {EncryptionError, "encryptionError"},
       {ReplyTo, "replyTo"},
@@ -680,6 +682,9 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                std::holds_alternative<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
                  *encrypted_event);
     }
+    case IsStateEvent: {
+        return is_state_event(event);
+    }
 
     case Trustlevel: {
         auto encrypted_event = events.get(event_id(event), "", false);
@@ -744,6 +749,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         m.insert(names[IsEdited], data(event, static_cast<int>(IsEdited)));
         m.insert(names[IsEditable], data(event, static_cast<int>(IsEditable)));
         m.insert(names[IsEncrypted], data(event, static_cast<int>(IsEncrypted)));
+        m.insert(names[IsStateEvent], data(event, static_cast<int>(IsStateEvent)));
         m.insert(names[ReplyTo], data(event, static_cast<int>(ReplyTo)));
         m.insert(names[RoomName], data(event, static_cast<int>(RoomName)));
         m.insert(names[RoomTopic], data(event, static_cast<int>(RoomTopic)));
@@ -776,7 +782,8 @@ TimelineModel::data(const QModelIndex &index, int role) const
     if (!event)
         return "";
 
-    if (role == PreviousMessageDay || role == PreviousMessageUserId) {
+    if (role == PreviousMessageDay || role == PreviousMessageUserId ||
+        role == PreviousMessageIsStateEvent) {
         int prevIdx = rowCount() - index.row() - 2;
         if (prevIdx < 0)
             return {};
@@ -785,8 +792,10 @@ TimelineModel::data(const QModelIndex &index, int role) const
             return {};
         if (role == PreviousMessageUserId)
             return data(*tempEv, UserId);
-        else
+        else if (role == PreviousMessageDay)
             return data(*tempEv, Day);
+        else
+            return data(*tempEv, IsStateEvent);
     }
 
     return data(*event, role);

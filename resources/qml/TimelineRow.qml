@@ -31,6 +31,7 @@ Item {
     required property bool isEncrypted
     required property bool isEditable
     required property bool isEdited
+    required property bool isStateEvent
     required property string replyTo
     required property string userId
     required property string userName
@@ -44,9 +45,8 @@ Item {
     required property int status
     required property int relatedEventCacheBuster
 
-    anchors.left: parent.left
-    anchors.right: parent.right
-    height: row.height
+    width: parent.width
+    height: childrenRect.height
 
     Rectangle {
         color: (Settings.messageHoverHighlight && hoverHandler.hovered) ? Nheko.colors.alternateBase : "transparent"
@@ -71,27 +71,48 @@ Item {
         gesturePolicy: TapHandler.ReleaseWithinBounds
     }
 
-    RowLayout {
+    Control {
         id: row
+        property bool bubbleOnRight : isSender && Settings.bubbles
+        property int bubblePadding: (parent.width-(Settings.smallAvatars? 0 : Nheko.avatarSize+8))/10
+        anchors.rightMargin: isSender || !Settings.bubbles? 0 : bubblePadding
+        anchors.leftMargin: (Settings.smallAvatars? 0 : Nheko.avatarSize+8) + (bubbleOnRight? bubblePadding : 0) // align bubble with section header
+        anchors.left: bubbleOnRight? undefined : parent.left
+        anchors.right: bubbleOnRight? parent.right : undefined
+        property int maxWidth: parent.width-anchors.leftMargin-anchors.rightMargin
+        width: Settings.bubbles? Math.min(maxWidth,implicitWidth+4) : maxWidth
+        leftPadding: 4
+        rightPadding: (Settings.bubbles && !isStateEvent)? 4: 2
+        topPadding: (Settings.bubbles && !isStateEvent)? 4: 2
+        bottomPadding: topPadding
+        background: Rectangle {
+            property color userColor: TimelineManager.userColor(userId, Nheko.colors.base)
+            property color bgColor: Nheko.colors.base
+            color: Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2))
+            radius: 4
+            visible: Settings.bubbles && !isStateEvent
+        }
 
-        anchors.rightMargin: 1
-        anchors.leftMargin: Nheko.avatarSize + 16
-        anchors.left: parent.left
-        anchors.right: parent.right
-
-        Column {
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignTop
-            spacing: 4
-            Layout.topMargin: 1
-            Layout.bottomMargin: 1
+        contentItem: GridLayout {
+            id: msg
+            rowSpacing: 0
+            columnSpacing: 2
+            columns: Settings.bubbles? 1 : 2
+            rows: Settings.bubbles? 3 : 2
 
             // fancy reply, if this is a reply
             Reply {
+                Layout.row: 0
+                Layout.column: 0
+                Layout.fillWidth: true
+                Layout.bottomMargin: visible? 2 : 0
+                Layout.preferredHeight: height
+                Layout.maximumWidth: implicitWidth
+                id: reply
+
                 function fromModel(role) {
                     return replyTo != "" ? room.dataById(replyTo, role, r.eventId) : null;
                 }
-
                 visible: replyTo
                 userColor: r.relatedEventCacheBuster, TimelineManager.userColor(userId, Nheko.colors.base)
                 blurhash: r.relatedEventCacheBuster, fromModel(Room.Blurhash) ?? ""
@@ -106,6 +127,7 @@ Item {
                 url: r.relatedEventCacheBuster, fromModel(Room.Url) ?? ""
                 originalWidth: r.relatedEventCacheBuster, fromModel(Room.OriginalWidth) ?? 0
                 isOnlyEmoji: r.relatedEventCacheBuster, fromModel(Room.IsOnlyEmoji) ?? false
+                isStateEvent: r.relatedEventCacheBuster, fromModel(Room.IsStateEvent) ?? false
                 userId: r.relatedEventCacheBuster, fromModel(Room.UserId) ?? ""
                 userName: r.relatedEventCacheBuster, fromModel(Room.UserName) ?? ""
                 thumbnailUrl: r.relatedEventCacheBuster, fromModel(Room.ThumbnailUrl) ?? ""
@@ -118,9 +140,13 @@ Item {
 
             // actual message content
             MessageDelegate {
+                Layout.row: 1
+                Layout.column: 0
+                Layout.fillWidth: true
+                Layout.preferredHeight: height
+                Layout.maximumWidth: implicitWidth
                 id: contentItem
 
-                width: parent.width
                 blurhash: r.blurhash
                 body: r.body
                 formattedBody: r.formattedBody
@@ -134,6 +160,7 @@ Item {
                 thumbnailUrl: r.thumbnailUrl
                 originalWidth: r.originalWidth
                 isOnlyEmoji: r.isOnlyEmoji
+                isStateEvent: r.isStateEvent
                 userId: r.userId
                 userName: r.userName
                 roomTopic: r.roomTopic
@@ -144,67 +171,82 @@ Item {
                 isReply: false
             }
 
-            Reactions {
-                id: reactionRow
+            RowLayout {
+                id: metadata
+                Layout.column: Settings.bubbles? 0 : 1
+                Layout.row: Settings.bubbles? 2 : 0
+                Layout.rowSpan: Settings.bubbles? 1 : 2
+                Layout.bottomMargin: -2
+                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                Layout.preferredWidth: implicitWidth
+                visible: !isStateEvent
 
-                reactions: r.reactions
-                eventId: r.eventId
+                property double scaling: Settings.bubbles? 0.75 : 1
+
+                StatusIndicator {
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    Layout.preferredHeight: 16*parent.scaling
+                    Layout.preferredWidth: 16*parent.scaling
+                    status: r.status
+                    eventId: r.eventId
+                }
+
+                Image {
+                    visible: isEdited || eventId == chat.model.edit
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    Layout.preferredHeight: 16*parent.scaling
+                    Layout.preferredWidth: 16*parent.scaling
+                    sourceSize.width: 16 * Screen.devicePixelRatio*parent.scaling
+                    sourceSize.height: 16 * Screen.devicePixelRatio*parent.scaling
+                    source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == chat.model.edit) ? Nheko.colors.highlight : Nheko.colors.buttonText)
+                    ToolTip.visible: editHovered.hovered
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: qsTr("Edited")
+
+                    HoverHandler {
+                        id: editHovered
+                    }
+
+                }
+
+                EncryptionIndicator {
+                    visible: room.isEncrypted
+                    encrypted: isEncrypted
+                    trust: trustlevel
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    Layout.preferredHeight: 16*parent.scaling
+                    Layout.preferredWidth: 16*parent.scaling
+                    sourceSize.width: 16 * Screen.devicePixelRatio*parent.scaling
+                    sourceSize.height: 16 * Screen.devicePixelRatio*parent.scaling
+                }
+
+                Label {
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    Layout.preferredWidth: implicitWidth
+                    text: timestamp.toLocaleTimeString(Locale.ShortFormat)
+                    color: Nheko.inactiveColors.text
+                    ToolTip.visible: ma.hovered
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: Qt.formatDateTime(timestamp, Qt.DefaultLocaleLongDate)
+                    font.pointSize: 10*parent.scaling
+                    HoverHandler {
+                        id: ma
+                    }
+
+                }
             }
-
         }
-
-        StatusIndicator {
-            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            Layout.preferredHeight: 16
-            width: 16
-            status: r.status
-            eventId: r.eventId
-        }
-
-        Image {
-            visible: isEdited || eventId == chat.model.edit
-            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            Layout.preferredHeight: 16
-            Layout.preferredWidth: 16
-            height: 16
-            width: 16
-            sourceSize.width: 16 * Screen.devicePixelRatio
-            sourceSize.height: 16 * Screen.devicePixelRatio
-            source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == chat.model.edit) ? Nheko.colors.highlight : Nheko.colors.buttonText)
-            ToolTip.visible: editHovered.hovered
-            ToolTip.delay: Nheko.tooltipDelay
-            ToolTip.text: qsTr("Edited")
-
-            HoverHandler {
-                id: editHovered
-            }
-
-        }
-
-        EncryptionIndicator {
-            visible: room.isEncrypted
-            encrypted: isEncrypted
-            trust: trustlevel
-            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            Layout.preferredHeight: 16
-            Layout.preferredWidth: 16
-        }
-
-        Label {
-            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-            text: timestamp.toLocaleTimeString(Locale.ShortFormat)
-            width: Math.max(implicitWidth, text.length * fontMetrics.maximumCharacterWidth)
-            color: Nheko.inactiveColors.text
-            ToolTip.visible: ma.hovered
-            ToolTip.delay: Nheko.tooltipDelay
-            ToolTip.text: Qt.formatDateTime(timestamp, Qt.DefaultLocaleLongDate)
-
-            HoverHandler {
-                id: ma
-            }
-
-        }
-
     }
+    Reactions {
+        anchors {
+            top: row.bottom
+            topMargin: -2
+            left: row.left
+        }
 
+        id: reactionRow
+
+        reactions: r.reactions
+        eventId: r.eventId
+    }
 }

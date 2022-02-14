@@ -16,7 +16,8 @@ Rectangle {
     required property string eventId
 
     radius: fontMetrics.lineSpacing / 2 + Nheko.paddingMedium
-    width: parent.width
+    width: parent.width? parent.width : 0
+    implicitWidth: encryptedText.implicitWidth+24+Nheko.paddingMedium*3 // Column doesn't provide a useful implicitWidth, should be replaced by ColumnLayout
     height: contents.implicitHeight + Nheko.paddingMedium * 2
     color: Nheko.colors.alternateBase
 
@@ -39,6 +40,7 @@ Rectangle {
             Layout.fillWidth: true
 
             MatrixText {
+                id: encryptedText
                 text: {
                     switch (encryptionError) {
                     case Olm.MissingSession:
