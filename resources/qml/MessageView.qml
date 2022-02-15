@@ -14,16 +14,16 @@ import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
 import im.nheko 1.0
 
-ScrollView {
-    clip: false
-    palette: Nheko.colors
-    padding: 8
-    ScrollBar.horizontal.visible: false
+//ScrollView {
+//    clip: false
+//    palette: Nheko.colors
+//    padding: 8
+//    ScrollBar.horizontal.visible: false
 
     ListView {
         id: chat
 
-        property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < parent.availableWidth) ? Settings.timelineMaxWidth : parent.availableWidth) - parent.padding * 2
+        property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < availableWidth) ? Settings.timelineMaxWidth : availableWidth)
 
         displayMarginBeginning: height / 2
         displayMarginEnd: height / 2
@@ -32,6 +32,19 @@ ScrollView {
         //onModelChanged: if (room) room.sendReset()
         //reuseItems: true
         boundsBehavior: Flickable.StopAtBounds
+        ScrollIndicator.vertical: ScrollIndicator {
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            width: 10
+            minimumSize: 0.1
+            contentItem: Rectangle {
+                color: Nheko.colors.WindowText
+                opacity: 0.25
+                radius: width/2
+                // visible: moving // currently only works for flicking
+            }
+        }
         pixelAligned: true
         spacing: 2
         verticalLayoutDirection: ListView.BottomToTop
@@ -164,7 +177,7 @@ ScrollView {
         ScrollHelper {
             flickable: parent
             anchors.fill: parent
-            enabled: !Settings.mobileMode
+//            enabled: !Settings.mobileMode
         }
 
         Shortcut {
@@ -251,6 +264,7 @@ ScrollView {
             Column {
                 topPadding: userName_.visible? 4: 0
                 bottomPadding: Settings.bubbles? (isSender? 0 : 2) : 3
+                leftPadding: 6
                 spacing: 8
                 visible: (previousMessageUserId !== userId || previousMessageDay !== day || isStateEvent !== previousMessageIsStateEvent)
                 width: parentWidth
@@ -554,8 +568,6 @@ ScrollView {
             }
 
         }
-
-    }
 
     Platform.Menu {
         id: messageContextMenu

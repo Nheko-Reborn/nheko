@@ -75,8 +75,8 @@ Item {
         id: row
         property bool bubbleOnRight : isSender && Settings.bubbles
         property int bubblePadding: (parent.width-(Settings.smallAvatars? 0 : Nheko.avatarSize+8))/10
-        anchors.rightMargin: isSender || !Settings.bubbles? 0 : bubblePadding
-        anchors.leftMargin: (Settings.smallAvatars? 0 : Nheko.avatarSize+8) + (bubbleOnRight? bubblePadding : 0) // align bubble with section header
+        anchors.rightMargin: (isSender || !Settings.bubbles? 0 : bubblePadding)+6
+        anchors.leftMargin: (Settings.smallAvatars? 0 : Nheko.avatarSize+8) + (bubbleOnRight? bubblePadding : 0)+6 // align bubble with section header
         anchors.left: bubbleOnRight? undefined : parent.left
         anchors.right: bubbleOnRight? parent.right : undefined
         property int maxWidth: parent.width-anchors.leftMargin-anchors.rightMargin
