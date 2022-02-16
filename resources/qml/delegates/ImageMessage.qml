@@ -19,7 +19,9 @@ Item {
     required property string eventId
     property double divisor: isReply ? 5 : 3
 
-    implicitWidth: Math.round(originalWidth*Math.min((timelineView.height/divisor)/(originalWidth*proportionalHeight), 1))
+    property int tempWidth: originalWidth < 1? 400: originalWidth
+
+    implicitWidth: Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1))
     width: Math.min(parent.width,implicitWidth)
     height: width*proportionalHeight
 
