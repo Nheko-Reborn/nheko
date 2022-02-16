@@ -33,8 +33,8 @@ ListView {
         id: vbar
         // scrollbar is 12 px wide to be easily clickable, but only 4 px are visible to be prettier
         width: 12
-        leftPadding: 4
-        rightPadding: 4
+        leftPadding: 6
+        rightPadding: 2
         opacity: 0
         states: State {
             name: "show"
@@ -47,7 +47,7 @@ ListView {
                 NumberAnimation {
                     target: vbar
                     properties: "opacity"
-                    from: 0.25
+                    from: 0.35
                     to: 0
                     duration: 500
                 }
@@ -59,7 +59,7 @@ ListView {
                     target: vbar
                     properties: "opacity"
                     from: 0
-                    to: 0.25
+                    to: 0.35
                     duration: 0
                 }
             }
@@ -75,7 +75,6 @@ ListView {
     // running changes to false and immediately back to true upon restart instead of staying true, this causes the scrollbar to be invisible during scrolling if a fade-in animation is used
     Timer {
         id: scrollBarTimeout
-        onRunningChanged: console.log(vbar.hovered || running)
     }
     onCountChanged: {
         // Mark timeline as read
