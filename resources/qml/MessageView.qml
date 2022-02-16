@@ -29,6 +29,54 @@ ListView {
     //pixelAligned: true
     spacing: 2
     verticalLayoutDirection: ListView.BottomToTop
+    ScrollBar.vertical: ScrollBar {
+        id: vbar
+        // scrollbar is 12 px wide to be easily clickable, but only 4 px are visible to be prettier
+        width: 12
+        leftPadding: 4
+        rightPadding: 4
+        opacity: 0
+        states: State {
+            name: "show"
+            when: (scrollBarTimeout.running || vbar.hovered)
+        }
+        transitions: [
+            Transition {
+                from: "show"
+                to: ""
+                NumberAnimation {
+                    target: vbar
+                    properties: "opacity"
+                    from: 0.25
+                    to: 0
+                    duration: 500
+                }
+            },
+            Transition {
+                from: ""
+                to: "show"
+                NumberAnimation {
+                    target: vbar
+                    properties: "opacity"
+                    from: 0
+                    to: 0.25
+                    duration: 0
+                }
+            }
+        ]
+        minimumSize: 0.05
+        contentItem: Rectangle {
+            color: Nheko.colors.text
+            radius: width/2
+        }
+        background: Item {} // no background - is there a better way?
+    }
+    onContentYChanged: scrollBarTimeout.restart()
+    // running changes to false and immediately back to true upon restart instead of staying true, this causes the scrollbar to be invisible during scrolling if a fade-in animation is used
+    Timer {
+        id: scrollBarTimeout
+        onRunningChanged: console.log(vbar.hovered || running)
+    }
     onCountChanged: {
         // Mark timeline as read
         if (atYEnd && room)
