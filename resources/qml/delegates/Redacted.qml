@@ -12,9 +12,11 @@ Rectangle{
 
     height: redactedLayout.implicitHeight + Nheko.paddingSmall
     implicitWidth: redactedLayout.implicitWidth + 2 * Nheko.paddingMedium
-    width: parent.width
+    width: Math.min(parent.width,implicitWidth+1)
     radius: fontMetrics.lineSpacing / 2 + 2 * Nheko.paddingSmall
     color: Nheko.colors.alternateBase
+    property int metadataWidth
+    property bool fitsMetadata: parent.width - redactedLayout.width > metadataWidth + 4
 
     RowLayout {
         id: redactedLayout
