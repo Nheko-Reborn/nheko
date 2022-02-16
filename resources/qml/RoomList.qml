@@ -38,7 +38,6 @@ Page {
         ScrollHelper {
             flickable: parent
             anchors.fill: parent
-            enabled: !Settings.mobileMode
         }
 
         Connections {
