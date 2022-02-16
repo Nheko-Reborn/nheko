@@ -409,6 +409,8 @@ ScrollView {
 
                 opacity: 0
                 visible: true
+                z: 1
+                enabled: false
                 color: Nheko.colors.highlight
 
                 states: State {
@@ -473,7 +475,7 @@ ScrollView {
             TimelineRow {
                 id: timelinerow
 
-                hovered: wrapper.hovered
+                hovered: (wrapper.hovered && !messageActionHover.hovered) || (messageActions.model != undefined && messageActions.model.eventId == timelinerow.eventId)
 
                 proportionalHeight: wrapper.proportionalHeight
                 type: chat.model, wrapper.type
