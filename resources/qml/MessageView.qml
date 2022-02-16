@@ -14,16 +14,10 @@ import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
 import im.nheko 1.0
 
-ScrollView {
-    clip: false
-    palette: Nheko.colors
-    padding: 8
-    ScrollBar.horizontal.visible: false
-
     ListView {
         id: chat
 
-        property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < parent.availableWidth) ? Settings.timelineMaxWidth : parent.availableWidth) - parent.padding * 2
+        property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < timelineView.width) ? Settings.timelineMaxWidth : timelineView.width) - 16
 
         displayMarginBeginning: height / 2
         displayMarginEnd: height / 2
@@ -32,7 +26,7 @@ ScrollView {
         //onModelChanged: if (room) room.sendReset()
         //reuseItems: true
         boundsBehavior: Flickable.StopAtBounds
-        pixelAligned: true
+        //pixelAligned: true
         spacing: 2
         verticalLayoutDirection: ListView.BottomToTop
         onCountChanged: {
@@ -547,8 +541,6 @@ ScrollView {
             }
 
         }
-
-    }
 
     Platform.Menu {
         id: messageContextMenu
