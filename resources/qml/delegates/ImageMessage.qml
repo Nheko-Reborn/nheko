@@ -20,8 +20,11 @@ Item {
     property double divisor: isReply ? 5 : 3
 
     implicitWidth: Math.round(originalWidth*Math.min((timelineView.height/divisor)/(originalWidth*proportionalHeight), 1))
-    width: parent.width
+    width: Math.min(parent.width,implicitWidth)
     height: width*proportionalHeight
+
+    property int metadataWidth
+    property bool fitsMetadata: (parent.width - width) > metadataWidth+4
 
     Image {
         id: blurhash_
