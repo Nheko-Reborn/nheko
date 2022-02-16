@@ -14,533 +14,533 @@ import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
 import im.nheko 1.0
 
-    ListView {
-        id: chat
+ListView {
+    id: chat
 
-        property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < timelineView.width) ? Settings.timelineMaxWidth : timelineView.width) - 16
+    property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < timelineView.width) ? Settings.timelineMaxWidth : timelineView.width) - 16
 
-        displayMarginBeginning: height / 2
-        displayMarginEnd: height / 2
-        model: room
-        // reuseItems still has a few bugs, see https://bugreports.qt.io/browse/QTBUG-95105 https://bugreports.qt.io/browse/QTBUG-95107
-        //onModelChanged: if (room) room.sendReset()
-        //reuseItems: true
-        boundsBehavior: Flickable.StopAtBounds
-        //pixelAligned: true
-        spacing: 2
-        verticalLayoutDirection: ListView.BottomToTop
-        onCountChanged: {
-            // Mark timeline as read
-            if (atYEnd && room)
-                model.currentIndex = 0;
+    displayMarginBeginning: height / 2
+    displayMarginEnd: height / 2
+    model: room
+    // reuseItems still has a few bugs, see https://bugreports.qt.io/browse/QTBUG-95105 https://bugreports.qt.io/browse/QTBUG-95107
+    //onModelChanged: if (room) room.sendReset()
+    //reuseItems: true
+    boundsBehavior: Flickable.StopAtBounds
+    //pixelAligned: true
+    spacing: 2
+    verticalLayoutDirection: ListView.BottomToTop
+    onCountChanged: {
+        // Mark timeline as read
+        if (atYEnd && room)
+            model.currentIndex = 0;
+
+    }
+
+    Rectangle {
+        //closePolicy: Popup.NoAutoClose
+
+        id: messageActions
+
+        property Item attached: null
+        property alias model: row.model
+        // use comma to update on scroll
+        property var attachedPos: chat.contentY, attached ? chat.mapFromItem(attached, attached ? attached.width - width : 0, -height) : null
+        readonly property int padding: Nheko.paddingSmall
+
+        visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || messageActionHover.hovered)
+        x: attached ? attachedPos.x : 0
+        y: attached ? attachedPos.y : 0
+        z: 10
+        height: row.implicitHeight + padding * 2
+        width: row.implicitWidth + padding * 2
+        color: Nheko.colors.window
+        border.color: Nheko.colors.buttonText
+        border.width: 1
+        radius: padding
+
+        HoverHandler {
+            id: messageActionHover
+
+            grabPermissions: PointerHandler.CanTakeOverFromAnything
+        }
+
+        Row {
+            id: row
+
+            property var model
+
+            anchors.centerIn: parent
+            spacing: messageActions.padding
+
+            Repeater {
+                model: Settings.recentReactions
+
+                delegate: TextButton {
+                    required property string modelData
+
+                    visible: chat.model ? chat.model.permissions.canSend(MtxEvent.Reaction) : false
+
+                    height: fontMetrics.height
+                    font.family: Settings.emojiFont
+
+                    text: modelData
+                    onClicked: {
+                        room.input.reaction(row.model.eventId, modelData);
+                        TimelineManager.focusMessageInput();
+                    }
+                }
+            }
+
+            ImageButton {
+                id: editButton
+
+                visible: !!row.model && row.model.isEditable
+                buttonTextColor: Nheko.colors.buttonText
+                width: 16
+                hoverEnabled: true
+                image: ":/icons/icons/ui/edit.svg"
+                ToolTip.visible: hovered
+                ToolTip.delay: Nheko.tooltipDelay
+                ToolTip.text: qsTr("Edit")
+                onClicked: {
+                    if (row.model.isEditable)
+                        chat.model.editAction(row.model.eventId);
+
+                }
+            }
+
+            ImageButton {
+                id: reactButton
+
+                visible: chat.model ? chat.model.permissions.canSend(MtxEvent.Reaction) : false
+                width: 16
+                hoverEnabled: true
+                image: ":/icons/icons/ui/smile.svg"
+                ToolTip.visible: hovered
+                ToolTip.delay: Nheko.tooltipDelay
+                ToolTip.text: qsTr("React")
+                onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(reactButton, function(emoji) {
+                    var event_id = row.model ? row.model.eventId : "";
+                    room.input.reaction(event_id, emoji);
+                    TimelineManager.focusMessageInput();
+                })
+            }
+
+            ImageButton {
+                id: replyButton
+
+                visible: chat.model ? chat.model.permissions.canSend(MtxEvent.TextMessage) : false
+                width: 16
+                hoverEnabled: true
+                image: ":/icons/icons/ui/reply.svg"
+                ToolTip.visible: hovered
+                ToolTip.delay: Nheko.tooltipDelay
+                ToolTip.text: qsTr("Reply")
+                onClicked: chat.model.replyAction(row.model.eventId)
+            }
+
+            ImageButton {
+                id: optionsButton
+
+                width: 16
+                hoverEnabled: true
+                image: ":/icons/icons/ui/options.svg"
+                ToolTip.visible: hovered
+                ToolTip.delay: Nheko.tooltipDelay
+                ToolTip.text: qsTr("Options")
+                onClicked: messageContextMenu.show(row.model.eventId, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
+            }
 
         }
 
-        Rectangle {
-            //closePolicy: Popup.NoAutoClose
+    }
 
-            id: messageActions
+    ScrollHelper {
+        flickable: parent
+        anchors.fill: parent
+        enabled: !Settings.mobileMode
+    }
 
-            property Item attached: null
-            property alias model: row.model
-            // use comma to update on scroll
-            property var attachedPos: chat.contentY, attached ? chat.mapFromItem(attached, attached ? attached.width - width : 0, -height) : null
-            readonly property int padding: Nheko.paddingSmall
+    Shortcut {
+        sequence: StandardKey.MoveToPreviousPage
+        onActivated: {
+            chat.contentY = chat.contentY - chat.height / 2;
+            chat.returnToBounds();
+        }
+    }
 
-            visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || messageActionHover.hovered)
-            x: attached ? attachedPos.x : 0
-            y: attached ? attachedPos.y : 0
-            z: 10
-            height: row.implicitHeight + padding * 2
-            width: row.implicitWidth + padding * 2
-            color: Nheko.colors.window
-            border.color: Nheko.colors.buttonText
-            border.width: 1
-            radius: padding
+    Shortcut {
+        sequence: StandardKey.MoveToNextPage
+        onActivated: {
+            chat.contentY = chat.contentY + chat.height / 2;
+            chat.returnToBounds();
+        }
+    }
 
-            HoverHandler {
-                id: messageActionHover
+    Shortcut {
+        sequence: StandardKey.Cancel
+        onActivated: {
+            if (chat.model.reply)
+                chat.model.reply = undefined;
+            else
+                chat.model.edit = undefined;
+        }
+    }
 
-                grabPermissions: PointerHandler.CanTakeOverFromAnything
+    Shortcut {
+        sequence: "Alt+Up"
+        onActivated: chat.model.reply = chat.model.indexToId(chat.model.reply ? chat.model.idToIndex(chat.model.reply) + 1 : 0)
+    }
+
+    Shortcut {
+        sequence: "Alt+Down"
+        onActivated: {
+            var idx = chat.model.reply ? chat.model.idToIndex(chat.model.reply) - 1 : -1;
+            chat.model.reply = idx >= 0 ? chat.model.indexToId(idx) : null;
+        }
+    }
+
+    Shortcut {
+        sequence: "Alt+F"
+        onActivated: {
+            if (chat.model.reply) {
+                var forwardMess = forwardCompleterComponent.createObject(timelineRoot);
+                forwardMess.setMessageEventId(chat.model.reply);
+                forwardMess.open();
+                chat.model.reply = null;
+            }
+        }
+    }
+
+    Shortcut {
+        sequence: "Ctrl+E"
+        onActivated: {
+            chat.model.edit = chat.model.reply;
+        }
+    }
+
+    Connections {
+        function onFocusChanged() {
+            readTimer.running = TimelineManager.isWindowFocused;
+        }
+
+        target: TimelineManager
+    }
+
+    Timer {
+        id: readTimer
+
+        // force current read index to update
+        onTriggered: {
+            if (chat.model)
+                chat.model.setCurrentIndex(chat.model.currentIndex);
+
+        }
+        interval: 1000
+    }
+
+    Component {
+        id: sectionHeader
+
+        Column {
+            topPadding: userName_.visible? 4: 0
+            bottomPadding: Settings.bubbles? (isSender? 0 : 2) : 3
+            spacing: 8
+            visible: (previousMessageUserId !== userId || previousMessageDay !== day || isStateEvent !== previousMessageIsStateEvent)
+            width: parentWidth
+            height: ((previousMessageDay !== day) ? dateBubble.height : 0) + (isStateEvent? 0 : userName.height +8 )
+
+            Label {
+                id: dateBubble
+
+                anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
+                visible: room && previousMessageDay !== day
+                text: room ? room.formatDateSeparator(timestamp) : ""
+                color: Nheko.colors.text
+                height: Math.round(fontMetrics.height * 1.4)
+                width: contentWidth * 1.2
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+
+                background: Rectangle {
+                    radius: parent.height / 2
+                    color: Nheko.colors.window
+                }
+
             }
 
             Row {
-                id: row
+                height: userName_.height
+                spacing: 8
+                visible: !isStateEvent && (!isSender || !Settings.bubbles)
 
-                property var model
+                Avatar {
+                    id: messageUserAvatar
 
-                anchors.centerIn: parent
-                spacing: messageActions.padding
+                    width: Nheko.avatarSize * (Settings.smallAvatars? 0.5 : 1)
+                    height: Nheko.avatarSize * (Settings.smallAvatars? 0.5 : 1)
+                    url: !room ? "" : room.avatarUrl(userId).replace("mxc://", "image://MxcImage/")
+                    displayName: userName
+                    userid: userId
+                    onClicked: room.openUserProfile(userId)
+                    ToolTip.visible: avatarHover.hovered
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: userid
 
-                Repeater {
-                    model: Settings.recentReactions
+                    HoverHandler {
+                        id: avatarHover
+                    }
 
-                    delegate: TextButton {
-                        required property string modelData
+                }
 
-                        visible: chat.model ? chat.model.permissions.canSend(MtxEvent.Reaction) : false
+                Connections {
+                    function onRoomAvatarUrlChanged() {
+                        messageUserAvatar.url = chat.model.avatarUrl(userId).replace("mxc://", "image://MxcImage/");
+                    }
 
-                        height: fontMetrics.height
-                        font.family: Settings.emojiFont
+                    function onScrollToIndex(index) {
+                        chat.positionViewAtIndex(index, ListView.Center);
+                    }
 
-                        text: modelData
-                        onClicked: {
-                            room.input.reaction(row.model.eventId, modelData);
-                            TimelineManager.focusMessageInput();
+                    target: chat.model
+                }
+
+                Label {
+                    id: userName_
+
+                    text: TimelineManager.escapeEmoji(userName)
+                    color: TimelineManager.userColor(userId, Nheko.colors.base)
+                    textFormat: Text.RichText
+                    ToolTip.visible: displayNameHover.hovered
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: userId
+
+                    TapHandler {
+                        onSingleTapped: chat.model.openUserProfile(userId)
+                    }
+
+                    CursorShape {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                    }
+
+                    HoverHandler {
+                        id: displayNameHover
+                    }
+
+                }
+
+                Label {
+                    id: statusMsg
+                    color: Nheko.colors.buttonText
+                    text: Presence.userStatus(userId)
+                    textFormat: Text.PlainText
+                    elide: Text.ElideRight
+                    width: chat.delegateMaxWidth - parent.spacing * 2 - userName.implicitWidth - Nheko.avatarSize
+                    font.italic: true
+
+                    Connections {
+                        target: Presence
+
+                        function onPresenceChanged(id) {
+                            if (id == userId) statusMsg.text = Presence.userStatus(userId);
                         }
                     }
                 }
 
-                ImageButton {
-                    id: editButton
+            }
 
-                    visible: !!row.model && row.model.isEditable
-                    buttonTextColor: Nheko.colors.buttonText
-                    width: 16
-                    hoverEnabled: true
-                    image: ":/icons/icons/ui/edit.svg"
-                    ToolTip.visible: hovered
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("Edit")
-                    onClicked: {
-                        if (row.model.isEditable)
-                            chat.model.editAction(row.model.eventId);
+        }
 
+    }
+
+    delegate: ItemDelegate {
+        id: wrapper
+
+        required property double proportionalHeight
+        required property int type
+        required property string typeString
+        required property int originalWidth
+        required property string blurhash
+        required property string body
+        required property string formattedBody
+        required property string eventId
+        required property string filename
+        required property string filesize
+        required property string url
+        required property string thumbnailUrl
+        required property bool isOnlyEmoji
+        required property bool isSender
+        required property bool isEncrypted
+        required property bool isEditable
+        required property bool isEdited
+        required property bool isStateEvent
+        required property bool previousMessageIsStateEvent
+        required property string replyTo
+        required property string userId
+        required property string roomTopic
+        required property string roomName
+        required property string callType
+        required property var reactions
+        required property int trustlevel
+        required property int encryptionError
+        required property var timestamp
+        required property int status
+        required property int index
+        required property int relatedEventCacheBuster
+        required property string previousMessageUserId
+        required property string day
+        required property string previousMessageDay
+        required property string userName
+        property bool scrolledToThis: eventId === chat.model.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
+
+        anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
+        width: chat.delegateMaxWidth
+        height: section.active ? section.height + timelinerow.height : timelinerow.height
+
+        background: Rectangle {
+            id: scrollHighlight
+
+            opacity: 0
+            visible: true
+            color: Nheko.colors.highlight
+
+            states: State {
+                name: "revealed"
+                when: wrapper.scrolledToThis
+            }
+
+            transitions: Transition {
+                from: ""
+                to: "revealed"
+
+                SequentialAnimation {
+                    PropertyAnimation {
+                        target: scrollHighlight
+                        properties: "opacity"
+                        easing.type: Easing.InOutQuad
+                        from: 0
+                        to: 1
+                        duration: 500
                     }
-                }
 
-                ImageButton {
-                    id: reactButton
+                    PropertyAnimation {
+                        target: scrollHighlight
+                        properties: "opacity"
+                        easing.type: Easing.InOutQuad
+                        from: 1
+                        to: 0
+                        duration: 500
+                    }
 
-                    visible: chat.model ? chat.model.permissions.canSend(MtxEvent.Reaction) : false
-                    width: 16
-                    hoverEnabled: true
-                    image: ":/icons/icons/ui/smile.svg"
-                    ToolTip.visible: hovered
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("React")
-                    onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(reactButton, function(emoji) {
-                        var event_id = row.model ? row.model.eventId : "";
-                        room.input.reaction(event_id, emoji);
-                        TimelineManager.focusMessageInput();
-                    })
-                }
+                    ScriptAction {
+                        script: chat.model.eventShown()
+                    }
 
-                ImageButton {
-                    id: replyButton
-
-                    visible: chat.model ? chat.model.permissions.canSend(MtxEvent.TextMessage) : false
-                    width: 16
-                    hoverEnabled: true
-                    image: ":/icons/icons/ui/reply.svg"
-                    ToolTip.visible: hovered
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("Reply")
-                    onClicked: chat.model.replyAction(row.model.eventId)
-                }
-
-                ImageButton {
-                    id: optionsButton
-
-                    width: 16
-                    hoverEnabled: true
-                    image: ":/icons/icons/ui/options.svg"
-                    ToolTip.visible: hovered
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("Options")
-                    onClicked: messageContextMenu.show(row.model.eventId, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
                 }
 
             }
 
         }
 
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
-            enabled: !Settings.mobileMode
+        Loader {
+            id: section
+
+            property int parentWidth: parent.width
+            property string userId: wrapper.userId
+            property string previousMessageUserId: wrapper.previousMessageUserId
+            property string day: wrapper.day
+            property string previousMessageDay: wrapper.previousMessageDay
+            property bool previousMessageIsStateEvent: wrapper.previousMessageIsStateEvent
+            property bool isStateEvent: wrapper.isStateEvent
+            property bool isSender: wrapper.isSender
+            property string userName: wrapper.userName
+            property date timestamp: wrapper.timestamp
+
+            z: 4
+            active: previousMessageUserId !== undefined && previousMessageUserId !== userId || previousMessageDay !== day || previousMessageIsStateEvent !== isStateEvent
+            //asynchronous: true
+            sourceComponent: sectionHeader
+            visible: status == Loader.Ready
         }
 
-        Shortcut {
-            sequence: StandardKey.MoveToPreviousPage
-            onActivated: {
-                chat.contentY = chat.contentY - chat.height / 2;
-                chat.returnToBounds();
-            }
+        TimelineRow {
+            id: timelinerow
+
+            hovered: wrapper.hovered
+
+            proportionalHeight: wrapper.proportionalHeight
+            type: chat.model, wrapper.type
+            typeString: wrapper.typeString
+            originalWidth: wrapper.originalWidth
+            blurhash: wrapper.blurhash
+            body: wrapper.body
+            formattedBody: wrapper.formattedBody
+            eventId: chat.model, wrapper.eventId
+            filename: wrapper.filename
+            filesize: wrapper.filesize
+            url: wrapper.url
+            thumbnailUrl: wrapper.thumbnailUrl
+            isOnlyEmoji: wrapper.isOnlyEmoji
+            isSender: wrapper.isSender
+            isEncrypted: wrapper.isEncrypted
+            isEditable: wrapper.isEditable
+            isEdited: wrapper.isEdited
+            isStateEvent: wrapper.isStateEvent
+            replyTo: wrapper.replyTo
+            userId: wrapper.userId
+            userName: wrapper.userName
+            roomTopic: wrapper.roomTopic
+            roomName: wrapper.roomName
+            callType: wrapper.callType
+            reactions: wrapper.reactions
+            trustlevel: wrapper.trustlevel
+            encryptionError: wrapper.encryptionError
+            timestamp: wrapper.timestamp
+            status: wrapper.status
+            relatedEventCacheBuster: wrapper.relatedEventCacheBuster
+            y: section.visible && section.active ? section.y + section.height : 0
         }
 
-        Shortcut {
-            sequence: StandardKey.MoveToNextPage
-            onActivated: {
-                chat.contentY = chat.contentY + chat.height / 2;
-                chat.returnToBounds();
-            }
-        }
-
-        Shortcut {
-            sequence: StandardKey.Cancel
-            onActivated: {
-                if (chat.model.reply)
-                    chat.model.reply = undefined;
-                else
-                    chat.model.edit = undefined;
-            }
-        }
-
-        Shortcut {
-            sequence: "Alt+Up"
-            onActivated: chat.model.reply = chat.model.indexToId(chat.model.reply ? chat.model.idToIndex(chat.model.reply) + 1 : 0)
-        }
-
-        Shortcut {
-            sequence: "Alt+Down"
-            onActivated: {
-                var idx = chat.model.reply ? chat.model.idToIndex(chat.model.reply) - 1 : -1;
-                chat.model.reply = idx >= 0 ? chat.model.indexToId(idx) : null;
-            }
-        }
-
-        Shortcut {
-            sequence: "Alt+F"
-            onActivated: {
-                if (chat.model.reply) {
-                    var forwardMess = forwardCompleterComponent.createObject(timelineRoot);
-                    forwardMess.setMessageEventId(chat.model.reply);
-                    forwardMess.open();
-                    chat.model.reply = null;
+        onHoveredChanged: {
+            if (!Settings.mobileMode && hovered) {
+                if (!messageActionHover.hovered) {
+                    messageActions.attached = timelinerow;
+                    messageActions.model = timelinerow;
                 }
-            }
-        }
-
-        Shortcut {
-            sequence: "Ctrl+E"
-            onActivated: {
-                chat.model.edit = chat.model.reply;
             }
         }
 
         Connections {
-            function onFocusChanged() {
-                readTimer.running = TimelineManager.isWindowFocused;
+            function onMovementEnded() {
+                if (y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height)
+                    chat.model.currentIndex = index;
+
             }
 
-            target: TimelineManager
+            target: chat
         }
 
-        Timer {
-            id: readTimer
+    }
 
-            // force current read index to update
-            onTriggered: {
-                if (chat.model)
-                    chat.model.setCurrentIndex(chat.model.currentIndex);
+    footer: Item {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.margins: Nheko.paddingLarge
+        visible: chat.model && chat.model.paginationInProgress
+        // hacky, but works
+        height: loadingSpinner.height + 2 * Nheko.paddingLarge
 
-            }
-            interval: 1000
-        }
+        Spinner {
+            id: loadingSpinner
 
-        Component {
-            id: sectionHeader
-
-            Column {
-                topPadding: userName_.visible? 4: 0
-                bottomPadding: Settings.bubbles? (isSender? 0 : 2) : 3
-                spacing: 8
-                visible: (previousMessageUserId !== userId || previousMessageDay !== day || isStateEvent !== previousMessageIsStateEvent)
-                width: parentWidth
-                height: ((previousMessageDay !== day) ? dateBubble.height : 0) + (isStateEvent? 0 : userName.height +8 )
-
-                Label {
-                    id: dateBubble
-
-                    anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
-                    visible: room && previousMessageDay !== day
-                    text: room ? room.formatDateSeparator(timestamp) : ""
-                    color: Nheko.colors.text
-                    height: Math.round(fontMetrics.height * 1.4)
-                    width: contentWidth * 1.2
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-
-                    background: Rectangle {
-                        radius: parent.height / 2
-                        color: Nheko.colors.window
-                    }
-
-                }
-
-                Row {
-                    height: userName_.height
-                    spacing: 8
-                    visible: !isStateEvent && (!isSender || !Settings.bubbles)
-
-                    Avatar {
-                        id: messageUserAvatar
-
-                        width: Nheko.avatarSize * (Settings.smallAvatars? 0.5 : 1)
-                        height: Nheko.avatarSize * (Settings.smallAvatars? 0.5 : 1)
-                        url: !room ? "" : room.avatarUrl(userId).replace("mxc://", "image://MxcImage/")
-                        displayName: userName
-                        userid: userId
-                        onClicked: room.openUserProfile(userId)
-                        ToolTip.visible: avatarHover.hovered
-                        ToolTip.delay: Nheko.tooltipDelay
-                        ToolTip.text: userid
-
-                        HoverHandler {
-                            id: avatarHover
-                        }
-
-                    }
-
-                    Connections {
-                        function onRoomAvatarUrlChanged() {
-                            messageUserAvatar.url = chat.model.avatarUrl(userId).replace("mxc://", "image://MxcImage/");
-                        }
-
-                        function onScrollToIndex(index) {
-                            chat.positionViewAtIndex(index, ListView.Center);
-                        }
-
-                        target: chat.model
-                    }
-
-                    Label {
-                        id: userName_
-
-                        text: TimelineManager.escapeEmoji(userName)
-                        color: TimelineManager.userColor(userId, Nheko.colors.base)
-                        textFormat: Text.RichText
-                        ToolTip.visible: displayNameHover.hovered
-                        ToolTip.delay: Nheko.tooltipDelay
-                        ToolTip.text: userId
-
-                        TapHandler {
-                            onSingleTapped: chat.model.openUserProfile(userId)
-                        }
-
-                        CursorShape {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                        }
-
-                        HoverHandler {
-                            id: displayNameHover
-                        }
-
-                    }
-
-                    Label {
-                        id: statusMsg
-                        color: Nheko.colors.buttonText
-                        text: Presence.userStatus(userId)
-                        textFormat: Text.PlainText
-                        elide: Text.ElideRight
-                        width: chat.delegateMaxWidth - parent.spacing * 2 - userName.implicitWidth - Nheko.avatarSize
-                        font.italic: true
-
-                        Connections {
-                            target: Presence
-
-                            function onPresenceChanged(id) {
-                                if (id == userId) statusMsg.text = Presence.userStatus(userId);
-                            }
-                        }
-                    }
-
-                }
-
-            }
-
-        }
-
-        delegate: ItemDelegate {
-            id: wrapper
-
-            required property double proportionalHeight
-            required property int type
-            required property string typeString
-            required property int originalWidth
-            required property string blurhash
-            required property string body
-            required property string formattedBody
-            required property string eventId
-            required property string filename
-            required property string filesize
-            required property string url
-            required property string thumbnailUrl
-            required property bool isOnlyEmoji
-            required property bool isSender
-            required property bool isEncrypted
-            required property bool isEditable
-            required property bool isEdited
-            required property bool isStateEvent
-            required property bool previousMessageIsStateEvent
-            required property string replyTo
-            required property string userId
-            required property string roomTopic
-            required property string roomName
-            required property string callType
-            required property var reactions
-            required property int trustlevel
-            required property int encryptionError
-            required property var timestamp
-            required property int status
-            required property int index
-            required property int relatedEventCacheBuster
-            required property string previousMessageUserId
-            required property string day
-            required property string previousMessageDay
-            required property string userName
-            property bool scrolledToThis: eventId === chat.model.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
-
-            anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
-            width: chat.delegateMaxWidth
-            height: section.active ? section.height + timelinerow.height : timelinerow.height
-
-            background: Rectangle {
-                id: scrollHighlight
-
-                opacity: 0
-                visible: true
-                color: Nheko.colors.highlight
-
-                states: State {
-                    name: "revealed"
-                    when: wrapper.scrolledToThis
-                }
-
-                transitions: Transition {
-                    from: ""
-                    to: "revealed"
-
-                    SequentialAnimation {
-                        PropertyAnimation {
-                            target: scrollHighlight
-                            properties: "opacity"
-                            easing.type: Easing.InOutQuad
-                            from: 0
-                            to: 1
-                            duration: 500
-                        }
-
-                        PropertyAnimation {
-                            target: scrollHighlight
-                            properties: "opacity"
-                            easing.type: Easing.InOutQuad
-                            from: 1
-                            to: 0
-                            duration: 500
-                        }
-
-                        ScriptAction {
-                            script: chat.model.eventShown()
-                        }
-
-                    }
-
-                }
-
-            }
-
-            Loader {
-                id: section
-
-                property int parentWidth: parent.width
-                property string userId: wrapper.userId
-                property string previousMessageUserId: wrapper.previousMessageUserId
-                property string day: wrapper.day
-                property string previousMessageDay: wrapper.previousMessageDay
-                property bool previousMessageIsStateEvent: wrapper.previousMessageIsStateEvent
-                property bool isStateEvent: wrapper.isStateEvent
-                property bool isSender: wrapper.isSender
-                property string userName: wrapper.userName
-                property date timestamp: wrapper.timestamp
-
-                z: 4
-                active: previousMessageUserId !== undefined && previousMessageUserId !== userId || previousMessageDay !== day || previousMessageIsStateEvent !== isStateEvent
-                //asynchronous: true
-                sourceComponent: sectionHeader
-                visible: status == Loader.Ready
-            }
-
-            TimelineRow {
-                id: timelinerow
-
-                hovered: wrapper.hovered
-
-                proportionalHeight: wrapper.proportionalHeight
-                type: chat.model, wrapper.type
-                typeString: wrapper.typeString
-                originalWidth: wrapper.originalWidth
-                blurhash: wrapper.blurhash
-                body: wrapper.body
-                formattedBody: wrapper.formattedBody
-                eventId: chat.model, wrapper.eventId
-                filename: wrapper.filename
-                filesize: wrapper.filesize
-                url: wrapper.url
-                thumbnailUrl: wrapper.thumbnailUrl
-                isOnlyEmoji: wrapper.isOnlyEmoji
-                isSender: wrapper.isSender
-                isEncrypted: wrapper.isEncrypted
-                isEditable: wrapper.isEditable
-                isEdited: wrapper.isEdited
-                isStateEvent: wrapper.isStateEvent
-                replyTo: wrapper.replyTo
-                userId: wrapper.userId
-                userName: wrapper.userName
-                roomTopic: wrapper.roomTopic
-                roomName: wrapper.roomName
-                callType: wrapper.callType
-                reactions: wrapper.reactions
-                trustlevel: wrapper.trustlevel
-                encryptionError: wrapper.encryptionError
-                timestamp: wrapper.timestamp
-                status: wrapper.status
-                relatedEventCacheBuster: wrapper.relatedEventCacheBuster
-                y: section.visible && section.active ? section.y + section.height : 0
-            }
-
-            onHoveredChanged: {
-                if (!Settings.mobileMode && hovered) {
-                    if (!messageActionHover.hovered) {
-                        messageActions.attached = timelinerow;
-                        messageActions.model = timelinerow;
-                    }
-                }
-            }
-
-            Connections {
-                function onMovementEnded() {
-                    if (y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height)
-                        chat.model.currentIndex = index;
-
-                }
-
-                target: chat
-            }
-
-        }
-
-        footer: Item {
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.centerIn: parent
             anchors.margins: Nheko.paddingLarge
-            visible: chat.model && chat.model.paginationInProgress
-            // hacky, but works
-            height: loadingSpinner.height + 2 * Nheko.paddingLarge
-
-            Spinner {
-                id: loadingSpinner
-
-                anchors.centerIn: parent
-                anchors.margins: Nheko.paddingLarge
-                running: chat.model && chat.model.paginationInProgress
-                foreground: Nheko.colors.mid
-                z: 3
-            }
-
+            running: chat.model && chat.model.paginationInProgress
+            foreground: Nheko.colors.mid
+            z: 3
         }
+
+    }
 
     Platform.Menu {
         id: messageContextMenu
