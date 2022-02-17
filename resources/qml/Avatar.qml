@@ -101,11 +101,11 @@ Rectangle {
         cursorShape: Qt.PointingHandCursor
     }
 
-    TapHandler {
+/*    TapHandler {
         id: mouseArea
 
         onSingleTapped: avatar.clicked(eventPoint)
-    }
+    }*/
 
     Ripple {
         color: Qt.rgba(Nheko.colors.alternateBase.r, Nheko.colors.alternateBase.g, Nheko.colors.alternateBase.b, 0.5)

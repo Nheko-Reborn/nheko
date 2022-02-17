@@ -45,15 +45,15 @@ Item {
     required property int status
     required property int relatedEventCacheBuster
 
-    //property bool hovered: false
+    property bool hovered: false
 
     width: parent.width
     height: childrenRect.height
 
-    /*Rectangle {
+    Rectangle {
         color: (Settings.messageHoverHighlight && hovered) ? Nheko.colors.alternateBase : "transparent"
         anchors.fill: row
-    }*/
+    }
 
     /*TapHandler {
         acceptedButtons: Qt.RightButton
@@ -195,13 +195,13 @@ Item {
                     sourceSize.width: 16 * Screen.devicePixelRatio*parent.scaling
                     sourceSize.height: 16 * Screen.devicePixelRatio*parent.scaling
                     source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == chat.model.edit) ? Nheko.colors.highlight : Nheko.colors.buttonText)
-                    //ToolTip.visible: editHovered.hovered
-                    //ToolTip.delay: Nheko.tooltipDelay
-                    //ToolTip.text: qsTr("Edited")
+                    ToolTip.visible: editHovered.hovered
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: qsTr("Edited")
 
-                    /*HoverHandler {
+                    HoverHandler {
                         id: editHovered
-                    }*/
+                    }
 
                 }
 
@@ -221,13 +221,13 @@ Item {
                     Layout.preferredWidth: implicitWidth
                     text: timestamp.toLocaleTimeString(Locale.ShortFormat)
                     color: Nheko.inactiveColors.text
-                    //ToolTip.visible: ma.hovered
-                    //ToolTip.delay: Nheko.tooltipDelay
-                    //ToolTip.text: Qt.formatDateTime(timestamp, Qt.DefaultLocaleLongDate)
+                    ToolTip.visible: ma.hovered
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: Qt.formatDateTime(timestamp, Qt.DefaultLocaleLongDate)
                     font.pointSize: 10*parent.scaling
-                    /*HoverHandler {
+                    HoverHandler {
                         id: ma
-                    }*/
+                    }
 
                 }
             }

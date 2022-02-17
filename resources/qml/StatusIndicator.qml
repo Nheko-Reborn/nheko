@@ -16,9 +16,9 @@ ImageButton {
     width: 16
     height: 16
     hoverEnabled: true
-    //changeColorOnHover: (status == MtxEvent.Read)
+    changeColorOnHover: (status == MtxEvent.Read)
     cursor: (status == MtxEvent.Read) ? Qt.PointingHandCursor : Qt.ArrowCursor
-    /*ToolTip.visible: hovered && status != MtxEvent.Empty
+    ToolTip.visible: hovered && status != MtxEvent.Empty
     ToolTip.text: {
         switch (status) {
         case MtxEvent.Failed:
@@ -32,7 +32,7 @@ ImageButton {
         default:
             return "";
         }
-    }*/
+    }
     onClicked: {
         if (status == MtxEvent.Read)
             room.showReadReceipts(eventId);
