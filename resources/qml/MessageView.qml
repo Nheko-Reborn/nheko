@@ -83,7 +83,7 @@ ListView {
 
     }
 
-    Rectangle {
+    /*Rectangle {
         //closePolicy: Popup.NoAutoClose
 
         id: messageActions
@@ -200,7 +200,7 @@ ListView {
 
         }
 
-    }
+    }*/
 
     ScrollHelper {
         flickable: parent
@@ -329,13 +329,13 @@ ListView {
                     displayName: userName
                     userid: userId
                     onClicked: room.openUserProfile(userId)
-                    ToolTip.visible: avatarHover.hovered
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: userid
+                    //ToolTip.visible: avatarHover.hovered
+                    //ToolTip.delay: Nheko.tooltipDelay
+                    //ToolTip.text: userid
 
-                    HoverHandler {
+                    /*HoverHandler {
                         id: avatarHover
-                    }
+                    }*/
 
                 }
 
@@ -357,9 +357,9 @@ ListView {
                     text: TimelineManager.escapeEmoji(userName)
                     color: TimelineManager.userColor(userId, Nheko.colors.base)
                     textFormat: Text.RichText
-                    ToolTip.visible: displayNameHover.hovered
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: userId
+                    //ToolTip.visible: displayNameHover.hovered
+                    //ToolTip.delay: Nheko.tooltipDelay
+                    //ToolTip.text: userId
 
                     TapHandler {
                         onSingleTapped: chat.model.openUserProfile(userId)
@@ -370,9 +370,9 @@ ListView {
                         cursorShape: Qt.PointingHandCursor
                     }
 
-                    HoverHandler {
+                    /*HoverHandler {
                         id: displayNameHover
-                    }
+                    }*/
 
                 }
 
@@ -513,7 +513,7 @@ ListView {
         TimelineRow {
             id: timelinerow
 
-            hovered: wrapper.hovered
+            //hovered: wrapper.hovered
 
             proportionalHeight: wrapper.proportionalHeight
             type: chat.model, wrapper.type
@@ -548,14 +548,14 @@ ListView {
             y: section.visible && section.active ? section.y + section.height : 0
         }
 
-        onHoveredChanged: {
+        /*onHoveredChanged: {
             if (!Settings.mobileMode && hovered) {
                 if (!messageActionHover.hovered) {
                     messageActions.attached = timelinerow;
                     messageActions.model = timelinerow;
                 }
             }
-        }
+        }*/
 
         Connections {
             function onMovementEnded() {

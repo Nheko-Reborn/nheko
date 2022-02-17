@@ -48,7 +48,7 @@ Image {
             return sourceUrl + Nheko.theme.error;
         }
     }
-    ToolTip.visible: ma.hovered
+    /*ToolTip.visible: ma.hovered
     ToolTip.text: {
         if (!encrypted)
             return qsTr("This message is not encrypted!");
@@ -65,6 +65,6 @@ Image {
 
     HoverHandler {
         id: ma
-    }
+    }*/
 
 }
