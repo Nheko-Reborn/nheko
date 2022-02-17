@@ -404,6 +404,8 @@ ScrollView {
             width: chat.delegateMaxWidth
             height: section.active ? section.height + timelinerow.height : timelinerow.height
 
+            hoverEnabled: true
+
             background: Rectangle {
                 id: scrollHighlight
 
