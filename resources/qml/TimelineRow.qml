@@ -53,7 +53,7 @@ Item {
     Rectangle {
         color: (Settings.messageHoverHighlight && hovered) ? Nheko.colors.alternateBase : "transparent"
         anchors.fill: parent
-        anchors.leftMargin: Settings.smallAvatars? 0 : Nheko.avatarSize+8
+        // this looks better without margins
     }
 
     TapHandler {
@@ -72,10 +72,11 @@ Item {
         id: row
         property bool bubbleOnRight : isSender && Settings.bubbles
         property int bubblePadding: (parent.width-(Settings.smallAvatars? 0 : Nheko.avatarSize+8))/10
-        anchors.rightMargin: isSender || !Settings.bubbles? 0 : bubblePadding
-        anchors.leftMargin: (Settings.smallAvatars? 0 : Nheko.avatarSize+8) + (bubbleOnRight? bubblePadding : 0) // align bubble with section header
-        anchors.left: bubbleOnRight? undefined : parent.left
-        anchors.right: bubbleOnRight? parent.right : undefined
+        anchors.rightMargin: isStateEvent? 0 : (isSender || !Settings.bubbles? 0 : bubblePadding)
+        anchors.leftMargin: isStateEvent? 0 :((Settings.smallAvatars? 0 : Nheko.avatarSize+8) + (bubbleOnRight? bubblePadding : 0)) // align bubble with section header
+        anchors.left: isStateEvent? undefined : (bubbleOnRight? undefined : parent.left)
+        anchors.right: isStateEvent? undefined: (bubbleOnRight? parent.right : undefined)
+        anchors.horizontalCenter: isStateEvent? parent.horizontalCenter : undefined
         property int maxWidth: parent.width-anchors.leftMargin-anchors.rightMargin
         width: Settings.bubbles? Math.min(maxWidth,implicitWidth+metadata.width+12) : maxWidth
         leftPadding: 4
