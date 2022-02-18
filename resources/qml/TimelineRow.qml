@@ -48,7 +48,7 @@ Item {
     property bool hovered: false
 
     width: parent.width
-    height: childrenRect.height
+    height: row.height+(reactionRow > 0 ? reactionRow.height-2 : 0 )
 
     Rectangle {
         color: (Settings.messageHoverHighlight && hovered) ? Nheko.colors.alternateBase : "transparent"
