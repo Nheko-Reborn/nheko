@@ -13,7 +13,7 @@ Popup {
     property int textHeight: Math.round(Qt.application.font.pixelSize * 2.4)
 
     background: null
-    width: Math.round(parent.width / 2)
+    width: Math.min(Math.max(Math.round(parent.width / 2),450),parent.width) // limiting width to parent.width/2 can be a bit narrow
     x: Math.round(parent.width / 2 - width / 2)
     y: Math.round(parent.height / 4 - height / 2)
     modal: true
