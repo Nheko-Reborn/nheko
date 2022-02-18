@@ -2031,7 +2031,7 @@ TimelineModel::formatMemberEvent(const QString &id)
     QString user = QString::fromStdString(event->state_key);
     QString name = utils::replaceEmoji(displayName(user));
     QString rendered;
-    QString sender = QString::fromStdString(event->sender);
+    QString sender     = QString::fromStdString(event->sender);
     QString senderName = utils::replaceEmoji(displayName(sender));
 
     // see table https://matrix.org/docs/spec/client_server/latest#m-room-member
@@ -2079,19 +2079,19 @@ TimelineModel::formatMemberEvent(const QString &id)
             if (event->state_key == event->sender)
                 rendered = tr("%1 rejected their invite.").arg(name);
             else
-                rendered = tr("%2 revoked the invite to %1.").arg(name,senderName);
+                rendered = tr("%2 revoked the invite to %1.").arg(name, senderName);
         } else if (prevEvent->content.membership == Membership::Join) {
             if (event->state_key == event->sender)
                 rendered = tr("%1 left the room.").arg(name);
             else
-                rendered = tr("%2 kicked %1.").arg(name,senderName);
+                rendered = tr("%2 kicked %1.").arg(name, senderName);
         } else if (prevEvent->content.membership == Membership::Ban) {
-            rendered = tr("%2 unbanned %1.").arg(name,senderName);
+            rendered = tr("%2 unbanned %1.").arg(name, senderName);
         } else if (prevEvent->content.membership == Membership::Knock) {
             if (event->state_key == event->sender)
                 rendered = tr("%1 redacted their knock.").arg(name);
             else
-                rendered = tr("%2 rejected the knock from %1.").arg(name,senderName);
+                rendered = tr("%2 rejected the knock from %1.").arg(name, senderName);
         } else
             return tr("%1 left after having already left!",
                       "This is a leave event after the user already left and shouldn't "
@@ -2100,7 +2100,7 @@ TimelineModel::formatMemberEvent(const QString &id)
         break;
 
     case Membership::Ban:
-        rendered = tr("%1 banned %2").arg(senderName,name);
+        rendered = tr("%1 banned %2").arg(senderName, name);
         break;
     case Membership::Knock:
         rendered = tr("%1 knocked.").arg(name);
