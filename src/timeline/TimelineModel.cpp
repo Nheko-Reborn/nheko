@@ -2038,7 +2038,7 @@ TimelineModel::formatMemberEvent(const QString &id)
     using namespace mtx::events::state;
     switch (event->content.membership) {
     case Membership::Invite:
-        rendered = tr("%1 invited %2.").arg(senderName).arg(name);
+        rendered = tr("%1 invited %2.").arg(senderName, name);
         break;
     case Membership::Join:
         if (prevEvent && prevEvent->content.membership == Membership::Join) {
