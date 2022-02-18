@@ -680,6 +680,24 @@ Page {
                     ripple: false
                     width: 22
                     height: 22
+                    image: ":/icons/icons/ui/search.svg"
+                    ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: qsTr("Search rooms (Ctrl+K)")
+                    Layout.margins: Nheko.paddingMedium
+                    onClicked: {
+                        var quickSwitch = quickSwitcherComponent.createObject(timelineRoot);
+                        quickSwitch.open();
+                    }
+                }
+
+                ImageButton {
+                    visible: !collapsed
+                    Layout.fillWidth: true
+                    hoverEnabled: true
+                    ripple: false
+                    width: 22
+                    height: 22
                     image: ":/icons/icons/ui/settings.svg"
                     ToolTip.visible: hovered
                     ToolTip.delay: Nheko.tooltipDelay
