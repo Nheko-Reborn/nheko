@@ -52,7 +52,8 @@ Item {
 
     Rectangle {
         color: (Settings.messageHoverHighlight && hovered) ? Nheko.colors.alternateBase : "transparent"
-        anchors.fill: row
+        anchors.fill: parent
+        anchors.leftMargin: Settings.smallAvatars? 0 : Nheko.avatarSize+8
     }
 
     TapHandler {
