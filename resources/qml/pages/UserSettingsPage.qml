@@ -25,7 +25,9 @@ Rectangle {
         palette: Nheko.colors
         ScrollBar.horizontal.visible: false
         anchors.fill: parent
-        anchors.margins: Nheko.paddingLarge
+        //anchors.margins: Nheko.paddingLarge // padding right of the scrollbar is ugly anyway
+        anchors.topMargin: (collapsed? backButton.height : 0) + Nheko.paddingMedium
+        anchors.leftMargin: collapsed? Nheko.paddingMedium : Nheko.paddingLarge
 
         contentWidth: availableWidth
 
@@ -48,7 +50,7 @@ Rectangle {
             columnSpacing: Nheko.paddingMedium
 
             anchors.fill: parent
-            anchors.leftMargin: userSettingsDialog.collapsed ? Nheko.paddingLarge : (userSettingsDialog.width-userSettingsDialog.collapsePoint) * 0.4
+            anchors.leftMargin: userSettingsDialog.collapsed ? 0 : (userSettingsDialog.width-userSettingsDialog.collapsePoint) * 0.4 + Nheko.paddingLarge
             anchors.rightMargin: anchors.leftMargin
 
             Repeater {
@@ -72,7 +74,7 @@ Rectangle {
                         //Layout.column: 0
                         Layout.columnSpan: (model.type == UserSettingsModel.SectionTitle && !userSettingsDialog.collapsed) ? 2 : 1
                         //Layout.row: model.index
-                        Layout.minimumWidth: implicitWidth
+                        //Layout.minimumWidth: implicitWidth
                         Layout.leftMargin: model.type == UserSettingsModel.SectionTitle ? 0 : Nheko.paddingMedium
                         Layout.topMargin: model.type == UserSettingsModel.SectionTitle ? Nheko.paddingLarge : 0
                         font.pointSize: 1.1 * fontMetrics.font.pointSize
@@ -84,6 +86,7 @@ Rectangle {
                         ToolTip.visible: hovered.hovered && model.description
                         ToolTip.text: model.description ?? ""
                         ToolTip.delay: Nheko.tooltipDelay
+                        wrapMode: Text.Wrap
                     }
 
                     DelegateChooser {
@@ -237,6 +240,7 @@ Rectangle {
     }
 
     ImageButton {
+        id: backButton
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.margins: Nheko.paddingMedium
