@@ -2031,12 +2031,14 @@ TimelineModel::formatMemberEvent(const QString &id)
     QString user = QString::fromStdString(event->state_key);
     QString name = utils::replaceEmoji(displayName(user));
     QString rendered;
+    QString sender = QString::fromStdString(event->sender);
+    QString senderName = utils::replaceEmoji(displayName(sender));
 
     // see table https://matrix.org/docs/spec/client_server/latest#m-room-member
     using namespace mtx::events::state;
     switch (event->content.membership) {
     case Membership::Invite:
-        rendered = tr("%1 was invited.").arg(name);
+        rendered = tr("%1 invited %2.").arg(senderName).arg(name);
         break;
     case Membership::Join:
         if (prevEvent && prevEvent->content.membership == Membership::Join) {
@@ -2077,19 +2079,19 @@ TimelineModel::formatMemberEvent(const QString &id)
             if (event->state_key == event->sender)
                 rendered = tr("%1 rejected their invite.").arg(name);
             else
-                rendered = tr("Revoked the invite to %1.").arg(name);
+                rendered = tr("%2 revoked the invite to %1.").arg(name,senderName);
         } else if (prevEvent->content.membership == Membership::Join) {
             if (event->state_key == event->sender)
                 rendered = tr("%1 left the room.").arg(name);
             else
-                rendered = tr("Kicked %1.").arg(name);
+                rendered = tr("%2 kicked %1.").arg(name,senderName);
         } else if (prevEvent->content.membership == Membership::Ban) {
-            rendered = tr("Unbanned %1.").arg(name);
+            rendered = tr("%2 unbanned %1.").arg(name,senderName);
         } else if (prevEvent->content.membership == Membership::Knock) {
             if (event->state_key == event->sender)
                 rendered = tr("%1 redacted their knock.").arg(name);
             else
-                rendered = tr("Rejected the knock from %1.").arg(name);
+                rendered = tr("%2 rejected the knock from %1.").arg(name,senderName);
         } else
             return tr("%1 left after having already left!",
                       "This is a leave event after the user already left and shouldn't "
@@ -2098,7 +2100,7 @@ TimelineModel::formatMemberEvent(const QString &id)
         break;
 
     case Membership::Ban:
-        rendered = tr("%1 was banned.").arg(name);
+        rendered = tr("%1 banned %2").arg(senderName,name);
         break;
     case Membership::Knock:
         rendered = tr("%1 knocked.").arg(name);
@@ -2197,7 +2199,7 @@ TimelineModel::resetState()
       room_id_.toStdString(),
       [this](const mtx::responses::StateEvents &events_, mtx::http::RequestErr e) {
           if (e) {
-              nhlog::net()->error("Failed to retrive current room state: {}", *e);
+              nhlog::net()->error("Failed to retrieve current room state: {}", *e);
               return;
           }
 
