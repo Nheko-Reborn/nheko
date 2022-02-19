@@ -42,12 +42,10 @@ Rectangle {
         }
 
 
-        GridLayout {
+        ColumnLayout {
             id: grid
 
-            columns: userSettingsDialog.collapsed ? 1 : 2
-            rowSpacing: Nheko.paddingMedium
-            columnSpacing: Nheko.paddingMedium
+            spacing: Nheko.paddingMedium
 
             anchors.fill: parent
             anchors.leftMargin: userSettingsDialog.collapsed ? 0 : (userSettingsDialog.width-userSettingsDialog.collapsePoint) * 0.4 + Nheko.paddingLarge
@@ -55,16 +53,13 @@ Rectangle {
 
             Repeater {
                 model: UserSettingsModel
+                Layout.fillWidth:true
 
-                delegate: Item {
+                delegate: GridLayout {
+                    columns: collapsed? 1 : 2
+                    rows: collapsed? 2: 1
                     required property var model
                     id: r
-
-                    Component.onCompleted: {
-                        while (children.length) { 
-                            children[0].parent = grid;
-                        }
-                    }
 
                     Label {
                         Layout.alignment: Qt.AlignLeft
