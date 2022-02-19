@@ -105,6 +105,7 @@ Rectangle {
         id: mouseArea
 
         onSingleTapped: avatar.clicked(eventPoint)
+        dragThreshold: 0
     }
 
     Ripple {
