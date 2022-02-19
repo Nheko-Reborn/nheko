@@ -49,6 +49,7 @@
 #include "ui/MxcMediaProxy.h"
 #include "ui/NhekoCursorShape.h"
 #include "ui/NhekoDropArea.h"
+#include "ui/NhekoEventObserver.h"
 #include "ui/NhekoGlobalObject.h"
 #include "ui/UIA.h"
 #include "voip/WebRTCSession.h"
@@ -164,6 +165,7 @@ MainWindow::registerQmlTypes()
     qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
     qmlRegisterType<NhekoDropArea>("im.nheko", 1, 0, "NhekoDropArea");
     qmlRegisterType<NhekoCursorShape>("im.nheko", 1, 0, "CursorShape");
+    qmlRegisterType<NhekoEventObserver>("im.nheko", 1, 0, "EventObserver");
     qmlRegisterType<MxcAnimatedImage>("im.nheko", 1, 0, "MxcAnimatedImage");
     qmlRegisterType<MxcMediaProxy>("im.nheko", 1, 0, "MxcMedia");
     qmlRegisterType<RoomDirectoryModel>("im.nheko", 1, 0, "RoomDirectoryModel");

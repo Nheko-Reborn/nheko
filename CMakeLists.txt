@@ -336,6 +336,7 @@ set(SRC_FILES
 	src/ui/MxcAnimatedImage.cpp
 	src/ui/MxcMediaProxy.cpp
 	src/ui/NhekoCursorShape.cpp
+	src/ui/NhekoEventObserver.cpp
 	src/ui/NhekoDropArea.cpp
 	src/ui/NhekoGlobalObject.cpp
 	src/ui/RoomSettings.cpp
@@ -532,6 +533,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/ui/MxcAnimatedImage.h
 	src/ui/MxcMediaProxy.h
 	src/ui/NhekoCursorShape.h
+	src/ui/NhekoEventObserver.h
 	src/ui/NhekoDropArea.h
 	src/ui/NhekoGlobalObject.h
 	src/ui/RoomSettings.h
