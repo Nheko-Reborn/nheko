@@ -48,16 +48,10 @@ Flickable {
     property bool hovered: false
 
     flickableDirection: Flickable.HorizontalFlick
-    property bool reachedThreshold
+
     onHorizontalOvershootChanged: {
-        if (horizontalOvershoot > 50) {
-            reachedThreshold = true
-        }
-    }
-    onFlickEnded: {
-        if (reachedThreshold) {
+        if (horizontalOvershoot > 50 && ! draggingHorizontally) { // trigger upon release
             chat.model.reply = eventId
-            reachedThreshold = false
         }
     }
 
