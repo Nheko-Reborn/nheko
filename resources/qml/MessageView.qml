@@ -33,7 +33,7 @@ Item {
 
         anchors.fill: parent
 
-        property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < chatRoot.availableWidth) ? Settings.timelineMaxWidth : chatRoot.availableWidth) - chatRoot.padding * 2 - (scrollbar.isTransient? 0 : scrollbar.width)
+        property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < chatRoot.availableWidth) ? Settings.timelineMaxWidth : chatRoot.availableWidth) - chatRoot.padding * 2 - (scrollbar.interactive? scrollbar.width : 0)
 
         displayMarginBeginning: height / 2
         displayMarginEnd: height / 2
@@ -53,7 +53,7 @@ Item {
 
         ScrollBar.vertical: scrollbar
 
-        anchors.rightMargin: scrollbar.isTransient? 0 : scrollbar.width
+        anchors.rightMargin: scrollbar.interactive? scrollbar.width : 0
 
         Rectangle {
             //closePolicy: Popup.NoAutoClose
