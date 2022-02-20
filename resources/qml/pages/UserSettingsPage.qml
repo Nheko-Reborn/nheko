@@ -25,10 +25,9 @@ Rectangle {
         palette: Nheko.colors
         ScrollBar.horizontal.visible: false
         anchors.fill: parent
-        //anchors.margins: Nheko.paddingLarge // padding right of the scrollbar is ugly anyway
-        anchors.topMargin: (collapsed? backButton.height : 0) + Nheko.paddingMedium
-        anchors.leftMargin: collapsed? Nheko.paddingMedium : Nheko.paddingLarge
-
+        anchors.topMargin: (collapsed? backButton.height : 0)+Nheko.paddingLarge
+        leftPadding: collapsed? Nheko.paddingMedium : Nheko.paddingLarge
+        bottomPadding: Nheko.paddingLarge
         contentWidth: availableWidth
 
         ColumnLayout {
@@ -82,6 +81,7 @@ Rectangle {
                         Layout.columnSpan: (model.type == UserSettingsModel.SectionTitle && !userSettingsDialog.collapsed) ? 2 : 1
                         Layout.preferredHeight: child.height
                         Layout.preferredWidth: Math.min(child.implicitWidth, child.width || 1000)
+                        Layout.maximumWidth: model.type == UserSettingsModel.SectionTitle ? Number.POSITIVE_INFINITY : 400
                         Layout.fillWidth: model.type == UserSettingsModel.SectionTitle || model.type == UserSettingsModel.Options || model.type == UserSettingsModel.Number
                         Layout.rightMargin: model.type == UserSettingsModel.SectionTitle ? 0 : Nheko.paddingMedium
 
