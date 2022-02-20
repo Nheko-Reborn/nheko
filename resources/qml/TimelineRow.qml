@@ -11,7 +11,7 @@ import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
 import im.nheko 1.0
 
-Item {
+Flickable {
     id: r
 
     required property double proportionalHeight
@@ -46,6 +46,20 @@ Item {
     required property int relatedEventCacheBuster
 
     property bool hovered: false
+
+    flickableDirection: Flickable.HorizontalFlick
+    property bool reachedThreshold
+    onHorizontalOvershootChanged: {
+        if (horizontalOvershoot > 50) {
+            reachedThreshold = true
+        }
+    }
+    onFlickEnded: {
+        if (reachedThreshold) {
+            chat.model.reply = eventId
+            reachedThreshold = false
+        }
+    }
 
     width: parent.width
     height: row.height+(reactionRow.height > 0 ? reactionRow.height-2 : 0 )
