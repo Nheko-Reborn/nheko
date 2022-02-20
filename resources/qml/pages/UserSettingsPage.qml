@@ -31,17 +31,6 @@ Rectangle {
 
         contentWidth: availableWidth
 
-        Timer {
-            id: deadTimer
-            interval: 500
-        }
-
-        Connections {
-            target: scroll.contentItem
-            function onContentYChanged() { deadTimer.restart(); }
-        }
-
-
         ColumnLayout {
             id: grid
 
@@ -111,8 +100,9 @@ Rectangle {
                                 width: Math.min(parent.width, implicitWidth)
                                 model: r.model.values
                                 currentIndex: r.model.value
-                                enabled: !deadTimer.running
                                 onCurrentIndexChanged: r.model.value = currentIndex
+
+                                WheelHandler{} // suppress scrolling changing values
                             }
                         }
                         DelegateChoice {
@@ -121,13 +111,14 @@ Rectangle {
                             SpinBox {
                                 anchors.right: parent.right
                                 width: Math.min(parent.width, implicitWidth)
-                                enabled: !deadTimer.running && model.enabled
                                 from: model.valueLowerBound
                                 to: model.valueUpperBound
                                 stepSize: model.valueStep
                                 value: model.value
                                 onValueChanged: model.value = value
                                 editable: true
+
+                                WheelHandler{} // suppress scrolling changing values
                             }
                         }
                         DelegateChoice {
@@ -141,7 +132,6 @@ Rectangle {
 
                                 anchors.right: parent.right
                                 width: Math.min(parent.width, implicitWidth)
-                                enabled: !deadTimer.running && model.enabled
                                 from: model.valueLowerBound * div
                                 to: model.valueUpperBound * div
                                 stepSize: model.valueStep * div
@@ -163,6 +153,8 @@ Rectangle {
                                 valueFromText: function(text, locale) {
                                     return Number.fromLocaleString(locale, text) * spinbox.div
                                 }
+
+                                WheelHandler{} // suppress scrolling changing values
                             }
                         }
                         DelegateChoice {
