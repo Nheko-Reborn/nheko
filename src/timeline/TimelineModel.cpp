@@ -1077,12 +1077,16 @@ TimelineModel::setCurrentIndex(int index)
 void
 TimelineModel::readEvent(const std::string &id)
 {
-    http::client()->read_event(room_id_.toStdString(), id, [this](mtx::http::RequestErr err) {
-        if (err) {
-            nhlog::net()->warn(
-              "failed to read_event ({}, {})", room_id_.toStdString(), currentId.toStdString());
-        }
-    });
+    http::client()->read_event(
+      room_id_.toStdString(),
+      id,
+      [this](mtx::http::RequestErr err) {
+          if (err) {
+              nhlog::net()->warn(
+                "failed to read_event ({}, {})", room_id_.toStdString(), currentId.toStdString());
+          }
+      },
+      !UserSettings::instance()->readReceipts());
 }
 
 QString

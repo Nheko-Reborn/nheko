@@ -16,6 +16,7 @@
 #include "EventAccessors.h"
 #include "Logging.h"
 #include "MatrixClient.h"
+#include "UserSettingsPage.h"
 #include "Utils.h"
 
 Q_DECLARE_METATYPE(Reaction)
@@ -220,11 +221,14 @@ EventStore::EventStore(std::string room_id, QObject *)
           }
 
           http::client()->read_event(
-            room_id_, event_id, [this, event_id](mtx::http::RequestErr err) {
+            room_id_,
+            event_id,
+            [this, event_id](mtx::http::RequestErr err) {
                 if (err) {
                     nhlog::net()->warn("failed to read_event ({}, {})", room_id_, event_id);
                 }
-            });
+            },
+            !UserSettings::instance()->readReceipts());
 
           auto idx = idToIndex(event_id);
 
