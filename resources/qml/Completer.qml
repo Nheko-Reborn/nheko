@@ -9,7 +9,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import im.nheko 1.0
 
-Popup {
+Control {
     id: popup
 
     property alias currentIndex: listView.currentIndex
@@ -75,19 +75,23 @@ Popup {
         } else {
             completer = undefined;
         }
+        currentIndex = -1
     }
-    padding: 1
-    onAboutToShow: currentIndex = -1
-    // If we have fewer than 7 items, just use the list view's content height.  
-    // Otherwise, we want to show 7 items.  Each item consists of row spacing between rows, row margins
-    // on each side of a row, 1px of padding above the first item and below the last item, and nominally
-    // some kind of content height.  avatarHeight is used for just about every delegate, so we're using
-    // that until we find something better.  Put is all together and you have the formula below!
-    height: Math.min(listView.contentHeight + 2, 6*rowSpacing + 7*(popup.avatarHeight + 2*rowMargin) + 2)
+    padding: 0
+    leftInset: 1
+    bottomInset: 1
+    topInset: 1
+    rightInset: 1
 
-    ListView {
+    contentItem: ListView {
         id: listView
 
+        // If we have fewer than 7 items, just use the list view's content height.  
+        // Otherwise, we want to show 7 items.  Each item consists of row spacing between rows, row margins
+        // on each side of a row, 1px of padding above the first item and below the last item, and nominally
+        // some kind of content height.  avatarHeight is used for just about every delegate, so we're using
+        // that until we find something better.  Put is all together and you have the formula below!
+        implicitHeight: Math.min(contentHeight, 6*rowSpacing + 7*(popup.avatarHeight + 2*rowMargin))
         clip: true 
         ScrollHelper {
             flickable: parent
@@ -103,8 +107,8 @@ Popup {
         onContentYChanged: deadTimer.restart()
 
         reuseItems: true
-        anchors.fill: parent
-        implicitWidth: fullWidth ? parent.width : contentItem.childrenRect.width
+        //anchors.fill: parent
+        implicitWidth: listView.contentItem.childrenRect.width
         model: completer
         verticalLayoutDirection: popup.bottomToTop ? ListView.BottomToTop : ListView.TopToBottom
         spacing: rowSpacing
@@ -116,7 +120,7 @@ Popup {
 
             color: model.index == popup.currentIndex ? Nheko.colors.highlight : Nheko.colors.base
             height: chooser.child.implicitHeight + 2 * popup.rowMargin
-            implicitWidth: fullWidth ? popup.contentWidth : chooser.child.implicitWidth + 4
+            implicitWidth: fullWidth ? popup.implicitContentWidth : chooser.child.implicitWidth + 4
 
             MouseArea {
                 id: mouseArea
@@ -303,30 +307,9 @@ Popup {
 
     }
 
-    enter: Transition {
-        NumberAnimation {
-            property: "opacity"
-            from: 0
-            to: 1
-            duration: 100
-        }
-
-    }
-
-    exit: Transition {
-        NumberAnimation {
-            property: "opacity"
-            from: 1
-            to: 0
-            duration: 100
-        }
-
-    }
 
     background: Rectangle {
         color: Nheko.colors.base
-        implicitHeight: popup.contentHeight
-        implicitWidth: popup.contentWidth
         border.color: Nheko.colors.mid
     }
 

@@ -18,20 +18,15 @@ Popup {
     }
 
     x: Math.round(parent.width / 2 - width / 2)
-    y: Math.round(parent.height / 2 - height / 2)
+    y: Math.round(parent.height / 4)
     modal: true
     palette: Nheko.colors
     parent: Overlay.overlay
-    width: implicitWidth >= (timelineRoot.width * 0.8) ? implicitWidth : (timelineRoot.width * 0.8)
-    height: implicitHeight + completerPopup.height + padding * 2
+    width: timelineRoot.width * 0.8
     leftPadding: 10
     rightPadding: 10
     onOpened: {
-        completerPopup.open();
         roomTextInput.forceActiveFocus();
-    }
-    onClosed: {
-        completerPopup.close();
     }
 
     Column {
@@ -53,6 +48,8 @@ Popup {
 
             property var modelData: room ? room.getDump(mid, "") : {
             }
+
+            width: parent.width
 
             userColor: TimelineManager.userColor(modelData.userId, Nheko.colors.window)
             blurhash: modelData.blurhash ?? ""
@@ -81,10 +78,10 @@ Popup {
                 completerPopup.completer.searchString = text;
             }
             Keys.onPressed: {
-                if ((event.key == Qt.Key_Up || event.key == Qt.Key_Backtab) && completerPopup.opened) {
+                if (event.key == Qt.Key_Up || event.key == Qt.Key_Backtab) {
                     event.accepted = true;
                     completerPopup.up();
-                } else if ((event.key == Qt.Key_Down || event.key == Qt.Key_Tab) && completerPopup.opened) {
+                } else if (event.key == Qt.Key_Down || event.key == Qt.Key_Tab) {
                     event.accepted = true;
                     if (event.key == Qt.Key_Tab && (event.modifiers & Qt.ShiftModifier))
                         completerPopup.up();
@@ -97,20 +94,18 @@ Popup {
             }
         }
 
-    }
+        Completer {
+            id: completerPopup
 
-    Completer {
-        id: completerPopup
+            width: forwardMessagePopup.width - forwardMessagePopup.leftPadding * 2
+            completerName: "room"
+            fullWidth: true
+            centerRowContent: false
+            avatarHeight: 24
+            avatarWidth: 24
+            bottomToTop: false
+        }
 
-        y: titleLabel.height + replyPreview.height + roomTextInput.height + roomTextInput.bottomPadding + forwardColumn.spacing * 3
-        width: forwardMessagePopup.width - forwardMessagePopup.leftPadding * 2
-        completerName: "room"
-        fullWidth: true
-        centerRowContent: false
-        avatarHeight: 24
-        avatarWidth: 24
-        bottomToTop: false
-        closePolicy: Popup.NoAutoClose
     }
 
     Connections {

@@ -110,9 +110,9 @@ Rectangle {
                 function openCompleter(pos, type) {
                     if (popup.opened) return;
                     completerTriggeredAt = pos;
-                    popup.completerName = type;
+                    completer.completerName = type;
                     popup.open();
-                    popup.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition));
+                    completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition));
                 }
 
                 function positionCursorAtEnd() {
@@ -149,7 +149,7 @@ Rectangle {
                         popup.close();
 
                     if (popup.opened)
-                        popup.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition));
+                        completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition));
 
                 }
                 onSelectionStartChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
@@ -183,16 +183,16 @@ Rectangle {
                     } else if (event.text == "~") {
                         messageInput.openCompleter(selectionStart, "customEmoji");
                     } else if (event.key == Qt.Key_Escape && popup.opened) {
-                        popup.completerName = "";
+                        completer.completerName = "";
                         popup.close();
                         event.accepted = true;
                     } else if (event.matches(StandardKey.SelectAll) && popup.opened) {
-                        popup.completerName = "";
+                        completer.completerName = "";
                         popup.close();
                     } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
                         if (popup.opened) {
-                            var currentCompletion = popup.currentCompletion();
-                            popup.completerName = "";
+                            var currentCompletion = completer.currentCompletion();
+                            completer.completerName = "";
                             popup.close();
                             if (currentCompletion) {
                                 messageInput.insertCompletion(currentCompletion);
@@ -206,9 +206,9 @@ Rectangle {
                         event.accepted = true;
                         if (popup.opened) {
                             if (event.modifiers & Qt.ShiftModifier)
-                                popup.down();
+                                completer.down();
                             else
-                                popup.up();
+                                completer.up();
                         } else {
                             var pos = cursorPosition - 1;
                             while (pos > -1) {
@@ -234,10 +234,10 @@ Rectangle {
                         }
                     } else if (event.key == Qt.Key_Up && popup.opened) {
                         event.accepted = true;
-                        popup.up();
+                        completer.up();
                     } else if ((event.key == Qt.Key_Down || event.key == Qt.Key_Backtab) && popup.opened) {
                         event.accepted = true;
-                        popup.down();
+                        completer.down();
                     } else if (event.key == Qt.Key_Up && event.modifiers == Qt.NoModifier) {
                         if (cursorPosition == 0) {
                             event.accepted = true;
@@ -283,7 +283,7 @@ Rectangle {
                         if (room)
                             messageInput.append(room.input.text);
 
-                        popup.completerName = "";
+                        completer.completerName = "";
                         messageInput.forceActiveFocus();
                     }
 
@@ -295,14 +295,40 @@ Rectangle {
                         messageInput.insertCompletion(completion);
                     }
 
-                    target: popup
+                    target: completer
                 }
 
-                Completer {
+                Popup {
                     id: popup
 
                     x: messageInput.positionToRectangle(messageInput.completerTriggeredAt).x
                     y: messageInput.positionToRectangle(messageInput.completerTriggeredAt).y - height
+                    padding: 0
+                    background: null
+
+                    Completer {
+                        anchors.fill: parent
+                        id: completer
+                    }
+
+                    enter: Transition {
+                        NumberAnimation {
+                            property: "opacity"
+                            from: 0
+                            to: 1
+                            duration: 100
+                        }
+
+                    }
+
+                    exit: Transition {
+                        NumberAnimation {
+                            property: "opacity"
+                            from: 1
+                            to: 0
+                            duration: 100
+                        }
+                    }
                 }
 
                 Connections {
