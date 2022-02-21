@@ -226,6 +226,7 @@ Item {
                     forwardMess.setMessageEventId(chat.model.reply);
                     forwardMess.open();
                     chat.model.reply = null;
+                    timelineRoot.destroyOnClose(forwardMess);
                 }
             }
         }
@@ -653,6 +654,7 @@ Item {
                 var forwardMess = forwardCompleterComponent.createObject(timelineRoot);
                 forwardMess.setMessageEventId(messageContextMenu.eventId);
                 forwardMess.open();
+                timelineRoot.destroyOnClose(forwardMess);
             }
         }
 

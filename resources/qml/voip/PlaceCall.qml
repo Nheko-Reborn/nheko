@@ -66,6 +66,7 @@ Popup {
                         "image": ":/icons/icons/ui/place-call.svg"
                     });
                     dialog.open();
+                    timelineRoot.destroyOnClose(dialog);
                     return false;
                 }
                 return true;
@@ -118,6 +119,7 @@ Popup {
                     var dialog = screenShareDialog.createObject(timelineRoot);
                     dialog.open();
                     close();
+                    timelineRoot.destroyOnClose(dialog);
                 }
             }
 

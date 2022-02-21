@@ -54,6 +54,7 @@ Rectangle {
                     } else {
                         var dialog = placeCallDialog.createObject(timelineRoot);
                         dialog.open();
+                        timelineRoot.destroyOnClose(dialog);
                     }
                 }
             }

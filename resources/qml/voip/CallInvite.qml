@@ -136,6 +136,7 @@ Popup {
                         "image": ":/icons/icons/ui/place-call.svg"
                     });
                     dialog.open();
+                    timelineRoot.destroyOnClose(dialog);
                     return false;
                 }
                 return true;

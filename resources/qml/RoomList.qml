@@ -394,6 +394,7 @@ Page {
                     "profile": Nheko.currentUser
                 });
                 userProfile.show();
+                timelineRoot.destroyOnClose(userProfile);
             }
 
 
@@ -670,6 +671,7 @@ Page {
                     onClicked: {
                         var win = roomDirectoryComponent.createObject(timelineRoot);
                         win.show();
+                        timelineRoot.destroyOnClose(win);
                     }
                 }
 
@@ -688,6 +690,7 @@ Page {
                     onClicked: {
                         var quickSwitch = quickSwitcherComponent.createObject(timelineRoot);
                         quickSwitch.open();
+                        timelineRoot.destroyOnClose(quickSwitch);
                     }
                 }
 

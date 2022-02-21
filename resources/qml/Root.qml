@@ -29,6 +29,13 @@ Pane {
         id: fontMetrics
     }
 
+    //Timer {
+    //    onTriggered: gc()
+    //    interval: 1000
+    //    running: true
+    //    repeat: true
+    //}
+
     EmojiPicker {
         id: emojiPopup
 
@@ -166,6 +173,7 @@ Pane {
         onActivated: {
             var quickSwitch = quickSwitcherComponent.createObject(timelineRoot);
             quickSwitch.open();
+            destroyOnClose(quickSwitch);
         }
     }
 
@@ -189,11 +197,13 @@ Pane {
         function onOpenLogoutDialog() {
             var dialog = logoutDialog.createObject(timelineRoot);
             dialog.open();
+            destroyOnClose(dialog);
         }
 
         function onOpenJoinRoomDialog() {
             var dialog = joinRoomDialog.createObject(timelineRoot);
             dialog.show();
+            destroyOnClose(dialog);
         }
 
         target: Nheko
@@ -205,9 +215,14 @@ Pane {
                 "flow": flow
             });
             dialog.show();
+            destroyOnClose(dialog);
         }
 
         target: VerificationManager
+    }
+
+    function destroyOnClose(obj) {
+        obj.closing.connect(() => obj.destroy());
     }
 
     Connections {
@@ -216,6 +231,7 @@ Pane {
                 "profile": profile
             });
             userProfile.show();
+            destroyOnClose(userProfile);
         }
 
         function onShowImagePackSettings(room, packlist) {
@@ -224,6 +240,7 @@ Pane {
                 "packlist": packlist
             });
             packSet.show();
+            destroyOnClose(packSet);
         }
 
         function onOpenRoomMembersDialog(members, room) {
@@ -232,6 +249,7 @@ Pane {
                 "room": room
             });
             membersDialog.show();
+            destroyOnClose(membersDialog);
         }
 
         function onOpenRoomSettingsDialog(settings) {
@@ -239,6 +257,7 @@ Pane {
                 "roomSettings": settings
             });
             roomSettings.show();
+            destroyOnClose(roomSettings);
         }
 
         function onOpenInviteUsersDialog(invitees) {
@@ -248,6 +267,7 @@ Pane {
                 "invitees": invitees
             });
             dialog.show();
+            destroyOnClose(dialog);
         }
 
         function onOpenLeaveRoomDialog(roomid) {
@@ -255,6 +275,7 @@ Pane {
                 "roomId": roomid
             });
             dialog.open();
+            destroyOnClose(dialog);
         }
 
         function onShowImageOverlay(room, eventId, url, proportionalHeight, originalWidth) {
@@ -264,6 +285,7 @@ Pane {
                 "url": url
             });
             dialog.showFullScreen();
+            destroyOnClose(dialog);
         }
 
         target: TimelineManager
@@ -274,6 +296,7 @@ Pane {
             if (CallManager.haveCallInvite && Settings.mobileMode) {
                 var dialog = mobileCallInviteDialog.createObject(msgView);
                 dialog.open();
+                destroyOnClose(dialog);
             }
         }
 

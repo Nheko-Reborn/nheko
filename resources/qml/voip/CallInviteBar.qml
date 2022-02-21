@@ -83,6 +83,7 @@ Rectangle {
             onClicked: {
                 var dialog = devicesDialog.createObject(timelineRoot);
                 dialog.open();
+            timelineRoot.destroyOnClose(dialog);
             }
         }
 
@@ -98,6 +99,7 @@ Rectangle {
                         "image": ":/icons/icons/ui/place-call.svg"
                     });
                     dialog.open();
+            timelineRoot.destroyOnClose(dialog);
                     return ;
                 } else if (!CallManager.mics.includes(Settings.microphone)) {
                     var dialog = deviceError.createObject(timelineRoot, {
@@ -105,6 +107,7 @@ Rectangle {
                         "image": ":/icons/icons/ui/place-call.svg"
                     });
                     dialog.open();
+            timelineRoot.destroyOnClose(dialog);
                     return ;
                 }
                 if (CallManager.callType == CallType.VIDEO && CallManager.cameras.length > 0 && !CallManager.cameras.includes(Settings.camera)) {
@@ -113,6 +116,7 @@ Rectangle {
                         "image": ":/icons/icons/ui/video.svg"
                     });
                     dialog.open();
+            timelineRoot.destroyOnClose(dialog);
                     return ;
                 }
                 CallManager.acceptInvite();

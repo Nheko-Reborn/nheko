@@ -71,6 +71,7 @@ ApplicationWindow {
                                 "imagePack": packlist.newPack(false)
                             });
                             dialog.show();
+                            timelineRoot.destroyOnClose(dialog);
                         }
                         width: packlistC.width
                         visible: !packlist.containsAccountPack
@@ -84,6 +85,7 @@ ApplicationWindow {
                                 "imagePack": packlist.newPack(true)
                             });
                             dialog.show();
+                            timelineRoot.destroyOnClose(dialog);
                         }
                         width: packlistC.width
                         visible: room.permissions.canChange(MtxEvent.ImagePackInRoom)
@@ -199,6 +201,7 @@ ApplicationWindow {
                                 "imagePack": currentPack
                             });
                             dialog.show();
+                            timelineRoot.destroyOnClose(dialog);
                         }
                     }
 

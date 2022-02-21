@@ -261,6 +261,7 @@ Item {
                 "room": room
             });
             dialog.show();
+            timelineRoot.destroyOnClose(dialog);
         }
 
         function onShowRawMessageDialog(rawMessage) {
@@ -268,6 +269,7 @@ Item {
                 "rawMessage": rawMessage
             });
             dialog.show();
+            timelineRoot.destroyOnClose(dialog);
         }
 
         target: room

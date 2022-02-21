@@ -183,28 +183,31 @@ TimelineViewManager::openRoomMembers(TimelineModel *room)
 {
     if (!room)
         return;
-    MemberList *memberList = new MemberList(room->roomId(), this);
+    MemberList *memberList = new MemberList(room->roomId());
+    QQmlEngine::setObjectOwnership(memberList, QQmlEngine::JavaScriptOwnership);
     emit openRoomMembersDialog(memberList, room);
 }
 
 void
 TimelineViewManager::openRoomSettings(QString room_id)
 {
-    RoomSettings *settings = new RoomSettings(room_id, this);
+    RoomSettings *settings = new RoomSettings(room_id);
     connect(rooms_->getRoomById(room_id).data(),
             &TimelineModel::roomAvatarUrlChanged,
             settings,
             &RoomSettings::avatarChanged);
+    QQmlEngine::setObjectOwnership(settings, QQmlEngine::JavaScriptOwnership);
     emit openRoomSettingsDialog(settings);
 }
 
 void
 TimelineViewManager::openInviteUsers(QString roomId)
 {
-    InviteesModel *model = new InviteesModel{this};
+    InviteesModel *model = new InviteesModel{};
     connect(model, &InviteesModel::accept, this, [this, model, roomId]() {
         emit inviteUsers(roomId, model->mxids());
     });
+    QQmlEngine::setObjectOwnership(model, QQmlEngine::JavaScriptOwnership);
     emit openInviteUsersDialog(model);
 }
 
@@ -212,6 +215,7 @@ void
 TimelineViewManager::openGlobalUserProfile(QString userId)
 {
     UserProfile *profile = new UserProfile{QString{}, userId, this};
+    QQmlEngine::setObjectOwnership(profile, QQmlEngine::JavaScriptOwnership);
     emit openProfile(profile);
 }
 
@@ -269,8 +273,10 @@ TimelineViewManager::openImageOverlay(TimelineModel *room, QString mxcUrl, QStri
 void
 TimelineViewManager::openImagePackSettings(QString roomid)
 {
-    auto room = rooms_->getRoomById(roomid).get();
-    emit showImagePackSettings(room, new ImagePackListModel(roomid.toStdString(), this));
+    auto room  = rooms_->getRoomById(roomid).get();
+    auto model = new ImagePackListModel(roomid.toStdString());
+    QQmlEngine::setObjectOwnership(model, QQmlEngine::JavaScriptOwnership);
+    emit showImagePackSettings(room, model);
 }
 
 void
