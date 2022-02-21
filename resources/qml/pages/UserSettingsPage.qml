@@ -25,44 +25,29 @@ Rectangle {
         palette: Nheko.colors
         ScrollBar.horizontal.visible: false
         anchors.fill: parent
-        anchors.margins: Nheko.paddingLarge
-
+        anchors.topMargin: (collapsed? backButton.height : 0)+Nheko.paddingLarge
+        leftPadding: collapsed? Nheko.paddingMedium : Nheko.paddingLarge
+        bottomPadding: Nheko.paddingLarge
         contentWidth: availableWidth
 
-        Timer {
-            id: deadTimer
-            interval: 500
-        }
-
-        Connections {
-            target: scroll.contentItem
-            function onContentYChanged() { deadTimer.restart(); }
-        }
-
-
-        GridLayout {
+        ColumnLayout {
             id: grid
 
-            columns: userSettingsDialog.collapsed ? 1 : 2
-            rowSpacing: Nheko.paddingMedium
-            columnSpacing: Nheko.paddingMedium
+            spacing: Nheko.paddingMedium
 
             anchors.fill: parent
-            anchors.leftMargin: userSettingsDialog.collapsed ? Nheko.paddingLarge : (userSettingsDialog.width-userSettingsDialog.collapsePoint) * 0.4
+            anchors.leftMargin: userSettingsDialog.collapsed ? 0 : (userSettingsDialog.width-userSettingsDialog.collapsePoint) * 0.4 + Nheko.paddingLarge
             anchors.rightMargin: anchors.leftMargin
 
             Repeater {
                 model: UserSettingsModel
+                Layout.fillWidth:true
 
-                delegate: Item {
+                delegate: GridLayout {
+                    columns: collapsed? 1 : 2
+                    rows: collapsed? 2: 1
                     required property var model
                     id: r
-
-                    Component.onCompleted: {
-                        while (children.length) { 
-                            children[0].parent = grid;
-                        }
-                    }
 
                     Label {
                         Layout.alignment: Qt.AlignLeft
@@ -72,7 +57,7 @@ Rectangle {
                         //Layout.column: 0
                         Layout.columnSpan: (model.type == UserSettingsModel.SectionTitle && !userSettingsDialog.collapsed) ? 2 : 1
                         //Layout.row: model.index
-                        Layout.minimumWidth: implicitWidth
+                        //Layout.minimumWidth: implicitWidth
                         Layout.leftMargin: model.type == UserSettingsModel.SectionTitle ? 0 : Nheko.paddingMedium
                         Layout.topMargin: model.type == UserSettingsModel.SectionTitle ? Nheko.paddingLarge : 0
                         font.pointSize: 1.1 * fontMetrics.font.pointSize
@@ -84,6 +69,7 @@ Rectangle {
                         ToolTip.visible: hovered.hovered && model.description
                         ToolTip.text: model.description ?? ""
                         ToolTip.delay: Nheko.tooltipDelay
+                        wrapMode: Text.Wrap
                     }
 
                     DelegateChooser {
@@ -95,6 +81,7 @@ Rectangle {
                         Layout.columnSpan: (model.type == UserSettingsModel.SectionTitle && !userSettingsDialog.collapsed) ? 2 : 1
                         Layout.preferredHeight: child.height
                         Layout.preferredWidth: Math.min(child.implicitWidth, child.width || 1000)
+                        Layout.maximumWidth: model.type == UserSettingsModel.SectionTitle ? Number.POSITIVE_INFINITY : 400
                         Layout.fillWidth: model.type == UserSettingsModel.SectionTitle || model.type == UserSettingsModel.Options || model.type == UserSettingsModel.Number
                         Layout.rightMargin: model.type == UserSettingsModel.SectionTitle ? 0 : Nheko.paddingMedium
 
@@ -113,8 +100,9 @@ Rectangle {
                                 width: Math.min(parent.width, implicitWidth)
                                 model: r.model.values
                                 currentIndex: r.model.value
-                                enabled: !deadTimer.running
                                 onCurrentIndexChanged: r.model.value = currentIndex
+
+                                WheelHandler{} // suppress scrolling changing values
                             }
                         }
                         DelegateChoice {
@@ -123,13 +111,14 @@ Rectangle {
                             SpinBox {
                                 anchors.right: parent.right
                                 width: Math.min(parent.width, implicitWidth)
-                                enabled: !deadTimer.running && model.enabled
                                 from: model.valueLowerBound
                                 to: model.valueUpperBound
                                 stepSize: model.valueStep
                                 value: model.value
                                 onValueChanged: model.value = value
                                 editable: true
+
+                                WheelHandler{} // suppress scrolling changing values
                             }
                         }
                         DelegateChoice {
@@ -143,7 +132,6 @@ Rectangle {
 
                                 anchors.right: parent.right
                                 width: Math.min(parent.width, implicitWidth)
-                                enabled: !deadTimer.running && model.enabled
                                 from: model.valueLowerBound * div
                                 to: model.valueUpperBound * div
                                 stepSize: model.valueStep * div
@@ -165,6 +153,8 @@ Rectangle {
                                 valueFromText: function(text, locale) {
                                     return Number.fromLocaleString(locale, text) * spinbox.div
                                 }
+
+                                WheelHandler{} // suppress scrolling changing values
                             }
                         }
                         DelegateChoice {
@@ -237,6 +227,7 @@ Rectangle {
     }
 
     ImageButton {
+        id: backButton
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.margins: Nheko.paddingMedium
