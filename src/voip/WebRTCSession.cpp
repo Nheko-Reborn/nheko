@@ -30,6 +30,11 @@ extern "C"
 #define GST_USE_UNSTABLE_API
 #include "gst/webrtc/webrtc.h"
 }
+
+#if !GST_CHECK_VERSION(1, 20, 0)
+#define gst_element_request_pad_simple gst_element_get_request_pad
+#endif
+
 #endif
 
 // https://github.com/vector-im/riot-web/issues/10173
@@ -387,7 +392,7 @@ addLocalPiP(GstElement *pipe, const std::pair<int, int> &videoCallSize)
     gst_object_unref(tee);
 
     GstElement *compositor = gst_bin_get_by_name(GST_BIN(pipe), "compositor");
-    localPiPSinkPad_       = gst_element_get_request_pad(compositor, "sink_%u");
+    localPiPSinkPad_       = gst_element_request_pad_simple(compositor, "sink_%u");
     g_object_set(localPiPSinkPad_, "zorder", 2, nullptr);
 
     bool isVideo         = WebRTCSession::instance().callType() == CallType::VIDEO;
@@ -435,7 +440,7 @@ addLocalVideo(GstElement *pipe)
 {
     GstElement *queue = newVideoSinkChain(pipe);
     GstElement *tee   = gst_bin_get_by_name(GST_BIN(pipe), "videosrctee");
-    GstPad *srcpad    = gst_element_get_request_pad(tee, "src_%u");
+    GstPad *srcpad    = gst_element_request_pad_simple(tee, "src_%u");
     GstPad *sinkpad   = gst_element_get_static_pad(queue, "sink");
     if (GST_PAD_LINK_FAILED(gst_pad_link(srcpad, sinkpad)))
         nhlog::ui()->error("WebRTC: failed to link videosrctee -> video sink chain");
@@ -955,7 +960,7 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
             }
 
             GstPad *srcpad    = gst_element_get_static_pad(camerafilter, "src");
-            remotePiPSinkPad_ = gst_element_get_request_pad(compositor, "sink_%u");
+            remotePiPSinkPad_ = gst_element_request_pad_simple(compositor, "sink_%u");
             if (GST_PAD_LINK_FAILED(gst_pad_link(srcpad, remotePiPSinkPad_))) {
                 nhlog::ui()->error("WebRTC: failed to link camerafilter -> compositor");
                 gst_object_unref(srcpad);
