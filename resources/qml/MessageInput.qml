@@ -18,6 +18,7 @@ Rectangle {
     Layout.fillWidth: true
     Layout.preferredHeight: row.implicitHeight
     Layout.minimumHeight: 40
+    property bool isNarrow: width < 450
 
     Component {
         id: placeCallDialog
@@ -29,6 +30,7 @@ Rectangle {
 
     RowLayout {
         id: row
+        property bool hasText: messageInput.length > 0
 
         visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
         anchors.fill: parent
@@ -354,7 +356,25 @@ Rectangle {
         }
 
         ImageButton {
+            id: emojiButton
+
+            Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+            Layout.margins: 8
+            hoverEnabled: true
+            width: 22
+            height: 22
+            image: ":/icons/icons/ui/smile.svg"
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Emoji")
+            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
+                messageInput.insert(messageInput.cursorPosition, emoji);
+                TimelineManager.focusMessageInput();
+            })
+        }
+
+        ImageButton {
             id: stickerButton
+            visible: !row.hasText || !isNarrow
 
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             Layout.margins: 8
@@ -378,23 +398,7 @@ Rectangle {
         }
 
         ImageButton {
-            id: emojiButton
-
-            Layout.alignment: Qt.AlignRight | Qt.AlignBottom
-            Layout.margins: 8
-            hoverEnabled: true
-            width: 22
-            height: 22
-            image: ":/icons/icons/ui/smile.svg"
-            ToolTip.visible: hovered
-            ToolTip.text: qsTr("Emoji")
-            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
-                messageInput.insert(messageInput.cursorPosition, emoji);
-                TimelineManager.focusMessageInput();
-            })
-        }
-
-        ImageButton {
+            visible: row.hasText || !isNarrow
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             Layout.margins: 8
             hoverEnabled: true
