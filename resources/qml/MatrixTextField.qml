@@ -117,6 +117,7 @@ ColumnLayout {
         onTextEdited: c.textEdited()
         onAccepted: c.accepted()
         onEditingFinished: c.editingFinished()
+        inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhNoPredictiveText
 
 
         background: Rectangle {
