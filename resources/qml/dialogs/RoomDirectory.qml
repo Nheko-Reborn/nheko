@@ -16,8 +16,10 @@ ApplicationWindow {
     property RoomDirectoryModel publicRooms
 
     visible: true
-    minimumWidth: 650
-    minimumHeight: 420
+    minimumWidth: 340
+    minimumHeight: 340
+    height: 420
+    width: 650
     palette: Nheko.colors
     color: Nheko.colors.window
     modality: Qt.WindowModal
@@ -38,7 +40,6 @@ ApplicationWindow {
         ScrollHelper {
             flickable: parent
             anchors.fill: parent
-            enabled: !Settings.mobileMode
         }
 
         delegate: Rectangle {
@@ -47,7 +48,7 @@ ApplicationWindow {
             property color background: Nheko.colors.window
             property color importantText: Nheko.colors.text
             property color unimportantText: Nheko.colors.buttonText
-            property int avatarSize: fontMetrics.lineSpacing * 4
+            property int avatarSize: fontMetrics.height * 3.2
 
             color: background
             height: avatarSize + Nheko.paddingLarge
@@ -56,13 +57,14 @@ ApplicationWindow {
             RowLayout {
                 spacing: Nheko.paddingMedium
                 anchors.fill: parent
-                anchors.margins: Nheko.paddingLarge
-                implicitHeight: textContent.height
+                anchors.margins: Nheko.paddingMedium
+                implicitHeight: textContent.implicitHeight
 
                 Avatar {
                     id: roomAvatar
 
                     Layout.alignment: Qt.AlignVCenter
+                    Layout.rightMargin: Nheko.paddingMedium
                     width: avatarSize
                     height: avatarSize
                     url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
@@ -70,78 +72,57 @@ ApplicationWindow {
                     displayName: model.name
                 }
 
-                ColumnLayout {
+                GridLayout {
                     id: textContent
+                    rows: 2
+                    columns: 2
 
                     Layout.alignment: Qt.AlignLeft
                     width: parent.width - avatar.width
                     Layout.preferredWidth: parent.width - avatar.width
-                    spacing: Nheko.paddingSmall
 
                     ElidedLabel {
-                        Layout.alignment: Qt.AlignBottom
+                        Layout.row: 0
+                        Layout.column: 0
+                        Layout.fillWidth:true
                         color: roomDirDelegate.importantText
-                        elideWidth: textContent.width - numMembersRectangle.width - buttonRectangle.width
-                        font.pixelSize: fontMetrics.font.pixelSize * 1.1
+                        elideWidth: width
                         fullText: model.name
                     }
 
-                    RowLayout {
-                        id: roomDescriptionRow
+                    Label {
+                        id: roomTopic
 
-                        Layout.preferredWidth: parent.width
-                        spacing: Nheko.paddingSmall
-                        Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                        Layout.preferredHeight: fontMetrics.lineSpacing * 4
+                        color: roomDirDelegate.unimportantText
+                        Layout.row: 1
+                        Layout.column: 0
+                        font.pointSize: fontMetrics.font.pointSize*0.9
+                        elide: Text.ElideRight
+                        maximumLineCount: 2
+                        Layout.fillWidth: true
+                        text: model.topic
+                        verticalAlignment: Text.AlignVCenter
+                        wrapMode: Text.WordWrap
+                    }
 
-                        Label {
-                            id: roomTopic
+                    Label {
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.row: 0
+                        Layout.column: 1
+                        id: roomCount
 
-                            color: roomDirDelegate.unimportantText
-                            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                            font.pixelSize: fontMetrics.font.pixelSize
-                            elide: Text.ElideRight
-                            maximumLineCount: 2
-                            Layout.fillWidth: true
-                            text: model.topic
-                            verticalAlignment: Text.AlignVCenter
-                            wrapMode: Text.WordWrap
-                        }
+                        color: roomDirDelegate.unimportantText
+                        font.pointSize: fontMetrics.font.pointSize*0.9
+                        text: model.numMembers.toString()
+                    }
 
-                        Item {
-                            id: numMembersRectangle
-
-                            Layout.margins: Nheko.paddingSmall
-                            width: roomCount.width
-
-                            Label {
-                                id: roomCount
-
-                                color: roomDirDelegate.unimportantText
-                                anchors.centerIn: parent
-                                font.pixelSize: fontMetrics.font.pixelSize
-                                text: model.numMembers.toString()
-                            }
-
-                        }
-
-                        Item {
-                            id: buttonRectangle
-
-                            Layout.margins: Nheko.paddingSmall
-                            width: joinRoomButton.width
-
-                            Button {
-                                id: joinRoomButton
-
-                                visible: model.canJoin
-                                anchors.centerIn: parent
-                                text: "Join"
-                                onClicked: publicRooms.joinRoom(model.index)
-                            }
-
-                        }
-
+                    Button {
+                        Layout.row: 1
+                        Layout.column: 1
+                        id: joinRoomButton
+                        enabled: model.canJoin
+                        text: "Join"
+                        onClicked: publicRooms.joinRoom(model.index)
                     }
 
                 }
