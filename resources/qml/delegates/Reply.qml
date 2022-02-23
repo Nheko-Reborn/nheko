@@ -82,19 +82,16 @@ Item {
             gesturePolicy: TapHandler.ReleaseWithinBounds
         }
 
-        Text {
-            Layout.leftMargin: 4
+        AbstractButton {
             id: userName_
+            contentItem: Text {
+                Layout.leftMargin: 4
 
-            text: TimelineManager.escapeEmoji(userName)
-            color: r.userColor
-            textFormat: Text.RichText
-
-            TapHandler {
-                onSingleTapped: room.openUserProfile(userId)
-                gesturePolicy: TapHandler.ReleaseWithinBounds
+                text: TimelineManager.escapeEmoji(userName)
+                color: r.userColor
+                textFormat: Text.RichText
             }
-
+            onClicked: room.openUserProfile(userId)
         }
 
         MessageDelegate {
