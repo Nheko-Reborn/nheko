@@ -302,14 +302,9 @@ Item {
                         displayName: userName
                         userid: userId
                         onClicked: room.openUserProfile(userId)
-                        ToolTip.visible: avatarHover.hovered
+                        ToolTip.visible: messageUserAvatar.hovered
                         ToolTip.delay: Nheko.tooltipDelay
                         ToolTip.text: userid
-
-                        HoverHandler {
-                            id: avatarHover
-                        }
-
                     }
 
                     Connections {

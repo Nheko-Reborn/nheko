@@ -9,7 +9,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Window 2.15
 import im.nheko 1.0
 
-Rectangle {
+AbstractButton {
     id: avatar
 
     property string url
@@ -18,13 +18,14 @@ Rectangle {
     property string displayName
     property alias textColor: label.color
     property bool crop: true
-
-    signal clicked(var mouse)
+    property color bgColor: Nheko.colors.alternateBase
 
     width: 48
     height: 48
-    radius: Settings.avatarCircles ? height / 2 : height / 8
-    color: Nheko.colors.alternateBase
+    background: Rectangle {
+        radius: Settings.avatarCircles ? height / 2 : height / 8
+        color: bgColor
+    }
 
     Label {
         id: label
@@ -99,13 +100,6 @@ Rectangle {
     CursorShape {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
-    }
-
-    TapHandler {
-        id: mouseArea
-
-        onSingleTapped: avatar.clicked(eventPoint)
-        dragThreshold: 0
     }
 
     Ripple {
