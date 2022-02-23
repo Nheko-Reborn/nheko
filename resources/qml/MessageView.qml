@@ -323,29 +323,21 @@ Item {
 
                         target: chat.model
                     }
-
-                    Label {
-                        id: userName_
-
-                        text: TimelineManager.escapeEmoji(userName)
-                        color: TimelineManager.userColor(userId, Nheko.colors.base)
-                        textFormat: Text.RichText
-                        ToolTip.visible: displayNameHover.hovered
+                    AbstractButton {
+                        contentItem: Label {
+                            id: userName_
+                            text: TimelineManager.escapeEmoji(userName)
+                            color: TimelineManager.userColor(userId, Nheko.colors.base)
+                            textFormat: Text.RichText
+                        }
+                        ToolTip.visible: hovered
                         ToolTip.delay: Nheko.tooltipDelay
                         ToolTip.text: userId
-
-                        TapHandler {
-                            onSingleTapped: chat.model.openUserProfile(userId)
-                            dragThreshold: 0
-                        }
+                        onClicked: chat.model.openUserProfile(userId)
 
                         CursorShape {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
-                        }
-
-                        HoverHandler {
-                            id: displayNameHover
                         }
 
                     }
