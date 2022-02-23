@@ -19,6 +19,22 @@ Rectangle {
     Layout.preferredHeight: row.implicitHeight
     Layout.minimumHeight: 40
     property bool isNarrow: width < 450
+    property bool isExpanded
+
+    Component.onCompleted: {
+        if(!isNarrow) {
+            isExpanded = true
+        } else {
+            isExpanded = false
+        }
+    }
+    onWidthChanged: {
+        if(!isNarrow) {
+            isExpanded = true
+        } else {
+            isExpanded = false
+        }
+    }
 
     Component {
         id: placeCallDialog
@@ -35,9 +51,23 @@ Rectangle {
         visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
         anchors.fill: parent
         spacing: 0
+        ImageButton {
+            visible: isNarrow
+            Layout.alignment: Qt.AlignBottom
+            hoverEnabled: true
+            width: 22
+            height: 22
+            image: isExpanded ? ":/icons/icons/ui/angle-arrow-left.svg" : ":/icons/icons/ui/collapsed.svg"
+            ToolTip.visible: hovered
+            ToolTip.text: isExpanded ? qsTr("Collapse") : qsTr("Expand")
+            Layout.margins: 8
+            onClicked: {
+                isExpanded = !isExpanded
+            }
+        }
 
         ImageButton {
-            visible: CallManager.callsSupported
+            visible: CallManager.callsSupported && isExpanded
             opacity: CallManager.haveCallInvite ? 0.3 : 1
             Layout.alignment: Qt.AlignBottom
             hoverEnabled: true
@@ -62,6 +92,7 @@ Rectangle {
         }
 
         ImageButton {
+            visible: isExpanded
             Layout.alignment: Qt.AlignBottom
             hoverEnabled: true
             width: 22
@@ -356,25 +387,8 @@ Rectangle {
         }
 
         ImageButton {
-            id: emojiButton
-
-            Layout.alignment: Qt.AlignRight | Qt.AlignBottom
-            Layout.margins: 8
-            hoverEnabled: true
-            width: 22
-            height: 22
-            image: ":/icons/icons/ui/smile.svg"
-            ToolTip.visible: hovered
-            ToolTip.text: qsTr("Emoji")
-            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
-                messageInput.insert(messageInput.cursorPosition, emoji);
-                TimelineManager.focusMessageInput();
-            })
-        }
-
-        ImageButton {
             id: stickerButton
-            visible: !row.hasText || !isNarrow
+            visible: isExpanded
 
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             Layout.margins: 8
@@ -398,7 +412,23 @@ Rectangle {
         }
 
         ImageButton {
-            visible: row.hasText || !isNarrow
+            id: emojiButton
+
+            Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+            Layout.margins: 8
+            hoverEnabled: true
+            width: 22
+            height: 22
+            image: ":/icons/icons/ui/smile.svg"
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("Emoji")
+            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
+                messageInput.insert(messageInput.cursorPosition, emoji);
+                TimelineManager.focusMessageInput();
+            })
+        }
+
+        ImageButton {
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             Layout.margins: 8
             hoverEnabled: true
