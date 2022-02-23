@@ -84,8 +84,8 @@ Item {
 
         AbstractButton {
             id: userName_
+            Layout.leftMargin: 4
             contentItem: Text {
-                Layout.leftMargin: 4
 
                 text: TimelineManager.escapeEmoji(userName)
                 color: r.userColor

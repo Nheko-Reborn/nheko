@@ -152,7 +152,7 @@ Page {
                     }
                     roomid: model.id
                     displayName: model.displayName
-                    bgColor: communityItem.backgroundColor
+                    color: communityItem.backgroundColor
                 }
 
                 ElidedLabel {

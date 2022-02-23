@@ -18,13 +18,14 @@ AbstractButton {
     property string displayName
     property alias textColor: label.color
     property bool crop: true
-    property color bgColor: Nheko.colors.alternateBase
+    property alias color: bg.color
 
     width: 48
     height: 48
     background: Rectangle {
+        id: bg
         radius: Settings.avatarCircles ? height / 2 : height / 8
-        color: bgColor
+        color: Nheko.colors.alternateBase
     }
 
     Label {
