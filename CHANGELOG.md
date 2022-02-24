@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.1-1] -- 2021-02-24
+
+- Rebuild against newer mtxclient to fix an incompatibility with Matrix v1.1 and newer.
+
+If you use the binary packages for macOS or Windows, you will need this update.
+Otherwise you can just wait for your distribution to update the mtxclient
+package instead.
+
 ## [0.9.1] -- 2021-12-22
 
 ### Highlights
