@@ -190,7 +190,7 @@ modules:
     name: mtxclient
     sources:
       - commit: b649ddbedbf5b6b8b4e841139e5e1b5b034b70d1
-        #tag: v0.6.1
+        #tag: v0.6.2
         type: git
         url: https://github.com/Nheko-Reborn/mtxclient.git
   - config-opts:
