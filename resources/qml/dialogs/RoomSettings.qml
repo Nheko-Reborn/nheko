@@ -19,6 +19,8 @@ ApplicationWindow {
 
     minimumWidth: 340
     minimumHeight: 340
+    width: 450
+    height: 680
     palette: Nheko.colors
     color: Nheko.colors.window
     modality: Qt.NonModal
