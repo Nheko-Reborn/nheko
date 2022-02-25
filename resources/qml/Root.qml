@@ -294,7 +294,7 @@ Pane {
     Connections {
         function onNewInviteState() {
             if (CallManager.haveCallInvite && Settings.mobileMode) {
-                var dialog = mobileCallInviteDialog.createObject(msgView);
+                var dialog = mobileCallInviteDialog.createObject(timelineRoot);
                 dialog.open();
                 destroyOnClose(dialog);
             }

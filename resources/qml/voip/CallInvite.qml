@@ -10,6 +10,8 @@ import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
 Popup {
+    id: callInv
+
     closePolicy: Popup.NoAutoClose
     width: parent.width
     height: parent.height
@@ -40,16 +42,18 @@ Popup {
 
         Label {
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: msgView.height / 25
+            Layout.topMargin: callInv.parent.height / 25
+            Layout.fillWidth: true
             text: CallManager.callPartyDisplayName
             font.pointSize: fontMetrics.font.pointSize * 2
             color: Nheko.colors.windowText
+            horizontalAlignment: Text.AlignHCenter
         }
 
         Avatar {
             Layout.alignment: Qt.AlignCenter
-            width: msgView.height / 5
-            height: msgView.height / 5
+            Layout.preferredHeight: callInv.height / 5
+            Layout.preferredWidth: callInv.height / 5
             url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
             userid: CallManager.callParty
             displayName: CallManager.callPartyDisplayName
@@ -57,14 +61,14 @@ Popup {
 
         ColumnLayout {
             Layout.alignment: Qt.AlignCenter
-            Layout.bottomMargin: msgView.height / 25
+            Layout.bottomMargin: callInv.height / 25
 
             Image {
                 property string image: CallManager.callType == CallType.VIDEO ? ":/icons/icons/ui/video.svg" : ":/icons/icons/ui/place-call.svg"
 
                 Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: msgView.height / 10
-                Layout.preferredHeight: msgView.height / 10
+                Layout.preferredWidth: callInv.height / 10
+                Layout.preferredHeight: callInv.height / 10
                 source: "image://colorimage/" + image + "?" + Nheko.colors.windowText
             }
 
@@ -80,10 +84,10 @@ Popup {
         ColumnLayout {
             id: deviceCombos
 
-            property int imageSize: msgView.height / 20
+            property int imageSize: callInv.height / 20
 
             Layout.alignment: Qt.AlignCenter
-            Layout.bottomMargin: msgView.height / 25
+            Layout.bottomMargin: callInv.height / 25
 
             RowLayout {
                 Layout.alignment: Qt.AlignCenter
@@ -127,7 +131,7 @@ Popup {
         RowLayout {
             id: buttonLayout
 
-            property int buttonSize: msgView.height / 8
+            property int buttonSize: callInv.height / 8
 
             function validateMic() {
                 if (CallManager.mics.length == 0) {
@@ -143,7 +147,7 @@ Popup {
             }
 
             Layout.alignment: Qt.AlignCenter
-            spacing: msgView.height / 6
+            spacing: callInv.height / 6
 
             RoundButton {
                 implicitWidth: buttonLayout.buttonSize
