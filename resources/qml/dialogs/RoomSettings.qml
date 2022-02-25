@@ -41,105 +41,105 @@ ApplicationWindow {
         flickableDirection: Flickable.VerticalFlick
         contentWidth: contentLayout1.width
         contentHeight: contentLayout1.height
-    ColumnLayout {
-        id: contentLayout1
-        width: flickable.width
-        spacing: Nheko.paddingMedium
+        ColumnLayout {
+            id: contentLayout1
+            width: flickable.width
+            spacing: Nheko.paddingMedium
 
-        Avatar {
-            Layout.topMargin: Nheko.paddingMedium
-            url: roomSettings.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
-            roomid: roomSettings.roomId
-            displayName: roomSettings.roomName
-            height: 130
-            width: 130
-            Layout.alignment: Qt.AlignHCenter
-            onClicked: {
-                if (roomSettings.canChangeAvatar)
-                    roomSettings.updateAvatar();
-
-            }
-        }
-
-        Spinner {
-            Layout.alignment: Qt.AlignHCenter
-            visible: roomSettings.isLoading
-            foreground: Nheko.colors.mid
-            running: roomSettings.isLoading
-        }
-
-        Text {
-            id: errorText
-
-            color: "red"
-            visible: opacity > 0
-            opacity: 0
-            Layout.alignment: Qt.AlignHCenter
-            wrapMode: Text.Wrap // somehow still doesn't wrap
-        }
-
-        SequentialAnimation {
-            id: hideErrorAnimation
-
-            running: false
-
-            PauseAnimation {
-                duration: 4000
-            }
-
-            NumberAnimation {
-                target: errorText
-                property: 'opacity'
-                to: 0
-                duration: 1000
-            }
-
-        }
-
-        Connections {
-            target: roomSettings
-            function onDisplayError(errorMessage) {
-                errorText.text = errorMessage;
-                errorText.opacity = 1;
-                hideErrorAnimation.restart();
-            }
-        }
-            Label {
-                text: roomSettings.roomName
+            Avatar {
+                Layout.topMargin: Nheko.paddingMedium
+                url: roomSettings.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
+                roomid: roomSettings.roomId
+                displayName: roomSettings.roomName
+                height: 130
+                width: 130
                 Layout.alignment: Qt.AlignHCenter
-                font.pixelSize: fontMetrics.font.pixelSize * 2
+                onClicked: {
+                    if (roomSettings.canChangeAvatar)
+                        roomSettings.updateAvatar();
+
+                }
+            }
+
+            Spinner {
+                Layout.alignment: Qt.AlignHCenter
+                visible: roomSettings.isLoading
+                foreground: Nheko.colors.mid
+                running: roomSettings.isLoading
+            }
+
+            Text {
+                id: errorText
+
+                color: "red"
+                visible: opacity > 0
+                opacity: 0
+                Layout.alignment: Qt.AlignHCenter
+                wrapMode: Text.Wrap // somehow still doesn't wrap
+            }
+
+            SequentialAnimation {
+                id: hideErrorAnimation
+
+                running: false
+
+                PauseAnimation {
+                    duration: 4000
+                }
+
+                NumberAnimation {
+                    target: errorText
+                    property: 'opacity'
+                    to: 0
+                    duration: 1000
+                }
+
+            }
+
+            Connections {
+                target: roomSettings
+                function onDisplayError(errorMessage) {
+                    errorText.text = errorMessage;
+                    errorText.opacity = 1;
+                    hideErrorAnimation.restart();
+                }
+            }
+                Label {
+                    text: roomSettings.roomName
+                    Layout.alignment: Qt.AlignHCenter
+                    font.pixelSize: fontMetrics.font.pixelSize * 2
+                    Layout.fillWidth: true
+                    horizontalAlignment: TextEdit.AlignHCenter
+                }
+
+                Label {
+                    text: qsTr("%n member(s)", "", roomSettings.memberCount)
+                    Layout.alignment: Qt.AlignHCenter
+
+                    TapHandler {
+                        onSingleTapped: TimelineManager.openRoomMembers(Rooms.getRoomById(roomSettings.roomId))
+                    }
+
+                    CursorShape {
+                        cursorShape: Qt.PointingHandCursor
+                        anchors.fill: parent
+                    }
+
+                }
+
+            ImageButton {
+                Layout.alignment: Qt.AlignHCenter
+                image: ":/icons/icons/ui/edit.svg"
+                visible: roomSettings.canChangeNameAndTopic
+                onClicked: roomSettings.openEditModal()
+            }
+
+            TextArea {
+                Layout.fillHeight: true
+                Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
-                horizontalAlignment: TextEdit.AlignHCenter
-            }
-
-            Label {
-                text: qsTr("%n member(s)", "", roomSettings.memberCount)
-                Layout.alignment: Qt.AlignHCenter
-
-                TapHandler {
-                    onSingleTapped: TimelineManager.openRoomMembers(Rooms.getRoomById(roomSettings.roomId))
-                }
-
-                CursorShape {
-                    cursorShape: Qt.PointingHandCursor
-                    anchors.fill: parent
-                }
-
-            }
-
-        ImageButton {
-            Layout.alignment: Qt.AlignHCenter
-            image: ":/icons/icons/ui/edit.svg"
-            visible: roomSettings.canChangeNameAndTopic
-            onClicked: roomSettings.openEditModal()
-        }
-
-        TextArea {
-            Layout.fillHeight: true
-            Layout.alignment: Qt.AlignHCenter
-            Layout.fillWidth: true
-            Layout.leftMargin: Nheko.paddingLarge
-            Layout.rightMargin: Nheko.paddingLarge
+                Layout.leftMargin: Nheko.paddingLarge
+                Layout.rightMargin: Nheko.paddingLarge
 
                 text: TimelineManager.escapeEmoji(roomSettings.roomTopic)
                 wrapMode: TextEdit.WordWrap
@@ -156,166 +156,166 @@ ApplicationWindow {
                     cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
                 }
 
-        }
-
-        GridLayout {
-            columns: 2
-            rowSpacing: Nheko.paddingMedium
-            Layout.margins: Nheko.paddingMedium
-
-            Label {
-                text: qsTr("SETTINGS")
-                font.bold: true
             }
 
-            Item {
-                Layout.fillWidth: true
-            }
+            GridLayout {
+                columns: 2
+                rowSpacing: Nheko.paddingMedium
+                Layout.margins: Nheko.paddingMedium
 
-            Label {
-                text: qsTr("Notifications")
-                Layout.fillWidth: true
-            }
-
-            ComboBox {
-                model: [qsTr("Muted"), qsTr("Mentions only"), qsTr("All messages")]
-                currentIndex: roomSettings.notifications
-                onActivated: {
-                    roomSettings.changeNotifications(index);
+                Label {
+                    text: qsTr("SETTINGS")
+                    font.bold: true
                 }
-                Layout.fillWidth: true
-            }
 
-            Label {
-                text: qsTr("Room access")
-                Layout.fillWidth: true
-            }
-
-            ComboBox {
-                enabled: roomSettings.canChangeJoinRules
-                model: {
-                    let opts = [qsTr("Anyone and guests"), qsTr("Anyone"), qsTr("Invited users")];
-                    if (roomSettings.supportsKnocking)
-                        opts.push(qsTr("By knocking"));
-
-                    if (roomSettings.supportsRestricted)
-                        opts.push(qsTr("Restricted by membership in other rooms"));
-
-                    return opts;
+                Item {
+                    Layout.fillWidth: true
                 }
-                currentIndex: roomSettings.accessJoinRules
-                onActivated: {
-                    roomSettings.changeAccessRules(index);
+
+                Label {
+                    text: qsTr("Notifications")
+                    Layout.fillWidth: true
                 }
-                Layout.fillWidth: true
-            }
 
-            Label {
-                text: qsTr("Encryption")
-            }
-
-            ToggleButton {
-                id: encryptionToggle
-
-                checked: roomSettings.isEncryptionEnabled
-                onCheckedChanged: {
-                    if (roomSettings.isEncryptionEnabled) {
-                        checked = true;
-                        return ;
+                ComboBox {
+                    model: [qsTr("Muted"), qsTr("Mentions only"), qsTr("All messages")]
+                    currentIndex: roomSettings.notifications
+                    onActivated: {
+                        roomSettings.changeNotifications(index);
                     }
-                    confirmEncryptionDialog.open();
+                    Layout.fillWidth: true
                 }
-                Layout.alignment: Qt.AlignRight
-            }
 
-            Platform.MessageDialog {
-                id: confirmEncryptionDialog
-
-                title: qsTr("End-to-End Encryption")
-                text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br>
-                            Please take note that it can't be disabled afterwards.")
-                modality: Qt.NonModal
-                onAccepted: {
-                    if (roomSettings.isEncryptionEnabled)
-                        return ;
-
-                    roomSettings.enableEncryption();
+                Label {
+                    text: qsTr("Room access")
+                    Layout.fillWidth: true
                 }
-                onRejected: {
-                    encryptionToggle.checked = false;
+
+                ComboBox {
+                    enabled: roomSettings.canChangeJoinRules
+                    model: {
+                        let opts = [qsTr("Anyone and guests"), qsTr("Anyone"), qsTr("Invited users")];
+                        if (roomSettings.supportsKnocking)
+                            opts.push(qsTr("By knocking"));
+
+                        if (roomSettings.supportsRestricted)
+                            opts.push(qsTr("Restricted by membership in other rooms"));
+
+                        return opts;
+                    }
+                    currentIndex: roomSettings.accessJoinRules
+                    onActivated: {
+                        roomSettings.changeAccessRules(index);
+                    }
+                    Layout.fillWidth: true
                 }
-                buttons: Platform.MessageDialog.Ok | Platform.MessageDialog.Cancel
-            }
 
-            Label {
-                text: qsTr("Sticker & Emote Settings")
-            }
+                Label {
+                    text: qsTr("Encryption")
+                }
 
-            Button {
-                text: qsTr("Change")
-                ToolTip.text: qsTr("Change what packs are enabled, remove packs or create new ones")
-                onClicked: TimelineManager.openImagePackSettings(roomSettings.roomId)
-                Layout.alignment: Qt.AlignRight
-            }
+                ToggleButton {
+                    id: encryptionToggle
 
-            Label {
-                text: qsTr("Hidden events")
-            }
+                    checked: roomSettings.isEncryptionEnabled
+                    onCheckedChanged: {
+                        if (roomSettings.isEncryptionEnabled) {
+                            checked = true;
+                            return ;
+                        }
+                        confirmEncryptionDialog.open();
+                    }
+                    Layout.alignment: Qt.AlignRight
+                }
 
-            HiddenEventsDialog {
-                id: hiddenEventsDialog
-                roomid: roomSettings.roomId
-                roomName: roomSettings.roomName
-            }
+                Platform.MessageDialog {
+                    id: confirmEncryptionDialog
 
-            Button {
-                text: qsTr("Configure")
-                ToolTip.text: qsTr("Select events to hide in this room")
-                onClicked: hiddenEventsDialog.show()
-                Layout.alignment: Qt.AlignRight
-            }
+                    title: qsTr("End-to-End Encryption")
+                    text: qsTr("Encryption is currently experimental and things might break unexpectedly. <br>
+                                Please take note that it can't be disabled afterwards.")
+                    modality: Qt.NonModal
+                    onAccepted: {
+                        if (roomSettings.isEncryptionEnabled)
+                            return ;
 
-            Item {
-                // for adding extra space between sections
-                Layout.fillWidth: true
-            }
+                        roomSettings.enableEncryption();
+                    }
+                    onRejected: {
+                        encryptionToggle.checked = false;
+                    }
+                    buttons: Platform.MessageDialog.Ok | Platform.MessageDialog.Cancel
+                }
 
-            Item {
-                // for adding extra space between sections
-                Layout.fillWidth: true
-            }
+                Label {
+                    text: qsTr("Sticker & Emote Settings")
+                }
 
-            Label {
-                text: qsTr("INFO")
-                font.bold: true
-            }
+                Button {
+                    text: qsTr("Change")
+                    ToolTip.text: qsTr("Change what packs are enabled, remove packs or create new ones")
+                    onClicked: TimelineManager.openImagePackSettings(roomSettings.roomId)
+                    Layout.alignment: Qt.AlignRight
+                }
 
-            Item {
-                Layout.fillWidth: true
-            }
+                Label {
+                    text: qsTr("Hidden events")
+                }
 
-            Label {
-                text: qsTr("Internal ID")
-            }
+                HiddenEventsDialog {
+                    id: hiddenEventsDialog
+                    roomid: roomSettings.roomId
+                    roomName: roomSettings.roomName
+                }
 
-            Label {
-                text: roomSettings.roomId
-                font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 0.8)
-                Layout.alignment: Qt.AlignRight
-            }
+                Button {
+                    text: qsTr("Configure")
+                    ToolTip.text: qsTr("Select events to hide in this room")
+                    onClicked: hiddenEventsDialog.show()
+                    Layout.alignment: Qt.AlignRight
+                }
 
-            Label {
-                text: qsTr("Room Version")
-            }
+                Item {
+                    // for adding extra space between sections
+                    Layout.fillWidth: true
+                }
 
-            Label {
-                text: roomSettings.roomVersion
-                font.pixelSize: fontMetrics.font.pixelSize
-                Layout.alignment: Qt.AlignRight
-            }
+                Item {
+                    // for adding extra space between sections
+                    Layout.fillWidth: true
+                }
 
+                Label {
+                    text: qsTr("INFO")
+                    font.bold: true
+                }
+
+                Item {
+                    Layout.fillWidth: true
+                }
+
+                Label {
+                    text: qsTr("Internal ID")
+                }
+
+                Label {
+                    text: roomSettings.roomId
+                    font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 0.8)
+                    Layout.alignment: Qt.AlignRight
+                }
+
+                Label {
+                    text: qsTr("Room Version")
+                }
+
+                Label {
+                    text: roomSettings.roomVersion
+                    font.pixelSize: fontMetrics.font.pixelSize
+                    Layout.alignment: Qt.AlignRight
+                }
+
+            }
         }
-    }
     }
     footer: DialogButtonBox {
         standardButtons: DialogButtonBox.Ok
