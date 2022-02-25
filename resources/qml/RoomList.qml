@@ -38,7 +38,6 @@ Page {
         ScrollHelper {
             flickable: parent
             anchors.fill: parent
-            enabled: !Settings.mobileMode
         }
 
         Connections {
@@ -273,7 +272,7 @@ Page {
                     Layout.minimumWidth: 100
                     width: parent.width - avatar.width
                     Layout.preferredWidth: parent.width - avatar.width
-                    spacing: Nheko.paddingSmall
+                    spacing: Nheko.paddingMedium
 
                     RowLayout {
                         Layout.fillWidth: true
@@ -282,12 +281,9 @@ Page {
                         ElidedLabel {
                             Layout.alignment: Qt.AlignBottom
                             color: roomItem.importantText
-                            elideWidth: textContent.width - timestamp.width - Nheko.paddingMedium
+                            elideWidth: width
                             fullText: roomName
                             textFormat: Text.RichText
-                        }
-
-                        Item {
                             Layout.fillWidth: true
                         }
 
@@ -313,12 +309,9 @@ Page {
                         ElidedLabel {
                             color: roomItem.unimportantText
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
-                            elideWidth: textContent.width - (notificationBubble.visible ? notificationBubble.width : 0) - Nheko.paddingSmall
+                            elideWidth: width
                             fullText: lastMessage
                             textFormat: Text.RichText
-                        }
-
-                        Item {
                             Layout.fillWidth: true
                         }
 
