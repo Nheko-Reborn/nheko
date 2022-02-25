@@ -17,8 +17,8 @@ ApplicationWindow {
 
     property var roomSettings
 
-    minimumWidth: 450
-    minimumHeight: 680
+    minimumWidth: 340
+    minimumHeight: 340
     palette: Nheko.colors
     color: Nheko.colors.window
     modality: Qt.NonModal
@@ -29,15 +29,25 @@ ApplicationWindow {
         sequence: StandardKey.Cancel
         onActivated: roomSettingsDialog.close()
     }
-
+    ScrollHelper {
+        flickable: flickable
+        anchors.fill: flickable
+    }
+    Flickable {
+        id: flickable
+        boundsBehavior: Flickable.StopAtBounds
+        anchors.fill: parent
+        clip: true
+        flickableDirection: Flickable.VerticalFlick
+        contentWidth: contentLayout1.width
+        contentHeight: contentLayout1.height
     ColumnLayout {
         id: contentLayout1
-
-        anchors.fill: parent
-        anchors.margins: Nheko.paddingMedium
+        width: flickable.width
         spacing: Nheko.paddingMedium
 
         Avatar {
+            Layout.topMargin: Nheko.paddingMedium
             url: roomSettings.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
             roomid: roomSettings.roomId
             displayName: roomSettings.roomName
@@ -65,6 +75,7 @@ ApplicationWindow {
             visible: opacity > 0
             opacity: 0
             Layout.alignment: Qt.AlignHCenter
+            wrapMode: Text.Wrap // somehow still doesn't wrap
         }
 
         SequentialAnimation {
@@ -93,18 +104,15 @@ ApplicationWindow {
                 hideErrorAnimation.restart();
             }
         }
-
-        ColumnLayout {
-            Layout.alignment: Qt.AlignHCenter
-
-            MatrixText {
+            Label {
                 text: roomSettings.roomName
+                Layout.alignment: Qt.AlignHCenter
                 font.pixelSize: fontMetrics.font.pixelSize * 2
                 Layout.fillWidth: true
                 horizontalAlignment: TextEdit.AlignHCenter
             }
 
-            MatrixText {
+            Label {
                 text: qsTr("%n member(s)", "", roomSettings.memberCount)
                 Layout.alignment: Qt.AlignHCenter
 
@@ -119,8 +127,6 @@ ApplicationWindow {
 
             }
 
-        }
-
         ImageButton {
             Layout.alignment: Qt.AlignHCenter
             image: ":/icons/icons/ui/edit.svg"
@@ -128,14 +134,13 @@ ApplicationWindow {
             onClicked: roomSettings.openEditModal()
         }
 
-        ScrollView {
+        TextArea {
             Layout.fillHeight: true
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             Layout.leftMargin: Nheko.paddingLarge
             Layout.rightMargin: Nheko.paddingLarge
 
-            TextArea {
                 text: TimelineManager.escapeEmoji(roomSettings.roomTopic)
                 wrapMode: TextEdit.WordWrap
                 textFormat: TextEdit.RichText
@@ -151,15 +156,14 @@ ApplicationWindow {
                     cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
                 }
 
-            }
-
         }
 
         GridLayout {
             columns: 2
             rowSpacing: Nheko.paddingMedium
+            Layout.margins: Nheko.paddingMedium
 
-            MatrixText {
+            Label {
                 text: qsTr("SETTINGS")
                 font.bold: true
             }
@@ -168,7 +172,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
             }
 
-            MatrixText {
+            Label {
                 text: qsTr("Notifications")
                 Layout.fillWidth: true
             }
@@ -182,7 +186,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
             }
 
-            MatrixText {
+            Label {
                 text: qsTr("Room access")
                 Layout.fillWidth: true
             }
@@ -206,7 +210,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
             }
 
-            MatrixText {
+            Label {
                 text: qsTr("Encryption")
             }
 
@@ -243,7 +247,7 @@ ApplicationWindow {
                 buttons: Platform.MessageDialog.Ok | Platform.MessageDialog.Cancel
             }
 
-            MatrixText {
+            Label {
                 text: qsTr("Sticker & Emote Settings")
             }
 
@@ -254,7 +258,7 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignRight
             }
 
-            MatrixText {
+            Label {
                 text: qsTr("Hidden events")
             }
 
@@ -281,7 +285,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
             }
 
-            MatrixText {
+            Label {
                 text: qsTr("INFO")
                 font.bold: true
             }
@@ -290,33 +294,31 @@ ApplicationWindow {
                 Layout.fillWidth: true
             }
 
-            MatrixText {
+            Label {
                 text: qsTr("Internal ID")
             }
 
-            MatrixText {
+            Label {
                 text: roomSettings.roomId
                 font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 0.8)
                 Layout.alignment: Qt.AlignRight
             }
 
-            MatrixText {
+            Label {
                 text: qsTr("Room Version")
             }
 
-            MatrixText {
+            Label {
                 text: roomSettings.roomVersion
                 font.pixelSize: fontMetrics.font.pixelSize
                 Layout.alignment: Qt.AlignRight
             }
 
         }
-
-        DialogButtonBox {
-            Layout.fillWidth: true
-            standardButtons: DialogButtonBox.Ok
-            onAccepted: close()
-        }
-
+    }
+    }
+    footer: DialogButtonBox {
+        standardButtons: DialogButtonBox.Ok
+        onAccepted: close()
     }
 }
