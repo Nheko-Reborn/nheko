@@ -272,9 +272,11 @@ Page {
                     Layout.minimumWidth: 100
                     width: parent.width - avatar.width
                     Layout.preferredWidth: parent.width - avatar.width
-                    spacing: Nheko.paddingMedium
+                    height: avatar.height
+                    spacing: Nheko.paddingSmall
 
                     RowLayout {
+                        Layout.alignment: Qt.AlignTop
                         Layout.fillWidth: true
                         spacing: 0
 
@@ -305,6 +307,7 @@ Page {
                         spacing: 0
                         visible: !isSpace
                         height: visible ? 0 : undefined
+                        Layout.alignment: Qt.AlignBottom
 
                         ElidedLabel {
                             color: roomItem.unimportantText
@@ -320,6 +323,7 @@ Page {
 
                             visible: notificationCount > 0
                             Layout.alignment: Qt.AlignRight
+                            Layout.leftMargin: Nheko.paddingSmall
                             height: notificationBubbleText.height + Nheko.paddingMedium
                             Layout.preferredWidth: Math.max(notificationBubbleText.width, height)
                             radius: height / 2
