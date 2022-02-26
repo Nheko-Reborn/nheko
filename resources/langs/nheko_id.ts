@@ -305,7 +305,7 @@
     <message>
         <location filename="../qml/ChatPage.qml" line="+37"/>
         <source>No network connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada koneksi jaringan</translation>
     </message>
 </context>
 <context>
@@ -647,7 +647,7 @@
         <location filename="../../src/ui/HiddenEvents.cpp" line="+79"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal menetapkan peristiwa tersembunyi: %1</translation>
     </message>
 </context>
 <context>
@@ -655,47 +655,47 @@
     <message>
         <location filename="../qml/dialogs/HiddenEventsDialog.qml" line="+31"/>
         <source>Hidden events for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Peristiwa tersembunyi untuk %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Peristiwa tersembunyi</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>These events will be be &lt;b&gt;shown&lt;/b&gt; in %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Peristiwa ini akan &lt;b&gt;ditampilkan&lt;/b&gt; di %1:</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>These events will be be &lt;b&gt;shown&lt;/b&gt; in all rooms:</source>
-        <translation type="unfinished"></translation>
+        <translation>Peristiwa ini akan &lt;b&gt;ditampilkan&lt;/b&gt; di semua ruangan:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>User events</source>
-        <translation type="unfinished"></translation>
+        <translation>Peristiwa pengguna</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Joins, leaves, avatar and name changes, bans, …</source>
-        <translation type="unfinished"></translation>
+        <translation>Gabungan, keluaran, perubahan avatar dan nama, cekalan, …</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Power level changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Perubahan tingkat daya</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sent when a moderator is added/removed or the permissions of a room are changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Terkirim ketika seorang moderator ditambahkan/dikeluarkan atau izin ruangan telah diubah.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Stickers</source>
-        <translation type="unfinished">Stiker</translation>
+        <translation>Stiker</translation>
     </message>
 </context>
 <context>
@@ -997,7 +997,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+35"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Kembali</translation>
     </message>
     <message>
         <location filename="../../src/LoginPage.cpp" line="+81"/>
@@ -1071,32 +1071,32 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+198"/>
         <source>%1 removed a message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 menghapus sebuah pesan</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 enabled encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 mengaktifkan enkripsi</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>%2 changed the room name to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 mengubah nama ruangan ke: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the room name</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 menghapus nama ruangan</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%2 changed the topic to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 mengubah topik ke: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the topic</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 menghapus topiknya</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1146,7 +1146,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+41"/>
         <source>%1 is negotiating the call...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sedang melakukan panggilan...</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1511,7 +1511,7 @@ Misalnya: https://server.my:8787</translation>
         <location line="+21"/>
         <location line="+96"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Kembali</translation>
     </message>
     <message>
         <location line="-75"/>
@@ -1536,7 +1536,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+1"/>
         <source>your.server</source>
-        <translation type="unfinished"></translation>
+        <translation>server.anda</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1546,17 +1546,17 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+90"/>
         <source>Your passwords do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Kata sandi Anda tidak cocok!</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Device name</source>
-        <translation type="unfinished">Nama perangkat</translation>
+        <translation>Nama perangkat</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation type="unfinished">Sebuah nama perangkat untuk perangkat ini, yang akan ditampilkan untuk yang lain, ketika memverifikasi perangkat Anda. Jika tidak dimasukkan nama perangkat yang default akan digunakan.</translation>
+        <translation>Sebuah nama perangkat untuk perangkat ini, yang akan ditampilkan untuk yang lain, ketika memverifikasi perangkat Anda. Jika tidak dimasukkan nama perangkat yang default akan digunakan.</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -1591,27 +1591,27 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+10"/>
         <source>Server does not support querying registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Server tidak mendukung kueri alur pendaftaran!</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Server does not support registration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Server tidak mendukung pendaftaran.</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Invalid username.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama pengguna tidak valid.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Name already in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama sudah digunakan.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Part of the reserved namespace.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bagian oleh namespace yang direservasikan.</translation>
     </message>
 </context>
 <context>
@@ -1766,7 +1766,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+19"/>
         <source>Search rooms (Ctrl+K)</source>
-        <translation type="unfinished"></translation>
+        <translation>Cari ruangan (Ctrl+K)</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -1918,17 +1918,17 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+6"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Peristiwa tersembunyi</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Configure</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfigurasi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select events to hide in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih peristiwa untuk disembunyikan di ruangan ini</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2152,7 +2152,7 @@ Jika Anda memilih verifikasi, Anda harus memiliki perangkat lain yang tersedia. 
     <message>
         <location line="+16"/>
         <source>Failed to create keys for online key backup!</source>
-        <translation>Gagal untuk membuat kunci untuk cadangan kunci online!</translation>
+        <translation>Gagal untuk membuat kunci untuk cadangan kunci daring!</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -2372,22 +2372,22 @@ Alasan: %4</translation>
     <message>
         <location line="+123"/>
         <source>%2 revoked the invite to %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 membatalkan undangan ke %1.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%2 kicked %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 mengeluarkan %1.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%2 unbanned %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 membatalkan cekalan %1.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%2 rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 menolak ketukan dari %1.</translation>
     </message>
     <message>
         <location line="-35"/>
@@ -2437,7 +2437,7 @@ Alasan: %4</translation>
     <message>
         <location line="+1017"/>
         <source>%1 invited %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 mengundang %2.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2458,7 +2458,7 @@ Alasan: %4</translation>
     <message>
         <location line="+7"/>
         <source>%1 banned %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 mencekal %2</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2756,369 +2756,369 @@ Alasan: %4</translation>
     <message>
         <location line="+376"/>
         <source>Theme</source>
-        <translation type="unfinished">Tema</translation>
+        <translation>Tema</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Scale factor</source>
-        <translation type="unfinished">Faktor skala</translation>
+        <translation>Faktor skala</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished">Highlight pesan saat kursor di atas pesan</translation>
+        <translation>Highlight pesan saat kursor di atas pesan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished">Emoji besar di linimasa</translation>
+        <translation>Emoji besar di linimasa</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Minimize to tray</source>
-        <translation type="unfinished">Perkecil ke baki</translation>
+        <translation>Perkecil ke baki</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Start in tray</source>
-        <translation type="unfinished">Mulai di baki</translation>
+        <translation>Mulai di baki</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Group&apos;s sidebar</source>
-        <translation type="unfinished">Bilah samping grup</translation>
+        <translation>Bilah samping grup</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished">Kirim pesan sebagai Markdown</translation>
+        <translation>Kirim pesan sebagai Markdown</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable message bubbles</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktifkan gelembung pesan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable small Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktifkan avatar kecil</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
-        <translation type="unfinished">Mainkan gambar beranimasi hanya saat kursor diarahkan ke gambar</translation>
+        <translation>Mainkan gambar beranimasi hanya saat kursor diarahkan ke gambar</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Typing notifications</source>
-        <translation type="unfinished">Notifikasi mengetik</translation>
+        <translation>Notifikasi mengetik</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sort rooms by unreads</source>
-        <translation type="unfinished">Urutkan ruangan bedasarkan yang belum dibaca</translation>
+        <translation>Urutkan ruangan bedasarkan yang belum dibaca</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons in timeline</source>
-        <translation type="unfinished">Tampilkan tombol di linimasa</translation>
+        <translation>Tampilkan tombol di linimasa</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation type="unfinished">Batasi lebar linimasa</translation>
+        <translation>Batasi lebar linimasa</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Laporan dibaca</translation>
+        <translation>Laporan dibaca</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Desktop notifications</source>
-        <translation type="unfinished">Notifikasi desktop</translation>
+        <translation>Notifikasi desktop</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Alert on notification</source>
-        <translation type="unfinished">Beritahu saat ada notifikasi</translation>
+        <translation>Beritahu saat ada notifikasi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Circular Avatars</source>
-        <translation type="unfinished">Avatar Bundar</translation>
+        <translation>Avatar Bundar</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Use identicons</source>
-        <translation type="unfinished">Gunakan identikon</translation>
+        <translation>Gunakan identikon</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished">Dekripsikan pesan di bilah samping</translation>
+        <translation>Dekripsikan pesan di bilah samping</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy Screen</source>
-        <translation type="unfinished">Layar Privasi</translation>
+        <translation>Layar Privasi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation type="unfinished">Waktu kehabisan layar privasi (dalam detik [0 - 3600])</translation>
+        <translation>Waktu kehabisan layar privasi (dalam detik [0 - 3600])</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Touchscreen mode</source>
-        <translation type="unfinished">Mode layar sentuh</translation>
+        <translation>Mode layar sentuh</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Font size</source>
-        <translation type="unfinished">Ukuran font</translation>
+        <translation>Ukuran font</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Font Family</source>
-        <translation type="unfinished">Keluarga Font</translation>
+        <translation>Keluarga Font</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished">Keluarga Font Emoji</translation>
+        <translation>Keluarga Font Emoji</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ringtone</source>
-        <translation type="unfinished">Nada Dering</translation>
+        <translation>Nada Dering</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Microphone</source>
-        <translation type="unfinished">Mikrofon</translation>
+        <translation>Mikrofon</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera</source>
-        <translation type="unfinished">Kamera</translation>
+        <translation>Kamera</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera resolution</source>
-        <translation type="unfinished">Resolusi kamera</translation>
+        <translation>Resolusi kamera</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera frame rate</source>
-        <translation type="unfinished">Frame rate kamera</translation>
+        <translation>Frame rate kamera</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished">Izinkan panggilan menggunakan bantuan server sebagai cadangan</translation>
+        <translation>Izinkan panggilan menggunakan bantuan server sebagai cadangan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send encrypted messages to verified users only</source>
-        <translation type="unfinished">Kirim pesan terenkripsi ke pengguna yang telah diverifikasi saja</translation>
+        <translation>Kirim pesan terenkripsi ke pengguna yang telah diverifikasi saja</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Share keys with verified users and devices</source>
-        <translation type="unfinished">Bagikan kunci dengan pengguna dan perangkat yang telah diverifikasi</translation>
+        <translation>Bagikan kunci dengan pengguna dan perangkat yang telah diverifikasi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Online Key Backup</source>
-        <translation type="unfinished">Cadangan Kunci Online</translation>
+        <translation>Cadangan Kunci Daring</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Profil</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID Pengguna</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Accesstoken</source>
-        <translation type="unfinished"></translation>
+        <translation>Tokenakses</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Device ID</source>
-        <translation type="unfinished">ID Perangkat</translation>
+        <translation>ID Perangkat</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished">Sidik Jari Perangkat</translation>
+        <translation>Sidik Jari Perangkat</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Homeserver</source>
-        <translation type="unfinished">Homeserver</translation>
+        <translation>Homeserver</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Platform</source>
-        <translation type="unfinished"></translation>
+        <translation>Platform</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>GENERAL</source>
-        <translation type="unfinished">UMUM</translation>
+        <translation>UMUM</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>TIMELINE</source>
-        <translation type="unfinished"></translation>
+        <translation>LINIMASA</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>SIDEBAR</source>
-        <translation type="unfinished"></translation>
+        <translation>BILAH SAMPING</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>TRAY</source>
-        <translation type="unfinished"></translation>
+        <translation>BAKI</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>NOTIFICATIONS</source>
-        <translation type="unfinished"></translation>
+        <translation>NOTIFIKASI</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>CALLS</source>
-        <translation type="unfinished">PANGGILAN</translation>
+        <translation>PANGGILAN</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ENCRYPTION</source>
-        <translation type="unfinished">ENKRIPSI</translation>
+        <translation>ENKRIPSI</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>INFO</source>
-        <translation type="unfinished">INFO</translation>
+        <translation>INFO</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Session Keys</source>
-        <translation type="unfinished">Kunci Perangkat</translation>
+        <translation>Kunci-Kunci Sesi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cross Signing Secrets</source>
-        <translation type="unfinished"></translation>
+        <translation>Rahasia Penandatanganan Silang</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Online backup key</source>
-        <translation type="unfinished"></translation>
+        <translation>Cadangan kunci daring</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Self signing key</source>
-        <translation type="unfinished">Kunci penandatanganan diri</translation>
+        <translation>Kunci penandatanganan diri</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User signing key</source>
-        <translation type="unfinished">Kunci penandatanganan pengguna</translation>
+        <translation>Kunci penandatanganan pengguna</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Master signing key</source>
-        <translation type="unfinished">Kunci penandatanganan utama</translation>
+        <translation>Kunci penandatanganan utama</translation>
     </message>
     <message>
         <location line="+91"/>
         <source>Default</source>
-        <translation type="unfinished">Default</translation>
+        <translation>Default</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation type="unfinished">Tetapkan suara notifikasi untuk dimainkan ketika ada panggilan</translation>
+        <translation>Tetapkan suara notifikasi untuk dimainkan ketika ada panggilan</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation type="unfinished">Tetapkan lebar maksimum pesan di linimasa (dalam pixel). Ini bisa membantu keterbacaan di layar lebar, ketika Nheko dimaksimalkan.</translation>
+        <translation>Tetapkan lebar maksimum pesan di linimasa (dalam pixel). Ini bisa membantu keterbacaan di layar lebar, ketika Nheko dimaksimalkan.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation type="unfinished">Tetapkan waktu kehabisan (dalam detik) untuk berapa lama setelah jendela kehilangan
+        <translation>Tetapkan waktu kehabisan (dalam detik) untuk berapa lama setelah jendela kehilangan
 fokus sebelum layarnya akan diburamkan.
 Tetapkan ke 0 untuk memburamkan secara langsung setelah kehilangan fokus. Nilai maksimum adalah 1 jam (3600 detik)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished">Mengubah warna background pesan ketika kursor Anda di atas pesannya.</translation>
+        <translation>Mengubah warna latar belakang pesan ketika kursor Anda di atas pesannya.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished">Membuat ukuran font lebih besar jika pesan dengan beberapa emoji ditampilkan.</translation>
+        <translation>Membuat ukuran font lebih besar jika pesan dengan beberapa emoji ditampilkan.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished">Membiarkan aplikasi berjalan di latar belakang setelah menutup jendela klien.</translation>
+        <translation>Membiarkan aplikasi berjalan di latar belakang setelah menutup jendela klien.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished">Mulai aplikasinya di latar belakang tanpa menunjukkan jendela kliennya.</translation>
+        <translation>Mulai aplikasinya di latar belakang tanpa menunjukkan jendela kliennya.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation type="unfinished">Menampilkan kolom yang berisi grup dan tanda di sebelah daftar ruangan.</translation>
+        <translation>Menampilkan kolom yang berisi grup dan tanda di sebelah daftar ruangan.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished">Memperbolehkan menggunakan Markdown di pesan.
+        <translation>Memperbolehkan menggunakan Markdown di pesan.
 Ketika dinonaktifkan, semua pesan akan dikirim sebagai teks biasa.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Messages get a bubble background. This also triggers some layout changes (WIP).</source>
-        <translation type="unfinished"></translation>
+        <translation>Pesan-pesan akan mendapatkan latar belakang gelembung pesan. Ini juga melakukan perubahan layout (dalam pengembangan).</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Avatars are resized to fit above the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Avatar diubah ukurannya untuk muat di atas pesan.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
-        <translation type="unfinished">Memainkan media seperti GIF atau WEBP ketika kursor di atas medianya.</translation>
+        <translation>Memainkan media seperti GIF atau WEBP ketika kursor di atas medianya.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished">Tampilkan siapa yang sedang mengetik dalam ruangan.
+        <translation>Tampilkan siapa yang sedang mengetik dalam ruangan.
 Ini akan mengaktifkan atau menonaktifkan pengiriman pemberitahuan pengetikan ke yang lain.</translation>
     </message>
     <message>
@@ -3126,124 +3126,124 @@ Ini akan mengaktifkan atau menonaktifkan pengiriman pemberitahuan pengetikan ke 
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished">Menampilkan ruangan dengan pesan baru pertama.
+        <translation>Menampilkan ruangan dengan pesan baru pertama.
 Jika ini dimatikan, daftar ruangan hanya diurutkan dari waktu pesan terakhir di ruangan.
-Jika ini dinyalakan, ruangan yang mempunyai notifikasi aktif (lingkaran kecil dengan nomor didalam) akan diurutkan di atas. Ruangan, yang dibisukan, masih diurutkan dari waktu, karena Anda tidak pertimangkan mereka sebagai penting dengan ruangan yang lain.</translation>
+Jika ini dinyalakan, ruangan yang mempunyai notifikasi aktif (lingkaran kecil dengan nomor didalam) akan diurutkan di atas. Ruangan, yang dibisukan, masih diurutkan dari waktu, karena Anda tidak pertimbangkan mereka sebagai penting dengan ruangan yang lain.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation type="unfinished">Tampilkan tombol untuk membalas, merekasi, atau mengakses opsi tambahan di sebelah pesan dengan cepat.</translation>
+        <translation>Tampilkan tombol untuk membalas, bereaksi, atau mengakses opsi tambahan di sebelah pesan dengan cepat.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.</source>
-        <translation type="unfinished">Menampilkan jika pesan Anda telah dibaca.
-Status akan ditampilkan disebelah waktu menerima pesan.</translation>
+        <translation>Menampilkan jika pesan Anda telah dibaca.
+Status akan ditampilkan di sebelah waktu menerima pesan.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Notify about received message when the client is not currently focused.</source>
-        <translation type="unfinished">Memberitahukan tentang pesan yang diterima ketika kliennya tidak difokuskan.</translation>
+        <translation>Memberitahukan tentang pesan yang diterima ketika kliennya tidak difokuskan.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished">Menampilkan pemberitahuan saat sebuah pesan diterima.
+        <translation>Menampilkan pemberitahuan saat sebuah pesan diterima.
 Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - Circle.</source>
-        <translation type="unfinished">Ubah penampilan avatar pengguna di chat.
+        <translation>Ubah penampilan avatar pengguna di chat.
 MATI - persegi, NYALA - Lingkaran.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Display an identicon instead of a letter when no avatar is set.</source>
-        <translation type="unfinished">Tampilkan sebuah identikon daripada sebuah huruf ketika tidak ada avatar yang diatur.</translation>
+        <translation>Tampilkan sebuah identikon daripada sebuah huruf ketika tidak ada avatar yang diatur.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished">Dekripsi pesan yang ditampilkan di bilah samping.
+        <translation>Dekripsi pesan yang ditampilkan di bilah samping.
 Hanya mempengaruhi pesan di chat terenkripsi.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation type="unfinished">Ketika jendela kehilangan fokus, linimasanya
+        <translation>Ketika jendela kehilangan fokus, linimasanya
 akan diburamkan.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation type="unfinished">Akan mencegah seleksi teks di linimasi untuk membuat guliran mudah.</translation>
+        <translation>Akan mencegah pemilihan teks di linimasi untuk membuat guliran mudah.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished">Mengubah faktor skala antarmuka pengguna.</translation>
+        <translation>Mengubah faktor skala antarmuka pengguna.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished">Akan menggunakan turn.matrix.org sebagai bantuan jika homeserver Anda tidak menawarkannya.</translation>
+        <translation>Akan menggunakan turn.matrix.org sebagai bantuan jika homeserver Anda tidak menawarkannya.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
-        <translation type="unfinished">Memerlukan pengguna diverifikasi untuk mengirim pesan terenkripsi ke pengguna. Ini meningkatkan keamanan tetapi membuat enkripsi ujung-ke-ujung lebih susah.</translation>
+        <translation>Memerlukan pengguna diverifikasi untuk mengirim pesan terenkripsi ke pengguna. Ini meningkatkan keamanan tetapi membuat enkripsi ujung-ke-ujung lebih susah.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Automatically replies to key requests from other users, if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished">Secara otomatis membalas ke permintaan kunci dari pengguna lain, jika mereka terverifikasi, bahkan jika perangkat itu seharusnya tidak mempunyai akses ke kunci itu secara lain.</translation>
+        <translation>Secara otomatis membalas ke permintaan kunci dari pengguna lain, jika mereka terverifikasi, bahkan jika perangkat itu seharusnya tidak mempunyai akses ke kunci itu secara lain.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Download message encryption keys from and upload to the encrypted online key backup.</source>
-        <translation type="unfinished">Unduh kunci enkripsi pesan dari dan unggah ke cadangan kunci online terenkripsi.</translation>
+        <translation>Unduh kunci enkripsi pesan dari dan unggah ke cadangan kunci daring terenkripsi.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
-        <translation type="unfinished">Kunci untuk mendekripsikan cadangan kunci online. Jika dicache, Anda dapat mengaktifkan kunci cadangan online untuk menyimpan kunci enkripsi yang dienkripsi secara aman di servernya.</translation>
+        <translation>Kunci untuk mendekripsikan cadangan kunci daring. Jika dicache, Anda dapat mengaktifkan kunci cadangan daring untuk menyimpan kunci enkripsi yang dienkripsi secara aman di servernya.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users, that have verified you.</source>
-        <translation type="unfinished">Kunci untuk memverifikasi perangkat Anda. Jika dicache, memverifikasi salah satu perangkat Anda akan menandainya sebagai terverifikasi untuk semua perangkat Anda yang lain dan untuk pengguna yang telah memverifikasi Anda.</translation>
+        <translation>Kunci untuk memverifikasi perangkat Anda. Jika dicache, memverifikasi salah satu perangkat Anda akan menandainya sebagai terverifikasi untuk semua perangkat Anda yang lain dan untuk pengguna yang telah memverifikasi Anda.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation type="unfinished">Kunci untuk memverifikasi pengguna lain. Jika dicache, memverifikasi sebuah pengguna akan memverifikasi semua perangkat mereka.</translation>
+        <translation>Kunci untuk memverifikasi pengguna lain. Jika dicache, memverifikasi sebuah pengguna akan memverifikasi semua perangkat mereka.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation type="unfinished">Kunci Anda yang paling penting. Anda tidak perlu menyimpannya dalam cache, karena tidak menyimpannya akan memperkecil kemungkinannya untuk dicuri dan hanya diperlukan untuk memutar kunci penandatanganan Anda yang lain.</translation>
+        <translation>Kunci Anda yang paling penting. Anda tidak perlu menyimpannya dalam cache, karena tidak menyimpannya akan memperkecil kemungkinannya untuk dicuri dan hanya diperlukan untuk memutar kunci penandatanganan Anda yang lain.</translation>
     </message>
     <message>
         <location line="+392"/>
         <source>Select a file</source>
-        <translation type="unfinished">Pilih sebuah file</translation>
+        <translation>Pilih sebuah file</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Semua File (*)</translation>
+        <translation>Semua File (*)</translation>
     </message>
     <message>
         <location line="+82"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished">Buka File Sesi</translation>
+        <translation>Buka File Sesi</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3253,34 +3253,34 @@ akan diburamkan.</translation>
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
-        <translation type="unfinished">Kesalahan</translation>
+        <translation>Kesalahan</translation>
     </message>
     <message>
         <location line="-64"/>
         <location line="+26"/>
         <source>File Password</source>
-        <translation type="unfinished">Kata Sandi File</translation>
+        <translation>Kata Sandi File</translation>
     </message>
     <message>
         <location line="-25"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished">Masukkan kata sandi untuk mendekripsi filenya:</translation>
+        <translation>Masukkan kata sandi untuk mendekripsi filenya:</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+26"/>
         <source>The password cannot be empty</source>
-        <translation type="unfinished">Kata sandi tidak boleh kosong</translation>
+        <translation>Kata sandi tidak boleh kosong</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation type="unfinished">Masukkan frasa sandi untuk mengenkripsikan kunci sesi Anda:</translation>
+        <translation>Masukkan frasa sandi untuk mengenkripsikan kunci sesi Anda:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>File to save the exported session keys</source>
-        <translation type="unfinished">File untuk menyimpan kunci sesi yang telah diekspor</translation>
+        <translation>File untuk menyimpan kunci sesi yang telah diekspor</translation>
     </message>
 </context>
 <context>
@@ -3308,7 +3308,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+49"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Kembali</translation>
     </message>
     <message>
         <location line="-42"/>
