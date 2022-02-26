@@ -36,27 +36,9 @@
     </message>
 </context>
 <context>
-    <name>AwaitingVerificationConfirmation</name>
-    <message>
-        <location filename="../qml/device-verification/AwaitingVerificationConfirmation.qml" line="+13"/>
-        <source>Awaiting Confirmation</source>
-        <translation>A aguardar confirmação</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Waiting for other side to complete verification.</source>
-        <translation>A aguardar que o outro lado complete a verificação.</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Cancel</source>
-        <translation>Cancelar</translation>
-    </message>
-</context>
-<context>
     <name>Cache</name>
     <message numerus="yes">
-        <location filename="../../src/Cache.cpp" line="+2446"/>
+        <location filename="../../src/Cache.cpp" line="+2512"/>
         <source>%1 and %n other(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -73,7 +55,7 @@
 <context>
     <name>CallInvite</name>
     <message>
-        <location filename="../qml/voip/CallInvite.qml" line="+73"/>
+        <location filename="../qml/voip/CallInvite.qml" line="+77"/>
         <source>Video Call</source>
         <translation>Videochamada</translation>
     </message>
@@ -106,27 +88,27 @@
         <translation>Dispositivos</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>Accept</source>
         <translation>Aceitar</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Unknown microphone: %1</source>
         <translation>Microfone desconhecido: %1</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Unknown camera: %1</source>
         <translation>Câmara desconhecida: %1</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <source>Decline</source>
         <translation>Recusar</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-31"/>
         <source>No microphone found.</source>
         <translation>Nenhum microfone encontrado.</translation>
     </message>
@@ -142,18 +124,18 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+127"/>
+        <location filename="../../src/ChatPage.cpp" line="+120"/>
         <source>Failed to invite user: %1</source>
         <translation>Falha ao convidar utilizador: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+663"/>
+        <location line="+655"/>
         <source>Invited user: %1</source>
         <translation>Utilizador convidado: %1</translation>
     </message>
     <message>
-        <location line="-458"/>
+        <location line="-460"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>A migração da cache para a versão atual falhou, e existem várias razões possíveis. Por favor abra um problema (&quot;issue&quot;) e experimente usar uma versão mais antiga entretanto. Alternativamente, pode tentar apagar a cache manualmente.</translation>
     </message>
@@ -194,7 +176,7 @@
         <translation>Tem a certeza que quer convidar %1 (%2)?</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+12"/>
         <source>Failed to invite %1 to %2: %3</source>
         <translation>Falha ao convidar %1 para %2: %3</translation>
     </message>
@@ -254,7 +236,7 @@
         <translation>Utilizador perdoado: %1</translation>
     </message>
     <message>
-        <location line="+347"/>
+        <location line="+345"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation>Tem a certeza que quer começar uma conversa privada com %1?</translation>
     </message>
@@ -317,9 +299,14 @@
         <translation>Falha ao sair da sala: %1</translation>
     </message>
     <message>
-        <location line="+66"/>
+        <location line="+68"/>
         <source>Failed to kick %1 from %2: %3</source>
         <translation>Falha ao expulsar %1 de %2: %3</translation>
+    </message>
+    <message>
+        <location filename="../qml/ChatPage.qml" line="+37"/>
+        <source>No network connection</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -396,7 +383,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+272"/>
+        <location filename="../../src/ChatPage.cpp" line="+270"/>
         <source>Decrypt secrets</source>
         <translation>Desencriptar segredos</translation>
     </message>
@@ -429,12 +416,12 @@
         <translation>Código de verificação</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+13"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
         <translation>Por favor verifique os seguintes dígitos.  Deve ver os mesmos em ambos os lados. Se forem diferentes, carregue em &quot;Não coincidem!&quot; para abortar a verificação!</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+33"/>
         <source>They do not match!</source>
         <translation>Não coincidem!</translation>
     </message>
@@ -447,7 +434,7 @@
 <context>
     <name>EditModal</name>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+43"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+46"/>
         <source>Apply</source>
         <translation>Aplicar</translation>
     </message>
@@ -475,7 +462,7 @@
         <translation>Procurar</translation>
     </message>
     <message>
-        <location line="+187"/>
+        <location line="+193"/>
         <source>People</source>
         <translation>Pessoas</translation>
     </message>
@@ -523,12 +510,12 @@
         <translation>Código de verificação</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+13"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
         <translation>Por favor verifique os seguintes emojis. Deve ver os mesmos em ambos os lados. Se não coincidirem, carregue em &quot;Não coincidem!&quot; para abortar a verificação!</translation>
     </message>
     <message>
-        <location line="+376"/>
+        <location line="+378"/>
         <source>They do not match!</source>
         <translation>Não coincidem!</translation>
     </message>
@@ -541,7 +528,7 @@
 <context>
     <name>Encrypted</name>
     <message>
-        <location filename="../qml/delegates/Encrypted.qml" line="+45"/>
+        <location filename="../qml/delegates/Encrypted.qml" line="+47"/>
         <source>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</source>
         <translation>Não existe nenhuma chave para desbloquear esta mensagem. Nós pedimos a chave automaticamente, mas pode tentar pedi-la outra vez se estiver impaciente.</translation>
     </message>
@@ -612,7 +599,7 @@
         <translation>Falha ao verifcar</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+18"/>
         <source>Other client does not support our verification protocol.</source>
         <translation>O outro cliente não suporta o nosso protocolo de verificação.</translation>
     </message>
@@ -642,7 +629,7 @@
         <translation>Erro de verificação desconhecido.</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+16"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
@@ -650,15 +637,72 @@
 <context>
     <name>ForwardCompleter</name>
     <message>
-        <location filename="../qml/ForwardCompleter.qml" line="+45"/>
+        <location filename="../qml/ForwardCompleter.qml" line="+40"/>
         <source>Forward Message</source>
         <translation>Reencaminhar mensagem</translation>
     </message>
 </context>
 <context>
+    <name>HiddenEvents</name>
+    <message>
+        <location filename="../../src/ui/HiddenEvents.cpp" line="+79"/>
+        <location line="+10"/>
+        <source>Failed to set hidden events: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HiddenEventsDialog</name>
+    <message>
+        <location filename="../qml/dialogs/HiddenEventsDialog.qml" line="+31"/>
+        <source>Hidden events for %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Hidden events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>These events will be be &lt;b&gt;shown&lt;/b&gt; in %1:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>These events will be be &lt;b&gt;shown&lt;/b&gt; in all rooms:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>User events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Joins, leaves, avatar and name changes, bans, …</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Power level changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sent when a moderator is added/removed or the permissions of a room are changed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Stickers</source>
+        <translation type="unfinished">Autocolantes</translation>
+    </message>
+</context>
+<context>
     <name>ImagePackEditorDialog</name>
     <message>
-        <location filename="../qml/dialogs/ImagePackEditorDialog.qml" line="+25"/>
+        <location filename="../qml/dialogs/ImagePackEditorDialog.qml" line="+23"/>
         <source>Editing image pack</source>
         <translation>A editar pacote de imagens</translation>
     </message>
@@ -698,34 +742,34 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+12"/>
         <source>State key</source>
         <translation>Chave de estado</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+8"/>
         <source>Packname</source>
         <translation>Nome do pacote</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+8"/>
         <source>Attribution</source>
         <translation>Atribuição</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <location line="+66"/>
+        <location line="+9"/>
+        <location line="+70"/>
         <source>Use as Emoji</source>
         <translation>Usar como emoji</translation>
     </message>
     <message>
-        <location line="-56"/>
-        <location line="+66"/>
+        <location line="-57"/>
+        <location line="+70"/>
         <source>Use as Sticker</source>
         <translation>Usar como autocolante</translation>
     </message>
     <message>
-        <location line="-30"/>
+        <location line="-32"/>
         <source>Shortcode</source>
         <translation>Código</translation>
     </message>
@@ -735,7 +779,7 @@
         <translation>Corpo</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+35"/>
         <source>Remove from pack</source>
         <translation>Remover do pacote</translation>
     </message>
@@ -768,7 +812,7 @@
         <translation>Criar pacote de conta</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <source>New room pack</source>
         <translation>Criar pacote de sala</translation>
     </message>
@@ -803,7 +847,7 @@
         <translation>Editar</translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+65"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
@@ -821,7 +865,7 @@
         <translation>Todos os ficheiros (*)</translation>
     </message>
     <message>
-        <location line="+481"/>
+        <location line="+483"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Falha ao carregar mídia. Por favor, tente novamente.</translation>
     </message>
@@ -834,7 +878,7 @@
         <translation>Convidar utilizadores para %1</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+23"/>
         <source>User ID to invite</source>
         <translation>ID do utilizador a convidar</translation>
     </message>
@@ -868,7 +912,7 @@
         <translation>Entrar na sala</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+21"/>
         <source>Room ID or alias</source>
         <translation>ID ou alcunha da sala</translation>
     </message>
@@ -889,17 +933,17 @@
 <context>
     <name>LoginPage</name>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+82"/>
+        <location filename="../qml/pages/LoginPage.qml" line="+59"/>
         <source>Matrix ID</source>
         <translation>ID Matrix</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+1"/>
         <source>e.g @joe:matrix.org</source>
         <translation>p. ex. @ze:matrix.org</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Your login name. A mxid should start with @ followed by the user id. After the user id you need to include your server name after a :.
 You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
@@ -920,7 +964,7 @@ Se o Nheko não conseguir encontrar o seu servidor, irá apresentar um campo ond
         <translation>A sua palavra-passe</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+8"/>
         <source>Device name</source>
         <translation>Nome do dispositivo</translation>
     </message>
@@ -930,7 +974,7 @@ Se o Nheko não conseguir encontrar o seu servidor, irá apresentar um campo ond
         <translation>Um nome para este dispositivo, que será exibido noutros quando os estiver a verificar. Caso nenhum seja fornecido, será usado um predefinido.</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+10"/>
         <source>Homeserver address</source>
         <translation>Endereço do servidor</translation>
     </message>
@@ -940,27 +984,32 @@ Se o Nheko não conseguir encontrar o seu servidor, irá apresentar um campo ond
         <translation>servidor.meu:8787</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation>O endereço que pode ser usado para contactar a API de clientes do seu servidor.
 Exemplo: https://servidor.meu:8787</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+30"/>
         <source>LOGIN</source>
         <translation>INCIAR SESSÃO</translation>
     </message>
     <message>
-        <location line="+83"/>
-        <location line="+11"/>
-        <location line="+153"/>
-        <location line="+11"/>
+        <location line="+35"/>
+        <source>Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/LoginPage.cpp" line="+81"/>
+        <location line="+6"/>
+        <location line="+58"/>
+        <location line="+81"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
         <translation>Inseriu um ID Matrix inválido  p. ex. @ze:matrix.org</translation>
     </message>
     <message>
-        <location line="-128"/>
+        <location line="-111"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Falha na descoberta automática. Reposta mal formatada recebida.</translation>
     </message>
@@ -970,7 +1019,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Falha na descoberta automática. Erro desconhecido ao solicitar &quot;.well-known&quot;.</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+33"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
         <translation>Não foi possível encontrar os funções (&quot;endpoints&quot;) necessárias. Possivelmente não é um servidor Matrix.</translation>
     </message>
@@ -985,17 +1034,17 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Erro desconhecido. Certifique-se que o domínio do servidor é válido.</translation>
     </message>
     <message>
-        <location line="-164"/>
+        <location filename="../qml/pages/LoginPage.qml" line="-21"/>
         <source>SSO LOGIN</source>
         <translation type="unfinished">ENTRAR COM ISU (SSO)</translation>
     </message>
     <message>
-        <location line="+259"/>
+        <location filename="../../src/LoginPage.cpp" line="+68"/>
         <source>Empty password</source>
         <translation>Palavra-passe vazia</translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+52"/>
         <source>SSO login failed</source>
         <translation>Falha no ISU (SSO)</translation>
     </message>
@@ -1021,62 +1070,67 @@ Exemplo: https://servidor.meu:8787</translation>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+192"/>
-        <source>Encryption enabled</source>
-        <translation>Encriptação ativada</translation>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+198"/>
+        <source>%1 removed a message</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>room name changed to: %1</source>
-        <translation>nome da sala alterado para: %1</translation>
+        <location line="+10"/>
+        <source>%1 enabled encryption</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+0"/>
-        <source>removed room name</source>
-        <translation>nome da sala removido</translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>topic changed to: %1</source>
-        <translation>tópico da sala alterado para: %1</translation>
+        <location line="+24"/>
+        <source>%2 changed the room name to: %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>removed topic</source>
-        <translation>tópico da sala removido</translation>
+        <source>%1 removed the room name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
+        <source>%2 changed the topic to: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>%1 removed the topic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
         <source>%1 changed the room avatar</source>
         <translation>%1 alterou o ícone da sala</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>%1 changed the pinned messages.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>%1 changed the stickers and emotes in this room.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>%1 changed the addresses for this room.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>%1 changed the parent spaces for this room.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>%1 created and configured room: %2</source>
         <translation>%1 criou e configurou a sala: %2</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+16"/>
         <source>%1 placed a voice call.</source>
         <translation>%1 iniciou uma chamada de voz.</translation>
     </message>
@@ -1091,27 +1145,22 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>%1 iniciou uma chamada.</translation>
     </message>
     <message>
-        <location line="+38"/>
-        <source>Negotiating call...</source>
-        <translation>A negociar chamada…</translation>
+        <location line="+41"/>
+        <source>%1 is negotiating the call...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+71"/>
+        <location line="+76"/>
         <source>Allow them in</source>
         <translation>Permitir a entrada</translation>
     </message>
     <message>
-        <location line="-95"/>
+        <location line="-102"/>
         <source>%1 answered the call.</source>
         <translation>%1 atendeu a chamada.</translation>
     </message>
     <message>
-        <location line="-148"/>
-        <source>removed</source>
-        <translation>removida</translation>
-    </message>
-    <message>
-        <location line="+160"/>
+        <location line="+13"/>
         <source>%1 ended the call.</source>
         <translation>%1 terminou a chamada.</translation>
     </message>
@@ -1119,7 +1168,7 @@ Exemplo: https://servidor.meu:8787</translation>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+45"/>
+        <location filename="../qml/MessageInput.qml" line="+46"/>
         <source>Hang up</source>
         <translation>Desligar</translation>
     </message>
@@ -1129,17 +1178,17 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Iniciar chamada</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>Send a file</source>
         <translation>Enviar um ficheiro</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+56"/>
         <source>Write a message...</source>
         <translation>Escreva uma mensagem…</translation>
     </message>
     <message>
-        <location line="+237"/>
+        <location line="+265"/>
         <source>Stickers</source>
         <translation>Autocolantes</translation>
     </message>
@@ -1162,7 +1211,7 @@ Exemplo: https://servidor.meu:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+110"/>
+        <location filename="../qml/MessageView.qml" line="+123"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
@@ -1182,19 +1231,19 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Opções</translation>
     </message>
     <message>
-        <location line="+431"/>
-        <location line="+125"/>
+        <location line="+422"/>
+        <location line="+126"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copiar</translation>
     </message>
     <message>
-        <location line="-118"/>
-        <location line="+125"/>
+        <location line="-119"/>
+        <location line="+126"/>
         <source>Copy &amp;link location</source>
         <translation>Copiar localização da &amp;ligação</translation>
     </message>
     <message>
-        <location line="-117"/>
+        <location line="-118"/>
         <source>Re&amp;act</source>
         <translation>Re&amp;agir</translation>
     </message>
@@ -1229,7 +1278,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Reen&amp;caminhar</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>&amp;Mark as read</source>
         <translation>&amp;Marcar como lida</translation>
     </message>
@@ -1282,7 +1331,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Pedido de verificação recebido</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+19"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
         <translation>Para permitir que outros utilizadores vejam que dispositivos realmente lhe pertencem, pode verificá-los. Este processo permite que a cópia de segurança das chaves funcione automaticamente. Verificar um dispositivo não verificado agora? (Por favor, certifique-se que tem um daqueles dispositivos disponíveis)</translation>
     </message>
@@ -1312,7 +1361,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>O seu dispositivo (%1) requisitou a sua verificação.</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+12"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -1385,7 +1434,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Nenhum microfone encontrado.</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>Voice</source>
         <translation>Voz</translation>
     </message>
@@ -1400,7 +1449,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Ecrã</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -1416,7 +1465,7 @@ Exemplo: https://servidor.meu:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+212"/>
+        <location filename="../../src/main.cpp" line="+213"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Crie um perfil único que lhe permite entrar em várias contas simultaneamente e iniciar várias instâncias do Nheko.</translation>
     </message>
@@ -1434,7 +1483,7 @@ Exemplo: https://servidor.meu:8787</translation>
 <context>
     <name>ReadReceipts</name>
     <message>
-        <location filename="../qml/dialogs/ReadReceipts.qml" line="+42"/>
+        <location filename="../qml/dialogs/ReadReceipts.qml" line="+41"/>
         <source>Read receipts</source>
         <translation>Recibos de leitura</translation>
     </message>
@@ -1450,35 +1499,45 @@ Exemplo: https://servidor.meu:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+82"/>
+        <location filename="../qml/pages/RegisterPage.qml" line="+93"/>
         <source>Username</source>
         <translation>Nome de utilizador</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location line="+147"/>
+        <location line="+1"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
         <translation>O nome de utilizador não pode ser vazio e tem que conter apenas os caracteres a-z, 0-9, ., _, =, - e /.</translation>
     </message>
     <message>
-        <location line="-143"/>
+        <location line="+21"/>
+        <location line="+96"/>
+        <source>Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-75"/>
         <source>Password</source>
         <translation>Palavra-passe</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
         <translation>Por favor, escolha uma palavra-passe segura. Os requisitos exatos para a força da palavra-passe poderão depender no seu servidor.</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+7"/>
         <source>Password confirmation</source>
         <translation>Confirmação da palavra-passe</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="-86"/>
         <source>Homeserver</source>
         <translation>Servidor</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>your.server</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1486,27 +1545,42 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Um servidor que permita registos. Uma vez que a Matrix é descentralizada, o utilizador precisa primeiro de encontrar um servidor onde se possa registar, ou alojar o seu próprio.</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+90"/>
+        <source>Your passwords do not match!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Device name</source>
+        <translation type="unfinished">Nome do dispositivo</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
+        <translation type="unfinished">Um nome para este dispositivo, que será exibido noutros quando os estiver a verificar. Caso nenhum seja fornecido, será usado um predefinido.</translation>
+    </message>
+    <message>
+        <location line="+29"/>
         <source>REGISTER</source>
         <translation>REGISTAR</translation>
     </message>
     <message>
-        <location line="+169"/>
+        <location filename="../../src/RegisterPage.cpp" line="+77"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Falha na descoberta automática. Resposta mal formada recebida.</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
         <translation>Falha na descoberta automática. Erro desconhecido ao requisitar &quot;.well-known&quot;.</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+25"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
         <translation>Não foi possível encontrar os funções (&quot;endpoints&quot;) necessárias. Possivelmente não é um servidor Matrix.</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
         <translation>Resposta mal formada recebida. Certifique-se que o domínio do servidor está correto.</translation>
     </message>
@@ -1516,25 +1590,35 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Erro desconhecido. Certifique-se que o domínio do servidor é válido.</translation>
     </message>
     <message>
-        <location line="-107"/>
-        <source>Password is not long enough (min 8 chars)</source>
-        <translation>A palavra-passe não é longa o suficiente (mín, 8 caracteres)</translation>
+        <location line="+10"/>
+        <source>Server does not support querying registration flows!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Passwords don&apos;t match</source>
-        <translation>As palavras-passe não coincidem</translation>
+        <location line="+5"/>
+        <source>Server does not support registration.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Invalid server name</source>
-        <translation>Nome do servidor inválido</translation>
+        <location line="+25"/>
+        <source>Invalid username.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Name already in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Part of the reserved namespace.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../qml/ReplyPopup.qml" line="+64"/>
+        <location filename="../qml/ReplyPopup.qml" line="+65"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
@@ -1547,17 +1631,17 @@ Exemplo: https://servidor.meu:8787</translation>
 <context>
     <name>RoomDirectory</name>
     <message>
-        <location filename="../qml/dialogs/RoomDirectory.qml" line="+26"/>
+        <location filename="../qml/dialogs/RoomDirectory.qml" line="+27"/>
         <source>Explore Public Rooms</source>
         <translation>Explorar salas públicas</translation>
     </message>
     <message>
-        <location line="+168"/>
+        <location line="+146"/>
         <source>Search for public rooms</source>
         <translation>Procurar por salas públicas</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+10"/>
         <source>Choose custom homeserver</source>
         <translation>Escolher servidor personalizado</translation>
     </message>
@@ -1565,7 +1649,7 @@ Exemplo: https://servidor.meu:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1926"/>
+        <location filename="../../src/Cache.cpp" line="+1925"/>
         <source>no version stored</source>
         <translation>nenhuma versão guardada</translation>
     </message>
@@ -1613,7 +1697,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Criar nova etiqueta...</translation>
     </message>
     <message>
-        <location line="+295"/>
+        <location line="+299"/>
         <source>Status Message</source>
         <translation>Mensagem de estado</translation>
     </message>
@@ -1633,7 +1717,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Definir mensagem de estado</translation>
     </message>
     <message>
-        <location line="+83"/>
+        <location line="+81"/>
         <source>Logout</source>
         <translation>Terminar sessão</translation>
     </message>
@@ -1661,7 +1745,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Fechar</translation>
     </message>
     <message>
-        <location line="+66"/>
+        <location line="+64"/>
         <source>Start a new chat</source>
         <translation>Iniciar uma nova conversa</translation>
     </message>
@@ -1681,7 +1765,12 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Diretório de salas</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+19"/>
+        <source>Search rooms (Ctrl+K)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>User settings</source>
         <translation>Definições de utilizador</translation>
     </message>
@@ -1694,7 +1783,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Membros de %1</translation>
     </message>
     <message numerus="yes">
-        <location line="+33"/>
+        <location line="+32"/>
         <source>%n people in %1</source>
         <comment>Summary above list of members</comment>
         <translation>
@@ -1731,12 +1820,12 @@ Exemplo: https://servidor.meu:8787</translation>
 <context>
     <name>RoomSettings</name>
     <message>
-        <location filename="../qml/dialogs/RoomSettings.qml" line="+27"/>
+        <location filename="../qml/dialogs/RoomSettings.qml" line="+26"/>
         <source>Room Settings</source>
         <translation>Definições de sala</translation>
     </message>
     <message numerus="yes">
-        <location line="+81"/>
+        <location line="+82"/>
         <source>%n member(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1830,6 +1919,21 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>Alterar a seleção de pacotes ativos, remover e criar novos pacotes</translation>
     </message>
     <message>
+        <location line="+6"/>
+        <source>Hidden events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Configure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select events to hide in this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+16"/>
         <source>INFO</source>
         <translation>INFO</translation>
@@ -1879,7 +1983,7 @@ Exemplo: https://servidor.meu:8787</translation>
 <context>
     <name>RoomlistModel</name>
     <message>
-        <location filename="../../src/timeline/RoomlistModel.cpp" line="+151"/>
+        <location filename="../../src/timeline/RoomlistModel.cpp" line="+152"/>
         <source>Pending invite.</source>
         <translation>Convite pendente.</translation>
     </message>
@@ -1889,7 +1993,7 @@ Exemplo: https://servidor.meu:8787</translation>
         <translation>A pré-visualizar esta sala</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+33"/>
         <source>No preview available</source>
         <translation>Pré-visualização não disponível</translation>
     </message>
@@ -1897,7 +2001,7 @@ Exemplo: https://servidor.meu:8787</translation>
 <context>
     <name>Root</name>
     <message>
-        <location filename="../qml/Root.qml" line="+276"/>
+        <location filename="../qml/Root.qml" line="+314"/>
         <source>Please enter your login password to continue:</source>
         <translation>Por favor, insira a sua palavra-passe para continuar:</translation>
     </message>
@@ -1979,7 +2083,7 @@ Exemplo: https://servidor.meu:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4222"/>
+        <location filename="../../src/Cache.cpp" line="-4278"/>
         <source>Failed to connect to secret storage</source>
         <translation>Falha ao ligar ao armazenamento secreto</translation>
     </message>
@@ -2139,12 +2243,12 @@ Se escolher a verificação, terá que ter o outro dispositivo disponível. Se e
         <translation>Verificação bem sucedida</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Verification successful! Both sides verified their devices!</source>
         <translation>Verificação bem sucedida!  Ambos os lados verificaram os seus dispositivos!</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+14"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
@@ -2152,7 +2256,7 @@ Se escolher a verificação, terá que ter o outro dispositivo disponível. Se e
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1219"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1250"/>
         <location line="+16"/>
         <source>Message redaction failed: %1</source>
         <translation>Falha ao eliminar mensagem: %1</translation>
@@ -2269,12 +2373,27 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+80"/>
-        <source>%1 was invited.</source>
-        <translation>%1 foi convidado.</translation>
+        <location line="+123"/>
+        <source>%2 revoked the invite to %1.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+5"/>
+        <source>%2 kicked %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%2 unbanned %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>%2 rejected the knock from %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-35"/>
         <source>%1 changed their avatar.</source>
         <translation>%1 alterou o seu avatar.</translation>
     </message>
@@ -2299,32 +2418,12 @@ Reason: %4</source>
         <translation>%1 recusou o seu convite.</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Revoked the invite to %1.</source>
-        <translation>Convite de %1 cancelado.</translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>%1 left the room.</source>
         <translation>%1 saiu da sala.</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Kicked %1.</source>
-        <translation>%1 foi expulso.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Unbanned %1.</source>
-        <translation>%1 foi perdoado.</translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>%1 was banned.</source>
-        <translation>%1 foi banido.</translation>
-    </message>
-    <message>
-        <location line="+8"/>
+        <location line="+26"/>
         <source>Reason: %1</source>
         <translation>Razão: %1</translation>
     </message>
@@ -2334,12 +2433,17 @@ Reason: %4</source>
         <translation>%1 eliminou a sua &quot;batida à porta&quot;.</translation>
     </message>
     <message>
-        <location line="-1062"/>
+        <location line="-1068"/>
         <source>You joined this room.</source>
         <translation>Entrou na sala.</translation>
     </message>
     <message>
-        <location line="+1023"/>
+        <location line="+1017"/>
+        <source>%1 invited %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation>%1 alterou o seu avatar e também o seu nome de exibição para %2.</translation>
     </message>
@@ -2349,18 +2453,18 @@ Reason: %4</source>
         <translation>%1 alterou o seu nome de exibição para %2.</translation>
     </message>
     <message>
-        <location line="+37"/>
-        <source>Rejected the knock from %1.</source>
-        <translation type="unfinished">Recusada a batida de %1.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+39"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
         <translation>%1 saiu depois de já ter saído!</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+7"/>
+        <source>%1 banned %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>%1 knocked.</source>
         <translation>%1 bateu à porta.</translation>
     </message>
@@ -2368,7 +2472,7 @@ Reason: %4</source>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+176"/>
+        <location filename="../qml/TimelineRow.qml" line="+202"/>
         <source>Edited</source>
         <translation>Editada</translation>
     </message>
@@ -2414,17 +2518,17 @@ Reason: %4</source>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+90"/>
+        <location filename="../qml/TopBar.qml" line="+95"/>
         <source>Back to room list</source>
         <translation>Voltar à lista de salas</translation>
     </message>
     <message>
-        <location line="-71"/>
+        <location line="-76"/>
         <source>No room selected</source>
         <translation>Nenhuma sala selecionada</translation>
     </message>
     <message>
-        <location line="+126"/>
+        <location line="+131"/>
         <source>This room is not encrypted!</source>
         <translation>Esta sala não é encriptada!</translation>
     </message>
@@ -2482,7 +2586,7 @@ Reason: %4</source>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+116"/>
+        <location filename="../../src/TrayIcon.cpp" line="+117"/>
         <source>Show</source>
         <translation>Mostrar</translation>
     </message>
@@ -2495,7 +2599,7 @@ Reason: %4</source>
 <context>
     <name>UIA</name>
     <message>
-        <location filename="../../src/ui/UIA.cpp" line="+60"/>
+        <location filename="../../src/ui/UIA.cpp" line="+59"/>
         <source>No available registration flows!</source>
         <translation>Nenhum processo de registo disponível!</translation>
     </message>
@@ -2520,7 +2624,7 @@ Reason: %4</source>
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../qml/dialogs/UserProfile.qml" line="+29"/>
+        <location filename="../qml/dialogs/UserProfile.qml" line="+26"/>
         <source>Global User Profile</source>
         <translation>Perfil de utilizador global</translation>
     </message>
@@ -2530,7 +2634,7 @@ Reason: %4</source>
         <translation>Perfil de utilizador na sala</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+48"/>
         <source>Change avatar globally.</source>
         <translation>Alterar avatar globalmente.</translation>
     </message>
@@ -2540,7 +2644,7 @@ Reason: %4</source>
         <translation>Alterar avatar. Irá apenas afetar esta sala.</translation>
     </message>
     <message>
-        <location line="+80"/>
+        <location line="+84"/>
         <source>Change display name globally.</source>
         <translation>Alterar nome de exibição globalmente.</translation>
     </message>
@@ -2560,7 +2664,7 @@ Reason: %4</source>
         <translation>Este é um perfil específico desta sala. O nome e avatar do utilizador poderão ser diferentes dos seus homólogos globais.</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+15"/>
         <source>Open the global profile for this user.</source>
         <translation>Abrir o perfil global deste utilizador.</translation>
     </message>
@@ -2644,198 +2748,63 @@ Reason: %4</source>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+421"/>
-        <location filename="../../src/UserSettingsPage.h" line="+212"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+442"/>
+        <location filename="../../src/UserSettingsPage.h" line="+219"/>
         <source>Default</source>
         <translation>Predefinido</translation>
     </message>
 </context>
 <context>
-    <name>UserSettingsPage</name>
+    <name>UserSettingsModel</name>
     <message>
-        <location line="+579"/>
+        <location line="+376"/>
+        <source>Theme</source>
+        <translation type="unfinished">Tema</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Scale factor</source>
+        <translation type="unfinished">Fator de escala</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Highlight message on hover</source>
+        <translation type="unfinished">Destacar mensagem quando passar o rato por cima.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Large Emoji in timeline</source>
+        <translation type="unfinished">Emojis grandes na cronologia</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Minimize to tray</source>
         <translation type="unfinished">Minimizar para a bandeja</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Start in tray</source>
         <translation type="unfinished">Iniciar na bandeja</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+2"/>
         <source>Group&apos;s sidebar</source>
-        <translation>Barra lateral do grupo</translation>
+        <translation type="unfinished">Barra lateral do grupo</translation>
     </message>
     <message>
-        <location line="-6"/>
-        <source>Circular Avatars</source>
-        <translation>Avatares circulares</translation>
+        <location line="+2"/>
+        <source>Send messages as Markdown</source>
+        <translation type="unfinished">Enviar mensagens como Markdown</translation>
     </message>
     <message>
-        <location line="-218"/>
-        <source>profile: %1</source>
-        <translation>perfil: %1</translation>
-    </message>
-    <message>
-        <location line="+104"/>
-        <source>Default</source>
-        <translation>Predefinido</translation>
-    </message>
-    <message>
-        <location line="+31"/>
-        <source>CALLS</source>
-        <translation>CHAMADAS</translation>
-    </message>
-    <message>
-        <location line="+46"/>
-        <source>Cross Signing Keys</source>
-        <translation>Chaves de assinatura cruzada</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>REQUEST</source>
-        <translation>PEDIR</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>DOWNLOAD</source>
-        <translation>DESCARREGAR</translation>
-    </message>
-    <message>
-        <location line="+27"/>
-        <source>Keep the application running in the background after closing the client window.</source>
-        <translation>Manter a aplicação a correr em segundo plano depois de fechar a janela.</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Start the application in the background without showing the client window.</source>
-        <translation>Iniciar a aplicação em segundo plano sem mostrar a janela do cliente.</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Change the appearance of user avatars in chats.
-OFF - square, ON - Circle.</source>
-        <translation>Alterar a aparência de avatares de utilizador nas conversas.
-DESLIGADO - quadrados, LIGADO - circulares.</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Use identicons</source>
+        <location line="+2"/>
+        <source>Enable message bubbles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Show a column containing groups and tags next to the room list.</source>
-        <translation>Mostrar uma coluna contendo grupos e etiquetas ao lado da lista de salas.</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Decrypt messages in sidebar</source>
-        <translation>Desencriptar mensagens na barra lateral</translation>
-    </message>
-    <message>
         <location line="+2"/>
-        <source>Decrypt the messages shown in the sidebar.
-Only affects messages in encrypted chats.</source>
-        <translation>Desencriptar mensagens exibidas na barra lateral.
-Apenas afeta mensagens em conversas encriptadas.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Privacy Screen</source>
-        <translation>Ecrã de privacidade</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>When the window loses focus, the timeline will
-be blurred.</source>
-        <translation>Quando a janela perde a atenção, a cronologia 
-será desfocada.</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation>Tempo de inatividade para ecrã de privacidade (em segundos [0 - 3600])</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Set timeout (in seconds) for how long after window loses
-focus before the screen will be blurred.
-Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation>Definir tempo (em segundos) depois da janela perder a 
-atenção até que o ecrã seja desfocado.
-Defina como 0 para desfocar imediatamente após perder a atenção. Valor máximo de 1 hora (3600 segundos)</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Show buttons in timeline</source>
-        <translation>Mostrar botões na cronologia</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation>Mostrar botões para resposta rápida, reações ou acesso a opções adicionais junto de cada mensagem.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Limit width of timeline</source>
-        <translation>Limitar largura da cronologia</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation>Definir largura máxima das mensagens na cronologia (em pixeis). Isto pode ajudar na legibilidade em ecrãs largos, quando o Nheko está maximizado.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Typing notifications</source>
-        <translation>Notificações de escrita</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Show who is typing in a room.
-This will also enable or disable sending typing notifications to others.</source>
-        <translation>Mostrar quem está a escrever numa sala.
-Irá também ativar ou desativar o envio de notificações de escrita para outros.</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Sort rooms by unreads</source>
-        <translation>Ordenar salas por não lidas</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Display rooms with new messages first.
-If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
-If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation>Exibe salas com novas mensagens primeiro.
-Se desativada, a lista de salas será apenas ordenada pela data da última mensagem de cada sala.
-Se ativada, salas com notificações ativas (pequeno círculo com um número dentro) serão ordenadas no topo. Salas silenciadas continuarão a ser ordenadas por data, visto que não são consideradas tão importantes como as outras.</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Read receipts</source>
-        <translation>Recibos de leitura</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Show if your message was read.
-Status is displayed next to timestamps.</source>
-        <translation>Mostrar se a sua mensagem foi lida.
-Estado exibido ao lado da data.</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Send messages as Markdown</source>
-        <translation>Enviar mensagens como Markdown</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Allow using markdown in messages.
-When disabled, all messages are sent as a plain text.</source>
-        <translation>Permitir Markdown em mensagens.
-Quando desativada, todas as mensagens serão enviadas em texto simples.</translation>
+        <source>Enable small Avatars</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2843,245 +2812,224 @@ Quando desativada, todas as mensagens serão enviadas em texto simples.</transla
         <translation type="unfinished">Reproduzir imagens animadas apenas quando lhes passar o rato por cima.</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
+        <source>Typing notifications</source>
+        <translation type="unfinished">Notificações de escrita</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Sort rooms by unreads</source>
+        <translation type="unfinished">Ordenar salas por não lidas</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show buttons in timeline</source>
+        <translation type="unfinished">Mostrar botões na cronologia</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Limit width of timeline</source>
+        <translation type="unfinished">Limitar largura da cronologia</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Read receipts</source>
+        <translation type="unfinished">Recibos de leitura</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Desktop notifications</source>
-        <translation>Notificações de ambiente de trabalho</translation>
+        <translation type="unfinished">Notificações de ambiente de trabalho</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Notify about received message when the client is not currently focused.</source>
-        <translation>Notificar sobre mensagens recebidas quando o cliente não está focado.</translation>
-    </message>
-    <message>
-        <location line="+1"/>
         <source>Alert on notification</source>
-        <translation>Alertar para notificações</translation>
+        <translation type="unfinished">Alertar para notificações</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Show an alert when a message is received.
-This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation>Mostrar alerta quando é recebida uma mensagem.</translation>
+        <source>Circular Avatars</source>
+        <translation type="unfinished">Avatares circulares</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Highlight message on hover</source>
-        <translation>Destacar mensagem quando passar o rato por cima.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Change the background color of messages when you hover over them.</source>
-        <translation>Alterar a cor de fundo das mensagens quando passar o rato por cima.</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Large Emoji in timeline</source>
-        <translation>Emojis grandes na cronologia</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation>Aumentar tamanho do tipo de letra quando apenas alguns emojis são exibidos.</translation>
-    </message>
-    <message>
-        <location line="+56"/>
-        <source>Send encrypted messages to verified users only</source>
-        <translation>Enviar mensagens encriptadas apenas a utilizadores verificados</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
-        <translation>Exigir que um utilizador esteja verificado para lhe enviar mensagens encriptadas. Isto melhora a segurança mas torna a encriptação mais entediante.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Share keys with verified users and devices</source>
-        <translation>Partilhar chaves com utilizadores e dispositivos verificados</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Automatically replies to key requests from other users, if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation>Automaticamente responde a pedidos de chaves de outros utilizadores, se estiverem verificados, mesmo que de outra forma o dispositivo não deveria ter acesso a essas chaves.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Online Key Backup</source>
-        <translation>Cópia de segurança de chave online</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Download message encryption keys from and upload to the encrypted online key backup.</source>
+        <source>Use identicons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+188"/>
-        <source>Enable online key backup</source>
-        <translation>Ativar cópia de segurança de chave online</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>The Nheko authors recommend not enabling online key backup until symmetric online key backup is available. Enable anyway?</source>
-        <translation>Os autores do Nheko recomendam não ativar a cópia de segurança de chave online até que a cópia simétrica esteja disponível. Deseja ativar ainda assim?</translation>
-    </message>
-    <message>
-        <location line="+253"/>
-        <source>CACHED</source>
-        <translation>ARMAZENADO EM CACHE</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>NOT CACHED</source>
-        <translation>NÃO ARMAZENADO EM CACHE</translation>
-    </message>
-    <message>
-        <location line="-506"/>
-        <source>Scale factor</source>
-        <translation>Fator de escala</translation>
+        <location line="+2"/>
+        <source>Decrypt messages in sidebar</source>
+        <translation type="unfinished">Desencriptar mensagens na barra lateral</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Change the scale factor of the whole user interface.</source>
-        <translation>Alterar o fator de escala para toda a interface.</translation>
+        <source>Privacy Screen</source>
+        <translation type="unfinished">Ecrã de privacidade</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+2"/>
+        <source>Privacy screen timeout (in seconds [0 - 3600])</source>
+        <translation type="unfinished">Tempo de inatividade para ecrã de privacidade (em segundos [0 - 3600])</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Touchscreen mode</source>
+        <translation type="unfinished">Modo de toque</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Font size</source>
-        <translation>Tamanho da letra</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Font Family</source>
-        <translation>Tipo de letra</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Theme</source>
-        <translation>Tema</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Ringtone</source>
-        <translation>Toque</translation>
+        <translation type="unfinished">Tamanho da letra</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Set the notification sound to play when a call invite arrives</source>
-        <translation>Tocar o som de notificação quando chegar um convite de chamada</translation>
+        <source>Font Family</source>
+        <translation type="unfinished">Tipo de letra</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
+        <source>Emoji Font Family</source>
+        <translation type="unfinished">Tipo de letra para emoji</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Ringtone</source>
+        <translation type="unfinished">Toque</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Microphone</source>
-        <translation>Microfone</translation>
+        <translation type="unfinished">Microfone</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Camera</source>
-        <translation>Câmara</translation>
+        <translation type="unfinished">Câmara</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Camera resolution</source>
-        <translation>Resolução de câmara</translation>
+        <translation type="unfinished">Resolução de câmara</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Camera frame rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+2"/>
         <source>Allow fallback call assist server</source>
-        <translation>Permitir servidor assistente de chamada</translation>
+        <translation type="unfinished">Permitir servidor assistente de chamada</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
+        <source>Send encrypted messages to verified users only</source>
+        <translation type="unfinished">Enviar mensagens encriptadas apenas a utilizadores verificados</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Share keys with verified users and devices</source>
+        <translation type="unfinished">Partilhar chaves com utilizadores e dispositivos verificados</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Online Key Backup</source>
+        <translation type="unfinished">Cópia de segurança de chave online</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+2"/>
+        <source>User ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Accesstoken</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Device ID</source>
-        <translation>ID do dispositivo</translation>
+        <translation type="unfinished">ID do dispositivo</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Device Fingerprint</source>
-        <translation>Impressão digital do dispositivo</translation>
+        <translation type="unfinished">Impressão digital do dispositivo</translation>
     </message>
     <message>
-        <location line="-168"/>
-        <source>Session Keys</source>
-        <translation>Chave de sessão</translation>
+        <location line="+2"/>
+        <source>Homeserver</source>
+        <translation type="unfinished">Servidor</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>IMPORT</source>
-        <translation>IMPORTAR</translation>
+        <location line="+2"/>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>EXPORT</source>
-        <translation>EXPORTAR</translation>
+        <location line="+2"/>
+        <source>Platform</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-34"/>
-        <source>ENCRYPTION</source>
-        <translation>ENCRIPTAÇÃO</translation>
-    </message>
-    <message>
-        <location line="-123"/>
+        <location line="+2"/>
         <source>GENERAL</source>
-        <translation>GERAL</translation>
+        <translation type="unfinished">GERAL</translation>
     </message>
     <message>
-        <location line="+72"/>
-        <source>INTERFACE</source>
-        <translation>INTERFACE</translation>
-    </message>
-    <message>
-        <location line="+134"/>
-        <source>Display an identicon instead of a letter when no avatar is set.</source>
+        <location line="+2"/>
+        <source>TIMELINE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+46"/>
-        <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
-        <translation>Reproduzir média como GIFs e WEBPs apenas quando passar o cursor explicitamente por cima.</translation>
-    </message>
-    <message>
-        <location line="+17"/>
-        <source>Touchscreen mode</source>
-        <translation>Modo de toque</translation>
-    </message>
-    <message>
         <location line="+2"/>
-        <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
+        <source>SIDEBAR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
-        <source>Emoji Font Family</source>
-        <translation>Tipo de letra para emoji</translation>
-    </message>
-    <message>
-        <location line="+54"/>
-        <source>Master signing key</source>
-        <translation>Chave de assinatura mestra</translation>
+        <location line="+2"/>
+        <source>TRAY</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation>A sua chave mais importante. Não necessita de a armazenar na cache, visto que será menos provável que seja roubada e só é necessária para rodar as outras chaves de assinatura.</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>User signing key</source>
-        <translation>Chave de assinatura de utilizador</translation>
+        <source>NOTIFICATIONS</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation>A chave para verificar outros utilizadores. Se armazenada em cache, verificar um utilizador irá verificar todos os seus dispositivos.</translation>
+        <source>CALLS</source>
+        <translation type="unfinished">CHAMADAS</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>ENCRYPTION</source>
+        <translation type="unfinished">ENCRIPTAÇÃO</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>INFO</source>
+        <translation type="unfinished">INFO</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Session Keys</source>
+        <translation type="unfinished">Chave de sessão</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Cross Signing Secrets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Online backup key</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3090,76 +3038,295 @@ This usually causes the application icon in the task bar to animate in some fash
     </message>
     <message>
         <location line="+2"/>
-        <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users, that have verified you.</source>
-        <translation>A chave para verificar os seus dispositivos. Se armazenada em cache, verificar um dos seus dispositivos irá marcá-lo como tal para todos os seus outros dispositivos e utilizadores que o tenham verificado.</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Backup key</source>
-        <translation>Chave de cópia de segurança</translation>
+        <source>User signing key</source>
+        <translation type="unfinished">Chave de assinatura de utilizador</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Master signing key</source>
+        <translation type="unfinished">Chave de assinatura mestra</translation>
+    </message>
+    <message>
+        <location line="+91"/>
+        <source>Default</source>
+        <translation type="unfinished">Predefinido</translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>Set the notification sound to play when a call invite arrives</source>
+        <translation type="unfinished">Tocar o som de notificação quando chegar um convite de chamada</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
+        <translation type="unfinished">Definir largura máxima das mensagens na cronologia (em pixeis). Isto pode ajudar na legibilidade em ecrãs largos, quando o Nheko está maximizado.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Set timeout (in seconds) for how long after window loses
+focus before the screen will be blurred.
+Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
+        <translation type="unfinished">Definir tempo (em segundos) depois da janela perder a 
+atenção até que o ecrã seja desfocado.
+Defina como 0 para desfocar imediatamente após perder a atenção. Valor máximo de 1 hora (3600 segundos)</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Change the background color of messages when you hover over them.</source>
+        <translation type="unfinished">Alterar a cor de fundo das mensagens quando passar o rato por cima.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Make font size larger if messages with only a few emojis are displayed.</source>
+        <translation type="unfinished">Aumentar tamanho do tipo de letra quando apenas alguns emojis são exibidos.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Keep the application running in the background after closing the client window.</source>
+        <translation type="unfinished">Manter a aplicação a correr em segundo plano depois de fechar a janela.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Start the application in the background without showing the client window.</source>
+        <translation type="unfinished">Iniciar a aplicação em segundo plano sem mostrar a janela do cliente.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show a column containing groups and tags next to the room list.</source>
+        <translation type="unfinished">Mostrar uma coluna contendo grupos e etiquetas ao lado da lista de salas.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Allow using markdown in messages.
+When disabled, all messages are sent as a plain text.</source>
+        <translation type="unfinished">Permitir Markdown em mensagens.
+Quando desativada, todas as mensagens serão enviadas em texto simples.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Messages get a bubble background. This also triggers some layout changes (WIP).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Avatars are resized to fit above the message.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
+        <translation type="unfinished">Reproduzir média como GIFs e WEBPs apenas quando passar o cursor explicitamente por cima.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show who is typing in a room.
+This will also enable or disable sending typing notifications to others.</source>
+        <translation type="unfinished">Mostrar quem está a escrever numa sala.
+Irá também ativar ou desativar o envio de notificações de escrita para outros.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Display rooms with new messages first.
+If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
+If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
+        <translation type="unfinished">Exibe salas com novas mensagens primeiro.
+Se desativada, a lista de salas será apenas ordenada pela data da última mensagem de cada sala.
+Se ativada, salas com notificações ativas (pequeno círculo com um número dentro) serão ordenadas no topo. Salas silenciadas continuarão a ser ordenadas por data, visto que não são consideradas tão importantes como as outras.</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
+        <translation type="unfinished">Mostrar botões para resposta rápida, reações ou acesso a opções adicionais junto de cada mensagem.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Show if your message was read.
+Status is displayed next to timestamps.</source>
+        <translation type="unfinished">Mostrar se a sua mensagem foi lida.
+Estado exibido ao lado da data.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Notify about received message when the client is not currently focused.</source>
+        <translation type="unfinished">Notificar sobre mensagens recebidas quando o cliente não está focado.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show an alert when a message is received.
+This usually causes the application icon in the task bar to animate in some fashion.</source>
+        <translation type="unfinished">Mostrar alerta quando é recebida uma mensagem.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Change the appearance of user avatars in chats.
+OFF - square, ON - Circle.</source>
+        <translation type="unfinished">Alterar a aparência de avatares de utilizador nas conversas.
+DESLIGADO - quadrados, LIGADO - circulares.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Display an identicon instead of a letter when no avatar is set.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Decrypt the messages shown in the sidebar.
+Only affects messages in encrypted chats.</source>
+        <translation type="unfinished">Desencriptar mensagens exibidas na barra lateral.
+Apenas afeta mensagens em conversas encriptadas.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>When the window loses focus, the timeline will
+be blurred.</source>
+        <translation type="unfinished">Quando a janela perde a atenção, a cronologia 
+será desfocada.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Change the scale factor of the whole user interface.</source>
+        <translation type="unfinished">Alterar o fator de escala para toda a interface.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
+        <translation type="unfinished">Exigir que um utilizador esteja verificado para lhe enviar mensagens encriptadas. Isto melhora a segurança mas torna a encriptação mais entediante.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Automatically replies to key requests from other users, if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
+        <translation type="unfinished">Automaticamente responde a pedidos de chaves de outros utilizadores, se estiverem verificados, mesmo que de outra forma o dispositivo não deveria ter acesso a essas chaves.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Download message encryption keys from and upload to the encrypted online key backup.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+4"/>
+        <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users, that have verified you.</source>
+        <translation type="unfinished">A chave para verificar os seus dispositivos. Se armazenada em cache, verificar um dos seus dispositivos irá marcá-lo como tal para todos os seus outros dispositivos e utilizadores que o tenham verificado.</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
+        <translation type="unfinished">A chave para verificar outros utilizadores. Se armazenada em cache, verificar um utilizador irá verificar todos os seus dispositivos.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
+        <translation type="unfinished">A sua chave mais importante. Não necessita de a armazenar na cache, visto que será menos provável que seja roubada e só é necessária para rodar as outras chaves de assinatura.</translation>
+    </message>
+    <message>
+        <location line="+392"/>
         <source>Select a file</source>
-        <translation>Selecionar um ficheiro</translation>
+        <translation type="unfinished">Selecionar um ficheiro</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation>Todos os ficheiros (*)</translation>
+        <translation type="unfinished">Todos os ficheiros (*)</translation>
     </message>
     <message>
-        <location line="+269"/>
+        <location line="+82"/>
         <source>Open Sessions File</source>
-        <translation>Abrir ficheiro de sessões</translation>
+        <translation type="unfinished">Abrir ficheiro de sessões</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+18"/>
         <location line="+8"/>
-        <location line="+19"/>
+        <location line="+18"/>
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
-        <translation>Erro</translation>
+        <translation type="unfinished">Erro</translation>
     </message>
     <message>
-        <location line="-65"/>
-        <location line="+27"/>
+        <location line="-64"/>
+        <location line="+26"/>
         <source>File Password</source>
-        <translation>Palavra-passe do ficheiro</translation>
+        <translation type="unfinished">Palavra-passe do ficheiro</translation>
     </message>
     <message>
-        <location line="-26"/>
+        <location line="-25"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation>Insira a palavra-passe para desencriptar o ficheiro:</translation>
+        <translation type="unfinished">Insira a palavra-passe para desencriptar o ficheiro:</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location line="+27"/>
+        <location line="+26"/>
         <source>The password cannot be empty</source>
-        <translation>A palavra-passe não pode estar vazia</translation>
+        <translation type="unfinished">A palavra-passe não pode estar vazia</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation>Insira a palavra-passe para encriptar as suas chaves de sessão:</translation>
+        <translation type="unfinished">Insira a palavra-passe para encriptar as suas chaves de sessão:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>File to save the exported session keys</source>
-        <translation>Ficheiro onde guardar as chaves de sessão exportadas</translation>
+        <translation type="unfinished">Ficheiro onde guardar as chaves de sessão exportadas</translation>
+    </message>
+</context>
+<context>
+    <name>UserSettingsPage</name>
+    <message>
+        <location filename="../qml/pages/UserSettingsPage.qml" line="+213"/>
+        <source>REQUEST</source>
+        <translation>PEDIR</translation>
+    </message>
+    <message>
+        <location line="-4"/>
+        <source>DOWNLOAD</source>
+        <translation>DESCARREGAR</translation>
+    </message>
+    <message>
+        <location line="-20"/>
+        <source>CACHED</source>
+        <translation>ARMAZENADO EM CACHE</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>NOT CACHED</source>
+        <translation>NÃO ARMAZENADO EM CACHE</translation>
+    </message>
+    <message>
+        <location line="+49"/>
+        <source>Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-42"/>
+        <source>IMPORT</source>
+        <translation>IMPORTAR</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>EXPORT</source>
+        <translation>EXPORTAR</translation>
     </message>
 </context>
 <context>
     <name>VerificationManager</name>
     <message>
-        <location filename="../../src/encryption/VerificationManager.cpp" line="+106"/>
+        <location filename="../../src/encryption/VerificationManager.cpp" line="+133"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>Não foi encontrada nenhuma conversa privada e encriptada com este utilizador. Crie uma e tente novamente.</translation>
     </message>
@@ -3172,7 +3339,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+18"/>
         <source>Waiting for other side to accept the verification request.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3187,7 +3354,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+17"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -3195,22 +3362,22 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>WelcomePage</name>
     <message>
-        <location filename="../../src/WelcomePage.cpp" line="+35"/>
+        <location filename="../qml/pages/WelcomePage.qml" line="+29"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
         <translation>Bem-vindo(a) ao Nheko! Um cliente de computador para o protocolo Matrix.</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+10"/>
         <source>Enjoy your stay!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+14"/>
         <source>REGISTER</source>
         <translation type="unfinished">REGISTAR</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>LOGIN</source>
         <translation type="unfinished">INCIAR SESSÃO</translation>
     </message>
@@ -3218,7 +3385,7 @@ This usually causes the application icon in the task bar to animate in some fash
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+192"/>
+        <location filename="../../src/Utils.cpp" line="+193"/>
         <source>Yesterday</source>
         <translation>Ontem</translation>
     </message>
