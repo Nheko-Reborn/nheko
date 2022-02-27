@@ -432,7 +432,6 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
               edit_ = QString::fromStdString(event_id);
               emit editChanged(edit_);
           }
-          nhlog::net()->debug("reply {}\ntxn {}\nev {}", reply_.toStdString(), txn_id, event_id);
           if (reply_.toStdString() == txn_id) {
               reply_ = QString::fromStdString(event_id);
               emit replyChanged(reply_);
