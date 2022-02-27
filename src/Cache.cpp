@@ -2931,6 +2931,28 @@ Cache::savePendingMessage(const std::string &room_id,
 
     txn.commit();
 }
+std::vector<std::string>
+Cache::pendingEvents(const std::string &room_id)
+{
+    auto txn     = ro_txn(env_);
+    auto pending = getPendingMessagesDb(txn, room_id);
+
+    std::vector<std::string> related_ids;
+
+    try {
+        {
+            auto pendingCursor = lmdb::cursor::open(txn, pending);
+            std::string_view tsIgnored, pendingTxn;
+            while (pendingCursor.get(tsIgnored, pendingTxn, MDB_NEXT)) {
+                related_ids.emplace_back(pendingTxn.data(), pendingTxn.size());
+            }
+        }
+    } catch (const lmdb::error &e) {
+        nhlog::db()->error("pending events error: {}", e.what());
+    }
+
+    return related_ids;
+}
 
 std::optional<mtx::events::collections::TimelineEvent>
 Cache::firstPendingMessage(const std::string &room_id)

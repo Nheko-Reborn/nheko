@@ -218,6 +218,7 @@ public:
     uint64_t saveOldMessages(const std::string &room_id, const mtx::responses::Messages &res);
     void savePendingMessage(const std::string &room_id,
                             const mtx::events::collections::TimelineEvent &message);
+    std::vector<std::string> pendingEvents(const std::string &room_id);
     std::optional<mtx::events::collections::TimelineEvent>
     firstPendingMessage(const std::string &room_id);
     void removePendingStatus(const std::string &room_id, const std::string &txn_id);

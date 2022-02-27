@@ -187,15 +187,13 @@ EventStore::EventStore(std::string room_id, QObject *)
 
           // FIXME (introduced by balsoft): this doesn't work for encrypted events, but
           // allegedly it's hard to fix so I'll leave my first contribution at that
-          for (const auto &related_event_id : cache::client()->relatedEvents(room_id_, txn_id)) {
-              if (cache::client()->getEvent(room_id_, related_event_id)) {
-                  auto related_event =
-                    cache::client()->getEvent(room_id_, related_event_id).value();
-                  auto relations = mtx::accessors::relations(related_event.data);
+          for (const auto &pending_event_id : cache::client()->pendingEvents(room_id_)) {
+              if (auto pending_event = cache::client()->getEvent(room_id_, pending_event_id)) {
+                  auto relations = mtx::accessors::relations(pending_event->data);
 
                   // Replace the blockquote in fallback reply
                   auto related_text = std::get_if<mtx::events::RoomEvent<mtx::events::msg::Text>>(
-                    &related_event.data);
+                    &pending_event->data);
                   if (related_text && relations.reply_to() == txn_id) {
                       size_t index = related_text->content.formatted_body.find(txn_id);
                       if (index != std::string::npos) {
@@ -209,13 +207,13 @@ EventStore::EventStore(std::string room_id, QObject *)
                           rel.event_id = event_id;
                   }
 
-                  mtx::accessors::set_relations(related_event.data, std::move(relations));
+                  mtx::accessors::set_relations(pending_event->data, std::move(relations));
 
-                  cache::client()->replaceEvent(room_id_, related_event_id, related_event);
+                  cache::client()->replaceEvent(room_id_, pending_event_id, *pending_event);
 
-                  auto idx = idToIndex(related_event_id);
+                  auto idx = idToIndex(pending_event_id);
 
-                  events_by_id_.remove({room_id_, related_event_id});
+                  events_by_id_.remove({room_id_, pending_event_id});
                   events_.remove({room_id_, toInternalIdx(*idx)});
               }
           }
