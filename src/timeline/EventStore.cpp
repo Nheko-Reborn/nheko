@@ -184,11 +184,21 @@ EventStore::EventStore(std::string room_id, QObject *)
           // Replace the event_id in pending edits/replies/redactions with the actual
           // event_id of this event. This allows one to edit and reply to events that are
           // currently pending.
-
-          // FIXME (introduced by balsoft): this doesn't work for encrypted events, but
-          // allegedly it's hard to fix so I'll leave my first contribution at that
           for (const auto &pending_event_id : cache::client()->pendingEvents(room_id_)) {
               if (auto pending_event = cache::client()->getEvent(room_id_, pending_event_id)) {
+                  bool was_encrypted = false;
+                  mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> original_encrypted;
+                  if (auto encrypted =
+                        std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                          &pending_event->data)) {
+                      auto d_event = decryptEvent({room_id_, encrypted->event_id}, *encrypted);
+                      if (d_event->event) {
+                          was_encrypted       = true;
+                          original_encrypted  = *encrypted;
+                          pending_event->data = *d_event->event;
+                      }
+                  }
+
                   auto relations = mtx::accessors::relations(pending_event->data);
 
                   // Replace the blockquote in fallback reply
@@ -202,12 +212,48 @@ EventStore::EventStore(std::string room_id, QObject *)
                       }
                   }
 
+                  bool replaced_txn = false;
                   for (mtx::common::Relation &rel : relations.relations) {
-                      if (rel.event_id == txn_id)
+                      if (rel.event_id == txn_id) {
                           rel.event_id = event_id;
+                          replaced_txn = true;
+                      }
                   }
 
+                  if (!replaced_txn)
+                      continue;
+
                   mtx::accessors::set_relations(pending_event->data, std::move(relations));
+
+                  // reencrypt. This is a bit of a hack and might make people able to read the
+                  // message, that were in the room at the time of sending the last pending message.
+                  // That window is pretty small though, so it should be good enough. We also just
+                  // fail, if there was no session. But there SHOULD always be one. Let's wait until
+                  // I am proven wrong :3
+                  if (was_encrypted) {
+                      auto session = cache::getOutboundMegolmSession(room_id_);
+                      if (!session.session)
+                          continue;
+
+                      std::visit(
+                        [&pending_event, &original_encrypted, &session, this](auto &msg) {
+                            json doc = {{"type", mtx::events::to_string(msg.type)},
+                                        {"content", json(msg.content)},
+                                        {"room_id", room_id_}};
+
+                            auto data = olm::encrypt_group_message_with_session(
+                              session.session, http::client()->device_id(), doc);
+
+                            session.data.message_index =
+                              olm_outbound_group_session_message_index(session.session.get());
+                            cache::updateOutboundMegolmSession(
+                              room_id_, session.data, session.session);
+
+                            original_encrypted.content = data;
+                            pending_event->data        = original_encrypted;
+                        },
+                        pending_event->data);
+                  }
 
                   cache::client()->replaceEvent(room_id_, pending_event_id, *pending_event);
 

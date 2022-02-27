@@ -80,6 +80,11 @@ handle_pre_key_olm_message(const std::string &sender,
                            const mtx::events::msg::OlmCipherContent &content);
 
 mtx::events::msg::Encrypted
+encrypt_group_message_with_session(mtx::crypto::OutboundGroupSessionPtr &session,
+                                   const std::string &device_id,
+                                   nlohmann::json body);
+
+mtx::events::msg::Encrypted
 encrypt_group_message(const std::string &room_id,
                       const std::string &device_id,
                       nlohmann::json body);

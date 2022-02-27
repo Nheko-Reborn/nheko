@@ -471,6 +471,30 @@ handle_pre_key_olm_message(const std::string &sender,
 }
 
 mtx::events::msg::Encrypted
+encrypt_group_message_with_session(mtx::crypto::OutboundGroupSessionPtr &session,
+                                   const std::string &device_id,
+                                   nlohmann::json body)
+{
+    using namespace mtx::events;
+
+    // relations shouldn't be encrypted...
+    mtx::common::Relations relations = mtx::common::parse_relations(body["content"]);
+
+    auto payload = olm::client()->encrypt_group_message(session.get(), body.dump());
+
+    // Prepare the m.room.encrypted event.
+    msg::Encrypted data;
+    data.ciphertext = std::string((char *)payload.data(), payload.size());
+    data.sender_key = olm::client()->identity_keys().curve25519;
+    data.session_id = mtx::crypto::session_id(session.get());
+    data.device_id  = device_id;
+    data.algorithm  = MEGOLM_ALGO;
+    data.relations  = relations;
+
+    return data;
+}
+
+mtx::events::msg::Encrypted
 encrypt_group_message(const std::string &room_id, const std::string &device_id, nlohmann::json body)
 {
     using namespace mtx::events;
@@ -631,19 +655,7 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
     if (!sendSessionTo.empty())
         olm::send_encrypted_to_device_messages(sendSessionTo, megolm_payload);
 
-    // relations shouldn't be encrypted...
-    mtx::common::Relations relations = mtx::common::parse_relations(body["content"]);
-
-    auto payload = olm::client()->encrypt_group_message(session.get(), body.dump());
-
-    // Prepare the m.room.encrypted event.
-    msg::Encrypted data;
-    data.ciphertext = std::string((char *)payload.data(), payload.size());
-    data.sender_key = olm::client()->identity_keys().curve25519;
-    data.session_id = mtx::crypto::session_id(session.get());
-    data.device_id  = device_id;
-    data.algorithm  = MEGOLM_ALGO;
-    data.relations  = relations;
+    auto data = encrypt_group_message_with_session(session, device_id, body);
 
     group_session_data.message_index = olm_outbound_group_session_message_index(session.get());
     nhlog::crypto()->debug("next message_index {}", group_session_data.message_index);

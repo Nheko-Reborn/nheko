@@ -423,19 +423,22 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
 
     // When a message is sent, check if the current edit/reply relates to that message,
     // and update the event_id so that it points to the sent message and not the pending one.
-    connect(&events,
-            &EventStore::messageSent,
-            this,
-            [this](const std::string &txn_id, const std::string &event_id) {
-                if (edit_.toStdString() == txn_id) {
-                    edit_ = QString::fromStdString(event_id);
-                    emit editChanged(edit_);
-                }
-                if (reply_.toStdString() == txn_id) {
-                    reply_ = QString::fromStdString(event_id);
-                    emit replyChanged(reply_);
-                }
-            });
+    connect(
+      &events,
+      &EventStore::messageSent,
+      this,
+      [this](const std::string &txn_id, const std::string &event_id) {
+          if (edit_.toStdString() == txn_id) {
+              edit_ = QString::fromStdString(event_id);
+              emit editChanged(edit_);
+          }
+          nhlog::net()->debug("reply {}\ntxn {}\nev {}", reply_.toStdString(), txn_id, event_id);
+          if (reply_.toStdString() == txn_id) {
+              reply_ = QString::fromStdString(event_id);
+              emit replyChanged(reply_);
+          }
+      },
+      Qt::QueuedConnection);
 
     connect(
       manager_, &TimelineViewManager::initialSyncChanged, &events, &EventStore::enableKeyRequests);
