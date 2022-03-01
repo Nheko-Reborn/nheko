@@ -63,7 +63,7 @@ Item {
             property Item attached: null
             property alias model: row.model
             // use comma to update on scroll
-            property var attachedPos: chat.contentY, attached ? chat.mapFromItem(attached, attached ? attached.width - width : 0, -height) : null
+            property var attachedPos: chat.contentY, chat.count, attached ? chat.mapFromItem(attached, attached ? attached.width - width : 0, -height) : null
             readonly property int padding: Nheko.paddingSmall
 
             visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || messageActionHover.hovered)
@@ -478,7 +478,7 @@ Item {
             TimelineRow {
                 id: timelinerow
 
-                hovered: (wrapper.hovered && !messageActionHover.hovered) || (messageActions.model != undefined && messageActions.model.eventId == timelinerow.eventId)
+                hovered: messageActionHover.hovered ? (messageActions.model != undefined && messageActions.model.eventId == timelinerow.eventId) : wrapper.hovered
 
                 proportionalHeight: wrapper.proportionalHeight
                 type: chat.model, wrapper.type
