@@ -156,7 +156,7 @@ Rectangle {
                 onSelectionStartChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 onSelectionEndChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 // Ensure that we get escape key press events first.
-                Keys.onShortcutOverride: event.accepted = (popup.opened && (event.key === Qt.Key_Escape || event.key === Qt.Key_Tab || event.key === Qt.Key_Enter))
+                Keys.onShortcutOverride: event.accepted = (popup.opened && (event.key === Qt.Key_Escape || event.key === Qt.Key_Tab || event.key === Qt.Key_Enter || event.key === Qt.Key_Space))
                 Keys.onPressed: {
                     if (event.matches(StandardKey.Paste)) {
                         room.input.paste(false);
@@ -166,7 +166,7 @@ Rectangle {
                         if (cursorPosition == completerTriggeredAt + 1)
                             popup.close();
 
-                        if (popup.opened && popup.count <= 0)
+                        if (popup.opened && completer.count <= 0)
                             popup.close();
 
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_U) {
@@ -190,6 +190,8 @@ Rectangle {
                     } else if (event.matches(StandardKey.SelectAll) && popup.opened) {
                         completer.completerName = "";
                         popup.close();
+                    } else if (event.matches(StandardKey.InsertLineSeparator)) {
+                        if (popup.opened) popup.close();
                     } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
                         if (popup.opened) {
                             var currentCompletion = completer.currentCompletion();
@@ -198,7 +200,7 @@ Rectangle {
                             if (currentCompletion) {
                                 messageInput.insertCompletion(currentCompletion);
                                 event.accepted = true;
-                                return ;
+                                return;
                             }
                         }
                         room.input.send();
@@ -304,12 +306,15 @@ Rectangle {
 
                     x: messageInput.positionToRectangle(messageInput.completerTriggeredAt).x
                     y: messageInput.positionToRectangle(messageInput.completerTriggeredAt).y - height
-                    padding: 0
+
                     background: null
+                    padding: 0
 
                     Completer {
                         anchors.fill: parent
                         id: completer
+                        rowMargin: 2
+                        rowSpacing: 0
                     }
 
                     enter: Transition {

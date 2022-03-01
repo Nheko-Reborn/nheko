@@ -24,6 +24,7 @@ Popup {
     onOpened: {
         roomTextInput.forceActiveFocus();
     }
+    property int textMargin: Nheko.paddingSmall
 
     Column{
         anchors.fill: parent

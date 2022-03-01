@@ -77,11 +77,11 @@ Control {
         }
         currentIndex = -1
     }
-    padding: 0
-    leftInset: 1
-    bottomInset: 1
-    topInset: 1
-    rightInset: 1
+
+    bottomPadding: 1
+    leftPadding: 1
+    topPadding: 1
+    rightPadding: 1
 
     contentItem: ListView {
         id: listView
@@ -107,7 +107,6 @@ Control {
         onContentYChanged: deadTimer.restart()
 
         reuseItems: true
-        //anchors.fill: parent
         implicitWidth: listView.contentItem.childrenRect.width
         model: completer
         verticalLayoutDirection: popup.bottomToTop ? ListView.BottomToTop : ListView.TopToBottom
@@ -120,7 +119,7 @@ Control {
 
             color: model.index == popup.currentIndex ? Nheko.colors.highlight : Nheko.colors.base
             height: chooser.child.implicitHeight + 2 * popup.rowMargin
-            implicitWidth: fullWidth ? popup.implicitContentWidth : chooser.child.implicitWidth + 4
+            implicitWidth: fullWidth ? ListView.view.width : chooser.child.implicitWidth + 4
 
             MouseArea {
                 id: mouseArea

@@ -173,7 +173,7 @@ Pane {
         onActivated: {
             var quickSwitch = quickSwitcherComponent.createObject(timelineRoot);
             quickSwitch.open();
-            destroyOnClose(quickSwitch);
+            destroyOnClosed(quickSwitch);
         }
     }
 
@@ -223,6 +223,10 @@ Pane {
 
     function destroyOnClose(obj) {
         obj.closing.connect(() => obj.destroy());
+    }
+
+    function destroyOnClosed(obj) {
+        obj.closed.connect(() => obj.destroy());
     }
 
     Connections {
