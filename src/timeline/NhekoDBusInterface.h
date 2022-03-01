@@ -23,11 +23,11 @@ class RoomInfoItem : public QObject
     Q_OBJECT
 
 public:
-    RoomInfoItem(const QString &roomId  = QString{},
-                 const QString &alias = QString{},
-                 const QString &title = QString{},
-                 const QImage &image  = QImage{},
-                 QObject *parent      = nullptr);
+    RoomInfoItem(const QString &roomId = QString{},
+                 const QString &alias  = QString{},
+                 const QString &title  = QString{},
+                 const QImage &image   = QImage{},
+                 QObject *parent       = nullptr);
 
     RoomInfoItem(const RoomInfoItem &other);
 
