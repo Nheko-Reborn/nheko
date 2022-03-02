@@ -1170,7 +1170,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case SelfSigningKey:
             return tr(
               "The key to verify your own devices. If it is cached, verifying one of your devices "
-              "will mark it verified for all your other devices and for users, that have verified "
+              "will mark it verified for all your other devices and for users that have verified "
               "you.");
         case UserSigningKey:
             return tr(
