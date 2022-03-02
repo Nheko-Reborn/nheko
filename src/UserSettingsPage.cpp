@@ -1117,7 +1117,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               "icon in the task bar to animate in some fashion.");
         case AvatarCircles:
             return tr(
-              "Change the appearance of user avatars in chats.\nOFF - square, ON - Circle.");
+              "Change the appearance of user avatars in chats.\nOFF - square, ON - circle.");
         case UseIdenticon:
             return tr("Display an identicon instead of a letter when no avatar is set.");
         case DecryptSidebar:
