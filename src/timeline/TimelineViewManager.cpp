@@ -6,44 +6,24 @@
 #include "TimelineViewManager.h"
 
 #include <QApplication>
-#include <QDropEvent>
 #include <QFileDialog>
-#include <QMetaType>
-#include <QQmlContext>
-#include <QQmlEngine>
 #include <QStandardPaths>
 #include <QString>
 
-#include "BlurhashProvider.h"
 #include "ChatPage.h"
-#include "Clipboard.h"
-#include "ColorImageProvider.h"
 #include "CombinedImagePackModel.h"
 #include "CompletionProxyModel.h"
-#include "DelegateChooser.h"
 #include "EventAccessors.h"
 #include "ImagePackListModel.h"
 #include "InviteesModel.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
-#include "MxcImageProvider.h"
-#include "ReadReceiptsModel.h"
-#include "RoomDirectoryModel.h"
 #include "RoomsModel.h"
-#include "SingleImagePackModel.h"
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
-#include "encryption/DeviceVerificationFlow.h"
-#include "encryption/SelfVerificationStatus.h"
-#include "ui/MxcAnimatedImage.h"
-#include "ui/MxcMediaProxy.h"
-#include "ui/NhekoCursorShape.h"
-#include "ui/NhekoDropArea.h"
-#include "ui/NhekoGlobalObject.h"
-#include "ui/UIA.h"
 
 namespace msgs = mtx::events::msg;
 
