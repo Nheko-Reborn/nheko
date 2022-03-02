@@ -1110,14 +1110,14 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case ReadReceipts:
             return tr("Show if your message was read.\nStatus is displayed next to timestamps.");
         case DesktopNotifications:
-            return tr("Notify about received message when the client is not currently focused.");
+            return tr("Notify about received messages when the client is not currently focused.");
         case AlertOnNotification:
             return tr(
               "Show an alert when a message is received.\nThis usually causes the application "
               "icon in the task bar to animate in some fashion.");
         case AvatarCircles:
             return tr(
-              "Change the appearance of user avatars in chats.\nOFF - square, ON - Circle.");
+              "Change the appearance of user avatars in chats.\nOFF - square, ON - circle.");
         case UseIdenticon:
             return tr("Display an identicon instead of a letter when no avatar is set.");
         case DecryptSidebar:
@@ -1170,7 +1170,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case SelfSigningKey:
             return tr(
               "The key to verify your own devices. If it is cached, verifying one of your devices "
-              "will mark it verified for all your other devices and for users, that have verified "
+              "will mark it verified for all your other devices and for users that have verified "
               "you.");
         case UserSigningKey:
             return tr(
