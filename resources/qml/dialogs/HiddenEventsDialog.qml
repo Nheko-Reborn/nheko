@@ -49,10 +49,10 @@ ApplicationWindow {
             id: promptLabel
             text: {
                 if (roomid) {
-                    return qsTr("These events will be be <b>shown</b> in %1:").arg(roomName);
+                    return qsTr("These events will be <b>shown</b> in %1:").arg(roomName);
                 }
                 else {
-                    return qsTr("These events will be be <b>shown</b> in all rooms:");
+                    return qsTr("These events will be <b>shown</b> in all rooms:");
                 }
             }
             font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.2)
