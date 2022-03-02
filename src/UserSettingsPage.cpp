@@ -1110,7 +1110,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case ReadReceipts:
             return tr("Show if your message was read.\nStatus is displayed next to timestamps.");
         case DesktopNotifications:
-            return tr("Notify about received message when the client is not currently focused.");
+            return tr("Notify about received messages when the client is not currently focused.");
         case AlertOnNotification:
             return tr(
               "Show an alert when a message is received.\nThis usually causes the application "
