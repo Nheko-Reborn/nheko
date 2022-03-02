@@ -18,7 +18,7 @@ ApplicationWindow {
     property var roomSettings
 
     minimumWidth: 340
-    minimumHeight: 340
+    minimumHeight: 450
     width: 450
     height: 680
     palette: Nheko.colors
@@ -41,11 +41,11 @@ ApplicationWindow {
         anchors.fill: parent
         clip: true
         flickableDirection: Flickable.VerticalFlick
-        contentWidth: contentLayout1.width
+        contentWidth: roomSettingsDialog.width
         contentHeight: contentLayout1.height
         ColumnLayout {
             id: contentLayout1
-            width: flickable.width
+            width: parent.width
             spacing: Nheko.paddingMedium
 
             Avatar {
@@ -78,6 +78,7 @@ ApplicationWindow {
                 opacity: 0
                 Layout.alignment: Qt.AlignHCenter
                 wrapMode: Text.Wrap // somehow still doesn't wrap
+                Layout.fillWidth: true
             }
 
             SequentialAnimation {
@@ -137,7 +138,12 @@ ApplicationWindow {
             }
 
             TextArea {
-                Layout.fillHeight: true
+                id: roomTopic
+                property bool cut: implicitHeight > 100
+                property bool showMore
+                clip: true
+                height: cut && !showMore? 100 : implicitHeight
+                Layout.preferredHeight: height
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
                 Layout.leftMargin: Nheko.paddingLarge
@@ -148,7 +154,7 @@ ApplicationWindow {
                 textFormat: TextEdit.RichText
                 readOnly: true
                 background: null
-                selectByMouse: true
+                selectByMouse: !Settings.mobileMode
                 color: Nheko.colors.text
                 horizontalAlignment: TextEdit.AlignHCenter
                 onLinkActivated: Nheko.openLink(link)
@@ -159,11 +165,20 @@ ApplicationWindow {
                 }
 
             }
+            Item {
+                Layout.alignment: Qt.AlignHCenter
+                id: showMorePlaceholder
+                Layout.preferredHeight: showMoreButton.height
+                Layout.preferredWidth: showMoreButton.width
+                visible: roomTopic.cut
+            }
+            property point showMorePos: mapToGlobal(showMorePlaceholder.x,showMorePlaceholder.y)
 
             GridLayout {
                 columns: 2
                 rowSpacing: Nheko.paddingMedium
                 Layout.margins: Nheko.paddingMedium
+                Layout.fillWidth: true
 
                 Label {
                     text: qsTr("SETTINGS")
@@ -186,6 +201,7 @@ ApplicationWindow {
                         roomSettings.changeNotifications(index);
                     }
                     Layout.fillWidth: true
+                    WheelHandler{} // suppress scrolling changing values
                 }
 
                 Label {
@@ -210,6 +226,7 @@ ApplicationWindow {
                         roomSettings.changeAccessRules(index);
                     }
                     Layout.fillWidth: true
+                    WheelHandler{} // suppress scrolling changing values
                 }
 
                 Label {
@@ -303,7 +320,9 @@ ApplicationWindow {
                 Label {
                     text: roomSettings.roomId
                     font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 0.8)
+                    wrapMode: Text.WrapAnywhere
                     Layout.alignment: Qt.AlignRight
+                    Layout.fillWidth: true
                 }
 
                 Label {
@@ -317,6 +336,16 @@ ApplicationWindow {
                 }
 
             }
+        }
+    }
+    Button {
+        id: showMoreButton
+        x: contentLayout1.showMorePos.x
+        y: Math.min(contentLayout1.showMorePos.y-flickable.contentY,parent.height-height)
+        visible: roomTopic.cut
+        text: roomTopic.showMore? "show less" : "show more"
+        onClicked: {roomTopic.showMore = !roomTopic.showMore
+            console.log(flickable.visibleArea)
         }
     }
     footer: DialogButtonBox {
