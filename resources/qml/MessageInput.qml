@@ -18,23 +18,8 @@ Rectangle {
     Layout.fillWidth: true
     Layout.preferredHeight: row.implicitHeight
     Layout.minimumHeight: 40
-    property bool isNarrow: width < 450
-    property bool isExpanded
+    property bool showAllButtons: width > 450 || (messageInput.length == 0 && !messageInput.inputMethodComposing)
 
-    Component.onCompleted: {
-        if(!isNarrow) {
-            isExpanded = true
-        } else {
-            isExpanded = false
-        }
-    }
-    onWidthChanged: {
-        if(!isNarrow) {
-            isExpanded = true
-        } else {
-            isExpanded = false
-        }
-    }
 
     Component {
         id: placeCallDialog
@@ -46,28 +31,13 @@ Rectangle {
 
     RowLayout {
         id: row
-        property bool hasText: messageInput.length > 0
 
         visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
         anchors.fill: parent
         spacing: 0
-        ImageButton {
-            visible: isNarrow
-            Layout.alignment: Qt.AlignBottom
-            hoverEnabled: true
-            width: 22
-            height: 22
-            image: isExpanded ? ":/icons/icons/ui/angle-arrow-left.svg" : ":/icons/icons/ui/collapsed.svg"
-            ToolTip.visible: hovered
-            ToolTip.text: isExpanded ? qsTr("Collapse") : qsTr("Expand")
-            Layout.margins: 8
-            onClicked: {
-                isExpanded = !isExpanded
-            }
-        }
 
         ImageButton {
-            visible: CallManager.callsSupported && isExpanded
+            visible: CallManager.callsSupported && showAllButtons
             opacity: CallManager.haveCallInvite ? 0.3 : 1
             Layout.alignment: Qt.AlignBottom
             hoverEnabled: true
@@ -92,7 +62,7 @@ Rectangle {
         }
 
         ImageButton {
-            visible: isExpanded
+            visible: showAllButtons
             Layout.alignment: Qt.AlignBottom
             hoverEnabled: true
             width: 22
@@ -166,6 +136,7 @@ Rectangle {
                 padding: 0
                 topPadding: 8
                 bottomPadding: 8
+                leftPadding: inputBar.showAllButtons? 0 : 8
                 focus: true
                 onTextChanged: {
                     if (room)
@@ -388,7 +359,7 @@ Rectangle {
 
         ImageButton {
             id: stickerButton
-            visible: isExpanded
+            visible: showAllButtons
 
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             Layout.margins: 8
@@ -439,6 +410,7 @@ Rectangle {
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Send")
             onClicked: {
+                messageInput.append(messageInput.preeditText)
                 room.input.send();
             }
         }
