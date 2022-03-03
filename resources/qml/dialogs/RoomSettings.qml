@@ -113,11 +113,13 @@ ApplicationWindow {
                     font.pixelSize: fontMetrics.font.pixelSize * 2
                     Layout.fillWidth: true
                     horizontalAlignment: TextEdit.AlignHCenter
+                    color: Nheko.colors.text
                 }
 
                 Label {
                     text: qsTr("%n member(s)", "", roomSettings.memberCount)
                     Layout.alignment: Qt.AlignHCenter
+                    color: Nheko.colors.text
 
                     TapHandler {
                         onSingleTapped: TimelineManager.openRoomMembers(Rooms.getRoomById(roomSettings.roomId))
@@ -142,7 +144,7 @@ ApplicationWindow {
                 property bool cut: implicitHeight > 100
                 property bool showMore
                 clip: true
-                height: cut && !showMore? 100 : implicitHeight
+                height: cut && !showMore? 100 : undefined
                 Layout.preferredHeight: height
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
@@ -183,6 +185,7 @@ ApplicationWindow {
                 Label {
                     text: qsTr("SETTINGS")
                     font.bold: true
+                    color: Nheko.colors.text
                 }
 
                 Item {
@@ -192,6 +195,7 @@ ApplicationWindow {
                 Label {
                     text: qsTr("Notifications")
                     Layout.fillWidth: true
+                    color: Nheko.colors.text
                 }
 
                 ComboBox {
@@ -207,6 +211,7 @@ ApplicationWindow {
                 Label {
                     text: qsTr("Room access")
                     Layout.fillWidth: true
+                    color: Nheko.colors.text
                 }
 
                 ComboBox {
@@ -231,6 +236,7 @@ ApplicationWindow {
 
                 Label {
                     text: qsTr("Encryption")
+                    color: Nheko.colors.text
                 }
 
                 ToggleButton {
@@ -268,6 +274,7 @@ ApplicationWindow {
 
                 Label {
                     text: qsTr("Sticker & Emote Settings")
+                    color: Nheko.colors.text
                 }
 
                 Button {
@@ -279,6 +286,7 @@ ApplicationWindow {
 
                 Label {
                     text: qsTr("Hidden events")
+                    color: Nheko.colors.text
                 }
 
                 HiddenEventsDialog {
@@ -307,6 +315,7 @@ ApplicationWindow {
                 Label {
                     text: qsTr("INFO")
                     font.bold: true
+                    color: Nheko.colors.text
                 }
 
                 Item {
@@ -315,24 +324,48 @@ ApplicationWindow {
 
                 Label {
                     text: qsTr("Internal ID")
+                    color: Nheko.colors.text
                 }
 
-                Label {
-                    text: roomSettings.roomId
-                    font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 0.8)
-                    wrapMode: Text.WrapAnywhere
+                AbstractButton { // AbstractButton does not allow setting text color
                     Layout.alignment: Qt.AlignRight
                     Layout.fillWidth: true
+                    Layout.preferredHeight: idLabel.height
+                    Label { // TextEdit does not trigger onClicked
+                        id: idLabel
+                        text: roomSettings.roomId
+                        font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 0.8)
+                        color: Nheko.colors.text
+                        width: parent.width
+                        wrapMode: Text.WrapAnywhere
+                        ToolTip.text: qsTr("Copied to clipboard")
+                        ToolTip.visible: toolTipTimer.running
+                    }
+                    TextEdit{ // label does not allow selection
+                        id: textEdit
+                        visible: false
+                        text: roomSettings.roomId
+                    }
+                    onClicked: {
+                        textEdit.selectAll()
+                        textEdit.copy()
+                        toolTipTimer.start()
+                    }
+                    Timer {
+                        id: toolTipTimer
+                    }
                 }
 
                 Label {
                     text: qsTr("Room Version")
+                    color: Nheko.colors.text
                 }
 
                 Label {
                     text: roomSettings.roomVersion
                     font.pixelSize: fontMetrics.font.pixelSize
                     Layout.alignment: Qt.AlignRight
+                    color: Nheko.colors.text
                 }
 
             }
@@ -341,7 +374,7 @@ ApplicationWindow {
     Button {
         id: showMoreButton
         x: contentLayout1.showMorePos.x
-        y: Math.min(contentLayout1.showMorePos.y-flickable.contentY,parent.height-height)
+        y: Math.min(contentLayout1.showMorePos.y-flickable.contentY,flickable.height-height)
         visible: roomTopic.cut
         text: roomTopic.showMore? "show less" : "show more"
         onClicked: {roomTopic.showMore = !roomTopic.showMore
