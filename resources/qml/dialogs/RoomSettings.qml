@@ -174,7 +174,6 @@ ApplicationWindow {
                 Layout.preferredWidth: showMoreButton.width
                 visible: roomTopic.cut
             }
-            property point showMorePos: mapToGlobal(showMorePlaceholder.x,showMorePlaceholder.y)
 
             GridLayout {
                 columns: 2
@@ -337,6 +336,7 @@ ApplicationWindow {
                         font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 0.8)
                         color: Nheko.colors.text
                         width: parent.width
+                        horizontalAlignment: Text.AlignRight
                         wrapMode: Text.WrapAnywhere
                         ToolTip.text: qsTr("Copied to clipboard")
                         ToolTip.visible: toolTipTimer.running
