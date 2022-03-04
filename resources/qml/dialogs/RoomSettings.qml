@@ -115,6 +115,7 @@ ApplicationWindow {
                     horizontalAlignment: TextEdit.AlignHCenter
                     color: Nheko.colors.text
                     wrapMode: Text.Wrap
+                    textFormat: Text.RichText
                 }
 
                 Label {
