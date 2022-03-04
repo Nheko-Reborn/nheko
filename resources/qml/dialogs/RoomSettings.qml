@@ -144,8 +144,8 @@ ApplicationWindow {
                 property bool cut: implicitHeight > 100
                 property bool showMore
                 clip: true
-                height: cut && !showMore? 100 : undefined
-                Layout.preferredHeight: height
+                Layout.maximumHeight: showMore? Number.POSITIVE_INFINITY : 100
+                Layout.preferredHeight: implicitHeight
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
                 Layout.leftMargin: Nheko.paddingLarge
@@ -373,8 +373,8 @@ ApplicationWindow {
     }
     Button {
         id: showMoreButton
-        x: contentLayout1.showMorePos.x
-        y: Math.min(contentLayout1.showMorePos.y-flickable.contentY,flickable.height-height)
+        anchors.horizontalCenter: flickable.horizontalCenter
+        y: Math.min(showMorePlaceholder.y+contentLayout1.y-flickable.contentY,flickable.height-height)
         visible: roomTopic.cut
         text: roomTopic.showMore? "show less" : "show more"
         onClicked: {roomTopic.showMore = !roomTopic.showMore
