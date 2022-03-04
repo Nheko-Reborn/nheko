@@ -114,6 +114,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     horizontalAlignment: TextEdit.AlignHCenter
                     color: Nheko.colors.text
+                    wrapMode: Text.Wrap
                 }
 
                 Label {
