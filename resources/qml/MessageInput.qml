@@ -18,6 +18,8 @@ Rectangle {
     Layout.fillWidth: true
     Layout.preferredHeight: row.implicitHeight
     Layout.minimumHeight: 40
+    property bool showAllButtons: width > 450 || (messageInput.length == 0 && !messageInput.inputMethodComposing)
+
 
     Component {
         id: placeCallDialog
@@ -35,7 +37,7 @@ Rectangle {
         spacing: 0
 
         ImageButton {
-            visible: CallManager.callsSupported
+            visible: CallManager.callsSupported && showAllButtons
             opacity: CallManager.haveCallInvite ? 0.3 : 1
             Layout.alignment: Qt.AlignBottom
             hoverEnabled: true
@@ -61,6 +63,7 @@ Rectangle {
         }
 
         ImageButton {
+            visible: showAllButtons
             Layout.alignment: Qt.AlignBottom
             hoverEnabled: true
             width: 22
@@ -134,6 +137,7 @@ Rectangle {
                 padding: 0
                 topPadding: 8
                 bottomPadding: 8
+                leftPadding: inputBar.showAllButtons? 0 : 8
                 focus: true
                 onTextChanged: {
                     if (room)
@@ -387,6 +391,7 @@ Rectangle {
 
         ImageButton {
             id: stickerButton
+            visible: showAllButtons
 
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             Layout.margins: 8
@@ -437,6 +442,7 @@ Rectangle {
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Send")
             onClicked: {
+                messageInput.append(messageInput.preeditText)
                 room.input.send();
             }
         }
