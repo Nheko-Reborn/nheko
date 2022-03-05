@@ -134,22 +134,30 @@ Pane {
                 text: roomTopic
             }
 
-            EncryptionIndicator {
+            AbstractButton {
                 Layout.column: 3
                 Layout.row: 0
                 Layout.rowSpan: 2
                 Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
                 Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
-                sourceSize.height: Layout.preferredHeight * Screen.devicePixelRatio
-                sourceSize.width: Layout.preferredWidth * Screen.devicePixelRatio
-                visible: isEncrypted
-                encrypted: isEncrypted
-                trust: trustlevel
+
+                contentItem: EncryptionIndicator {
+                    sourceSize.height: parent.Layout.preferredHeight * Screen.devicePixelRatio
+                    sourceSize.width: parent.Layout.preferredWidth * Screen.devicePixelRatio
+                    visible: isEncrypted
+                    encrypted: isEncrypted
+                    trust: trustlevel
+                    enabled: false
+                }
+
+                background: null
+
+                ToolTip.delay: Nheko.tooltipDelay
                 ToolTip.text: {
-                    if (!encrypted)
+                    if (!isEncrypted)
                     return qsTr("This room is not encrypted!");
 
-                    switch (trust) {
+                    switch (trustlevel) {
                         case Crypto.Verified:
                         return qsTr("This room contains only verified devices.");
                         case Crypto.TOFU:
@@ -158,6 +166,9 @@ Pane {
                         return qsTr("This room contains unverified devices!");
                     }
                 }
+                ToolTip.visible: hovered
+
+                onClicked: TimelineManager.openRoomMembers(room)
             }
 
             ImageButton {
