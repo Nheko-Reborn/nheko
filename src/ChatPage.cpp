@@ -785,11 +785,18 @@ ChatPage::kickUser(QString userid, QString reason)
 {
     auto room = currentRoom();
 
-    if (QMessageBox::question(nullptr,
-                              tr("Confirm kick"),
-                              tr("Do you really want to kick %1 (%2)?")
-                                .arg(cache::displayName(room, userid), userid)) != QMessageBox::Yes)
+    bool confirmed;
+    reason =
+      QInputDialog::getText(nullptr,
+                            tr("Reason for the kick"),
+                            tr("Enter reason for kicking %1 (%2) or hit enter for no reason:")
+                              .arg(cache::displayName(room, userid), userid),
+                            QLineEdit::Normal,
+                            reason,
+                            &confirmed);
+    if (!confirmed) {
         return;
+    }
 
     http::client()->kick_user(
       room.toStdString(),
@@ -809,12 +816,18 @@ ChatPage::banUser(QString userid, QString reason)
 {
     auto room = currentRoom();
 
-    if (QMessageBox::question(
-          nullptr,
-          tr("Confirm ban"),
-          tr("Do you really want to ban %1 (%2)?").arg(cache::displayName(room, userid), userid)) !=
-        QMessageBox::Yes)
+    bool confirmed;
+    reason =
+      QInputDialog::getText(nullptr,
+                            tr("Reason for the ban"),
+                            tr("Enter reason for banning %1 (%2) or hit enter for no reason:")
+                              .arg(cache::displayName(room, userid), userid),
+                            QLineEdit::Normal,
+                            reason,
+                            &confirmed);
+    if (!confirmed) {
         return;
+    }
 
     http::client()->ban_user(
       room.toStdString(),
