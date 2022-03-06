@@ -1240,7 +1240,7 @@ TimelineModel::showReadReceipts(QString id)
 }
 
 void
-TimelineModel::redactEvent(const QString &id)
+TimelineModel::redactEvent(const QString &id, const QString &reason)
 {
     if (!id.isEmpty()) {
         auto edits = events.edits(id.toStdString());
@@ -1255,7 +1255,8 @@ TimelineModel::redactEvent(const QString &id)
               }
 
               emit dataAtIdChanged(id);
-          });
+          },
+          reason.toStdString());
 
         // redact all edits to prevent leaks
         for (const auto &e : edits) {
@@ -1271,7 +1272,8 @@ TimelineModel::redactEvent(const QString &id)
                   }
 
                   emit dataAtIdChanged(id);
-              });
+              },
+              reason.toStdString());
         }
     }
 }
