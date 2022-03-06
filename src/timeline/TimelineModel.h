@@ -272,7 +272,7 @@ public:
     Q_INVOKABLE void unpin(const QString &id);
     Q_INVOKABLE void pin(const QString &id);
     Q_INVOKABLE void showReadReceipts(QString id);
-    Q_INVOKABLE void redactEvent(const QString &id);
+    Q_INVOKABLE void redactEvent(const QString &id, const QString &reason = "");
     Q_INVOKABLE int idToIndex(const QString &id) const;
     Q_INVOKABLE QString indexToId(int index) const;
     Q_INVOKABLE void openMedia(const QString &eventId);
