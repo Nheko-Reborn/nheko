@@ -306,7 +306,7 @@
     <message>
         <location filename="../qml/ChatPage.qml" line="+37"/>
         <source>No network connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Võrguühendus puudub</translation>
     </message>
 </context>
 <context>
@@ -648,7 +648,7 @@
         <location filename="../../src/ui/HiddenEvents.cpp" line="+79"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Peidetud sündmuste loomine ei õnnestunud: %1</translation>
     </message>
 </context>
 <context>
@@ -656,47 +656,47 @@
     <message>
         <location filename="../qml/dialogs/HiddenEventsDialog.qml" line="+31"/>
         <source>Hidden events for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 peidetud sündmused</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Peidetud sündmused</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>These events will be be &lt;b&gt;shown&lt;/b&gt; in %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Neid sündmusi &lt;b&gt;kuvatakse&lt;/b&gt; %1 jututoas:</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>These events will be be &lt;b&gt;shown&lt;/b&gt; in all rooms:</source>
-        <translation type="unfinished"></translation>
+        <translation>Neid sündmusi &lt;b&gt;kuvatakse&lt;/b&gt; igas jututoas:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>User events</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja sündmused</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Joins, leaves, avatar and name changes, bans, …</source>
-        <translation type="unfinished"></translation>
+        <translation>Liitumised, lahkumised, keelamised ning tunnuspildi ja nime muutused…</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Power level changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Õiguste muutused</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sent when a moderator is added/removed or the permissions of a room are changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Saadetakse siis, kui lisatakse või eemaldatakse moderaator või kui kasutajate õigused jututoas muutuvad.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Stickers</source>
-        <translation type="unfinished">Kleepsud</translation>
+        <translation>Kleepsud</translation>
     </message>
 </context>
 <context>
@@ -998,7 +998,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+35"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagasi</translation>
     </message>
     <message>
         <location filename="../../src/LoginPage.cpp" line="+81"/>
@@ -1072,32 +1072,32 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+198"/>
         <source>%1 removed a message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 eemaldas sõnumi</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 enabled encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 võttis kasutusele krüptimise</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>%2 changed the room name to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 muutis jututoa uueks nimeks: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the room name</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 eemaldas jututoa nime</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%2 changed the topic to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 muutis jututoa uueks teemaks: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the topic</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 eemaldas jututoa teema</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1147,7 +1147,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+41"/>
         <source>%1 is negotiating the call...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 alustab kõnet...</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1512,7 +1512,7 @@ Näiteks: https://server.minu:8787</translation>
         <location line="+21"/>
         <location line="+96"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagasi</translation>
     </message>
     <message>
         <location line="-75"/>
@@ -1537,7 +1537,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+1"/>
         <source>your.server</source>
-        <translation type="unfinished"></translation>
+        <translation>sinu.server</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1547,17 +1547,17 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+90"/>
         <source>Your passwords do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinu sisestatud salasõnad ei klapi!</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Device name</source>
-        <translation type="unfinished">Seadme nimi</translation>
+        <translation>Seadme nimi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation type="unfinished">Selle seadme nimi, mida näidetakse verifitseerimise ajal teisele kasutajatele. Kui sa ise nime ei pane, siis kasutame automaatselt pandud nime.</translation>
+        <translation>Selle seadme nimi, mida näidetakse verifitseerimise ajal teisele kasutajatele. Kui sa ise nime ei pane, siis kasutame automaatselt pandud nime.</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -1592,27 +1592,27 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+10"/>
         <source>Server does not support querying registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Koduserver ei toeta registreerimisega seotud lisapäringuid!</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Server does not support registration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Koduserver ei toeta registreerimist.</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Invalid username.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vigane kasutajanimi.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Name already in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>See nimi on juba kasutusel.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Part of the reserved namespace.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tegemist on osaga reserveeritud nimeruumist.</translation>
     </message>
 </context>
 <context>
@@ -1767,7 +1767,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+19"/>
         <source>Search rooms (Ctrl+K)</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsi jututubasid (Ctrl+K)</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -1921,17 +1921,17 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+6"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Peidetud sündmused</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Configure</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadista</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select events to hide in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali sündmused, mida siin jututoas peita</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2376,22 +2376,22 @@ Põhjus: %4</translation>
     <message>
         <location line="+123"/>
         <source>%2 revoked the invite to %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 tühistas kutse kasutajale %1.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%2 kicked %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 müksas kasutaja %1 jututoast välja.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%2 unbanned %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 eemaldas ligipääsupiirangu kasutajalt %1.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%2 rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 lükkas tagasi kasutaja %1 koputuse jututoa uksele.</translation>
     </message>
     <message>
         <location line="-35"/>
@@ -2441,7 +2441,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+1017"/>
         <source>%1 invited %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 saatis kutse kasutajale %2.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2462,7 +2462,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+7"/>
         <source>%1 banned %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 seadis suhtluskeelu kasutajale %2</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2760,369 +2760,369 @@ Põhjus: %4</translation>
     <message>
         <location line="+376"/>
         <source>Theme</source>
-        <translation type="unfinished">Teema</translation>
+        <translation>Teema</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Scale factor</source>
-        <translation type="unfinished">Mastaabitegur</translation>
+        <translation>Mastaabitegur</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished">Üle sõnumi liikumisel too ta esile</translation>
+        <translation>Üle sõnumi liikumisel too ta esile</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished">Suured emojid ajajoonel</translation>
+        <translation>Suured emojid ajajoonel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Minimize to tray</source>
-        <translation type="unfinished">Vähenda tegumiribale</translation>
+        <translation>Kahanda tegumiribale</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Start in tray</source>
-        <translation type="unfinished">Käivita tegumiribalt</translation>
+        <translation>Käivita tegumiribalt</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Group&apos;s sidebar</source>
-        <translation type="unfinished">Rühmade küljepaan</translation>
+        <translation>Rühmade külgpaan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished">Saada sõnumid Markdown-vormindusena</translation>
+        <translation>Saada sõnumid kasutades Markdown vormindust</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable message bubbles</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasuta jutumulle</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable small Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasuta väikeseid tunnuspilte</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
-        <translation type="unfinished">Esita liikuvaid pilte vaid siis, kui kursor on pildi kohal</translation>
+        <translation>Esita liikuvaid pilte vaid siis, kui kursor on pildi kohal</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Typing notifications</source>
-        <translation type="unfinished">Kirjutamisteatised</translation>
+        <translation>Kirjutamisteatised</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sort rooms by unreads</source>
-        <translation type="unfinished">Järjesta jututoad lugemata tubade alusel</translation>
+        <translation>Järjesta jututoad lugemata tubade alusel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons in timeline</source>
-        <translation type="unfinished">Näita ajajoonel nuppe</translation>
+        <translation>Näita ajajoonel nuppe</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation type="unfinished">Piira ajajoone laiust</translation>
+        <translation>Piira ajajoone laiust</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Lugemisteatised</translation>
+        <translation>Lugemisteatised</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Desktop notifications</source>
-        <translation type="unfinished">Töölauakeskkonna teavitused</translation>
+        <translation>Töölauakeskkonna teavitused</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Alert on notification</source>
-        <translation type="unfinished">Anna teavitustest märku</translation>
+        <translation>Anna teavitustest märku</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Circular Avatars</source>
-        <translation type="unfinished">Ümmargused tunnuspildid</translation>
+        <translation>Ümmargused tunnuspildid</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Use identicons</source>
-        <translation type="unfinished">Kasuta identikone</translation>
+        <translation>Kasuta identikone</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished">Dekrüpti sõnumid külgribal</translation>
+        <translation>Dekrüpti sõnumid külgribal</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy Screen</source>
-        <translation type="unfinished">Privaatsust tagav sirm</translation>
+        <translation>Privaatsust tagav sirm</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation type="unfinished">Viivitus privaatsussirmi sisselülitamisel (sekundites [0 - 3600])</translation>
+        <translation>Viivitus privaatsussirmi sisselülitamisel (sekundites [0 - 3600])</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Touchscreen mode</source>
-        <translation type="unfinished">Puuteekraani režiim</translation>
+        <translation>Puuteekraani režiim</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Font size</source>
-        <translation type="unfinished">Fondi suurus</translation>
+        <translation>Fondi suurus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Font Family</source>
-        <translation type="unfinished">Fondiperekond</translation>
+        <translation>Fondiperekond</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished">Fondiperekond emojide jaoks</translation>
+        <translation>Fondiperekond emojide jaoks</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ringtone</source>
-        <translation type="unfinished">Kõnehelin</translation>
+        <translation>Kõnehelin</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Microphone</source>
-        <translation type="unfinished">Mikrofon</translation>
+        <translation>Mikrofon</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera</source>
-        <translation type="unfinished">Kaamera</translation>
+        <translation>Kaamera</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera resolution</source>
-        <translation type="unfinished">Kaamera eraldusvõime</translation>
+        <translation>Kaamera eraldusvõime</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera frame rate</source>
-        <translation type="unfinished">Kaamera kaadrisagedus</translation>
+        <translation>Kaamera kaadrisagedus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished">Luba kõnehõlbustusserveri kasutamist</translation>
+        <translation>Luba tagavara-kõnehõlbustusserveri kasutamist</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send encrypted messages to verified users only</source>
-        <translation type="unfinished">Saada krüptitud sõnumeid vaid verifitseeritud kasutajatele</translation>
+        <translation>Saada krüptitud sõnumeid vaid verifitseeritud kasutajatele</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Share keys with verified users and devices</source>
-        <translation type="unfinished">Jaga võtmeid verifitseeritud kasutajate ja seadmetega</translation>
+        <translation>Jaga võtmeid verifitseeritud kasutajate ja seadmetega</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Online Key Backup</source>
-        <translation type="unfinished">Krüptovõtmete varundus võrgus</translation>
+        <translation>Krüptovõtmete varundus võrgus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Profiil</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja tunnus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Accesstoken</source>
-        <translation type="unfinished"></translation>
+        <translation>Ligipääsu tunnusluba</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Device ID</source>
-        <translation type="unfinished">Seadme tunnus</translation>
+        <translation>Seadme tunnus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished">Seadme sõrmejälg</translation>
+        <translation>Seadme sõrmejälg</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Homeserver</source>
-        <translation type="unfinished">Koduserver</translation>
+        <translation>Koduserver</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versioon</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Platform</source>
-        <translation type="unfinished"></translation>
+        <translation>Platvorm</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>GENERAL</source>
-        <translation type="unfinished">ÜLDISED SEADISTUSED</translation>
+        <translation>ÜLDISED SEADISTUSED</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>TIMELINE</source>
-        <translation type="unfinished"></translation>
+        <translation>AJAJOON</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>SIDEBAR</source>
-        <translation type="unfinished"></translation>
+        <translation>KÜLGPAAN</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>TRAY</source>
-        <translation type="unfinished"></translation>
+        <translation>TEGUMIRIBA</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>NOTIFICATIONS</source>
-        <translation type="unfinished"></translation>
+        <translation>TEAVITUSED</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>CALLS</source>
-        <translation type="unfinished">KÕNED</translation>
+        <translation>KÕNED</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ENCRYPTION</source>
-        <translation type="unfinished">KRÜPTIMINE</translation>
+        <translation>KRÜPTIMINE</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>INFO</source>
-        <translation type="unfinished">TEAVE</translation>
+        <translation>TEAVE</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Session Keys</source>
-        <translation type="unfinished">Sessioonivõtmed</translation>
+        <translation>Sessioonivõtmed</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cross Signing Secrets</source>
-        <translation type="unfinished"></translation>
+        <translation>Risttunnustamise võtmed</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Online backup key</source>
-        <translation type="unfinished"></translation>
+        <translation>Võrgupõhise varunduse võti</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Self signing key</source>
-        <translation type="unfinished">Omatunnustusvõti</translation>
+        <translation>Omatunnustusvõti</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User signing key</source>
-        <translation type="unfinished">Kasutaja allkirjavõti</translation>
+        <translation>Kasutaja allkirjavõti</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Master signing key</source>
-        <translation type="unfinished">Allkirjastamise juurvõti</translation>
+        <translation>Allkirjastamise juurvõti</translation>
     </message>
     <message>
         <location line="+91"/>
         <source>Default</source>
-        <translation type="unfinished">Vaikimisi</translation>
+        <translation>Vaikimisi</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation type="unfinished">Seadista helin, mis annab märku uuest kõnest</translation>
+        <translation>Seadista helin, mis annab märku uuest kõnest</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation type="unfinished">Seadista sõnumite suurim laius pikslites ajajoonel. See parandab loetavust suurel ekraanil, kui Nheko on avatud täisvaates.</translation>
+        <translation>Seadista sõnumite suurim laius pikslites ajajoonel. See parandab loetavust suurel ekraanil, kui Nheko on avatud täisvaates.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation type="unfinished">Seadista aeg sekundites, mille möödumisel
+        <translation>Seadista aeg sekundites, mille möödumisel
 peale akna fookuse kadumist ajajoone vaade hägustub.
 0 hägustab vaate koheselt. Pikim viivitus saab olla 1 tund (3600 sekundit)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished">Üle sõnumite liikudes muuda nende taustavärvi.</translation>
+        <translation>Üle sõnumite liikudes muuda nende taustavärvi.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished">Tee sõnumi font suuremaks, kui sõnumis on vaid mõned emojid.</translation>
+        <translation>Tee sõnumi font suuremaks, kui sõnumis on vaid mõned emojid.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished">Peale akna sulgemist jäta rakendus taustal tööle.</translation>
+        <translation>Peale akna sulgemist jäta rakendus taustal tööle.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished">Käivita rakendus taustal ilma kliendiakna kuvamiseta.</translation>
+        <translation>Käivita rakendus taustal ilma kliendiakna kuvamiseta.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation type="unfinished">Näita jututubade loendi kõrval veergu rühmade ja siltidega.</translation>
+        <translation>Näita jututubade loendi kõrval veergu rühmade ja siltidega.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished">Luba Markdown-vormingu kasutamine sõnumite koostamisel.
+        <translation>Luba Markdown-vormingu kasutamine sõnumite koostamisel.
 Kui Markdown ei ole kasutusel, siis saadetakse kõik sõnumid vormindamata tekstina.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Messages get a bubble background. This also triggers some layout changes (WIP).</source>
-        <translation type="unfinished"></translation>
+        <translation>Sõnumeid kuvatakse jutumullides. Sellega kaasnevad ka mõned muudatused rakenduse välimuses (osaliselt veel arenduses).</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Avatars are resized to fit above the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tunnuspiltide suurus kohendub nii, et ta mahuks sõnumi kohale.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
-        <translation type="unfinished">Esitame liikuvaid GIF ja WEBP pilte vaid siis, kui kursor on pildi kohal.</translation>
+        <translation>Esita liikuvaid GIF ja WEBP pilte vaid siis, kui kursor on pildi kohal.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished">Näita, kes jututoas parasjagu kirjutab.
+        <translation>Näita, kes jututoas parasjagu kirjutab.
 Samaga lülitatakse sisse või välja ka sinu kirjutamisteatiste saatmine teistele kasutajatele.</translation>
     </message>
     <message>
@@ -3130,124 +3130,124 @@ Samaga lülitatakse sisse või välja ka sinu kirjutamisteatiste saatmine teiste
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished">Kuva uute sõnumitega jututoad esimesena.
+        <translation>Kuva uute sõnumitega jututoad esimesena.
 Kui see valik on välja lülitatud, siis jututoad järjestatakse viimati saanunud sõnumi ajatempli alusel.
-Kui see valik on sisse lülitatud, siis teavitustega jututoad (pisike ümmargune numbrifa ikoon) järjestatakse esimesena. Sinu poolt summutatud jututoad järjestatakse ikkagi ajatempli alusel, sest sa ei pea neid teistega võrreldes piisavalt tähtsaks.</translation>
+Kui see valik on sisse lülitatud, siis teavitustega jututoad (pisike ümmargune numbriga ikoon) järjestatakse esimesena. Sinu poolt summutatud jututoad järjestatakse ikkagi ajatempli alusel, sest sa ei pea neid teistega võrreldes piisavalt tähtsaks.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation type="unfinished">Näita iga sõnumi kõrval nuppe, mis võimaldavad kiiresti vastata, reageerida või teha sõnumiga muid toiminguid.</translation>
+        <translation>Näita iga sõnumi kõrval nuppe, mis võimaldavad kiiresti vastata, reageerida või teha sõnumiga muid toiminguid.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.</source>
-        <translation type="unfinished">Näita, kas sinu sõnum sai loetud.
+        <translation>Näita, kas sinu sõnum sai loetud.
 Lugemise olekut kuvatakse ajatempli kõrval.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Notify about received message when the client is not currently focused.</source>
-        <translation type="unfinished">Näita saabunud sõnumi teavitust, kui Nheko ei ole parasjagu fookuses.</translation>
+        <translation>Näita saabunud sõnumi teavitust, kui Nheko ei ole parasjagu fookuses.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished">Sõnumi saabumisel näita teavitust.
+        <translation>Sõnumi saabumisel näita teavitust.
 See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti animatsiooniga sulle märku.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - Circle.</source>
-        <translation type="unfinished">Muuda vestlustes kuvatavate tunnuspiltide kuju.
+        <translation>Muuda vestlustes kuvatavate tunnuspiltide kuju.
 Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Display an identicon instead of a letter when no avatar is set.</source>
-        <translation type="unfinished">Kui tunnuspilt on seadistamata, siis kuva tähe asemel identikoni (matemaatilist tunnuspilti).</translation>
+        <translation>Kui tunnuspilt on seadistamata, siis kuva tähe asemel identikoni (matemaatilist tunnuspilti).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished">Dekrüpti külgpaanis kuvatavaid sõnumeid.
+        <translation>Dekrüpti külgpaanis kuvatavaid sõnumeid.
 Kehtib vaid läbivalt krüptitud vestluste puhul.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation type="unfinished">Kui aken kaotab fookuse,
+        <translation>Kui aken kaotab fookuse,
 siis ajajoone vaade hägustub.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation type="unfinished">Selleks, et puutega kerimine oleks lihtsam, blokeerib see seadistus tekstivaliku ajajoonel.</translation>
+        <translation>Selleks, et puutega kerimine oleks lihtsam, blokeerib see seadistus tekstivaliku ajajoonel.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished">Muuda kogu kasutajaliidese suurust.</translation>
+        <translation>Muuda kogu kasutajaliidese suurust.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished">Kui sinu koduserver ei paku välja sobilikku kõnehõlbustusserverit, siis kasuta turn.matrix.org teenust.</translation>
+        <translation>Kui sinu koduserver ei paku välja sobilikku kõnehõlbustusserverit, siis kasuta turn.matrix.org teenust.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
-        <translation type="unfinished">Selle tingimuse alusel peab kasutaja olema krüptitud sõnumivahetuse jaoks verifitseeritud. Niisugune nõue parandab turvalisust, kuid teeb läbiva krüptimise natuke ebamugavamaks.</translation>
+        <translation>Selle tingimuse alusel peab kasutaja olema krüptitud sõnumivahetuse jaoks verifitseeritud. Niisugune nõue parandab turvalisust, kuid teeb läbiva krüptimise natuke ebamugavamaks.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Automatically replies to key requests from other users, if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished">Kui teised kasutajad on verifitseeritud, siis luba automaatselt vastata nende krüptovõtmete päringutele isegi siis, kui too seade ei peaks saama neid võtmeid kasutada.</translation>
+        <translation>Kui teised kasutajad on verifitseeritud, siis luba automaatselt vastata nende krüptovõtmete päringutele isegi siis, kui too seade ei peaks saama neid võtmeid kasutada.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Download message encryption keys from and upload to the encrypted online key backup.</source>
-        <translation type="unfinished">Luba krüptitud võtmete varunduseks laadida sõnumite krüptovõtmeid sinu serverisse või sinu serverist.</translation>
+        <translation>Luba krüptitud võtmete varunduseks laadida sõnumite krüptovõtmeid sinu serverisse või sinu serverist.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
-        <translation type="unfinished">Selle võtmega dekrüptitakse võrku varundatud muud võtmed. Kui see võti on puhverdatud, siis saad kasutusele võtta oma krüptovõtmete turvalise varundamise sinu koduserveris.</translation>
+        <translation>Selle võtmega dekrüptitakse võrku varundatud muud võtmed. Kui see võti on puhverdatud, siis saad kasutusele võtta oma krüptovõtmete turvalise varundamise sinu koduserveris.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users, that have verified you.</source>
-        <translation type="unfinished">Selle võtmega verifitseerid oma seadmeid. Kui ta on puhverdatud, siis sinu seadme verifitseerimine märgib selle seadme usaldusväärseks nii sinu muude seadmete kui selliste kasutajate jaoks, kes on sind verifitseerinud.</translation>
+        <translation>Selle võtmega verifitseerid oma seadmeid. Kui ta on puhverdatud, siis sinu seadme verifitseerimine märgib selle seadme usaldusväärseks nii sinu muude seadmete kui selliste kasutajate jaoks, kes on sind verifitseerinud.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation type="unfinished">Teiste kasutajate verifitseerimiseks mõeldud võti. Kui see võti on puhverdatud, siis kasutaja verifitseerimine tähendab ka kõikide tema seadmete verifitseerimist.</translation>
+        <translation>Teiste kasutajate verifitseerimiseks mõeldud võti. Kui see võti on puhverdatud, siis kasutaja verifitseerimine tähendab ka kõikide tema seadmete verifitseerimist.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation type="unfinished">Sinu kõige olulisem krüptovõti. See ei pea olema puhverdatud (mis hoiab ära ka võimaliku varastamise) ning teda on vaja vaid sinu muude allkirjavõtmete ringluse jaoks.</translation>
+        <translation>Sinu kõige olulisem krüptovõti. See ei pea olema puhverdatud (mis hoiab ära ka võimaliku varastamise) ning teda on vaja vaid sinu muude allkirjavõtmete ringluse jaoks.</translation>
     </message>
     <message>
         <location line="+392"/>
         <source>Select a file</source>
-        <translation type="unfinished">Vali fail</translation>
+        <translation>Vali fail</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Kõik failid (*)</translation>
+        <translation>Kõik failid (*)</translation>
     </message>
     <message>
         <location line="+82"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished">Ava sessioonide fail</translation>
+        <translation>Ava sessioonide fail</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3257,34 +3257,34 @@ siis ajajoone vaade hägustub.</translation>
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
-        <translation type="unfinished">Viga</translation>
+        <translation>Viga</translation>
     </message>
     <message>
         <location line="-64"/>
         <location line="+26"/>
         <source>File Password</source>
-        <translation type="unfinished">Faili salasõna</translation>
+        <translation>Faili salasõna</translation>
     </message>
     <message>
         <location line="-25"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished">Faili dekrüptimiseks sisesta salafraas:</translation>
+        <translation>Faili dekrüptimiseks sisesta salafraas:</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+26"/>
         <source>The password cannot be empty</source>
-        <translation type="unfinished">Salasõna ei saa olla tühi</translation>
+        <translation>Salasõna ei saa olla tühi</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation type="unfinished">Oma sessioonivõtmete krüptimiseks sisesta salafraas:</translation>
+        <translation>Oma sessioonivõtmete krüptimiseks sisesta salafraas:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>File to save the exported session keys</source>
-        <translation type="unfinished">Fail, kuhu salvestad eksporditavad sessiooni krüptovõtmed</translation>
+        <translation>Fail, kuhu salvestad eksporditavad sessiooni krüptovõtmed</translation>
     </message>
 </context>
 <context>
@@ -3312,7 +3312,7 @@ siis ajajoone vaade hägustub.</translation>
     <message>
         <location line="+49"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagasi</translation>
     </message>
     <message>
         <location line="-42"/>
