@@ -6,6 +6,7 @@
 import QtGraphicalEffects 1.12
 import QtQuick 2.9
 import QtQuick.Controls 2.5
+import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
 // FIXME(Nico): Don't use hardcoded colors.
@@ -15,6 +16,8 @@ Button {
     implicitHeight: Math.ceil(control.contentItem.implicitHeight * 1.70)
     implicitWidth: Math.ceil(control.contentItem.implicitWidth + control.contentItem.implicitHeight)
     hoverEnabled: true
+
+    property string iconImage: ""
 
     DropShadow {
         anchors.fill: control.background
@@ -27,16 +30,30 @@ Button {
         source: control.background
     }
 
-    contentItem: Text {
-        text: control.text
-        //font: control.font
-        font.capitalization: Font.AllUppercase
-        font.pointSize: Math.ceil(fontMetrics.font.pointSize * 1.5)
-        //font.capitalization: Font.AllUppercase
-        color: Nheko.colors.light
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        elide: Text.ElideRight
+    contentItem: RowLayout {
+        spacing: 0
+        anchors.centerIn: parent
+        Image {
+            Layout.leftMargin: Nheko.paddingMedium
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+            Layout.preferredHeight: fontMetrics.font.pixelSize * 1.5
+            Layout.preferredWidth:  fontMetrics.font.pixelSize * 1.5
+            visible: !!iconImage
+            source: iconImage
+        }
+
+        Text {
+            Layout.alignment: Qt.AlignHCenter
+            text: control.text
+            //font: control.font
+            font.capitalization: Font.AllUppercase
+            font.pointSize: Math.ceil(fontMetrics.font.pointSize * 1.5)
+            //font.capitalization: Font.AllUppercase
+            color: Nheko.colors.light
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            elide: Text.ElideRight
+        }
     }
 
     background: Rectangle {

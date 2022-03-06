@@ -61,7 +61,7 @@ Item {
                     onEditingFinished: login.mxid = text
 
                     ToolTip.text: qsTr("Your login name. A mxid should start with @ followed by the user id. After the user id you need to include your server name after a :.\nYou can also put your homeserver address there, if your server doesn't support .well-known lookup.\nExample: @user:server.my\nIf Nheko fails to discover your homeserver, it will show you a field to enter the server manually.")
-                    Keys.forwardTo: [pwBtn, ssoBtn]
+                    Keys.forwardTo: [pwBtn, ssoRepeater]
                 }
 
 
@@ -89,7 +89,7 @@ Item {
                 echoMode: TextInput.Password
                 ToolTip.text: qsTr("Your password.")
                 visible: login.passwordSupported
-                Keys.forwardTo: [pwBtn, ssoBtn]
+                Keys.forwardTo: [pwBtn, ssoRepeater]
             }
 
             MatrixTextField {
@@ -98,7 +98,7 @@ Item {
                 label: qsTr("Device name")
                 placeholderText: login.initialDeviceName()
                 ToolTip.text: qsTr("A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.")
-                Keys.forwardTo: [pwBtn, ssoBtn]
+                Keys.forwardTo: [pwBtn, ssoRepeater]
             }
 
             MatrixTextField {
@@ -112,7 +112,7 @@ Item {
                 text: login.homeserver
                 onEditingFinished: login.homeserver = text
                 ToolTip.text: qsTr("The address that can be used to contact you homeservers client API.\nExample: https://server.my:8787")
-                Keys.forwardTo: [pwBtn, ssoBtn]
+                Keys.forwardTo: [pwBtn, ssoRepeater]
             }
 
             Item {
@@ -150,21 +150,28 @@ Item {
                 Keys.onReturnPressed: pwBtn.pwLogin()
                 Keys.enabled: pwBtn.enabled && login.passwordSupported
             }
-            FlatButton {
-                id: ssoBtn
-                visible: login.ssoSupported
-                enabled: login.homeserverValid && matrixIdLabel.text == login.mxid && login.homeserver == hsLabel.text
-                Layout.alignment: Qt.AlignHCenter
-                text: qsTr("SSO LOGIN")
-                function ssoLogin() {
-                    login.onLoginButtonClicked(Login.SSO, matrixIdLabel.text, passwordLabel.text, deviceNameLabel.text)
-                }
-                onClicked: ssoBtn.ssoLogin()
-                Keys.onEnterPressed: ssoBtn.ssoLogin()
-                Keys.onReturnPressed: ssoBtn.ssoLogin()
-                Keys.enabled: ssoBtn.enabled && !login.passwordSupported
-            }
 
+            Repeater {
+                id: ssoRepeater
+
+                model: login.identityProviders
+
+                delegate: FlatButton {
+                    id: ssoBtn
+                    visible: login.ssoSupported
+                    enabled: login.homeserverValid && matrixIdLabel.text == login.mxid && login.homeserver == hsLabel.text
+                    Layout.alignment: Qt.AlignHCenter
+                    text: modelData.name
+                    iconImage: modelData.avatarUrl.replace("mxc://", "image://MxcImage/")
+                    function ssoLogin() {
+                        login.onLoginButtonClicked(Login.SSO, matrixIdLabel.text, modelData.id, deviceNameLabel.text)
+                    }
+                    onClicked: ssoBtn.ssoLogin()
+                    Keys.onEnterPressed: ssoBtn.ssoLogin()
+                    Keys.onReturnPressed: ssoBtn.ssoLogin()
+                    Keys.enabled: ssoBtn.enabled && !login.passwordSupported
+                }
+            }
         }
     }
 
