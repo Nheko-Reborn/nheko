@@ -56,7 +56,7 @@ Item {
 
         anchors.rightMargin: scrollbar.interactive? scrollbar.width : 0
 
-        Rectangle {
+        Control {
             //closePolicy: Popup.NoAutoClose
 
             id: messageActions
@@ -64,27 +64,22 @@ Item {
             property Item attached: null
             property alias model: row.model
             // use comma to update on scroll
-            property var attachedPos: chat.contentY, chat.count, attached ? chat.mapFromItem(attached, attached ? attached.width - width : 0, -height) : null
-            readonly property int padding: Nheko.paddingSmall
+            property var attachedPos: chat.contentY, attached ? chat.mapFromItem(attached, attached ? attached.width - width : 0, -height) : null
+            padding: Nheko.paddingSmall
 
-            visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || messageActionHover.hovered)
+            visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
             x: attached ? attachedPos.x : 0
             y: attached ? attachedPos.y : 0
             z: 10
-            height: row.implicitHeight + padding * 2
-            width: row.implicitWidth + padding * 2
+
+            background: Rectangle {
             color: Nheko.colors.window
             border.color: Nheko.colors.buttonText
             border.width: 1
             radius: padding
-
-            HoverHandler {
-                id: messageActionHover
-
-                grabPermissions: PointerHandler.CanTakeOverFromAnything
             }
 
-            Row {
+            contentItem: Row {
                 id: row
 
                 property var model
@@ -479,7 +474,7 @@ Item {
             TimelineRow {
                 id: timelinerow
 
-                hovered: messageActionHover.hovered ? (messageActions.model != undefined && messageActions.model.eventId == timelinerow.eventId) : wrapper.hovered
+                hovered: messageActions.hovered ? (messageActions.model != undefined && messageActions.model == timelinerow) : wrapper.hovered
 
                 proportionalHeight: wrapper.proportionalHeight
                 type: chat.model, wrapper.type
@@ -512,15 +507,17 @@ Item {
                 status: wrapper.status
                 relatedEventCacheBuster: wrapper.relatedEventCacheBuster
                 y: section.visible && section.active ? section.y + section.height : 0
-            }
 
-            onHoveredChanged: {
+                onHoveredChanged: {
+                    console.log("Hover changed: " + hovered + " w: " + wrapper.hovered + " h: "+ messageActions.hovered + " obj: " + timelinerow)
                 if (!Settings.mobileMode && hovered) {
-                    if (!messageActionHover.hovered) {
+                    if (!messageActions.hovered) {
                         messageActions.attached = timelinerow;
                         messageActions.model = timelinerow;
                     }
                 }
+            }
+
             }
 
             Connections {
