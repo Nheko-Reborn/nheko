@@ -7,12 +7,30 @@
 #pragma once
 
 #include <QObject>
+#include <QVariantList>
 
 namespace mtx {
 namespace responses {
 struct Login;
 }
 }
+
+struct SSOProvider
+{
+    Q_GADGET
+    Q_PROPERTY(QString avatarUrl READ avatarUrl CONSTANT)
+    Q_PROPERTY(QString name READ name CONSTANT)
+    Q_PROPERTY(QString id READ id CONSTANT)
+
+public:
+    [[nodiscard]] QString avatarUrl() const { return avatarUrl_; }
+    [[nodiscard]] QString name() const { return name_.toHtmlEscaped(); }
+    [[nodiscard]] QString id() const { return id_; }
+
+    QString avatarUrl_;
+    QString name_;
+    QString id_;
+};
 
 class LoginPage : public QObject
 {
@@ -29,6 +47,8 @@ class LoginPage : public QObject
     Q_PROPERTY(bool passwordSupported READ passwordSupported NOTIFY versionLookedUp)
     Q_PROPERTY(bool ssoSupported READ ssoSupported NOTIFY versionLookedUp)
     Q_PROPERTY(bool homeserverNeeded READ homeserverNeeded NOTIFY versionLookedUp)
+
+    Q_PROPERTY(QVariantList identityProviders READ identityProviders NOTIFY versionLookedUp)
 
 public:
     enum class LoginMethod
@@ -51,6 +71,7 @@ public:
     bool ssoSupported() const { return ssoSupported_; }
     bool homeserverNeeded() const { return homeserverNeeded_; }
     bool homeserverValid() const { return homeserverValid_; }
+    QVariantList identityProviders() const { return identityProviders_; }
 
     QString homeserver() { return homeserver_; }
     QString mxid() { return mxid_; }
@@ -89,7 +110,7 @@ signals:
 
     //! Used to trigger the corresponding slot outside of the main thread.
     void versionErrorCb(const QString &err);
-    void versionOkCb(bool passwordSupported, bool ssoSupported);
+    void versionOkCb(bool passwordSupported, bool ssoSupported, QVariantList identityProviders);
 
     void loginOk(const mtx::responses::Login &res);
 
@@ -116,7 +137,7 @@ public slots:
     // Callback for errors produced during server probing
     void versionError(const QString &error_message);
     // Callback for successful server probing
-    void versionOk(bool passwordSupported, bool ssoSupported);
+    void versionOk(bool passwordSupported, bool ssoSupported, QVariantList identityProviders);
 
 private:
     void checkHomeserverVersion();
@@ -136,6 +157,8 @@ private:
 
     QString mxidError_;
     QString error_;
+
+    QVariantList identityProviders_;
 
     bool passwordSupported_ = true;
     bool ssoSupported_      = false;

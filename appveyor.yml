@@ -101,10 +101,8 @@ after_build:
     - xcopy NhekoData\*.* installer\packages\io.github.nhekoreborn.nheko\data\*.* /s /e /c /y
     - move NhekoRelease\nheko.exe installer\packages\io.github.nhekoreborn.nheko\data
     - mkdir tools
-    #- curl -L -O https://download.qt.io/official_releases/qt-installer-framework/3.0.4/QtInstallerFramework-win-x86.exe
-    # Since the official download.qt.io is down atm
-    - curl -L -O https://qt-mirror.dannhauer.de/official_releases/qt-installer-framework/4.0.1/QtInstallerFramework-win-x86.exe
-    - 7z x QtInstallerFramework-win-x86.exe -otools -aoa
+    - curl -L -O https://download.qt.io/official_releases/qt-installer-framework/4.3.0/QtInstallerFramework-windows-x86-4.3.0.exe
+    - 7z x QtInstallerFramework-windows-x86-4.3.0.exe -otools -aoa
     - set PATH=%BUILD%\tools\bin;%PATH%
     - binarycreator.exe -f -c installer\config\config.xml -p installer\packages nheko-installer.exe
 

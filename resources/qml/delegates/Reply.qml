@@ -65,7 +65,7 @@ Item {
         TapHandler {
             acceptedButtons: Qt.LeftButton
             onSingleTapped: {
-                let link = reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight);
+                let link = reply.child.linkAt != undefined && reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight);
                 if (link) {
                     Nheko.openLink(link)
                 } else {

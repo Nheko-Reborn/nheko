@@ -222,7 +222,8 @@ Pane {
     }
 
     function destroyOnClose(obj) {
-        obj.closing.connect(() => obj.destroy());
+        if (obj.closing != undefined) obj.closing.connect(() => obj.destroy());
+        else if (obj.closed != undefined) obj.closed.connect(() => obj.destroy());
     }
 
     function destroyOnClosed(obj) {

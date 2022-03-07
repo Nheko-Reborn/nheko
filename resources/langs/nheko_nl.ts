@@ -166,12 +166,12 @@
     </message>
     <message>
         <location line="+44"/>
-        <location line="+433"/>
+        <location line="+446"/>
         <source>Confirm invite</source>
         <translation>Bevestig uitnodiging</translation>
     </message>
     <message>
-        <location line="-432"/>
+        <location line="-445"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Weet je zeker dat je %1 (%2) wil uitnodigen?</translation>
     </message>
@@ -181,32 +181,12 @@
         <translation>Uitnodigen van %1 naar %2 mislukt: %3</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Confirm kick</source>
-        <translation>Bevestig verwijdering</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Do you really want to kick %1 (%2)?</source>
-        <translation>Weet je zeker dat je %1 (%2) uit de kamer wil verwijderen?</translation>
-    </message>
-    <message>
-        <location line="+13"/>
+        <location line="+34"/>
         <source>Kicked user: %1</source>
         <translation>Uit kamer verwijderde gebruiker: %1</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <source>Confirm ban</source>
-        <translation>Bevestig verbannen</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Do you really want to ban %1 (%2)?</source>
-        <translation>Weet je zeker dat je gebruiker %1 (%2) wil verbannen?</translation>
-    </message>
-    <message>
-        <location line="+10"/>
+        <location line="+28"/>
         <source>Failed to ban %1 in %2: %3</source>
         <translation>Verbannen van %1 uit %2 mislukt: %3</translation>
     </message>
@@ -241,7 +221,7 @@
         <translation>Weet je zeker dat je een privé chat wil beginnen met %1?</translation>
     </message>
     <message>
-        <location line="-879"/>
+        <location line="-892"/>
         <source>Cache migration failed!</source>
         <translation>Migreren van de cache is mislukt!</translation>
     </message>
@@ -299,9 +279,29 @@
         <translation>Kamer verlaten mislukt: %1</translation>
     </message>
     <message>
-        <location line="+68"/>
+        <location line="+59"/>
+        <source>Reason for the kick</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>Failed to kick %1 from %2: %3</source>
         <translation>Kon %1 niet verwijderen uit %2: %3</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Reason for the ban</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/ChatPage.qml" line="+37"/>
@@ -383,7 +383,7 @@
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+270"/>
+        <location filename="../../src/ChatPage.cpp" line="+260"/>
         <source>Decrypt secrets</source>
         <translation>Ontsleutel geheimen</translation>
     </message>
@@ -665,12 +665,12 @@
     </message>
     <message>
         <location line="+18"/>
-        <source>These events will be be &lt;b&gt;shown&lt;/b&gt; in %1:</source>
+        <source>These events will be &lt;b&gt;shown&lt;/b&gt; in %1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>These events will be be &lt;b&gt;shown&lt;/b&gt; in all rooms:</source>
+        <source>These events will be &lt;b&gt;shown&lt;/b&gt; in all rooms:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -996,20 +996,20 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>INLOGGEN</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+42"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+81"/>
+        <location filename="../../src/LoginPage.cpp" line="+83"/>
         <location line="+6"/>
         <location line="+58"/>
-        <location line="+81"/>
+        <location line="+109"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
         <translation>Je hebt een ongeldige Matrix ID ingevuld. Correct voorbeeld: @jan:matrix.org</translation>
     </message>
     <message>
-        <location line="-111"/>
+        <location line="-139"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Automatische herkenning mislukt. Ongeldig antwoord ontvangen.</translation>
     </message>
@@ -1029,17 +1029,42 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Ongeldig antwoord ontvangen. Zorg dat de thuisserver geldig is.</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
         <translation>Een onbekende fout trad op. Zorg dat de thuisserver geldig is.</translation>
     </message>
     <message>
-        <location filename="../qml/pages/LoginPage.qml" line="-21"/>
+        <location line="+19"/>
+        <source>Sign in with Apple</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Continue with Facebook</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Sign in with Google</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Sign in with Twitter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Login using %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>SSO LOGIN</source>
         <translation>SSO INLOGGEN</translation>
     </message>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+68"/>
+        <location line="+58"/>
         <source>Empty password</source>
         <translation>Leeg wachtwoord</translation>
     </message>
@@ -1168,7 +1193,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+46"/>
+        <location filename="../qml/MessageInput.qml" line="+48"/>
         <source>Hang up</source>
         <translation>Ophangen</translation>
     </message>
@@ -1178,7 +1203,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Plaats een oproep</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+27"/>
         <source>Send a file</source>
         <translation>Verstuur een bestand</translation>
     </message>
@@ -1188,7 +1213,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Typ een bericht…</translation>
     </message>
     <message>
-        <location line="+265"/>
+        <location line="+272"/>
         <source>Stickers</source>
         <translation>Stickers</translation>
     </message>
@@ -1203,7 +1228,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Verstuur</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>You don&apos;t have permission to send messages in this room</source>
         <translation>Je hebt geen toestemming om berichten te versturen in deze kamer</translation>
     </message>
@@ -1211,7 +1236,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+123"/>
+        <location filename="../qml/MessageView.qml" line="+124"/>
         <source>Edit</source>
         <translation>Bewerken</translation>
     </message>
@@ -1231,19 +1256,29 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Opties</translation>
     </message>
     <message>
-        <location line="+422"/>
-        <location line="+126"/>
+        <location line="+426"/>
+        <source>Reason for removal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter reason for removal or hit enter for no reason:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <location line="+132"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopiëren</translation>
     </message>
     <message>
-        <location line="-119"/>
-        <location line="+126"/>
+        <location line="-125"/>
+        <location line="+132"/>
         <source>Copy &amp;link location</source>
         <translation>Kopieer &amp;link</translation>
     </message>
     <message>
-        <location line="-118"/>
+        <location line="-124"/>
         <source>Re&amp;act</source>
         <translation>Re&amp;ageren</translation>
     </message>
@@ -1298,7 +1333,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>&amp;Verwijder bericht</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+13"/>
         <source>&amp;Save as</source>
         <translation>Op&amp;slaan als</translation>
     </message>
@@ -1649,7 +1684,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1925"/>
+        <location filename="../../src/Cache.cpp" line="+1947"/>
         <source>no version stored</source>
         <translation>geen versie opgeslagen</translation>
     </message>
@@ -1657,7 +1692,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+69"/>
+        <location filename="../qml/RoomList.qml" line="+68"/>
         <source>New tag</source>
         <translation>Nieuwe markering</translation>
     </message>
@@ -1697,7 +1732,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Maak nieuwe markering…</translation>
     </message>
     <message>
-        <location line="+299"/>
+        <location line="+297"/>
         <source>Status Message</source>
         <translation>Statusbericht</translation>
     </message>
@@ -1820,12 +1855,12 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>RoomSettings</name>
     <message>
-        <location filename="../qml/dialogs/RoomSettings.qml" line="+26"/>
+        <location filename="../qml/dialogs/RoomSettings.qml" line="+28"/>
         <source>Room Settings</source>
         <translation>Kamerinstellingen</translation>
     </message>
     <message numerus="yes">
-        <location line="+82"/>
+        <location line="+94"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n deelnemer</numerusform>
@@ -1833,17 +1868,17 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         </translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+65"/>
         <source>SETTINGS</source>
         <translation>INSTELLINGEN</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>Notifications</source>
         <translation>Meldingen</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Muted</source>
         <translation>Gedempt</translation>
     </message>
@@ -1858,12 +1893,12 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Alle berichten</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>Room access</source>
         <translation>Kamertoegang</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Anyone and guests</source>
         <translation>Iedereen (inclusief gasten)</translation>
     </message>
@@ -1888,20 +1923,20 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Beperkt door deelname aan andere kamers</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Encryption</source>
         <translation>Versleuteling</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>End-to-End Encryption</source>
         <translation>Eind-tot-eind versleuteling</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
-                            Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation>Versleuteling is momenteel experimenteel en dingen kunnen onverwacht stuk gaan.&lt;br&gt;Let op: versleuteling kan achteraf niet uitgeschakeld worden.</translation>
+                                Please take note that it can&apos;t be disabled afterwards.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1909,7 +1944,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Sticker &amp; Emoji instellingen</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Change</source>
         <translation>Bewerken</translation>
     </message>
@@ -1924,7 +1959,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>Configure</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1939,12 +1974,17 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>INFO</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>Internal ID</source>
         <translation>Interne ID</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+16"/>
+        <source>Copied to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>Room Version</source>
         <translation>Kamerversie</translation>
     </message>
@@ -2001,7 +2041,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>Root</name>
     <message>
-        <location filename="../qml/Root.qml" line="+314"/>
+        <location filename="../qml/Root.qml" line="+319"/>
         <source>Please enter your login password to continue:</source>
         <translation>Voer a.u.b. je wachtwoord in om door te gaan:</translation>
     </message>
@@ -2083,7 +2123,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4278"/>
+        <location filename="../../src/Cache.cpp" line="-4300"/>
         <source>Failed to connect to secret storage</source>
         <translation>Verbinden met geheimopslag mislukt</translation>
     </message>
@@ -2256,13 +2296,13 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1250"/>
-        <location line="+16"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1252"/>
+        <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Bericht intrekken mislukt: %1</translation>
     </message>
     <message>
-        <location line="+73"/>
+        <location line="+74"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation>Kon evenement niet versleutelen, versturen geannuleerd!</translation>
@@ -2434,12 +2474,12 @@ Reden: %4</translation>
         <translation>%1 heeft het aankloppen ingetrokken.</translation>
     </message>
     <message>
-        <location line="-1068"/>
+        <location line="-1070"/>
         <source>You joined this room.</source>
         <translation>Je neemt nu deel aan deze kamer.</translation>
     </message>
     <message>
-        <location line="+1017"/>
+        <location line="+1019"/>
         <source>%1 invited %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2473,7 +2513,7 @@ Reden: %4</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+202"/>
+        <location filename="../qml/TimelineRow.qml" line="+207"/>
         <source>Edited</source>
         <translation>Bewerkt</translation>
     </message>
@@ -2529,7 +2569,7 @@ Reden: %4</translation>
         <translation>Geen kamer geselecteerd</translation>
     </message>
     <message>
-        <location line="+131"/>
+        <location line="+139"/>
         <source>This room is not encrypted!</source>
         <translation>Deze kamer is niet versleuteld!</translation>
     </message>
@@ -2549,7 +2589,7 @@ Reden: %4</translation>
         <translation>Deze kamer bevat ongeverifieerde apparaten!</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+22"/>
         <source>Show or hide pinned messages</source>
         <translation>Toon of verberg vastgeprikte berichten</translation>
     </message>
@@ -2749,7 +2789,7 @@ Reden: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+442"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+456"/>
         <location filename="../../src/UserSettingsPage.h" line="+219"/>
         <source>Default</source>
         <translation>Standaard</translation>
@@ -3148,25 +3188,29 @@ De status staat naast de tijdsindicatie.</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Notify about received message when the client is not currently focused.</source>
-        <translation type="unfinished">Verstuur een notificatie over ontvangen berichten als het scherm geen focus heeft.</translation>
+        <source>Notify about received messages when the client is not currently focused.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+6"/>
+        <source>Change the appearance of user avatars in chats.
+OFF - square, ON - circle.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+52"/>
+        <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-56"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation type="unfinished">Activeer een melding als een bericht binnen komt.
 Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets dergelijks.</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Change the appearance of user avatars in chats.
-OFF - square, ON - Circle.</source>
-        <translation type="unfinished">Verander het uiterlijk van avatars in de chats.
-UIT - vierkant, AAN - cirkel.</translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+7"/>
         <source>Display an identicon instead of a letter when no avatar is set.</source>
         <translation type="unfinished">Laat een identicon zien in plaats van een letter wanneer er geen avatar is ingesteld.</translation>
     </message>
@@ -3220,12 +3264,7 @@ worden geblurt.</translation>
         <translation type="unfinished">De sleutel om online reservesleutels mee te ontsleutelen. Indien gecached kan je online reservesleutel activeren om je sleutels veilig versleuteld op de server op te slaan.</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users, that have verified you.</source>
-        <translation type="unfinished">De sleutel om je eigen apparaten mee te verifiëren. Indien gecached zal één van je apparaten verifiëren dat doen voor andere apparaten en gebruikers die jou geverifieerd hebben.</translation>
-    </message>
-    <message>
-        <location line="+5"/>
+        <location line="+9"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
         <translation type="unfinished">De sleutel die wordt gebruikt om andere gebruikers te verifiëren. Indien gecached zal het verifiëren van een gebruiker alle apparaten van die gebruiker verifiëren.</translation>
     </message>
@@ -3237,7 +3276,7 @@ worden geblurt.</translation>
     <message>
         <location line="+392"/>
         <source>Select a file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selecteer een bestand</translation>
     </message>
     <message>
         <location line="+0"/>

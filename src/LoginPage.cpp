@@ -19,6 +19,7 @@
 #include "UserSettingsPage.h"
 
 Q_DECLARE_METATYPE(LoginPage::LoginMethod)
+Q_DECLARE_METATYPE(SSOProvider)
 
 using namespace mtx::identifiers;
 
@@ -28,6 +29,7 @@ LoginPage::LoginPage(QObject *parent)
 {
     [[maybe_unused]] static auto ignored =
       qRegisterMetaType<LoginPage::LoginMethod>("LoginPage::LoginMethod");
+    [[maybe_unused]] static auto ignored2 = qRegisterMetaType<SSOProvider>();
 
     connect(this, &LoginPage::versionOkCb, this, &LoginPage::versionOk, Qt::QueuedConnection);
     connect(this, &LoginPage::versionErrorCb, this, &LoginPage::versionError, Qt::QueuedConnection);
@@ -161,27 +163,54 @@ LoginPage::checkHomeserverVersion()
                 return;
             }
 
+            nhlog::net()->error("Error requesting versions: {}", *err);
+
             emit versionErrorCb(
               tr("An unknown error occured. Make sure the homeserver domain is valid."));
             return;
         }
 
-        http::client()->get_login(
-          [this](mtx::responses::LoginFlows flows, mtx::http::RequestErr err) {
-              if (err || flows.flows.empty())
-                  emit versionOkCb(true, false);
+        http::client()->get_login([this](mtx::responses::LoginFlows flows,
+                                         mtx::http::RequestErr err) {
+            if (err || flows.flows.empty())
+                emit versionOkCb(true, false, {});
 
-              bool ssoSupported      = false;
-              bool passwordSupported = false;
-              for (const auto &flow : flows.flows) {
-                  if (flow.type == mtx::user_interactive::auth_types::sso) {
-                      ssoSupported = true;
-                  } else if (flow.type == mtx::user_interactive::auth_types::password) {
-                      passwordSupported = true;
-                  }
-              }
-              emit versionOkCb(passwordSupported, ssoSupported);
-          });
+            QVariantList idps;
+            bool ssoSupported      = false;
+            bool passwordSupported = false;
+            for (const auto &flow : flows.flows) {
+                if (flow.type == mtx::user_interactive::auth_types::sso) {
+                    ssoSupported = true;
+
+                    for (const auto &idp : flow.identity_providers) {
+                        SSOProvider prov;
+                        if (idp.brand == "apple")
+                            prov.name_ = tr("Sign in with Apple");
+                        else if (idp.brand == "facebook")
+                            prov.name_ = tr("Continue with Facebook");
+                        else if (idp.brand == "google")
+                            prov.name_ = tr("Sign in with Google");
+                        else if (idp.brand == "twitter")
+                            prov.name_ = tr("Sign in with Twitter");
+                        else
+                            prov.name_ = tr("Login using %1").arg(QString::fromStdString(idp.name));
+
+                        prov.avatarUrl_ = QString::fromStdString(idp.icon);
+                        prov.id_        = QString::fromStdString(idp.id);
+                        idps.push_back(QVariant::fromValue(prov));
+                    }
+
+                    if (flow.identity_providers.empty()) {
+                        SSOProvider prov;
+                        prov.name_ = tr("SSO LOGIN");
+                        idps.push_back(QVariant::fromValue(prov));
+                    }
+                } else if (flow.type == mtx::user_interactive::auth_types::password) {
+                    passwordSupported = true;
+                }
+            }
+            emit versionOkCb(passwordSupported, ssoSupported, idps);
+        });
     });
 }
 
@@ -198,10 +227,11 @@ LoginPage::versionError(const QString &error)
 }
 
 void
-LoginPage::versionOk(bool passwordSupported, bool ssoSupported)
+LoginPage::versionOk(bool passwordSupported, bool ssoSupported, QVariantList idps)
 {
     passwordSupported_ = passwordSupported;
     ssoSupported_      = ssoSupported;
+    identityProviders_ = idps;
 
     lookingUpHs_     = false;
     homeserverValid_ = true;
@@ -248,7 +278,7 @@ LoginPage::onLoginButtonClicked(LoginMethod loginMethod,
 
               if (res.well_known) {
                   http::client()->set_server(res.well_known->homeserver.base_url);
-                  nhlog::net()->info("Login requested to user server: " +
+                  nhlog::net()->info("Login requested to use server: " +
                                      res.well_known->homeserver.base_url);
               }
 
@@ -273,7 +303,7 @@ LoginPage::onLoginButtonClicked(LoginMethod loginMethod,
 
                     if (res.well_known) {
                         http::client()->set_server(res.well_known->homeserver.base_url);
-                        nhlog::net()->info("Login requested to user server: " +
+                        nhlog::net()->info("Login requested to use server: " +
                                            res.well_known->homeserver.base_url);
                     }
 
@@ -287,8 +317,9 @@ LoginPage::onLoginButtonClicked(LoginMethod loginMethod,
             sso->deleteLater();
         });
 
-        QDesktopServices::openUrl(
-          QString::fromStdString(http::client()->login_sso_redirect(sso->url())));
+        // password doubles as the idp id for SSO login
+        QDesktopServices::openUrl(QString::fromStdString(
+          http::client()->login_sso_redirect(sso->url(), password.toStdString())));
     }
 
     loggingIn_ = true;

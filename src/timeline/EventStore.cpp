@@ -208,7 +208,7 @@ EventStore::EventStore(std::string room_id, QObject *)
                       size_t index = related_text->content.formatted_body.find(txn_id);
                       if (index != std::string::npos) {
                           related_text->content.formatted_body.replace(
-                            index, event_id.length(), event_id);
+                            index, txn_id.length(), event_id);
                       }
                   }
 

@@ -21,6 +21,10 @@ ApplicationWindow {
     width: 350
     height: fontMetrics.lineSpacing * 7
 
+    function forceActiveFocus() {
+        statusInput.forceActiveFocus();
+    }
+
     Shortcut {
         sequence: StandardKey.Cancel
         onActivated: dbb.rejected()

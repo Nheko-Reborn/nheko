@@ -79,15 +79,17 @@ UserSettings::load(std::optional<QString> profile)
     sortByImportance_ = settings.value(QStringLiteral("user/sort_by_unread"), true).toBool();
     readReceipts_     = settings.value(QStringLiteral("user/read_receipts"), true).toBool();
     theme_            = settings.value(QStringLiteral("user/theme"), defaultTheme_).toString();
-    font_             = settings.value(QStringLiteral("user/font_family"), "default").toString();
-    avatarCircles_    = settings.value(QStringLiteral("user/avatar_circles"), true).toBool();
-    useIdenticon_     = settings.value(QStringLiteral("user/use_identicon"), true).toBool();
-    decryptSidebar_   = settings.value(QStringLiteral("user/decrypt_sidebar"), true).toBool();
-    privacyScreen_    = settings.value(QStringLiteral("user/privacy_screen"), false).toBool();
+
+    font_ = settings.value(QStringLiteral("user/font_family"), "").toString();
+
+    avatarCircles_  = settings.value(QStringLiteral("user/avatar_circles"), true).toBool();
+    useIdenticon_   = settings.value(QStringLiteral("user/use_identicon"), true).toBool();
+    decryptSidebar_ = settings.value(QStringLiteral("user/decrypt_sidebar"), true).toBool();
+    privacyScreen_  = settings.value(QStringLiteral("user/privacy_screen"), false).toBool();
     privacyScreenTimeout_ =
       settings.value(QStringLiteral("user/privacy_screen_timeout"), 0).toInt();
     mobileMode_ = settings.value(QStringLiteral("user/mobile_mode"), false).toBool();
-    emojiFont_  = settings.value(QStringLiteral("user/emoji_font_family"), "default").toString();
+    emojiFont_  = settings.value(QStringLiteral("user/emoji_font_family"), "emoji").toString();
     baseFontSize_ =
       settings.value(QStringLiteral("user/font_size"), QFont().pointSizeF()).toDouble();
     auto tempPresence =
@@ -419,6 +421,12 @@ UserSettings::setFontSize(double size)
     if (size == baseFontSize_)
         return;
     baseFontSize_ = size;
+
+    const static auto defaultFamily = QFont().defaultFamily();
+    QFont f((font_.isEmpty() || font_ == QStringLiteral("default")) ? defaultFamily : font_);
+    f.setPointSizeF(fontSize());
+    QApplication::setFont(f);
+
     emit fontSizeChanged(size);
     save();
 }
@@ -429,6 +437,12 @@ UserSettings::setFontFamily(QString family)
     if (family == font_)
         return;
     font_ = family;
+
+    const static auto defaultFamily = QFont().defaultFamily();
+    QFont f((family.isEmpty() || family == QStringLiteral("default")) ? defaultFamily : family);
+    f.setPointSizeF(fontSize());
+    QApplication::setFont(f);
+
     emit fontChanged(family);
     save();
 }
@@ -440,7 +454,7 @@ UserSettings::setEmojiFontFamily(QString family)
         return;
 
     if (family == tr("Default")) {
-        emojiFont_ = QStringLiteral("default");
+        emojiFont_ = QStringLiteral("emoji");
     } else {
         emojiFont_ = family;
     }

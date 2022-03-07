@@ -7,6 +7,7 @@ import "./components"
 import "./delegates"
 import "./emoji"
 import "./ui"
+import "./dialogs"
 import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.15
@@ -585,6 +586,21 @@ Item {
             open();
         }
 
+        Component {
+            id: removeReason
+            InputDialog {
+                id: removeReasonDialog
+
+                property string eventId
+
+                title: qsTr("Reason for removal")
+                prompt: qsTr("Enter reason for removal or hit enter for no reason:")
+                onAccepted: function(text) {
+                    room.redactEvent(eventId, text);
+                }
+            }
+        }
+
         Platform.MenuItem {
             visible: messageContextMenu.text
             enabled: visible
@@ -665,7 +681,13 @@ Item {
         Platform.MenuItem {
             visible: (room ? room.permissions.canRedact() : false) || messageContextMenu.isSender
             text: qsTr("Remo&ve message")
-            onTriggered: room.redactEvent(messageContextMenu.eventId)
+            onTriggered: function() {
+                var dialog = removeReason.createObject(timelineRoot);
+                dialog.eventId = messageContextMenu.eventId;
+                dialog.show();
+                dialog.forceActiveFocus();
+                timelineRoot.destroyOnClose(dialog);
+            }
         }
 
         Platform.MenuItem {
