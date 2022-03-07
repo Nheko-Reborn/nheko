@@ -163,6 +163,8 @@ LoginPage::checkHomeserverVersion()
                 return;
             }
 
+            nhlog::net()->error("Error requesting versions: {}", *err);
+
             emit versionErrorCb(
               tr("An unknown error occured. Make sure the homeserver domain is valid."));
             return;
@@ -276,7 +278,7 @@ LoginPage::onLoginButtonClicked(LoginMethod loginMethod,
 
               if (res.well_known) {
                   http::client()->set_server(res.well_known->homeserver.base_url);
-                  nhlog::net()->info("Login requested to user server: " +
+                  nhlog::net()->info("Login requested to use server: " +
                                      res.well_known->homeserver.base_url);
               }
 
@@ -301,7 +303,7 @@ LoginPage::onLoginButtonClicked(LoginMethod loginMethod,
 
                     if (res.well_known) {
                         http::client()->set_server(res.well_known->homeserver.base_url);
-                        nhlog::net()->info("Login requested to user server: " +
+                        nhlog::net()->info("Login requested to use server: " +
                                            res.well_known->homeserver.base_url);
                     }
 
