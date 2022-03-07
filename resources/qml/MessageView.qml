@@ -57,8 +57,6 @@ Item {
         anchors.rightMargin: scrollbar.interactive? scrollbar.width : 0
 
         Control {
-            //closePolicy: Popup.NoAutoClose
-
             id: messageActions
 
             property Item attached: null
@@ -73,10 +71,10 @@ Item {
             z: 10
 
             background: Rectangle {
-            color: Nheko.colors.window
-            border.color: Nheko.colors.buttonText
-            border.width: 1
-            radius: padding
+                color: Nheko.colors.window
+                border.color: Nheko.colors.buttonText
+                border.width: 1
+                radius: padding
             }
 
             contentItem: Row {
@@ -119,7 +117,7 @@ Item {
                     ToolTip.text: qsTr("Edit")
                     onClicked: {
                         if (row.model.isEditable)
-                            chat.model.editAction(row.model.eventId);
+                        chat.model.editAction(row.model.eventId);
 
                     }
                 }
@@ -195,9 +193,9 @@ Item {
             sequence: StandardKey.Cancel
             onActivated: {
                 if (chat.model.reply)
-                    chat.model.reply = undefined;
+                chat.model.reply = undefined;
                 else
-                    chat.model.edit = undefined;
+                chat.model.edit = undefined;
             }
         }
 
@@ -248,7 +246,7 @@ Item {
             // force current read index to update
             onTriggered: {
                 if (chat.model)
-                    chat.model.setCurrentIndex(chat.model.currentIndex);
+                chat.model.setCurrentIndex(chat.model.currentIndex);
 
             }
             interval: 1000
@@ -509,21 +507,20 @@ Item {
                 y: section.visible && section.active ? section.y + section.height : 0
 
                 onHoveredChanged: {
-                    console.log("Hover changed: " + hovered + " w: " + wrapper.hovered + " h: "+ messageActions.hovered + " obj: " + timelinerow)
-                if (!Settings.mobileMode && hovered) {
-                    if (!messageActions.hovered) {
-                        messageActions.attached = timelinerow;
-                        messageActions.model = timelinerow;
+                    if (!Settings.mobileMode && hovered) {
+                        if (!messageActions.hovered) {
+                            messageActions.attached = timelinerow;
+                            messageActions.model = timelinerow;
+                        }
                     }
                 }
-            }
 
             }
 
             Connections {
                 function onMovementEnded() {
                     if (y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height)
-                        chat.model.currentIndex = index;
+                    chat.model.currentIndex = index;
 
                 }
 
