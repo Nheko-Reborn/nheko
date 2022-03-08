@@ -280,12 +280,12 @@
     <message>
         <location line="+59"/>
         <source>Reason for the kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Alasan untuk mengeluarkan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan alasan untuk mengeluarkan %1 (%2) atau tekan enter untuk mengeluarkan tanpa alasan:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -295,12 +295,12 @@
     <message>
         <location line="+15"/>
         <source>Reason for the ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Alasan untuk mencekal</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan alasan untuk mencekal %1 (%2) atau tekan enter untuk mencekal tanpa alasan:</translation>
     </message>
     <message>
         <location filename="../qml/ChatPage.qml" line="+37"/>
@@ -665,12 +665,12 @@
     <message>
         <location line="+18"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Peristiwa berikut ini akan &lt;b&gt;ditampilkan&lt;/b&gt; di %1:</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in all rooms:</source>
-        <translation type="unfinished"></translation>
+        <translation>Peristiwa berikut ini akan &lt;b&gt;ditampilkan&lt;/b&gt; di semua ruangan:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1035,27 +1035,27 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+19"/>
         <source>Sign in with Apple</source>
-        <translation type="unfinished"></translation>
+        <translation>Masuk dengan Apple</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Continue with Facebook</source>
-        <translation type="unfinished"></translation>
+        <translation>Lanjutkan dengan Facebook</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Google</source>
-        <translation type="unfinished"></translation>
+        <translation>Masuk dengan Google</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Twitter</source>
-        <translation type="unfinished"></translation>
+        <translation>Masuk dengan Twitter</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Login using %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Masuk menggunakan %1</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1257,12 +1257,12 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+426"/>
         <source>Reason for removal</source>
-        <translation type="unfinished"></translation>
+        <translation>Alasan untuk menghapus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for removal or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan alasan untuk menghapus atau tekan enter untuk menghapus tanpa alasan:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1933,7 +1933,8 @@ Misalnya: https://server.my:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enkripsi saat ini eksperimental dan hal-hal mungkin rusak tanpa terduga. &lt;br&gt;
+Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1978,7 +1979,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+16"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Tersalin ke papan klip</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -3185,18 +3186,19 @@ Status akan ditampilkan di sebelah waktu menerima pesan.</translation>
     <message>
         <location line="+2"/>
         <source>Notify about received messages when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Beritahu tentang pesan-pesan yang diterima saat klien tidak difokuskan.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - circle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengubah penampilan avatar pengguna dalam obrolan.
+MATI - kotak, NYALA - bulat.</translation>
     </message>
     <message>
         <location line="+52"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunci untuk memverifikasi perangkat-perangkat Anda. Jika dicache, memverifikasi salah satu perangkat Anda akan menandainya sebagai terverifikasi untuk perangkat Anda yang lain dan untuk pengguna yang telah memverifikasi Anda.</translation>
     </message>
     <message>
         <location line="-56"/>
