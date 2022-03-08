@@ -1036,22 +1036,22 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+19"/>
         <source>Sign in with Apple</source>
-        <translation type="unfinished"></translation>
+        <translation>Mit Apple anmelden</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Continue with Facebook</source>
-        <translation type="unfinished"></translation>
+        <translation>Weiter mit Facebook</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Google</source>
-        <translation type="unfinished"></translation>
+        <translation>Mit Google anmelden</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Twitter</source>
-        <translation type="unfinished"></translation>
+        <translation>Mit Twitter anmelden</translation>
     </message>
     <message>
         <location line="+2"/>
