@@ -971,7 +971,7 @@ Wenn Nheko deinen Server nicht automatisch erkennen kann, bekommst du eine Einga
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation>Ein Name für dieses Gerät, das der anderen Seite gezeigt wird, wenn das Gerät verifiziert wird. Wird nichts angegeben, wird einer generiert.</translation>
+        <translation>Ein Name für dieses Gerät, das anderen angezeigt wird, wenn Sie deine Geräte verifizieren. Wird keiner angegeben, wird ein Standard genutzt.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1230,7 +1230,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+12"/>
         <source>You don&apos;t have permission to send messages in this room</source>
-        <translation>Du darfst hier keine Nachrichten senden</translation>
+        <translation>Du hast keine Berechtigung, Nachrichten in diesen Raum zu senden</translation>
     </message>
 </context>
 <context>
