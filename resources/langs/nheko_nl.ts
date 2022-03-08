@@ -281,12 +281,12 @@
     <message>
         <location line="+59"/>
         <source>Reason for the kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Reden voor verwijderen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer reden voor verwijderen van %1 (%2) in of druk op enter voor geen reden:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -296,17 +296,17 @@
     <message>
         <location line="+15"/>
         <source>Reason for the ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Reden voor verbannen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer reden voor het verbannen van %1 (%2) in of druk op enter voor geen reden:</translation>
     </message>
     <message>
         <location filename="../qml/ChatPage.qml" line="+37"/>
         <source>No network connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen netwerkverbinding</translation>
     </message>
 </context>
 <context>
@@ -648,7 +648,7 @@
         <location filename="../../src/ui/HiddenEvents.cpp" line="+79"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kon verborgen gebeurtenissen niet instellen: %1</translation>
     </message>
 </context>
 <context>
@@ -656,47 +656,47 @@
     <message>
         <location filename="../qml/dialogs/HiddenEventsDialog.qml" line="+31"/>
         <source>Hidden events for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Verborgen gebeurtenissen voor %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Verborgen gebeurtenissen</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze gebeurtenissen zullen &lt;b&gt;getoond&lt;/b&gt; worden in %1:</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in all rooms:</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze gebeurtenissen zullen &lt;b&gt;getoond&lt;/b&gt; worden in alle kamers:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>User events</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikersgebeurtenissen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Joins, leaves, avatar and name changes, bans, …</source>
-        <translation type="unfinished"></translation>
+        <translation>Binnenkomen, vertrekken, avatar- en naamsveranderingen, verbanningen, …</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Power level changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikersrechtenveranderingen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sent when a moderator is added/removed or the permissions of a room are changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstuurd wanneer een beheerder wordt toegevoegd/verwijderd of de rechten van een kamer worden aangepast.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Stickers</source>
-        <translation type="unfinished">Stickers</translation>
+        <translation>Stickers</translation>
     </message>
 </context>
 <context>
@@ -998,7 +998,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+42"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Terug</translation>
     </message>
     <message>
         <location filename="../../src/LoginPage.cpp" line="+83"/>
@@ -1036,27 +1036,27 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+19"/>
         <source>Sign in with Apple</source>
-        <translation type="unfinished"></translation>
+        <translation>Inloggen met Apple</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Continue with Facebook</source>
-        <translation type="unfinished"></translation>
+        <translation>Verder met Facebook</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Google</source>
-        <translation type="unfinished"></translation>
+        <translation>Inloggen met Google</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Twitter</source>
-        <translation type="unfinished"></translation>
+        <translation>Inloggen met Twitter</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Login using %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Inloggen met %1</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1097,32 +1097,32 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+198"/>
         <source>%1 removed a message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft een bericht verwijderd</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 enabled encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft versleuteling ingeschakeld</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>%2 changed the room name to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 heeft de naam van de kamer veranderd in: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the room name</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft de kamernaam verwijderd</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%2 changed the topic to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 heeft het onderwerp veranderd in: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the topic</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft het onderwerp verwijderd</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1182,7 +1182,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+13"/>
         <source>%1 is negotiating the call...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 is het gesprek aan het opzetten...</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1258,12 +1258,12 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+426"/>
         <source>Reason for removal</source>
-        <translation type="unfinished"></translation>
+        <translation>Reden voor verwijdering</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for removal or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer de reden voor verwijdering in of druk op enter voor geen reden:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1547,7 +1547,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <location line="+21"/>
         <location line="+96"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Terug</translation>
     </message>
     <message>
         <location line="-75"/>
@@ -1572,7 +1572,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+1"/>
         <source>your.server</source>
-        <translation type="unfinished"></translation>
+        <translation>jouwserver.example.com</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1582,17 +1582,17 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+90"/>
         <source>Your passwords do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Je wachtwoorden komen niet overeen!</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Device name</source>
-        <translation type="unfinished">Apparaatnaam</translation>
+        <translation>Apparaatnaam</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation type="unfinished">Een naam voor dit apparaat, welke zichtbaar zal zijn voor anderen als ze je apparaten verifiëren. Als niets is ingevuld zal er een standaardnaam worden gebruikt.</translation>
+        <translation>Een naam voor dit apparaat, welke zichtbaar zal zijn voor anderen als ze je apparaten verifiëren. Als niets is ingevuld zal er een standaardnaam worden gebruikt.</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -1627,27 +1627,27 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+10"/>
         <source>Server does not support querying registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>De server ondersteund het opvragen van registratiemethodes niet!</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Server does not support registration.</source>
-        <translation type="unfinished"></translation>
+        <translation>De server ondersteund registreren niet.</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Invalid username.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongeldige gebruikersnaam.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Name already in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>Naam reeds in gebruik.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Part of the reserved namespace.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deel van de gereserveerde naamruimte.</translation>
     </message>
 </context>
 <context>
@@ -1802,7 +1802,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+19"/>
         <source>Search rooms (Ctrl+K)</source>
-        <translation type="unfinished"></translation>
+        <translation>Doorzoek kamers (Ctrl+K)</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -1936,7 +1936,8 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteling is momenteel experimenteel en dingen gaan misschien stuk. &lt;br&gt;
+Wees ervan bewust dat het achteraf niet meer uitgeschakeld kan worden.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1956,17 +1957,17 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+6"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Verborgen gebeurtenissen</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Configure</source>
-        <translation type="unfinished"></translation>
+        <translation>Instellen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select events to hide in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecteer gebeurtenissen die verborgen dienen te worden in deze kamer</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1981,7 +1982,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+16"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Gekopieerd naar klembord</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -2416,22 +2417,22 @@ Reden: %4</translation>
     <message>
         <location line="+123"/>
         <source>%2 revoked the invite to %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 heeft de uitnodiging voor %1 ingetrokken.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%2 kicked %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 heeft %1 verwijderd.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%2 unbanned %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 heeft de verbanning van %1 opgeheven.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%2 rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 heeft het aankloppen van %1 geweigerd.</translation>
     </message>
     <message>
         <location line="-35"/>
@@ -2481,7 +2482,7 @@ Reden: %4</translation>
     <message>
         <location line="+1019"/>
         <source>%1 invited %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft %2 uitgenodigd.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2502,7 +2503,7 @@ Reden: %4</translation>
     <message>
         <location line="+7"/>
         <source>%1 banned %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft %2 verbannen</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2800,369 +2801,369 @@ Reden: %4</translation>
     <message>
         <location line="+376"/>
         <source>Theme</source>
-        <translation type="unfinished">Thema</translation>
+        <translation>Thema</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Scale factor</source>
-        <translation type="unfinished">Schaalfactor</translation>
+        <translation>Schaalfactor</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished">Oplichten van berichten onder muis</translation>
+        <translation>Oplichten van berichten onder muis</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished">Grote emoji in de tijdlijn</translation>
+        <translation>Grote emoji in de tijdlijn</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Minimize to tray</source>
-        <translation type="unfinished">Minimaliseren naar systeemvak</translation>
+        <translation>Minimaliseren naar systeemvak</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Start in tray</source>
-        <translation type="unfinished">Geminimaliseerd opstarten</translation>
+        <translation>Geminimaliseerd opstarten</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Group&apos;s sidebar</source>
-        <translation type="unfinished">Zijbalk met groepen</translation>
+        <translation>Zijbalk met groepen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished">Verstuur berichten in Markdown</translation>
+        <translation>Verstuur berichten in Markdown</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable message bubbles</source>
-        <translation type="unfinished"></translation>
+        <translation>Activeer berichtbubbels</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable small Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>Activeer kleine avatars</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
-        <translation type="unfinished">Speel animaties in afbeeldingen alleen af tijdens muisover</translation>
+        <translation>Speel animaties in afbeeldingen alleen af tijdens muisover</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Typing notifications</source>
-        <translation type="unfinished">Typnotificaties</translation>
+        <translation>Typnotificaties</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sort rooms by unreads</source>
-        <translation type="unfinished">Sorteer kamers op ongelezen berichten</translation>
+        <translation>Sorteer kamers op ongelezen berichten</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons in timeline</source>
-        <translation type="unfinished">Laat knoppen zien in tijdlijn</translation>
+        <translation>Laat knoppen zien in tijdlijn</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation type="unfinished">Beperk breedte van tijdlijn</translation>
+        <translation>Beperk breedte van tijdlijn</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Leesbevestigingen</translation>
+        <translation>Leesbevestigingen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Desktop notifications</source>
-        <translation type="unfinished">Bureaubladnotificaties</translation>
+        <translation>Bureaubladnotificaties</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Alert on notification</source>
-        <translation type="unfinished">Melding bij notificatie</translation>
+        <translation>Melding bij notificatie</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Circular Avatars</source>
-        <translation type="unfinished">Ronde avatars</translation>
+        <translation>Ronde avatars</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Use identicons</source>
-        <translation type="unfinished">Gebruik identicons</translation>
+        <translation>Gebruik identicons</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished">Ontsleutel berichten in de zijbalk</translation>
+        <translation>Ontsleutel berichten in de zijbalk</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy Screen</source>
-        <translation type="unfinished">Privacy scherm</translation>
+        <translation>Privacy scherm</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation type="unfinished">Privacy scherm wachttijd (in seconden [0 - 3600])</translation>
+        <translation>Privacy scherm wachttijd (in seconden [0 - 3600])</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Touchscreen mode</source>
-        <translation type="unfinished">Touchscreenmodus</translation>
+        <translation>Touchscreenmodus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Font size</source>
-        <translation type="unfinished">Lettertypegrootte</translation>
+        <translation>Lettertypegrootte</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Font Family</source>
-        <translation type="unfinished">Lettertype</translation>
+        <translation>Lettertype</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished">Emoji lettertype</translation>
+        <translation>Emoji lettertype</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ringtone</source>
-        <translation type="unfinished">Beltoon</translation>
+        <translation>Beltoon</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Microphone</source>
-        <translation type="unfinished">Microfoon</translation>
+        <translation>Microfoon</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera</source>
-        <translation type="unfinished">Camera</translation>
+        <translation>Camera</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera resolution</source>
-        <translation type="unfinished">Cameraresolutie</translation>
+        <translation>Cameraresolutie</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera frame rate</source>
-        <translation type="unfinished">Cameraverversingssnelheid</translation>
+        <translation>Cameraverversingssnelheid</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished">Sta terugval naar oproepassistentieserver toe</translation>
+        <translation>Sta terugval naar oproepassistentieserver toe</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send encrypted messages to verified users only</source>
-        <translation type="unfinished">Verstuur alleen versleutelde berichten naar geverifieerde gebruikers</translation>
+        <translation>Verstuur alleen versleutelde berichten naar geverifieerde gebruikers</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Share keys with verified users and devices</source>
-        <translation type="unfinished">Deel sleutels met geverifieerde gebruikers en apparaten</translation>
+        <translation>Deel sleutels met geverifieerde gebruikers en apparaten</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Online Key Backup</source>
-        <translation type="unfinished">Online reservesleutel</translation>
+        <translation>Online reservesleutel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Profiel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikers ID</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Accesstoken</source>
-        <translation type="unfinished"></translation>
+        <translation>Toegangsteken</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Device ID</source>
-        <translation type="unfinished">Apparaat ID</translation>
+        <translation>Apparaat ID</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished">Apparaat vingerafdruk</translation>
+        <translation>Apparaat vingerafdruk</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Homeserver</source>
-        <translation type="unfinished">Thuisserver</translation>
+        <translation>Thuisserver</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versie</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Platform</source>
-        <translation type="unfinished"></translation>
+        <translation>Platform</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>GENERAL</source>
-        <translation type="unfinished">ALGEMEEN</translation>
+        <translation>ALGEMEEN</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>TIMELINE</source>
-        <translation type="unfinished"></translation>
+        <translation>TIJDLIJN</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>SIDEBAR</source>
-        <translation type="unfinished"></translation>
+        <translation>ZIJBALK</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>TRAY</source>
-        <translation type="unfinished"></translation>
+        <translation>NOTIFICATIEICOON</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>NOTIFICATIONS</source>
-        <translation type="unfinished"></translation>
+        <translation>NOTIFICATIES</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>CALLS</source>
-        <translation type="unfinished">OPROEPEN</translation>
+        <translation>OPROEPEN</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ENCRYPTION</source>
-        <translation type="unfinished">VERSLEUTELING</translation>
+        <translation>VERSLEUTELING</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>INFO</source>
-        <translation type="unfinished">INFO</translation>
+        <translation>INFO</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Session Keys</source>
-        <translation type="unfinished">Sessiesleutels</translation>
+        <translation>Sessiesleutels</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cross Signing Secrets</source>
-        <translation type="unfinished"></translation>
+        <translation>Kruisversleutelingsgeheimen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Online backup key</source>
-        <translation type="unfinished"></translation>
+        <translation>Online reservesleutel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Self signing key</source>
-        <translation type="unfinished">Zelf ondertekenen sleutel</translation>
+        <translation>Zelfondertekensleutel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User signing key</source>
-        <translation type="unfinished">Gebruikerssleutel</translation>
+        <translation>Gebruikerssleutel</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Master signing key</source>
-        <translation type="unfinished">Hoofdsleutel</translation>
+        <translation>Hoofdsleutel</translation>
     </message>
     <message>
         <location line="+91"/>
         <source>Default</source>
-        <translation type="unfinished">Standaard</translation>
+        <translation>Standaard</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation type="unfinished">Stel het geluid in dat speelt als een oproep binnen komt</translation>
+        <translation>Stel het geluid in dat speelt als een oproep binnen komt</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation type="unfinished">Stel de maximale breedte in van berichten in de tijdlijn (in pixels). Dit kan helpen bij de leesbaarheid als Nheko gemaximaliseerd is.</translation>
+        <translation>Stel de maximale breedte in van berichten in de tijdlijn (in pixels). Dit kan helpen bij de leesbaarheid als Nheko gemaximaliseerd is.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation type="unfinished">Stel wachttijd (in seconden) voor hoe lang het duurt nadat
+        <translation>Stel wachttijd (in seconden) voor hoe lang het duurt nadat
 focus weg is voordat het scherm wordt geblurt.
 Kies 0 om direct te blurren. Maximale waarde is 1 uur (3600 seconden)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished">Veranderd de achtergrondkleur van het bericht waar de muiscursor op staat.</translation>
+        <translation>Veranderd de achtergrondkleur van het bericht waar de muiscursor op staat.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished">Maakt het lettertype groter als berichten met slechts enkele emoji worden getoond.</translation>
+        <translation>Maakt het lettertype groter als berichten met slechts enkele emoji worden getoond.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished">Blijf draaien in de achtergrond na het sluiten van het scherm.</translation>
+        <translation>Blijf draaien in de achtergrond na het sluiten van het scherm.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished">Start de applicatie in de achtergrond zonder het scherm te tonen.</translation>
+        <translation>Start de applicatie in de achtergrond zonder het scherm te tonen.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation type="unfinished">Laat een kolom zien met groepen en markeringen naast de kamerlijst.</translation>
+        <translation>Laat een kolom zien met groepen en markeringen naast de kamerlijst.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished">Sta het gebruik van Markdown in berichten toe.
+        <translation>Sta het gebruik van Markdown in berichten toe.
 Indien uitgeschakeld worden alle berichten als platte tekst verstuurd.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Messages get a bubble background. This also triggers some layout changes (WIP).</source>
-        <translation type="unfinished"></translation>
+        <translation>Berichten krijgen een bubbelachtergrond. Dit activeert ook enkele veranderingen aan de layout (werk in uitvoering).</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Avatars are resized to fit above the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Avatars worden verkleint om te passen boven het bericht.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
-        <translation type="unfinished">Speelt media zoals GIFs en WebPs alleen af terwijl de muiscursor erboven hangt.</translation>
+        <translation>Speelt media zoals GIFs en WebPs alleen af terwijl de muiscursor erboven hangt.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished">Laat zien wie er typt in een kamer.
+        <translation>Laat zien wie er typt in een kamer.
 Dit schakelt ook het versturen van je eigen typnotificaties naar anderen in of uit.</translation>
     </message>
     <message>
@@ -3170,123 +3171,124 @@ Dit schakelt ook het versturen van je eigen typnotificaties naar anderen in of u
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished">Laat kamers met nieuwe berichten eerst zien.
+        <translation>Laat kamers met nieuwe berichten eerst zien.
 Indien uitgeschakeld, staan kamers gesorteerd op de tijd van het laatst ontvangen bericht.
 Indien ingeschakeld, staan kamers met actieve notificaties (het cirkeltje met een getal erin) bovenaan. Kamers die je hebt gedempt zullen nog steeds op tijd zijn gesorteerd, want die vind je blijkbaar niet zo belangrijk als de andere kamers.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation type="unfinished">Laat knoppen zien om snel te reageren, beantwoorden, of extra opties te kunnen gebruiken naast elk bericht.</translation>
+        <translation>Laat knoppen zien om snel te reageren, beantwoorden, of extra opties te kunnen gebruiken naast elk bericht.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.</source>
-        <translation type="unfinished">Laat zien of je bericht gelezen is.
+        <translation>Laat zien of je bericht gelezen is.
 De status staat naast de tijdsindicatie.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Notify about received messages when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstuur meldingen over ontvangen berichten als het scherm niet momenteel de focus heeft.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - circle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Veranderd de weergave van gebruikersavatars in chats.
+UIT - vierkant, AAN - cirkel.</translation>
     </message>
     <message>
         <location line="+52"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
-        <translation type="unfinished"></translation>
+        <translation>De sleutel om je eigen apparaten te verifiëren. Indien gecached zal het verifiëren van één van je apparaten die ook als geverifieerd markeren voor je anderen apparaten en gebruikers die jou geverifieerd hebben.</translation>
     </message>
     <message>
         <location line="-56"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished">Activeer een melding als een bericht binnen komt.
+        <translation>Activeer een melding als een bericht binnen komt.
 Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets dergelijks.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Display an identicon instead of a letter when no avatar is set.</source>
-        <translation type="unfinished">Laat een identicon zien in plaats van een letter wanneer er geen avatar is ingesteld.</translation>
+        <translation>Laat een identicon zien in plaats van een letter wanneer er geen avatar is ingesteld.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished">Ontsleutel de berichten getoond in de zijbalk.
+        <translation>Ontsleutel de berichten getoond in de zijbalk.
 Heeft alleen effect op versleutelde chats.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation type="unfinished">Als het scherm focus verliest, zal de tijdlijn
+        <translation>Als het scherm focus verliest, zal de tijdlijn
 worden geblurt.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation type="unfinished">Voorkomt dat tekst geselecteerd wordt in de tijdlijn, om scrollen makkelijker te maken.</translation>
+        <translation>Voorkomt dat tekst geselecteerd wordt in de tijdlijn, om scrollen makkelijker te maken.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished">Verander de schaalfactor van de gehele gebruikersinterface.</translation>
+        <translation>Verander de schaalfactor van de gehele gebruikersinterface.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished">Zal turn.matrix.org gebruiken om te assisteren als je thuisserver geen TURN server heeft.</translation>
+        <translation>Zal turn.matrix.org gebruiken om te assisteren als je thuisserver geen TURN server heeft.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
-        <translation type="unfinished">Vereist dat een gebruiker geverifieerd is voordat berichten worden versleuteld. Verbetert de beveiliging maar maakt versleutelen irritanter om in te stellen.</translation>
+        <translation>Vereist dat een gebruiker geverifieerd is voordat berichten worden versleuteld. Verbetert de beveiliging maar maakt versleutelen irritanter om in te stellen.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Automatically replies to key requests from other users, if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished">Beantwoord automatisch sleutelverzoeken van andere gebruikers, indien geverifieerd, ook als dat apparaat normaal geen toegang tot die sleutels had moeten hebben.</translation>
+        <translation>Beantwoord automatisch sleutelverzoeken van andere gebruikers, indien geverifieerd, ook als dat apparaat normaal geen toegang tot die sleutels had moeten hebben.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Download message encryption keys from and upload to the encrypted online key backup.</source>
-        <translation type="unfinished">Download van en upload naar de online reservesleutel.</translation>
+        <translation>Download van en upload naar de online reservesleutel.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
-        <translation type="unfinished">De sleutel om online reservesleutels mee te ontsleutelen. Indien gecached kan je online reservesleutel activeren om je sleutels veilig versleuteld op de server op te slaan.</translation>
+        <translation>De sleutel om online reservesleutels mee te ontsleutelen. Indien gecached kan je online reservesleutel activeren om je sleutels veilig versleuteld op de server op te slaan.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation type="unfinished">De sleutel die wordt gebruikt om andere gebruikers te verifiëren. Indien gecached zal het verifiëren van een gebruiker alle apparaten van die gebruiker verifiëren.</translation>
+        <translation>De sleutel die wordt gebruikt om andere gebruikers te verifiëren. Indien gecached zal het verifiëren van een gebruiker alle apparaten van die gebruiker verifiëren.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation type="unfinished">Je belangrijkste sleutel. Deze hoeft niet gecached te zijn, en dat maakt het minder waarschijnlijk dat hij ooit gestolen wordt. Hij is alleen nodig om je andere sleutels te roteren.</translation>
+        <translation>Je belangrijkste sleutel. Deze hoeft niet gecached te zijn, en dat maakt het minder waarschijnlijk dat hij ooit gestolen wordt. Hij is alleen nodig om je andere sleutels te roteren.</translation>
     </message>
     <message>
         <location line="+392"/>
         <source>Select a file</source>
-        <translation type="unfinished">Selecteer een bestand</translation>
+        <translation>Selecteer een bestand</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Alle bestanden (*)</translation>
+        <translation>Alle bestanden (*)</translation>
     </message>
     <message>
         <location line="+82"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished">Open sessiebestand</translation>
+        <translation>Open sessiebestand</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3296,34 +3298,34 @@ worden geblurt.</translation>
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
-        <translation type="unfinished">Fout</translation>
+        <translation>Fout</translation>
     </message>
     <message>
         <location line="-64"/>
         <location line="+26"/>
         <source>File Password</source>
-        <translation type="unfinished">Wachtwoord voor bestand</translation>
+        <translation>Wachtwoord voor bestand</translation>
     </message>
     <message>
         <location line="-25"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished">Voer de wachtwoordzin in om het bestand te ontsleutelen:</translation>
+        <translation>Voer de wachtwoordzin in om het bestand te ontsleutelen:</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+26"/>
         <source>The password cannot be empty</source>
-        <translation type="unfinished">Het wachtwoord kan niet leeg zijn</translation>
+        <translation>Het wachtwoord kan niet leeg zijn</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation type="unfinished">Voer wachtwoordzin in om je sessiesleutels mee te versleutelen:</translation>
+        <translation>Voer wachtwoordzin in om je sessiesleutels mee te versleutelen:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>File to save the exported session keys</source>
-        <translation type="unfinished">Bestand om geëxporteerde sessiesleutels in op te slaan</translation>
+        <translation>Bestand om geëxporteerde sessiesleutels in op te slaan</translation>
     </message>
 </context>
 <context>
@@ -3351,7 +3353,7 @@ worden geblurt.</translation>
     <message>
         <location line="+49"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Terug</translation>
     </message>
     <message>
         <location line="-42"/>
