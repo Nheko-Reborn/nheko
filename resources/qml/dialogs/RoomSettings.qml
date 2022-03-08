@@ -378,7 +378,7 @@ ApplicationWindow {
         anchors.horizontalCenter: flickable.horizontalCenter
         y: Math.min(showMorePlaceholder.y+contentLayout1.y-flickable.contentY,flickable.height-height)
         visible: roomTopic.cut
-        text: roomTopic.showMore? "show less" : "show more"
+        text: roomTopic.showMore? qsTr("show less") : qsTr("show more")
         onClicked: {roomTopic.showMore = !roomTopic.showMore
             console.log(flickable.visibleArea)
         }
