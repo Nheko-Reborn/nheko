@@ -40,16 +40,16 @@
     <message numerus="yes">
         <location filename="../../src/Cache.cpp" line="+2512"/>
         <source>%1 and %n other(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 e outro %n</numerusform>
+            <numerusform>%1 e outros %n</numerusform>
         </translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+175"/>
         <source>Empty Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Sala vazia</translation>
     </message>
 </context>
 <context>
@@ -281,12 +281,12 @@
     <message>
         <location line="+59"/>
         <source>Reason for the kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Razão para a expulsão</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Insira uma razão para a expulsão de %1 (%2) ou carregue no Enter para saltar:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -296,7 +296,7 @@
     <message>
         <location line="+15"/>
         <source>Reason for the ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Razão para</translation>
     </message>
     <message>
         <location line="+1"/>
