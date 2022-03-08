@@ -281,12 +281,12 @@
     <message>
         <location line="+59"/>
         <source>Reason for the kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Väljamüksamise põhjus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisesta %1 (%2) väljamüksamise põhjus või kui sa põhjust lisada ei taha, siis vajuta Enter-klahvi:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -296,12 +296,12 @@
     <message>
         <location line="+15"/>
         <source>Reason for the ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Suhtluskeelu põhjus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisesta %1 (%2) suhtluskeelu põhjus või kui sa põhjust lisada ei taha, siis vajuta Enter-klahvi:</translation>
     </message>
     <message>
         <location filename="../qml/ChatPage.qml" line="+37"/>
@@ -1036,27 +1036,27 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+19"/>
         <source>Sign in with Apple</source>
-        <translation type="unfinished"></translation>
+        <translation>Logi sisse Apple&apos;i kontoga</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Continue with Facebook</source>
-        <translation type="unfinished"></translation>
+        <translation>Logi sisse Facebook&apos;i kontoga</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Google</source>
-        <translation type="unfinished"></translation>
+        <translation>Logi sisse Google&apos;i kontoga</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Twitter</source>
-        <translation type="unfinished"></translation>
+        <translation>Logi sisse Twitter&apos;i kontoga</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Login using %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisselogimine kasutades teenust: %1</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1258,12 +1258,12 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+426"/>
         <source>Reason for removal</source>
-        <translation type="unfinished"></translation>
+        <translation>Eemaldamise põhjus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for removal or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa eemaldamise põhjus või põhjust lisada ei taha, siis vajuta Enter-klahvi:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1936,7 +1936,8 @@ Näiteks: https://server.minu:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimine on Nhekos hetkel veel katseline ning nii mõndagi võib ootamatult katki minna. &lt;br&gt;
+Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1981,7 +1982,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+16"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopeeritud lõikelauale</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -3201,7 +3202,7 @@ Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
     <message>
         <location line="+52"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle võtmega verifitseerid oma seadmeid. Kui ta on puhverdatud, siis sinu seadme verifitseerimine märgib selle seadme usaldusväärseks nii sinu muude seadmete kui selliste kasutajate jaoks, kes on sinu verifitseerinud.</translation>
     </message>
     <message>
         <location line="-56"/>
