@@ -243,7 +243,7 @@ ApplicationWindow {
 
                     Avatar {
                         Layout.columnSpan: 2
-                        url: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.Url).replace("mxc://", "image://MxcImage/")
+                        url: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.Url).replace("mxc://", "image://MxcImage/") + "?scale"
                         displayName: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.ShortCode)
                         roomid: displayName
                         height: 130

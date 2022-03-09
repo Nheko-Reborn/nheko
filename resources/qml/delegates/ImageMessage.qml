@@ -45,7 +45,7 @@ Item {
 
         visible: !mxcimage.loaded
         anchors.fill: parent
-        source: url.replace("mxc://", "image://MxcImage/")
+        source: url.replace("mxc://", "image://MxcImage/") + "?scale"
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         smooth: true

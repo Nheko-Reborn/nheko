@@ -157,7 +157,7 @@ Menu {
                     contentItem: Image {
                         height: stickerDim
                         width: stickerDim
-                        source: model.url.replace("mxc://", "image://MxcImage/")
+                        source: model.url.replace("mxc://", "image://MxcImage/") + "?scale"
                         fillMode: Image.PreserveAspectFit
                     }
 
