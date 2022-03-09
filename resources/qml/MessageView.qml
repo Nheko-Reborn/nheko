@@ -77,12 +77,11 @@ Item {
                 radius: padding
             }
 
-            contentItem: Row {
+            contentItem: RowLayout {
                 id: row
 
                 property var model
 
-                anchors.centerIn: parent
                 spacing: messageActions.padding
 
                 Repeater {
@@ -93,7 +92,7 @@ Item {
 
                         visible: chat.model ? chat.model.permissions.canSend(MtxEvent.Reaction) : false
 
-                        height: fontMetrics.height
+                        Layout.preferredHeight: fontMetrics.height
                         font.family: Settings.emojiFont
 
                         text: modelData
