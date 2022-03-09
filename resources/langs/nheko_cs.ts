@@ -1233,7 +1233,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+124"/>
+        <location filename="../qml/MessageView.qml" line="+117"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1253,7 +1253,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+426"/>
+        <location line="+427"/>
         <source>Reason for removal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1985,6 +1985,16 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+19"/>
         <source>Room Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>show less</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>show more</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

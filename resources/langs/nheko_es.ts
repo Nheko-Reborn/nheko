@@ -1238,7 +1238,7 @@ Ejemplo: https://mi.servidor:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+124"/>
+        <location filename="../qml/MessageView.qml" line="+117"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
@@ -1258,7 +1258,7 @@ Ejemplo: https://mi.servidor:8787</translation>
         <translation>Opciones</translation>
     </message>
     <message>
-        <location line="+426"/>
+        <location line="+427"/>
         <source>Reason for removal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1990,6 +1990,16 @@ Ejemplo: https://mi.servidor:8787</translation>
         <location line="+19"/>
         <source>Room Version</source>
         <translation>Versión de la sala</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>show less</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>show more</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+256"/>
