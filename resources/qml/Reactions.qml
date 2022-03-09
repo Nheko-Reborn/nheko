@@ -66,7 +66,15 @@ Flow {
                     id: reactionText
 
                     anchors.baseline: reactionCounter.baseline
-                    text: textMetrics.elidedText + (textMetrics.elidedText == modelData.displayKey ? "" : "…")
+                    text: {
+                        // When an emoji font is selected that doesn't have …, it is dropped from elidedText. So we add it back.
+                        if (textMetrics.elidedText !== modelData.displayKey) {
+                            if (!textMetrics.elidedText.endsWith("…")) {
+                                return textMetrics.elidedText + "…";
+                            }
+                        }
+                        return textMetrics.elidedText;
+                    }
                     font.family: Settings.emojiFont
                     color: reaction.hovered ? Nheko.colors.highlight : Nheko.colors.text
                     maximumLineCount: 1
