@@ -33,11 +33,18 @@ Flow {
             implicitWidth: contentItem.childrenRect.width + contentItem.leftPadding * 2
             implicitHeight: contentItem.childrenRect.height
             ToolTip.visible: hovered
-            ToolTip.text: modelData.users
             ToolTip.delay: Nheko.tooltipDelay
             onClicked: {
                 console.debug("Picked " + modelData.key + "in response to " + reactionFlow.eventId + ". selfReactedEvent: " + modelData.selfReactedEvent);
                 room.input.reaction(reactionFlow.eventId, modelData.key);
+            }
+            Component.onCompleted: {
+                ToolTip.text = Qt.binding(function() {
+                    if (textMetrics.elidedText === textMetrics.text) {
+                        return modelData.users;
+                    }
+                    return modelData.displayKey + "\n" + modelData.users;
+                })
             }
 
             contentItem: Row {
