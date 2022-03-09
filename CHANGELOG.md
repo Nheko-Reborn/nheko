@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.9.2] -- unreleased
+## [0.9.2] -- 0.9.2
 
 ### Highlights
 
