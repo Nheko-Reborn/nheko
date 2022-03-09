@@ -1992,12 +1992,12 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     <message>
         <location line="+19"/>
         <source>show less</source>
-        <translation type="unfinished"></translation>
+        <translation>näita vähem</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>show more</source>
-        <translation type="unfinished"></translation>
+        <translation>näita rohkem</translation>
     </message>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+256"/>
