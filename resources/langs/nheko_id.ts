@@ -1989,12 +1989,12 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="+19"/>
         <source>show less</source>
-        <translation type="unfinished"></translation>
+        <translation>sembunyikan</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>show more</source>
-        <translation type="unfinished"></translation>
+        <translation>tampilkan</translation>
     </message>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+256"/>
