@@ -1,5 +1,94 @@
 # Changelog
 
+## [0.9.2] -- unreleased
+
+### Highlights
+
+- Message bubbles (Malte E) 💬
+  - Give a colorful and space saving background to messages.
+  - Optionally shrink the usernames to save even more space.
+  - Your messages are on the opposite side of messages sent by other users.
+- Basic widgets 🗔
+  - Widgets in a room are shown below the topic.
+  - Open them in your browser to view them.
+
+### Features
+
+- Autocompleter for custom emotes using `~`. Note that this currently inserts raw html into the message input.
+- Support running Nheko without a secrets service using a hidden setting.
+- Add zooming and panning to the image overlay.
+- Add a manpage. (tastytea)
+- Offline indicator. (LorenDB)
+- Proper previews for unjoined rooms in spaces (on supported servers).
+- `/reset-state` /command to reset the state of a single room.
+- Allow hiding some events from the timeline. (tastytea)
+- Hidden read receipts. (Symphorien)
+- Open room members dialog when clicking the encryption indicator.
+- Click to copy room id. (Malte E)
+- Allow specifiying a reason for message removal, bans and kicks. (tastytea)
+
+### Improvements
+
+- Speed up blurhash and jdenticon rendering.
+- Use fewer threads for image decoding reducing memory use.
+- Document secret service installation on Arch. (Marshall Lochbaum)
+- Make edits replace previous notifications for the same message on Linux.
+- Add alternatives for Alt-A as a shortcut on systems where that is already used.
+- Apply clang-tidy suggestions. (MTRNord)
+- Make custom emotes twice as high as the text to improve legibility. (tastytea)
+- Ensure high quality scaling is used for custom emotes. (tastytea)
+- Reduce allocations for the timeline by around a factor of 2.
+- Render messages half as often, when displaying them for the first time.
+- Increase maximum number of items in completers to 30.
+- Run the gstreamer event loop also on macOS and Windows.
+- Make presence update dynamically.
+- Cleanup the raw message dialog.
+- Make settings responsive.
+- Improve Login and Registration pages.
+- Add custom stickers & emotes to Q&A.
+- Improve scrolling on touch screens. (Malte E)
+- Reduce size of state events.
+- Update OpenSUSE install instructions. (LorenDB)
+- Use newer flatpak runtime.
+- Fallback to using the shortcode in custom emotes, when there is no title set. (Ivan Pavluk)
+- Improve a lot of hovering behaviours.
+- Make spinboxes in scrollable pages unscrollable. (Malte E)
+- Fix deprecation warnings in gstreamer code. (Scow)
+- Make room directory fit mobile screens. (Malte E)
+- Make room search accessible on mobile. (Malte E)
+- Fix calls on mobile.
+- Add arch binary repo. (digital-mystik)
+- Improve long topics in the room settings. (Malte E)
+- Fix typos. (ISSOtm)
+- Improve the message input on mobile devices. (Malte E)
+
+### Translations
+
+- Indonesian (Linerly)
+- Spanish (Lluise, Diego Collado, Richard, Edd Ludd, Drake)
+- Catalan (Edd Ludd)
+- French (ISSOtm)
+- Estonian (Priit)
+- Dutch (Thulinma)
+- Chinese (hulb)
+
+### Bugfixes
+
+- Wrap member events.
+- Fix rendering of some emoji.
+- Fix crash when accepting invites.
+- Don't fail startup on servers without presence.
+- Fix grayscale images in notifications when using dunst.
+- Clear sticker search. (tastytea)
+- Limit width of username and roomname in the respective settings.
+- Application name on Wayland.
+- Memory leak when closing dialogs.
+- Fix editing pending messages.
+- Fix missing Windows runtime. (MTRNord)
+- Fix a long standing issue where the font was set to a random one instead of the system default.
+- Allow clicking on images in replies to scroll to that image again.
+- Don't force https, when logging into a http only server.
+
 ## [0.9.1-1] -- 2021-02-24
 
 - Rebuild against newer mtxclient to fix an incompatibility with Matrix v1.1 and newer.
