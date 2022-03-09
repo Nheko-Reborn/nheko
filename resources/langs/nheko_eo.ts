@@ -49,7 +49,7 @@
         <location line="+2"/>
         <location line="+175"/>
         <source>Empty Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Malplena ĉambro</translation>
     </message>
 </context>
 <context>
@@ -282,12 +282,12 @@
     <message>
         <location line="+59"/>
         <source>Reason for the kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Kialo de forpelo</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Enigu kialon de forpelo de %1 (%2) aŭ premu enigan klavon por vaka kialo:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -297,17 +297,17 @@
     <message>
         <location line="+15"/>
         <source>Reason for the ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Kialo de forpelo</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Enigu kialon de forbaro de %1 (%2) aŭ premu enigan klavon por vaka kialo:</translation>
     </message>
     <message>
         <location filename="../qml/ChatPage.qml" line="+37"/>
         <source>No network connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Neniu retkonekto</translation>
     </message>
 </context>
 <context>
@@ -320,12 +320,12 @@
     <message>
         <location line="+83"/>
         <source>Expand</source>
-        <translation type="unfinished"></translation>
+        <translation>Etendi</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Collapse</source>
-        <translation type="unfinished"></translation>
+        <translation>Maletendi</translation>
     </message>
 </context>
 <context>
@@ -715,7 +715,7 @@
     <message>
         <location line="+7"/>
         <source>Images (*.png *.webp *.gif *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Bildoj (*.png *.webp *.gif *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
