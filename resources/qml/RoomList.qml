@@ -278,10 +278,11 @@ Page {
                     RowLayout {
                         Layout.alignment: Qt.AlignTop
                         Layout.fillWidth: true
-                        spacing: 0
+                        spacing: Nheko.paddingSmall
 
                         ElidedLabel {
-                            Layout.alignment: Qt.AlignBottom
+                            id: rN
+                            Layout.alignment: Qt.AlignBaseline
                             color: roomItem.importantText
                             elideWidth: width
                             fullText: roomName
@@ -294,7 +295,7 @@ Page {
 
                             visible: !isInvite && !isSpace
                             width: visible ? 0 : undefined
-                            Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+                            Layout.alignment: Qt.AlignRight | Qt.AlignBaseline
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             color: roomItem.unimportantText
                             text: time
