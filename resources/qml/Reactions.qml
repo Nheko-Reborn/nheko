@@ -19,8 +19,6 @@ Flow {
     property string eventId
     property alias reactions: repeater.model
 
-    anchors.left: parent.left
-    anchors.right: parent.right
     spacing: 4
 
     Repeater {
