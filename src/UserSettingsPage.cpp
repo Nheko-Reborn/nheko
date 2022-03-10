@@ -141,7 +141,7 @@ UserSettings::load(std::optional<QString> profile)
       settings.value(prefix + "user/automatically_share_keys_with_trusted_users", false).toBool();
     onlyShareKeysWithVerifiedUsers_ =
       settings.value(prefix + "user/only_share_keys_with_verified_users", false).toBool();
-    useOnlineKeyBackup_ = settings.value(prefix + "user/online_key_backup", false).toBool();
+    useOnlineKeyBackup_ = settings.value(prefix + "user/online_key_backup", true).toBool();
 
     disableCertificateValidation_ =
       settings.value(QStringLiteral("disable_certificate_validation"), false).toBool();
