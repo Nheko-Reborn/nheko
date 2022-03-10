@@ -103,6 +103,7 @@ Item {
                 Layout.row: 0
                 Layout.column: 0
                 Layout.fillWidth: true
+                Layout.maximumWidth: Settings.bubbles? Number.MAX_VALUE : implicitWidth
                 Layout.bottomMargin: visible? 2 : 0
                 Layout.preferredHeight: height
                 id: reply
