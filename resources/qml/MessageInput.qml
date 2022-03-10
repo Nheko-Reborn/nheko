@@ -29,6 +29,14 @@ Rectangle {
 
     }
 
+    Component {
+        id: screenShareDialog
+
+        ScreenShare {
+        }
+
+    }
+
     RowLayout {
         id: row
 

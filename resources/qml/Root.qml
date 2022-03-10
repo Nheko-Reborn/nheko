@@ -222,12 +222,12 @@ Pane {
     }
 
     function destroyOnClose(obj) {
-        if (obj.closing != undefined) obj.closing.connect(() => obj.destroy());
-        else if (obj.closed != undefined) obj.closed.connect(() => obj.destroy());
+        if (obj.closing != undefined) obj.closing.connect(() => obj.destroy(1000));
+        else if (obj.aboutToHide != undefined) obj.aboutToHide.connect(() => obj.destroy(1000));
     }
 
     function destroyOnClosed(obj) {
-        obj.closed.connect(() => obj.destroy());
+        obj.aboutToHide.connect(() => obj.destroy(1000));
     }
 
     Connections {

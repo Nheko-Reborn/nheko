@@ -28,14 +28,6 @@ Popup {
 
     }
 
-    Component {
-        id: screenShareDialog
-
-        ScreenShare {
-        }
-
-    }
-
     ColumnLayout {
         id: columnLayout
 
@@ -81,7 +73,7 @@ Popup {
                 height: Nheko.avatarSize
                 url: room.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
                 displayName: room.roomName
-                roomid: room.roomid
+                roomid: room.roomId
                 onClicked: TimelineManager.openImageOverlay(room, room.avatarUrl(userid), room.data.eventId)
             }
 
@@ -118,8 +110,8 @@ Popup {
                 onClicked: {
                     var dialog = screenShareDialog.createObject(timelineRoot);
                     dialog.open();
-                    close();
                     timelineRoot.destroyOnClose(dialog);
+                    close();
                 }
             }
 
