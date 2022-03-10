@@ -103,6 +103,7 @@ Item {
                 Layout.row: 0
                 Layout.column: 0
                 Layout.fillWidth: true
+                Layout.maximumWidth: Settings.bubbles? Number.MAX_VALUE : implicitWidth
                 Layout.bottomMargin: visible? 2 : 0
                 Layout.preferredHeight: height
                 id: reply
@@ -247,8 +248,11 @@ Item {
         anchors {
             top: row.bottom
             topMargin: -2
-            left: row.left
+            left: row.bubbleOnRight? undefined : row.left
+            right: row.bubbleOnRight? row.right : undefined
         }
+        width: row.maxWidth
+        layoutDirection: row.bubbleOnRight? Qt.RightToLeft : Qt.LeftToRight
 
         id: reactionRow
 
