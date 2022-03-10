@@ -649,7 +649,7 @@
         <location filename="../../src/ui/HiddenEvents.cpp" line="+79"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Malsukcesis agordi kaŝitajn okazojn: %1</translation>
     </message>
 </context>
 <context>
@@ -657,12 +657,12 @@
     <message>
         <location filename="../qml/dialogs/HiddenEventsDialog.qml" line="+31"/>
         <source>Hidden events for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaŝitaj okazoj por %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaŝitaj okazoj</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -720,27 +720,27 @@
     <message>
         <location line="+1"/>
         <source>Select images for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Elekti bildojn por pako</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Add to pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Aldoni al pako</translation>
     </message>
     <message>
         <location line="+61"/>
         <source>Change the overview image for this pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Ŝanĝi reprezentan bildon de ĉi tiu pako</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Overview Image (*.png *.webp *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Reprezenta bildo (*.png *.webp *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select overview image for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Elekti reprezentan bildon de pako</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1002,7 +1002,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+42"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Reen</translation>
     </message>
     <message>
         <location filename="../../src/LoginPage.cpp" line="+83"/>
@@ -1040,27 +1040,27 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+19"/>
         <source>Sign in with Apple</source>
-        <translation type="unfinished"></translation>
+        <translation>Saluti per Apple</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Continue with Facebook</source>
-        <translation type="unfinished"></translation>
+        <translation>Pluiĝi per Facebook</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Google</source>
-        <translation type="unfinished"></translation>
+        <translation>Saluti per Google</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Twitter</source>
-        <translation type="unfinished"></translation>
+        <translation>Saluti per Twitter</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Login using %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Saluti per %1</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1101,32 +1101,32 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+198"/>
         <source>%1 removed a message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 forigis mesaĝon</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 enabled encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ŝaltis ĉifradon</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>%2 changed the room name to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 ŝanĝis nomon de la ĉambro al: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the room name</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 forigis nomon de la ĉambro</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%2 changed the topic to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 ŝanĝis la temon al: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the topic</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 forigis la temon</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1136,7 +1136,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+13"/>
         <source>%1 changed the pinned messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ŝanĝis la fiksitajn mesaĝojn.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1146,7 +1146,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+13"/>
         <source>%1 changed the addresses for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ŝanĝis la adresojn de ĉi tiu ĉambro.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1262,12 +1262,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+427"/>
         <source>Reason for removal</source>
-        <translation type="unfinished"></translation>
+        <translation>Kialo de forigo</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for removal or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Enigu kialon de forigo aŭ premu enigan klavon por vaka kialo:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1299,12 +1299,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+7"/>
         <source>Un&amp;pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Mal&amp;fiksi</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>&amp;Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fiksi</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1551,7 +1551,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <location line="+21"/>
         <location line="+96"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Reen</translation>
     </message>
     <message>
         <location line="-75"/>
@@ -1576,7 +1576,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+1"/>
         <source>your.server</source>
-        <translation type="unfinished"></translation>
+        <translation>via.servilo</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1586,7 +1586,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+90"/>
         <source>Your passwords do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Viaj pasvortoj ne akordas!</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1641,12 +1641,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+25"/>
         <source>Invalid username.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nevalida uzantonomo.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Name already in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>La nomo jam estas uzata.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1866,9 +1866,9 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message numerus="yes">
         <location line="+94"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n ano</numerusform>
+            <numerusform>%n anoj</numerusform>
         </translation>
     </message>
     <message>
@@ -1960,12 +1960,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+6"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaŝitaj okazoj</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Configure</source>
-        <translation type="unfinished"></translation>
+        <translation>Agordi</translation>
     </message>
     <message>
         <location line="+1"/>
