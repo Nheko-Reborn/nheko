@@ -54,6 +54,7 @@ ApplicationWindow {
     footer: DialogButtonBox {
         id: dbb
 
+        standardButtons: DialogButtonBox.Cancel
         onAccepted: {
             Nheko.joinRoom(input.text);
             joinRoomRoot.close();
@@ -66,11 +67,6 @@ ApplicationWindow {
             text: "Join"
             enabled: input.text.match("#.+?:.{3,}")
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-        }
-
-        Button {
-            text: "Cancel"
-            DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
         }
 
     }
