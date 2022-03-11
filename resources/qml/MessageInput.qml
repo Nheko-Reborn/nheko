@@ -446,7 +446,6 @@ Rectangle {
             width: 22
             height: 22
             image: ":/icons/icons/ui/send.svg"
-            Layout.rightMargin: 8
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Send")
             onClicked: {
