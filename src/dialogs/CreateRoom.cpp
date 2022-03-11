@@ -38,16 +38,10 @@ CreateRoom::CreateRoom(QWidget *parent)
                                conf::modals::WIDGET_MARGIN,
                                conf::modals::WIDGET_MARGIN);
 
-    auto buttonLayout = new QHBoxLayout();
-    buttonLayout->setSpacing(15);
-
+    buttonBox_  = new QDialogButtonBox(QDialogButtonBox::Cancel);
     confirmBtn_ = new QPushButton(tr("Create room"), this);
     confirmBtn_->setDefault(true);
-    cancelBtn_ = new QPushButton(tr("Cancel"), this);
-
-    buttonLayout->addStretch(1);
-    buttonLayout->addWidget(cancelBtn_);
-    buttonLayout->addWidget(confirmBtn_);
+    buttonBox_->addButton(confirmBtn_, QDialogButtonBox::AcceptRole);
 
     QFont font;
     font.setPointSizeF(font.pointSizeF() * 1.3);
@@ -101,9 +95,9 @@ CreateRoom::CreateRoom(QWidget *parent)
     layout->addLayout(visibilityLayout);
     layout->addLayout(presetLayout);
     layout->addLayout(directLayout);
-    layout->addLayout(buttonLayout);
+    layout->addWidget(buttonBox_);
 
-    connect(confirmBtn_, &QPushButton::clicked, this, [this]() {
+    connect(buttonBox_, &QDialogButtonBox::accepted, this, [this]() {
         request_.name            = nameInput_->text().toStdString();
         request_.topic           = topicInput_->text().toStdString();
         request_.room_alias_name = aliasInput_->text().toStdString();
@@ -114,7 +108,7 @@ CreateRoom::CreateRoom(QWidget *parent)
         emit close();
     });
 
-    connect(cancelBtn_, &QPushButton::clicked, this, [this]() {
+    connect(buttonBox_, &QDialogButtonBox::rejected, this, [this]() {
         clearFields();
         emit close();
     });

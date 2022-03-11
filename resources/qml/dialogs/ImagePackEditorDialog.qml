@@ -329,21 +329,12 @@ ApplicationWindow {
     footer: DialogButtonBox {
         id: buttons
 
-        Button {
-            text: qsTr("Cancel")
-            DialogButtonBox.buttonRole: DialogButtonBox.DestructiveRole
-            onClicked: win.close()
+        standardButtons: DialogButtonBox.Save | DialogButtonBox.Cancel
+        onAccepted: {
+            imagePack.save();
+            win.close();
         }
-
-        Button {
-            text: qsTr("Save")
-            DialogButtonBox.buttonRole: DialogButtonBox.ApplyRole
-            onClicked: {
-                imagePack.save();
-                win.close();
-            }
-        }
-
+        onRejected: win.close()
     }
 
 }

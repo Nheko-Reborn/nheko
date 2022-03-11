@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <QDialogButtonBox>
 #include <QFrame>
 
 #include <mtx/requests.hpp>
@@ -37,7 +38,7 @@ private:
     Toggle *directToggle_;
 
     QPushButton *confirmBtn_;
-    QPushButton *cancelBtn_;
+    QDialogButtonBox *buttonBox_;
 
     TextField *nameInput_;
     TextField *topicInput_;
