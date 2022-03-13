@@ -291,7 +291,7 @@ LoginPage::onLoginButtonClicked(LoginMethod loginMethod,
               mtx::requests::Login req{};
               req.token = token;
               req.type  = mtx::user_interactive::auth_types::token;
-              req.device_id =
+              req.initial_device_display_name =
                 deviceName.trimmed().isEmpty() ? initialDeviceName_() : deviceName.toStdString();
               http::client()->login(
                 req, [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
