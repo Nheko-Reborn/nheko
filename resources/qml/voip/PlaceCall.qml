@@ -108,10 +108,15 @@ Popup {
                 text: qsTr("Screen")
                 icon.source: "qrc:/icons/icons/ui/screen-share.svg"
                 onClicked: {
-                    var dialog = screenShareDialog.createObject(timelineRoot);
-                    dialog.open();
-                    timelineRoot.destroyOnClose(dialog);
-                    close();
+                    if (buttonLayout.validateMic()) {
+                        Settings.microphone = micCombo.currentText;
+                        Settings.camera = cameraCombo.currentText;
+
+                        var dialog = screenShareDialog.createObject(timelineRoot);
+                        dialog.open();
+                        timelineRoot.destroyOnClose(dialog);
+                        close();
+                    }
                 }
             }
 

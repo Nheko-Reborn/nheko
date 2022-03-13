@@ -83,7 +83,7 @@ Popup {
                 id: pipCheckBox
 
                 enabled: CallManager.cameras.length > 0
-                checked: Settings.screenSharePiP
+                checked: CallManager.cameras.length > 0 && Settings.screenSharePiP
                 Layout.alignment: Qt.AlignRight
             }
 
@@ -125,19 +125,15 @@ Popup {
             Button {
                 text: qsTr("Share")
                 icon.source: "qrc:/icons/icons/ui/screen-share.svg"
-                onClicked: {
-                    if (buttonLayout.validateMic()) {
-                        Settings.microphone = micCombo.currentText;
-                        if (pipCheckBox.checked)
-                            Settings.camera = cameraCombo.currentText;
 
-                        Settings.screenShareFrameRate = frameRateCombo.currentText;
-                        Settings.screenSharePiP = pipCheckBox.checked;
-                        Settings.screenShareRemoteVideo = remoteVideoCheckBox.checked;
-                        Settings.screenShareHideCursor = hideCursorCheckBox.checked;
-                        CallManager.sendInvite(room.roomId, CallType.SCREEN, windowCombo.currentIndex);
-                        close();
-                    }
+                onClicked: {
+                    Settings.screenShareFrameRate = frameRateCombo.currentText;
+                    Settings.screenSharePiP = pipCheckBox.checked;
+                    Settings.screenShareRemoteVideo = remoteVideoCheckBox.checked;
+                    Settings.screenShareHideCursor = hideCursorCheckBox.checked;
+
+                    CallManager.sendInvite(room.roomId, CallType.SCREEN, windowCombo.currentIndex);
+                    close();
                 }
             }
 
