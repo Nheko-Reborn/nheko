@@ -60,6 +60,36 @@ UIA::genericHandler(QString context)
                 return;
             }
 
+            // sort flows with known stages first
+            std::sort(
+              flows.begin(),
+              flows.end(),
+              [](const mtx::user_interactive::Flow &a, const mtx::user_interactive::Flow &b) {
+                  auto calcWeight = [](const mtx::user_interactive::Flow &f) {
+                      using namespace mtx::user_interactive::auth_types;
+                      const static std::map<std::string_view, int> weights{
+                        {mtx::user_interactive::auth_types::password, 0},
+                        {mtx::user_interactive::auth_types::email_identity, 0},
+                        {mtx::user_interactive::auth_types::msisdn, 0},
+                        {mtx::user_interactive::auth_types::dummy, 0},
+                        {mtx::user_interactive::auth_types::registration_token, 0},
+                        // recaptcha is known, but we'd like to avoid it, because it calls out to
+                        // the browser
+                        {mtx::user_interactive::auth_types::recaptcha, 1},
+                      };
+                      int weight = 0;
+                      for (const auto &s : f.stages) {
+                          if (!weights.count(s))
+                              weight += 3;
+                          else
+                              weight += weights.at(s);
+                      }
+                      return weight;
+                  };
+
+                  return calcWeight(a) < calcWeight(b);
+              });
+
             auto current_stage = flows.front().stages.at(u.completed.size());
 
             if (current_stage == mtx::user_interactive::auth_types::password) {
