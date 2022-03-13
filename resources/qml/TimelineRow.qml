@@ -78,7 +78,7 @@ Item {
         anchors.right: isStateEvent? undefined: (bubbleOnRight? parent.right : undefined)
         anchors.horizontalCenter: isStateEvent? parent.horizontalCenter : undefined
         property int maxWidth: parent.width-anchors.leftMargin-anchors.rightMargin
-        width: Settings.bubbles? Math.min(maxWidth,implicitWidth+metadata.width+12) : maxWidth
+        width: Settings.bubbles? Math.min(maxWidth,Math.max(reply.implicitWidth+8,contentItem.implicitWidth+metadata.width+20)) : maxWidth
         leftPadding: 4
         rightPadding: (Settings.bubbles && !isStateEvent)? 4: 2
         topPadding: (Settings.bubbles && !isStateEvent)? 4: 2
@@ -142,7 +142,6 @@ Item {
                 Layout.column: 0
                 Layout.fillWidth: true
                 Layout.preferredHeight: height
-                Layout.minimumWidth: 80
                 id: contentItem
 
                 blurhash: r.blurhash

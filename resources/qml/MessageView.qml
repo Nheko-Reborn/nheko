@@ -256,7 +256,7 @@ Item {
 
             Column {
                 topPadding: userName_.visible? 4: 0
-                bottomPadding: Settings.bubbles? (isSender? 0 : 2) : 3
+                bottomPadding: Settings.bubbles? (isSender && previousMessageDay == day? 0 : 2) : 3
                 spacing: 8
                 visible: (previousMessageUserId !== userId || previousMessageDay !== day || isStateEvent !== previousMessageIsStateEvent)
                 width: parentWidth
