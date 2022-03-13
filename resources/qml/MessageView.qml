@@ -312,12 +312,15 @@ Item {
                         target: chat.model
                     }
                     AbstractButton {
-                        contentItem: Label {
+                        contentItem: ElidedLabel {
                             id: userName_
-                            text: TimelineManager.escapeEmoji(userName)
+                            fullText: userName
                             color: TimelineManager.userColor(userId, Nheko.colors.base)
                             textFormat: Text.RichText
+                            elideWidth: width
+                            width: parent.width
                         }
+                        width: Math.min(chat.delegateMaxWidth - parent.spacing * 2 - Nheko.avatarSize, userName_.fullTextWidth)
                         ToolTip.visible: hovered
                         ToolTip.delay: Nheko.tooltipDelay
                         ToolTip.text: userId

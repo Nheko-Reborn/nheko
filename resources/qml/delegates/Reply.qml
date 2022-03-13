@@ -9,6 +9,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
 import im.nheko 1.0
+import "../"
 
 Item {
     id: r
@@ -85,11 +86,13 @@ Item {
         AbstractButton {
             id: userName_
             Layout.leftMargin: 4
-            contentItem: Text {
-
-                text: TimelineManager.escapeEmoji(userName)
+            Layout.fillWidth: true
+            contentItem: ElidedLabel {
+                fullText: userName
                 color: r.userColor
                 textFormat: Text.RichText
+                width: parent.width
+                elideWidth: width
             }
             onClicked: room.openUserProfile(userId)
         }
