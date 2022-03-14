@@ -25,6 +25,18 @@ cleanup:
   - /include
   - /bin/mdb*
   - '*.a'
+  - /libexec
+  - /lib/girepository-1.0/
+  - /lib/gst-validate-launcher/
+  - /lib/gstreamer-1.0/include/
+  - /lib/gstreamer-1.0/validate/
+  - /lib/cmake/
+  - /bin/gst-*
+  - /bin/cmark
+  - /bin/event_rpcgen.py
+  - /bin/playout
+  - /bin/secret-tool
+  - /share/gir-1.0
 modules:
   - name: lmdb
     sources:
@@ -115,48 +127,27 @@ modules:
   - buildsystem: meson
     name: gstreamer
     sources:
-      - commit: 71c213f99ad5c8fc8f36a26238483f2bdf7d846a
-        tag: 1.18.5
+      - commit: f0b045a69bb0b36515b84e3b64df9dc30c8f1e1a
+        tag: 1.20.0
         type: git
         url: https://gitlab.freedesktop.org/gstreamer/gstreamer.git
-  - config-opts:
+    config-opts:
       - -Dcompositor=enabled
       - -Dgl=enabled
-    buildsystem: meson
-    name: gstreamer-plugins-base
-    sources:
-      - commit: 57fb883b3f8c6d7a397afc0dfc4a7c2e5af05579
-        tag: 1.18.5
-        type: git
-        url: https://gitlab.freedesktop.org/gstreamer/gst-plugins-base.git
-  - config-opts:
-      - -Dpulse=enabled
-      - -Dqt5=enabled
-      - -Drtp=enabled
-      - -Drtpmanager=enabled
-      - -Dvpx=enabled
-    buildsystem: meson
-    name: gstreamer-plugins-good
-    sources:
-      - commit: 56dec037a80266add6853e4b06e2dc379de757d1
-        tag: 1.18.5
-        type: git
-        url: https://gitlab.freedesktop.org/gstreamer/gst-plugins-good.git
-  - config-opts:
-      - -Ddtls=enabled
-      - -Dgl=enabled
-      - -Dopenh264=enabled
-      - -Dopus=enabled
-      - -Dsrtp=enabled
-      - -Dwebrtc=enabled
-      - -Dflite=disabled
-    buildsystem: meson
-    name: gstreamer-plugins-bad
-    sources:
-      - commit: d3af58d5b31941caa26c3ded85d7a7b84a91f0cc
-        tag: 1.18.5
-        type: git
-        url: https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad.git
+      - -Dgood=enabled
+      - -Dgst-plugins-good:pulse=enabled
+      - -Dgst-plugins-good:qt5=enabled
+      - -Dgst-plugins-good:rtp=enabled
+      - -Dgst-plugins-good:rtpmanager=enabled
+      - -Dgst-plugins-good:vpx=enabled
+      - -Dbad=enabled
+      - -Dgst-plugins-bad:dtls=enabled
+      - -Dgst-plugins-bad:gl=enabled
+      - -Dgst-plugins-bad:openh264=enabled
+      - -Dgst-plugins-bad:opus=enabled
+      - -Dgst-plugins-bad:srtp=enabled
+      - -Dgst-plugins-bad:webrtc=enabled
+      - -Dgst-plugins-bad:flite=disabled
   - buildsystem: qmake
     name: qt-jdenticon
     no-make-install: true
