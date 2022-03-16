@@ -15,7 +15,7 @@ Rectangle {
     Layout.fillWidth: true
     visible: room && (room.reply || room.edit)
     // Height of child, plus margins, plus border
-    implicitHeight: (room && room.reply ? replyPreview.height : closeEditButton.height) + 10
+    implicitHeight: (room && room.reply ? replyPreview.height : closeEditButton.height) + Nheko.paddingSmall
     color: Nheko.colors.window
     z: 3
 
@@ -27,10 +27,11 @@ Rectangle {
 
         visible: room && room.reply
         anchors.left: parent.left
-        anchors.leftMargin: 2 * 22 + 3 * 16
-        anchors.right: closeReplyButton.left
-        anchors.rightMargin: 2 * 22 + 3 * 16
-        anchors.bottom: parent.bottom
+        anchors.leftMargin: replyPopup.width < 450? Nheko.paddingSmall : (CallManager.callsSupported? 2*(22+16) : 1*(22+16))
+        anchors.right: parent.right
+        anchors.rightMargin: replyPopup.width < 450? 2*(22+16) : 3*(22+16)
+        anchors.top: parent.top
+        anchors.topMargin: Nheko.paddingSmall
         userColor: TimelineManager.userColor(modelData.userId, Nheko.colors.window)
         blurhash: modelData.blurhash ?? ""
         body: modelData.body ?? ""
@@ -54,9 +55,9 @@ Rectangle {
         id: closeReplyButton
 
         visible: room && room.reply
-        anchors.right: parent.right
-        anchors.rightMargin: 16
+        anchors.right: replyPreview.right
         anchors.top: replyPreview.top
+        anchors.margins: Nheko.paddingSmall
         hoverEnabled: true
         width: 16
         height: 16
@@ -66,16 +67,19 @@ Rectangle {
         onClicked: room.reply = undefined
     }
 
-    Button {
+    ImageButton {
         id: closeEditButton
 
         visible: room && room.edit
-        anchors.left: parent.left
-        anchors.rightMargin: 16
-        anchors.topMargin: 10
+        anchors.right: parent.right
+        anchors.margins: 8
         anchors.top: parent.top
-        //height: 16
-        text: qsTr("Cancel edit")
+        hoverEnabled: true
+        image: ":/icons/icons/ui/dismiss_edit.svg"
+        width: 22
+        height: 22
+        ToolTip.visible: closeEditButton.hovered
+        ToolTip.text: qsTr("Cancel Edit")
         onClicked: room.edit = undefined
     }
 
