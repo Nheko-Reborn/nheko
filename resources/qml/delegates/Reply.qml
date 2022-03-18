@@ -40,7 +40,7 @@ Item {
 
     height: replyContainer.height
     implicitHeight: replyContainer.height
-    implicitWidth: colorLine.width+Math.max(replyContainer.implicitWidth,userName.fullTextWidth) // visible? seems to be causing issues
+    implicitWidth: visible? colorLine.width+Math.max(replyContainer.implicitWidth,userName_.fullTextWidth) : 0 // visible? seems to be causing issues
 
     CursorShape {
         anchors.fill: parent
@@ -84,10 +84,10 @@ Item {
         }
 
         AbstractButton {
-            id: userName_
             Layout.leftMargin: 4
             Layout.fillWidth: true
             contentItem: ElidedLabel {
+                id: userName_
                 fullText: userName
                 color: r.userColor
                 textFormat: Text.RichText

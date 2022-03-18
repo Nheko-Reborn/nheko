@@ -77,6 +77,7 @@ Item {
         anchors.horizontalCenter: isStateEvent? parent.horizontalCenter : undefined
         property int maxWidth: (parent.width-(Settings.smallAvatars || isStateEvent? 0 : Nheko.avatarSize+8))*(Settings.bubbles && !isStateEvent? 0.9 : 1)
         width: Settings.bubbles? Math.min(maxWidth,Math.max(reply.implicitWidth+8,contentItem.implicitWidth+metadata.width+20)) : maxWidth
+
         leftPadding: 4
         rightPadding: (Settings.bubbles && !isStateEvent)? 4: 2
         topPadding: rightPadding
