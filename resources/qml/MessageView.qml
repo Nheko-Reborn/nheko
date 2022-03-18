@@ -312,7 +312,7 @@ Item {
 
                         target: chat.model
                     }
-                    property int remainingWidth: chat.delegateMaxWidth - parent.spacing * 2 - Nheko.avatarSize
+                    property int remainingWidth: chat.delegateMaxWidth - parent.spacing * 2 - messageUserAvatar.width
                     AbstractButton {
                         contentItem: ElidedLabel {
                             id: userName_
