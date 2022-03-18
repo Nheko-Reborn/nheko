@@ -285,6 +285,7 @@ Item {
                     height: userName_.height
                     spacing: 8
                     visible: !isStateEvent && (!isSender || !Settings.bubbles)
+                    id: userInfo
 
                     Avatar {
                         id: messageUserAvatar
@@ -311,6 +312,7 @@ Item {
 
                         target: chat.model
                     }
+                    property int remainingWidth: chat.delegateMaxWidth - parent.spacing * 2 - Nheko.avatarSize
                     AbstractButton {
                         contentItem: ElidedLabel {
                             id: userName_
@@ -320,7 +322,7 @@ Item {
                             elideWidth: width
                             width: parent.width
                         }
-                        width: Math.min(chat.delegateMaxWidth - parent.spacing * 2 - Nheko.avatarSize, userName_.fullTextWidth)
+                        width: Math.min(userInfo.remainingWidth-Math.min(statusMsg.implicitWidth,userInfo.remainingWidth/3), userName_.fullTextWidth)
                         ToolTip.visible: hovered
                         ToolTip.delay: Nheko.tooltipDelay
                         ToolTip.text: userId
@@ -339,7 +341,7 @@ Item {
                         text: Presence.userStatus(userId)
                         textFormat: Text.PlainText
                         elide: Text.ElideRight
-                        width: chat.delegateMaxWidth - parent.spacing * 2 - userName.implicitWidth - Nheko.avatarSize
+                        width: userInfo.remainingWidth - userName_.width
                         font.italic: true
 
                         Connections {

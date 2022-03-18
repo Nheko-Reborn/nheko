@@ -12,7 +12,7 @@ Label {
 
     property alias fullText: metrics.text
     property alias elideWidth: metrics.elideWidth
-    property int fullTextWidth: metrics.width+1 // prevent premature eliding
+    property int fullTextWidth: Math.ceil(metrics.width)+2 // prevent premature eliding
 
     color: Nheko.colors.text
     text: (textFormat == Text.PlainText) ? metrics.elidedText : TimelineManager.escapeEmoji(TimelineManager.htmlEscape(metrics.elidedText))
