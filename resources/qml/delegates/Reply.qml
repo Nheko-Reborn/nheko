@@ -40,7 +40,7 @@ Item {
 
     height: replyContainer.height
     implicitHeight: replyContainer.height
-    implicitWidth: visible? colorLine.width+replyContainer.implicitWidth : 0
+    implicitWidth: colorLine.width+Math.max(replyContainer.implicitWidth,userName.fullTextWidth) // visible? seems to be causing issues
 
     CursorShape {
         anchors.fill: parent
