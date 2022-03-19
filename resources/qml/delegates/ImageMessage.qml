@@ -68,7 +68,7 @@ Item {
     TapHandler {
         //enabled: type == MtxEvent.ImageMessage && (img.status == Image.Ready || mxcimage.loaded)
         onSingleTapped: {
-            TimelineManager.openImageOverlay(room, url, eventId);
+            Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId);
             eventPoint.accepted = true;
         }
         gesturePolicy: TapHandler.ReleaseWithinBounds
