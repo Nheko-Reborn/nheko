@@ -82,11 +82,12 @@ UserSettings::load(std::optional<QString> profile)
 
     font_ = settings.value(QStringLiteral("user/font_family"), "").toString();
 
-    avatarCircles_  = settings.value(QStringLiteral("user/avatar_circles"), true).toBool();
-    useIdenticon_   = settings.value(QStringLiteral("user/use_identicon"), true).toBool();
-    openImageExternal_   = settings.value(QStringLiteral("user/open_image_external"), false).toBool();
-    decryptSidebar_ = settings.value(QStringLiteral("user/decrypt_sidebar"), true).toBool();
-    privacyScreen_  = settings.value(QStringLiteral("user/privacy_screen"), false).toBool();
+    avatarCircles_     = settings.value(QStringLiteral("user/avatar_circles"), true).toBool();
+    useIdenticon_      = settings.value(QStringLiteral("user/use_identicon"), true).toBool();
+    openImageExternal_ = settings.value(QStringLiteral("user/open_image_external"), false).toBool();
+    openVideoExternal_ = settings.value(QStringLiteral("user/open_video_external"), false).toBool();
+    decryptSidebar_    = settings.value(QStringLiteral("user/decrypt_sidebar"), true).toBool();
+    privacyScreen_     = settings.value(QStringLiteral("user/privacy_screen"), false).toBool();
     privacyScreenTimeout_ =
       settings.value(QStringLiteral("user/privacy_screen_timeout"), 0).toInt();
     mobileMode_ = settings.value(QStringLiteral("user/mobile_mode"), false).toBool();
@@ -699,6 +700,16 @@ UserSettings::setOpenImageExternal(bool state)
 }
 
 void
+UserSettings::setOpenVideoExternal(bool state)
+{
+    if (state == openVideoExternal_)
+        return;
+    openVideoExternal_ = state;
+    emit openVideoExternalChanged(openVideoExternal_);
+    save();
+}
+
+void
 UserSettings::applyTheme()
 {
     QFile stylefile;
@@ -776,6 +787,7 @@ UserSettings::save()
     settings.setValue(QStringLiteral("currentProfile"), profile_);
     settings.setValue(QStringLiteral("use_identicon"), useIdenticon_);
     settings.setValue(QStringLiteral("open_image_external"), openImageExternal_);
+    settings.setValue(QStringLiteral("open_video_external"), openVideoExternal_);
 
     settings.endGroup(); // user
 
@@ -880,8 +892,10 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Circular Avatars");
         case UseIdenticon:
             return tr("Use identicons");
-	case OpenImageExternal:
+        case OpenImageExternal:
             return tr("Open images with external program");
+        case OpenVideoExternal:
+            return tr("Open videos with external program");
         case DecryptSidebar:
             return tr("Decrypt messages in sidebar");
         case PrivacyScreen:
@@ -1006,8 +1020,10 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->avatarCircles();
         case UseIdenticon:
             return i->useIdenticon();
-	case OpenImageExternal:
+        case OpenImageExternal:
             return i->openImageExternal();
+        case OpenVideoExternal:
+            return i->openVideoExternal();
         case DecryptSidebar:
             return i->decryptSidebar();
         case PrivacyScreen:
@@ -1150,9 +1166,12 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               "Change the appearance of user avatars in chats.\nOFF - square, ON - circle.");
         case UseIdenticon:
             return tr("Display an identicon instead of a letter when no avatar is set.");
-	case OpenImageExternal:
+        case OpenImageExternal:
             return tr("Click to open image with external program. \nSame as Right-Click>Open "
-		      "in External Program");
+                      "in external program");
+        case OpenVideoExternal:
+            return tr("Click to open video with external program. \nSame as Right-Click>Open "
+                      "in external program");
         case DecryptSidebar:
             return tr("Decrypt the messages shown in the sidebar.\nOnly affects messages in "
                       "encrypted chats.");
@@ -1249,7 +1268,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case AlertOnNotification:
         case AvatarCircles:
         case UseIdenticon:
-	case OpenImageExternal:
+        case OpenImageExternal:
+        case OpenVideoExternal:
         case DecryptSidebar:
         case PrivacyScreen:
         case MobileMode:
@@ -1542,9 +1562,16 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
             } else
                 return false;
         }
-	case OpenImageExternal: {
+        case OpenImageExternal: {
             if (value.userType() == QMetaType::Bool) {
                 i->setOpenImageExternal(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case OpenVideoExternal: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setOpenVideoExternal(value.toBool());
                 return true;
             } else
                 return false;
@@ -1811,6 +1838,9 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::openImageExternalChanged, this, [this]() {
         emit dataChanged(index(OpenImageExternal), index(OpenImageExternal), {Value});
+    });
+    connect(s.get(), &UserSettings::openVideoExternalChanged, this, [this]() {
+        emit dataChanged(index(OpenVideoExternal), index(OpenVideoExternal), {Value});
     });
     connect(s.get(), &UserSettings::privacyScreenChanged, this, [this]() {
         emit dataChanged(index(PrivacyScreen), index(PrivacyScreen), {Value});

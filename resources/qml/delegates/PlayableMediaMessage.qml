@@ -52,7 +52,7 @@ Item {
         height: parent.height - fileInfoLabel.height
 
         TapHandler {
-            onTapped: mediaControls.showControls()
+            onTapped: Settings.openVideoExternal ? room.openMedia(eventId) : mediaControls.showControls()
         }
 
         Image {

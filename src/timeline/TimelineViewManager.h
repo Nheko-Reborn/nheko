@@ -133,4 +133,3 @@ Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationMac)
 Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationReady)
 Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationRequest)
 Q_DECLARE_METATYPE(mtx::events::msg::KeyVerificationStart)
-
