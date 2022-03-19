@@ -1167,11 +1167,13 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case UseIdenticon:
             return tr("Display an identicon instead of a letter when no avatar is set.");
         case OpenImageExternal:
-            return tr("Click to open image with external program. \nSame as Right-Click>Open "
-                      "in external program");
+            return tr("Toggles the behavior of \"Right-Click>Open with external program\" "
+                      "when tapping the image.\nNote that when this option is ON, opened "
+                      "files are left unencrypted on disk and must be manually deleted.");
         case OpenVideoExternal:
-            return tr("Click to open video with external program. \nSame as Right-Click>Open "
-                      "in external program");
+            return tr("Toggles the behavior of \"Right-Click>Open with external program\" "
+                      "when tapping the video.\nNote that when this option is ON, opened "
+                      "files are left unencrypted on disk and must be manually deleted.");
         case DecryptSidebar:
             return tr("Decrypt the messages shown in the sidebar.\nOnly affects messages in "
                       "encrypted chats.");
