@@ -84,6 +84,7 @@ UserSettings::load(std::optional<QString> profile)
 
     avatarCircles_  = settings.value(QStringLiteral("user/avatar_circles"), true).toBool();
     useIdenticon_   = settings.value(QStringLiteral("user/use_identicon"), true).toBool();
+    openImageExternal_   = settings.value(QStringLiteral("user/open_image_external"), false).toBool();
     decryptSidebar_ = settings.value(QStringLiteral("user/decrypt_sidebar"), true).toBool();
     privacyScreen_  = settings.value(QStringLiteral("user/privacy_screen"), false).toBool();
     privacyScreenTimeout_ =
@@ -688,6 +689,16 @@ UserSettings::setUseIdenticon(bool state)
 }
 
 void
+UserSettings::setOpenImageExternal(bool state)
+{
+    if (state == openImageExternal_)
+        return;
+    openImageExternal_ = state;
+    emit openImageExternalChanged(openImageExternal_);
+    save();
+}
+
+void
 UserSettings::applyTheme()
 {
     QFile stylefile;
@@ -764,6 +775,7 @@ UserSettings::save()
     settings.setValue(QStringLiteral("use_stun_server"), useStunServer_);
     settings.setValue(QStringLiteral("currentProfile"), profile_);
     settings.setValue(QStringLiteral("use_identicon"), useIdenticon_);
+    settings.setValue(QStringLiteral("open_image_external"), openImageExternal_);
 
     settings.endGroup(); // user
 
@@ -868,6 +880,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Circular Avatars");
         case UseIdenticon:
             return tr("Use identicons");
+	case OpenImageExternal:
+            return tr("Open images with external program");
         case DecryptSidebar:
             return tr("Decrypt messages in sidebar");
         case PrivacyScreen:
@@ -992,6 +1006,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->avatarCircles();
         case UseIdenticon:
             return i->useIdenticon();
+	case OpenImageExternal:
+            return i->openImageExternal();
         case DecryptSidebar:
             return i->decryptSidebar();
         case PrivacyScreen:
@@ -1134,6 +1150,9 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               "Change the appearance of user avatars in chats.\nOFF - square, ON - circle.");
         case UseIdenticon:
             return tr("Display an identicon instead of a letter when no avatar is set.");
+	case OpenImageExternal:
+            return tr("Click to open image with external program. \nSame as Right-Click>Open "
+		      "in External Program");
         case DecryptSidebar:
             return tr("Decrypt the messages shown in the sidebar.\nOnly affects messages in "
                       "encrypted chats.");
@@ -1230,6 +1249,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case AlertOnNotification:
         case AvatarCircles:
         case UseIdenticon:
+	case OpenImageExternal:
         case DecryptSidebar:
         case PrivacyScreen:
         case MobileMode:
@@ -1522,6 +1542,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
             } else
                 return false;
         }
+	case OpenImageExternal: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setOpenImageExternal(value.toBool());
+                return true;
+            } else
+                return false;
+        }
         case DecryptSidebar: {
             if (value.userType() == QMetaType::Bool) {
                 i->setDecryptSidebar(value.toBool());
@@ -1781,6 +1808,9 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::useIdenticonChanged, this, [this]() {
         emit dataChanged(index(UseIdenticon), index(UseIdenticon), {Value});
+    });
+    connect(s.get(), &UserSettings::openImageExternalChanged, this, [this]() {
+        emit dataChanged(index(OpenImageExternal), index(OpenImageExternal), {Value});
     });
     connect(s.get(), &UserSettings::privacyScreenChanged, this, [this]() {
         emit dataChanged(index(PrivacyScreen), index(PrivacyScreen), {Value});
