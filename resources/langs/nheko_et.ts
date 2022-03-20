@@ -432,6 +432,154 @@
     </message>
 </context>
 <context>
+    <name>DirectChatSetup</name>
+    <message>
+        <location filename="../qml/dialogs/DirectChatSetup.qml" line="+28"/>
+        <source>Room Settings</source>
+        <translation type="unfinished">Jututoa seadistused</translation>
+    </message>
+    <message numerus="yes">
+        <location line="+94"/>
+        <source>%n member(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n liige</numerusform>
+            <numerusform>%n liiget</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+65"/>
+        <source>SETTINGS</source>
+        <translation type="unfinished">SEADISTUSED</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Notifications</source>
+        <translation type="unfinished">Teavitused</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Muted</source>
+        <translation type="unfinished">Summutatud</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Mentions only</source>
+        <translation type="unfinished">Vaid mainimised</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>All messages</source>
+        <translation type="unfinished">Kõik sõnumid</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Room access</source>
+        <translation type="unfinished">Ligipääs jututuppa</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Anyone and guests</source>
+        <translation type="unfinished">Kõik (sealhulgas külalised)</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Anyone</source>
+        <translation type="unfinished">Kõik</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Invited users</source>
+        <translation type="unfinished">Kutsutud kasutajad</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>By knocking</source>
+        <translation type="unfinished">Koputades</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Restricted by membership in other rooms</source>
+        <translation type="unfinished">Piiratud teiste jututubade liikmelisusega</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Encryption</source>
+        <translation type="unfinished">Krüptimine</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>End-to-End Encryption</source>
+        <translation type="unfinished">Läbiv krüptimine</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
+                                Please take note that it can&apos;t be disabled afterwards.</source>
+        <translation type="unfinished">Krüptimine on Nhekos hetkel veel katseline ning nii mõndagi võib ootamatult katki minna. &lt;br&gt;
+Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Sticker &amp; Emote Settings</source>
+        <translation type="unfinished">Kleepsude ja emotikonide seadistused</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Change</source>
+        <translation type="unfinished">Muuda</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Change what packs are enabled, remove packs or create new ones</source>
+        <translation type="unfinished">Muuda missugused efektipakid on kasutusel, eemalda neid ja loo uusi</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Hidden events</source>
+        <translation type="unfinished">Peidetud sündmused</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Configure</source>
+        <translation type="unfinished">Seadista</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select events to hide in this room</source>
+        <translation type="unfinished">Vali sündmused, mida siin jututoas peita</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>INFO</source>
+        <translation type="unfinished">TEAVE</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Internal ID</source>
+        <translation type="unfinished">Sisemine tunnus</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Copied to clipboard</source>
+        <translation type="unfinished">Kopeeritud lõikelauale</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Room Version</source>
+        <translation type="unfinished">Jututoa versioon</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>show less</source>
+        <translation type="unfinished">näita vähem</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>show more</source>
+        <translation type="unfinished">näita rohkem</translation>
+    </message>
+</context>
+<context>
     <name>EditModal</name>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+46"/>
@@ -788,16 +936,6 @@
         <source>Remove</source>
         <translation>Eemalda</translation>
     </message>
-    <message>
-        <location line="+26"/>
-        <source>Cancel</source>
-        <translation>Loobu</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Save</source>
-        <translation>Salvesta</translation>
-    </message>
 </context>
 <context>
     <name>ImagePackSettingsDialog</name>
@@ -855,7 +993,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+270"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+273"/>
         <source>Select a file</source>
         <translation>Vali fail</translation>
     </message>
@@ -1193,7 +1331,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+48"/>
+        <location filename="../qml/MessageInput.qml" line="+56"/>
         <source>Hang up</source>
         <translation>Lõpeta kõne</translation>
     </message>
@@ -1228,7 +1366,7 @@ Näiteks: https://server.minu:8787</translation>
         <translation>Saada</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+11"/>
         <source>You don&apos;t have permission to send messages in this room</source>
         <translation>Sul puuduvad selles jututoas õigused sõnumite saatmiseks</translation>
     </message>
@@ -1236,7 +1374,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+117"/>
+        <location filename="../qml/MessageView.qml" line="+116"/>
         <source>Edit</source>
         <translation>Muuda</translation>
     </message>
@@ -1459,7 +1597,7 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>PlaceCall</name>
     <message>
-        <location filename="../qml/voip/PlaceCall.qml" line="+49"/>
+        <location filename="../qml/voip/PlaceCall.qml" line="+41"/>
         <source>Place a call to %1?</source>
         <translation>Kas helistame kasutajale %1?</translation>
     </message>
@@ -1484,7 +1622,7 @@ Näiteks: https://server.minu:8787</translation>
         <translation>Ekraan</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+16"/>
         <source>Cancel</source>
         <translation>Katkesta</translation>
     </message>
@@ -1653,14 +1791,14 @@ Näiteks: https://server.minu:8787</translation>
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../qml/ReplyPopup.qml" line="+65"/>
+        <location filename="../qml/ReplyPopup.qml" line="+66"/>
         <source>Close</source>
         <translation>Sulge</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Cancel edit</source>
-        <translation>Tühista muudatused</translation>
+        <location line="+16"/>
+        <source>Cancel Edit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1732,7 +1870,7 @@ Näiteks: https://server.minu:8787</translation>
         <translation>Loo uus silt…</translation>
     </message>
     <message>
-        <location line="+297"/>
+        <location line="+298"/>
         <source>Status Message</source>
         <translation>Olekuteade</translation>
     </message>
@@ -2080,7 +2218,7 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
 <context>
     <name>ScreenShare</name>
     <message>
-        <location filename="../qml/voip/ScreenShare.qml" line="+31"/>
+        <location filename="../qml/voip/ScreenShare.qml" line="+29"/>
         <source>Share desktop with %1?</source>
         <translation>Kas sa soovid jagada oma töölauda kasutajaga %1?</translation>
     </message>
@@ -2121,7 +2259,7 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
         <translation>Jaga</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+15"/>
         <source>Preview</source>
         <translation>Eelvaade</translation>
     </message>
@@ -2656,7 +2794,7 @@ Põhjus: %4</translation>
         <translation>Registreerimiseks vajalikku töövoogu ei leidu!</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+56"/>
         <location line="+24"/>
         <location line="+17"/>
         <source>Registration aborted</source>
@@ -2800,8 +2938,8 @@ Põhjus: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+456"/>
-        <location filename="../../src/UserSettingsPage.h" line="+219"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+458"/>
+        <location filename="../../src/UserSettingsPage.h" line="+225"/>
         <source>Default</source>
         <translation>Vaikimisi</translation>
     </message>
@@ -2809,7 +2947,7 @@ Põhjus: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+376"/>
+        <location line="+398"/>
         <source>Theme</source>
         <translation>Teema</translation>
     </message>
@@ -2907,6 +3045,16 @@ Põhjus: %4</translation>
         <location line="+2"/>
         <source>Use identicons</source>
         <translation>Kasuta identikone</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Open images with external program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Open videos with external program</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3099,7 +3247,7 @@ Põhjus: %4</translation>
         <translation>Allkirjastamise juurvõti</translation>
     </message>
     <message>
-        <location line="+91"/>
+        <location line="+95"/>
         <source>Default</source>
         <translation>Vaikimisi</translation>
     </message>
@@ -3210,12 +3358,24 @@ OFF - square, ON - circle.</source>
 Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+5"/>
+        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the image.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the video.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+51"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
         <translation>Selle võtmega verifitseerid oma seadmeid. Kui ta on puhverdatud, siis sinu seadme verifitseerimine märgib selle seadme usaldusväärseks nii sinu muude seadmete kui selliste kasutajate jaoks, kes on sinu verifitseerinud.</translation>
     </message>
     <message>
-        <location line="-56"/>
+        <location line="-64"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation>Sõnumi saabumisel näita teavitust.
@@ -3227,7 +3387,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
         <translation>Kui tunnuspilt on seadistamata, siis kuva tähe asemel identikoni (matemaatilist tunnuspilti).</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+10"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
         <translation>Dekrüpti külgpaanis kuvatavaid sõnumeid.
@@ -3286,7 +3446,7 @@ siis ajajoone vaade hägustub.</translation>
         <translation>Sinu kõige olulisem krüptovõti. See ei pea olema puhverdatud (mis hoiab ära ka võimaliku varastamise) ning teda on vaja vaid sinu muude allkirjavõtmete ringluse jaoks.</translation>
     </message>
     <message>
-        <location line="+392"/>
+        <location line="+408"/>
         <source>Select a file</source>
         <translation>Vali fail</translation>
     </message>
@@ -3446,17 +3606,12 @@ siis ajajoone vaade hägustub.</translation>
 <context>
     <name>dialogs::CreateRoom</name>
     <message>
-        <location filename="../../src/dialogs/CreateRoom.cpp" line="+44"/>
+        <location filename="../../src/dialogs/CreateRoom.cpp" line="+42"/>
         <source>Create room</source>
         <translation>Loo jututuba</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Cancel</source>
-        <translation>Tühista</translation>
-    </message>
-    <message>
-        <location line="+10"/>
+        <location line="+8"/>
         <source>Name</source>
         <translation>Nimi</translation>
     </message>

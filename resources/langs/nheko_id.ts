@@ -431,6 +431,153 @@
     </message>
 </context>
 <context>
+    <name>DirectChatSetup</name>
+    <message>
+        <location filename="../qml/dialogs/DirectChatSetup.qml" line="+28"/>
+        <source>Room Settings</source>
+        <translation type="unfinished">Pengaturan Ruangan</translation>
+    </message>
+    <message numerus="yes">
+        <location line="+94"/>
+        <source>%n member(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n anggota</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+65"/>
+        <source>SETTINGS</source>
+        <translation type="unfinished">PENGATURAN</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Notifications</source>
+        <translation type="unfinished">Notifikasi</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Muted</source>
+        <translation type="unfinished">Bisukan</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Mentions only</source>
+        <translation type="unfinished">Sebutan saja</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>All messages</source>
+        <translation type="unfinished">Semua pesan</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Room access</source>
+        <translation type="unfinished">Akses ruangan</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Anyone and guests</source>
+        <translation type="unfinished">Siapa saja dan tamu</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Anyone</source>
+        <translation type="unfinished">Siapa saja</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Invited users</source>
+        <translation type="unfinished">Pengguna yang diundang</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>By knocking</source>
+        <translation type="unfinished">Dengan mengetuk</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Restricted by membership in other rooms</source>
+        <translation type="unfinished">Dibatasi oleh keanggotaan di ruangan lain</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Encryption</source>
+        <translation type="unfinished">Enkripsi</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>End-to-End Encryption</source>
+        <translation type="unfinished">Enkripsi Ujung-ke-Ujung</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
+                                Please take note that it can&apos;t be disabled afterwards.</source>
+        <translation type="unfinished">Enkripsi saat ini eksperimental dan hal-hal mungkin rusak tanpa terduga. &lt;br&gt;
+Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Sticker &amp; Emote Settings</source>
+        <translation type="unfinished">Pengaturan Stiker &amp; Emote</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Change</source>
+        <translation type="unfinished">Ubah</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Change what packs are enabled, remove packs or create new ones</source>
+        <translation type="unfinished">Ubah paket apa yang diaktifkan, hapus paket atau buat yang baru</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Hidden events</source>
+        <translation type="unfinished">Peristiwa tersembunyi</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Configure</source>
+        <translation type="unfinished">Konfigurasi</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select events to hide in this room</source>
+        <translation type="unfinished">Pilih peristiwa untuk disembunyikan di ruangan ini</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>INFO</source>
+        <translation type="unfinished">INFO</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Internal ID</source>
+        <translation type="unfinished">ID Internal</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Copied to clipboard</source>
+        <translation type="unfinished">Tersalin ke papan klip</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Room Version</source>
+        <translation type="unfinished">Versi Ruangan</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>show less</source>
+        <translation type="unfinished">sembunyikan</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>show more</source>
+        <translation type="unfinished">tampilkan</translation>
+    </message>
+</context>
+<context>
     <name>EditModal</name>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+46"/>
@@ -787,16 +934,6 @@
         <source>Remove</source>
         <translation>Hapus</translation>
     </message>
-    <message>
-        <location line="+26"/>
-        <source>Cancel</source>
-        <translation>Batalkan</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Save</source>
-        <translation>Simpan</translation>
-    </message>
 </context>
 <context>
     <name>ImagePackSettingsDialog</name>
@@ -854,7 +991,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+270"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+273"/>
         <source>Select a file</source>
         <translation>Pilih sebuah file</translation>
     </message>
@@ -1192,7 +1329,7 @@ Misalnya: https://server.my:8787</translation>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+48"/>
+        <location filename="../qml/MessageInput.qml" line="+56"/>
         <source>Hang up</source>
         <translation>Tutup panggilan</translation>
     </message>
@@ -1227,7 +1364,7 @@ Misalnya: https://server.my:8787</translation>
         <translation>Kirim</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+11"/>
         <source>You don&apos;t have permission to send messages in this room</source>
         <translation>Anda tidak memiliki izin untuk mengirim pesan di ruangan ini</translation>
     </message>
@@ -1235,7 +1372,7 @@ Misalnya: https://server.my:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+117"/>
+        <location filename="../qml/MessageView.qml" line="+116"/>
         <source>Edit</source>
         <translation>Edit</translation>
     </message>
@@ -1458,7 +1595,7 @@ Misalnya: https://server.my:8787</translation>
 <context>
     <name>PlaceCall</name>
     <message>
-        <location filename="../qml/voip/PlaceCall.qml" line="+49"/>
+        <location filename="../qml/voip/PlaceCall.qml" line="+41"/>
         <source>Place a call to %1?</source>
         <translation>Lakukan panggilan ke %1?</translation>
     </message>
@@ -1483,7 +1620,7 @@ Misalnya: https://server.my:8787</translation>
         <translation>Layar</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+16"/>
         <source>Cancel</source>
         <translation>Batalkan</translation>
     </message>
@@ -1652,14 +1789,14 @@ Misalnya: https://server.my:8787</translation>
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../qml/ReplyPopup.qml" line="+65"/>
+        <location filename="../qml/ReplyPopup.qml" line="+66"/>
         <source>Close</source>
         <translation>Tutup</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Cancel edit</source>
-        <translation>Batalkan pengeditan</translation>
+        <location line="+16"/>
+        <source>Cancel Edit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1731,7 +1868,7 @@ Misalnya: https://server.my:8787</translation>
         <translation>Membuat tanda baru…</translation>
     </message>
     <message>
-        <location line="+297"/>
+        <location line="+298"/>
         <source>Status Message</source>
         <translation>Pesan Status</translation>
     </message>
@@ -2077,7 +2214,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
 <context>
     <name>ScreenShare</name>
     <message>
-        <location filename="../qml/voip/ScreenShare.qml" line="+31"/>
+        <location filename="../qml/voip/ScreenShare.qml" line="+29"/>
         <source>Share desktop with %1?</source>
         <translation>Bagikan desktop dengan %1?</translation>
     </message>
@@ -2118,7 +2255,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
         <translation>Bagikan</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+15"/>
         <source>Preview</source>
         <translation>Tampilkan</translation>
     </message>
@@ -2652,7 +2789,7 @@ Alasan: %4</translation>
         <translation>Tidak ada alur pendaftaran yang tersedia!</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+56"/>
         <location line="+24"/>
         <location line="+17"/>
         <source>Registration aborted</source>
@@ -2796,8 +2933,8 @@ Alasan: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+456"/>
-        <location filename="../../src/UserSettingsPage.h" line="+219"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+458"/>
+        <location filename="../../src/UserSettingsPage.h" line="+225"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -2805,7 +2942,7 @@ Alasan: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+376"/>
+        <location line="+398"/>
         <source>Theme</source>
         <translation>Tema</translation>
     </message>
@@ -2903,6 +3040,16 @@ Alasan: %4</translation>
         <location line="+2"/>
         <source>Use identicons</source>
         <translation>Gunakan identikon</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Open images with external program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Open videos with external program</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3095,7 +3242,7 @@ Alasan: %4</translation>
         <translation>Kunci penandatanganan utama</translation>
     </message>
     <message>
-        <location line="+91"/>
+        <location line="+95"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -3206,12 +3353,24 @@ OFF - square, ON - circle.</source>
 MATI - kotak, NYALA - bulat.</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+5"/>
+        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the image.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the video.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+51"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
         <translation>Kunci untuk memverifikasi perangkat-perangkat Anda. Jika dicache, memverifikasi salah satu perangkat Anda akan menandainya sebagai terverifikasi untuk perangkat Anda yang lain dan untuk pengguna yang telah memverifikasi Anda.</translation>
     </message>
     <message>
-        <location line="-56"/>
+        <location line="-64"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation>Menampilkan pemberitahuan saat sebuah pesan diterima.
@@ -3223,7 +3382,7 @@ Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</transla
         <translation>Tampilkan sebuah identikon daripada sebuah huruf ketika tidak ada avatar yang diatur.</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+10"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
         <translation>Dekripsi pesan yang ditampilkan di bilah samping.
@@ -3282,7 +3441,7 @@ akan diburamkan.</translation>
         <translation>Kunci Anda yang paling penting. Anda tidak perlu menyimpannya dalam cache, karena tidak menyimpannya akan memperkecil kemungkinannya untuk dicuri dan hanya diperlukan untuk memutar kunci penandatanganan Anda yang lain.</translation>
     </message>
     <message>
-        <location line="+392"/>
+        <location line="+408"/>
         <source>Select a file</source>
         <translation>Pilih sebuah file</translation>
     </message>
@@ -3442,17 +3601,12 @@ akan diburamkan.</translation>
 <context>
     <name>dialogs::CreateRoom</name>
     <message>
-        <location filename="../../src/dialogs/CreateRoom.cpp" line="+44"/>
+        <location filename="../../src/dialogs/CreateRoom.cpp" line="+42"/>
         <source>Create room</source>
         <translation>Buat ruangan</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Cancel</source>
-        <translation>Batalkan</translation>
-    </message>
-    <message>
-        <location line="+10"/>
+        <location line="+8"/>
         <source>Name</source>
         <translation>Nama</translation>
     </message>

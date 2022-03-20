@@ -433,6 +433,154 @@
     </message>
 </context>
 <context>
+    <name>DirectChatSetup</name>
+    <message>
+        <location filename="../qml/dialogs/DirectChatSetup.qml" line="+28"/>
+        <source>Room Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location line="+94"/>
+        <source>%n member(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+65"/>
+        <source>SETTINGS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Muted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Mentions only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>All messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Room access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Anyone and guests</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Anyone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Invited users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>By knocking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Restricted by membership in other rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>End-to-End Encryption</source>
+        <translation type="unfinished">Criptare Capăt-la-Capăt</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
+                                Please take note that it can&apos;t be disabled afterwards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Sticker &amp; Emote Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Change what packs are enabled, remove packs or create new ones</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Hidden events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Configure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select events to hide in this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>INFO</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Internal ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Copied to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Room Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>show less</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>show more</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EditModal</name>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+46"/>
@@ -789,16 +937,6 @@
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location line="+26"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ImagePackSettingsDialog</name>
@@ -856,7 +994,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+270"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+273"/>
         <source>Select a file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1194,7 +1332,7 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+48"/>
+        <location filename="../qml/MessageInput.qml" line="+56"/>
         <source>Hang up</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1229,7 +1367,7 @@ Exemplu: https://serverul.meu:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+11"/>
         <source>You don&apos;t have permission to send messages in this room</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1237,7 +1375,7 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+117"/>
+        <location filename="../qml/MessageView.qml" line="+116"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1460,7 +1598,7 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>PlaceCall</name>
     <message>
-        <location filename="../qml/voip/PlaceCall.qml" line="+49"/>
+        <location filename="../qml/voip/PlaceCall.qml" line="+41"/>
         <source>Place a call to %1?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1485,7 +1623,7 @@ Exemplu: https://serverul.meu:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+16"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1654,13 +1792,13 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../qml/ReplyPopup.qml" line="+65"/>
+        <location filename="../qml/ReplyPopup.qml" line="+66"/>
         <source>Close</source>
         <translation type="unfinished">Închide</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Cancel edit</source>
+        <location line="+16"/>
+        <source>Cancel Edit</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1733,7 +1871,7 @@ Exemplu: https://serverul.meu:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+297"/>
+        <location line="+298"/>
         <source>Status Message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2082,7 +2220,7 @@ Exemplu: https://serverul.meu:8787</translation>
 <context>
     <name>ScreenShare</name>
     <message>
-        <location filename="../qml/voip/ScreenShare.qml" line="+31"/>
+        <location filename="../qml/voip/ScreenShare.qml" line="+29"/>
         <source>Share desktop with %1?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2123,7 +2261,7 @@ Exemplu: https://serverul.meu:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+15"/>
         <source>Preview</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2656,7 +2794,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+56"/>
         <location line="+24"/>
         <location line="+17"/>
         <source>Registration aborted</source>
@@ -2800,8 +2938,8 @@ Reason: %4</source>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+456"/>
-        <location filename="../../src/UserSettingsPage.h" line="+219"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+458"/>
+        <location filename="../../src/UserSettingsPage.h" line="+225"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2809,7 +2947,7 @@ Reason: %4</source>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+376"/>
+        <location line="+398"/>
         <source>Theme</source>
         <translation type="unfinished">Temă</translation>
     </message>
@@ -2906,6 +3044,16 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Use identicons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Open images with external program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Open videos with external program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3099,7 +3247,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+91"/>
+        <location line="+95"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3202,12 +3350,24 @@ OFF - square, ON - circle.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+5"/>
+        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the image.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the video.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+51"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-56"/>
+        <location line="-64"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation type="unfinished">Arată o alertă când primiți un mesaj. Deobicei pictograma aplicației se animează în taskbar.</translation>
@@ -3218,7 +3378,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+10"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
         <translation type="unfinished"></translation>
@@ -3275,7 +3435,7 @@ be blurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+392"/>
+        <location line="+408"/>
         <source>Select a file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3435,17 +3595,12 @@ be blurred.</source>
 <context>
     <name>dialogs::CreateRoom</name>
     <message>
-        <location filename="../../src/dialogs/CreateRoom.cpp" line="+44"/>
+        <location filename="../../src/dialogs/CreateRoom.cpp" line="+42"/>
         <source>Create room</source>
         <translation>Crează cameră</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Cancel</source>
-        <translation>Anulare</translation>
-    </message>
-    <message>
-        <location line="+10"/>
+        <location line="+8"/>
         <source>Name</source>
         <translation>Nume</translation>
     </message>
