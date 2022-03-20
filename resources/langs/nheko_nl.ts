@@ -432,6 +432,154 @@
     </message>
 </context>
 <context>
+    <name>DirectChatSetup</name>
+    <message>
+        <location filename="../qml/dialogs/DirectChatSetup.qml" line="+28"/>
+        <source>Room Settings</source>
+        <translation type="unfinished">Kamerinstellingen</translation>
+    </message>
+    <message numerus="yes">
+        <location line="+94"/>
+        <source>%n member(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n deelnemer</numerusform>
+            <numerusform>%n deelnemers</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+65"/>
+        <source>SETTINGS</source>
+        <translation type="unfinished">INSTELLINGEN</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Notifications</source>
+        <translation type="unfinished">Meldingen</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Muted</source>
+        <translation type="unfinished">Gedempt</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Mentions only</source>
+        <translation type="unfinished">Alleen vermeldingen</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>All messages</source>
+        <translation type="unfinished">Alle berichten</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Room access</source>
+        <translation type="unfinished">Kamertoegang</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Anyone and guests</source>
+        <translation type="unfinished">Iedereen (inclusief gasten)</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Anyone</source>
+        <translation type="unfinished">Iedereen</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Invited users</source>
+        <translation type="unfinished">Uitgenodigde gebruikers</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>By knocking</source>
+        <translation type="unfinished">Door aan te kloppen</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Restricted by membership in other rooms</source>
+        <translation type="unfinished">Beperkt door deelname aan andere kamers</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Encryption</source>
+        <translation type="unfinished">Versleuteling</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>End-to-End Encryption</source>
+        <translation type="unfinished">Eind-tot-eind versleuteling</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
+                                Please take note that it can&apos;t be disabled afterwards.</source>
+        <translation type="unfinished">Versleuteling is momenteel experimenteel en dingen gaan misschien stuk. &lt;br&gt;
+Wees ervan bewust dat het achteraf niet meer uitgeschakeld kan worden.</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Sticker &amp; Emote Settings</source>
+        <translation type="unfinished">Sticker &amp; Emoji instellingen</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Change</source>
+        <translation type="unfinished">Bewerken</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Change what packs are enabled, remove packs or create new ones</source>
+        <translation type="unfinished">Verander welke afbeeldingspakketten zijn ingeschakeld, verwijder ze of voeg nieuwe toe</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Hidden events</source>
+        <translation type="unfinished">Verborgen gebeurtenissen</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Configure</source>
+        <translation type="unfinished">Instellen</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select events to hide in this room</source>
+        <translation type="unfinished">Selecteer gebeurtenissen die verborgen dienen te worden in deze kamer</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>INFO</source>
+        <translation type="unfinished">INFO</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Internal ID</source>
+        <translation type="unfinished">Interne ID</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Copied to clipboard</source>
+        <translation type="unfinished">Gekopieerd naar klembord</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Room Version</source>
+        <translation type="unfinished">Kamerversie</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>show less</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>show more</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EditModal</name>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+46"/>
@@ -788,16 +936,6 @@
         <source>Remove</source>
         <translation>Verwijder</translation>
     </message>
-    <message>
-        <location line="+26"/>
-        <source>Cancel</source>
-        <translation>Annuleren</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Save</source>
-        <translation>Opslaan</translation>
-    </message>
 </context>
 <context>
     <name>ImagePackSettingsDialog</name>
@@ -855,7 +993,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+270"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+273"/>
         <source>Select a file</source>
         <translation>Selecteer een bestand</translation>
     </message>
@@ -1193,7 +1331,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>MessageInput</name>
     <message>
-        <location filename="../qml/MessageInput.qml" line="+48"/>
+        <location filename="../qml/MessageInput.qml" line="+56"/>
         <source>Hang up</source>
         <translation>Ophangen</translation>
     </message>
@@ -1228,7 +1366,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Verstuur</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+11"/>
         <source>You don&apos;t have permission to send messages in this room</source>
         <translation>Je hebt geen toestemming om berichten te versturen in deze kamer</translation>
     </message>
@@ -1236,7 +1374,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+117"/>
+        <location filename="../qml/MessageView.qml" line="+116"/>
         <source>Edit</source>
         <translation>Bewerken</translation>
     </message>
@@ -1459,7 +1597,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>PlaceCall</name>
     <message>
-        <location filename="../qml/voip/PlaceCall.qml" line="+49"/>
+        <location filename="../qml/voip/PlaceCall.qml" line="+41"/>
         <source>Place a call to %1?</source>
         <translation>Bel %1?</translation>
     </message>
@@ -1484,7 +1622,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Scherm</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+16"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
@@ -1653,14 +1791,14 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../qml/ReplyPopup.qml" line="+65"/>
+        <location filename="../qml/ReplyPopup.qml" line="+66"/>
         <source>Close</source>
         <translation>Sluiten</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Cancel edit</source>
-        <translation>Bewerken annuleren</translation>
+        <location line="+16"/>
+        <source>Cancel Edit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1732,7 +1870,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Maak nieuwe markering…</translation>
     </message>
     <message>
-        <location line="+297"/>
+        <location line="+298"/>
         <source>Status Message</source>
         <translation>Statusbericht</translation>
     </message>
@@ -2080,7 +2218,7 @@ Wees ervan bewust dat het achteraf niet meer uitgeschakeld kan worden.</translat
 <context>
     <name>ScreenShare</name>
     <message>
-        <location filename="../qml/voip/ScreenShare.qml" line="+31"/>
+        <location filename="../qml/voip/ScreenShare.qml" line="+29"/>
         <source>Share desktop with %1?</source>
         <translation>Scherm delen met %1?</translation>
     </message>
@@ -2121,7 +2259,7 @@ Wees ervan bewust dat het achteraf niet meer uitgeschakeld kan worden.</translat
         <translation>Delen</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+15"/>
         <source>Preview</source>
         <translation>Voorbeeld</translation>
     </message>
@@ -2656,7 +2794,7 @@ Reden: %4</translation>
         <translation>Geen beschikbare registratiestromen!</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+56"/>
         <location line="+24"/>
         <location line="+17"/>
         <source>Registration aborted</source>
@@ -2800,8 +2938,8 @@ Reden: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+456"/>
-        <location filename="../../src/UserSettingsPage.h" line="+219"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+458"/>
+        <location filename="../../src/UserSettingsPage.h" line="+225"/>
         <source>Default</source>
         <translation>Standaard</translation>
     </message>
@@ -2809,7 +2947,7 @@ Reden: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+376"/>
+        <location line="+398"/>
         <source>Theme</source>
         <translation>Thema</translation>
     </message>
@@ -2907,6 +3045,16 @@ Reden: %4</translation>
         <location line="+2"/>
         <source>Use identicons</source>
         <translation>Gebruik identicons</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Open images with external program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Open videos with external program</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3099,7 +3247,7 @@ Reden: %4</translation>
         <translation>Hoofdsleutel</translation>
     </message>
     <message>
-        <location line="+91"/>
+        <location line="+95"/>
         <source>Default</source>
         <translation>Standaard</translation>
     </message>
@@ -3210,12 +3358,24 @@ OFF - square, ON - circle.</source>
 UIT - vierkant, AAN - cirkel.</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+5"/>
+        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the image.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the video.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+51"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
         <translation>De sleutel om je eigen apparaten te verifiëren. Indien gecached zal het verifiëren van één van je apparaten die ook als geverifieerd markeren voor je anderen apparaten en gebruikers die jou geverifieerd hebben.</translation>
     </message>
     <message>
-        <location line="-56"/>
+        <location line="-64"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation>Activeer een melding als een bericht binnen komt.
@@ -3227,7 +3387,7 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
         <translation>Laat een identicon zien in plaats van een letter wanneer er geen avatar is ingesteld.</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+10"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
         <translation>Ontsleutel de berichten getoond in de zijbalk.
@@ -3286,7 +3446,7 @@ worden geblurt.</translation>
         <translation>Je belangrijkste sleutel. Deze hoeft niet gecached te zijn, en dat maakt het minder waarschijnlijk dat hij ooit gestolen wordt. Hij is alleen nodig om je andere sleutels te roteren.</translation>
     </message>
     <message>
-        <location line="+392"/>
+        <location line="+408"/>
         <source>Select a file</source>
         <translation>Selecteer een bestand</translation>
     </message>
@@ -3446,17 +3606,12 @@ worden geblurt.</translation>
 <context>
     <name>dialogs::CreateRoom</name>
     <message>
-        <location filename="../../src/dialogs/CreateRoom.cpp" line="+44"/>
+        <location filename="../../src/dialogs/CreateRoom.cpp" line="+42"/>
         <source>Create room</source>
         <translation>Kamer maken</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Cancel</source>
-        <translation>Annuleren</translation>
-    </message>
-    <message>
-        <location line="+10"/>
+        <location line="+8"/>
         <source>Name</source>
         <translation>Naam</translation>
     </message>
