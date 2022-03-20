@@ -105,6 +105,10 @@ class UserSettings : public QObject
     Q_PROPERTY(bool disableCertificateValidation READ disableCertificateValidation WRITE
                  setDisableCertificateValidation NOTIFY disableCertificateValidationChanged)
     Q_PROPERTY(bool useIdenticon READ useIdenticon WRITE setUseIdenticon NOTIFY useIdenticonChanged)
+    Q_PROPERTY(bool openImageExternal READ openImageExternal WRITE setOpenImageExternal NOTIFY
+                 openImageExternalChanged)
+    Q_PROPERTY(bool openVideoExternal READ openVideoExternal WRITE setOpenVideoExternal NOTIFY
+                 openVideoExternalChanged)
 
     Q_PROPERTY(QStringList hiddenPins READ hiddenPins WRITE setHiddenPins NOTIFY hiddenPinsChanged)
     Q_PROPERTY(QStringList recentReactions READ recentReactions WRITE setRecentReactions NOTIFY
@@ -184,6 +188,8 @@ public:
     void setHiddenWidgets(QStringList hiddenTags);
     void setRecentReactions(QStringList recent);
     void setUseIdenticon(bool state);
+    void setOpenImageExternal(bool state);
+    void setOpenVideoExternal(bool state);
     void setCollapsedSpaces(QList<QStringList> spaces);
 
     QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
@@ -246,6 +252,8 @@ public:
     QStringList hiddenWidgets() const { return hiddenWidgets_; }
     QStringList recentReactions() const { return recentReactions_; }
     bool useIdenticon() const { return useIdenticon_ && JdenticonProvider::isAvailable(); }
+    bool openImageExternal() const { return openImageExternal_; }
+    bool openVideoExternal() const { return openVideoExternal_; }
     QList<QStringList> collapsedSpaces() const { return collapsedSpaces_; }
 
 signals:
@@ -297,6 +305,8 @@ signals:
     void homeserverChanged(QString homeserver);
     void disableCertificateValidationChanged(bool disabled);
     void useIdenticonChanged(bool state);
+    void openImageExternalChanged(bool state);
+    void openVideoExternalChanged(bool state);
     void hiddenPinsChanged();
     void hiddenWidgetsChanged();
     void recentReactionsChanged();
@@ -361,6 +371,8 @@ private:
     QStringList recentReactions_;
     QList<QStringList> collapsedSpaces_;
     bool useIdenticon_;
+    bool openImageExternal_;
+    bool openVideoExternal_;
 
     QSettings settings;
 
@@ -384,6 +396,8 @@ class UserSettingsModel : public QAbstractListModel
         EmojiFont,
         AvatarCircles,
         UseIdenticon,
+        OpenImageExternal,
+        OpenVideoExternal,
         PrivacyScreen,
         PrivacyScreenTimeout,
 

@@ -2910,6 +2910,16 @@ Reason: %4</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Open images with external program</source>
+        <translation>Open images with external program</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Open videos with external program</source>
+        <translation>Open videos with external program</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Decrypt messages in sidebar</source>
         <translation>Decrypt messages in sidebar</translation>
     </message>
