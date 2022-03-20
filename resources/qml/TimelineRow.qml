@@ -71,17 +71,16 @@ Item {
     Control {
         id: row
         property bool bubbleOnRight : isSender && Settings.bubbles
-        property int bubblePadding: (parent.width-(Settings.smallAvatars? 0 : Nheko.avatarSize+8))/10
-        anchors.rightMargin: isStateEvent? 0 : (isSender || !Settings.bubbles? 0 : bubblePadding)
-        anchors.leftMargin: isStateEvent? 0 :((Settings.smallAvatars? 0 : Nheko.avatarSize+8) + (bubbleOnRight? bubblePadding : 0)) // align bubble with section header
+        anchors.leftMargin: isStateEvent || Settings.smallAvatars? 0 : Nheko.avatarSize+8 // align bubble with section header
         anchors.left: isStateEvent? undefined : (bubbleOnRight? undefined : parent.left)
         anchors.right: isStateEvent? undefined: (bubbleOnRight? parent.right : undefined)
         anchors.horizontalCenter: isStateEvent? parent.horizontalCenter : undefined
-        property int maxWidth: parent.width-anchors.leftMargin-anchors.rightMargin
+        property int maxWidth: (parent.width-(Settings.smallAvatars || isStateEvent? 0 : Nheko.avatarSize+8))*(Settings.bubbles && !isStateEvent? 0.9 : 1)
         width: Settings.bubbles? Math.min(maxWidth,Math.max(reply.implicitWidth+8,contentItem.implicitWidth+metadata.width+20)) : maxWidth
+
         leftPadding: 4
         rightPadding: (Settings.bubbles && !isStateEvent)? 4: 2
-        topPadding: (Settings.bubbles && !isStateEvent)? 4: 2
+        topPadding: rightPadding
         bottomPadding: topPadding
         background: Rectangle {
             property color userColor: TimelineManager.userColor(userId, Nheko.colors.base)

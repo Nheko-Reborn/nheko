@@ -285,6 +285,7 @@ Item {
                     height: userName_.height
                     spacing: 8
                     visible: !isStateEvent && (!isSender || !Settings.bubbles)
+                    id: userInfo
 
                     Avatar {
                         id: messageUserAvatar
@@ -311,17 +312,23 @@ Item {
 
                         target: chat.model
                     }
+                    property int remainingWidth: chat.delegateMaxWidth - spacing - messageUserAvatar.width
                     AbstractButton {
-                        contentItem: Label {
+                        contentItem: ElidedLabel {
                             id: userName_
-                            text: TimelineManager.escapeEmoji(userName)
+                            fullText: userName
                             color: TimelineManager.userColor(userId, Nheko.colors.base)
                             textFormat: Text.RichText
+                            elideWidth: Math.min(userInfo.remainingWidth-Math.min(statusMsg.implicitWidth,userInfo.remainingWidth/3), userName_.fullTextWidth)
                         }
                         ToolTip.visible: hovered
                         ToolTip.delay: Nheko.tooltipDelay
                         ToolTip.text: userId
                         onClicked: chat.model.openUserProfile(userId)
+                        leftInset: 0
+                        rightInset: 0
+                        leftPadding: 0
+                        rightPadding: 0
 
                         CursorShape {
                             anchors.fill: parent
@@ -336,7 +343,7 @@ Item {
                         text: Presence.userStatus(userId)
                         textFormat: Text.PlainText
                         elide: Text.ElideRight
-                        width: chat.delegateMaxWidth - parent.spacing * 2 - userName.implicitWidth - Nheko.avatarSize
+                        width: userInfo.remainingWidth - userName_.width - parent.spacing
                         font.italic: true
 
                         Connections {

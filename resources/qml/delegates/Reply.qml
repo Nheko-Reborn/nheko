@@ -9,6 +9,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
 import im.nheko 1.0
+import "../"
 
 Item {
     id: r
@@ -39,7 +40,7 @@ Item {
 
     height: replyContainer.height
     implicitHeight: replyContainer.height
-    implicitWidth: visible? colorLine.width+replyContainer.implicitWidth : 0
+    implicitWidth: visible? colorLine.width+Math.max(replyContainer.implicitWidth,userName_.fullTextWidth) : 0 // visible? seems to be causing issues
 
     CursorShape {
         anchors.fill: parent
@@ -83,13 +84,15 @@ Item {
         }
 
         AbstractButton {
-            id: userName_
             Layout.leftMargin: 4
-            contentItem: Text {
-
-                text: TimelineManager.escapeEmoji(userName)
+            Layout.fillWidth: true
+            contentItem: ElidedLabel {
+                id: userName_
+                fullText: userName
                 color: r.userColor
                 textFormat: Text.RichText
+                width: parent.width
+                elideWidth: width
             }
             onClicked: room.openUserProfile(userId)
         }
