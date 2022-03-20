@@ -124,7 +124,7 @@ Rectangle {
                     completerTriggeredAt = pos;
                     completer.completerName = type;
                     popup.open();
-                    completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition));
+                    completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition)+messageInput.preeditText);
                 }
 
                 function positionCursorAtEnd() {
