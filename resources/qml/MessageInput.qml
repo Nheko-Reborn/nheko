@@ -157,13 +157,13 @@ Rectangle {
                     else
                         lastChar = ''
                     if (lastChar == '@') {
-                        messageInput.openCompleter(selectionStart, "user");
+                        messageInput.openCompleter(selectionStart-1, "user");
                     } else if (lastChar == ':') {
-                        messageInput.openCompleter(selectionStart, "emoji");
+                        messageInput.openCompleter(selectionStart-1, "emoji");
                     } else if (lastChar == '#') {
-                        messageInput.openCompleter(selectionStart, "roomAliases");
+                        messageInput.openCompleter(selectionStart-1, "roomAliases");
                     } else if (lastChar == "~") {
-                        messageInput.openCompleter(selectionStart, "customEmoji");
+                        messageInput.openCompleter(selectionStart-1, "customEmoji");
                     }
                 }
                 onCursorPositionChanged: {
