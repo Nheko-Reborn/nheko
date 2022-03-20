@@ -175,8 +175,12 @@ Rectangle {
                         popup.close();
 
                     if (popup.opened)
-                        completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition));
+                        completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition)+messageInput.preeditText);
 
+                }
+                onPreeditTextChanged: {
+                    if (popup.opened)
+                        completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition)+messageInput.preeditText);
                 }
                 onSelectionStartChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 onSelectionEndChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
