@@ -147,11 +147,24 @@ Rectangle {
                 bottomPadding: 8
                 leftPadding: inputBar.showAllButtons? 0 : 8
                 focus: true
+                property string lastChar
                 onTextChanged: {
                     if (room)
                         room.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
-
                     forceActiveFocus();
+                    if (cursorPosition > 0)
+                        lastChar = text.charAt(cursorPosition-1)
+                    else
+                        lastChar = ''
+                    if (lastChar == '@') {
+                        messageInput.openCompleter(selectionStart, "user");
+                    } else if (lastChar == ':') {
+                        messageInput.openCompleter(selectionStart, "emoji");
+                    } else if (lastChar == '#') {
+                        messageInput.openCompleter(selectionStart, "roomAliases");
+                    } else if (lastChar == "~") {
+                        messageInput.openCompleter(selectionStart, "customEmoji");
+                    }
                 }
                 onCursorPositionChanged: {
                     if (!room)
@@ -187,14 +200,6 @@ Rectangle {
                         messageInput.text = room.input.previousText();
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_N) {
                         messageInput.text = room.input.nextText();
-                    } else if (event.key == Qt.Key_At) {
-                        messageInput.openCompleter(selectionStart, "user");
-                    } else if (event.key == Qt.Key_Colon) {
-                        messageInput.openCompleter(selectionStart, "emoji");
-                    } else if (event.key == Qt.Key_NumberSign) {
-                        messageInput.openCompleter(selectionStart, "roomAliases");
-                    } else if (event.text == "~") {
-                        messageInput.openCompleter(selectionStart, "customEmoji");
                     } else if (event.key == Qt.Key_Escape && popup.opened) {
                         completer.completerName = "";
                         popup.close();
