@@ -124,6 +124,12 @@ Item {
             color: Nheko.theme.separator
         }
 
+        Button {
+            text: "Send files " + (room ? room.input.uploads.length : 0)
+            visible: room && room.input.uploads.length > 0
+            onClicked: room.input.acceptUploads()
+        }
+
         NotificationWarning {
         }
 

@@ -5,6 +5,7 @@
 
 #include "InputBar.h"
 
+#include <QBuffer>
 #include <QClipboard>
 #include <QDropEvent>
 #include <QFileDialog>
@@ -31,7 +32,6 @@
 #include "TimelineViewManager.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
-#include "dialogs/PreviewUploadOverlay.h"
 
 #include "blurhash.hpp"
 
@@ -67,28 +67,22 @@ InputBar::insertMimeData(const QMimeData *md)
 
     if (md->hasImage()) {
         if (formats.contains(QStringLiteral("image/svg+xml"), Qt::CaseInsensitive)) {
-            showPreview(*md, QLatin1String(""), QStringList(QStringLiteral("image/svg+xml")));
+            startUploadFromMimeData(*md, QStringLiteral("image/svg+xml"));
+        } else if (formats.contains(QStringLiteral("image/png"), Qt::CaseInsensitive)) {
+            startUploadFromMimeData(*md, QStringLiteral("image/png"));
         } else {
-            showPreview(*md, QLatin1String(""), image);
+            startUploadFromMimeData(*md, image.first());
         }
     } else if (!audio.empty()) {
-        showPreview(*md, QLatin1String(""), audio);
+        startUploadFromMimeData(*md, audio.first());
     } else if (!video.empty()) {
-        showPreview(*md, QLatin1String(""), video);
+        startUploadFromMimeData(*md, video.first());
     } else if (md->hasUrls()) {
         // Generic file path for any platform.
-        QString path;
         for (auto &&u : md->urls()) {
             if (u.isLocalFile()) {
-                path = u.toLocalFile();
-                break;
+                startUploadFromPath(u.toLocalFile());
             }
-        }
-
-        if (!path.isEmpty() && QFileInfo::exists(path)) {
-            showPreview(*md, path, formats);
-        } else {
-            nhlog::ui()->warn("Clipboard does not contain any valid file paths.");
         }
     } else if (md->hasFormat(QStringLiteral("x-special/gnome-copied-files"))) {
         // Special case for X11 users. See "Notes for X11 Users" in md.
@@ -108,20 +102,11 @@ InputBar::insertMimeData(const QMimeData *md)
             return;
         }
 
-        QString path;
         for (int i = 1; i < data.size(); ++i) {
             QUrl url{data[i]};
             if (url.isLocalFile()) {
-                path = url.toLocalFile();
-                break;
+                startUploadFromPath(url.toLocalFile());
             }
-        }
-
-        if (!path.isEmpty()) {
-            showPreview(*md, path, formats);
-        } else {
-            nhlog::ui()->warn("Clipboard does not contain any valid file paths: {}",
-                              data.join(", ").toStdString());
         }
     } else if (md->hasText()) {
         emit insertText(md->text());
@@ -275,25 +260,7 @@ InputBar::openFileSelection()
     if (fileName.isEmpty())
         return;
 
-    QMimeDatabase db;
-    QMimeType mime = db.mimeTypeForFile(fileName, QMimeDatabase::MatchContent);
-
-    QFile file{fileName};
-
-    if (!file.open(QIODevice::ReadOnly)) {
-        emit ChatPage::instance()->showNotification(
-          QStringLiteral("Error while reading media: %1").arg(file.errorString()));
-        return;
-    }
-
-    setUploading(true);
-
-    auto bin = file.readAll();
-
-    QMimeData data;
-    data.setData(mime.name(), bin);
-
-    showPreview(data, fileName, QStringList{mime.name()});
+    startUploadFromPath(fileName);
 }
 
 void
@@ -661,123 +628,204 @@ InputBar::command(const QString &command, QString args)
     }
 }
 
-void
-InputBar::showPreview(const QMimeData &source, const QString &path, const QStringList &formats)
+MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
+                         QString mimetype,
+                         QString originalFilename,
+                         bool encrypt,
+                         QObject *parent)
+  : QObject(parent)
+  , source(std::move(source_))
+  , mimetype_(std::move(mimetype))
+  , originalFilename_(QFileInfo(originalFilename).fileName())
+  , encrypt_(encrypt)
 {
-    auto *previewDialog_ = new dialogs::PreviewUploadOverlay(nullptr);
-    previewDialog_->setAttribute(Qt::WA_DeleteOnClose);
+    mimeClass_ = mimetype_.left(mimetype_.indexOf(u'/'));
 
-    // Force SVG to _not_ be handled as an image, but as raw data
-    if (source.hasImage() &&
-        (formats.empty() || formats.front() != QLatin1String("image/svg+xml"))) {
-        if (!formats.empty() && formats.front().startsWith(QLatin1String("image/"))) {
-            // known format, keep as-is
-            previewDialog_->setPreview(qvariant_cast<QImage>(source.imageData()), formats.front());
-        } else {
-            // unknown image format, default to image/png
-            previewDialog_->setPreview(qvariant_cast<QImage>(source.imageData()),
-                                       QStringLiteral("image/png"));
-        }
-    } else if (!path.isEmpty())
-        previewDialog_->setPreview(path);
-    else if (!formats.isEmpty()) {
-        const auto &mime = formats.first();
-        previewDialog_->setPreview(source.data(mime), mime);
-    } else {
-        setUploading(false);
-        previewDialog_->deleteLater();
+    if (!source->isOpen())
+        source->open(QIODevice::ReadOnly);
+
+    data = source->readAll();
+
+    if (!data.size()) {
+        nhlog::ui()->warn("Attempted to upload zero-byte file?! Mimetype {}, filename {}",
+                          mimetype_.toStdString(),
+                          originalFilename_.toStdString());
+        emit uploadFailed(this);
         return;
     }
 
-    connect(previewDialog_, &dialogs::PreviewUploadOverlay::aborted, this, [this]() {
-        setUploading(false);
-    });
+    nhlog::ui()->debug("Mime: {}", mimetype_.toStdString());
+    if (mimeClass_ == u"image") {
+        QImage img = utils::readImage(data);
 
-    connect(
-      previewDialog_,
-      &dialogs::PreviewUploadOverlay::confirmUpload,
-      this,
-      [this](const QByteArray &data, const QString &mime, const QString &fn) {
-          if (!data.size()) {
-              nhlog::ui()->warn("Attempted to upload zero-byte file?! Mimetype {}, filename {}",
-                                mime.toStdString(),
-                                fn.toStdString());
+        dimensions_ = img.size();
+        if (img.height() > 200 && img.width() > 360)
+            img = img.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
+        std::vector<unsigned char> data_;
+        for (int y = 0; y < img.height(); y++) {
+            for (int x = 0; x < img.width(); x++) {
+                auto p = img.pixel(x, y);
+                data_.push_back(static_cast<unsigned char>(qRed(p)));
+                data_.push_back(static_cast<unsigned char>(qGreen(p)));
+                data_.push_back(static_cast<unsigned char>(qBlue(p)));
+            }
+        }
+        blurhash_ =
+          QString::fromStdString(blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
+    }
+}
+
+void
+MediaUpload::startUpload()
+{
+    auto payload = std::string(data.data(), data.size());
+    if (encrypt_) {
+        mtx::crypto::BinaryBuf buf;
+        std::tie(buf, encryptedFile) = mtx::crypto::encrypt_file(std::move(payload));
+        payload                      = mtx::crypto::to_string(buf);
+    }
+    size_ = payload.size();
+
+    http::client()->upload(
+      payload,
+      encryptedFile ? "application/octet-stream" : mimetype_.toStdString(),
+      originalFilename_.toStdString(),
+      [this](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) mutable {
+          if (err) {
+              emit ChatPage::instance()->showNotification(
+                tr("Failed to upload media. Please try again."));
+              nhlog::net()->warn("failed to upload media: {} {} ({})",
+                                 err->matrix_error.error,
+                                 to_string(err->matrix_error.errcode),
+                                 static_cast<int>(err->status_code));
+              emit uploadFailed(this);
               return;
           }
-          setUploading(true);
 
-          setText(QLatin1String(""));
+          auto url = QString::fromStdString(res.content_uri);
+          if (encryptedFile)
+              encryptedFile->url = res.content_uri;
 
-          auto payload = std::string(data.data(), data.size());
-          std::optional<mtx::crypto::EncryptedFile> encryptedFile;
-          if (cache::isRoomEncrypted(room->roomId().toStdString())) {
-              mtx::crypto::BinaryBuf buf;
-              std::tie(buf, encryptedFile) = mtx::crypto::encrypt_file(payload);
-              payload                      = mtx::crypto::to_string(buf);
-          }
-
-          QSize dimensions;
-          QString blurhash;
-          auto mimeClass = mime.left(mime.indexOf(u'/'));
-          nhlog::ui()->debug("Mime: {}", mime.toStdString());
-          if (mimeClass == u"image") {
-              QImage img = utils::readImage(data);
-
-              dimensions = img.size();
-              if (img.height() > 200 && img.width() > 360)
-                  img = img.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
-              std::vector<unsigned char> data_;
-              for (int y = 0; y < img.height(); y++) {
-                  for (int x = 0; x < img.width(); x++) {
-                      auto p = img.pixel(x, y);
-                      data_.push_back(static_cast<unsigned char>(qRed(p)));
-                      data_.push_back(static_cast<unsigned char>(qGreen(p)));
-                      data_.push_back(static_cast<unsigned char>(qBlue(p)));
-                  }
-              }
-              blurhash = QString::fromStdString(
-                blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
-          }
-
-          http::client()->upload(
-            payload,
-            encryptedFile ? "application/octet-stream" : mime.toStdString(),
-            QFileInfo(fn).fileName().toStdString(),
-            [this,
-             filename      = fn,
-             encryptedFile = std::move(encryptedFile),
-             mimeClass,
-             mime,
-             size = payload.size(),
-             dimensions,
-             blurhash](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) mutable {
-                if (err) {
-                    emit ChatPage::instance()->showNotification(
-                      tr("Failed to upload media. Please try again."));
-                    nhlog::net()->warn("failed to upload media: {} {} ({})",
-                                       err->matrix_error.error,
-                                       to_string(err->matrix_error.errcode),
-                                       static_cast<int>(err->status_code));
-                    setUploading(false);
-                    return;
-                }
-
-                auto url = QString::fromStdString(res.content_uri);
-                if (encryptedFile)
-                    encryptedFile->url = res.content_uri;
-
-                if (mimeClass == u"image")
-                    image(filename, encryptedFile, url, mime, size, dimensions, blurhash);
-                else if (mimeClass == u"audio")
-                    audio(filename, encryptedFile, url, mime, size);
-                else if (mimeClass == u"video")
-                    video(filename, encryptedFile, url, mime, size);
-                else
-                    file(filename, encryptedFile, url, mime, size);
-
-                setUploading(false);
-            });
+          emit uploadComplete(this, std::move(url));
       });
+}
+
+void
+InputBar::finalizeUpload(MediaUpload *upload, QString url)
+{
+    auto mime          = upload->mimetype();
+    auto filename      = upload->filename();
+    auto mimeClass     = upload->mimeClass();
+    auto size          = upload->size();
+    auto encryptedFile = upload->encryptedFile_();
+    if (mimeClass == u"image")
+        image(filename, encryptedFile, url, mime, size, upload->dimensions(), upload->blurhash());
+    else if (mimeClass == u"audio")
+        audio(filename, encryptedFile, url, mime, size);
+    else if (mimeClass == u"video")
+        video(filename, encryptedFile, url, mime, size);
+    else
+        file(filename, encryptedFile, url, mime, size);
+
+    removeRunUpload(upload);
+}
+
+void
+InputBar::removeRunUpload(MediaUpload *upload)
+{
+    auto it = std::find_if(runningUploads.begin(),
+                           runningUploads.end(),
+                           [upload](const UploadHandle &h) { return h.get() == upload; });
+    if (it != runningUploads.end())
+        runningUploads.erase(it);
+
+    if (runningUploads.empty())
+        setUploading(false);
+    else
+        runningUploads.front()->startUpload();
+}
+
+void
+InputBar::startUploadFromPath(const QString &path)
+{
+    if (path.isEmpty())
+        return;
+
+    auto file = std::make_unique<QFile>(path);
+
+    if (!file->open(QIODevice::ReadOnly)) {
+        nhlog::ui()->warn(
+          "Failed to open file ({}): {}", path.toStdString(), file->errorString().toStdString());
+        return;
+    }
+
+    QMimeDatabase db;
+    auto mime = db.mimeTypeForFileNameAndData(path, file.get());
+
+    startUpload(std::move(file), path, mime.name());
+}
+
+void
+InputBar::startUploadFromMimeData(const QMimeData &source, const QString &format)
+{
+    auto file = std::make_unique<QBuffer>();
+    file->setData(source.data(format));
+
+    if (!file->open(QIODevice::ReadOnly)) {
+        nhlog::ui()->warn("Failed to open buffer: {}", file->errorString().toStdString());
+        return;
+    }
+
+    startUpload(std::move(file), QStringLiteral(""), format);
+}
+void
+InputBar::startUpload(std::unique_ptr<QIODevice> dev, const QString &orgPath, const QString &format)
+{
+    auto upload =
+      UploadHandle(new MediaUpload(std::move(dev), format, orgPath, room->isEncrypted(), this));
+    connect(upload.get(), &MediaUpload::uploadComplete, this, &InputBar::finalizeUpload);
+
+    unconfirmedUploads.push_back(std::move(upload));
+
+    nhlog::ui()->info("Uploads {}", unconfirmedUploads.size());
+    emit uploadsChanged();
+}
+
+void
+InputBar::acceptUploads()
+{
+    if (unconfirmedUploads.empty())
+        return;
+
+    bool wasntRunning = runningUploads.empty();
+    runningUploads.insert(runningUploads.end(),
+                          std::make_move_iterator(unconfirmedUploads.begin()),
+                          std::make_move_iterator(unconfirmedUploads.end()));
+    unconfirmedUploads.clear();
+    emit uploadsChanged();
+
+    if (wasntRunning) {
+        setUploading(true);
+        runningUploads.front()->startUpload();
+    }
+}
+
+void
+InputBar::declineUploads()
+{
+    unconfirmedUploads.clear();
+    emit uploadsChanged();
+}
+
+QVariantList
+InputBar::uploads() const
+{
+    QVariantList l;
+    l.reserve((int)unconfirmedUploads.size());
+
+    for (auto &e : unconfirmedUploads)
+        l.push_back(QVariant::fromValue(e.get()));
+    return l;
 }
 
 void
