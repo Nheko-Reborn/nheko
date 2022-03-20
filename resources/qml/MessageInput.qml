@@ -224,8 +224,10 @@ Rectangle {
                                 return;
                             }
                         }
-                        room.input.send();
-                        event.accepted = true;
+                        if (!Qt.inputMethod.visible) {
+                            room.input.send();
+                            event.accepted = true;
+                        }
                     } else if (event.key == Qt.Key_Tab && (event.modifiers == Qt.NoModifier || event.modifiers == Qt.ShiftModifier)) {
                         event.accepted = true;
                         if (popup.opened) {
