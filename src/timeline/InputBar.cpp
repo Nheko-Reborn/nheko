@@ -9,6 +9,7 @@
 #include <QDropEvent>
 #include <QFileDialog>
 #include <QGuiApplication>
+#include <QInputMethod>
 #include <QMimeData>
 #include <QMimeDatabase>
 #include <QStandardPaths>
@@ -234,6 +235,8 @@ InputBar::nextText()
 void
 InputBar::send()
 {
+    QInputMethod *im = QGuiApplication::inputMethod();
+    im->commit();
     if (text().trimmed().isEmpty())
         return;
 
