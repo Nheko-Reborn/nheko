@@ -312,21 +312,23 @@ Item {
 
                         target: chat.model
                     }
-                    property int remainingWidth: chat.delegateMaxWidth - parent.spacing * 2 - messageUserAvatar.width
+                    property int remainingWidth: chat.delegateMaxWidth - spacing - messageUserAvatar.width
                     AbstractButton {
                         contentItem: ElidedLabel {
                             id: userName_
                             fullText: userName
                             color: TimelineManager.userColor(userId, Nheko.colors.base)
                             textFormat: Text.RichText
-                            elideWidth: width
-                            width: parent.width
+                            elideWidth: Math.min(userInfo.remainingWidth-Math.min(statusMsg.implicitWidth,userInfo.remainingWidth/3), userName_.fullTextWidth)
                         }
-                        width: Math.min(userInfo.remainingWidth-Math.min(statusMsg.implicitWidth,userInfo.remainingWidth/3), userName_.fullTextWidth)
                         ToolTip.visible: hovered
                         ToolTip.delay: Nheko.tooltipDelay
                         ToolTip.text: userId
                         onClicked: chat.model.openUserProfile(userId)
+                        leftInset: 0
+                        rightInset: 0
+                        leftPadding: 0
+                        rightPadding: 0
 
                         CursorShape {
                             anchors.fill: parent
@@ -341,7 +343,7 @@ Item {
                         text: Presence.userStatus(userId)
                         textFormat: Text.PlainText
                         elide: Text.ElideRight
-                        width: userInfo.remainingWidth - userName_.width
+                        width: userInfo.remainingWidth - userName_.width - parent.spacing
                         font.italic: true
 
                         Connections {
