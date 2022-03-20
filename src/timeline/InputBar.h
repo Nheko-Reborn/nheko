@@ -5,7 +5,9 @@
 
 #pragma once
 
+#include <QAbstractVideoSurface>
 #include <QIODevice>
+#include <QImage>
 #include <QObject>
 #include <QSize>
 #include <QStringList>
@@ -27,6 +29,90 @@ enum class MarkdownOverride
     NOT_SPECIFIED, // no override set
     ON,
     OFF,
+};
+
+class InputVideoSurface : public QAbstractVideoSurface
+{
+    Q_OBJECT
+
+public:
+    InputVideoSurface(QObject *parent)
+      : QAbstractVideoSurface(parent)
+    {}
+
+    bool present(const QVideoFrame &frame) override
+    {
+        QImage::Format format = QImage::Format_Invalid;
+
+        switch (frame.pixelFormat()) {
+        case QVideoFrame::Format_ARGB32:
+            format = QImage::Format_ARGB32;
+            break;
+        case QVideoFrame::Format_ARGB32_Premultiplied:
+            format = QImage::Format_ARGB32_Premultiplied;
+            break;
+        case QVideoFrame::Format_RGB24:
+            format = QImage::Format_RGB888;
+            break;
+        case QVideoFrame::Format_BGR24:
+            format = QImage::Format_BGR888;
+            break;
+        case QVideoFrame::Format_RGB32:
+            format = QImage::Format_RGB32;
+            break;
+        case QVideoFrame::Format_RGB565:
+            format = QImage::Format_RGB16;
+            break;
+        case QVideoFrame::Format_RGB555:
+            format = QImage::Format_RGB555;
+            break;
+        default:
+            format = QImage::Format_Invalid;
+        }
+
+        if (format == QImage::Format_Invalid) {
+            emit newImage({});
+            return false;
+        } else {
+            QVideoFrame frametodraw(frame);
+
+            if (!frametodraw.map(QAbstractVideoBuffer::ReadOnly)) {
+                emit newImage({});
+                return false;
+            }
+
+            // this is a shallow operation. it just refer the frame buffer
+            QImage image(frametodraw.bits(),
+                         frametodraw.width(),
+                         frametodraw.height(),
+                         frametodraw.bytesPerLine(),
+                         QImage::Format_RGB444);
+
+            emit newImage(std::move(image));
+            return true;
+        }
+    }
+
+    QList<QVideoFrame::PixelFormat>
+    supportedPixelFormats(QAbstractVideoBuffer::HandleType type) const override
+    {
+        if (type == QAbstractVideoBuffer::NoHandle) {
+            return {
+              QVideoFrame::Format_ARGB32,
+              QVideoFrame::Format_ARGB32_Premultiplied,
+              QVideoFrame::Format_RGB24,
+              QVideoFrame::Format_BGR24,
+              QVideoFrame::Format_RGB32,
+              QVideoFrame::Format_RGB565,
+              QVideoFrame::Format_RGB555,
+            };
+        } else {
+            return {};
+        }
+    }
+
+signals:
+    void newImage(QImage img);
 };
 
 class MediaUpload : public QObject
@@ -67,6 +153,7 @@ public:
     [[nodiscard]] QString filename() const { return originalFilename_; }
     [[nodiscard]] QString blurhash() const { return blurhash_; }
     [[nodiscard]] uint64_t size() const { return size_; }
+    [[nodiscard]] uint64_t duration() const { return duration_; }
     [[nodiscard]] std::optional<mtx::crypto::EncryptedFile> encryptedFile_()
     {
         return encryptedFile;
@@ -82,6 +169,7 @@ public slots:
 
 private slots:
     void updateThumbnailUrl(QString url) { this->thumbnailUrl_ = std::move(url); }
+    void setThumbnail(QImage img) { this->thumbnail_ = std::move(img); }
 
 public:
     // void uploadThumbnail(QImage img);
@@ -96,8 +184,11 @@ public:
     QString url_;
     std::optional<mtx::crypto::EncryptedFile> encryptedFile;
 
+    QImage thumbnail_;
+
     QSize dimensions_;
-    uint64_t size_ = 0;
+    uint64_t size_     = 0;
+    uint64_t duration_ = 0;
     bool encrypt_;
 };
 
@@ -181,12 +272,15 @@ private:
                const std::optional<mtx::crypto::EncryptedFile> &file,
                const QString &url,
                const QString &mime,
-               uint64_t dsize);
+               uint64_t dsize,
+               uint64_t duration);
     void video(const QString &filename,
                const std::optional<mtx::crypto::EncryptedFile> &file,
                const QString &url,
                const QString &mime,
-               uint64_t dsize);
+               uint64_t dsize,
+               uint64_t duration,
+               const QSize &dimensions);
 
     void startUploadFromPath(const QString &path);
     void startUploadFromMimeData(const QMimeData &source, const QString &format);

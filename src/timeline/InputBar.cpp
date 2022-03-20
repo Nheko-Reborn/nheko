@@ -11,6 +11,8 @@
 #include <QFileDialog>
 #include <QGuiApplication>
 #include <QInputMethod>
+#include <QMediaMetaData>
+#include <QMediaPlayer>
 #include <QMimeData>
 #include <QMimeDatabase>
 #include <QStandardPaths>
@@ -452,13 +454,17 @@ InputBar::audio(const QString &filename,
                 const std::optional<mtx::crypto::EncryptedFile> &file,
                 const QString &url,
                 const QString &mime,
-                uint64_t dsize)
+                uint64_t dsize,
+                uint64_t duration)
 {
     mtx::events::msg::Audio audio;
     audio.info.mimetype = mime.toStdString();
     audio.info.size     = dsize;
     audio.body          = filename.toStdString();
     audio.url           = url.toStdString();
+
+    if (duration > 0)
+        audio.info.duration = duration;
 
     if (file)
         audio.file = file;
@@ -482,12 +488,21 @@ InputBar::video(const QString &filename,
                 const std::optional<mtx::crypto::EncryptedFile> &file,
                 const QString &url,
                 const QString &mime,
-                uint64_t dsize)
+                uint64_t dsize,
+                uint64_t duration,
+                const QSize &dimensions)
 {
     mtx::events::msg::Video video;
     video.info.mimetype = mime.toStdString();
     video.info.size     = dsize;
     video.body          = filename.toStdString();
+
+    if (duration > 0)
+        video.info.duration = duration;
+    if (dimensions.isValid()) {
+        video.info.h = dimensions.height();
+        video.info.w = dimensions.width();
+    }
 
     if (file)
         video.file = file;
@@ -645,6 +660,7 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
         source->open(QIODevice::ReadOnly);
 
     data = source->readAll();
+    source->reset();
 
     if (!data.size()) {
         nhlog::ui()->warn("Attempted to upload zero-byte file?! Mimetype {}, filename {}",
@@ -657,6 +673,8 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
     nhlog::ui()->debug("Mime: {}", mimetype_.toStdString());
     if (mimeClass_ == u"image") {
         QImage img = utils::readImage(data);
+        setThumbnail(img.scaled(
+          std::min(800, img.width()), std::min(800, img.height()), Qt::KeepAspectRatioByExpanding));
 
         dimensions_ = img.size();
         if (img.height() > 200 && img.width() > 360)
@@ -672,6 +690,78 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
         }
         blurhash_ =
           QString::fromStdString(blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
+    } else if (mimeClass_ == u"video" || mimeClass_ == u"audio") {
+        auto mediaPlayer = new QMediaPlayer(
+          this,
+          mimeClass_ == u"video" ? QFlags{QMediaPlayer::StreamPlayback, QMediaPlayer::VideoSurface}
+                                 : QFlags{QMediaPlayer::StreamPlayback});
+        mediaPlayer->setMuted(true);
+
+        if (mimeClass_ == u"video") {
+            auto newSurface = new InputVideoSurface(this);
+            connect(
+              newSurface, &InputVideoSurface::newImage, this, [this, mediaPlayer](QImage img) {
+                  mediaPlayer->stop();
+
+                  nhlog::ui()->debug("Got image {}x{}", img.width(), img.height());
+
+                  this->setThumbnail(img);
+
+                  if (!dimensions_.isValid())
+                      this->dimensions_ = img.size();
+
+                  if (img.height() > 200 && img.width() > 360)
+                      img = img.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
+                  std::vector<unsigned char> data_;
+                  for (int y = 0; y < img.height(); y++) {
+                      for (int x = 0; x < img.width(); x++) {
+                          auto p = img.pixel(x, y);
+                          data_.push_back(static_cast<unsigned char>(qRed(p)));
+                          data_.push_back(static_cast<unsigned char>(qGreen(p)));
+                          data_.push_back(static_cast<unsigned char>(qBlue(p)));
+                      }
+                  }
+                  blurhash_ = QString::fromStdString(
+                    blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
+              });
+            mediaPlayer->setVideoOutput(newSurface);
+        }
+
+        connect(mediaPlayer,
+                qOverload<QMediaPlayer::Error>(&QMediaPlayer::error),
+                this,
+                [this, mediaPlayer](QMediaPlayer::Error error) {
+                    nhlog::ui()->info("Media player error {} and errorStr {}",
+                                      error,
+                                      mediaPlayer->errorString().toStdString());
+                });
+        connect(mediaPlayer,
+                &QMediaPlayer::mediaStatusChanged,
+                [this, mediaPlayer](QMediaPlayer::MediaStatus status) {
+                    nhlog::ui()->info(
+                      "Media player status {} and error {}", status, mediaPlayer->error());
+                });
+        connect(mediaPlayer,
+                qOverload<const QString &, const QVariant &>(&QMediaPlayer::metaDataChanged),
+                [this, mediaPlayer](QString t, QVariant) {
+                    nhlog::ui()->info("Got metadata {}", t.toStdString());
+
+                    if (mediaPlayer->duration() > 0)
+                        this->duration_ = mediaPlayer->duration();
+
+                    dimensions_      = mediaPlayer->metaData(QMediaMetaData::Resolution).toSize();
+                    auto orientation = mediaPlayer->metaData(QMediaMetaData::Orientation).toInt();
+                    if (orientation == 90 || orientation == 270) {
+                        dimensions_.transpose();
+                    }
+                });
+        connect(mediaPlayer, &QMediaPlayer::durationChanged, [this, mediaPlayer](qint64 duration) {
+            if (duration > 0)
+                this->duration_ = mediaPlayer->duration();
+            nhlog::ui()->info("Duration changed {}", duration);
+        });
+        mediaPlayer->setMedia(QMediaContent(originalFilename_), source.get());
+        mediaPlayer->play();
     }
 }
 
@@ -721,9 +811,9 @@ InputBar::finalizeUpload(MediaUpload *upload, QString url)
     if (mimeClass == u"image")
         image(filename, encryptedFile, url, mime, size, upload->dimensions(), upload->blurhash());
     else if (mimeClass == u"audio")
-        audio(filename, encryptedFile, url, mime, size);
+        audio(filename, encryptedFile, url, mime, size, upload->duration());
     else if (mimeClass == u"video")
-        video(filename, encryptedFile, url, mime, size);
+        video(filename, encryptedFile, url, mime, size, upload->duration(), upload->dimensions());
     else
         file(filename, encryptedFile, url, mime, size);
 

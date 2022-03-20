@@ -376,6 +376,7 @@ Item {
             required property string filesize
             required property string url
             required property string thumbnailUrl
+            required property string duration
             required property bool isOnlyEmoji
             required property bool isSender
             required property bool isEncrypted
@@ -492,6 +493,7 @@ Item {
                 filesize: wrapper.filesize
                 url: wrapper.url
                 thumbnailUrl: wrapper.thumbnailUrl
+                duration: wrapper.duration
                 isOnlyEmoji: wrapper.isOnlyEmoji
                 isSender: wrapper.isSender
                 isEncrypted: wrapper.isEncrypted

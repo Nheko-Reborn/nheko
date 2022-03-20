@@ -214,7 +214,7 @@ Rectangle {
 
             Label {
                 Layout.alignment: Qt.AlignRight
-                text: (!control.mediaLoaded) ? "-- / --" : (durationToString(control.positionValue) + " / " + durationToString(control.duration))
+                text: (!control.mediaLoaded ? "-- " : durationToString(control.positionValue)) + " / " + durationToString(control.duration)
                 color: Nheko.colors.text
             }
 

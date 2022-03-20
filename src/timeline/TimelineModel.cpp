@@ -474,6 +474,7 @@ TimelineModel::roleNames() const
       {Timestamp, "timestamp"},
       {Url, "url"},
       {ThumbnailUrl, "thumbnailUrl"},
+      {Duration, "duration"},
       {Blurhash, "blurhash"},
       {Filename, "filename"},
       {Filesize, "filesize"},
@@ -627,6 +628,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         return QVariant(QString::fromStdString(url(event)));
     case ThumbnailUrl:
         return QVariant(QString::fromStdString(thumbnail_url(event)));
+    case Duration:
+        return QVariant(static_cast<qulonglong>(duration(event)));
     case Blurhash:
         return QVariant(QString::fromStdString(blurhash(event)));
     case Filename:
@@ -739,6 +742,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         m.insert(names[Timestamp], data(event, static_cast<int>(Timestamp)));
         m.insert(names[Url], data(event, static_cast<int>(Url)));
         m.insert(names[ThumbnailUrl], data(event, static_cast<int>(ThumbnailUrl)));
+        m.insert(names[Duration], data(event, static_cast<int>(Duration)));
         m.insert(names[Blurhash], data(event, static_cast<int>(Blurhash)));
         m.insert(names[Filename], data(event, static_cast<int>(Filename)));
         m.insert(names[Filesize], data(event, static_cast<int>(Filesize)));

@@ -17,6 +17,7 @@ Item {
     required property double proportionalHeight
     required property int type
     required property int originalWidth
+    required property int duration
     required property string thumbnailUrl
     required property string eventId
     required property string url
@@ -85,7 +86,7 @@ Item {
         anchors.bottom: fileInfoLabel.top
         playingVideo: type == MtxEvent.VideoMessage
         positionValue: mxcmedia.position
-        duration: mxcmedia.duration
+        duration: mediaLoaded ? mxcmedia.duration : content.duration
         mediaLoaded: mxcmedia.loaded
         mediaState: mxcmedia.state
         onPositionChanged: mxcmedia.position = position

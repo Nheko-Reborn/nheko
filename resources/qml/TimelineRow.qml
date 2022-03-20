@@ -41,6 +41,7 @@ Item {
     required property var reactions
     required property int trustlevel
     required property int encryptionError
+    required property int duration
     required property var timestamp
     required property int status
     required property int relatedEventCacheBuster
@@ -128,6 +129,7 @@ Item {
                 userId: r.relatedEventCacheBuster, fromModel(Room.UserId) ?? ""
                 userName: r.relatedEventCacheBuster, fromModel(Room.UserName) ?? ""
                 thumbnailUrl: r.relatedEventCacheBuster, fromModel(Room.ThumbnailUrl) ?? ""
+                duration: r.relatedEventCacheBuster, fromModel(Room.Duration) ?? ""
                 roomTopic: r.relatedEventCacheBuster, fromModel(Room.RoomTopic) ?? ""
                 roomName: r.relatedEventCacheBuster, fromModel(Room.RoomName) ?? ""
                 callType: r.relatedEventCacheBuster, fromModel(Room.CallType) ?? ""
@@ -154,6 +156,7 @@ Item {
                 typeString: r.typeString ?? ""
                 url: r.url
                 thumbnailUrl: r.thumbnailUrl
+                duration: r.duration
                 originalWidth: r.originalWidth
                 isOnlyEmoji: r.isOnlyEmoji
                 isStateEvent: r.isStateEvent
