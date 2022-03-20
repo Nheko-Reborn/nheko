@@ -435,146 +435,146 @@
     <message>
         <location filename="../qml/dialogs/DirectChatSetup.qml" line="+28"/>
         <source>Room Settings</source>
-        <translation type="unfinished">Pengaturan Ruangan</translation>
+        <translation>Pengaturan Ruangan</translation>
     </message>
     <message numerus="yes">
         <location line="+94"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n anggota</numerusform>
         </translation>
     </message>
     <message>
         <location line="+65"/>
         <source>SETTINGS</source>
-        <translation type="unfinished">PENGATURAN</translation>
+        <translation>PENGATURAN</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Notifications</source>
-        <translation type="unfinished">Notifikasi</translation>
+        <translation>Notifikasi</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Muted</source>
-        <translation type="unfinished">Bisukan</translation>
+        <translation>Bisukan</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mentions only</source>
-        <translation type="unfinished">Sebutan saja</translation>
+        <translation>Sebutan saja</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All messages</source>
-        <translation type="unfinished">Semua pesan</translation>
+        <translation>Semua pesan</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Room access</source>
-        <translation type="unfinished">Akses ruangan</translation>
+        <translation>Akses ruangan</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Anyone and guests</source>
-        <translation type="unfinished">Siapa saja dan tamu</translation>
+        <translation>Siapa saja dan tamu</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Anyone</source>
-        <translation type="unfinished">Siapa saja</translation>
+        <translation>Siapa saja</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Invited users</source>
-        <translation type="unfinished">Pengguna yang diundang</translation>
+        <translation>Pengguna yang diundang</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>By knocking</source>
-        <translation type="unfinished">Dengan mengetuk</translation>
+        <translation>Dengan mengetuk</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Restricted by membership in other rooms</source>
-        <translation type="unfinished">Dibatasi oleh keanggotaan di ruangan lain</translation>
+        <translation>Dibatasi oleh keanggotaan di ruangan lain</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Encryption</source>
-        <translation type="unfinished">Enkripsi</translation>
+        <translation>Enkripsi</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished">Enkripsi Ujung-ke-Ujung</translation>
+        <translation>Enkripsi Ujung-ke-Ujung</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished">Enkripsi saat ini eksperimental dan hal-hal mungkin rusak tanpa terduga. &lt;br&gt;
+        <translation>Enkripsi saat ini eksperimental dan hal-hal mungkin rusak tanpa terduga. &lt;br&gt;
 Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Sticker &amp; Emote Settings</source>
-        <translation type="unfinished">Pengaturan Stiker &amp; Emote</translation>
+        <translation>Pengaturan Stiker &amp; Emote</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Change</source>
-        <translation type="unfinished">Ubah</translation>
+        <translation>Ubah</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Change what packs are enabled, remove packs or create new ones</source>
-        <translation type="unfinished">Ubah paket apa yang diaktifkan, hapus paket atau buat yang baru</translation>
+        <translation>Ubah paket apa yang diaktifkan, hapus paket atau buat yang baru</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Hidden events</source>
-        <translation type="unfinished">Peristiwa tersembunyi</translation>
+        <translation>Peristiwa tersembunyi</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Configure</source>
-        <translation type="unfinished">Konfigurasi</translation>
+        <translation>Konfigurasi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select events to hide in this room</source>
-        <translation type="unfinished">Pilih peristiwa untuk disembunyikan di ruangan ini</translation>
+        <translation>Pilih peristiwa untuk disembunyikan di ruangan ini</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>INFO</source>
-        <translation type="unfinished">INFO</translation>
+        <translation>INFO</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Internal ID</source>
-        <translation type="unfinished">ID Internal</translation>
+        <translation>ID Internal</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished">Tersalin ke papan klip</translation>
+        <translation>Tersalin ke papan klip</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Room Version</source>
-        <translation type="unfinished">Versi Ruangan</translation>
+        <translation>Versi Ruangan</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>show less</source>
-        <translation type="unfinished">sembunyikan</translation>
+        <translation>sembunyikan</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>show more</source>
-        <translation type="unfinished">tampilkan</translation>
+        <translation>tampilkan</translation>
     </message>
 </context>
 <context>
@@ -1796,7 +1796,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+16"/>
         <source>Cancel Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Batalkan Pengeditan</translation>
     </message>
 </context>
 <context>
@@ -3044,12 +3044,12 @@ Alasan: %4</translation>
     <message>
         <location line="+2"/>
         <source>Open images with external program</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka gambar dengan program eksternal</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Open videos with external program</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka video dengan program eksternal</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3356,13 +3356,15 @@ MATI - kotak, NYALA - bulat.</translation>
         <location line="+5"/>
         <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the image.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengubah perilaku &quot;Klik-Kanan&gt;Buka dengan program eksternal&quot; ketika mengetuk pada gambar.
+Dicatat bahwa ketika opsi ini NYALA, file yang terbuka ditinggal tidak terenkripsi pada disk dan harus dihapus secara manual.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the video.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengubah perilaku &quot;Klik-Kanan&gt;Buka dengan program eksternal&quot; ketika mengetuk pada video.
+Dicatat bahwa ketika opsi ini NYALA, file yang terbuka ditinggal tidak terenkripsi pada disk dan harus dihapus secara manual.</translation>
     </message>
     <message>
         <location line="+51"/>
