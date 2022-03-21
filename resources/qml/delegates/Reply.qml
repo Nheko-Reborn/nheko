@@ -39,8 +39,7 @@ Item {
     property int relatedEventCacheBuster
     property int maxWidth
 
-    height: replyContainer.height
-    implicitHeight: replyContainer.height
+    implicitHeight: replyContainer.implicitHeight
     implicitWidth: visible? colorLine.width+Math.max(replyContainer.implicitWidth,userName_.fullTextWidth) : 0 // visible? seems to be causing issues
 
     CursorShape {
@@ -96,10 +95,15 @@ Item {
                 elideWidth: width
             }
             onClicked: room.openUserProfile(userId)
+            CursorShape {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+            }
         }
 
         MessageDelegate {
             Layout.leftMargin: 4
+            Layout.maximumHeight: (timelineView.height+Qt.inputMethod.keyboardRectangle.height) / 8 //this also applies to images etc., but isn't that actually reasonable?
             Layout.preferredHeight: height
             id: reply
             blurhash: r.blurhash
@@ -128,6 +132,12 @@ Item {
             enabled: false
             Layout.fillWidth: true
             isReply: true
+            clip: true
+
+            CursorShape {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+            }
         }
 
     }

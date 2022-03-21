@@ -105,7 +105,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.maximumWidth: Settings.bubbles? Number.MAX_VALUE : implicitWidth
                 Layout.bottomMargin: visible? 2 : 0
-                Layout.preferredHeight: height
+                Layout.preferredHeight: implicitHeight
                 id: reply
 
                 function fromModel(role) {

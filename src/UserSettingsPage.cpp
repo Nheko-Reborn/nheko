@@ -1132,7 +1132,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               "text.");
         case Bubbles:
             return tr(
-              "Messages get a bubble background. This also triggers some layout changes (WIP).");
+              "Messages get a bubble background. This also triggers some layout changes.");
         case SmallAvatars:
             return tr("Avatars are resized to fit above the message.");
         case AnimateImagesOnHover:

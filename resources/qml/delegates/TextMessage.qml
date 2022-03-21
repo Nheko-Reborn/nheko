@@ -36,15 +36,8 @@ MatrixText {
     </style>
     " + formatted.replace(/<pre>/g, "<pre style='white-space: pre-wrap; background-color: " + Nheko.colors.alternateBase + "'>").replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
     width: parent.width
-    height: isReply ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : implicitHeight
-    clip: isReply
+    //height: isReply ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : implicitHeight
     selectByMouse: !Settings.mobileMode && !isReply
     font.pointSize: (Settings.enlargeEmojiOnlyMessages && isOnlyEmoji > 0 && isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize
-
-    CursorShape {
-        enabled: isReply
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-    }
 
 }

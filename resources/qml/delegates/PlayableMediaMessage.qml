@@ -25,7 +25,7 @@ Item {
     required property string filesize
     property double divisor: isReply ? 4 : 2
     property int tempWidth: originalWidth < 1? 400: originalWidth
-    implicitWidth: type == MtxEvent.VideoMessage ? Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1)) : 500
+    implicitWidth: type == MtxEvent.VideoMessage ? Math.round(tempWidth*Math.min(((timelineView.height+Qt.inputMethod.keyboardRectange.height)/divisor)/(tempWidth*proportionalHeight), 1)) : 500
     width: Math.min(parent.width, implicitWidth)
     height: (type == MtxEvent.VideoMessage ? width*proportionalHeight : 80) + fileInfoLabel.height
     implicitHeight: height
