@@ -824,14 +824,14 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
         connect(mediaPlayer,
                 qOverload<QMediaPlayer::Error>(&QMediaPlayer::error),
                 this,
-                [this, mediaPlayer](QMediaPlayer::Error error) {
+                [mediaPlayer](QMediaPlayer::Error error) {
                     nhlog::ui()->debug("Media player error {} and errorStr {}",
                                        error,
                                        mediaPlayer->errorString().toStdString());
                 });
         connect(mediaPlayer,
                 &QMediaPlayer::mediaStatusChanged,
-                [this, mediaPlayer](QMediaPlayer::MediaStatus status) {
+                [mediaPlayer](QMediaPlayer::MediaStatus status) {
                     nhlog::ui()->debug(
                       "Media player status {} and error {}", status, mediaPlayer->error());
                 });
@@ -1013,7 +1013,7 @@ InputBar::startUploadFromMimeData(const QMimeData &source, const QString &format
         return;
     }
 
-    startUpload(std::move(file), QStringLiteral(""), format);
+    startUpload(std::move(file), {}, format);
 }
 void
 InputBar::startUpload(std::unique_ptr<QIODevice> dev, const QString &orgPath, const QString &format)
