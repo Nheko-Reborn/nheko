@@ -164,7 +164,7 @@ InputBar::insertMimeData(const QMimeData *md)
             qvariant_cast<QImage>(md->imageData()).save(&buffer, "PNG");
             QMimeData d;
             d.setData(QStringLiteral("image/png"), ba);
-            startUploadFromMimeData(d, image.first());
+            startUploadFromMimeData(d, QStringLiteral("image/png"));
         } else {
             startUploadFromMimeData(*md, image.first());
         }
