@@ -155,9 +155,16 @@ InputBar::insertMimeData(const QMimeData *md)
     if (md->hasImage()) {
         if (formats.contains(QStringLiteral("image/svg+xml"), Qt::CaseInsensitive)) {
             startUploadFromMimeData(*md, QStringLiteral("image/svg+xml"));
-        } else if (formats.contains(QStringLiteral("image/png"), Qt::CaseInsensitive) ||
-                   formats.empty()) {
+        } else if (formats.contains(QStringLiteral("image/png"), Qt::CaseInsensitive)) {
             startUploadFromMimeData(*md, QStringLiteral("image/png"));
+        } else if (image.empty()) {
+            QByteArray ba;
+            QBuffer buffer(&ba);
+            buffer.open(QIODevice::WriteOnly);
+            qvariant_cast<QImage>(md->imageData()).save(&buffer, "PNG");
+            QMimeData d;
+            d.setData(QStringLiteral("image/png"), ba);
+            startUploadFromMimeData(d, image.first());
         } else {
             startUploadFromMimeData(*md, image.first());
         }
