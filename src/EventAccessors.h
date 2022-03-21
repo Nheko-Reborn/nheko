@@ -78,11 +78,15 @@ formattedBodyWithFallback(const mtx::events::collections::TimelineEvents &event)
 
 std::optional<mtx::crypto::EncryptedFile>
 file(const mtx::events::collections::TimelineEvents &event);
+std::optional<mtx::crypto::EncryptedFile>
+thumbnail_file(const mtx::events::collections::TimelineEvents &event);
 
 std::string
 url(const mtx::events::collections::TimelineEvents &event);
 std::string
 thumbnail_url(const mtx::events::collections::TimelineEvents &event);
+uint64_t
+duration(const mtx::events::collections::TimelineEvents &event);
 std::string
 blurhash(const mtx::events::collections::TimelineEvents &event);
 std::string

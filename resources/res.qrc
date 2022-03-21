@@ -46,6 +46,10 @@
         <file>icons/ui/volume-off-indicator.svg</file>
         <file>icons/ui/volume-up.svg</file>
         <file>icons/ui/world.svg</file>
+        <file>icons/ui/music.svg</file>
+        <file>icons/ui/image.svg</file>
+        <file>icons/ui/zip.svg</file>
+        <file>icons/ui/video-file.svg</file>
         <file>icons/emoji-categories/activity.svg</file>
         <file>icons/emoji-categories/flags.svg</file>
         <file>icons/emoji-categories/foods.svg</file>
@@ -95,6 +99,7 @@
         <file>qml/MatrixText.qml</file>
         <file>qml/MatrixTextField.qml</file>
         <file>qml/ToggleButton.qml</file>
+        <file>qml/UploadBox.qml</file>
         <file>qml/MessageInput.qml</file>
         <file>qml/MessageView.qml</file>
         <file>qml/NhekoBusyIndicator.qml</file>

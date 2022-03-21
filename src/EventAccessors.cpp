@@ -139,6 +139,19 @@ struct EventFile
     }
 };
 
+struct EventThumbnailFile
+{
+    template<class Content>
+    using file_t = decltype(Content::info.thumbnail_file);
+    template<class T>
+    std::optional<mtx::crypto::EncryptedFile> operator()(const mtx::events::Event<T> &e)
+    {
+        if constexpr (is_detected<file_t, T>::value)
+            return e.content.info.thumbnail_file;
+        return std::nullopt;
+    }
+};
+
 struct EventUrl
 {
     template<class Content>
@@ -163,9 +176,25 @@ struct EventThumbnailUrl
     std::string operator()(const mtx::events::Event<T> &e)
     {
         if constexpr (is_detected<thumbnail_url_t, T>::value) {
+            if (auto file = EventThumbnailFile{}(e))
+                return file->url;
             return e.content.info.thumbnail_url;
         }
         return "";
+    }
+};
+
+struct EventDuration
+{
+    template<class Content>
+    using thumbnail_url_t = decltype(Content::info.duration);
+    template<class T>
+    uint64_t operator()(const mtx::events::Event<T> &e)
+    {
+        if constexpr (is_detected<thumbnail_url_t, T>::value) {
+            return e.content.info.duration;
+        }
+        return 0;
     }
 };
 
@@ -410,6 +439,12 @@ mtx::accessors::file(const mtx::events::collections::TimelineEvents &event)
     return std::visit(EventFile{}, event);
 }
 
+std::optional<mtx::crypto::EncryptedFile>
+mtx::accessors::thumbnail_file(const mtx::events::collections::TimelineEvents &event)
+{
+    return std::visit(EventThumbnailFile{}, event);
+}
+
 std::string
 mtx::accessors::url(const mtx::events::collections::TimelineEvents &event)
 {
@@ -419,6 +454,11 @@ std::string
 mtx::accessors::thumbnail_url(const mtx::events::collections::TimelineEvents &event)
 {
     return std::visit(EventThumbnailUrl{}, event);
+}
+uint64_t
+mtx::accessors::duration(const mtx::events::collections::TimelineEvents &event)
+{
+    return std::visit(EventDuration{}, event);
 }
 std::string
 mtx::accessors::blurhash(const mtx::events::collections::TimelineEvents &event)

@@ -34,6 +34,7 @@ Item {
     property string roomTopic
     property string roomName
     property string callType
+    property int duration
     property int encryptionError
     property int relatedEventCacheBuster
     property int maxWidth
@@ -112,6 +113,7 @@ Item {
             typeString: r.typeString ?? ""
             url: r.url
             thumbnailUrl: r.thumbnailUrl
+            duration: r.duration
             originalWidth: r.originalWidth
             isOnlyEmoji: r.isOnlyEmoji
             isStateEvent: r.isStateEvent

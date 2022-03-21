@@ -215,6 +215,7 @@ public:
         Timestamp,
         Url,
         ThumbnailUrl,
+        Duration,
         Blurhash,
         Filename,
         Filesize,

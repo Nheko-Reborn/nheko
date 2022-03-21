@@ -18,6 +18,7 @@ Item {
     required property int type
     required property string typeString
     required property int originalWidth
+    required property int duration
     required property string blurhash
     required property string body
     required property string formattedBody
@@ -161,6 +162,7 @@ Item {
                 url: d.url
                 body: d.body
                 filesize: d.filesize
+                duration: d.duration
                 metadataWidth: d.metadataWidth
             }
 
@@ -178,6 +180,7 @@ Item {
                 url: d.url
                 body: d.body
                 filesize: d.filesize
+                duration: d.duration
                 metadataWidth: d.metadataWidth
             }
 

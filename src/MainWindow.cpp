@@ -251,6 +251,8 @@ MainWindow::registerQmlTypes()
     qmlRegisterType<emoji::EmojiModel>("im.nheko.EmojiModel", 1, 0, "EmojiModel");
     qmlRegisterUncreatableType<emoji::Emoji>(
       "im.nheko.EmojiModel", 1, 0, "Emoji", QStringLiteral("Used by emoji models"));
+    qmlRegisterUncreatableType<MediaUpload>(
+      "im.nheko", 1, 0, "MediaUpload", QStringLiteral("MediaUploads can not be created in Qml"));
     qmlRegisterUncreatableMetaObject(emoji::staticMetaObject,
                                      "im.nheko.EmojiModel",
                                      1,

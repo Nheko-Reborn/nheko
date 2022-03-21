@@ -124,6 +124,10 @@ Item {
             color: Nheko.theme.separator
         }
 
+
+        UploadBox {
+        }
+
         NotificationWarning {
         }
 
