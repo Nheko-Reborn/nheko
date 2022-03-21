@@ -124,10 +124,76 @@ Item {
             color: Nheko.theme.separator
         }
 
-        Button {
-            text: "Send files " + (room ? room.input.uploads.length : 0)
+
+        Page {
+            id: uploadPopup
             visible: room && room.input.uploads.length > 0
-            onClicked: room.input.acceptUploads()
+            Layout.preferredHeight: 200
+            clip: true
+
+            Layout.fillWidth: true
+
+            padding: Nheko.paddingMedium
+
+            contentItem: ListView {
+                id: uploadsList
+                anchors.horizontalCenter: parent.horizontalCenter
+                boundsBehavior: Flickable.StopAtBounds
+
+                orientation: ListView.Horizontal
+                width: Math.min(contentWidth, parent.width)
+                model: room ? room.input.uploads : undefined
+                spacing: Nheko.paddingMedium
+
+                delegate: Pane {
+                    padding: Nheko.paddingSmall
+                    height: uploadPopup.availableHeight - buttons.height
+                    width: uploadPopup.availableHeight - buttons.height
+
+                    background: Rectangle {
+                        color: Nheko.colors.window
+                        radius: Nheko.paddingMedium
+                    }
+                    contentItem: ColumnLayout {
+                        Image {
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+
+                            sourceSize.height: height
+                            sourceSize.width: width
+
+                            property string typeStr: switch(modelData.mediaType) {
+                                case MediaUpload.Video: return "video-file";
+                                case MediaUpload.Audio: return "music";
+                                case MediaUpload.Image: return "image";
+                                default: return "zip";
+                            }
+                            source: "image://colorimage/:/icons/icons/ui/"+typeStr+".svg?" + Nheko.colors.buttonText
+                        }
+                        MatrixTextField {
+                            Layout.fillWidth: true
+                            text: modelData.filename
+                            onTextEdited: modelData.filename = text
+                        }
+                    }
+                }
+            }
+
+            footer: DialogButtonBox {
+                id: buttons
+
+                standardButtons: DialogButtonBox.Cancel
+                Button {
+                    text: qsTr("Upload %n file(s)", "", (room ? room.input.uploads.length : 0))
+                    DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+                }
+                onAccepted: room.input.acceptUploads()
+                onRejected: room.input.declineUploads()
+            }
+
+            background: Rectangle {
+                color: Nheko.colors.base
+            }
         }
 
         NotificationWarning {

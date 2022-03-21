@@ -58,7 +58,7 @@ Item {
 
         Image {
             anchors.fill: parent
-            source: thumbnailUrl.replace("mxc://", "image://MxcImage/") + "?scale"
+            source: thumbnailUrl ? thumbnailUrl.replace("mxc://", "image://MxcImage/") + "?scale" : ""
             asynchronous: true
             fillMode: Image.PreserveAspectFit
 

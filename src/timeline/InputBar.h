@@ -53,11 +53,11 @@ class MediaUpload : public QObject
 {
     Q_OBJECT
     //    Q_PROPERTY(bool uploading READ uploading NOTIFY uploadingChanged)
-    //    Q_PROPERTY(MediaType mediaType READ type NOTIFY mediaTypeChanged)
+    Q_PROPERTY(int mediaType READ type NOTIFY mediaTypeChanged)
     //    // https://stackoverflow.com/questions/33422265/pass-qimage-to-qml/68554646#68554646
     //    Q_PROPERTY(QUrl thumbnail READ thumbnail NOTIFY thumbnailChanged)
     //    Q_PROPERTY(QString humanSize READ humanSize NOTIFY huSizeChanged)
-    //    Q_PROPERTY(QString filename READ filename NOTIFY filenameChanged)
+    Q_PROPERTY(QString filename READ filename WRITE setFilename NOTIFY filenameChanged)
     //    Q_PROPERTY(QString mimetype READ mimetype NOTIFY mimetypeChanged)
     //    Q_PROPERTY(int height READ height NOTIFY heightChanged)
     //    Q_PROPERTY(int width READ width NOTIFY widthChanged)
@@ -73,7 +73,7 @@ public:
         Video,
         Audio,
     };
-    Q_ENUM(MediaType);
+    Q_ENUM(MediaType)
 
     explicit MediaUpload(std::unique_ptr<QIODevice> data,
                          QString mimetype,
@@ -81,6 +81,17 @@ public:
                          bool encrypt,
                          QObject *parent = nullptr);
 
+    [[nodiscard]] int type() const
+    {
+        if (mimeClass_ == u"video")
+            return MediaType::Video;
+        else if (mimeClass_ == u"audio")
+            return MediaType::Audio;
+        else if (mimeClass_ == u"image")
+            return MediaType::Image;
+        else
+            return MediaType::File;
+    }
     [[nodiscard]] QString url() const { return url_; }
     [[nodiscard]] QString mimetype() const { return mimetype_; }
     [[nodiscard]] QString mimeClass() const { return mimeClass_; }
@@ -102,9 +113,19 @@ public:
     QString thumbnailUrl() const { return thumbnailUrl_; }
     [[nodiscard]] uint64_t thumbnailSize() const { return thumbnailSize_; }
 
+    void setFilename(QString fn)
+    {
+        if (fn != originalFilename_) {
+            originalFilename_ = std::move(fn);
+            emit filenameChanged();
+        }
+    }
+
 signals:
     void uploadComplete(MediaUpload *self, QString url);
     void uploadFailed(MediaUpload *self);
+    void filenameChanged();
+    void mediaTypeChanged();
 
 public slots:
     void startUpload();
