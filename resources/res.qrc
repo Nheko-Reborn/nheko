@@ -99,6 +99,7 @@
         <file>qml/MatrixText.qml</file>
         <file>qml/MatrixTextField.qml</file>
         <file>qml/ToggleButton.qml</file>
+        <file>qml/UploadBox.qml</file>
         <file>qml/MessageInput.qml</file>
         <file>qml/MessageView.qml</file>
         <file>qml/NhekoBusyIndicator.qml</file>

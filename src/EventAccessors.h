@@ -78,6 +78,8 @@ formattedBodyWithFallback(const mtx::events::collections::TimelineEvents &event)
 
 std::optional<mtx::crypto::EncryptedFile>
 file(const mtx::events::collections::TimelineEvents &event);
+std::optional<mtx::crypto::EncryptedFile>
+thumbnail_file(const mtx::events::collections::TimelineEvents &event);
 
 std::string
 url(const mtx::events::collections::TimelineEvents &event);

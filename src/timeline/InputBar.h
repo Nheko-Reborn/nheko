@@ -12,6 +12,7 @@
 #include <QSize>
 #include <QStringList>
 #include <QTimer>
+#include <QUrl>
 #include <QVariantList>
 #include <deque>
 #include <memory>
@@ -52,15 +53,11 @@ signals:
 class MediaUpload : public QObject
 {
     Q_OBJECT
-    //    Q_PROPERTY(bool uploading READ uploading NOTIFY uploadingChanged)
     Q_PROPERTY(int mediaType READ type NOTIFY mediaTypeChanged)
-    //    // https://stackoverflow.com/questions/33422265/pass-qimage-to-qml/68554646#68554646
-    //    Q_PROPERTY(QUrl thumbnail READ thumbnail NOTIFY thumbnailChanged)
+    // https://stackoverflow.com/questions/33422265/pass-qimage-to-qml/68554646#68554646
+    Q_PROPERTY(QUrl thumbnail READ thumbnailDataUrl NOTIFY thumbnailChanged)
     //    Q_PROPERTY(QString humanSize READ humanSize NOTIFY huSizeChanged)
     Q_PROPERTY(QString filename READ filename WRITE setFilename NOTIFY filenameChanged)
-    //    Q_PROPERTY(QString mimetype READ mimetype NOTIFY mimetypeChanged)
-    //    Q_PROPERTY(int height READ height NOTIFY heightChanged)
-    //    Q_PROPERTY(int width READ width NOTIFY widthChanged)
 
     // thumbnail video
     // https://stackoverflow.com/questions/26229633/display-on-screen-using-qabstractvideosurface
@@ -111,6 +108,7 @@ public:
 
     QImage thumbnailImg() const { return thumbnail_; }
     QString thumbnailUrl() const { return thumbnailUrl_; }
+    QUrl thumbnailDataUrl() const;
     [[nodiscard]] uint64_t thumbnailSize() const { return thumbnailSize_; }
 
     void setFilename(QString fn)
@@ -125,13 +123,18 @@ signals:
     void uploadComplete(MediaUpload *self, QString url);
     void uploadFailed(MediaUpload *self);
     void filenameChanged();
+    void thumbnailChanged();
     void mediaTypeChanged();
 
 public slots:
     void startUpload();
 
 private slots:
-    void setThumbnail(QImage img) { this->thumbnail_ = std::move(img); }
+    void setThumbnail(QImage img)
+    {
+        this->thumbnail_ = std::move(img);
+        emit thumbnailChanged();
+    }
 
 public:
     // void uploadThumbnail(QImage img);
@@ -225,6 +228,10 @@ private:
                const QString &mime,
                uint64_t dsize,
                const QSize &dimensions,
+               const std::optional<mtx::crypto::EncryptedFile> &thumbnailEncryptedFile,
+               const QString &thumbnailUrl,
+               uint64_t thumbnailSize,
+               const QSize &thumbnailDimensions,
                const QString &blurhash);
     void file(const QString &filename,
               const std::optional<mtx::crypto::EncryptedFile> &encryptedFile,
@@ -245,9 +252,10 @@ private:
                uint64_t duration,
                const QSize &dimensions,
                const std::optional<mtx::crypto::EncryptedFile> &thumbnailEncryptedFile,
-               const QString &thumnailUrl,
-               uint64_t thumnailSize,
-               const QSize &thumbnailDimensions);
+               const QString &thumbnailUrl,
+               uint64_t thumbnailSize,
+               const QSize &thumbnailDimensions,
+               const QString &blurhash);
 
     void startUploadFromPath(const QString &path);
     void startUploadFromMimeData(const QMimeData &source, const QString &format);

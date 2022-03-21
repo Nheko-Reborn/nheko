@@ -1367,6 +1367,10 @@ struct SendMessageVisitor
             if (encInfo)
                 emit model_->newEncryptedImage(encInfo.value());
 
+            encInfo = mtx::accessors::thumbnail_file(msg);
+            if (encInfo)
+                emit model_->newEncryptedImage(encInfo.value());
+
             model_->sendEncryptedMessage(msg, Event);
         } else {
             msg.type = Event;

@@ -139,6 +139,19 @@ struct EventFile
     }
 };
 
+struct EventThumbnailFile
+{
+    template<class Content>
+    using file_t = decltype(Content::info.thumbnail_file);
+    template<class T>
+    std::optional<mtx::crypto::EncryptedFile> operator()(const mtx::events::Event<T> &e)
+    {
+        if constexpr (is_detected<file_t, T>::value)
+            return e.content.info.thumbnail_file;
+        return std::nullopt;
+    }
+};
+
 struct EventUrl
 {
     template<class Content>
@@ -163,6 +176,8 @@ struct EventThumbnailUrl
     std::string operator()(const mtx::events::Event<T> &e)
     {
         if constexpr (is_detected<thumbnail_url_t, T>::value) {
+            if (auto file = EventThumbnailFile{}(e))
+                return file->url;
             return e.content.info.thumbnail_url;
         }
         return "";
@@ -422,6 +437,12 @@ std::optional<mtx::crypto::EncryptedFile>
 mtx::accessors::file(const mtx::events::collections::TimelineEvents &event)
 {
     return std::visit(EventFile{}, event);
+}
+
+std::optional<mtx::crypto::EncryptedFile>
+mtx::accessors::thumbnail_file(const mtx::events::collections::TimelineEvents &event)
+{
+    return std::visit(EventThumbnailFile{}, event);
 }
 
 std::string

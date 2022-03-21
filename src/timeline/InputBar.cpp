@@ -17,7 +17,6 @@
 #include <QMimeDatabase>
 #include <QStandardPaths>
 #include <QTextBoundaryFinder>
-#include <QUrl>
 
 #include <QRegularExpression>
 #include <mtx/responses/common.hpp>
@@ -38,6 +37,20 @@
 #include "blurhash.hpp"
 
 static constexpr size_t INPUT_HISTORY_SIZE = 10;
+
+QUrl
+MediaUpload::thumbnailDataUrl() const
+{
+    if (thumbnail_.isNull())
+        return {};
+
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+    thumbnail_.save(&buffer, "PNG");
+    QString base64 = QString::fromUtf8(byteArray.toBase64());
+    return QString("data:image/png;base64,") + base64;
+}
 
 bool
 InputVideoSurface::present(const QVideoFrame &frame)
@@ -465,6 +478,10 @@ InputBar::image(const QString &filename,
                 const QString &mime,
                 uint64_t dsize,
                 const QSize &dimensions,
+                const std::optional<mtx::crypto::EncryptedFile> &thumbnailEncryptedFile,
+                const QString &thumbnailUrl,
+                uint64_t thumbnailSize,
+                const QSize &thumbnailDimensions,
                 const QString &blurhash)
 {
     mtx::events::msg::Image image;
@@ -479,6 +496,18 @@ InputBar::image(const QString &filename,
         image.file = file;
     else
         image.url = url.toStdString();
+
+    if (!thumbnailUrl.isEmpty()) {
+        if (thumbnailEncryptedFile)
+            image.info.thumbnail_file = thumbnailEncryptedFile;
+        else
+            image.info.thumbnail_url = thumbnailUrl.toStdString();
+
+        image.info.thumbnail_info.h        = thumbnailDimensions.height();
+        image.info.thumbnail_info.w        = thumbnailDimensions.width();
+        image.info.thumbnail_info.size     = thumbnailSize;
+        image.info.thumbnail_info.mimetype = "image/png";
+    }
 
     if (!room->reply().isEmpty()) {
         image.relations.relations.push_back(
@@ -566,11 +595,13 @@ InputBar::video(const QString &filename,
                 const std::optional<mtx::crypto::EncryptedFile> &thumbnailEncryptedFile,
                 const QString &thumbnailUrl,
                 uint64_t thumbnailSize,
-                const QSize &thumbnailDimensions)
+                const QSize &thumbnailDimensions,
+                const QString &blurhash)
 {
     mtx::events::msg::Video video;
     video.info.mimetype = mime.toStdString();
     video.info.size     = dsize;
+    video.info.blurhash = blurhash.toStdString();
     video.body          = filename.toStdString();
 
     if (duration > 0)
@@ -946,7 +977,17 @@ InputBar::finalizeUpload(MediaUpload *upload, QString url)
     auto size          = upload->size();
     auto encryptedFile = upload->encryptedFile_();
     if (mimeClass == u"image")
-        image(filename, encryptedFile, url, mime, size, upload->dimensions(), upload->blurhash());
+        image(filename,
+              encryptedFile,
+              url,
+              mime,
+              size,
+              upload->dimensions(),
+              upload->thumbnailEncryptedFile_(),
+              upload->thumbnailUrl(),
+              upload->thumbnailSize(),
+              upload->thumbnailImg().size(),
+              upload->blurhash());
     else if (mimeClass == u"audio")
         audio(filename, encryptedFile, url, mime, size, upload->duration());
     else if (mimeClass == u"video")
@@ -960,7 +1001,8 @@ InputBar::finalizeUpload(MediaUpload *upload, QString url)
               upload->thumbnailEncryptedFile_(),
               upload->thumbnailUrl(),
               upload->thumbnailSize(),
-              upload->thumbnailImg().size());
+              upload->thumbnailImg().size(),
+              upload->blurhash());
     else
         file(filename, encryptedFile, url, mime, size);
 
