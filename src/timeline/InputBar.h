@@ -40,76 +40,10 @@ public:
       : QAbstractVideoSurface(parent)
     {}
 
-    bool present(const QVideoFrame &frame) override
-    {
-        QImage::Format format = QImage::Format_Invalid;
-
-        switch (frame.pixelFormat()) {
-        case QVideoFrame::Format_ARGB32:
-            format = QImage::Format_ARGB32;
-            break;
-        case QVideoFrame::Format_ARGB32_Premultiplied:
-            format = QImage::Format_ARGB32_Premultiplied;
-            break;
-        case QVideoFrame::Format_RGB24:
-            format = QImage::Format_RGB888;
-            break;
-        case QVideoFrame::Format_BGR24:
-            format = QImage::Format_BGR888;
-            break;
-        case QVideoFrame::Format_RGB32:
-            format = QImage::Format_RGB32;
-            break;
-        case QVideoFrame::Format_RGB565:
-            format = QImage::Format_RGB16;
-            break;
-        case QVideoFrame::Format_RGB555:
-            format = QImage::Format_RGB555;
-            break;
-        default:
-            format = QImage::Format_Invalid;
-        }
-
-        if (format == QImage::Format_Invalid) {
-            emit newImage({});
-            return false;
-        } else {
-            QVideoFrame frametodraw(frame);
-
-            if (!frametodraw.map(QAbstractVideoBuffer::ReadOnly)) {
-                emit newImage({});
-                return false;
-            }
-
-            // this is a shallow operation. it just refer the frame buffer
-            QImage image(frametodraw.bits(),
-                         frametodraw.width(),
-                         frametodraw.height(),
-                         frametodraw.bytesPerLine(),
-                         QImage::Format_RGB444);
-
-            emit newImage(std::move(image));
-            return true;
-        }
-    }
+    bool present(const QVideoFrame &frame) override;
 
     QList<QVideoFrame::PixelFormat>
-    supportedPixelFormats(QAbstractVideoBuffer::HandleType type) const override
-    {
-        if (type == QAbstractVideoBuffer::NoHandle) {
-            return {
-              QVideoFrame::Format_ARGB32,
-              QVideoFrame::Format_ARGB32_Premultiplied,
-              QVideoFrame::Format_RGB24,
-              QVideoFrame::Format_BGR24,
-              QVideoFrame::Format_RGB32,
-              QVideoFrame::Format_RGB565,
-              QVideoFrame::Format_RGB555,
-            };
-        } else {
-            return {};
-        }
-    }
+    supportedPixelFormats(QAbstractVideoBuffer::HandleType type) const override;
 
 signals:
     void newImage(QImage img);
@@ -158,7 +92,15 @@ public:
     {
         return encryptedFile;
     }
+    [[nodiscard]] std::optional<mtx::crypto::EncryptedFile> thumbnailEncryptedFile_()
+    {
+        return thumbnailEncryptedFile;
+    }
     [[nodiscard]] QSize dimensions() const { return dimensions_; }
+
+    QImage thumbnailImg() const { return thumbnail_; }
+    QString thumbnailUrl() const { return thumbnailUrl_; }
+    [[nodiscard]] uint64_t thumbnailSize() const { return thumbnailSize_; }
 
 signals:
     void uploadComplete(MediaUpload *self, QString url);
@@ -168,7 +110,6 @@ public slots:
     void startUpload();
 
 private slots:
-    void updateThumbnailUrl(QString url) { this->thumbnailUrl_ = std::move(url); }
     void setThumbnail(QImage img) { this->thumbnail_ = std::move(img); }
 
 public:
@@ -182,13 +123,14 @@ public:
     QString blurhash_;
     QString thumbnailUrl_;
     QString url_;
-    std::optional<mtx::crypto::EncryptedFile> encryptedFile;
+    std::optional<mtx::crypto::EncryptedFile> encryptedFile, thumbnailEncryptedFile;
 
     QImage thumbnail_;
 
     QSize dimensions_;
-    uint64_t size_     = 0;
-    uint64_t duration_ = 0;
+    uint64_t size_          = 0;
+    uint64_t thumbnailSize_ = 0;
+    uint64_t duration_      = 0;
     bool encrypt_;
 };
 
@@ -280,7 +222,11 @@ private:
                const QString &mime,
                uint64_t dsize,
                uint64_t duration,
-               const QSize &dimensions);
+               const QSize &dimensions,
+               const std::optional<mtx::crypto::EncryptedFile> &thumbnailEncryptedFile,
+               const QString &thumnailUrl,
+               uint64_t thumnailSize,
+               const QSize &thumbnailDimensions);
 
     void startUploadFromPath(const QString &path);
     void startUploadFromMimeData(const QMimeData &source, const QString &format);

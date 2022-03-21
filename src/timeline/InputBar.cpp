@@ -39,6 +39,78 @@
 
 static constexpr size_t INPUT_HISTORY_SIZE = 10;
 
+bool
+InputVideoSurface::present(const QVideoFrame &frame)
+{
+    QImage::Format format = QImage::Format_Invalid;
+
+    switch (frame.pixelFormat()) {
+    case QVideoFrame::Format_ARGB32:
+        format = QImage::Format_ARGB32;
+        break;
+    case QVideoFrame::Format_ARGB32_Premultiplied:
+        format = QImage::Format_ARGB32_Premultiplied;
+        break;
+    case QVideoFrame::Format_RGB24:
+        format = QImage::Format_RGB888;
+        break;
+    case QVideoFrame::Format_BGR24:
+        format = QImage::Format_BGR888;
+        break;
+    case QVideoFrame::Format_RGB32:
+        format = QImage::Format_RGB32;
+        break;
+    case QVideoFrame::Format_RGB565:
+        format = QImage::Format_RGB16;
+        break;
+    case QVideoFrame::Format_RGB555:
+        format = QImage::Format_RGB555;
+        break;
+    default:
+        format = QImage::Format_Invalid;
+    }
+
+    if (format == QImage::Format_Invalid) {
+        emit newImage({});
+        return false;
+    } else {
+        QVideoFrame frametodraw(frame);
+
+        if (!frametodraw.map(QAbstractVideoBuffer::ReadOnly)) {
+            emit newImage({});
+            return false;
+        }
+
+        // this is a shallow operation. it just refer the frame buffer
+        QImage image(frametodraw.bits(),
+                     frametodraw.width(),
+                     frametodraw.height(),
+                     frametodraw.bytesPerLine(),
+                     format);
+
+        emit newImage(std::move(image));
+        return true;
+    }
+}
+
+QList<QVideoFrame::PixelFormat>
+InputVideoSurface::supportedPixelFormats(QAbstractVideoBuffer::HandleType type) const
+{
+    if (type == QAbstractVideoBuffer::NoHandle) {
+        return {
+          QVideoFrame::Format_ARGB32,
+          QVideoFrame::Format_ARGB32_Premultiplied,
+          QVideoFrame::Format_RGB24,
+          QVideoFrame::Format_BGR24,
+          QVideoFrame::Format_RGB32,
+          QVideoFrame::Format_RGB565,
+          QVideoFrame::Format_RGB555,
+        };
+    } else {
+        return {};
+    }
+}
+
 void
 InputBar::paste(bool fromMouse)
 {
@@ -490,7 +562,11 @@ InputBar::video(const QString &filename,
                 const QString &mime,
                 uint64_t dsize,
                 uint64_t duration,
-                const QSize &dimensions)
+                const QSize &dimensions,
+                const std::optional<mtx::crypto::EncryptedFile> &thumbnailEncryptedFile,
+                const QString &thumbnailUrl,
+                uint64_t thumbnailSize,
+                const QSize &thumbnailDimensions)
 {
     mtx::events::msg::Video video;
     video.info.mimetype = mime.toStdString();
@@ -508,6 +584,18 @@ InputBar::video(const QString &filename,
         video.file = file;
     else
         video.url = url.toStdString();
+
+    if (!thumbnailUrl.isEmpty()) {
+        if (thumbnailEncryptedFile)
+            video.info.thumbnail_file = thumbnailEncryptedFile;
+        else
+            video.info.thumbnail_url = thumbnailUrl.toStdString();
+
+        video.info.thumbnail_info.h        = thumbnailDimensions.height();
+        video.info.thumbnail_info.w        = thumbnailDimensions.width();
+        video.info.thumbnail_info.size     = thumbnailSize;
+        video.info.thumbnail_info.mimetype = "image/png";
+    }
 
     if (!room->reply().isEmpty()) {
         video.relations.relations.push_back(
@@ -703,6 +791,12 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
               newSurface, &InputVideoSurface::newImage, this, [this, mediaPlayer](QImage img) {
                   mediaPlayer->stop();
 
+                  auto orientation = mediaPlayer->metaData(QMediaMetaData::Orientation).toInt();
+                  if (orientation == 90 || orientation == 270 || orientation == 180) {
+                      img =
+                        img.transformed(QTransform().rotate(orientation), Qt::SmoothTransformation);
+                  }
+
                   nhlog::ui()->debug("Got image {}x{}", img.width(), img.height());
 
                   this->setThumbnail(img);
@@ -731,20 +825,20 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
                 qOverload<QMediaPlayer::Error>(&QMediaPlayer::error),
                 this,
                 [this, mediaPlayer](QMediaPlayer::Error error) {
-                    nhlog::ui()->info("Media player error {} and errorStr {}",
-                                      error,
-                                      mediaPlayer->errorString().toStdString());
+                    nhlog::ui()->debug("Media player error {} and errorStr {}",
+                                       error,
+                                       mediaPlayer->errorString().toStdString());
                 });
         connect(mediaPlayer,
                 &QMediaPlayer::mediaStatusChanged,
                 [this, mediaPlayer](QMediaPlayer::MediaStatus status) {
-                    nhlog::ui()->info(
+                    nhlog::ui()->debug(
                       "Media player status {} and error {}", status, mediaPlayer->error());
                 });
         connect(mediaPlayer,
                 qOverload<const QString &, const QVariant &>(&QMediaPlayer::metaDataChanged),
                 [this, mediaPlayer](QString t, QVariant) {
-                    nhlog::ui()->info("Got metadata {}", t.toStdString());
+                    nhlog::ui()->debug("Got metadata {}", t.toStdString());
 
                     if (mediaPlayer->duration() > 0)
                         this->duration_ = mediaPlayer->duration();
@@ -758,7 +852,7 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
         connect(mediaPlayer, &QMediaPlayer::durationChanged, [this, mediaPlayer](qint64 duration) {
             if (duration > 0)
                 this->duration_ = mediaPlayer->duration();
-            nhlog::ui()->info("Duration changed {}", duration);
+            nhlog::ui()->debug("Duration changed {}", duration);
         });
         mediaPlayer->setMedia(QMediaContent(originalFilename_), source.get());
         mediaPlayer->play();
@@ -768,6 +862,45 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
 void
 MediaUpload::startUpload()
 {
+    if (!thumbnail_.isNull() && thumbnailUrl_.isEmpty()) {
+        QByteArray ba;
+        QBuffer buffer(&ba);
+        buffer.open(QIODevice::WriteOnly);
+        thumbnail_.save(&buffer, "PNG");
+        auto payload = std::string(ba.data(), ba.size());
+        if (encrypt_) {
+            mtx::crypto::BinaryBuf buf;
+            std::tie(buf, thumbnailEncryptedFile) = mtx::crypto::encrypt_file(std::move(payload));
+            payload                               = mtx::crypto::to_string(buf);
+        }
+        thumbnailSize_ = payload.size();
+
+        http::client()->upload(
+          payload,
+          encryptedFile ? "application/octet-stream" : "image/png",
+          "",
+          [this](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) mutable {
+              if (err) {
+                  emit ChatPage::instance()->showNotification(
+                    tr("Failed to upload media. Please try again."));
+                  nhlog::net()->warn("failed to upload media: {} {} ({})",
+                                     err->matrix_error.error,
+                                     to_string(err->matrix_error.errcode),
+                                     static_cast<int>(err->status_code));
+                  thumbnail_ = QImage();
+                  startUpload();
+                  return;
+              }
+
+              thumbnailUrl_ = QString::fromStdString(res.content_uri);
+              if (thumbnailEncryptedFile)
+                  thumbnailEncryptedFile->url = res.content_uri;
+
+              startUpload();
+          });
+        return;
+    }
+
     auto payload = std::string(data.data(), data.size());
     if (encrypt_) {
         mtx::crypto::BinaryBuf buf;
@@ -779,7 +912,7 @@ MediaUpload::startUpload()
     http::client()->upload(
       payload,
       encryptedFile ? "application/octet-stream" : mimetype_.toStdString(),
-      originalFilename_.toStdString(),
+      encrypt_ ? "" : originalFilename_.toStdString(),
       [this](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) mutable {
           if (err) {
               emit ChatPage::instance()->showNotification(
@@ -813,7 +946,17 @@ InputBar::finalizeUpload(MediaUpload *upload, QString url)
     else if (mimeClass == u"audio")
         audio(filename, encryptedFile, url, mime, size, upload->duration());
     else if (mimeClass == u"video")
-        video(filename, encryptedFile, url, mime, size, upload->duration(), upload->dimensions());
+        video(filename,
+              encryptedFile,
+              url,
+              mime,
+              size,
+              upload->duration(),
+              upload->dimensions(),
+              upload->thumbnailEncryptedFile_(),
+              upload->thumbnailUrl(),
+              upload->thumbnailSize(),
+              upload->thumbnailImg().size());
     else
         file(filename, encryptedFile, url, mime, size);
 
@@ -877,7 +1020,7 @@ InputBar::startUpload(std::unique_ptr<QIODevice> dev, const QString &orgPath, co
 
     unconfirmedUploads.push_back(std::move(upload));
 
-    nhlog::ui()->info("Uploads {}", unconfirmedUploads.size());
+    nhlog::ui()->debug("Uploads {}", unconfirmedUploads.size());
     emit uploadsChanged();
 }
 
