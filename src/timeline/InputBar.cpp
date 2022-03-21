@@ -850,11 +850,15 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
                     }
                 });
         connect(mediaPlayer, &QMediaPlayer::durationChanged, [this, mediaPlayer](qint64 duration) {
-            if (duration > 0)
+            if (duration > 0) {
                 this->duration_ = mediaPlayer->duration();
+                if (mimeClass_ == u"audio")
+                    mediaPlayer->stop();
+            }
             nhlog::ui()->debug("Duration changed {}", duration);
         });
         mediaPlayer->setMedia(QMediaContent(originalFilename_), source.get());
+
         mediaPlayer->play();
     }
 }
