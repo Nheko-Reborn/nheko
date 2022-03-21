@@ -155,7 +155,8 @@ InputBar::insertMimeData(const QMimeData *md)
     if (md->hasImage()) {
         if (formats.contains(QStringLiteral("image/svg+xml"), Qt::CaseInsensitive)) {
             startUploadFromMimeData(*md, QStringLiteral("image/svg+xml"));
-        } else if (formats.contains(QStringLiteral("image/png"), Qt::CaseInsensitive)) {
+        } else if (formats.contains(QStringLiteral("image/png"), Qt::CaseInsensitive) ||
+                   formats.empty()) {
             startUploadFromMimeData(*md, QStringLiteral("image/png"));
         } else {
             startUploadFromMimeData(*md, image.first());
