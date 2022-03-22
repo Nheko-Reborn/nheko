@@ -21,7 +21,7 @@ Item {
 
     property int tempWidth: originalWidth < 1? 400: originalWidth
 
-    implicitWidth: Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1))
+    implicitWidth: Math.round(tempWidth*Math.min((timelineView.fullHeight/divisor)/(tempWidth*proportionalHeight), 1))
     width: Math.min(parent.width,implicitWidth)
     height: width*proportionalHeight
 
