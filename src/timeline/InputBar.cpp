@@ -879,7 +879,11 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
             }
             nhlog::ui()->debug("Duration changed {}", duration);
         });
-        mediaPlayer->setMedia(QMediaContent(originalFilename_), source.get());
+
+        auto originalFile = qobject_cast<QFile *>(source.get());
+
+        mediaPlayer->setMedia(
+          QMediaContent(originalFile ? originalFile->fileName() : originalFilename_), source.get());
 
         mediaPlayer->play();
     }
