@@ -65,9 +65,9 @@ MxcImageRunnable::run()
     MxcImageProvider::download(
       m_id,
       m_requestedSize,
-      [this](QString, QSize, QImage image, QString) {
+      [this](QString id, QSize, QImage image, QString) {
           if (image.isNull()) {
-              emit error(QStringLiteral("Failed to download image."));
+              emit error(QStringLiteral("Failed to download image: %1").arg(id));
           } else {
               emit done(image);
           }
@@ -157,7 +157,6 @@ MxcImageProvider::download(const QString &id,
                                                             mtx::http::RequestErr err) {
               if (err || res.empty()) {
                   download(id, QSize(), then, crop, radius);
-
                   return;
               }
 
@@ -237,6 +236,7 @@ MxcImageProvider::download(const QString &id,
                 const std::string &originalFilename,
                 mtx::http::RequestErr err) {
                   if (err) {
+                      nhlog::net()->error("Failed to download {}: {}", id.toStdString(), *err);
                       then(id, QSize(), {}, QLatin1String(""));
                       return;
                   }
@@ -244,6 +244,8 @@ MxcImageProvider::download(const QString &id,
                   auto tempData = res;
                   QFile f(fileInfo.absoluteFilePath());
                   if (!f.open(QIODevice::Truncate | QIODevice::WriteOnly)) {
+                      nhlog::net()->error(
+                        "Failed to write {}: {}", id.toStdString(), f.errorString().toStdString());
                       then(id, QSize(), {}, QLatin1String(""));
                       return;
                   }

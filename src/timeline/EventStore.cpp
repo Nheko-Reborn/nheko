@@ -722,6 +722,9 @@ EventStore::decryptEvent(const IdIndex &idx,
     auto encInfo = mtx::accessors::file(decryptionResult.event.value());
     if (encInfo)
         emit newEncryptedImage(encInfo.value());
+    encInfo = mtx::accessors::thumbnail_file(decryptionResult.event.value());
+    if (encInfo)
+        emit newEncryptedImage(encInfo.value());
 
     return asCacheEntry(std::move(decryptionResult));
 }
