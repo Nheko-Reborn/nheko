@@ -65,6 +65,7 @@ Item {
             property var attachedPos: chat.contentY, attached ? chat.mapFromItem(attached, attached ? attached.width - width : 0, -height) : null
             padding: Nheko.paddingSmall
 
+            hoverEnabled: true
             visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
             x: attached ? attachedPos.x : 0
             y: attached ? attachedPos.y + Nheko.paddingMedium : 0
