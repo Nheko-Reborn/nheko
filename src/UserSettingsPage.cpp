@@ -1131,8 +1131,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               "Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
               "text.");
         case Bubbles:
-            return tr(
-              "Messages get a bubble background. This also triggers some layout changes (WIP).");
+            return tr("Messages get a bubble background. This also triggers some layout changes.");
         case SmallAvatars:
             return tr("Avatars are resized to fit above the message.");
         case AnimateImagesOnHover:
