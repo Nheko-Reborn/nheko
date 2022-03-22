@@ -55,33 +55,7 @@ MediaUpload::thumbnailDataUrl() const
 bool
 InputVideoSurface::present(const QVideoFrame &frame)
 {
-    QImage::Format format = QImage::Format_Invalid;
-
-    switch (frame.pixelFormat()) {
-    case QVideoFrame::Format_ARGB32:
-        format = QImage::Format_ARGB32;
-        break;
-    case QVideoFrame::Format_ARGB32_Premultiplied:
-        format = QImage::Format_ARGB32_Premultiplied;
-        break;
-    case QVideoFrame::Format_RGB24:
-        format = QImage::Format_RGB888;
-        break;
-    case QVideoFrame::Format_BGR24:
-        format = QImage::Format_BGR888;
-        break;
-    case QVideoFrame::Format_RGB32:
-        format = QImage::Format_RGB32;
-        break;
-    case QVideoFrame::Format_RGB565:
-        format = QImage::Format_RGB16;
-        break;
-    case QVideoFrame::Format_RGB555:
-        format = QImage::Format_RGB555;
-        break;
-    default:
-        format = QImage::Format_Invalid;
-    }
+    QImage::Format format = QVideoFrame::imageFormatFromPixelFormat(frame.pixelFormat());
 
     if (format == QImage::Format_Invalid) {
         emit newImage({});
@@ -95,11 +69,14 @@ InputVideoSurface::present(const QVideoFrame &frame)
         }
 
         // this is a shallow operation. it just refer the frame buffer
-        QImage image(frametodraw.bits(),
+        QImage image(qAsConst(frametodraw).bits(),
                      frametodraw.width(),
                      frametodraw.height(),
                      frametodraw.bytesPerLine(),
                      format);
+        image.detach();
+
+        frametodraw.unmap();
 
         emit newImage(std::move(image));
         return true;
@@ -820,14 +797,16 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
     } else if (mimeClass_ == u"video" || mimeClass_ == u"audio") {
         auto mediaPlayer = new QMediaPlayer(
           this,
-          mimeClass_ == u"video" ? QFlags{QMediaPlayer::StreamPlayback, QMediaPlayer::VideoSurface}
-                                 : QFlags{QMediaPlayer::StreamPlayback});
+          mimeClass_ == u"video" ? QFlags{QMediaPlayer::VideoSurface} : QMediaPlayer::Flags{});
         mediaPlayer->setMuted(true);
 
         if (mimeClass_ == u"video") {
             auto newSurface = new InputVideoSurface(this);
             connect(
               newSurface, &InputVideoSurface::newImage, this, [this, mediaPlayer](QImage img) {
+                  if (img.size().isEmpty())
+                      return;
+
                   mediaPlayer->stop();
 
                   auto orientation = mediaPlayer->metaData(QMediaMetaData::Orientation).toInt();
@@ -882,10 +861,14 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
                     if (mediaPlayer->duration() > 0)
                         this->duration_ = mediaPlayer->duration();
 
-                    dimensions_      = mediaPlayer->metaData(QMediaMetaData::Resolution).toSize();
-                    auto orientation = mediaPlayer->metaData(QMediaMetaData::Orientation).toInt();
-                    if (orientation == 90 || orientation == 270) {
-                        dimensions_.transpose();
+                    auto dimensions = mediaPlayer->metaData(QMediaMetaData::Resolution).toSize();
+                    if (!dimensions.isEmpty()) {
+                        dimensions_ = dimensions;
+                        auto orientation =
+                          mediaPlayer->metaData(QMediaMetaData::Orientation).toInt();
+                        if (orientation == 90 || orientation == 270) {
+                            dimensions_.transpose();
+                        }
                     }
                 });
         connect(mediaPlayer, &QMediaPlayer::durationChanged, [this, mediaPlayer](qint64 duration) {
