@@ -124,7 +124,7 @@ Rectangle {
                     completerTriggeredAt = pos;
                     completer.completerName = type;
                     popup.open();
-                    completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition));
+                    completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition)+messageInput.preeditText);
                 }
 
                 function positionCursorAtEnd() {
@@ -147,11 +147,24 @@ Rectangle {
                 bottomPadding: 8
                 leftPadding: inputBar.showAllButtons? 0 : 8
                 focus: true
+                property string lastChar
                 onTextChanged: {
                     if (room)
                         room.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
-
                     forceActiveFocus();
+                    if (cursorPosition > 0)
+                        lastChar = text.charAt(cursorPosition-1)
+                    else
+                        lastChar = ''
+                    if (lastChar == '@') {
+                        messageInput.openCompleter(selectionStart-1, "user");
+                    } else if (lastChar == ':') {
+                        messageInput.openCompleter(selectionStart-1, "emoji");
+                    } else if (lastChar == '#') {
+                        messageInput.openCompleter(selectionStart-1, "roomAliases");
+                    } else if (lastChar == "~") {
+                        messageInput.openCompleter(selectionStart-1, "customEmoji");
+                    }
                 }
                 onCursorPositionChanged: {
                     if (!room)
@@ -162,8 +175,12 @@ Rectangle {
                         popup.close();
 
                     if (popup.opened)
-                        completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition));
+                        completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition)+messageInput.preeditText);
 
+                }
+                onPreeditTextChanged: {
+                    if (popup.opened)
+                        completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition)+messageInput.preeditText);
                 }
                 onSelectionStartChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 onSelectionEndChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
@@ -187,14 +204,6 @@ Rectangle {
                         messageInput.text = room.input.previousText();
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_N) {
                         messageInput.text = room.input.nextText();
-                    } else if (event.key == Qt.Key_At) {
-                        messageInput.openCompleter(selectionStart, "user");
-                    } else if (event.key == Qt.Key_Colon) {
-                        messageInput.openCompleter(selectionStart, "emoji");
-                    } else if (event.key == Qt.Key_NumberSign) {
-                        messageInput.openCompleter(selectionStart, "roomAliases");
-                    } else if (event.text == "~") {
-                        messageInput.openCompleter(selectionStart, "customEmoji");
                     } else if (event.key == Qt.Key_Escape && popup.opened) {
                         completer.completerName = "";
                         popup.close();
@@ -215,8 +224,10 @@ Rectangle {
                                 return;
                             }
                         }
-                        room.input.send();
-                        event.accepted = true;
+                        if (!Qt.inputMethod.visible) {
+                            room.input.send();
+                            event.accepted = true;
+                        }
                     } else if (event.key == Qt.Key_Tab && (event.modifiers == Qt.NoModifier || event.modifiers == Qt.ShiftModifier)) {
                         event.accepted = true;
                         if (popup.opened) {
