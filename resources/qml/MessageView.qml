@@ -67,7 +67,7 @@ Item {
 
             visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
             x: attached ? attachedPos.x : 0
-            y: attached ? attachedPos.y : 0
+            y: attached ? attachedPos.y + Nheko.paddingMedium : 0
             z: 10
 
             background: Rectangle {
