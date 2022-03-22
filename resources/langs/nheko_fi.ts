@@ -436,7 +436,7 @@
     <message>
         <location filename="../qml/dialogs/DirectChatSetup.qml" line="+28"/>
         <source>Room Settings</source>
-        <translation type="unfinished">Huoneen asetukset</translation>
+        <translation>Huoneen asetukset</translation>
     </message>
     <message numerus="yes">
         <location line="+94"/>
@@ -449,67 +449,67 @@
     <message>
         <location line="+65"/>
         <source>SETTINGS</source>
-        <translation type="unfinished">ASETUKSET</translation>
+        <translation>ASETUKSET</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Notifications</source>
-        <translation type="unfinished">Ilmoitukset</translation>
+        <translation>Ilmoitukset</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Muted</source>
-        <translation type="unfinished">Mykistetty</translation>
+        <translation>Mykistetty</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mentions only</source>
-        <translation type="unfinished">Vain maininnat</translation>
+        <translation>Vain maininnat</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All messages</source>
-        <translation type="unfinished">Kaikki viestit</translation>
+        <translation>Kaikki viestit</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Room access</source>
-        <translation type="unfinished">Huoneeseen pääsy</translation>
+        <translation>Huoneeseen pääsy</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Anyone and guests</source>
-        <translation type="unfinished">Kaikki ja vieraat</translation>
+        <translation>Kaikki ja vieraat</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Anyone</source>
-        <translation type="unfinished">Kuka tahansa</translation>
+        <translation>Kuka tahansa</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Invited users</source>
-        <translation type="unfinished">Kutsutut käyttäjät</translation>
+        <translation>Kutsutut käyttäjät</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>By knocking</source>
-        <translation type="unfinished">Koputtamalla</translation>
+        <translation>Koputtamalla</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Restricted by membership in other rooms</source>
-        <translation type="unfinished">Rajoitettu jäsenyyden perusteella muissa huoneissa</translation>
+        <translation>Rajoitettu jäsenyyden perusteella muissa huoneissa</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Encryption</source>
-        <translation type="unfinished">Salaus</translation>
+        <translation>Salaus</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished">Päästä-päähän-salaus</translation>
+        <translation>Päästä-päähän-salaus</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -520,17 +520,17 @@
     <message>
         <location line="+16"/>
         <source>Sticker &amp; Emote Settings</source>
-        <translation type="unfinished">Tarra- ja emojiasetukset</translation>
+        <translation>Tarra- ja emojiasetukset</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Change</source>
-        <translation type="unfinished">Muuta</translation>
+        <translation>Muuta</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Change what packs are enabled, remove packs or create new ones</source>
-        <translation type="unfinished">Muuta mitkä pakkaukset ovat sallittuja, poista pakkauksia tai luo uusia</translation>
+        <translation>Muuta mitkä pakkaukset ovat sallittuja, poista pakkauksia tai luo uusia</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -550,12 +550,12 @@
     <message>
         <location line="+16"/>
         <source>INFO</source>
-        <translation type="unfinished">TIETOA</translation>
+        <translation>TIETOA</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Internal ID</source>
-        <translation type="unfinished">Sisäinen ID</translation>
+        <translation>Sisäinen ID</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -565,7 +565,7 @@
     <message>
         <location line="+19"/>
         <source>Room Version</source>
-        <translation type="unfinished">Huoneen versio</translation>
+        <translation>Huoneen versio</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -843,7 +843,7 @@
     <message>
         <location line="+16"/>
         <source>Stickers</source>
-        <translation type="unfinished">Tarrat</translation>
+        <translation>Tarrat</translation>
     </message>
 </context>
 <context>
@@ -1724,12 +1724,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+7"/>
         <source>Device name</source>
-        <translation type="unfinished">Laitteen nimi</translation>
+        <translation>Laitteen nimi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation type="unfinished">Tämän laitteen nimi, joka näytetään muille kun laitteitasi vahvistetaan. Oletusta käytetään jos mitään ei anneta.</translation>
+        <translation>Tämän laitteen nimi, joka näytetään muille kun laitteitasi vahvistetaan. Oletusta käytetään jos mitään ei anneta.</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -2944,42 +2944,42 @@ Reason: %4</source>
     <message>
         <location line="+398"/>
         <source>Theme</source>
-        <translation type="unfinished">Teema</translation>
+        <translation>Teema</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Scale factor</source>
-        <translation type="unfinished">Mittakerroin</translation>
+        <translation>Mittakerroin</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished">Korosta viestiä kun kohdistin on päällä</translation>
+        <translation>Korosta viestiä kun kohdistin on päällä</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished">Iso emoji aikajanalla</translation>
+        <translation>Iso emoji aikajanalla</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Minimize to tray</source>
-        <translation type="unfinished">Pienennä ilmoitusalueelle</translation>
+        <translation>Pienennä ilmoitusalueelle</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Start in tray</source>
-        <translation type="unfinished">Aloita ilmoitusalueella</translation>
+        <translation>Aloita ilmoitusalueella</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Group&apos;s sidebar</source>
-        <translation type="unfinished">Ryhmäsivupalkki</translation>
+        <translation>Ryhmäsivupalkki</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished">Lähetä viestit Markdownina</translation>
+        <translation>Lähetä viestit Markdownina</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2994,47 +2994,47 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
-        <translation type="unfinished">Toista animoidut kuvat vain kun kohdistin on niiden päällä</translation>
+        <translation>Toista animoidut kuvat vain kun kohdistin on niiden päällä</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Typing notifications</source>
-        <translation type="unfinished">Kirjoitusilmoitukset</translation>
+        <translation>Kirjoitusilmoitukset</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sort rooms by unreads</source>
-        <translation type="unfinished">Lajittele huoneet lukemattomien mukaan</translation>
+        <translation>Lajittele huoneet lukemattomien mukaan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons in timeline</source>
-        <translation type="unfinished">Näytä painikkeet aikajanalla</translation>
+        <translation>Näytä painikkeet aikajanalla</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation type="unfinished">Rajoita aikajanan leveyttä</translation>
+        <translation>Rajoita aikajanan leveyttä</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Lukukuittaukset</translation>
+        <translation>Lukukuittaukset</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Desktop notifications</source>
-        <translation type="unfinished">Työpöytäilmoitukset</translation>
+        <translation>Työpöytäilmoitukset</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Alert on notification</source>
-        <translation type="unfinished">Hälytä ilmoituksesta</translation>
+        <translation>Hälytä ilmoituksesta</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Circular Avatars</source>
-        <translation type="unfinished">Pyöreät avatarit</translation>
+        <translation>Pyöreät avatarit</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3054,82 +3054,82 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished">Pura viestien salaus sivupalkissa</translation>
+        <translation>Pura viestien salaus sivupalkissa</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy Screen</source>
-        <translation type="unfinished">Yksityisyysnäkymä</translation>
+        <translation>Yksityisyysnäkymä</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation type="unfinished">Yksityisyysnäkymän aikakatkaisu (sekunneissa [0-3600])</translation>
+        <translation>Yksityisyysnäkymän aikakatkaisu (sekunneissa [0-3600])</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Touchscreen mode</source>
-        <translation type="unfinished">Kosketusnäyttötila</translation>
+        <translation>Kosketusnäyttötila</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Font size</source>
-        <translation type="unfinished">Fonttikoko</translation>
+        <translation>Fonttikoko</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Font Family</source>
-        <translation type="unfinished">Fonttiperhe</translation>
+        <translation>Fonttiperhe</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished">Emojien fonttiperhe</translation>
+        <translation>Emojien fonttiperhe</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ringtone</source>
-        <translation type="unfinished">Soittoääni</translation>
+        <translation>Soittoääni</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Microphone</source>
-        <translation type="unfinished">Mikrofoni</translation>
+        <translation>Mikrofoni</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera</source>
-        <translation type="unfinished">Kamera</translation>
+        <translation>Kamera</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera resolution</source>
-        <translation type="unfinished">Kameran resoluutio</translation>
+        <translation>Kameran resoluutio</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera frame rate</source>
-        <translation type="unfinished">Kameran ruudunpäivitys</translation>
+        <translation>Kameran ruudunpäivitys</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished">Salli varajärjestelynä toimiva puhelua avustava palvelin</translation>
+        <translation>Salli varajärjestelynä toimiva puhelua avustava palvelin</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send encrypted messages to verified users only</source>
-        <translation type="unfinished">Lähetä salatut viestit vain vahvistetuille käyttäjille</translation>
+        <translation>Lähetä salatut viestit vain vahvistetuille käyttäjille</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Share keys with verified users and devices</source>
-        <translation type="unfinished">Jaa avaimet vahvistettujen käyttäjien ja laitteiden kanssa</translation>
+        <translation>Jaa avaimet vahvistettujen käyttäjien ja laitteiden kanssa</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Online Key Backup</source>
-        <translation type="unfinished">Avaimen varmuuskopiointi verkkoon</translation>
+        <translation>Avaimen varmuuskopiointi verkkoon</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3149,17 +3149,17 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Device ID</source>
-        <translation type="unfinished">Laitteen tunnus</translation>
+        <translation>Laitteen tunnus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished">Laitteen sormenjälki</translation>
+        <translation>Laitteen sormenjälki</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Homeserver</source>
-        <translation type="unfinished">Kotipalvelin</translation>
+        <translation>Kotipalvelin</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3174,7 +3174,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>GENERAL</source>
-        <translation type="unfinished">YLEISET ASETUKSET</translation>
+        <translation>YLEISET ASETUKSET</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3199,22 +3199,22 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>CALLS</source>
-        <translation type="unfinished">PUHELUT</translation>
+        <translation>PUHELUT</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ENCRYPTION</source>
-        <translation type="unfinished">SALAUS</translation>
+        <translation>SALAUS</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>INFO</source>
-        <translation type="unfinished">TIETOA</translation>
+        <translation>TIETOA</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Session Keys</source>
-        <translation type="unfinished">Istunnon avaimet</translation>
+        <translation>Istunnon avaimet</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3229,72 +3229,72 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Self signing key</source>
-        <translation type="unfinished">Itsensä allekirjoittava avain</translation>
+        <translation>Itsensä allekirjoittava avain</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User signing key</source>
-        <translation type="unfinished">Käyttäjän allekirjoittava avain</translation>
+        <translation>Käyttäjän allekirjoittava avain</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Master signing key</source>
-        <translation type="unfinished">Päätason allekirjoittava avain</translation>
+        <translation>Päätason allekirjoittava avain</translation>
     </message>
     <message>
         <location line="+95"/>
         <source>Default</source>
-        <translation type="unfinished">Oletus</translation>
+        <translation>Oletus</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation type="unfinished">Aseta ilmoitusääni soimaan kun kutsu puheluun tulee</translation>
+        <translation>Aseta ilmoitusääni soimaan kun kutsu puheluun tulee</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation type="unfinished">Aseta viestien suurin leveys aikajanalla (pikseleissä). Tämä voi auttaa luettavuutta laajakuvassa, kun Nheko on täyden ruudun tilassa.</translation>
+        <translation>Aseta viestien suurin leveys aikajanalla (pikseleissä). Tämä voi auttaa luettavuutta laajakuvassa, kun Nheko on täyden ruudun tilassa.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation type="unfinished">Aseta aikakatkaisu (sekunneissa) ikkunan kohdistuksen kadottamiselle
+        <translation>Aseta aikakatkaisu (sekunneissa) ikkunan kohdistuksen kadottamiselle
 ennen kuin näkymä sumennetaan.
 Aseta nollaan, jotta sumennetaan heti kohdistus kadotetaan. Suurin arvo 1 tunti (3600 sekuntia)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished">Muuta viestien taustaväriä kun kohdistimesi liikkuu niiden yli.</translation>
+        <translation>Muuta viestien taustaväriä kun kohdistimesi liikkuu niiden yli.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished">Suurenna fonttikokoa jos näytetään viestit vain muutamalla emojilla.</translation>
+        <translation>Suurenna fonttikokoa jos näytetään viestit vain muutamalla emojilla.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished">Anna sovelluksen pyöriä taustalla asiakasohjelman ikkunan sulkemisen jälkeen.</translation>
+        <translation>Anna sovelluksen pyöriä taustalla asiakasohjelman ikkunan sulkemisen jälkeen.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished">Aloita sovellus taustalla näyttämättä asiakasohjelman ikkunaa.</translation>
+        <translation>Aloita sovellus taustalla näyttämättä asiakasohjelman ikkunaa.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation type="unfinished">Näytä huonelistan vieressä tagit ja ryhmät sisältävä sarake.</translation>
+        <translation>Näytä huonelistan vieressä tagit ja ryhmät sisältävä sarake.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished">Salli Markdownin käyttö viesteissä.
+        <translation>Salli Markdownin käyttö viesteissä.
 Kun poissa päältä, kaikki viestit lähetetään tavallisena tekstinä.</translation>
     </message>
     <message>
@@ -3310,13 +3310,13 @@ Kun poissa päältä, kaikki viestit lähetetään tavallisena tekstinä.</trans
     <message>
         <location line="+2"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
-        <translation type="unfinished">Soittaa mediaa kuten GIF- ja WEBP-tiedostoja vain kun kursori on niiden kohdalla.</translation>
+        <translation>Soittaa mediaa kuten GIF- ja WEBP-tiedostoja vain kun kursori on niiden kohdalla.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished">Näytä kuka kirjoittaa huoneessa.
+        <translation>Näytä kuka kirjoittaa huoneessa.
 Tämä myös sallii tai evää kirjoitusilmoitusten lähettämisen muille.</translation>
     </message>
     <message>
@@ -3324,20 +3324,20 @@ Tämä myös sallii tai evää kirjoitusilmoitusten lähettämisen muille.</tran
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished">Näytä ensiksi huoneet, joissa on uusia viestejä.
+        <translation>Näytä ensiksi huoneet, joissa on uusia viestejä.
 Jos tämä on poissa päältä, lista huoneista lajitellaan vain huoneen viimeisimmän viestin aikaleiman mukaan.
 Jos tämä on päällä, huoneet, joissa ilmoitukset ovat päällä (pieni ympyrä, jonka sisässä on numero), lajitellaan päällimmäisiksi. Mykistämäsi huoneet lajitellaan aikaleiman mukaan, koska et nähtävästi pidä niitä yhtä tärkeinä kuin muita huoneita.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation type="unfinished">Näytä painikkeet vastataksesi nopeasti, reagoidaksesi tai päästäksesi lisätoimintoihin joka viestin vieressä.</translation>
+        <translation>Näytä painikkeet vastataksesi nopeasti, reagoidaksesi tai päästäksesi lisätoimintoihin joka viestin vieressä.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.</source>
-        <translation type="unfinished">Näytä jos viestisi oli luettu.
+        <translation>Näytä jos viestisi oli luettu.
 Tila näytetään aikaleimojen vieressä.</translation>
     </message>
     <message>
@@ -3372,7 +3372,7 @@ Note that when this option is ON, opened files are left unencrypted on disk and 
         <location line="-64"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished">Näytä hälytys kun viesti on vastaanotettu.
+        <translation>Näytä hälytys kun viesti on vastaanotettu.
 Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalkissa.</translation>
     </message>
     <message>
@@ -3384,40 +3384,40 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
         <location line="+10"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished">Pura sivupalkissa näkyvien viestien salaus
+        <translation>Pura sivupalkissa näkyvien viestien salaus
 Vaikuttaa vain salattujen keskustelujen viesteihin.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation type="unfinished">Kun ikkuna ei ole kohdistettuna, tämä aikajana
+        <translation>Kun ikkuna ei ole kohdistettuna, tämä aikajana
 sumennetaan.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation type="unfinished">Estää tekstin valitsemisen aikajanalla, jotta koskettamalla vierittäminen on helpompaa.</translation>
+        <translation>Estää tekstin valitsemisen aikajanalla, jotta koskettamalla vierittäminen on helpompaa.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished">Muuta koko käyttöliittymän kokoa.</translation>
+        <translation>Muuta koko käyttöliittymän kokoa.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished">Käyttää apuna palvelinta turn.matrix.org silloin kun kotipalvelimesi ei sellaista tarjoa.</translation>
+        <translation>Käyttää apuna palvelinta turn.matrix.org silloin kun kotipalvelimesi ei sellaista tarjoa.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
-        <translation type="unfinished">Vaatii käyttäjän olevan vahvistettu, jotta hänelle voi lähettää salattuja viestejä. Tämä parantaa turvallisuutta, mutta tekee päästä-päähän -salauksen hankalammaksi.</translation>
+        <translation>Vaatii käyttäjän olevan vahvistettu, jotta hänelle voi lähettää salattuja viestejä. Tämä parantaa turvallisuutta, mutta tekee päästä-päähän -salauksen hankalammaksi.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Automatically replies to key requests from other users, if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished">Automaattisesti vastaa avainpyyntöihin, jos ne ovat vahvistettuja, vaikka tuolla laitteella ei tulisi muuten olla pääsyä noihin avaimiin.</translation>
+        <translation>Automaattisesti vastaa avainpyyntöihin, jos ne ovat vahvistettuja, vaikka tuolla laitteella ei tulisi muuten olla pääsyä noihin avaimiin.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3427,32 +3427,32 @@ sumennetaan.</translation>
     <message>
         <location line="+23"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
-        <translation type="unfinished">Avain purkamaan avainten varmuuskopioita verkossa. Jos se laitetaan välimuistiin, voit sallia avainten varmuuskopioinnin verkossa säilöäksesi salausavaimet, jotka ovat turvallisesti salattuja palvelimella.</translation>
+        <translation>Avain purkamaan avainten varmuuskopioita verkossa. Jos se laitetaan välimuistiin, voit sallia avainten varmuuskopioinnin verkossa säilöäksesi salausavaimet, jotka ovat turvallisesti salattuja palvelimella.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation type="unfinished">Avain vahvistamaan muita käyttäjiä. Jos se on välimuistissa, käyttäjän varmistaminen varmistaa hänen kaikki laitteensa.</translation>
+        <translation>Avain vahvistamaan muita käyttäjiä. Jos se on välimuistissa, käyttäjän varmistaminen varmistaa hänen kaikki laitteensa.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation type="unfinished">Kaikkein tärkein avaimesi. Sinun ei tarvitse laittaa sitä välimuistiin, koska silloin sen varastaminen on epätodennäköistä ja sitä vaaditaan vain kierrättämään muita allekirjoittavia avaimiasi.</translation>
+        <translation>Kaikkein tärkein avaimesi. Sinun ei tarvitse laittaa sitä välimuistiin, koska silloin sen varastaminen on epätodennäköistä ja sitä vaaditaan vain kierrättämään muita allekirjoittavia avaimiasi.</translation>
     </message>
     <message>
         <location line="+408"/>
         <source>Select a file</source>
-        <translation type="unfinished">Valitse tiedosto</translation>
+        <translation>Valitse tiedosto</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Kaikki Tiedostot (*)</translation>
+        <translation>Kaikki Tiedostot (*)</translation>
     </message>
     <message>
         <location line="+82"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished">Avaa Istuntoavaintiedosto</translation>
+        <translation>Avaa Istuntoavaintiedosto</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3462,34 +3462,34 @@ sumennetaan.</translation>
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
-        <translation type="unfinished">Virhe</translation>
+        <translation>Virhe</translation>
     </message>
     <message>
         <location line="-64"/>
         <location line="+26"/>
         <source>File Password</source>
-        <translation type="unfinished">Tiedoston Salasana</translation>
+        <translation>Tiedoston salasana</translation>
     </message>
     <message>
         <location line="-25"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished">Anna salasana tiedoston salauksen purkamiseksi:</translation>
+        <translation>Anna salasana tiedoston salauksen purkamiseksi:</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+26"/>
         <source>The password cannot be empty</source>
-        <translation type="unfinished">Salasana ei voi olla tyhjä</translation>
+        <translation>Salasana ei voi olla tyhjä</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation type="unfinished">Anna salasana istuntoavaimien salaamiseksi:</translation>
+        <translation>Anna salasana istuntoavaimien salaamiseksi:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>File to save the exported session keys</source>
-        <translation type="unfinished">Tiedosto, johon viedyt istuntoavaimet tallennetaan</translation>
+        <translation>Tiedosto, johon viedyt istuntoavaimet tallennetaan</translation>
     </message>
 </context>
 <context>
