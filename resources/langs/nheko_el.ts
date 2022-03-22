@@ -992,7 +992,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+273"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+330"/>
         <source>Select a file</source>
         <translation type="unfinished">Διάλεξε ένα αρχείο</translation>
     </message>
@@ -1000,11 +1000,6 @@
         <location line="+0"/>
         <source>All Files (*)</source>
         <translation type="unfinished">Όλα τα αρχεία (*)</translation>
-    </message>
-    <message>
-        <location line="+483"/>
-        <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1226,9 +1221,18 @@ Example: https://server.my:8787</source>
     </message>
 </context>
 <context>
+    <name>MediaUpload</name>
+    <message>
+        <location filename="../../src/timeline/InputBar.cpp" line="+581"/>
+        <location line="+34"/>
+        <source>Failed to upload media. Please try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+198"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+201"/>
         <source>%1 removed a message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1346,7 +1350,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished">Γράψε ένα μήνυμα...</translation>
     </message>
     <message>
-        <location line="+272"/>
+        <location line="+283"/>
         <source>Stickers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1389,7 +1393,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+427"/>
+        <location line="+436"/>
         <source>Reason for removal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2437,7 +2441,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1252"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1256"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished"></translation>
@@ -2449,7 +2453,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+170"/>
+        <location line="+174"/>
         <source>Save image</source>
         <translation type="unfinished">Αποθήκευση Εικόνας</translation>
     </message>
@@ -2614,12 +2618,12 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1070"/>
+        <location line="-1074"/>
         <source>You joined this room.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1019"/>
+        <location line="+1023"/>
         <source>%1 invited %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2653,7 +2657,7 @@ Reason: %4</source>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+207"/>
+        <location filename="../qml/TimelineRow.qml" line="+209"/>
         <source>Edited</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2666,7 +2670,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+137"/>
+        <location line="+141"/>
         <source>No preview available</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2800,6 +2804,17 @@ Reason: %4</source>
         <location line="+165"/>
         <source>Invalid token</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UploadBox</name>
+    <message numerus="yes">
+        <location filename="../qml/UploadBox.qml" line="+79"/>
+        <source>Upload %n file(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -3341,19 +3356,7 @@ OFF - square, ON - circle.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the image.
-Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the video.
-Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+51"/>
+        <location line="+60"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3369,7 +3372,19 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+2"/>
+        <source>Opens images with an external program when tapping the image.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Opens videos with an external program when tapping the video.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
         <translation type="unfinished"></translation>
@@ -3667,26 +3682,6 @@ be blurred.</source>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>dialogs::PreviewUploadOverlay</name>
-    <message>
-        <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+30"/>
-        <source>Upload</source>
-        <translation>Μεταφόρτωση</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Cancel</source>
-        <translation>Άκυρο</translation>
-    </message>
-    <message>
-        <location line="+96"/>
-        <source>Media type: %1
-Media size: %2
-</source>
-        <translation>Τύπος πολυμέσου: %1 Μέγεθος: %2</translation>
     </message>
 </context>
 <context>

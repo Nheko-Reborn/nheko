@@ -993,7 +993,7 @@ Die Verschlüsselung des Raumes kann nach Aktivierung nicht mehr deaktiviert wer
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+273"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+330"/>
         <source>Select a file</source>
         <translation>Datei auswählen</translation>
     </message>
@@ -1001,11 +1001,6 @@ Die Verschlüsselung des Raumes kann nach Aktivierung nicht mehr deaktiviert wer
         <location line="+0"/>
         <source>All Files (*)</source>
         <translation>Alle Dateien (*)</translation>
-    </message>
-    <message>
-        <location line="+483"/>
-        <source>Failed to upload media. Please try again.</source>
-        <translation>Medienupload fehlgeschlagen. Bitte versuche es erneut.</translation>
     </message>
 </context>
 <context>
@@ -1231,9 +1226,18 @@ Beispiel: https://mein.server:8787</translation>
     </message>
 </context>
 <context>
+    <name>MediaUpload</name>
+    <message>
+        <location filename="../../src/timeline/InputBar.cpp" line="+581"/>
+        <location line="+34"/>
+        <source>Failed to upload media. Please try again.</source>
+        <translation>Medienupload fehlgeschlagen. Bitte versuche es erneut.</translation>
+    </message>
+</context>
+<context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+198"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+201"/>
         <source>%1 removed a message</source>
         <translation>%1 hat eine Nachricht gelöscht</translation>
     </message>
@@ -1351,7 +1355,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Schreibe eine Nachricht…</translation>
     </message>
     <message>
-        <location line="+272"/>
+        <location line="+283"/>
         <source>Stickers</source>
         <translation>Sticker</translation>
     </message>
@@ -1394,7 +1398,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Optionen</translation>
     </message>
     <message>
-        <location line="+427"/>
+        <location line="+436"/>
         <source>Reason for removal</source>
         <translation>Grund für die Löschung</translation>
     </message>
@@ -2445,7 +2449,7 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1252"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1256"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Nachricht zurückziehen fehlgeschlagen: %1</translation>
@@ -2457,7 +2461,7 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
         <translation>Event konnte nicht verschlüsselt werden, senden wurde abgebrochen!</translation>
     </message>
     <message>
-        <location line="+170"/>
+        <location line="+174"/>
         <source>Save image</source>
         <translation>Bild speichern</translation>
     </message>
@@ -2623,12 +2627,12 @@ Grund: %4</translation>
         <translation>%1 hat das Anklopfen zurückgezogen.</translation>
     </message>
     <message>
-        <location line="-1070"/>
+        <location line="-1074"/>
         <source>You joined this room.</source>
         <translation>Du bist dem Raum beigetreten.</translation>
     </message>
     <message>
-        <location line="+1019"/>
+        <location line="+1023"/>
         <source>%1 invited %2.</source>
         <translation>%1 hat %2 eingeladen.</translation>
     </message>
@@ -2662,7 +2666,7 @@ Grund: %4</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+207"/>
+        <location filename="../qml/TimelineRow.qml" line="+209"/>
         <source>Edited</source>
         <translation>Bearbeitet</translation>
     </message>
@@ -2675,7 +2679,7 @@ Grund: %4</translation>
         <translation>Kein Raum geöffnet</translation>
     </message>
     <message>
-        <location line="+137"/>
+        <location line="+141"/>
         <source>No preview available</source>
         <translation>Keine Vorschau verfügbar</translation>
     </message>
@@ -2809,6 +2813,17 @@ Grund: %4</translation>
         <location line="+165"/>
         <source>Invalid token</source>
         <translation>Ungültiges Token</translation>
+    </message>
+</context>
+<context>
+    <name>UploadBox</name>
+    <message numerus="yes">
+        <location filename="../qml/UploadBox.qml" line="+79"/>
+        <source>Upload %n file(s)</source>
+        <translation>
+            <numerusform>Datei hochladen</numerusform>
+            <numerusform>%n Dateien hochladen</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -3358,21 +3373,7 @@ OFF - square, ON - circle.</source>
 AUS - Quadratisch, AN - Kreisförmig.</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the image.
-Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation>Ändert das Verhalten von &quot;Rechtsklick&gt;In externem Progamm öffnen&quot; wenn ein Bild angeklickt wird.
-Wenn diese Option aktiv ist, bleiben verschlüsselte Dateien nach dem Öffnen unverschlüsselt auf der Festplatte und müssen manuell gelöscht werden.</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the video.
-Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation>Ändert das Verhalten von &quot;Rechtsklick&gt;In externem Progamm öffnen&quot; wenn ein Video angeklickt wird.
-Wenn diese Option aktiv ist, bleiben verschlüsselte Dateien nach dem Öffnen unverschlüsselt auf der Festplatte und müssen manuell gelöscht werden.</translation>
-    </message>
-    <message>
-        <location line="+51"/>
+        <location line="+60"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
         <translation>Der Schlüssel um deine eigenen Geräte zu verifizieren. Wenn dieser im Cache ist, dann werden alle deine Geräte als verifiziert für andere Nutzer erscheinen, wenn du diese verifiziert hast.</translation>
     </message>
@@ -3389,7 +3390,21 @@ Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</
         <translation>Zeigen einen &quot;Identicon&quot; anstelle eines Buchstaben, wenn etwas keinen Avatar gesetzt hat.</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+2"/>
+        <source>Opens images with an external program when tapping the image.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation>Öffnet Bilder in einem externen Programm, wenn diese angeklickt werden.
+Beachte, dass wenn diese Option ausgewählt ist, bleiben unverschlüsselte Dateien auf der Festplatte zurück und müssen manuell gelöscht werden.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Opens videos with an external program when tapping the video.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation>Öffnet Videos in einem externen Programm, wenn diese angeklickt werden.
+Beachte, dass wenn diese Option ausgewählt ist, bleiben unverschlüsselte Dateien auf der Festplatte zurück und müssen manuell gelöscht werden.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
         <translation>Entschlüssle Nachrichten in der Seitenliste.
@@ -3688,28 +3703,6 @@ be blurred.</source>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
         <translation>Öffne das Fallback, folge den Anweisungen und bestätige nach Abschluss via &quot;Bestätigen&quot;.</translation>
-    </message>
-</context>
-<context>
-    <name>dialogs::PreviewUploadOverlay</name>
-    <message>
-        <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+30"/>
-        <source>Upload</source>
-        <translation>Hochladen</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Cancel</source>
-        <translation>Abbrechen</translation>
-    </message>
-    <message>
-        <location line="+96"/>
-        <source>Media type: %1
-Media size: %2
-</source>
-        <translation>Medien-Typ: %1
-Medien-Größe: %2
-</translation>
     </message>
 </context>
 <context>

@@ -993,7 +993,7 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+273"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+330"/>
         <source>Select a file</source>
         <translation>Vali fail</translation>
     </message>
@@ -1001,11 +1001,6 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
         <location line="+0"/>
         <source>All Files (*)</source>
         <translation>Kõik failid (*)</translation>
-    </message>
-    <message>
-        <location line="+483"/>
-        <source>Failed to upload media. Please try again.</source>
-        <translation>Meediafailide üleslaadimine ei õnnestunud. Palun proovi uuesti.</translation>
     </message>
 </context>
 <context>
@@ -1231,9 +1226,18 @@ Näiteks: https://server.minu:8787</translation>
     </message>
 </context>
 <context>
+    <name>MediaUpload</name>
+    <message>
+        <location filename="../../src/timeline/InputBar.cpp" line="+581"/>
+        <location line="+34"/>
+        <source>Failed to upload media. Please try again.</source>
+        <translation type="unfinished">Meediafailide üleslaadimine ei õnnestunud. Palun proovi uuesti.</translation>
+    </message>
+</context>
+<context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+198"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+201"/>
         <source>%1 removed a message</source>
         <translation>%1 eemaldas sõnumi</translation>
     </message>
@@ -1351,7 +1355,7 @@ Näiteks: https://server.minu:8787</translation>
         <translation>Kirjuta sõnum…</translation>
     </message>
     <message>
-        <location line="+272"/>
+        <location line="+283"/>
         <source>Stickers</source>
         <translation>Kleepsud</translation>
     </message>
@@ -1394,7 +1398,7 @@ Näiteks: https://server.minu:8787</translation>
         <translation>Valikud</translation>
     </message>
     <message>
-        <location line="+427"/>
+        <location line="+436"/>
         <source>Reason for removal</source>
         <translation>Eemaldamise põhjus</translation>
     </message>
@@ -2445,7 +2449,7 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1252"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1256"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Sõnumi ümbersõnastamine ebaõnnestus: %1</translation>
@@ -2457,7 +2461,7 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
         <translation>Sündmuse krüptimine ei õnnestunud, katkestame saatmise!</translation>
     </message>
     <message>
-        <location line="+170"/>
+        <location line="+174"/>
         <source>Save image</source>
         <translation>Salvesta pilt</translation>
     </message>
@@ -2623,12 +2627,12 @@ Põhjus: %4</translation>
         <translation>%1 muutis oma koputust jututoa uksele.</translation>
     </message>
     <message>
-        <location line="-1070"/>
+        <location line="-1074"/>
         <source>You joined this room.</source>
         <translation>Sa liitusid jututoaga.</translation>
     </message>
     <message>
-        <location line="+1019"/>
+        <location line="+1023"/>
         <source>%1 invited %2.</source>
         <translation>%1 saatis kutse kasutajale %2.</translation>
     </message>
@@ -2662,7 +2666,7 @@ Põhjus: %4</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+207"/>
+        <location filename="../qml/TimelineRow.qml" line="+209"/>
         <source>Edited</source>
         <translation>Muudetud</translation>
     </message>
@@ -2675,7 +2679,7 @@ Põhjus: %4</translation>
         <translation>Ühtegi jututuba pole avatud</translation>
     </message>
     <message>
-        <location line="+137"/>
+        <location line="+141"/>
         <source>No preview available</source>
         <translation>Eelvaade pole saadaval</translation>
     </message>
@@ -2809,6 +2813,17 @@ Põhjus: %4</translation>
         <location line="+165"/>
         <source>Invalid token</source>
         <translation>Vigane tunnusluba</translation>
+    </message>
+</context>
+<context>
+    <name>UploadBox</name>
+    <message numerus="yes">
+        <location filename="../qml/UploadBox.qml" line="+79"/>
+        <source>Upload %n file(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -3358,21 +3373,7 @@ OFF - square, ON - circle.</source>
 Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the image.
-Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation>Võimaldab juhtida pildi klõpsimisele järgnevat tegevust, kui kasutad „Kontekstimenüü &gt; Ava välise rakendusega“ funktsionaalsust.
-Kui see valik on sisse lülitatud, siis failid jäävad andmekandjale krüptimata kujul ning sa pead neid eraldi kustutama.</translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the video.
-Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation>Võimaldab juhtida video klõpsimisele järgnevat tegevust, kui kasutad „Kontekstimenüü &gt; Ava välise rakendusega“ funktsionaalsust.
-Kui see valik on sisse lülitatud, siis failid jäävad andmekandjale krüptimata kujul ning sa pead neid eraldi kustutama.</translation>
-    </message>
-    <message>
-        <location line="+51"/>
+        <location line="+60"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
         <translation>Selle võtmega verifitseerid oma seadmeid. Kui ta on puhverdatud, siis sinu seadme verifitseerimine märgib selle seadme usaldusväärseks nii sinu muude seadmete kui selliste kasutajate jaoks, kes on sinu verifitseerinud.</translation>
     </message>
@@ -3389,7 +3390,19 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
         <translation>Kui tunnuspilt on seadistamata, siis kuva tähe asemel identikoni (matemaatilist tunnuspilti).</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+2"/>
+        <source>Opens images with an external program when tapping the image.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Opens videos with an external program when tapping the video.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
         <translation>Dekrüpti külgpaanis kuvatavaid sõnumeid.
@@ -3689,28 +3702,6 @@ siis ajajoone vaade hägustub.</translation>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
         <translation>Ava kasutaja registreerimise tagavaravariant, läbi kõik sammud ja kinnita seda, kui kõik valmis on.</translation>
-    </message>
-</context>
-<context>
-    <name>dialogs::PreviewUploadOverlay</name>
-    <message>
-        <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+30"/>
-        <source>Upload</source>
-        <translation>Laadi üles</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Cancel</source>
-        <translation>Tühista</translation>
-    </message>
-    <message>
-        <location line="+96"/>
-        <source>Media type: %1
-Media size: %2
-</source>
-        <translation>Meedia tüüp: %1
-Meedia suurus: %2
-</translation>
     </message>
 </context>
 <context>

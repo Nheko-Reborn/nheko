@@ -992,7 +992,7 @@
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+273"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+330"/>
         <source>Select a file</source>
         <translation>Sélectionnez un fichier</translation>
     </message>
@@ -1000,11 +1000,6 @@
         <location line="+0"/>
         <source>All Files (*)</source>
         <translation>Tous les types de fichiers (*)</translation>
-    </message>
-    <message>
-        <location line="+483"/>
-        <source>Failed to upload media. Please try again.</source>
-        <translation>Échec de l&apos;envoi du média. Veuillez réessayer.</translation>
     </message>
 </context>
 <context>
@@ -1230,9 +1225,18 @@ Exemple&#xa0;: https&#x202f;://monserveur.example.com:8787</translation>
     </message>
 </context>
 <context>
+    <name>MediaUpload</name>
+    <message>
+        <location filename="../../src/timeline/InputBar.cpp" line="+581"/>
+        <location line="+34"/>
+        <source>Failed to upload media. Please try again.</source>
+        <translation type="unfinished">Échec de l&apos;envoi du média. Veuillez réessayer.</translation>
+    </message>
+</context>
+<context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+198"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+201"/>
         <source>%1 removed a message</source>
         <translation>%1 a effacé un message</translation>
     </message>
@@ -1350,7 +1354,7 @@ Exemple&#xa0;: https&#x202f;://monserveur.example.com:8787</translation>
         <translation>Écrivez un message…</translation>
     </message>
     <message>
-        <location line="+272"/>
+        <location line="+283"/>
         <source>Stickers</source>
         <translation>Autocollants</translation>
     </message>
@@ -1393,7 +1397,7 @@ Exemple&#xa0;: https&#x202f;://monserveur.example.com:8787</translation>
         <translation>Options</translation>
     </message>
     <message>
-        <location line="+427"/>
+        <location line="+436"/>
         <source>Reason for removal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2443,7 +2447,7 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1252"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1256"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Échec de la suppression du message&#xa0;: %1</translation>
@@ -2455,7 +2459,7 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
         <translation>Échec du chiffrement de l&apos;évènement, envoi abandonné&#x202f;!</translation>
     </message>
     <message>
-        <location line="+170"/>
+        <location line="+174"/>
         <source>Save image</source>
         <translation>Enregistrer l&apos;image</translation>
     </message>
@@ -2621,12 +2625,12 @@ Raison : %4</translation>
         <translation>%1 a arrêté de toquer.</translation>
     </message>
     <message>
-        <location line="-1070"/>
+        <location line="-1074"/>
         <source>You joined this room.</source>
         <translation>Vous avez rejoint ce salon.</translation>
     </message>
     <message>
-        <location line="+1019"/>
+        <location line="+1023"/>
         <source>%1 invited %2.</source>
         <translation>%1 a invité %2.</translation>
     </message>
@@ -2660,7 +2664,7 @@ Raison : %4</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+207"/>
+        <location filename="../qml/TimelineRow.qml" line="+209"/>
         <source>Edited</source>
         <translation>Modifié</translation>
     </message>
@@ -2673,7 +2677,7 @@ Raison : %4</translation>
         <translation>Aucun salon ouvert</translation>
     </message>
     <message>
-        <location line="+137"/>
+        <location line="+141"/>
         <source>No preview available</source>
         <translation>Aucune prévisualisation disponible</translation>
     </message>
@@ -2807,6 +2811,17 @@ Raison : %4</translation>
         <location line="+165"/>
         <source>Invalid token</source>
         <translation>Jeton invalide</translation>
+    </message>
+</context>
+<context>
+    <name>UploadBox</name>
+    <message numerus="yes">
+        <location filename="../qml/UploadBox.qml" line="+79"/>
+        <source>Upload %n file(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -3355,19 +3370,7 @@ OFF - square, ON - circle.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the image.
-Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the video.
-Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+51"/>
+        <location line="+60"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3384,7 +3387,19 @@ Typiquement, l&apos;icône de l&apos;application est mise en évidence dans la b
         <translation>Montre une image générée (identicône) au lieu d&apos;une lettre lorsqu&apos;aucun avatar n&apos;est présent.</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+2"/>
+        <source>Opens images with an external program when tapping the image.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Opens videos with an external program when tapping the video.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
         <translation>Déchiffre les messages affichés dans la liste des salons.
@@ -3683,28 +3698,6 @@ be blurred.</source>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
         <translation>Ouvrez la solution de remplacement, suivez les étapes et confirmez après les avoir terminées.</translation>
-    </message>
-</context>
-<context>
-    <name>dialogs::PreviewUploadOverlay</name>
-    <message>
-        <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+30"/>
-        <source>Upload</source>
-        <translation>Envoyer</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Cancel</source>
-        <translation>Annuler</translation>
-    </message>
-    <message>
-        <location line="+96"/>
-        <source>Media type: %1
-Media size: %2
-</source>
-        <translation>Type de média : %1
-Taille du média : %2
-</translation>
     </message>
 </context>
 <context>

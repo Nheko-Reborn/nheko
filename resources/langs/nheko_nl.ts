@@ -993,7 +993,7 @@ Wees ervan bewust dat het achteraf niet meer uitgeschakeld kan worden.</translat
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+273"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+330"/>
         <source>Select a file</source>
         <translation>Selecteer een bestand</translation>
     </message>
@@ -1001,11 +1001,6 @@ Wees ervan bewust dat het achteraf niet meer uitgeschakeld kan worden.</translat
         <location line="+0"/>
         <source>All Files (*)</source>
         <translation>Alle bestanden (*)</translation>
-    </message>
-    <message>
-        <location line="+483"/>
-        <source>Failed to upload media. Please try again.</source>
-        <translation>Het is niet is gelukt om de media te versturen. Probeer het a.u.b. opnieuw.</translation>
     </message>
 </context>
 <context>
@@ -1231,9 +1226,18 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     </message>
 </context>
 <context>
+    <name>MediaUpload</name>
+    <message>
+        <location filename="../../src/timeline/InputBar.cpp" line="+581"/>
+        <location line="+34"/>
+        <source>Failed to upload media. Please try again.</source>
+        <translation type="unfinished">Het is niet is gelukt om de media te versturen. Probeer het a.u.b. opnieuw.</translation>
+    </message>
+</context>
+<context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+198"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+201"/>
         <source>%1 removed a message</source>
         <translation>%1 heeft een bericht verwijderd</translation>
     </message>
@@ -1351,7 +1355,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Typ een bericht…</translation>
     </message>
     <message>
-        <location line="+272"/>
+        <location line="+283"/>
         <source>Stickers</source>
         <translation>Stickers</translation>
     </message>
@@ -1394,7 +1398,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Opties</translation>
     </message>
     <message>
-        <location line="+427"/>
+        <location line="+436"/>
         <source>Reason for removal</source>
         <translation>Reden voor verwijdering</translation>
     </message>
@@ -2445,7 +2449,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1252"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1256"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Bericht intrekken mislukt: %1</translation>
@@ -2457,7 +2461,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <translation>Kon evenement niet versleutelen, versturen geannuleerd!</translation>
     </message>
     <message>
-        <location line="+170"/>
+        <location line="+174"/>
         <source>Save image</source>
         <translation>Afbeelding opslaan</translation>
     </message>
@@ -2623,12 +2627,12 @@ Reden: %4</translation>
         <translation>%1 heeft het aankloppen ingetrokken.</translation>
     </message>
     <message>
-        <location line="-1070"/>
+        <location line="-1074"/>
         <source>You joined this room.</source>
         <translation>Je neemt nu deel aan deze kamer.</translation>
     </message>
     <message>
-        <location line="+1019"/>
+        <location line="+1023"/>
         <source>%1 invited %2.</source>
         <translation>%1 heeft %2 uitgenodigd.</translation>
     </message>
@@ -2662,7 +2666,7 @@ Reden: %4</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+207"/>
+        <location filename="../qml/TimelineRow.qml" line="+209"/>
         <source>Edited</source>
         <translation>Bewerkt</translation>
     </message>
@@ -2675,7 +2679,7 @@ Reden: %4</translation>
         <translation>Geen kamer open</translation>
     </message>
     <message>
-        <location line="+137"/>
+        <location line="+141"/>
         <source>No preview available</source>
         <translation>Geen voorbeeld beschikbaar</translation>
     </message>
@@ -2809,6 +2813,17 @@ Reden: %4</translation>
         <location line="+165"/>
         <source>Invalid token</source>
         <translation>Ongeldig teken</translation>
+    </message>
+</context>
+<context>
+    <name>UploadBox</name>
+    <message numerus="yes">
+        <location filename="../qml/UploadBox.qml" line="+79"/>
+        <source>Upload %n file(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -3358,19 +3373,7 @@ OFF - square, ON - circle.</source>
 UIT - vierkant, AAN - cirkel.</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the image.
-Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the video.
-Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+51"/>
+        <location line="+60"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
         <translation>De sleutel om je eigen apparaten te verifiëren. Indien gecached zal het verifiëren van één van je apparaten die ook als geverifieerd markeren voor je anderen apparaten en gebruikers die jou geverifieerd hebben.</translation>
     </message>
@@ -3387,7 +3390,19 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
         <translation>Laat een identicon zien in plaats van een letter wanneer er geen avatar is ingesteld.</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+2"/>
+        <source>Opens images with an external program when tapping the image.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Opens videos with an external program when tapping the video.
+Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
         <translation>Ontsleutel de berichten getoond in de zijbalk.
@@ -3687,28 +3702,6 @@ worden geblurt.</translation>
         <location line="+12"/>
         <source>Open the fallback, follow the steps and confirm after completing them.</source>
         <translation>Open de fallback, volg de stappen, en bevestig nadat je klaar bent.</translation>
-    </message>
-</context>
-<context>
-    <name>dialogs::PreviewUploadOverlay</name>
-    <message>
-        <location filename="../../src/dialogs/PreviewUploadOverlay.cpp" line="+30"/>
-        <source>Upload</source>
-        <translation>Uploaden</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Cancel</source>
-        <translation>Annuleren</translation>
-    </message>
-    <message>
-        <location line="+96"/>
-        <source>Media type: %1
-Media size: %2
-</source>
-        <translation>Mediatype: %1
-Mediagrootte: %2
-</translation>
     </message>
 </context>
 <context>
