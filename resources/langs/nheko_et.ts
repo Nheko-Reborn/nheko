@@ -436,12 +436,12 @@
     <message>
         <location filename="../qml/dialogs/DirectChatSetup.qml" line="+28"/>
         <source>Room Settings</source>
-        <translation type="unfinished">Jututoa seadistused</translation>
+        <translation>Jututoa seadistused</translation>
     </message>
     <message numerus="yes">
         <location line="+94"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n liige</numerusform>
             <numerusform>%n liiget</numerusform>
         </translation>
@@ -449,134 +449,134 @@
     <message>
         <location line="+65"/>
         <source>SETTINGS</source>
-        <translation type="unfinished">SEADISTUSED</translation>
+        <translation>SEADISTUSED</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Notifications</source>
-        <translation type="unfinished">Teavitused</translation>
+        <translation>Teavitused</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Muted</source>
-        <translation type="unfinished">Summutatud</translation>
+        <translation>Summutatud</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mentions only</source>
-        <translation type="unfinished">Vaid mainimised</translation>
+        <translation>Vaid mainimised</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All messages</source>
-        <translation type="unfinished">Kõik sõnumid</translation>
+        <translation>Kõik sõnumid</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Room access</source>
-        <translation type="unfinished">Ligipääs jututuppa</translation>
+        <translation>Ligipääs jututuppa</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Anyone and guests</source>
-        <translation type="unfinished">Kõik (sealhulgas külalised)</translation>
+        <translation>Kõik (sealhulgas külalised)</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Anyone</source>
-        <translation type="unfinished">Kõik</translation>
+        <translation>Kõik</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Invited users</source>
-        <translation type="unfinished">Kutsutud kasutajad</translation>
+        <translation>Kutsutud kasutajad</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>By knocking</source>
-        <translation type="unfinished">Koputades</translation>
+        <translation>Koputades</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Restricted by membership in other rooms</source>
-        <translation type="unfinished">Piiratud teiste jututubade liikmelisusega</translation>
+        <translation>Piiratud teiste jututubade liikmelisusega</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Encryption</source>
-        <translation type="unfinished">Krüptimine</translation>
+        <translation>Krüptimine</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished">Läbiv krüptimine</translation>
+        <translation>Läbiv krüptimine</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished">Krüptimine on Nhekos hetkel veel katseline ning nii mõndagi võib ootamatult katki minna. &lt;br&gt;
+        <translation>Krüptimine on Nhekos hetkel veel katseline ning nii mõndagi võib ootamatult katki minna. &lt;br&gt;
 Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Sticker &amp; Emote Settings</source>
-        <translation type="unfinished">Kleepsude ja emotikonide seadistused</translation>
+        <translation>Kleepsude ja emotikonide seadistused</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Change</source>
-        <translation type="unfinished">Muuda</translation>
+        <translation>Muuda</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Change what packs are enabled, remove packs or create new ones</source>
-        <translation type="unfinished">Muuda missugused efektipakid on kasutusel, eemalda neid ja loo uusi</translation>
+        <translation>Muuda missugused efektipakid on kasutusel, eemalda neid või loo uusi</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Hidden events</source>
-        <translation type="unfinished">Peidetud sündmused</translation>
+        <translation>Peidetud sündmused</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Configure</source>
-        <translation type="unfinished">Seadista</translation>
+        <translation>Seadista</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select events to hide in this room</source>
-        <translation type="unfinished">Vali sündmused, mida siin jututoas peita</translation>
+        <translation>Vali sündmused, mida siin jututoas peita</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>INFO</source>
-        <translation type="unfinished">TEAVE</translation>
+        <translation>TEAVE</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Internal ID</source>
-        <translation type="unfinished">Sisemine tunnus</translation>
+        <translation>Sisemine tunnus</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished">Kopeeritud lõikelauale</translation>
+        <translation>Kopeeritud lõikelauale</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Room Version</source>
-        <translation type="unfinished">Jututoa versioon</translation>
+        <translation>Jututoa versioon</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>show less</source>
-        <translation type="unfinished">näita vähem</translation>
+        <translation>näita vähem</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>show more</source>
-        <translation type="unfinished">näita rohkem</translation>
+        <translation>näita rohkem</translation>
     </message>
 </context>
 <context>
@@ -1798,7 +1798,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+16"/>
         <source>Cancel Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühista muudatused</translation>
     </message>
 </context>
 <context>
@@ -3049,12 +3049,12 @@ Põhjus: %4</translation>
     <message>
         <location line="+2"/>
         <source>Open images with external program</source>
-        <translation type="unfinished"></translation>
+        <translation>Ava pildid välise rakendusega</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Open videos with external program</source>
-        <translation type="unfinished"></translation>
+        <translation>Ava videod välise rakendusega</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3361,13 +3361,15 @@ Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
         <location line="+5"/>
         <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the image.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Võimaldab juhtida pildi klõpsimisele järgnevat tegevust, kui kasutad „Kontekstimenüü &gt; Ava välise rakendusega“ funktsionaalsust.
+Kui see valik on sisse lülitatud, siis failid jäävad andmekandjale krüptimata kujul ning sa pead neid eraldi kustutama.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Toggles the behavior of &quot;Right-Click&gt;Open with external program&quot; when tapping the video.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Võimaldab juhtida video klõpsimisele järgnevat tegevust, kui kasutad „Kontekstimenüü &gt; Ava välise rakendusega“ funktsionaalsust.
+Kui see valik on sisse lülitatud, siis failid jäävad andmekandjale krüptimata kujul ning sa pead neid eraldi kustutama.</translation>
     </message>
     <message>
         <location line="+51"/>
