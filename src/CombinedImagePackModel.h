@@ -33,6 +33,12 @@ public:
             return {};
         return images.at(static_cast<size_t>(row)).image;
     }
+    QString shortcodeAt(int row)
+    {
+        if (row < 0 || static_cast<size_t>(row) >= images.size())
+            return {};
+        return images.at(static_cast<size_t>(row)).shortcode;
+    }
 
 private:
     std::string room_id;

@@ -636,7 +636,7 @@ InputBar::sticker(CombinedImagePackModel *model, int row)
     mtx::events::msg::StickerImage sticker{};
     sticker.info = img.info.value_or(mtx::common::ImageInfo{});
     sticker.url  = img.url;
-    sticker.body = img.body;
+    sticker.body = img.body.empty() ? model->shortcodeAt(row).toStdString() : img.body;
 
     // workaround for https://github.com/vector-im/element-ios/issues/2353
     sticker.info.thumbnail_url           = sticker.url;
