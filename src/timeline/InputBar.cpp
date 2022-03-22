@@ -1050,7 +1050,12 @@ InputBar::startUploadFromMimeData(const QMimeData &source, const QString &format
         return;
     }
 
-    startUpload(std::move(file), {}, format);
+    QMimeDatabase db;
+    auto mime        = db.mimeTypeForName(format);
+    auto suffix      = mime.preferredSuffix();
+    QString filename = QStringLiteral("clipboard");
+
+    startUpload(std::move(file), suffix.isEmpty() ? filename : (filename + "." + suffix), format);
 }
 void
 InputBar::startUpload(std::unique_ptr<QIODevice> dev, const QString &orgPath, const QString &format)
