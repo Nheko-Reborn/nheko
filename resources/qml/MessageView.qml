@@ -407,8 +407,6 @@ Item {
             width: chat.delegateMaxWidth
             height: section.active ? section.height + timelinerow.height : timelinerow.height
 
-            //hoverEnabled: true
-
             Loader {
                 id: section
 
@@ -432,8 +430,6 @@ Item {
 
             TimelineRow {
                 id: timelinerow
-
-                //hovered: messageActions.hovered ? (messageActions.model != undefined && messageActions.model == timelinerow) : wrapper.hovered
 
                 proportionalHeight: wrapper.proportionalHeight
                 type: chat.model, wrapper.type

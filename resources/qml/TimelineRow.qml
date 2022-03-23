@@ -46,7 +46,7 @@ AbstractButton {
     required property int status
     required property int relatedEventCacheBuster
 
-    //property bool hovered: false
+    hoverEnabled: true
 
     width: parent.width
     height: row.height+(reactionRow.height > 0 ? reactionRow.height-2 : 0 )
