@@ -76,7 +76,7 @@ build-macos:
   stage: build
   tags: [macos]
   before_script:
-    #- brew update
+    - 'brew upgrade qt@5'
     #- brew reinstall --force python3
     #- brew bundle --file=./.ci/macos/Brewfile --force --cleanup
     - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
