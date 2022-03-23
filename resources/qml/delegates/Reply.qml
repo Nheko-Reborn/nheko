@@ -11,7 +11,7 @@ import QtQuick.Window 2.13
 import im.nheko 1.0
 import "../"
 
-Item {
+AbstractButton {
     id: r
 
     property color userColor: "red"
@@ -57,6 +57,16 @@ Item {
         color: TimelineManager.userColor(userId, Nheko.colors.base)
     }
 
+    onClicked: {
+        let link = reply.child.linkAt != undefined && reply.child.linkAt(pressX-colorLine.width, pressY - userName_.implicitHeight);
+        if (link) {
+            Nheko.openLink(link)
+        } else {
+            room.showEvent(r.eventId)
+        }
+    }
+    onPressAndHold: replyContextMenu.show(reply.child.copyText, reply.child.linkAt(pressX-colorLine.width, pressY - userName_.implicitHeight))
+
     ColumnLayout {
         id: replyContainer
 
@@ -65,21 +75,7 @@ Item {
         spacing: 0
 
         TapHandler {
-            acceptedButtons: Qt.LeftButton
-            onSingleTapped: {
-                let link = reply.child.linkAt != undefined && reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight);
-                if (link) {
-                    Nheko.openLink(link)
-                } else {
-                    room.showEvent(r.eventId)
-                }
-            }
-            gesturePolicy: TapHandler.ReleaseWithinBounds
-        }
-
-        TapHandler {
             acceptedButtons: Qt.RightButton
-            onLongPressed: replyContextMenu.show(reply.child.copyText, reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight))
             onSingleTapped: replyContextMenu.show(reply.child.copyText, reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight))
             gesturePolicy: TapHandler.ReleaseWithinBounds
         }
