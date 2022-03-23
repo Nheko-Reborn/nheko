@@ -362,7 +362,7 @@ Item {
 
         }
 
-        delegate: ItemDelegate {
+        delegate: Item {
             id: wrapper
 
             required property double proportionalHeight
@@ -407,54 +407,7 @@ Item {
             width: chat.delegateMaxWidth
             height: section.active ? section.height + timelinerow.height : timelinerow.height
 
-            hoverEnabled: true
-
-            background: Rectangle {
-                id: scrollHighlight
-
-                opacity: 0
-                visible: true
-                z: 1
-                enabled: false
-                color: Nheko.colors.highlight
-
-                states: State {
-                    name: "revealed"
-                    when: wrapper.scrolledToThis
-                }
-
-                transitions: Transition {
-                    from: ""
-                    to: "revealed"
-
-                    SequentialAnimation {
-                        PropertyAnimation {
-                            target: scrollHighlight
-                            properties: "opacity"
-                            easing.type: Easing.InOutQuad
-                            from: 0
-                            to: 1
-                            duration: 500
-                        }
-
-                        PropertyAnimation {
-                            target: scrollHighlight
-                            properties: "opacity"
-                            easing.type: Easing.InOutQuad
-                            from: 1
-                            to: 0
-                            duration: 500
-                        }
-
-                        ScriptAction {
-                            script: chat.model.eventShown()
-                        }
-
-                    }
-
-                }
-
-            }
+            //hoverEnabled: true
 
             Loader {
                 id: section
@@ -480,7 +433,7 @@ Item {
             TimelineRow {
                 id: timelinerow
 
-                hovered: messageActions.hovered ? (messageActions.model != undefined && messageActions.model == timelinerow) : wrapper.hovered
+                //hovered: messageActions.hovered ? (messageActions.model != undefined && messageActions.model == timelinerow) : wrapper.hovered
 
                 proportionalHeight: wrapper.proportionalHeight
                 type: chat.model, wrapper.type
@@ -523,7 +476,52 @@ Item {
                         }
                     }
                 }
+                background: Rectangle {
+                    id: scrollHighlight
 
+                    opacity: 0
+                    visible: true
+                    z: 1
+                    enabled: false
+                    color: Nheko.colors.highlight
+
+                    states: State {
+                        name: "revealed"
+                        when: wrapper.scrolledToThis
+                    }
+
+                    transitions: Transition {
+                        from: ""
+                        to: "revealed"
+
+                        SequentialAnimation {
+                            PropertyAnimation {
+                                target: scrollHighlight
+                                properties: "opacity"
+                                easing.type: Easing.InOutQuad
+                                from: 0
+                                to: 1
+                                duration: 500
+                            }
+
+                            PropertyAnimation {
+                                target: scrollHighlight
+                                properties: "opacity"
+                                easing.type: Easing.InOutQuad
+                                from: 1
+                                to: 0
+                                duration: 500
+                            }
+
+                            ScriptAction {
+                                script: chat.model.eventShown()
+                            }
+
+                        }
+
+                    }
+
+                }
             }
 
             Connections {
