@@ -112,6 +112,7 @@ codesign-macos:
   stage: deploy
   tags: [macos]
   before_script:
+    - 'brew upgrade qt@5'
     - pip3 install dmgbuild
   script:
     - export PATH=/usr/local/opt/qt@5/bin/:${PATH}
