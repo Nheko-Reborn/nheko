@@ -25,6 +25,7 @@ AbstractButton {
     implicitWidth: Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1))
     width: Math.min(parent.width,implicitWidth)
     height: width*proportionalHeight
+    hoverEnabled: true
 
     property int metadataWidth
     property bool fitsMetadata: (parent.width - width) > metadataWidth+4
