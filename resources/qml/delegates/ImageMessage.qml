@@ -5,9 +5,10 @@
 
 import QtQuick 2.15
 import QtQuick.Window 2.15
+import QtQuick.Controls 2.3
 import im.nheko 1.0
 
-Item {
+AbstractButton {
     required property int type
     required property int originalWidth
     required property double proportionalHeight
@@ -61,28 +62,17 @@ Item {
         visible: loaded
         anchors.fill: parent
         roomm: room
-        play: !Settings.animateImagesOnHover || mouseArea.hovered
+        play: !Settings.animateImagesOnHover || parent.hovered
         eventId: parent.eventId
     }
 
-    TapHandler {
-        //enabled: type == MtxEvent.ImageMessage && (img.status == Image.Ready || mxcimage.loaded)
-        onSingleTapped: {
-            Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId);
-            eventPoint.accepted = true;
-        }
-        gesturePolicy: TapHandler.ReleaseWithinBounds
-    }
-
-    HoverHandler {
-        id: mouseArea
-    }
+    onClicked :Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId);
 
     Item {
         id: overlay
 
         anchors.fill: parent
-        visible: mouseArea.hovered
+        visible: parent.hovered
 
         Rectangle {
             id: container
