@@ -727,10 +727,12 @@ Item {
 
         property string text
         property string link
+        property string eventId
 
-        function show(text_, link_) {
+        function show(text_, link_, eventId_) {
             text = text_;
             link = link_;
+            eventId = eventId_;
             open();
         }
 
@@ -752,7 +754,7 @@ Item {
             visible: true
             enabled: visible
             text: qsTr("&Go to quoted message")
-            onTriggered: chat.model.showEvent(eventId)
+            onTriggered: chat.model.showEvent(replyContextMenu.eventId)
         }
 
     }

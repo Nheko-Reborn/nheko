@@ -65,7 +65,7 @@ AbstractButton {
             room.showEvent(r.eventId)
         }
     }
-    onPressAndHold: replyContextMenu.show(reply.child.copyText, reply.child.linkAt(pressX-colorLine.width, pressY - userName_.implicitHeight))
+    onPressAndHold: replyContextMenu.show(reply.child.copyText, reply.child.linkAt(pressX-colorLine.width, pressY - userName_.implicitHeight), r.eventId)
 
     ColumnLayout {
         id: replyContainer
@@ -76,7 +76,7 @@ AbstractButton {
 
         TapHandler {
             acceptedButtons: Qt.RightButton
-            onSingleTapped: replyContextMenu.show(reply.child.copyText, reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight))
+            onSingleTapped: replyContextMenu.show(reply.child.copyText, reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight), r.eventId)
             gesturePolicy: TapHandler.ReleaseWithinBounds
         }
 
