@@ -55,11 +55,11 @@ AbstractButton {
         color: (Settings.messageHoverHighlight && hovered) ? Nheko.colors.alternateBase : "transparent"
         anchors.fill: parent
         // this looks better without margins
-    TapHandler {
-        acceptedButtons: Qt.RightButton
-        onSingleTapped: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
-        gesturePolicy: TapHandler.ReleaseWithinBounds
-    }
+        TapHandler {
+            acceptedButtons: Qt.RightButton
+            onSingleTapped: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
+            gesturePolicy: TapHandler.ReleaseWithinBounds
+        }
     }
 
 
