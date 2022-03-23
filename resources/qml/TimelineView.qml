@@ -23,7 +23,15 @@ Item {
     property var room: null
     property var roomPreview: null
     property bool showBackButton: false
-    property int fullHeight: height+Qt.inputMethod.keyboardRectangle.height
+    property int fullHeight
+
+    Component.onCompleted: {
+        fullHeight = height
+    }
+    onHeightChanged: {
+        if(!Qt.inputMethod.visible)
+            fullHeight = height
+    }
 
     Label {
         visible: !room && !TimelineManager.isInitialSync && (!roomPreview || !roomPreview.roomid)
