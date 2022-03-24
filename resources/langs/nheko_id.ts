@@ -1229,7 +1229,7 @@ Misalnya: https://server.my:8787</translation>
         <location filename="../../src/timeline/InputBar.cpp" line="+581"/>
         <location line="+34"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished">Gagal untuk mengunggah media. Silakan coba lagi.</translation>
+        <translation>Gagal untuk mengunggah media. Silakan coba lagi.</translation>
     </message>
 </context>
 <context>
@@ -2815,8 +2815,8 @@ Alasan: %4</translation>
     <message numerus="yes">
         <location filename="../qml/UploadBox.qml" line="+79"/>
         <source>Upload %n file(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Unggah %n file</numerusform>
         </translation>
     </message>
 </context>
@@ -3387,13 +3387,15 @@ Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</transla
         <location line="+2"/>
         <source>Opens images with an external program when tapping the image.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Membuka gambar dengan sebuah program eksternal ketika mengetuk pada gambar.
+Dicatat bahwa ketika opsi ini NYALA, file yang terbuka ditinggal tidak terenkripsi pada disk dan harus dihapus secara manual.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Opens videos with an external program when tapping the video.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Membuka video dengan sebuah program eksternal ketika mengetuk pada video.
+Dicatat bahwa ketika opsi ini NYALA, file yang terbuka ditinggal tidak terenkripsi pada disk dan harus dihapus secara manual.</translation>
     </message>
     <message>
         <location line="+4"/>
