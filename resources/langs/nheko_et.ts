@@ -1231,7 +1231,7 @@ Näiteks: https://server.minu:8787</translation>
         <location filename="../../src/timeline/InputBar.cpp" line="+581"/>
         <location line="+34"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished">Meediafailide üleslaadimine ei õnnestunud. Palun proovi uuesti.</translation>
+        <translation>Meediafailide üleslaadimine ei õnnestunud. Palun proovi uuesti.</translation>
     </message>
 </context>
 <context>
@@ -2820,9 +2820,9 @@ Põhjus: %4</translation>
     <message numerus="yes">
         <location filename="../qml/UploadBox.qml" line="+79"/>
         <source>Upload %n file(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Laadi fail üles</numerusform>
+            <numerusform>Laadi %n faili üles</numerusform>
         </translation>
     </message>
 </context>
@@ -3393,13 +3393,15 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
         <location line="+2"/>
         <source>Opens images with an external program when tapping the image.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pildile klõpsimisel avab need välises rakenduses.
+Kui see valik on sisse lülitatud, siis failid jäävad andmekandjale krüptimata kujul ning sa pead neid eraldi kustutama.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Opens videos with an external program when tapping the video.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Videole klõpsimisel avab need välises rakenduses.
+Kui see valik on sisse lülitatud, siis failid jäävad andmekandjale krüptimata kujul ning sa pead neid eraldi kustutama.</translation>
     </message>
     <message>
         <location line="+4"/>
