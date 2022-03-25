@@ -26,6 +26,13 @@ Page {
 
     }
 
+    Component {
+        id: createRoomComponent
+
+        CreateRoom {
+        }
+    }
+
     ListView {
         id: roomlist
 
@@ -648,7 +655,11 @@ Page {
 
                         Platform.MenuItem {
                             text: qsTr("Create a new room")
-                            onTriggered: Nheko.openCreateRoomDialog()
+                            onTriggered: {
+                                var createRoom = createRoomComponent.createObject(timelineRoot);
+                                createRoom.show();
+                                timelineRoot.destroyOnClose(createRoom);
+                            }
                         }
 
                     }
