@@ -69,11 +69,19 @@ AbstractButton {
     DragHandler {
         id: draghandler
         yAxis.enabled: false
-        xAxis.maximum: 0
+        xAxis.maximum: 100
         xAxis.minimum: -100
         onActiveChanged: {
-            if(!active && x < -70)
-                chat.model.reply = eventId
+            if(!active) {
+                if (x < -70){
+                    chat.model.reply = eventId
+                } else if (x > 70) {
+                    var forwardMess = forwardCompleterComponent.createObject(timelineRoot);
+                    forwardMess.setMessageEventId(r.eventId);
+                    forwardMess.open();
+                    timelineRoot.destroyOnClose(forwardMess);
+                }
+            }
         }
     }
     states: State {
