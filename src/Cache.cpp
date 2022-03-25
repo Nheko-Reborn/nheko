@@ -3708,8 +3708,10 @@ Cache::getImagePacks(const std::string &room_id, std::optional<bool> stickers)
     auto addPack = [&infos, stickers](const mtx::events::msc2545::ImagePack &pack,
                                       const std::string &source_room,
                                       const std::string &state_key) {
-        bool pack_matches = !stickers.has_value() ||
-                            (stickers.value() ? pack.pack->is_sticker() : pack.pack->is_emoji());
+        bool pack_is_sticker = pack.pack ? pack.pack->is_sticker() : true;
+        bool pack_is_emoji   = pack.pack ? pack.pack->is_emoji() : true;
+        bool pack_matches =
+          !stickers.has_value() || (stickers.value() ? pack_is_sticker : pack_is_emoji);
 
         ImagePackInfo info;
         info.source_room = source_room;
