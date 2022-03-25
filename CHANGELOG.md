@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.9.3] -- unreleased
+## [0.9.3] -- 2022-03-25
 
 ### Highlights
 
@@ -34,11 +34,7 @@
 - Indonesian (Linerly)
 - Estonian (Priit)
 - Finnish (Priit)
-#- Spanish (Lluise, Diego Collado, Richard, Edd Ludd, Drake)
-#- Catalan (Edd Ludd)
-#- French (ISSOtm)
-#- Dutch (Thulinma)
-#- Chinese (hulb)
+- Esperanto (Tirifto)
 
 ### Bugfixes
 
