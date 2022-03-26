@@ -8,29 +8,38 @@ import QtQuick 2.15
 import QtQuick.Window 2.13
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
+import QtQml.Models 2.15
 import im.nheko 1.0
 
 ApplicationWindow {
     id: createDirectRoot
     title: qsTr("Create Direct Chat")
-    property var profile: null
+    property var profile
+    property bool otherUserHasE2ee: profile? dMod.count > 0 : true
     minimumHeight: layout.implicitHeight+2*layout.anchors.margins+footer.height
     minimumWidth: footer.width
+
+    DelegateModel {
+        id: dMod
+        model: profile? profile.deviceList : undefined
+    }
+
     ColumnLayout {
         id: layout
         anchors.fill: parent
         anchors.margins: Nheko.paddingSmall
         MatrixTextField {
             id: userID
+            property bool isValidMxid: text.match("@.+?:.{3,}")
             Layout.fillWidth: true
             focus: true
             placeholderText: qsTr("Name")
-            /*onTextChanged: {
-                if(isValidMxid(text))
-                    profile = getProfile(text);
-                else
+            onTextChanged: {
+                if(isValidMxid) {
+                    profile = TimelineManager.getGlobalUserProfile(text);
+                } else
                     profile = null;
-            }*/
+            }
         }
 
         GridLayout {
@@ -39,21 +48,20 @@ ApplicationWindow {
             columns: 2
             rowSpacing: Nheko.paddingSmall
             columnSpacing: Nheko.paddingMedium
-            anchors.centerIn: parent
 
             Avatar {
                 Layout.rowSpan: 2
                 Layout.preferredWidth: Nheko.avatarSize
                 Layout.preferredHeight: Nheko.avatarSize
                 Layout.alignment: Qt.AlignLeft
-                userid: profile.mxid
-                url: profile.avatarUrl.replace("mxc://", "image://MxcImage/")
-                displayName: profile.displayName
+                userid: profile? profile.mxid : ""
+                url: profile? profile.avatarUrl.replace("mxc://", "image://MxcImage/") : null
+                displayName: profile? profile.displayName : ""
                 enabled: false
             }
             Label {
                 Layout.fillWidth: true
-                text: "John Smith" //profile.displayName
+                text: profile? profile.displayName : ""
                 color: TimelineManager.userColor(userID.text, Nheko.colors.window)
                 font.pointSize: fontMetrics.font.pointSize
             }
@@ -76,7 +84,7 @@ ApplicationWindow {
             ToggleButton {
                 Layout.alignment: Qt.AlignRight
                 id: encryption
-                checked: true
+                checked: otherUserHasE2ee
             }
         }
     }
@@ -85,8 +93,12 @@ ApplicationWindow {
         Button {
             text: "Start Direct Chat"
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            enabled: userID.isValidMxid
         }
         onRejected: createDirectRoot.close();
-        //onAccepted: createRoom(newRoomName.text, newRoomTopic.text, newRoomAlias.text, newRoomVisibility.index, newRoomPreset.index)
+        onAccepted: {
+            profile.startChat()
+            createDirectRoot.close()
+        }
     }
 }
