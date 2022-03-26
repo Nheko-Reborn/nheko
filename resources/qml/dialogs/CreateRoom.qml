@@ -72,7 +72,7 @@ ApplicationWindow {
     footer: DialogButtonBox {
         standardButtons: DialogButtonBox.Cancel
         Button {
-            text: "CreateRoom"
+            text: "Create Room"
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
         }
         onRejected: createRoomRoot.close();

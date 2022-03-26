@@ -33,6 +33,13 @@ Page {
         }
     }
 
+    Component {
+        id: createDirectComponent
+
+        CreateDirect {
+        }
+    }
+
     ListView {
         id: roomlist
 
@@ -659,6 +666,15 @@ Page {
                                 var createRoom = createRoomComponent.createObject(timelineRoot);
                                 createRoom.show();
                                 timelineRoot.destroyOnClose(createRoom);
+                            }
+                        }
+
+                        Platform.MenuItem {
+                            text: qsTr("Start a direct chat")
+                            onTriggered: {
+                                var createDirect = createDirectComponent.createObject(timelineRoot);
+                                createDirect.show();
+                                timelineRoot.destroyOnClose(createDirect);
                             }
                         }
 
