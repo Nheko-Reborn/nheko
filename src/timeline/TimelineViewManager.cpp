@@ -199,12 +199,12 @@ TimelineViewManager::openGlobalUserProfile(QString userId)
     emit openProfile(profile);
 }
 
-UserProfile*
+UserProfile *
 TimelineViewManager::getGlobalUserProfile(QString userId)
 {
     UserProfile *profile = new UserProfile{QString{}, userId, this};
     QQmlEngine::setObjectOwnership(profile, QQmlEngine::JavaScriptOwnership);
-    return(profile);
+    return (profile);
 }
 
 void
