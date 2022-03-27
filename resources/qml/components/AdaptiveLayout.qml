@@ -131,6 +131,7 @@ Container {
         interactive: singlePageMode
         highlightMoveDuration: container.singlePageMode ? 200 : 0
         currentIndex: container.singlePageMode ? container.pageIndex : 0
+        boundsBehavior: Flickable.StopAtBounds
     }
 
 }

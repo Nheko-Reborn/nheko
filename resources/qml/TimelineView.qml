@@ -23,6 +23,7 @@ Item {
     property var room: null
     property var roomPreview: null
     property bool showBackButton: false
+    clip: true
 
     Label {
         visible: !room && !TimelineManager.isInitialSync && (!roomPreview || !roomPreview.roomid)

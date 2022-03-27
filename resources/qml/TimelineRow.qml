@@ -5,7 +5,7 @@
 
 import "./delegates"
 import "./emoji"
-import QtQuick 2.12
+import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
@@ -65,6 +65,32 @@ AbstractButton {
 
     onPressAndHold: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
     onDoubleClicked: chat.model.reply = eventId
+
+    DragHandler {
+        id: draghandler
+        yAxis.enabled: false
+        xAxis.maximum: 100
+        xAxis.minimum: -100
+        onActiveChanged: {
+            if(!active && (x < -70 || x > 70))
+                chat.model.reply = eventId
+        }
+    }
+    states: State {
+        name: "dragging"
+        when: draghandler.active
+    }
+    transitions: Transition {
+        from: "dragging"
+        to: ""
+        PropertyAnimation {
+            target: r
+            properties: "x"
+            easing.type: Easing.InOutQuad
+            to: 0
+            duration: 100
+        }
+    }
 
     Rectangle {
         id: row
