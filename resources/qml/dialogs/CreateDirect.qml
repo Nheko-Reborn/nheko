@@ -19,6 +19,10 @@ ApplicationWindow {
     minimumHeight: layout.implicitHeight+2*layout.anchors.margins+footer.height
     minimumWidth: footer.width
 
+    Shortcut {
+        sequence: StandardKey.Cancel
+        onActivated: roomDirectoryWindow.close()
+    }
     DelegateModel {
         id: dMod
         model: profile? profile.deviceList : undefined
