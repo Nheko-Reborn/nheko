@@ -72,16 +72,8 @@ AbstractButton {
         xAxis.maximum: 100
         xAxis.minimum: -100
         onActiveChanged: {
-            if(!active) {
-                if (x < -70){
-                    chat.model.reply = eventId
-                } else if (x > 70) {
-                    var forwardMess = forwardCompleterComponent.createObject(timelineRoot);
-                    forwardMess.setMessageEventId(r.eventId);
-                    forwardMess.open();
-                    timelineRoot.destroyOnClose(forwardMess);
-                }
-            }
+            if(!active && (x < -70 || x > 70))
+                chat.model.reply = eventId
         }
     }
     states: State {
