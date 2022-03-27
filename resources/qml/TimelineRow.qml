@@ -5,13 +5,13 @@
 
 import "./delegates"
 import "./emoji"
-import QtQuick 2.12
+import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
 import im.nheko 1.0
 
-Item {
+AbstractButton {
     id: r
 
     required property double proportionalHeight
@@ -46,7 +46,7 @@ Item {
     required property int status
     required property int relatedEventCacheBuster
 
-    property bool hovered: false
+    hoverEnabled: true
 
     width: parent.width
     height: row.height+(reactionRow.height > 0 ? reactionRow.height-2 : 0 )
@@ -55,21 +55,44 @@ Item {
         color: (Settings.messageHoverHighlight && hovered) ? Nheko.colors.alternateBase : "transparent"
         anchors.fill: parent
         // this looks better without margins
+        TapHandler {
+            acceptedButtons: Qt.RightButton
+            onSingleTapped: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
+            gesturePolicy: TapHandler.ReleaseWithinBounds
+        }
     }
 
-    TapHandler {
-        acceptedButtons: Qt.RightButton
-        onSingleTapped: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
-        gesturePolicy: TapHandler.ReleaseWithinBounds
+
+    onPressAndHold: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
+    onDoubleClicked: chat.model.reply = eventId
+
+    DragHandler {
+        id: draghandler
+        yAxis.enabled: false
+        xAxis.maximum: 100
+        xAxis.minimum: -100
+        onActiveChanged: {
+            if(!active && (x < -70 || x > 70))
+                chat.model.reply = eventId
+        }
+    }
+    states: State {
+        name: "dragging"
+        when: draghandler.active
+    }
+    transitions: Transition {
+        from: "dragging"
+        to: ""
+        PropertyAnimation {
+            target: r
+            properties: "x"
+            easing.type: Easing.InOutQuad
+            to: 0
+            duration: 100
+        }
     }
 
-    TapHandler {
-        onLongPressed: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
-        onDoubleTapped: chat.model.reply = eventId
-        gesturePolicy: TapHandler.ReleaseWithinBounds
-    }
-
-    Control {
+    Rectangle {
         id: row
         property bool bubbleOnRight : isSender && Settings.bubbles
         anchors.leftMargin: isStateEvent || Settings.smallAvatars? 0 : Nheko.avatarSize+8 // align bubble with section header
@@ -78,20 +101,21 @@ Item {
         anchors.horizontalCenter: isStateEvent? parent.horizontalCenter : undefined
         property int maxWidth: (parent.width-(Settings.smallAvatars || isStateEvent? 0 : Nheko.avatarSize+8))*(Settings.bubbles && !isStateEvent? 0.9 : 1)
         width: Settings.bubbles? Math.min(maxWidth,Math.max(reply.implicitWidth+8,contentItem.implicitWidth+metadata.width+20)) : maxWidth
+        height: msg.height+msg.anchors.margins*2
 
-        leftPadding: 4
-        rightPadding: (Settings.bubbles && !isStateEvent)? 4: 2
-        topPadding: rightPadding
-        bottomPadding: topPadding
-        background: Rectangle {
-            property color userColor: TimelineManager.userColor(userId, Nheko.colors.base)
-            property color bgColor: Nheko.colors.base
-            color: Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2))
-            radius: 4
-            visible: Settings.bubbles && !isStateEvent
-        }
+        property color userColor: TimelineManager.userColor(userId, Nheko.colors.base)
+        property color bgColor: Nheko.colors.base
+        color: (Settings.bubbles && !isStateEvent) ? Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) : "#00000000"
+        radius: 4
 
-        contentItem: GridLayout {
+        GridLayout {
+            anchors {
+                left: parent.left
+                top: parent.top
+                right: parent.right
+                margins: (Settings.bubbles && ! isStateEvent)? 4 : 2
+                leftMargin: 4
+            }
             id: msg
             rowSpacing: 0
             columnSpacing: 2

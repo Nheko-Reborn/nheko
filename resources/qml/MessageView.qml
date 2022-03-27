@@ -68,7 +68,7 @@ Item {
             hoverEnabled: true
             visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
             x: attached ? attachedPos.x : 0
-            y: attached ? attachedPos.y + Nheko.paddingMedium : 0
+            y: attached ? attachedPos.y + Nheko.paddingSmall : 0
             z: 10
 
             background: Rectangle {
@@ -362,7 +362,7 @@ Item {
 
         }
 
-        delegate: ItemDelegate {
+        delegate: Item {
             id: wrapper
 
             required property double proportionalHeight
@@ -407,55 +407,6 @@ Item {
             width: chat.delegateMaxWidth
             height: section.active ? section.height + timelinerow.height : timelinerow.height
 
-            hoverEnabled: true
-
-            background: Rectangle {
-                id: scrollHighlight
-
-                opacity: 0
-                visible: true
-                z: 1
-                enabled: false
-                color: Nheko.colors.highlight
-
-                states: State {
-                    name: "revealed"
-                    when: wrapper.scrolledToThis
-                }
-
-                transitions: Transition {
-                    from: ""
-                    to: "revealed"
-
-                    SequentialAnimation {
-                        PropertyAnimation {
-                            target: scrollHighlight
-                            properties: "opacity"
-                            easing.type: Easing.InOutQuad
-                            from: 0
-                            to: 1
-                            duration: 500
-                        }
-
-                        PropertyAnimation {
-                            target: scrollHighlight
-                            properties: "opacity"
-                            easing.type: Easing.InOutQuad
-                            from: 1
-                            to: 0
-                            duration: 500
-                        }
-
-                        ScriptAction {
-                            script: chat.model.eventShown()
-                        }
-
-                    }
-
-                }
-
-            }
-
             Loader {
                 id: section
 
@@ -479,8 +430,6 @@ Item {
 
             TimelineRow {
                 id: timelinerow
-
-                hovered: messageActions.hovered ? (messageActions.model != undefined && messageActions.model == timelinerow) : wrapper.hovered
 
                 proportionalHeight: wrapper.proportionalHeight
                 type: chat.model, wrapper.type
@@ -523,7 +472,52 @@ Item {
                         }
                     }
                 }
+                background: Rectangle {
+                    id: scrollHighlight
 
+                    opacity: 0
+                    visible: true
+                    z: 1
+                    enabled: false
+                    color: Nheko.colors.highlight
+
+                    states: State {
+                        name: "revealed"
+                        when: wrapper.scrolledToThis
+                    }
+
+                    transitions: Transition {
+                        from: ""
+                        to: "revealed"
+
+                        SequentialAnimation {
+                            PropertyAnimation {
+                                target: scrollHighlight
+                                properties: "opacity"
+                                easing.type: Easing.InOutQuad
+                                from: 0
+                                to: 1
+                                duration: 500
+                            }
+
+                            PropertyAnimation {
+                                target: scrollHighlight
+                                properties: "opacity"
+                                easing.type: Easing.InOutQuad
+                                from: 1
+                                to: 0
+                                duration: 500
+                            }
+
+                            ScriptAction {
+                                script: chat.model.eventShown()
+                            }
+
+                        }
+
+                    }
+
+                }
             }
 
             Connections {
@@ -729,10 +723,12 @@ Item {
 
         property string text
         property string link
+        property string eventId
 
-        function show(text_, link_) {
+        function show(text_, link_, eventId_) {
             text = text_;
             link = link_;
+            eventId = eventId_;
             open();
         }
 
@@ -754,7 +750,7 @@ Item {
             visible: true
             enabled: visible
             text: qsTr("&Go to quoted message")
-            onTriggered: chat.model.showEvent(eventId)
+            onTriggered: chat.model.showEvent(replyContextMenu.eventId)
         }
 
     }

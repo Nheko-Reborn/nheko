@@ -32,6 +32,8 @@ Item {
         if(!Qt.inputMethod.visible)
             fullHeight = height
     }
+    
+    clip: true
 
     Label {
         visible: !room && !TimelineManager.isInitialSync && (!roomPreview || !roomPreview.roomid)

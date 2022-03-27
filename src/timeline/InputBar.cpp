@@ -896,39 +896,47 @@ MediaUpload::startUpload()
         QByteArray ba;
         QBuffer buffer(&ba);
         buffer.open(QIODevice::WriteOnly);
-        thumbnail_.save(&buffer, "PNG");
-        auto payload = std::string(ba.data(), ba.size());
-        if (encrypt_) {
-            mtx::crypto::BinaryBuf buf;
-            std::tie(buf, thumbnailEncryptedFile) = mtx::crypto::encrypt_file(std::move(payload));
-            payload                               = mtx::crypto::to_string(buf);
-        }
-        thumbnailSize_ = payload.size();
+        thumbnail_.save(&buffer, "PNG", 0);
+        if (ba.size() >= (data.size() - data.size() / 10)) {
+            nhlog::ui()->info(
+              "Thumbnail is not a lot smaller than original image, not uploading it");
+            nhlog::ui()->debug(
+              "\n    Image size: {:9d}\nThumbnail size: {:9d}", data.size(), ba.size());
+        } else {
+            auto payload = std::string(ba.data(), ba.size());
+            if (encrypt_) {
+                mtx::crypto::BinaryBuf buf;
+                std::tie(buf, thumbnailEncryptedFile) =
+                  mtx::crypto::encrypt_file(std::move(payload));
+                payload = mtx::crypto::to_string(buf);
+            }
+            thumbnailSize_ = payload.size();
 
-        http::client()->upload(
-          payload,
-          encryptedFile ? "application/octet-stream" : "image/png",
-          "",
-          [this](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) mutable {
-              if (err) {
-                  emit ChatPage::instance()->showNotification(
-                    tr("Failed to upload media. Please try again."));
-                  nhlog::net()->warn("failed to upload media: {} {} ({})",
-                                     err->matrix_error.error,
-                                     to_string(err->matrix_error.errcode),
-                                     static_cast<int>(err->status_code));
-                  thumbnail_ = QImage();
+            http::client()->upload(
+              payload,
+              encryptedFile ? "application/octet-stream" : "image/png",
+              "",
+              [this](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) mutable {
+                  if (err) {
+                      emit ChatPage::instance()->showNotification(
+                        tr("Failed to upload media. Please try again."));
+                      nhlog::net()->warn("failed to upload media: {} {} ({})",
+                                         err->matrix_error.error,
+                                         to_string(err->matrix_error.errcode),
+                                         static_cast<int>(err->status_code));
+                      thumbnail_ = QImage();
+                      startUpload();
+                      return;
+                  }
+
+                  thumbnailUrl_ = QString::fromStdString(res.content_uri);
+                  if (thumbnailEncryptedFile)
+                      thumbnailEncryptedFile->url = res.content_uri;
+
                   startUpload();
-                  return;
-              }
-
-              thumbnailUrl_ = QString::fromStdString(res.content_uri);
-              if (thumbnailEncryptedFile)
-                  thumbnailEncryptedFile->url = res.content_uri;
-
-              startUpload();
-          });
-        return;
+              });
+            return;
+        }
     }
 
     auto payload = std::string(data.data(), data.size());

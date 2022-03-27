@@ -1,5 +1,50 @@
 # Changelog
 
+## [0.9.3] -- 2022-03-25
+
+### Highlights
+
+- New upload UX
+  - Queue multiple uploads by pasting or dragging multiple files.
+  - Videos will now properly have a thumbnail as well as images.
+  - Duration, width and height is now also properly included so that clients can resize appropriately.
+  - Thumbnails are excluded if they are bigger than the original image. (tastytea)
+- Improvements for mobile devices (Malte E)
+  - You should now be able to scroll by touching anywhere with no random dead zones.
+  - Preedit text can now be used in a completer and is properly sent
+  - If an input method is active, pressing Enter will not send the current message.
+
+### Features
+
+- Optionally always open videos and images in an external program. (math)
+
+### Improvements
+
+- Build macOS releases against Qt 5.15.3 to resolve missing spaces after some punctuation.
+- Send the shortcode as the body for stickers without a body.
+- Elide long usernames in the timeline. (Malte E)
+- Cleanup the reply popup. (Malte E)
+- Use standard buttons where possible. (tastytea)
+- Various improvements to the bubble layout. (Malte E)
+- Enable online key backup by default.
+- Update the bundled gstreamer in our Flatpaks.
+
+### Translations
+
+- Indonesian (Linerly)
+- Estonian (Priit)
+- Finnish (Priit)
+- Esperanto (Tirifto)
+
+### Bugfixes
+
+- Fix hovering the action menu.
+- Try to avoid using unknown UIA flows.
+- Don't Components actively in use.
+- Fix screensharing.
+- Fix device id when doing SSO logins.
+
+
 ## [0.9.2] -- 2022-03-09
 
 ### Highlights

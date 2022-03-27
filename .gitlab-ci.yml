@@ -76,9 +76,6 @@ build-macos:
   stage: build
   tags: [macos]
   before_script:
-    #- brew update
-    #- brew reinstall --force python3
-    #- brew bundle --file=./.ci/macos/Brewfile --force --cleanup
     - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
   script:
     - export PATH=/usr/local/opt/qt@5/bin/:${PATH}
@@ -112,6 +109,7 @@ codesign-macos:
   stage: deploy
   tags: [macos]
   before_script:
+    - 'brew upgrade qt@5'
     - pip3 install dmgbuild
   script:
     - export PATH=/usr/local/opt/qt@5/bin/:${PATH}

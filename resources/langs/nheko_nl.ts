@@ -436,12 +436,12 @@
     <message>
         <location filename="../qml/dialogs/DirectChatSetup.qml" line="+28"/>
         <source>Room Settings</source>
-        <translation type="unfinished">Kamerinstellingen</translation>
+        <translation>Kamerinstellingen</translation>
     </message>
     <message numerus="yes">
         <location line="+94"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n deelnemer</numerusform>
             <numerusform>%n deelnemers</numerusform>
         </translation>
@@ -449,134 +449,134 @@
     <message>
         <location line="+65"/>
         <source>SETTINGS</source>
-        <translation type="unfinished">INSTELLINGEN</translation>
+        <translation>INSTELLINGEN</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Notifications</source>
-        <translation type="unfinished">Meldingen</translation>
+        <translation>Meldingen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Muted</source>
-        <translation type="unfinished">Gedempt</translation>
+        <translation>Gedempt</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mentions only</source>
-        <translation type="unfinished">Alleen vermeldingen</translation>
+        <translation>Alleen vermeldingen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All messages</source>
-        <translation type="unfinished">Alle berichten</translation>
+        <translation>Alle berichten</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Room access</source>
-        <translation type="unfinished">Kamertoegang</translation>
+        <translation>Kamertoegang</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Anyone and guests</source>
-        <translation type="unfinished">Iedereen (inclusief gasten)</translation>
+        <translation>Iedereen (inclusief gasten)</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Anyone</source>
-        <translation type="unfinished">Iedereen</translation>
+        <translation>Iedereen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Invited users</source>
-        <translation type="unfinished">Uitgenodigde gebruikers</translation>
+        <translation>Uitgenodigde gebruikers</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>By knocking</source>
-        <translation type="unfinished">Door aan te kloppen</translation>
+        <translation>Door aan te kloppen</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Restricted by membership in other rooms</source>
-        <translation type="unfinished">Beperkt door deelname aan andere kamers</translation>
+        <translation>Beperkt door deelname aan andere kamers</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Encryption</source>
-        <translation type="unfinished">Versleuteling</translation>
+        <translation>Versleuteling</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished">Eind-tot-eind versleuteling</translation>
+        <translation>Eind-tot-eind versleuteling</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished">Versleuteling is momenteel experimenteel en dingen gaan misschien stuk. &lt;br&gt;
+        <translation>Versleuteling is momenteel experimenteel en dingen gaan misschien stuk. &lt;br&gt;
 Wees ervan bewust dat het achteraf niet meer uitgeschakeld kan worden.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Sticker &amp; Emote Settings</source>
-        <translation type="unfinished">Sticker &amp; Emoji instellingen</translation>
+        <translation>Sticker &amp; Emoji instellingen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Change</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Change what packs are enabled, remove packs or create new ones</source>
-        <translation type="unfinished">Verander welke afbeeldingspakketten zijn ingeschakeld, verwijder ze of voeg nieuwe toe</translation>
+        <translation>Verander welke afbeeldingspakketten zijn ingeschakeld, verwijder ze of voeg nieuwe toe</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Hidden events</source>
-        <translation type="unfinished">Verborgen gebeurtenissen</translation>
+        <translation>Verborgen gebeurtenissen</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Configure</source>
-        <translation type="unfinished">Instellen</translation>
+        <translation>Instellen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select events to hide in this room</source>
-        <translation type="unfinished">Selecteer gebeurtenissen die verborgen dienen te worden in deze kamer</translation>
+        <translation>Selecteer gebeurtenissen die verborgen dienen te worden in deze kamer</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>INFO</source>
-        <translation type="unfinished">INFO</translation>
+        <translation>INFO</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Internal ID</source>
-        <translation type="unfinished">Interne ID</translation>
+        <translation>Interne ID</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished">Gekopieerd naar klembord</translation>
+        <translation>Gekopieerd naar klembord</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Room Version</source>
-        <translation type="unfinished">Kamerversie</translation>
+        <translation>Kamerversie</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>show less</source>
-        <translation type="unfinished"></translation>
+        <translation>minder tonen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>show more</source>
-        <translation type="unfinished"></translation>
+        <translation>meer tonen</translation>
     </message>
 </context>
 <context>
@@ -1231,7 +1231,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <location filename="../../src/timeline/InputBar.cpp" line="+581"/>
         <location line="+34"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished">Het is niet is gelukt om de media te versturen. Probeer het a.u.b. opnieuw.</translation>
+        <translation>Het is niet is gelukt om de media te versturen. Probeer het a.u.b. opnieuw.</translation>
     </message>
 </context>
 <context>
@@ -1802,7 +1802,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+16"/>
         <source>Cancel Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewerken annuleren</translation>
     </message>
 </context>
 <context>
@@ -2134,12 +2134,12 @@ Wees ervan bewust dat het achteraf niet meer uitgeschakeld kan worden.</translat
     <message>
         <location line="+19"/>
         <source>show less</source>
-        <translation type="unfinished"></translation>
+        <translation>minder tonen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>show more</source>
-        <translation type="unfinished"></translation>
+        <translation>meer tonen</translation>
     </message>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+256"/>
@@ -2820,9 +2820,9 @@ Reden: %4</translation>
     <message numerus="yes">
         <location filename="../qml/UploadBox.qml" line="+79"/>
         <source>Upload %n file(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Bestand versturen</numerusform>
+            <numerusform>%n bestanden versturen</numerusform>
         </translation>
     </message>
 </context>
@@ -3064,12 +3064,12 @@ Reden: %4</translation>
     <message>
         <location line="+2"/>
         <source>Open images with external program</source>
-        <translation type="unfinished"></translation>
+        <translation>Open afbeeldingen met externe applicatie</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Open videos with external program</source>
-        <translation type="unfinished"></translation>
+        <translation>Open videos met externe applicatie</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3393,13 +3393,15 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
         <location line="+2"/>
         <source>Opens images with an external program when tapping the image.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Opent afbeeldingen met een externe applicatie wanneer op een afbeelding geklikt wordt.
+Let up dat als deze instelling AAN staat, geopende afbeeldingen zonder versleuteling opgeslagen worden en met de hand moeten worden opgeruimd.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Opens videos with an external program when tapping the video.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Opent videos met een externe applicatie wanneer op een afbeelding geklikt wordt.
+Let up dat als deze instelling AAN staat, geopende videos zonder versleuteling opgeslagen worden en met de hand moeten worden opgeruimd.</translation>
     </message>
     <message>
         <location line="+4"/>
