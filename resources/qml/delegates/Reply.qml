@@ -78,6 +78,7 @@ AbstractButton {
             acceptedButtons: Qt.RightButton
             onSingleTapped: replyContextMenu.show(reply.child.copyText, reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight), r.eventId)
             gesturePolicy: TapHandler.ReleaseWithinBounds
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
         }
 
         AbstractButton {

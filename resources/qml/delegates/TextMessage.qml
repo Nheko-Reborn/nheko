@@ -39,6 +39,7 @@ MatrixText {
     height: isReply ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : implicitHeight
     clip: isReply
     selectByMouse: !Settings.mobileMode && !isReply
+    enabled: !Settings.mobileMode
     font.pointSize: (Settings.enlargeEmojiOnlyMessages && isOnlyEmoji > 0 && isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize
 
     CursorShape {
