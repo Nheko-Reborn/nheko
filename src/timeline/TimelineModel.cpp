@@ -2088,19 +2088,16 @@ TimelineModel::formatMemberEvent(const QString &id)
         }
         break;
     case Membership::Leave:
-        if (!prevEvent) // Should only ever happen temporarily
-            return {};
-
-        if (prevEvent->content.membership == Membership::Invite) {
-            if (event->state_key == event->sender)
-                rendered = tr("%1 rejected their invite.").arg(name);
-            else
-                rendered = tr("%2 revoked the invite to %1.").arg(name, senderName);
-        } else if (prevEvent->content.membership == Membership::Join) {
+        if (!prevEvent || prevEvent->content.membership == Membership::Join) {
             if (event->state_key == event->sender)
                 rendered = tr("%1 left the room.").arg(name);
             else
                 rendered = tr("%2 kicked %1.").arg(name, senderName);
+        } else if (prevEvent->content.membership == Membership::Invite) {
+            if (event->state_key == event->sender)
+                rendered = tr("%1 rejected their invite.").arg(name);
+            else
+                rendered = tr("%2 revoked the invite to %1.").arg(name, senderName);
         } else if (prevEvent->content.membership == Membership::Ban) {
             rendered = tr("%2 unbanned %1.").arg(name, senderName);
         } else if (prevEvent->content.membership == Membership::Knock) {
