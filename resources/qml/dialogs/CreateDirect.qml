@@ -15,36 +15,26 @@ ApplicationWindow {
     id: createDirectRoot
     title: qsTr("Create Direct Chat")
     property var profile
-    property bool otherUserHasE2ee: profile? dMod.count > 0 : true
-    minimumHeight: layout.implicitHeight+2*layout.anchors.margins+footer.height
-    minimumWidth: footer.width
+    property bool otherUserHasE2ee: profile? profile.deviceList.rowCount() > 0 : true
+    minimumHeight: layout.implicitHeight + footer.implicitHeight + Nheko.paddingLarge*2
+    minimumWidth: Math.max(footer.implicitWidth, layout.implicitWidth)
+    modality: Qt.NonModal
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+
+    onVisibilityChanged: {
+        userID.forceActiveFocus();
+    }
 
     Shortcut {
         sequence: StandardKey.Cancel
-        onActivated: roomDirectoryWindow.close()
-    }
-    DelegateModel {
-        id: dMod
-        model: profile? profile.deviceList : undefined
+        onActivated: createDirectRoot.close()
     }
 
     ColumnLayout {
         id: layout
         anchors.fill: parent
-        anchors.margins: Nheko.paddingSmall
-        MatrixTextField {
-            id: userID
-            property bool isValidMxid: text.match("@.+?:.{3,}")
-            Layout.fillWidth: true
-            focus: true
-            placeholderText: qsTr("Name")
-            onTextChanged: {
-                if(isValidMxid) {
-                    profile = TimelineManager.getGlobalUserProfile(text);
-                } else
-                    profile = null;
-            }
-        }
+        anchors.margins: Nheko.paddingLarge
+        spacing: userID.height/4
 
         GridLayout {
             Layout.fillWidth: true
@@ -58,7 +48,7 @@ ApplicationWindow {
                 Layout.preferredWidth: Nheko.avatarSize
                 Layout.preferredHeight: Nheko.avatarSize
                 Layout.alignment: Qt.AlignLeft
-                userid: profile? profile.mxid : ""
+                userid: profile? profile.userid : ""
                 url: profile? profile.avatarUrl.replace("mxc://", "image://MxcImage/") : null
                 displayName: profile? profile.displayName : ""
                 enabled: false
@@ -77,6 +67,22 @@ ApplicationWindow {
                 font.pointSize: fontMetrics.font.pointSize * 0.9
             }
         }
+
+        MatrixTextField {
+            id: userID
+            property bool isValidMxid: text.match("@.+?:.{3,}")
+            Layout.fillWidth: true
+            focus: true
+            label: qsTr("User to invite")
+            placeholderText: qsTr("@user:server.tld")
+            onTextChanged: {
+                if(isValidMxid) {
+                    profile = TimelineManager.getGlobalUserProfile(text);
+                } else
+                    profile = null;
+            }
+        }
+
         RowLayout {
             Layout.fillWidth: true
             Label {
@@ -91,6 +97,8 @@ ApplicationWindow {
                 checked: otherUserHasE2ee
             }
         }
+
+        Item {Layout.fillHeight: true}
     }
     footer: DialogButtonBox {
         standardButtons: DialogButtonBox.Cancel
@@ -101,7 +109,7 @@ ApplicationWindow {
         }
         onRejected: createDirectRoot.close();
         onAccepted: {
-            profile.startChat()
+            profile.startChat(encryption.checked)
             createDirectRoot.close()
         }
     }

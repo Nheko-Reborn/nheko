@@ -54,8 +54,6 @@
 #include "ui/UIA.h"
 #include "voip/WebRTCSession.h"
 
-#include "dialogs/CreateRoom.h"
-
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
 Q_DECLARE_METATYPE(std::vector<mtx::responses::PublicRoomsChunk>)
@@ -402,19 +400,6 @@ MainWindow::hasActiveUser()
     return settings->contains(prefix + "auth/access_token") &&
            settings->contains(prefix + "auth/home_server") &&
            settings->contains(prefix + "auth/user_id");
-}
-
-void
-MainWindow::openCreateRoomDialog(
-  std::function<void(const mtx::requests::CreateRoom &request)> callback)
-{
-    auto dialog = new dialogs::CreateRoom(nullptr);
-    connect(dialog,
-            &dialogs::CreateRoom::createRoom,
-            this,
-            [callback](const mtx::requests::CreateRoom &request) { callback(request); });
-
-    showDialog(dialog);
 }
 
 bool

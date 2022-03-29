@@ -13,8 +13,15 @@ import im.nheko 1.0
 ApplicationWindow {
     id: createRoomRoot
     title: qsTr("Create Room")
-    minimumWidth: rootLayout.implicitWidth+2*rootLayout.anchors.margins
+    minimumWidth: Math.max(rootLayout.implicitWidth+2*rootLayout.anchors.margins, footer.implicitWidth + Nheko.paddingLarge)
     minimumHeight: rootLayout.implicitHeight+footer.implicitHeight+2*rootLayout.anchors.margins
+    modality: Qt.NonModal
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+
+    onVisibilityChanged: {
+        newRoomName.forceActiveFocus();
+    }
+
     Shortcut {
         sequence: StandardKey.Cancel
         onActivated: createRoomRoot.close()
@@ -22,15 +29,18 @@ ApplicationWindow {
     GridLayout {
         id: rootLayout
         anchors.fill: parent
-        anchors.margins: Nheko.paddingSmall
+        anchors.margins: Nheko.paddingLarge
         columns: 2
+        rowSpacing: Nheko.paddingMedium
+
         MatrixTextField {
             id: newRoomName
             Layout.columnSpan: 2
             Layout.fillWidth: true
 
             focus: true
-            placeholderText: qsTr("Name")
+            label: qsTr("Name")
+            placeholderText: qsTr("No name")
         }
         MatrixTextField {
             id: newRoomTopic
@@ -38,8 +48,14 @@ ApplicationWindow {
             Layout.fillWidth: true
 
             focus: true
-            placeholderText: qsTr("Topic")
+            label: qsTr("Topic")
+            placeholderText: qsTr("No topic")
         }
+
+        Item {
+            Layout.preferredHeight: newRoomName.height / 2
+        }
+
         RowLayout {
             Layout.columnSpan: 2
             Layout.fillWidth: true
@@ -63,20 +79,20 @@ ApplicationWindow {
         Label {
             Layout.preferredWidth: implicitWidth
             Layout.alignment: Qt.AlignLeft
-            text: qsTr("Private")
+            text: qsTr("Public")
             color: Nheko.colors.text
             HoverHandler {
                 id: privateHover
             }
             ToolTip.visible: privateHover.hovered
-            ToolTip.text: qsTr("Only invited users can join the room")
+            ToolTip.text: qsTr("Public rooms can be joined by anyone, private rooms need explicit invites.")
             ToolTip.delay: Nheko.tooltipDelay
         }
         ToggleButton {
             Layout.alignment: Qt.AlignRight
             Layout.preferredWidth: implicitWidth
-            id: isPrivate
-            checked: true
+            id: isPublic
+            checked: false
         }
         Label {
             Layout.preferredWidth: implicitWidth
@@ -95,7 +111,7 @@ ApplicationWindow {
             Layout.preferredWidth: implicitWidth
             id: isTrusted
             checked: false
-            enabled: isPrivate.checked
+            enabled: !isPublic.checked
         }
         Label {
             Layout.preferredWidth: implicitWidth
@@ -115,6 +131,8 @@ ApplicationWindow {
             id: isEncrypted
             checked: false
         }
+
+        Item {Layout.fillHeight: true}
     }
     footer: DialogButtonBox {
         standardButtons: DialogButtonBox.Cancel
@@ -123,6 +141,17 @@ ApplicationWindow {
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
         }
         onRejected: createRoomRoot.close();
-        //onAccepted: createRoom(newRoomName.text, newRoomTopic.text, newRoomAlias.text, newRoomVisibility.index, newRoomPreset.index)
+        onAccepted: {
+            var preset = 0;
+
+            if (isPublic.checked) {
+                preset = 1;
+            }
+            else {
+                preset = isTrusted.checked ? 2 : 0;
+            }
+            Nheko.createRoom(newRoomName.text, newRoomTopic.text, newRoomAlias.text, isEncrypted.checked, preset)
+            createRoomRoot.close();
+        }
     }
 }

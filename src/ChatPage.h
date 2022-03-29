@@ -74,12 +74,13 @@ public:
 
     // TODO(Nico): Get rid of this!
     QString currentRoom() const;
+    void startChat(QString userid, std::optional<bool> encryptionEnabled);
 
 public slots:
     bool handleMatrixUri(QString uri);
     bool handleMatrixUri(const QUrl &uri);
 
-    void startChat(QString userid);
+    void startChat(QString userid) { startChat(userid, std::nullopt); }
     void leaveRoom(const QString &room_id);
     void createRoom(const mtx::requests::CreateRoom &req);
     void joinRoom(const QString &room);
