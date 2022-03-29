@@ -768,7 +768,15 @@ Item {
         radius: width/2
         onClicked: chat.positionViewAtBeginning();
         flat: true
-        highlighted: true
+        hoverEnabled: true
+
+        background: Rectangle {
+            color: toEndButton.down ? Nheko.colors.highlight : Nheko.colors.button
+            opacity: enabled ? 1 : 0.3
+            border.color: toEndButton.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText
+            border.width: 1
+            radius: toEndButton.radius
+        }
 
         states: State {
             name: "hidden"
@@ -779,7 +787,7 @@ Item {
             id: buttonImg
             anchors.fill: parent
             anchors.margins: Nheko.paddingMedium
-            source: ("image://colorimage/" + ":/icons/icons/ui/download.svg" + "?" + Nheko.colors.buttonText)
+            source: "image://colorimage/:/icons/icons/ui/download.svg?" + (toEndButton.down ? Nheko.colors.highlightedText : Nheko.colors.buttonText)
             fillMode: Image.PreserveAspectFit
         }
 
