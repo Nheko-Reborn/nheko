@@ -754,4 +754,62 @@ Item {
         }
 
     }
+    RoundButton {
+        id: toEndButton
+        anchors {
+            bottom: parent.bottom
+            right: scrollbar.left
+            bottomMargin: Nheko.paddingMedium+(fullWidth-width)/2
+            rightMargin: Nheko.paddingMedium+(fullWidth-width)/2
+        }
+        property int fullWidth: 40
+        width: fullWidth
+        height: width
+        radius: width/2
+        onClicked: chat.positionViewAtBeginning();
+        flat: true
+        highlighted: true
+
+        states: State {
+            name: "hidden"
+            when: chat.atYEnd
+        }
+
+        Image {
+            id: buttonImg
+            anchors.fill: parent
+            anchors.margins: Nheko.paddingMedium
+            source: ("image://colorimage/" + ":/icons/icons/ui/download.svg" + "?" + Nheko.colors.buttonText)
+            fillMode: Image.PreserveAspectFit
+        }
+
+        transitions: [
+            Transition {
+                from: ""
+                to: "hidden"
+
+                PropertyAnimation {
+                    target: toEndButton
+                    properties: "width"
+                    easing.type: Easing.InOutQuad
+                    from: 40
+                    to: 0
+                    duration: 200
+                }
+            },
+            Transition {
+                from: "hidden"
+                to: ""
+
+                PropertyAnimation {
+                    target: toEndButton
+                    properties: "width"
+                    easing.type: Easing.InOutQuad
+                    from: 0
+                    to: 40
+                    duration: 200
+                }
+            }
+        ]
+    }
 }
