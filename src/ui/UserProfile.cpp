@@ -53,6 +53,9 @@ UserProfile::UserProfile(QString roomid,
 
           emit verificationStatiChanged();
       });
+    connect(this, &UserProfile::devicesChanged, [this]() {
+        nhlog::net()->critical("Device list: {}", deviceList_.rowCount());
+    });
     fetchDeviceList(this->userid_);
 }
 
@@ -187,7 +190,6 @@ UserProfile::fetchDeviceList(const QString &userID)
               nhlog::net()->warn("failed to query device keys: {},{}",
                                  mtx::errors::to_string(err->matrix_error.errcode),
                                  static_cast<int>(err->status_code));
-              return;
           }
 
           // Ensure local key cache is up to date
@@ -201,7 +203,6 @@ UserProfile::fetchDeviceList(const QString &userID)
                     nhlog::net()->warn("failed to query device keys: {},{}",
                                        mtx::errors::to_string(err->matrix_error.errcode),
                                        static_cast<int>(err->status_code));
-                    return;
                 }
 
                 emit verificationStatiChanged();
@@ -313,9 +314,15 @@ UserProfile::kickUser()
 }
 
 void
+UserProfile::startChat(bool encryption)
+{
+    ChatPage::instance()->startChat(this->userid_, encryption);
+}
+
+void
 UserProfile::startChat()
 {
-    ChatPage::instance()->startChat(this->userid_);
+    ChatPage::instance()->startChat(this->userid_, std::nullopt);
 }
 
 void

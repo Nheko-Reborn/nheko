@@ -13,7 +13,6 @@
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"
-#include "MainWindow.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
 #include "voip/WebRTCSession.h"
@@ -129,8 +128,32 @@ Nheko::logout() const
 }
 
 void
-Nheko::openCreateRoomDialog() const
+Nheko::createRoom(QString name, QString topic, QString aliasLocalpart, bool isEncrypted, int preset)
 {
-    MainWindow::instance()->openCreateRoomDialog(
-      [](const mtx::requests::CreateRoom &req) { ChatPage::instance()->createRoom(req); });
+    mtx::requests::CreateRoom req;
+
+    switch (preset) {
+    case 1:
+        req.preset = mtx::requests::Preset::PublicChat;
+        break;
+    case 2:
+        req.preset = mtx::requests::Preset::TrustedPrivateChat;
+        break;
+    case 0:
+    default:
+        req.preset = mtx::requests::Preset::PrivateChat;
+    }
+
+    req.name            = name.toStdString();
+    req.topic           = topic.toStdString();
+    req.room_alias_name = aliasLocalpart.toStdString();
+
+    if (isEncrypted) {
+        mtx::events::StrippedEvent<mtx::events::state::Encryption> enc;
+        enc.type              = mtx::events::EventType::RoomEncryption;
+        enc.content.algorithm = mtx::crypto::MEGOLM_ALGO;
+        req.initial_state.emplace_back(std::move(enc));
+    }
+
+    emit ChatPage::instance()->createRoom(req);
 }

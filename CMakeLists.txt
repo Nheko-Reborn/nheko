@@ -309,7 +309,6 @@ configure_file(cmake/nheko.h config/nheko.h)
 #
 set(SRC_FILES
 	# Dialogs
-	src/dialogs/CreateRoom.cpp
 	src/dialogs/FallbackAuth.cpp
 	src/dialogs/ReCaptcha.cpp
 
@@ -404,7 +403,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        v0.7.0
+		GIT_TAG        817ae6e110829cfec39cd367a133a628ab923bb4
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -506,7 +505,6 @@ feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAG
 
 qt5_wrap_cpp(MOC_HEADERS
 	# Dialogs
-	src/dialogs/CreateRoom.h
 	src/dialogs/FallbackAuth.h
 	src/dialogs/ReCaptcha.h
 

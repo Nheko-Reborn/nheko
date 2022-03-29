@@ -199,6 +199,14 @@ TimelineViewManager::openGlobalUserProfile(QString userId)
     emit openProfile(profile);
 }
 
+UserProfile *
+TimelineViewManager::getGlobalUserProfile(QString userId)
+{
+    UserProfile *profile = new UserProfile{QString{}, userId, this};
+    QQmlEngine::setObjectOwnership(profile, QQmlEngine::JavaScriptOwnership);
+    return (profile);
+}
+
 void
 TimelineViewManager::setVideoCallItem()
 {

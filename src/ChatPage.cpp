@@ -1187,7 +1187,7 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
 }
 
 void
-ChatPage::startChat(QString userid)
+ChatPage::startChat(QString userid, std::optional<bool> encryptionEnabled)
 {
     auto joined_rooms = cache::joinedRooms();
     auto room_infos   = cache::getRoomInfo(joined_rooms);
@@ -1213,6 +1213,14 @@ ChatPage::startChat(QString userid)
     mtx::requests::CreateRoom req;
     req.preset     = mtx::requests::Preset::PrivateChat;
     req.visibility = mtx::common::RoomVisibility::Private;
+
+    if (encryptionEnabled.value_or(false)) {
+        mtx::events::StrippedEvent<mtx::events::state::Encryption> enc;
+        enc.type              = mtx::events::EventType::RoomEncryption;
+        enc.content.algorithm = mtx::crypto::MEGOLM_ALGO;
+        req.initial_state.emplace_back(std::move(enc));
+    }
+
     if (utils::localUser() != userid) {
         req.invite    = {userid.toStdString()};
         req.is_direct = true;

@@ -26,6 +26,20 @@ Page {
 
     }
 
+    Component {
+        id: createRoomComponent
+
+        CreateRoom {
+        }
+    }
+
+    Component {
+        id: createDirectComponent
+
+        CreateDirect {
+        }
+    }
+
     ListView {
         id: roomlist
 
@@ -648,7 +662,20 @@ Page {
 
                         Platform.MenuItem {
                             text: qsTr("Create a new room")
-                            onTriggered: Nheko.openCreateRoomDialog()
+                            onTriggered: {
+                                var createRoom = createRoomComponent.createObject(timelineRoot);
+                                createRoom.show();
+                                timelineRoot.destroyOnClose(createRoom);
+                            }
+                        }
+
+                        Platform.MenuItem {
+                            text: qsTr("Start a direct chat")
+                            onTriggered: {
+                                var createDirect = createDirectComponent.createObject(timelineRoot);
+                                createDirect.show();
+                                timelineRoot.destroyOnClose(createDirect);
+                            }
                         }
 
                     }

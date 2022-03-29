@@ -47,8 +47,6 @@ public:
     static MainWindow *instance() { return instance_; }
     void saveCurrentWindowSize();
 
-    void
-    openCreateRoomDialog(std::function<void(const mtx::requests::CreateRoom &request)> callback);
     void openJoinRoomDialog(std::function<void(const QString &room_id)> callback);
 
     MxcImageProvider *imageProvider() { return imgProvider; }
