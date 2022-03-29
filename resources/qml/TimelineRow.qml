@@ -59,6 +59,7 @@ AbstractButton {
             acceptedButtons: Qt.RightButton
             onSingleTapped: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
             gesturePolicy: TapHandler.ReleaseWithinBounds
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
         }
     }
 
@@ -89,6 +90,13 @@ AbstractButton {
             easing.type: Easing.InOutQuad
             to: 0
             duration: 100
+        }
+    }
+
+    onClicked: {
+        let link = contentItem.child.linkAt != undefined && contentItem.child.linkAt(pressX-row.x-msg.x, pressY-row.y-msg.y-contentItem.y);
+        if (link) {
+            Nheko.openLink(link)
         }
     }
 
