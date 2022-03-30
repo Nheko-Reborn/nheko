@@ -24,6 +24,11 @@ Pane {
     palette: Nheko.colors
     background: null
     padding: 0
+    rotation: Rooms.currentRoom ? Rooms.currentRoom.input.text.length : 0
+    layer.smooth: true
+    layer.mipmap: true
+    antialiasing: true
+    layer.samples: 8
 
     FontMetrics {
         id: fontMetrics
