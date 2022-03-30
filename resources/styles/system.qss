@@ -1,55 +1,5 @@
-#chatPage,
-#chatPage > *,
-CommunitiesList,
-CommunitiesList > *,
-RoomList,
-RoomList > *,
-TimelineView,
-TimelineView > *,
-UserMentionsWidget,
-UserMentionsWidget > * {
-    border: none;
-}
-
-TypingDisplay {
-    qproperty-textColor: palette(text);
-    qproperty-backgroundColor: palette(window);
-}
-
-TimelineItem {
-    qproperty-backgroundColor: palette(window);
-}
-
-UserMentionsWidget > TimelineItem {
-    qproperty-backgroundColor: palette(window);
-    qproperty-hoverColor: palette(base);
-}
-
-SideBarActions,
 TextInputWidget {
     border: none;
-}
-
-UserInfoWidget {
-    border: none;
-    border-bottom: 1px solid palette(mid);
-}
-
-RoomList,
-RoomList > * {
-    background-color: palette(window);
-    border: none;
-}
-
-#sideBar {
-    border: none;
-    border-right: 1px solid palette(mid);
-    border-left: 1px solid palette(mid);
-}
-
-InfoMessage {
-    qproperty-textColor: palette(text);
-    qproperty-boxColor: palette(base);
 }
 
 PopupItem {
@@ -58,13 +8,6 @@ PopupItem {
 
 FlatButton {
     qproperty-foregroundColor: palette(text);
-}
-
-AudioItem,
-FileItem {
-    qproperty-textColor: palette(text);
-    qproperty-backgroundColor: palette(base);
-    qproperty-iconColor: palette(window);
 }
 
 RaisedButton {
@@ -76,96 +19,14 @@ TextField {
 }
 
 QTextEdit,
-ReceiptItem,
-MemberItem,
 QLineEdit,
 QListWidget {
     background-color: palette(window);
 }
 
-RoomInfoListItem,
-UserMentionsWidget {
-    qproperty-mentionedColor: palette(alternate-base);
-    qproperty-highlightedBackgroundColor: palette(highlight);
-    qproperty-hoverBackgroundColor: palette(light);
-    qproperty-backgroundColor: palette(window);
-
-    qproperty-titleColor: palette(text);
-    qproperty-subtitleColor: palette(text);
-
-    qproperty-highlightedTitleColor: palette(highlighted-text);
-    qproperty-highlightedSubtitleColor: palette(highlighted-text);
-
-    qproperty-hoverTitleColor: palette(dark);
-    qproperty-hoverSubtitleColor: palette(dark);
-
-    qproperty-btnColor: palette(dark);
-    qproperty-btnTextColor: palette(bright-text);
-
-    qproperty-timestampColor: palette(text);
-    qproperty-highlightedTimestampColor: palette(highlighted-text);
-    qproperty-hoverTimestampColor: palette(dark);
-
-    qproperty-bubbleBgColor: palette(base);
-    qproperty-bubbleFgColor: palette(text);
-}
-
-RoomInfoListItem > Avatar {
-    qproperty-backgroundColor: palette(base);
-    qproperty-textColor: palette(text);
-}
-
-
-CommunitiesListItem {
-    qproperty-highlightedBackgroundColor: palette(highlight);
-    qproperty-disabledBackgroundColor: palette(mid);
-    qproperty-hoverBackgroundColor: palette(light);
-    qproperty-backgroundColor: palette(window);
-
-    qproperty-avatarBgColor: palette(base);
-    qproperty-avatarFgColor: palette(text);
-}
-
-LoadingIndicator {
-    qproperty-color: palette(highlight);
-}
-
-#ChatPageLoadSpinner {
-    qproperty-color: palette(light);
-}
-
-emoji--Panel,
-emoji--Panel > * {
-    background-color: palette(base);
-    color: palette(text);
-}
-
-emoji--Panel QWidget { border: none; }
-emoji--Panel QScrollBar:vertical { width: 0px; margin: 0px; }
-emoji--Panel QScrollBar::handle:vertical { min-height: 30px; }
-
-emoji--Category {
-    qproperty-hoverBackgroundColor: palette(highlight);
-}
-
-emoji--Category,
-emoji--Category > * {
-    background-color: palette(window);
-    color: palette(text);
-}
-
-emoji--Category QLabel {
-    margin: 20px 0 20px 8px;
-}
-
 FloatingButton {
     qproperty-backgroundColor: palette(base);
     qproperty-foregroundColor: palette(text);
-}
-
-SnackBar {
-    qproperty-textColor: palette(text);
-    qproperty-bgColor: palette(base);
 }
 
 Toggle {

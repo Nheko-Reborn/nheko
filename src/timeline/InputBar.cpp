@@ -254,6 +254,7 @@ InputBar::updateState(int selectionStart_,
     selectionStart = selectionStart_;
     selectionEnd   = selectionEnd_;
     cursorPosition = cursorPosition_;
+    emit textChanged(text_);
 }
 
 QString

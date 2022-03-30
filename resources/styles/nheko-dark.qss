@@ -16,91 +16,17 @@ UserSettingsPage,
     background-color: #202228;
 }
 
-#chatPage,
-#chatPage > *,
-CommunitiesList,
-CommunitiesList > *,
-RoomList,
-RoomList > *,
-TimelineView,
-TimelineView > *,
-UserMentionsWidget,
-UserMentionsWidget > * {
-    background-color: #2d3139;
-    border: none;
-}
-
 QLineEdit,
-WelcomePage,
-LoginPage,
-RegisterPage,
 EditModal,
-emoji--Panel,
-emoji--Panel > *,
-dialogs--Logout,
 dialogs--ReCaptcha,
-dialogs--LeaveRoom,
-dialogs--CreateRoom,
-dialogs--RoomSettings,
-dialogs--InviteUsers,
-dialogs--ReadReceipts,
-dialogs--JoinRoom,
-dialogs--MemberList,
-dialogs--PreviewUploadOverlay,
-dialogs--UserProfile,
-dialogs--CreateRoom > QLineEdit,
-dialogs--InviteUsers > QLineEdit,
-dialogs--JoinRoom > QLineEdit {
+dialogs--JoinRoom {
     background-color: #202228;
     color: #caccd1;
-}
-
-emoji--Panel QWidget { border: none; }
-emoji--Panel QScrollBar:vertical { width: 0px; margin: 0px; }
-emoji--Panel QScrollBar::handle:vertical { min-height: 30px; }
-
-emoji--Category,
-emoji--Category > * {
-    background-color: #2d3139;
-    color: #727274;
-}
-
-emoji--Category QLabel {
-    margin: 20px 0 20px 8px;
-}
-
-TimelineItem {
-    qproperty-backgroundColor: #202228;
-}
-
-#sideBar {
-    border: none;
-    border-right: 1px solid #202228;
-    border-left: 1px solid #202228;
-}
-
-UserMentionsWidget > TimelineItem {
-    qproperty-backgroundColor: #202228;
-    qproperty-hoverColor: rgba(45, 49, 57, 120);
-}
-
-InfoMessage {
-    qproperty-textColor: #caccd1;
-    qproperty-boxColor: rgba(45, 49, 57, 120);
 }
 
 PopupItem {
     background-color: #202228;
     qproperty-hoverColor: rgba(45, 49, 57, 120);
-}
-
-TypingDisplay {
-    qproperty-textColor: #caccd1;
-    qproperty-backgroundColor: #202228;
-}
-
-#roomlist_area {
-    background-color: #2d3139;
 }
 
 FlatButton {
@@ -109,90 +35,9 @@ FlatButton {
     qproperty-disabledForegroundColor: #222;
 }
 
-AudioItem,
-FileItem {
-    qproperty-textColor: #caccd1;
-    qproperty-backgroundColor: #2d3139;
-    qproperty-iconColor: #caccd1;
-}
-
 RaisedButton {
     qproperty-foregroundColor: #caccd1;
     qproperty-backgroundColor: #333;
-}
-
-RoomInfoListItem,
-UserMentionsWidget {
-    qproperty-mentionedColor: #a82353;
-    qproperty-highlightedBackgroundColor: #4d84c7;
-    qproperty-hoverBackgroundColor: rgb(67, 70, 77);
-    qproperty-backgroundColor: #2d3139;
-
-    qproperty-titleColor: #e4e5e8;
-    qproperty-subtitleColor: #caccd1;
-
-    qproperty-hoverTitleColor: #f4f5f8;
-    qproperty-hoverSubtitleColor: white;
-
-    qproperty-highlightedTitleColor: #f4f4f5;
-    qproperty-highlightedSubtitleColor: #e4e5e8;
-
-    qproperty-btnColor: #414A59;
-    qproperty-btnTextColor: white;
-
-    qproperty-timestampColor: #727274;
-    qproperty-highlightedTimestampColor: #e7e7e9;
-    qproperty-hoverTimestampColor: #f4f5f8;
-
-    qproperty-bubbleFgColor: white;
-    qproperty-bubbleBgColor: #4d84c7;
-}
-
-RoomInfoListItem > Avatar {
-    qproperty-backgroundColor: #202228;
-    qproperty-textColor: white;
-}
-
-CommunitiesListItem {
-    qproperty-highlightedBackgroundColor: #4d84c7;
-    qproperty-disabledBackgroundColor: palette(mid);
-    qproperty-hoverBackgroundColor: rgb(67, 70, 77);
-    qproperty-backgroundColor: #2d3139;
-
-    qproperty-avatarBgColor: #202228;
-    qproperty-avatarFgColor: black;
-}
-
-LoadingIndicator {
-    qproperty-color: #caccd1;
-}
-
-UserInfoWidget, UserInfoWidget > * {
-    background-color: #2d3139;
-    color: #b0b3ba;
-}
-
-UserInfoWidget {
-    border: none;
-    border-bottom: 1px solid #202228;
-}
-
-Avatar {
-    qproperty-textColor: white;
-    qproperty-backgroundColor: #2d3139;
-}
-
-#displayNameLabel,
-#userIdLabel {
-    color: #f2f2f2;
-}
-
-TopSection {
-    qproperty-textColor: #caccd1;
-}
-
-emoji--Category {
-    qproperty-hoverBackgroundColor: rgb(67, 70, 77);
 }
 
 FloatingButton {
@@ -204,12 +49,6 @@ TextField {
     qproperty-backgroundColor: #202228;
     qproperty-inkColor: #caccd1;
     qproperty-labelColor: #caccd1;
-}
-
-SideBarActions {
-    border: none;
-    border-top: 1px solid #202228;
-    background-color: #2d3139;
 }
 
 TextInputWidget {
@@ -233,11 +72,6 @@ Toggle {
 QListWidget {
     color: #caccd1;
     background-color: #202228;
-}
-
-SnackBar {
-    qproperty-textColor: #caccd1;
-    qproperty-bgColor: #202228;
 }
 
 QSplitter::handle { image: none; }

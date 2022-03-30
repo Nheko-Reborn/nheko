@@ -53,9 +53,6 @@ UserProfile::UserProfile(QString roomid,
 
           emit verificationStatiChanged();
       });
-    connect(this, &UserProfile::devicesChanged, [this]() {
-        nhlog::net()->critical("Device list: {}", deviceList_.rowCount());
-    });
     fetchDeviceList(this->userid_);
 }
 
