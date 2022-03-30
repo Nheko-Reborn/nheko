@@ -669,11 +669,11 @@ InputBar::command(const QString &command, QString args)
         if (!eventId.isEmpty())
             reaction(eventId, args.trimmed());
     } else if (command == QLatin1String("join")) {
-        ChatPage::instance()->joinRoom(args);
+        ChatPage::instance()->joinRoom(args.section(' ', 0, 0), args.section(' ', 1, -1));
     } else if (command == QLatin1String("knock")) {
-        ChatPage::instance()->knockRoom(args);
+        ChatPage::instance()->knockRoom(args.section(' ', 0, 0), args.section(' ', 1, -1));
     } else if (command == QLatin1String("part") || command == QLatin1String("leave")) {
-        ChatPage::instance()->timelineManager()->openLeaveRoomDialog(room->roomId());
+        ChatPage::instance()->timelineManager()->openLeaveRoomDialog(room->roomId(), args);
     } else if (command == QLatin1String("invite")) {
         ChatPage::instance()->inviteUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
     } else if (command == QLatin1String("kick")) {

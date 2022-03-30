@@ -64,7 +64,7 @@ signals:
 
     void openLogoutDialog();
     void openJoinRoomDialog();
-    void joinRoom(QString roomId);
+    void joinRoom(QString roomId, QString reason = "");
 
 private:
     QScopedPointer<UserProfile> currentUser_;

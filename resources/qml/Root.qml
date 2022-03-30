@@ -275,9 +275,10 @@ Pane {
             destroyOnClose(dialog);
         }
 
-        function onOpenLeaveRoomDialog(roomid) {
+        function onOpenLeaveRoomDialog(roomid, reason) {
             var dialog = leaveRoomComponent.createObject(timelineRoot, {
-                "roomId": roomid
+                "roomId": roomid,
+                "reason": reason
             });
             dialog.open();
             destroyOnClose(dialog);

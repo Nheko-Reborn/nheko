@@ -154,14 +154,14 @@ Send a message as a rainbow-colored notice.
 
 === Room management
 
-*/join* _<roomname>_::
-Join a room.
+*/join* _<roomname>_ _[reason]_::
+Join a room. _reason_ is optional.
 
-*/knock* _<roomname>_::
-Ask to join a room.
+*/knock* _<roomname>_ _[reason]_::
+Ask to join a room. _reason_ is optional.
 
-*/part*, */leave*::
-Leave the current room.
+*/part*, */leave* _[reason]_::
+Leave the current room. _reason_ is optional.
 
 */invite* _<username>_ _[reason]_::
 Invite a user into the current room. _reason_ is optional.

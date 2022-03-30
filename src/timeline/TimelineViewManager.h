@@ -89,7 +89,7 @@ signals:
     void openInviteUsersDialog(InviteesModel *invitees);
     void openProfile(UserProfile *profile);
     void showImagePackSettings(TimelineModel *room, ImagePackListModel *packlist);
-    void openLeaveRoomDialog(QString roomid);
+    void openLeaveRoomDialog(QString roomid, QString reason);
     void showImageOverlay(TimelineModel *room, QString eventId, QString url);
 
 public slots:

@@ -102,7 +102,7 @@ public slots:
     void joinPreview(QString roomid, QString parentSpace);
     void acceptInvite(QString roomid);
     void declineInvite(QString roomid);
-    void leave(QString roomid);
+    void leave(QString roomid, QString reason = "");
     TimelineModel *currentRoom() const { return currentRoom_.get(); }
     RoomPreview currentRoomPreview() const { return currentRoomPreview_.value_or(RoomPreview{}); }
     void setCurrentRoom(QString roomid);
@@ -165,7 +165,7 @@ public slots:
     }
     void acceptInvite(QString roomid) { roomlistmodel->acceptInvite(roomid); }
     void declineInvite(QString roomid) { roomlistmodel->declineInvite(roomid); }
-    void leave(QString roomid) { roomlistmodel->leave(roomid); }
+    void leave(QString roomid, QString reason = "") { roomlistmodel->leave(roomid, reason); }
     void toggleTag(QString roomid, QString tag, bool on);
 
     TimelineModel *currentRoom() const { return roomlistmodel->currentRoom(); }

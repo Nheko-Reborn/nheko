@@ -659,7 +659,7 @@ ChatPage::trySync()
 }
 
 void
-ChatPage::knockRoom(const QString &room)
+ChatPage::knockRoom(const QString &room, const QString &reason)
 {
     const auto room_id = room.toStdString();
     if (QMessageBox::Yes !=
@@ -668,26 +668,30 @@ ChatPage::knockRoom(const QString &room)
         return;
 
     http::client()->knock_room(
-      room_id, {}, [this, room_id](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
+      room_id,
+      {},
+      [this, room_id](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
           if (err) {
               emit showNotification(tr("Failed to knock room: %1")
                                       .arg(QString::fromStdString(err->matrix_error.error)));
               return;
           }
-      });
+      },
+      reason.toStdString());
 }
 
 void
-ChatPage::joinRoom(const QString &room)
+ChatPage::joinRoom(const QString &room, const QString &reason)
 {
     const auto room_id = room.toStdString();
-    joinRoomVia(room_id, {}, false);
+    joinRoomVia(room_id, {}, false, reason);
 }
 
 void
 ChatPage::joinRoomVia(const std::string &room_id,
                       const std::vector<std::string> &via,
-                      bool promptForConfirmation)
+                      bool promptForConfirmation,
+                      const QString &reason)
 {
     if (promptForConfirmation &&
         QMessageBox::Yes !=
@@ -698,7 +702,9 @@ ChatPage::joinRoomVia(const std::string &room_id,
         return;
 
     http::client()->join_room(
-      room_id, via, [this, room_id](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
+      room_id,
+      via,
+      [this, room_id](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
           if (err) {
               emit showNotification(
                 tr("Failed to join room: %1").arg(QString::fromStdString(err->matrix_error.error)));
@@ -713,7 +719,8 @@ ChatPage::joinRoomVia(const std::string &room_id,
           }
 
           view_manager_->rooms()->setCurrentRoom(QString::fromStdString(room_id));
-      });
+      },
+      reason.toStdString());
 }
 
 void
@@ -740,7 +747,7 @@ ChatPage::createRoom(const mtx::requests::CreateRoom &req)
 }
 
 void
-ChatPage::leaveRoom(const QString &room_id)
+ChatPage::leaveRoom(const QString &room_id, const QString &reason)
 {
     http::client()->leave_room(
       room_id.toStdString(),
@@ -762,7 +769,8 @@ ChatPage::leaveRoom(const QString &room_id)
           }
 
           emit leftRoom(room_id);
-      });
+      },
+      reason.toStdString());
 }
 
 void

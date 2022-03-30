@@ -659,12 +659,12 @@ RoomlistModel::declineInvite(QString roomid)
             roomids.erase(roomids.begin() + idx);
             invites.remove(roomid);
             endRemoveRows();
-            ChatPage::instance()->leaveRoom(roomid);
+            ChatPage::instance()->leaveRoom(roomid, "");
         }
     }
 }
 void
-RoomlistModel::leave(QString roomid)
+RoomlistModel::leave(QString roomid, QString reason)
 {
     if (models.contains(roomid)) {
         auto idx = roomidToIndex(roomid);
@@ -674,7 +674,7 @@ RoomlistModel::leave(QString roomid)
             roomids.erase(roomids.begin() + idx);
             models.remove(roomid);
             endRemoveRows();
-            ChatPage::instance()->leaveRoom(roomid);
+            ChatPage::instance()->leaveRoom(roomid, reason);
         }
     }
 }

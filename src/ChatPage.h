@@ -81,13 +81,14 @@ public slots:
     bool handleMatrixUri(const QUrl &uri);
 
     void startChat(QString userid) { startChat(userid, std::nullopt); }
-    void leaveRoom(const QString &room_id);
+    void leaveRoom(const QString &room_id, const QString &reason);
     void createRoom(const mtx::requests::CreateRoom &req);
-    void joinRoom(const QString &room);
-    void knockRoom(const QString &room);
+    void joinRoom(const QString &room, const QString &reason = "");
+    void knockRoom(const QString &room, const QString &reason = "");
     void joinRoomVia(const std::string &room_id,
                      const std::vector<std::string> &via,
-                     bool promptForConfirmation = true);
+                     bool promptForConfirmation = true,
+                     const QString &reason      = "");
 
     void inviteUser(QString userid, QString reason);
     void kickUser(QString userid, QString reason);

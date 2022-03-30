@@ -12,10 +12,11 @@ P.MessageDialog {
     id: leaveRoomRoot
 
     required property string roomId
+    property string reason: ""
 
     title: qsTr("Leave room")
     text: qsTr("Are you sure you want to leave?")
     modality: Qt.ApplicationModal
     buttons: P.MessageDialog.Ok | P.MessageDialog.Cancel
-    onAccepted: Rooms.leave(roomId)
+    onAccepted: Rooms.leave(roomId, reason)
 }
