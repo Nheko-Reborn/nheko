@@ -659,6 +659,25 @@ ChatPage::trySync()
 }
 
 void
+ChatPage::knockRoom(const QString &room)
+{
+    const auto room_id = room.toStdString();
+    if (QMessageBox::Yes !=
+        QMessageBox::question(
+          nullptr, tr("Confirm knock"), tr("Do you really want to ask to join %1?").arg(room)))
+        return;
+
+    http::client()->knock_room(
+      room_id, {}, [this, room_id](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
+          if (err) {
+              emit showNotification(tr("Failed to knock room: %1")
+                                      .arg(QString::fromStdString(err->matrix_error.error)));
+              return;
+          }
+      });
+}
+
+void
 ChatPage::joinRoom(const QString &room)
 {
     const auto room_id = room.toStdString();
@@ -685,8 +704,6 @@ ChatPage::joinRoomVia(const std::string &room_id,
                 tr("Failed to join room: %1").arg(QString::fromStdString(err->matrix_error.error)));
               return;
           }
-
-          emit tr("You joined the room");
 
           // We remove any invites with the same room_id.
           try {

@@ -157,6 +157,9 @@ Send a message as a rainbow-colored notice.
 */join* _<roomname>_::
 Join a room.
 
+*/knock* _<roomname>_::
+Ask to join a room.
+
 */part*, */leave*::
 Leave the current room.
 

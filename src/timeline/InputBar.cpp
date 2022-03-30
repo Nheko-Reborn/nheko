@@ -670,6 +670,8 @@ InputBar::command(const QString &command, QString args)
             reaction(eventId, args.trimmed());
     } else if (command == QLatin1String("join")) {
         ChatPage::instance()->joinRoom(args);
+    } else if (command == QLatin1String("knock")) {
+        ChatPage::instance()->knockRoom(args);
     } else if (command == QLatin1String("part") || command == QLatin1String("leave")) {
         ChatPage::instance()->timelineManager()->openLeaveRoomDialog(room->roomId());
     } else if (command == QLatin1String("invite")) {
