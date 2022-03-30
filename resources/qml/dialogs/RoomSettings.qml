@@ -107,16 +107,57 @@ ApplicationWindow {
                     hideErrorAnimation.restart();
                 }
             }
-                Label {
-                    text: roomSettings.roomName
-                    Layout.alignment: Qt.AlignHCenter
-                    font.pixelSize: fontMetrics.font.pixelSize * 2
-                    Layout.fillWidth: true
-                    horizontalAlignment: TextEdit.AlignHCenter
-                    color: Nheko.colors.text
-                    wrapMode: Text.Wrap
-                    textFormat: Text.RichText
+
+            TextEdit {
+                id: roomName
+
+                property bool isNameEditingAllowed: false
+
+                readOnly: !isNameEditingAllowed
+                textFormat: isNameEditingAllowed ? TextEdit.PlainText : TextEdit.RichText
+                text: isNameEditingAllowed ? roomSettings.plainRoomName : roomSettings.roomName
+                font.pixelSize: fontMetrics.font.pixelSize * 2
+                color: Nheko.colors.text
+
+                Layout.alignment: Qt.AlignHCenter
+                Layout.maximumWidth: parent.width - (Nheko.paddingSmall * 2) - nameChangeButton.anchors.leftMargin - (nameChangeButton.width * 2)
+                horizontalAlignment: TextEdit.AlignHCenter
+                wrapMode: TextEdit.Wrap
+                selectByMouse: true
+
+                Keys.onShortcutOverride: event.key === Qt.Key_Enter
+                Keys.onPressed: {
+                    if (event.matches(StandardKey.InsertLineSeparator) || event.matches(StandardKey.InsertParagraphSeparator)) {
+                        roomSettings.changeName(roomName.text);
+                        roomName.isNameEditingAllowed = false;
+                        event.accepted = true;
+                    }
                 }
+
+                ImageButton {
+                    id: nameChangeButton
+                    visible: roomSettings.canChangeName
+                    anchors.leftMargin: Nheko.paddingSmall
+                    anchors.left: roomName.right
+                    anchors.verticalCenter: roomName.verticalCenter
+                    hoverEnabled: true
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Change name of this room")
+                    ToolTip.delay: Nheko.tooltipDelay
+                    image: roomName.isNameEditingAllowed ? ":/icons/icons/ui/checkmark.svg" : ":/icons/icons/ui/edit.svg"
+                    onClicked: {
+                        if (roomName.isNameEditingAllowed) {
+                            roomSettings.changeName(roomName.text);
+                            roomName.isNameEditingAllowed = false;
+                        } else {
+                            roomName.isNameEditingAllowed = true;
+                            roomName.focus = true;
+                            roomName.selectAll();
+                        }
+                    }
+                }
+
+            }
 
                 Label {
                     text: qsTr("%n member(s)", "", roomSettings.memberCount)
@@ -134,17 +175,10 @@ ApplicationWindow {
 
                 }
 
-            ImageButton {
-                Layout.alignment: Qt.AlignHCenter
-                image: ":/icons/icons/ui/edit.svg"
-                visible: roomSettings.canChangeNameAndTopic
-                onClicked: roomSettings.openEditModal()
-            }
-
             TextArea {
                 id: roomTopic
                 property bool cut: implicitHeight > 100
-                property bool showMore
+                property bool showMore: false
                 clip: true
                 Layout.maximumHeight: showMore? Number.POSITIVE_INFINITY : 100
                 Layout.preferredHeight: implicitHeight
@@ -153,10 +187,12 @@ ApplicationWindow {
                 Layout.leftMargin: Nheko.paddingLarge
                 Layout.rightMargin: Nheko.paddingLarge
 
-                text: TimelineManager.escapeEmoji(roomSettings.roomTopic)
+                property bool isTopicEditingAllowed: false
+
+                readOnly: !isTopicEditingAllowed
+                textFormat: isTopicEditingAllowed ? TextEdit.PlainText : TextEdit.RichText
+                text: isTopicEditingAllowed ? roomSettings.plainRoomTopic : roomSettings.roomTopic
                 wrapMode: TextEdit.WordWrap
-                textFormat: TextEdit.RichText
-                readOnly: true
                 background: null
                 selectByMouse: !Settings.mobileMode
                 color: Nheko.colors.text
@@ -169,6 +205,29 @@ ApplicationWindow {
                 }
 
             }
+
+            ImageButton {
+                id: topicChangeButton
+                Layout.alignment: Qt.AlignHCenter
+                visible: roomSettings.canChangeTopic
+                hoverEnabled: true
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Change topic of this room")
+                ToolTip.delay: Nheko.tooltipDelay
+                image: roomTopic.isTopicEditingAllowed ? ":/icons/icons/ui/checkmark.svg" : ":/icons/icons/ui/edit.svg"
+                onClicked: {
+                    if (roomTopic.isTopicEditingAllowed) {
+                        roomSettings.changeTopic(roomTopic.text);
+                        roomTopic.isTopicEditingAllowed = false;
+                    } else {
+                        roomTopic.isTopicEditingAllowed = true;
+                        roomTopic.showMore = true;
+                        roomTopic.focus = true;
+                        //roomTopic.selectAll();
+                    }
+                }
+            }
+
             Item {
                 Layout.alignment: Qt.AlignHCenter
                 id: showMorePlaceholder

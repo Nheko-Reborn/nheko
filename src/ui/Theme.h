@@ -8,54 +8,6 @@
 #include <QColor>
 #include <QPalette>
 
-namespace ui {
-// Default font size.
-const int FontSize = 16;
-
-// Default avatar size. Width and height.
-const int AvatarSize = 40;
-
-enum class ButtonPreset
-{
-    FlatPreset,
-    CheckablePreset
-};
-
-enum class RippleStyle
-{
-    CenteredRipple,
-    PositionedRipple,
-    NoRipple
-};
-
-enum class OverlayStyle
-{
-    NoOverlay,
-    TintedOverlay,
-    GrayOverlay
-};
-
-enum class Role
-{
-    Default,
-    Primary,
-    Secondary
-};
-
-enum class ButtonIconPlacement
-{
-    LeftIcon,
-    RightIcon
-};
-
-enum class ProgressType
-{
-    DeterminateProgress,
-    IndeterminateProgress
-};
-
-} // namespace ui
-
 class Theme : public QPalette
 {
     Q_GADGET

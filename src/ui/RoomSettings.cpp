@@ -5,13 +5,10 @@
 
 #include "RoomSettings.h"
 
-#include <QApplication>
 #include <QFileDialog>
-#include <QHBoxLayout>
 #include <QImageReader>
 #include <QMimeDatabase>
 #include <QStandardPaths>
-#include <QVBoxLayout>
 #include <mtx/events/event_type.hpp>
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/media.hpp>
@@ -23,152 +20,8 @@
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "Utils.h"
-#include "ui/TextField.h"
 
 using namespace mtx::events;
-
-EditModal::EditModal(const QString &roomId, QWidget *parent)
-  : QWidget(parent)
-  , roomId_{roomId}
-{
-    setAutoFillBackground(true);
-    setAttribute(Qt::WA_DeleteOnClose, true);
-    setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
-    setWindowModality(Qt::WindowModal);
-
-    QFont largeFont;
-    largeFont.setPointSizeF(largeFont.pointSizeF() * 1.4);
-    setMinimumWidth(conf::window::minModalWidth);
-    setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-
-    auto layout = new QVBoxLayout(this);
-
-    applyBtn_  = new QPushButton(tr("Apply"), this);
-    cancelBtn_ = new QPushButton(tr("Cancel"), this);
-    cancelBtn_->setDefault(true);
-
-    auto btnLayout = new QHBoxLayout;
-    btnLayout->addStretch(1);
-    btnLayout->setSpacing(15);
-    btnLayout->addWidget(cancelBtn_);
-    btnLayout->addWidget(applyBtn_);
-
-    nameInput_ = new TextField(this);
-    nameInput_->setLabel(tr("Name").toUpper());
-    topicInput_ = new TextField(this);
-    topicInput_->setLabel(tr("Topic").toUpper());
-
-    errorField_ = new QLabel(this);
-    errorField_->setWordWrap(true);
-    errorField_->hide();
-
-    layout->addWidget(nameInput_);
-    layout->addWidget(topicInput_);
-    layout->addLayout(btnLayout, 1);
-
-    auto labelLayout = new QHBoxLayout;
-    labelLayout->setAlignment(Qt::AlignHCenter);
-    labelLayout->addWidget(errorField_);
-    layout->addLayout(labelLayout);
-
-    connect(applyBtn_, &QPushButton::clicked, this, &EditModal::applyClicked);
-    connect(cancelBtn_, &QPushButton::clicked, this, &EditModal::close);
-
-    auto window = QApplication::activeWindow();
-
-    if (window != nullptr) {
-        auto center = window->frameGeometry().center();
-        move(center.x() - (width() * 0.5), center.y() - (height() * 0.5));
-    }
-}
-
-void
-EditModal::topicEventSent(const QString &topic)
-{
-    errorField_->hide();
-    emit topicChanged(topic);
-    close();
-}
-
-void
-EditModal::nameEventSent(const QString &name)
-{
-    errorField_->hide();
-    emit nameChanged(name);
-    close();
-}
-
-void
-EditModal::error(const QString &msg)
-{
-    errorField_->setText(msg);
-    errorField_->show();
-}
-
-void
-EditModal::applyClicked()
-{
-    // Check if the values are changed from the originals.
-    auto newName  = nameInput_->text().trimmed();
-    auto newTopic = topicInput_->text().trimmed();
-
-    errorField_->hide();
-
-    if (newName == initialName_ && newTopic == initialTopic_) {
-        close();
-        return;
-    }
-
-    using namespace mtx::events;
-    auto proxy = std::make_shared<ThreadProxy>();
-    connect(proxy.get(), &ThreadProxy::topicEventSent, this, &EditModal::topicEventSent);
-    connect(proxy.get(), &ThreadProxy::nameEventSent, this, &EditModal::nameEventSent);
-    connect(proxy.get(), &ThreadProxy::error, this, &EditModal::error);
-
-    if (newName != initialName_ && !newName.isEmpty()) {
-        state::Name body;
-        body.name = newName.toStdString();
-
-        http::client()->send_state_event(
-          roomId_.toStdString(),
-          body,
-          [proxy, newName](const mtx::responses::EventId &, mtx::http::RequestErr err) {
-              if (err) {
-                  emit proxy->error(QString::fromStdString(err->matrix_error.error));
-                  return;
-              }
-
-              emit proxy->nameEventSent(newName);
-          });
-    }
-
-    if (newTopic != initialTopic_ && !newTopic.isEmpty()) {
-        state::Topic body;
-        body.topic = newTopic.toStdString();
-
-        http::client()->send_state_event(
-          roomId_.toStdString(),
-          body,
-          [proxy, newTopic](const mtx::responses::EventId &, mtx::http::RequestErr err) {
-              if (err) {
-                  emit proxy->error(QString::fromStdString(err->matrix_error.error));
-                  return;
-              }
-
-              emit proxy->topicEventSent(newTopic);
-          });
-    }
-}
-
-void
-EditModal::setFields(const QString &roomName, const QString &roomTopic)
-{
-    initialName_  = roomName;
-    initialTopic_ = roomTopic;
-
-    nameInput_->setText(roomName);
-    topicInput_->setText(roomTopic);
-}
 
 RoomSettings::RoomSettings(QString roomid, QObject *parent)
   : QObject(parent)
@@ -242,6 +95,18 @@ RoomSettings::roomTopic() const
       utils::linkifyMessage(QString::fromStdString(info_.topic)
                               .toHtmlEscaped()
                               .replace(QLatin1String("\n"), QLatin1String("<br>"))));
+}
+
+QString
+RoomSettings::plainRoomName() const
+{
+    return QString::fromStdString(info_.name);
+}
+
+QString
+RoomSettings::plainRoomTopic() const
+{
+    return QString::fromStdString(info_.topic);
 }
 
 QString
@@ -340,12 +205,24 @@ RoomSettings::canChangeJoinRules() const
 }
 
 bool
-RoomSettings::canChangeNameAndTopic() const
+RoomSettings::canChangeName() const
 {
     try {
-        return cache::hasEnoughPowerLevel({EventType::RoomName, EventType::RoomTopic},
-                                          roomid_.toStdString(),
-                                          utils::localUser().toStdString());
+        return cache::hasEnoughPowerLevel(
+          {EventType::RoomName}, roomid_.toStdString(), utils::localUser().toStdString());
+    } catch (const lmdb::error &e) {
+        nhlog::db()->warn("lmdb error: {}", e.what());
+    }
+
+    return false;
+}
+
+bool
+RoomSettings::canChangeTopic() const
+{
+    try {
+        return cache::hasEnoughPowerLevel(
+          {EventType::RoomTopic}, roomid_.toStdString(), utils::localUser().toStdString());
     } catch (const lmdb::error &e) {
         nhlog::db()->warn("lmdb error: {}", e.what());
     }
@@ -385,26 +262,6 @@ RoomSettings::supportsRestricted() const
     return info_.version != "" && info_.version != "1" && info_.version != "2" &&
            info_.version != "3" && info_.version != "4" && info_.version != "5" &&
            info_.version != "6" && info_.version != "7";
-}
-
-void
-RoomSettings::openEditModal()
-{
-    retrieveRoomInfo();
-
-    auto modal = new EditModal(roomid_);
-    modal->setFields(QString::fromStdString(info_.name), QString::fromStdString(info_.topic));
-    modal->raise();
-    modal->show();
-    connect(modal, &EditModal::nameChanged, this, [this](const QString &newName) {
-        info_.name = newName.toStdString();
-        emit roomNameChanged();
-    });
-
-    connect(modal, &EditModal::topicChanged, this, [this](const QString &newTopic) {
-        info_.topic = newTopic.toStdString();
-        emit roomTopicChanged();
-    });
 }
 
 void
@@ -500,6 +357,74 @@ RoomSettings::changeAccessRules(int index)
     }(index);
 
     updateAccessRules(roomid_.toStdString(), join_rule, guest_access);
+}
+
+void
+RoomSettings::changeName(QString name)
+{
+    // Check if the values are changed from the originals.
+    auto newName = name.trimmed().toStdString();
+
+    if (newName == info_.name) {
+        return;
+    }
+
+    using namespace mtx::events;
+    auto proxy = std::make_shared<ThreadProxy>();
+    connect(proxy.get(), &ThreadProxy::nameEventSent, this, [this](QString newRoomName) {
+        this->info_.name = newRoomName.toStdString();
+        emit roomNameChanged();
+    });
+    connect(proxy.get(), &ThreadProxy::error, this, &RoomSettings::displayError);
+
+    state::Name body;
+    body.name = newName;
+
+    http::client()->send_state_event(
+      roomid_.toStdString(),
+      body,
+      [proxy, newName](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+          if (err) {
+              emit proxy->error(QString::fromStdString(err->matrix_error.error));
+              return;
+          }
+
+          emit proxy->nameEventSent(QString::fromStdString(newName));
+      });
+}
+
+void
+RoomSettings::changeTopic(QString topic)
+{
+    // Check if the values are changed from the originals.
+    auto newTopic = topic.trimmed().toStdString();
+
+    if (newTopic == info_.topic) {
+        return;
+    }
+
+    using namespace mtx::events;
+    auto proxy = std::make_shared<ThreadProxy>();
+    connect(proxy.get(), &ThreadProxy::topicEventSent, this, [this](QString newRoomTopic) {
+        this->info_.topic = newRoomTopic.toStdString();
+        emit roomTopicChanged();
+    });
+    connect(proxy.get(), &ThreadProxy::error, this, &RoomSettings::displayError);
+
+    state::Topic body;
+    body.topic = newTopic;
+
+    http::client()->send_state_event(
+      roomid_.toStdString(),
+      body,
+      [proxy, newTopic](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+          if (err) {
+              emit proxy->error(QString::fromStdString(err->matrix_error.error));
+              return;
+          }
+
+          emit proxy->topicEventSent(QString::fromStdString(newTopic));
+      });
 }
 
 void
