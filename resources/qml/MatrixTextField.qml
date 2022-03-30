@@ -37,6 +37,10 @@ ColumnLayout {
         input.forceActiveFocus();
     }
 
+    function clear() {
+        input.clear();
+    }
+
     ToolTip.delay: Nheko.tooltipDelay
     ToolTip.visible: hover.hovered
 
