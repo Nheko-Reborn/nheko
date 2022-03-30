@@ -763,7 +763,7 @@ Item {
             rightMargin: Nheko.paddingMedium+(fullWidth-width)/2
         }
         property int fullWidth: 40
-        width: fullWidth
+        width: 0
         height: width
         radius: width/2
         onClicked: chat.positionViewAtBeginning();
@@ -778,10 +778,17 @@ Item {
             radius: toEndButton.radius
         }
 
-        states: State {
-            name: "hidden"
-            when: chat.atYEnd
-        }
+        states: [
+            State {
+                name: ""
+                PropertyChanges { target: toEndButton; width: 0 }
+            },
+            State {
+                name: "shown"
+                when: !chat.atYEnd
+                PropertyChanges { target: toEndButton; width: toEndButton.fullWidth }
+            }
+        ]
 
         Image {
             id: buttonImg
@@ -791,33 +798,20 @@ Item {
             fillMode: Image.PreserveAspectFit
         }
 
-        transitions: [
-            Transition {
-                from: ""
-                to: "hidden"
+        transitions: Transition {
+            from: ""
+            to: "shown"
+            reversible: true
 
+            SequentialAnimation {
+                PauseAnimation { duration: 500 }
                 PropertyAnimation {
                     target: toEndButton
                     properties: "width"
                     easing.type: Easing.InOutQuad
-                    from: 40
-                    to: 0
-                    duration: 200
-                }
-            },
-            Transition {
-                from: "hidden"
-                to: ""
-
-                PropertyAnimation {
-                    target: toEndButton
-                    properties: "width"
-                    easing.type: Easing.InOutQuad
-                    from: 0
-                    to: 40
                     duration: 200
                 }
             }
-        ]
+        }
     }
 }
