@@ -249,7 +249,8 @@ InputBar::updateState(int selectionStart_,
         history_index_ = 0;
 
         updateAtRoom(text_);
-        emit textChanged(text_);
+        // disabled, as it moves the cursor to the end
+        // emit textChanged(text_);
     }
 
     selectionStart = selectionStart_;
