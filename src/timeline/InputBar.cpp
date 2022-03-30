@@ -249,12 +249,12 @@ InputBar::updateState(int selectionStart_,
         history_index_ = 0;
 
         updateAtRoom(text_);
+        emit textChanged(text_);
     }
 
     selectionStart = selectionStart_;
     selectionEnd   = selectionEnd_;
     cursorPosition = cursorPosition_;
-    emit textChanged(text_);
 }
 
 QString
