@@ -52,6 +52,10 @@ Item {
 
         }
 
+        property bool showToEndButton: lastItem? itemAtIndex(0).y+itemAtIndex(0).height-contentY > 2*height : true
+        property Item lastItem
+        onContentYChanged: lastItem = itemAtIndex(0)
+
         ScrollBar.vertical: scrollbar
 
         anchors.rightMargin: scrollbar.interactive? scrollbar.width : 0
@@ -785,7 +789,7 @@ Item {
             },
             State {
                 name: "shown"
-                when: !chat.atYEnd
+                when: chat.showToEndButton
                 PropertyChanges { target: toEndButton; width: toEndButton.fullWidth }
             }
         ]
