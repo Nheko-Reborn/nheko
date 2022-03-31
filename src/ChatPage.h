@@ -84,7 +84,11 @@ public slots:
     void leaveRoom(const QString &room_id, const QString &reason);
     void createRoom(const mtx::requests::CreateRoom &req);
     void joinRoom(const QString &room, const QString &reason = "");
-    void knockRoom(const QString &room, const QString &reason = "");
+    void knockRoom(const QString &room, QString reason = "") { knockRoom(room, {}, reason, false); }
+    void knockRoom(const QString &room,
+                   const std::vector<std::string> &via,
+                   QString reason  = "",
+                   bool failedJoin = false);
     void joinRoomVia(const std::string &room_id,
                      const std::vector<std::string> &via,
                      bool promptForConfirmation = true,
@@ -160,6 +164,11 @@ signals:
 
     void downloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescription keyDesc,
                            const SecretsToDecrypt &secrets);
+
+    void internalKnock(const QString &room,
+                       const std::vector<std::string> &via,
+                       QString reason  = "",
+                       bool failedJoin = false);
 
 private slots:
     void logout();

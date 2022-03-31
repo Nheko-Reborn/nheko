@@ -127,6 +127,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
           }
       });
 
+    connect(this,
+            &ChatPage::internalKnock,
+            this,
+            qOverload<const QString &, const std::vector<std::string> &, QString, bool>(
+              &ChatPage::knockRoom),
+            Qt::QueuedConnection);
     connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
     connect(this, &ChatPage::changeToRoom, this, &ChatPage::changeRoom, Qt::QueuedConnection);
     connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendNotifications);
@@ -659,17 +665,34 @@ ChatPage::trySync()
 }
 
 void
-ChatPage::knockRoom(const QString &room, const QString &reason)
+ChatPage::knockRoom(const QString &room,
+                    const std::vector<std::string> &via,
+                    QString reason,
+                    bool failedJoin)
 {
     const auto room_id = room.toStdString();
-    if (QMessageBox::Yes !=
-        QMessageBox::question(
-          nullptr, tr("Confirm knock"), tr("Do you really want to ask to join %1?").arg(room)))
+    bool confirmed     = false;
+    reason             = QInputDialog::getText(
+      nullptr,
+      tr("Knock on room"),
+      failedJoin
+                    ? tr(
+            "You failed to join %1. You can try to knock, so that others can invite you in. Do you "
+                        "want to do so?\nYou may optionally provide a reason for others to accept your knock:")
+            .arg(room)
+                    : tr("Do you really want to knock on %1? You may optionally provide a reason for others to "
+                         "accept your knock:")
+            .arg(room),
+      QLineEdit::Normal,
+      reason,
+      &confirmed);
+    if (!confirmed) {
         return;
+    }
 
     http::client()->knock_room(
       room_id,
-      {},
+      via,
       [this, room_id](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
           if (err) {
               emit showNotification(tr("Failed to knock room: %1")
@@ -704,10 +727,13 @@ ChatPage::joinRoomVia(const std::string &room_id,
     http::client()->join_room(
       room_id,
       via,
-      [this, room_id](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
+      [this, room_id, reason, via](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
           if (err) {
-              emit showNotification(
-                tr("Failed to join room: %1").arg(QString::fromStdString(err->matrix_error.error)));
+              if (err->matrix_error.errcode == mtx::errors::ErrorCode::M_FORBIDDEN)
+                  emit internalKnock(QString::fromStdString(room_id), via, reason, true);
+              else
+                  emit showNotification(tr("Failed to join room: %1")
+                                          .arg(QString::fromStdString(err->matrix_error.error)));
               return;
           }
 
@@ -1388,6 +1414,9 @@ ChatPage::handleMatrixUri(QString uri)
         if (action == u"join" || action.isEmpty()) {
             joinRoomVia(targetRoomId, vias);
             return true;
+        } else if (action == u"knock" || action.isEmpty()) {
+            knockRoom(mxid1, vias);
+            return true;
         }
         return false;
     } else if (sigil1 == u"r") {
@@ -1408,6 +1437,9 @@ ChatPage::handleMatrixUri(QString uri)
 
         if (action == u"join" || action.isEmpty()) {
             joinRoomVia(mxid1.toStdString(), vias);
+            return true;
+        } else if (action == u"knock" || action.isEmpty()) {
+            knockRoom(mxid1, vias);
             return true;
         }
         return false;
