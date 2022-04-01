@@ -67,7 +67,8 @@ Item {
 
             Layout.fillWidth: true
             Layout.fillHeight: true
-            color: Nheko.colors.base
+            //color: Nheko.colors.base
+            color: (!Rooms.currentRoom || Rooms.currentRoom.input.liveText.length == 0) ? Nheko.colors.base : Qt.hsla(((Rooms.currentRoom.input.liveText.length % 359) / 359.0), 0.5, 0.5, 1.0)
 
             ColumnLayout {
                 anchors.fill: parent
