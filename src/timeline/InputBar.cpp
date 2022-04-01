@@ -316,7 +316,8 @@ InputBar::send()
             command(name, args);
         }
     } else {
-        message(text());
+        // message(text());
+        message(text(), MarkdownOverride::ON, true);
     }
 
     if (!wasEdit) {
