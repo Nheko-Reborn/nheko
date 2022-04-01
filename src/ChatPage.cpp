@@ -749,6 +749,13 @@ ChatPage::joinRoomVia(const std::string &room_id,
 void
 ChatPage::createRoom(const mtx::requests::CreateRoom &req)
 {
+    if (req.room_alias_name.find(":") != std::string::npos ||
+        req.room_alias_name.find("#") != std::string::npos) {
+        nhlog::net()->warn("Failed to create room: Some characters are not allowed in alias");
+        emit this->showNotification(tr("Room creation failed: Bad Alias"));
+        return;
+    }
+
     http::client()->create_room(
       req, [this](const mtx::responses::CreateRoom &res, mtx::http::RequestErr err) {
           if (err) {
