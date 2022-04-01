@@ -229,6 +229,7 @@ InputBar::setText(const QString &newText)
 
     updateAtRoom(QLatin1String(""));
     emit textChanged(newText);
+    emit liveTextChanged(newText);
 }
 void
 InputBar::updateState(int selectionStart_,
@@ -250,7 +251,7 @@ InputBar::updateState(int selectionStart_,
 
         updateAtRoom(text_);
         // disabled, as it moves the cursor to the end
-        // emit textChanged(text_);
+        emit liveTextChanged(text_);
     }
 
     selectionStart = selectionStart_;

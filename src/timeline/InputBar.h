@@ -164,6 +164,7 @@ class InputBar : public QObject
     Q_PROPERTY(bool uploading READ uploading NOTIFY uploadingChanged)
     Q_PROPERTY(bool containsAtRoom READ containsAtRoom NOTIFY containsAtRoomChanged)
     Q_PROPERTY(QString text READ text NOTIFY textChanged)
+    Q_PROPERTY(QString liveText READ text NOTIFY liveTextChanged)
     Q_PROPERTY(QVariantList uploads READ uploads NOTIFY uploadsChanged)
 
 public:
@@ -214,6 +215,7 @@ private slots:
 signals:
     void insertText(QString text);
     void textChanged(QString newText);
+    void liveTextChanged(QString newText);
     void uploadingChanged(bool value);
     void containsAtRoomChanged();
     void uploadsChanged();
