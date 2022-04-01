@@ -30,6 +30,12 @@ Pane {
     antialiasing: true
     layer.samples: 8
 
+    Behavior on rotation {
+        NumberAnimation {
+            duration: 100
+        }
+    }
+
     FontMetrics {
         id: fontMetrics
     }
