@@ -1248,7 +1248,8 @@ ChatPage::startChat(QString userid, std::optional<bool> encryptionEnabled)
     auto room_infos   = cache::getRoomInfo(joined_rooms);
 
     for (const std::string &room_id : joined_rooms) {
-        if (room_infos[QString::fromStdString(room_id)].member_count == 2) {
+        if (const auto &info = room_infos[QString::fromStdString(room_id)];
+            info.member_count == 2 && !info.is_space) {
             auto room_members = cache::roomMembers(room_id);
             if (std::find(room_members.begin(), room_members.end(), (userid).toStdString()) !=
                 room_members.end()) {
