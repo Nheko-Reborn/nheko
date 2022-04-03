@@ -84,6 +84,9 @@ an emoji will add HTML code for the inline image into the input line.
 *Ctrl-Up/Ctrl-Down*::
 Navigate within the room list.
 
+*Ctrl-W*::
+Close the currently open room.
+
 *Ctrl-K*::
 Search and select rooms from the room list.
 
