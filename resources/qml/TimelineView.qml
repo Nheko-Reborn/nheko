@@ -25,6 +25,11 @@ Item {
     property bool showBackButton: false
     clip: true
 
+    Shortcut {
+        sequence: StandardKey.Close
+        onActivated: Rooms.resetCurrentRoom()
+    }
+
     Label {
         visible: !room && !TimelineManager.isInitialSync && (!roomPreview || !roomPreview.roomid)
         anchors.centerIn: parent
