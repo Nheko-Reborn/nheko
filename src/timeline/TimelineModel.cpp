@@ -2195,7 +2195,27 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
         }
     }
 
-    // TODO handle added/removed/changed event types
+    // Handle added/removed/changed event type
+    for (auto const &[event_type, powerlevel] : event->content.events) {
+        if (prevEvent->content.event_level(event_type) != powerlevel) {
+            if (powerlevel == administrator_power_level) {
+                resultingMessage.append(tr("%1 has made event type \"%2\" changeable only by admins.")
+                                          .arg(sender_name, QString::fromStdString(event_type)));
+            } else if (powerlevel == moderator_power_level ) {
+                resultingMessage.append(tr("%1 has made event type \"%2\" changeable only by moderators.")
+                                          .arg(sender_name, QString::fromStdString(event_type)));
+            } else if (powerlevel == default_powerlevel ) {
+                resultingMessage.append(tr("%1 has made event type \"%2\" changeable by all members.")
+                                          .arg(sender_name, QString::fromStdString(event_type)));
+            }  else {
+                resultingMessage.append(tr("%1 has changed the powerlevel of event type \"%2\" from %3 to %4.")
+                                          .arg(sender_name,
+                                               QString::fromStdString(event_type),
+                                               QString::number(prevEvent->content.event_level(event_type)),
+                                               QString::number(powerlevel)));
+            }
+        }
+    }
 
     if (!resultingMessage.isEmpty()) {
         return resultingMessage.join('\n');
