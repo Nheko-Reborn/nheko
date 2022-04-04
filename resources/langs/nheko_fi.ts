@@ -41,15 +41,15 @@
         <location filename="../../src/Cache.cpp" line="+2512"/>
         <source>%1 and %n other(s)</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>%1 ja %n toinen</numerusform>
+            <numerusform>%1 and %n toista</numerusform>
         </translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+175"/>
         <source>Empty Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Tyhjä Huone</translation>
     </message>
 </context>
 <context>
@@ -147,7 +147,7 @@
     <message>
         <location line="+41"/>
         <source>Failed to open database, logging out!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tietokannan avaaminen epäonnistui, kirjaudutaan ulos!</translation>
     </message>
     <message>
         <location line="+304"/>
@@ -281,12 +281,12 @@
     <message>
         <location line="+59"/>
         <source>Reason for the kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Syy potkimiselle</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Anna syy potkimiselle %1 (%2) tai paina enter mikäli syytä ei ole:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -296,17 +296,17 @@
     <message>
         <location line="+15"/>
         <source>Reason for the ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Syy porttikiellolle</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Anna syy porttikiellolle %1 (%2) tai paina enter mikäli syytä ei ole:</translation>
     </message>
     <message>
         <location filename="../qml/ChatPage.qml" line="+37"/>
         <source>No network connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei verkkoyhteyttä</translation>
     </message>
 </context>
 <context>
@@ -319,12 +319,12 @@
     <message>
         <location line="+83"/>
         <source>Expand</source>
-        <translation type="unfinished"></translation>
+        <translation>Laajenna</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Collapse</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorruta</translation>
     </message>
 </context>
 <context>
@@ -441,9 +441,9 @@
     <message numerus="yes">
         <location line="+94"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n jäsen</numerusform>
+            <numerusform>%n jäsentä</numerusform>
         </translation>
     </message>
     <message>
@@ -515,7 +515,8 @@
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salaus on toistaiseksi kokeellinen ja voi rikkoutua odottamattomasti. &lt;br&gt;
+Otathan huomioon, ettei sitä voi poistaa jälkikäteen.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -535,17 +536,17 @@
     <message>
         <location line="+6"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Piilotettua tapahtumaa</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Configure</source>
-        <translation type="unfinished"></translation>
+        <translation>Määritä</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select events to hide in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitse tapahtumat, jotka piilotetaan tästä huoneesta</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -560,7 +561,7 @@
     <message>
         <location line="+16"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopioitu leikepöydälle</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -570,12 +571,12 @@
     <message>
         <location line="+19"/>
         <source>show less</source>
-        <translation type="unfinished"></translation>
+        <translation>näytä vähemmän</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>show more</source>
-        <translation type="unfinished"></translation>
+        <translation>näytä enemmän</translation>
     </message>
 </context>
 <context>
@@ -768,12 +769,12 @@
     <message>
         <location line="+2"/>
         <source>Verification messages received out of order!</source>
-        <translation type="unfinished"></translation>
+        <translation>Varmistusviestit vastaanotettiin epäjärjestyksessä!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown verification error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuntematon varmennusvirhe.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -795,7 +796,7 @@
         <location filename="../../src/ui/HiddenEvents.cpp" line="+79"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Piilotettujen tapahtumien asettaminen epäonnistui: %1</translation>
     </message>
 </context>
 <context>
@@ -803,42 +804,42 @@
     <message>
         <location filename="../qml/dialogs/HiddenEventsDialog.qml" line="+31"/>
         <source>Hidden events for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Piilotetut tapahtumat kohteelle %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Piilotettua tapahtumaa</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nämä tapahtumat tullaan &lt;b&gt;näyttämään&lt;/b&gt; kohteessa %1:</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in all rooms:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nämä tapahtumat tullaan &lt;b&gt;näyttämään&lt;/b&gt; kaikissa huoneissa:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>User events</source>
-        <translation type="unfinished"></translation>
+        <translation>Käyttäjätapahtumat</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Joins, leaves, avatar and name changes, bans, …</source>
-        <translation type="unfinished"></translation>
+        <translation>Liittymiset, poistumiset, avatarin ja nimen muutokset, porttikiellot, …</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Power level changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Voimatasojen muutokset</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sent when a moderator is added/removed or the permissions of a room are changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetetään moderaattorin tullessa lisätyksi/poistetuksi tai kun huoneen oikeuksia muutetaan.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -861,32 +862,32 @@
     <message>
         <location line="+7"/>
         <source>Images (*.png *.webp *.gif *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvat (*.png *.webp *.gif *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select images for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitse kuvat pakettia varten</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Add to pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisää pakettiin</translation>
     </message>
     <message>
         <location line="+61"/>
         <source>Change the overview image for this pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta tämän kokoelman yleisnäkymän kuvaa</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Overview Image (*.png *.webp *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Yleisnäkymän kuva (*.png *.webp *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select overview image for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitse yleisnäkymän kuva paketille</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1130,7 +1131,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+42"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Takaisin</translation>
     </message>
     <message>
         <location filename="../../src/LoginPage.cpp" line="+83"/>
@@ -1168,27 +1169,27 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+19"/>
         <source>Sign in with Apple</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjaudu sisään Applella</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Continue with Facebook</source>
-        <translation type="unfinished"></translation>
+        <translation>Jatka Facebookilla</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Google</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjaudu sisään Googlella</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Twitter</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjaudu sisään Twitterillä</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Login using %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjaudu sisään käyttäen %1</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1230,7 +1231,7 @@ Esimerkki: https://server.my:8787</translation>
         <location filename="../../src/timeline/InputBar.cpp" line="+581"/>
         <location line="+34"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished">Mediaa ei onnistuttu lataamaan. Yritä uudelleen.</translation>
+        <translation>Mediaa ei onnistuttu lähettämään. Yritä uudelleen.</translation>
     </message>
 </context>
 <context>
@@ -1238,32 +1239,32 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+201"/>
         <source>%1 removed a message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 poisti viestin</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 enabled encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 otti käyttöön salauksen</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>%2 changed the room name to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 vaihtoi huoneen nimeksi: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the room name</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 poisti huoneen nimen</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%2 changed the topic to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 vaihtoi aiheeksi: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the topic</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 poisti aiheen</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1273,22 +1274,22 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+13"/>
         <source>%1 changed the pinned messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 vaihtoi kiinnitettyjä viestejä.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%1 changed the stickers and emotes in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 vaihtoi tämän huoneen tarroja ja emoteja.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%1 changed the addresses for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutti tämän huoneen osoitteita.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%1 changed the parent spaces for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 muutti tämän kanavan yläSpaceja.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1323,12 +1324,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+13"/>
         <source>%1 is negotiating the call...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 neuvottelee puhelua...</translation>
     </message>
     <message>
         <location line="+76"/>
         <source>Allow them in</source>
-        <translation>Salli heidät sisään</translation>
+        <translation>Päästä hänet sisään</translation>
     </message>
 </context>
 <context>
@@ -1399,12 +1400,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+436"/>
         <source>Reason for removal</source>
-        <translation type="unfinished"></translation>
+        <translation>Syy poistamiselle</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for removal or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Anna syy poistamiselle tai paina enter mikäli syytä ei ole:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1436,12 +1437,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+7"/>
         <source>Un&amp;pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisää/poista kiinnitys</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>&amp;Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Kiinnitä</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1562,7 +1563,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../qml/NotificationWarning.qml" line="+33"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished"></translation>
+        <translation>Aiot ilmoittaa kaikkia huoneessa olevia</translation>
     </message>
 </context>
 <context>
@@ -1688,7 +1689,7 @@ Esimerkki: https://server.my:8787</translation>
         <location line="+21"/>
         <location line="+96"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Takaisin</translation>
     </message>
     <message>
         <location line="-75"/>
@@ -1713,7 +1714,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+1"/>
         <source>your.server</source>
-        <translation type="unfinished"></translation>
+        <translation>sinun.palvelimesi</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1723,7 +1724,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+90"/>
         <source>Your passwords do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasanasi eivät täsmää!</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1768,27 +1769,27 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+10"/>
         <source>Server does not support querying registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Palvelin ei tue rekisteröintimenetelmien kyselyä!</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Server does not support registration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Palvelin ei tue rekisteröimistä.</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Invalid username.</source>
-        <translation type="unfinished"></translation>
+        <translation>Epäkelpo käyttäjätunnus.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Name already in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimi on jo käytössä.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Part of the reserved namespace.</source>
-        <translation type="unfinished"></translation>
+        <translation>Osa varattua nimiavaruutta.</translation>
     </message>
 </context>
 <context>
@@ -1801,7 +1802,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+16"/>
         <source>Cancel Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Peruuta Muokkaus</translation>
     </message>
 </context>
 <context>
@@ -1819,7 +1820,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+10"/>
         <source>Choose custom homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitse mukautettu kotipalvelin</translation>
     </message>
 </context>
 <context>
@@ -1901,19 +1902,19 @@ Esimerkki: https://server.my:8787</translation>
         <location line="+40"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Salausta ei ole määritetty</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unverified login</source>
         <extracomment>The user just signed in with this device and hasn&apos;t verified their master key.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Varmistamaton sisäänkirjautuminen</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please verify your other devices</source>
         <extracomment>There are unverified devices signed in to this account.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Varmista muut laitteesi</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1943,7 +1944,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+19"/>
         <source>Search rooms (Ctrl+K)</source>
-        <translation type="unfinished"></translation>
+        <translation>Hae huoneita (CTRL+K)</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -2003,9 +2004,9 @@ Esimerkki: https://server.my:8787</translation>
     <message numerus="yes">
         <location line="+94"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n jäsen</numerusform>
+            <numerusform>%n jäsentä</numerusform>
         </translation>
     </message>
     <message>
@@ -2097,12 +2098,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+6"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Piilotettua tapahtuma</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Configure</source>
-        <translation type="unfinished"></translation>
+        <translation>Määritä</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2176,7 +2177,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../../src/timeline/RoomlistModel.cpp" line="+152"/>
         <source>Pending invite.</source>
-        <translation>Kutsua odotetaan.</translation>
+        <translation>Odottava kutsu.</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -2299,7 +2300,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+9"/>
         <source>Failed to setup encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Salauksen aktivointi epäonnistui: %1</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -2564,7 +2565,7 @@ Reason: %4</source>
     <message>
         <location line="+123"/>
         <source>%2 revoked the invite to %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 perui käyttäjän %1 kutsun.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2629,7 +2630,7 @@ Reason: %4</source>
     <message>
         <location line="+1023"/>
         <source>%1 invited %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kutsui käyttäjän %2.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2691,12 +2692,12 @@ Reason: %4</source>
     <message>
         <location line="+7"/>
         <source>accept invite</source>
-        <translation>salli kutsu</translation>
+        <translation>hyväksy kutsu</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>decline invite</source>
-        <translation>peru kutsu</translation>
+        <translation>kieltäydy kutsusta</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3149,7 +3150,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Profiili</translation>
     </message>
     <message>
         <location line="+2"/>
