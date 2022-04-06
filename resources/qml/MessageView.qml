@@ -49,12 +49,12 @@ Item {
         onCountChanged: {
             // Mark timeline as read
             if (atYEnd && room) model.currentIndex = 0;
-
+            lastItem = itemAtIndex(0)
         }
+        Component.onCompleted: lastItem = itemAtIndex(0)
 
-        property bool showToEndButton: lastItem? itemAtIndex(0).y+itemAtIndex(0).height-contentY > 2*height : true
+        property bool showToEndButton: lastItem? lastItem.y+lastItem.height-contentY > 2*height : true
         property Item lastItem
-        onContentYChanged: lastItem = itemAtIndex(0)
 
         ScrollBar.vertical: scrollbar
 
