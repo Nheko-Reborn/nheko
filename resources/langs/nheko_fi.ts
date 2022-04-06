@@ -40,9 +40,9 @@
     <message numerus="yes">
         <location filename="../../src/Cache.cpp" line="+2512"/>
         <source>%1 and %n other(s)</source>
-        <translation type="unfinished">
-            <numerusform>%1 ja %n toinen</numerusform>
-            <numerusform>%1 and %n toista</numerusform>
+        <translation>
+            <numerusform>%1 ja %n muu</numerusform>
+            <numerusform>%1 and %n muuta</numerusform>
         </translation>
     </message>
     <message>
@@ -2544,17 +2544,17 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+29"/>
         <source>Removed by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Poistanut %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 (%2) removed this message at %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) poisti tämän viestin %3</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Removed by %1 because: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Poistanut %1 syystä: %2</translation>
     </message>
     <message>
         <location line="+1"/>
