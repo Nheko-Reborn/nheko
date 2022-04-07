@@ -61,7 +61,7 @@ operator>>(const QDBusArgument &arg, RoomInfoItem &item)
     arg.beginStructure();
     arg >> item.roomId_ >> item.alias_ >> item.roomName_ >> item.image_;
     if (item.image_.isNull())
-        item.image_ = QIcon::fromTheme(QStringLiteral("group")).pixmap(32, 32).toImage();
+        item.image_ = QImage{QStringLiteral(":/icons/ui/speech-bubbles.svg")};
 
     arg.endStructure();
     return arg;
