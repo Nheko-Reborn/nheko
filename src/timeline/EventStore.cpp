@@ -691,17 +691,15 @@ EventStore::decryptEvent(const IdIndex &idx,
             break;
         }
         case olm::DecryptionErrorCode::DbError:
-            nhlog::db()->critical("failed to retrieve megolm session with index ({}, {}, {})",
+            nhlog::db()->critical("failed to retrieve megolm session with index ({}, {})",
                                   index.room_id,
                                   index.session_id,
-                                  index.sender_key,
                                   decryptionResult.error_message.value_or(""));
             break;
         case olm::DecryptionErrorCode::DecryptionFailed:
-            nhlog::crypto()->critical("failed to decrypt message with index ({}, {}, {}): {}",
+            nhlog::crypto()->critical("failed to decrypt message with index ({},  {}): {}",
                                       index.room_id,
                                       index.session_id,
-                                      index.sender_key,
                                       decryptionResult.error_message.value_or(""));
             break;
         case olm::DecryptionErrorCode::ParsingFailed:
@@ -710,7 +708,7 @@ EventStore::decryptEvent(const IdIndex &idx,
             nhlog::crypto()->critical("Reply attack while decryptiong event {} in room {} from {}!",
                                       e.event_id,
                                       room_id_,
-                                      index.sender_key);
+                                      e.sender);
             break;
         case olm::DecryptionErrorCode::NoError:
             // unreachable

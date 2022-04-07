@@ -37,7 +37,7 @@
 
 //! Should be changed when a breaking change occurs in the cache format.
 //! This will reset client's data.
-static const std::string CURRENT_CACHE_FORMAT_VERSION("2021.08.31");
+static const std::string CURRENT_CACHE_FORMAT_VERSION{"2022.04.08"};
 
 //! Keys used for the DB
 static const std::string_view NEXT_BATCH_KEY("next_batch");
@@ -165,7 +165,6 @@ Cache::isHiddenEvent(lmdb::txn &txn,
         MegolmSessionIndex index;
         index.room_id    = room_id;
         index.session_id = encryptedEvent->content.session_id;
-        index.sender_key = encryptedEvent->content.sender_key;
 
         auto result = olm::decryptEvent(index, *encryptedEvent, true);
         if (!result.error)
@@ -600,8 +599,25 @@ Cache::exportSessionKeys()
             continue;
         }
 
+        try {
+            using namespace mtx::crypto;
+
+            std::string_view v;
+            if (megolmSessionDataDb_.get(txn, json(index).dump(), v)) {
+                auto data           = nlohmann::json::parse(v).get<GroupSessionData>();
+                exported.sender_key = data.sender_key;
+                if (!data.sender_claimed_ed25519_key.empty())
+                    exported.sender_claimed_keys["ed25519"] = data.sender_claimed_ed25519_key;
+                exported.forwarding_curve25519_key_chain = data.forwarding_curve25519_key_chain;
+            }
+
+            continue;
+        } catch (std::exception &e) {
+            nhlog::db()->error("Failed to retrieve Megolm Session Data: {}", e.what());
+            continue;
+        }
+
         exported.room_id     = index.room_id;
-        exported.sender_key  = index.sender_key;
         exported.session_id  = index.session_id;
         exported.session_key = export_session(saved_session.get(), -1);
 
@@ -620,9 +636,9 @@ Cache::importSessionKeys(const mtx::crypto::ExportedSessionKeys &keys)
         MegolmSessionIndex index;
         index.room_id    = s.room_id;
         index.session_id = s.session_id;
-        index.sender_key = s.sender_key;
 
         GroupSessionData data{};
+        data.sender_key                      = s.sender_key;
         data.forwarding_curve25519_key_chain = s.forwarding_curve25519_key_chain;
         if (s.sender_claimed_keys.count("ed25519"))
             data.sender_claimed_ed25519_key = s.sender_claimed_keys.at("ed25519");
@@ -717,7 +733,6 @@ Cache::updateOutboundMegolmSession(const std::string &room_id,
     data.message_index    = olm_outbound_group_session_message_index(ptr.get());
     MegolmSessionIndex index;
     index.room_id    = room_id;
-    index.sender_key = olm::client()->identity_keys().ed25519;
     index.session_id = mtx::crypto::session_id(ptr.get());
 
     // Save the updated pickled data for the session.
@@ -758,7 +773,6 @@ Cache::saveOutboundMegolmSession(const std::string &room_id,
     data.message_index    = olm_outbound_group_session_message_index(session.get());
     MegolmSessionIndex index;
     index.room_id    = room_id;
-    index.sender_key = olm::client()->identity_keys().ed25519;
     index.session_id = mtx::crypto::session_id(session.get());
 
     json j;
@@ -799,7 +813,6 @@ Cache::getOutboundMegolmSession(const std::string &room_id)
 
         MegolmSessionIndex index;
         index.room_id    = room_id;
-        index.sender_key = olm::client()->identity_keys().ed25519;
         index.session_id = mtx::crypto::session_id(ref.session.get());
 
         if (megolmSessionDataDb_.get(txn, json(index).dump(), value)) {
@@ -1289,6 +1302,56 @@ Cache::runMigrations()
        [this]() {
            storeSecret("pickle_secret", "secret", true);
            return true;
+       }},
+      {"2022.04.08",
+       [this]() {
+           try {
+               auto txn = lmdb::txn::begin(env_, nullptr);
+               auto inboundMegolmSessionDb =
+                 lmdb::dbi::open(txn, INBOUND_MEGOLM_SESSIONS_DB, MDB_CREATE);
+               auto outboundMegolmSessionDb =
+                 lmdb::dbi::open(txn, OUTBOUND_MEGOLM_SESSIONS_DB, MDB_CREATE);
+               auto megolmSessionDataDb = lmdb::dbi::open(txn, MEGOLM_SESSIONS_DATA_DB, MDB_CREATE);
+               try {
+                   outboundMegolmSessionDb.drop(txn, false);
+               } catch (std::exception &e) {
+                   nhlog::db()->warn("Failed to drop outbound sessions: {}", e.what());
+               }
+
+               std::string_view key, value;
+               auto cursor = lmdb::cursor::open(txn, inboundMegolmSessionDb);
+               std::map<std::string, std::string> inboundSessions;
+               std::map<std::string, std::string> megolmSessionData;
+               while (cursor.get(key, value, MDB_NEXT)) {
+                   auto indexVal   = nlohmann::json::parse(key);
+                   auto sender_key = indexVal["sender_key"];
+                   indexVal.erase("sender_key");
+
+                   std::string_view dataVal;
+                   bool res = megolmSessionDataDb.get(txn, key, dataVal);
+                   if (res) {
+                       auto data                          = nlohmann::json::parse(dataVal);
+                       data["sender_key"]                 = sender_key;
+                       inboundSessions[indexVal.dump()]   = std::string(value);
+                       megolmSessionData[indexVal.dump()] = data.dump();
+                   }
+               }
+               inboundMegolmSessionDb.drop(txn, false);
+               megolmSessionDataDb.drop(txn, false);
+
+               for (const auto &[k, v] : inboundSessions) {
+                   inboundMegolmSessionDb.put(txn, k, v);
+               }
+               for (const auto &[k, v] : megolmSessionData) {
+                   megolmSessionDataDb.put(txn, k, v);
+               }
+               txn.commit();
+               return true;
+           } catch (std::exception &e) {
+               nhlog::db()->warn(
+                 "Failed to migrate stored megolm session to have no sender key: {}", e.what());
+               return false;
+           }
        }},
     };
 
@@ -4709,6 +4772,7 @@ to_json(nlohmann::json &obj, const GroupSessionData &msg)
     obj["ts"]            = msg.timestamp;
     obj["trust"]         = msg.trusted;
 
+    obj["sender_key"]                      = msg.sender_key;
     obj["sender_claimed_ed25519_key"]      = msg.sender_claimed_ed25519_key;
     obj["forwarding_curve25519_key_chain"] = msg.forwarding_curve25519_key_chain;
 
@@ -4724,6 +4788,7 @@ from_json(const nlohmann::json &obj, GroupSessionData &msg)
     msg.timestamp     = obj.value("ts", 0ULL);
     msg.trusted       = obj.value("trust", true);
 
+    msg.sender_key                 = obj.value("sender_key", "");
     msg.sender_claimed_ed25519_key = obj.value("sender_claimed_ed25519_key", "");
     msg.forwarding_curve25519_key_chain =
       obj.value("forwarding_curve25519_key_chain", std::vector<std::string>{});
@@ -4752,7 +4817,6 @@ to_json(nlohmann::json &obj, const MegolmSessionIndex &msg)
 {
     obj["room_id"]    = msg.room_id;
     obj["session_id"] = msg.session_id;
-    obj["sender_key"] = msg.sender_key;
 }
 
 void
@@ -4760,7 +4824,6 @@ from_json(const nlohmann::json &obj, MegolmSessionIndex &msg)
 {
     msg.room_id    = obj.at("room_id");
     msg.session_id = obj.at("session_id");
-    msg.sender_key = obj.at("sender_key");
 }
 
 void

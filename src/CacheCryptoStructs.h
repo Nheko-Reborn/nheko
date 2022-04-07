@@ -53,6 +53,9 @@ struct GroupSessionData
     // TODO(Nico): What about forwards? They might come from key backup?
     bool trusted = true;
 
+    // the original 25519 key
+    std::string sender_key;
+
     std::string sender_claimed_ed25519_key;
     std::vector<std::string> forwarding_curve25519_key_chain;
 
@@ -93,15 +96,12 @@ struct MegolmSessionIndex
     MegolmSessionIndex(std::string room_id_, const mtx::events::msg::Encrypted &e)
       : room_id(std::move(room_id_))
       , session_id(e.session_id)
-      , sender_key(e.sender_key)
     {}
 
     //! The room in which this session exists.
     std::string room_id;
     //! The session_id of the megolm session.
     std::string session_id;
-    //! The curve25519 public key of the sender.
-    std::string sender_key;
 };
 
 void

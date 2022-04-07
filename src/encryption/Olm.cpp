@@ -614,6 +614,7 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
         session_data.message_index              = 0;
         session_data.timestamp                  = QDateTime::currentMSecsSinceEpoch();
         session_data.sender_claimed_ed25519_key = olm::client()->identity_keys().ed25519;
+        session_data.sender_key                 = olm::client()->identity_keys().curve25519;
 
         sendSessionTo.clear();
 
@@ -635,7 +636,6 @@ encrypt_group_message(const std::string &room_id, const std::string &device_id, 
             MegolmSessionIndex index;
             index.room_id       = room_id;
             index.session_id    = session_id;
-            index.sender_key    = olm::client()->identity_keys().curve25519;
             auto megolm_session = olm::client()->init_inbound_group_session(session_key);
             backup_session_key(index, session_data, megolm_session);
             cache::saveInboundMegolmSession(index, std::move(megolm_session), session_data);
@@ -734,12 +734,12 @@ create_inbound_megolm_session(const mtx::events::DeviceEvent<mtx::events::msg::R
     MegolmSessionIndex index;
     index.room_id    = roomKey.content.room_id;
     index.session_id = roomKey.content.session_id;
-    index.sender_key = sender_key;
 
     try {
         GroupSessionData data{};
         data.forwarding_curve25519_key_chain = {sender_key};
         data.sender_claimed_ed25519_key      = sender_ed25519;
+        data.sender_key                      = sender_key;
 
         auto megolm_session =
           olm::client()->init_inbound_group_session(roomKey.content.session_key);
@@ -766,7 +766,6 @@ import_inbound_megolm_session(
     MegolmSessionIndex index;
     index.room_id    = roomKey.content.room_id;
     index.session_id = roomKey.content.session_id;
-    index.sender_key = roomKey.content.sender_key;
 
     try {
         auto megolm_session =
@@ -775,6 +774,7 @@ import_inbound_megolm_session(
         GroupSessionData data{};
         data.forwarding_curve25519_key_chain = roomKey.content.forwarding_curve25519_key_chain;
         data.sender_claimed_ed25519_key      = roomKey.content.sender_claimed_ed25519_key;
+        data.sender_key                      = roomKey.content.sender_key;
         // may have come from online key backup, so we can't trust it...
         data.trusted = false;
         // if we got it forwarded from the sender, assume it is trusted. They may still have
@@ -832,7 +832,7 @@ backup_session_key(const MegolmSessionIndex &idx,
         sessionData.algorithm                       = mtx::crypto::MEGOLM_ALGO;
         sessionData.forwarding_curve25519_key_chain = data.forwarding_curve25519_key_chain;
         sessionData.sender_claimed_keys["ed25519"]  = data.sender_claimed_ed25519_key;
-        sessionData.sender_key                      = idx.sender_key;
+        sessionData.sender_key                      = data.sender_key;
         sessionData.session_key = mtx::crypto::export_session(session.get(), -1);
 
         auto encrypt_session = mtx::crypto::encrypt_session(sessionData, public_key);
@@ -920,11 +920,11 @@ lookup_keybackup(const std::string room, const std::string session_id)
               MegolmSessionIndex index;
               index.room_id    = room;
               index.session_id = session_id;
-              index.sender_key = session.sender_key;
 
               GroupSessionData data{};
               data.forwarding_curve25519_key_chain = session.forwarding_curve25519_key_chain;
               data.sender_claimed_ed25519_key      = session.sender_claimed_keys["ed25519"];
+              data.sender_key                      = session.sender_key;
               // online key backup can't be trusted, because anyone can upload to it.
               data.trusted = false;
 
@@ -982,8 +982,8 @@ send_key_request_for(mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> e,
     nhlog::crypto()->debug("m.room_key_request: {}", json(request).dump(2));
 
     std::map<mtx::identifiers::User, std::map<std::string, decltype(request)>> body;
-    body[mtx::identifiers::parse<mtx::identifiers::User>(e.sender)][e.content.device_id] = request;
-    body[http::client()->user_id()]["*"]                                                 = request;
+    body[mtx::identifiers::parse<mtx::identifiers::User>(e.sender)]["*"] = request;
+    body[http::client()->user_id()]["*"]                                 = request;
 
     http::client()->send_to_device(
       http::client()->generate_txn_id(), body, [e](mtx::http::RequestErr err) {
@@ -1011,29 +1011,28 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
         return;
     }
 
-    // Check if we were the sender of the session being requested (unless it is actually us
-    // requesting the session).
-    if (req.sender != http::client()->user_id().to_string() &&
-        req.content.sender_key != olm::client()->identity_keys().curve25519) {
-        nhlog::crypto()->debug(
-          "ignoring key request {} because we did not create the requested session: "
-          "\nrequested({}) ours({})",
-          req.content.request_id,
-          req.content.sender_key,
-          olm::client()->identity_keys().curve25519);
-        return;
-    }
-
     // Check that the requested session_id and the one we have saved match.
     MegolmSessionIndex index{};
     index.room_id    = req.content.room_id;
     index.session_id = req.content.session_id;
-    index.sender_key = req.content.sender_key;
 
     // Check if we have the keys for the requested session.
     auto sessionData = cache::getMegolmSessionData(index);
     if (!sessionData) {
         nhlog::crypto()->warn("requested session not found in room: {}", req.content.room_id);
+        return;
+    }
+
+    // Check if we were the sender of the session being requested (unless it is actually us
+    // requesting the session).
+    if (req.sender != http::client()->user_id().to_string() &&
+        sessionData->sender_key != olm::client()->identity_keys().curve25519) {
+        nhlog::crypto()->debug(
+          "ignoring key request {} because we did not create the requested session: "
+          "\nrequested({}) ours({})",
+          req.content.request_id,
+          sessionData->sender_key,
+          olm::client()->identity_keys().curve25519);
         return;
     }
 
@@ -1098,7 +1097,7 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
         forward_key.room_id     = index.room_id;
         forward_key.session_id  = index.session_id;
         forward_key.session_key = session_key;
-        forward_key.sender_key  = index.sender_key;
+        forward_key.sender_key  = sessionData->sender_key;
 
         // TODO(Nico): Figure out if this is correct
         forward_key.sender_claimed_ed25519_key      = sessionData->sender_claimed_ed25519_key;
@@ -1196,8 +1195,9 @@ calculate_trust(const std::string &user_id, const MegolmSessionIndex &index)
     auto megolmData          = cache::client()->getMegolmSessionData(index);
     crypto::Trust trustlevel = crypto::Trust::Unverified;
 
-    if (megolmData && megolmData->trusted && status.verified_device_keys.count(index.sender_key))
-        trustlevel = status.verified_device_keys.at(index.sender_key);
+    if (megolmData && megolmData->trusted &&
+        status.verified_device_keys.count(megolmData->sender_key))
+        trustlevel = status.verified_device_keys.at(megolmData->sender_key);
 
     return trustlevel;
 }
