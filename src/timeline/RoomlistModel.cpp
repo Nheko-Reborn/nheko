@@ -15,7 +15,7 @@
 #include "TimelineViewManager.h"
 #include "UserSettingsPage.h"
 
-#ifdef DBUS_AVAILABLE
+#ifdef NHEKO_DBUS_SYS
 #include <QDBusConnection>
 #endif
 
