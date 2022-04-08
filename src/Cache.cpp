@@ -609,9 +609,10 @@ Cache::exportSessionKeys()
                 if (!data.sender_claimed_ed25519_key.empty())
                     exported.sender_claimed_keys["ed25519"] = data.sender_claimed_ed25519_key;
                 exported.forwarding_curve25519_key_chain = data.forwarding_curve25519_key_chain;
+            } else {
+                continue;
             }
 
-            continue;
         } catch (std::exception &e) {
             nhlog::db()->error("Failed to retrieve Megolm Session Data: {}", e.what());
             continue;
