@@ -1988,20 +1988,20 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
                 auto true_affected_rest = number_of_affected - affected.size();
                 if (number_of_affected > 2) {
                     resultingMessage.append(
-                      default_message + QString::fromStdString(" ") +
+                      default_message + QStringLiteral(" ") +
                       tr("%1 and %2 and %n other(s) can now kick room members.")
                         .arg(utils::replaceEmoji(displayName(affected.at(0))),
                              utils::replaceEmoji(displayName(affected.at(1))))
                         .arg(true_affected_rest));
                 } else if (number_of_affected == 2) {
                     resultingMessage.append(
-                      default_message + QString::fromStdString(" ") +
+                      default_message + QStringLiteral(" ") +
                       tr("%1 and %2 can now kick room members.")
                         .arg(utils::replaceEmoji(displayName(affected.at(0))),
                              utils::replaceEmoji(displayName(affected.at(1)))));
                 } else if (number_of_affected == 1) {
                     resultingMessage.append(
-                      default_message + QString::fromStdString(" ") +
+                      default_message + QStringLiteral(" ") +
                       tr("%1 can now kick room members.")
                         .arg(utils::replaceEmoji(displayName(affected.at(0)))));
                 }
@@ -2028,20 +2028,20 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
                 auto true_affected_rest = number_of_affected - affected.size();
                 if (number_of_affected > 2) {
                     resultingMessage.append(
-                      default_message + QString::fromStdString(" ") +
+                      default_message + QStringLiteral(" ") +
                       tr("%1 and %2 and %n other(s) can now redact room messages.")
                         .arg(utils::replaceEmoji(displayName(affected.at(0))),
                              utils::replaceEmoji(displayName(affected.at(1))))
                         .arg(true_affected_rest));
                 } else if (number_of_affected == 2) {
                     resultingMessage.append(
-                      default_message + QString::fromStdString(" ") +
+                      default_message + QStringLiteral(" ") +
                       tr("%1 and %2 can now redact room messages.")
                         .arg(utils::replaceEmoji(displayName(affected.at(0))),
                              utils::replaceEmoji(displayName(affected.at(1)))));
                 } else if (number_of_affected == 1) {
                     resultingMessage.append(
-                      default_message + QString::fromStdString(" ") +
+                      default_message + QStringLiteral(" ") +
                       tr("%1 can now redact room messages.")
                         .arg(utils::replaceEmoji(displayName(affected.at(0)))));
                 }
@@ -2068,20 +2068,20 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
                 auto true_affected_rest = number_of_affected - affected.size();
                 if (number_of_affected > 2) {
                     resultingMessage.append(
-                      default_message + QString::fromStdString(" ") +
+                      default_message + QStringLiteral(" ") +
                       tr("%1 and %2 and %n other(s) can now ban room members.")
                         .arg(utils::replaceEmoji(displayName(affected.at(0))),
                              utils::replaceEmoji(displayName(affected.at(1))))
                         .arg(true_affected_rest));
                 } else if (number_of_affected == 2) {
                     resultingMessage.append(
-                      default_message + QString::fromStdString(" ") +
+                      default_message + QStringLiteral(" ") +
                       tr("%1 and %2 can now ban room members.")
                         .arg(utils::replaceEmoji(displayName(affected.at(0))),
                              utils::replaceEmoji(displayName(affected.at(1)))));
                 } else if (number_of_affected == 1) {
                     resultingMessage.append(
-                      default_message + QString::fromStdString(" ") +
+                      default_message + QStringLiteral(" ") +
                       tr("%1 can now ban room members.")
                         .arg(utils::replaceEmoji(displayName(affected.at(0)))));
                 }
@@ -2109,20 +2109,20 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
                 auto true_affected_rest = number_of_affected - affected.size();
                 if (number_of_affected > 2) {
                     resultingMessage.append(
-                      default_message + QString::fromStdString(" ") +
+                      default_message + QStringLiteral(" ") +
                       tr("%1 and %2 and %n other(s) can now send state events.")
                         .arg(utils::replaceEmoji(displayName(affected.at(0))),
                              utils::replaceEmoji(displayName(affected.at(1))))
                         .arg(true_affected_rest));
                 } else if (number_of_affected == 2) {
                     resultingMessage.append(
-                      default_message + QString::fromStdString(" ") +
+                      default_message + QStringLiteral(" ") +
                       tr("%1 and %2 can now send state events.")
                         .arg(utils::replaceEmoji(displayName(affected.at(0))),
                              utils::replaceEmoji(displayName(affected.at(1)))));
                 } else if (number_of_affected == 1) {
                     resultingMessage.append(
-                      default_message + QString::fromStdString(" ") +
+                      default_message + QStringLiteral(" ") +
                       tr("%1 can now send state events.")
                         .arg(utils::replaceEmoji(displayName(affected.at(0)))));
                 }
