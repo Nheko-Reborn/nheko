@@ -2022,7 +2022,7 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
         // We only calculate affected users if we change to a level above the default users PL
         // to not accidentally have a DoS vector
         if (event->content.redact > default_powerlevel) {
-            auto [affected, number_of_affected] = calc_affected(event->content.kick);
+            auto [affected, number_of_affected] = calc_affected(event->content.redact);
 
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
