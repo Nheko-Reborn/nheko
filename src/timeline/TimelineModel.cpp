@@ -2150,14 +2150,14 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
     for (auto const &[mxid, powerlevel] : event->content.users) {
         auto nameOfChangedUser = utils::replaceEmoji(displayName(QString::fromStdString(mxid)));
         if (prevEvent->content.user_level(mxid) != powerlevel) {
-            if (powerlevel == administrator_power_level) {
+            if (powerlevel >= administrator_power_level) {
                 resultingMessage.append(tr("%1 has made %2 an administrator of this room.")
                                           .arg(sender_name, nameOfChangedUser));
-            } else if (powerlevel == moderator_power_level &&
+            } else if (powerlevel >= moderator_power_level &&
                        powerlevel > prevEvent->content.user_level(mxid)) {
                 resultingMessage.append(tr("%1 has made %2 a moderator of this room.")
                                           .arg(sender_name, nameOfChangedUser));
-            } else if (powerlevel == moderator_power_level &&
+            } else if (powerlevel >= moderator_power_level &&
                        powerlevel < prevEvent->content.user_level(mxid)) {
                 resultingMessage.append(tr("%1 has downgraded %2 to moderator of this room.")
                                           .arg(sender_name, nameOfChangedUser));
@@ -2174,11 +2174,11 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
     // Handle added/removed/changed event type
     for (auto const &[event_type, powerlevel] : event->content.events) {
         if (prevEvent->content.event_level(event_type) != powerlevel) {
-            if (powerlevel == administrator_power_level) {
+            if (powerlevel >= administrator_power_level) {
                 resultingMessage.append(
                   tr("%1 has made event type \"%2\" changeable only by admins.")
                     .arg(sender_name, QString::fromStdString(event_type)));
-            } else if (powerlevel == moderator_power_level) {
+            } else if (powerlevel >= moderator_power_level) {
                 resultingMessage.append(
                   tr("%1 has made event type \"%2\" changeable only by moderators.")
                     .arg(sender_name, QString::fromStdString(event_type)));
