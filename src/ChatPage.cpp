@@ -560,25 +560,26 @@ ChatPage::startInitialSync()
             }
         }
 
-        nhlog::net()->info("initial sync completed");
+        QTimer::singleShot(0, this, [this, res] {
+            nhlog::net()->info("initial sync completed");
+            try {
+                cache::client()->saveState(res);
 
-        try {
-            cache::client()->saveState(res);
+                olm::handle_to_device_messages(res.to_device.events);
 
-            olm::handle_to_device_messages(res.to_device.events);
+                emit initializeViews(std::move(res));
+                emit initializeMentions(cache::getTimelineMentions());
 
-            emit initializeViews(std::move(res));
-            emit initializeMentions(cache::getTimelineMentions());
+                cache::calculateRoomReadStatus();
+            } catch (const lmdb::error &e) {
+                nhlog::db()->error("failed to save state after initial sync: {}", e.what());
+                startInitialSync();
+                return;
+            }
 
-            cache::calculateRoomReadStatus();
-        } catch (const lmdb::error &e) {
-            nhlog::db()->error("failed to save state after initial sync: {}", e.what());
-            startInitialSync();
-            return;
-        }
-
-        emit trySyncCb();
-        emit contentLoaded();
+            emit trySyncCb();
+            emit contentLoaded();
+        });
     });
 }
 

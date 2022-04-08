@@ -1574,7 +1574,7 @@ Cache::saveState(const mtx::responses::Sync &res)
     using namespace mtx::events;
     auto local_user_id = this->localUserId_.toStdString();
 
-    auto currentBatchToken = nextBatchToken();
+    auto currentBatchToken = res.next_batch;
 
     auto txn = lmdb::txn::begin(env_);
 
@@ -3942,8 +3942,15 @@ Cache::roomVerificationStatus(const std::string &room_id)
                 trust = crypto::TOFU;
         }
 
-        if (!keysToRequest.empty())
-            markUserKeysOutOfDate(txn, keysDb, keysToRequest, "");
+        if (!keysToRequest.empty()) {
+            std::string_view token;
+
+            bool result = syncStateDb_.get(txn, NEXT_BATCH_KEY, token);
+
+            if (!result)
+                token = "";
+            markUserKeysOutOfDate(txn, keysDb, keysToRequest, std::string(token));
+        }
 
     } catch (std::exception &e) {
         nhlog::db()->error("Failed to calculate verification status for {}: {}", room_id, e.what());
@@ -4123,11 +4130,11 @@ Cache::userKeys_(const std::string &user_id, lmdb::txn &txn)
         if (res) {
             return json::parse(keys).get<UserKeyCache>();
         } else {
-            return {};
+            return std::nullopt;
         }
     } catch (std::exception &e) {
         nhlog::db()->error("Failed to retrieve user keys for {}: {}", user_id, e.what());
-        return {};
+        return std::nullopt;
     }
 }
 
@@ -4365,7 +4372,7 @@ Cache::query_keys(const std::string &user_id,
     QObject *context{new QObject(this)};
     QObject::connect(
       this,
-      &Cache::verificationStatusChanged,
+      &Cache::userKeysUpdateFinalize,
       context,
       [cb, user_id, context_ = context, this](std::string updated_user) mutable {
           if (user_id == updated_user) {
@@ -4390,6 +4397,7 @@ Cache::query_keys(const std::string &user_id,
           }
 
           emit userKeysUpdate(last_changed, res);
+          emit userKeysUpdateFinalize(user_id);
       });
 }
 

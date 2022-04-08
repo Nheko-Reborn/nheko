@@ -317,6 +317,7 @@ signals:
     void roomReadStatus(const std::map<QString, bool> &status);
     void removeNotification(const QString &room_id, const QString &event_id);
     void userKeysUpdate(const std::string &sync_token, const mtx::responses::QueryKeys &keyQuery);
+    void userKeysUpdateFinalize(const std::string &user_id);
     void verificationStatusChanged(const std::string &userid);
     void selfVerificationStatusChanged();
     void secretChanged(const std::string name);
