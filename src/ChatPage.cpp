@@ -1155,8 +1155,8 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
     stripped.remove(' ');
     stripped.remove('\n');
     stripped.remove('\t');
-    auto decryptionKey = mtx::crypto::key_from_recoverykey(stripped.toStdString(), keyDesc);
 
+    auto decryptionKey = mtx::crypto::key_from_recoverykey(stripped.toStdString(), keyDesc);
     if (!decryptionKey && keyDesc.passphrase) {
         try {
             decryptionKey = mtx::crypto::key_from_passphrase(text.toStdString(), keyDesc);
@@ -1180,6 +1180,8 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
 
     for (const auto &[secretName, encryptedSecret] : secrets) {
         auto decrypted = mtx::crypto::decrypt(encryptedSecret, *decryptionKey, secretName);
+        nhlog::crypto()->debug("Secret {} decrypted: {}", secretName, !decrypted.empty());
+
         if (!decrypted.empty()) {
             cache::storeSecret(secretName, decrypted);
 
@@ -1222,7 +1224,8 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
         }
     }
 
-    if (!req.signatures.empty())
+    if (!req.signatures.empty()) {
+        nhlog::crypto()->debug("Uploading new signatures: {}", json(req).dump(2));
         http::client()->keys_signatures_upload(
           req, [](const mtx::responses::KeySignaturesUpload &res, mtx::http::RequestErr err) {
               if (err) {
@@ -1240,6 +1243,7 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
                                           mtx::errors::to_string(e.errcode),
                                           e.error);
           });
+    }
 }
 
 void
