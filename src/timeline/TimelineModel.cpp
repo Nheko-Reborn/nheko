@@ -1951,7 +1951,7 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
     auto moderator_power_level     = event->content.redact;
     auto default_powerlevel        = event->content.users_default;
     if (!prevEvent)
-        return "";
+        return tr("%1 has changed the room's permissions.").arg(sender_name);
 
     auto calc_affected = [&event,
                           &prevEvent](int64_t newPowerlevelSetting) -> std::pair<QStringList, int> {
@@ -2174,17 +2174,14 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
 
         if (prev_not_present || prevEvent->content.events.at(event_type) != powerlevel) {
             if (powerlevel >= administrator_power_level) {
-                resultingMessage.append(
-                  tr("%1 allowed only administrators to send \"%2\".")
-                    .arg(sender_name, QString::fromStdString(event_type)));
+                resultingMessage.append(tr("%1 allowed only administrators to send \"%2\".")
+                                          .arg(sender_name, QString::fromStdString(event_type)));
             } else if (powerlevel >= moderator_power_level) {
-                resultingMessage.append(
-                  tr("%1 allowed only moderators to send \"%2\".")
-                    .arg(sender_name, QString::fromStdString(event_type)));
+                resultingMessage.append(tr("%1 allowed only moderators to send \"%2\".")
+                                          .arg(sender_name, QString::fromStdString(event_type)));
             } else if (powerlevel == default_powerlevel) {
-                resultingMessage.append(
-                  tr("%1 allowed everyone to send \"%2\".")
-                    .arg(sender_name, QString::fromStdString(event_type)));
+                resultingMessage.append(tr("%1 allowed everyone to send \"%2\".")
+                                          .arg(sender_name, QString::fromStdString(event_type)));
             } else if (prev_not_present) {
                 resultingMessage.append(
                   tr("%1 has changed the powerlevel of event type \"%2\" from the default to %3.")
