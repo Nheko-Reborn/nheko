@@ -2175,15 +2175,15 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
         if (prev_not_present || prevEvent->content.events.at(event_type) != powerlevel) {
             if (powerlevel >= administrator_power_level) {
                 resultingMessage.append(
-                  tr("%1 has made event type \"%2\" changeable only by admins.")
+                  tr("%1 allowed only administrators to send \"%2\".")
                     .arg(sender_name, QString::fromStdString(event_type)));
             } else if (powerlevel >= moderator_power_level) {
                 resultingMessage.append(
-                  tr("%1 has made event type \"%2\" changeable only by moderators.")
+                  tr("%1 allowed only moderators to send \"%2\".")
                     .arg(sender_name, QString::fromStdString(event_type)));
             } else if (powerlevel == default_powerlevel) {
                 resultingMessage.append(
-                  tr("%1 has made event type \"%2\" changeable by all members.")
+                  tr("%1 allowed everyone to send \"%2\".")
                     .arg(sender_name, QString::fromStdString(event_type)));
             } else if (prev_not_present) {
                 resultingMessage.append(
