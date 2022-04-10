@@ -2018,9 +2018,10 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
                 if (number_of_affected > 1) {
-                    resultingMessage.append(
-                      default_message + QStringLiteral(" ") +
-                      tr("%n member(s) can now redact room messages.", nullptr, true_affected_rest));
+                    resultingMessage.append(default_message + QStringLiteral(" ") +
+                                            tr("%n member(s) can now redact room messages.",
+                                               nullptr,
+                                               true_affected_rest));
                 } else if (number_of_affected == 1) {
                     resultingMessage.append(
                       default_message + QStringLiteral(" ") +
