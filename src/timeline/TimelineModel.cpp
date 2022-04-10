@@ -1987,11 +1987,9 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
                 if (number_of_affected > 1) {
-                    resultingMessage.append(default_message + QStringLiteral(" ") +
-                                            tr("%1 and %n other(s) can now kick room members.")
-                                              .arg(utils::replaceEmoji(displayName(affected.at(0))),
-                                                   utils::replaceEmoji(displayName(affected.at(1))))
-                                              .arg(true_affected_rest));
+                    resultingMessage.append(
+                      default_message + QStringLiteral(" ") +
+                      tr("%n member(s) can now kick room members.").arg(true_affected_rest));
                 } else if (number_of_affected == 1) {
                     resultingMessage.append(
                       default_message + QStringLiteral(" ") +
@@ -2020,11 +2018,9 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
                 if (number_of_affected > 1) {
-                    resultingMessage.append(default_message + QStringLiteral(" ") +
-                                            tr("%1 and %n other(s) can now redact room messages.")
-                                              .arg(utils::replaceEmoji(displayName(affected.at(0))),
-                                                   utils::replaceEmoji(displayName(affected.at(1))))
-                                              .arg(true_affected_rest));
+                    resultingMessage.append(
+                      default_message + QStringLiteral(" ") +
+                      tr("%n member(s) can now redact room messages.").arg(true_affected_rest));
                 } else if (number_of_affected == 1) {
                     resultingMessage.append(
                       default_message + QStringLiteral(" ") +
@@ -2053,11 +2049,9 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
                 if (number_of_affected > 1) {
-                    resultingMessage.append(default_message + QStringLiteral(" ") +
-                                            tr("%1 and %n other(s) can now ban room members.")
-                                              .arg(utils::replaceEmoji(displayName(affected.at(0))),
-                                                   utils::replaceEmoji(displayName(affected.at(1))))
-                                              .arg(true_affected_rest));
+                    resultingMessage.append(
+                      default_message + QStringLiteral(" ") +
+                      tr("%n member(s) can now ban room members.").arg(true_affected_rest));
                 } else if (number_of_affected == 1) {
                     resultingMessage.append(
                       default_message + QStringLiteral(" ") +
@@ -2087,11 +2081,9 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
                 if (number_of_affected > 1) {
-                    resultingMessage.append(default_message + QStringLiteral(" ") +
-                                            tr("%1 and %n other(s) can now send state events.")
-                                              .arg(utils::replaceEmoji(displayName(affected.at(0))),
-                                                   utils::replaceEmoji(displayName(affected.at(1))))
-                                              .arg(true_affected_rest));
+                    resultingMessage.append(
+                      default_message + QStringLiteral(" ") +
+                      tr("%n member(s) can now send state events.").arg(true_affected_rest));
                 } else if (number_of_affected == 1) {
                     resultingMessage.append(
                       default_message + QStringLiteral(" ") +
