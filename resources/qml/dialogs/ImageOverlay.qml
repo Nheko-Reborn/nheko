@@ -4,7 +4,6 @@
 
 import QtQuick 2.15
 import QtQuick.Window 2.15
-import Qt.labs.animation 1.0
 
 import ".."
 
@@ -16,10 +15,12 @@ Window {
     required property string url
     required property string eventId
     required property Room room
+    required property int originalWidth
+    required property double proportionalHeight
 
     flags: Qt.FramelessWindowHint
 
-    visibility: Window.FullScreen
+    //visibility: Window.FullScreen
     color: Qt.rgba(0.2,0.2,0.2,0.66)
 
     Shortcut {
@@ -28,11 +29,18 @@ Window {
     }
 
 
+
     Item {
-        height: Math.min(parent.height, img.implicitHeight)
-        width: Math.min(parent.width, img.implicitWidth)
-        x: (parent.width - img.width)/2
-        y: (parent.height - img.height)/2
+        id: imgContainer
+
+        property int imgSrcWidth: (originalWidth && originalWidth > 200) ? originalWidth : Screen.width
+        property int imgSrcHeight: proportionalHeight ? imgSrcWidth * proportionalHeight : Screen.height
+
+        height: Math.min(parent.height, imgSrcHeight)
+        width: Math.min(parent.width, imgSrcWidth)
+
+        x: (parent.width - width)
+        y: (parent.height - height)
 
         Image {
             id: img
@@ -57,46 +65,29 @@ Window {
             eventId: imageOverlay.eventId
         }
 
-        BoundaryRule on scale {
-            enabled: img.loaded || mxcimage.loaded
-            id: sbr
-            minimum: 0.1
-            maximum: 10
-            minimumOvershoot: 0.02; maximumOvershoot: 10.02
+        onScaleChanged: {
+            if (scale > 10) scale = 10;
+            if (scale < 0.1) scale = 0.1
         }
+    }
 
-        BoundaryRule on x {
-           enabled: img.loaded || mxcimage.loaded
-           id: xbr
-           minimum: -100
-           maximum: imageOverlay.width - img.width + 100
-           minimumOvershoot: 100; maximumOvershoot: 100
-           overshootFilter: BoundaryRule.Peak
-        }
+    Item {
+        anchors.fill: parent
 
-        BoundaryRule on y {
-           enabled: img.loaded || mxcimage.loaded
-           id: ybr
-           minimum: -100
-           maximum: imageOverlay.height - img.height + 100
-           minimumOvershoot: 100; maximumOvershoot: 100
-           overshootFilter: BoundaryRule.Peak
-        }
 
         PinchHandler {
-            onActiveChanged: if (!active) sbr.returnToBounds();
+            target: imgContainer
+            maximumScale: 10
+            minimumScale: 0.1
         }
 
         WheelHandler {
             property: "scale"
-            onActiveChanged: if (!active) sbr.returnToBounds();
+            target: imgContainer
         }
 
         DragHandler {
-            onActiveChanged: if (!active) {
-               xbr.returnToBounds();
-               ybr.returnToBounds();
-            }
+            target: imgContainer
         }
 
         HoverHandler {

@@ -288,7 +288,9 @@ Pane {
             var dialog = imageOverlay.createObject(timelineRoot, {
                 "room": room,
                 "eventId": eventId,
-                "url": url
+                "url": url,
+                "originalWidth": originalWidth ?? 0,
+                "proportionalHeight": proportionalHeight ?? 0
             });
             dialog.showFullScreen();
             destroyOnClose(dialog);
