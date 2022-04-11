@@ -126,13 +126,13 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+120"/>
         <source>Failed to invite user: %1</source>
-        <translation>Käyttäjää %1 ei onnistuttu kutsumaan</translation>
+        <translation>Käyttäjän %1 kutsuminen epäonnistui</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+655"/>
         <source>Invited user: %1</source>
-        <translation>Kutsuttu käyttäjä: %1</translation>
+        <translation>Kutsuttiin käyttäjä: %1</translation>
     </message>
     <message>
         <location line="-460"/>
@@ -173,12 +173,12 @@
     <message>
         <location line="-445"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation>Haluatko kutsua %1 (%2)?</translation>
+        <translation>Haluatko varmasti kutsua %1 (%2)?</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Failed to invite %1 to %2: %3</source>
-        <translation>Epäonnistuttiin kutsuminen %1 huoneeseen %2:%3</translation>
+        <translation>Käyttäjän %1 kutsuminen huoneeseen %2 epäonnistui:%3</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -266,7 +266,7 @@
     <message>
         <location line="+6"/>
         <source>Failed to remove invite: %1</source>
-        <translation>Kutsua ei onnistuttu poistamaan: %1</translation>
+        <translation>Kutsun poistaminen epäonnistui: %1</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -314,7 +314,7 @@
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+46"/>
         <source>Hide rooms with this tag or from this space by default.</source>
-        <translation>Piilota huoneet tällä tagilla tai tästä tilasta oletuksena.</translation>
+        <translation>Piilota huoneet tällä tagilla tai tästä Spacesta oletuksena.</translation>
     </message>
     <message>
         <location line="+83"/>
@@ -499,7 +499,7 @@
     <message>
         <location line="+3"/>
         <source>Restricted by membership in other rooms</source>
-        <translation>Rajoitettu jäsenyyden perusteella muissa huoneissa</translation>
+        <translation>Rajoitettu muiden huoneiden jäsenyyden perusteella</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1372,7 +1372,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+11"/>
         <source>You don&apos;t have permission to send messages in this room</source>
-        <translation>Sinulla ei ole lupaa lähettää viestejä tässä huoneessa</translation>
+        <translation>Sinulla ei ole oikeutta lähettää viestejä tässä huoneessa</translation>
     </message>
 </context>
 <context>
@@ -1851,7 +1851,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+5"/>
         <source>Tag room as:</source>
-        <translation>Laita huoneelle tagi:</translation>
+        <translation>Aseta huoneelle tagi:</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1939,7 +1939,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+17"/>
         <source>Room directory</source>
-        <translation>Huoneluettelo</translation>
+        <translation>Huonehakemisto</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -1971,7 +1971,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+10"/>
         <source>Invite more people</source>
-        <translation>Kutsu lisää ihmisiä</translation>
+        <translation>Kutsu lisää käyttäjiä</translation>
     </message>
     <message>
         <location line="+87"/>
@@ -2062,7 +2062,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+3"/>
         <source>Restricted by membership in other rooms</source>
-        <translation>Rajoitettu jäsenyyden perusteella muissa huoneissa</translation>
+        <translation>Rajoitettu muiden huoneiden jäsenyyden perusteella</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2108,7 +2108,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+1"/>
         <source>Select events to hide in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitse huoneesta piilotettavat tapahtumat</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2177,7 +2177,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../../src/timeline/RoomlistModel.cpp" line="+152"/>
         <source>Pending invite.</source>
-        <translation>Odottava kutsu.</translation>
+        <translation>Vastausta odottava kutsu.</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -2489,7 +2489,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+67"/>
         <source>%1 opened the room to the public.</source>
-        <translation>%1 avasi huoneen julkiseksi.</translation>
+        <translation>%1 avasi huoneen kaikelle yleisölle.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2499,7 +2499,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+2"/>
         <source>%1 allowed to join this room by knocking.</source>
-        <translation>Käyttäjän %1 annettiin liittyä tähän huoneeseen koputtamalla.</translation>
+        <translation>Käyttäjän %1 sallittiin liittyä tähän huoneeseen koputtamalla.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2539,7 +2539,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+22"/>
         <source>%1 has changed the room&apos;s permissions.</source>
-        <translation>%1 on muuttanut huoneen lupia.</translation>
+        <translation>%1 on muuttanut huoneen oikeuksia.</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -2625,7 +2625,7 @@ Reason: %4</source>
     <message>
         <location line="-1074"/>
         <source>You joined this room.</source>
-        <translation>Sinä liityit tähän huoneeseen.</translation>
+        <translation>Liityit tähän huoneeseen.</translation>
     </message>
     <message>
         <location line="+1023"/>
@@ -2672,7 +2672,7 @@ Reason: %4</source>
     <message>
         <location filename="../qml/TimelineView.qml" line="+30"/>
         <source>No room open</source>
-        <translation>Ei avointa huonetta</translation>
+        <translation>Yhtäkään huonetta ei ole avattu</translation>
     </message>
     <message>
         <location line="+141"/>
@@ -2842,7 +2842,7 @@ Reason: %4</source>
     <message>
         <location line="+0"/>
         <source>Change avatar. Will only apply to this room.</source>
-        <translation>Muuta avataria. Toimii vain tässä huoneessa.</translation>
+        <translation>Muuta avataria. Koskee vain tätä huonetta.</translation>
     </message>
     <message>
         <location line="+84"/>
@@ -2852,7 +2852,7 @@ Reason: %4</source>
     <message>
         <location line="+0"/>
         <source>Change display name. Will only apply to this room.</source>
-        <translation>Muuta näyttönimeä. Toimii vain tässä huoneessa.</translation>
+        <translation>Muuta näyttönimeä. Koskee vain tätä huonetta.</translation>
     </message>
     <message>
         <location line="+29"/>
