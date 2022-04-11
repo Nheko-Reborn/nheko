@@ -12,11 +12,11 @@ import im.nheko 1.0
 Rectangle {
     id: tile
 
-    property color background: Nheko.colors.window
-    property color importantText: Nheko.colors.text
-    property color unimportantText: Nheko.colors.buttonText
-    property color bubbleBackground: Nheko.colors.highlight
-    property color bubbleText: Nheko.colors.highlightedText
+    property color background: timelineRoot.palette.window
+    property color importantText: timelineRoot.palette.text
+    property color unimportantText: timelineRoot.palette.buttonText
+    property color bubbleBackground: timelineRoot.palette.highlight
+    property color bubbleText: timelineRoot.palette.highlightedText
     property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.3)
     required property string avatarUrl
     required property string title
@@ -38,11 +38,11 @@ Rectangle {
 
             PropertyChanges {
                 target: tile
-                background: Nheko.colors.dark
-                importantText: Nheko.colors.brightText
-                unimportantText: Nheko.colors.brightText
-                bubbleBackground: Nheko.colors.highlight
-                bubbleText: Nheko.colors.highlightedText
+                background: timelineRoot.palette.dark
+                importantText: timelineRoot.palette.brightText
+                unimportantText: timelineRoot.palette.brightText
+                bubbleBackground: timelineRoot.palette.highlight
+                bubbleText: timelineRoot.palette.highlightedText
             }
 
         },
@@ -52,11 +52,11 @@ Rectangle {
 
             PropertyChanges {
                 target: tile
-                background: Nheko.colors.highlight
-                importantText: Nheko.colors.highlightedText
-                unimportantText: Nheko.colors.highlightedText
-                bubbleBackground: Nheko.colors.highlightedText
-                bubbleText: Nheko.colors.highlight
+                background: timelineRoot.palette.highlight
+                importantText: timelineRoot.palette.highlightedText
+                unimportantText: timelineRoot.palette.highlightedText
+                bubbleBackground: timelineRoot.palette.highlightedText
+                bubbleText: timelineRoot.palette.highlight
             }
 
         }

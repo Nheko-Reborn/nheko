@@ -72,8 +72,8 @@ Item {
             z: 10
 
             background: Rectangle {
-                color: Nheko.colors.window
-                border.color: Nheko.colors.buttonText
+                color: timelineRoot.palette.window
+                border.color: timelineRoot.palette.buttonText
                 border.width: 1
                 radius: padding
             }
@@ -108,7 +108,7 @@ Item {
                     id: editButton
 
                     visible: !!row.model && row.model.isEditable
-                    buttonTextColor: Nheko.colors.buttonText
+                    buttonTextColor: timelineRoot.palette.buttonText
                     width: 16
                     hoverEnabled: true
                     image: ":/icons/icons/ui/edit.svg"
@@ -166,11 +166,6 @@ Item {
 
             }
 
-        }
-
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
         }
 
         Shortcut {
@@ -269,7 +264,7 @@ Item {
                     anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
                     visible: room && previousMessageDay !== day
                     text: room ? room.formatDateSeparator(timestamp) : ""
-                    color: Nheko.colors.text
+                    color: timelineRoot.palette.text
                     height: Math.round(fontMetrics.height * 1.4)
                     width: contentWidth * 1.2
                     horizontalAlignment: Text.AlignHCenter
@@ -277,7 +272,7 @@ Item {
 
                     background: Rectangle {
                         radius: parent.height / 2
-                        color: Nheko.colors.window
+                        color: timelineRoot.palette.window
                     }
 
                 }
@@ -318,7 +313,7 @@ Item {
                         contentItem: ElidedLabel {
                             id: userName_
                             fullText: userName
-                            color: TimelineManager.userColor(userId, Nheko.colors.base)
+                            color: TimelineManager.userColor(userId, timelineRoot.palette.base)
                             textFormat: Text.RichText
                             elideWidth: Math.min(userInfo.remainingWidth-Math.min(statusMsg.implicitWidth,userInfo.remainingWidth/3), userName_.fullTextWidth)
                         }
@@ -340,7 +335,7 @@ Item {
 
                     Label {
                         id: statusMsg
-                        color: Nheko.colors.buttonText
+                        color: timelineRoot.palette.buttonText
                         text: Presence.userStatus(userId)
                         textFormat: Text.PlainText
                         elide: Text.ElideRight
@@ -405,7 +400,7 @@ Item {
 
             anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
             width: chat.delegateMaxWidth
-            height: section.active ? section.height + timelinerow.height : timelinerow.height
+            height: section.active ? (section.item?.implicitHeight ?? 0) + timelinerow.height : timelinerow.height
 
             Loader {
                 id: section
@@ -462,7 +457,7 @@ Item {
                 timestamp: wrapper.timestamp
                 status: wrapper.status
                 relatedEventCacheBuster: wrapper.relatedEventCacheBuster
-                y: section.visible && section.active ? section.y + section.height : 0
+                y: section.item?.implicitHeight ?? 0
 
                 onHoveredChanged: {
                     if (!Settings.mobileMode && hovered) {
@@ -479,7 +474,7 @@ Item {
                     visible: true
                     z: 1
                     enabled: false
-                    color: Nheko.colors.highlight
+                    color: timelineRoot.palette.highlight
 
                     states: State {
                         name: "revealed"
@@ -537,7 +532,7 @@ Item {
             anchors.margins: Nheko.paddingLarge
             visible: chat.model && chat.model.paginationInProgress
             // hacky, but works
-            height: loadingSpinner.height + 2 * Nheko.paddingLarge
+            height: (loadingSpinner.item?.implicitHeight ?? 0) + 2 * Nheko.paddingLarge
 
             Spinner {
                 id: loadingSpinner
@@ -545,7 +540,7 @@ Item {
                 anchors.centerIn: parent
                 anchors.margins: Nheko.paddingLarge
                 running: chat.model && chat.model.paginationInProgress
-                foreground: Nheko.colors.mid
+                foreground: timelineRoot.palette.mid
                 z: 3
             }
 
@@ -771,9 +766,9 @@ Item {
         hoverEnabled: true
 
         background: Rectangle {
-            color: toEndButton.down ? Nheko.colors.highlight : Nheko.colors.button
+            color: toEndButton.down ? timelineRoot.palette.highlight : timelineRoot.palette.button
             opacity: enabled ? 1 : 0.3
-            border.color: toEndButton.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText
+            border.color: toEndButton.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.buttonText
             border.width: 1
             radius: toEndButton.radius
         }
@@ -794,7 +789,7 @@ Item {
             id: buttonImg
             anchors.fill: parent
             anchors.margins: Nheko.paddingMedium
-            source: "image://colorimage/:/icons/icons/ui/download.svg?" + (toEndButton.down ? Nheko.colors.highlightedText : Nheko.colors.buttonText)
+            source: "image://colorimage/:/icons/icons/ui/download.svg?" + (toEndButton.down ? timelineRoot.palette.highlightedText : timelineRoot.palette.buttonText)
             fillMode: Image.PreserveAspectFit
         }
 

@@ -17,7 +17,7 @@ Popup {
     Component.onCompleted: {
         frameRateCombo.currentIndex = frameRateCombo.find(Settings.screenShareFrameRate);
     }
-    palette: Nheko.colors
+    palette: timelineRoot.palette
 
     ColumnLayout {
         Label {
@@ -27,7 +27,7 @@ Popup {
             Layout.rightMargin: 8
             Layout.alignment: Qt.AlignLeft
             text: qsTr("Share desktop with %1?").arg(room.roomName)
-            color: Nheko.colors.windowText
+            color: timelineRoot.palette.windowText
         }
 
         RowLayout {
@@ -38,7 +38,7 @@ Popup {
             Label {
                 Layout.alignment: Qt.AlignLeft
                 text: qsTr("Window:")
-                color: Nheko.colors.windowText
+                color: timelineRoot.palette.windowText
             }
 
             ComboBox {
@@ -58,7 +58,7 @@ Popup {
             Label {
                 Layout.alignment: Qt.AlignLeft
                 text: qsTr("Frame rate:")
-                color: Nheko.colors.windowText
+                color: timelineRoot.palette.windowText
             }
 
             ComboBox {
@@ -156,8 +156,8 @@ Popup {
     }
 
     background: Rectangle {
-        color: Nheko.colors.window
-        border.color: Nheko.colors.windowText
+        color: timelineRoot.palette.window
+        border.color: timelineRoot.palette.windowText
     }
 
 }

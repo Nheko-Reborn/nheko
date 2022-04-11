@@ -13,9 +13,9 @@ Flow {
     id: reactionFlow
 
     // highlight colors for selfReactedEvent background
-    property real highlightHue: Nheko.colors.highlight.hslHue
-    property real highlightSat: Nheko.colors.highlight.hslSaturation
-    property real highlightLight: Nheko.colors.highlight.hslLightness
+    property real highlightHue: timelineRoot.palette.highlight.hslHue
+    property real highlightSat: timelineRoot.palette.highlight.hslSaturation
+    property real highlightLight: timelineRoot.palette.highlight.hslLightness
     property string eventId
     property alias reactions: repeater.model
 
@@ -74,7 +74,7 @@ Flow {
                         return textMetrics.elidedText;
                     }
                     font.family: Settings.emojiFont
-                    color: reaction.hovered ? Nheko.colors.highlight : Nheko.colors.text
+                    color: reaction.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.text
                     maximumLineCount: 1
                 }
 
@@ -83,7 +83,7 @@ Flow {
 
                     height: Math.floor(reactionCounter.implicitHeight * 1.4)
                     width: 1
-                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? Nheko.colors.highlight : Nheko.colors.text
+                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? timelineRoot.palette.highlight : timelineRoot.palette.text
                 }
 
                 Text {
@@ -92,7 +92,7 @@ Flow {
                     anchors.verticalCenter: divider.verticalCenter
                     text: modelData.count
                     font: reaction.font
-                    color: reaction.hovered ? Nheko.colors.highlight : Nheko.colors.text
+                    color: reaction.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.text
                 }
 
             }
@@ -101,8 +101,8 @@ Flow {
                 anchors.centerIn: parent
                 implicitWidth: reaction.implicitWidth
                 implicitHeight: reaction.implicitHeight
-                border.color: (reaction.hovered || modelData.selfReactedEvent !== '') ? Nheko.colors.highlight : Nheko.colors.text
-                color: modelData.selfReactedEvent !== '' ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.2) : Nheko.colors.window
+                border.color: (reaction.hovered || modelData.selfReactedEvent !== '') ? timelineRoot.palette.highlight : timelineRoot.palette.text
+                color: modelData.selfReactedEvent !== '' ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.2) : timelineRoot.palette.window
                 border.width: 1
                 radius: reaction.height / 2
             }

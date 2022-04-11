@@ -21,8 +21,8 @@ ApplicationWindow {
     width: 420
     minimumWidth: 150
     minimumHeight: 150
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    palette: timelineRoot.palette
+    color: timelineRoot.palette.window
     title: profile.isGlobalUserProfile ? qsTr("Global User Profile") : qsTr("Room User Profile")
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
@@ -45,11 +45,6 @@ ApplicationWindow {
         anchors.margins: 10
         footerPositioning: ListView.OverlayFooter
 
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
-            enabled: !Settings.mobileMode
-        }
 
         header: ColumnLayout {
             id: contentL
@@ -87,7 +82,7 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignHCenter
                 running: profile.isLoading
                 visible: profile.isLoading
-                foreground: Nheko.colors.mid
+                foreground: timelineRoot.palette.mid
             }
 
             Text {
@@ -135,7 +130,7 @@ ApplicationWindow {
                 readOnly: !isUsernameEditingAllowed
                 text: profile.displayName
                 font.pixelSize: 20
-                color: TimelineManager.userColor(profile.userid, Nheko.colors.window)
+                color: TimelineManager.userColor(profile.userid, timelineRoot.palette.window)
                 font.bold: true
                 Layout.alignment: Qt.AlignHCenter
                 Layout.maximumWidth: parent.width - (Nheko.paddingSmall * 2) - usernameChangeButton.anchors.leftMargin - (usernameChangeButton.width * 2)
@@ -300,7 +295,7 @@ ApplicationWindow {
                         Layout.alignment: Qt.AlignLeft
                         elide: Text.ElideRight
                         font.bold: true
-                        color: Nheko.colors.text
+                        color: timelineRoot.palette.text
                         text: deviceId
                     }
 
@@ -346,7 +341,7 @@ ApplicationWindow {
 
                         readOnly: !deviceNameRow.isEditingAllowed
                         text: deviceName
-                        color: Nheko.colors.text
+                        color: timelineRoot.palette.text
                         Layout.alignment: Qt.AlignLeft
                         Layout.fillWidth: true
                         selectByMouse: true
@@ -381,7 +376,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignLeft
                     elide: Text.ElideRight
-                    color: Nheko.colors.text
+                    color: timelineRoot.palette.text
                     text: qsTr("Last seen %1 from %2").arg(new Date(lastTs).toLocaleString(Locale.ShortFormat)).arg(lastIp ? lastIp : "???")
                 }
 
@@ -429,7 +424,7 @@ ApplicationWindow {
 
             background: Rectangle {
                 anchors.fill: parent
-                color: Nheko.colors.window
+                color: timelineRoot.palette.window
             }
 
         }

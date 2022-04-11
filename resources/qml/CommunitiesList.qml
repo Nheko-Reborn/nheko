@@ -26,12 +26,6 @@ Page {
         height: parent.height
         model: Communities.filtered()
 
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
-            enabled: !Settings.mobileMode
-        }
-
         Platform.Menu {
             id: communityContextMenu
 
@@ -52,11 +46,11 @@ Page {
         delegate: ItemDelegate {
             id: communityItem
 
-            property color backgroundColor: Nheko.colors.window
-            property color importantText: Nheko.colors.text
-            property color unimportantText: Nheko.colors.buttonText
-            property color bubbleBackground: Nheko.colors.highlight
-            property color bubbleText: Nheko.colors.highlightedText
+            property color backgroundColor: timelineRoot.palette.window
+            property color importantText: timelineRoot.palette.text
+            property color unimportantText: timelineRoot.palette.buttonText
+            property color bubbleBackground: timelineRoot.palette.highlight
+            property color bubbleText: timelineRoot.palette.highlightedText
 
             height: avatarSize + 2 * Nheko.paddingMedium
             width: ListView.view.width
@@ -73,11 +67,11 @@ Page {
 
                     PropertyChanges {
                         target: communityItem
-                        backgroundColor: Nheko.colors.dark
-                        importantText: Nheko.colors.brightText
-                        unimportantText: Nheko.colors.brightText
-                        bubbleBackground: Nheko.colors.highlight
-                        bubbleText: Nheko.colors.highlightedText
+                        backgroundColor: timelineRoot.palette.dark
+                        importantText: timelineRoot.palette.brightText
+                        unimportantText: timelineRoot.palette.brightText
+                        bubbleBackground: timelineRoot.palette.highlight
+                        bubbleText: timelineRoot.palette.highlightedText
                     }
 
                 },
@@ -87,11 +81,11 @@ Page {
 
                     PropertyChanges {
                         target: communityItem
-                        backgroundColor: Nheko.colors.highlight
-                        importantText: Nheko.colors.highlightedText
-                        unimportantText: Nheko.colors.highlightedText
-                        bubbleBackground: Nheko.colors.highlightedText
-                        bubbleText: Nheko.colors.highlight
+                        backgroundColor: timelineRoot.palette.highlight
+                        importantText: timelineRoot.palette.highlightedText
+                        unimportantText: timelineRoot.palette.highlightedText
+                        bubbleBackground: timelineRoot.palette.highlightedText
+                        bubbleText: timelineRoot.palette.highlight
                     }
 
                 }

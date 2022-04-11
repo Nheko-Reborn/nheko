@@ -11,7 +11,7 @@ import im.nheko 1.0
 Pane {
     property string title: qsTr("Successful Verification")
     background: Rectangle {
-        color: Nheko.colors.window
+        color: timelineRoot.palette.window
     }
 
     ColumnLayout {
@@ -25,7 +25,7 @@ Pane {
             Layout.fillWidth: true
             wrapMode: Text.Wrap
             text: qsTr("Verification successful! Both sides verified their devices!")
-            color: Nheko.colors.text
+            color: timelineRoot.palette.text
             verticalAlignment: Text.AlignVCenter
         }
 

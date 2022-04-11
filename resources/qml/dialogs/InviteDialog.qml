@@ -34,8 +34,8 @@ ApplicationWindow {
     title: qsTr("Invite users to %1").arg(plainRoomName)
     height: 380
     width: 340
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    palette: timelineRoot.palette
+    color: timelineRoot.palette.window
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     Shortcut {
@@ -56,7 +56,7 @@ ApplicationWindow {
         Label {
             text: qsTr("User ID to invite")
             Layout.fillWidth: true
-            color: Nheko.colors.text
+            color: timelineRoot.palette.text
         }
 
         RowLayout {
@@ -67,7 +67,7 @@ ApplicationWindow {
 
                 property bool isValidMxid: text.match("@.+?:.{3,}")
 
-                backgroundColor: Nheko.colors.window
+                backgroundColor: timelineRoot.palette.window
                 placeholderText: qsTr("@joe:matrix.org", "Example user id. The name 'joe' can be localized however you want.")
                 Layout.fillWidth: true
                 onAccepted: {
@@ -107,7 +107,7 @@ ApplicationWindow {
                 height: layout.implicitHeight + Nheko.paddingSmall * 2
                 onClicked: TimelineManager.openGlobalUserProfile(model.mxid)
                 background: Rectangle {
-                    color: del.hovered ? Nheko.colors.dark : inviteDialogRoot.color
+                    color: del.hovered ? timelineRoot.palette.dark : inviteDialogRoot.color
                 }
 
                 RowLayout {
@@ -137,7 +137,7 @@ ApplicationWindow {
 
                         Label {
                             text: model.mxid
-                            color: del.hovered ? Nheko.colors.brightText : Nheko.colors.buttonText
+                            color: del.hovered ? timelineRoot.palette.brightText : timelineRoot.palette.buttonText
                             font.pointSize: fontMetrics.font.pointSize * 0.9
                         }
 

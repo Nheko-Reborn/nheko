@@ -19,8 +19,8 @@ MatrixText {
     // table border-collapse doesn't seem to work
     text: "
     <style type=\"text/css\">
-    a { color:" + Nheko.colors.link + ";}
-    code { background-color: " + Nheko.colors.alternateBase + ";}
+    a { color:" + timelineRoot.palette.link + ";}
+    code { background-color: " + timelineRoot.palette.alternateBase + ";}
     table {
         border-width: 1px;
         border-collapse: collapse;
@@ -28,14 +28,14 @@ MatrixText {
     }
     table th,
     table td {
-        bgcolor: " + Nheko.colors.alternateBase + ";
+        bgcolor: " + timelineRoot.palette.alternateBase + ";
         border-collapse: collapse;
-        border: 1px solid " + Nheko.colors.text + ";
+        border: 1px solid " + timelineRoot.palette.text + ";
     }
     blockquote { margin-left: 1em; }
     </style>
-    " + formatted.replace(/<pre>/g, "<pre style='white-space: pre-wrap; background-color: " + Nheko.colors.alternateBase + "'>").replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
-    width: parent.width
+    " + formatted.replace(/<pre>/g, "<pre style='white-space: pre-wrap; background-color: " + timelineRoot.palette.alternateBase + "'>").replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
+    width: parent?.width
     height: isReply ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : implicitHeight
     clip: isReply
     selectByMouse: !Settings.mobileMode && !isReply

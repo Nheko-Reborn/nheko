@@ -19,7 +19,7 @@ Rectangle {
     width: parent.width? parent.width : 0
     implicitWidth: encryptedText.implicitWidth+24+Nheko.paddingMedium*3 // Column doesn't provide a useful implicitWidth, should be replaced by ColumnLayout
     height: contents.implicitHeight + Nheko.paddingMedium * 2
-    color: Nheko.colors.alternateBase
+    color: timelineRoot.palette.alternateBase
 
     RowLayout {
         id: contents
@@ -59,12 +59,12 @@ Rectangle {
                         return qsTr("Unknown decryption error");
                     }
                 }
-                color: Nheko.colors.text
+                color: timelineRoot.palette.text
                 width: parent.width
             }
 
             Button {
-                palette: Nheko.colors
+                palette: timelineRoot.palette
                 visible: encryptionError == Olm.MissingSession || encryptionError == Olm.MissingSessionIndex
                 text: qsTr("Request key")
                 onClicked: room.requestKeyForEvent(eventId)

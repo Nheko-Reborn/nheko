@@ -19,7 +19,7 @@ TextEdit {
     selectByMouse: !Settings.mobileMode
     // this always has to be enabled, otherwise you can't click links anymore!
     //enabled: selectByMouse
-    color: Nheko.colors.text
+    color: timelineRoot.palette.text
     onLinkActivated: Nheko.openLink(link)
     ToolTip.visible: hoveredLink || false
     ToolTip.text: hoveredLink

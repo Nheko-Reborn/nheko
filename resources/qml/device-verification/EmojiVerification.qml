@@ -11,7 +11,7 @@ import im.nheko 1.0
 Pane {
     property string title: qsTr("Verification Code")
     background: Rectangle {
-        color: Nheko.colors.window
+        color: timelineRoot.palette.window
     }
 
     ColumnLayout {
@@ -23,7 +23,7 @@ Pane {
             Layout.fillWidth: true
             wrapMode: Text.Wrap
             text: qsTr("Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press 'They do not match!' to abort verification!")
-            color: Nheko.colors.text
+            color: timelineRoot.palette.text
             verticalAlignment: Text.AlignVCenter
         }
 
@@ -379,13 +379,13 @@ Pane {
                             text: col.emoji.emoji
                             font.pixelSize: Qt.application.font.pixelSize * 2
                             font.family: Settings.emojiFont
-                            color: Nheko.colors.text
+                            color: timelineRoot.palette.text
                         }
 
                         Label {
                             Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
                             text: col.emoji.description
-                            color: Nheko.colors.text
+                            color: timelineRoot.palette.text
                         }
 
                     }

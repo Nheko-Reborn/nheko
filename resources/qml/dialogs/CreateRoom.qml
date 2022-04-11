@@ -62,7 +62,7 @@ ApplicationWindow {
             Label {
                 Layout.preferredWidth: implicitWidth
                 text: qsTr("#")
-                color: Nheko.colors.text
+                color: timelineRoot.palette.text
             }
             MatrixTextField {
                 id: newRoomAlias
@@ -73,14 +73,14 @@ ApplicationWindow {
                 Layout.preferredWidth: implicitWidth
                 property string userName: userInfoGrid.profile.userid
                 text: userName.substring(userName.indexOf(":"))
-                color: Nheko.colors.text
+                color: timelineRoot.palette.text
             }
         }
         Label {
             Layout.preferredWidth: implicitWidth
             Layout.alignment: Qt.AlignLeft
             text: qsTr("Public")
-            color: Nheko.colors.text
+            color: timelineRoot.palette.text
             HoverHandler {
                 id: privateHover
             }
@@ -98,7 +98,7 @@ ApplicationWindow {
             Layout.preferredWidth: implicitWidth
             Layout.alignment: Qt.AlignLeft
             text: qsTr("Trusted")
-            color: Nheko.colors.text
+            color: timelineRoot.palette.text
             HoverHandler {
                 id: trustedHover
             }
@@ -117,7 +117,7 @@ ApplicationWindow {
             Layout.preferredWidth: implicitWidth
             Layout.alignment: Qt.AlignLeft
             text: qsTr("Encryption")
-            color: Nheko.colors.text
+            color: timelineRoot.palette.text
             HoverHandler {
                 id: encryptionHover
             }

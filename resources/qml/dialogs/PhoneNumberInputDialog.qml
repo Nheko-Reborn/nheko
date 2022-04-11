@@ -33,7 +33,7 @@ ApplicationWindow {
             id: promptLabel
 
             Layout.columnSpan: 2
-            color: Nheko.colors.text
+            color: timelineRoot.palette.text
         }
 
         ComboBox {

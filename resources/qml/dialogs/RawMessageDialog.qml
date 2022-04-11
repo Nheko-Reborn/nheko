@@ -14,8 +14,8 @@ ApplicationWindow {
 
     height: 420
     width: 420
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    palette: timelineRoot.palette
+    color: timelineRoot.palette.window
     flags: Qt.Tool | Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     Shortcut {
@@ -26,21 +26,21 @@ ApplicationWindow {
     ScrollView {
         anchors.margins: Nheko.paddingMedium
         anchors.fill: parent
-        palette: Nheko.colors
+        palette: timelineRoot.palette
         padding: Nheko.paddingMedium
 
         TextArea {
             id: rawMessageView
 
             font: Nheko.monospaceFont()
-            color: Nheko.colors.text
+            color: timelineRoot.palette.text
             readOnly: true
             textFormat: Text.PlainText
 
             anchors.fill: parent
 
             background: Rectangle {
-                color: Nheko.colors.base
+                color: timelineRoot.palette.base
             }
 
         }

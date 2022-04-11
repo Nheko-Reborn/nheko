@@ -23,8 +23,8 @@ ApplicationWindow {
     title: qsTr("Editing image pack")
     height: 600
     width: 600
-    palette: Nheko.colors
-    color: Nheko.colors.base
+    palette: timelineRoot.palette
+    color: timelineRoot.palette.base
     modality: Qt.WindowModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
@@ -51,11 +51,6 @@ ApplicationWindow {
 
                 model: imagePack
 
-                ScrollHelper {
-                    flickable: parent
-                    anchors.fill: parent
-                    enabled: !Settings.mobileMode
-                }
 
                 header: AvatarListTile {
                     title: imagePack.packname
@@ -74,13 +69,13 @@ ApplicationWindow {
                         anchors.verticalCenter: parent.verticalCenter
                         height: parent.height - Nheko.paddingSmall * 2
                         width: 3
-                        color: Nheko.colors.highlight
+                        color: timelineRoot.palette.highlight
                     }
 
                 }
 
                 footer: Button {
-                    palette: Nheko.colors
+                    palette: timelineRoot.palette
                     onClicked: addFilesDialog.open()
                     width: ListView.view.width
                     text: qsTr("Add images")
@@ -101,11 +96,11 @@ ApplicationWindow {
                 delegate: AvatarListTile {
                     id: packItem
 
-                    property color background: Nheko.colors.window
-                    property color importantText: Nheko.colors.text
-                    property color unimportantText: Nheko.colors.buttonText
-                    property color bubbleBackground: Nheko.colors.highlight
-                    property color bubbleText: Nheko.colors.highlightedText
+                    property color background: timelineRoot.palette.window
+                    property color importantText: timelineRoot.palette.text
+                    property color unimportantText: timelineRoot.palette.buttonText
+                    property color bubbleBackground: timelineRoot.palette.highlight
+                    property color bubbleText: timelineRoot.palette.highlightedText
                     required property string shortCode
                     required property string url
                     required property string body
@@ -130,7 +125,7 @@ ApplicationWindow {
             id: packinfoC
 
             Rectangle {
-                color: Nheko.colors.window
+                color: timelineRoot.palette.window
 
                 GridLayout {
                     anchors.fill: parent

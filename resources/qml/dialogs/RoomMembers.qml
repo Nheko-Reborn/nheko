@@ -21,8 +21,8 @@ ApplicationWindow {
     height: 650
     width: 420
     minimumHeight: 420
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    palette: timelineRoot.palette
+    color: timelineRoot.palette.window
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     Shortcut {
@@ -95,7 +95,7 @@ ApplicationWindow {
         }
 
         ScrollView {
-            palette: Nheko.colors
+            palette: timelineRoot.palette
             padding: Nheko.paddingMedium
             ScrollBar.horizontal.visible: false
             Layout.fillHeight: true
@@ -109,11 +109,6 @@ ApplicationWindow {
                 boundsBehavior: Flickable.StopAtBounds
                 model: members
 
-                ScrollHelper {
-                    flickable: parent
-                    anchors.fill: parent
-                    enabled: !Settings.mobileMode
-                }
 
                 delegate: ItemDelegate {
                     id: del
@@ -124,7 +119,7 @@ ApplicationWindow {
                     height: memberLayout.implicitHeight + Nheko.paddingSmall * 2
                     hoverEnabled: true
                     background: Rectangle {
-                        color: del.hovered ? Nheko.colors.dark : roomMembersRoot.color
+                        color: del.hovered ? timelineRoot.palette.dark : roomMembersRoot.color
                     }
 
                     RowLayout {
@@ -157,7 +152,7 @@ ApplicationWindow {
 
                             ElidedLabel {
                                 fullText: model.mxid
-                                color: del.hovered ? Nheko.colors.brightText : Nheko.colors.buttonText
+                                color: del.hovered ? timelineRoot.palette.brightText : timelineRoot.palette.buttonText
                                 font.pixelSize: Math.ceil(fontMetrics.font.pixelSize * 0.9)
                                 elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
                             }

@@ -17,7 +17,7 @@ Item {
         id: warningRect
 
         visible: (room && room.permissions.canPingRoom() && room.input.containsAtRoom)
-        color: Nheko.colors.base
+        color: timelineRoot.palette.base
         anchors.fill: parent
         z: 3
 

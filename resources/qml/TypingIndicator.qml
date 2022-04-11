@@ -16,7 +16,7 @@ Item {
         id: typingRect
 
         visible: (room && room.typingUsers.length > 0)
-        color: Nheko.colors.base
+        color: timelineRoot.palette.base
         anchors.fill: parent
         z: 3
 
@@ -28,8 +28,8 @@ Item {
             anchors.right: parent.right
             anchors.rightMargin: 10
             anchors.bottom: parent.bottom
-            color: Nheko.colors.text
-            text: room ? room.formatTypingUsers(room.typingUsers, Nheko.colors.base) : ""
+            color: timelineRoot.palette.text
+            text: room ? room.formatTypingUsers(room.typingUsers, timelineRoot.palette.base) : ""
             textFormat: Text.RichText
         }
 

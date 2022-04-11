@@ -19,8 +19,8 @@ ApplicationWindow {
     width: 340
     minimumHeight: 380
     minimumWidth: headerTitle.width + 2 * Nheko.paddingMedium
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    palette: timelineRoot.palette
+    color: timelineRoot.palette.window
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     Shortcut {
@@ -36,14 +36,14 @@ ApplicationWindow {
         Label {
             id: headerTitle
 
-            color: Nheko.colors.text
+            color: timelineRoot.palette.text
             Layout.alignment: Qt.AlignCenter
             text: qsTr("Read receipts")
             font.pointSize: fontMetrics.font.pointSize * 1.5
         }
 
         ScrollView {
-            palette: Nheko.colors
+            palette: timelineRoot.palette
             padding: Nheko.paddingMedium
             ScrollBar.horizontal.visible: false
             Layout.fillHeight: true
@@ -68,7 +68,7 @@ ApplicationWindow {
                     ToolTip.visible: hovered
                     ToolTip.text: model.mxid
                     background: Rectangle {
-                        color: del.hovered ? Nheko.colors.dark : readReceiptsRoot.color
+                        color: del.hovered ? timelineRoot.palette.dark : readReceiptsRoot.color
                     }
 
                     RowLayout {
@@ -92,13 +92,13 @@ ApplicationWindow {
 
                             Label {
                                 text: model.displayName
-                                color: TimelineManager.userColor(model ? model.mxid : "", Nheko.colors.window)
+                                color: TimelineManager.userColor(model ? model.mxid : "", timelineRoot.palette.window)
                                 font.pointSize: fontMetrics.font.pointSize
                             }
 
                             Label {
                                 text: model.timestamp
-                                color: Nheko.colors.buttonText
+                                color: timelineRoot.palette.buttonText
                                 font.pointSize: fontMetrics.font.pointSize * 0.9
                             }
 

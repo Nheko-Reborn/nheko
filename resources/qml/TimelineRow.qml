@@ -52,7 +52,7 @@ AbstractButton {
     height: row.height+(reactionRow.height > 0 ? reactionRow.height-2 : 0 )
 
     Rectangle {
-        color: (Settings.messageHoverHighlight && hovered) ? Nheko.colors.alternateBase : "transparent"
+        color: (Settings.messageHoverHighlight && hovered) ? timelineRoot.palette.alternateBase : "transparent"
         anchors.fill: parent
         // this looks better without margins
         TapHandler {
@@ -111,8 +111,8 @@ AbstractButton {
         width: Settings.bubbles? Math.min(maxWidth,Math.max(reply.implicitWidth+8,contentItem.implicitWidth+metadata.width+20)) : maxWidth
         height: msg.height+msg.anchors.margins*2
 
-        property color userColor: TimelineManager.userColor(userId, Nheko.colors.base)
-        property color bgColor: Nheko.colors.base
+        property color userColor: TimelineManager.userColor(userId, timelineRoot.palette.base)
+        property color bgColor: timelineRoot.palette.base
         color: (Settings.bubbles && !isStateEvent) ? Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) : "#00000000"
         radius: 4
 
@@ -144,7 +144,7 @@ AbstractButton {
                     return replyTo != "" ? room.dataById(replyTo, role, r.eventId) : null;
                 }
                 visible: replyTo
-                userColor: r.relatedEventCacheBuster, TimelineManager.userColor(userId, Nheko.colors.base)
+                userColor: r.relatedEventCacheBuster, TimelineManager.userColor(userId, timelineRoot.palette.base)
                 blurhash: r.relatedEventCacheBuster, fromModel(Room.Blurhash) ?? ""
                 body: r.relatedEventCacheBuster, fromModel(Room.Body) ?? ""
                 formattedBody: r.relatedEventCacheBuster, fromModel(Room.FormattedBody) ?? ""
@@ -161,11 +161,11 @@ AbstractButton {
                 userId: r.relatedEventCacheBuster, fromModel(Room.UserId) ?? ""
                 userName: r.relatedEventCacheBuster, fromModel(Room.UserName) ?? ""
                 thumbnailUrl: r.relatedEventCacheBuster, fromModel(Room.ThumbnailUrl) ?? ""
-                duration: r.relatedEventCacheBuster, fromModel(Room.Duration) ?? ""
+                duration: r.relatedEventCacheBuster, fromModel(Room.Duration) ?? 0
                 roomTopic: r.relatedEventCacheBuster, fromModel(Room.RoomTopic) ?? ""
                 roomName: r.relatedEventCacheBuster, fromModel(Room.RoomName) ?? ""
                 callType: r.relatedEventCacheBuster, fromModel(Room.CallType) ?? ""
-                encryptionError: r.relatedEventCacheBuster, fromModel(Room.EncryptionError) ?? ""
+                encryptionError: r.relatedEventCacheBuster, fromModel(Room.EncryptionError) ?? 0
                 relatedEventCacheBuster: r.relatedEventCacheBuster, fromModel(Room.RelatedEventCacheBuster) ?? 0
             }
 
@@ -235,7 +235,7 @@ AbstractButton {
                     width: parent.iconSize
                     sourceSize.width: parent.iconSize * Screen.devicePixelRatio
                     sourceSize.height: parent.iconSize * Screen.devicePixelRatio
-                    source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == chat.model.edit) ? Nheko.colors.highlight : Nheko.colors.buttonText)
+                    source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == chat.model.edit) ? timelineRoot.palette.highlight : timelineRoot.palette.buttonText)
                     ToolTip.visible: editHovered.hovered
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Edited")
@@ -264,7 +264,7 @@ AbstractButton {
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
                     Layout.preferredWidth: implicitWidth
                     text: timestamp.toLocaleTimeString(Locale.ShortFormat)
-                    color: Nheko.inactiveColors.text
+                    color: timelineRoot.palette.inactive.text
                     ToolTip.visible: ma.hovered
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: Qt.formatDateTime(timestamp, Qt.DefaultLocaleLongDate)

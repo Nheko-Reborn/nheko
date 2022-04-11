@@ -11,7 +11,7 @@ import im.nheko 1.0
 Pane {
     property string title: flow.sender ? qsTr("Send Verification Request") : qsTr("Received Verification Request")
     background: Rectangle {
-        color: Nheko.colors.window
+        color: timelineRoot.palette.window
     }
 
     ColumnLayout {
@@ -42,7 +42,7 @@ Pane {
                         return qsTr("Your device (%1) has requested to be verified.").arg(flow.deviceId);
                 }
             }
-            color: Nheko.colors.text
+            color: timelineRoot.palette.text
             verticalAlignment: Text.AlignVCenter
         }
 

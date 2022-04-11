@@ -92,7 +92,7 @@ Item {
 
             NoticeMessage {
                 formatted: TimelineManager.escapeEmoji(d.userName) + " " + d.formattedBody
-                color: TimelineManager.userColor(d.userId, Nheko.colors.base)
+                color: TimelineManager.userColor(d.userId, timelineRoot.palette.base)
                 body: d.body
                 isOnlyEmoji: d.isOnlyEmoji
                 isReply: d.isReply
@@ -446,7 +446,7 @@ Item {
             roleValue: MtxEvent.Member
 
             ColumnLayout {
-                width: parent.width
+                width: parent?.width
 
                 NoticeMessage {
                     body: formatted
@@ -459,7 +459,7 @@ Item {
 
                 Button {
                     visible: d.relatedEventCacheBuster, room.showAcceptKnockButton(d.eventId)
-                    palette: Nheko.colors
+                    palette: timelineRoot.palette
                     text: qsTr("Allow them in")
                     onClicked: room.acceptKnock(eventId)
                 }

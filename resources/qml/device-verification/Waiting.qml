@@ -12,7 +12,7 @@ import im.nheko 1.0
 Pane {
     property string title: qsTr("Waiting for other party…")
     background: Rectangle {
-        color: Nheko.colors.window
+        color: timelineRoot.palette.window
     }
 
     ColumnLayout {
@@ -35,14 +35,14 @@ Pane {
                     return qsTr("Waiting for other side to complete the verification process.");
                 }
             }
-            color: Nheko.colors.text
+            color: timelineRoot.palette.text
             verticalAlignment: Text.AlignVCenter
         }
 
         Item { Layout.fillHeight: true; }
         Spinner {
             Layout.alignment: Qt.AlignHCenter
-            foreground: Nheko.colors.mid
+            foreground: timelineRoot.palette.mid
         }
         Item { Layout.fillHeight: true; }
 

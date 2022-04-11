@@ -48,7 +48,7 @@ Item {
     Rectangle {
         id: videoContainer
 
-        color: type == MtxEvent.VideoMessage ? Nheko.colors.window : "transparent"
+        color: type == MtxEvent.VideoMessage ? timelineRoot.palette.window : "transparent"
         width: parent.width
         height: parent.height - fileInfoLabel.height
 
@@ -101,10 +101,10 @@ Item {
         text: body + " [" + filesize + "]"
         textFormat: Text.RichText
         elide: Text.ElideRight
-        color: Nheko.colors.text
+        color: timelineRoot.palette.text
 
         background: Rectangle {
-            color: Nheko.colors.base
+            color: timelineRoot.palette.base
         }
 
     }

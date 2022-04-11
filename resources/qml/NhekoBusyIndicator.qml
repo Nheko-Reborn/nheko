@@ -40,7 +40,7 @@ BusyIndicator {
                     implicitWidth: radius * 2
                     implicitHeight: radius * 2
                     radius: item.height / 6
-                    color: Nheko.colors.text
+                    color: timelineRoot.palette.text
                     opacity: (index + 2) / (repeater.count + 2)
                     transform: [
                         Translate {

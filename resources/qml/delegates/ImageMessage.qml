@@ -23,7 +23,7 @@ AbstractButton {
     property int tempWidth: originalWidth < 1? 400: originalWidth
 
     implicitWidth: Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1))
-    width: Math.min(parent.width,implicitWidth)
+    width: Math.min(parent?.width ?? implicitWidth,implicitWidth)
     height: width*proportionalHeight
     hoverEnabled: true
 
@@ -35,7 +35,7 @@ AbstractButton {
 
         anchors.fill: parent
         visible: img.status != Image.Ready
-        source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + Nheko.colors.buttonText)
+        source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + timelineRoot.palette.buttonText)
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         sourceSize.width: parent.width * Screen.devicePixelRatio
@@ -81,7 +81,7 @@ AbstractButton {
             width: parent.width
             implicitHeight: imgcaption.implicitHeight
             anchors.bottom: overlay.bottom
-            color: Nheko.colors.window
+            color: timelineRoot.palette.window
             opacity: 0.75
         }
 
@@ -94,7 +94,7 @@ AbstractButton {
             verticalAlignment: Text.AlignVCenter
             // See this MSC: https://github.com/matrix-org/matrix-doc/pull/2530
             text: filename ? filename : body
-            color: Nheko.colors.text
+            color: timelineRoot.palette.text
         }
 
     }

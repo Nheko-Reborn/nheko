@@ -31,7 +31,7 @@ Pane {
 
     padding: 0
     background: Rectangle {
-        color: Nheko.colors.window
+        color: timelineRoot.palette.window
     }
 
     TapHandler {
@@ -114,7 +114,7 @@ Pane {
                 Layout.fillWidth: true
                 Layout.column: 2
                 Layout.row: 0
-                color: Nheko.colors.text
+                color: timelineRoot.palette.text
                 font.pointSize: fontMetrics.font.pointSize * 1.1
                 text: roomName
                 maximumLineCount: 1
@@ -257,7 +257,7 @@ Pane {
                 visible: !!room && room.pinnedMessages.length > 0 && !Settings.hiddenPins.includes(roomId)
                 clip: true
 
-                palette: Nheko.colors
+                palette: timelineRoot.palette
                 ScrollBar.horizontal.visible: false
 
                 ListView {
@@ -275,7 +275,7 @@ Pane {
                             Layout.fillWidth: true
                             Layout.preferredHeight: height
 
-                            userColor: TimelineManager.userColor(e.userId, Nheko.colors.window)
+                            userColor: TimelineManager.userColor(e.userId, timelineRoot.palette.window)
                             blurhash: e.blurhash ?? ""
                             body: e.body ?? ""
                             formattedBody: e.formattedBody ?? ""
@@ -310,12 +310,6 @@ Pane {
                         }
                     }
 
-
-                    ScrollHelper {
-                        flickable: parent
-                        anchors.fill: parent
-                        enabled: !Settings.mobileMode
-                    }
                 }
             }
 
@@ -332,7 +326,7 @@ Pane {
                 visible: !!room && room.widgetLinks.length > 0 && !Settings.hiddenWidgets.includes(roomId)
                 clip: true
 
-                palette: Nheko.colors
+                palette: timelineRoot.palette
                 ScrollBar.horizontal.visible: false
 
                 ListView {
@@ -342,16 +336,10 @@ Pane {
                     delegate: MatrixText {
                         required property var modelData
 
-                        color: Nheko.colors.text
+                        color: timelineRoot.palette.text
                         text: modelData
                     }
 
-
-                    ScrollHelper {
-                        flickable: parent
-                        anchors.fill: parent
-                        enabled: !Settings.mobileMode
-                    }
                 }
             }
         }

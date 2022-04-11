@@ -25,7 +25,7 @@ AbstractButton {
     background: Rectangle {
         id: bg
         radius: Settings.avatarCircles ? height / 2 : height / 8
-        color: Nheko.colors.alternateBase
+        color: timelineRoot.palette.alternateBase
     }
 
     Label {
@@ -40,7 +40,7 @@ AbstractButton {
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         visible: img.status != Image.Ready && !Settings.useIdenticon
-        color: Nheko.colors.text
+        color: timelineRoot.palette.text
     }
 
     Image {
@@ -104,7 +104,7 @@ AbstractButton {
     }
 
     Ripple {
-        color: Qt.rgba(Nheko.colors.alternateBase.r, Nheko.colors.alternateBase.g, Nheko.colors.alternateBase.b, 0.5)
+        color: Qt.rgba(timelineRoot.palette.alternateBase.r, timelineRoot.palette.alternateBase.g, timelineRoot.palette.alternateBase.b, 0.5)
     }
 
 }

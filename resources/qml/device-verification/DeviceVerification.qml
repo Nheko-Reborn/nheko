@@ -16,8 +16,8 @@ ApplicationWindow {
     onClosing: VerificationManager.removeVerificationFlow(flow)
     title: stack.currentItem.title_
     modality: Qt.NonModal
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    palette: timelineRoot.palette
+    color: timelineRoot.palette.window
     minimumHeight: stack.implicitHeight
     width: stack.implicitWidth
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint

@@ -28,7 +28,7 @@ Item {
         Rectangle {
             id: button
 
-            color: Nheko.colors.light
+            color: timelineRoot.palette.light
             radius: 22
             height: 44
             width: 44
@@ -68,7 +68,7 @@ Item {
                 text: filename
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
-                color: Nheko.colors.text
+                color: timelineRoot.palette.text
             }
 
             Text {
@@ -78,7 +78,7 @@ Item {
                 text: filesize
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
-                color: Nheko.colors.text
+                color: timelineRoot.palette.text
             }
 
         }
@@ -86,7 +86,7 @@ Item {
     }
 
     Rectangle {
-        color: Nheko.colors.alternateBase
+        color: timelineRoot.palette.alternateBase
         z: -1
         radius: 10
         anchors.fill: parent

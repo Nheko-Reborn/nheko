@@ -18,9 +18,9 @@ Menu {
     property string roomid
     property alias model: gridView.model
     property var textArea
-    property real highlightHue: Nheko.colors.highlight.hslHue
-    property real highlightSat: Nheko.colors.highlight.hslSaturation
-    property real highlightLight: Nheko.colors.highlight.hslLightness
+    property real highlightHue: timelineRoot.palette.highlight.hslHue
+    property real highlightSat: timelineRoot.palette.highlight.hslSaturation
+    property real highlightLight: timelineRoot.palette.highlight.hslLightness
     readonly property int stickerDim: 128
     readonly property int stickerDimPad: 128 + Nheko.paddingSmall
     readonly property int stickersPerRow: 3
@@ -42,7 +42,7 @@ Menu {
     width: stickersPerRow * stickerDimPad + 20
 
     Rectangle {
-        color: Nheko.colors.window
+        color: timelineRoot.palette.window
         height: columnView.implicitHeight + 4
         width: stickersPerRow * stickerDimPad + 20
 
@@ -63,10 +63,10 @@ Menu {
 
                 Layout.topMargin: 3
                 Layout.preferredWidth: stickersPerRow * stickerDimPad + 20 - 6
-                palette: Nheko.colors
+                palette: timelineRoot.palette
                 background: null
-                placeholderTextColor: Nheko.colors.buttonText
-                color: Nheko.colors.text
+                placeholderTextColor: timelineRoot.palette.buttonText
+                color: timelineRoot.palette.text
                 placeholderText: qsTr("Search")
                 selectByMouse: true
                 rightPadding: clearSearch.width
@@ -89,7 +89,7 @@ Menu {
                     id: clearSearch
 
                     visible: emojiSearch.text !== ''
-                    icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
+                    icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.buttonText)
                     focusPolicy: Qt.NoFocus
                     onClicked: emojiSearch.clear()
                     hoverEnabled: true
@@ -104,7 +104,7 @@ Menu {
                     Image {
                         height: parent.height - 2 * Nheko.paddingSmall
                         width: height
-                        source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
+                        source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.buttonText)
 
                         anchors {
                             verticalCenter: parent.verticalCenter
@@ -133,11 +133,6 @@ Menu {
                 currentIndex: -1 // prevent sorting from stealing focus
                 cacheBuffer: 500
 
-                ScrollHelper {
-                    flickable: parent
-                    anchors.fill: parent
-                    enabled: !Settings.mobileMode
-                }
 
                 // Individual emoji
                 delegate: AbstractButton {
@@ -162,7 +157,7 @@ Menu {
 
                     background: Rectangle {
                         anchors.fill: parent
-                        color: hovered ? Nheko.colors.highlight : 'transparent'
+                        color: hovered ? timelineRoot.palette.highlight : 'transparent'
                         radius: 5
                     }
 

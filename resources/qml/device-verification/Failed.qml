@@ -11,7 +11,7 @@ import im.nheko 1.0
 Pane {
     property string title: qsTr("Verification failed")
     background: Rectangle {
-        color: Nheko.colors.window
+        color: timelineRoot.palette.window
     }
 
     ColumnLayout {
@@ -42,7 +42,7 @@ Pane {
                     return qsTr("Unknown verification error.");
                 }
             }
-            color: Nheko.colors.text
+            color: timelineRoot.palette.text
             verticalAlignment: Text.AlignVCenter
         }
 

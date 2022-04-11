@@ -17,12 +17,12 @@ Rectangle {
 
     property int collapsePoint: 800
     property bool collapsed: width < collapsePoint
-    color: Nheko.colors.window
+    color: timelineRoot.palette.window
 
     ScrollView {
         id: scroll
 
-        palette: Nheko.colors
+        palette: timelineRoot.palette
         ScrollBar.horizontal.visible: false
         anchors.fill: parent
         anchors.topMargin: (collapsed? backButton.height : 0)+Nheko.paddingLarge
@@ -52,7 +52,7 @@ Rectangle {
                     Label {
                         Layout.alignment: Qt.AlignLeft
                         Layout.fillWidth: true
-                        color: Nheko.colors.text
+                        color: timelineRoot.palette.text
                         text: model.name
                         //Layout.column: 0
                         Layout.columnSpan: (model.type == UserSettingsModel.SectionTitle && !userSettingsDialog.collapsed) ? 2 : 1
@@ -160,7 +160,7 @@ Rectangle {
                         DelegateChoice {
                             roleValue: UserSettingsModel.ReadOnlyText
                             TextEdit {
-                                color: Nheko.colors.text
+                                color: timelineRoot.palette.text
                                 text: model.value
                                 readOnly: true
                                 selectByMouse: !Settings.mobileMode
@@ -177,7 +177,7 @@ Rectangle {
                                     anchors.top: parent.top
                                     anchors.left: parent.left
                                     anchors.right: parent.right
-                                    color: Nheko.colors.buttonText
+                                    color: timelineRoot.palette.buttonText
                                     height: 1
                                 }
                             }

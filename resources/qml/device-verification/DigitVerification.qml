@@ -11,7 +11,7 @@ import im.nheko 1.0
 Pane {
     property string title: qsTr("Verification Code")
     background: Rectangle {
-        color: Nheko.colors.window
+        color: timelineRoot.palette.window
     }
 
     ColumnLayout {
@@ -23,7 +23,7 @@ Pane {
             Layout.fillWidth: true
             wrapMode: Text.Wrap
             text: qsTr("Please verify the following digits. You should see the same numbers on both sides. If they differ, please press 'They do not match!' to abort verification!")
-            color: Nheko.colors.text
+            color: timelineRoot.palette.text
             verticalAlignment: Text.AlignVCenter
         }
 
@@ -34,19 +34,19 @@ Pane {
             Label {
                 font.pixelSize: Qt.application.font.pixelSize * 2
                 text: flow.sasList[0]
-                color: Nheko.colors.text
+                color: timelineRoot.palette.text
             }
 
             Label {
                 font.pixelSize: Qt.application.font.pixelSize * 2
                 text: flow.sasList[1]
-                color: Nheko.colors.text
+                color: timelineRoot.palette.text
             }
 
             Label {
                 font.pixelSize: Qt.application.font.pixelSize * 2
                 text: flow.sasList[2]
-                color: Nheko.colors.text
+                color: timelineRoot.palette.text
             }
 
         }

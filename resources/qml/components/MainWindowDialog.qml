@@ -33,7 +33,7 @@ Dialog {
     ]
 
     background: Rectangle {
-        color: Nheko.colors.window
+        color: timelineRoot.palette.window
         border.color: Nheko.theme.separator
         border.width: 1
         radius: Nheko.paddingSmall

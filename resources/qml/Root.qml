@@ -35,8 +35,8 @@ Pane {
         alternateBase: "#2d3139"
         highlight: "#38a3d8"
         highlightedText: "#f4f5f8"
-        toolTipBase: base
-        toolTipText: text
+        toolTipBase: timelineRoot.palette.base
+        toolTipText: timelineRoot.palette.text
         link: "#38a3d8"
         buttonText: "#828284"
 

@@ -93,11 +93,6 @@ Control {
         // that until we find something better.  Put is all together and you have the formula below!
         implicitHeight: Math.min(contentHeight, 6*rowSpacing + 7*(popup.avatarHeight + 2*rowMargin))
         clip: true 
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
-            enabled: !Settings.mobileMode
-        }
 
         Timer {
             id: deadTimer
@@ -117,7 +112,7 @@ Control {
         delegate: Rectangle {
             property variant modelData: model
 
-            color: model.index == popup.currentIndex ? Nheko.colors.highlight : Nheko.colors.base
+            color: model.index == popup.currentIndex ? timelineRoot.palette.highlight : timelineRoot.palette.base
             height: chooser.child.implicitHeight + 2 * popup.rowMargin
             implicitWidth: fullWidth ? ListView.view.width : chooser.child.implicitWidth + 4
 
@@ -134,7 +129,7 @@ Control {
                 }
             }
             Ripple {
-                color: Qt.rgba(Nheko.colors.base.r, Nheko.colors.base.g, Nheko.colors.base.b, 0.5)
+                color: Qt.rgba(timelineRoot.palette.base.r, timelineRoot.palette.base.g, timelineRoot.palette.base.b, 0.5)
             }
 
             DelegateChooser {
@@ -165,12 +160,12 @@ Control {
 
                         Label {
                             text: model.displayName
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? timelineRoot.palette.highlightedText : timelineRoot.palette.text
                         }
 
                         Label {
                             text: "(" + model.userid + ")"
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
+                            color: model.index == popup.currentIndex ? timelineRoot.palette.highlightedText : timelineRoot.palette.buttonText
                         }
 
                     }
@@ -188,13 +183,13 @@ Control {
 
                         Label {
                             text: model.unicode
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? timelineRoot.palette.highlightedText : timelineRoot.palette.text
                             font: Settings.emojiFont
                         }
 
                         Label {
                             text: model.shortName
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? timelineRoot.palette.highlightedText : timelineRoot.palette.text
                         }
 
                     }
@@ -222,12 +217,12 @@ Control {
 
                         Label {
                             text: model.shortcode
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? timelineRoot.palette.highlightedText : timelineRoot.palette.text
                         }
 
                         Label {
                             text: "(" + model.packname + ")"
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
+                            color: model.index == popup.currentIndex ? timelineRoot.palette.highlightedText : timelineRoot.palette.buttonText
                         }
 
                     }
@@ -258,7 +253,7 @@ Control {
                         Label {
                             text: model.roomName
                             font.pixelSize: popup.avatarHeight * 0.5
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? timelineRoot.palette.highlightedText : timelineRoot.palette.text
                             textFormat: Text.RichText
                         }
 
@@ -286,13 +281,13 @@ Control {
 
                         Label {
                             text: model.roomName
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? timelineRoot.palette.highlightedText : timelineRoot.palette.text
                             textFormat: Text.RichText
                         }
 
                         Label {
                             text: "(" + model.roomAlias + ")"
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
+                            color: model.index == popup.currentIndex ? timelineRoot.palette.highlightedText : timelineRoot.palette.buttonText
                             textFormat: Text.RichText
                         }
 
@@ -308,8 +303,8 @@ Control {
 
 
     background: Rectangle {
-        color: Nheko.colors.base
-        border.color: Nheko.colors.mid
+        color: timelineRoot.palette.base
+        border.color: timelineRoot.palette.mid
     }
 
 }

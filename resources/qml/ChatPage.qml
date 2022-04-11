@@ -15,7 +15,7 @@ import QtQml 2.15
 Rectangle {
     id: chatPage
 
-    color: Nheko.colors.window
+    color: timelineRoot.palette.window
 
     ColumnLayout {
         spacing: 0

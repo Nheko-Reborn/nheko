@@ -38,7 +38,7 @@ ApplicationWindow {
         Label {
             id: promptLabel
 
-            color: Nheko.colors.text
+            color: timelineRoot.palette.text
         }
 
         MatrixTextField {

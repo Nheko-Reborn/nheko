@@ -25,19 +25,19 @@ Popup {
         Image {
             Layout.preferredWidth: 16
             Layout.preferredHeight: 16
-            source: "image://colorimage/" + image + "?" + Nheko.colors.windowText
+            source: "image://colorimage/" + image + "?" + timelineRoot.palette.windowText
         }
 
         Label {
             text: errorString
-            color: Nheko.colors.windowText
+            color: timelineRoot.palette.windowText
         }
 
     }
 
     background: Rectangle {
-        color: Nheko.colors.window
-        border.color: Nheko.colors.windowText
+        color: timelineRoot.palette.window
+        border.color: timelineRoot.palette.windowText
     }
 
 }

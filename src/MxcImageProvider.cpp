@@ -81,6 +81,9 @@ MxcImageRunnable::run()
 static QImage
 clipRadius(QImage img, double radius)
 {
+    if (img.isNull())
+        return img;
+
     QImage out(img.size(), QImage::Format_ARGB32_Premultiplied);
     out.fill(Qt::transparent);
 

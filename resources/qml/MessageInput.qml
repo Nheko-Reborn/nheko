@@ -14,7 +14,7 @@ import im.nheko 1.0
 Rectangle {
     id: inputBar
 
-    color: Nheko.colors.window
+    color: timelineRoot.palette.window
     Layout.fillWidth: true
     Layout.preferredHeight: row.implicitHeight
     Layout.minimumHeight: 40
@@ -84,7 +84,7 @@ Rectangle {
 
             Rectangle {
                 anchors.fill: parent
-                color: Nheko.colors.window
+                color: timelineRoot.palette.window
                 visible: room && room.input.uploading
 
                 NhekoBusyIndicator {
@@ -137,8 +137,8 @@ Rectangle {
 
                 selectByMouse: true
                 placeholderText: qsTr("Write a message...")
-                placeholderTextColor: Nheko.colors.buttonText
-                color: Nheko.colors.text
+                placeholderTextColor: timelineRoot.palette.buttonText
+                color: timelineRoot.palette.text
                 width: textInput.width 
                 verticalAlignment: TextEdit.AlignVCenter
                 wrapMode: TextEdit.Wrap
@@ -428,7 +428,7 @@ Rectangle {
             StickerPicker {
                 id: stickerPopup
 
-                colors: Nheko.colors
+                colors: timelineRoot.palette
             }
 
         }
@@ -471,7 +471,7 @@ Rectangle {
         anchors.centerIn: parent
         visible: room ? (!room.permissions.canSend(MtxEvent.TextMessage)) : false
         text: qsTr("You don't have permission to send messages in this room")
-        color: Nheko.colors.text
+        color: timelineRoot.palette.text
     }
 
 }

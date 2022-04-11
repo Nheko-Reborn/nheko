@@ -35,13 +35,13 @@ Item {
         anchors.centerIn: parent
         text: qsTr("No room open")
         font.pointSize: 24
-        color: Nheko.colors.text
+        color: timelineRoot.palette.text
     }
 
     Spinner {
         visible: TimelineManager.isInitialSync
         anchors.centerIn: parent
-        foreground: Nheko.colors.mid
+        foreground: timelineRoot.palette.mid
         running: TimelineManager.isInitialSync
         // height is somewhat arbitrary here... don't set width because width scales w/ height
         height: parent.height / 16
@@ -72,7 +72,7 @@ Item {
 
             Layout.fillWidth: true
             Layout.fillHeight: true
-            color: Nheko.colors.base
+            color: timelineRoot.palette.base
 
             ColumnLayout {
                 anchors.fill: parent
@@ -226,7 +226,7 @@ Item {
                 readOnly: true
                 background: null
                 selectByMouse: true
-                color: Nheko.colors.text
+                color: timelineRoot.palette.text
                 horizontalAlignment: TextEdit.AlignHCenter
                 onLinkActivated: Nheko.openLink(link)
 

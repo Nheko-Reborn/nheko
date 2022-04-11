@@ -49,7 +49,7 @@ Button {
             font.capitalization: Font.AllUppercase
             font.pointSize: Math.ceil(fontMetrics.font.pointSize * 1.5)
             //font.capitalization: Font.AllUppercase
-            color: Nheko.colors.light
+            color: timelineRoot.palette.light
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
@@ -60,7 +60,7 @@ Button {
         //height: control.contentItem.implicitHeight * 2
         //width: control.contentItem.implicitWidth * 2
         radius: height / 8
-        color: Qt.lighter(Nheko.colors.dark, control.down ? 1.4 : (control.hovered ? 1.2 : 1))
+        color: Qt.lighter(timelineRoot.palette.dark, control.down ? 1.4 : (control.hovered ? 1.2 : 1))
     }
 
 }

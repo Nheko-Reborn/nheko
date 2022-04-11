@@ -40,7 +40,7 @@ Page {
             width: uploadPopup.availableHeight - buttons.height
 
             background: Rectangle {
-                color: Nheko.colors.window
+                color: timelineRoot.palette.window
                 radius: Nheko.paddingMedium
             }
             contentItem: ColumnLayout {
@@ -60,7 +60,7 @@ Page {
                         case MediaUpload.Image: return "image";
                         default: return "zip";
                     }
-                    source: (modelData.thumbnail != "") ? modelData.thumbnail : ("image://colorimage/:/icons/icons/ui/"+typeStr+".svg?" + Nheko.colors.buttonText)
+                    source: (modelData.thumbnail != "") ? modelData.thumbnail : ("image://colorimage/:/icons/icons/ui/"+typeStr+".svg?" + timelineRoot.palette.buttonText)
                 }
                 MatrixTextField {
                     Layout.fillWidth: true
@@ -84,6 +84,6 @@ Page {
     }
 
     background: Rectangle {
-        color: Nheko.colors.base
+        color: timelineRoot.palette.base
     }
 }
