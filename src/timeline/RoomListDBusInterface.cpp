@@ -66,8 +66,7 @@ RoomListDBusInterface::prepareModel()
         MainWindow::instance()->imageProvider()->download(
           model->roomAvatarUrl().remove("mxc://"),
           {128, 128},
-          [this,
-           &model](const QString &, const QSize &, const QImage &image, const QString &) {
+          [this, &model](const QString &, const QSize &, const QImage &image, const QString &) {
               const auto aliases = cache::client()->getRoomAliases(model->roomId().toStdString());
               QString alias;
               if (aliases.has_value()) {
