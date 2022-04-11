@@ -5,15 +5,15 @@
 
 #pragma once
 
-#include <QVideoSink>
 #include <QBuffer>
 #include <QMediaPlayer>
 #include <QObject>
 #include <QPointer>
 #include <QString>
+#include <QVideoSink>
 
-#include "timeline/TimelineModel.h"
 #include "Logging.h"
+#include "timeline/TimelineModel.h"
 
 class TimelineModel;
 

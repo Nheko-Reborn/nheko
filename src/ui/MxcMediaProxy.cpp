@@ -24,27 +24,20 @@ MxcMediaProxy::MxcMediaProxy(QObject *parent)
 {
     connect(this, &MxcMediaProxy::eventIdChanged, &MxcMediaProxy::startDownload);
     connect(this, &MxcMediaProxy::roomChanged, &MxcMediaProxy::startDownload);
-    connect(this,
-            &MxcMediaProxy::error,
-            [this]() {
-                nhlog::ui()->info("Media player error {} and errorStr {}",
-                                  error(),
-                                  this->errorString().toStdString());
-            });
+    connect(this, &MxcMediaProxy::error, [this]() {
+        nhlog::ui()->info(
+          "Media player error {} and errorStr {}", error(), this->errorString().toStdString());
+    });
     connect(this, &MxcMediaProxy::mediaStatusChanged, [this](QMediaPlayer::MediaStatus status) {
         nhlog::ui()->info("Media player status {} and error {}", status, this->error());
     });
-    connect(this,
-            &MxcMediaProxy::metaDataChanged,
-            [this]() {
-            emit orientationChanged();
-            });
+    connect(this, &MxcMediaProxy::metaDataChanged, [this]() { emit orientationChanged(); });
 }
 
 int
 MxcMediaProxy::orientation() const
 {
-    //nhlog::ui()->debug("metadata: {}", metaData().
+    // nhlog::ui()->debug("metadata: {}", metaData().
     auto orientation = metaData().value(QMediaMetaData::Orientation).toInt();
     nhlog::ui()->debug("Video orientation: {}", orientation);
     return orientation;
@@ -109,7 +102,7 @@ MxcMediaProxy::startDownload()
         QTimer::singleShot(0, this, [this, filename] {
             nhlog::ui()->info(
               "Playing buffer with size: {}, {}", buffer.bytesAvailable(), buffer.isOpen());
-            this->setSourceDevice( &buffer, QUrl(filename.fileName()));
+            this->setSourceDevice(&buffer, QUrl(filename.fileName()));
             emit loadedChanged();
         });
     };

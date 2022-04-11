@@ -142,24 +142,21 @@ CallManager::CallManager(QObject *parent)
               player_.play();
       });
 
-    connect(&player_,
-            &QMediaPlayer::error,
-            this,
-            [this]() {
-                stopRingtone();
-                switch (player_.error()) {
-                case QMediaPlayer::FormatError:
-                case QMediaPlayer::ResourceError:
-                    nhlog::ui()->error("WebRTC: valid ringtone file not found");
-                    break;
-                case QMediaPlayer::AccessDeniedError:
-                    nhlog::ui()->error("WebRTC: access to ringtone file denied");
-                    break;
-                default:
-                    nhlog::ui()->error("WebRTC: unable to play ringtone");
-                    break;
-                }
-            });
+    connect(&player_, &QMediaPlayer::errorChanged, this, [this]() {
+        stopRingtone();
+        switch (player_.error()) {
+        case QMediaPlayer::FormatError:
+        case QMediaPlayer::ResourceError:
+            nhlog::ui()->error("WebRTC: valid ringtone file not found");
+            break;
+        case QMediaPlayer::AccessDeniedError:
+            nhlog::ui()->error("WebRTC: access to ringtone file denied");
+            break;
+        default:
+            nhlog::ui()->error("WebRTC: unable to play ringtone");
+            break;
+        }
+    });
 }
 
 void
@@ -496,10 +493,9 @@ CallManager::retrieveTurnServer()
 void
 CallManager::playRingtone(const QUrl &ringtone, bool repeat)
 {
-    player_.setLoops(repeat ? QMediaPlayer::Infinite :
-                                   1);
+    player_.setLoops(repeat ? QMediaPlayer::Infinite : 1);
     player_.setSource(ringtone);
-    //player_.audioOutput()->setVolume(100);
+    // player_.audioOutput()->setVolume(100);
     player_.play();
 }
 
