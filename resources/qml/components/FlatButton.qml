@@ -3,7 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtGraphicalEffects 1.12
+//import QtGraphicalEffects 1.12
 import QtQuick 2.9
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.2
@@ -19,16 +19,16 @@ Button {
 
     property string iconImage: ""
 
-    DropShadow {
-        anchors.fill: control.background
-        horizontalOffset: 3
-        verticalOffset: 3
-        radius: 8
-        samples: 17
-        cached: true
-        color: "#80000000"
-        source: control.background
-    }
+    //DropShadow {
+    //    anchors.fill: control.background
+    //    horizontalOffset: 3
+    //    verticalOffset: 3
+    //    radius: 8
+    //    samples: 17
+    //    cached: true
+    //    color: "#80000000"
+    //    source: control.background
+    //}
 
     contentItem: RowLayout {
         spacing: 0

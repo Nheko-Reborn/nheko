@@ -78,11 +78,12 @@ public slots:
         if (queryStart != -1) {
             id_            = id.left(queryStart);
             auto query     = id.mid(queryStart + 1);
-            auto queryBits = query.splitRef('&');
+            auto queryBits = QStringView(query).split('&');
 
             for (const auto &b : queryBits) {
                 if (b.startsWith(QStringView(u"radius="))) {
                     radius = b.mid(7).toDouble();
+                    break;
                 }
             }
         }

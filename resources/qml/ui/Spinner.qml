@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "./animations"
-import QtGraphicalEffects 1.12
+//import QtGraphicalEffects 1.12
 import QtQuick 2.12
 
 Item {
@@ -140,17 +140,17 @@ Item {
 
     }
 
-    Glow {
-        anchors.fill: row
-        radius: 14
-        samples: 17
-        color: spinner.foreground
-        source: row
+    //Glow {
+    //    anchors.fill: row
+    //    radius: 14
+    //    samples: 17
+    //    color: spinner.foreground
+    //    source: row
 
-        transform: Matrix4x4 {
-            matrix: Qt.matrix4x4(Math.cos(spinner.a), -Math.sin(spinner.a), 0, 0, 0, Math.cos(spinner.a), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
-        }
+    //    transform: Matrix4x4 {
+    //        matrix: Qt.matrix4x4(Math.cos(spinner.a), -Math.sin(spinner.a), 0, 0, 0, Math.cos(spinner.a), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+    //    }
 
-    }
+    //}
 
 }

@@ -268,7 +268,8 @@ utils::firstChar(const QString &input)
             return QString::fromUcs4(&c, 1).toUpper();
     }
 
-    return QString::fromUcs4(&input.toUcs4().at(0), 1).toUpper();
+    auto c = static_cast<char32_t>(input.toUcs4().at(0));
+    return QString::fromUcs4(&c, 1).toUpper();
 }
 
 QString

@@ -196,14 +196,15 @@ endif()
 #
 # Discover Qt dependencies.
 #
-find_package(Qt5 5.15 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia Qml QuickControls2 QuickWidgets REQUIRED)
-find_package(Qt5QuickCompiler)
-find_package(Qt5DBus)
+find_package(Qt6 6.2 COMPONENTS Core Widgets LinguistTools Svg Multimedia Qml QuickControls2 REQUIRED)
+#find_package(Qt5QuickCompiler)
+find_package(Qt6DBus)
 
 if (USE_BUNDLED_QTKEYCHAIN)
 	include(FetchContent)
+	set(BUILD_WITH_QT6 ON)
 	FetchContent_Declare(
-		qt5keychain
+		qt6keychain
 		GIT_REPOSITORY https://github.com/frankosterfeld/qtkeychain.git
 		GIT_TAG        v0.13.1
 		)
@@ -213,13 +214,13 @@ if (USE_BUNDLED_QTKEYCHAIN)
 		set(QTKEYCHAIN_STATIC ON CACHE INTERNAL "")
 	endif()
 	set(BUILD_TEST_APPLICATION OFF CACHE INTERNAL "")
-	FetchContent_MakeAvailable(qt5keychain)
+	FetchContent_MakeAvailable(qt6keychain)
 else()
-	find_package(Qt5Keychain REQUIRED)
+	find_package(Qt6Keychain REQUIRED)
 endif()
 
 if (APPLE)
-	find_package(Qt5MacExtras REQUIRED)
+	find_package(Qt6MacExtras REQUIRED)
 endif(APPLE)
 
 if (Qt5Widgets_FOUND)
@@ -505,7 +506,7 @@ if (NOT APPLE AND NOT WIN32)
 	add_compile_definitions(NHEKO_DBUS_SYS)
 endif()
 
-qt5_wrap_cpp(MOC_HEADERS
+qt_wrap_cpp(MOC_HEADERS
 	# Dialogs
 	src/dialogs/FallbackAuth.h
 	src/dialogs/ReCaptcha.h
@@ -645,7 +646,7 @@ elseif(WIN32)
 		target_compile_options(nheko PUBLIC "/Zc:__cplusplus")
 	endif()
 else()
-	target_link_libraries (nheko PRIVATE Qt5::DBus)
+	target_link_libraries (nheko PRIVATE Qt::DBus)
 	if (FLATPAK)
 		target_compile_definitions(nheko PRIVATE NHEKO_FLATPAK)
 	endif()
@@ -654,21 +655,19 @@ target_include_directories(nheko PRIVATE src includes third_party/blurhash third
 
 # Fixup bundled keychain include dirs
 if (USE_BUNDLED_QTKEYCHAIN)
-	target_include_directories(nheko PRIVATE ${qt5keychain_SOURCE_DIR} ${qt5keychain_BINARY_DIR})
+	target_include_directories(nheko PRIVATE ${qt6keychain_SOURCE_DIR} ${qt6keychain_BINARY_DIR})
 endif()
 
 target_link_libraries(nheko PRIVATE
 	MatrixClient::MatrixClient
 	cmark::cmark
 	spdlog::spdlog
-	Qt5::Widgets
-	Qt5::Svg
-	Qt5::Concurrent
-	Qt5::Multimedia
-	Qt5::Qml
-	Qt5::QuickControls2
-	Qt5::QuickWidgets
-	qt5keychain
+	Qt::Widgets
+	Qt::Svg
+	Qt::Multimedia
+	Qt::Qml
+	Qt::QuickControls2
+	qt6keychain
 	nlohmann_json::nlohmann_json
 	lmdbxx::lmdbxx
 	liblmdb::lmdb

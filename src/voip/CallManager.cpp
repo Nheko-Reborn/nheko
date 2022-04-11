@@ -10,7 +10,6 @@
 #include <cstdlib>
 #include <memory>
 
-#include <QMediaPlaylist>
 #include <QUrl>
 
 #include "Cache.h"
@@ -144,11 +143,11 @@ CallManager::CallManager(QObject *parent)
       });
 
     connect(&player_,
-            QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
+            &QMediaPlayer::error,
             this,
-            [this](QMediaPlayer::Error error) {
+            [this]() {
                 stopRingtone();
-                switch (error) {
+                switch (player_.error()) {
                 case QMediaPlayer::FormatError:
                 case QMediaPlayer::ResourceError:
                     nhlog::ui()->error("WebRTC: valid ringtone file not found");
@@ -497,19 +496,17 @@ CallManager::retrieveTurnServer()
 void
 CallManager::playRingtone(const QUrl &ringtone, bool repeat)
 {
-    static QMediaPlaylist playlist;
-    playlist.clear();
-    playlist.setPlaybackMode(repeat ? QMediaPlaylist::CurrentItemInLoop
-                                    : QMediaPlaylist::CurrentItemOnce);
-    playlist.addMedia(ringtone);
-    player_.setVolume(100);
-    player_.setPlaylist(&playlist);
+    player_.setLoops(repeat ? QMediaPlayer::Infinite :
+                                   1);
+    player_.setSource(ringtone);
+    //player_.audioOutput()->setVolume(100);
+    player_.play();
 }
 
 void
 CallManager::stopRingtone()
 {
-    player_.setPlaylist(nullptr);
+    player_.stop();
 }
 
 QStringList

@@ -1373,7 +1373,6 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
                 l.push_back(QString::fromStdString(d));
             return l;
         };
-        static QFontDatabase fontDb;
 
         switch (index.row()) {
         case Theme:
@@ -1393,9 +1392,9 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               i->camera().toStdString(), i->cameraResolution().toStdString()));
 
         case Font:
-            return fontDb.families();
+            return QFontDatabase::families();
         case EmojiFont:
-            return fontDb.families(QFontDatabase::WritingSystem::Symbol);
+            return QFontDatabase::families(QFontDatabase::WritingSystem::Symbol);
         case Ringtone:
             QStringList l{
               QStringLiteral("Mute"),
@@ -1438,8 +1437,6 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
 bool
 UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    static QFontDatabase fontDb;
-
     auto i = UserSettings::instance();
     if (role == Value) {
         switch (index.row()) {
@@ -1464,7 +1461,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 return false;
         }
         case ScaleFactor: {
-            if (value.canConvert(QMetaType::Double)) {
+            if (value.canConvert(QMetaType::fromType<double>())) {
                 utils::setScaleFactor(static_cast<float>(value.toDouble()));
                 return true;
             } else
@@ -1548,7 +1545,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 return false;
         }
         case TimelineMaxWidth: {
-            if (value.canConvert(QMetaType::Int)) {
+            if (value.canConvert(QMetaType::fromType<int>())) {
                 i->setTimelineMaxWidth(value.toInt());
                 return true;
             } else
@@ -1619,7 +1616,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 return false;
         }
         case PrivacyScreenTimeout: {
-            if (value.canConvert(QMetaType::Int)) {
+            if (value.canConvert(QMetaType::fromType<int>())) {
                 i->setPrivacyScreenTimeout(value.toInt());
                 return true;
             } else
@@ -1633,7 +1630,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 return false;
         }
         case FontSize: {
-            if (value.canConvert(QMetaType::Double)) {
+            if (value.canConvert(QMetaType::fromType<double>())) {
                 i->setFontSize(value.toDouble());
                 return true;
             } else
@@ -1641,7 +1638,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         }
         case Font: {
             if (value.userType() == QMetaType::Int) {
-                i->setFontFamily(fontDb.families().at(value.toInt()));
+                i->setFontFamily(QFontDatabase::families().at(value.toInt()));
                 return true;
             } else
                 return false;
@@ -1649,7 +1646,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         case EmojiFont: {
             if (value.userType() == QMetaType::Int) {
                 i->setEmojiFontFamily(
-                  fontDb.families(QFontDatabase::WritingSystem::Symbol).at(value.toInt()));
+                  QFontDatabase::families(QFontDatabase::WritingSystem::Symbol).at(value.toInt()));
                 return true;
             } else
                 return false;

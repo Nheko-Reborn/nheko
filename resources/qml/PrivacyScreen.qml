@@ -3,7 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtGraphicalEffects 1.0
+//import QtGraphicalEffects 1.0
 import QtQuick 2.12
 import QtQuick.Window 2.2
 import im.nheko 1.0
@@ -120,13 +120,13 @@ Item {
             }
         ]
 
-        FastBlur {
-            id: blur
+        //FastBlur {
+        //    id: blur
 
-            anchors.fill: parent
-            source: timelineRoot
-            radius: 50
-        }
+        //    anchors.fill: parent
+        //    source: timelineRoot
+        //    radius: 50
+        //}
 
     }
 

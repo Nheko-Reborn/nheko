@@ -55,7 +55,7 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
                 finder.toNextBoundary();
                 auto end = finder.position();
 
-                auto ref = str.midRef(start, end - start).trimmed();
+                auto ref = QStringView(str).mid(start, end - start).trimmed();
                 if (!ref.isEmpty())
                     trie_.insert(ref.toUcs4(), i);
             } while (finder.position() < str.size());
