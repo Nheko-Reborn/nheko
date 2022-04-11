@@ -10,6 +10,7 @@
 #include <mtxclient/crypto/client.hpp>
 
 #include <QByteArray>
+#include <QCache>
 #include <QDir>
 #include <QFileInfo>
 #include <QPainter>
@@ -21,6 +22,8 @@
 #include "Utils.h"
 
 QHash<QString, mtx::crypto::EncryptedFile> infos;
+// bit-shift for 2 MB makes me feel like a 1337 H4XXOR somehow
+QCache<QString, QImage> cachedThumbnails{2 << 20};
 
 QQuickImageResponse *
 MxcImageProvider::requestImageResponse(const QString &id, const QSize &requestedSize)
@@ -108,6 +111,12 @@ MxcImageProvider::download(const QString &id,
     if (temp != infos.end())
         encryptionInfo = *temp;
 
+    if (cachedThumbnails.contains(id))
+    {
+        then(id, requestedSize, *cachedThumbnails[id], QString{});
+        return;
+    }
+
     if (requestedSize.isValid() &&
         !encryptionInfo
         // Protect against synapse not following the spec:
@@ -140,6 +149,10 @@ MxcImageProvider::download(const QString &id,
                 }
 
                 if (!image.isNull()) {
+                    // only cache stuff under 10 KB
+                    if (!cachedThumbnails.contains(id) && image.sizeInBytes() < 10240)
+                        cachedThumbnails.insert(id, new QImage{image}, image.sizeInBytes());
+
                     then(id, requestedSize, image, fileInfo.absoluteFilePath());
                     return;
                 }
@@ -182,6 +195,10 @@ MxcImageProvider::download(const QString &id,
                   nhlog::ui()->debug("Failed to write: {}",
                                      fileInfo.absoluteFilePath().toStdString());
 
+              // only cache stuff under 10 KB
+              if (!cachedThumbnails.contains(id) && image.sizeInBytes() < 10240)
+                  cachedThumbnails.insert(id, new QImage{image}, image.sizeInBytes());
+
               then(id, requestedSize, image, fileInfo.absoluteFilePath());
           });
     } else {
@@ -212,6 +229,10 @@ MxcImageProvider::download(const QString &id,
                             image = clipRadius(std::move(image), radius);
                         }
 
+                        // only cache stuff under 10 KB
+                        if (!cachedThumbnails.contains(id) && image.sizeInBytes() < 10240)
+                            cachedThumbnails.insert(id, new QImage{image}, image.sizeInBytes());
+
                         then(id, requestedSize, image, fileInfo.absoluteFilePath());
                         return;
                     }
@@ -221,6 +242,10 @@ MxcImageProvider::download(const QString &id,
                         if (radius != 0) {
                             image = clipRadius(std::move(image), radius);
                         }
+
+                        // only cache stuff under 10 KB
+                        if (!cachedThumbnails.contains(id) && image.sizeInBytes() < 10240)
+                            cachedThumbnails.insert(id, new QImage{image}, image.sizeInBytes());
 
                         then(id, requestedSize, image, fileInfo.absoluteFilePath());
                         return;
@@ -264,6 +289,11 @@ MxcImageProvider::download(const QString &id,
                       image.setText(QStringLiteral("original filename"),
                                     QString::fromStdString(originalFilename));
                       image.setText(QStringLiteral("mxc url"), "mxc://" + id);
+
+                      // only cache stuff under 10 KB
+                      if (!cachedThumbnails.contains(id) && image.sizeInBytes() < 10240)
+                          cachedThumbnails.insert(id, new QImage{image}, image.sizeInBytes());
+
                       then(id, requestedSize, image, fileInfo.absoluteFilePath());
                       return;
                   }
@@ -276,6 +306,11 @@ MxcImageProvider::download(const QString &id,
                   image.setText(QStringLiteral("original filename"),
                                 QString::fromStdString(originalFilename));
                   image.setText(QStringLiteral("mxc url"), "mxc://" + id);
+
+                  // only cache stuff under 10 KB
+                  if (!cachedThumbnails.contains(id) && image.sizeInBytes() < 10240)
+                      cachedThumbnails.insert(id, new QImage{image}, image.sizeInBytes());
+
                   then(id, requestedSize, image, fileInfo.absoluteFilePath());
               });
         } catch (std::exception &e) {
