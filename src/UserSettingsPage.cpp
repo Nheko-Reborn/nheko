@@ -90,10 +90,7 @@ UserSettings::load(std::optional<QString> profile)
     privacyScreen_     = settings.value(QStringLiteral("user/privacy_screen"), false).toBool();
     privacyScreenTimeout_ =
       settings.value(QStringLiteral("user/privacy_screen_timeout"), 0).toInt();
-
-#ifdef NHEKO_DBUS_SYS
     exposeDBusApi_ = settings.value(QStringLiteral("user/expose_dbus_api"), false).toBool();
-#endif
 
     mobileMode_ = settings.value(QStringLiteral("user/mobile_mode"), false).toBool();
     emojiFont_  = settings.value(QStringLiteral("user/emoji_font_family"), "emoji").toString();
@@ -252,7 +249,6 @@ UserSettings::setCollapsedSpaces(QList<QStringList> spaces)
     save();
 }
 
-#ifdef NHEKO_DBUS_SYS
 void
 UserSettings::setExposeDBusApi(bool state)
 {
@@ -263,7 +259,6 @@ UserSettings::setExposeDBusApi(bool state)
     emit exposeDBusApiChanged(state);
     save();
 }
-#endif
 
 void
 UserSettings::setMarkdown(bool state)
@@ -806,9 +801,7 @@ UserSettings::save()
     settings.setValue(QStringLiteral("use_identicon"), useIdenticon_);
     settings.setValue(QStringLiteral("open_image_external"), openImageExternal_);
     settings.setValue(QStringLiteral("open_video_external"), openVideoExternal_);
-#ifdef NHEKO_DBUS_SYS
     settings.setValue(QStringLiteral("expose_dbus_api"), exposeDBusApi_);
-#endif
 
     settings.endGroup(); // user
 
@@ -993,10 +986,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("User signing key");
         case MasterKey:
             return tr("Master signing key");
-#ifdef NHEKO_DBUS_SYS
         case ExposeDBusApi:
             return tr("Expose room information via D-Bus");
-#endif
         }
     } else if (role == Value) {
         switch (index.row()) {
@@ -1116,10 +1107,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               .has_value();
         case MasterKey:
             return cache::secret(mtx::secret_storage::secrets::cross_signing_master).has_value();
-#ifdef NHEKO_DBUS_SYS
         case ExposeDBusApi:
             return i->exposeDBusApi();
-#endif
         }
     } else if (role == Description) {
         switch (index.row()) {
@@ -1264,14 +1253,12 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               "Your most important key. You don't need to have it cached, since not caching "
               "it makes it less likely it can be stolen and it is only needed to rotate your "
               "other signing keys.");
-#ifdef NHEKO_DBUS_SYS
         case ExposeDBusApi:
             return tr("Allow third-party plugins and applications to load information about rooms "
                       "you are in via D-Bus. "
                       "This can have useful applications, but it also could be used for nefarious "
                       "purposes. Enable at your own risk.\n\n"
                       "This setting will take effect upon restart.");
-#endif
         }
     } else if (role == Type) {
         switch (index.row()) {
@@ -1316,9 +1303,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case OnlyShareKeysWithVerifiedUsers:
         case ShareKeysWithTrustedUsers:
         case UseOnlineKeyBackup:
-#ifdef NHEKO_DBUS_SYS
         case ExposeDBusApi:
-#endif
             return Toggle;
         case Profile:
         case UserId:
@@ -1751,7 +1736,6 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
             } else
                 return false;
         }
-#ifdef NHEKO_DBUS_SYS
         case ExposeDBusApi: {
             if (value.userType() == QMetaType::Bool) {
                 i->setExposeDBusApi(value.toBool());
@@ -1759,7 +1743,6 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
             } else
                 return false;
         }
-#endif
         }
     }
     return false;
@@ -1989,9 +1972,7 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     connect(MainWindow::instance(), &MainWindow::secretsChanged, this, [this]() {
         emit dataChanged(index(OnlineBackupKey), index(MasterKey), {Value, Good});
     });
-#ifdef NHEKO_DBUS_SYS
     connect(s.get(), &UserSettings::exposeDBusApiChanged, this, [this] {
         emit dataChanged(index(ExposeDBusApi), index(ExposeDBusApi), {Value});
     });
-#endif
 }
