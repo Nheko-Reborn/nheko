@@ -75,6 +75,13 @@ RoomListDBusInterface::joinRoom(const QString &alias) const
 }
 
 void
+RoomListDBusInterface::startDirectChat(const QString &userId) const
+{
+    bringWindowToTop();
+    ChatPage::instance()->startChat(userId);
+}
+
+void
 RoomListDBusInterface::bringWindowToTop() const
 {
     MainWindow::instance()->show();

@@ -29,6 +29,9 @@ public slots:
     Q_SCRIPTABLE void activateRoom(const QString &alias) const;
     //! Joins a room. It is your responsibility to ask for confirmation (if desired).
     Q_SCRIPTABLE void joinRoom(const QString &alias) const;
+    //! Starts or activates a direct chat. It is your responsibility to ask for confirmation (if
+    //! desired).
+    Q_SCRIPTABLE void startDirectChat(const QString &userId) const;
 
 private:
     void bringWindowToTop() const;
