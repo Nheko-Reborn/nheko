@@ -610,16 +610,10 @@ RoomlistModel::initializeRooms()
     endResetModel();
 
 #ifdef NHEKO_DBUS_SYS
-    if (UserSettings::instance()->exposeDBusApi()) {
-        if (QDBusConnection::sessionBus().isConnected() &&
-            QDBusConnection::sessionBus().registerService(NHEKO_DBUS_SERVICE_NAME)) {
-            nheko::dbus::init();
-            dbusInterface_ = new RoomListDBusInterface{this};
-            QDBusConnection::sessionBus().registerObject(
-              "/", dbusInterface_, QDBusConnection::ExportScriptableSlots);
-            nhlog::ui()->info("Initialized D-Bus");
-        } else
-            nhlog::ui()->warn("Could not connect to D-Bus!");
+    if (MainWindow::instance()->dbusAvailable()) {
+        dbusInterface_ = new RoomListDBusInterface{this};
+        QDBusConnection::sessionBus().registerObject(
+          "/", dbusInterface_, QDBusConnection::ExportScriptableSlots);
     }
 #endif
 }
