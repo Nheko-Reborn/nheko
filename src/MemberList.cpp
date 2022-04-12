@@ -12,7 +12,7 @@
 #include "Utils.h"
 #include "timeline/TimelineViewManager.h"
 
-MemberList::MemberList(const QString &room_id, QObject *parent)
+MemberListBackend::MemberListBackend(const QString &room_id, QObject *parent)
   : QAbstractListModel{parent}
   , room_id_{room_id}
 {
@@ -32,7 +32,7 @@ MemberList::MemberList(const QString &room_id, QObject *parent)
 }
 
 void
-MemberList::addUsers(const std::vector<RoomMember> &members)
+MemberListBackend::addUsers(const std::vector<RoomMember> &members)
 {
     beginInsertRows(QModelIndex{}, m_memberList.count(), m_memberList.count() + members.size() - 1);
 
@@ -46,7 +46,7 @@ MemberList::addUsers(const std::vector<RoomMember> &members)
 }
 
 QHash<int, QByteArray>
-MemberList::roleNames() const
+MemberListBackend::roleNames() const
 {
     return {
       {Mxid, "mxid"},
@@ -57,7 +57,7 @@ MemberList::roleNames() const
 }
 
 QVariant
-MemberList::data(const QModelIndex &index, int role) const
+MemberListBackend::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid() || index.row() >= (int)m_memberList.size() || index.row() < 0)
         return {};
@@ -86,7 +86,7 @@ MemberList::data(const QModelIndex &index, int role) const
 }
 
 bool
-MemberList::canFetchMore(const QModelIndex &) const
+MemberListBackend::canFetchMore(const QModelIndex &) const
 {
     const size_t numMembers = rowCount();
     if (numMembers > 1 && numMembers < info_.member_count)
@@ -96,7 +96,7 @@ MemberList::canFetchMore(const QModelIndex &) const
 }
 
 void
-MemberList::fetchMore(const QModelIndex &)
+MemberListBackend::fetchMore(const QModelIndex &)
 {
     loadingMoreMembers_ = true;
     emit loadingMoreMembersChanged();
@@ -108,4 +108,42 @@ MemberList::fetchMore(const QModelIndex &)
 
     loadingMoreMembers_ = false;
     emit loadingMoreMembersChanged();
+}
+
+MemberList::MemberList(const QString &room_id, QObject *parent)
+  : QSortFilterProxyModel{parent}
+  , m_model{room_id, this}
+{
+    connect(&m_model, &MemberListBackend::roomNameChanged, this, &MemberList::roomNameChanged);
+    connect(
+      &m_model, &MemberListBackend::memberCountChanged, this, &MemberList::memberCountChanged);
+    connect(&m_model, &MemberListBackend::avatarUrlChanged, this, &MemberList::avatarUrlChanged);
+    connect(&m_model, &MemberListBackend::roomIdChanged, this, &MemberList::roomIdChanged);
+    connect(&m_model,
+            &MemberListBackend::numUsersLoadedChanged,
+            this,
+            &MemberList::numUsersLoadedChanged);
+    connect(&m_model,
+            &MemberListBackend::loadingMoreMembersChanged,
+            this,
+            &MemberList::loadingMoreMembersChanged);
+
+    setSourceModel(&m_model);
+    setSortRole(MemberListBackend::Mxid);
+    sort(0, Qt::AscendingOrder);
+    setDynamicSortFilter(true);
+    setFilterCaseSensitivity(Qt::CaseInsensitive);
+}
+
+void
+MemberList::setFilterString(const QString &text)
+{
+    setFilterRegExp(QRegExp::escape(text));
+}
+
+bool
+MemberList::filterAcceptsRow(int source_row, const QModelIndex &) const
+{
+    return m_model.m_memberList[source_row].first.user_id.contains(filterRegExp()) ||
+           m_model.m_memberList[source_row].first.display_name.contains(filterRegExp());
 }

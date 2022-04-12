@@ -63,6 +63,14 @@ ApplicationWindow {
             onClicked: TimelineManager.openInviteUsers(members.roomId)
         }
 
+        MatrixTextField {
+            id: searchBar
+
+            Layout.fillWidth: true
+            placeholderText: qsTr("Search...")
+            onTextChanged: members.setFilterString(text)
+        }
+
         ScrollView {
             palette: Nheko.colors
             padding: Nheko.paddingMedium
@@ -172,14 +180,14 @@ ApplicationWindow {
                     width: parent.width
                     visible: (members.numUsersLoaded < members.memberCount) && members.loadingMoreMembers
                     // use the default height if it's visible, otherwise no height at all
-                    height: membersLoadingSpinner.height
+                    height: membersLoadingSpinner.implicitHeight
                     anchors.margins: Nheko.paddingMedium
 
                     Spinner {
                         id: membersLoadingSpinner
 
                         anchors.centerIn: parent
-                        height: visible ? 35 : 0
+                        implicitHeight: parent.visible ? 35 : 0
                     }
 
                 }
