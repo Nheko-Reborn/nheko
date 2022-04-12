@@ -160,8 +160,8 @@ MxcImageProvider::download(const QString &id,
         opts.method  = crop ? "crop" : "scale";
         http::client()->get_thumbnail(
           opts,
-          [fileInfo, requestedSize, radius, then, id, crop](
-            const std::string &res, mtx::http::RequestErr err) {
+          [fileInfo, requestedSize, radius, then, id, crop](const std::string &res,
+                                                            mtx::http::RequestErr err) {
               if (err || res.empty()) {
                   download(id, QSize(), then, crop, radius);
                   return;
