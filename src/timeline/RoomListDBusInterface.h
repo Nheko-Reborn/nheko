@@ -34,11 +34,6 @@ private:
     void bringWindowToTop() const;
 
     RoomlistModel *m_parent;
-
-    // this is a QSharedPointer so that copy ops are less expensive (see below)
-    QSharedPointer<QVector<nheko::dbus::RoomInfoItem>> m_model{
-      new QVector<nheko::dbus::RoomInfoItem>};
-    QMutex m_modelAccess;
 };
 
 #endif // ROOMLISTDBUSINTERFACE_H

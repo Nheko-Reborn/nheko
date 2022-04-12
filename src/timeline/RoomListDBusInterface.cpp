@@ -23,15 +23,15 @@ RoomListDBusInterface::getRooms(const QDBusMessage &message)
 {
     // Just in case a room is joined while the model is being built.
     auto modelSize = m_parent->models.size();
+    auto model{new QVector<nheko::dbus::RoomInfoItem>};
 
-    m_modelAccess.lock();
-    for (const auto &model : std::as_const(m_parent->models)) {
+    for (const auto &room : std::as_const(m_parent->models)) {
         MainWindow::instance()->imageProvider()->download(
-          model->roomAvatarUrl().remove("mxc://"),
+          room->roomAvatarUrl().remove("mxc://"),
           {128, 128},
-          [this, message, model, modelSize](
+          [this, message, room, model, modelSize](
             const QString &, const QSize &, const QImage &image, const QString &) {
-              const auto aliases = cache::client()->getRoomAliases(model->roomId().toStdString());
+              const auto aliases = cache::client()->getRoomAliases(room->roomId().toStdString());
               QString alias;
               if (aliases.has_value()) {
                   const auto &val = aliases.value();
@@ -41,18 +41,17 @@ RoomListDBusInterface::getRooms(const QDBusMessage &message)
                       alias = QString::fromStdString(val.alt_aliases.front());
               }
 
-              m_model->push_back(
-                nheko::dbus::RoomInfoItem{model->roomId(), model->roomName(), alias, image});
+              model->push_back(
+                nheko::dbus::RoomInfoItem{room->roomId(), room->roomName(), alias, image});
 
-              if (m_model->length() == modelSize) {
+              if (model->length() == modelSize) {
                   auto reply = message.createReply();
-                  nhlog::ui()->debug("Sending {} rooms over D-Bus...", m_model->size());
-                  reply << QVariant::fromValue(*m_model);
+                  nhlog::ui()->debug("Sending {} rooms over D-Bus...", model->size());
+                  reply << QVariant::fromValue(*model);
                   QDBusConnection::sessionBus().send(reply);
                   nhlog::ui()->debug("Rooms successfully sent to D-Bus.");
 
-                  m_model->clear();
-                  m_modelAccess.unlock();
+                  delete model;
               }
           },
           false);
