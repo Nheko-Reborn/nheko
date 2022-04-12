@@ -25,9 +25,9 @@
 #include "Cache.h"
 #include "EventAccessors.h"
 #include "MxcImageProvider.h"
+#include "NhekoDBusInterface.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
-#include "NhekoDBusInterface.h"
 
 NotificationsManager::NotificationsManager(QObject *parent)
   : QObject(parent)
