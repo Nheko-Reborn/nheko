@@ -16,8 +16,7 @@
 RoomListDBusInterface::RoomListDBusInterface(RoomlistModel *parent)
   : QObject{parent}
   , m_parent{parent}
-{
-}
+{}
 
 QVector<nheko::dbus::RoomInfoItem>
 RoomListDBusInterface::getRooms(const QDBusMessage &message)
@@ -30,7 +29,8 @@ RoomListDBusInterface::getRooms(const QDBusMessage &message)
         MainWindow::instance()->imageProvider()->download(
           model->roomAvatarUrl().remove("mxc://"),
           {128, 128},
-          [this, message, model, modelSize](const QString &, const QSize &, const QImage &image, const QString &) {
+          [this, message, model, modelSize](
+            const QString &, const QSize &, const QImage &image, const QString &) {
               const auto aliases = cache::client()->getRoomAliases(model->roomId().toStdString());
               QString alias;
               if (aliases.has_value()) {
