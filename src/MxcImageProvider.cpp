@@ -106,6 +106,12 @@ MxcImageProvider::download(const QString &id,
                            bool crop,
                            double radius)
 {
+    if (id.isEmpty()) {
+        nhlog::net()->error("Attempted to download image with empty ID");
+        then(id, QSize{}, QImage{}, QString{});
+        return;
+    }
+
     std::optional<mtx::crypto::EncryptedFile> encryptionInfo;
     auto temp = infos.find("mxc://" + id);
     if (temp != infos.end())
