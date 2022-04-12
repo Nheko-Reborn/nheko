@@ -29,7 +29,7 @@ RoomListDBusInterface::getRooms(const QDBusMessage &message)
         MainWindow::instance()->imageProvider()->download(
           room->roomAvatarUrl().remove("mxc://"),
           {128, 128},
-          [this, message, room, model, modelSize](
+          [message, room, model, modelSize](
             const QString &, const QSize &, const QImage &image, const QString &) {
               const auto aliases = cache::client()->getRoomAliases(room->roomId().toStdString());
               QString alias;
