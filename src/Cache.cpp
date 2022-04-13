@@ -1548,7 +1548,7 @@ Cache::updateState(const std::string &room, const mtx::responses::StateEvents &s
         std::string_view data;
         if (roomsDb_.get(txn, room, data)) {
             try {
-                RoomInfo updatedInfo = json::parse(std::string_view(data.data(), data.size()));
+                updatedInfo = json::parse(std::string_view(data.data(), data.size()));
             } catch (const json::exception &e) {
                 nhlog::db()->warn("failed to parse room info: room_id ({}), {}: {}",
                                   room,
