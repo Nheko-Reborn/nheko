@@ -52,7 +52,7 @@ RoomListDBusInterface::getRooms(const QDBusMessage &message)
                   nhlog::ui()->debug("Rooms successfully sent to D-Bus.");
               }
           },
-          false);
+          true);
     }
 
     return {};
