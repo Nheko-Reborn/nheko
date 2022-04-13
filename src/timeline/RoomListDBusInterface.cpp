@@ -28,7 +28,7 @@ RoomListDBusInterface::getRooms(const QDBusMessage &message)
     for (const auto &room : roomListModel) {
         MainWindow::instance()->imageProvider()->download(
           room->roomAvatarUrl().remove("mxc://"),
-          {128, 128},
+          {96, 96},
           [message, room, model, roomListModel](
             const QString &, const QSize &, const QImage &image, const QString &) {
               const auto aliases = cache::client()->getRoomAliases(room->roomId().toStdString());
