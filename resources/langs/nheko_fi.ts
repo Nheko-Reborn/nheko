@@ -1417,7 +1417,7 @@ Esimerkki: https://server.my:8787</translation>
         <location line="-125"/>
         <location line="+132"/>
         <source>Copy &amp;link location</source>
-        <translation>Kopioi &amp;linkki sijainti</translation>
+        <translation>Kopioi &amp;linkin kohde</translation>
     </message>
     <message>
         <location line="-124"/>
