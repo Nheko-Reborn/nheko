@@ -35,12 +35,14 @@ RoomInfoItem::RoomInfoItem(const QString &roomId,
                            const QString &alias,
                            const QString &title,
                            const QImage &image,
+                           const int unreadNotifications,
                            QObject *parent)
   : QObject{parent}
   , roomId_{roomId}
   , alias_{alias}
   , roomName_{title}
   , image_{image}
+  , unreadNotifications_{unreadNotifications}
 {}
 
 RoomInfoItem::RoomInfoItem(const RoomInfoItem &other)
@@ -49,15 +51,17 @@ RoomInfoItem::RoomInfoItem(const RoomInfoItem &other)
   , alias_{other.alias_}
   , roomName_{other.roomName_}
   , image_{other.image_}
+  , unreadNotifications_{other.unreadNotifications_}
 {}
 
 RoomInfoItem &
 RoomInfoItem::operator=(const RoomInfoItem &other)
 {
-    roomId_   = other.roomId_;
-    alias_    = other.alias_;
-    roomName_ = other.roomName_;
-    image_    = other.image_;
+    roomId_              = other.roomId_;
+    alias_               = other.alias_;
+    roomName_            = other.roomName_;
+    image_               = other.image_;
+    unreadNotifications_ = other.unreadNotifications_;
     return *this;
 }
 
@@ -65,7 +69,8 @@ QDBusArgument &
 operator<<(QDBusArgument &arg, const RoomInfoItem &item)
 {
     arg.beginStructure();
-    arg << item.roomId_ << item.alias_ << item.roomName_ << item.image_;
+    arg << item.roomId_ << item.alias_ << item.roomName_ << item.image_
+        << item.unreadNotifications_;
     arg.endStructure();
     return arg;
 }
@@ -74,7 +79,8 @@ const QDBusArgument &
 operator>>(const QDBusArgument &arg, RoomInfoItem &item)
 {
     arg.beginStructure();
-    arg >> item.roomId_ >> item.alias_ >> item.roomName_ >> item.image_;
+    arg >> item.roomId_ >> item.alias_ >> item.roomName_ >> item.image_ >>
+      item.unreadNotifications_;
     if (item.image_.isNull())
         item.image_ = QImage{QStringLiteral(":/icons/ui/speech-bubbles.svg")};
 

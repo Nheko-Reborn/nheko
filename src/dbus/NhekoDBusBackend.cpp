@@ -41,8 +41,8 @@ NhekoDBusBackend::getRooms(const QDBusMessage &message)
                       alias = QString::fromStdString(val.alt_aliases.front());
               }
 
-              model->push_back(
-                nheko::dbus::RoomInfoItem{room->roomId(), room->roomName(), alias, image});
+              model->push_back(nheko::dbus::RoomInfoItem{
+                room->roomId(), room->roomName(), alias, image, room->notificationCount()});
 
               if (model->length() == roomListModel.size()) {
                   auto reply = message.createReply();

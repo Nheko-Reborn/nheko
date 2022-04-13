@@ -30,11 +30,12 @@ class RoomInfoItem : public QObject
     Q_OBJECT
 
 public:
-    RoomInfoItem(const QString &roomId = QString{},
-                 const QString &alias  = QString{},
-                 const QString &title  = QString{},
-                 const QImage &image   = QImage{},
-                 QObject *parent       = nullptr);
+    RoomInfoItem(const QString &roomId         = QString{},
+                 const QString &alias          = QString{},
+                 const QString &title          = QString{},
+                 const QImage &image           = QImage{},
+                 const int unreadNotifications = 0,
+                 QObject *parent               = nullptr);
 
     RoomInfoItem(const RoomInfoItem &other);
 
@@ -42,6 +43,7 @@ public:
     const QString &alias() const { return alias_; }
     const QString &roomName() const { return roomName_; }
     const QImage &image() const { return image_; }
+    int unreadNotifications() const { return unreadNotifications_; }
 
     RoomInfoItem &operator=(const RoomInfoItem &other);
     friend QDBusArgument &operator<<(QDBusArgument &arg, const nheko::dbus::RoomInfoItem &item);
@@ -53,6 +55,7 @@ private:
     QString alias_;
     QString roomName_;
     QImage image_;
+    int unreadNotifications_;
 };
 
 QDBusArgument &
