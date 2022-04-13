@@ -153,6 +153,42 @@ Page {
                     roomid: model.id
                     displayName: model.displayName
                     color: communityItem.backgroundColor
+
+                    Rectangle {
+                        id: collapsedNotificationBubble
+
+                        visible: model.unreadMessages > 0 && communitySidebar.collapsed
+                        anchors.right: avatar.right
+                        anchors.bottom: avatar.bottom
+                        anchors.margins: -Nheko.paddingSmall
+                        height: collapsedNotificationBubbleText.height + Nheko.paddingMedium
+                        width: Math.max(collapsedNotificationBubbleText.width, height)
+                        radius: height / 2
+                        color: /*hasLoudNotification ? Nheko.theme.red :*/ communityItem.bubbleBackground
+                        ToolTip.text: model.unreadMessages
+                        ToolTip.delay: Nheko.tooltipDelay
+                        ToolTip.visible: collapsedNotificationBubbleHover.hovered && (model.unreadMessages > 9999)
+
+                        Label {
+                            id: collapsedNotificationBubbleText
+
+                            anchors.centerIn: parent
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            width: Math.max(implicitWidth + Nheko.paddingMedium, parent.height)
+                            font.bold: true
+                            font.pixelSize: fontMetrics.font.pixelSize * 0.6
+                            color: /*hasLoudNotification ? "white" :*/ communityItem.bubbleText
+                            text: model.unreadMessages > 9999 ? "9999+" : model.unreadMessages
+
+                            HoverHandler {
+                                id: collapsedNotificationBubbleHover
+                            }
+
+                        }
+
+                    }
+
                 }
 
                 ElidedLabel {
@@ -167,6 +203,40 @@ Page {
 
                 Item {
                     Layout.fillWidth: true
+                }
+
+                Rectangle {
+                    id: notificationBubble
+
+                    visible: model.unreadMessages > 0 && !communitySidebar.collapsed
+                    Layout.alignment: Qt.AlignRight
+                    Layout.leftMargin: Nheko.paddingSmall
+                    height: notificationBubbleText.height + Nheko.paddingMedium
+                    Layout.preferredWidth: Math.max(notificationBubbleText.width, height)
+                    radius: height / 2
+                    color: /*hasLoudNotification ? Nheko.theme.red :*/ communityItem.bubbleBackground
+                    ToolTip.text: model.unreadMessages
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.visible: notificationBubbleHover.hovered && (model.unreadMessages > 9999)
+
+                    Label {
+                        id: notificationBubbleText
+
+                        anchors.centerIn: parent
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        width: Math.max(implicitWidth + Nheko.paddingMedium, parent.height)
+                        font.bold: true
+                        font.pixelSize: fontMetrics.font.pixelSize * 0.8
+                        color: /*hasLoudNotification ? "white" :*/ communityItem.bubbleText
+                        text: model.unreadMessages > 9999 ? "9999+" : model.unreadMessages
+
+                        HoverHandler {
+                            id: notificationBubbleHover
+                        }
+
+                    }
+
                 }
 
             }

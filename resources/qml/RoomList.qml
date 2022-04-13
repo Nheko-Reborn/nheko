@@ -294,9 +294,6 @@ Page {
                 anchors.margins: Nheko.paddingMedium
 
                 Avatar {
-                    // In the future we could show an online indicator by setting the userid for the avatar
-                    //userid: Nheko.currentUser.userid
-
                     id: avatar
 
                     enabled: false

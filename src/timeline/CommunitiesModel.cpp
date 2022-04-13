@@ -9,12 +9,19 @@
 
 #include "Cache.h"
 #include "Cache_p.h"
+#include "ChatPage.h"
 #include "Logging.h"
 #include "UserSettingsPage.h"
 
 CommunitiesModel::CommunitiesModel(QObject *parent)
   : QAbstractListModel(parent)
-{}
+{
+    connect(ChatPage::instance(), &ChatPage::unreadMessages, this, [this](int) {
+        // Simply updating every space is easier than tracking which ones need updated.
+        if (!spaces_.empty())
+            emit dataChanged(index(2, 0), index(spaces_.size() + 2, 0), {Roles::UnreadMessages});
+    });
+}
 
 QHash<int, QByteArray>
 CommunitiesModel::roleNames() const
@@ -28,6 +35,7 @@ CommunitiesModel::roleNames() const
       {Hidden, "hidden"},
       {Depth, "depth"},
       {Id, "id"},
+      {UnreadMessages, "unreadMessages"},
     };
 }
 
@@ -70,6 +78,8 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             return 0;
         case CommunitiesModel::Roles::Id:
             return "";
+        case CommunitiesModel::Roles::UnreadMessages:
+            return 0;
         }
     } else if (index.row() == 1) {
         switch (role) {
@@ -91,9 +101,11 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             return 0;
         case CommunitiesModel::Roles::Id:
             return "dm";
+        case CommunitiesModel::Roles::UnreadMessages:
+            return 0;
         }
     } else if (index.row() - 2 < spaceOrder_.size()) {
-        auto id = spaceOrder_.tree.at(index.row() - 2).name;
+        auto id = spaceOrder_.tree.at(index.row() - 2).id;
         switch (role) {
         case CommunitiesModel::Roles::AvatarUrl:
             return QString::fromStdString(spaces_.at(id).avatar_url);
@@ -110,7 +122,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             return hiddentTagIds_.contains("space:" + id);
         case CommunitiesModel::Roles::Parent: {
             if (auto p = spaceOrder_.parent(index.row() - 2); p >= 0)
-                return spaceOrder_.tree[p].name;
+                return spaceOrder_.tree[p].id;
 
             return "";
         }
@@ -118,6 +130,8 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             return spaceOrder_.tree.at(index.row() - 2).depth;
         case CommunitiesModel::Roles::Id:
             return "space:" + id;
+        case CommunitiesModel::Roles::UnreadMessages:
+            return getChildNotifications(id);
         }
     } else if (index.row() - 2 < tags_.size() + spaceOrder_.size()) {
         auto tag = tags_.at(index.row() - 2 - spaceOrder_.size());
@@ -171,6 +185,8 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             return 0;
         case CommunitiesModel::Roles::Id:
             return "tag:" + tag;
+        case CommunitiesModel::Roles::UnreadMessages:
+            return 0;
         }
     }
     return QVariant();
@@ -279,6 +295,7 @@ CommunitiesModel::initializeSidebar()
 
     hiddentTagIds_ = UserSettings::instance()->hiddenTags();
     spaceOrder_.restoreCollapsed();
+
     endResetModel();
 
     emit tagsChanged();
@@ -298,12 +315,12 @@ CommunitiesModel::FlatTree::storeCollapsed()
 
     for (const auto &e : tree) {
         if (e.depth > depth) {
-            current.push_back(e.name);
+            current.push_back(e.id);
         } else if (e.depth == depth) {
-            current.back() = e.name;
+            current.back() = e.id;
         } else {
             current.pop_back();
-            current.back() = e.name;
+            current.back() = e.id;
         }
 
         if (e.collapsed)
@@ -323,12 +340,12 @@ CommunitiesModel::FlatTree::restoreCollapsed()
 
     for (auto &e : tree) {
         if (e.depth > depth) {
-            current.push_back(e.name);
+            current.push_back(e.id);
         } else if (e.depth == depth) {
-            current.back() = e.name;
+            current.back() = e.id;
         } else {
             current.pop_back();
-            current.back() = e.name;
+            current.back() = e.id;
         }
 
         if (elements.contains(current))
@@ -353,7 +370,6 @@ CommunitiesModel::sync(const mtx::responses::Sync &sync_)
     bool tagsUpdated = false;
 
     for (const auto &[roomid, room] : sync_.rooms.join) {
-        (void)roomid;
         for (const auto &e : room.account_data.events)
             if (std::holds_alternative<
                   mtx::events::AccountDataEvent<mtx::events::account_data::Tags>>(e)) {
@@ -392,7 +408,7 @@ CommunitiesModel::sync(const mtx::responses::Sync &sync_)
 }
 
 void
-CommunitiesModel::setCurrentTagId(QString tagId)
+CommunitiesModel::setCurrentTagId(const QString &tagId)
 {
     if (tagId.startsWith(QLatin1String("tag:"))) {
         auto tag = tagId.mid(4);
@@ -406,7 +422,7 @@ CommunitiesModel::setCurrentTagId(QString tagId)
     } else if (tagId.startsWith(QLatin1String("space:"))) {
         auto tag = tagId.mid(6);
         for (const auto &t : spaceOrder_.tree) {
-            if (t.name == tag) {
+            if (t.id == tag) {
                 this->currentTagId_ = tagId;
                 emit currentTagIdChanged(currentTagId_);
                 return;
@@ -447,6 +463,20 @@ CommunitiesModel::toggleTagId(QString tagId)
     }
 
     emit hiddenTagsChanged();
+}
+
+int
+CommunitiesModel::getChildNotifications(const QString &space_id) const
+{
+    auto children = cache::getRoomInfo(cache::client()->getChildRoomIds(space_id.toStdString()));
+    int total{0};
+    for (const auto &[child_id, child] : children) {
+        if (child.is_space)
+            total += getChildNotifications(child_id);
+        else
+            total += child.notification_count;
+    }
+    return total;
 }
 
 FilteredCommunitiesModel::FilteredCommunitiesModel(CommunitiesModel *model, QObject *parent)
