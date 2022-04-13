@@ -8,6 +8,7 @@
 #include <QDBusArgument>
 #include <QIcon>
 #include <QObject>
+#include <QVersionNumber>
 
 namespace nheko::dbus {
 
@@ -15,8 +16,14 @@ namespace nheko::dbus {
 void
 init();
 
-//! The current nheko D-Bus API version.
-const auto apiVersion{QStringLiteral("0.0.1")};
+//! The nheko D-Bus API version provided by this file. The API version number follows semantic
+//! versioning as defined by https://semver.org.
+const QVersionNumber apiVersion{0, 0, 1};
+
+//! Compare the installed Nheko API to the version that your client app targets to see if they
+//! are compatible.
+bool
+apiVersionIsCompatible(const QVersionNumber &clientAppVersion);
 
 class RoomInfoItem : public QObject
 {
@@ -59,6 +66,11 @@ QDBusArgument &
 operator<<(QDBusArgument &arg, const QImage &image);
 const QDBusArgument &
 operator>>(const QDBusArgument &arg, QImage &);
+
+QDBusArgument &
+operator<<(QDBusArgument &arg, const QVersionNumber &v);
+const QDBusArgument &
+operator>>(const QDBusArgument &arg, QVersionNumber &v);
 
 #define NHEKO_DBUS_SERVICE_NAME "io.github.Nheko-Reborn.nheko"
 
