@@ -21,15 +21,15 @@ RoomListDBusInterface::RoomListDBusInterface(RoomlistModel *parent)
 QVector<nheko::dbus::RoomInfoItem>
 RoomListDBusInterface::getRooms(const QDBusMessage &message)
 {
-    // Just in case a room is joined while the model is being built.
-    auto modelSize = m_parent->models.size();
-    auto model{new QVector<nheko::dbus::RoomInfoItem>};
+    const auto roomListModel = m_parent->models;
+    QSharedPointer<QVector<nheko::dbus::RoomInfoItem>> model{
+      new QVector<nheko::dbus::RoomInfoItem>};
 
-    for (const auto &room : std::as_const(m_parent->models)) {
+    for (const auto &room : roomListModel) {
         MainWindow::instance()->imageProvider()->download(
           room->roomAvatarUrl().remove("mxc://"),
           {128, 128},
-          [message, room, model, modelSize](
+          [message, room, model, roomListModel](
             const QString &, const QSize &, const QImage &image, const QString &) {
               const auto aliases = cache::client()->getRoomAliases(room->roomId().toStdString());
               QString alias;
@@ -44,14 +44,12 @@ RoomListDBusInterface::getRooms(const QDBusMessage &message)
               model->push_back(
                 nheko::dbus::RoomInfoItem{room->roomId(), room->roomName(), alias, image});
 
-              if (model->length() == modelSize) {
+              if (model->length() == roomListModel.size()) {
                   auto reply = message.createReply();
                   nhlog::ui()->debug("Sending {} rooms over D-Bus...", model->size());
                   reply << QVariant::fromValue(*model);
                   QDBusConnection::sessionBus().send(reply);
                   nhlog::ui()->debug("Rooms successfully sent to D-Bus.");
-
-                  delete model;
               }
           },
           false);
