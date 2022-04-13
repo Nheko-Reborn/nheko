@@ -55,7 +55,7 @@
 #include "voip/WebRTCSession.h"
 
 #ifdef NHEKO_DBUS_SYS
-#include "NhekoDBusInterface.h"
+#include "dbus/NhekoDBusApi.h"
 #endif
 
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)

@@ -604,13 +604,13 @@ elseif (WIN32)
 	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerWin.cpp src/wintoastlib.cpp)
 else ()
 	set(SRC_FILES ${SRC_FILES}
-		src/NhekoDBusInterface.cpp
-		src/notifications/ManagerLinux.cpp
-		src/timeline/RoomListDBusInterface.cpp
+        src/dbus/NhekoDBusApi.cpp
+        src/dbus/NhekoDBusBackend.cpp
+        src/notifications/ManagerLinux.cpp
 	)
     qt5_wrap_cpp(MOC_HEADERS
-		src/NhekoDBusInterface.h
-		src/timeline/RoomListDBusInterface.h
+        src/dbus/NhekoDBusApi.h
+        src/dbus/NhekoDBusBackend.h
 	)
 endif ()
 

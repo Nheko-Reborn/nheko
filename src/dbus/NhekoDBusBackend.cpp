@@ -2,24 +2,24 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "RoomListDBusInterface.h"
+#include "NhekoDBusBackend.h"
 
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MxcImageProvider.h"
-#include "RoomlistModel.h"
+#include "timeline/RoomlistModel.h"
 
 #include <QDBusConnection>
 
-RoomListDBusInterface::RoomListDBusInterface(RoomlistModel *parent)
+NhekoDBusBackend::NhekoDBusBackend(RoomlistModel *parent)
   : QObject{parent}
   , m_parent{parent}
 {}
 
 QVector<nheko::dbus::RoomInfoItem>
-RoomListDBusInterface::getRooms(const QDBusMessage &message)
+NhekoDBusBackend::getRooms(const QDBusMessage &message)
 {
     const auto roomListModel = m_parent->models;
     QSharedPointer<QVector<nheko::dbus::RoomInfoItem>> model{
@@ -59,28 +59,28 @@ RoomListDBusInterface::getRooms(const QDBusMessage &message)
 }
 
 void
-RoomListDBusInterface::activateRoom(const QString &alias) const
+NhekoDBusBackend::activateRoom(const QString &alias) const
 {
     bringWindowToTop();
     m_parent->setCurrentRoom(alias);
 }
 
 void
-RoomListDBusInterface::joinRoom(const QString &alias) const
+NhekoDBusBackend::joinRoom(const QString &alias) const
 {
     bringWindowToTop();
     ChatPage::instance()->joinRoom(alias);
 }
 
 void
-RoomListDBusInterface::startDirectChat(const QString &userId) const
+NhekoDBusBackend::startDirectChat(const QString &userId) const
 {
     bringWindowToTop();
     ChatPage::instance()->startChat(userId);
 }
 
 void
-RoomListDBusInterface::bringWindowToTop() const
+NhekoDBusBackend::bringWindowToTop() const
 {
     MainWindow::instance()->show();
     MainWindow::instance()->raise();

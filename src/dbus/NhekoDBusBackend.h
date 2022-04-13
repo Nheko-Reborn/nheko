@@ -2,22 +2,22 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#ifndef ROOMLISTDBUSINTERFACE_H
-#define ROOMLISTDBUSINTERFACE_H
+#ifndef NHEKODBUSBACKEND_H
+#define NHEKODBUSBACKEND_H
 
 #include <QDBusMessage>
 #include <QObject>
 
-#include "NhekoDBusInterface.h"
+#include "NhekoDBusApi.h"
 
 class RoomlistModel;
 
-class RoomListDBusInterface : public QObject
+class NhekoDBusBackend : public QObject
 {
     Q_OBJECT
 
 public:
-    RoomListDBusInterface(RoomlistModel *parent);
+    NhekoDBusBackend(RoomlistModel *parent);
 
 public slots:
     //! Get the nheko D-Bus API version.
@@ -38,4 +38,4 @@ private:
     RoomlistModel *m_parent;
 };
 
-#endif // ROOMLISTDBUSINTERFACE_H
+#endif // NHEKODBUSBACKEND_H

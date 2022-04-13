@@ -3,7 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "NhekoDBusInterface.h"
+#include "NhekoDBusApi.h"
 
 #include <QDBusMetaType>
 
