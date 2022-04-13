@@ -6,7 +6,6 @@
 #define ROOMLISTDBUSINTERFACE_H
 
 #include <QDBusMessage>
-#include <QMutex>
 #include <QObject>
 
 #include "NhekoDBusInterface.h"
