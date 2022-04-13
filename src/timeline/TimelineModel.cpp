@@ -349,10 +349,12 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
 {
     lastMessage_.timestamp = 0;
 
-    if (auto create =
-          cache::client()->getStateEvent<mtx::events::state::Create>(room_id_.toStdString()))
-        this->isSpace_ = create->content.type == mtx::events::state::room_type::space;
     this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
+
+    auto roomInfo            = cache::singleRoomInfo(room_id_.toStdString());
+    this->isSpace_           = roomInfo.is_space;
+    this->notification_count = roomInfo.notification_count;
+    this->highlight_count    = roomInfo.highlight_count;
 
     // this connection will simplify adding the plainRoomNameChanged() signal everywhere that it
     // needs to be

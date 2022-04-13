@@ -88,6 +88,9 @@ struct RoomInfo
     bool guest_access                      = false;
     //! The list of tags associated with this room
     std::vector<std::string> tags;
+
+    uint16_t highlight_count    = 0;
+    uint16_t notification_count = 0;
 };
 
 void

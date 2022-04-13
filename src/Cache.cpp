@@ -1543,18 +1543,12 @@ Cache::updateState(const std::string &room, const mtx::responses::StateEvents &s
     saveStateEvents(txn, statesdb, stateskeydb, membersdb, eventsDb, room, state.events);
 
     RoomInfo updatedInfo;
-    updatedInfo.name       = getRoomName(txn, statesdb, membersdb).toStdString();
-    updatedInfo.topic      = getRoomTopic(txn, statesdb).toStdString();
-    updatedInfo.avatar_url = getRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
-    updatedInfo.version    = getRoomVersion(txn, statesdb).toStdString();
-    updatedInfo.is_space   = getRoomIsSpace(txn, statesdb);
 
     {
         std::string_view data;
         if (roomsDb_.get(txn, room, data)) {
             try {
-                RoomInfo tmp     = json::parse(std::string_view(data.data(), data.size()));
-                updatedInfo.tags = tmp.tags;
+                RoomInfo updatedInfo = json::parse(std::string_view(data.data(), data.size()));
             } catch (const json::exception &e) {
                 nhlog::db()->warn("failed to parse room info: room_id ({}), {}: {}",
                                   room,
@@ -1563,6 +1557,12 @@ Cache::updateState(const std::string &room, const mtx::responses::StateEvents &s
             }
         }
     }
+
+    updatedInfo.name       = getRoomName(txn, statesdb, membersdb).toStdString();
+    updatedInfo.topic      = getRoomTopic(txn, statesdb).toStdString();
+    updatedInfo.avatar_url = getRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
+    updatedInfo.version    = getRoomVersion(txn, statesdb).toStdString();
+    updatedInfo.is_space   = getRoomIsSpace(txn, statesdb);
 
     roomsDb_.put(txn, room, json(updatedInfo).dump());
     updateSpaces(txn, {room}, {room});
@@ -1627,6 +1627,9 @@ Cache::saveState(const mtx::responses::Sync &res)
         updatedInfo.avatar_url = getRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
         updatedInfo.version    = getRoomVersion(txn, statesdb).toStdString();
         updatedInfo.is_space   = getRoomIsSpace(txn, statesdb);
+
+        updatedInfo.notification_count = room.second.unread_notifications.notification_count;
+        updatedInfo.highlight_count    = room.second.unread_notifications.highlight_count;
 
         if (updatedInfo.is_space) {
             bool space_updates = false;
@@ -4693,6 +4696,9 @@ to_json(json &j, const RoomInfo &info)
     j["join_rule"]    = info.join_rule;
     j["guest_access"] = info.guest_access;
 
+    j["notification_count"] = info.notification_count;
+    j["highlight_count"]    = info.highlight_count;
+
     if (info.member_count != 0)
         j["member_count"] = info.member_count;
 
@@ -4712,6 +4718,9 @@ from_json(const json &j, RoomInfo &info)
     info.is_space     = j.value("is_space", false);
     info.join_rule    = j.at("join_rule");
     info.guest_access = j.at("guest_access");
+
+    info.notification_count = j.value("notification_count", 0);
+    info.highlight_count    = j.value("highlight_count", 0);
 
     if (j.count("member_count"))
         info.member_count = j.at("member_count");
