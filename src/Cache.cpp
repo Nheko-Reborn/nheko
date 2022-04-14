@@ -1337,6 +1337,7 @@ Cache::runMigrations()
                        megolmSessionData[indexVal.dump()] = data.dump();
                    }
                }
+               cursor.close();
                inboundMegolmSessionDb.drop(txn, false);
                megolmSessionDataDb.drop(txn, false);
 
