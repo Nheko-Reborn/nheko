@@ -26,11 +26,8 @@ NhekoDBusBackend::getRooms(const QDBusMessage &message)
       new QVector<nheko::dbus::RoomInfoItem>};
 
     for (const auto &room : roomListModel) {
-        MainWindow::instance()->imageProvider()->download(
-          room->roomAvatarUrl().remove("mxc://"),
-          {96, 96},
-          [message, room, model, roomListModel](
-            const QString &, const QSize &, const QImage &image, const QString &) {
+        auto addRoom =
+          [room, roomListModelSize = roomListModel.size(), message, model](const QImage &image) {
               const auto aliases = cache::client()->getRoomAliases(room->roomId().toStdString());
               QString alias;
               if (aliases.has_value()) {
@@ -44,15 +41,26 @@ NhekoDBusBackend::getRooms(const QDBusMessage &message)
               model->push_back(nheko::dbus::RoomInfoItem{
                 room->roomId(), room->roomName(), alias, image, room->notificationCount()});
 
-              if (model->length() == roomListModel.size()) {
+              if (model->length() == roomListModelSize) {
                   auto reply = message.createReply();
                   nhlog::ui()->debug("Sending {} rooms over D-Bus...", model->size());
                   reply << QVariant::fromValue(*model);
                   QDBusConnection::sessionBus().send(reply);
                   nhlog::ui()->debug("Rooms successfully sent to D-Bus.");
               }
-          },
-          true);
+          };
+
+        auto avatarUrl = room->roomAvatarUrl();
+        if (avatarUrl.isEmpty())
+            addRoom(QImage());
+        else
+            MainWindow::instance()->imageProvider()->download(
+              avatarUrl.remove("mxc://"),
+              {96, 96},
+              [addRoom](const QString &, const QSize &, const QImage &image, const QString &) {
+                  addRoom(image);
+              },
+              true);
     }
 
     return {};

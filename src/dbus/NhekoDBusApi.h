@@ -75,6 +75,6 @@ operator<<(QDBusArgument &arg, const QVersionNumber &v);
 const QDBusArgument &
 operator>>(const QDBusArgument &arg, QVersionNumber &v);
 
-#define NHEKO_DBUS_SERVICE_NAME "io.github.Nheko-Reborn.nheko"
+#define NHEKO_DBUS_SERVICE_NAME "im.nheko.Nheko"
 
 #endif // NHEKODBUSAPI_H
