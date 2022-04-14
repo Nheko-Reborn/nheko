@@ -27,6 +27,7 @@
 #include "MxcImageProvider.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
+#include "dbus/NhekoDBusApi.h"
 
 NotificationsManager::NotificationsManager(QObject *parent)
   : QObject(parent)
@@ -268,50 +269,4 @@ NotificationsManager::notificationClosed(uint id, uint reason)
 {
     Q_UNUSED(reason);
     notificationIds.remove(id);
-}
-
-/**
- * Automatic marshaling of a QImage for org.freedesktop.Notifications.Notify
- *
- * This function is from the Clementine project (see
- * http://www.clementine-player.org) and licensed under the GNU General Public
- * License, version 3 or later.
- *
- * SPDX-FileCopyrightText: 2010 David Sansome <me@davidsansome.com>
- */
-QDBusArgument &
-operator<<(QDBusArgument &arg, const QImage &image)
-{
-    if (image.isNull()) {
-        arg.beginStructure();
-        arg << 0 << 0 << 0 << false << 0 << 0 << QByteArray();
-        arg.endStructure();
-        return arg;
-    }
-
-    QImage i = image.height() > 100 || image.width() > 100
-                 ? image.scaledToHeight(100, Qt::SmoothTransformation)
-                 : image;
-    i        = std::move(i).convertToFormat(QImage::Format_RGBA8888);
-
-    arg.beginStructure();
-    arg << i.width();
-    arg << i.height();
-    arg << i.bytesPerLine();
-    arg << i.hasAlphaChannel();
-    int channels = i.hasAlphaChannel() ? 4 : 3;
-    arg << i.depth() / channels;
-    arg << channels;
-    arg << QByteArray(reinterpret_cast<const char *>(i.bits()), i.sizeInBytes());
-    arg.endStructure();
-
-    return arg;
-}
-
-const QDBusArgument &
-operator>>(const QDBusArgument &arg, QImage &)
-{
-    // This is needed to link but shouldn't be called.
-    Q_ASSERT(0);
-    return arg;
 }

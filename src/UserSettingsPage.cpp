@@ -90,6 +90,8 @@ UserSettings::load(std::optional<QString> profile)
     privacyScreen_     = settings.value(QStringLiteral("user/privacy_screen"), false).toBool();
     privacyScreenTimeout_ =
       settings.value(QStringLiteral("user/privacy_screen_timeout"), 0).toInt();
+    exposeDBusApi_ = settings.value(QStringLiteral("user/expose_dbus_api"), false).toBool();
+
     mobileMode_ = settings.value(QStringLiteral("user/mobile_mode"), false).toBool();
     emojiFont_  = settings.value(QStringLiteral("user/emoji_font_family"), "emoji").toString();
     baseFontSize_ =
@@ -244,6 +246,17 @@ void
 UserSettings::setCollapsedSpaces(QList<QStringList> spaces)
 {
     collapsedSpaces_ = spaces;
+    save();
+}
+
+void
+UserSettings::setExposeDBusApi(bool state)
+{
+    if (exposeDBusApi_ == state)
+        return;
+
+    exposeDBusApi_ = state;
+    emit exposeDBusApiChanged(state);
     save();
 }
 
@@ -788,6 +801,7 @@ UserSettings::save()
     settings.setValue(QStringLiteral("use_identicon"), useIdenticon_);
     settings.setValue(QStringLiteral("open_image_external"), openImageExternal_);
     settings.setValue(QStringLiteral("open_video_external"), openVideoExternal_);
+    settings.setValue(QStringLiteral("expose_dbus_api"), exposeDBusApi_);
 
     settings.endGroup(); // user
 
@@ -972,6 +986,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("User signing key");
         case MasterKey:
             return tr("Master signing key");
+        case ExposeDBusApi:
+            return tr("Expose room information via D-Bus");
         }
     } else if (role == Value) {
         switch (index.row()) {
@@ -1091,6 +1107,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               .has_value();
         case MasterKey:
             return cache::secret(mtx::secret_storage::secrets::cross_signing_master).has_value();
+        case ExposeDBusApi:
+            return i->exposeDBusApi();
         }
     } else if (role == Description) {
         switch (index.row()) {
@@ -1235,6 +1253,12 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               "Your most important key. You don't need to have it cached, since not caching "
               "it makes it less likely it can be stolen and it is only needed to rotate your "
               "other signing keys.");
+        case ExposeDBusApi:
+            return tr("Allow third-party plugins and applications to load information about rooms "
+                      "you are in via D-Bus. "
+                      "This can have useful applications, but it also could be used for nefarious "
+                      "purposes. Enable at your own risk.\n\n"
+                      "This setting will take effect upon restart.");
         }
     } else if (role == Type) {
         switch (index.row()) {
@@ -1279,6 +1303,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case OnlyShareKeysWithVerifiedUsers:
         case ShareKeysWithTrustedUsers:
         case UseOnlineKeyBackup:
+        case ExposeDBusApi:
             return Toggle;
         case Profile:
         case UserId:
@@ -1711,6 +1736,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
             } else
                 return false;
         }
+        case ExposeDBusApi: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setExposeDBusApi(value.toBool());
+                return true;
+            } else
+                return false;
+        }
         }
     }
     return false;
@@ -1939,5 +1971,8 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(MainWindow::instance(), &MainWindow::secretsChanged, this, [this]() {
         emit dataChanged(index(OnlineBackupKey), index(MasterKey), {Value, Good});
+    });
+    connect(s.get(), &UserSettings::exposeDBusApiChanged, this, [this] {
+        emit dataChanged(index(ExposeDBusApi), index(ExposeDBusApi), {Value});
     });
 }

@@ -54,6 +54,10 @@ public:
     //! Show the chat page and start communicating with the given access token.
     void showChatPage();
 
+#ifdef NHEKO_DBUS_SYS
+    bool dbusAvailable() const { return dbusAvailable_; }
+#endif
+
 protected:
     void closeEvent(QCloseEvent *event);
     bool event(QEvent *event) override;
@@ -96,4 +100,8 @@ private:
     TrayIcon *trayIcon_;
 
     MxcImageProvider *imgProvider = nullptr;
+
+#ifdef NHEKO_DBUS_SYS
+    bool dbusAvailable_{false};
+#endif
 };

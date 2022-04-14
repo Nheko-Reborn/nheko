@@ -303,7 +303,6 @@ check_symbol_exists(backtrace_symbols_fd "execinfo.h" HAVE_BACKTRACE_SYMBOLS_FD)
 
 configure_file(cmake/nheko.h config/nheko.h)
 
-
 #
 # Declare source and header files.
 #
@@ -501,6 +500,11 @@ add_subdirectory(third_party/SingleApplication-3.3.2/)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
+# this must be defined here to make the moc work properly
+if (NOT APPLE AND NOT WIN32)
+	add_compile_definitions(NHEKO_DBUS_SYS)
+endif()
+
 qt5_wrap_cpp(MOC_HEADERS
 	# Dialogs
 	src/dialogs/FallbackAuth.h
@@ -599,7 +603,15 @@ elseif (WIN32)
 
 	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerWin.cpp src/wintoastlib.cpp)
 else ()
-	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerLinux.cpp)
+	set(SRC_FILES ${SRC_FILES}
+        src/dbus/NhekoDBusApi.cpp
+        src/dbus/NhekoDBusBackend.cpp
+        src/notifications/ManagerLinux.cpp
+	)
+    qt5_wrap_cpp(MOC_HEADERS
+        src/dbus/NhekoDBusApi.h
+        src/dbus/NhekoDBusBackend.h
+	)
 endif ()
 
 set(NHEKO_DEPS

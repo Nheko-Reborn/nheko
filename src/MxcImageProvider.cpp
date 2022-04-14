@@ -10,6 +10,7 @@
 #include <mtxclient/crypto/client.hpp>
 
 #include <QByteArray>
+#include <QCache>
 #include <QDir>
 #include <QFileInfo>
 #include <QPainter>
@@ -103,6 +104,12 @@ MxcImageProvider::download(const QString &id,
                            bool crop,
                            double radius)
 {
+    if (id.isEmpty()) {
+        nhlog::net()->warn("Attempted to download image with empty ID");
+        then(id, QSize{}, QImage{}, QString{});
+        return;
+    }
+
     std::optional<mtx::crypto::EncryptedFile> encryptionInfo;
     auto temp = infos.find("mxc://" + id);
     if (temp != infos.end())
@@ -264,6 +271,7 @@ MxcImageProvider::download(const QString &id,
                       image.setText(QStringLiteral("original filename"),
                                     QString::fromStdString(originalFilename));
                       image.setText(QStringLiteral("mxc url"), "mxc://" + id);
+
                       then(id, requestedSize, image, fileInfo.absoluteFilePath());
                       return;
                   }
@@ -276,6 +284,7 @@ MxcImageProvider::download(const QString &id,
                   image.setText(QStringLiteral("original filename"),
                                 QString::fromStdString(originalFilename));
                   image.setText(QStringLiteral("mxc url"), "mxc://" + id);
+
                   then(id, requestedSize, image, fileInfo.absoluteFilePath());
               });
         } catch (std::exception &e) {

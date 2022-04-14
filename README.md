@@ -43,6 +43,7 @@ Specifically there is support for:
 - Room switcher (ctrl-K).
 - Light, Dark & System themes.
 - Creating separate profiles (command line only, use `-p name`).
+- D-Bus API to allow integration with third-party plugins (does not support Windows or macOS).
 
 ## Installation
 
@@ -155,6 +156,12 @@ with [Chocolatey](https://chocolatey.org/):
 ```posh
 choco install nheko-reborn
 ```
+
+#### D-Bus plugins
+
+nheko does not provide binaries for any D-Bus plugins. However, we do provide the following list of known plugins:
+
+- [nheko-krunner](https://github.com/LorenDB/nheko-krunner)
 
 ### FAQ
 
@@ -409,7 +416,12 @@ Also copy the respective cmark.dll to the binary dir from `build/cmark-build/src
 
 ### Contributing
 
-See [CONTRIBUTING](.github/CONTRIBUTING.md)
+See [CONTRIBUTING](.github/CONTRIBUTING.md).
+
+### Using the D-Bus API
+
+Currently, there is no documentation for the D-Bus API, so if you'd like to make use of it, come ask
+for support in [#nheko:nheko.im](https://matrix.to/#/#nheko:nheko.im).
 
 ### Screens
 

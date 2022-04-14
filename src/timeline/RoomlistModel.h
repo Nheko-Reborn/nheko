@@ -17,6 +17,10 @@
 
 #include "TimelineModel.h"
 
+#ifdef NHEKO_DBUS_SYS
+#include "dbus/NhekoDBusBackend.h"
+#endif
+
 class TimelineViewManager;
 
 class RoomPreview
@@ -137,6 +141,11 @@ private:
     std::optional<RoomPreview> currentRoomPreview_;
 
     std::map<QString, std::vector<QString>> directChatToUser;
+
+#ifdef NHEKO_DBUS_SYS
+    NhekoDBusBackend *dbusInterface_;
+    friend class NhekoDBusBackend;
+#endif
 
     friend class FilteredRoomlistModel;
 };

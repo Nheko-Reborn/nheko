@@ -15,6 +15,10 @@
 #include "TimelineViewManager.h"
 #include "UserSettingsPage.h"
 
+#ifdef NHEKO_DBUS_SYS
+#include <QDBusConnection>
+#endif
+
 RoomlistModel::RoomlistModel(TimelineViewManager *parent)
   : QAbstractListModel(parent)
   , manager(parent)
@@ -604,6 +608,15 @@ RoomlistModel::initializeRooms()
     nhlog::db()->info("Restored {} rooms from cache", rowCount());
 
     endResetModel();
+
+#ifdef NHEKO_DBUS_SYS
+    if (MainWindow::instance()->dbusAvailable()) {
+        dbusInterface_ = new NhekoDBusBackend{this};
+        if (!QDBusConnection::sessionBus().registerObject(
+              "/", dbusInterface_, QDBusConnection::ExportScriptableSlots))
+            nhlog::ui()->warn("Failed to register rooms with D-Bus");
+    }
+#endif
 }
 
 void

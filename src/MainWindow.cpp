@@ -54,6 +54,10 @@
 #include "ui/UIA.h"
 #include "voip/WebRTCSession.h"
 
+#ifdef NHEKO_DBUS_SYS
+#include "dbus/NhekoDBusApi.h"
+#endif
+
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
 Q_DECLARE_METATYPE(std::vector<mtx::responses::PublicRoomsChunk>)
@@ -282,6 +286,18 @@ MainWindow::registerQmlTypes()
         engine()->addImageProvider(QStringLiteral("jdenticon"), new JdenticonProvider());
 
     QObject::connect(engine(), &QQmlEngine::quit, &QGuiApplication::quit);
+
+#ifdef NHEKO_DBUS_SYS
+    if (UserSettings::instance()->exposeDBusApi()) {
+        if (QDBusConnection::sessionBus().isConnected() &&
+            QDBusConnection::sessionBus().registerService(NHEKO_DBUS_SERVICE_NAME)) {
+            nheko::dbus::init();
+            nhlog::ui()->info("Initialized D-Bus");
+            dbusAvailable_ = true;
+        } else
+            nhlog::ui()->warn("Could not connect to D-Bus!");
+    }
+#endif
 }
 
 void
