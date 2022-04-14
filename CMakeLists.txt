@@ -324,7 +324,6 @@ set(SRC_FILES
 	src/timeline/Reaction.cpp
 	src/timeline/TimelineViewManager.cpp
 	src/timeline/TimelineModel.cpp
-	src/timeline/DelegateChooser.cpp
 	src/timeline/Permissions.cpp
 	src/timeline/PresenceEmitter.cpp
 	src/timeline/RoomlistModel.cpp
@@ -506,7 +505,7 @@ if (NOT APPLE AND NOT WIN32)
 	add_compile_definitions(NHEKO_DBUS_SYS)
 endif()
 
-qt_wrap_cpp(MOC_HEADERS
+set(MOC_HEADERS
 	# Dialogs
 	src/dialogs/FallbackAuth.h
 	src/dialogs/ReCaptcha.h
@@ -522,7 +521,6 @@ qt_wrap_cpp(MOC_HEADERS
 	src/timeline/Reaction.h
 	src/timeline/TimelineViewManager.h
 	src/timeline/TimelineModel.h
-	src/timeline/DelegateChooser.h
 	src/timeline/Permissions.h
 	src/timeline/PresenceEmitter.h
 	src/timeline/RoomlistModel.h
@@ -533,7 +531,6 @@ qt_wrap_cpp(MOC_HEADERS
 	src/ui/MxcMediaProxy.h
 	src/ui/NhekoCursorShape.h
 	src/ui/NhekoEventObserver.h
-	src/ui/NhekoDropArea.h
 	src/ui/NhekoGlobalObject.h
 	src/ui/RoomSettings.h
 	src/ui/Theme.h
@@ -646,6 +643,113 @@ endif()
 file(GLOB LANG_TS_SRC "${CMAKE_CURRENT_SOURCE_DIR}/resources/langs/*.ts")
 qt_add_translations(nheko RESOURCE_PREFIX "/translations" TS_FILES ${LANG_TS_SRC})
 
+set_property(TARGET nheko PROPERTY AUTOMOC ON)
+qt_add_qml_module(nheko
+	URI im.nheko2
+	RESOURCE_PREFIX "/"
+	VERSION 1.0
+	SOURCES
+	src/timeline/DelegateChooser.cpp
+	src/timeline/DelegateChooser.h
+	src/ui/NhekoDropArea.h
+	)
+qt_target_qml_sources(nheko
+	#PREFIX "/"
+	QML_FILES
+	qml/Avatar.qml
+	qml/ChatPage.qml
+	qml/ElidedLabel.qml
+	qml/EncryptionIndicator.qml
+	qml/ForwardCompleter.qml
+	qml/ImageButton.qml
+	qml/MatrixText.qml
+	qml/MatrixTextField.qml
+	qml/MessageInput.qml
+	qml/NhekoBusyIndicator.qml
+	qml/NotificationWarning.qml
+	qml/QuickSwitcher.qml
+	qml/Reactions.qml
+	qml/SelfVerificationCheck.qml
+	qml/StatusIndicator.qml
+	qml/ToggleButton.qml
+	qml/TypingIndicator.qml
+	qml/UploadBox.qml
+	qml/components/AdaptiveLayout.qml
+	qml/components/AdaptiveLayoutElement.qml
+	qml/components/AvatarListTile.qml
+	qml/components/MainWindowDialog.qml
+	qml/components/TextButton.qml
+	qml/components/FlatButton.qml
+	qml/delegates/Encrypted.qml
+	qml/delegates/FileMessage.qml
+	qml/delegates/NoticeMessage.qml
+	qml/delegates/Pill.qml
+	qml/delegates/Placeholder.qml
+	qml/delegates/Redacted.qml
+	qml/delegates/Reply.qml
+	qml/delegates/PlayableMediaMessage.qml
+	qml/delegates/ImageMessage.qml
+	qml/delegates/TextMessage.qml
+	qml/delegates/MessageDelegate.qml
+	qml/device-verification/DeviceVerification.qml
+	qml/device-verification/DigitVerification.qml
+	qml/device-verification/EmojiElement.qml
+	qml/device-verification/EmojiVerification.qml
+	qml/device-verification/Failed.qml
+	qml/device-verification/NewVerificationRequest.qml
+	qml/device-verification/Success.qml
+	qml/device-verification/Waiting.qml
+	qml/dialogs/HiddenEventsDialog.qml
+	qml/dialogs/ImageOverlay.qml
+	qml/dialogs/LeaveRoomDialog.qml
+	qml/dialogs/LogoutDialog.qml
+	qml/dialogs/CreateDirect.qml
+	qml/dialogs/CreateRoom.qml
+	qml/dialogs/ImagePackEditorDialog.qml
+	qml/dialogs/ImagePackSettingsDialog.qml
+	qml/dialogs/InputDialog.qml
+	qml/dialogs/InviteDialog.qml
+	qml/dialogs/JoinRoomDialog.qml
+	qml/dialogs/PhoneNumberInputDialog.qml
+	qml/dialogs/RawMessageDialog.qml
+	qml/dialogs/ReadReceipts.qml
+	qml/dialogs/RoomDirectory.qml
+	qml/dialogs/RoomMembers.qml
+	qml/dialogs/UserProfile.qml
+	qml/dialogs/RoomSettings.qml
+	qml/emoji/EmojiPicker.qml
+	qml/emoji/StickerPicker.qml
+	qml/pages/LoginPage.qml
+	qml/pages/RegisterPage.qml
+	qml/pages/WelcomePage.qml
+	qml/pages/UserSettingsPage.qml
+	qml/ui/NhekoSlider.qml
+	qml/ui/Snackbar.qml
+	qml/ui/animations/BlinkAnimation.qml
+	qml/ui/media/MediaControls.qml
+	qml/ui/Ripple.qml
+	qml/ui/Spinner.qml
+	qml/voip/ActiveCallBar.qml
+	qml/voip/CallDevices.qml
+	qml/voip/CallInvite.qml
+	qml/voip/CallInviteBar.qml
+	qml/voip/DeviceError.qml
+	qml/voip/PlaceCall.qml
+	qml/voip/ScreenShare.qml
+	qml/voip/VideoCall.qml
+	qml/PrivacyScreen.qml
+	qml/TimelineRow.qml
+	qml/Root.qml
+	qml/ReplyPopup.qml
+	qml/MessageView.qml
+	qml/RoomList.qml
+	qml/CommunitiesList.qml
+	qml/TopBar.qml
+	qml/Completer.qml
+	qml/TimelineView.qml
+	)
+
+
 if(APPLE)
 	target_link_libraries (nheko PRIVATE Qt5::MacExtras)
 elseif(WIN32)
@@ -660,7 +764,7 @@ else()
 		target_compile_definitions(nheko PRIVATE NHEKO_FLATPAK)
 	endif()
 endif()
-target_include_directories(nheko PRIVATE src includes third_party/blurhash third_party/cpp-httplib-0.5.12)
+target_include_directories(nheko PRIVATE src includes third_party/blurhash third_party/cpp-httplib-0.5.12 src/timeline src/ui)
 
 # Fixup bundled keychain include dirs
 if (USE_BUNDLED_QTKEYCHAIN)

@@ -9,6 +9,7 @@
 #pragma once
 
 #include <QQmlComponent>
+#include <QQmlEngine>
 #include <QQmlIncubator>
 #include <QQmlListProperty>
 #include <QQuickItem>
@@ -20,6 +21,7 @@ class QQmlAdaptorModel;
 class DelegateChoice : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_CLASSINFO("DefaultProperty", "delegate")
 
 public:
@@ -46,6 +48,7 @@ private:
 class DelegateChooser : public QQuickItem
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_CLASSINFO("DefaultProperty", "choices")
 
 public:

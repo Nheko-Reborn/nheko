@@ -3,11 +3,13 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import "./ui"
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import im.nheko 1.0
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import im.nheko
+import im.nheko2
+
+import "./ui/"
 
 Control {
     id: popup

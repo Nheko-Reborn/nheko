@@ -6,7 +6,8 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.2
-import im.nheko 1.0
+import im.nheko
+import im.nheko2
 
 Item {
     id: d

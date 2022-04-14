@@ -8,6 +8,7 @@
 class NhekoDropArea : public QQuickItem
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(QString roomid READ roomid WRITE setRoomid NOTIFY roomidChanged)
 public:
     NhekoDropArea(QQuickItem *parent = nullptr);

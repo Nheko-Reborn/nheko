@@ -42,13 +42,11 @@
 #include "emoji/Provider.h"
 #include "encryption/DeviceVerificationFlow.h"
 #include "encryption/SelfVerificationStatus.h"
-#include "timeline/DelegateChooser.h"
 #include "timeline/TimelineViewManager.h"
 #include "ui/HiddenEvents.h"
 #include "ui/MxcAnimatedImage.h"
 #include "ui/MxcMediaProxy.h"
 #include "ui/NhekoCursorShape.h"
-#include "ui/NhekoDropArea.h"
 #include "ui/NhekoEventObserver.h"
 #include "ui/NhekoGlobalObject.h"
 #include "ui/UIA.h"
@@ -81,7 +79,7 @@ MainWindow::MainWindow(QWindow *parent)
     registerQmlTypes();
 
     setColor(Theme::paletteFromTheme(userSettings_->theme()).window().color());
-    setSource(QUrl(QStringLiteral("qrc:///qml/Root.qml")));
+    setSource(QUrl(QStringLiteral("qrc:///im/nheko2/qml/Root.qml")));
 
     trayIcon_ = new TrayIcon(QStringLiteral(":/logos/nheko.svg"), this);
 
@@ -163,9 +161,6 @@ MainWindow::registerQmlTypes()
                                      "VerificationStatus",
                                      QStringLiteral("Can't instantiate enum!"));
 
-    qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
-    qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
-    qmlRegisterType<NhekoDropArea>("im.nheko", 1, 0, "NhekoDropArea");
     qmlRegisterType<NhekoCursorShape>("im.nheko", 1, 0, "CursorShape");
     qmlRegisterType<NhekoEventObserver>("im.nheko", 1, 0, "EventObserver");
     qmlRegisterType<MxcAnimatedImage>("im.nheko", 1, 0, "MxcAnimatedImage");
