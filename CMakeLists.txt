@@ -580,10 +580,13 @@ qt_wrap_cpp(MOC_HEADERS
 )
 
 #
-# Bundle translations.
+# Bundle resources
 #
-include(Translations)
-set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
+if(Qt5QuickCompiler_FOUND AND COMPILE_QML)
+	qtquick_compiler_add_resources(QRC resources/res.qrc)
+else()
+	qt_add_resources(QRC resources/res.qrc)
+endif()
 
 if (APPLE)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation -framework Cocoa -framework UserNotifications")
@@ -619,7 +622,7 @@ set(NHEKO_DEPS
 	${SRC_FILES}
 	${UI_HEADERS}
 	${MOC_HEADERS}
-	${TRANSLATION_DEPS}
+	${QRC}
 	${META_FILES_TO_INCLUDE})
 
 if(ASAN)
@@ -636,6 +639,12 @@ else()
 		set_target_properties(nheko PROPERTIES ENABLE_EXPORTS ON)
 	endif()
 endif()
+
+#
+# Bundle translations
+#
+file(GLOB LANG_TS_SRC "${CMAKE_CURRENT_SOURCE_DIR}/resources/langs/*.ts")
+qt_add_translations(nheko RESOURCE_PREFIX "/translations" TS_FILES ${LANG_TS_SRC})
 
 if(APPLE)
 	target_link_libraries (nheko PRIVATE Qt5::MacExtras)
