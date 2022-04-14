@@ -105,7 +105,7 @@ MxcImageProvider::download(const QString &id,
                            double radius)
 {
     if (id.isEmpty()) {
-        nhlog::net()->error("Attempted to download image with empty ID");
+        nhlog::net()->warn("Attempted to download image with empty ID");
         then(id, QSize{}, QImage{}, QString{});
         return;
     }
