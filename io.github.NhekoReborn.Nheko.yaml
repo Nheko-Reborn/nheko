@@ -1,7 +1,7 @@
 id: io.github.NhekoReborn.Nheko
 command: nheko
 runtime: org.kde.Platform
-runtime-version: '5.15-21.08'
+runtime-version: '6.2'
 sdk: org.kde.Sdk
 finish-args:
   - --device=dri
@@ -105,12 +105,13 @@ modules:
   - config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DBUILD_TEST_APPLICATION=OFF
-      - -DQTKEYCHAIN_STATIC=ON
+      - -DBUILD_WITH_QT6=ON
+      - -DBUILD_SHARED_LIBS=OFF
     buildsystem: cmake-ninja
     name: QtKeychain
     sources:
-      - commit: f59ac26be709fd2d8d7a062fab1cf1e67a93806c
-        tag: v0.13.1
+      - commit: c236f9241e37f1754879cf8726d59351a2b2b24a
+        tag: v0.13.2
         type: git
         url: https://github.com/frankosterfeld/qtkeychain.git
   - config-opts:
