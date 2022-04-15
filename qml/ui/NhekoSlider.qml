@@ -26,7 +26,7 @@ Slider {
         width: control.availableWidth - handle.width
         height: implicitHeight
         radius: height / 2
-        color: timelineRoot.palette.buttonText
+        color: timelineRoot.palette.placeholderText
 
         Rectangle {
             width: control.visualPosition * parent.width

@@ -72,6 +72,8 @@ MainWindow::MainWindow(QWindow *parent)
     registerQmlTypes();
 
     setColor(Theme::paletteFromTheme(userSettings_->theme()).window().color());
+    QApplication::setPalette(Theme::paletteFromTheme(userSettings_->theme()));
+
     setSource(QUrl(QStringLiteral("qrc:///im/nheko/qml/Root.qml")));
 
     trayIcon_ = new TrayIcon(QStringLiteral(":/logos/nheko.svg"), this);

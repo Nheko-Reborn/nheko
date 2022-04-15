@@ -63,7 +63,7 @@ Menu {
                 Layout.preferredWidth: 7 * 52 + 20 - 6
                 palette: timelineRoot.palette
                 background: null
-                placeholderTextColor: timelineRoot.palette.buttonText
+                placeholderTextColor: timelineRoot.palette.placeholderText
                 color: timelineRoot.palette.text
                 placeholderText: qsTr("Search")
                 selectByMouse: true
@@ -90,7 +90,7 @@ Menu {
                     id: clearSearch
 
                     visible: emojiSearch.text !== ''
-                    icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.buttonText)
+                    icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.placeholderText)
                     focusPolicy: Qt.NoFocus
                     onClicked: emojiSearch.clear()
                     hoverEnabled: true
@@ -105,7 +105,7 @@ Menu {
                     Image {
                         height: parent.height - 2 * Nheko.paddingSmall
                         width: height
-                        source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.buttonText)
+                        source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.placeholderText)
 
                         anchors {
                             verticalCenter: parent.verticalCenter
@@ -294,7 +294,7 @@ Menu {
                             mipmap: true
                             sourceSize.width: 32 * Screen.devicePixelRatio
                             sourceSize.height: 32 * Screen.devicePixelRatio
-                            source: "image://colorimage/" + modelData.image + "?" + (hovered ? timelineRoot.palette.highlight : timelineRoot.palette.buttonText)
+                            source: "image://colorimage/" + modelData.image + "?" + (hovered ? timelineRoot.palette.highlight : timelineRoot.palette.placeholderText)
                         }
 
                         background: Rectangle {

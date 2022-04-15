@@ -40,7 +40,7 @@ Image {
             case Crypto.Verified:
                 return sourceUrl + "green";
             case Crypto.TOFU:
-                return sourceUrl + timelineRoot.palette.buttonText;
+                return sourceUrl + timelineRoot.palette.placeholderText;
             default:
                 return sourceUrl + Nheko.theme.error;
             }

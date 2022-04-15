@@ -42,7 +42,7 @@ ApplicationWindow {
 
             property color background: timelineRoot.palette.window
             property color importantText: timelineRoot.palette.text
-            property color unimportantText: timelineRoot.palette.buttonText
+            property color unimportantText: timelineRoot.palette.placeholderText
             property int avatarSize: fontMetrics.height * 3.2
 
             color: background

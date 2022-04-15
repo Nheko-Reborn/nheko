@@ -167,7 +167,7 @@ Control {
 
                         Label {
                             text: "(" + model.userid + ")"
-                            color: model.index == popup.currentIndex ? timelineRoot.palette.highlightedText : timelineRoot.palette.buttonText
+                            color: model.index == popup.currentIndex ? timelineRoot.palette.highlightedText : timelineRoot.palette.placeholderText
                         }
 
                     }
@@ -224,7 +224,7 @@ Control {
 
                         Label {
                             text: "(" + model.packname + ")"
-                            color: model.index == popup.currentIndex ? timelineRoot.palette.highlightedText : timelineRoot.palette.buttonText
+                            color: model.index == popup.currentIndex ? timelineRoot.palette.highlightedText : timelineRoot.palette.placeholderText
                         }
 
                     }
@@ -289,7 +289,7 @@ Control {
 
                         Label {
                             text: "(" + model.roomAlias + ")"
-                            color: model.index == popup.currentIndex ? timelineRoot.palette.highlightedText : timelineRoot.palette.buttonText
+                            color: model.index == popup.currentIndex ? timelineRoot.palette.highlightedText : timelineRoot.palette.placeholderText
                             textFormat: Text.RichText
                         }
 

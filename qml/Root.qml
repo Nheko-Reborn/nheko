@@ -19,27 +19,7 @@ import im.nheko
 
 Pane {
     id: timelineRoot
-
-    palette {
-        windowText: "#caccd1"
-        button: "white"
-        light: "#caccd1"
-        dark: "#3c464d"
-        mid: "#202228"
-        text: "#caccd1"
-        brightText: "#f4f5f8"
-        base: "#202228"
-        window: "#2d3139"
-
-        alternateBase: "#2d3139"
-        highlight: "#38a3d8"
-        highlightedText: "#f4f5f8"
-        toolTipBase: timelineRoot.palette.base
-        toolTipText: timelineRoot.palette.text
-        link: "#38a3d8"
-        buttonText: "#828284"
-
-    }
+    
     background: null
     padding: 0
 

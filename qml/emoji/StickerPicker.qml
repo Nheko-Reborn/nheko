@@ -64,7 +64,7 @@ Menu {
                 Layout.preferredWidth: stickersPerRow * stickerDimPad + 20 - 6
                 palette: timelineRoot.palette
                 background: null
-                placeholderTextColor: timelineRoot.palette.buttonText
+                placeholderTextColor: timelineRoot.palette.placeholderText
                 color: timelineRoot.palette.text
                 placeholderText: qsTr("Search")
                 selectByMouse: true
@@ -88,7 +88,7 @@ Menu {
                     id: clearSearch
 
                     visible: emojiSearch.text !== ''
-                    icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.buttonText)
+                    icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.placeholderText)
                     focusPolicy: Qt.NoFocus
                     onClicked: emojiSearch.clear()
                     hoverEnabled: true
@@ -103,7 +103,7 @@ Menu {
                     Image {
                         height: parent.height - 2 * Nheko.paddingSmall
                         width: height
-                        source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.buttonText)
+                        source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.placeholderText)
 
                         anchors {
                             verticalCenter: parent.verticalCenter

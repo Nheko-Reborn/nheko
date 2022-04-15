@@ -98,7 +98,7 @@ ApplicationWindow {
 
                             Label {
                                 text: model.timestamp
-                                color: timelineRoot.palette.buttonText
+                                color: timelineRoot.palette.placeholderText
                                 font.pointSize: fontMetrics.font.pointSize * 0.9
                             }
 

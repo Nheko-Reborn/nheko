@@ -31,6 +31,8 @@ Theme::paletteFromTheme(QStringView theme)
             lightActive.setColor(QPalette::ToolTipText, lightActive.text().color());
             lightActive.setColor(QPalette::Link, QColor(0x00, 0x77, 0xb5));
             lightActive.setColor(QPalette::ButtonText, QColor(0x55, 0x54, 0x59));
+            lightActive.setColor(QPalette::PlaceholderText, QColor(0x55, 0x54, 0x59));
+
             return lightActive;
         }();
         return lightActive;
@@ -53,6 +55,8 @@ Theme::paletteFromTheme(QStringView theme)
             darkActive.setColor(QPalette::ToolTipText, darkActive.text().color());
             darkActive.setColor(QPalette::Link, QColor(0x38, 0xa3, 0xd8));
             darkActive.setColor(QPalette::ButtonText, QColor(0x82, 0x82, 0x84));
+            darkActive.setColor(QPalette::PlaceholderText, QColor(0x82, 0x82, 0x84));
+
             return darkActive;
         }();
         return darkActive;

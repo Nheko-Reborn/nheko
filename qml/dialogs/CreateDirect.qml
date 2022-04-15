@@ -63,7 +63,7 @@ ApplicationWindow {
             Label {
                 Layout.fillWidth: true
                 text: userID.text
-                color: timelineRoot.palette.buttonText
+                color: timelineRoot.palette.placeholderText
                 font.pointSize: fontMetrics.font.pointSize * 0.9
             }
         }

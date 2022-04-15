@@ -13,7 +13,7 @@ AbstractButton {
 
     property alias cursor: mouseArea.cursorShape
     property color highlightColor: timelineRoot.palette.highlight
-    property color buttonTextColor: timelineRoot.palette.buttonText
+    property color buttonTextColor: timelineRoot.palette.placeholderText
 
     focusPolicy: Qt.NoFocus
     width: buttonText.implicitWidth

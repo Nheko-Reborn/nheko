@@ -60,7 +60,7 @@ Page {
                         case MediaUpload.Image: return "image";
                         default: return "zip";
                     }
-                    source: (modelData.thumbnail != "") ? modelData.thumbnail : ("image://colorimage/:/icons/icons/ui/"+typeStr+".svg?" + timelineRoot.palette.buttonText)
+                    source: (modelData.thumbnail != "") ? modelData.thumbnail : ("image://colorimage/:/icons/icons/ui/"+typeStr+".svg?" + timelineRoot.palette.placeholderText)
                 }
                 MatrixTextField {
                     Layout.fillWidth: true

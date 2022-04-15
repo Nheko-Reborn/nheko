@@ -235,7 +235,7 @@ AbstractButton {
                     width: parent.iconSize
                     sourceSize.width: parent.iconSize * Screen.devicePixelRatio
                     sourceSize.height: parent.iconSize * Screen.devicePixelRatio
-                    source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == chat.model.edit) ? timelineRoot.palette.highlight : timelineRoot.palette.buttonText)
+                    source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == chat.model.edit) ? timelineRoot.palette.highlight : timelineRoot.palette.placeholderText)
                     ToolTip.visible: editHovered.hovered
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Edited")

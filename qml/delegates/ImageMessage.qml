@@ -35,7 +35,7 @@ AbstractButton {
 
         anchors.fill: parent
         visible: img.status != Image.Ready
-        source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + timelineRoot.palette.buttonText)
+        source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + timelineRoot.palette.placeholderText)
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         sourceSize.width: parent.width * Screen.devicePixelRatio

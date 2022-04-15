@@ -129,7 +129,7 @@ Page {
 
             property color backgroundColor: timelineRoot.palette.window
             property color importantText: timelineRoot.palette.text
-            property color unimportantText: timelineRoot.palette.buttonText
+            property color unimportantText: timelineRoot.palette.placeholderText
             property color bubbleBackground: timelineRoot.palette.highlight
             property color bubbleText: timelineRoot.palette.highlightedText
             required property string roomName
@@ -492,7 +492,7 @@ Page {
 
                     ElidedLabel {
                         Layout.alignment: Qt.AlignTop
-                        color: timelineRoot.palette.buttonText
+                        color: timelineRoot.palette.placeholderText
                         font.pointSize: fontMetrics.font.pointSize * 0.9
                         elideWidth: col.width
                         fullText: userInfoGrid.profile ? userInfoGrid.profile.userid : ""
@@ -547,7 +547,7 @@ Page {
 
                     Layout.margins: Nheko.paddingMedium
                     Layout.rightMargin: Nheko.paddingSmall
-                    color: timelineRoot.palette.buttonText
+                    color: timelineRoot.palette.placeholderText
                     Layout.fillWidth: true
                     text: {
                         switch (SelfVerificationStatus.status) {

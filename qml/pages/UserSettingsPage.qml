@@ -178,7 +178,7 @@ Rectangle {
                                     anchors.top: parent.top
                                     anchors.left: parent.left
                                     anchors.right: parent.right
-                                    color: timelineRoot.palette.buttonText
+                                    color: timelineRoot.palette.placeholderText
                                     height: 1
                                 }
                             }

@@ -137,7 +137,7 @@ ApplicationWindow {
 
                         Label {
                             text: model.mxid
-                            color: del.hovered ? timelineRoot.palette.brightText : timelineRoot.palette.buttonText
+                            color: del.hovered ? timelineRoot.palette.brightText : timelineRoot.palette.placeholderText
                             font.pointSize: fontMetrics.font.pointSize * 0.9
                         }
 

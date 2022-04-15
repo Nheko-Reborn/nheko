@@ -137,7 +137,7 @@ Rectangle {
 
                 selectByMouse: true
                 placeholderText: qsTr("Write a message...")
-                placeholderTextColor: timelineRoot.palette.buttonText
+                placeholderTextColor: timelineRoot.palette.placeholderText
                 color: timelineRoot.palette.text
                 width: textInput.width 
                 verticalAlignment: TextEdit.AlignVCenter

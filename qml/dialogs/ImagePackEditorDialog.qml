@@ -98,7 +98,7 @@ ApplicationWindow {
 
                     property color background: timelineRoot.palette.window
                     property color importantText: timelineRoot.palette.text
-                    property color unimportantText: timelineRoot.palette.buttonText
+                    property color unimportantText: timelineRoot.palette.placeholderText
                     property color bubbleBackground: timelineRoot.palette.highlight
                     property color bubbleText: timelineRoot.palette.highlightedText
                     required property string shortCode

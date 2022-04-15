@@ -152,7 +152,7 @@ ApplicationWindow {
 
                             ElidedLabel {
                                 fullText: model.mxid
-                                color: del.hovered ? timelineRoot.palette.brightText : timelineRoot.palette.buttonText
+                                color: del.hovered ? timelineRoot.palette.brightText : timelineRoot.palette.placeholderText
                                 font.pixelSize: Math.ceil(fontMetrics.font.pixelSize * 0.9)
                                 elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
                             }

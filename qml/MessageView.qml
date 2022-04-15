@@ -73,7 +73,7 @@ Item {
 
             background: Rectangle {
                 color: timelineRoot.palette.window
-                border.color: timelineRoot.palette.buttonText
+                border.color: timelineRoot.palette.placeholderText
                 border.width: 1
                 radius: padding
             }
@@ -108,7 +108,7 @@ Item {
                     id: editButton
 
                     visible: !!row.model && row.model.isEditable
-                    buttonTextColor: timelineRoot.palette.buttonText
+                    buttonTextColor: timelineRoot.palette.placeholderText
                     width: 16
                     hoverEnabled: true
                     image: ":/icons/icons/ui/edit.svg"
@@ -335,7 +335,7 @@ Item {
 
                     Label {
                         id: statusMsg
-                        color: timelineRoot.palette.buttonText
+                        color: timelineRoot.palette.placeholderText
                         text: Presence.userStatus(userId)
                         textFormat: Text.PlainText
                         elide: Text.ElideRight
@@ -768,7 +768,7 @@ Item {
         background: Rectangle {
             color: toEndButton.down ? timelineRoot.palette.highlight : timelineRoot.palette.button
             opacity: enabled ? 1 : 0.3
-            border.color: toEndButton.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.buttonText
+            border.color: toEndButton.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.placeholderText
             border.width: 1
             radius: toEndButton.radius
         }
@@ -789,7 +789,7 @@ Item {
             id: buttonImg
             anchors.fill: parent
             anchors.margins: Nheko.paddingMedium
-            source: "image://colorimage/:/icons/icons/ui/download.svg?" + (toEndButton.down ? timelineRoot.palette.highlightedText : timelineRoot.palette.buttonText)
+            source: "image://colorimage/:/icons/icons/ui/download.svg?" + (toEndButton.down ? timelineRoot.palette.highlightedText : timelineRoot.palette.placeholderText)
             fillMode: Image.PreserveAspectFit
         }
 

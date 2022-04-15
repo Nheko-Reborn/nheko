@@ -10,7 +10,7 @@ import im.nheko
 TextMessage {
     property bool isStateEvent
     font.italic: true
-    color: timelineRoot.palette.buttonText
+    color: timelineRoot.palette.placeholderText
     font.pointSize: isStateEvent? 0.8*Settings.fontSize : Settings.fontSize
     horizontalAlignment: isStateEvent? Text.AlignHCenter : undefined
 }
