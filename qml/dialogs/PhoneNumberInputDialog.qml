@@ -8,7 +8,7 @@ import ".."
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
-import im.nheko 1.0
+import im.nheko
 
 ApplicationWindow {
     id: inputDialog

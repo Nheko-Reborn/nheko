@@ -7,9 +7,9 @@
 
 #include <QAbstractListModel>
 #include <QSortFilterProxyModel>
+#include <QQmlEngine>
 
 #include <mtx/events/power_levels.hpp>
-
 #include "CacheStructs.h"
 
 class MemberListBackend : public QAbstractListModel
@@ -80,6 +80,8 @@ private:
 class MemberList : public QSortFilterProxyModel
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("MemberList needs to be instantiated from C++")
 
     Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
     Q_PROPERTY(int memberCount READ memberCount NOTIFY memberCountChanged)

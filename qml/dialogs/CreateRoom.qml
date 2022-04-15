@@ -8,7 +8,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.13
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
-import im.nheko 1.0
+import im.nheko
 
 ApplicationWindow {
     id: createRoomRoot

@@ -7,7 +7,7 @@ import "../"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
-import im.nheko 1.0
+import im.nheko
 
 Popup {
     modal: true
@@ -83,7 +83,7 @@ Popup {
                 onClicked: {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;
-                        CallManager.sendInvite(room.roomId, CallType.VOICE);
+                        CallManager.sendInvite(room.roomId, Voip.VOICE);
                         close();
                     }
                 }
@@ -97,7 +97,7 @@ Popup {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;
                         Settings.camera = cameraCombo.currentText;
-                        CallManager.sendInvite(room.roomId, CallType.VIDEO);
+                        CallManager.sendInvite(room.roomId, Voip.VIDEO);
                         close();
                     }
                 }

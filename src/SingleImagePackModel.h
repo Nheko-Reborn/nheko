@@ -7,6 +7,7 @@
 
 #include <QAbstractListModel>
 #include <QList>
+#include <QQmlEngine>
 #include <QUrl>
 
 #include <mtx/events/mscs/image_packs.hpp>
@@ -16,6 +17,8 @@
 class SingleImagePackModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("Needs to be instantiated from C++")
 
     Q_PROPERTY(QString roomid READ roomid CONSTANT)
     Q_PROPERTY(QString statekey READ statekey WRITE setStatekey NOTIFY statekeyChanged)

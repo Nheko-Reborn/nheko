@@ -333,7 +333,6 @@ set(SRC_FILES
 	src/ui/MxcAnimatedImage.cpp
 	src/ui/MxcMediaProxy.cpp
 	src/ui/NhekoCursorShape.cpp
-	src/ui/NhekoEventObserver.cpp
 	src/ui/NhekoDropArea.cpp
 	src/ui/NhekoGlobalObject.cpp
 	src/ui/RoomSettings.cpp
@@ -530,7 +529,6 @@ set(MOC_HEADERS
 	src/ui/MxcAnimatedImage.h
 	src/ui/MxcMediaProxy.h
 	src/ui/NhekoCursorShape.h
-	src/ui/NhekoEventObserver.h
 	src/ui/NhekoGlobalObject.h
 	src/ui/RoomSettings.h
 	src/ui/Theme.h
@@ -645,7 +643,7 @@ qt_add_translations(nheko RESOURCE_PREFIX "/translations" TS_FILES ${LANG_TS_SRC
 
 set_property(TARGET nheko PROPERTY AUTOMOC ON)
 qt_add_qml_module(nheko
-	URI im.nheko2
+	URI im.nheko
 	RESOURCE_PREFIX "/"
 	VERSION 1.0
 	SOURCES
@@ -749,6 +747,10 @@ qt_target_qml_sources(nheko
 	qml/TimelineView.qml
 	)
 
+if (NOT COMPILE_QML)
+	set_target_properties(nheko PROPERTIES QT_QMLCACHEGEN_ARGUMENTS "--only-bytecode")
+endif()
+
 
 if(APPLE)
 	target_link_libraries (nheko PRIVATE Qt5::MacExtras)
@@ -764,7 +766,7 @@ else()
 		target_compile_definitions(nheko PRIVATE NHEKO_FLATPAK)
 	endif()
 endif()
-target_include_directories(nheko PRIVATE src includes third_party/blurhash third_party/cpp-httplib-0.5.12 src/timeline src/ui)
+target_include_directories(nheko PRIVATE src includes third_party/blurhash third_party/cpp-httplib-0.5.12 src/timeline src/ui src/encryption src/emoji src/voip)
 
 # Fixup bundled keychain include dirs
 if (USE_BUNDLED_QTKEYCHAIN)

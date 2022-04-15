@@ -6,7 +6,7 @@
 import "../ui"
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import im.nheko 1.0 // for cursor shape
+import im.nheko // for cursor shape
 
 AbstractButton {
     id: button
@@ -33,7 +33,7 @@ AbstractButton {
         horizontalAlignment: Text.AlignHCenter
     }
 
-    CursorShape {
+    NhekoCursorShape {
         id: mouseArea
 
         anchors.fill: parent

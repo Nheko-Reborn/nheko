@@ -8,8 +8,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.15
-import im.nheko 1.0
-import im.nheko.EmojiModel 1.0
+import im.nheko
 
 Menu {
     id: emojiPopup
@@ -203,56 +202,56 @@ Menu {
                 // Display the normal categories
                 Repeater {
 
-                    model: ListModel {
+                    model: [
                         // TODO: Would like to get 'simple' icons for the categories
-                        ListElement {
-                            image: ":/icons/icons/emoji-categories/people.svg"
+                        {
+                            image: ":/icons/icons/emoji-categories/people.svg",
                             category: Emoji.Category.People
-                        }
+                        },
 
-                        ListElement {
-                            image: ":/icons/icons/emoji-categories/nature.svg"
+                        {
+                            image: ":/icons/icons/emoji-categories/nature.svg",
                             category: Emoji.Category.Nature
-                        }
+                        },
 
-                        ListElement {
-                            image: ":/icons/icons/emoji-categories/foods.svg"
+                        {
+                            image: ":/icons/icons/emoji-categories/foods.svg",
                             category: Emoji.Category.Food
-                        }
+                        },
 
-                        ListElement {
-                            image: ":/icons/icons/emoji-categories/activity.svg"
+                        {
+                            image: ":/icons/icons/emoji-categories/activity.svg",
                             category: Emoji.Category.Activity
-                        }
+                        },
 
-                        ListElement {
-                            image: ":/icons/icons/emoji-categories/travel.svg"
+                        {
+                            image: ":/icons/icons/emoji-categories/travel.svg",
                             category: Emoji.Category.Travel
-                        }
+                        },
 
-                        ListElement {
-                            image: ":/icons/icons/emoji-categories/objects.svg"
+                        {
+                            image: ":/icons/icons/emoji-categories/objects.svg",
                             category: Emoji.Category.Objects
-                        }
+                        },
 
-                        ListElement {
-                            image: ":/icons/icons/emoji-categories/symbols.svg"
+                        {
+                            image: ":/icons/icons/emoji-categories/symbols.svg",
                             category: Emoji.Category.Symbols
-                        }
+                        },
 
-                        ListElement {
-                            image: ":/icons/icons/emoji-categories/flags.svg"
+                        {
+                            image: ":/icons/icons/emoji-categories/flags.svg",
                             category: Emoji.Category.Flags
                         }
 
-                    }
+                    ]
 
                     delegate: AbstractButton {
                         Layout.preferredWidth: 36
                         Layout.preferredHeight: 36
                         hoverEnabled: true
                         ToolTip.text: {
-                            switch (model.category) {
+                            switch (modelData.category) {
                             case Emoji.Category.People:
                                 return qsTr('People');
                             case Emoji.Category.Nature:
@@ -274,7 +273,7 @@ Menu {
                         ToolTip.visible: hovered
                         onClicked: {
                             //emojiPopup.model.category = model.category;
-                            gridView.positionViewAtIndex(emojiPopup.model.sourceModel.categoryToIndex(model.category), GridView.Beginning);
+                            gridView.positionViewAtIndex(emojiPopup.model.sourceModel.categoryToIndex(modelData.category), GridView.Beginning);
                         }
 
                         MouseArea {
@@ -295,14 +294,14 @@ Menu {
                             mipmap: true
                             sourceSize.width: 32 * Screen.devicePixelRatio
                             sourceSize.height: 32 * Screen.devicePixelRatio
-                            source: "image://colorimage/" + model.image + "?" + (hovered ? timelineRoot.palette.highlight : timelineRoot.palette.buttonText)
+                            source: "image://colorimage/" + modelData.image + "?" + (hovered ? timelineRoot.palette.highlight : timelineRoot.palette.buttonText)
                         }
 
                         background: Rectangle {
                             anchors.fill: parent
-                            color: emojiPopup.model.category === model.category ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.2) : 'transparent'
+                            color: emojiPopup.model.category === modelData.category ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.2) : 'transparent'
                             radius: 5
-                            border.color: emojiPopup.model.category === model.category ? timelineRoot.palette.highlight : 'transparent'
+                            border.color: emojiPopup.model.category === modelData.category ? timelineRoot.palette.highlight : 'transparent'
                         }
 
                     }

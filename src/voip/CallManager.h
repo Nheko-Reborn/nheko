@@ -10,6 +10,7 @@
 
 #include <QMediaPlayer>
 #include <QObject>
+#include <QQmlEngine>
 #include <QString>
 #include <QStringList>
 #include <QTimer>
@@ -28,6 +29,9 @@ class QUrl;
 class CallManager : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
+
     Q_PROPERTY(bool haveCallInvite READ haveCallInvite NOTIFY newInviteState)
     Q_PROPERTY(bool isOnCall READ isOnCall NOTIFY newCallState)
     Q_PROPERTY(webrtc::CallType callType READ callType NOTIFY newInviteState)
@@ -44,6 +48,8 @@ class CallManager : public QObject
 
 public:
     CallManager(QObject *);
+
+    static CallManager *create(QQmlEngine *qmlEngine, QJSEngine *);
 
     bool haveCallInvite() const { return haveCallInvite_; }
     bool isOnCall() const { return session_.state() != webrtc::State::DISCONNECTED; }

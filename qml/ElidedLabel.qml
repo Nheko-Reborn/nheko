@@ -5,7 +5,7 @@
 
 import QtQuick 2.9
 import QtQuick.Controls 2.5
-import im.nheko 1.0
+import im.nheko
 
 Label {
     id: root

@@ -7,7 +7,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.2
-import im.nheko 1.0
+import im.nheko
 
 // FIXME(Nico): Don't use hardcoded colors.
 Button {

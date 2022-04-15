@@ -9,7 +9,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
-import im.nheko 1.0
+import im.nheko
 
 AbstractButton {
     id: r
@@ -164,7 +164,7 @@ AbstractButton {
                 duration: r.relatedEventCacheBuster, fromModel(Room.Duration) ?? 0
                 roomTopic: r.relatedEventCacheBuster, fromModel(Room.RoomTopic) ?? ""
                 roomName: r.relatedEventCacheBuster, fromModel(Room.RoomName) ?? ""
-                callType: r.relatedEventCacheBuster, fromModel(Room.CallType) ?? ""
+                callType: r.relatedEventCacheBuster, fromModel(Room.Voip) ?? ""
                 encryptionError: r.relatedEventCacheBuster, fromModel(Room.EncryptionError) ?? 0
                 relatedEventCacheBuster: r.relatedEventCacheBuster, fromModel(Room.RelatedEventCacheBuster) ?? 0
             }

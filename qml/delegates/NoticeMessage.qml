@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import QtQuick 2.5
-import im.nheko 1.0
+import im.nheko
 
 
 TextMessage {

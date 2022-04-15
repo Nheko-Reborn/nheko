@@ -7,7 +7,7 @@ import "../ui"
 import QtQuick 2.3
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.10
-import im.nheko 1.0
+import im.nheko
 
 Pane {
     property string title: qsTr("Waiting for other party…")

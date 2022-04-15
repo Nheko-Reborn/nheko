@@ -15,8 +15,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.13
 import im.nheko
-import im.nheko2
-import im.nheko.EmojiModel 1.0
+import im.nheko
 
 Item {
     id: timelineView
@@ -98,7 +97,7 @@ Item {
                     }
 
                     Loader {
-                        source: CallManager.isOnCall && CallManager.callType != CallType.VOICE ? "voip/VideoCall.qml" : ""
+                        source: CallManager.isOnCall && CallManager.callType != Voip.VOICE ? "voip/VideoCall.qml" : ""
                         onLoaded: TimelineManager.setVideoCallItem()
                     }
 
@@ -231,7 +230,7 @@ Item {
                 horizontalAlignment: TextEdit.AlignHCenter
                 onLinkActivated: Nheko.openLink(link)
 
-                CursorShape {
+                NhekoCursorShape {
                     anchors.fill: parent
                     cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
                 }

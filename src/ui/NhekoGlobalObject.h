@@ -8,6 +8,7 @@
 #include <QFontDatabase>
 #include <QObject>
 #include <QPalette>
+#include <QQmlEngine>
 
 #include "Theme.h"
 #include "UserProfile.h"
@@ -15,6 +16,8 @@
 class Nheko : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
     Q_PROPERTY(QPalette colors READ colors NOTIFY colorsChanged)
     Q_PROPERTY(QPalette inactiveColors READ inactiveColors NOTIFY colorsChanged)

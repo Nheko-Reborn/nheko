@@ -9,7 +9,7 @@ import QtMultimedia 5.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import im.nheko 1.0
+import im.nheko
 
 Rectangle {
     id: control

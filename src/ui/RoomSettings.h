@@ -6,6 +6,7 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 #include <QSet>
 #include <QString>
 
@@ -30,6 +31,9 @@ signals:
 class RoomSettings : public QObject
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(RoomSettingsModel)
+    QML_UNCREATABLE("RoomSettings needs to be instantiated from C++")
+
     Q_PROPERTY(QString roomId READ roomId CONSTANT)
     Q_PROPERTY(QString roomVersion READ roomVersion CONSTANT)
     Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)

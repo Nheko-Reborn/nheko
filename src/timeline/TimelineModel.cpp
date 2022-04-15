@@ -48,169 +48,166 @@ namespace {
 struct RoomEventType
 {
     template<class T>
-    qml_mtx_events::EventType operator()(const mtx::events::Event<T> &e)
+    MtxEvent::EventType operator()(const mtx::events::Event<T> &e)
     {
-        return qml_mtx_events::toRoomEventType(e.type);
+        return MtxEvent::toRoomEventType(e.type);
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Audio> &)
+    MtxEvent::EventType operator()(const mtx::events::Event<mtx::events::msg::Audio> &)
     {
-        return qml_mtx_events::EventType::AudioMessage;
+        return MtxEvent::EventType::AudioMessage;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Emote> &)
+    MtxEvent::EventType operator()(const mtx::events::Event<mtx::events::msg::Emote> &)
     {
-        return qml_mtx_events::EventType::EmoteMessage;
+        return MtxEvent::EventType::EmoteMessage;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::File> &)
+    MtxEvent::EventType operator()(const mtx::events::Event<mtx::events::msg::File> &)
     {
-        return qml_mtx_events::EventType::FileMessage;
+        return MtxEvent::EventType::FileMessage;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Image> &)
+    MtxEvent::EventType operator()(const mtx::events::Event<mtx::events::msg::Image> &)
     {
-        return qml_mtx_events::EventType::ImageMessage;
+        return MtxEvent::EventType::ImageMessage;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Notice> &)
+    MtxEvent::EventType operator()(const mtx::events::Event<mtx::events::msg::Notice> &)
     {
-        return qml_mtx_events::EventType::NoticeMessage;
+        return MtxEvent::EventType::NoticeMessage;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Text> &)
+    MtxEvent::EventType operator()(const mtx::events::Event<mtx::events::msg::Text> &)
     {
-        return qml_mtx_events::EventType::TextMessage;
+        return MtxEvent::EventType::TextMessage;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Video> &)
+    MtxEvent::EventType operator()(const mtx::events::Event<mtx::events::msg::Video> &)
     {
-        return qml_mtx_events::EventType::VideoMessage;
+        return MtxEvent::EventType::VideoMessage;
     }
-    qml_mtx_events::EventType
+    MtxEvent::EventType
     operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationRequest> &)
     {
-        return qml_mtx_events::EventType::KeyVerificationRequest;
+        return MtxEvent::EventType::KeyVerificationRequest;
     }
-    qml_mtx_events::EventType
+    MtxEvent::EventType
     operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationStart> &)
     {
-        return qml_mtx_events::EventType::KeyVerificationStart;
+        return MtxEvent::EventType::KeyVerificationStart;
     }
-    qml_mtx_events::EventType
-    operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationMac> &)
+    MtxEvent::EventType operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationMac> &)
     {
-        return qml_mtx_events::EventType::KeyVerificationMac;
+        return MtxEvent::EventType::KeyVerificationMac;
     }
-    qml_mtx_events::EventType
+    MtxEvent::EventType
     operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationAccept> &)
     {
-        return qml_mtx_events::EventType::KeyVerificationAccept;
+        return MtxEvent::EventType::KeyVerificationAccept;
     }
-    qml_mtx_events::EventType
+    MtxEvent::EventType
     operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationReady> &)
     {
-        return qml_mtx_events::EventType::KeyVerificationReady;
+        return MtxEvent::EventType::KeyVerificationReady;
     }
-    qml_mtx_events::EventType
+    MtxEvent::EventType
     operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationCancel> &)
     {
-        return qml_mtx_events::EventType::KeyVerificationCancel;
+        return MtxEvent::EventType::KeyVerificationCancel;
     }
-    qml_mtx_events::EventType
-    operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationKey> &)
+    MtxEvent::EventType operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationKey> &)
     {
-        return qml_mtx_events::EventType::KeyVerificationKey;
+        return MtxEvent::EventType::KeyVerificationKey;
     }
-    qml_mtx_events::EventType
+    MtxEvent::EventType
     operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationDone> &)
     {
-        return qml_mtx_events::EventType::KeyVerificationDone;
+        return MtxEvent::EventType::KeyVerificationDone;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Redacted> &)
+    MtxEvent::EventType operator()(const mtx::events::Event<mtx::events::msg::Redacted> &)
     {
-        return qml_mtx_events::EventType::Redacted;
+        return MtxEvent::EventType::Redacted;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::CallInvite> &)
+    MtxEvent::EventType operator()(const mtx::events::Event<mtx::events::msg::CallInvite> &)
     {
-        return qml_mtx_events::EventType::CallInvite;
+        return MtxEvent::EventType::CallInvite;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::CallAnswer> &)
+    MtxEvent::EventType operator()(const mtx::events::Event<mtx::events::msg::CallAnswer> &)
     {
-        return qml_mtx_events::EventType::CallAnswer;
+        return MtxEvent::EventType::CallAnswer;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::CallHangUp> &)
+    MtxEvent::EventType operator()(const mtx::events::Event<mtx::events::msg::CallHangUp> &)
     {
-        return qml_mtx_events::EventType::CallHangUp;
+        return MtxEvent::EventType::CallHangUp;
     }
-    qml_mtx_events::EventType
-    operator()(const mtx::events::Event<mtx::events::msg::CallCandidates> &)
+    MtxEvent::EventType operator()(const mtx::events::Event<mtx::events::msg::CallCandidates> &)
     {
-        return qml_mtx_events::EventType::CallCandidates;
+        return MtxEvent::EventType::CallCandidates;
     }
     // ::EventType::Type operator()(const Event<mtx::events::msg::Location> &e) { return
     // ::EventType::LocationMessage; }
 };
 }
 
-qml_mtx_events::EventType
-qml_mtx_events::toRoomEventType(mtx::events::EventType e)
+MtxEvent::EventType
+MtxEvent::toRoomEventType(mtx::events::EventType e)
 {
     using mtx::events::EventType;
     switch (e) {
     case EventType::RoomKeyRequest:
-        return qml_mtx_events::EventType::KeyRequest;
+        return MtxEvent::EventType::KeyRequest;
     case EventType::Reaction:
-        return qml_mtx_events::EventType::Reaction;
+        return MtxEvent::EventType::Reaction;
     case EventType::RoomAliases:
-        return qml_mtx_events::EventType::Aliases;
+        return MtxEvent::EventType::Aliases;
     case EventType::RoomAvatar:
-        return qml_mtx_events::EventType::Avatar;
+        return MtxEvent::EventType::Avatar;
     case EventType::RoomCanonicalAlias:
-        return qml_mtx_events::EventType::CanonicalAlias;
+        return MtxEvent::EventType::CanonicalAlias;
     case EventType::RoomCreate:
-        return qml_mtx_events::EventType::RoomCreate;
+        return MtxEvent::EventType::RoomCreate;
     case EventType::RoomEncrypted:
-        return qml_mtx_events::EventType::Encrypted;
+        return MtxEvent::EventType::Encrypted;
     case EventType::RoomEncryption:
-        return qml_mtx_events::EventType::Encryption;
+        return MtxEvent::EventType::Encryption;
     case EventType::RoomGuestAccess:
-        return qml_mtx_events::EventType::RoomGuestAccess;
+        return MtxEvent::EventType::RoomGuestAccess;
     case EventType::RoomHistoryVisibility:
-        return qml_mtx_events::EventType::RoomHistoryVisibility;
+        return MtxEvent::EventType::RoomHistoryVisibility;
     case EventType::RoomJoinRules:
-        return qml_mtx_events::EventType::RoomJoinRules;
+        return MtxEvent::EventType::RoomJoinRules;
     case EventType::RoomMember:
-        return qml_mtx_events::EventType::Member;
+        return MtxEvent::EventType::Member;
     case EventType::RoomMessage:
-        return qml_mtx_events::EventType::UnknownMessage;
+        return MtxEvent::EventType::UnknownMessage;
     case EventType::RoomName:
-        return qml_mtx_events::EventType::Name;
+        return MtxEvent::EventType::Name;
     case EventType::RoomPowerLevels:
-        return qml_mtx_events::EventType::PowerLevels;
+        return MtxEvent::EventType::PowerLevels;
     case EventType::RoomTopic:
-        return qml_mtx_events::EventType::Topic;
+        return MtxEvent::EventType::Topic;
     case EventType::RoomTombstone:
-        return qml_mtx_events::EventType::Tombstone;
+        return MtxEvent::EventType::Tombstone;
     case EventType::RoomRedaction:
-        return qml_mtx_events::EventType::Redaction;
+        return MtxEvent::EventType::Redaction;
     case EventType::RoomPinnedEvents:
-        return qml_mtx_events::EventType::PinnedEvents;
+        return MtxEvent::EventType::PinnedEvents;
     case EventType::Sticker:
-        return qml_mtx_events::EventType::Sticker;
+        return MtxEvent::EventType::Sticker;
     case EventType::Tag:
-        return qml_mtx_events::EventType::Tag;
+        return MtxEvent::EventType::Tag;
     case EventType::SpaceParent:
-        return qml_mtx_events::EventType::SpaceParent;
+        return MtxEvent::EventType::SpaceParent;
     case EventType::SpaceChild:
-        return qml_mtx_events::EventType::SpaceChild;
+        return MtxEvent::EventType::SpaceChild;
     case EventType::ImagePackInRoom:
-        return qml_mtx_events::ImagePackInRoom;
+        return MtxEvent::ImagePackInRoom;
     case EventType::ImagePackInAccountData:
-        return qml_mtx_events::ImagePackInAccountData;
+        return MtxEvent::ImagePackInAccountData;
     case EventType::ImagePackRooms:
-        return qml_mtx_events::ImagePackRooms;
+        return MtxEvent::ImagePackRooms;
     case EventType::Unsupported:
-        return qml_mtx_events::EventType::Unsupported;
+        return MtxEvent::EventType::Unsupported;
     default:
-        return qml_mtx_events::EventType::UnknownMessage;
+        return MtxEvent::EventType::UnknownMessage;
     }
 }
 
-qml_mtx_events::EventType
+MtxEvent::EventType
 toRoomEventType(const mtx::events::collections::TimelineEvents &event)
 {
     return std::visit(RoomEventType{}, event);
@@ -224,122 +221,122 @@ toRoomEventTypeString(const mtx::events::collections::TimelineEvents &event)
 }
 
 mtx::events::EventType
-qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
+MtxEvent::fromRoomEventType(MtxEvent::EventType t)
 {
     switch (t) {
     // Unsupported event
-    case qml_mtx_events::Unsupported:
+    case MtxEvent::Unsupported:
         return mtx::events::EventType::Unsupported;
 
     /// m.room_key_request
-    case qml_mtx_events::KeyRequest:
+    case MtxEvent::KeyRequest:
         return mtx::events::EventType::RoomKeyRequest;
     /// m.reaction:
-    case qml_mtx_events::Reaction:
+    case MtxEvent::Reaction:
         return mtx::events::EventType::Reaction;
     /// m.room.aliases
-    case qml_mtx_events::Aliases:
+    case MtxEvent::Aliases:
         return mtx::events::EventType::RoomAliases;
     /// m.room.avatar
-    case qml_mtx_events::Avatar:
+    case MtxEvent::Avatar:
         return mtx::events::EventType::RoomAvatar;
     /// m.call.invite
-    case qml_mtx_events::CallInvite:
+    case MtxEvent::CallInvite:
         return mtx::events::EventType::CallInvite;
     /// m.call.answer
-    case qml_mtx_events::CallAnswer:
+    case MtxEvent::CallAnswer:
         return mtx::events::EventType::CallAnswer;
     /// m.call.hangup
-    case qml_mtx_events::CallHangUp:
+    case MtxEvent::CallHangUp:
         return mtx::events::EventType::CallHangUp;
     /// m.call.candidates
-    case qml_mtx_events::CallCandidates:
+    case MtxEvent::CallCandidates:
         return mtx::events::EventType::CallCandidates;
     /// m.room.canonical_alias
-    case qml_mtx_events::CanonicalAlias:
+    case MtxEvent::CanonicalAlias:
         return mtx::events::EventType::RoomCanonicalAlias;
     /// m.room.create
-    case qml_mtx_events::RoomCreate:
+    case MtxEvent::RoomCreate:
         return mtx::events::EventType::RoomCreate;
     /// m.room.encrypted.
-    case qml_mtx_events::Encrypted:
+    case MtxEvent::Encrypted:
         return mtx::events::EventType::RoomEncrypted;
     /// m.room.encryption.
-    case qml_mtx_events::Encryption:
+    case MtxEvent::Encryption:
         return mtx::events::EventType::RoomEncryption;
     /// m.room.guest_access
-    case qml_mtx_events::RoomGuestAccess:
+    case MtxEvent::RoomGuestAccess:
         return mtx::events::EventType::RoomGuestAccess;
     /// m.room.history_visibility
-    case qml_mtx_events::RoomHistoryVisibility:
+    case MtxEvent::RoomHistoryVisibility:
         return mtx::events::EventType::RoomHistoryVisibility;
     /// m.room.join_rules
-    case qml_mtx_events::RoomJoinRules:
+    case MtxEvent::RoomJoinRules:
         return mtx::events::EventType::RoomJoinRules;
     /// m.room.member
-    case qml_mtx_events::Member:
+    case MtxEvent::Member:
         return mtx::events::EventType::RoomMember;
     /// m.room.name
-    case qml_mtx_events::Name:
+    case MtxEvent::Name:
         return mtx::events::EventType::RoomName;
     /// m.room.power_levels
-    case qml_mtx_events::PowerLevels:
+    case MtxEvent::PowerLevels:
         return mtx::events::EventType::RoomPowerLevels;
     /// m.room.tombstone
-    case qml_mtx_events::Tombstone:
+    case MtxEvent::Tombstone:
         return mtx::events::EventType::RoomTombstone;
     /// m.room.topic
-    case qml_mtx_events::Topic:
+    case MtxEvent::Topic:
         return mtx::events::EventType::RoomTopic;
     /// m.room.redaction
-    case qml_mtx_events::Redaction:
+    case MtxEvent::Redaction:
         return mtx::events::EventType::RoomRedaction;
     /// m.room.pinned_events
-    case qml_mtx_events::PinnedEvents:
+    case MtxEvent::PinnedEvents:
         return mtx::events::EventType::RoomPinnedEvents;
     /// m.widget
-    case qml_mtx_events::Widget:
+    case MtxEvent::Widget:
         return mtx::events::EventType::Widget;
     // m.sticker
-    case qml_mtx_events::Sticker:
+    case MtxEvent::Sticker:
         return mtx::events::EventType::Sticker;
     // m.tag
-    case qml_mtx_events::Tag:
+    case MtxEvent::Tag:
         return mtx::events::EventType::Tag;
     // m.space.parent
-    case qml_mtx_events::SpaceParent:
+    case MtxEvent::SpaceParent:
         return mtx::events::EventType::SpaceParent;
     // m.space.child
-    case qml_mtx_events::SpaceChild:
+    case MtxEvent::SpaceChild:
         return mtx::events::EventType::SpaceChild;
     /// m.room.message
-    case qml_mtx_events::AudioMessage:
-    case qml_mtx_events::EmoteMessage:
-    case qml_mtx_events::FileMessage:
-    case qml_mtx_events::ImageMessage:
-    case qml_mtx_events::LocationMessage:
-    case qml_mtx_events::NoticeMessage:
-    case qml_mtx_events::TextMessage:
-    case qml_mtx_events::VideoMessage:
-    case qml_mtx_events::Redacted:
-    case qml_mtx_events::UnknownMessage:
-    case qml_mtx_events::KeyVerificationRequest:
-    case qml_mtx_events::KeyVerificationStart:
-    case qml_mtx_events::KeyVerificationMac:
-    case qml_mtx_events::KeyVerificationAccept:
-    case qml_mtx_events::KeyVerificationCancel:
-    case qml_mtx_events::KeyVerificationKey:
-    case qml_mtx_events::KeyVerificationDone:
-    case qml_mtx_events::KeyVerificationReady:
+    case MtxEvent::AudioMessage:
+    case MtxEvent::EmoteMessage:
+    case MtxEvent::FileMessage:
+    case MtxEvent::ImageMessage:
+    case MtxEvent::LocationMessage:
+    case MtxEvent::NoticeMessage:
+    case MtxEvent::TextMessage:
+    case MtxEvent::VideoMessage:
+    case MtxEvent::Redacted:
+    case MtxEvent::UnknownMessage:
+    case MtxEvent::KeyVerificationRequest:
+    case MtxEvent::KeyVerificationStart:
+    case MtxEvent::KeyVerificationMac:
+    case MtxEvent::KeyVerificationAccept:
+    case MtxEvent::KeyVerificationCancel:
+    case MtxEvent::KeyVerificationKey:
+    case MtxEvent::KeyVerificationDone:
+    case MtxEvent::KeyVerificationReady:
         return mtx::events::EventType::RoomMessage;
         //! m.image_pack, currently im.ponies.room_emotes
-    case qml_mtx_events::ImagePackInRoom:
+    case MtxEvent::ImagePackInRoom:
         return mtx::events::EventType::ImagePackInRoom;
     //! m.image_pack, currently im.ponies.user_emotes
-    case qml_mtx_events::ImagePackInAccountData:
+    case MtxEvent::ImagePackInAccountData:
         return mtx::events::EventType::ImagePackInAccountData;
     //! m.image_pack.rooms, currently im.ponies.emote_rooms
-    case qml_mtx_events::ImagePackRooms:
+    case MtxEvent::ImagePackRooms:
         return mtx::events::EventType::ImagePackRooms;
     default:
         return mtx::events::EventType::Unsupported;
@@ -676,13 +673,13 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
 
         // only show read receipts for messages not from us
         if (acc::sender(event) != http::client()->user_id().to_string())
-            return qml_mtx_events::Empty;
+            return MtxEvent::Empty;
         else if (!id.isEmpty() && id[0] == 'm')
-            return qml_mtx_events::Sent;
+            return MtxEvent::Sent;
         else if (read.contains(id) || containsOthers(cache::readReceipts(id, room_id_)))
-            return qml_mtx_events::Read;
+            return MtxEvent::Read;
         else
-            return qml_mtx_events::Received;
+            return MtxEvent::Received;
     }
     case IsEdited:
         return {relations(event).replaces().has_value()};
@@ -1527,14 +1524,14 @@ TimelineModel::saveMedia(const QString &eventId) const
 
     auto encryptionInfo = mtx::accessors::file(*event);
 
-    qml_mtx_events::EventType eventType = toRoomEventType(*event);
+    MtxEvent::EventType eventType = toRoomEventType(*event);
 
     QString dialogTitle;
-    if (eventType == qml_mtx_events::EventType::ImageMessage) {
+    if (eventType == MtxEvent::EventType::ImageMessage) {
         dialogTitle = tr("Save image");
-    } else if (eventType == qml_mtx_events::EventType::VideoMessage) {
+    } else if (eventType == MtxEvent::EventType::VideoMessage) {
         dialogTitle = tr("Save video");
-    } else if (eventType == qml_mtx_events::EventType::AudioMessage) {
+    } else if (eventType == MtxEvent::EventType::AudioMessage) {
         dialogTitle = tr("Save audio");
     } else {
         dialogTitle = tr("Save file");

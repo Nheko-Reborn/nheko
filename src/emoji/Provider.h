@@ -7,6 +7,7 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 #include <QSet>
 #include <QString>
 #include <QVector>
@@ -18,6 +19,8 @@ Q_NAMESPACE
 struct Emoji
 {
     Q_GADGET
+    QML_ELEMENT
+
 public:
     enum class Category
     {

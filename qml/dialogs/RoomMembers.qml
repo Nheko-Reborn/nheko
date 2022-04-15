@@ -9,7 +9,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Window 2.13
-import im.nheko 1.0
+import im.nheko
 
 ApplicationWindow {
     id: roomMembersRoot
@@ -187,7 +187,7 @@ ApplicationWindow {
 
                     }
 
-                    CursorShape {
+                    NhekoCursorShape {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
                     }

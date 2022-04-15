@@ -6,7 +6,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.1
 import QtQuick.Window 2.15
-import im.nheko 1.0
+import im.nheko
 
 Image {
     id: stateImg

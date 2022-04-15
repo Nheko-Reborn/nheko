@@ -5,7 +5,7 @@
 
 import QtQuick 2.12
 import QtQuick.Layouts 1.2
-import im.nheko 1.0
+import im.nheko
 
 Item {
     required property string eventId
@@ -51,7 +51,7 @@ Item {
                 gesturePolicy: TapHandler.ReleaseWithinBounds
             }
 
-            CursorShape {
+            NhekoCursorShape {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
             }

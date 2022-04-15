@@ -8,7 +8,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.15
-import im.nheko 1.0
+import im.nheko
 
 import "./delegates"
 
@@ -26,7 +26,7 @@ Pane {
     property string directChatOtherUserId: room ? room.directChatOtherUserId : ""
 
     Layout.fillWidth: true
-    implicitHeight: topLayout.height + Nheko.paddingMedium * 2
+    implicitHeight: topBarC.height + Nheko.paddingMedium * 2
     z: 3
 
     padding: 0
@@ -71,8 +71,7 @@ Pane {
 
     contentItem: Item {
         GridLayout {
-            id: topLayout
-
+            id: topBarC
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: Nheko.paddingMedium
@@ -344,7 +343,7 @@ Pane {
             }
         }
 
-        CursorShape {
+        NhekoCursorShape {
             anchors.fill: parent
             anchors.bottomMargin: (pinnedMessages.visible ? pinnedMessages.height : 0) + (widgets.visible ? widgets.height : 0)
             cursorShape: Qt.PointingHandCursor

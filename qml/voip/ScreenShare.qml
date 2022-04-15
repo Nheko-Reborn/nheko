@@ -7,7 +7,7 @@ import "../"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
-import im.nheko 1.0
+import im.nheko
 
 Popup {
     modal: true
@@ -132,7 +132,7 @@ Popup {
                     Settings.screenShareRemoteVideo = remoteVideoCheckBox.checked;
                     Settings.screenShareHideCursor = hideCursorCheckBox.checked;
 
-                    CallManager.sendInvite(room.roomId, CallType.SCREEN, windowCombo.currentIndex);
+                    CallManager.sendInvite(room.roomId, Voip.SCREEN, windowCombo.currentIndex);
                     close();
                 }
             }

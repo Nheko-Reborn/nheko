@@ -7,6 +7,7 @@
 
 #include <QAbstractListModel>
 #include <QHash>
+#include <QQmlEngine>
 #include <QString>
 #include <string>
 #include <vector>
@@ -27,6 +28,7 @@ struct PublicRooms;
 class RoomDirectoryModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(bool loadingMoreRooms READ loadingMoreRooms NOTIFY loadingMoreRoomsChanged)
     Q_PROPERTY(

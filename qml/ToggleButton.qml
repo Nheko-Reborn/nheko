@@ -6,7 +6,7 @@
 import QtQuick 2.5
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import im.nheko 1.0
+import im.nheko
 
 Switch {
     id: toggleButton

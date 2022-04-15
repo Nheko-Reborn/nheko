@@ -10,7 +10,8 @@ import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
-import im.nheko 1.0
+import im.nheko
+import im.nheko
 
 ApplicationWindow {
     id: roomSettingsDialog
@@ -165,7 +166,7 @@ ApplicationWindow {
                         onSingleTapped: TimelineManager.openRoomMembers(Rooms.getRoomById(roomSettings.roomId))
                     }
 
-                    CursorShape {
+                    NhekoCursorShape {
                         cursorShape: Qt.PointingHandCursor
                         anchors.fill: parent
                     }
@@ -196,7 +197,7 @@ ApplicationWindow {
                 horizontalAlignment: TextEdit.AlignHCenter
                 onLinkActivated: Nheko.openLink(link)
 
-                CursorShape {
+                NhekoCursorShape {
                     anchors.fill: parent
                     cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
                 }

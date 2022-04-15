@@ -8,7 +8,7 @@ import "../ui"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
-import im.nheko 1.0
+import im.nheko
 
 ApplicationWindow {
     id: roomDirectoryWindow

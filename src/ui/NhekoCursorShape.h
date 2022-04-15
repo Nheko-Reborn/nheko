@@ -8,11 +8,13 @@
 // see
 // https://stackoverflow.com/questions/27821054/how-to-change-cursor-shape-in-qml-when-mousearea-is-covered-with-another-mousear/29382092#29382092
 
+#include <QQmlEngine>
 #include <QQuickItem>
 
 class NhekoCursorShape : public QQuickItem
 {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(
       Qt::CursorShape cursorShape READ cursorShape WRITE setCursorShape NOTIFY cursorShapeChanged)

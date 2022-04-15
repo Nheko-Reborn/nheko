@@ -6,6 +6,7 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 
 #include <mtx/responses/crypto.hpp>
 #include <nlohmann/json.hpp>
@@ -62,6 +63,9 @@ using sas_ptr = std::unique_ptr<mtx::crypto::SAS>;
 class DeviceVerificationFlow : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("Needs to be instantiated from C++")
+
     Q_PROPERTY(QString state READ state NOTIFY stateChanged)
     Q_PROPERTY(Error error READ error NOTIFY errorChanged)
     Q_PROPERTY(QString userId READ getUserId CONSTANT)

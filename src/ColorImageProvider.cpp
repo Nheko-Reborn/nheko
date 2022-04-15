@@ -23,10 +23,12 @@ ColorImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &)
     QColor color(args[1]);
 
     QPixmap colorized = source;
-    QPainter painter(&colorized);
-    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
-    painter.fillRect(colorized.rect(), color);
-    painter.end();
+    if (!source.isNull()) {
+        QPainter painter(&colorized);
+        painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+        painter.fillRect(colorized.rect(), color);
+        painter.end();
+    }
 
     return colorized;
 }

@@ -6,6 +6,7 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 
 #include <map>
 #include <mutex>
@@ -17,6 +18,8 @@
 
 namespace crypto {
 Q_NAMESPACE
+QML_NAMED_ELEMENT(Crypto)
+
 //! How much a participant is trusted.
 enum Trust
 {

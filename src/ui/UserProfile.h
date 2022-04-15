@@ -7,6 +7,7 @@
 
 #include <QAbstractListModel>
 #include <QObject>
+#include <QQmlEngine>
 #include <QString>
 #include <QVector>
 #include <mtx/responses.hpp>
@@ -17,6 +18,7 @@
 
 namespace verification {
 Q_NAMESPACE
+QML_NAMED_ELEMENT(VerificationStatus)
 
 enum Status
 {
@@ -106,6 +108,9 @@ private:
 class UserProfile : public QObject
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(UserProfileModel)
+    QML_UNCREATABLE("UserProfile needs to be instantiated from C++")
+
     Q_PROPERTY(QString displayName READ displayName NOTIFY displayNameChanged)
     Q_PROPERTY(QString userid READ userid CONSTANT)
     Q_PROPERTY(QString avatarUrl READ avatarUrl NOTIFY avatarUrlChanged)

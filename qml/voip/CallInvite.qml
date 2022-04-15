@@ -7,7 +7,7 @@ import "../"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
-import im.nheko 1.0
+import im.nheko
 
 Popup {
     id: callInv
@@ -64,7 +64,7 @@ Popup {
             Layout.bottomMargin: callInv.height / 25
 
             Image {
-                property string image: CallManager.callType == CallType.VIDEO ? ":/icons/icons/ui/video.svg" : ":/icons/icons/ui/place-call.svg"
+                property string image: CallManager.callType == Voip.VIDEO ? ":/icons/icons/ui/video.svg" : ":/icons/icons/ui/place-call.svg"
 
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: callInv.height / 10
@@ -74,7 +74,7 @@ Popup {
 
             Label {
                 Layout.alignment: Qt.AlignCenter
-                text: CallManager.callType == CallType.VIDEO ? qsTr("Video Call") : qsTr("Voice Call")
+                text: CallManager.callType == Voip.VIDEO ? qsTr("Video Call") : qsTr("Voice Call")
                 font.pointSize: fontMetrics.font.pointSize * 2
                 color: timelineRoot.palette.windowText
             }
@@ -108,7 +108,7 @@ Popup {
             }
 
             RowLayout {
-                visible: CallManager.callType == CallType.VIDEO && CallManager.cameras.length > 0
+                visible: CallManager.callType == Voip.VIDEO && CallManager.cameras.length > 0
                 Layout.alignment: Qt.AlignCenter
 
                 Image {
@@ -171,7 +171,7 @@ Popup {
             RoundButton {
                 id: acceptButton
 
-                property string image: CallManager.callType == CallType.VIDEO ? ":/icons/icons/ui/video.svg" : ":/icons/icons/ui/place-call.svg"
+                property string image: CallManager.callType == Voip.VIDEO ? ":/icons/icons/ui/video.svg" : ":/icons/icons/ui/place-call.svg"
 
                 implicitWidth: buttonLayout.buttonSize
                 implicitHeight: buttonLayout.buttonSize

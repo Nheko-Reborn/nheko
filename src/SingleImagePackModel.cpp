@@ -184,8 +184,7 @@ SingleImagePackModel::canEdit() const
     if (roomid_.empty())
         return true;
     else
-        return Permissions(QString::fromStdString(roomid_))
-          .canChange(qml_mtx_events::ImagePackInRoom);
+        return Permissions(QString::fromStdString(roomid_)).canChange(MtxEvent::ImagePackInRoom);
 }
 
 void

@@ -46,7 +46,7 @@ HiddenEvents::load()
 Q_INVOKABLE void
 HiddenEvents::toggle(int type)
 {
-    auto t = qml_mtx_events::fromRoomEventType(static_cast<qml_mtx_events::EventType>(type));
+    auto t = MtxEvent::fromRoomEventType(static_cast<MtxEvent::EventType>(type));
     if (auto it = std::find(begin(hiddenEvents_), end(hiddenEvents_), t); it != end(hiddenEvents_))
         hiddenEvents_.erase(it);
     else
@@ -59,7 +59,7 @@ HiddenEvents::hiddenEvents() const
 {
     QVariantList l;
     for (const auto &e : hiddenEvents_) {
-        l.push_back(qml_mtx_events::toRoomEventType(e));
+        l.push_back(MtxEvent::toRoomEventType(e));
     }
 
     return l;

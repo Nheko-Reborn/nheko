@@ -52,15 +52,15 @@ bool
 Permissions::canChange(int eventType)
 {
     return pl.user_level(http::client()->user_id().to_string()) >=
-           pl.state_level(to_string(
-             qml_mtx_events::fromRoomEventType(static_cast<qml_mtx_events::EventType>(eventType))));
+           pl.state_level(
+             to_string(MtxEvent::fromRoomEventType(static_cast<MtxEvent::EventType>(eventType))));
 }
 bool
 Permissions::canSend(int eventType)
 {
     return pl.user_level(http::client()->user_id().to_string()) >=
-           pl.event_level(to_string(
-             qml_mtx_events::fromRoomEventType(static_cast<qml_mtx_events::EventType>(eventType))));
+           pl.event_level(
+             to_string(MtxEvent::fromRoomEventType(static_cast<MtxEvent::EventType>(eventType))));
 }
 
 bool

@@ -298,11 +298,7 @@ main(int argc, char *argv[])
                            QStringLiteral(":/translations")))
         app.installTranslator(&appTranslator);
 
-    MainWindow w;
-    // QQuickView w;
-
-    // Move the MainWindow to the center
-    // w.move(screenCenter(w.width(), w.height()));
+    MainWindow w(nullptr);
 
     if (!(settings.lock()->startInTray() && settings.lock()->tray()))
         w.show();

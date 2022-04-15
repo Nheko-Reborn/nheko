@@ -7,7 +7,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import im.nheko
-import im.nheko2
+import im.nheko
 
 import "./ui/"
 

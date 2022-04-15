@@ -6,6 +6,7 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QQmlEngine>
 #include <QSet>
 #include <QSortFilterProxyModel>
 #include <QVector>
@@ -20,6 +21,8 @@ namespace emoji {
 class EmojiModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
+
 public:
     enum Roles
     {

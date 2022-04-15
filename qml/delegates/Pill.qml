@@ -5,7 +5,7 @@
 
 import QtQuick 2.5
 import QtQuick.Controls 2.1
-import im.nheko 1.0
+import im.nheko
 
 Label {
     property bool isStateEvent

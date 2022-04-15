@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include <QQmlEngine>
+
 #include <memory>
 #include <mtx/events.hpp>
 #include <mtx/events/encrypted.hpp>
@@ -16,6 +18,7 @@ constexpr auto OLM_ALGO = "m.olm.v1.curve25519-aes-sha2";
 
 namespace olm {
 Q_NAMESPACE
+QML_NAMED_ELEMENT(Olm)
 
 enum DecryptionErrorCode
 {

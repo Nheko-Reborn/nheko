@@ -7,7 +7,7 @@ import QtQuick.Window 2.15
 
 import ".."
 
-import im.nheko 1.0
+import im.nheko
 
 Window {
     id: imageOverlay

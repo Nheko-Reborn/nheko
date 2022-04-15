@@ -8,6 +8,7 @@
 
 #include <QAbstractListModel>
 #include <QProcessEnvironment>
+#include <QQmlEngine>
 #include <QSettings>
 #include <QSharedPointer>
 
@@ -30,6 +31,8 @@ constexpr int LayoutBottomMargin = LayoutTopMargin;
 class UserSettings : public QObject
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(Settings)
+    QML_SINGLETON
 
     Q_PROPERTY(QString theme READ theme WRITE setTheme NOTIFY themeChanged)
     Q_PROPERTY(bool messageHoverHighlight READ messageHoverHighlight WRITE setMessageHoverHighlight
@@ -123,6 +126,24 @@ class UserSettings : public QObject
 public:
     static QSharedPointer<UserSettings> instance();
     static void initialize(std::optional<QString> profile);
+    static UserSettings *create(QQmlEngine *qmlEngine, QJSEngine *)
+    {
+        // The instance has to exist before it is used. We cannot replace it.
+        Q_ASSERT(instance());
+
+        // The engine has to have the same thread affinity as the singleton.
+        Q_ASSERT(qmlEngine->thread() == instance()->thread());
+
+        // There can only be one engine accessing the singleton.
+        static QJSEngine *s_engine = nullptr;
+        if (s_engine)
+            Q_ASSERT(qmlEngine == s_engine);
+        else
+            s_engine = qmlEngine;
+
+        QJSEngine::setObjectOwnership(instance().get(), QJSEngine::CppOwnership);
+        return instance().get();
+    }
 
     QSettings *qsettings() { return &settings; }
 
@@ -388,6 +409,8 @@ private:
 class UserSettingsModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
 
     enum Indices
     {

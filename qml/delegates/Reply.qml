@@ -8,7 +8,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
-import im.nheko 1.0
+import im.nheko
 import "../"
 
 AbstractButton {
@@ -43,7 +43,7 @@ AbstractButton {
     implicitHeight: replyContainer.height
     implicitWidth: visible? colorLine.width+Math.max(replyContainer.implicitWidth,userName_.fullTextWidth) : 0 // visible? seems to be causing issues
 
-    CursorShape {
+    NhekoCursorShape {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
     }

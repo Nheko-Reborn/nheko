@@ -11,7 +11,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.15
 import im.nheko
-import im.nheko2
+import im.nheko
 
 Rectangle {
     id: userSettingsDialog

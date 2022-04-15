@@ -6,7 +6,7 @@
 import Qt.labs.platform 1.1 as P
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import im.nheko 1.0
+import im.nheko
 
 P.MessageDialog {
     id: logoutRoot

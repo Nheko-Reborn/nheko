@@ -6,7 +6,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
-import im.nheko 1.0
+import im.nheko
 
 Container {
     //Component.onCompleted: {
@@ -88,7 +88,7 @@ Container {
         x: parent.preferredWidth
         z: 3
 
-        CursorShape {
+        NhekoCursorShape {
             height: parent.height
             width: container.splitterGrabMargin * 2
             x: -container.splitterGrabMargin

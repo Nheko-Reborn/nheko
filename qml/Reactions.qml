@@ -5,7 +5,7 @@
 
 import QtQuick 2.6
 import QtQuick.Controls 2.2
-import im.nheko 1.0
+import im.nheko
 
 // This class is for showing Reactions in the timeline row, not for
 // adding new reactions via the emoji picker

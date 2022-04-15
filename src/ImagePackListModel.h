@@ -9,10 +9,14 @@
 #include <QQmlEngine>
 #include <QSharedPointer>
 
-class SingleImagePackModel;
+#include "SingleImagePackModel.h"
+
 class ImagePackListModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("Needs to be instantiated from C++")
+
     Q_PROPERTY(bool containsAccountPack READ containsAccountPack CONSTANT)
 public:
     enum Roles

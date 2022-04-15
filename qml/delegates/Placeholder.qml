@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import ".."
-import im.nheko 1.0
+import im.nheko
 
 MatrixText {
     required property string typeString

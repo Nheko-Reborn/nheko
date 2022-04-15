@@ -7,6 +7,7 @@
 #define INVITEESMODEL_H
 
 #include <QAbstractListModel>
+#include <QQmlEngine>
 #include <QVector>
 
 class Invitee : public QObject
@@ -30,6 +31,8 @@ private:
 class InviteesModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("Needs to be instantiated from C++")
 
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
 

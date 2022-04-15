@@ -6,7 +6,7 @@
 //import QtGraphicalEffects 1.0
 import QtQuick 2.12
 import QtQuick.Window 2.2
-import im.nheko 1.0
+import im.nheko
 
 Item {
     id: privacyScreen

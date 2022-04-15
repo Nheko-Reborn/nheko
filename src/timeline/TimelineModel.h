@@ -9,6 +9,7 @@
 #include <QColor>
 #include <QDate>
 #include <QHash>
+#include <QQmlEngine>
 #include <QSet>
 #include <QTimer>
 #include <QVariant>
@@ -36,8 +37,9 @@ struct ClaimKeys;
 }
 struct RelatedInfo;
 
-namespace qml_mtx_events {
+namespace MtxEvent {
 Q_NAMESPACE
+QML_ELEMENT
 
 enum EventType
 {
@@ -124,8 +126,8 @@ enum EventType
     SpaceChild,
 };
 Q_ENUM_NS(EventType)
-mtx::events::EventType fromRoomEventType(qml_mtx_events::EventType);
-qml_mtx_events::EventType
+mtx::events::EventType fromRoomEventType(MtxEvent::EventType);
+MtxEvent::EventType
 toRoomEventType(mtx::events::EventType e);
 
 enum EventState
@@ -168,6 +170,9 @@ class TimelineViewManager;
 class TimelineModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(Room)
+    QML_UNCREATABLE("Needs to be instantiated from C++")
+
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
     Q_PROPERTY(std::vector<QString> typingUsers READ typingUsers WRITE updateTypingUsers NOTIFY
                  typingUsersChanged)

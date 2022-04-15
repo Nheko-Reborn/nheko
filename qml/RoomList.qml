@@ -10,7 +10,7 @@ import QtQml 2.12
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
-import im.nheko 1.0
+import im.nheko
 
 Page {
     //leftPadding: Nheko.paddingSmall
