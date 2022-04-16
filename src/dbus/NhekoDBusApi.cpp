@@ -14,18 +14,17 @@ init()
     qDBusRegisterMetaType<RoomInfoItem>();
     qDBusRegisterMetaType<QVector<RoomInfoItem>>();
     qDBusRegisterMetaType<QImage>();
-    qDBusRegisterMetaType<QVersionNumber>();
 }
 
 bool
 apiVersionIsCompatible(const QVersionNumber &clientAppVersion)
 {
-    if (clientAppVersion.majorVersion() != nheko::dbus::apiVersion.majorVersion())
+    if (clientAppVersion.majorVersion() != nheko::dbus::dbusApiVersion.majorVersion())
         return false;
-    if (clientAppVersion.minorVersion() > nheko::dbus::apiVersion.minorVersion())
+    if (clientAppVersion.minorVersion() > nheko::dbus::dbusApiVersion.minorVersion())
         return false;
-    if (clientAppVersion.minorVersion() == nheko::dbus::apiVersion.minorVersion() &&
-        clientAppVersion.microVersion() < nheko::dbus::apiVersion.microVersion())
+    if (clientAppVersion.minorVersion() == nheko::dbus::dbusApiVersion.minorVersion() &&
+        clientAppVersion.microVersion() < nheko::dbus::dbusApiVersion.microVersion())
         return false;
 
     return true;
@@ -142,25 +141,5 @@ operator>>(const QDBusArgument &arg, QImage &image)
 
     image = QImage(reinterpret_cast<uchar *>(bits.data()), width, height, QImage::Format_RGBA8888);
 
-    return arg;
-}
-
-QDBusArgument &
-operator<<(QDBusArgument &arg, const QVersionNumber &v)
-{
-    arg.beginStructure();
-    arg << v.toString();
-    arg.endStructure();
-    return arg;
-}
-
-const QDBusArgument &
-operator>>(const QDBusArgument &arg, QVersionNumber &v)
-{
-    arg.beginStructure();
-    QString temp;
-    arg >> temp;
-    v = QVersionNumber::fromString(temp);
-    arg.endStructure();
     return arg;
 }

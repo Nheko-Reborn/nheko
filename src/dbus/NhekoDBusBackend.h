@@ -23,7 +23,7 @@ public:
 
 public slots:
     //! Get the nheko D-Bus API version.
-    Q_SCRIPTABLE QVersionNumber apiVersion() const { return nheko::dbus::apiVersion; }
+    Q_SCRIPTABLE QString apiVersion() const { return nheko::dbus::dbusApiVersion.toString(); }
     //! Get the nheko version.
     Q_SCRIPTABLE QString nhekoVersionString() const { return nheko::version; }
     //! Call this function to get a list of all joined rooms.
