@@ -114,8 +114,7 @@ getRooms()
 {
     if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
         interface.isValid())
-        return QDBusReply<QVector<nheko::dbus::RoomInfoItem>>{
-          interface.call(QStringLiteral("getRooms"))}
+        return QDBusReply<QVector<RoomInfoItem>>{interface.call(QStringLiteral("getRooms"))}
           .value();
     else
         return {};
