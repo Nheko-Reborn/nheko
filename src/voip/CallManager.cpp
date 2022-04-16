@@ -35,10 +35,6 @@ extern "C"
 }
 #endif
 
-Q_DECLARE_METATYPE(std::vector<mtx::events::msg::CallCandidates::Candidate>)
-Q_DECLARE_METATYPE(mtx::events::msg::CallCandidates::Candidate)
-Q_DECLARE_METATYPE(mtx::responses::TurnServer)
-
 using namespace mtx::events;
 using namespace mtx::events::msg;
 
@@ -75,10 +71,6 @@ CallManager::CallManager(QObject *parent)
   , session_(WebRTCSession::instance())
   , turnServerTimer_(this)
 {
-    qRegisterMetaType<std::vector<mtx::events::msg::CallCandidates::Candidate>>();
-    qRegisterMetaType<mtx::events::msg::CallCandidates::Candidate>();
-    qRegisterMetaType<mtx::responses::TurnServer>();
-
     connect(
       &session_,
       &WebRTCSession::offerCreated,

@@ -4,6 +4,8 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "MainWindow.h"
+
 #include <QApplication>
 #include <QMessageBox>
 
@@ -14,44 +16,23 @@
 #include "Cache.h"
 #include "Cache_p.h"
 #include "ChatPage.h"
-#include "Clipboard.h"
 #include "ColorImageProvider.h"
-#include "CombinedImagePackModel.h"
-#include "CompletionProxyModel.h"
 #include "Config.h"
-#include "EventAccessors.h"
-#include "ImagePackListModel.h"
-#include "InviteesModel.h"
 #include "JdenticonProvider.h"
 #include "Logging.h"
-#include "MainWindow.h"
 #include "MatrixClient.h"
 #include "MemberList.h"
 #include "MxcImageProvider.h"
-#include "ReadReceiptsModel.h"
-#include "RoomDirectoryModel.h"
-#include "RoomsModel.h"
-#include "SingleImagePackModel.h"
 #include "TrayIcon.h"
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
 #include "Utils.h"
-#include "emoji/EmojiModel.h"
-#include "emoji/Provider.h"
-#include "encryption/DeviceVerificationFlow.h"
-#include "encryption/SelfVerificationStatus.h"
 #include "timeline/TimelineViewManager.h"
-#include "ui/NhekoGlobalObject.h"
-#include "ui/UIA.h"
-#include "voip/WebRTCSession.h"
+#include "ui/Theme.h"
 
 #ifdef NHEKO_DBUS_SYS
 #include "dbus/NhekoDBusApi.h"
 #endif
-
-Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
-Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
-Q_DECLARE_METATYPE(std::vector<mtx::responses::PublicRoomsChunk>)
 
 MainWindow *MainWindow::instance_ = nullptr;
 
@@ -92,6 +73,18 @@ MainWindow::MainWindow(QWindow *parent)
 
     trayIcon_->setVisible(userSettings_->tray());
 
+#ifdef NHEKO_DBUS_SYS
+    if (UserSettings::instance()->exposeDBusApi()) {
+        if (QDBusConnection::sessionBus().isConnected() &&
+            QDBusConnection::sessionBus().registerService(NHEKO_DBUS_SERVICE_NAME)) {
+            nheko::dbus::init();
+            nhlog::ui()->info("Initialized D-Bus");
+            dbusAvailable_ = true;
+        } else
+            nhlog::ui()->warn("Could not connect to D-Bus!");
+    }
+#endif
+
     // load cache on event loop
     QTimer::singleShot(0, this, [this] {
         if (hasActiveUser()) {
@@ -129,18 +122,6 @@ MainWindow::registerQmlTypes()
         engine()->addImageProvider(QStringLiteral("jdenticon"), new JdenticonProvider());
 
     QObject::connect(engine(), &QQmlEngine::quit, &QGuiApplication::quit);
-
-#ifdef NHEKO_DBUS_SYS
-    if (UserSettings::instance()->exposeDBusApi()) {
-        if (QDBusConnection::sessionBus().isConnected() &&
-            QDBusConnection::sessionBus().registerService(NHEKO_DBUS_SERVICE_NAME)) {
-            nheko::dbus::init();
-            nhlog::ui()->info("Initialized D-Bus");
-            dbusAvailable_ = true;
-        } else
-            nhlog::ui()->warn("Could not connect to D-Bus!");
-    }
-#endif
 }
 
 void

@@ -23,8 +23,6 @@ RoomlistModel::RoomlistModel(TimelineViewManager *parent)
   : QAbstractListModel(parent)
   , manager(parent)
 {
-    [[maybe_unused]] static auto id = qRegisterMetaType<RoomPreview>();
-
     connect(ChatPage::instance(), &ChatPage::decryptSidebarChanged, this, [this]() {
         auto decrypt = ChatPage::instance()->userSettings()->decryptSidebar();
         QHash<QString, QSharedPointer<TimelineModel>>::iterator i;

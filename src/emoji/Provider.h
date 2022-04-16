@@ -52,6 +52,4 @@ public:
     // all emoji for QML purposes
     static const QVector<Emoji> emoji;
 };
-
 } // namespace emoji
-Q_DECLARE_METATYPE(emoji::Emoji)

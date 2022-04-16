@@ -17,10 +17,6 @@ client();
 
 bool
 is_logged_in();
-
-//! Initialize the http module
-void
-init();
 }
 
 template<>

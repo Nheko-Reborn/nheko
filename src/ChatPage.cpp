@@ -37,12 +37,6 @@ constexpr int CHECK_CONNECTIVITY_INTERVAL = 15'000;
 constexpr int RETRY_TIMEOUT               = 5'000;
 constexpr size_t MAX_ONETIME_KEYS         = 50;
 
-Q_DECLARE_METATYPE(std::optional<mtx::crypto::EncryptedFile>)
-Q_DECLARE_METATYPE(std::optional<RelatedInfo>)
-Q_DECLARE_METATYPE(mtx::presence::PresenceState)
-Q_DECLARE_METATYPE(mtx::secret_storage::AesHmacSha2KeyDescription)
-Q_DECLARE_METATYPE(SecretsToDecrypt)
-
 ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
   : QObject(parent)
   , isConnected_(true)
@@ -53,12 +47,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
     setObjectName(QStringLiteral("chatPage"));
 
     instance_ = this;
-
-    qRegisterMetaType<std::optional<mtx::crypto::EncryptedFile>>();
-    qRegisterMetaType<std::optional<RelatedInfo>>();
-    qRegisterMetaType<mtx::presence::PresenceState>();
-    qRegisterMetaType<mtx::secret_storage::AesHmacSha2KeyDescription>();
-    qRegisterMetaType<SecretsToDecrypt>();
 
     view_manager_ = new TimelineViewManager(callManager_, this);
 

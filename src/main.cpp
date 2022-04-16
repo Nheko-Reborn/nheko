@@ -231,8 +231,6 @@ main(int argc, char *argv[])
     app.setDesktopFileName(QStringLiteral("nheko"));
 #endif
 
-    http::init();
-
     createStandardDirectory(QStandardPaths::CacheLocation);
     createStandardDirectory(QStandardPaths::AppDataLocation);
 

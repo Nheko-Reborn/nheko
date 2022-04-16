@@ -87,12 +87,6 @@ constexpr auto MEGOLM_SESSIONS_DATA_DB("megolm_sessions_data_db");
 using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
 using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
 
-Q_DECLARE_METATYPE(RoomMember)
-Q_DECLARE_METATYPE(mtx::responses::Timeline)
-Q_DECLARE_METATYPE(RoomSearchResult)
-Q_DECLARE_METATYPE(RoomInfo)
-Q_DECLARE_METATYPE(mtx::responses::QueryKeys)
-
 namespace {
 std::unique_ptr<Cache> instance_ = nullptr;
 }
@@ -4862,14 +4856,6 @@ namespace cache {
 void
 init(const QString &user_id)
 {
-    qRegisterMetaType<RoomMember>();
-    qRegisterMetaType<RoomSearchResult>();
-    qRegisterMetaType<RoomInfo>();
-    qRegisterMetaType<QMap<QString, RoomInfo>>();
-    qRegisterMetaType<std::map<QString, RoomInfo>>();
-    qRegisterMetaType<std::map<QString, mtx::responses::Timeline>>();
-    qRegisterMetaType<mtx::responses::QueryKeys>();
-
     instance_ = std::make_unique<Cache>(user_id);
 }
 
