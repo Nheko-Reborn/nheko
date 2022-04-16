@@ -1,0 +1,23 @@
+#compdef nheko
+
+_arguments '--help[Displays help on commandline options.]' \
+           '-h[Displays help on commandline options.]' \
+           '--help-all[Displays help including Qt specific options.]' \
+           '--version[Displays version information.]' \
+           '-v[Displays version information.]' \
+           '--debug[Enables debug output.]' \
+           '--profile[Create or select profile.]:profile:_nheko_select_profile' \
+           '-p[Create or select profile.]:profile:_nheko_select_profile'
+
+function _nheko_select_profile()
+{
+    local -a profiles=(default)
+    while read -r line; do
+        [[ ${line} =~ '\\auth\\device_id' ]] && profiles+=(${line%%\\*})
+    done < ${XDG_CONFIG_HOME:-~/.config}/nheko/nheko.conf
+    _values "profile" ${profiles}
+}
+
+# Local Variables:
+# mode: shell-script
+# End:
