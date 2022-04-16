@@ -109,7 +109,7 @@ nhekoVersionString()
         return {};
 }
 
-QVector<nheko::dbus::RoomInfoItem>
+QVector<RoomInfoItem>
 getRooms()
 {
     if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};

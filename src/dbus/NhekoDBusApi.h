@@ -58,13 +58,6 @@ private:
     int unreadNotifications_;
 };
 
-QDBusArgument &
-operator<<(QDBusArgument &arg, const RoomInfoItem &item);
-const QDBusArgument &
-operator>>(const QDBusArgument &arg, RoomInfoItem &item);
-} // nheko::dbus
-Q_DECLARE_METATYPE(nheko::dbus::RoomInfoItem)
-
 //! Get the nheko D-Bus API version.
 QString
 apiVersion();
@@ -72,7 +65,7 @@ apiVersion();
 QString
 nhekoVersionString();
 //! Call this function to get a list of all joined rooms.
-QVector<nheko::dbus::RoomInfoItem>
+QVector<RoomInfoItem>
 getRooms();
 //! Activates a currently joined room.
 void
@@ -84,6 +77,13 @@ joinRoom(const QString &alias);
 //! desired).
 void
 startDirectChat(const QString &userId);
+
+QDBusArgument &
+operator<<(QDBusArgument &arg, const RoomInfoItem &item);
+const QDBusArgument &
+operator>>(const QDBusArgument &arg, RoomInfoItem &item);
+} // nheko::dbus
+Q_DECLARE_METATYPE(nheko::dbus::RoomInfoItem)
 
 QDBusArgument &
 operator<<(QDBusArgument &arg, const QImage &image);
