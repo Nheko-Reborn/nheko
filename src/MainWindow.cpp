@@ -156,18 +156,6 @@ MainWindow::setWindowTitle(int notificationCount)
     QQuickView::setTitle(name);
 }
 
-bool
-MainWindow::event(QEvent *event)
-{
-    auto type = event->type();
-
-    if (type == QEvent::Close) {
-        closeEvent(static_cast<QCloseEvent *>(event));
-    }
-
-    return QQuickView::event(event);
-}
-
 void
 MainWindow::restoreWindowSize()
 {
