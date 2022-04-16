@@ -31,10 +31,6 @@
 #include "config/nheko.h"
 #include "singleapplication.h"
 
-#if defined(Q_OS_MAC)
-#include "emoji/MacHelper.h"
-#endif
-
 #if defined(GSTREAMER_AVAILABLE) && (defined(Q_OS_MAC) || defined(Q_OS_WINDOWS))
 #include <QAbstractEventDispatcher>
 #include <gst/gst.h>
@@ -342,12 +338,6 @@ main(int argc, char *argv[])
     }
     QDesktopServices::setUrlHandler(
       QStringLiteral("matrix"), ChatPage::instance(), "handleMatrixUri");
-
-#if defined(Q_OS_MAC)
-    // Temporary solution for the emoji picker until
-    // nheko has a proper menu bar with more functionality.
-    MacHelper::initializeMenus();
-#endif
 
     nhlog::ui()->info("starting nheko {}", nheko::version);
 

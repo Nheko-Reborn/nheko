@@ -219,10 +219,6 @@ else()
 	find_package(Qt6Keychain REQUIRED)
 endif()
 
-if (APPLE)
-	find_package(Qt6MacExtras REQUIRED)
-endif(APPLE)
-
 if (Qt5Widgets_FOUND)
 	if (Qt5Widgets_VERSION VERSION_LESS 5.15.0)
 		message(STATUS "Qt version ${Qt5Widgets_VERSION}")
@@ -585,10 +581,6 @@ endif()
 
 if (APPLE)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation -framework Cocoa -framework UserNotifications")
-	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerMac.mm src/notifications/ManagerMac.cpp src/emoji/MacHelper.mm)
-	if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
-		set_source_files_properties( src/notifications/ManagerMac.mm src/emoji/MacHelper.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
-	endif()
 elseif (WIN32)
 	file(DOWNLOAD
 		"https://raw.githubusercontent.com/mohabouje/WinToast/41ed1c58d5dce0ee9c01dbdeac05be45358d4f57/src/wintoastlib.cpp"
@@ -752,9 +744,7 @@ if (NOT COMPILE_QML)
 endif()
 
 
-if(APPLE)
-	target_link_libraries (nheko PRIVATE Qt5::MacExtras)
-elseif(WIN32)
+if(WIN32)
 	target_compile_definitions(nheko PRIVATE WIN32_LEAN_AND_MEAN)
 	target_link_libraries (nheko PRIVATE ${NTDLIB} Qt5::WinMain)
 	if(MSVC)
