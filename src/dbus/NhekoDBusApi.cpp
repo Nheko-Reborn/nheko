@@ -5,7 +5,9 @@
 
 #include "NhekoDBusApi.h"
 
+#include <QDBusInterface>
 #include <QDBusMetaType>
+#include <QDBusReply>
 
 namespace nheko::dbus {
 void
@@ -85,6 +87,62 @@ operator>>(const QDBusArgument &arg, RoomInfoItem &item)
 
     arg.endStructure();
     return arg;
+}
+
+QString
+apiVersion()
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        return QDBusReply<QString>{interface.call(QStringLiteral("apiVersion"))}.value();
+    else
+        return {};
+}
+
+QString
+nhekoVersionString()
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        return QDBusReply<QString>{interface.call(QStringLiteral("nhekoVersionString"))}.value();
+    else
+        return {};
+}
+
+QVector<nheko::dbus::RoomInfoItem>
+getRooms()
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        return QDBusReply<QVector<nheko::dbus::RoomInfoItem>>{
+          interface.call(QStringLiteral("getRooms"))}
+          .value();
+    else
+        return {};
+}
+
+void
+activateRoom(const QString &alias)
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        interface.call(QDBus::NoBlock, QStringLiteral("activateRoom"), alias);
+}
+
+void
+joinRoom(const QString &alias)
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        interface.call(QDBus::NoBlock, QStringLiteral("joinRoom"), alias);
+}
+
+void
+startDirectChat(const QString &userId)
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        interface.call(QDBus::NoBlock, QStringLiteral("startDirectChat"), userId);
 }
 } // nheko::dbus
 

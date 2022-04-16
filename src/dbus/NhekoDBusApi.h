@@ -65,6 +65,26 @@ operator>>(const QDBusArgument &arg, RoomInfoItem &item);
 } // nheko::dbus
 Q_DECLARE_METATYPE(nheko::dbus::RoomInfoItem)
 
+//! Get the nheko D-Bus API version.
+QString
+apiVersion();
+//! Get the nheko version.
+QString
+nhekoVersionString();
+//! Call this function to get a list of all joined rooms.
+QVector<nheko::dbus::RoomInfoItem>
+getRooms();
+//! Activates a currently joined room.
+void
+activateRoom(const QString &alias);
+//! Joins a room. It is your responsibility to ask for confirmation (if desired).
+void
+joinRoom(const QString &alias);
+//! Starts or activates a direct chat. It is your responsibility to ask for confirmation (if
+//! desired).
+void
+startDirectChat(const QString &userId);
+
 QDBusArgument &
 operator<<(QDBusArgument &arg, const QImage &image);
 const QDBusArgument &
