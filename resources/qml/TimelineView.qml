@@ -23,6 +23,16 @@ Item {
     property var room: null
     property var roomPreview: null
     property bool showBackButton: false
+    property int fullHeight
+
+    Component.onCompleted: {
+        fullHeight = height
+    }
+    onHeightChanged: {
+        if(!Qt.inputMethod.visible)
+            fullHeight = height
+    }
+    
     clip: true
 
     Shortcut {
