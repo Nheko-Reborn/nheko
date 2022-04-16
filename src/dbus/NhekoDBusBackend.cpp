@@ -39,7 +39,7 @@ NhekoDBusBackend::getRooms(const QDBusMessage &message)
               }
 
               model->push_back(nheko::dbus::RoomInfoItem{
-                room->roomId(), room->roomName(), alias, image, room->notificationCount()});
+                room->roomId(), alias, room->roomName(), image, room->notificationCount()});
 
               if (model->length() == roomListModelSize) {
                   auto reply = message.createReply();
