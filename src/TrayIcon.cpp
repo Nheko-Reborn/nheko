@@ -14,10 +14,6 @@
 
 #include "TrayIcon.h"
 
-#if defined(Q_OS_MAC)
-#include <QtMacExtras>
-#endif
-
 MsgCountComposedIcon::MsgCountComposedIcon(const QString &filename)
   : QIconEngine()
 {
@@ -127,18 +123,20 @@ TrayIcon::TrayIcon(const QString &filename, QWindow *parent)
 void
 TrayIcon::setUnreadCount(int count)
 {
+    Q_UNUSED(count);
 // Use the native badge counter in MacOS.
 #if defined(Q_OS_MAC)
-// currently, to avoid writing obj-c code, ignore deprecated warnings on the badge functions
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    auto labelText = count == 0 ? "" : QString::number(count);
-
-    if (labelText == QtMac::badgeLabelText())
-        return;
-
-    QtMac::setBadgeLabelText(labelText);
-#pragma clang diagnostic pop
+// FIXME: Reimplement this for Qt6
+//// currently, to avoid writing obj-c code, ignore deprecated warnings on the badge functions
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+//    auto labelText = count == 0 ? "" : QString::number(count);
+//
+//    if (labelText == QtMac::badgeLabelText())
+//        return;
+//
+//    QtMac::setBadgeLabelText(labelText);
+//#pragma clang diagnostic pop
 #elif defined(Q_OS_WIN)
 // FIXME: Find a way to use Windows apis for the badge counter (if any).
 #else
