@@ -4,7 +4,6 @@
 #import <AppKit/NSImage.h>
 #import <UserNotifications/UserNotifications.h>
 
-#include <QtMac>
 #include <QImage>
 
 @interface UNNotificationAttachment (UNNotificationAttachmentAdditions)
