@@ -1,9 +1,7 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-import "./ui"
+import "ui"
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Window 2.15
@@ -12,70 +10,54 @@ import im.nheko
 AbstractButton {
     id: avatar
 
+    property alias color: bg.color
+    property bool crop: true
+    property string displayName
+    property string roomid
+    property alias textColor: label.color
     property string url
     property string userid
-    property string roomid
-    property string displayName
-    property alias textColor: label.color
-    property bool crop: true
-    property alias color: bg.color
 
-    width: 48
     height: 48
+    width: 48
+
     background: Rectangle {
         id: bg
-        radius: Settings.avatarCircles ? height / 2 : height / 8
         color: timelineRoot.palette.alternateBase
+        radius: Settings.avatarCircles ? height / 2 : height / 8
     }
 
     Label {
         id: label
-
-        enabled: false
-
         anchors.fill: parent
+        color: timelineRoot.palette.text
+        enabled: false
+        font.pixelSize: avatar.height / 2
+        horizontalAlignment: Text.AlignHCenter
         text: TimelineManager.escapeEmoji(displayName ? String.fromCodePoint(displayName.codePointAt(0)) : "")
         textFormat: Text.RichText
-        font.pixelSize: avatar.height / 2
         verticalAlignment: Text.AlignVCenter
-        horizontalAlignment: Text.AlignHCenter
         visible: img.status != Image.Ready && !Settings.useIdenticon
-        color: timelineRoot.palette.text
     }
-
     Image {
         id: identicon
-
         anchors.fill: parent
-        visible: Settings.useIdenticon && img.status != Image.Ready
         source: Settings.useIdenticon ? ("image://jdenticon/" + (userid !== "" ? userid : roomid) + "?radius=" + (Settings.avatarCircles ? 100 : 25)) : ""
+        visible: Settings.useIdenticon && img.status != Image.Ready
     }
-
     Image {
         id: img
-
         anchors.fill: parent
         asynchronous: true
         fillMode: avatar.crop ? Image.PreserveAspectCrop : Image.PreserveAspectFit
         mipmap: true
         smooth: true
-        sourceSize.width: avatar.width * Screen.devicePixelRatio
-        sourceSize.height: avatar.height * Screen.devicePixelRatio
         source: avatar.url ? (avatar.url + "?radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale")) : ""
-
+        sourceSize.height: avatar.height * Screen.devicePixelRatio
+        sourceSize.width: avatar.width * Screen.devicePixelRatio
     }
-
     Rectangle {
         id: onlineIndicator
-
-        anchors.bottom: avatar.bottom
-        anchors.right: avatar.right
-        visible: !!userid
-        height: avatar.height / 6
-        width: height
-        radius: Settings.avatarCircles ? height / 2 : height / 8
-        color: updatePresence()
-
         function updatePresence() {
             switch (Presence.userPresence(userid)) {
             case "online":
@@ -89,22 +71,28 @@ AbstractButton {
             }
         }
 
-        Connections {
-            target: Presence
+        anchors.bottom: avatar.bottom
+        anchors.right: avatar.right
+        color: updatePresence()
+        height: avatar.height / 6
+        radius: Settings.avatarCircles ? height / 2 : height / 8
+        visible: !!userid
+        width: height
 
+        Connections {
             function onPresenceChanged(id) {
-                if (id == userid) onlineIndicator.color = onlineIndicator.updatePresence();
+                if (id == userid)
+                    onlineIndicator.color = onlineIndicator.updatePresence();
             }
+
+            target: Presence
         }
     }
-
     NhekoCursorShape {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
     }
-
     Ripple {
         color: Qt.rgba(timelineRoot.palette.alternateBase.r, timelineRoot.palette.alternateBase.g, timelineRoot.palette.alternateBase.b, 0.5)
     }
-
 }

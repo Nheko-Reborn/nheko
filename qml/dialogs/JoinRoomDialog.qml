@@ -1,9 +1,7 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-import ".."
+import "../"
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
@@ -11,50 +9,18 @@ import im.nheko
 
 ApplicationWindow {
     id: joinRoomRoot
-
-    title: qsTr("Join room")
-    modality: Qt.WindowModal
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    palette: timelineRoot.palette
     color: timelineRoot.palette.window
-    width: 350
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     height: fontMetrics.lineSpacing * 7
-
-    Shortcut {
-        sequence: StandardKey.Cancel
-        onActivated: dbb.rejected()
-    }
-
-    ColumnLayout {
-        spacing: Nheko.paddingMedium
-        anchors.margins: Nheko.paddingMedium
-        anchors.fill: parent
-
-        Label {
-            id: promptLabel
-
-            text: qsTr("Room ID or alias")
-            color: timelineRoot.palette.text
-        }
-
-        MatrixTextField {
-            id: input
-
-            focus: true
-            Layout.fillWidth: true
-            onAccepted: {
-                if (input.text.match("#.+?:.{3,}"))
-                    dbb.accepted();
-
-            }
-        }
-
-    }
+    modality: Qt.WindowModal
+    palette: timelineRoot.palette
+    title: qsTr("Join room")
+    width: 350
 
     footer: DialogButtonBox {
         id: dbb
-
         standardButtons: DialogButtonBox.Cancel
+
         onAccepted: {
             Nheko.joinRoom(input.text);
             joinRoomRoot.close();
@@ -64,11 +30,36 @@ ApplicationWindow {
         }
 
         Button {
-            text: "Join"
-            enabled: input.text.match("#.+?:.{3,}")
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            enabled: input.text.match("#.+?:.{3,}")
+            text: "Join"
         }
-
     }
 
+    Shortcut {
+        sequence: StandardKey.Cancel
+
+        onActivated: dbb.rejected()
+    }
+    ColumnLayout {
+        anchors.fill: parent
+        anchors.margins: Nheko.paddingMedium
+        spacing: Nheko.paddingMedium
+
+        Label {
+            id: promptLabel
+            color: timelineRoot.palette.text
+            text: qsTr("Room ID or alias")
+        }
+        MatrixTextField {
+            id: input
+            Layout.fillWidth: true
+            focus: true
+
+            onAccepted: {
+                if (input.text.match("#.+?:.{3,}"))
+                    dbb.accepted();
+            }
+        }
+    }
 }

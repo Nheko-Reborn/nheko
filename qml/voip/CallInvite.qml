@@ -1,8 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 import "../"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
@@ -11,54 +9,51 @@ import im.nheko
 
 Popup {
     id: callInv
-
     closePolicy: Popup.NoAutoClose
-    width: parent.width
     height: parent.height
     palette: timelineRoot.palette
+    width: parent.width
+
+    background: Rectangle {
+        border.color: timelineRoot.palette.windowText
+        color: timelineRoot.palette.window
+    }
 
     Component {
         id: deviceError
-
         DeviceError {
         }
-
     }
-
     Connections {
         function onNewInviteState() {
             if (!CallManager.haveCallInvite)
                 close();
-
         }
 
         target: CallManager
     }
-
     ColumnLayout {
-        anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
 
         Label {
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: callInv.parent.height / 25
             Layout.fillWidth: true
-            text: CallManager.callPartyDisplayName
-            font.pointSize: fontMetrics.font.pointSize * 2
+            Layout.topMargin: callInv.parent.height / 25
             color: timelineRoot.palette.windowText
+            font.pointSize: fontMetrics.font.pointSize * 2
             horizontalAlignment: Text.AlignHCenter
+            text: CallManager.callPartyDisplayName
         }
-
         Avatar {
             Layout.alignment: Qt.AlignCenter
             Layout.preferredHeight: callInv.height / 5
             Layout.preferredWidth: callInv.height / 5
+            displayName: CallManager.callPartyDisplayName
             url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
             userid: CallManager.callParty
-            displayName: CallManager.callPartyDisplayName
         }
-
         ColumnLayout {
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: callInv.height / 25
@@ -67,20 +62,17 @@ Popup {
                 property string image: CallManager.callType == Voip.VIDEO ? ":/icons/icons/ui/video.svg" : ":/icons/icons/ui/place-call.svg"
 
                 Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: callInv.height / 10
                 Layout.preferredHeight: callInv.height / 10
+                Layout.preferredWidth: callInv.height / 10
                 source: "image://colorimage/" + image + "?" + timelineRoot.palette.windowText
             }
-
             Label {
                 Layout.alignment: Qt.AlignCenter
-                text: CallManager.callType == Voip.VIDEO ? qsTr("Video Call") : qsTr("Voice Call")
-                font.pointSize: fontMetrics.font.pointSize * 2
                 color: timelineRoot.palette.windowText
+                font.pointSize: fontMetrics.font.pointSize * 2
+                text: CallManager.callType == Voip.VIDEO ? qsTr("Video Call") : qsTr("Voice Call")
             }
-
         }
-
         ColumnLayout {
             id: deviceCombos
 
@@ -93,41 +85,32 @@ Popup {
                 Layout.alignment: Qt.AlignCenter
 
                 Image {
-                    Layout.preferredWidth: deviceCombos.imageSize
                     Layout.preferredHeight: deviceCombos.imageSize
+                    Layout.preferredWidth: deviceCombos.imageSize
                     source: "image://colorimage/:/icons/icons/ui/microphone-unmute.svg?" + timelineRoot.palette.windowText
                 }
-
                 ComboBox {
                     id: micCombo
-
                     Layout.fillWidth: true
                     model: CallManager.mics
                 }
-
             }
-
             RowLayout {
-                visible: CallManager.callType == Voip.VIDEO && CallManager.cameras.length > 0
                 Layout.alignment: Qt.AlignCenter
+                visible: CallManager.callType == Voip.VIDEO && CallManager.cameras.length > 0
 
                 Image {
-                    Layout.preferredWidth: deviceCombos.imageSize
                     Layout.preferredHeight: deviceCombos.imageSize
+                    Layout.preferredWidth: deviceCombos.imageSize
                     source: "image://colorimage/:/icons/icons/ui/video.svg?" + timelineRoot.palette.windowText
                 }
-
                 ComboBox {
                     id: cameraCombo
-
                     Layout.fillWidth: true
                     model: CallManager.cameras
                 }
-
             }
-
         }
-
         RowLayout {
             id: buttonLayout
 
@@ -136,9 +119,9 @@ Popup {
             function validateMic() {
                 if (CallManager.mics.length == 0) {
                     var dialog = deviceError.createObject(timelineRoot, {
-                        "errorString": qsTr("No microphone found."),
-                        "image": ":/icons/icons/ui/place-call.svg"
-                    });
+                            "errorString": qsTr("No microphone found."),
+                            "image": ":/icons/icons/ui/place-call.svg"
+                        });
                     dialog.open();
                     timelineRoot.destroyOnClose(dialog);
                     return false;
@@ -150,60 +133,48 @@ Popup {
             spacing: callInv.height / 6
 
             RoundButton {
-                implicitWidth: buttonLayout.buttonSize
                 implicitHeight: buttonLayout.buttonSize
-                onClicked: {
-                    CallManager.hangUp();
-                    close();
-                }
+                implicitWidth: buttonLayout.buttonSize
 
                 background: Rectangle {
-                    radius: buttonLayout.buttonSize / 2
                     color: "#ff0000"
+                    radius: buttonLayout.buttonSize / 2
                 }
-
                 contentItem: Image {
                     source: "image://colorimage/:/icons/icons/ui/end-call.svg?#ffffff"
                 }
 
+                onClicked: {
+                    CallManager.hangUp();
+                    close();
+                }
             }
-
             RoundButton {
                 id: acceptButton
 
                 property string image: CallManager.callType == Voip.VIDEO ? ":/icons/icons/ui/video.svg" : ":/icons/icons/ui/place-call.svg"
 
-                implicitWidth: buttonLayout.buttonSize
                 implicitHeight: buttonLayout.buttonSize
+                implicitWidth: buttonLayout.buttonSize
+
+                background: Rectangle {
+                    color: "#00ff00"
+                    radius: buttonLayout.buttonSize / 2
+                }
+                contentItem: Image {
+                    source: "image://colorimage/" + acceptButton.image + "?#ffffff"
+                }
+
                 onClicked: {
                     if (buttonLayout.validateMic()) {
                         Settings.microphone = micCombo.currentText;
                         if (cameraCombo.visible)
                             Settings.camera = cameraCombo.currentText;
-
                         CallManager.acceptInvite();
                         close();
                     }
                 }
-
-                background: Rectangle {
-                    radius: buttonLayout.buttonSize / 2
-                    color: "#00ff00"
-                }
-
-                contentItem: Image {
-                    source: "image://colorimage/" + acceptButton.image + "?#ffffff"
-                }
-
             }
-
         }
-
     }
-
-    background: Rectangle {
-        color: timelineRoot.palette.window
-        border.color: timelineRoot.palette.windowText
-    }
-
 }

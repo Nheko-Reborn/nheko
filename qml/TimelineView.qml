@@ -1,14 +1,12 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-import "./components"
-import "./delegates"
-import "./device-verification"
-import "./emoji"
-import "./ui"
-import "./voip"
+import "components"
+import "delegates"
+import "device-verification"
+import "emoji"
+import "ui"
+import "voip"
 import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.5
@@ -23,55 +21,50 @@ Item {
     property var room: null
     property var roomPreview: null
     property bool showBackButton: false
+
     clip: true
 
     Shortcut {
         sequence: StandardKey.Close
+
         onActivated: Rooms.resetCurrentRoom()
     }
-
     Label {
-        visible: !room && !TimelineManager.isInitialSync && (!roomPreview || !roomPreview.roomid)
         anchors.centerIn: parent
-        text: qsTr("No room open")
-        font.pointSize: 24
         color: timelineRoot.palette.text
+        font.pointSize: 24
+        text: qsTr("No room open")
+        visible: !room && !TimelineManager.isInitialSync && (!roomPreview || !roomPreview.roomid)
     }
-
     Spinner {
-        visible: TimelineManager.isInitialSync
         anchors.centerIn: parent
         foreground: timelineRoot.palette.mid
-        running: TimelineManager.isInitialSync
         // height is somewhat arbitrary here... don't set width because width scales w/ height
         height: parent.height / 16
+        running: TimelineManager.isInitialSync
+        visible: TimelineManager.isInitialSync
         z: 3
     }
-
     ColumnLayout {
         id: timelineLayout
-
-        visible: room != null && !room.isSpace
-        enabled: visible
         anchors.fill: parent
+        enabled: visible
         spacing: 0
+        visible: room != null && !room.isSpace
 
         TopBar {
             showBackButton: timelineView.showBackButton
         }
-
         Rectangle {
             Layout.fillWidth: true
+            color: Nheko.theme.separator
             height: 1
             z: 3
-            color: Nheko.theme.separator
         }
-
         Rectangle {
             id: msgView
-
-            Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.fillWidth: true
             color: timelineRoot.palette.base
 
             ColumnLayout {
@@ -80,7 +73,6 @@ Item {
 
                 StackLayout {
                     id: stackLayout
-
                     currentIndex: 0
 
                     Connections {
@@ -90,129 +82,107 @@ Item {
 
                         target: timelineView
                     }
-
                     MessageView {
-                        implicitHeight: msgView.height - typingIndicator.height
                         Layout.fillWidth: true
+                        implicitHeight: msgView.height - typingIndicator.height
                     }
-
                     Loader {
                         source: CallManager.isOnCall && CallManager.callType != Voip.VOICE ? "voip/VideoCall.qml" : ""
+
                         onLoaded: TimelineManager.setVideoCallItem()
                     }
-
                 }
-
                 TypingIndicator {
                     id: typingIndicator
                 }
-
             }
-
         }
-
         CallInviteBar {
             id: callInviteBar
-
             Layout.fillWidth: true
             z: 3
         }
-
         ActiveCallBar {
             Layout.fillWidth: true
             z: 3
         }
-
         Rectangle {
             Layout.fillWidth: true
-            z: 3
-            height: 1
             color: Nheko.theme.separator
+            height: 1
+            z: 3
         }
-
-
         UploadBox {
         }
-
         NotificationWarning {
         }
-
         ReplyPopup {
         }
-
         MessageInput {
         }
-
     }
-
     ColumnLayout {
         id: preview
 
+        property string avatarUrl: room ? room.roomAvatarUrl : (roomPreview ? roomPreview.roomAvatarUrl : "")
         property string roomId: room ? room.roomId : (roomPreview ? roomPreview.roomid : "")
         property string roomName: room ? room.roomName : (roomPreview ? roomPreview.roomName : "")
         property string roomTopic: room ? room.roomTopic : (roomPreview ? roomPreview.roomTopic : "")
-        property string avatarUrl: room ? room.roomAvatarUrl : (roomPreview ? roomPreview.roomAvatarUrl : "")
 
-        visible: room != null && room.isSpace || roomPreview != null
-        enabled: visible
         anchors.fill: parent
         anchors.margins: Nheko.paddingLarge
+        enabled: visible
         spacing: Nheko.paddingLarge
+        visible: room != null && room.isSpace || roomPreview != null
 
         Item {
             Layout.fillHeight: true
         }
-
         Avatar {
-            url: parent.avatarUrl.replace("mxc://", "image://MxcImage/")
-            roomid: parent.roomId
+            Layout.alignment: Qt.AlignHCenter
             displayName: parent.roomName
-            height: 130
-            width: 130
-            Layout.alignment: Qt.AlignHCenter
             enabled: false
+            height: 130
+            roomid: parent.roomId
+            url: parent.avatarUrl.replace("mxc://", "image://MxcImage/")
+            width: 130
         }
-
         RowLayout {
-            spacing: Nheko.paddingMedium
             Layout.alignment: Qt.AlignHCenter
+            spacing: Nheko.paddingMedium
 
             MatrixText {
-                text: preview.roomName == "" ? qsTr("No preview available") : preview.roomName
                 font.pixelSize: 24
+                text: preview.roomName == "" ? qsTr("No preview available") : preview.roomName
             }
-
             ImageButton {
+                ToolTip.text: qsTr("Settings")
+                ToolTip.visible: hovered
+                hoverEnabled: true
                 image: ":/icons/icons/ui/settings.svg"
                 visible: !!room
-                hoverEnabled: true
-                ToolTip.visible: hovered
-                ToolTip.text: qsTr("Settings")
+
                 onClicked: TimelineManager.openRoomSettings(room.roomId)
             }
-
         }
-
         RowLayout {
-            visible: !!room
-            spacing: Nheko.paddingMedium
             Layout.alignment: Qt.AlignHCenter
+            spacing: Nheko.paddingMedium
+            visible: !!room
 
             MatrixText {
-                text: qsTr("%1 member(s)").arg(room ? room.roomMemberCount : 0)
                 cursorShape: Qt.PointingHandCursor
+                text: qsTr("%1 member(s)").arg(room ? room.roomMemberCount : 0)
             }
-
             ImageButton {
-                image: ":/icons/icons/ui/people.svg"
-                hoverEnabled: true
-                ToolTip.visible: hovered
                 ToolTip.text: qsTr("View members of %1").arg(room.roomName)
+                ToolTip.visible: hovered
+                hoverEnabled: true
+                image: ":/icons/icons/ui/people.svg"
+
                 onClicked: TimelineManager.openRoomMembers(room)
             }
-
         }
-
         ScrollView {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
@@ -220,97 +190,88 @@ Item {
             Layout.rightMargin: Nheko.paddingLarge
 
             TextArea {
-                text: TimelineManager.escapeEmoji(preview.roomTopic)
-                wrapMode: TextEdit.WordWrap
-                textFormat: TextEdit.RichText
-                readOnly: true
                 background: null
-                selectByMouse: true
                 color: timelineRoot.palette.text
                 horizontalAlignment: TextEdit.AlignHCenter
+                readOnly: true
+                selectByMouse: true
+                text: TimelineManager.escapeEmoji(preview.roomTopic)
+                textFormat: TextEdit.RichText
+                wrapMode: TextEdit.WordWrap
+
                 onLinkActivated: Nheko.openLink(link)
 
                 NhekoCursorShape {
                     anchors.fill: parent
                     cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
                 }
-
             }
-
         }
-
         FlatButton {
-            visible: roomPreview && !roomPreview.isInvite
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("join the conversation")
+            visible: roomPreview && !roomPreview.isInvite
+
             onClicked: Rooms.joinPreview(roomPreview.roomid)
         }
-
         FlatButton {
-            visible: roomPreview && roomPreview.isInvite
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("accept invite")
+            visible: roomPreview && roomPreview.isInvite
+
             onClicked: Rooms.acceptInvite(roomPreview.roomid)
         }
-
         FlatButton {
-            visible: roomPreview && roomPreview.isInvite
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("decline invite")
+            visible: roomPreview && roomPreview.isInvite
+
             onClicked: Rooms.declineInvite(roomPreview.roomid)
         }
-
         Item {
-            visible: room != null
             Layout.preferredHeight: Math.ceil(fontMetrics.lineSpacing * 2)
+            visible: room != null
         }
-
         Item {
             Layout.fillHeight: true
         }
-
     }
-
     ImageButton {
         id: backToRoomsButton
-
-        anchors.top: parent.top
+        ToolTip.text: qsTr("Back to room list")
+        ToolTip.visible: hovered
         anchors.left: parent.left
         anchors.margins: Nheko.paddingMedium
-        width: Nheko.avatarSize
-        height: Nheko.avatarSize
-        visible: (room == null || room.isSpace) && showBackButton
+        anchors.top: parent.top
         enabled: visible
+        height: Nheko.avatarSize
         image: ":/icons/icons/ui/angle-arrow-left.svg"
-        ToolTip.visible: hovered
-        ToolTip.text: qsTr("Back to room list")
+        visible: (room == null || room.isSpace) && showBackButton
+        width: Nheko.avatarSize
+
         onClicked: Rooms.resetCurrentRoom()
     }
-
     NhekoDropArea {
         anchors.fill: parent
         roomid: room ? room.roomId : ""
     }
-
     Connections {
         function onOpenReadReceiptsDialog(rr) {
             var dialog = readReceiptsDialog.createObject(timelineRoot, {
-                "readReceipts": rr,
-                "room": room
-            });
+                    "readReceipts": rr,
+                    "room": room
+                });
             dialog.show();
             timelineRoot.destroyOnClose(dialog);
         }
-
         function onShowRawMessageDialog(rawMessage) {
             var dialog = rawMessageDialog.createObject(timelineRoot, {
-                "rawMessage": rawMessage
-            });
+                    "rawMessage": rawMessage
+                });
             dialog.show();
             timelineRoot.destroyOnClose(dialog);
         }
 
         target: room
     }
-
 }

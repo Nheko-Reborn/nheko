@@ -1,9 +1,7 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-import ".."
+import "../"
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
@@ -15,19 +13,25 @@ ApplicationWindow {
     property ReadReceiptsProxy readReceipts
     property Room room
 
+    color: timelineRoot.palette.window
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     height: 380
-    width: 340
     minimumHeight: 380
     minimumWidth: headerTitle.width + 2 * Nheko.paddingMedium
     palette: timelineRoot.palette
-    color: timelineRoot.palette.window
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+    width: 340
+
+    footer: DialogButtonBox {
+        standardButtons: DialogButtonBox.Ok
+
+        onAccepted: readReceiptsRoot.close()
+    }
 
     Shortcut {
         sequence: StandardKey.Cancel
+
         onActivated: readReceiptsRoot.close()
     }
-
     ColumnLayout {
         anchors.fill: parent
         anchors.margins: Nheko.paddingMedium
@@ -35,97 +39,78 @@ ApplicationWindow {
 
         Label {
             id: headerTitle
-
-            color: timelineRoot.palette.text
             Layout.alignment: Qt.AlignCenter
-            text: qsTr("Read receipts")
+            color: timelineRoot.palette.text
             font.pointSize: fontMetrics.font.pointSize * 1.5
+            text: qsTr("Read receipts")
         }
-
         ScrollView {
-            palette: timelineRoot.palette
-            padding: Nheko.paddingMedium
-            ScrollBar.horizontal.visible: false
             Layout.fillHeight: true
-            Layout.minimumHeight: 200
             Layout.fillWidth: true
+            Layout.minimumHeight: 200
+            ScrollBar.horizontal.visible: false
+            padding: Nheko.paddingMedium
+            palette: timelineRoot.palette
 
             ListView {
                 id: readReceiptsList
-
-                clip: true
                 boundsBehavior: Flickable.StopAtBounds
+                clip: true
                 model: readReceipts
 
                 delegate: ItemDelegate {
                     id: del
-
-                    onClicked: room.openUserProfile(model.mxid)
-                    padding: Nheko.paddingMedium
-                    width: ListView.view.width
+                    ToolTip.text: model.mxid
+                    ToolTip.visible: hovered
                     height: receiptLayout.implicitHeight + Nheko.paddingSmall * 2
                     hoverEnabled: true
-                    ToolTip.visible: hovered
-                    ToolTip.text: model.mxid
+                    padding: Nheko.paddingMedium
+                    width: ListView.view.width
+
                     background: Rectangle {
                         color: del.hovered ? timelineRoot.palette.dark : readReceiptsRoot.color
                     }
 
+                    onClicked: room.openUserProfile(model.mxid)
+
                     RowLayout {
                         id: receiptLayout
-
-                        spacing: Nheko.paddingMedium
                         anchors.fill: parent
                         anchors.margins: Nheko.paddingSmall
+                        spacing: Nheko.paddingMedium
 
                         Avatar {
-                            width: Nheko.avatarSize
-                            height: Nheko.avatarSize
-                            userid: model.mxid
-                            url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             displayName: model.displayName
                             enabled: false
+                            height: Nheko.avatarSize
+                            url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                            userid: model.mxid
+                            width: Nheko.avatarSize
                         }
-
                         ColumnLayout {
                             spacing: Nheko.paddingSmall
 
                             Label {
-                                text: model.displayName
                                 color: TimelineManager.userColor(model ? model.mxid : "", timelineRoot.palette.window)
                                 font.pointSize: fontMetrics.font.pointSize
+                                text: model.displayName
                             }
-
                             Label {
-                                text: model.timestamp
                                 color: timelineRoot.palette.placeholderText
                                 font.pointSize: fontMetrics.font.pointSize * 0.9
+                                text: model.timestamp
                             }
-
                         }
-
                         Item {
                             Layout.fillWidth: true
                         }
-
                     }
-
                     NhekoCursorShape {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
                     }
-
                 }
-
             }
-
         }
-
     }
-
-    footer: DialogButtonBox {
-        standardButtons: DialogButtonBox.Ok
-        onAccepted: readReceiptsRoot.close()
-    }
-
 }

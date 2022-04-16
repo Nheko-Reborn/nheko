@@ -7,7 +7,7 @@
 
 set -eu
 
-FILES=$(find src resources/qml -type f \( -iname "*.cpp" -o -iname "*.h" -o -iname "*.qml" \))
+FILES=$(find src qml -type f \( -iname "*.cpp" -o -iname "*.h" -o -iname "*.qml" \))
 
 reuse addheader --copyright="Nheko Contributors" --license="GPL-3.0-or-later" $FILES
 

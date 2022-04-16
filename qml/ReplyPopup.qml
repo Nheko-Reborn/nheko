@@ -1,9 +1,7 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-import "./delegates/"
+import "delegates"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
@@ -11,76 +9,71 @@ import im.nheko
 
 Rectangle {
     id: replyPopup
-
     Layout.fillWidth: true
-    visible: room && (room.reply || room.edit)
+    color: timelineRoot.palette.window
     // Height of child, plus margins, plus border
     implicitHeight: (room && room.reply ? replyPreview.height : closeEditButton.height) + Nheko.paddingSmall
-    color: timelineRoot.palette.window
+    visible: room && (room.reply || room.edit)
     z: 3
 
     Reply {
         id: replyPreview
 
-        property var modelData: room ? room.getDump(room.reply, room.id) : {
-        }
+        property var modelData: room ? room.getDump(room.reply, room.id) : {}
 
-        visible: room && room.reply
         anchors.left: parent.left
-        anchors.leftMargin: replyPopup.width < 450? Nheko.paddingSmall : (CallManager.callsSupported? 2*(22+16) : 1*(22+16))
+        anchors.leftMargin: replyPopup.width < 450 ? Nheko.paddingSmall : (CallManager.callsSupported ? 2 * (22 + 16) : 1 * (22 + 16))
         anchors.right: parent.right
-        anchors.rightMargin: replyPopup.width < 450? 2*(22+16) : 3*(22+16)
+        anchors.rightMargin: replyPopup.width < 450 ? 2 * (22 + 16) : 3 * (22 + 16)
         anchors.top: parent.top
         anchors.topMargin: Nheko.paddingSmall
-        userColor: TimelineManager.userColor(modelData.userId, timelineRoot.palette.window)
         blurhash: modelData.blurhash ?? ""
         body: modelData.body ?? ""
-        formattedBody: modelData.formattedBody ?? ""
+        encryptionError: modelData.encryptionError ?? 0
         eventId: modelData.eventId ?? ""
         filename: modelData.filename ?? ""
         filesize: modelData.filesize ?? ""
+        formattedBody: modelData.formattedBody ?? ""
+        isOnlyEmoji: modelData.isOnlyEmoji ?? false
+        originalWidth: modelData.originalWidth ?? 0
         proportionalHeight: modelData.proportionalHeight ?? 1
         type: modelData.type ?? MtxEvent.UnknownMessage
         typeString: modelData.typeString ?? ""
         url: modelData.url ?? ""
-        originalWidth: modelData.originalWidth ?? 0
-        isOnlyEmoji: modelData.isOnlyEmoji ?? false
+        userColor: TimelineManager.userColor(modelData.userId, timelineRoot.palette.window)
         userId: modelData.userId ?? ""
         userName: modelData.userName ?? ""
-        encryptionError: modelData.encryptionError ?? 0
+        visible: room && room.reply
         width: parent.width
     }
-
     ImageButton {
         id: closeReplyButton
-
-        visible: room && room.reply
+        ToolTip.text: qsTr("Close")
+        ToolTip.visible: closeReplyButton.hovered
+        anchors.margins: Nheko.paddingSmall
         anchors.right: replyPreview.right
         anchors.top: replyPreview.top
-        anchors.margins: Nheko.paddingSmall
-        hoverEnabled: true
-        width: 16
         height: 16
+        hoverEnabled: true
         image: ":/icons/icons/ui/dismiss.svg"
-        ToolTip.visible: closeReplyButton.hovered
-        ToolTip.text: qsTr("Close")
+        visible: room && room.reply
+        width: 16
+
         onClicked: room.reply = undefined
     }
-
     ImageButton {
         id: closeEditButton
-
-        visible: room && room.edit
-        anchors.right: parent.right
+        ToolTip.text: qsTr("Cancel Edit")
+        ToolTip.visible: closeEditButton.hovered
         anchors.margins: 8
+        anchors.right: parent.right
         anchors.top: parent.top
+        height: 22
         hoverEnabled: true
         image: ":/icons/icons/ui/dismiss_edit.svg"
+        visible: room && room.edit
         width: 22
-        height: 22
-        ToolTip.visible: closeEditButton.hovered
-        ToolTip.text: qsTr("Cancel Edit")
+
         onClicked: room.edit = undefined
     }
-
 }

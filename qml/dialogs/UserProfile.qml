@@ -1,9 +1,7 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-import ".."
+import "../"
 import "../device-verification"
 import "../ui"
 import QtQuick 2.15
@@ -18,101 +16,232 @@ ApplicationWindow {
 
     property var profile
 
-    height: 650
-    width: 420
-    minimumWidth: 150
-    minimumHeight: 150
-    palette: timelineRoot.palette
     color: timelineRoot.palette.window
-    title: profile.isGlobalUserProfile ? qsTr("Global User Profile") : qsTr("Room User Profile")
-    modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+    height: 650
+    minimumHeight: 150
+    minimumWidth: 150
+    modality: Qt.NonModal
+    palette: timelineRoot.palette
+    title: profile.isGlobalUserProfile ? qsTr("Global User Profile") : qsTr("Room User Profile")
+    width: 420
 
     Shortcut {
         sequence: StandardKey.Cancel
+
         onActivated: userProfileDialog.close()
     }
-
     ListView {
         id: devicelist
-
         Layout.fillHeight: true
         Layout.fillWidth: true
-        clip: true
-        spacing: 8
-        boundsBehavior: Flickable.StopAtBounds
-        model: profile.deviceList
         anchors.fill: parent
         anchors.margins: 10
+        boundsBehavior: Flickable.StopAtBounds
+        clip: true
         footerPositioning: ListView.OverlayFooter
+        model: profile.deviceList
+        spacing: 8
 
+        delegate: RowLayout {
+            required property string deviceId
+            required property string deviceName
+            required property string lastIp
+            required property var lastTs
+            required property int verificationStatus
 
+            spacing: 4
+            width: devicelist.width
+
+            ColumnLayout {
+                spacing: 0
+
+                RowLayout {
+                    Text {
+                        Layout.alignment: Qt.AlignLeft
+                        Layout.fillWidth: true
+                        color: timelineRoot.palette.text
+                        elide: Text.ElideRight
+                        font.bold: true
+                        text: deviceId
+                    }
+                    Image {
+                        Layout.preferredHeight: 16
+                        Layout.preferredWidth: 16
+                        source: {
+                            switch (verificationStatus) {
+                            case VerificationStatus.VERIFIED:
+                                return "image://colorimage/:/icons/icons/ui/shield-filled-checkmark.svg?green";
+                            case VerificationStatus.UNVERIFIED:
+                                return "image://colorimage/:/icons/icons/ui/shield-filled-exclamation-mark.svg?#d6c020";
+                            case VerificationStatus.SELF:
+                                return "image://colorimage/:/icons/icons/ui/checkmark.svg?green";
+                            default:
+                                return "image://colorimage/:/icons/icons/ui/shield-filled-cross.svg?#d6c020";
+                            }
+                        }
+                        sourceSize.height: 16 * Screen.devicePixelRatio
+                        sourceSize.width: 16 * Screen.devicePixelRatio
+                        visible: profile.isSelf && verificationStatus != VerificationStatus.NOT_APPLICABLE
+                    }
+                    ImageButton {
+                        Layout.alignment: Qt.AlignTop
+                        ToolTip.text: qsTr("Sign out this device.")
+                        ToolTip.visible: hovered
+                        hoverEnabled: true
+                        image: ":/icons/icons/ui/power-off.svg"
+                        visible: profile.isSelf
+
+                        onClicked: profile.signOutDevice(deviceId)
+                    }
+                }
+                RowLayout {
+                    id: deviceNameRow
+
+                    property bool isEditingAllowed
+
+                    TextInput {
+                        id: deviceNameField
+                        Layout.alignment: Qt.AlignLeft
+                        Layout.fillWidth: true
+                        color: timelineRoot.palette.text
+                        readOnly: !deviceNameRow.isEditingAllowed
+                        selectByMouse: true
+                        text: deviceName
+
+                        onAccepted: {
+                            profile.changeDeviceName(deviceId, deviceNameField.text);
+                            deviceNameRow.isEditingAllowed = false;
+                        }
+                    }
+                    ImageButton {
+                        ToolTip.text: qsTr("Change device name.")
+                        ToolTip.visible: hovered
+                        hoverEnabled: true
+                        image: deviceNameRow.isEditingAllowed ? ":/icons/icons/ui/checkmark.svg" : ":/icons/icons/ui/edit.svg"
+                        visible: profile.isSelf
+
+                        onClicked: {
+                            if (deviceNameRow.isEditingAllowed) {
+                                profile.changeDeviceName(deviceId, deviceNameField.text);
+                                deviceNameRow.isEditingAllowed = false;
+                            } else {
+                                deviceNameRow.isEditingAllowed = true;
+                                deviceNameField.focus = true;
+                                deviceNameField.selectAll();
+                            }
+                        }
+                    }
+                }
+                Text {
+                    Layout.alignment: Qt.AlignLeft
+                    Layout.fillWidth: true
+                    color: timelineRoot.palette.text
+                    elide: Text.ElideRight
+                    text: qsTr("Last seen %1 from %2").arg(new Date(lastTs).toLocaleString(Locale.ShortFormat)).arg(lastIp ? lastIp : "???")
+                    visible: profile.isSelf
+                }
+            }
+            Image {
+                Layout.preferredHeight: 16
+                Layout.preferredWidth: 16
+                source: {
+                    switch (verificationStatus) {
+                    case VerificationStatus.VERIFIED:
+                        return "image://colorimage/:/icons/icons/ui/shield-filled-checkmark.svg?green";
+                    case VerificationStatus.UNVERIFIED:
+                        return "image://colorimage/:/icons/icons/ui/shield-filled-exclamation-mark.svg?#d6c020";
+                    case VerificationStatus.SELF:
+                        return "image://colorimage/:/icons/icons/ui/checkmark.svg?green";
+                    default:
+                        return "image://colorimage/:/icons/icons/ui/shield-filled.svg?red";
+                    }
+                }
+                visible: !profile.isSelf && verificationStatus != VerificationStatus.NOT_APPLICABLE
+            }
+            Button {
+                id: verifyButton
+                text: (verificationStatus != VerificationStatus.VERIFIED) ? qsTr("Verify") : qsTr("Unverify")
+                visible: verificationStatus == VerificationStatus.UNVERIFIED && (profile.isSelf || !profile.userVerificationEnabled)
+
+                onClicked: {
+                    if (verificationStatus == VerificationStatus.VERIFIED)
+                        profile.unverify(deviceId);
+                    else
+                        profile.verify(deviceId);
+                }
+            }
+        }
+        footer: DialogButtonBox {
+            alignment: Qt.AlignRight
+            standardButtons: DialogButtonBox.Ok
+            width: devicelist.width
+            z: 2
+
+            background: Rectangle {
+                anchors.fill: parent
+                color: timelineRoot.palette.window
+            }
+
+            onAccepted: userProfileDialog.close()
+        }
         header: ColumnLayout {
             id: contentL
-
-            width: devicelist.width
             spacing: 10
+            width: devicelist.width
 
             Avatar {
                 id: displayAvatar
-
-                url: profile.avatarUrl.replace("mxc://", "image://MxcImage/")
-                height: 130
-                width: 130
-                displayName: profile.displayName
-                userid: profile.userid
                 Layout.alignment: Qt.AlignHCenter
+                displayName: profile.displayName
+                height: 130
+                url: profile.avatarUrl.replace("mxc://", "image://MxcImage/")
+                userid: profile.userid
+                width: 130
+
                 onClicked: TimelineManager.openImageOverlay(null, profile.avatarUrl, "")
 
                 ImageButton {
-                    hoverEnabled: true
-                    ToolTip.visible: hovered
                     ToolTip.text: profile.isGlobalUserProfile ? qsTr("Change avatar globally.") : qsTr("Change avatar. Will only apply to this room.")
+                    ToolTip.visible: hovered
                     anchors.left: displayAvatar.left
-                    anchors.top: displayAvatar.top
                     anchors.leftMargin: Nheko.paddingMedium
+                    anchors.top: displayAvatar.top
                     anchors.topMargin: Nheko.paddingMedium
-                    visible: profile.isSelf
+                    hoverEnabled: true
                     image: ":/icons/icons/ui/edit.svg"
+                    visible: profile.isSelf
+
                     onClicked: profile.changeAvatar()
                 }
-
             }
-
             Spinner {
                 Layout.alignment: Qt.AlignHCenter
+                foreground: timelineRoot.palette.mid
                 running: profile.isLoading
                 visible: profile.isLoading
-                foreground: timelineRoot.palette.mid
             }
-
             Text {
                 id: errorText
-
-                color: "red"
-                visible: opacity > 0
-                opacity: 0
                 Layout.alignment: Qt.AlignHCenter
+                color: "red"
+                opacity: 0
+                visible: opacity > 0
             }
-
             SequentialAnimation {
                 id: hideErrorAnimation
-
                 running: false
 
                 PauseAnimation {
                     duration: 4000
                 }
-
                 NumberAnimation {
-                    target: errorText
-                    property: 'opacity'
-                    to: 0
                     duration: 1000
+                    property: 'opacity'
+                    target: errorText
+                    to: 0
                 }
-
             }
-
             Connections {
                 function onDisplayError(errorMessage) {
                     errorText.text = errorMessage;
@@ -122,22 +251,22 @@ ApplicationWindow {
 
                 target: profile
             }
-
             TextInput {
                 id: displayUsername
 
                 property bool isUsernameEditingAllowed
 
-                readOnly: !isUsernameEditingAllowed
-                text: profile.displayName
-                font.pixelSize: 20
-                color: TimelineManager.userColor(profile.userid, timelineRoot.palette.window)
-                font.bold: true
                 Layout.alignment: Qt.AlignHCenter
                 Layout.maximumWidth: parent.width - (Nheko.paddingSmall * 2) - usernameChangeButton.anchors.leftMargin - (usernameChangeButton.width * 2)
+                color: TimelineManager.userColor(profile.userid, timelineRoot.palette.window)
+                font.bold: true
+                font.pixelSize: 20
                 horizontalAlignment: TextInput.AlignHCenter
-                wrapMode: TextInput.Wrap
+                readOnly: !isUsernameEditingAllowed
                 selectByMouse: true
+                text: profile.displayName
+                wrapMode: TextInput.Wrap
+
                 onAccepted: {
                     profile.changeUsername(displayUsername.text);
                     displayUsername.isUsernameEditingAllowed = false;
@@ -145,14 +274,15 @@ ApplicationWindow {
 
                 ImageButton {
                     id: usernameChangeButton
-                    visible: profile.isSelf
-                    anchors.leftMargin: Nheko.paddingSmall
+                    ToolTip.text: profile.isGlobalUserProfile ? qsTr("Change display name globally.") : qsTr("Change display name. Will only apply to this room.")
+                    ToolTip.visible: hovered
                     anchors.left: displayUsername.right
+                    anchors.leftMargin: Nheko.paddingSmall
                     anchors.verticalCenter: displayUsername.verticalCenter
                     hoverEnabled: true
-                    ToolTip.visible: hovered
-                    ToolTip.text: profile.isGlobalUserProfile ? qsTr("Change display name globally.") : qsTr("Change display name. Will only apply to this room.")
                     image: displayUsername.isUsernameEditingAllowed ? ":/icons/icons/ui/checkmark.svg" : ":/icons/icons/ui/edit.svg"
+                    visible: profile.isSelf
+
                     onClicked: {
                         if (displayUsername.isUsernameEditingAllowed) {
                             profile.changeUsername(displayUsername.text);
@@ -164,63 +294,54 @@ ApplicationWindow {
                         }
                     }
                 }
-
             }
-
             MatrixText {
-                text: profile.userid
                 Layout.alignment: Qt.AlignHCenter
+                text: profile.userid
             }
-
             RowLayout {
-                visible: !profile.isGlobalUserProfile
                 Layout.alignment: Qt.AlignHCenter
                 spacing: Nheko.paddingSmall
+                visible: !profile.isGlobalUserProfile
 
                 MatrixText {
                     id: displayRoomname
-
-                    text: qsTr("Room: %1").arg(profile.room ? profile.room.roomName : "")
+                    Layout.maximumWidth: parent.parent.width - (parent.spacing * 3) - 16
                     ToolTip.text: qsTr("This is a room-specific profile. The user's name and avatar may be different from their global versions.")
                     ToolTip.visible: ma.hovered
-                    Layout.maximumWidth: parent.parent.width - (parent.spacing * 3) - 16
                     horizontalAlignment: TextEdit.AlignHCenter
+                    text: qsTr("Room: %1").arg(profile.room ? profile.room.roomName : "")
 
                     HoverHandler {
                         id: ma
                     }
-
                 }
-
                 ImageButton {
-                    image: ":/icons/icons/ui/world.svg"
-                    hoverEnabled: true
-                    ToolTip.visible: hovered
                     ToolTip.text: qsTr("Open the global profile for this user.")
+                    ToolTip.visible: hovered
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/world.svg"
+
                     onClicked: profile.openGlobalProfile()
                 }
-
             }
-
             Button {
                 id: verifyUserButton
-
-                text: qsTr("Verify")
                 Layout.alignment: Qt.AlignHCenter
                 enabled: profile.userVerified != Crypto.Verified
+                text: qsTr("Verify")
                 visible: profile.userVerified != Crypto.Verified && !profile.isSelf && profile.userVerificationEnabled
+
                 onClicked: profile.verify()
             }
-
             EncryptionIndicator {
+                Layout.alignment: Qt.AlignHCenter
                 Layout.preferredHeight: 16
                 Layout.preferredWidth: 16
+                ToolTip.visible: false
                 encrypted: profile.userVerificationEnabled
                 trust: profile.userVerified
-                Layout.alignment: Qt.AlignHCenter
-                ToolTip.visible: false
             }
-
             RowLayout {
                 // ImageButton{
                 //     image:":/icons/icons/ui/volume-off-indicator.svg"
@@ -234,202 +355,45 @@ ApplicationWindow {
                 //         profile.ignoreUser()
                 //     }
                 // }
-
                 Layout.alignment: Qt.AlignHCenter
                 Layout.bottomMargin: 10
                 spacing: Nheko.paddingSmall
 
                 ImageButton {
-                    image: ":/icons/icons/ui/chat.svg"
-                    hoverEnabled: true
-                    ToolTip.visible: hovered
                     ToolTip.text: qsTr("Start a private chat.")
+                    ToolTip.visible: hovered
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/chat.svg"
+
                     onClicked: profile.startChat()
                 }
-
                 ImageButton {
-                    image: ":/icons/icons/ui/round-remove-button.svg"
-                    hoverEnabled: true
-                    ToolTip.visible: hovered
                     ToolTip.text: qsTr("Kick the user.")
-                    onClicked: profile.kickUser()
+                    ToolTip.visible: hovered
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/round-remove-button.svg"
                     visible: !profile.isGlobalUserProfile && profile.room.permissions.canKick()
-                }
 
+                    onClicked: profile.kickUser()
+                }
                 ImageButton {
-                    image: ":/icons/icons/ui/ban.svg"
-                    hoverEnabled: true
-                    ToolTip.visible: hovered
                     ToolTip.text: qsTr("Ban the user.")
-                    onClicked: profile.banUser()
-                    visible: !profile.isGlobalUserProfile && profile.room.permissions.canBan()
-                }
-
-                ImageButton {
-                    image: ":/icons/icons/ui/refresh.svg"
-                    hoverEnabled: true
                     ToolTip.visible: hovered
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/ban.svg"
+                    visible: !profile.isGlobalUserProfile && profile.room.permissions.canBan()
+
+                    onClicked: profile.banUser()
+                }
+                ImageButton {
                     ToolTip.text: qsTr("Refresh device list.")
+                    ToolTip.visible: hovered
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/refresh.svg"
+
                     onClicked: profile.refreshDevices()
                 }
-
             }
-
         }
-
-        delegate: RowLayout {
-            required property int verificationStatus
-            required property string deviceId
-            required property string deviceName
-            required property string lastIp
-            required property var lastTs
-
-            width: devicelist.width
-            spacing: 4
-
-            ColumnLayout {
-                spacing: 0
-
-                RowLayout {
-                    Text {
-                        Layout.fillWidth: true
-                        Layout.alignment: Qt.AlignLeft
-                        elide: Text.ElideRight
-                        font.bold: true
-                        color: timelineRoot.palette.text
-                        text: deviceId
-                    }
-
-                    Image {
-                        Layout.preferredHeight: 16
-                        Layout.preferredWidth: 16
-                        visible: profile.isSelf && verificationStatus != VerificationStatus.NOT_APPLICABLE
-                        sourceSize.height: 16 * Screen.devicePixelRatio
-                        sourceSize.width: 16 * Screen.devicePixelRatio
-                        source: {
-                            switch (verificationStatus) {
-                            case VerificationStatus.VERIFIED:
-                                return "image://colorimage/:/icons/icons/ui/shield-filled-checkmark.svg?green";
-                            case VerificationStatus.UNVERIFIED:
-                                return "image://colorimage/:/icons/icons/ui/shield-filled-exclamation-mark.svg?#d6c020";
-                            case VerificationStatus.SELF:
-                                return "image://colorimage/:/icons/icons/ui/checkmark.svg?green";
-                            default:
-                                return "image://colorimage/:/icons/icons/ui/shield-filled-cross.svg?#d6c020";
-                            }
-                        }
-                    }
-
-                    ImageButton {
-                        Layout.alignment: Qt.AlignTop
-                        image: ":/icons/icons/ui/power-off.svg"
-                        hoverEnabled: true
-                        ToolTip.visible: hovered
-                        ToolTip.text: qsTr("Sign out this device.")
-                        onClicked: profile.signOutDevice(deviceId)
-                        visible: profile.isSelf
-                    }
-
-                }
-
-                RowLayout {
-                    id: deviceNameRow
-
-                    property bool isEditingAllowed
-
-                    TextInput {
-                        id: deviceNameField
-
-                        readOnly: !deviceNameRow.isEditingAllowed
-                        text: deviceName
-                        color: timelineRoot.palette.text
-                        Layout.alignment: Qt.AlignLeft
-                        Layout.fillWidth: true
-                        selectByMouse: true
-                        onAccepted: {
-                            profile.changeDeviceName(deviceId, deviceNameField.text);
-                            deviceNameRow.isEditingAllowed = false;
-                        }
-                    }
-
-                    ImageButton {
-                        visible: profile.isSelf
-                        hoverEnabled: true
-                        ToolTip.visible: hovered
-                        ToolTip.text: qsTr("Change device name.")
-                        image: deviceNameRow.isEditingAllowed ? ":/icons/icons/ui/checkmark.svg" : ":/icons/icons/ui/edit.svg"
-                        onClicked: {
-                            if (deviceNameRow.isEditingAllowed) {
-                                profile.changeDeviceName(deviceId, deviceNameField.text);
-                                deviceNameRow.isEditingAllowed = false;
-                            } else {
-                                deviceNameRow.isEditingAllowed = true;
-                                deviceNameField.focus = true;
-                                deviceNameField.selectAll();
-                            }
-                        }
-                    }
-
-                }
-
-                Text {
-                    visible: profile.isSelf
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignLeft
-                    elide: Text.ElideRight
-                    color: timelineRoot.palette.text
-                    text: qsTr("Last seen %1 from %2").arg(new Date(lastTs).toLocaleString(Locale.ShortFormat)).arg(lastIp ? lastIp : "???")
-                }
-
-            }
-
-            Image {
-                Layout.preferredHeight: 16
-                Layout.preferredWidth: 16
-                visible: !profile.isSelf && verificationStatus != VerificationStatus.NOT_APPLICABLE
-                source: {
-                    switch (verificationStatus) {
-                    case VerificationStatus.VERIFIED:
-                        return "image://colorimage/:/icons/icons/ui/shield-filled-checkmark.svg?green";
-                    case VerificationStatus.UNVERIFIED:
-                        return "image://colorimage/:/icons/icons/ui/shield-filled-exclamation-mark.svg?#d6c020";
-                    case VerificationStatus.SELF:
-                        return "image://colorimage/:/icons/icons/ui/checkmark.svg?green";
-                    default:
-                        return "image://colorimage/:/icons/icons/ui/shield-filled.svg?red";
-                    }
-                }
-            }
-
-            Button {
-                id: verifyButton
-
-                visible: verificationStatus == VerificationStatus.UNVERIFIED && (profile.isSelf || !profile.userVerificationEnabled)
-                text: (verificationStatus != VerificationStatus.VERIFIED) ? qsTr("Verify") : qsTr("Unverify")
-                onClicked: {
-                    if (verificationStatus == VerificationStatus.VERIFIED)
-                        profile.unverify(deviceId);
-                    else
-                        profile.verify(deviceId);
-                }
-            }
-
-        }
-
-        footer: DialogButtonBox {
-            z: 2
-            width: devicelist.width
-            alignment: Qt.AlignRight
-            standardButtons: DialogButtonBox.Ok
-            onAccepted: userProfileDialog.close()
-
-            background: Rectangle {
-                anchors.fill: parent
-                color: timelineRoot.palette.window
-            }
-
-        }
-
     }
-
 }

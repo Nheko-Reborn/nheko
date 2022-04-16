@@ -1,8 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 import QtQuick 2.3
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.10
@@ -10,6 +8,7 @@ import im.nheko
 
 Pane {
     property string title: flow.sender ? qsTr("Send Verification Request") : qsTr("Received Verification Request")
+
     background: Rectangle {
         color: timelineRoot.palette.window
     }
@@ -19,11 +18,10 @@ Pane {
         spacing: 16
 
         Label {
-            // Self verification
-
-            Layout.preferredWidth: 400
             Layout.fillWidth: true
-            wrapMode: Text.Wrap
+            // Self verification
+            Layout.preferredWidth: 400
+            color: timelineRoot.palette.text
             text: {
                 if (flow.sender) {
                     if (flow.isSelfVerification)
@@ -42,34 +40,31 @@ Pane {
                         return qsTr("Your device (%1) has requested to be verified.").arg(flow.deviceId);
                 }
             }
-            color: timelineRoot.palette.text
             verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.Wrap
         }
-
-        Item { Layout.fillHeight: true; }
-
+        Item {
+            Layout.fillHeight: true
+        }
         RowLayout {
             Button {
                 Layout.alignment: Qt.AlignLeft
                 text: flow.sender ? qsTr("Cancel") : qsTr("Deny")
+
                 onClicked: {
                     flow.cancel();
                     dialog.close();
                 }
             }
-
             Item {
                 Layout.fillWidth: true
             }
-
             Button {
                 Layout.alignment: Qt.AlignRight
                 text: flow.sender ? qsTr("Start verification") : qsTr("Accept")
+
                 onClicked: flow.next()
             }
-
         }
-
     }
-
 }

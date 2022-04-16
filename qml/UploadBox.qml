@@ -1,10 +1,7 @@
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-import "./components"
-import "./ui"
-
+import "components"
+import "ui"
 import QtQuick 2.9
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
@@ -12,31 +9,30 @@ import im.nheko
 
 Page {
     id: uploadPopup
-    visible: room && room.input.uploads.length > 0
+    Layout.fillWidth: true
     Layout.preferredHeight: 200
     clip: true
-
-    Layout.fillWidth: true
-
     padding: Nheko.paddingMedium
+    visible: room && room.input.uploads.length > 0
 
+    background: Rectangle {
+        color: timelineRoot.palette.base
+    }
     contentItem: ListView {
         id: uploadsList
         anchors.horizontalCenter: parent.horizontalCenter
         boundsBehavior: Flickable.StopAtBounds
+        model: room ? room.input.uploads : undefined
+        orientation: ListView.Horizontal
+        spacing: Nheko.paddingMedium
+        width: Math.min(contentWidth, parent.availableWidth)
 
         ScrollBar.horizontal: ScrollBar {
             id: scr
         }
-
-        orientation: ListView.Horizontal
-        width: Math.min(contentWidth, parent.availableWidth)
-        model: room ? room.input.uploads : undefined
-        spacing: Nheko.paddingMedium
-
         delegate: Pane {
+            height: uploadPopup.availableHeight - buttons.height - (scr.visible ? scr.height : 0)
             padding: Nheko.paddingSmall
-            height: uploadPopup.availableHeight - buttons.height - (scr.visible? scr.height : 0)
             width: uploadPopup.availableHeight - buttons.height
 
             background: Rectangle {
@@ -45,45 +41,45 @@ Page {
             }
             contentItem: ColumnLayout {
                 Image {
+                    property string typeStr: switch (modelData.mediaType) {
+                    case MediaUpload.Video:
+                        return "video-file";
+                    case MediaUpload.Audio:
+                        return "music";
+                    case MediaUpload.Image:
+                        return "image";
+                    default:
+                        return "zip";
+                    }
+
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-
+                    fillMode: Image.PreserveAspectFit
+                    mipmap: true
+                    smooth: true
+                    source: (modelData.thumbnail != "") ? modelData.thumbnail : ("image://colorimage/:/icons/icons/ui/" + typeStr + ".svg?" + timelineRoot.palette.placeholderText)
                     sourceSize.height: height
                     sourceSize.width: width
-                    fillMode: Image.PreserveAspectFit
-                    smooth: true
-                    mipmap: true
-
-                    property string typeStr: switch(modelData.mediaType) {
-                        case MediaUpload.Video: return "video-file";
-                        case MediaUpload.Audio: return "music";
-                        case MediaUpload.Image: return "image";
-                        default: return "zip";
-                    }
-                    source: (modelData.thumbnail != "") ? modelData.thumbnail : ("image://colorimage/:/icons/icons/ui/"+typeStr+".svg?" + timelineRoot.palette.placeholderText)
                 }
                 MatrixTextField {
                     Layout.fillWidth: true
                     text: modelData.filename
+
                     onTextEdited: modelData.filename = text
                 }
             }
         }
     }
-
     footer: DialogButtonBox {
         id: buttons
-
         standardButtons: DialogButtonBox.Cancel
-        Button {
-            text: qsTr("Upload %n file(s)", "", (room ? room.input.uploads.length : 0))
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-        }
+
         onAccepted: room.input.acceptUploads()
         onRejected: room.input.declineUploads()
-    }
 
-    background: Rectangle {
-        color: timelineRoot.palette.base
+        Button {
+            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            text: qsTr("Upload %n file(s)", "", (room ? room.input.uploads.length : 0))
+        }
     }
 }

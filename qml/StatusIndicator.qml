@@ -1,8 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 import QtQuick 2.5
 import QtQuick.Controls 2.1
 import im.nheko
@@ -10,15 +8,9 @@ import im.nheko
 ImageButton {
     id: indicator
 
-    required property int status
     required property string eventId
+    required property int status
 
-    width: 16
-    height: 16
-    hoverEnabled: true
-    changeColorOnHover: (status == MtxEvent.Read)
-    cursor: (status == MtxEvent.Read) ? Qt.PointingHandCursor : Qt.ArrowCursor
-    ToolTip.visible: hovered && status != MtxEvent.Empty
     ToolTip.text: {
         switch (status) {
         case MtxEvent.Failed:
@@ -33,11 +25,11 @@ ImageButton {
             return "";
         }
     }
-    onClicked: {
-        if (status == MtxEvent.Read)
-            room.showReadReceipts(eventId);
-
-    }
+    ToolTip.visible: hovered && status != MtxEvent.Empty
+    changeColorOnHover: (status == MtxEvent.Read)
+    cursor: (status == MtxEvent.Read) ? Qt.PointingHandCursor : Qt.ArrowCursor
+    height: 16
+    hoverEnabled: true
     image: {
         switch (status) {
         case MtxEvent.Failed:
@@ -51,5 +43,11 @@ ImageButton {
         default:
             return "";
         }
+    }
+    width: 16
+
+    onClicked: {
+        if (status == MtxEvent.Read)
+            room.showReadReceipts(eventId);
     }
 }

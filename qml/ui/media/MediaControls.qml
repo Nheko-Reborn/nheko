@@ -1,8 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 import "../"
 import "../../"
 import QtMultimedia 5.15
@@ -15,27 +13,22 @@ Rectangle {
     id: control
 
     property alias desiredVolume: volumeSlider.desiredVolume
+    property var duration
+    property bool mediaLoaded: false
+    property var mediaState
     property bool muted: false
     property bool playingVideo: false
-    property var mediaState
-    property bool mediaLoaded: false
-    property var duration
-    property var positionValue: 0
     property var position
+    property var positionValue: 0
     property bool shouldShowControls: !playingVideo || playerMouseArea.shouldShowControls || volumeSlider.state == "shown"
 
-    signal playPauseActivated()
-    signal loadActivated()
-
-    function showControls() {
-        controlHideTimer.restart();
-    }
+    signal loadActivated
+    signal playPauseActivated
 
     function durationToString(duration) {
         function maybeZeroPrepend(time) {
             return (time < 10) ? "0" + time.toString() : time.toString();
         }
-
         var totalSeconds = Math.floor(duration / 1000);
         var seconds = totalSeconds % 60;
         var minutes = (Math.floor(totalSeconds / 60)) % 60;
@@ -46,16 +39,25 @@ Rectangle {
         var hh = hours.toString();
         if (hours < 1)
             return mm + ":" + ss;
-
         return hh + ":" + mm + ":" + ss;
+    }
+    function showControls() {
+        controlHideTimer.restart();
     }
 
     color: {
         var wc = timelineRoot.palette.alternateBase;
         return Qt.rgba(wc.r, wc.g, wc.b, 0.5);
     }
-    opacity: control.shouldShowControls ? 1 : 0
     height: controlLayout.implicitHeight
+    opacity: control.shouldShowControls ? 1 : 0
+
+    // Fade controls in/out
+    Behavior on opacity  {
+        OpacityAnimator {
+            duration: 100
+        }
+    }
 
     HoverHandler {
         id: playerMouseArea
@@ -64,41 +66,38 @@ Rectangle {
 
         onHoveredChanged: showControls()
     }
-
     ColumnLayout {
         id: controlLayout
-
-        enabled: control.shouldShowControls
-        spacing: 0
         anchors.bottom: control.bottom
         anchors.left: control.left
         anchors.right: control.right
+        enabled: control.shouldShowControls
+        spacing: 0
 
         NhekoSlider {
             Layout.fillWidth: true
             Layout.leftMargin: Nheko.paddingSmall
             Layout.rightMargin: Nheko.paddingSmall
+            alwaysShowSlider: false
             enabled: control.mediaLoaded
-            value: control.positionValue
-            onMoved: control.position = value
             from: 0
             to: control.duration
-            alwaysShowSlider: false
-        }
+            value: control.positionValue
 
+            onMoved: control.position = value
+        }
         RowLayout {
+            Layout.fillWidth: true
             Layout.margins: Nheko.paddingSmall
             spacing: Nheko.paddingSmall
-            Layout.fillWidth: true
 
             // Cache/Play/pause button
             ImageButton {
                 id: playbackStateImage
-
                 Layout.alignment: Qt.AlignLeft
-                buttonTextColor: timelineRoot.palette.text
                 Layout.preferredHeight: 24
                 Layout.preferredWidth: 24
+                buttonTextColor: timelineRoot.palette.text
                 image: {
                     if (control.mediaLoaded) {
                         if (control.mediaState == MediaPlayer.PlayingState)
@@ -109,38 +108,48 @@ Rectangle {
                         return ":/icons/icons/ui/download.svg";
                     }
                 }
+
                 onClicked: control.mediaLoaded ? control.playPauseActivated() : control.loadActivated()
             }
-
             ImageButton {
                 id: volumeButton
-
                 Layout.alignment: Qt.AlignLeft
-                buttonTextColor: timelineRoot.palette.text
                 Layout.preferredHeight: 24
                 Layout.preferredWidth: 24
+                buttonTextColor: timelineRoot.palette.text
                 image: {
                     if (control.muted || control.desiredVolume <= 0)
                         return ":/icons/icons/ui/volume-off-indicator.svg";
                     else
                         return ":/icons/icons/ui/volume-up.svg";
                 }
+
                 onClicked: control.muted = !control.muted
             }
-
             NhekoSlider {
                 id: volumeSlider
 
                 property real desiredVolume: QtMultimedia.convertVolume(volumeSlider.value, QtMultimedia.LogarithmicVolumeScale, QtMultimedia.LinearVolumeScale)
 
-                state: ""
                 Layout.alignment: Qt.AlignLeft
                 Layout.preferredWidth: 0
                 opacity: 0
                 orientation: Qt.Horizontal
+                state: ""
                 value: 1
-                onDesiredVolumeChanged: {
-                    control.muted = !(desiredVolume > 0);
+
+                states: State {
+                    name: "shown"
+                    when: Settings.mobileMode || volumeButton.hovered || volumeSlider.hovered || volumeSlider.pressed
+
+                    PropertyChanges {
+                        Layout.preferredWidth: 100
+                        target: volumeSlider
+                    }
+                    PropertyChanges {
+                        opacity: 1
+                        target: volumeSlider
+                    }
                 }
                 transitions: [
                     Transition {
@@ -151,20 +160,16 @@ Rectangle {
                             PauseAnimation {
                                 duration: 50
                             }
-
                             NumberAnimation {
                                 duration: 100
-                                properties: "opacity"
                                 easing.type: Easing.InQuad
+                                properties: "opacity"
                             }
-
                         }
-
                         NumberAnimation {
-                            properties: "Layout.preferredWidth"
                             duration: 150
+                            properties: "Layout.preferredWidth"
                         }
-
                     },
                     Transition {
                         from: "shown"
@@ -174,72 +179,40 @@ Rectangle {
                             PauseAnimation {
                                 duration: 100
                             }
-
                             ParallelAnimation {
                                 NumberAnimation {
                                     duration: 100
-                                    properties: "opacity"
                                     easing.type: Easing.InQuad
+                                    properties: "opacity"
                                 }
-
                                 NumberAnimation {
-                                    properties: "Layout.preferredWidth"
                                     duration: 150
+                                    properties: "Layout.preferredWidth"
                                 }
-
                             }
-
                         }
-
                     }
                 ]
 
-                states: State {
-                    name: "shown"
-                    when: Settings.mobileMode || volumeButton.hovered || volumeSlider.hovered || volumeSlider.pressed
-
-                    PropertyChanges {
-                        target: volumeSlider
-                        Layout.preferredWidth: 100
-                    }
-
-                    PropertyChanges {
-                        target: volumeSlider
-                        opacity: 1
-                    }
-
+                onDesiredVolumeChanged: {
+                    control.muted = !(desiredVolume > 0);
                 }
-
             }
-
             Label {
                 Layout.alignment: Qt.AlignRight
-                text: (!control.mediaLoaded ? "-- " : durationToString(control.positionValue)) + " / " + durationToString(control.duration)
                 color: timelineRoot.palette.text
+                text: (!control.mediaLoaded ? "-- " : durationToString(control.positionValue)) + " / " + durationToString(control.duration)
             }
-
             Item {
                 Layout.fillWidth: true
             }
-
         }
-
     }
 
     // For hiding controls on stationary cursor
     Timer {
         id: controlHideTimer
-
         interval: 1500 //ms
         repeat: false
     }
-
-    // Fade controls in/out
-    Behavior on opacity {
-        OpacityAnimator {
-            duration: 100
-        }
-
-    }
-
 }

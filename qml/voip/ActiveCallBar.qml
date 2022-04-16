@@ -1,8 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 import "../"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
@@ -10,51 +8,46 @@ import QtQuick.Layouts 1.2
 import im.nheko
 
 Rectangle {
-    visible: CallManager.isOnCall
     color: callInviteBar.color
     implicitHeight: visible ? rowLayout.height + 8 : 0
+    visible: CallManager.isOnCall
 
     MouseArea {
         anchors.fill: parent
+
         onClicked: {
             if (CallManager.callType != Voip.VOICE)
                 stackLayout.currentIndex = stackLayout.currentIndex ? 0 : 1;
-
         }
     }
-
     RowLayout {
         id: rowLayout
-
         anchors.left: parent.left
+        anchors.leftMargin: 8
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        anchors.leftMargin: 8
 
         Avatar {
-            width: Nheko.avatarSize
+            displayName: CallManager.callPartyDisplayName
             height: Nheko.avatarSize
             url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
             userid: CallManager.callParty
-            displayName: CallManager.callPartyDisplayName
+            width: Nheko.avatarSize
+
             onClicked: TimelineManager.openImageOverlay(room, room.avatarUrl(userid), room.data.eventId)
         }
-
         Label {
             Layout.leftMargin: 8
+            color: "#000000"
             font.pointSize: fontMetrics.font.pointSize * 1.1
             text: CallManager.callPartyDisplayName
-            color: "#000000"
         }
-
         Image {
             id: callTypeIcon
-
             Layout.leftMargin: 4
-            Layout.preferredWidth: 24
             Layout.preferredHeight: 24
+            Layout.preferredWidth: 24
         }
-
         Item {
             states: [
                 State {
@@ -62,41 +55,35 @@ Rectangle {
                     when: CallManager.callType == Voip.VOICE
 
                     PropertyChanges {
-                        target: callTypeIcon
                         source: "qrc:/icons/icons/ui/place-call.svg"
+                        target: callTypeIcon
                     }
-
                 },
                 State {
                     name: "VIDEO"
                     when: CallManager.callType == Voip.VIDEO
 
                     PropertyChanges {
-                        target: callTypeIcon
                         source: "qrc:/icons/icons/ui/video.svg"
+                        target: callTypeIcon
                     }
-
                 },
                 State {
                     name: "SCREEN"
                     when: CallManager.callType == Voip.SCREEN
 
                     PropertyChanges {
-                        target: callTypeIcon
                         source: "qrc:/icons/icons/ui/screen-share.svg"
+                        target: callTypeIcon
                     }
-
                 }
             ]
         }
-
         Label {
             id: callStateLabel
-
-            font.pointSize: fontMetrics.font.pointSize * 1.1
             color: "#000000"
+            font.pointSize: fontMetrics.font.pointSize * 1.1
         }
-
         Item {
             states: [
                 State {
@@ -107,7 +94,6 @@ Rectangle {
                         target: callStateLabel
                         text: qsTr("Calling...")
                     }
-
                 },
                 State {
                     name: "CONNECTING"
@@ -117,7 +103,6 @@ Rectangle {
                         target: callStateLabel
                         text: qsTr("Connecting...")
                     }
-
                 },
                 State {
                     name: "ANSWERSENT"
@@ -127,7 +112,6 @@ Rectangle {
                         target: callStateLabel
                         text: qsTr("Connecting...")
                     }
-
                 },
                 State {
                     name: "CONNECTED"
@@ -137,17 +121,14 @@ Rectangle {
                         target: callStateLabel
                         text: "00:00"
                     }
-
                     PropertyChanges {
-                        target: callTimer
                         startTime: Math.floor((new Date()).getTime() / 1000)
+                        target: callTimer
                     }
-
                     PropertyChanges {
-                        target: stackLayout
                         currentIndex: CallManager.callType != Voip.VOICE ? 1 : 0
+                        target: stackLayout
                     }
-
                 },
                 State {
                     name: "DISCONNECTED"
@@ -157,16 +138,13 @@ Rectangle {
                         target: callStateLabel
                         text: ""
                     }
-
                     PropertyChanges {
-                        target: stackLayout
                         currentIndex: 0
+                        target: stackLayout
                     }
-
                 }
             ]
         }
-
         Timer {
             id: callTimer
 
@@ -177,8 +155,9 @@ Rectangle {
             }
 
             interval: 1000
-            running: CallManager.callState == Voip.CONNECTED
             repeat: true
+            running: CallManager.callState == Voip.CONNECTED
+
             onTriggered: {
                 var d = new Date();
                 let seconds = Math.floor(d.getTime() / 1000 - startTime);
@@ -188,44 +167,40 @@ Rectangle {
                 callStateLabel.text = (h ? (pad(h) + ":") : "") + pad(m) + ":" + pad(s);
             }
         }
-
         Label {
             Layout.leftMargin: 16
-            visible: CallManager.callType == Voip.SCREEN && CallManager.callState == Voip.CONNECTED
-            text: qsTr("You are screen sharing")
-            font.pointSize: fontMetrics.font.pointSize * 1.1
             color: "#000000"
+            font.pointSize: fontMetrics.font.pointSize * 1.1
+            text: qsTr("You are screen sharing")
+            visible: CallManager.callType == Voip.SCREEN && CallManager.callState == Voip.CONNECTED
         }
-
         Item {
             Layout.fillWidth: true
         }
-
         ImageButton {
+            ToolTip.text: qsTr("Hide/Show Picture-in-Picture")
+            ToolTip.visible: hovered
+            buttonTextColor: "#000000"
+            height: 24
+            hoverEnabled: true
+            image: ":/icons/icons/ui/picture-in-picture.svg"
             visible: CallManager.haveLocalPiP
             width: 24
-            height: 24
-            buttonTextColor: "#000000"
-            image: ":/icons/icons/ui/picture-in-picture.svg"
-            hoverEnabled: true
-            ToolTip.visible: hovered
-            ToolTip.text: qsTr("Hide/Show Picture-in-Picture")
+
             onClicked: CallManager.toggleLocalPiP()
         }
-
         ImageButton {
             Layout.leftMargin: 8
             Layout.rightMargin: 16
-            width: 24
-            height: 24
-            buttonTextColor: "#000000"
-            image: CallManager.isMicMuted ? ":/icons/icons/ui/microphone-unmute.svg" : ":/icons/icons/ui/microphone-mute.svg"
-            hoverEnabled: true
-            ToolTip.visible: hovered
             ToolTip.text: CallManager.isMicMuted ? qsTr("Unmute Mic") : qsTr("Mute Mic")
+            ToolTip.visible: hovered
+            buttonTextColor: "#000000"
+            height: 24
+            hoverEnabled: true
+            image: CallManager.isMicMuted ? ":/icons/icons/ui/microphone-unmute.svg" : ":/icons/icons/ui/microphone-mute.svg"
+            width: 24
+
             onClicked: CallManager.toggleMicMute()
         }
-
     }
-
 }

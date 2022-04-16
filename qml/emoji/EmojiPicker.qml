@@ -1,8 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 import "../"
 import QtQuick 2.9
 import QtQuick.Controls 2.3
@@ -15,12 +13,12 @@ Menu {
 
     property var callback
     property var colors
-    property alias model: gridView.model
-    property var textArea
     property string emojiCategory: "people"
     property real highlightHue: timelineRoot.palette.highlight.hslHue
-    property real highlightSat: timelineRoot.palette.highlight.hslSaturation
     property real highlightLight: timelineRoot.palette.highlight.hslLightness
+    property real highlightSat: timelineRoot.palette.highlight.hslSaturation
+    property alias model: gridView.model
+    property var textArea
 
     function show(showAt, callback) {
         console.debug("Showing emojiPicker");
@@ -28,13 +26,13 @@ Menu {
         popup(showAt ? showAt : null);
     }
 
-    margins: 0
     bottomPadding: 1
-    leftPadding: 1
-    rightPadding: 1
-    modal: true
-    focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+    focus: true
+    leftPadding: 1
+    margins: 0
+    modal: true
+    rightPadding: 1
     //height: columnView.implicitHeight + 4
     //width: columnView.implicitWidth
     width: 7 * 52 + 20
@@ -46,28 +44,27 @@ Menu {
 
         ColumnLayout {
             id: columnView
-
-            spacing: 0
-            anchors.leftMargin: 3
-            anchors.rightMargin: 3
             anchors.bottom: parent.bottom
             anchors.left: parent.left
+            anchors.leftMargin: 3
             anchors.right: parent.right
+            anchors.rightMargin: 3
             anchors.topMargin: 2
+            spacing: 0
 
             // Search field
             TextField {
                 id: emojiSearch
-
-                Layout.topMargin: 3
                 Layout.preferredWidth: 7 * 52 + 20 - 6
-                palette: timelineRoot.palette
+                Layout.topMargin: 3
                 background: null
-                placeholderTextColor: timelineRoot.palette.placeholderText
                 color: timelineRoot.palette.text
+                palette: timelineRoot.palette
                 placeholderText: qsTr("Search")
-                selectByMouse: true
+                placeholderTextColor: timelineRoot.palette.placeholderText
                 rightPadding: clearSearch.width
+                selectByMouse: true
+
                 onTextChanged: searchTimer.restart()
                 onVisibleChanged: {
                     if (visible)
@@ -78,74 +75,71 @@ Menu {
 
                 Timer {
                     id: searchTimer
-
                     interval: 350 // tweak as needed?
+
                     onTriggered: {
                         emojiPopup.model.searchString = emojiSearch.text;
                         emojiPopup.model.category = Emoji.Category.Search;
                     }
                 }
-
                 ToolButton {
                     id: clearSearch
-
-                    visible: emojiSearch.text !== ''
-                    icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.placeholderText)
-                    focusPolicy: Qt.NoFocus
-                    onClicked: emojiSearch.clear()
-                    hoverEnabled: true
                     background: null
+                    focusPolicy: Qt.NoFocus
+                    hoverEnabled: true
+                    icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.placeholderText)
+                    visible: emojiSearch.text !== ''
+
+                    onClicked: emojiSearch.clear()
 
                     anchors {
-                        verticalCenter: parent.verticalCenter
                         right: parent.right
+                        verticalCenter: parent.verticalCenter
                     }
                     // clear the default hover effects.
-
                     Image {
                         height: parent.height - 2 * Nheko.paddingSmall
-                        width: height
                         source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? timelineRoot.palette.highlight : timelineRoot.palette.placeholderText)
+                        width: height
 
                         anchors {
-                            verticalCenter: parent.verticalCenter
-                            right: parent.right
                             margins: Nheko.paddingSmall
+                            right: parent.right
+                            verticalCenter: parent.verticalCenter
                         }
-
                     }
-
                 }
-
             }
 
             // emoji grid
             GridView {
                 id: gridView
-
+                Layout.leftMargin: 4
                 Layout.preferredHeight: cellHeight * 5
                 Layout.preferredWidth: 7 * 52 + 20
-                Layout.leftMargin: 4
-                cellWidth: 52
-                cellHeight: 52
                 boundsBehavior: Flickable.StopAtBounds
+                cacheBuffer: 500
+                cellHeight: 52
+                cellWidth: 52
                 clip: true
                 currentIndex: -1 // prevent sorting from stealing focus
-                cacheBuffer: 500
 
+                ScrollBar.vertical: ScrollBar {
+                    id: emojiScroll
+                }
 
                 // Individual emoji
                 delegate: AbstractButton {
-                    width: 48
-                    height: 48
-                    hoverEnabled: true
                     ToolTip.text: model.shortName
                     ToolTip.visible: hovered
-                    // TODO: maybe add favorites at some point?
-                    onClicked: {
-                        console.debug("Picked " + model.unicode);
-                        emojiPopup.close();
-                        callback(model.unicode);
+                    height: 48
+                    hoverEnabled: true
+                    width: 48
+
+                    background: Rectangle {
+                        anchors.fill: parent
+                        color: hovered ? timelineRoot.palette.highlight : 'transparent'
+                        radius: 5
                     }
 
                     // give the emoji a little oomf
@@ -159,97 +153,73 @@ Menu {
                     //     color: "#80000000"
                     //     source: parent.contentItem
                     // }
-
                     contentItem: Text {
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
+                        color: timelineRoot.palette.text
                         font.family: Settings.emojiFont
                         font.pixelSize: 36
+                        horizontalAlignment: Text.AlignHCenter
                         text: model.unicode.replace('\ufe0f', '')
-                        color: timelineRoot.palette.text
+                        verticalAlignment: Text.AlignVCenter
                     }
 
-                    background: Rectangle {
-                        anchors.fill: parent
-                        color: hovered ? timelineRoot.palette.highlight : 'transparent'
-                        radius: 5
+                    // TODO: maybe add favorites at some point?
+                    onClicked: {
+                        console.debug("Picked " + model.unicode);
+                        emojiPopup.close();
+                        callback(model.unicode);
                     }
-
                 }
-
-                ScrollBar.vertical: ScrollBar {
-                    id: emojiScroll
-                }
-
             }
 
             // Separator
             Rectangle {
-                visible: emojiSearch.text === ''
                 Layout.fillWidth: true
                 Layout.preferredHeight: 1
                 color: emojiPopup.Nheko.theme.separator
+                visible: emojiSearch.text === ''
             }
 
             // Category picker row
             RowLayout {
-                visible: emojiSearch.text === ''
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
                 Layout.bottomMargin: 0
                 Layout.preferredHeight: 42
                 implicitHeight: 42
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
+                visible: emojiSearch.text === ''
 
                 // Display the normal categories
                 Repeater {
-
                     model: [
                         // TODO: Would like to get 'simple' icons for the categories
                         {
-                            image: ":/icons/icons/emoji-categories/people.svg",
-                            category: Emoji.Category.People
-                        },
-
-                        {
-                            image: ":/icons/icons/emoji-categories/nature.svg",
-                            category: Emoji.Category.Nature
-                        },
-
-                        {
-                            image: ":/icons/icons/emoji-categories/foods.svg",
-                            category: Emoji.Category.Food
-                        },
-
-                        {
-                            image: ":/icons/icons/emoji-categories/activity.svg",
-                            category: Emoji.Category.Activity
-                        },
-
-                        {
-                            image: ":/icons/icons/emoji-categories/travel.svg",
-                            category: Emoji.Category.Travel
-                        },
-
-                        {
-                            image: ":/icons/icons/emoji-categories/objects.svg",
-                            category: Emoji.Category.Objects
-                        },
-
-                        {
-                            image: ":/icons/icons/emoji-categories/symbols.svg",
-                            category: Emoji.Category.Symbols
-                        },
-
-                        {
-                            image: ":/icons/icons/emoji-categories/flags.svg",
-                            category: Emoji.Category.Flags
-                        }
-
-                    ]
+                            "image": ":/icons/icons/emoji-categories/people.svg",
+                            "category": Emoji.Category.People
+                        }, {
+                            "image": ":/icons/icons/emoji-categories/nature.svg",
+                            "category": Emoji.Category.Nature
+                        }, {
+                            "image": ":/icons/icons/emoji-categories/foods.svg",
+                            "category": Emoji.Category.Food
+                        }, {
+                            "image": ":/icons/icons/emoji-categories/activity.svg",
+                            "category": Emoji.Category.Activity
+                        }, {
+                            "image": ":/icons/icons/emoji-categories/travel.svg",
+                            "category": Emoji.Category.Travel
+                        }, {
+                            "image": ":/icons/icons/emoji-categories/objects.svg",
+                            "category": Emoji.Category.Objects
+                        }, {
+                            "image": ":/icons/icons/emoji-categories/symbols.svg",
+                            "category": Emoji.Category.Symbols
+                        }, {
+                            "image": ":/icons/icons/emoji-categories/flags.svg",
+                            "category": Emoji.Category.Flags
+                        }]
 
                     delegate: AbstractButton {
-                        Layout.preferredWidth: 36
                         Layout.preferredHeight: 36
-                        hoverEnabled: true
+                        Layout.preferredWidth: 36
                         ToolTip.text: {
                             switch (modelData.category) {
                             case Emoji.Category.People:
@@ -271,6 +241,27 @@ Menu {
                             }
                         }
                         ToolTip.visible: hovered
+                        hoverEnabled: true
+
+                        background: Rectangle {
+                            anchors.fill: parent
+                            border.color: emojiPopup.model.category === modelData.category ? timelineRoot.palette.highlight : 'transparent'
+                            color: emojiPopup.model.category === modelData.category ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.2) : 'transparent'
+                            radius: 5
+                        }
+                        contentItem: Image {
+                            fillMode: Image.Pad
+                            height: 32
+                            horizontalAlignment: Image.AlignHCenter
+                            mipmap: true
+                            smooth: true
+                            source: "image://colorimage/" + modelData.image + "?" + (hovered ? timelineRoot.palette.highlight : timelineRoot.palette.placeholderText)
+                            sourceSize.height: 32 * Screen.devicePixelRatio
+                            sourceSize.width: 32 * Screen.devicePixelRatio
+                            verticalAlignment: Image.AlignVCenter
+                            width: 32
+                        }
+
                         onClicked: {
                             //emojiPopup.model.category = model.category;
                             gridView.positionViewAtIndex(emojiPopup.model.sourceModel.categoryToIndex(modelData.category), GridView.Beginning);
@@ -278,40 +269,14 @@ Menu {
 
                         MouseArea {
                             id: mouseArea
-
                             anchors.fill: parent
-                            onPressed: mouse.accepted = false
                             cursorShape: Qt.PointingHandCursor
-                        }
 
-                        contentItem: Image {
-                            horizontalAlignment: Image.AlignHCenter
-                            verticalAlignment: Image.AlignVCenter
-                            fillMode: Image.Pad
-                            height: 32
-                            width: 32
-                            smooth: true
-                            mipmap: true
-                            sourceSize.width: 32 * Screen.devicePixelRatio
-                            sourceSize.height: 32 * Screen.devicePixelRatio
-                            source: "image://colorimage/" + modelData.image + "?" + (hovered ? timelineRoot.palette.highlight : timelineRoot.palette.placeholderText)
+                            onPressed: mouse.accepted = false
                         }
-
-                        background: Rectangle {
-                            anchors.fill: parent
-                            color: emojiPopup.model.category === modelData.category ? Qt.hsla(highlightHue, highlightSat, highlightLight, 0.2) : 'transparent'
-                            radius: 5
-                            border.color: emojiPopup.model.category === modelData.category ? timelineRoot.palette.highlight : 'transparent'
-                        }
-
                     }
-
                 }
-
             }
-
         }
-
     }
-
 }

@@ -1,6 +1,5 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 //import QtGraphicalEffects 1.0
@@ -11,8 +10,8 @@ import im.nheko
 Item {
     id: privacyScreen
 
-    property var timelineRoot
     property int screenTimeout
+    property var timelineRoot
 
     Connections {
         function onFocusChanged() {
@@ -22,29 +21,26 @@ Item {
             } else {
                 if (timelineRoot.visible)
                     screenSaverTimer.start();
-
             }
         }
 
         target: TimelineManager
     }
-
     Timer {
         id: screenSaverTimer
-
         interval: screenTimeout * 1000
         running: !MainWindow.active
+
         onTriggered: {
             screenSaver.state = "Visible";
         }
     }
-
     Item {
         id: screenSaver
-
-        state: "Invisible"
         anchors.fill: parent
+        state: "Invisible"
         visible: false
+
         states: [
             State {
                 name: "Visible"
@@ -53,26 +49,22 @@ Item {
                     target: screenSaver
                     visible: true
                 }
-
                 PropertyChanges {
-                    target: screenSaver
                     opacity: 1
+                    target: screenSaver
                 }
-
             },
             State {
                 name: "Invisible"
 
                 PropertyChanges {
-                    target: screenSaver
                     opacity: 0
+                    target: screenSaver
                 }
-
                 PropertyChanges {
                     target: screenSaver
                     visible: false
                 }
-
             }
         ]
         transitions: [
@@ -82,20 +74,17 @@ Item {
 
                 SequentialAnimation {
                     NumberAnimation {
-                        target: screenSaver
-                        property: "opacity"
                         duration: 250
                         easing.type: Easing.InQuad
-                    }
-
-                    NumberAnimation {
+                        property: "opacity"
                         target: screenSaver
-                        property: "visible"
-                        duration: 0
                     }
-
+                    NumberAnimation {
+                        duration: 0
+                        property: "visible"
+                        target: screenSaver
+                    }
                 }
-
             },
             Transition {
                 from: "Invisible"
@@ -103,20 +92,17 @@ Item {
 
                 SequentialAnimation {
                     NumberAnimation {
-                        target: screenSaver
-                        property: "visible"
                         duration: 0
-                    }
-
-                    NumberAnimation {
+                        property: "visible"
                         target: screenSaver
-                        property: "opacity"
+                    }
+                    NumberAnimation {
                         duration: 500
                         easing.type: Easing.InQuad
+                        property: "opacity"
+                        target: screenSaver
                     }
-
                 }
-
             }
         ]
 
@@ -127,7 +113,5 @@ Item {
         //    source: timelineRoot
         //    radius: 50
         //}
-
     }
-
 }

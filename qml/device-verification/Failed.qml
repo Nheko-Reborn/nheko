@@ -1,8 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 import QtQuick 2.3
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.10
@@ -10,6 +8,7 @@ import im.nheko
 
 Pane {
     property string title: qsTr("Verification failed")
+
     background: Rectangle {
         color: timelineRoot.palette.window
     }
@@ -20,10 +19,9 @@ Pane {
 
         Text {
             id: content
-
-            Layout.preferredWidth: 400
             Layout.fillWidth: true
-            wrapMode: Text.Wrap
+            Layout.preferredWidth: 400
+            color: timelineRoot.palette.text
             text: {
                 switch (flow.error) {
                 case DeviceVerificationFlow.UnknownMethod:
@@ -42,25 +40,22 @@ Pane {
                     return qsTr("Unknown verification error.");
                 }
             }
-            color: timelineRoot.palette.text
             verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.Wrap
         }
-
-        Item { Layout.fillHeight: true; }
-
+        Item {
+            Layout.fillHeight: true
+        }
         RowLayout {
             Item {
                 Layout.fillWidth: true
             }
-
             Button {
                 Layout.alignment: Qt.AlignRight
                 text: qsTr("Close")
+
                 onClicked: dialog.close()
             }
-
         }
-
     }
-
 }

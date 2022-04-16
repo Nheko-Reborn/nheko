@@ -1,9 +1,7 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-import ".."
+import "../"
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
@@ -15,32 +13,31 @@ Rectangle {
     required property int encryptionError
     required property string eventId
 
-    radius: fontMetrics.lineSpacing / 2 + Nheko.paddingMedium
-    width: parent.width? parent.width : 0
-    implicitWidth: encryptedText.implicitWidth+24+Nheko.paddingMedium*3 // Column doesn't provide a useful implicitWidth, should be replaced by ColumnLayout
-    height: contents.implicitHeight + Nheko.paddingMedium * 2
     color: timelineRoot.palette.alternateBase
+    height: contents.implicitHeight + Nheko.paddingMedium * 2
+    implicitWidth: encryptedText.implicitWidth + 24 + Nheko.paddingMedium * 3 // Column doesn't provide a useful implicitWidth, should be replaced by ColumnLayout
+    radius: fontMetrics.lineSpacing / 2 + Nheko.paddingMedium
+    width: parent.width ? parent.width : 0
 
     RowLayout {
         id: contents
-
         anchors.fill: parent
         anchors.margins: Nheko.paddingMedium
         spacing: Nheko.paddingMedium
 
         Image {
-            source: "image://colorimage/:/icons/icons/ui/shield-filled-cross.svg?" + Nheko.theme.error
             Layout.alignment: Qt.AlignVCenter
-            width: 24
             height: width
+            source: "image://colorimage/:/icons/icons/ui/shield-filled-cross.svg?" + Nheko.theme.error
+            width: 24
         }
-
         Column {
-            spacing: Nheko.paddingSmall
             Layout.fillWidth: true
+            spacing: Nheko.paddingSmall
 
             MatrixText {
                 id: encryptedText
+                color: timelineRoot.palette.text
                 text: {
                     switch (encryptionError) {
                     case Olm.MissingSession:
@@ -59,19 +56,15 @@ Rectangle {
                         return qsTr("Unknown decryption error");
                     }
                 }
-                color: timelineRoot.palette.text
                 width: parent.width
             }
-
             Button {
                 palette: timelineRoot.palette
-                visible: encryptionError == Olm.MissingSession || encryptionError == Olm.MissingSessionIndex
                 text: qsTr("Request key")
+                visible: encryptionError == Olm.MissingSession || encryptionError == Olm.MissingSessionIndex
+
                 onClicked: room.requestKeyForEvent(eventId)
             }
-
         }
-
     }
-
 }

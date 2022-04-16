@@ -1,9 +1,7 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
-import ".."
+import "../"
 import "../components"
 import QtQuick 2.12
 import QtQuick.Controls 2.12
@@ -13,96 +11,70 @@ import im.nheko
 ApplicationWindow {
     id: win
 
-    property Room room
-    property ImagePackListModel packlist
     property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.3)
     property SingleImagePackModel currentPack: packlist.packAt(currentPackIndex)
     property int currentPackIndex: 0
+    property ImagePackListModel packlist
+    property Room room
     readonly property int stickerDim: 128
     readonly property int stickerDimPad: 128 + Nheko.paddingSmall
 
-    title: qsTr("Image pack settings")
-    height: 600
-    width: 800
-    palette: timelineRoot.palette
     color: timelineRoot.palette.base
-    modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+    height: 600
+    modality: Qt.NonModal
+    palette: timelineRoot.palette
+    title: qsTr("Image pack settings")
+    width: 800
+
+    footer: DialogButtonBox {
+        id: buttons
+        Button {
+            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            text: qsTr("Close")
+
+            onClicked: win.close()
+        }
+    }
 
     Component {
         id: packEditor
-
         ImagePackEditorDialog {
         }
-
     }
-
     AdaptiveLayout {
         id: adaptiveView
-
         anchors.fill: parent
-        singlePageMode: false
         pageIndex: 0
+        singlePageMode: false
 
         AdaptiveLayoutElement {
             id: packlistC
-
-            visible: Settings.groupView
-            minimumWidth: 200
             collapsedWidth: 200
-            preferredWidth: 300
             maximumWidth: 300
+            minimumWidth: 200
+            preferredWidth: 300
+            visible: Settings.groupView
 
             ListView {
-                model: packlist
                 clip: true
-
-
-                footer: ColumnLayout {
-                    Button {
-                        palette: timelineRoot.palette
-                        onClicked: {
-                            var dialog = packEditor.createObject(timelineRoot, {
-                                "imagePack": packlist.newPack(false)
-                            });
-                            dialog.show();
-                            timelineRoot.destroyOnClose(dialog);
-                        }
-                        width: packlistC.width
-                        visible: !packlist.containsAccountPack
-                        text: qsTr("Create account pack")
-                    }
-
-                    Button {
-                        palette: timelineRoot.palette
-                        onClicked: {
-                            var dialog = packEditor.createObject(timelineRoot, {
-                                "imagePack": packlist.newPack(true)
-                            });
-                            dialog.show();
-                            timelineRoot.destroyOnClose(dialog);
-                        }
-                        width: packlistC.width
-                        visible: room.permissions.canChange(MtxEvent.ImagePackInRoom)
-                        text: qsTr("New room pack")
-                    }
-
-                }
+                model: packlist
 
                 delegate: AvatarListTile {
                     id: packItem
 
                     property color background: timelineRoot.palette.window
-                    property color importantText: timelineRoot.palette.text
-                    property color unimportantText: timelineRoot.palette.placeholderText
                     property color bubbleBackground: timelineRoot.palette.highlight
                     property color bubbleText: timelineRoot.palette.highlightedText
                     required property string displayName
                     required property bool fromAccountData
                     required property bool fromCurrentRoom
+                    property color importantText: timelineRoot.palette.text
                     required property string statekey
+                    property color unimportantText: timelineRoot.palette.placeholderText
 
-                    title: displayName
+                    roomid: statekey
+                    selectedIndex: currentPackIndex
                     subtitle: {
                         if (fromAccountData)
                             return qsTr("Private pack");
@@ -111,31 +83,55 @@ ApplicationWindow {
                         else
                             return qsTr("Globally enabled pack");
                     }
-                    selectedIndex: currentPackIndex
-                    roomid: statekey
+                    title: displayName
 
                     TapHandler {
                         onSingleTapped: currentPackIndex = index
                     }
-
                 }
+                footer: ColumnLayout {
+                    Button {
+                        palette: timelineRoot.palette
+                        text: qsTr("Create account pack")
+                        visible: !packlist.containsAccountPack
+                        width: packlistC.width
 
+                        onClicked: {
+                            var dialog = packEditor.createObject(timelineRoot, {
+                                    "imagePack": packlist.newPack(false)
+                                });
+                            dialog.show();
+                            timelineRoot.destroyOnClose(dialog);
+                        }
+                    }
+                    Button {
+                        palette: timelineRoot.palette
+                        text: qsTr("New room pack")
+                        visible: room.permissions.canChange(MtxEvent.ImagePackInRoom)
+                        width: packlistC.width
+
+                        onClicked: {
+                            var dialog = packEditor.createObject(timelineRoot, {
+                                    "imagePack": packlist.newPack(true)
+                                });
+                            dialog.show();
+                            timelineRoot.destroyOnClose(dialog);
+                        }
+                    }
+                }
             }
-
         }
-
         AdaptiveLayoutElement {
             id: packinfoC
-
             Rectangle {
                 color: timelineRoot.palette.window
 
                 ColumnLayout {
                     id: packinfo
 
-                    property string packName: currentPack ? currentPack.packname : ""
                     property string attribution: currentPack ? currentPack.attribution : ""
                     property string avatarUrl: currentPack ? currentPack.avatarUrl : ""
+                    property string packName: currentPack ? currentPack.packname : ""
                     property string statekey: currentPack ? currentPack.statekey : ""
 
                     anchors.fill: parent
@@ -143,117 +139,92 @@ ApplicationWindow {
                     spacing: Nheko.paddingLarge
 
                     Avatar {
-                        url: packinfo.avatarUrl.replace("mxc://", "image://MxcImage/")
-                        displayName: packinfo.packName
-                        roomid: packinfo.statekey
-                        height: 100
-                        width: 100
                         Layout.alignment: Qt.AlignHCenter
+                        displayName: packinfo.packName
                         enabled: false
+                        height: 100
+                        roomid: packinfo.statekey
+                        url: packinfo.avatarUrl.replace("mxc://", "image://MxcImage/")
+                        width: 100
                     }
-
                     MatrixText {
-                        text: packinfo.packName
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredWidth: packinfoC.width - Nheko.paddingLarge * 2
                         font.pixelSize: Math.ceil(fontMetrics.pixelSize * 1.1)
                         horizontalAlignment: TextEdit.AlignHCenter
+                        text: packinfo.packName
+                    }
+                    MatrixText {
                         Layout.alignment: Qt.AlignHCenter
                         Layout.preferredWidth: packinfoC.width - Nheko.paddingLarge * 2
-                    }
-
-                    MatrixText {
+                        horizontalAlignment: TextEdit.AlignHCenter
                         text: packinfo.attribution
                         wrapMode: TextEdit.Wrap
-                        horizontalAlignment: TextEdit.AlignHCenter
-                        Layout.alignment: Qt.AlignHCenter
-                        Layout.preferredWidth: packinfoC.width - Nheko.paddingLarge * 2
                     }
-
                     GridLayout {
                         Layout.alignment: Qt.AlignHCenter
-                        visible: currentPack && currentPack.roomid != ""
                         columns: 2
                         rowSpacing: Nheko.paddingMedium
+                        visible: currentPack && currentPack.roomid != ""
 
                         MatrixText {
                             text: qsTr("Enable globally")
                         }
-
                         ToggleButton {
+                            Layout.alignment: Qt.AlignRight
                             ToolTip.text: qsTr("Enables this pack to be used in all rooms")
                             checked: currentPack ? currentPack.isGloballyEnabled : false
+
                             onCheckedChanged: currentPack.isGloballyEnabled = checked
-                            Layout.alignment: Qt.AlignRight
                         }
-
                     }
-
                     Button {
                         Layout.alignment: Qt.AlignHCenter
-                        text: qsTr("Edit")
                         enabled: currentPack.canEdit
+                        text: qsTr("Edit")
+
                         onClicked: {
                             var dialog = packEditor.createObject(timelineRoot, {
-                                "imagePack": currentPack
-                            });
+                                    "imagePack": currentPack
+                                });
                             dialog.show();
                             timelineRoot.destroyOnClose(dialog);
                         }
                     }
-
                     GridView {
                         Layout.fillHeight: true
                         Layout.fillWidth: true
-                        model: currentPack
-                        cellWidth: stickerDimPad
-                        cellHeight: stickerDimPad
                         boundsBehavior: Flickable.StopAtBounds
+                        cacheBuffer: 500
+                        cellHeight: stickerDimPad
+                        cellWidth: stickerDimPad
                         clip: true
                         currentIndex: -1 // prevent sorting from stealing focus
-                        cacheBuffer: 500
-
+                        model: currentPack
 
                         // Individual emoji
                         delegate: AbstractButton {
-                            width: stickerDim
-                            height: stickerDim
-                            hoverEnabled: true
                             ToolTip.text: ":" + model.shortCode + ": - " + model.body
                             ToolTip.visible: hovered
-
-                            contentItem: Image {
-                                height: stickerDim
-                                width: stickerDim
-                                source: model.url.replace("mxc://", "image://MxcImage/") + "?scale"
-                                fillMode: Image.PreserveAspectFit
-                            }
+                            height: stickerDim
+                            hoverEnabled: true
+                            width: stickerDim
 
                             background: Rectangle {
                                 anchors.fill: parent
                                 color: hovered ? timelineRoot.palette.highlight : 'transparent'
                                 radius: 5
                             }
-
+                            contentItem: Image {
+                                fillMode: Image.PreserveAspectFit
+                                height: stickerDim
+                                source: model.url.replace("mxc://", "image://MxcImage/") + "?scale"
+                                width: stickerDim
+                            }
                         }
-
                     }
-
                 }
-
             }
-
         }
-
     }
-
-    footer: DialogButtonBox {
-        id: buttons
-
-        Button {
-            text: qsTr("Close")
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-            onClicked: win.close()
-        }
-
-    }
-
 }

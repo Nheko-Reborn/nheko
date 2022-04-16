@@ -1,102 +1,85 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
-//
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.3
 import im.nheko
 
 AbstractButton {
-    required property int type
-    required property int originalWidth
-    required property double proportionalHeight
-    required property string url
     required property string blurhash
     required property string body
-    required property string filename
-    required property bool isReply
-    required property string eventId
     property double divisor: isReply ? 5 : 3
-
-    property int tempWidth: originalWidth < 1? 400: originalWidth
-
-    implicitWidth: Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1))
-    width: Math.min(parent?.width ?? implicitWidth,implicitWidth)
-    height: width*proportionalHeight
-    hoverEnabled: true
-
+    required property string eventId
+    required property string filename
+    property bool fitsMetadata: (parent.width - width) > metadataWidth + 4
+    required property bool isReply
     property int metadataWidth
-    property bool fitsMetadata: (parent.width - width) > metadataWidth+4
+    required property int originalWidth
+    required property double proportionalHeight
+    property int tempWidth: originalWidth < 1 ? 400 : originalWidth
+    required property int type
+    required property string url
+
+    height: width * proportionalHeight
+    hoverEnabled: true
+    implicitWidth: Math.round(tempWidth * Math.min((timelineView.height / divisor) / (tempWidth * proportionalHeight), 1))
+    width: Math.min(parent?.width ?? implicitWidth, implicitWidth)
+
+    onClicked: Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId)
 
     Image {
         id: blurhash_
-
         anchors.fill: parent
-        visible: img.status != Image.Ready
-        source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + timelineRoot.palette.placeholderText)
         asynchronous: true
         fillMode: Image.PreserveAspectFit
-        sourceSize.width: parent.width * Screen.devicePixelRatio
+        source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + timelineRoot.palette.placeholderText)
         sourceSize.height: parent.height * Screen.devicePixelRatio
+        sourceSize.width: parent.width * Screen.devicePixelRatio
+        visible: img.status != Image.Ready
     }
-
     Image {
         id: img
-
-        visible: !mxcimage.loaded
         anchors.fill: parent
-        source: url.replace("mxc://", "image://MxcImage/") + "?scale"
         asynchronous: true
         fillMode: Image.PreserveAspectFit
-        smooth: true
         mipmap: true
-
+        smooth: true
+        source: url.replace("mxc://", "image://MxcImage/") + "?scale"
+        sourceSize.height: Math.min(Screen.desktopAvailableHeight, (originalWidth < 1 ? Screen.desktopAvailableHeight : originalWidth * proportionalHeight)) * Screen.devicePixelRatio
         sourceSize.width: Math.min(Screen.desktopAvailableWidth, originalWidth < 1 ? Screen.desktopAvailableWidth : originalWidth) * Screen.devicePixelRatio
-        sourceSize.height: Math.min(Screen.desktopAvailableHeight, (originalWidth < 1 ? Screen.desktopAvailableHeight : originalWidth*proportionalHeight)) * Screen.devicePixelRatio
+        visible: !mxcimage.loaded
     }
-
     MxcAnimatedImage {
         id: mxcimage
-
-        visible: loaded
         anchors.fill: parent
-        roomm: room
-        play: !Settings.animateImagesOnHover || parent.hovered
         eventId: parent.eventId
+        play: !Settings.animateImagesOnHover || parent.hovered
+        roomm: room
+        visible: loaded
     }
-
-    onClicked :Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId);
-
     Item {
         id: overlay
-
         anchors.fill: parent
         visible: parent.hovered
 
         Rectangle {
             id: container
-
-            width: parent.width
-            implicitHeight: imgcaption.implicitHeight
             anchors.bottom: overlay.bottom
             color: timelineRoot.palette.window
+            implicitHeight: imgcaption.implicitHeight
             opacity: 0.75
+            width: parent.width
         }
-
         Text {
             id: imgcaption
-
             anchors.fill: container
+            color: timelineRoot.palette.text
             elide: Text.ElideMiddle
             horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
             // See this MSC: https://github.com/matrix-org/matrix-doc/pull/2530
             text: filename ? filename : body
-            color: timelineRoot.palette.text
+            verticalAlignment: Text.AlignVCenter
         }
-
     }
-
 }
