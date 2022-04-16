@@ -739,7 +739,7 @@ qt_target_qml_sources(nheko
 	qml/TimelineView.qml
 	)
 
-if (NOT COMPILE_QML)
+if (NOT COMPILE_QML AND Qt6Widgets_VERSION VERSION_GREATER_EQUAL 6.3.0)
 	set_target_properties(nheko PROPERTIES QT_QMLCACHEGEN_ARGUMENTS "--only-bytecode")
 endif()
 
