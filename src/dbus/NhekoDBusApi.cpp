@@ -196,8 +196,8 @@ operator>>(const QDBusArgument &arg, QImage &image)
     arg >> width >> height >> garbage >> garbage >> garbage >> garbage >> bits;
     arg.endStructure();
 
-    // Unfortunately, this copy-and-detach is necessary to make sure that the image will always
-    // decode properly. If anybody finds a better solution, please implement it.
+    // Unfortunately, this copy-and-detach is necessary to ensure that the source buffer
+    // is copied properly. If anybody finds a better solution, please implement it.
     auto temp =
       QImage(reinterpret_cast<uchar *>(bits.data()), width, height, QImage::Format_RGBA8888);
     image = temp;
