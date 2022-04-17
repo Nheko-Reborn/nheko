@@ -119,7 +119,7 @@ Item {
             }
         }
 
-        onGrabChanged: {
+        onGrabChanged: (transition, point) => {
             circle.centerX = point.position.x;
             circle.centerY = point.position.y;
         }
