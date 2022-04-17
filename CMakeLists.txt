@@ -495,11 +495,6 @@ add_subdirectory(third_party/SingleApplication-3.3.2/)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
-# this must be defined here to make the moc work properly
-if (NOT APPLE AND NOT WIN32)
-	add_compile_definitions(NHEKO_DBUS_SYS)
-endif()
-
 set(MOC_HEADERS
 	# Dialogs
 	src/dialogs/FallbackAuth.h
@@ -603,7 +598,7 @@ else ()
         src/dbus/NhekoDBusBackend.cpp
         src/notifications/ManagerLinux.cpp
 	)
-    qt5_wrap_cpp(MOC_HEADERS
+	set(MOC_HEADERS ${MOC_HEADERS}
         src/dbus/NhekoDBusApi.h
         src/dbus/NhekoDBusBackend.h
 	)
@@ -625,6 +620,10 @@ if(WIN32)
 	target_compile_definitions(nheko PRIVATE _WIN32_WINNT=0x0601 NOMINMAX WIN32_LEAN_AND_MEAN STRICT)
 else()
 	add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
+
+	if (NOT APPLE)
+		target_compile_definitions(nheko PRIVATE NHEKO_DBUS_SYS)
+	endif()
 
 	if (HAVE_BACKTRACE_SYMBOLS_FD AND NOT CMAKE_BUILD_TYPE STREQUAL "Release")
 		set_target_properties(nheko PROPERTIES ENABLE_EXPORTS ON)
