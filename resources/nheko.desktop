@@ -10,3 +10,5 @@ StartupWMClass=nheko
 Terminal=false
 MimeType=x-scheme-handler/matrix;
 X-GNOME-UsesNotifications=true
+Keywords=Matrix;matrix.org;chat;irc;communications;talk;riot;element;fractal;voip;
+X-KDE-Keywords=Matrix,matrix.org,chat,irc,communications,talk,riot,element,fractal,voip,

@@ -3,9 +3,6 @@ command: nheko
 runtime: org.kde.Platform
 runtime-version: '5.15-21.08'
 sdk: org.kde.Sdk
-rename-icon: nheko
-rename-desktop-file: nheko.desktop
-rename-appdata-file: nheko.appdata.xml
 finish-args:
   - --device=dri
   # needed for webcams, see #517
