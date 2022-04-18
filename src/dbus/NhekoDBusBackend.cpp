@@ -19,7 +19,7 @@ NhekoDBusBackend::NhekoDBusBackend(RoomlistModel *parent)
 {}
 
 QVector<nheko::dbus::RoomInfoItem>
-NhekoDBusBackend::getRooms(const QDBusMessage &message)
+NhekoDBusBackend::rooms(const QDBusMessage &message)
 {
     const auto roomListModel = m_parent->models;
     QSharedPointer<QVector<nheko::dbus::RoomInfoItem>> model{
@@ -81,7 +81,7 @@ NhekoDBusBackend::joinRoom(const QString &alias) const
 }
 
 void
-NhekoDBusBackend::startDirectChat(const QString &userId) const
+NhekoDBusBackend::directChat(const QString &userId) const
 {
     bringWindowToTop();
     ChatPage::instance()->startChat(userId);

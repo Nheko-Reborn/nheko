@@ -100,21 +100,21 @@ apiVersion()
 }
 
 QString
-nhekoVersionString()
+nhekoVersion()
 {
     if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
         interface.isValid())
-        return QDBusReply<QString>{interface.call(QStringLiteral("nhekoVersionString"))}.value();
+        return QDBusReply<QString>{interface.call(QStringLiteral("nhekoVersion"))}.value();
     else
         return {};
 }
 
 QVector<RoomInfoItem>
-getRooms()
+rooms()
 {
     if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
         interface.isValid())
-        return QDBusReply<QVector<RoomInfoItem>>{interface.call(QStringLiteral("getRooms"))}
+        return QDBusReply<QVector<RoomInfoItem>>{interface.call(QStringLiteral("rooms"))}
           .value();
     else
         return {};
@@ -137,11 +137,11 @@ joinRoom(const QString &alias)
 }
 
 void
-startDirectChat(const QString &userId)
+directChat(const QString &userId)
 {
     if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
         interface.isValid())
-        interface.call(QDBus::NoBlock, QStringLiteral("startDirectChat"), userId);
+        interface.call(QDBus::NoBlock, QStringLiteral("directChat"), userId);
 }
 } // nheko::dbus
 

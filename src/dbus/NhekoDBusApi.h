@@ -63,10 +63,10 @@ QString
 apiVersion();
 //! Get the nheko version.
 QString
-nhekoVersionString();
+nhekoVersion();
 //! Call this function to get a list of all joined rooms.
 QVector<RoomInfoItem>
-getRooms();
+rooms();
 //! Activates a currently joined room.
 void
 activateRoom(const QString &alias);
@@ -76,7 +76,7 @@ joinRoom(const QString &alias);
 //! Starts or activates a direct chat. It is your responsibility to ask for confirmation (if
 //! desired).
 void
-startDirectChat(const QString &userId);
+directChat(const QString &userId);
 
 QDBusArgument &
 operator<<(QDBusArgument &arg, const RoomInfoItem &item);
