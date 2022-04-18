@@ -135,6 +135,18 @@ MemberList::MemberList(const QString &room_id, QObject *parent)
     setFilterCaseSensitivity(Qt::CaseInsensitive);
 }
 
+QVariant
+MemberList::data(const QModelIndex &index, int role) const
+{
+    // HACK: work around https://bugreports.qt.io/browse/QTBUG-102169.
+    // See also TimelineModel::data().
+    if (index.row() + 1 == rowCount() && !m_model.loadingMoreMembers_ &&
+        m_model.canFetchMore(buddy(index)))
+        const_cast<MemberListBackend *>(&m_model)->fetchMore(buddy(index));
+
+    return QSortFilterProxyModel::data(index, role);
+}
+
 void
 MemberList::setFilterString(const QString &text)
 {

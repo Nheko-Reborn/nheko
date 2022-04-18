@@ -85,6 +85,8 @@ class MemberList : public QSortFilterProxyModel
 public:
     MemberList(const QString &room_id, QObject *parent = nullptr);
 
+    QVariant data(const QModelIndex &index, int role) const override;
+
     QString roomName() const { return m_model.roomName(); }
     int memberCount() const { return m_model.memberCount(); }
     QString avatarUrl() const { return m_model.avatarUrl(); }
@@ -105,8 +107,6 @@ public slots:
 
 protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
-    bool canFetchMore(const QModelIndex &i) const override { return m_model.canFetchMore(i); }
-    void fetchMore(const QModelIndex &i) override { m_model.fetchMore(i); }
 
 private:
     MemberListBackend m_model;
