@@ -232,6 +232,20 @@ Item {
             onClicked: Rooms.declineInvite(roomPreview.roomid)
         }
 
+        FlatButton {
+            visible: room != null && room.isSpace && roomPreview == null
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("members")
+            onClicked: TimelineManager.openRoomMembers(room)
+        }
+
+        FlatButton {
+            visible: room != null && room.isSpace && roomPreview == null
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("settings")
+            onClicked: TimelineManager.openRoomSettings(room.roomId)
+        }
+
         Item {
             visible: room != null
             Layout.preferredHeight: Math.ceil(fontMetrics.lineSpacing * 2)
