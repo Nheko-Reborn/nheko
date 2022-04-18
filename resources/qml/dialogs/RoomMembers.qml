@@ -69,6 +69,8 @@ ApplicationWindow {
             Layout.fillWidth: true
             placeholderText: qsTr("Search...")
             onTextChanged: members.setFilterString(text)
+
+            Component.onCompleted: forceActiveFocus()
         }
 
         ScrollView {
