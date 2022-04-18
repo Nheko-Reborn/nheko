@@ -23,18 +23,18 @@ public:
 
 public slots:
     //! Get the nheko D-Bus API version.
-    Q_SCRIPTABLE QVersionNumber apiVersion() const { return nheko::dbus::apiVersion; }
+    Q_SCRIPTABLE QString apiVersion() const { return nheko::dbus::dbusApiVersion.toString(); }
     //! Get the nheko version.
-    Q_SCRIPTABLE QString nhekoVersionString() const { return nheko::version; }
+    Q_SCRIPTABLE QString nhekoVersion() const { return nheko::version; }
     //! Call this function to get a list of all joined rooms.
-    Q_SCRIPTABLE QVector<nheko::dbus::RoomInfoItem> getRooms(const QDBusMessage &message);
+    Q_SCRIPTABLE QVector<nheko::dbus::RoomInfoItem> rooms(const QDBusMessage &message);
     //! Activates a currently joined room.
     Q_SCRIPTABLE void activateRoom(const QString &alias) const;
     //! Joins a room. It is your responsibility to ask for confirmation (if desired).
     Q_SCRIPTABLE void joinRoom(const QString &alias) const;
     //! Starts or activates a direct chat. It is your responsibility to ask for confirmation (if
     //! desired).
-    Q_SCRIPTABLE void startDirectChat(const QString &userId) const;
+    Q_SCRIPTABLE void directChat(const QString &userId) const;
 
 private:
     void bringWindowToTop() const;

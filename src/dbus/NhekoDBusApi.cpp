@@ -5,7 +5,9 @@
 
 #include "NhekoDBusApi.h"
 
+#include <QDBusInterface>
 #include <QDBusMetaType>
+#include <QDBusReply>
 
 namespace nheko::dbus {
 void
@@ -14,18 +16,17 @@ init()
     qDBusRegisterMetaType<RoomInfoItem>();
     qDBusRegisterMetaType<QVector<RoomInfoItem>>();
     qDBusRegisterMetaType<QImage>();
-    qDBusRegisterMetaType<QVersionNumber>();
 }
 
 bool
 apiVersionIsCompatible(const QVersionNumber &clientAppVersion)
 {
-    if (clientAppVersion.majorVersion() != nheko::dbus::apiVersion.majorVersion())
+    if (clientAppVersion.majorVersion() != nheko::dbus::dbusApiVersion.majorVersion())
         return false;
-    if (clientAppVersion.minorVersion() > nheko::dbus::apiVersion.minorVersion())
+    if (clientAppVersion.minorVersion() > nheko::dbus::dbusApiVersion.minorVersion())
         return false;
-    if (clientAppVersion.minorVersion() == nheko::dbus::apiVersion.minorVersion() &&
-        clientAppVersion.microVersion() < nheko::dbus::apiVersion.microVersion())
+    if (clientAppVersion.minorVersion() == nheko::dbus::dbusApiVersion.minorVersion() &&
+        clientAppVersion.microVersion() < nheko::dbus::dbusApiVersion.microVersion())
         return false;
 
     return true;
@@ -87,6 +88,61 @@ operator>>(const QDBusArgument &arg, RoomInfoItem &item)
     arg.endStructure();
     return arg;
 }
+
+QString
+apiVersion()
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        return QDBusReply<QString>{interface.call(QStringLiteral("apiVersion"))}.value();
+    else
+        return {};
+}
+
+QString
+nhekoVersion()
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        return QDBusReply<QString>{interface.call(QStringLiteral("nhekoVersion"))}.value();
+    else
+        return {};
+}
+
+QVector<RoomInfoItem>
+rooms()
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        return QDBusReply<QVector<RoomInfoItem>>{interface.call(QStringLiteral("rooms"))}
+          .value();
+    else
+        return {};
+}
+
+void
+activateRoom(const QString &alias)
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        interface.call(QDBus::NoBlock, QStringLiteral("activateRoom"), alias);
+}
+
+void
+joinRoom(const QString &alias)
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        interface.call(QDBus::NoBlock, QStringLiteral("joinRoom"), alias);
+}
+
+void
+directChat(const QString &userId)
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        interface.call(QDBus::NoBlock, QStringLiteral("directChat"), userId);
+}
 } // nheko::dbus
 
 /**
@@ -140,27 +196,12 @@ operator>>(const QDBusArgument &arg, QImage &image)
     arg >> width >> height >> garbage >> garbage >> garbage >> garbage >> bits;
     arg.endStructure();
 
-    image = QImage(reinterpret_cast<uchar *>(bits.data()), width, height, QImage::Format_RGBA8888);
+    // Unfortunately, this copy-and-detach is necessary to ensure that the source buffer
+    // is copied properly. If anybody finds a better solution, please implement it.
+    auto temp =
+      QImage(reinterpret_cast<uchar *>(bits.data()), width, height, QImage::Format_RGBA8888);
+    image = temp;
+    image.detach();
 
-    return arg;
-}
-
-QDBusArgument &
-operator<<(QDBusArgument &arg, const QVersionNumber &v)
-{
-    arg.beginStructure();
-    arg << v.toString();
-    arg.endStructure();
-    return arg;
-}
-
-const QDBusArgument &
-operator>>(const QDBusArgument &arg, QVersionNumber &v)
-{
-    arg.beginStructure();
-    QString temp;
-    arg >> temp;
-    v = QVersionNumber::fromString(temp);
-    arg.endStructure();
     return arg;
 }

@@ -18,7 +18,7 @@ init();
 
 //! The nheko D-Bus API version provided by this file. The API version number follows semantic
 //! versioning as defined by https://semver.org.
-const QVersionNumber apiVersion{0, 0, 1};
+const QVersionNumber dbusApiVersion{0, 0, 1};
 
 //! Compare the installed Nheko API to the version that your client app targets to see if they
 //! are compatible.
@@ -58,6 +58,26 @@ private:
     int unreadNotifications_;
 };
 
+//! Get the nheko D-Bus API version.
+QString
+apiVersion();
+//! Get the nheko version.
+QString
+nhekoVersion();
+//! Call this function to get a list of all joined rooms.
+QVector<RoomInfoItem>
+rooms();
+//! Activates a currently joined room.
+void
+activateRoom(const QString &alias);
+//! Joins a room. It is your responsibility to ask for confirmation (if desired).
+void
+joinRoom(const QString &alias);
+//! Starts or activates a direct chat. It is your responsibility to ask for confirmation (if
+//! desired).
+void
+directChat(const QString &userId);
+
 QDBusArgument &
 operator<<(QDBusArgument &arg, const RoomInfoItem &item);
 const QDBusArgument &
@@ -69,11 +89,6 @@ QDBusArgument &
 operator<<(QDBusArgument &arg, const QImage &image);
 const QDBusArgument &
 operator>>(const QDBusArgument &arg, QImage &);
-
-QDBusArgument &
-operator<<(QDBusArgument &arg, const QVersionNumber &v);
-const QDBusArgument &
-operator>>(const QDBusArgument &arg, QVersionNumber &v);
 
 #define NHEKO_DBUS_SERVICE_NAME "im.nheko.Nheko"
 
