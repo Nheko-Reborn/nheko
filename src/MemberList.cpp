@@ -23,7 +23,8 @@ MemberListBackend::MemberListBackend(const QString &room_id, QObject *parent)
     }
 
     try {
-        auto members = cache::getMembers(room_id_.toStdString());
+        // HACK: due to QTBUG-1020169, we'll load a big chunk to speed things up
+        auto members = cache::getMembers(room_id_.toStdString(), 0, 500);
         addUsers(members);
         numUsersLoaded_ = members.size();
     } catch (const lmdb::error &e) {
@@ -107,7 +108,8 @@ MemberListBackend::fetchMore(const QModelIndex &)
     loadingMoreMembers_ = true;
     emit loadingMoreMembersChanged();
 
-    auto members = cache::getMembers(room_id_.toStdString(), rowCount());
+    // TODO: remove 500 when QTBUG-102169 is fixed
+    auto members = cache::getMembers(room_id_.toStdString(), rowCount(), 500);
     addUsers(members);
     numUsersLoaded_ += members.size();
     emit numUsersLoadedChanged();
