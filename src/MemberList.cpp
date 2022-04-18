@@ -16,6 +16,10 @@
 MemberListBackend::MemberListBackend(const QString &room_id, QObject *parent)
   : QAbstractListModel{parent}
   , room_id_{room_id}
+  , powerLevels_{cache::client()
+                   ->getStateEvent<mtx::events::state::PowerLevels>(room_id_.toStdString())
+                   .value_or(mtx::events::StateEvent<mtx::events::state::PowerLevels>{})
+                   .content}
 {
     try {
         info_ = cache::singleRoomInfo(room_id_.toStdString());
@@ -89,10 +93,8 @@ MemberListBackend::data(const QModelIndex &index, int role) const
             return stat->user_verified;
     }
     case Powerlevel:
-        return static_cast<qlonglong>(cache::client()
-          ->getStateEvent<mtx::events::state::PowerLevels>(room_id_.toStdString())
-          .value_or(mtx::events::StateEvent<mtx::events::state::PowerLevels>{})
-          .content.user_level(m_memberList[index.row()].first.user_id.toStdString()));
+        return static_cast<qlonglong>(
+          powerLevels_.user_level(m_memberList[index.row()].first.user_id.toStdString()));
     default:
         return {};
     }
@@ -159,6 +161,8 @@ void
 MemberList::sortBy(const MemberSortRoles role)
 {
     setSortRole(role);
+    // Unfortunately, Qt doesn't provide a "setSortOrder" function.
+    sort(0, role == MemberSortRoles::Powerlevel ? Qt::DescendingOrder : Qt::AscendingOrder);
 }
 
 bool

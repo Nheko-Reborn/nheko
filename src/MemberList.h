@@ -8,6 +8,8 @@
 #include <QAbstractListModel>
 #include <QSortFilterProxyModel>
 
+#include <mtx/events/power_levels.hpp>
+
 #include "CacheStructs.h"
 
 class MemberListBackend : public QAbstractListModel
@@ -69,6 +71,8 @@ private:
     RoomInfo info_;
     int numUsersLoaded_{0};
     bool loadingMoreMembers_{false};
+
+    mtx::events::state::PowerLevels powerLevels_;
 
     friend class MemberList;
 };
