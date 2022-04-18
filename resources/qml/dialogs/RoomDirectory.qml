@@ -172,6 +172,8 @@ ApplicationWindow {
             color: Nheko.colors.text
             placeholderText: qsTr("Search for public rooms")
             onTextChanged: searchTimer.restart()
+
+            Component.onCompleted: forceActiveFocus()
         }
 
         MatrixTextField {
