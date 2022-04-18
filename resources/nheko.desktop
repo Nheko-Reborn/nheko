@@ -10,5 +10,8 @@ StartupWMClass=nheko
 Terminal=false
 MimeType=x-scheme-handler/matrix;
 X-GNOME-UsesNotifications=true
+# Allows finding Nheko using application launchers and software shops more easily
 Keywords=Matrix;matrix.org;chat;irc;communications;talk;riot;element;fractal;voip;
 X-KDE-Keywords=Matrix,matrix.org,chat,irc,communications,talk,riot,element,fractal,voip,
+# to be listed properly in some stores
+X-Purism-FormFactor=Workstation;Mobile;
