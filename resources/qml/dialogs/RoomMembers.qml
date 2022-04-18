@@ -76,6 +76,10 @@ ApplicationWindow {
                 Component.onCompleted: forceActiveFocus()
             }
 
+            Label {
+                text: qsTr("Sort by: ")
+            }
+
             ComboBox {
                 model: ListModel {
                     ListElement { data: MemberList.Mxid; text: qsTr("User ID") }
