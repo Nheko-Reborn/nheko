@@ -29,6 +29,12 @@ MemberListBackend::MemberListBackend(const QString &room_id, QObject *parent)
     } catch (const lmdb::error &e) {
         nhlog::db()->critical("Failed to retrieve members from cache: {}", e.what());
     }
+
+    // HACK: until https://bugreports.qt.io/browse/QTBUG-102169 is fixed, we'll just load all of the
+    // members to make searches work properly. If QTBUG-102169 has been fixed, please delete this
+    // code.
+    while (canFetchMore({}))
+        fetchMore({});
 }
 
 void
@@ -133,18 +139,6 @@ MemberList::MemberList(const QString &room_id, QObject *parent)
     sort(0, Qt::AscendingOrder);
     setDynamicSortFilter(true);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
-}
-
-QVariant
-MemberList::data(const QModelIndex &index, int role) const
-{
-    // HACK: work around https://bugreports.qt.io/browse/QTBUG-102169.
-    // See also TimelineModel::data().
-    if (index.row() + 1 == rowCount() && !m_model.loadingMoreMembers_ &&
-        m_model.canFetchMore(buddy(index)))
-        const_cast<MemberListBackend *>(&m_model)->fetchMore(buddy(index));
-
-    return QSortFilterProxyModel::data(index, role);
 }
 
 void

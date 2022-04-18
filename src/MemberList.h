@@ -85,8 +85,6 @@ class MemberList : public QSortFilterProxyModel
 public:
     MemberList(const QString &room_id, QObject *parent = nullptr);
 
-    QVariant data(const QModelIndex &index, int role) const override;
-
     QString roomName() const { return m_model.roomName(); }
     int memberCount() const { return m_model.memberCount(); }
     QString avatarUrl() const { return m_model.avatarUrl(); }
