@@ -28,7 +28,9 @@ public:
         DisplayName,
         AvatarUrl,
         Trustlevel,
+        Powerlevel,
     };
+
     MemberListBackend(const QString &room_id, QObject *parent = nullptr);
 
     QHash<int, QByteArray> roleNames() const override;
@@ -83,6 +85,14 @@ class MemberList : public QSortFilterProxyModel
     Q_PROPERTY(bool loadingMoreMembers READ loadingMoreMembers NOTIFY loadingMoreMembersChanged)
 
 public:
+    enum MemberSortRoles
+    {
+        Mxid        = MemberListBackend::Roles::Mxid,
+        DisplayName = MemberListBackend::Roles::DisplayName,
+        Powerlevel  = MemberListBackend::Roles::Powerlevel,
+    };
+    Q_ENUM(MemberSortRoles)
+
     MemberList(const QString &room_id, QObject *parent = nullptr);
 
     QString roomName() const { return m_model.roomName(); }
@@ -102,6 +112,7 @@ signals:
 
 public slots:
     void setFilterString(const QString &text);
+    void sortBy(const MemberSortRoles role);
 
 protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;

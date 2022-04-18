@@ -63,14 +63,29 @@ ApplicationWindow {
             onClicked: TimelineManager.openInviteUsers(members.roomId)
         }
 
-        MatrixTextField {
-            id: searchBar
+        RowLayout {
+            spacing: Nheko.paddingMedium
 
-            Layout.fillWidth: true
-            placeholderText: qsTr("Search...")
-            onTextChanged: members.setFilterString(text)
+            MatrixTextField {
+                id: searchBar
 
-            Component.onCompleted: forceActiveFocus()
+                Layout.fillWidth: true
+                placeholderText: qsTr("Search...")
+                onTextChanged: members.setFilterString(text)
+
+                Component.onCompleted: forceActiveFocus()
+            }
+
+            ComboBox {
+                model: ListModel {
+                    ListElement { data: MemberList.Mxid; text: qsTr("User ID") }
+                    ListElement { data: MemberList.DisplayName; text: qsTr("Display name") }
+                    ListElement { data: MemberList.Powerlevel; text: qsTr("Power level") }
+                }
+                textRole: "text"
+                valueRole: "data"
+                onCurrentValueChanged: members.sortBy(currentValue)
+            }
         }
 
         ScrollView {

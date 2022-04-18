@@ -6,6 +6,7 @@
 #include "MemberList.h"
 
 #include "Cache.h"
+#include "Cache_p.h"
 #include "ChatPage.h"
 #include "Config.h"
 #include "Logging.h"
@@ -87,6 +88,11 @@ MemberListBackend::data(const QModelIndex &index, int role) const
         else
             return stat->user_verified;
     }
+    case Powerlevel:
+        return static_cast<qlonglong>(cache::client()
+          ->getStateEvent<mtx::events::state::PowerLevels>(room_id_.toStdString())
+          .value_or(mtx::events::StateEvent<mtx::events::state::PowerLevels>{})
+          .content.user_level(m_memberList[index.row()].first.user_id.toStdString()));
     default:
         return {};
     }
@@ -137,7 +143,7 @@ MemberList::MemberList(const QString &room_id, QObject *parent)
             &MemberList::loadingMoreMembersChanged);
 
     setSourceModel(&m_model);
-    setSortRole(MemberListBackend::Mxid);
+    setSortRole(MemberSortRoles::Mxid);
     sort(0, Qt::AscendingOrder);
     setDynamicSortFilter(true);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -147,6 +153,12 @@ void
 MemberList::setFilterString(const QString &text)
 {
     setFilterRegExp(QRegExp::escape(text));
+}
+
+void
+MemberList::sortBy(const MemberSortRoles role)
+{
+    setSortRole(role);
 }
 
 bool
