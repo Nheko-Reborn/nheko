@@ -2,11 +2,11 @@
 Name=nheko
 Version=1.0
 Comment=Desktop client for Matrix
-Exec=nheko %u
-Icon=nheko
+Exec=@APPID@ %u
+Icon=@APPID@
 Type=Application
 Categories=Network;InstantMessaging;Qt;
-StartupWMClass=nheko
+StartupWMClass=@APPID@
 Terminal=false
 MimeType=x-scheme-handler/matrix;
 X-GNOME-UsesNotifications=true
