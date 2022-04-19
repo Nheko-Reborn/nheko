@@ -262,6 +262,7 @@ public:
     Q_INVOKABLE QString formatHistoryVisibilityEvent(const QString &id);
     Q_INVOKABLE QString formatGuestAccessEvent(const QString &id);
     Q_INVOKABLE QString formatPowerLevelEvent(const QString &id);
+    Q_INVOKABLE QString formatImagePackEvent(const QString &id);
     Q_INVOKABLE QVariantMap formatRedactedEvent(const QString &id);
 
     Q_INVOKABLE void viewRawMessage(const QString &id);

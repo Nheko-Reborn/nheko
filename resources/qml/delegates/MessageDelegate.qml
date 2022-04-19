@@ -284,10 +284,11 @@ Item {
                 isOnlyEmoji: false
                 isReply: d.isReply
                 isStateEvent: d.isStateEvent
-                formatted: qsTr("%1 changed the stickers and emotes in this room.").arg(d.userName)
+                formatted: d.relatedEventCacheBuster, room.formatImagePackEvent(d.eventId)
             }
 
         }
+
 
         DelegateChoice {
             roleValue: MtxEvent.CanonicalAlias
@@ -390,7 +391,6 @@ Item {
         }
 
         DelegateChoice {
-            // TODO: make a more complex formatter for the power levels.
             roleValue: MtxEvent.PowerLevels
 
             NoticeMessage {
