@@ -183,6 +183,12 @@ Item {
             visible: !!room
             text: qsTr("%1 member(s)").arg(room ? room.roomMemberCount : 0)
             Layout.alignment: Qt.AlignHCenter
+            cursorShape: Qt.PointingHandCursor
+
+            TapHandler {
+                onSingleTapped: TimelineManager.openRoomMembers(room)
+            }
+
         }
 
         ScrollView {
@@ -230,13 +236,6 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("decline invite")
             onClicked: Rooms.declineInvite(roomPreview.roomid)
-        }
-
-        FlatButton {
-            visible: room != null && room.isSpace && roomPreview == null
-            Layout.alignment: Qt.AlignHCenter
-            text: qsTr("members")
-            onClicked: TimelineManager.openRoomMembers(room)
         }
 
         FlatButton {
