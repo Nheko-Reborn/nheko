@@ -94,7 +94,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         case CommunitiesModel::Roles::Collapsible:
             return false;
         case CommunitiesModel::Roles::Hidden:
-            return hiddentTagIds_.contains(QStringLiteral("dm"));
+            return hiddenTagIds_.contains(QStringLiteral("dm"));
         case CommunitiesModel::Roles::Parent:
             return "";
         case CommunitiesModel::Roles::Depth:
@@ -119,7 +119,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             return idx != spaceOrder_.lastChild(idx);
         }
         case CommunitiesModel::Roles::Hidden:
-            return hiddentTagIds_.contains("space:" + id);
+            return hiddenTagIds_.contains("space:" + id);
         case CommunitiesModel::Roles::Parent: {
             if (auto p = spaceOrder_.parent(index.row() - 2); p >= 0)
                 return spaceOrder_.tree[p].id;
@@ -174,7 +174,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
 
         switch (role) {
         case CommunitiesModel::Roles::Hidden:
-            return hiddentTagIds_.contains("tag:" + tag);
+            return hiddenTagIds_.contains("tag:" + tag);
         case CommunitiesModel::Roles::Collapsed:
             return true;
         case CommunitiesModel::Roles::Collapsible:
@@ -293,7 +293,7 @@ CommunitiesModel::initializeSidebar()
     for (const auto &t : ts)
         tags_.push_back(QString::fromStdString(t));
 
-    hiddentTagIds_ = UserSettings::instance()->hiddenTags();
+    hiddenTagIds_ = UserSettings::instance()->hiddenTags();
     spaceOrder_.restoreCollapsed();
 
     endResetModel();
@@ -441,12 +441,12 @@ CommunitiesModel::setCurrentTagId(const QString &tagId)
 void
 CommunitiesModel::toggleTagId(QString tagId)
 {
-    if (hiddentTagIds_.contains(tagId)) {
-        hiddentTagIds_.removeOne(tagId);
-        UserSettings::instance()->setHiddenTags(hiddentTagIds_);
+    if (hiddenTagIds_.contains(tagId)) {
+        hiddenTagIds_.removeOne(tagId);
+        UserSettings::instance()->setHiddenTags(hiddenTagIds_);
     } else {
-        hiddentTagIds_.push_back(tagId);
-        UserSettings::instance()->setHiddenTags(hiddentTagIds_);
+        hiddenTagIds_.push_back(tagId);
+        UserSettings::instance()->setHiddenTags(hiddenTagIds_);
     }
 
     if (tagId.startsWith(QLatin1String("tag:"))) {

@@ -152,7 +152,7 @@ private:
 
     QStringList tags_;
     QString currentTagId_;
-    QStringList hiddentTagIds_;
+    QStringList hiddenTagIds_;
     FlatTree spaceOrder_;
     std::map<QString, RoomInfo> spaces_;
 
