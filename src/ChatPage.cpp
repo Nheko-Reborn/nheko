@@ -1272,7 +1272,7 @@ ChatPage::startChat(QString userid, std::optional<bool> encryptionEnabled)
         return;
 
     mtx::requests::CreateRoom req;
-    req.preset     = mtx::requests::Preset::PrivateChat;
+    req.preset     = mtx::requests::Preset::TrustedPrivateChat;
     req.visibility = mtx::common::RoomVisibility::Private;
 
     if (encryptionEnabled.value_or(false)) {
