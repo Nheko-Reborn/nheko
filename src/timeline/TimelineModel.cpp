@@ -2250,18 +2250,27 @@ TimelineModel::formatImagePackEvent(const QString &id)
     auto added   = calcChange(newImages, oldImages);
     auto removed = calcChange(oldImages, newImages);
 
-    auto sender = utils::replaceEmoji(displayName(QString::fromStdString(event->sender)));
+    auto sender       = utils::replaceEmoji(displayName(QString::fromStdString(event->sender)));
+    const auto packId = [&event]() -> QString {
+        if (!event->content.pack->display_name.empty()) {
+            return event->content.pack->display_name.c_str();
+        } else if (!event->state_key.empty()) {
+            return event->state_key.c_str();
+        }
+        return tr("(empty)");
+    }();
 
     QString msg;
 
     if (!removed.isEmpty()) {
-        msg = tr("%1 removed the following images from the pack:<br>%2")
-                .arg(sender, removed.join(", "));
+        msg = tr("%1 removed the following images from the pack %2:<br>%3")
+                .arg(sender, packId, removed.join(", "));
     }
     if (!added.isEmpty()) {
         if (!msg.isEmpty())
             msg += "<br>";
-        msg += tr("%1 added the following images to the pack:<br>%2").arg(sender, added.join(", "));
+        msg += tr("%1 added the following images to the pack %2:<br>%3")
+                 .arg(sender, packId, added.join(", "));
     }
 
     if (msg.isEmpty())
