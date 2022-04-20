@@ -352,15 +352,22 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
 {
     this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
 
-    auto roomInfo            = cache::singleRoomInfo(room_id_.toStdString());
-    this->isSpace_           = roomInfo.is_space;
-    this->notification_count = roomInfo.notification_count;
-    this->highlight_count    = roomInfo.highlight_count;
-    lastMessage_.timestamp   = roomInfo.approximate_last_modification_ts;
+    auto roomInfo  = cache::singleRoomInfo(room_id_.toStdString());
+    this->isSpace_ = roomInfo.is_space;
+    this->notification_count =
+      isSpace_ ? utils::getChildNotificationsForSpace(room_id_) : roomInfo.notification_count;
+    this->highlight_count  = roomInfo.highlight_count;
+    lastMessage_.timestamp = roomInfo.approximate_last_modification_ts;
 
     // this connection will simplify adding the plainRoomNameChanged() signal everywhere that it
     // needs to be
     connect(this, &TimelineModel::roomNameChanged, this, &TimelineModel::plainRoomNameChanged);
+
+    if (isSpace_)
+        connect(ChatPage::instance(), &ChatPage::unreadMessages, this, [this](int) {
+            notification_count = utils::getChildNotificationsForSpace(room_id_);
+            emit notificationsChanged();
+        });
 
     connect(
       this,

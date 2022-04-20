@@ -148,8 +148,6 @@ signals:
     void containsSubspacesChanged();
 
 private:
-    int getChildNotifications(const QString &space_id) const;
-
     QStringList tags_;
     QString currentTagId_;
     QStringList hiddenTagIds_;

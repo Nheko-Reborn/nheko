@@ -348,58 +348,15 @@ Page {
                     height: avatar.height
                     spacing: Nheko.paddingSmall
 
-                    RowLayout {
-                        Layout.alignment: Qt.AlignTop
-                        Layout.fillWidth: true
-                        spacing: Nheko.paddingSmall
-
-                        ElidedLabel {
-                            id: rN
-                            Layout.alignment: Qt.AlignBaseline
-                            color: roomItem.importantText
-                            elideWidth: width
-                            fullText: roomName
-                            textFormat: Text.RichText
-                            Layout.fillWidth: true
-                        }
-
-                        Label {
-                            id: timestamp
-
-                            visible: !isInvite && !isSpace
-                            width: visible ? 0 : undefined
-                            Layout.alignment: Qt.AlignRight | Qt.AlignBaseline
-                            font.pixelSize: fontMetrics.font.pixelSize * 0.9
-                            color: roomItem.unimportantText
-                            text: time
-                        }
-
-                    }
-
-                    RowLayout {
-                        Layout.fillWidth: true
-                        spacing: 0
-                        visible: !isSpace
-                        height: visible ? 0 : undefined
-                        Layout.alignment: Qt.AlignBottom
-
-                        ElidedLabel {
-                            color: roomItem.unimportantText
-                            font.pixelSize: fontMetrics.font.pixelSize * 0.9
-                            elideWidth: width
-                            fullText: lastMessage
-                            textFormat: Text.RichText
-                            Layout.fillWidth: true
-                        }
+                    Component {
+                        id: notificationBubble
 
                         Rectangle {
-                            id: notificationBubble
-
                             visible: notificationCount > 0
                             Layout.alignment: Qt.AlignRight
                             Layout.leftMargin: Nheko.paddingSmall
                             height: notificationBubbleText.height + Nheko.paddingMedium
-                            Layout.preferredWidth: Math.max(notificationBubbleText.width, height)
+                            width: Math.max(notificationBubbleText.width, height)
                             radius: height / 2
                             color: hasLoudNotification ? Nheko.theme.red : roomItem.bubbleBackground
                             ToolTip.text: notificationCount
@@ -425,7 +382,66 @@ Page {
                             }
 
                         }
+                    }
 
+                    RowLayout {
+                        id: titleRow
+
+                        Layout.alignment: Qt.AlignTop
+                        Layout.fillWidth: true
+                        spacing: Nheko.paddingSmall
+
+                        ElidedLabel {
+                            id: rN
+                            Layout.alignment: Qt.AlignBaseline
+                            color: roomItem.importantText
+                            elideWidth: width
+                            fullText: roomName
+                            textFormat: Text.RichText
+                            Layout.fillWidth: true
+                        }
+
+                        Label {
+                            id: timestamp
+
+                            visible: !isInvite && !isSpace
+                            width: visible ? 0 : undefined
+                            Layout.alignment: Qt.AlignRight | Qt.AlignBaseline
+                            font.pixelSize: fontMetrics.font.pixelSize * 0.9
+                            color: roomItem.unimportantText
+                            text: time
+                        }
+
+                        Loader {
+                            sourceComponent: notificationBubble
+                            active: isSpace
+                        }
+
+                    }
+
+                    RowLayout {
+                        id: subtextRow
+
+                        Layout.fillWidth: true
+                        spacing: 0
+                        visible: !isSpace
+                        height: visible ? 0 : undefined
+                        Layout.alignment: Qt.AlignBottom
+
+                        ElidedLabel {
+                            color: roomItem.unimportantText
+                            font.pixelSize: fontMetrics.font.pixelSize * 0.9
+                            elideWidth: width
+                            fullText: lastMessage
+                            textFormat: Text.RichText
+                            Layout.fillWidth: true
+                        }
+
+
+                        Loader {
+                            sourceComponent: notificationBubble
+                            active: !isSpace
+                        }
                     }
 
                 }

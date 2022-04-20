@@ -27,6 +27,7 @@
 #include <cmark.h>
 
 #include "Cache.h"
+#include "Cache_p.h"
 #include "Config.h"
 #include "EventAccessors.h"
 #include "Logging.h"
@@ -879,4 +880,18 @@ utils::markRoomAsDirect(QString roomid, std::vector<RoomMember> members)
                   nhlog::net()->error("Failed to update m.direct: {}", *e);
           });
       });
+}
+
+int
+utils::getChildNotificationsForSpace(const QString &spaceId)
+{
+    auto children = cache::getRoomInfo(cache::client()->getChildRoomIds(spaceId.toStdString()));
+    int total{0};
+    for (const auto &[childId, child] : children) {
+        if (child.is_space)
+            total += utils::getChildNotificationsForSpace(childId);
+        else
+            total += child.notification_count;
+    }
+    return total;
 }

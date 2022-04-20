@@ -12,6 +12,7 @@
 #include "ChatPage.h"
 #include "Logging.h"
 #include "UserSettingsPage.h"
+#include "Utils.h"
 
 CommunitiesModel::CommunitiesModel(QObject *parent)
   : QAbstractListModel(parent)
@@ -131,7 +132,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         case CommunitiesModel::Roles::Id:
             return "space:" + id;
         case CommunitiesModel::Roles::UnreadMessages:
-            return getChildNotifications(id);
+            return utils::getChildNotificationsForSpace(id);
         }
     } else if (index.row() - 2 < tags_.size() + spaceOrder_.size()) {
         auto tag = tags_.at(index.row() - 2 - spaceOrder_.size());
@@ -463,20 +464,6 @@ CommunitiesModel::toggleTagId(QString tagId)
     }
 
     emit hiddenTagsChanged();
-}
-
-int
-CommunitiesModel::getChildNotifications(const QString &space_id) const
-{
-    auto children = cache::getRoomInfo(cache::client()->getChildRoomIds(space_id.toStdString()));
-    int total{0};
-    for (const auto &[child_id, child] : children) {
-        if (child.is_space)
-            total += getChildNotifications(child_id);
-        else
-            total += child.notification_count;
-    }
-    return total;
 }
 
 FilteredCommunitiesModel::FilteredCommunitiesModel(CommunitiesModel *model, QObject *parent)

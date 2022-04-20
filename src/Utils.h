@@ -311,4 +311,7 @@ removeDirectFromRoom(QString roomid);
 
 void
 markRoomAsDirect(QString roomid, std::vector<RoomMember> members);
+
+int
+getChildNotificationsForSpace(const QString &spaceId);
 }
