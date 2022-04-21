@@ -17,7 +17,7 @@
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>Anda sedang membagikan layar.</translation>
+        <translation>Kamu sedang membagikan layar.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -136,17 +136,17 @@
     <message>
         <location line="-460"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
-        <translation>Migrasi cache ke versi saat ini gagal. Ini dapat memiliki alasan yang berbeda. Silakan buka masalah dan coba gunakan versi yang lebih lama untuk sementara. Alternatifnya Anda dapat mencoba menghapus cache secara manual.</translation>
+        <translation>Migrasi cache ke versi saat ini gagal. Ini dapat memiliki alasan yang berbeda. Silakan buka masalah dan coba gunakan versi yang lebih lama untuk sementara. Alternatifnya kamu bisa mencoba menghapus cache secara manual.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
-        <translation>Cache pada disk Anda lebih baru daripada versi yang didukung Nheko ini. Harap perbarui Nheko atau bersihkan cache Anda.</translation>
+        <translation>Cache pada diskmu lebih baru daripada versi yang didukung Nheko ini. Harap perbarui Nheko atau bersihkan cachemu.</translation>
     </message>
     <message>
         <location line="+41"/>
         <source>Failed to open database, logging out!</source>
-        <translation>Gagal untuk membuka basisdata! Anda telah dikeluarkan.</translation>
+        <translation>Gagal untuk membuka basisdata, kamu telah dikeluarkan!</translation>
     </message>
     <message>
         <location line="+304"/>
@@ -156,7 +156,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to join %1?</source>
-        <translation>Apakah Anda ingin bergabung %1?</translation>
+        <translation>Apakah kamu ingin bergabung %1?</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -172,7 +172,7 @@
     <message>
         <location line="-445"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation>Apakah Anda ingin menundang %1 (%2)?</translation>
+        <translation>Apakah kamu ingin mengundang %1 (%2)?</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -202,7 +202,7 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to unban %1 (%2)?</source>
-        <translation>Apakah Anda ingin menghilangkan cekalan %1 (%2)?</translation>
+        <translation>Apakah kamu ingin menghilangkan cekalan %1 (%2)?</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -217,7 +217,7 @@
     <message>
         <location line="+345"/>
         <source>Do you really want to start a private chat with %1?</source>
-        <translation>Apakah Anda ingin memulai chat privat dengan %1?</translation>
+        <translation>Apakah kamu ingin memulai chat privat dengan %1?</translation>
     </message>
     <message>
         <location line="-892"/>
@@ -260,7 +260,7 @@
     <message>
         <location line="+4"/>
         <source>You joined the room</source>
-        <translation>Anda bergabung ruangan ini</translation>
+        <translation>Kamu bergabung ruangan ini</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -356,7 +356,7 @@
     <message>
         <location line="+2"/>
         <source>Rooms you have favourited.</source>
-        <translation>Ruangan yang Anda favoritkan.</translation>
+        <translation>Ruangan yang kamu favoritkan.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -376,7 +376,7 @@
     <message>
         <location line="+2"/>
         <source>Messages from your server or administrator.</source>
-        <translation>Pesan dari server Anda atau administrator.</translation>
+        <translation>Pesan dari servermu atau administratormu.</translation>
     </message>
 </context>
 <context>
@@ -389,12 +389,12 @@
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase to decrypt your secrets:</source>
-        <translation>Masukkan kunci pemulihan Anda atau frasa sandi untuk mendekripsikan rahasia Anda:</translation>
+        <translation>Masukkan kunci pemulihanmu atau frasa sandi untuk mendekripsikan rahasiamu:</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase called %1 to decrypt your secrets:</source>
-        <translation>Masukkan kunci pemulihan Anda atau frasa sandi yang bernama %1 untuk mendekripsikan rahasia Anda:</translation>
+        <translation>Masukkan kunci pemulihanmu atau frasa sandi yang bernama %1 untuk mendekripsikan rahasiamu:</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -417,7 +417,7 @@
     <message>
         <location line="+13"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>Harap verifikasi digit berikut.  Anda seharusnya melihat angka yang sama di kedua sisi.  Jika mereka berbeda, mohon tekan &apos;Mereka tidak cocok!&apos; untuk membatalkan verifikasi!</translation>
+        <translation>Harap verifikasi digit berikut.  Kamu seharusnya melihat angka yang sama di kedua sisi.  Jika mereka berbeda, mohon tekan &apos;Mereka tidak cocok!&apos; untuk membatalkan verifikasi!</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -658,7 +658,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="+13"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>Mohon verifikasi emoji berikut. Anda seharusnya melihat emoji yang sama di kedua sisi. Jika mereka berbeda, mohon tekan &apos;Mereka tidak cocok!&apos; untuk membatalkan verifikasi!</translation>
+        <translation>Mohon verifikasi emoji berikut. Kamu seharusnya melihat emoji yang sama di kedua sisi. Jika mereka berbeda, mohon tekan &apos;Mereka tidak cocok!&apos; untuk membatalkan verifikasi!</translation>
     </message>
     <message>
         <location line="+378"/>
@@ -676,12 +676,12 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location filename="../qml/delegates/Encrypted.qml" line="+47"/>
         <source>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</source>
-        <translation>Tidak ada kunci untuk mengakses pesan ini. Kami telah meminta untuk kunci secara otomatis, tetapi Anda dapat meminta lagi jika Anda tidak sabar.</translation>
+        <translation>Tidak ada kunci untuk mengakses pesan ini. Kami telah meminta untuk kunci secara otomatis, tetapi kamu bisa meminta lagi jika kamu tidak sabar.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message couldn&apos;t be decrypted, because we only have a key for newer messages. You can try requesting access to this message.</source>
-        <translation>Pesan ini tidak dapat didekripsikan, karena kami hanya memiliki kunci untuk pesan baru. Anda dapat meminta akses ke pesan ini.</translation>
+        <translation>Pesan ini tidak bisa didekripsikan, karena kami hanya memiliki kunci untuk pesan baru. Kamu bisa meminta akses ke pesan ini.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -729,7 +729,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
-        <translation>Terenkripsi oleh perangkat yang tidak diverifikasi, tetapi Anda mempercayai pengguna itu sejauh ini.</translation>
+        <translation>Terenkripsi oleh perangkat yang tidak diverifikasi, tetapi kamu mempercayai pengguna itu sejauh ini.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1058,7 +1058,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to leave?</source>
-        <translation>Apakah Anda yakin untuk keluar?</translation>
+        <translation>Apakah kamu yakin untuk keluar?</translation>
     </message>
 </context>
 <context>
@@ -1079,8 +1079,8 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
 You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation>Nama login Anda. Sebuah MXID harus mulai dengan @ diikuti dengan ID pengguna. Setelah ID penggunanya Anda harus menambahkan nama server setelah :.
-Anda juga dapat memasukkan alamat homeserver Anda, jika server Anda tidak mendukung pencarian .well-known.
+        <translation>Nama loginmu. Sebuah MXID harus mulai dengan @ diikuti dengan ID pengguna. Setelah ID penggunanya kamu harus menambahkan nama server setelah :.
+Kamu juga bisa memasukkan alamat homeserver-mu, jika servermu tidak mendukung pencarian .well-known.
 Misalnya: @pengguna:server.my
 Jika Nheko gagal menemukan homeserver Anda, Nheko akan menampilkan kolom untuk memasukkan servernya secara manual.</translation>
     </message>
@@ -1092,7 +1092,7 @@ Jika Nheko gagal menemukan homeserver Anda, Nheko akan menampilkan kolom untuk m
     <message>
         <location line="+2"/>
         <source>Your password.</source>
-        <translation>Kata sandi Anda.</translation>
+        <translation>Kata sandimu.</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1102,7 +1102,7 @@ Jika Nheko gagal menemukan homeserver Anda, Nheko akan menampilkan kolom untuk m
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation>Sebuah nama perangkat untuk perangkat ini, yang akan ditampilkan untuk yang lain, ketika memverifikasi perangkat Anda. Jika tidak dimasukkan nama perangkat yang default akan digunakan.</translation>
+        <translation>Sebuah nama perangkat untuk perangkat ini, yang akan ditampilkan untuk yang lain, ketika memverifikasi perangkatmu. Jika tidak dimasukkan nama perangkat yang default akan digunakan.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1118,8 +1118,8 @@ Jika Nheko gagal menemukan homeserver Anda, Nheko akan menampilkan kolom untuk m
         <location line="+3"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
-        <translation>Alamat yang dapat digunakan untuk menghubungi API klien homeserver Anda.
-Misalnya: https://server.my:8787</translation>
+        <translation>Alamat yang dapat digunakan untuk menghubungi API klien homeserver-mu.
+Misalnya: https://server.id:8787</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -1137,7 +1137,7 @@ Misalnya: https://server.my:8787</translation>
         <location line="+58"/>
         <location line="+109"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
-        <translation>Anda telah memasukkan ID Matrix yang tidak valid  mis. @pengguna:matrix.org</translation>
+        <translation>Kamu telah memasukkan ID Matrix yang tidak valid  mis. @joe:matrix.org</translation>
     </message>
     <message>
         <location line="-139"/>
@@ -1220,7 +1220,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+0"/>
         <source>Are you sure you want to log out?</source>
-        <translation>Apakah Anda ingin keluar?</translation>
+        <translation>Apakah kamu ingin keluar?</translation>
     </message>
 </context>
 <context>
@@ -1370,7 +1370,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+11"/>
         <source>You don&apos;t have permission to send messages in this room</source>
-        <translation>Anda tidak memiliki izin untuk mengirim pesan di ruangan ini</translation>
+        <translation>Kamu tidak memiliki izin untuk mengirim pesan di ruangan ini</translation>
     </message>
 </context>
 <context>
@@ -1508,17 +1508,17 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+19"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation>Untuk mengizinkan pengguna lain melihat  perangkat mana yang benar-benar milik Anda, Anda dapat memverifikasinya. Ini juga memungkinkan cadangan kunci bekerja secara otomatis. Verifikasi perangkat yang belum diverifikasi sekarang? (Pastikan Anda memiliki salah satu perangkat tersebut.)</translation>
+        <translation>Untuk mengizinkan pengguna lain melihat  perangkat mana yang benar-benar milikmu, kamu bisa memverifikasinya. Ini juga memungkinkan cadangan kunci bekerja secara otomatis. Verifikasi perangkat yang belum diverifikasi sekarang? (Pastikan kamu memiliki salah satu perangkat tersebut.)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation>Untuk mengizinkan pengguna yang lain untuk melihat perangkat apa saja yang sebenarnya milik Anda, lakukan verifikasi pada perangkatnya. Ini juga dapat membuat kunci cadangan bekerja secara otomatis. Verifikasi %1 sekarang?</translation>
+        <translation>Untuk mengizinkan pengguna yang lain untuk melihat perangkat apa saja yang sebenarnya milikmu, lakukan verifikasi pada perangkatnya. Ini juga dapat membuat kunci cadangan bekerja secara otomatis. Verifikasi %1 sekarang?</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To ensure that no malicious user can eavesdrop on your encrypted communications you can verify the other party.</source>
-        <translation>Supaya tidak ada pengguna yang jahat yang bisa melihat komunikasi yang terenkripsi Anda dapat memverifikasi pengguna yang lain.</translation>
+        <translation>Supaya tidak ada pengguna yang jahat yang bisa melihat komunikasi yang terenkripsi kamu bisa memverifikasi pengguna yang lain.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1533,7 +1533,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Your device (%1) has requested to be verified.</source>
-        <translation>Perangkat Anda (%1) meminta untuk diverifikasi.</translation>
+        <translation>Perangkatmu (%1) meminta untuk diverifikasi.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1561,7 +1561,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location filename="../qml/NotificationWarning.qml" line="+33"/>
         <source>You are about to notify the whole room</source>
-        <translation>Anda akan memberitahu seluruh ruangan</translation>
+        <translation>Kamu akan memberitahu seluruh ruangan</translation>
     </message>
 </context>
 <context>
@@ -1642,7 +1642,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location filename="../../src/main.cpp" line="+213"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation>Buat profil yang unik, yang mengizinkan Anda untuk masuk ke beberapa akun pada waktu bersamaan dan mulai beberapa instansi Nheko.</translation>
+        <translation>Buat profil yang unik, yang memungkinkan kamu untuk masuk ke beberapa akun pada waktu bersamaan dan mulai beberapa instansi Nheko.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1697,7 +1697,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
-        <translation>Mohon memilih kata sandi yang aman. Persyaratan untuk kekuatan sandi mungkin bergantung pada server Anda.</translation>
+        <translation>Mohon memilih kata sandi yang aman. Persyaratan untuk kekuatan sandi mungkin bergantung pada servermu.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1712,17 +1712,17 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+1"/>
         <source>your.server</source>
-        <translation>server.anda</translation>
+        <translation>server.mu</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
-        <translation>Sebuah server yang mengizinkan pendaftaran. Karena Matrix itu terdecentralisasi, Anda pertama harus mencari server yang Anda daftar atau host server Anda sendiri.</translation>
+        <translation>Sebuah server yang mengizinkan pendaftaran. Karena Matrix itu terdecentralisasi, kamu pertama harus mencari server yang kamu daftar atau host servermu sendiri.</translation>
     </message>
     <message>
         <location line="+90"/>
         <source>Your passwords do not match!</source>
-        <translation>Kata sandi Anda tidak cocok!</translation>
+        <translation>Kata sandimu tidak cocok!</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1732,7 +1732,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation>Sebuah nama perangkat untuk perangkat ini, yang akan ditampilkan untuk yang lain, ketika memverifikasi perangkat Anda. Jika tidak dimasukkan nama perangkat yang default akan digunakan.</translation>
+        <translation>Sebuah nama perangkat untuk perangkat ini, yang akan ditampilkan untuk yang lain, ketika memverifikasi perangkatmu. Jika tidak dimasukkan nama perangkat yang default akan digunakan.</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -1839,7 +1839,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+1"/>
         <source>Enter the tag you want to use:</source>
-        <translation>Masukkan tanda yang Anda ingin gunakan:</translation>
+        <translation>Masukkan tanda yang kamu ingin gunakan:</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1869,7 +1869,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+13"/>
         <source>Create new tag...</source>
-        <translation>Membuat tanda baru…</translation>
+        <translation>Buat tanda baru…</translation>
     </message>
     <message>
         <location line="+298"/>
@@ -1879,7 +1879,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+1"/>
         <source>Enter your status message:</source>
-        <translation>Masukkan pesan status Anda:</translation>
+        <translation>Masukkan pesan statusmu:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1912,7 +1912,7 @@ Misalnya: https://server.my:8787</translation>
         <location line="+3"/>
         <source>Please verify your other devices</source>
         <extracomment>There are unverified devices signed in to this account.</extracomment>
-        <translation>Mohon verifikasi perangkat Anda yang lain</translation>
+        <translation>Mohon verifikasi perangkatmu yang lain</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1983,7 +1983,7 @@ Misalnya: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>This user isn&apos;t verified, but is still using the same master key from the first time you met.</source>
-        <translation>Pengguna ini belum diverifikasi, tetapi masih menggunakan kunci utama dari pertama kali Anda bertemu.</translation>
+        <translation>Pengguna ini belum diverifikasi, tetapi masih menggunakan kunci utama dari pertama kali kamu bertemu.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2192,7 +2192,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location filename="../qml/Root.qml" line="+319"/>
         <source>Please enter your login password to continue:</source>
-        <translation>Mohon masukkan kata sandi login Anda untuk melanjutkan:</translation>
+        <translation>Mohon masukkan kata sandi loginmu untuk melanjutkan:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2207,7 +2207,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="+10"/>
         <source>Please enter the token, which has been sent to you:</source>
-        <translation>Mohon masukkan tokennya yang telah terkirim ke Anda:</translation>
+        <translation>Mohon masukkan tokennya yang telah dikirim ke kamu:</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2235,7 +2235,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="+19"/>
         <source>Include your camera picture-in-picture</source>
-        <translation>Tambahkan kamera Anda dalam picture-in-picture</translation>
+        <translation>Tambahkan kameramu dalam gambar-dalam-gambar</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2279,7 +2279,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation>Nheko tidak dapat terhubung ke penyimpanan aman untuk menyimpan rahasia enkripsi. Ini dapat memiliki beberapa alasan. Periksa apakah layanan D-Bus Anda berjalan dan Anda telah mengkonfigurasi layanan seperti KWallet, Gnome Keyring, KeePassXC atau yang setara untuk platform Anda. Jika Anda mengalami masalah, jangan ragu untuk membuka masalah di sini: https://github.com/Nheko-Reborn/nheko/issues</translation>
+        <translation>Nheko tidak bisa terhubung ke penyimpanan aman untuk menyimpan rahasia enkripsi. Ini dapat memiliki beberapa alasan. Periksa apakah layanan D-Bus kamu berjalan dan kamu telah mengkonfigurasi layanan seperti KWallet, Gnome Keyring, KeePassXC atau yang setara untuk platform kamu. Jika kamu mengalami masalah, jangan ragu untuk membuka masalah di sini: https://github.com/Nheko-Reborn/nheko/issues</translation>
     </message>
 </context>
 <context>
@@ -2287,7 +2287,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location filename="../qml/SelfVerificationCheck.qml" line="+40"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation>Ini adalah kunci pemulihan Anda. Anda akan membutuhkannya untuk memulihkan akses ke pesan terenkripsi dan kunci verifikasi Anda. Simpan dengan aman. Jangan bagikan dengan siapa pun dan jangan sampai hilang! Jangan lewat! Jangan mengumpulkan Rp. 200.000!</translation>
+        <translation>Ini kunci pemulihanmu. Kamu akan membutuhkannya untuk memulihkan akses ke pesan terenkripsi dan kunci verifikasimu. Simpan dengan aman. Jangan bagikan dengan siapa pun dan jangan sampai hilang! Jangan lewat! Jangan mengumpulkan Rp 200.000!</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -2309,7 +2309,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
         <translation>Halo dan selamat datang di Matrix!
-Sepertinya Anda baru di sini. Sebelum Anda dapat mengenkripsi pesan Anda dengan aman, kami perlu menyiapkan beberapa hal. Anda dapat langsung menekan terima atau menyesuaikan beberapa opsi dasar. Kami juga mencoba menjelaskan beberapa dasar-dasarnya. Anda dapat melewatkan bagian-bagiannya, tetapi mereka mungkin terbukti membantu!</translation>
+Sepertinya kamu baru di sini. Sebelum kamu dapat mengenkripsi pesan Anda dengan aman, kami perlu menyiapkan beberapa hal. Kamu bisa langsung menekan terima atau menyesuaikan beberapa opsi dasar. Kami juga mencoba menjelaskan beberapa dasar-dasarnya. Kamu bisa melewatkan bagian-bagiannya, tetapi mereka mungkin terbukti membantu!</translation>
     </message>
     <message>
         <location line="+124"/>
@@ -2320,8 +2320,8 @@ Sepertinya Anda baru di sini. Sebelum Anda dapat mengenkripsi pesan Anda dengan 
         <location line="+10"/>
         <source>It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.
 If you choose verify, you need to have the other device available. If you choose &quot;enter passphrase&quot;, you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.</source>
-        <translation>Sepertinya Anda telah mengkonfigurasi enkripsi untuk akun ini. Agar dapat mengakses pesan terenkripsi dan membuat perangkat ini tepercaya, Anda dapat memverifikasi perangkat yang ada atau (jika punya) memasukkan frasa sandi pemulihan. Silakan pilih salah satu opsi di bawah ini.
-Jika Anda memilih verifikasi, Anda harus memiliki perangkat lain yang tersedia. Jika Anda memilih &quot;masukkan frasa sandi&quot;, Anda memerlukan kunci pemulihan atau frasa sandi. Jika Anda mengklik batal, Anda dapat memilih untuk memverifikasi diri Anda di lain waktu.</translation>
+        <translation>Sepertinya kamu telah mengkonfigurasi enkripsi untuk akun ini. Agar dapat mengakses pesan terenkripsi dan membuat perangkat ini tepercaya, kamu bisa memverifikasi perangkat yang ada atau (jika punya) memasukkan frasa sandi pemulihan. Silakan pilih salah satu opsi di bawah ini.
+Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. Jika kamu memilih &quot;masukkan frasa sandi&quot;, kamu memerlukan kunci pemulihan atau frasa sandi. Jika kamu mengklik batal, kamu dapat memilih untuk memverifikasi dirimu di lain waktu.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2339,7 +2339,7 @@ Jika Anda memilih verifikasi, Anda harus memiliki perangkat lain yang tersedia. 
     <message>
         <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+43"/>
         <source>Failed to create keys for cross-signing!</source>
-        <translation>Gagal untuk membuat kunci untuk penandatanganan silang!</translation>
+        <translation>Gagal membuat kunci untuk penandatanganan silang!</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2364,7 +2364,7 @@ Jika Anda memilih verifikasi, Anda harus memiliki perangkat lain yang tersedia. 
     <message>
         <location line="+140"/>
         <source>Identity key changed. This breaks E2EE, so logging out.</source>
-        <translation>Kunci identitas telah diubah. Ini merusak enkripsi ujung-ke-ujung, jadi Anda dikeluarkan.</translation>
+        <translation>Kunci identitas telah berubah. Ini merusak enkripsi ujung-ke-ujung, jadi kamu dikeluarkan.</translation>
     </message>
 </context>
 <context>
@@ -2624,7 +2624,7 @@ Alasan: %4</translation>
     <message>
         <location line="-1074"/>
         <source>You joined this room.</source>
-        <translation>Anda bergabung ruangan ini.</translation>
+        <translation>Kamu bergabung ruangan ini.</translation>
     </message>
     <message>
         <location line="+1023"/>
@@ -2921,7 +2921,7 @@ Alasan: %4</translation>
     <message>
         <location line="+10"/>
         <source>You signed out this device.</source>
-        <translation>Anda mengeluarkan perangkat ini.</translation>
+        <translation>Kamu mengeluarkan perangkat ini.</translation>
     </message>
     <message>
         <location line="+224"/>
@@ -3282,7 +3282,7 @@ Tetapkan ke 0 untuk memburamkan secara langsung setelah kehilangan fokus. Nilai 
     <message>
         <location line="+7"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation>Mengubah warna latar belakang pesan ketika kursor Anda di atas pesannya.</translation>
+        <translation>Mengubah warna latar belakang pesan ketika kursor kamu di atas pesannya.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3340,7 +3340,7 @@ If this is off, the list of rooms will only be sorted by the timestamp of the la
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
         <translation>Menampilkan ruangan dengan pesan baru pertama.
 Jika ini dimatikan, daftar ruangan hanya diurutkan dari waktu pesan terakhir di ruangan.
-Jika ini dinyalakan, ruangan yang mempunyai notifikasi aktif (lingkaran kecil dengan nomor didalam) akan diurutkan di atas. Ruangan, yang dibisukan, masih diurutkan dari waktu, karena Anda tidak pertimbangkan mereka sebagai penting dengan ruangan yang lain.</translation>
+Jika ini dinyalakan, ruangan yang mempunyai notifikasi aktif (lingkaran kecil dengan nomor didalam) akan diurutkan di atas. Ruangan, yang dibisukan, masih diurutkan dari waktu, karena kamu tidak pertimbangkan mereka sebagai penting dengan ruangan yang lain.</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -3369,7 +3369,7 @@ MATI - kotak, NYALA - bulat.</translation>
     <message>
         <location line="+60"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
-        <translation>Kunci untuk memverifikasi perangkat-perangkat Anda. Jika dicache, memverifikasi salah satu perangkat Anda akan menandainya sebagai terverifikasi untuk perangkat Anda yang lain dan untuk pengguna yang telah memverifikasi Anda.</translation>
+        <translation>Kunci untuk memverifikasi perangkat-perangkat kamu. Jika dicache, memverifikasi salah satu perangkat Anda akan menandainya sebagai terverifikasi untuk perangkat Anda yang lain dan untuk pengguna yang telah memverifikasimu.</translation>
     </message>
     <message>
         <location line="-64"/>
@@ -3424,7 +3424,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation>Akan menggunakan turn.matrix.org sebagai bantuan jika homeserver Anda tidak menawarkannya.</translation>
+        <translation>Akan menggunakan turn.matrix.org sebagai bantuan jika homeserver-mu tidak menawarkannya.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3444,7 +3444,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+23"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
-        <translation>Kunci untuk mendekripsikan cadangan kunci daring. Jika dicache, Anda dapat mengaktifkan kunci cadangan daring untuk menyimpan kunci enkripsi yang dienkripsi secara aman di servernya.</translation>
+        <translation>Kunci untuk mendekripsikan cadangan kunci daring. Jika dicache, kamu bisa mengaktifkan kunci cadangan daring untuk menyimpan kunci enkripsi yang dienkripsi secara aman di servernya.</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3454,7 +3454,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+4"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation>Kunci Anda yang paling penting. Anda tidak perlu menyimpannya dalam cache, karena tidak menyimpannya akan memperkecil kemungkinannya untuk dicuri dan hanya diperlukan untuk memutar kunci penandatanganan Anda yang lain.</translation>
+        <translation>Kunci kamu yang paling penting. Kamu tidak perlu menyimpannya dalam cache, karena tidak menyimpannya akan memperkecil kemungkinannya untuk dicuri dan hanya diperlukan untuk memutar kunci penandatangananmu yang lain.</translation>
     </message>
     <message>
         <location line="+408"/>
@@ -3501,7 +3501,7 @@ akan diburamkan.</translation>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation>Masukkan frasa sandi untuk mengenkripsikan kunci sesi Anda:</translation>
+        <translation>Masukkan frasa sandi untuk mengenkripsikan kunci sesimu:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -3593,7 +3593,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+10"/>
         <source>Enjoy your stay!</source>
-        <translation>Nikmati masa tinggal Anda di sini!</translation>
+        <translation>Nikmati masa tinggalmu!</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -3728,7 +3728,7 @@ akan diburamkan.</translation>
     <message>
         <location filename="../../src/Utils.h" line="+117"/>
         <source>You sent an audio clip</source>
-        <translation>Anda mengirim klip audio</translation>
+        <translation>Kamu mengirim klip audio</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3738,7 +3738,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+4"/>
         <source>You sent an image</source>
-        <translation>Anda mengirim sebuah pesan</translation>
+        <translation>Kamu mengirim sebuah pesan</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3748,7 +3748,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+4"/>
         <source>You sent a file</source>
-        <translation>Anda mengirim sebuah file</translation>
+        <translation>Kamu mengirim sebuah file</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3758,7 +3758,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+4"/>
         <source>You sent a video</source>
-        <translation>Anda mengirim sebuah video</translation>
+        <translation>Kamu mengirim sebuah video</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3768,7 +3768,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+4"/>
         <source>You sent a sticker</source>
-        <translation>Anda mengirim sebuah stiker</translation>
+        <translation>Kamu mengirim sebuah stiker</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3778,7 +3778,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+4"/>
         <source>You sent a notification</source>
-        <translation>Anda mengirim sebuah pemberitahuan</translation>
+        <translation>Kamu mengirim sebuah pemberitahuan</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3788,7 +3788,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+5"/>
         <source>You: %1</source>
-        <translation>Anda: %1</translation>
+        <translation>Kamu: %1</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3798,7 +3798,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+6"/>
         <source>You sent an encrypted message</source>
-        <translation>Anda mengirim sebuah pesan terenkripsi</translation>
+        <translation>Kamu mengirim sebuah pesan terenkripsi</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3808,7 +3808,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+5"/>
         <source>You placed a call</source>
-        <translation>Anda melakukan panggilan</translation>
+        <translation>Kamu melakukan panggilan</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3818,7 +3818,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+4"/>
         <source>You answered a call</source>
-        <translation>Anda menjawab panggilan</translation>
+        <translation>Kamu menjawab panggilan</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3828,7 +3828,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+4"/>
         <source>You ended a call</source>
-        <translation>Anda mengakhiri panggilan</translation>
+        <translation>Kamu mengakhiri panggilan</translation>
     </message>
     <message>
         <location line="+2"/>
