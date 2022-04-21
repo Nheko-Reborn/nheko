@@ -355,8 +355,9 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
     auto roomInfo  = cache::singleRoomInfo(room_id_.toStdString());
     this->isSpace_ = roomInfo.is_space;
     this->notification_count =
-      isSpace_ ? utils::getChildNotificationsForSpace(room_id_) : roomInfo.notification_count;
-    this->highlight_count  = roomInfo.highlight_count;
+      isSpace_ ? utils::getChildNotificationsForSpace(room_id_).first : roomInfo.notification_count;
+    this->highlight_count =
+      isSpace_ ? utils::getChildNotificationsForSpace(room_id_).second : roomInfo.highlight_count;
     lastMessage_.timestamp = roomInfo.approximate_last_modification_ts;
 
     // this connection will simplify adding the plainRoomNameChanged() signal everywhere that it
@@ -365,7 +366,9 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
 
     if (isSpace_)
         connect(ChatPage::instance(), &ChatPage::unreadMessages, this, [this](int) {
-            notification_count = utils::getChildNotificationsForSpace(room_id_);
+            auto temp{utils::getChildNotificationsForSpace(room_id_)};
+            notification_count = temp.first;
+            highlight_count    = temp.second;
             emit notificationsChanged();
         });
 

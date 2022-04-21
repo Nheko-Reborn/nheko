@@ -37,6 +37,7 @@ CommunitiesModel::roleNames() const
       {Depth, "depth"},
       {Id, "id"},
       {UnreadMessages, "unreadMessages"},
+      {HasLoudNotification, "hasLoudNotification"},
     };
 }
 
@@ -80,6 +81,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         case CommunitiesModel::Roles::Id:
             return "";
         case CommunitiesModel::Roles::UnreadMessages:
+        case CommunitiesModel::Roles::HasLoudNotification:
             return 0;
         }
     } else if (index.row() == 1) {
@@ -103,6 +105,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         case CommunitiesModel::Roles::Id:
             return "dm";
         case CommunitiesModel::Roles::UnreadMessages:
+        case CommunitiesModel::Roles::HasLoudNotification:
             return 0;
         }
     } else if (index.row() - 2 < spaceOrder_.size()) {
@@ -132,7 +135,9 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         case CommunitiesModel::Roles::Id:
             return "space:" + id;
         case CommunitiesModel::Roles::UnreadMessages:
-            return utils::getChildNotificationsForSpace(id);
+            return utils::getChildNotificationsForSpace(id).first;
+        case CommunitiesModel::Roles::HasLoudNotification:
+            return utils::getChildNotificationsForSpace(id).second > 0;
         }
     } else if (index.row() - 2 < tags_.size() + spaceOrder_.size()) {
         auto tag = tags_.at(index.row() - 2 - spaceOrder_.size());
@@ -187,6 +192,7 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         case CommunitiesModel::Roles::Id:
             return "tag:" + tag;
         case CommunitiesModel::Roles::UnreadMessages:
+        case CommunitiesModel::Roles::HasLoudNotification:
             return 0;
         }
     }

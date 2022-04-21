@@ -49,6 +49,7 @@ public:
         Depth,
         Id,
         UnreadMessages,
+        HasLoudNotification,
     };
 
     struct FlatTree
