@@ -1,0 +1,6 @@
+loudly crying face:sob
+face screaming in fear:scream
+downcast face with sweat:sweat 
+grinning face with sweat:sweat_smile
+grinning face with smiling eyes:smile 
+rolling on the floor laughing:rofl 

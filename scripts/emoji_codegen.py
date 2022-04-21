@@ -2,7 +2,7 @@
 
 import sys
 import re
-
+from unidecode import unidecode
 from jinja2 import Template
 
 
@@ -26,11 +26,12 @@ const QVector<Emoji> emoji::Provider::emoji = {
     print(tmpl.render(d))
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print('usage: emoji_codegen.py /path/to/emoji-test.txt')
+    if len(sys.argv) < 3:
+        print('usage: emoji_codegen.py /path/to/emoji-test.txt /path/to/shortcodes.txt')
         sys.exit(1)
 
     filename = sys.argv[1]
+    shortcodefilename = sys.argv[2]
 
     people = []
     nature = []
@@ -52,7 +53,11 @@ if __name__ == '__main__':
         'Symbols': symbols,
         'Flags': flags
     }
-
+    shortcodeDict = {} 
+    # for my sanity - this strips newlines
+    for line in open(shortcodefilename, 'r', encoding="utf8"): 
+        longname, shortname = line.strip().split(':')
+        shortcodeDict[longname] = shortname
     current_category = ''
     for line in open(filename, 'r', encoding="utf8"):
         if line.startswith('# group:'):
@@ -68,16 +73,34 @@ if __name__ == '__main__':
         code, qualification, charAndName = segments
 
         # skip unqualified versions of same unicode
-        if qualification == 'unqualified':
+        if qualification != 'fully-qualified':
             continue
 
-        if qualification == 'component':
-            continue
 
         char, name = re.match(r'^(\S+) E\d+\.\d+ (.*)$', charAndName).groups()
-
+        # drop "face" part
+        
+        if name in shortcodeDict: 
+            name = shortcodeDict[name]
+        else: 
+            if name.endswith(' face'): 
+                name = name[:-5]
+            elif name.endswith(' button'): 
+                name = name[:-7]
+            else: 
+                matchobj = re.match(r'^flag: (.*)$', name) 
+                if matchobj: 
+                    country, = matchobj.groups() 
+                    name = country + " flag"
+            name = name.replace(" ", "_")
+            name = name.replace("“", "")
+            name = name.replace("”", "")
+            name = name.replace(":", "")
+            name = name.lower()
+            name = unidecode(name)
         categories[current_category].append(Emoji(code, name))
 
     # Use xclip to pipe the output to clipboard.
     # e.g ./codegen.py emoji.json | xclip -sel clip
+    # alternatively - delete the var from src/emoji/Provider.cpp, and do ./codegen.py emojis shortcodes >> src/emoji/Provider.cpp
     generate_qml_list(people=people, nature=nature, food=food, activity=activity, travel=travel, objects=objects, symbols=symbols, flags=flags)
