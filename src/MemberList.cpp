@@ -29,18 +29,12 @@ MemberListBackend::MemberListBackend(const QString &room_id, QObject *parent)
 
     try {
         // HACK: due to QTBUG-1020169, we'll load a big chunk to speed things up
-        auto members = cache::getMembers(room_id_.toStdString(), 0, 500);
+        auto members = cache::getMembers(room_id_.toStdString(), 0, -1);
         addUsers(members);
         numUsersLoaded_ = members.size();
     } catch (const lmdb::error &e) {
         nhlog::db()->critical("Failed to retrieve members from cache: {}", e.what());
     }
-
-    // HACK: until https://bugreports.qt.io/browse/QTBUG-102169 is fixed, we'll just load all of the
-    // members to make searches work properly. If QTBUG-102169 has been fixed, please delete this
-    // code.
-    while (canFetchMore({}))
-        fetchMore({});
 }
 
 void
@@ -116,8 +110,7 @@ MemberListBackend::fetchMore(const QModelIndex &)
     loadingMoreMembers_ = true;
     emit loadingMoreMembersChanged();
 
-    // TODO: remove 500 when QTBUG-102169 is fixed
-    auto members = cache::getMembers(room_id_.toStdString(), rowCount(), 500);
+    auto members = cache::getMembers(room_id_.toStdString(), rowCount());
     addUsers(members);
     numUsersLoaded_ += members.size();
     emit numUsersLoadedChanged();
