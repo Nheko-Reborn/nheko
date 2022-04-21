@@ -182,6 +182,7 @@
         <file>qml/voip/PlaceCall.qml</file>
         <file>qml/voip/ScreenShare.qml</file>
         <file>qml/voip/VideoCall.qml</file>
+        <file>qml/components/NotificationBubble.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>

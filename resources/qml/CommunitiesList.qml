@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import "./components"
 import "./dialogs"
 import Qt.labs.platform 1.1 as Platform
 import QtQml 2.12
@@ -57,19 +58,29 @@ Page {
             property color unimportantText: Nheko.colors.buttonText
             property color bubbleBackground: Nheko.colors.highlight
             property color bubbleText: Nheko.colors.highlightedText
+            required property string avatarUrl
+            required property string displayName
+            required property string tooltip
+            required property bool collapsed
+            required property bool collapsible
+            required property bool hidden
+            required property int depth
+            required property string id
+            required property int unreadMessages
+            required property bool hasLoudNotification
 
             height: avatarSize + 2 * Nheko.paddingMedium
             width: ListView.view.width
             state: "normal"
             ToolTip.visible: hovered && collapsed
-            ToolTip.text: model.tooltip
+            ToolTip.text: communityItem.tooltip
             ToolTip.delay: Nheko.tooltipDelay
-            onClicked: Communities.setCurrentTagId(model.id)
-            onPressAndHold: communityContextMenu.show(model.id)
+            onClicked: Communities.setCurrentTagId(communityItem.id)
+            onPressAndHold: communityContextMenu.show(communityItem.id)
             states: [
                 State {
                     name: "highlight"
-                    when: (communityItem.hovered || model.hidden) && !(Communities.currentTagId == model.id)
+                    when: (communityItem.hovered || communityItem.hidden) && !(Communities.currentTagId === communityItem.id)
 
                     PropertyChanges {
                         target: communityItem
@@ -83,7 +94,7 @@ Page {
                 },
                 State {
                     name: "selected"
-                    when: Communities.currentTagId == model.id
+                    when: Communities.currentTagId == communityItem.id
 
                     PropertyChanges {
                         target: communityItem
@@ -102,7 +113,7 @@ Page {
 
                 TapHandler {
                     acceptedButtons: Qt.RightButton
-                    onSingleTapped: communityContextMenu.show(model.id)
+                    onSingleTapped: communityContextMenu.show(communityItem.id)
                     gesturePolicy: TapHandler.ReleaseWithinBounds
                     acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
                 }
@@ -114,27 +125,27 @@ Page {
                 spacing: Nheko.paddingMedium
                 anchors.fill: parent
                 anchors.margins: Nheko.paddingMedium
-                anchors.leftMargin: Nheko.paddingMedium + (communitySidebar.collapsed ? 0 : (fontMetrics.lineSpacing * model.depth))
+                anchors.leftMargin: Nheko.paddingMedium + (communitySidebar.collapsed ? 0 : (fontMetrics.lineSpacing * communityItem.depth))
 
                 ImageButton {
-                    visible: !communitySidebar.collapsed && model.collapsible
+                    visible: !communitySidebar.collapsed && communityItem.collapsible
                     Layout.preferredHeight: fontMetrics.lineSpacing
                     Layout.preferredWidth: fontMetrics.lineSpacing
                     Layout.alignment: Qt.AlignVCenter
                     height: fontMetrics.lineSpacing
                     width: fontMetrics.lineSpacing
-                    image: model.collapsed ? ":/icons/icons/ui/collapsed.svg" : ":/icons/icons/ui/expanded.svg"
+                    image: communityItem.collapsed ? ":/icons/icons/ui/collapsed.svg" : ":/icons/icons/ui/expanded.svg"
                     ToolTip.visible: hovered
                     ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: model.collapsed ? qsTr("Expand") : qsTr("Collapse")
+                    ToolTip.text: communityItem.collapsed ? qsTr("Expand") : qsTr("Collapse")
                     hoverEnabled: true
 
-                    onClicked: model.collapsed = !model.collapsed
+                    onClicked: communityItem.collapsed = !communityItem.collapsed
                 }
 
                 Item {
                     Layout.preferredWidth: fontMetrics.lineSpacing
-                    visible: !communitySidebar.collapsed && !model.collapsible && Communities.containsSubspaces
+                    visible: !communitySidebar.collapsed && !communityItem.collapsible && Communities.containsSubspaces
                 }
 
                 Avatar {
@@ -145,48 +156,25 @@ Page {
                     height: avatarSize
                     width: avatarSize
                     url: {
-                        if (model.avatarUrl.startsWith("mxc://"))
-                            return model.avatarUrl.replace("mxc://", "image://MxcImage/");
+                        if (communityItem.avatarUrl.startsWith("mxc://"))
+                            return communityItem.avatarUrl.replace("mxc://", "image://MxcImage/");
                         else
-                            return "image://colorimage/" + model.avatarUrl + "?" + communityItem.unimportantText;
+                            return "image://colorimage/" + communityItem.avatarUrl + "?" + communityItem.unimportantText;
                     }
-                    roomid: model.id
-                    displayName: model.displayName
+                    roomid: communityItem.id
+                    displayName: communityItem.displayName
                     color: communityItem.backgroundColor
 
-                    Rectangle {
-                        id: collapsedNotificationBubble
-
-                        visible: model.unreadMessages > 0 && communitySidebar.collapsed
+                    NotificationBubble {
+                        notificationCount: communityItem.unreadMessages
+                        hasLoudNotification: communityItem.hasLoudNotification
+                        bubbleBackgroundColor: communityItem.bubbleBackground
+                        bubbleTextColor: communityItem.bubbleText
+                        font.pixelSize: fontMetrics.font.pixelSize * 0.6
+                        mayBeVisible: communitySidebar.collapsed
                         anchors.right: avatar.right
                         anchors.bottom: avatar.bottom
                         anchors.margins: -Nheko.paddingSmall
-                        height: collapsedNotificationBubbleText.height + Nheko.paddingMedium
-                        width: Math.max(collapsedNotificationBubbleText.width, height)
-                        radius: height / 2
-                        color: model.hasLoudNotification ? Nheko.theme.red : communityItem.bubbleBackground
-                        ToolTip.text: model.unreadMessages
-                        ToolTip.delay: Nheko.tooltipDelay
-                        ToolTip.visible: collapsedNotificationBubbleHover.hovered && (model.unreadMessages > 9999)
-
-                        Label {
-                            id: collapsedNotificationBubbleText
-
-                            anchors.centerIn: parent
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            width: Math.max(implicitWidth + Nheko.paddingMedium, parent.height)
-                            font.bold: true
-                            font.pixelSize: fontMetrics.font.pixelSize * 0.6
-                            color: model.hasLoudNotification ? "white" : communityItem.bubbleText
-                            text: model.unreadMessages > 9999 ? "9999+" : model.unreadMessages
-
-                            HoverHandler {
-                                id: collapsedNotificationBubbleHover
-                            }
-
-                        }
-
                     }
 
                 }
@@ -197,7 +185,7 @@ Page {
                     color: communityItem.importantText
                     Layout.fillWidth: true
                     elideWidth: width
-                    fullText: model.displayName
+                    fullText: communityItem.displayName
                     textFormat: Text.PlainText
                 }
 
@@ -205,44 +193,20 @@ Page {
                     Layout.fillWidth: true
                 }
 
-                Rectangle {
-                    id: notificationBubble
-
-                    visible: model.unreadMessages > 0 && !communitySidebar.collapsed
+                NotificationBubble {
+                    notificationCount: communityItem.unreadMessages
+                    hasLoudNotification: communityItem.hasLoudNotification
+                    bubbleBackgroundColor: communityItem.bubbleBackground
+                    bubbleTextColor: communityItem.bubbleText
+                    mayBeVisible: !communitySidebar.collapsed
                     Layout.alignment: Qt.AlignRight
                     Layout.leftMargin: Nheko.paddingSmall
-                    height: notificationBubbleText.height + Nheko.paddingMedium
-                    Layout.preferredWidth: Math.max(notificationBubbleText.width, height)
-                    radius: height / 2
-                    color: model.hasLoudNotification ? Nheko.theme.red : communityItem.bubbleBackground
-                    ToolTip.text: model.unreadMessages
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.visible: notificationBubbleHover.hovered && (model.unreadMessages > 9999)
-
-                    Label {
-                        id: notificationBubbleText
-
-                        anchors.centerIn: parent
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        width: Math.max(implicitWidth + Nheko.paddingMedium, parent.height)
-                        font.bold: true
-                        font.pixelSize: fontMetrics.font.pixelSize * 0.8
-                        color: model.hasLoudNotification ? "white" : communityItem.bubbleText
-                        text: model.unreadMessages > 9999 ? "9999+" : model.unreadMessages
-
-                        HoverHandler {
-                            id: notificationBubbleHover
-                        }
-
-                    }
-
                 }
 
             }
 
             background: Rectangle {
-                color: backgroundColor
+                color: communityItem.backgroundColor
             }
 
         }
