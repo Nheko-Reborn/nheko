@@ -17,6 +17,8 @@ ApplicationWindow {
 
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowTitleHint
+    width: 275
+    height: 220
     minimumWidth: 250
     minimumHeight: 220
 
