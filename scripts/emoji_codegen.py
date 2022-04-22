@@ -78,26 +78,26 @@ if __name__ == '__main__':
 
 
         char, name = re.match(r'^(\S+) E\d+\.\d+ (.*)$', charAndName).groups()
-        # drop "face" part
-        
+        #TODO: Handle skintone modifiers in a sane way
         if name in shortcodeDict: 
-            name = shortcodeDict[name]
+            # TODO: this duplicates emoji
+            categories[current_category].append(Emoji(code, shortcodeDict[name]))
+        
+        if name.endswith(' face'): 
+            name = name[:-5]
+        elif name.endswith(' button'): 
+            name = name[:-7]
         else: 
-            if name.endswith(' face'): 
-                name = name[:-5]
-            elif name.endswith(' button'): 
-                name = name[:-7]
-            else: 
-                matchobj = re.match(r'^flag: (.*)$', name) 
-                if matchobj: 
-                    country, = matchobj.groups() 
-                    name = country + " flag"
-            name = name.replace(" ", "_")
-            name = name.replace("“", "")
-            name = name.replace("”", "")
-            name = name.replace(":", "")
-            name = name.lower()
-            name = unidecode(name)
+            matchobj = re.match(r'^flag: (.*)$', name) 
+            if matchobj: 
+                country, = matchobj.groups() 
+                name = country + " flag"
+        name = name.replace(" ", "_")
+        name = name.replace("“", "")
+        name = name.replace("”", "")
+        name = name.replace(":", "")
+        name = name.lower()
+        name = unidecode(name)
         categories[current_category].append(Emoji(code, name))
 
     # Use xclip to pipe the output to clipboard.
