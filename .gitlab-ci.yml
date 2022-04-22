@@ -134,9 +134,7 @@ build-flatpak-amd64:
   #image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master'
   tags: [docker]
   before_script:
-    # need flatpak 1.11.1 at least
-    - apt-get update && apt-get install -y software-properties-common
-    - add-apt-repository ppa:alexlarsson/flatpak && apt-get update && apt-get -y install flatpak-builder git python curl python3-aiohttp python3-tenacity gir1.2-ostree-1.0
+    - apt-get update && apt-get -y install flatpak-builder git python3 curl python3-aiohttp python3-tenacity gir1.2-ostree-1.0
     - flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     - flatpak --noninteractive install --user flathub org.kde.Platform//5.15-21.08
     - flatpak --noninteractive install --user flathub org.kde.Sdk//5.15-21.08
@@ -164,9 +162,7 @@ build-flatpak-arm64:
   #image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master'
   tags: [docker-arm64]
   before_script:
-    # need flatpak 1.11.1 at least
-    - apt-get update && apt-get install -y software-properties-common
-    - add-apt-repository ppa:alexlarsson/flatpak && apt-get update && apt-get -y install flatpak-builder git python curl python3-aiohttp python3-tenacity gir1.2-ostree-1.0
+    - apt-get update && apt-get -y install flatpak-builder git python3 curl python3-aiohttp python3-tenacity gir1.2-ostree-1.0
     - flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     - flatpak --noninteractive install --user flathub org.kde.Platform//5.15-21.08
     - flatpak --noninteractive install --user flathub org.kde.Sdk//5.15-21.08
