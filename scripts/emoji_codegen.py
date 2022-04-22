@@ -86,7 +86,7 @@ if __name__ == '__main__':
         if name.endswith(' face'): 
             name = name[:-5]
         elif name.endswith(' button'): 
-            name = name[:-7]
+            name = name[:-7] 
         else: 
             matchobj = re.match(r'^flag: (.*)$', name) 
             if matchobj: 
@@ -96,6 +96,8 @@ if __name__ == '__main__':
         name = name.replace("“", "")
         name = name.replace("”", "")
         name = name.replace(":", "")
+        name = name.replace("-", "_")
+        name = re.sub(r'_{2,}', '_', name) 
         name = name.lower()
         name = unidecode(name)
         categories[current_category].append(Emoji(code, name))
