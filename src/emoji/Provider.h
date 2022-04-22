@@ -35,11 +35,13 @@ public:
 
     Q_PROPERTY(const QString &unicode MEMBER unicode)
     Q_PROPERTY(const QString &shortName MEMBER shortName)
+    Q_PROPERTY(const QString &unicodeName MEMBER unicodeName)
     Q_PROPERTY(emoji::Emoji::Category category MEMBER category)
 
 public:
     QString unicode;
     QString shortName;
+    QString unicodeName;
     Category category;
 };
 

@@ -7,9 +7,10 @@ from jinja2 import Template
 
 
 class Emoji(object):
-    def __init__(self, code, shortname):
+    def __init__(self, code, shortname, unicodename):
         self.code = ''.join(['\\U'+c.rjust(8, '0') for c in code.strip().split(' ')])
         self.shortname = shortname
+        self.unicodename = unicodename
 
 def generate_qml_list(**kwargs):
     tmpl = Template('''
@@ -17,7 +18,7 @@ const QVector<Emoji> emoji::Provider::emoji = {
     {%- for c in kwargs.items() %}
     // {{ c[0].capitalize() }}
     {%- for e in c[1] %}
-    Emoji{QStringLiteral(u"{{ e.code }}"), QStringLiteral(u"{{ e.shortname }}"), emoji::Emoji::Category::{{ c[0].capitalize() }}},
+    Emoji{QStringLiteral(u"{{ e.code }}"), QStringLiteral(u"{{ e.shortname }}"), QStringLiteral(u"{{ e.unicodename }}"), emoji::Emoji::Category::{{ c[0].capitalize() }}},
     {%- endfor %}
     {%- endfor %}
 };
@@ -78,29 +79,31 @@ if __name__ == '__main__':
 
 
         char, name = re.match(r'^(\S+) E\d+\.\d+ (.*)$', charAndName).groups()
+        shortname = name
+
         #TODO: Handle skintone modifiers in a sane way
-        if name in shortcodeDict: 
-            # TODO: this duplicates emoji
-            categories[current_category].append(Emoji(code, shortcodeDict[name]))
-        
-        if name.endswith(' face'): 
-            name = name[:-5]
-        elif name.endswith(' button'): 
-            name = name[:-7] 
+        if shortname in shortcodeDict: 
+            shortname = shortcodeDict[shortname]
         else: 
-            matchobj = re.match(r'^flag: (.*)$', name) 
-            if matchobj: 
-                country, = matchobj.groups() 
-                name = country + " flag"
-        name = name.replace(" ", "_")
-        name = name.replace("“", "")
-        name = name.replace("”", "")
-        name = name.replace(":", "")
-        name = name.replace("-", "_")
-        name = re.sub(r'_{2,}', '_', name) 
-        name = name.lower()
-        name = unidecode(name)
-        categories[current_category].append(Emoji(code, name))
+            if shortname.endswith(' face'): 
+                shortname = shortname[:-5]
+            elif shortname.endswith(' button'): 
+                shortname = shortname[:-7] 
+            else: 
+                # FIXME: Is there a better way to do this?
+                matchobj = re.match(r'^flag: (.*)$', shortname) 
+                if matchobj: 
+                    country, = matchobj.groups() 
+                    shortname = country + " flag"
+            shortname = shortname.replace(" ", "_")
+            shortname = shortname.replace("“", "")
+            shortname = shortname.replace("”", "")
+            shortname = shortname.replace(":", "")
+            shortname = shortname.replace("-", "_")
+            shortname = re.sub(r'_{2,}', '_', shortname) 
+            shortname = shortname.lower()
+            shortname = unidecode(shortname)
+        categories[current_category].append(Emoji(code, shortname, name))
 
     # Use xclip to pipe the output to clipboard.
     # e.g ./codegen.py emoji.json | xclip -sel clip
