@@ -63,21 +63,22 @@ ApplicationWindow {
             onClicked: TimelineManager.openInviteUsers(members.roomId)
         }
 
+        MatrixTextField {
+            id: searchBar
+
+            Layout.fillWidth: true
+            placeholderText: qsTr("Search...")
+            onTextChanged: members.setFilterString(text)
+
+            Component.onCompleted: forceActiveFocus()
+        }
+
         RowLayout {
             spacing: Nheko.paddingMedium
 
-            MatrixTextField {
-                id: searchBar
-
-                Layout.fillWidth: true
-                placeholderText: qsTr("Search...")
-                onTextChanged: members.setFilterString(text)
-
-                Component.onCompleted: forceActiveFocus()
-            }
-
             Label {
                 text: qsTr("Sort by: ")
+                color: Nheko.colors.text
             }
 
             ComboBox {
@@ -89,6 +90,7 @@ ApplicationWindow {
                 textRole: "text"
                 valueRole: "data"
                 onCurrentValueChanged: members.sortBy(currentValue)
+                Layout.fillWidth: true
             }
         }
 
