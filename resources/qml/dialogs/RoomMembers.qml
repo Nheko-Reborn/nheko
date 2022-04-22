@@ -63,6 +63,37 @@ ApplicationWindow {
             onClicked: TimelineManager.openInviteUsers(members.roomId)
         }
 
+        MatrixTextField {
+            id: searchBar
+
+            Layout.fillWidth: true
+            placeholderText: qsTr("Search...")
+            onTextChanged: members.setFilterString(text)
+
+            Component.onCompleted: forceActiveFocus()
+        }
+
+        RowLayout {
+            spacing: Nheko.paddingMedium
+
+            Label {
+                text: qsTr("Sort by: ")
+                color: Nheko.colors.text
+            }
+
+            ComboBox {
+                model: ListModel {
+                    ListElement { data: MemberList.Mxid; text: qsTr("User ID") }
+                    ListElement { data: MemberList.DisplayName; text: qsTr("Display name") }
+                    ListElement { data: MemberList.Powerlevel; text: qsTr("Power level") }
+                }
+                textRole: "text"
+                valueRole: "data"
+                onCurrentValueChanged: members.sortBy(currentValue)
+                Layout.fillWidth: true
+            }
+        }
+
         ScrollView {
             palette: Nheko.colors
             padding: Nheko.paddingMedium
@@ -172,14 +203,14 @@ ApplicationWindow {
                     width: parent.width
                     visible: (members.numUsersLoaded < members.memberCount) && members.loadingMoreMembers
                     // use the default height if it's visible, otherwise no height at all
-                    height: membersLoadingSpinner.height
+                    height: membersLoadingSpinner.implicitHeight
                     anchors.margins: Nheko.paddingMedium
 
                     Spinner {
                         id: membersLoadingSpinner
 
                         anchors.centerIn: parent
-                        height: visible ? 35 : 0
+                        implicitHeight: parent.visible ? 35 : 0
                     }
 
                 }

@@ -6,15 +6,20 @@
 #include "MemberList.h"
 
 #include "Cache.h"
+#include "Cache_p.h"
 #include "ChatPage.h"
 #include "Config.h"
 #include "Logging.h"
 #include "Utils.h"
 #include "timeline/TimelineViewManager.h"
 
-MemberList::MemberList(const QString &room_id, QObject *parent)
+MemberListBackend::MemberListBackend(const QString &room_id, QObject *parent)
   : QAbstractListModel{parent}
   , room_id_{room_id}
+  , powerLevels_{cache::client()
+                   ->getStateEvent<mtx::events::state::PowerLevels>(room_id_.toStdString())
+                   .value_or(mtx::events::StateEvent<mtx::events::state::PowerLevels>{})
+                   .content}
 {
     try {
         info_ = cache::singleRoomInfo(room_id_.toStdString());
@@ -23,7 +28,8 @@ MemberList::MemberList(const QString &room_id, QObject *parent)
     }
 
     try {
-        auto members = cache::getMembers(room_id_.toStdString());
+        // HACK: due to QTBUG-1020169, we'll load a big chunk to speed things up
+        auto members = cache::getMembers(room_id_.toStdString(), 0, -1);
         addUsers(members);
         numUsersLoaded_ = members.size();
     } catch (const lmdb::error &e) {
@@ -32,7 +38,7 @@ MemberList::MemberList(const QString &room_id, QObject *parent)
 }
 
 void
-MemberList::addUsers(const std::vector<RoomMember> &members)
+MemberListBackend::addUsers(const std::vector<RoomMember> &members)
 {
     beginInsertRows(QModelIndex{}, m_memberList.count(), m_memberList.count() + members.size() - 1);
 
@@ -46,7 +52,7 @@ MemberList::addUsers(const std::vector<RoomMember> &members)
 }
 
 QHash<int, QByteArray>
-MemberList::roleNames() const
+MemberListBackend::roleNames() const
 {
     return {
       {Mxid, "mxid"},
@@ -57,7 +63,7 @@ MemberList::roleNames() const
 }
 
 QVariant
-MemberList::data(const QModelIndex &index, int role) const
+MemberListBackend::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid() || index.row() >= (int)m_memberList.size() || index.row() < 0)
         return {};
@@ -80,13 +86,16 @@ MemberList::data(const QModelIndex &index, int role) const
         else
             return stat->user_verified;
     }
+    case Powerlevel:
+        return static_cast<qlonglong>(
+          powerLevels_.user_level(m_memberList[index.row()].first.user_id.toStdString()));
     default:
         return {};
     }
 }
 
 bool
-MemberList::canFetchMore(const QModelIndex &) const
+MemberListBackend::canFetchMore(const QModelIndex &) const
 {
     const size_t numMembers = rowCount();
     if (numMembers > 1 && numMembers < info_.member_count)
@@ -96,7 +105,7 @@ MemberList::canFetchMore(const QModelIndex &) const
 }
 
 void
-MemberList::fetchMore(const QModelIndex &)
+MemberListBackend::fetchMore(const QModelIndex &)
 {
     loadingMoreMembers_ = true;
     emit loadingMoreMembersChanged();
@@ -108,4 +117,50 @@ MemberList::fetchMore(const QModelIndex &)
 
     loadingMoreMembers_ = false;
     emit loadingMoreMembersChanged();
+}
+
+MemberList::MemberList(const QString &room_id, QObject *parent)
+  : QSortFilterProxyModel{parent}
+  , m_model{room_id, this}
+{
+    connect(&m_model, &MemberListBackend::roomNameChanged, this, &MemberList::roomNameChanged);
+    connect(
+      &m_model, &MemberListBackend::memberCountChanged, this, &MemberList::memberCountChanged);
+    connect(&m_model, &MemberListBackend::avatarUrlChanged, this, &MemberList::avatarUrlChanged);
+    connect(&m_model, &MemberListBackend::roomIdChanged, this, &MemberList::roomIdChanged);
+    connect(&m_model,
+            &MemberListBackend::numUsersLoadedChanged,
+            this,
+            &MemberList::numUsersLoadedChanged);
+    connect(&m_model,
+            &MemberListBackend::loadingMoreMembersChanged,
+            this,
+            &MemberList::loadingMoreMembersChanged);
+
+    setSourceModel(&m_model);
+    setSortRole(MemberSortRoles::Mxid);
+    sort(0, Qt::AscendingOrder);
+    setDynamicSortFilter(true);
+    setFilterCaseSensitivity(Qt::CaseInsensitive);
+}
+
+void
+MemberList::setFilterString(const QString &text)
+{
+    setFilterRegExp(QRegExp::escape(text));
+}
+
+void
+MemberList::sortBy(const MemberSortRoles role)
+{
+    setSortRole(role);
+    // Unfortunately, Qt doesn't provide a "setSortOrder" function.
+    sort(0, role == MemberSortRoles::Powerlevel ? Qt::DescendingOrder : Qt::AscendingOrder);
+}
+
+bool
+MemberList::filterAcceptsRow(int source_row, const QModelIndex &) const
+{
+    return m_model.m_memberList[source_row].first.user_id.contains(filterRegExp()) ||
+           m_model.m_memberList[source_row].first.display_name.contains(filterRegExp());
 }

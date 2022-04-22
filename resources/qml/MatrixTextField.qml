@@ -117,11 +117,11 @@ ColumnLayout {
         palette: Nheko.colors
         color: labelC.color
         opacity: labelC.text ? 0 : 1
+        focus: true
 
         onTextEdited: c.textEdited()
         onAccepted: c.accepted()
         onEditingFinished: c.editingFinished()
-
 
         background: Rectangle {
             id: backgroundRect
