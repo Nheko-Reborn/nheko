@@ -5,6 +5,7 @@ option(CI_BUILD "Set when building in CI. Enables -Werror where possible" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
 option(QML_DEBUGGING "Enable qml debugging" OFF)
 option(COMPILE_QML "Compile Qml. It will make Nheko faster, but you will need to recompile it, when you update Qt." ON)
+option(COMPILE_QML_TYPES "Try the experimental qml type compiler. This will currently not generate working code and is just for experimentation." OFF)
 if(UNIX AND NOT APPLE)
 	option(MAN "Build man page" ON)
 else()
@@ -641,15 +642,14 @@ qt_add_qml_module(nheko
 	URI im.nheko
 	RESOURCE_PREFIX "/"
 	VERSION 1.0
-	DEPENDENCIES QtQml # https://bugreports.qt.io/browse/QTBUG-102554
+	DEPENDENCIES QtQml QtQuick # https://bugreports.qt.io/browse/QTBUG-102554
 	SOURCES
 	src/timeline/DelegateChooser.cpp
 	src/timeline/DelegateChooser.h
 	src/ui/NhekoDropArea.h
 	)
-qt_target_qml_sources(nheko
-	#PREFIX "/"
-	QML_FILES
+
+set(QML_SOURCES
 	qml/Avatar.qml
 	qml/ChatPage.qml
 	qml/ElidedLabel.qml
@@ -742,9 +742,23 @@ qt_target_qml_sources(nheko
 	qml/Completer.qml
 	qml/TimelineView.qml
 	)
+qt_target_qml_sources(nheko
+	#PREFIX "/"
+	QML_FILES
+	${QML_SOURCES}
+	)
 
 if (NOT COMPILE_QML AND Qt6Widgets_VERSION VERSION_GREATER_EQUAL 6.3.0)
 	set_target_properties(nheko PROPERTIES QT_QMLCACHEGEN_ARGUMENTS "--only-bytecode")
+endif()
+
+if (COMPILE_QML_TYPES)
+	target_link_libraries(nheko PRIVATE Qt::QmlPrivate Qt::QuickPrivate)
+	qt_target_compile_qml_to_cpp(
+		nheko
+		NAMESPACE nhekoqml
+		QML_FILES ${QML_SOURCES}
+		)
 endif()
 
 
