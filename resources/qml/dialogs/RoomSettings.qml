@@ -159,21 +159,24 @@ ApplicationWindow {
 
             }
 
+            RowLayout {
+                spacing: Nheko.paddingMedium
+                Layout.alignment: Qt.AlignHCenter
+
                 Label {
                     text: qsTr("%n member(s)", "", roomSettings.memberCount)
-                    Layout.alignment: Qt.AlignHCenter
                     color: Nheko.colors.text
-
-                    TapHandler {
-                        onSingleTapped: TimelineManager.openRoomMembers(Rooms.getRoomById(roomSettings.roomId))
-                    }
-
-                    CursorShape {
-                        cursorShape: Qt.PointingHandCursor
-                        anchors.fill: parent
-                    }
-
                 }
+
+                ImageButton {
+                    image: ":/icons/icons/ui/people.svg"
+                    hoverEnabled: true
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("View members of %1").arg(roomSettings.roomName)
+                    onClicked: TimelineManager.openRoomMembers(Rooms.getRoomById(roomSettings.roomId))
+                }
+
+            }
 
             TextArea {
                 id: roomTopic

@@ -209,7 +209,6 @@ Item {
 
             MatrixText {
                 text: qsTr("%n member(s)", "", room ? room.roomMemberCount : 0)
-                cursorShape: Qt.PointingHandCursor
             }
 
             ImageButton {
