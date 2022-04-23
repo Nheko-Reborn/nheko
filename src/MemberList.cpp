@@ -161,6 +161,6 @@ MemberList::sortBy(const MemberSortRoles role)
 bool
 MemberList::filterAcceptsRow(int source_row, const QModelIndex &) const
 {
-    return m_model.m_memberList[source_row].first.user_id.contains(filterRegExp()) ||
-           m_model.m_memberList[source_row].first.display_name.contains(filterRegExp());
+    return m_model.m_memberList[source_row].first.user_id.contains(filterRegularExpression()) ||
+           m_model.m_memberList[source_row].first.display_name.contains(filterRegularExpression());
 }
