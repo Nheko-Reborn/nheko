@@ -122,5 +122,6 @@ protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 
 private:
+    QString filterString;
     MemberListBackend m_model;
 };

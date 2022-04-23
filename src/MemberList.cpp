@@ -147,6 +147,7 @@ MemberList::MemberList(const QString &room_id, QObject *parent)
 void
 MemberList::setFilterString(const QString &text)
 {
+    filterString = text;
     setFilterFixedString(text);
 }
 
@@ -161,6 +162,6 @@ MemberList::sortBy(const MemberSortRoles role)
 bool
 MemberList::filterAcceptsRow(int source_row, const QModelIndex &) const
 {
-    return m_model.m_memberList[source_row].first.user_id.contains(filterRegularExpression()) ||
-           m_model.m_memberList[source_row].first.display_name.contains(filterRegularExpression());
+    return m_model.m_memberList[source_row].first.user_id.contains(filterString) ||
+           m_model.m_memberList[source_row].first.display_name.contains(filterString);
 }
