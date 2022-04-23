@@ -146,8 +146,7 @@ Menu {
                     width: 48
                     height: 48
                     hoverEnabled: true
-                    // TODO: Do this based off of Qt::Tooltip role
-                    ToolTip.text: model.unicodeName
+                    ToolTip.text: model.toolTip
                     ToolTip.visible: hovered
                     // TODO: maybe add favorites at some point?
                     onClicked: {

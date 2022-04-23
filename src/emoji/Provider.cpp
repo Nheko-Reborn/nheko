@@ -11717,7 +11717,7 @@ const QVector<Emoji> emoji::Provider::emoji = {
         QStringLiteral(u"umbrella on ground"),
         emoji::Emoji::Category::Travel},
   Emoji{QStringLiteral(u"\U000026A1"),
-        QStringLiteral(u"high_voltage"),
+        QStringLiteral(u"zap"),
         QStringLiteral(u"high voltage"),
         emoji::Emoji::Category::Travel},
   Emoji{QStringLiteral(u"\U00002744\U0000FE0F"),
