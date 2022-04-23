@@ -78,7 +78,7 @@ if __name__ == '__main__':
             continue
 
 
-        char, name = re.match(r'^(\S+) E\d+\.\d+ (.*)$', charAndName.strip()).groups()
+        char, name = re.match(r'^(\S+) E\d+\.\d+ (.*)$', charAndName).groups()
         shortname = name
 
         #TODO: Handle skintone modifiers in a sane way
