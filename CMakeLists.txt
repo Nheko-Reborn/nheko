@@ -4,7 +4,7 @@ option(APPVEYOR_BUILD "Build on appveyor" OFF)
 option(CI_BUILD "Set when building in CI. Enables -Werror where possible" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
 option(QML_DEBUGGING "Enable qml debugging" OFF)
-option(COMPILE_QML "Compile Qml. It will make Nheko faster, but you will need to recompile it, when you update Qt." OFF)
+option(COMPILE_QML "Compile Qml. It will make Nheko faster, but you will need to recompile it, when you update Qt." ON)
 if(UNIX AND NOT APPLE)
 	option(MAN "Build man page" ON)
 else()
@@ -641,6 +641,7 @@ qt_add_qml_module(nheko
 	URI im.nheko
 	RESOURCE_PREFIX "/"
 	VERSION 1.0
+	DEPENDENCIES QtQml # https://bugreports.qt.io/browse/QTBUG-102554
 	SOURCES
 	src/timeline/DelegateChooser.cpp
 	src/timeline/DelegateChooser.h
