@@ -147,7 +147,7 @@ MemberList::MemberList(const QString &room_id, QObject *parent)
 void
 MemberList::setFilterString(const QString &text)
 {
-    setFilterRegExp(QRegExp::escape(text));
+    setFilterFixedString(text);
 }
 
 void
