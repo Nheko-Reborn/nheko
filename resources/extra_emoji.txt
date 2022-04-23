@@ -1,0 +1,27 @@
+# group: Symbols 
+1F1E6 ; fully-qualified # 🇦 E6.0 regional indicator a 
+1F1E7 ; fully-qualified # 🇧 E6.0 regional indicator b 
+1F1E8 ; fully-qualified # 🇨 E6.0 regional indicator c
+1F1E9 ; fully-qualified # 🇩 E6.0 regional indicator d 
+1F1EA ; fully-qualified # 🇪 E6.0 regional indicator e 
+1F1EB ; fully-qualified # 🇫 E6.0 regional indicator f 
+1F1EC ; fully-qualified # 🇬 E6.0 regional indicator g 
+1F1ED ; fully-qualified # 🇭 E6.0 regional indicator h 
+1F1EE ; fully-qualified # 🇮 E6.0 regional indicator i
+1F1EF ; fully-qualified # 🇯 E6.0 regional indicator j 
+1F1F0 ; fully-qualified # 🇰 E6.0 regional indicator k 
+1F1F1 ; fully-qualified # 🇱 E6.0 regional indicator l 
+1F1F2 ; fully-qualified # 🇲 E6.0 regional indicator m
+1F1F3 ; fully-qualified # 🇳 E6.0 regional indicator n
+1F1F4 ; fully-qualified # 🇴 E6.0 regional indicator o  
+1F1F5 ; fully-qualified # 🇵 E6.0 regional indicator p 
+1F1F6 ; fully-qualified # 🇶 E6.0 regional indicator q 
+1F1F7 ; fully-qualified # 🇷 E6.0 regional indicator r
+1F1F8 ; fully-qualified # 🇸 E6.0 regional indicator s
+1F1F9 ; fully-qualified # 🇹 E6.0 regional indicator t 
+1F1FA ; fully-qualified # 🇺 E6.0 regional indicator u
+1F1FB ; fully-qualified # 🇻 E6.0 regional indicator v
+1F1FC ; fully-qualified # 🇼 E6.0 regional indicator w
+1F1FD ; fully-qualified # 🇽 E6.0 regional indicator x
+1F1FE ; fully-qualified # 🇾 E6.0 regional indicator y
+1F1FF ; fully-qualified # 🇿 E6.0 regional indicator z
