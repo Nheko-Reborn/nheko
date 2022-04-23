@@ -316,7 +316,7 @@ Page {
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
                         anchors.margins: -Nheko.paddingSmall
-                        mayBeVisible: collapsed
+                        mayBeVisible: collapsed && (isSpace ? Settings.spaceNotifications === Settings.SidebarAndRoomlist : true)
                     }
 
                 }
@@ -345,7 +345,7 @@ Page {
                         Layout.leftMargin: Nheko.paddingSmall
                         Layout.preferredWidth: implicitWidth
                         Layout.preferredHeight: implicitHeight
-                        mayBeVisible: !collapsed
+                        mayBeVisible: !collapsed && (isSpace ? Settings.spaceNotifications === Settings.SidebarAndRoomlist : true)
                     }
 
                     RowLayout {
