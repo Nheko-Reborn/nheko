@@ -20,7 +20,7 @@ CommunitiesModel::CommunitiesModel(QObject *parent)
     connect(ChatPage::instance(), &ChatPage::unreadMessages, this, [this](int) {
         // Simply updating every space is easier than tracking which ones need updated.
         if (!spaces_.empty())
-            emit dataChanged(index(2, 0), index(spaces_.size() + 2, 0), {Roles::UnreadMessages});
+            emit dataChanged(index(2, 0), index(spaces_.size() + 2, 0), {Roles::UnreadMessages, Roles::HasLoudNotification});
     });
 }
 
