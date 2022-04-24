@@ -291,6 +291,7 @@ Pane {
                             userId: e.userId ?? ""
                             userName: e.userName ?? ""
                             encryptionError: e.encryptionError ?? ""
+                            keepFullText: true
                         }
 
                         ImageButton {

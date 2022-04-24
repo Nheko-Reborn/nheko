@@ -207,7 +207,7 @@ Item {
                 image: ":/icons/icons/ui/people.svg"
                 hoverEnabled: true
                 ToolTip.visible: hovered
-                ToolTip.text: qsTr("View members of %1").arg(room.roomName)
+                ToolTip.text: qsTr("View members of %1").arg(room ? room.roomName : "")
                 onClicked: TimelineManager.openRoomMembers(room)
             }
 

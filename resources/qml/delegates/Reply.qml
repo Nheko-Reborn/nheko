@@ -38,6 +38,7 @@ AbstractButton {
     property int encryptionError
     property int relatedEventCacheBuster
     property int maxWidth
+    property bool keepFullText: false
 
     height: replyContainer.height
     implicitHeight: replyContainer.height
@@ -125,6 +126,7 @@ AbstractButton {
             enabled: false
             Layout.fillWidth: true
             isReply: true
+            keepFullText: r.keepFullText
         }
 
     }
