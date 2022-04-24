@@ -8,3 +8,35 @@ face savoring food:yum
 smiling face with halo:innocent
 smiling face with open hands:hugging_face
 high voltage:zap
+double exclamation mark:bangbang
+exclamation question mark:interrobang
+red question mark:question 
+red exclamation mark:exclamation 
+white question mark:white_question
+white exclamation mark:white_exclamation
+input latin uppercase:big_abcd
+input latin lowercase:abcd 
+input numbers:1234
+input symbols:symbols 
+input latin letters:abc
+smiling face with heart-eyes:heart_eyes
+smiling face with tear:cry_smile
+smiling face with horns:smiling_imp 
+angry face with horns:imp
+pouting face:rage
+face with steam from nose:triumph
+grinning cat:smiley_cat
+grinning cat with smiling eyes:smile_cat 
+cat with tears of joy:joy_cat
+smiling cat with heart-eyes:heart_eyes_cat
+cat with wry smile:smirk_cat
+weary cat:scream_cat
+hundred points:100
+waving hand:wave
+backhand index pointing left:point_left
+backhand index pointing right:point_right
+backhand index pointing up:point_up_2
+backhand index pointing down:point_down
+index pointing up:point_up 
+index pointing at the viewer:point_you
+person shrugging:shrug

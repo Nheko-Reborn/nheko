@@ -25,7 +25,37 @@ const QVector<Emoji> emoji::Provider::emoji = {
     ''')
     d = dict(kwargs=kwargs)
     print(tmpl.render(d))
-
+# FIXME: Stop this madness
+def humanize_keypad(num): 
+    match num: 
+        case "0": 
+            return "zero" 
+        case "1": 
+            return "one"
+        case "2": 
+            return "two"
+        case "3": 
+            return "three"
+        case "4": 
+            return "four"
+        case "5": 
+            return "five"
+        case "6": 
+            return "six" 
+        case "7": 
+            return "seven" 
+        case "8": 
+            return "eight"
+        case "9": 
+            return "nine"
+        case "10": 
+            return "ten"
+        case "*": 
+            return "asterisk"
+        case "#": 
+            return "hash"
+        case _: 
+            return None
 if __name__ == '__main__':
     if len(sys.argv) < 3:
         print('usage: emoji_codegen.py /path/to/emoji-test.txt /path/to/shortcodes.txt')
@@ -52,7 +82,8 @@ if __name__ == '__main__':
         'Activities': activity,
         'Objects': objects,
         'Symbols': symbols,
-        'Flags': flags
+        'Flags': flags,
+        'Component': symbols
     }
     shortcodeDict = {} 
     # for my sanity - this strips newlines
@@ -74,34 +105,63 @@ if __name__ == '__main__':
         code, qualification, charAndName = segments
 
         # skip unqualified versions of same unicode
-        if qualification != 'fully-qualified':
+        if qualification != 'fully-qualified' and qualification != 'component' :
             continue
-
+        
 
         char, name = re.match(r'^(\S+) E\d+\.\d+ (.*)$', charAndName).groups()
         shortname = name
-
+        
+        # discard skin tone variants for sanity
+        # __contains__ is so stupid i hate prototype languages
+        if name.__contains__("skin tone") and qualification != 'component': 
+            continue
+        if qualification == 'component' and not name.__contains__("skin tone"): 
+            continue
         #TODO: Handle skintone modifiers in a sane way
         if shortname in shortcodeDict: 
             shortname = shortcodeDict[shortname]
-        else: 
+        else:
+            shortname = shortname.lower()
+            if shortname.endswith(' (blood type)'): 
+                shortname = shortname[:-13]
+            if shortname.endswith(': red hair'): 
+                shortname = "red_haired_" + shortname[:-10]
+            if shortname.endswith(': curly hair'): 
+                shortname = "curly_haired_" + shortname[:-12]
+            if shortname.endswith(': white hair'): 
+                shortname = "white_haried_" + shortname[:-12]
+            if shortname.endswith(': bald'): 
+                shortname = "bald_" + shortname[:-6]
+            if shortname.endswith(': beard'): 
+                shortname = "bearded_" + shortname[:-7]
             if shortname.endswith(' face'): 
                 shortname = shortname[:-5]
-            elif shortname.endswith(' button'): 
+            if shortname.endswith(' button'): 
                 shortname = shortname[:-7] 
-            else: 
-                # FIXME: Is there a better way to do this?
-                matchobj = re.match(r'^flag: (.*)$', shortname) 
-                if matchobj: 
-                    country, = matchobj.groups() 
-                    shortname = country + " flag"
-            shortname = shortname.replace(" ", "_")
-            shortname = shortname.replace("“", "")
-            shortname = shortname.replace("”", "")
-            shortname = shortname.replace(":", "")
+            if shortname.endswith(' banknote'): 
+                shortname = shortname[:-9]
+            keycapmtch = re.match(r'^keycap: (.+)$', shortname)
+            if keycapmtch: 
+                keycapthing, = keycapmtch.groups()
+                type(keycapthing)
+                num_name = humanize_keypad(keycapthing) 
+                if num_name: 
+                    shortname = num_name
+                else: 
+                    raise Exception("incomplete keycap " + keycapthing + ", fix ur code")
+                
+            # FIXME: Is there a better way to do this?
+            matchobj = re.match(r'^flag: (.*)$', shortname) 
+            if matchobj: 
+                country, = matchobj.groups() 
+                shortname = country + " flag"
+            shortname = shortname.replace("u.s.", "us")
+            shortname = shortname.replace("&", "and")
             shortname = shortname.replace("-", "_")
+            shortname, = re.match(r'^_*(.+)_*$', shortname).groups()
+            shortname = re.sub(r'\W', '_', shortname) 
             shortname = re.sub(r'_{2,}', '_', shortname) 
-            shortname = shortname.lower()
             shortname = unidecode(shortname)
         categories[current_category].append(Emoji(code, shortname, name))
 
