@@ -153,8 +153,11 @@ MxcAnimatedImage::geometryChanged(const QRectF &newGeometry, const QRectF &oldGe
     QQuickItem::geometryChanged(newGeometry, oldGeometry);
 
     if (newGeometry.size() != oldGeometry.size()) {
-        if (height() != 0 && width() != 0)
-            movie.setScaledSize(newGeometry.size().toSize());
+        if (height() != 0 && width() != 0) {
+            QSizeF r = movie.scaledSize();
+            r.scale(newGeometry.size(), Qt::KeepAspectRatio);
+            movie.setScaledSize(r.toSize());
+        }
     }
 }
 
@@ -184,7 +187,10 @@ MxcAnimatedImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeD
         return nullptr;
     }
 
-    n->setRect(0, 0, width(), height());
+    QSizeF r = img.size();
+    r.scale(size(), Qt::KeepAspectRatio);
+
+    n->setRect((width() - r.width()) / 2, (height() - r.height()) / 2, r.width(), r.height());
     n->setFiltering(QSGTexture::Linear);
     n->setMipmapFiltering(QSGTexture::None);
 
