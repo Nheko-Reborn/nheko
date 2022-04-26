@@ -20,7 +20,9 @@ CommunitiesModel::CommunitiesModel(QObject *parent)
     connect(ChatPage::instance(), &ChatPage::unreadMessages, this, [this](int) {
         // Simply updating every space is easier than tracking which ones need updated.
         if (!spaces_.empty())
-            emit dataChanged(index(0, 0), index(spaces_.size() + tags_.size() + 1, 0), {Roles::UnreadMessages, Roles::HasLoudNotification});
+            emit dataChanged(index(0, 0),
+                             index(spaces_.size() + tags_.size() + 1, 0),
+                             {Roles::UnreadMessages, Roles::HasLoudNotification});
     });
 }
 
@@ -211,14 +213,16 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             int total{0};
             auto rooms{cache::joinedRooms()};
             for (const auto &[roomid, info] : cache::getRoomInfo(rooms))
-                if (std::find(std::begin(info.tags), std::end(info.tags), tag.toStdString()) != std::end(info.tags))
+                if (std::find(std::begin(info.tags), std::end(info.tags), tag.toStdString()) !=
+                    std::end(info.tags))
                     total += info.notification_count;
             return total;
         }
         case CommunitiesModel::Roles::HasLoudNotification: {
             auto rooms{cache::joinedRooms()};
             for (const auto &[roomid, info] : cache::getRoomInfo(rooms))
-                if (std::find(std::begin(info.tags), std::end(info.tags), tag.toStdString()) != std::end(info.tags))
+                if (std::find(std::begin(info.tags), std::end(info.tags), tag.toStdString()) !=
+                    std::end(info.tags))
                     if (info.highlight_count > 0)
                         return true;
             return false;
