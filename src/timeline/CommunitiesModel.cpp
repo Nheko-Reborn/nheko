@@ -20,7 +20,7 @@ CommunitiesModel::CommunitiesModel(QObject *parent)
     connect(ChatPage::instance(), &ChatPage::unreadMessages, this, [this](int) {
         // Simply updating every space is easier than tracking which ones need updated.
         if (!spaces_.empty())
-            emit dataChanged(index(2, 0), index(spaces_.size() + 2, 0), {Roles::UnreadMessages, Roles::HasLoudNotification});
+            emit dataChanged(index(0, 0), index(spaces_.size() + tags_.size() + 1, 0), {Roles::UnreadMessages, Roles::HasLoudNotification});
     });
 }
 
@@ -80,9 +80,17 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             return 0;
         case CommunitiesModel::Roles::Id:
             return "";
-        case CommunitiesModel::Roles::UnreadMessages:
+        case CommunitiesModel::Roles::UnreadMessages: {
+            int total{0};
+            for (const auto &[id, info] : cache::getRoomInfo(cache::joinedRooms()))
+                total += info.notification_count;
+            return total;
+        }
         case CommunitiesModel::Roles::HasLoudNotification:
-            return 0;
+            for (const auto &[id, info] : cache::getRoomInfo(cache::joinedRooms()))
+                if (info.highlight_count > 0)
+                    return true;
+            return false;
         }
     } else if (index.row() == 1) {
         switch (role) {
@@ -104,9 +112,17 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             return 0;
         case CommunitiesModel::Roles::Id:
             return "dm";
-        case CommunitiesModel::Roles::UnreadMessages:
+        case CommunitiesModel::Roles::UnreadMessages: {
+            int total{0};
+            for (const auto &[id, info] : cache::getRoomInfo(directMessages_))
+                total += info.notification_count;
+            return total;
+        }
         case CommunitiesModel::Roles::HasLoudNotification:
-            return 0;
+            for (const auto &[id, info] : cache::getRoomInfo(directMessages_))
+                if (info.highlight_count > 0)
+                    return true;
+            return false;
         }
     } else if (index.row() - 2 < spaceOrder_.size()) {
         auto id = spaceOrder_.tree.at(index.row() - 2).id;
@@ -191,9 +207,22 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             return 0;
         case CommunitiesModel::Roles::Id:
             return "tag:" + tag;
-        case CommunitiesModel::Roles::UnreadMessages:
-        case CommunitiesModel::Roles::HasLoudNotification:
-            return 0;
+        case CommunitiesModel::Roles::UnreadMessages: {
+            int total{0};
+            auto rooms{cache::joinedRooms()};
+            for (const auto &[roomid, info] : cache::getRoomInfo(rooms))
+                if (std::find(std::begin(info.tags), std::end(info.tags), tag.toStdString()) != std::end(info.tags))
+                    total += info.notification_count;
+            return total;
+        }
+        case CommunitiesModel::Roles::HasLoudNotification: {
+            auto rooms{cache::joinedRooms()};
+            for (const auto &[roomid, info] : cache::getRoomInfo(rooms))
+                if (std::find(std::begin(info.tags), std::end(info.tags), tag.toStdString()) != std::end(info.tags))
+                    if (info.highlight_count > 0)
+                        return true;
+            return false;
+        }
         }
     }
     return QVariant();
@@ -403,8 +432,12 @@ CommunitiesModel::sync(const mtx::responses::Sync &sync_)
             tagsUpdated = true;
     }
     for (const auto &e : sync_.account_data.events) {
-        if (std::holds_alternative<
-              mtx::events::AccountDataEvent<mtx::events::account_data::Direct>>(e)) {
+        if (auto event =
+              std::get_if<mtx::events::AccountDataEvent<mtx::events::account_data::Direct>>(&e)) {
+            directMessages_.clear();
+            for (const auto &[userId, roomIds] : event->content.user_to_rooms)
+                for (const auto &roomId : roomIds)
+                    directMessages_.push_back(roomId);
             tagsUpdated = true;
             break;
         }

@@ -50,6 +50,7 @@ public:
         Id,
         UnreadMessages,
         HasLoudNotification,
+        IsDirect,
     };
 
     struct FlatTree
@@ -154,6 +155,7 @@ private:
     QStringList hiddenTagIds_;
     FlatTree spaceOrder_;
     std::map<QString, RoomInfo> spaces_;
+    std::vector<std::string> directMessages_;
 
     friend class FilteredCommunitiesModel;
 };
