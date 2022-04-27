@@ -25,37 +25,6 @@ const QVector<Emoji> emoji::Provider::emoji = {
     ''')
     d = dict(kwargs=kwargs)
     print(tmpl.render(d))
-# FIXME: Stop this madness
-def humanize_keypad(num): 
-    match num: 
-        case "0": 
-            return "zero" 
-        case "1": 
-            return "one"
-        case "2": 
-            return "two"
-        case "3": 
-            return "three"
-        case "4": 
-            return "four"
-        case "5": 
-            return "five"
-        case "6": 
-            return "six" 
-        case "7": 
-            return "seven" 
-        case "8": 
-            return "eight"
-        case "9": 
-            return "nine"
-        case "10": 
-            return "ten"
-        case "*": 
-            return "asterisk"
-        case "#": 
-            return "hash"
-        case _: 
-            return None
 if __name__ == '__main__':
     if len(sys.argv) < 3:
         print('usage: emoji_codegen.py /path/to/emoji-test.txt /path/to/shortcodes.txt')
@@ -105,22 +74,23 @@ if __name__ == '__main__':
         code, qualification, charAndName = segments
 
         # skip unqualified versions of same unicode
-        if qualification != 'fully-qualified' and qualification != 'component' :
+        if qualification != 'fully-qualified':
             continue
         
 
         char, name = re.match(r'^(\S+) E\d+\.\d+ (.*)$', charAndName).groups()
         shortname = name
-        
+        # until skin tone is handled, keep them around
         # discard skin tone variants for sanity
         # __contains__ is so stupid i hate prototype languages
-        if name.__contains__("skin tone") and qualification != 'component': 
-            continue
-        if qualification == 'component' and not name.__contains__("skin tone"): 
-            continue
+        # if name.__contains__("skin tone") and qualification != 'component': 
+        #    continue
+        # if qualification == 'component' and not name.__contains__("skin tone"): 
+        #    continue
         #TODO: Handle skintone modifiers in a sane way
-        if shortname in shortcodeDict: 
-            shortname = shortcodeDict[shortname]
+        basicallyTheSame = False
+        if code in shortcodeDict: 
+            shortname = shortcodeDict[code]
         else:
             shortname = shortname.lower()
             if shortname.endswith(' (blood type)'): 
@@ -141,28 +111,25 @@ if __name__ == '__main__':
                 shortname = shortname[:-7] 
             if shortname.endswith(' banknote'): 
                 shortname = shortname[:-9]
-            keycapmtch = re.match(r'^keycap: (.+)$', shortname)
-            if keycapmtch: 
-                keycapthing, = keycapmtch.groups()
-                type(keycapthing)
-                num_name = humanize_keypad(keycapthing) 
-                if num_name: 
-                    shortname = num_name
-                else: 
-                    raise Exception("incomplete keycap " + keycapthing + ", fix ur code")
                 
             # FIXME: Is there a better way to do this?
             matchobj = re.match(r'^flag: (.*)$', shortname) 
-            if matchobj: 
-                country, = matchobj.groups() 
+            if shortname.startswith("flag: "): 
+                country = shortname[5:]
                 shortname = country + " flag"
             shortname = shortname.replace("u.s.", "us")
             shortname = shortname.replace("&", "and")
+            
+            if shortname == name.lower(): 
+                basicallyTheSame = True
+
             shortname = shortname.replace("-", "_")
+            shortname = re.sub(r'\W', '_', shortname)
             shortname, = re.match(r'^_*(.+)_*$', shortname).groups()
-            shortname = re.sub(r'\W', '_', shortname) 
             shortname = re.sub(r'_{2,}', '_', shortname) 
             shortname = unidecode(shortname)
+        # if basicallyTheSame: 
+        #    shortname = ""
         categories[current_category].append(Emoji(code, shortname, name))
 
     # Use xclip to pipe the output to clipboard.
