@@ -46,6 +46,15 @@ Item {
         // height is somewhat arbitrary here... don't set width because width scales w/ height
         height: parent.height / 16
         z: 3
+        opacity: hh.hovered ? 0.3 : 1
+
+        Behavior on opacity {
+            NumberAnimation { duration: 100; }
+        }
+
+        HoverHandler {
+            id: hh
+        }
     }
 
     ColumnLayout {
@@ -199,8 +208,7 @@ Item {
             Layout.alignment: Qt.AlignHCenter
 
             MatrixText {
-                text: qsTr("%1 member(s)").arg(room ? room.roomMemberCount : 0)
-                cursorShape: Qt.PointingHandCursor
+                text: qsTr("%n member(s)", "", room ? room.roomMemberCount : 0)
             }
 
             ImageButton {
