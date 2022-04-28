@@ -196,9 +196,10 @@ public:
     void setDeviceId(QString deviceId);
     void setHomeserver(QString homeserver);
     void setDisableCertificateValidation(bool disabled);
-    void setHiddenTags(QStringList hiddenTags);
-    void setHiddenPins(QStringList hiddenTags);
-    void setHiddenWidgets(QStringList hiddenTags);
+    void setHiddenTags(const QStringList &hiddenTags);
+    void setMutedTags(const QStringList &mutedTags);
+    void setHiddenPins(const QStringList &hiddenTags);
+    void setHiddenWidgets(const QStringList &hiddenTags);
     void setRecentReactions(QStringList recent);
     void setUseIdenticon(bool state);
     void setOpenImageExternal(bool state);
@@ -263,6 +264,7 @@ public:
     QString homeserver() const { return homeserver_; }
     bool disableCertificateValidation() const { return disableCertificateValidation_; }
     QStringList hiddenTags() const { return hiddenTags_; }
+    QStringList mutedTags() const { return mutedTags_; }
     QStringList hiddenPins() const { return hiddenPins_; }
     QStringList hiddenWidgets() const { return hiddenWidgets_; }
     QStringList recentReactions() const { return recentReactions_; }
@@ -385,6 +387,7 @@ private:
     QString deviceId_;
     QString homeserver_;
     QStringList hiddenTags_;
+    QStringList mutedTags_;
     QStringList hiddenPins_;
     QStringList hiddenWidgets_;
     QStringList recentReactions_;

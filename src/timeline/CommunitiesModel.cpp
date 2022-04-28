@@ -16,6 +16,8 @@
 
 CommunitiesModel::CommunitiesModel(QObject *parent)
   : QAbstractListModel(parent)
+  , hiddenTagIds_{UserSettings::instance()->hiddenTags()}
+  , mutedTagIds_{UserSettings::instance()->mutedTags()}
 {
     connect(ChatPage::instance(), &ChatPage::unreadMessages, this, [this](int) {
         // Simply updating every space is easier than tracking which ones need updated.
@@ -40,6 +42,7 @@ CommunitiesModel::roleNames() const
       {Id, "id"},
       {UnreadMessages, "unreadMessages"},
       {HasLoudNotification, "hasLoudNotification"},
+      {Muted, "muted"},
     };
 }
 
@@ -62,6 +65,13 @@ CommunitiesModel::setData(const QModelIndex &index, const QVariant &value, int r
 QVariant
 CommunitiesModel::data(const QModelIndex &index, int role) const
 {
+    if (role == CommunitiesModel::Roles::Muted) {
+        if (index.row() == 0)
+            return mutedTagIds_.contains(QStringLiteral("global"));
+        else
+            return mutedTagIds_.contains(data(index, CommunitiesModel::Roles::Id).toString());
+    }
+
     if (index.row() == 0) {
         switch (role) {
         case CommunitiesModel::Roles::AvatarUrl:
@@ -333,7 +343,6 @@ CommunitiesModel::initializeSidebar()
     for (const auto &t : ts)
         tags_.push_back(QString::fromStdString(t));
 
-    hiddenTagIds_ = UserSettings::instance()->hiddenTags();
     spaceOrder_.restoreCollapsed();
 
     endResetModel();
@@ -485,13 +494,11 @@ CommunitiesModel::setCurrentTagId(const QString &tagId)
 void
 CommunitiesModel::toggleTagId(QString tagId)
 {
-    if (hiddenTagIds_.contains(tagId)) {
+    if (hiddenTagIds_.contains(tagId))
         hiddenTagIds_.removeOne(tagId);
-        UserSettings::instance()->setHiddenTags(hiddenTagIds_);
-    } else {
+    else
         hiddenTagIds_.push_back(tagId);
-        UserSettings::instance()->setHiddenTags(hiddenTagIds_);
-    }
+    UserSettings::instance()->setHiddenTags(hiddenTagIds_);
 
     if (tagId.startsWith(QLatin1String("tag:"))) {
         auto idx = tags_.indexOf(tagId.mid(4));
@@ -507,6 +514,34 @@ CommunitiesModel::toggleTagId(QString tagId)
     }
 
     emit hiddenTagsChanged();
+}
+
+void
+CommunitiesModel::toggleTagMute(QString tagId)
+{
+    if (tagId.isEmpty())
+        tagId = QStringLiteral("global");
+
+    if (mutedTagIds_.contains(tagId))
+        mutedTagIds_.removeOne(tagId);
+    else
+        mutedTagIds_.push_back(tagId);
+    UserSettings::instance()->setMutedTags(mutedTagIds_);
+
+    if (tagId.startsWith(QLatin1String("tag:"))) {
+        auto idx = tags_.indexOf(tagId.mid(4));
+        if (idx != -1)
+            emit dataChanged(index(idx + 1 + spaceOrder_.size()),
+                             index(idx + 1 + spaceOrder_.size()));
+    } else if (tagId.startsWith(QLatin1String("space:"))) {
+        auto idx = spaceOrder_.indexOf(tagId.mid(6));
+        if (idx != -1)
+            emit dataChanged(index(idx + 1), index(idx + 1));
+    } else if (tagId == QLatin1String("dm")) {
+        emit dataChanged(index(1), index(1));
+    } else if (tagId == QLatin1String("global")) {
+        emit dataChanged(index(0), index(0));
+    }
 }
 
 FilteredCommunitiesModel::FilteredCommunitiesModel(CommunitiesModel *model, QObject *parent)

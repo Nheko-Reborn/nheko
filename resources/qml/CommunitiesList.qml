@@ -37,14 +37,27 @@ Page {
             id: communityContextMenu
 
             property string tagId
+            property bool hidden
+            property bool muted
 
-            function show(id_, tags_) {
+            function show(id_, hidden_, muted_) {
                 tagId = id_;
+                hidden = hidden_;
+                muted = muted_;
                 open();
             }
 
             Platform.MenuItem {
+                text: qsTr("Do not show notification counts for this space or tag.")
+                checkable: true
+                checked: communityContextMenu.muted
+                onTriggered: Communities.toggleTagMute(communityContextMenu.tagId)
+            }
+
+            Platform.MenuItem {
                 text: qsTr("Hide rooms with this tag or from this space by default.")
+                checkable: true
+                checked: communityContextMenu.hidden
                 onTriggered: Communities.toggleTagId(communityContextMenu.tagId)
             }
 
@@ -68,6 +81,7 @@ Page {
             required property string id
             required property int unreadMessages
             required property bool hasLoudNotification
+            required property bool muted
 
             height: avatarSize + 2 * Nheko.paddingMedium
             width: ListView.view.width
@@ -76,7 +90,7 @@ Page {
             ToolTip.text: communityItem.tooltip
             ToolTip.delay: Nheko.tooltipDelay
             onClicked: Communities.setCurrentTagId(communityItem.id)
-            onPressAndHold: communityContextMenu.show(communityItem.id)
+            onPressAndHold: communityContextMenu.show(communityItem.id, communityItem.hidden, communityItem.muted)
             states: [
                 State {
                     name: "highlight"
@@ -113,7 +127,7 @@ Page {
 
                 TapHandler {
                     acceptedButtons: Qt.RightButton
-                    onSingleTapped: communityContextMenu.show(communityItem.id)
+                    onSingleTapped: communityContextMenu.show(communityItem.id, communityItem.hidden, communityItem.muted)
                     gesturePolicy: TapHandler.ReleaseWithinBounds
                     acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
                 }
@@ -174,6 +188,8 @@ Page {
                         mayBeVisible: {
                             if (!communitySidebar.collapsed)
                                 return false
+                            else if (communityItem.muted)
+                                return false
                             else if (Settings.spaceNotifications === Settings.SpaceNotificationsOff)
                                 return false
                             else if (Settings.spaceNotifications === Settings.SidebarHiddenRooms)
@@ -215,10 +231,17 @@ Page {
                     mayBeVisible: {
                         if (communitySidebar.collapsed)
                             return false
+                        else if (communityItem.muted)
+                            return false
                         else if (Settings.spaceNotification === Settings.SpaceNotificationsOff)
                             return false
-                        else if ((Settings.spaceNotifications === Settings.SidebarHiddenRooms) && communityItem.hidden)
-                            return true
+                        else if (Settings.spaceNotifications === Settings.SidebarHiddenRooms)
+                        {
+                            if (communityItem.hidden)
+                                return true
+                            else
+                                return false
+                        }
                         else
                             return true
                     }

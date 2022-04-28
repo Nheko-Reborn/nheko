@@ -50,6 +50,7 @@ public:
         Id,
         UnreadMessages,
         HasLoudNotification,
+        Muted,
         IsDirect,
     };
 
@@ -141,6 +142,7 @@ public slots:
         return tagsWD;
     }
     void toggleTagId(QString tagId);
+    void toggleTagMute(QString tagId);
     FilteredCommunitiesModel *filtered() { return new FilteredCommunitiesModel(this, this); }
 
 signals:
@@ -153,6 +155,7 @@ private:
     QStringList tags_;
     QString currentTagId_;
     QStringList hiddenTagIds_;
+    QStringList mutedTagIds_;
     FlatTree spaceOrder_;
     std::map<QString, RoomInfo> spaces_;
     std::vector<std::string> directMessages_;
