@@ -128,7 +128,7 @@ Nheko::logout() const
 }
 
 void
-Nheko::createRoom(QString name, QString topic, QString aliasLocalpart, bool isEncrypted, int preset)
+Nheko::createRoom(QString name, QString topic, QString aliasLocalpart, bool isEncrypted, bool isSpace, int preset)
 {
     mtx::requests::CreateRoom req;
 
@@ -153,6 +153,11 @@ Nheko::createRoom(QString name, QString topic, QString aliasLocalpart, bool isEn
         enc.type              = mtx::events::EventType::RoomEncryption;
         enc.content.algorithm = mtx::crypto::MEGOLM_ALGO;
         req.initial_state.emplace_back(std::move(enc));
+    }
+
+    if (isSpace) {
+        req.creation_content = mtx::events::state::Create{};
+        req.creation_content->type = "m.space";
     }
 
     emit ChatPage::instance()->createRoom(req);

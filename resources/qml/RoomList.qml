@@ -661,7 +661,7 @@ Page {
                         }
 
                         Platform.MenuItem {
-                            text: qsTr("Create a new room")
+                            text: qsTr("Create a new room or space")
                             onTriggered: {
                                 var createRoom = createRoomComponent.createObject(timelineRoot);
                                 createRoom.show();

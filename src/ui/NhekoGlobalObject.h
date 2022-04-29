@@ -53,7 +53,7 @@ public:
     Q_INVOKABLE void showUserSettingsPage() const;
     Q_INVOKABLE void logout() const;
     Q_INVOKABLE void
-    createRoom(QString name, QString topic, QString aliasLocalpart, bool isEncrypted, int preset);
+    createRoom(QString name, QString topic, QString aliasLocalpart, bool isEncrypted, bool isSpace, int preset);
 
 public slots:
     void updateUserProfile();

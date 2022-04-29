@@ -85,13 +85,31 @@ ApplicationWindow {
                 id: privateHover
             }
             ToolTip.visible: privateHover.hovered
-            ToolTip.text: qsTr("Public rooms can be joined by anyone, private rooms need explicit invites.")
+            ToolTip.text: qsTr("Public rooms can be joined by anyone; private rooms need explicit invites.")
             ToolTip.delay: Nheko.tooltipDelay
         }
         ToggleButton {
             Layout.alignment: Qt.AlignRight
             Layout.preferredWidth: implicitWidth
             id: isPublic
+            checked: false
+        }
+        Label {
+            Layout.preferredWidth: implicitWidth
+            Layout.alignment: Qt.AlignLeft
+            text: qsTr("Space")
+            color: Nheko.colors.text
+            HoverHandler {
+                id: spaceHover
+            }
+            ToolTip.visible: spaceHover.hovered
+            ToolTip.text: qsTr("Make this a space for organizing other rooms and spaces.")
+            ToolTip.delay: Nheko.tooltipDelay
+        }
+        ToggleButton {
+            Layout.alignment: Qt.AlignRight
+            Layout.preferredWidth: implicitWidth
+            id: isSpace
             checked: false
         }
         Label {
@@ -150,7 +168,7 @@ ApplicationWindow {
             else {
                 preset = isTrusted.checked ? 2 : 0;
             }
-            Nheko.createRoom(newRoomName.text, newRoomTopic.text, newRoomAlias.text, isEncrypted.checked, preset)
+            Nheko.createRoom(newRoomName.text, newRoomTopic.text, newRoomAlias.text, isEncrypted.checked, isSpace.checked, preset)
             createRoomRoot.close();
         }
     }
