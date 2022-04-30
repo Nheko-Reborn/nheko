@@ -375,6 +375,7 @@ set(SRC_FILES
 	src/SSOHandler.cpp
 	src/CombinedImagePackModel.cpp
 	src/SingleImagePackModel.cpp
+	src/SpaceChildrenModel.cpp
 	src/ImagePackListModel.cpp
 	src/TrayIcon.cpp
 	src/UserSettingsPage.cpp
@@ -570,6 +571,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/RoomsModel.h
 	src/SSOHandler.h
 	src/SingleImagePackModel.h
+	src/SpaceChildrenModel.h
 	src/TrayIcon.h
 	src/UserSettingsPage.h
 	src/UsersModel.h

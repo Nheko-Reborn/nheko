@@ -181,6 +181,16 @@ TimelineViewManager::openRoomSettings(QString room_id)
 }
 
 void
+TimelineViewManager::openSpaceChildren(const QString &spaceId)
+{
+    auto children    = new SpaceChildrenModel{rooms_->getRoomById(spaceId)};
+    auto nonChildren = new NonSpaceChildrenModel{rooms_->getRoomById(spaceId)};
+    QQmlEngine::setObjectOwnership(children, QQmlEngine::JavaScriptOwnership);
+    QQmlEngine::setObjectOwnership(nonChildren, QQmlEngine::JavaScriptOwnership);
+    emit openSpaceChildrenDialog(children, nonChildren);
+}
+
+void
 TimelineViewManager::openInviteUsers(QString roomId)
 {
     InviteesModel *model = new InviteesModel{};

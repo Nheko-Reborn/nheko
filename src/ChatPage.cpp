@@ -748,6 +748,45 @@ ChatPage::joinRoomVia(const std::string &room_id,
 }
 
 void
+ChatPage::addRoomToSpace(const QString &roomId, const QString &spaceId)
+{
+    // Make sure that the user isn't trying to create an infinite loop. Granted, this is not
+    // perfect, since you could have a loop of the form "a => b => a => ...", but this is sufficient
+    // for now.
+    if (roomId == spaceId)
+        return;
+
+    mtx::events::state::space::Child child;
+    child.via = {roomId.splitRef(QStringLiteral(":")).last().toString().toStdString()};
+    http::client()->send_state_event(
+      roomId.toStdString(),
+      child,
+      [this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+          if (err) {
+              emit showNotification(tr("Failed to add room to space: %1")
+                                      .arg(QString::fromStdString(err->matrix_error.error)));
+          }
+      });
+}
+
+void
+ChatPage::removeRoomFromSpace(const QString &roomId, const QString &spaceId)
+{
+    auto childEvent = cache::client()->getStateEvent<mtx::events::state::space::Child>(
+      spaceId.toStdString(), "m.space.child");
+    if (childEvent.has_value())
+        http::client()->redact_event(
+          roomId.toStdString(),
+          childEvent->event_id,
+          [this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+              if (err) {
+                  emit showNotification(tr("Failed to remove room from space: %1")
+                                          .arg(QString::fromStdString(err->matrix_error.error)));
+              }
+          });
+}
+
+void
 ChatPage::createRoom(const mtx::requests::CreateRoom &req)
 {
     if (req.room_alias_name.find(":") != std::string::npos ||

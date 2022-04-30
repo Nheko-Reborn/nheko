@@ -52,8 +52,14 @@ public:
     Q_INVOKABLE void setStatusMessage(QString msg) const;
     Q_INVOKABLE void showUserSettingsPage() const;
     Q_INVOKABLE void logout() const;
-    Q_INVOKABLE void
-    createRoom(QString name, QString topic, QString aliasLocalpart, bool isEncrypted, bool isSpace, int preset);
+    Q_INVOKABLE void createRoom(QString name,
+                                QString topic,
+                                QString aliasLocalpart,
+                                bool isEncrypted,
+                                bool isSpace,
+                                int preset);
+    Q_INVOKABLE void addRoomToSpace(const QString &roomId, const QString &spaceId);
+    Q_INVOKABLE void removeRoomFromSpace(const QString &roomId, const QString &spaceId);
 
 public slots:
     void updateUserProfile();

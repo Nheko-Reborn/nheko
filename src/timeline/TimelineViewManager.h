@@ -17,6 +17,7 @@
 #include "Cache.h"
 #include "JdenticonProvider.h"
 #include "Logging.h"
+#include "SpaceChildrenModel.h"
 #include "TimelineModel.h"
 #include "Utils.h"
 #include "emoji/EmojiModel.h"
@@ -65,6 +66,7 @@ public:
 
     Q_INVOKABLE void openRoomMembers(TimelineModel *room);
     Q_INVOKABLE void openRoomSettings(QString room_id);
+    Q_INVOKABLE void openSpaceChildren(const QString &spaceId);
     Q_INVOKABLE void openInviteUsers(QString roomId);
     Q_INVOKABLE void openGlobalUserProfile(QString userId);
     Q_INVOKABLE UserProfile *getGlobalUserProfile(QString userId);
@@ -86,6 +88,7 @@ signals:
     void focusInput();
     void openRoomMembersDialog(MemberList *members, TimelineModel *room);
     void openRoomSettingsDialog(RoomSettings *settings);
+    void openSpaceChildrenDialog(SpaceChildrenModel *children, NonSpaceChildrenModel *nonChildren);
     void openInviteUsersDialog(InviteesModel *invitees);
     void openProfile(UserProfile *profile);
     void showImagePackSettings(TimelineModel *room, ImagePackListModel *packlist);

@@ -60,6 +60,14 @@ Pane {
     }
 
     Component {
+        id: spaceChildrenComponent
+
+        SpaceChildren {
+        }
+
+    }
+
+    Component {
         id: roomMembersComponent
 
         RoomMembers {
@@ -263,6 +271,15 @@ Pane {
             });
             roomSettings.show();
             destroyOnClose(roomSettings);
+        }
+
+        function onOpenSpaceChildrenDialog(spaceChildren, nonChildren) {
+            var spaceChildrenDialog = spaceChildrenComponent.createObject(timelineRoot, {
+                "spaceChildren": spaceChildren,
+                "nonChildren": nonChildren
+            });
+            spaceChildrenDialog.show();
+            destroyOnClose(spaceChildrenDialog);
         }
 
         function onOpenInviteUsersDialog(invitees) {

@@ -363,6 +363,18 @@ ApplicationWindow {
                 }
 
                 Item {
+                    Layout.fillWidth: true
+                    visible: roomSettings.isSpace
+                }
+
+                Button {
+                    visible: roomSettings.isSpace
+                    text: qsTr("Manage space children")
+                    Layout.alignment: Qt.AlignRight
+                    onClicked: TimelineManager.openSpaceChildren(roomSettings.roomId)
+                }
+
+                Item {
                     // for adding extra space between sections
                     Layout.fillWidth: true
                 }

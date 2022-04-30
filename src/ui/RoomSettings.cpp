@@ -244,6 +244,19 @@ RoomSettings::canChangeAvatar() const
 }
 
 bool
+RoomSettings::canSetSpaceChild() const
+{
+    try {
+        return cache::hasEnoughPowerLevel(
+          {EventType::SpaceChild}, roomid_.toStdString(), utils::localUser().toStdString());
+    } catch (const lmdb::error &e) {
+        nhlog::db()->warn("lmdb error: {}", e.what());
+    }
+
+    return false;
+}
+
+bool
 RoomSettings::isEncryptionEnabled() const
 {
     return usesEncryption_;

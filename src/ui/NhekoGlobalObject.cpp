@@ -128,7 +128,12 @@ Nheko::logout() const
 }
 
 void
-Nheko::createRoom(QString name, QString topic, QString aliasLocalpart, bool isEncrypted, bool isSpace, int preset)
+Nheko::createRoom(QString name,
+                  QString topic,
+                  QString aliasLocalpart,
+                  bool isEncrypted,
+                  bool isSpace,
+                  int preset)
 {
     mtx::requests::CreateRoom req;
 
@@ -156,9 +161,21 @@ Nheko::createRoom(QString name, QString topic, QString aliasLocalpart, bool isEn
     }
 
     if (isSpace) {
-        req.creation_content = mtx::events::state::Create{};
+        req.creation_content       = mtx::events::state::Create{};
         req.creation_content->type = "m.space";
     }
 
     emit ChatPage::instance()->createRoom(req);
+}
+
+void
+Nheko::addRoomToSpace(const QString &roomId, const QString &spaceId)
+{
+    ChatPage::instance()->addRoomToSpace(roomId, spaceId);
+}
+
+void
+Nheko::removeRoomFromSpace(const QString &roomId, const QString &spaceId)
+{
+    ChatPage::instance()->removeRoomFromSpace(roomId, spaceId);
 }

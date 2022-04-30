@@ -37,6 +37,7 @@ class RoomSettings : public QObject
     Q_PROPERTY(QString plainRoomName READ plainRoomName NOTIFY roomNameChanged)
     Q_PROPERTY(QString plainRoomTopic READ plainRoomTopic NOTIFY roomTopicChanged)
     Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY avatarUrlChanged)
+    Q_PROPERTY(bool isSpace READ isSpace CONSTANT)
     Q_PROPERTY(int memberCount READ memberCount CONSTANT)
     Q_PROPERTY(int notifications READ notifications NOTIFY notificationsChanged)
     Q_PROPERTY(int accessJoinRules READ accessJoinRules NOTIFY accessJoinRulesChanged)
@@ -45,6 +46,7 @@ class RoomSettings : public QObject
     Q_PROPERTY(bool canChangeJoinRules READ canChangeJoinRules CONSTANT)
     Q_PROPERTY(bool canChangeName READ canChangeName CONSTANT)
     Q_PROPERTY(bool canChangeTopic READ canChangeTopic CONSTANT)
+    Q_PROPERTY(bool canSetSpaceChild READ canSetSpaceChild CONSTANT)
     Q_PROPERTY(bool isEncryptionEnabled READ isEncryptionEnabled NOTIFY encryptionChanged)
     Q_PROPERTY(bool supportsKnocking READ supportsKnocking CONSTANT)
     Q_PROPERTY(bool supportsRestricted READ supportsRestricted CONSTANT)
@@ -59,6 +61,7 @@ public:
     QString plainRoomTopic() const;
     QString roomVersion() const;
     QString roomAvatarUrl();
+    bool isSpace() const { return info_.is_space; }
     int memberCount() const;
     int notifications();
     int accessJoinRules();
@@ -71,6 +74,8 @@ public:
     bool canChangeTopic() const;
     //! Whether the user has enough power level to send m.room.avatar event.
     bool canChangeAvatar() const;
+    //! Whether the user has enough power level to add children to a space.
+    bool canSetSpaceChild() const;
     bool isEncryptionEnabled() const;
     bool supportsKnocking() const;
     bool supportsRestricted() const;

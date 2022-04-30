@@ -34,6 +34,7 @@
 #include "RoomDirectoryModel.h"
 #include "RoomsModel.h"
 #include "SingleImagePackModel.h"
+#include "SpaceChildrenModel.h"
 #include "TrayIcon.h"
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
@@ -212,6 +213,18 @@ MainWindow::registerQmlTypes()
       0,
       "SingleImagePackModel",
       QStringLiteral("SingleImagePackModel needs to be instantiated on the C++ side"));
+    qmlRegisterUncreatableType<SpaceChildrenModel>(
+      "im.nheko",
+      1,
+      0,
+      "SpaceChildrenModel",
+      "SpaceChildrenModel needs to be instantiated on the C++ side");
+    qmlRegisterUncreatableType<NonSpaceChildrenModel>(
+      "im.nheko",
+      1,
+      0,
+      "NonSpaceChildrenModel",
+      "NonSpaceChildrenModel needs to be instantiated on the C++ side");
     qmlRegisterUncreatableType<InviteesModel>(
       "im.nheko",
       1,

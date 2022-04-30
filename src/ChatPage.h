@@ -94,6 +94,9 @@ public slots:
                      bool promptForConfirmation = true,
                      const QString &reason      = "");
 
+    void addRoomToSpace(const QString &roomId, const QString &spaceId);
+    void removeRoomFromSpace(const QString &roomId, const QString &spaceId);
+
     void inviteUser(QString userid, QString reason);
     void kickUser(QString userid, QString reason);
     void banUser(QString userid, QString reason);
