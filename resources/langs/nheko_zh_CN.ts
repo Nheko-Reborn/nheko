@@ -6,7 +6,7 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+108"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>正在拨打…</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -27,12 +27,12 @@
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>开启麦克风</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>麦克风静音</translation>
     </message>
 </context>
 <context>
@@ -40,8 +40,8 @@
     <message numerus="yes">
         <location filename="../../src/Cache.cpp" line="+2512"/>
         <source>%1 and %n other(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 和另外 %n 人</numerusform>
         </translation>
     </message>
     <message>
@@ -66,7 +66,7 @@
     <message>
         <location line="+62"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>未检测到麦克风。</translation>
     </message>
 </context>
 <context>
@@ -89,7 +89,7 @@
     <message>
         <location line="+11"/>
         <source>Accept</source>
-        <translation type="unfinished">接受</translation>
+        <translation>接受</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -104,12 +104,12 @@
     <message>
         <location line="+14"/>
         <source>Decline</source>
-        <translation type="unfinished">拒绝</translation>
+        <translation>拒绝</translation>
     </message>
     <message>
         <location line="-31"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>未检测到麦克风</translation>
     </message>
 </context>
 <context>
@@ -141,12 +141,12 @@
     <message>
         <location line="+13"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>当前设备中的缓存比Nheko支持的版本更新，请更新Nheko或清理缓存。</translation>
     </message>
     <message>
         <location line="+41"/>
         <source>Failed to open database, logging out!</source>
-        <translation type="unfinished"></translation>
+        <translation>无法打开数据库，账户将登出！</translation>
     </message>
     <message>
         <location line="+304"/>
@@ -177,7 +177,7 @@
     <message>
         <location line="+12"/>
         <source>Failed to invite %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>未能成功邀请 %1 到 %2：%3</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -202,12 +202,12 @@
     <message>
         <location line="+1"/>
         <source>Do you really want to unban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>确认解封 %1 (%2) 吗？</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Failed to unban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>未能将 %2 里的 %1 成功解封：%3</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -290,7 +290,7 @@
     <message>
         <location line="+15"/>
         <source>Failed to kick %1 from %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>从%2: %3踢出%1失败</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -318,12 +318,12 @@
     <message>
         <location line="+83"/>
         <source>Expand</source>
-        <translation type="unfinished"></translation>
+        <translation>展开</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Collapse</source>
-        <translation type="unfinished"></translation>
+        <translation>收起</translation>
     </message>
 </context>
 <context>
@@ -331,7 +331,7 @@
     <message>
         <location filename="../../src/timeline/CommunitiesModel.cpp" line="+58"/>
         <source>All rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>所有房间</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -351,22 +351,22 @@
     <message>
         <location line="+48"/>
         <source>Favourites</source>
-        <translation type="unfinished"></translation>
+        <translation>收藏</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rooms you have favourited.</source>
-        <translation type="unfinished"></translation>
+        <translation>你收藏的房间</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Low Priority</source>
-        <translation type="unfinished"></translation>
+        <translation>低优先级</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rooms with low priority.</source>
-        <translation type="unfinished"></translation>
+        <translation>低优先级房间</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -376,7 +376,7 @@
     <message>
         <location line="+2"/>
         <source>Messages from your server or administrator.</source>
-        <translation type="unfinished"></translation>
+        <translation>来自服务器或管理员的消息。</translation>
     </message>
 </context>
 <context>
@@ -399,7 +399,7 @@
     <message>
         <location line="+28"/>
         <source>Decryption failed</source>
-        <translation type="unfinished"></translation>
+        <translation>解密失败</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -412,7 +412,7 @@
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+12"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>验证码</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -604,7 +604,7 @@
     <message>
         <location filename="../qml/emoji/EmojiPicker.qml" line="+70"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>搜索</translation>
     </message>
     <message>
         <location line="+193"/>
@@ -619,7 +619,7 @@
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished"></translation>
+        <translation>食物</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -639,7 +639,7 @@
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished">Symbols</translation>
+        <translation>标识</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -652,7 +652,7 @@
     <message>
         <location filename="../qml/device-verification/EmojiVerification.qml" line="+12"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>验证码</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -675,17 +675,17 @@
     <message>
         <location filename="../qml/delegates/Encrypted.qml" line="+47"/>
         <source>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</source>
-        <translation type="unfinished"></translation>
+        <translation>没有找到解锁这条消息的密钥。我们尝试过自动获取密钥，如果你着急你可以持续尝试获取密钥。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message couldn&apos;t be decrypted, because we only have a key for newer messages. You can try requesting access to this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>这条消息无法被解密，因为我们只持有较之更新的消息的密钥。你可以继续尝试访问这条消息。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>There was an internal error reading the decryption key from the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>从数据库读取解密密钥时发生内部错误。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -695,7 +695,7 @@
     <message>
         <location line="+2"/>
         <source>The message couldn&apos;t be parsed.</source>
-        <translation type="unfinished"></translation>
+        <translation>无法解析这条消息。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -705,12 +705,12 @@
     <message>
         <location line="+2"/>
         <source>Unknown decryption error</source>
-        <translation type="unfinished"></translation>
+        <translation>未知的解密错误</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Request key</source>
-        <translation type="unfinished"></translation>
+        <translation>请求密钥</translation>
     </message>
 </context>
 <context>
@@ -771,12 +771,12 @@
     <message>
         <location line="+2"/>
         <source>Unknown verification error.</source>
-        <translation type="unfinished"></translation>
+        <translation>未知的认证错误。</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>关闭</translation>
     </message>
 </context>
 <context>
