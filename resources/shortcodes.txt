@@ -24,7 +24,7 @@
 1F608:smiling_imp 
 1F47F:imp
 1F261:rage
-1F627:triumph
+1F624:triumph
 1F63A:smiley_cat
 1F638:smile_cat 
 1F639:joy_cat
