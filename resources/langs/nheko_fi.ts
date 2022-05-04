@@ -1289,7 +1289,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+13"/>
         <source>%1 changed the parent spaces for this room.</source>
-        <translation type="unfinished">%1 muutti tämän kanavan yläSpaceja.</translation>
+        <translation>%1 muutti tämän kanavan yläSpaceja.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1510,7 +1510,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+19"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Näyttääksesi muille käyttäjille mitkä laitteet oikeasti kuuluvat sinulle, voit varmistaa ne. Tämä sallii myös avainvarmuuskopion toimimisen automaattisesti. Varmistetaanko varmistamaton laite nyt? (Varmistathan käsilläsi olevan yksi varmistetuista laitteista.)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1530,7 +1530,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>%1 using the device %2 has requested to be verified.</source>
-        <translation>%1 käyttää laitetta, jonka %2 on pyytänyt vahvistamaan.</translation>
+        <translation>%1 on pyytänyt vahvistamista laitteella %2.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2078,7 +2078,8 @@ Esimerkki: https://server.my:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salaus on kokeellinen ja asiat voivat rikkoutua odottamattomasti.&lt;br&gt;
+Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2123,7 +2124,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+16"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopioitu leikepöydälle</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -2133,12 +2134,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+19"/>
         <source>show less</source>
-        <translation type="unfinished"></translation>
+        <translation>näytä vähemmän</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>show more</source>
-        <translation type="unfinished"></translation>
+        <translation>näytä enemmän</translation>
     </message>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+256"/>
@@ -2195,27 +2196,27 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../qml/Root.qml" line="+319"/>
         <source>Please enter your login password to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Syötä sisäänkirjautumisen salasanasi jatkaaksesi:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid email address to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Syötä oikea sähköposti-osoite jatkaaksesi:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid phone number to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Syötä oikea puhelinnumero jatkaaksesi:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter the token, which has been sent to you:</source>
-        <translation type="unfinished"></translation>
+        <translation>Syötä sinulle lähetetty poletti:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Wait for the confirmation link to arrive, then continue.</source>
-        <translation type="unfinished"></translation>
+        <translation>Odota vahvistuslinkin saapumista, sitten jatka.</translation>
     </message>
 </context>
 <context>
@@ -2290,12 +2291,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../qml/SelfVerificationCheck.qml" line="+40"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tämä on palautusavaimesi. Tarvitset sitä palauttaaksesi pääsysi salttuihin viesteihisi, sekä varmistusavaimiin. Pidä tämä turvassa. Älä jaa sitä kenellekään äläkä menetä sitä! Älä kulje lähtöruudun kautta! Et saa M̶ 200!</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Encryption setup successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Salaus määritetty onnistuneesti</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -2305,18 +2306,19 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+22"/>
         <source>Setup Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Määritä salaus</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
-        <translation type="unfinished"></translation>
+        <translation>Hei ja tervetuloa Matriksiin!
+Vaikuttaa, että olet uusi. Ennen kuin voit turvallisesti salata viestisi, meidän täytyy säätää muutama pikku juttu. Voit joko suostua heti tai määrittää muutaman perusasetuksen. Yritämme selittää muutamat perusteista. Voit ohittaa nämä kohdat, mutta ne voivat osoittautua hyödyllisiksi!</translation>
     </message>
     <message>
         <location line="+124"/>
         <source>Activate Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktivoi salaus</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2332,7 +2334,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+10"/>
         <source>enter passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>syötä salalause</translation>
     </message>
 </context>
 <context>
@@ -2340,12 +2342,12 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+43"/>
         <source>Failed to create keys for cross-signing!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ristiinvarmennusavainten luominen epäonnistui!</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to create keys for online key backup!</source>
-        <translation type="unfinished"></translation>
+        <translation>Avainten luominen verkkoavainvarmuuskopioon epäonnistui!</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -2355,12 +2357,12 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+44"/>
         <source>Encryption Setup</source>
-        <translation type="unfinished"></translation>
+        <translation>Salauksen määritys</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Salauksen määritys epäonnistui: %1</translation>
     </message>
     <message>
         <location line="+140"/>
