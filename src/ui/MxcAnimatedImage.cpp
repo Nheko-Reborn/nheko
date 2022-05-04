@@ -70,22 +70,27 @@ MxcAnimatedImage::startDownload()
         if (!self)
             return;
 
-        if (buffer.isOpen()) {
-            movie.stop();
-            movie.setDevice(nullptr);
-            buffer.close();
-        }
+        try {
+            if (buffer.isOpen()) {
+                movie.stop();
+                movie.setDevice(nullptr);
+                buffer.close();
+            }
 
-        if (encryptionInfo) {
-            QByteArray ba = device.readAll();
-            std::string temp(ba.constData(), ba.size());
-            temp = mtx::crypto::to_string(mtx::crypto::decrypt_file(temp, encryptionInfo.value()));
-            buffer.setData(temp.data(), temp.size());
-        } else {
-            buffer.setData(device.readAll());
+            if (encryptionInfo) {
+                QByteArray ba = device.readAll();
+                std::string temp(ba.constData(), ba.size());
+                temp =
+                  mtx::crypto::to_string(mtx::crypto::decrypt_file(temp, encryptionInfo.value()));
+                buffer.setData(temp.data(), temp.size());
+            } else {
+                buffer.setData(device.readAll());
+            }
+            buffer.open(QIODevice::ReadOnly);
+            buffer.reset();
+        } catch (const std::exception &e) {
+            nhlog::net()->error("Failed to setup animated image buffer: {}", e.what());
         }
-        buffer.open(QIODevice::ReadOnly);
-        buffer.reset();
 
         QTimer::singleShot(0, this, [this, mimeType] {
             nhlog::ui()->info(
