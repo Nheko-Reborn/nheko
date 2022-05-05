@@ -72,8 +72,6 @@ public:
 
     mtx::presence::PresenceState currentPresence() const;
 
-    // TODO(Nico): Get rid of this!
-    QString currentRoom() const;
     void startChat(QString userid, std::optional<bool> encryptionEnabled);
 
 public slots:

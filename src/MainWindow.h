@@ -40,6 +40,7 @@ class ReCaptcha;
 class MainWindow : public QQuickView
 {
     Q_OBJECT
+    Q_PROPERTY(QString activeRoom READ activeRoom WRITE updateActiveRoom NOTIFY activeRoomChanged)
 
 public:
     explicit MainWindow(QWindow *parent = nullptr);
@@ -57,6 +58,15 @@ public:
 #ifdef NHEKO_DBUS_SYS
     bool dbusAvailable() const { return dbusAvailable_; }
 #endif
+
+    QString activeRoom() const { return activeRoom_; }
+    void updateActiveRoom(QString r)
+    {
+        if (activeRoom_ != r) {
+            activeRoom_ = std::move(r);
+            emit activeRoomChanged();
+        }
+    }
 
 protected:
     void closeEvent(QCloseEvent *event);
@@ -77,6 +87,8 @@ signals:
     void switchToChatPage();
     void switchToWelcomePage();
     void switchToLoginPage(QString error);
+
+    void activeRoomChanged();
 
 private:
     void showDialog(QWidget *dialog);
@@ -100,6 +112,8 @@ private:
     TrayIcon *trayIcon_;
 
     MxcImageProvider *imgProvider = nullptr;
+
+    QString activeRoom_;
 
 #ifdef NHEKO_DBUS_SYS
     bool dbusAvailable_{false};

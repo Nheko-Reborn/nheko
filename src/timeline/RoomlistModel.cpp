@@ -692,6 +692,34 @@ RoomlistModel::leave(QString roomid, QString reason)
     }
 }
 
+RoomPreview
+RoomlistModel::getRoomPreviewById(QString roomid) const
+{
+    RoomPreview preview{};
+
+    if (invites.contains(roomid) || previewedRooms.contains(roomid)) {
+        std::optional<RoomInfo> i;
+        if (invites.contains(roomid)) {
+            i                 = invites.value(roomid);
+            preview.isInvite_ = true;
+        } else {
+            i                 = previewedRooms.value(roomid);
+            preview.isInvite_ = false;
+        }
+
+        if (i) {
+            preview.roomid_        = roomid;
+            preview.roomName_      = QString::fromStdString(i->name);
+            preview.roomTopic_     = QString::fromStdString(i->topic);
+            preview.roomAvatarUrl_ = QString::fromStdString(i->avatar_url);
+        } else {
+            preview.roomid_ = roomid;
+        }
+    }
+
+    return preview;
+}
+
 void
 RoomlistModel::setCurrentRoom(QString roomid)
 {

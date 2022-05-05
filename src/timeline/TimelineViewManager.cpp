@@ -138,10 +138,6 @@ TimelineViewManager::TimelineViewManager(CallManager *, ChatPage *parent)
         isInitialSync_ = true;
         emit initialSyncChanged(true);
     });
-    connect(qobject_cast<QApplication *>(QApplication::instance()),
-            &QApplication::focusWindowChanged,
-            this,
-            &TimelineViewManager::focusChanged);
     connect(parent, &ChatPage::connectionLost, this, [this] {
         isConnected_ = false;
         emit isConnectedChanged(false);
@@ -150,12 +146,6 @@ TimelineViewManager::TimelineViewManager(CallManager *, ChatPage *parent)
         isConnected_ = true;
         emit isConnectedChanged(true);
     });
-}
-
-bool
-TimelineViewManager::isWindowFocused() const
-{
-    return MainWindow::instance() == QApplication::focusWindow();
 }
 
 void

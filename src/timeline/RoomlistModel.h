@@ -89,6 +89,7 @@ public:
         else
             return {};
     }
+    RoomPreview getRoomPreviewById(QString roomid) const;
 
 public slots:
     void initializeRooms();
@@ -184,6 +185,10 @@ public slots:
     TimelineModel *getRoomById(const QString &id) const
     {
         return roomlistmodel->getRoomById(id).data();
+    }
+    RoomPreview getRoomPreviewById(QString roomid) const
+    {
+        return roomlistmodel->getRoomPreviewById(roomid);
     }
 
     void nextRoomWithActivity();

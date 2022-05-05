@@ -25,6 +25,8 @@ Pane {
     background: null
     padding: 0
 
+    Window.onActiveChanged: if (Window.active) {MainWindow.activeRoom = Qt.binding(function() { return Rooms.currentRoom.roomId || Rooms.currentRoomPreview.roomid })}
+
     FontMetrics {
         id: fontMetrics
     }

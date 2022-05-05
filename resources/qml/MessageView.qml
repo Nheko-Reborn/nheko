@@ -232,13 +232,7 @@ Item {
             }
         }
 
-        Connections {
-            function onFocusChanged() {
-                readTimer.running = TimelineManager.isWindowFocused;
-            }
-
-            target: TimelineManager
-        }
+        Window.onActiveChanged: readTimer.running = Window.active
 
         Timer {
             id: readTimer

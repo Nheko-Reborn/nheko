@@ -64,6 +64,41 @@ Page {
             target: Rooms
         }
 
+        Component {
+            id: roomWindowComponent
+
+            ApplicationWindow {
+                id: roomWindowW
+
+                property var room: null
+                property var roomPreview: null
+
+                onActiveChanged: if (active) {MainWindow.activeRoom = (room.roomId || roomPreview.roomid)}
+
+                height: 650
+                width: 420
+                minimumWidth: 150
+                minimumHeight: 150
+                palette: Nheko.colors
+                color: Nheko.colors.window
+                title: room.roomName
+                modality: Qt.NonModal
+                flags: Qt.Window | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+
+                Shortcut {
+                    sequence: StandardKey.Cancel
+                    onActivated: roomWindowW.close()
+                }
+
+                TimelineView {
+                    anchors.fill: parent
+                    room: roomWindowW.room
+                    roomPreview: roomWindowW.roomPreview.roomid ? roomWindowW.roomPreview : null
+                }
+            }
+
+        }
+
         Platform.Menu {
             id: roomContextMenu
 
@@ -87,6 +122,18 @@ Page {
             }
 
             Platform.MenuItem {
+                text: qsTr("Open separately")
+                onTriggered: {
+                    var roomWindow = roomWindowComponent.createObject(null, {
+                    "room": Rooms.getRoomById(roomContextMenu.roomid),
+                    "roomPreview": Rooms.getRoomPreviewById(roomContextMenu.roomid)
+                    });
+                    roomWindow.showNormal();
+                    destroyOnClose(roomWindow);
+                }
+            }
+
+            Platform.MenuItem {
                 text: qsTr("Leave room")
                 onTriggered: TimelineManager.openLeaveRoomDialog(roomContextMenu.roomid)
             }
@@ -97,7 +144,7 @@ Page {
 
             Instantiator {
                 model: Communities.tagsWithDefault
-                onObjectAdded: roomContextMenu.insertItem(index + 2, object)
+                onObjectAdded: roomContextMenu.insertItem(index + 3, object)
                 onObjectRemoved: roomContextMenu.removeItem(object)
 
                 delegate: Platform.MenuItem {
