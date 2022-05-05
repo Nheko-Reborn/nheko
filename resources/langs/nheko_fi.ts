@@ -2291,7 +2291,7 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
     <message>
         <location filename="../qml/SelfVerificationCheck.qml" line="+40"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation>Tämä on palautusavaimesi. Tarvitset sitä palauttaaksesi pääsysi salttuihin viesteihisi, sekä varmistusavaimiin. Pidä tämä turvassa. Älä jaa sitä kenellekään äläkä menetä sitä! Älä kulje lähtöruudun kautta! Et saa M̶ 200!</translation>
+        <translation>Tämä on palautusavaimesi. Tarvitset sitä palauttaaksesi pääsysi salttuihin viesteihisi, sekä varmistusavaimiin. Pidä tämä turvassa. Älä jaa sitä kenellekään äläkä kadota sitä! Älä kulje lähtöruudun kautta! Et saa M̶ 200!</translation>
     </message>
     <message>
         <location line="+33"/>
