@@ -12,12 +12,12 @@
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation>Соединение...</translation>
+        <translation>Соединение…</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>Вы демонстрируете экран</translation>
+        <translation>Вы демонстрируете экран.</translation>
     </message>
     <message>
         <location line="+17"/>
