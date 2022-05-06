@@ -53,3 +53,5 @@
 0038 FE0F 20E3:eight
 0039 FE0F 20E3:nine
 1F51F:ten
+1F4A5:boom
+1F389:tada

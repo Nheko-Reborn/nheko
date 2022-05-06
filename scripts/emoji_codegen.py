@@ -76,63 +76,61 @@ if __name__ == '__main__':
         # skip unqualified versions of same unicode
         if qualification != 'fully-qualified':
             continue
-        
 
         char, name = re.match(r'^(\S+) E\d+\.\d+ (.*)$', charAndName).groups()
         shortname = name
         # until skin tone is handled, keep them around
-        # discard skin tone variants for sanity
-        # __contains__ is so stupid i hate prototype languages
-        # if name.__contains__("skin tone") and qualification != 'component': 
+        ## discard skin tone variants for sanity
+        # if "skin tone" in name and qualification != 'component': 
         #    continue
-        # if qualification == 'component' and not name.__contains__("skin tone"): 
+        # if qualification == 'component' and not "skin tone" in name:
         #    continue
         #TODO: Handle skintone modifiers in a sane way
         basicallyTheSame = False
-        if code in shortcodeDict: 
+        if code in shortcodeDict:
             shortname = shortcodeDict[code]
         else:
             shortname = shortname.lower()
-            if shortname.endswith(' (blood type)'): 
+            if shortname.endswith(' (blood type)'):
                 shortname = shortname[:-13]
-            if shortname.endswith(': red hair'): 
+            if shortname.endswith(': red hair'):
                 shortname = "red_haired_" + shortname[:-10]
-            if shortname.endswith(': curly hair'): 
+            if shortname.endswith(': curly hair'):
                 shortname = "curly_haired_" + shortname[:-12]
-            if shortname.endswith(': white hair'): 
+            if shortname.endswith(': white hair'):
                 shortname = "white_haried_" + shortname[:-12]
-            if shortname.endswith(': bald'): 
+            if shortname.endswith(': bald'):
                 shortname = "bald_" + shortname[:-6]
-            if shortname.endswith(': beard'): 
+            if shortname.endswith(': beard'):
                 shortname = "bearded_" + shortname[:-7]
-            if shortname.endswith(' face'): 
+            if shortname.endswith(' face'):
                 shortname = shortname[:-5]
-            if shortname.endswith(' button'): 
-                shortname = shortname[:-7] 
-            if shortname.endswith(' banknote'): 
+            if shortname.endswith(' button'):
+                shortname = shortname[:-7]
+            if shortname.endswith(' banknote'):
                 shortname = shortname[:-9]
-                
+
             # FIXME: Is there a better way to do this?
-            matchobj = re.match(r'^flag: (.*)$', shortname) 
-            if shortname.startswith("flag: "): 
+            matchobj = re.match(r'^flag: (.*)$', shortname)
+            if shortname.startswith("flag: "):
                 country = shortname[5:]
                 shortname = country + " flag"
             shortname = shortname.replace("u.s.", "us")
             shortname = shortname.replace("&", "and")
-            
-            if shortname == name.lower(): 
+
+            if shortname == name.lower():
                 basicallyTheSame = True
 
             shortname = shortname.replace("-", "_")
             shortname = re.sub(r'\W', '_', shortname)
             shortname, = re.match(r'^_*(.+)_*$', shortname).groups()
-            shortname = re.sub(r'_{2,}', '_', shortname) 
+            shortname = re.sub(r'_{2,}', '_', shortname)
             shortname = unidecode(shortname)
         # if basicallyTheSame: 
         #    shortname = ""
         categories[current_category].append(Emoji(code, shortname, name))
 
     # Use xclip to pipe the output to clipboard.
-    # e.g ./codegen.py emoji.json | xclip -sel clip
-    # alternatively - delete the var from src/emoji/Provider.cpp, and do ./codegen.py emojis shortcodes >> src/emoji/Provider.cpp
+    # e.g ./emoji_codegen.py emoji.json | xclip -sel clip
+    # alternatively - delete the var from src/emoji/Provider.cpp, and do ./codegen.sh emojis shortcodes >> ../src/emoji/Provider.cpp
     generate_qml_list(people=people, nature=nature, food=food, activity=activity, travel=travel, objects=objects, symbols=symbols, flags=flags)

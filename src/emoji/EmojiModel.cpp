@@ -59,6 +59,8 @@ EmojiModel::data(const QModelIndex &index, int role) const
             return Provider::emoji[index.row()].unicode;
 
         case Qt::ToolTipRole:
+            return Provider::emoji[index.row()].shortName + ", " +
+                   Provider::emoji[index.row()].unicodeName;
         case CompletionModel::SearchRole2:
         case static_cast<int>(EmojiModel::Roles::UnicodeName):
             return Provider::emoji[index.row()].unicodeName;
