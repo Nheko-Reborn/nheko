@@ -1,0 +1,57 @@
+1F62D:sob
+1F631:scream
+1F613:sweat 
+1F605:sweat_smile
+1F604:smile 
+1F923:rofl 
+1F60B:yum
+1F607:innocent
+1F917:hugging_face
+26A1:zap
+203C FE0F:bangbang
+2049 FE0F:interrobang
+2753:question 
+2757:exclamation 
+2754:white_question
+2755:white_exclamation
+1F520:big_abcd
+1F521:abcd 
+1F522:1234
+1F523:symbols 
+1F524:abc
+1F60D:heart_eyes
+1F927:cry_smile
+1F608:smiling_imp 
+1F47F:imp
+1F261:rage
+1F624:triumph
+1F63A:smiley_cat
+1F638:smile_cat 
+1F639:joy_cat
+1F63B:heart_eyes_cat
+1F63C:smirk_cat
+1F640:scream_cat
+1F4AF:100
+1F44B:wave
+1F448:point_left
+1F449:point_right
+1F446:point_up_2
+1F447:point_down
+261D FE0F:point_up 
+1FAF5:point_you
+1F937:shrug
+0023 FE0F 20E3:hash 
+002A FE0F 20E3:asterisk 
+0030 FE0F 20E3:zero 
+0031 FE0F 20E3:one 
+0032 FE0F 20E3:two
+0033 FE0F 20E3:three
+0034 FE0F 20E3:four 
+0035 FE0F 20E3:five
+0036 FE0F 20E3:six
+0037 FE0F 20E3:seven
+0038 FE0F 20E3:eight
+0039 FE0F 20E3:nine
+1F51F:ten
+1F4A5:boom
+1F389:tada

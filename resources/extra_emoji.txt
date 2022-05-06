@@ -1,0 +1,27 @@
+# group: Symbols 
+200C 1F1E6 200C ; fully-qualified # ‌🇦‌ E6.0 regional indicator a
+200C 1F1E7 200C ; fully-qualified # ‌🇧‌ E6.0 regional indicator b
+200C 1F1E8 200C ; fully-qualified # ‌🇨‌ E6.0 regional indicator c
+200C 1F1E9 200C ; fully-qualified # ‌🇩‌ E6.0 regional indicator d
+200C 1F1EA 200C ; fully-qualified # ‌🇪‌ E6.0 regional indicator e
+200C 1F1EB 200C ; fully-qualified # ‌🇫‌ E6.0 regional indicator f
+200C 1F1EC 200C ; fully-qualified # ‌🇬‌ E6.0 regional indicator g
+200C 1F1ED 200C ; fully-qualified # ‌🇭‌ E6.0 regional indicator h
+200C 1F1EE 200C ; fully-qualified # ‌🇮‌ E6.0 regional indicator i
+200C 1F1EF 200C ; fully-qualified # ‌🇯‌ E6.0 regional indicator j
+200C 1F1F0 200C ; fully-qualified # ‌🇰‌ E6.0 regional indicator k
+200C 1F1F1 200C ; fully-qualified # ‌🇱‌ E6.0 regional indicator l
+200C 1F1F2 200C ; fully-qualified # ‌🇲‌ E6.0 regional indicator m
+200C 1F1F3 200C ; fully-qualified # ‌🇳‌ E6.0 regional indicator n
+200C 1F1F4 200C ; fully-qualified # ‌🇴‌ E6.0 regional indicator o
+200C 1F1F5 200C ; fully-qualified # ‌🇵‌ E6.0 regional indicator p
+200C 1F1F6 200C ; fully-qualified # ‌🇶‌ E6.0 regional indicator q
+200C 1F1F7 200C ; fully-qualified # ‌🇷‌ E6.0 regional indicator r
+200C 1F1F8 200C ; fully-qualified # ‌🇸‌ E6.0 regional indicator s
+200C 1F1F9 200C ; fully-qualified # ‌🇹‌ E6.0 regional indicator t
+200C 1F1FA 200C ; fully-qualified # ‌🇺‌ E6.0 regional indicator u
+200C 1F1FB 200C ; fully-qualified # ‌🇻‌ E6.0 regional indicator v
+200C 1F1FC 200C ; fully-qualified # ‌🇼‌ E6.0 regional indicator w
+200C 1F1FD 200C ; fully-qualified # ‌🇽‌ E6.0 regional indicator x
+200C 1F1FE 200C ; fully-qualified # ‌🇾‌ E6.0 regional indicator y
+200C 1F1FF 200C ; fully-qualified # ‌🇿‌ E6.0 regional indicator z

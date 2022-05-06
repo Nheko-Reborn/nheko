@@ -31,11 +31,12 @@ EmojiModel::roleNames() const
     static QHash<int, QByteArray> roles;
 
     if (roles.isEmpty()) {
-        roles                                                 = QAbstractListModel::roleNames();
-        roles[static_cast<int>(EmojiModel::Roles::Unicode)]   = QByteArrayLiteral("unicode");
-        roles[static_cast<int>(EmojiModel::Roles::ShortName)] = QByteArrayLiteral("shortName");
-        roles[static_cast<int>(EmojiModel::Roles::Category)]  = QByteArrayLiteral("category");
-        roles[static_cast<int>(EmojiModel::Roles::Emoji)]     = QByteArrayLiteral("emoji");
+        roles                                                   = QAbstractListModel::roleNames();
+        roles[static_cast<int>(EmojiModel::Roles::Unicode)]     = QByteArrayLiteral("unicode");
+        roles[static_cast<int>(EmojiModel::Roles::ShortName)]   = QByteArrayLiteral("shortName");
+        roles[static_cast<int>(EmojiModel::Roles::UnicodeName)] = QByteArrayLiteral("unicodeName");
+        roles[static_cast<int>(EmojiModel::Roles::Category)]    = QByteArrayLiteral("category");
+        roles[static_cast<int>(EmojiModel::Roles::Emoji)]       = QByteArrayLiteral("emoji");
     }
 
     return roles;
@@ -58,10 +59,14 @@ EmojiModel::data(const QModelIndex &index, int role) const
             return Provider::emoji[index.row()].unicode;
 
         case Qt::ToolTipRole:
+            return Provider::emoji[index.row()].shortName + ", " +
+                   Provider::emoji[index.row()].unicodeName;
+        case CompletionModel::SearchRole2:
+        case static_cast<int>(EmojiModel::Roles::UnicodeName):
+            return Provider::emoji[index.row()].unicodeName;
         case CompletionModel::SearchRole:
         case static_cast<int>(EmojiModel::Roles::ShortName):
             return Provider::emoji[index.row()].shortName;
-
         case static_cast<int>(EmojiModel::Roles::Category):
             return QVariant::fromValue(Provider::emoji[index.row()].category);
 

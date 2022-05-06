@@ -146,7 +146,7 @@ Menu {
                     width: 48
                     height: 48
                     hoverEnabled: true
-                    ToolTip.text: model.shortName
+                    ToolTip.text: model.toolTip
                     ToolTip.visible: hovered
                     // TODO: maybe add favorites at some point?
                     onClicked: {

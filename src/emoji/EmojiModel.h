@@ -26,6 +26,7 @@ public:
         Unicode = Qt::UserRole, // unicode of emoji
         Category,               // category of emoji
         ShortName,              // shortext of the emoji
+        UnicodeName,            // true unicode name of the emoji
         Emoji,                  // Contains everything from the Emoji
     };
 
