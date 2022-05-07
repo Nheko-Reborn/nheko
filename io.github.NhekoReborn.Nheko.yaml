@@ -104,6 +104,36 @@ modules:
         url: https://gitlab.gnome.org/GNOME/libsecret.git
   - config-opts:
       - -DCMAKE_BUILD_TYPE=Release
+      - -DAVIF_CODEC_AOM=ON
+      #- -DBUILD_SHARED_LIBS=OFF
+    buildsystem: cmake-ninja
+    name: libavif
+    sources:
+      - sha256: 66e82854ceb84a3e542bc140a343bc90e56c68f3ecb4fff63e636c136ed9a05e
+        type: archive
+        url: https://github.com/AOMediaCodec/libavif/archive/refs/tags/v0.10.1.tar.gz
+  - config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DWITH_EXAMPLES=OFF
+      #- -DBUILD_SHARED_LIBS=OFF
+    buildsystem: cmake-ninja
+    name: libheif
+    sources:
+      - sha256: e1ac2abb354fdc8ccdca71363ebad7503ad731c84022cf460837f0839e171718
+        type: archive
+        url: https://github.com/strukturag/libheif/releases/download/v1.12.0/libheif-1.12.0.tar.gz
+  - config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DKIMAGEFORMATS_HEIF=ON
+    buildsystem: cmake-ninja
+    name: KImageFormats
+    sources:
+      - commit: ae6b724824fc2fdf71d50dc7ae0052ad1551b25a
+        tag: v5.93.0
+        type: git
+        url: https://invent.kde.org/frameworks/kimageformats.git
+  - config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
       - -DBUILD_TEST_APPLICATION=OFF
       - -DQTKEYCHAIN_STATIC=ON
     buildsystem: cmake-ninja
