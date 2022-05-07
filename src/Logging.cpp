@@ -13,6 +13,8 @@
 #include <QString>
 #include <QtGlobal>
 
+#include <mtx/log.hpp>
+
 namespace {
 std::shared_ptr<spdlog::logger> db_logger     = nullptr;
 std::shared_ptr<spdlog::logger> net_logger    = nullptr;
@@ -67,12 +69,13 @@ init(const std::string &file_path)
     auto file_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
       file_path, MAX_FILE_SIZE, MAX_LOG_FILES);
 
-    auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+    auto console_sink = std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
 
     std::vector<spdlog::sink_ptr> sinks;
     sinks.push_back(file_sink);
     sinks.push_back(console_sink);
 
+    mtx::utils::log::log()->sinks() = sinks;
     net_logger    = std::make_shared<spdlog::logger>("net", std::begin(sinks), std::end(sinks));
     ui_logger     = std::make_shared<spdlog::logger>("ui", std::begin(sinks), std::end(sinks));
     db_logger     = std::make_shared<spdlog::logger>("db", std::begin(sinks), std::end(sinks));
@@ -85,6 +88,7 @@ init(const std::string &file_path)
         crypto_logger->set_level(spdlog::level::trace);
         net_logger->set_level(spdlog::level::trace);
         qml_logger->set_level(spdlog::level::trace);
+        mtx::utils::log::log()->set_level(spdlog::level::trace);
     }
 
     qInstallMessageHandler(qmlMessageHandler);
