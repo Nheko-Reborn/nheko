@@ -445,8 +445,8 @@ MainWindow::removePerRoomWindow(const QString &room, QWindow *window)
 {
     roomWindows_.remove(room, window);
 }
-const QWindow *
-MainWindow::windowForRoom(const QString &room) const
+QWindow *
+MainWindow::windowForRoom(const QString &room)
 {
     auto currMainWindowRoom = ChatPage::instance()->timelineManager()->rooms()->currentRoom();
     if ((currMainWindowRoom && currMainWindowRoom->roomId() == room) ||

@@ -61,7 +61,7 @@ public:
 
     Q_INVOKABLE void addPerRoomWindow(const QString &room, QWindow *window);
     Q_INVOKABLE void removePerRoomWindow(const QString &room, QWindow *window);
-    const QWindow *windowForRoom(const QString &room) const;
+    QWindow *windowForRoom(const QString &room);
     QString focusedRoom() const;
 
 protected:

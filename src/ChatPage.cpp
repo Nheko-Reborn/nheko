@@ -152,16 +152,26 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
             this,
             [this](const QString &roomid, const QString &eventid) {
                 Q_UNUSED(eventid)
-                view_manager_->rooms()->setCurrentRoom(roomid);
-                MainWindow::instance()->requestActivate();
+                auto exWin = MainWindow::instance()->windowForRoom(roomid);
+                if (exWin) {
+                    exWin->requestActivate();
+                } else {
+                    view_manager_->rooms()->setCurrentRoom(roomid);
+                    MainWindow::instance()->requestActivate();
+                }
             });
     connect(&notificationsManager,
             &NotificationsManager::sendNotificationReply,
             this,
             [this](const QString &roomid, const QString &eventid, const QString &body) {
-                view_manager_->rooms()->setCurrentRoom(roomid);
                 view_manager_->queueReply(roomid, eventid, body);
-                MainWindow::instance()->requestActivate();
+                auto exWin = MainWindow::instance()->windowForRoom(roomid);
+                if (exWin) {
+                    exWin->requestActivate();
+                } else {
+                    view_manager_->rooms()->setCurrentRoom(roomid);
+                    MainWindow::instance()->requestActivate();
+                }
             });
 
     connect(

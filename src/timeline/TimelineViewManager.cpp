@@ -222,7 +222,10 @@ void
 TimelineViewManager::showEvent(const QString &room_id, const QString &event_id)
 {
     if (auto room = rooms_->getRoomById(room_id)) {
-        if (rooms_->currentRoom() != room) {
+        auto exWin = MainWindow::instance()->windowForRoom(room_id);
+        if (exWin) {
+            exWin->requestActivate();
+        } else if (rooms_->currentRoom() != room) {
             rooms_->setCurrentRoom(room_id);
             MainWindow::instance()->requestActivate();
             nhlog::ui()->info("Activated room {}", room_id.toStdString());

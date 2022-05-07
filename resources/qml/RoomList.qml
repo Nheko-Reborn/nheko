@@ -82,7 +82,7 @@ Page {
                 minimumHeight: 150
                 palette: Nheko.colors
                 color: Nheko.colors.window
-                title: room.roomName
+                title: room.plainRoomName
                 modality: Qt.NonModal
                 flags: Qt.Window | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
