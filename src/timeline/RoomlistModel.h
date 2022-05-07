@@ -8,10 +8,10 @@
 #include <CacheStructs.h>
 #include <QAbstractListModel>
 #include <QHash>
+#include <QQmlEngine>
 #include <QSharedPointer>
 #include <QSortFilterProxyModel>
 #include <QString>
-#include <QQmlEngine>
 #include <set>
 
 #include <mtx/responses/sync.hpp>
