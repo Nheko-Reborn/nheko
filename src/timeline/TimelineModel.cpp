@@ -1072,7 +1072,7 @@ TimelineModel::setCurrentIndex(int index)
     if (index != oldIndex)
         emit currentIndexChanged(index);
 
-    if (MainWindow::instance()->activeRoom() != roomId())
+    if (MainWindow::instance()->activeRoom() != roomId() && QGuiApplication::focusWindow())
         return;
 
     if (!currentId.startsWith('m')) {
