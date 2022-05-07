@@ -811,10 +811,8 @@ ChatPage::changeRoom(const QString &room_id)
 }
 
 void
-ChatPage::inviteUser(QString userid, QString reason)
+ChatPage::inviteUser(const QString &room, QString userid, QString reason)
 {
-    auto room = MainWindow::instance()->activeRoom();
-
     if (QMessageBox::question(nullptr,
                               tr("Confirm invite"),
                               tr("Do you really want to invite %1 (%2)?")
@@ -837,10 +835,8 @@ ChatPage::inviteUser(QString userid, QString reason)
       reason.trimmed().toStdString());
 }
 void
-ChatPage::kickUser(QString userid, QString reason)
+ChatPage::kickUser(const QString &room, QString userid, QString reason)
 {
-    auto room = MainWindow::instance()->activeRoom();
-
     bool confirmed;
     reason =
       QInputDialog::getText(nullptr,
@@ -868,10 +864,8 @@ ChatPage::kickUser(QString userid, QString reason)
       reason.trimmed().toStdString());
 }
 void
-ChatPage::banUser(QString userid, QString reason)
+ChatPage::banUser(const QString &room, QString userid, QString reason)
 {
-    auto room = MainWindow::instance()->activeRoom();
-
     bool confirmed;
     reason =
       QInputDialog::getText(nullptr,
@@ -899,10 +893,8 @@ ChatPage::banUser(QString userid, QString reason)
       reason.trimmed().toStdString());
 }
 void
-ChatPage::unbanUser(QString userid, QString reason)
+ChatPage::unbanUser(const QString &room, QString userid, QString reason)
 {
-    auto room = MainWindow::instance()->activeRoom();
-
     if (QMessageBox::question(nullptr,
                               tr("Confirm unban"),
                               tr("Do you really want to unban %1 (%2)?")
@@ -1398,7 +1390,7 @@ ChatPage::handleMatrixUri(QString uri)
 
     if (sigil1 == u"u") {
         if (action.isEmpty()) {
-            auto t = MainWindow::instance()->activeRoom();
+            auto t = MainWindow::instance()->focusedRoom();
             if (!t.isEmpty() && cache::isRoomMember(mxid1.toStdString(), t.toStdString())) {
                 auto rm = view_manager_->rooms()->getRoomById(t);
                 if (rm)
@@ -1468,5 +1460,6 @@ ChatPage::handleMatrixUri(const QUrl &uri)
 bool
 ChatPage::isRoomActive(const QString &room_id)
 {
-    return QGuiApplication::focusWindow() && MainWindow::instance()->activeRoom() == room_id;
+    return QGuiApplication::focusWindow() && QGuiApplication::focusWindow()->isActive() &&
+           MainWindow::instance()->windowForRoom(room_id) == QGuiApplication::focusWindow();
 }

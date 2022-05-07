@@ -1072,7 +1072,8 @@ TimelineModel::setCurrentIndex(int index)
     if (index != oldIndex)
         emit currentIndexChanged(index);
 
-    if (MainWindow::instance()->activeRoom() != roomId() && QGuiApplication::focusWindow())
+    if (!QGuiApplication::focusWindow() || !QGuiApplication::focusWindow()->isActive() ||
+        MainWindow::instance()->windowForRoom(roomId()) != QGuiApplication::focusWindow())
         return;
 
     if (!currentId.startsWith('m')) {
@@ -2338,7 +2339,8 @@ TimelineModel::acceptKnock(const QString &id)
     if (event->content.membership != Membership::Knock)
         return;
 
-    ChatPage::instance()->inviteUser(QString::fromStdString(event->state_key), QLatin1String(""));
+    ChatPage::instance()->inviteUser(
+      room_id_, QString::fromStdString(event->state_key), QLatin1String(""));
 }
 
 bool

@@ -675,13 +675,17 @@ InputBar::command(const QString &command, QString args)
     } else if (command == QLatin1String("part") || command == QLatin1String("leave")) {
         ChatPage::instance()->timelineManager()->openLeaveRoomDialog(room->roomId(), args);
     } else if (command == QLatin1String("invite")) {
-        ChatPage::instance()->inviteUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
+        ChatPage::instance()->inviteUser(
+          room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
     } else if (command == QLatin1String("kick")) {
-        ChatPage::instance()->kickUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
+        ChatPage::instance()->kickUser(
+          room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
     } else if (command == QLatin1String("ban")) {
-        ChatPage::instance()->banUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
+        ChatPage::instance()->banUser(
+          room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
     } else if (command == QLatin1String("unban")) {
-        ChatPage::instance()->unbanUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
+        ChatPage::instance()->unbanUser(
+          room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
     } else if (command == QLatin1String("roomnick")) {
         mtx::events::state::Member member;
         member.display_name = args.toStdString();

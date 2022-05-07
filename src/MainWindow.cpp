@@ -434,3 +434,50 @@ MainWindow::showDialog(QWidget *dialog)
     utils::centerWidget(dialog, this);
     dialog->window()->windowHandle()->setTransientParent(this);
 }
+
+void
+MainWindow::addPerRoomWindow(const QString &room, QWindow *window)
+{
+    roomWindows_.insert(room, window);
+}
+void
+MainWindow::removePerRoomWindow(const QString &room, QWindow *window)
+{
+    roomWindows_.remove(room, window);
+}
+const QWindow *
+MainWindow::windowForRoom(const QString &room) const
+{
+    auto currMainWindowRoom = ChatPage::instance()->timelineManager()->rooms()->currentRoom();
+    if ((currMainWindowRoom && currMainWindowRoom->roomId() == room) ||
+        ChatPage::instance()->timelineManager()->rooms()->currentRoomPreview().roomid_ == room)
+        return this;
+    else if (auto res = roomWindows_.find(room); res != roomWindows_.end())
+        return res.value();
+    return nullptr;
+}
+
+QString
+MainWindow::focusedRoom() const
+{
+    auto focus = QGuiApplication::focusWindow();
+    if (!focus)
+        return {};
+
+    if (focus == this) {
+        auto currMainWindowRoom = ChatPage::instance()->timelineManager()->rooms()->currentRoom();
+        if (currMainWindowRoom)
+            return currMainWindowRoom->roomId();
+        else
+            return ChatPage::instance()->timelineManager()->rooms()->currentRoomPreview().roomid_;
+    }
+
+    auto i = roomWindows_.constBegin();
+    while (i != roomWindows_.constEnd()) {
+        if (i.value() == focus)
+            return i.key();
+        ++i;
+    }
+
+    return nullptr;
+}

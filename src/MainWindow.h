@@ -8,6 +8,7 @@
 
 #include <functional>
 
+#include <QHash>
 #include <QQuickView>
 #include <QSharedPointer>
 #include <QSystemTrayIcon>
@@ -40,7 +41,6 @@ class ReCaptcha;
 class MainWindow : public QQuickView
 {
     Q_OBJECT
-    Q_PROPERTY(QString activeRoom READ activeRoom WRITE updateActiveRoom NOTIFY activeRoomChanged)
 
 public:
     explicit MainWindow(QWindow *parent = nullptr);
@@ -59,14 +59,10 @@ public:
     bool dbusAvailable() const { return dbusAvailable_; }
 #endif
 
-    QString activeRoom() const { return activeRoom_; }
-    void updateActiveRoom(QString r)
-    {
-        if (activeRoom_ != r) {
-            activeRoom_ = std::move(r);
-            emit activeRoomChanged();
-        }
-    }
+    Q_INVOKABLE void addPerRoomWindow(const QString &room, QWindow *window);
+    Q_INVOKABLE void removePerRoomWindow(const QString &room, QWindow *window);
+    const QWindow *windowForRoom(const QString &room) const;
+    QString focusedRoom() const;
 
 protected:
     void closeEvent(QCloseEvent *event);
@@ -87,8 +83,6 @@ signals:
     void switchToChatPage();
     void switchToWelcomePage();
     void switchToLoginPage(QString error);
-
-    void activeRoomChanged();
 
 private:
     void showDialog(QWidget *dialog);
@@ -113,7 +107,7 @@ private:
 
     MxcImageProvider *imgProvider = nullptr;
 
-    QString activeRoom_;
+    QMultiHash<QString, QWindow *> roomWindows_;
 
 #ifdef NHEKO_DBUS_SYS
     bool dbusAvailable_{false};

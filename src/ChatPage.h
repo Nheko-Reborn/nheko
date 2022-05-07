@@ -92,10 +92,10 @@ public slots:
                      bool promptForConfirmation = true,
                      const QString &reason      = "");
 
-    void inviteUser(QString userid, QString reason);
-    void kickUser(QString userid, QString reason);
-    void banUser(QString userid, QString reason);
-    void unbanUser(QString userid, QString reason);
+    void inviteUser(const QString &room, QString userid, QString reason);
+    void kickUser(const QString &room, QString userid, QString reason);
+    void banUser(const QString &room, QString userid, QString reason);
+    void unbanUser(const QString &room, QString userid, QString reason);
 
     void receivedSessionKey(const std::string &room_id, const std::string &session_id);
     void decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescription keyDesc,

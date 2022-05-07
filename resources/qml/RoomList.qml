@@ -73,7 +73,8 @@ Page {
                 property var room: null
                 property var roomPreview: null
 
-                onActiveChanged: if (active) {MainWindow.activeRoom = (room.roomId || roomPreview.roomid)}
+                Component.onCompleted: MainWindow.addPerRoomWindow(room.roomId || roomPreview.roomid, roomWindowW)
+                Component.onDestruction: MainWindow.removePerRoomWindow(room.roomId || roomPreview.roomid, roomWindowW)
 
                 height: 650
                 width: 420

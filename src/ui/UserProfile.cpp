@@ -297,7 +297,7 @@ UserProfile::updateVerificationStatus()
 void
 UserProfile::banUser()
 {
-    ChatPage::instance()->banUser(this->userid_, QLatin1String(""));
+    ChatPage::instance()->banUser(roomid_, this->userid_, QLatin1String(""));
 }
 
 // void ignoreUser(){
@@ -307,7 +307,7 @@ UserProfile::banUser()
 void
 UserProfile::kickUser()
 {
-    ChatPage::instance()->kickUser(this->userid_, QLatin1String(""));
+    ChatPage::instance()->kickUser(roomid_, this->userid_, QLatin1String(""));
 }
 
 void
