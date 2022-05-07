@@ -11,6 +11,7 @@
 #include <QSharedPointer>
 #include <QSortFilterProxyModel>
 #include <QString>
+#include <QQmlEngine>
 #include <set>
 
 #include <mtx/responses/sync.hpp>
@@ -184,7 +185,9 @@ public slots:
     void resetCurrentRoom() { roomlistmodel->resetCurrentRoom(); }
     TimelineModel *getRoomById(const QString &id) const
     {
-        return roomlistmodel->getRoomById(id).data();
+        auto r = roomlistmodel->getRoomById(id).data();
+        QQmlEngine::setObjectOwnership(r, QQmlEngine::CppOwnership);
+        return r;
     }
     RoomPreview getRoomPreviewById(QString roomid) const
     {
