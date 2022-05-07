@@ -59,6 +59,7 @@ MemberListBackend::roleNames() const
       {DisplayName, "displayName"},
       {AvatarUrl, "avatarUrl"},
       {Trustlevel, "trustlevel"},
+      {Powerlevel, "powerlevel"},
     };
 }
 

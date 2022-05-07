@@ -168,6 +168,41 @@ ApplicationWindow {
                             Layout.fillWidth: true
                         }
 
+                        Image {
+                            property bool isAdmin: room.permissions.changeLevel(MtxEvent.PowerLevels) <= model.powerlevel
+                            property bool isModerator: room.permissions.redactLevel() <= model.powerlevel
+                            //property bool isDefault: room.permissions.defaultLevel() <= model.powerlevel
+
+                            property string sourceUrl: {
+                                if (isAdmin)
+                                return "image://colorimage/:/icons/icons/ui/ribbon_star.svg?";
+                                else if (isModerator)
+                                return "image://colorimage/:/icons/icons/ui/ribbon.svg?";
+                                else
+                                return "image://colorimage/:/icons/icons/ui/person.svg?";
+                            }
+
+                            width: 16
+                            height: 16
+                            sourceSize.height: height * Screen.devicePixelRatio
+                            sourceSize.width: width * Screen.devicePixelRatio
+                            source: sourceUrl + (ma.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
+                            ToolTip.visible: ma.hovered
+                            ToolTip.text: {
+                                if (isAdmin)
+                                return qsTr("Administrator: %1").arg(model.powerlevel);
+                                else if (isModerator)
+                                return qsTr("Moderator: %1").arg(model.powerlevel);
+                                else
+                                return qsTr("User: %1").arg(model.powerlevel);
+                            }
+
+                            HoverHandler {
+                                id: ma
+                            }
+
+                        }
+
                         EncryptionIndicator {
                             id: encryptInd
 

@@ -63,6 +63,31 @@ Permissions::canSend(int eventType)
              qml_mtx_events::fromRoomEventType(static_cast<qml_mtx_events::EventType>(eventType))));
 }
 
+int
+Permissions::defaultLevel()
+{
+    return  pl.users_default;
+}
+int
+Permissions::redactLevel()
+{
+    return  pl.redact;
+}
+int
+Permissions::changeLevel(int eventType)
+{
+    return 
+           pl.state_level(to_string(
+             qml_mtx_events::fromRoomEventType(static_cast<qml_mtx_events::EventType>(eventType))));
+}
+int
+Permissions::sendLevel(int eventType)
+{
+    return 
+           pl.event_level(to_string(
+             qml_mtx_events::fromRoomEventType(static_cast<qml_mtx_events::EventType>(eventType))));
+}
+
 bool
 Permissions::canPingRoom()
 {

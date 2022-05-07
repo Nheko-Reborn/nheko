@@ -17,12 +17,15 @@
         <file>icons/ui/end-call.svg</file>
         <file>icons/ui/expanded.svg</file>
         <file>icons/ui/image-failed.svg</file>
+        <file>icons/ui/image.svg</file>
         <file>icons/ui/lowprio.svg</file>
         <file>icons/ui/microphone-mute.svg</file>
         <file>icons/ui/microphone-unmute.svg</file>
+        <file>icons/ui/music.svg</file>
         <file>icons/ui/options.svg</file>
         <file>icons/ui/pause-symbol.svg</file>
         <file>icons/ui/people.svg</file>
+        <file>icons/ui/person.svg</file>
         <file>icons/ui/picture-in-picture.svg</file>
         <file>icons/ui/pin-off.svg</file>
         <file>icons/ui/pin.svg</file>
@@ -31,6 +34,8 @@
         <file>icons/ui/power-off.svg</file>
         <file>icons/ui/refresh.svg</file>
         <file>icons/ui/reply.svg</file>
+        <file>icons/ui/ribbon.svg</file>
+        <file>icons/ui/ribbon_star.svg</file>
         <file>icons/ui/round-remove-button.svg</file>
         <file>icons/ui/screen-share.svg</file>
         <file>icons/ui/search.svg</file>
@@ -42,14 +47,12 @@
         <file>icons/ui/sticky-note-solid.svg</file>
         <file>icons/ui/tag.svg</file>
         <file>icons/ui/user-friends-solid.svg</file>
+        <file>icons/ui/video-file.svg</file>
         <file>icons/ui/video.svg</file>
         <file>icons/ui/volume-off-indicator.svg</file>
         <file>icons/ui/volume-up.svg</file>
         <file>icons/ui/world.svg</file>
-        <file>icons/ui/music.svg</file>
-        <file>icons/ui/image.svg</file>
         <file>icons/ui/zip.svg</file>
-        <file>icons/ui/video-file.svg</file>
         <file>icons/emoji-categories/activity.svg</file>
         <file>icons/emoji-categories/flags.svg</file>
         <file>icons/emoji-categories/foods.svg</file>
