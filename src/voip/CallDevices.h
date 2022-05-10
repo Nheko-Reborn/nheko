@@ -43,6 +43,6 @@ private:
     GstDevice *videoDevice(std::pair<int, int> &resolution, std::pair<int, int> &frameRate) const;
 
 public:
-    CallDevices(CallDevices const &) = delete;
+    CallDevices(CallDevices const &)    = delete;
     void operator=(CallDevices const &) = delete;
 };

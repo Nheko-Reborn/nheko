@@ -10,7 +10,8 @@
 NhekoCursorShape::NhekoCursorShape(QQuickItem *parent)
   : QQuickItem(parent)
   , currentShape_(Qt::CursorShape::ArrowCursor)
-{}
+{
+}
 
 Qt::CursorShape
 NhekoCursorShape::cursorShape() const

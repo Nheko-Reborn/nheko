@@ -113,6 +113,6 @@ private:
     void clear();
 
 public:
-    WebRTCSession(WebRTCSession const &) = delete;
+    WebRTCSession(WebRTCSession const &)  = delete;
     void operator=(WebRTCSession const &) = delete;
 };

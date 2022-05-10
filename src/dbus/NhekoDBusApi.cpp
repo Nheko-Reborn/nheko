@@ -44,7 +44,8 @@ RoomInfoItem::RoomInfoItem(const QString &roomId,
   , roomName_{title}
   , image_{image}
   , unreadNotifications_{unreadNotifications}
-{}
+{
+}
 
 RoomInfoItem::RoomInfoItem(const RoomInfoItem &other)
   : QObject{other.parent()}
@@ -53,7 +54,8 @@ RoomInfoItem::RoomInfoItem(const RoomInfoItem &other)
   , roomName_{other.roomName_}
   , image_{other.image_}
   , unreadNotifications_{other.unreadNotifications_}
-{}
+{
+}
 
 RoomInfoItem &
 RoomInfoItem::operator=(const RoomInfoItem &other)

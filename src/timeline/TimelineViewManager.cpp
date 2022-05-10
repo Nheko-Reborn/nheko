@@ -242,13 +242,17 @@ TimelineViewManager::escapeEmoji(QString str) const
 }
 
 void
-TimelineViewManager::openImageOverlay(TimelineModel *room, QString mxcUrl, QString eventId)
+TimelineViewManager::openImageOverlay(TimelineModel *room,
+                                      QString mxcUrl,
+                                      QString eventId,
+                                      double originalWidth,
+                                      double proportionalHeight)
 {
     if (mxcUrl.isEmpty()) {
         return;
     }
 
-    emit showImageOverlay(room, eventId, mxcUrl);
+    emit showImageOverlay(room, eventId, mxcUrl, originalWidth, proportionalHeight);
 }
 
 void

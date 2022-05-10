@@ -193,7 +193,8 @@ MxcAnimatedImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeD
     }
 
     QSizeF r = img.size();
-    r.scale(size(), Qt::KeepAspectRatio);
+    if (height() != 0 || width() != 0)
+        r.scale(size(), Qt::KeepAspectRatio);
 
     n->setRect((width() - r.width()) / 2, (height() - r.height()) / 2, r.width(), r.height());
     n->setFiltering(QSGTexture::Linear);

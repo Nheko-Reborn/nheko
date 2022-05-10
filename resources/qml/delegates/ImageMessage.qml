@@ -67,7 +67,7 @@ AbstractButton {
         eventId: parent.eventId
     }
 
-    onClicked :Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId);
+    onClicked :Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId, originalWidth, proportionalHeight);
 
     Item {
         id: overlay

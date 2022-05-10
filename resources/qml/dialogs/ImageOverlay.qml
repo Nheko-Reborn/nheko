@@ -29,18 +29,17 @@ Window {
     }
 
 
-
     Item {
         id: imgContainer
 
-        property int imgSrcWidth: (originalWidth && originalWidth > 200) ? originalWidth : Screen.width
-        property int imgSrcHeight: proportionalHeight ? imgSrcWidth * proportionalHeight : Screen.height
+        property int imgSrcWidth: (imageOverlay.originalWidth && imageOverlay.originalWidth > 100) ? imageOverlay.originalWidth : Screen.width
+        property int imgSrcHeight: imageOverlay.proportionalHeight ? imgSrcWidth * imageOverlay.proportionalHeight : Screen.height
 
-        height: Math.min(parent.height, imgSrcHeight)
-        width: Math.min(parent.width, imgSrcWidth)
+        height: Math.min(parent.height || Screen.height, imgSrcHeight)
+        width: Math.min(parent.width || Screen.width, imgSrcWidth)
 
-        x: (parent.width - width)
-        y: (parent.height - height)
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
 
         Image {
             id: img

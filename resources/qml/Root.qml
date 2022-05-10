@@ -284,7 +284,7 @@ Pane {
             destroyOnClose(dialog);
         }
 
-        function onShowImageOverlay(room, eventId, url, proportionalHeight, originalWidth) {
+        function onShowImageOverlay(room, eventId, url, originalWidth, proportionalHeight) {
             var dialog = imageOverlay.createObject(timelineRoot, {
                 "room": room,
                 "eventId": eventId,
@@ -292,6 +292,7 @@ Pane {
                 "originalWidth": originalWidth ?? 0,
                 "proportionalHeight": proportionalHeight ?? 0
             });
+
             dialog.showFullScreen();
             destroyOnClose(dialog);
         }

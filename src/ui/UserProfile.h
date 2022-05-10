@@ -45,7 +45,8 @@ public:
       , verification_status(verification_status_)
       , lastIp(lastIp_)
       , lastTs(lastTs_)
-    {}
+    {
+    }
     DeviceInfo(const QString deviceID,
                const QString displayName,
                verification::Status verification_status_)
@@ -53,10 +54,12 @@ public:
       , display_name(displayName)
       , verification_status(verification_status_)
       , lastTs(0)
-    {}
+    {
+    }
     DeviceInfo()
       : verification_status(verification::UNVERIFIED)
-    {}
+    {
+    }
 
     QString device_id;
     QString display_name;

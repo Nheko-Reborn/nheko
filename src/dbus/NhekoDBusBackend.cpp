@@ -16,7 +16,8 @@
 NhekoDBusBackend::NhekoDBusBackend(RoomlistModel *parent)
   : QObject{parent}
   , m_parent{parent}
-{}
+{
+}
 
 QVector<nheko::dbus::RoomInfoItem>
 NhekoDBusBackend::rooms(const QDBusMessage &message)

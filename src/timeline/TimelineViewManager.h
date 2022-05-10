@@ -54,7 +54,11 @@ public:
 
     Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
     bool isConnected() const { return isConnected_; }
-    Q_INVOKABLE void openImageOverlay(TimelineModel *room, QString mxcUrl, QString eventId);
+    Q_INVOKABLE void openImageOverlay(TimelineModel *room,
+                                      QString mxcUrl,
+                                      QString eventId,
+                                      double originalWidth,
+                                      double proportionalHeight);
     Q_INVOKABLE void openImagePackSettings(QString roomid);
     Q_INVOKABLE void saveMedia(QString mxcUrl);
     Q_INVOKABLE QColor userColor(QString id, QColor background);
@@ -87,7 +91,11 @@ signals:
     void openProfile(UserProfile *profile);
     void showImagePackSettings(TimelineModel *room, ImagePackListModel *packlist);
     void openLeaveRoomDialog(QString roomid, QString reason = "");
-    void showImageOverlay(TimelineModel *room, QString eventId, QString url);
+    void showImageOverlay(TimelineModel *room,
+                          QString eventId,
+                          QString url,
+                          double originalWidth,
+                          double proportionalHeight);
 
 public slots:
     void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
