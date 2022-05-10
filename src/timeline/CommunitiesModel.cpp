@@ -14,8 +14,7 @@
 
 CommunitiesModel::CommunitiesModel(QObject *parent)
   : QAbstractListModel(parent)
-{
-}
+{}
 
 QHash<int, QByteArray>
 CommunitiesModel::roleNames() const

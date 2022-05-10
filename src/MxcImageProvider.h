@@ -29,8 +29,7 @@ public:
       , m_requestedSize(requestedSize)
       , m_crop(crop)
       , m_radius(radius)
-    {
-    }
+    {}
 
     void run();
 

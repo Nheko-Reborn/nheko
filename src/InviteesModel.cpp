@@ -12,8 +12,7 @@
 
 InviteesModel::InviteesModel(QObject *parent)
   : QAbstractListModel{parent}
-{
-}
+{}
 
 void
 InviteesModel::addUser(QString mxid)

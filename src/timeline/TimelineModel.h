@@ -147,8 +147,7 @@ class StateKeeper
 public:
     StateKeeper(std::function<void()> &&fn)
       : fn_(std::move(fn))
-    {
-    }
+    {}
 
     ~StateKeeper() { fn_(); }
 

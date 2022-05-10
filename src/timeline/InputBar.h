@@ -39,8 +39,7 @@ class InputVideoSurface : public QAbstractVideoSurface
 public:
     InputVideoSurface(QObject *parent)
       : QAbstractVideoSurface(parent)
-    {
-    }
+    {}
 
     bool present(const QVideoFrame &frame) override;
 
