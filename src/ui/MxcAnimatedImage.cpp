@@ -162,6 +162,8 @@ MxcAnimatedImage::geometryChanged(const QRectF &newGeometry, const QRectF &oldGe
             QSizeF r = movie.scaledSize();
             r.scale(newGeometry.size(), Qt::KeepAspectRatio);
             movie.setScaledSize(r.toSize());
+            imageDirty = true;
+            update();
         }
     }
 }
@@ -182,7 +184,6 @@ MxcAnimatedImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeD
         n->setFlags(QSGNode::OwnedByParent);
     }
 
-    // n->setTexture(nullptr);
     auto img = movie.currentImage();
     n->setSourceRect(img.rect());
     if (!img.isNull())
@@ -193,8 +194,7 @@ MxcAnimatedImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeD
     }
 
     QSizeF r = img.size();
-    if (height() != 0 || width() != 0)
-        r.scale(size(), Qt::KeepAspectRatio);
+    r.scale(size(), Qt::KeepAspectRatio);
 
     n->setRect((width() - r.width()) / 2, (height() - r.height()) / 2, r.width(), r.height());
     n->setFiltering(QSGTexture::Linear);
