@@ -143,6 +143,7 @@ Rectangle {
         visible: Settings.privacyScreen
         screenTimeout: Settings.privacyScreenTimeout
         timelineRoot: adaptiveView
+        windowTarget: MainWindow
     }
 
 }
