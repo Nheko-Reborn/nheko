@@ -15,7 +15,7 @@ Item {
     property int screenTimeout
 
     Connections {
-        function onFocusChanged() {
+        function onActiveChanged() {
             if (MainWindow.active) {
                 screenSaverTimer.stop();
                 screenSaver.state = "Invisible";
@@ -26,7 +26,7 @@ Item {
             }
         }
 
-        target: TimelineManager
+        target: MainWindow
     }
 
     Timer {
