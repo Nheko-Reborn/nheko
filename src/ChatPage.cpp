@@ -242,6 +242,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
       this,
       [this]() {
           QTimer::singleShot(std::chrono::minutes(5), this, &ChatPage::removeOldFallbackKey);
+          disconnect(this, &ChatPage::newSyncResponse, this, &ChatPage::startRemoveFallbackKeyTimer);
       },
       Qt::QueuedConnection);
 
@@ -1067,7 +1068,6 @@ ChatPage::removeOldFallbackKey()
 {
     olm::client()->forget_old_fallback_key();
     olm::mark_keys_as_published();
-    disconnect(this, &ChatPage::newSyncResponse, this, &ChatPage::removeOldFallbackKey);
 }
 
 void
