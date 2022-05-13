@@ -236,6 +236,15 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
 
     connect(this, &ChatPage::dropToLoginPageCb, this, &ChatPage::dropToLoginPage);
 
+    connect(
+      this,
+      &ChatPage::startRemoveFallbackKeyTimer,
+      this,
+      [this]() {
+          QTimer::singleShot(std::chrono::minutes(5), this, &ChatPage::removeOldFallbackKey);
+      },
+      Qt::QueuedConnection);
+
     connectCallMessage<mtx::events::msg::CallInvite>();
     connectCallMessage<mtx::events::msg::CallCandidates>();
     connectCallMessage<mtx::events::msg::CallAnswer>();
@@ -432,6 +441,7 @@ ChatPage::loadStateFromCache()
     emit contentLoaded();
 
     // Start receiving events.
+    connect(this, &ChatPage::newSyncResponse, &ChatPage::startRemoveFallbackKeyTimer);
     emit trySyncCb();
 }
 
@@ -495,7 +505,7 @@ ChatPage::tryInitialSync()
 
     // Upload one time keys for the device.
     nhlog::crypto()->info("generating one time keys");
-    olm::client()->generate_one_time_keys(MAX_ONETIME_KEYS);
+    olm::client()->generate_one_time_keys(MAX_ONETIME_KEYS, true);
 
     http::client()->upload_keys(
       olm::client()->create_upload_keys_request(),
@@ -519,6 +529,7 @@ ChatPage::tryInitialSync()
               return;
           }
 
+          olm::client()->forget_old_fallback_key();
           olm::mark_keys_as_published();
 
           for (const auto &entry : res.one_time_key_counts)
@@ -608,7 +619,7 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
     nhlog::net()->debug("sync completed: {}", res.next_batch);
 
     // Ensure that we have enough one-time keys available.
-    ensureOneTimeKeyCount(res.device_one_time_keys_count);
+    ensureOneTimeKeyCount(res.device_one_time_keys_count, res.device_unused_fallback_key_types);
 
     // TODO: fine grained error handling
     try {
@@ -989,26 +1000,38 @@ ChatPage::verifyOneTimeKeyCountAfterStartup()
           nhlog::crypto()->info(
             "Fetched server key count {} {}", count, mtx::crypto::SIGNED_CURVE25519);
 
-          ensureOneTimeKeyCount(key_counts);
+          ensureOneTimeKeyCount(key_counts, std::nullopt);
       });
 }
 
 void
-ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
+ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts,
+                                const std::optional<std::vector<std::string>> &unused_fallback_keys)
 {
     if (auto count = counts.find(mtx::crypto::SIGNED_CURVE25519); count != counts.end()) {
+        bool replace_fallback_key = false;
+        if (unused_fallback_keys &&
+            std::find(unused_fallback_keys->begin(),
+                      unused_fallback_keys->end(),
+                      mtx::crypto::SIGNED_CURVE25519) == unused_fallback_keys->end())
+            replace_fallback_key = true;
         nhlog::crypto()->debug(
-          "Updated server key count {} {}", count->second, mtx::crypto::SIGNED_CURVE25519);
+          "Updated server key count {} {}, fallback keys supported: {}, new fallback key: {}",
+          count->second,
+          mtx::crypto::SIGNED_CURVE25519,
+          unused_fallback_keys.has_value(),
+          replace_fallback_key);
 
-        if (count->second < MAX_ONETIME_KEYS) {
+        if (count->second < MAX_ONETIME_KEYS || replace_fallback_key) {
             const size_t nkeys = MAX_ONETIME_KEYS - count->second;
 
             nhlog::crypto()->info("uploading {} {} keys", nkeys, mtx::crypto::SIGNED_CURVE25519);
-            olm::client()->generate_one_time_keys(nkeys);
+            olm::client()->generate_one_time_keys(nkeys, replace_fallback_key);
 
             http::client()->upload_keys(
               olm::client()->create_upload_keys_request(),
-              [](const mtx::responses::UploadKeys &, mtx::http::RequestErr err) {
+              [replace_fallback_key, this](const mtx::responses::UploadKeys &,
+                                           mtx::http::RequestErr err) {
                   if (err) {
                       nhlog::crypto()->warn("failed to update one-time keys: {}", err);
 
@@ -1018,6 +1041,10 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
 
                   // mark as published anyway, otherwise we may end up in a loop.
                   olm::mark_keys_as_published();
+
+                  if (replace_fallback_key) {
+                      emit startRemoveFallbackKeyTimer();
+                  }
               });
         } else if (count->second > 2 * MAX_ONETIME_KEYS) {
             nhlog::crypto()->warn("too many one-time keys, deleting 1");
@@ -1033,6 +1060,14 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts)
               });
         }
     }
+}
+
+void
+ChatPage::removeOldFallbackKey()
+{
+    olm::client()->forget_old_fallback_key();
+    olm::mark_keys_as_published();
+    disconnect(this, &ChatPage::newSyncResponse, this, &ChatPage::removeOldFallbackKey);
 }
 
 void

@@ -400,7 +400,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        288f585725ecdf2e5e04c5985fdbf658a7fe8a1b
+		GIT_TAG        2122209f04681ac8d61ddd0fa4fcbc8368eb5b5b
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -418,7 +418,7 @@ if(USE_BUNDLED_OLM)
 	set(OLM_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(Olm)
 else()
-	find_package(Olm 3 REQUIRED)
+	find_package(Olm 3.2.7 REQUIRED)
 	set_package_properties(Olm PROPERTIES
 		DESCRIPTION "An implementation of the Double Ratchet cryptographic ratchet"
 		URL "https://git.matrix.org/git/olm/about/"
