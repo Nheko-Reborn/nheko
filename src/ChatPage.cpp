@@ -242,7 +242,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
       this,
       [this]() {
           QTimer::singleShot(std::chrono::minutes(5), this, &ChatPage::removeOldFallbackKey);
-          disconnect(this, &ChatPage::newSyncResponse, this, &ChatPage::startRemoveFallbackKeyTimer);
+          disconnect(
+            this, &ChatPage::newSyncResponse, this, &ChatPage::startRemoveFallbackKeyTimer);
       },
       Qt::QueuedConnection);
 
