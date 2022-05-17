@@ -625,7 +625,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation>Aktifitas</translation>
+        <translation>Aktivitas</translation>
     </message>
     <message>
         <location line="+2"/>
