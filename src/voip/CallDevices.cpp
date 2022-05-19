@@ -157,8 +157,7 @@ removeDevice(T &sources, GstDevice *device, bool changed)
     if (auto it = std::find_if(
           sources.begin(), sources.end(), [device](const auto &s) { return s.device == device; });
         it != sources.end()) {
-        nhlog::ui()->debug(
-          std::string("WebRTC: device ") + (changed ? "changed: " : "removed: ") + "{}", it->name);
+        nhlog::ui()->debug("WebRTC: device {}: {}", (changed ? "changed" : "removed"), it->name);
         gst_object_unref(device);
         sources.erase(it);
         return true;
