@@ -1025,7 +1025,8 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts,
           replace_fallback_key);
 
         if (count->second < MAX_ONETIME_KEYS || replace_fallback_key) {
-            const size_t nkeys = MAX_ONETIME_KEYS - count->second;
+            const size_t nkeys =
+              count->second < MAX_ONETIME_KEYS ? (MAX_ONETIME_KEYS - count->second) : 0;
 
             nhlog::crypto()->info("uploading {} {} keys", nkeys, mtx::crypto::SIGNED_CURVE25519);
             olm::client()->generate_one_time_keys(nkeys, replace_fallback_key);
