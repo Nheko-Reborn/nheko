@@ -296,8 +296,10 @@ InputBar::send()
 {
     QInputMethod *im = QGuiApplication::inputMethod();
     im->commit();
-    if (text().trimmed().isEmpty())
+    if (text().trimmed().isEmpty()) {
+        acceptUploads();
         return;
+    }
 
     nhlog::ui()->debug("Send: {}", text().toStdString());
 
