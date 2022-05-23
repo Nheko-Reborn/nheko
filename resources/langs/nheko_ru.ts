@@ -6,7 +6,7 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+108"/>
         <source>Calling...</source>
-        <translation>Вызов...</translation>
+        <translation>Вызов…</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -50,7 +50,7 @@
         <location line="+2"/>
         <location line="+175"/>
         <source>Empty Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Пустая Комната</translation>
     </message>
 </context>
 <context>
@@ -148,7 +148,7 @@
     <message>
         <location line="+41"/>
         <source>Failed to open database, logging out!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка при попытке открыть базу данных, выходим из аккаунта!</translation>
     </message>
     <message>
         <location line="+304"/>
