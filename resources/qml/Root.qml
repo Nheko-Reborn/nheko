@@ -51,6 +51,22 @@ Pane {
 
     }
 
+        function showPLEditor(settings) {
+            var dialog = plEditor.createObject(timelineRoot, {
+                "roomSettings": settings
+            });
+            dialog.show();
+            destroyOnClose(dialog);
+        }
+
+    Component {
+        id: plEditor
+
+        PowerLevelEditor {
+        }
+    }
+
+
     Component {
         id: roomSettingsComponent
 

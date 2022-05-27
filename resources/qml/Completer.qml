@@ -13,6 +13,7 @@ Control {
     id: popup
 
     property alias currentIndex: listView.currentIndex
+    property string roomId
     property string completerName
     property var completer
     property bool bottomToTop: true
@@ -23,6 +24,10 @@ Control {
     property int rowMargin: 0
     property int rowSpacing: 5
     property alias count: listView.count
+
+    Component.onCompleted: {
+        console.log("RRRRRRRRRR: " + roomId);
+    }
 
     signal completionClicked(string completion)
     signal completionSelected(string id)
@@ -65,18 +70,22 @@ Control {
     function finishCompletion() {
         if (popup.completerName == "room")
             popup.completionSelected(listView.itemAtIndex(currentIndex).modelData.roomid);
+        else if (popup.completerName == "user")
+            popup.completionSelected(listView.itemAtIndex(currentIndex).modelData.userid);
 
     }
 
-    onCompleterNameChanged: {
+    function changeCompleter() {
         if (completerName) {
-            completer = TimelineManager.completerFor(completerName, completerName == "room" ? "" : room.roomId);
+            completer = TimelineManager.completerFor(completerName, completerName == "room" ? "" : (popup.roomId != "" ? popup.roomId :  room.roomId));
             completer.setSearchString("");
         } else {
             completer = undefined;
         }
         currentIndex = -1
     }
+    onCompleterNameChanged: changeCompleter()
+    onRoomIdChanged: changeCompleter()
 
     bottomPadding: 1
     leftPadding: 1
@@ -131,6 +140,8 @@ Control {
                      popup.completionClicked(completer.completionAt(model.index));
                      if (popup.completerName == "room")
                          popup.completionSelected(model.roomid);
+                     else if (popup.completerName == "user")
+                         popup.completionSelected(model.userid);
                 }
             }
             Ripple {
@@ -151,7 +162,7 @@ Control {
                     RowLayout {
                         id: del
 
-                        anchors.centerIn: parent
+                        anchors.centerIn: centerRowContent ? parent : undefined
                         spacing: rowSpacing
 
                         Avatar {
@@ -160,7 +171,7 @@ Control {
                             displayName: model.displayName
                             userid: model.userid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            onClicked: popup.completionClicked(completer.completionAt(model.index))
+                            enabled: false
                         }
 
                         Label {
@@ -216,7 +227,7 @@ Control {
                             displayName: model.shortcode
                             //userid: model.shortcode
                             url: model.url.replace("mxc://", "image://MxcImage/")
-                            onClicked: popup.completionClicked(completer.completionAt(model.index))
+                            enabled: false
                             crop: false
                         }
 
@@ -249,10 +260,7 @@ Control {
                             displayName: model.roomName
                             roomid: model.roomid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            onClicked: {
-                                popup.completionClicked(completer.completionAt(model.index));
-                                popup.completionSelected(model.roomid);
-                            }
+                            enabled: false
                         }
 
                         Label {
@@ -281,7 +289,7 @@ Control {
                             displayName: model.roomName
                             roomid: model.roomid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            onClicked: popup.completionClicked(completer.completionAt(model.index))
+                            enabled: false
                         }
 
                         Label {

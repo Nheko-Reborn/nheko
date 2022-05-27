@@ -370,6 +370,7 @@ set(SRC_FILES
 	src/MatrixClient.cpp
 	src/MemberList.cpp
 	src/MxcImageProvider.cpp
+	src/PowerlevelsEditModels.cpp
 	src/ReadReceiptsModel.cpp
 	src/RegisterPage.cpp
 	src/SSOHandler.cpp
@@ -573,6 +574,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/TrayIcon.h
 	src/UserSettingsPage.h
 	src/UsersModel.h
+	src/PowerlevelsEditModels.h
 	src/RoomDirectoryModel.h
 	src/RoomsModel.h
 	src/ReadReceiptsModel.h

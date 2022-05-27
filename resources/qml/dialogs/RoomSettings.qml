@@ -336,6 +336,18 @@ ApplicationWindow {
                 }
 
                 Label {
+                    text: qsTr("Permission")
+                    color: Nheko.colors.text
+                }
+
+                Button {
+                    text: qsTr("Configure")
+                    ToolTip.text: qsTr("View and change the permissions in this room")
+                    onClicked: timelineRoot.showPLEditor(roomSettings)
+                    Layout.alignment: Qt.AlignRight
+                }
+
+                Label {
                     text: qsTr("Sticker & Emote Settings")
                     color: Nheko.colors.text
                 }

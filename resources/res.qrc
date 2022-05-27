@@ -127,6 +127,7 @@
         <file>qml/components/AvatarListTile.qml</file>
         <file>qml/components/FlatButton.qml</file>
         <file>qml/components/MainWindowDialog.qml</file>
+        <file>qml/components/ReorderableListview.qml</file>
         <file>qml/components/TextButton.qml</file>
         <file>qml/delegates/Encrypted.qml</file>
         <file>qml/delegates/FileMessage.qml</file>
@@ -148,22 +149,23 @@
         <file>qml/device-verification/Waiting.qml</file>
         <file>qml/dialogs/CreateDirect.qml</file>
         <file>qml/dialogs/CreateRoom.qml</file>
+        <file>qml/dialogs/HiddenEventsDialog.qml</file>
         <file>qml/dialogs/ImageOverlay.qml</file>
         <file>qml/dialogs/ImagePackEditorDialog.qml</file>
         <file>qml/dialogs/ImagePackSettingsDialog.qml</file>
-        <file>qml/dialogs/PhoneNumberInputDialog.qml</file>
         <file>qml/dialogs/InputDialog.qml</file>
         <file>qml/dialogs/InviteDialog.qml</file>
         <file>qml/dialogs/JoinRoomDialog.qml</file>
         <file>qml/dialogs/LeaveRoomDialog.qml</file>
         <file>qml/dialogs/LogoutDialog.qml</file>
+        <file>qml/dialogs/PhoneNumberInputDialog.qml</file>
+        <file>qml/dialogs/PowerLevelEditor.qml</file>
         <file>qml/dialogs/RawMessageDialog.qml</file>
         <file>qml/dialogs/ReadReceipts.qml</file>
         <file>qml/dialogs/RoomDirectory.qml</file>
         <file>qml/dialogs/RoomMembers.qml</file>
         <file>qml/dialogs/RoomSettings.qml</file>
         <file>qml/dialogs/UserProfile.qml</file>
-        <file>qml/dialogs/HiddenEventsDialog.qml</file>
         <file>qml/emoji/EmojiPicker.qml</file>
         <file>qml/emoji/StickerPicker.qml</file>
         <file>qml/ui/NhekoSlider.qml</file>

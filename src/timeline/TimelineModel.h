@@ -282,6 +282,7 @@ public:
     Q_INVOKABLE bool saveMedia(const QString &eventId) const;
     Q_INVOKABLE void showEvent(QString eventId);
     Q_INVOKABLE void copyLinkToEvent(const QString &eventId) const;
+
     void
     cacheMedia(const QString &eventId, const std::function<void(const QString filename)> &callback);
     Q_INVOKABLE void sendReset()

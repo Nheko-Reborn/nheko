@@ -29,6 +29,7 @@
 #include "MatrixClient.h"
 #include "MemberList.h"
 #include "MxcImageProvider.h"
+#include "PowerlevelsEditModels.h"
 #include "ReadReceiptsModel.h"
 #include "RegisterPage.h"
 #include "RoomDirectoryModel.h"
@@ -174,6 +175,12 @@ MainWindow::registerQmlTypes()
     qmlRegisterType<LoginPage>("im.nheko", 1, 0, "Login");
     qmlRegisterType<RegisterPage>("im.nheko", 1, 0, "Registration");
     qmlRegisterType<HiddenEvents>("im.nheko", 1, 0, "HiddenEvents");
+    qmlRegisterUncreatableType<PowerlevelEditingModels>(
+      "im.nheko",
+      1,
+      0,
+      "PowerlevelEditingModels",
+      QStringLiteral("Please use editPowerlevels to create the models"));
     qmlRegisterUncreatableType<DeviceVerificationFlow>(
       "im.nheko",
       1,
