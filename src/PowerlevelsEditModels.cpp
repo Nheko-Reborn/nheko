@@ -79,7 +79,7 @@ std::map<std::string, mtx::events::state::power_level_t, std::less<>>
 PowerlevelsTypeListModel::toEvents()
 {
     std::map<std::string, mtx::events::state::power_level_t, std::less<>> m;
-    for (const auto &[key, pl] : types)
+    for (const auto &[key, pl] : qAsConst(types))
         if (key.find('.') != std::string::npos)
             m[key] = pl;
     return m;
@@ -87,7 +87,7 @@ PowerlevelsTypeListModel::toEvents()
 mtx::events::state::power_level_t
 PowerlevelsTypeListModel::kick()
 {
-    for (const auto &[key, pl] : types)
+    for (const auto &[key, pl] : qAsConst(types))
         if (key == "kick")
             return pl;
     return powerLevels_.users_default;
@@ -95,7 +95,7 @@ PowerlevelsTypeListModel::kick()
 mtx::events::state::power_level_t
 PowerlevelsTypeListModel::invite()
 {
-    for (const auto &[key, pl] : types)
+    for (const auto &[key, pl] : qAsConst(types))
         if (key == "invite")
             return pl;
     return powerLevels_.users_default;
@@ -103,7 +103,7 @@ PowerlevelsTypeListModel::invite()
 mtx::events::state::power_level_t
 PowerlevelsTypeListModel::ban()
 {
-    for (const auto &[key, pl] : types)
+    for (const auto &[key, pl] : qAsConst(types))
         if (key == "ban")
             return pl;
     return powerLevels_.users_default;
@@ -111,7 +111,7 @@ PowerlevelsTypeListModel::ban()
 mtx::events::state::power_level_t
 PowerlevelsTypeListModel::eventsDefault()
 {
-    for (const auto &[key, pl] : types)
+    for (const auto &[key, pl] : qAsConst(types))
         if (key == "zdefault_events")
             return pl;
     return powerLevels_.users_default;
@@ -119,7 +119,7 @@ PowerlevelsTypeListModel::eventsDefault()
 mtx::events::state::power_level_t
 PowerlevelsTypeListModel::stateDefault()
 {
-    for (const auto &[key, pl] : types)
+    for (const auto &[key, pl] : qAsConst(types))
         if (key == "zdefault_states")
             return pl;
     return powerLevels_.users_default;
@@ -359,7 +359,7 @@ std::map<std::string, mtx::events::state::power_level_t, std::less<>>
 PowerlevelsUserListModel::toUsers()
 {
     std::map<std::string, mtx::events::state::power_level_t, std::less<>> m;
-    for (const auto &[key, pl] : users)
+    for (const auto &[key, pl] : qAsConst(users))
         if (key.size() > 0 && key.at(0) == '@')
             m[key] = pl;
     return m;
@@ -367,7 +367,7 @@ PowerlevelsUserListModel::toUsers()
 mtx::events::state::power_level_t
 PowerlevelsUserListModel::usersDefault()
 {
-    for (const auto &[key, pl] : users)
+    for (const auto &[key, pl] : qAsConst(users))
         if (key == "default")
             return pl;
     return powerLevels_.users_default;
