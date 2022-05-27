@@ -38,7 +38,7 @@
 <context>
     <name>Cache</name>
     <message numerus="yes">
-        <location filename="../../src/Cache.cpp" line="+2512"/>
+        <location filename="../../src/Cache.cpp" line="+2580"/>
         <source>%1 and %n other(s)</source>
         <translation>
             <numerusform>%1 ja %n muu</numerusform>
@@ -130,12 +130,12 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+655"/>
+        <location line="+732"/>
         <source>Invited user: %1</source>
         <translation>Kutsuttiin käyttäjä: %1</translation>
     </message>
     <message>
-        <location line="-460"/>
+        <location line="-510"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Välimuistin tuominen nykyiseen versioon epäonnistui. Tällä voi olla eri syitä. Luo vikailmoitus ja yritä sillä aikaa käyttää vanhempaa versiota. Voit myös vaihtoehtoisesti koettaa tyhjentää välimuistin käsin.</translation>
     </message>
@@ -150,7 +150,28 @@
         <translation>Tietokannan avaaminen epäonnistui, kirjaudutaan ulos!</translation>
     </message>
     <message>
-        <location line="+304"/>
+        <location line="+301"/>
+        <source>Knock on room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>You failed to join %1. You can try to knock, so that others can invite you in. Do you want to do so?
+You may optionally provide a reason for others to accept your knock:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Failed to knock room: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
         <source>Confirm join</source>
         <translation>Vahvista liittyminen</translation>
     </message>
@@ -160,18 +181,23 @@
         <translation>Haluatko todella liittyä huoneeseen %1?</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+34"/>
+        <source>Room creation failed: Bad Alias</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
         <source>Room %1 created.</source>
         <translation>Huone %1 luotu.</translation>
     </message>
     <message>
-        <location line="+44"/>
-        <location line="+446"/>
+        <location line="+43"/>
+        <location line="+469"/>
         <source>Confirm invite</source>
         <translation>Vahvista kutsu</translation>
     </message>
     <message>
-        <location line="-445"/>
+        <location line="-468"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Haluatko varmasti kutsua %1 (%2)?</translation>
     </message>
@@ -181,12 +207,12 @@
         <translation>Käyttäjän %1 kutsuminen huoneeseen %2 epäonnistui:%3</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+32"/>
         <source>Kicked user: %1</source>
         <translation>Potkittiin käyttäjä: %1</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+26"/>
         <source>Failed to ban %1 in %2: %3</source>
         <translation>Ei onnistuttu antamaan porttikieltoa käyttäjälle %1 huoneessa %2:%3</translation>
     </message>
@@ -196,7 +222,7 @@
         <translation>Annettiin porttikielto käyttäjälle: %1</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+8"/>
         <source>Confirm unban</source>
         <translation>Vahvista porttikiellon purku</translation>
     </message>
@@ -216,12 +242,12 @@
         <translation>Purettiin porttikielto käyttäjältä %1</translation>
     </message>
     <message>
-        <location line="+345"/>
+        <location line="+374"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation>Haluatko luoda yksityisen keskustelun käyttäjän %1 kanssa?</translation>
     </message>
     <message>
-        <location line="-892"/>
+        <location line="-965"/>
         <source>Cache migration failed!</source>
         <translation>Välimuistin siirto epäonnistui!</translation>
     </message>
@@ -243,33 +269,28 @@
         <translation>Tallennettujen tietojen palauttaminen epäonnistui. Ole hyvä ja kirjaudu sisään uudelleen.</translation>
     </message>
     <message>
-        <location line="+93"/>
+        <location line="+94"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
         <translation>Salausavainten lähetys epäonnistui. Palvelimen vastaus: %1 %2. Ole hyvä ja yritä uudelleen myöhemmin.</translation>
     </message>
     <message>
-        <location line="+34"/>
-        <location line="+111"/>
+        <location line="+35"/>
+        <location line="+112"/>
         <source>Please try to login again: %1</source>
         <translation>Ole hyvä ja yritä kirjautua sisään uudelleen: %1</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+84"/>
         <source>Failed to join room: %1</source>
         <translation>Huoneeseen liittyminen epäonnistui: %1</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>You joined the room</source>
-        <translation>Sinä liityit huoneeseen</translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+9"/>
         <source>Failed to remove invite: %1</source>
         <translation>Kutsun poistaminen epäonnistui: %1</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+27"/>
         <source>Room creation failed: %1</source>
         <translation>Huoneen luominen epäonnistui: %1</translation>
     </message>
@@ -279,7 +300,7 @@
         <translation>Huoneesta poistuminen epäonnistui: %1</translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+56"/>
         <source>Reason for the kick</source>
         <translation>Syy potkimiselle</translation>
     </message>
@@ -294,7 +315,7 @@
         <translation>Ei onnistuttu potkimaan käyttäjää %1 huoneesta %2: %3</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+13"/>
         <source>Reason for the ban</source>
         <translation>Syy porttikiellolle</translation>
     </message>
@@ -381,9 +402,96 @@
     </message>
 </context>
 <context>
+    <name>CreateDirect</name>
+    <message>
+        <location filename="../qml/dialogs/CreateDirect.qml" line="+16"/>
+        <source>Create Direct Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+60"/>
+        <source>User to invite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>@user:server.tld</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Encryption</source>
+        <translation type="unfinished">Salaus</translation>
+    </message>
+</context>
+<context>
+    <name>CreateRoom</name>
+    <message>
+        <location filename="../qml/dialogs/CreateRoom.qml" line="+15"/>
+        <location line="+125"/>
+        <source>Create Room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-98"/>
+        <source>Name</source>
+        <translation type="unfinished">Nimi</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>No name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Topic</source>
+        <translation type="unfinished">Aihe</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>No topic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Alias</source>
+        <translation type="unfinished">Osoite</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Public</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Public rooms can be joined by anyone, private rooms need explicit invites.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Trusted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>All invitees are given the same power level as the creator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Encryption</source>
+        <translation type="unfinished">Salaus</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Caution: Encryption cannot be disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+260"/>
+        <location filename="../../src/ChatPage.cpp" line="+282"/>
         <source>Decrypt secrets</source>
         <translation>Salaisuuksien salauksen purku</translation>
     </message>
@@ -429,177 +537,6 @@
         <location line="+13"/>
         <source>They match!</source>
         <translation>Ne vastaavat toisiaan!</translation>
-    </message>
-</context>
-<context>
-    <name>DirectChatSetup</name>
-    <message>
-        <location filename="../qml/dialogs/DirectChatSetup.qml" line="+28"/>
-        <source>Room Settings</source>
-        <translation>Huoneen asetukset</translation>
-    </message>
-    <message numerus="yes">
-        <location line="+94"/>
-        <source>%n member(s)</source>
-        <translation>
-            <numerusform>%n jäsen</numerusform>
-            <numerusform>%n jäsentä</numerusform>
-        </translation>
-    </message>
-    <message>
-        <location line="+65"/>
-        <source>SETTINGS</source>
-        <translation>ASETUKSET</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Notifications</source>
-        <translation>Ilmoitukset</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Muted</source>
-        <translation>Mykistetty</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>Mentions only</source>
-        <translation>Vain maininnat</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>All messages</source>
-        <translation>Kaikki viestit</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Room access</source>
-        <translation>Huoneeseen pääsy</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Anyone and guests</source>
-        <translation>Kaikki ja vieraat</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>Anyone</source>
-        <translation>Kuka tahansa</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>Invited users</source>
-        <translation>Kutsutut käyttäjät</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>By knocking</source>
-        <translation>Koputtamalla</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Restricted by membership in other rooms</source>
-        <translation>Rajoitettu muiden huoneiden jäsenyyden perusteella</translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Encryption</source>
-        <translation>Salaus</translation>
-    </message>
-    <message>
-        <location line="+21"/>
-        <source>End-to-End Encryption</source>
-        <translation>Päästä-päähän-salaus</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
-                                Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation>Salaus on toistaiseksi kokeellinen ja voi rikkoutua odottamattomasti. &lt;br&gt;
-Otathan huomioon, ettei sitä voi poistaa jälkikäteen.</translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>Sticker &amp; Emote Settings</source>
-        <translation>Tarra- ja emojiasetukset</translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Change</source>
-        <translation>Muuta</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Change what packs are enabled, remove packs or create new ones</source>
-        <translation>Muuta mitkä pakkaukset ovat sallittuja, poista pakkauksia tai luo uusia</translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Hidden events</source>
-        <translation>Piilotettua tapahtumaa</translation>
-    </message>
-    <message>
-        <location line="+11"/>
-        <source>Configure</source>
-        <translation>Määritä</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Select events to hide in this room</source>
-        <translation>Valitse tapahtumat, jotka piilotetaan tästä huoneesta</translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>INFO</source>
-        <translation>TIETOA</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Internal ID</source>
-        <translation>Sisäinen ID</translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>Copied to clipboard</source>
-        <translation>Kopioitu leikepöydälle</translation>
-    </message>
-    <message>
-        <location line="+19"/>
-        <source>Room Version</source>
-        <translation>Huoneen versio</translation>
-    </message>
-    <message>
-        <location line="+19"/>
-        <source>show less</source>
-        <translation>näytä vähemmän</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>show more</source>
-        <translation>näytä enemmän</translation>
-    </message>
-</context>
-<context>
-    <name>EditModal</name>
-    <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+46"/>
-        <source>Apply</source>
-        <translation>Tallenna</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Cancel</source>
-        <translation>Peruuta</translation>
-    </message>
-    <message>
-        <location line="+10"/>
-        <source>Name</source>
-        <translation>Nimi</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Topic</source>
-        <translation>Aihe</translation>
     </message>
 </context>
 <context>
@@ -802,7 +739,7 @@ Otathan huomioon, ettei sitä voi poistaa jälkikäteen.</translation>
 <context>
     <name>HiddenEventsDialog</name>
     <message>
-        <location filename="../qml/dialogs/HiddenEventsDialog.qml" line="+31"/>
+        <location filename="../qml/dialogs/HiddenEventsDialog.qml" line="+33"/>
         <source>Hidden events for %1</source>
         <translation>Piilotetut tapahtumat kohteelle %1</translation>
     </message>
@@ -993,7 +930,7 @@ Otathan huomioon, ettei sitä voi poistaa jälkikäteen.</translation>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+330"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+334"/>
         <source>Select a file</source>
         <translation>Valitse tiedosto</translation>
     </message>
@@ -1053,7 +990,7 @@ Otathan huomioon, ettei sitä voi poistaa jälkikäteen.</translation>
 <context>
     <name>LeaveRoomDialog</name>
     <message>
-        <location filename="../qml/dialogs/LeaveRoomDialog.qml" line="+16"/>
+        <location filename="../qml/dialogs/LeaveRoomDialog.qml" line="+17"/>
         <source>Leave room</source>
         <translation>Poistu huoneesta</translation>
     </message>
@@ -1228,8 +1165,8 @@ Esimerkki: https://server.my:8787</translation>
 <context>
     <name>MediaUpload</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+581"/>
-        <location line="+34"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+598"/>
+        <location line="+35"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Mediaa ei onnistuttu lähettämään. Yritä uudelleen.</translation>
     </message>
@@ -1237,7 +1174,7 @@ Esimerkki: https://server.my:8787</translation>
 <context>
     <name>MessageDelegate</name>
     <message>
-        <location filename="../qml/delegates/MessageDelegate.qml" line="+201"/>
+        <location filename="../qml/delegates/MessageDelegate.qml" line="+205"/>
         <source>%1 removed a message</source>
         <translation>%1 poisti viestin</translation>
     </message>
@@ -1247,7 +1184,7 @@ Esimerkki: https://server.my:8787</translation>
         <translation>%1 otti käyttöön salauksen</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+25"/>
         <source>%2 changed the room name to: %1</source>
         <translation>%2 vaihtoi huoneen nimeksi: %1</translation>
     </message>
@@ -1257,7 +1194,7 @@ Esimerkki: https://server.my:8787</translation>
         <translation>%1 poisti huoneen nimen</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <source>%2 changed the topic to: %1</source>
         <translation>%2 vaihtoi aiheeksi: %1</translation>
     </message>
@@ -1267,37 +1204,32 @@ Esimerkki: https://server.my:8787</translation>
         <translation>%1 poisti aiheen</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <source>%1 changed the room avatar</source>
         <translation>%1 muutti huoneen avataria</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <source>%1 changed the pinned messages.</source>
         <translation>%1 vaihtoi kiinnitettyjä viestejä.</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>%1 changed the stickers and emotes in this room.</source>
-        <translation>%1 vaihtoi tämän huoneen tarroja ja emoteja.</translation>
-    </message>
-    <message>
-        <location line="+13"/>
+        <location line="+29"/>
         <source>%1 changed the addresses for this room.</source>
         <translation>%1 muutti tämän huoneen osoitteita.</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <source>%1 changed the parent spaces for this room.</source>
         <translation>%1 muutti tämän kanavan yläSpaceja.</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <source>%1 created and configured room: %2</source>
         <translation>%1 loi ja sääti huoneen: %2</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <source>%1 placed a voice call.</source>
         <translation>%1 asetti äänipuhelun.</translation>
     </message>
@@ -1312,22 +1244,22 @@ Esimerkki: https://server.my:8787</translation>
         <translation>%1 soitti puhelun.</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+16"/>
         <source>%1 answered the call.</source>
         <translation>%1 vastasi puheluun.</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <source>%1 ended the call.</source>
         <translation>%1 päätti puhelun.</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <source>%1 is negotiating the call...</source>
         <translation>%1 neuvottelee puhelua...</translation>
     </message>
     <message>
-        <location line="+76"/>
+        <location line="+80"/>
         <source>Allow them in</source>
         <translation>Päästä hänet sisään</translation>
     </message>
@@ -1378,7 +1310,7 @@ Esimerkki: https://server.my:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+116"/>
+        <location filename="../qml/MessageView.qml" line="+117"/>
         <source>Edit</source>
         <translation>Muokkaa</translation>
     </message>
@@ -1398,7 +1330,7 @@ Esimerkki: https://server.my:8787</translation>
         <translation>Asetukset</translation>
     </message>
     <message>
-        <location line="+436"/>
+        <location line="+424"/>
         <source>Reason for removal</source>
         <translation>Syy poistamiselle</translation>
     </message>
@@ -1409,18 +1341,18 @@ Esimerkki: https://server.my:8787</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+132"/>
+        <location line="+134"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopioi</translation>
     </message>
     <message>
-        <location line="-125"/>
-        <location line="+132"/>
+        <location line="-127"/>
+        <location line="+134"/>
         <source>Copy &amp;link location</source>
         <translation>Kopioi &amp;linkin kohde</translation>
     </message>
     <message>
-        <location line="-124"/>
+        <location line="-126"/>
         <source>Re&amp;act</source>
         <translation>Rea&amp;goi</translation>
     </message>
@@ -1490,7 +1422,7 @@ Esimerkki: https://server.my:8787</translation>
         <translation>Kopioi linkki tapaht&amp;umaan</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+45"/>
         <source>&amp;Go to quoted message</source>
         <translation>&amp;Mene lainattuun viestiin</translation>
     </message>
@@ -1637,6 +1569,256 @@ Esimerkki: https://server.my:8787</translation>
         <location filename="../qml/delegates/Placeholder.qml" line="+12"/>
         <source>unimplemented event: </source>
         <translation>toistaseksi toteuttamaton tapahtuma: </translation>
+    </message>
+</context>
+<context>
+    <name>PowerLevelEditor</name>
+    <message>
+        <location filename="../qml/dialogs/PowerLevelEditor.qml" line="+24"/>
+        <source>Permissions in %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Be careful when editing permissions. You can&apos;t lower the permissions of people with a same or higher level than you. Be careful when promoting others.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <source>Roles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Move permissions between roles to change them</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <location line="+182"/>
+        <source>Administrator (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-180"/>
+        <location line="+182"/>
+        <source>Moderator (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-180"/>
+        <location line="+182"/>
+        <source>Custom (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-169"/>
+        <source>Remove event type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Add event type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Move users up or down to change their permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+137"/>
+        <source>Remove user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Add user</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PowerlevelEditingModels</name>
+    <message>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="+530"/>
+        <source>Failed to update powerlevel: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PowerlevelsTypeListModel</name>
+    <message>
+        <location line="-379"/>
+        <source>Other events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Other state events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Remove other users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Ban other users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Invite other users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Redact events sent by others</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Reactions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Deprecated aliases events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Change the room avatar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Change the room addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Send encrypted messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Enable encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Change guest access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Change history visibility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Change who can join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Send messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Change the room name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Change the room permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Change the rooms topic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Change the widgets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Change the widgets (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Redact own events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Change the pinned events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Upgrade the room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Send stickers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Edit child rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Change parent spaces</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Start a call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Negotiate a call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Answer a call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Hang up a call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Change the room emotes</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PowerlevelsUserListModel</name>
+    <message>
+        <location line="+190"/>
+        <source>Other users</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1818,7 +2000,7 @@ Esimerkki: https://server.my:8787</translation>
         <translation>Etsi julkisia huoneita</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+12"/>
         <source>Choose custom homeserver</source>
         <translation>Valitse mukautettu kotipalvelin</translation>
     </message>
@@ -1826,7 +2008,7 @@ Esimerkki: https://server.my:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1947"/>
+        <location filename="../../src/Cache.cpp" line="+1960"/>
         <source>no version stored</source>
         <translation>ei tallennettua versiota</translation>
     </message>
@@ -1834,7 +2016,7 @@ Esimerkki: https://server.my:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+68"/>
+        <location filename="../qml/RoomList.qml" line="+127"/>
         <source>New tag</source>
         <translation>Uusi tagi</translation>
     </message>
@@ -1845,6 +2027,11 @@ Esimerkki: https://server.my:8787</translation>
     </message>
     <message>
         <location line="+7"/>
+        <source>Open separately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
         <source>Leave room</source>
         <translation>Poistu huoneesta</translation>
     </message>
@@ -1937,7 +2124,12 @@ Esimerkki: https://server.my:8787</translation>
         <translation>Luo uusi huone</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+9"/>
+        <source>Start a direct chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
         <source>Room directory</source>
         <translation>Huonehakemisto</translation>
     </message>
@@ -1974,7 +2166,47 @@ Esimerkki: https://server.my:8787</translation>
         <translation>Kutsu lisää käyttäjiä</translation>
     </message>
     <message>
-        <location line="+87"/>
+        <location line="+8"/>
+        <source>Search...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Sort by: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>User ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Display name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Power level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+105"/>
+        <source>Administrator: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Moderator: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>User: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
         <source>This room is not encrypted!</source>
         <translation>Tämä huone ei ole salattu!</translation>
     </message>
@@ -2001,8 +2233,13 @@ Esimerkki: https://server.my:8787</translation>
         <source>Room Settings</source>
         <translation>Huoneen asetukset</translation>
     </message>
+    <message>
+        <location line="+117"/>
+        <source>Change name of this room</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location line="+94"/>
+        <location line="+22"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n jäsen</numerusform>
@@ -2010,7 +2247,17 @@ Esimerkki: https://server.my:8787</translation>
         </translation>
     </message>
     <message>
-        <location line="+65"/>
+        <location line="+8"/>
+        <source>View members of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <source>Change topic of this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
         <source>SETTINGS</source>
         <translation>ASETUKSET</translation>
     </message>
@@ -2083,6 +2330,16 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
     </message>
     <message>
         <location line="+16"/>
+        <source>Permission</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>View and change the permissions in this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>Sticker &amp; Emote Settings</source>
         <translation>Tarra- ja emojiasetukset</translation>
     </message>
@@ -2102,7 +2359,8 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
         <translation>Piilotettua tapahtuma</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="-19"/>
+        <location line="+30"/>
         <source>Configure</source>
         <translation>Määritä</translation>
     </message>
@@ -2142,12 +2400,12 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
         <translation>näytä enemmän</translation>
     </message>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+256"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+180"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Salauksen aktivointi epäonnistui: %1</translation>
     </message>
     <message>
-        <location line="+249"/>
+        <location line="+309"/>
         <source>Select an avatar</source>
         <translation>Valitse profiilikuva</translation>
     </message>
@@ -2176,7 +2434,7 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
 <context>
     <name>RoomlistModel</name>
     <message>
-        <location filename="../../src/timeline/RoomlistModel.cpp" line="+152"/>
+        <location filename="../../src/timeline/RoomlistModel.cpp" line="+156"/>
         <source>Pending invite.</source>
         <translation>Vastausta odottava kutsu.</translation>
     </message>
@@ -2194,7 +2452,7 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
 <context>
     <name>Root</name>
     <message>
-        <location filename="../qml/Root.qml" line="+319"/>
+        <location filename="../qml/Root.qml" line="+339"/>
         <source>Please enter your login password to continue:</source>
         <translation>Syötä sisäänkirjautumisen salasanasi jatkaaksesi:</translation>
     </message>
@@ -2276,7 +2534,7 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4300"/>
+        <location filename="../../src/Cache.cpp" line="-4382"/>
         <source>Failed to connect to secret storage</source>
         <translation>Salattuun tallennustilaan ei saatu yhteyttä</translation>
     </message>
@@ -2448,7 +2706,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1256"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1265"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Viestin muokkaus epäonnistui: %1</translation>
@@ -2539,12 +2797,170 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>%1 asetti huoneen historian näkyväksi jäsenille huoneeseen liittymisen jälkeen.</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+35"/>
+        <location line="+244"/>
         <source>%1 has changed the room&apos;s permissions.</source>
         <translation>%1 on muuttanut huoneen oikeuksia.</translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="-221"/>
+        <source>%1 has changed the room&apos;s kick powerlevel from %2 to %3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location line="+15"/>
+        <source>%n member(s) can now kick room members.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>%1 can now kick room members.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>%1 has changed the room&apos;s redact powerlevel from %2 to %3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location line="+14"/>
+        <source>%n member(s) can now redact room messages.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>%1 can now redact room messages.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>%1 has changed the room&apos;s ban powerlevel from %2 to %3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location line="+15"/>
+        <source>%n member(s) can now ban room members.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>%1 can now ban room members.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>%1 has changed the room&apos;s state_default powerlevel from %2 to %3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location line="+15"/>
+        <source>%n member(s) can now send state events.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>%1 can now send state events.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>%1 has changed the room&apos;s invite powerlevel from %2 to %3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now not send any events.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now send events that are not otherwise restricted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>%1 has made %2 an administrator of this room.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>%1 has made %2 a moderator of this room.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>%1 has downgraded %2 to moderator of this room.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>%1 allowed only administrators to send &quot;%2&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 allowed only moderators to send &quot;%2&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 allowed everyone to send &quot;%2&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>%1 has changed the powerlevel of event type &quot;%2&quot; from the default to %3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>%1 has changed the powerlevel of event type &quot;%2&quot; from %3 to %4.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+66"/>
+        <source>(empty)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>%1 removed the following images from the pack %2:&lt;br&gt;%3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>%1 added the following images to the pack %2:&lt;br&gt;%3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>%1 changed the sticker and emotes in this room.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
         <source>Removed by %1</source>
         <translation>Poistanut %1</translation>
     </message>
@@ -2565,17 +2981,17 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+123"/>
+        <location line="+126"/>
         <source>%2 revoked the invite to %1.</source>
         <translation>%2 perui käyttäjän %1 kutsun.</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-5"/>
         <source>%2 kicked %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+7"/>
         <source>%2 unbanned %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2585,7 +3001,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-35"/>
+        <location line="-32"/>
         <source>%1 changed their avatar.</source>
         <translation>%1 muutti avatariaan.</translation>
     </message>
@@ -2605,17 +3021,17 @@ Reason: %4</source>
         <translation>%1 liittyi käyttäjän %2 palvelimen suomalla vahvistuksella.</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+13"/>
         <source>%1 rejected their invite.</source>
         <translation>%1 hylkäsi kutsunsa.</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-5"/>
         <source>%1 left the room.</source>
         <translation>%1 poistui huoneesta.</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+31"/>
         <source>Reason: %1</source>
         <translation>Syy: %1</translation>
     </message>
@@ -2625,12 +3041,12 @@ Reason: %4</source>
         <translation>%1 perui koputuksensa.</translation>
     </message>
     <message>
-        <location line="-1074"/>
+        <location line="-1403"/>
         <source>You joined this room.</source>
         <translation>Liityit tähän huoneeseen.</translation>
     </message>
     <message>
-        <location line="+1023"/>
+        <location line="+1355"/>
         <source>%1 invited %2.</source>
         <translation>%1 kutsui käyttäjän %2.</translation>
     </message>
@@ -2645,7 +3061,7 @@ Reason: %4</source>
         <translation>%1 vaihtoi näyttönimekseen %2.</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+36"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
         <translation>%1 lähti vaikka lähti jo aiemmin!</translation>
@@ -2664,7 +3080,7 @@ Reason: %4</source>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+209"/>
+        <location filename="../qml/TimelineRow.qml" line="+241"/>
         <source>Edited</source>
         <translation>Muokattu</translation>
     </message>
@@ -2672,22 +3088,35 @@ Reason: %4</source>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+30"/>
+        <location filename="../qml/TimelineView.qml" line="+36"/>
         <source>No room open</source>
         <translation>Yhtäkään huonetta ei ole avattu</translation>
     </message>
     <message>
-        <location line="+141"/>
+        <location line="+154"/>
         <source>No preview available</source>
         <translation>Esikatselu ei saatavilla</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>%1 member(s)</source>
-        <translation>%1 jäsentä</translation>
+        <location line="+9"/>
+        <source>Settings</source>
+        <translation type="unfinished">Asetukset</translation>
+    </message>
+    <message numerus="yes">
+        <location line="+12"/>
+        <source>%n member(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n jäsen</numerusform>
+            <numerusform>%n jäsentä</numerusform>
+        </translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+7"/>
+        <source>View members of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
         <source>join the conversation</source>
         <translation>liity keskusteluun</translation>
     </message>
@@ -2770,7 +3199,7 @@ Reason: %4</source>
         <translation>Asetukset</translation>
     </message>
     <message>
-        <location line="+68"/>
+        <location line="+69"/>
         <source>Unpin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2928,7 +3357,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+224"/>
+        <location line="+228"/>
         <source>Select an avatar</source>
         <translation>Valitse profiilikuva</translation>
     </message>
@@ -2951,8 +3380,8 @@ Reason: %4</source>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+458"/>
-        <location filename="../../src/UserSettingsPage.h" line="+225"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+471"/>
+        <location filename="../../src/UserSettingsPage.h" line="+228"/>
         <source>Default</source>
         <translation>Oletus</translation>
     </message>
@@ -2960,7 +3389,7 @@ Reason: %4</source>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+398"/>
+        <location line="+399"/>
         <source>Theme</source>
         <translation>Teema</translation>
     </message>
@@ -3260,12 +3689,17 @@ Reason: %4</source>
         <translation>Päätason allekirjoittava avain</translation>
     </message>
     <message>
+        <location line="+2"/>
+        <source>Expose room information via D-Bus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+95"/>
         <source>Default</source>
         <translation>Oletus</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+35"/>
         <source>Set the notification sound to play when a call invite arrives</source>
         <translation>Aseta ilmoitusääni soimaan kun kutsu puheluun tulee</translation>
     </message>
@@ -3458,7 +3892,14 @@ sumennetaan.</translation>
         <translation>Kaikkein tärkein avaimesi. Sinun ei tarvitse laittaa sitä välimuistiin, koska silloin sen varastaminen on epätodennäköistä ja sitä vaaditaan vain kierrättämään muita allekirjoittavia avaimiasi.</translation>
     </message>
     <message>
-        <location line="+408"/>
+        <location line="+5"/>
+        <source>Allow third-party plugins and applications to load information about rooms you are in via D-Bus. This can have useful applications, but it also could be used for nefarious purposes. Enable at your own risk.
+
+This setting will take effect upon restart.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+410"/>
         <source>Select a file</source>
         <translation>Valitse tiedosto</translation>
     </message>
@@ -3468,7 +3909,7 @@ sumennetaan.</translation>
         <translation>Kaikki Tiedostot (*)</translation>
     </message>
     <message>
-        <location line="+82"/>
+        <location line="+89"/>
         <source>Open Sessions File</source>
         <translation>Avaa Istuntoavaintiedosto</translation>
     </message>
@@ -3535,7 +3976,7 @@ sumennetaan.</translation>
     <message>
         <location line="+49"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Takaisin</translation>
     </message>
     <message>
         <location line="-42"/>
@@ -3613,69 +4054,6 @@ sumennetaan.</translation>
         <location filename="../../src/Utils.cpp" line="+193"/>
         <source>Yesterday</source>
         <translation>Eilen</translation>
-    </message>
-</context>
-<context>
-    <name>dialogs::CreateRoom</name>
-    <message>
-        <location filename="../../src/dialogs/CreateRoom.cpp" line="+42"/>
-        <source>Create room</source>
-        <translation>Luo huone</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Name</source>
-        <translation>Nimi</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Topic</source>
-        <translation>Aihe</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Alias</source>
-        <translation>Osoite</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Room Visibility</source>
-        <translation>Huoneen näkyvyys</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Private</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Public</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Room Preset</source>
-        <translation>Huoneen esiasetus</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Private Chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Public Chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Trusted Private Chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Direct Chat</source>
-        <translation>Suora keskustelu</translation>
     </message>
 </context>
 <context>

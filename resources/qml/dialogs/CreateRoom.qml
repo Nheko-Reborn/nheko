@@ -61,7 +61,7 @@ ApplicationWindow {
             Layout.fillWidth: true
             Label {
                 Layout.preferredWidth: implicitWidth
-                text: qsTr("#")
+                text: "#"
                 color: Nheko.colors.text
             }
             MatrixTextField {
