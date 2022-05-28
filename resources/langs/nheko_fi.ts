@@ -411,7 +411,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+60"/>
         <source>User to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsuttava käyttäjä</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -440,7 +440,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>No name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei nimeä</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -450,7 +450,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>No topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei aihetta</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -460,7 +460,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+12"/>
         <source>Public</source>
-        <translation type="unfinished"></translation>
+        <translation>Julkinen</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -470,7 +470,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+12"/>
         <source>Trusted</source>
-        <translation type="unfinished"></translation>
+        <translation>Luotettu</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -480,12 +480,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+13"/>
         <source>Encryption</source>
-        <translation type="unfinished">Salaus</translation>
+        <translation>Salaus</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Caution: Encryption cannot be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Varoitus: Salausta ei voi poistaa käytöstä</translation>
     </message>
 </context>
 <context>
@@ -1576,7 +1576,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../qml/dialogs/PowerLevelEditor.qml" line="+24"/>
         <source>Permissions in %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Luvat huoneessa %1</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1586,12 +1586,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+34"/>
         <source>Roles</source>
-        <translation type="unfinished"></translation>
+        <translation>Roolit</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Users</source>
-        <translation type="unfinished"></translation>
+        <translation>Käyttäjät</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1602,13 +1602,13 @@ Esimerkki: https://server.my:8787</translation>
         <location line="+22"/>
         <location line="+182"/>
         <source>Administrator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ylläpitäjä (%1)</translation>
     </message>
     <message>
         <location line="-180"/>
         <location line="+182"/>
         <source>Moderator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Moderaattori (%1)</translation>
     </message>
     <message>
         <location line="-180"/>
@@ -1624,7 +1624,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+0"/>
         <source>Add event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisää tapahtumatyyppi</translation>
     </message>
     <message>
         <location line="+45"/>
@@ -1639,7 +1639,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+0"/>
         <source>Add user</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisää käyttäjä</translation>
     </message>
 </context>
 <context>
@@ -1655,7 +1655,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="-379"/>
         <source>Other events</source>
-        <translation type="unfinished"></translation>
+        <translation>Muut tapahtumat</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1670,12 +1670,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Ban other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Anna porttikieltoja toisille käyttäjille</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invite other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsu toisia käyttäjiä</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1685,7 +1685,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Reactions</source>
-        <translation type="unfinished"></translation>
+        <translation>Reaktiot</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1700,17 +1700,17 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Change the room addresses</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta huoneen osoitteita</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send encrypted messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä salattuja viestejä</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Ota salaus käyttöön</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1720,7 +1720,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Change history visibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta historian näkyvyyttä</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1730,12 +1730,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Send messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä viestejä</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room name</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta huoneen nimi</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1790,7 +1790,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+3"/>
         <source>Start a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Aloita puhelu</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1800,7 +1800,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Answer a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastaa puheluun</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1818,7 +1818,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+190"/>
         <source>Other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Muut käyttäjät</translation>
     </message>
 </context>
 <context>
@@ -2028,7 +2028,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+7"/>
         <source>Open separately</source>
-        <translation type="unfinished"></translation>
+        <translation>Avaa erikseen</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2168,12 +2168,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+8"/>
         <source>Search...</source>
-        <translation type="unfinished"></translation>
+        <translation>Etsi...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Sort by: </source>
-        <translation type="unfinished"></translation>
+        <translation>Lajitteluperuste: </translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2193,17 +2193,17 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+105"/>
         <source>Administrator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ylläpitäjä: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Moderator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Moderaattori: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Käyttäjä: %1</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -2236,7 +2236,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+117"/>
         <source>Change name of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta tämän huoneen nimeä</translation>
     </message>
     <message numerus="yes">
         <location line="+22"/>
@@ -2254,7 +2254,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+43"/>
         <source>Change topic of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta tämän huoneen aihetta</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -2331,7 +2331,7 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
     <message>
         <location line="+16"/>
         <source>Permission</source>
-        <translation type="unfinished"></translation>
+        <translation>Lupa</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2810,15 +2810,15 @@ If you choose verify, you need to have the other device available. If you choose
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now kick room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n jäsen voi nyt potkia huoneen jäseniä.</numerusform>
+            <numerusform>%n jäsentä voi nyt potkia huoneen jäseniä.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now kick room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 voi nyt potkia huoneen jäseniä.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2846,15 +2846,15 @@ If you choose verify, you need to have the other device available. If you choose
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now ban room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n jäsen voi nyt antaa porttikieltoja huoneen jäsenille.</numerusform>
+            <numerusform>%n jäsentä voi nyt antaa porttikieltoja huoneen jäsenille.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now ban room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 voi nyt antaa porttikieltoja huoneen jäsenille.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2942,7 +2942,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+66"/>
         <source>(empty)</source>
-        <translation type="unfinished"></translation>
+        <translation>(tyhjä)</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2988,12 +2988,12 @@ Reason: %4</source>
     <message>
         <location line="-5"/>
         <source>%2 kicked %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 potkaisi käyttäjän %1.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%2 unbanned %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 poisti käyttäjän %1 porttikiellon</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3069,7 +3069,7 @@ Reason: %4</source>
     <message>
         <location line="+7"/>
         <source>%1 banned %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 antoi porttikiellon käyttäjälle %2</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3100,12 +3100,12 @@ Reason: %4</source>
     <message>
         <location line="+9"/>
         <source>Settings</source>
-        <translation type="unfinished">Asetukset</translation>
+        <translation>Asetukset</translation>
     </message>
     <message numerus="yes">
         <location line="+12"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n jäsen</numerusform>
             <numerusform>%n jäsentä</numerusform>
         </translation>
@@ -3334,7 +3334,7 @@ Reason: %4</source>
     <message>
         <location line="+31"/>
         <source>Change device name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta laitteen nimeä.</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -3491,12 +3491,12 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Open images with external program</source>
-        <translation type="unfinished"></translation>
+        <translation>Avaa kuvat ulkoisella ohjelmalla</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Open videos with external program</source>
-        <translation type="unfinished"></translation>
+        <translation>Avaa videot ulkoisella ohjelmalla</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3611,12 +3611,12 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versio</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Platform</source>
-        <translation type="unfinished"></translation>
+        <translation>Alusta</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3626,12 +3626,12 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>TIMELINE</source>
-        <translation type="unfinished"></translation>
+        <translation>AIKAJANA</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>SIDEBAR</source>
-        <translation type="unfinished"></translation>
+        <translation>SIVUPALKKI</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3641,7 +3641,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>NOTIFICATIONS</source>
-        <translation type="unfinished"></translation>
+        <translation>ILMOITUKSET</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4084,7 +4084,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+38"/>
         <source>Open reCAPTCHA</source>
-        <translation type="unfinished"></translation>
+        <translation>Avaa reCAPTCHA</translation>
     </message>
     <message>
         <location line="+1"/>
