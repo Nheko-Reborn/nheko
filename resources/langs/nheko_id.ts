@@ -151,7 +151,7 @@
     <message>
         <location line="+301"/>
         <source>Knock on room</source>
-        <translation type="unfinished"></translation>
+        <translation>Ketuk pada ruangan</translation>
     </message>
     <message>
         <location line="+3"/>
