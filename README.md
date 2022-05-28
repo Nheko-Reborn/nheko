@@ -314,9 +314,7 @@ sudo apt install cmake gcc make automake liblmdb-dev \
 ##### Fedora
 
 ```bash
-sudo dnf install qt5-qtbase-devel qt5-linguist qt5-qtsvg-devel qt5-qtmultimedia-devel \
-    qt5-qtquickcontrols2-devel qtkeychain-qt5-devel spdlog-devel openssl-devel \
-    libolm-devel cmark-devel lmdb-devel lmdbxx-devel tweeny-devel 
+sudo dnf builddep nheko # note that some newer packages might not be captured by that
 ```
 
 ##### Guix
