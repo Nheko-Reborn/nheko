@@ -152,23 +152,24 @@
     <message>
         <location line="+301"/>
         <source>Knock on room</source>
-        <translation type="unfinished"></translation>
+        <translation>Koputa jututoa uksele</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>You failed to join %1. You can try to knock, so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoaga %1 liitumine ei õnnestunud. Sa võid proovida jututoa uksele koputamist ja seal olijad saavad sind sisse lasta. Kas sa soovid seda teha?
+Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerima:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa kindlasti soovid koputada %1 jututoa uksele? Kui soovid, siis võid lisada ka selgituse, miks jututoa liikmed peaksid sinu koputusele reageerima:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Failed to knock room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa uksele koputamine ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -183,7 +184,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+34"/>
         <source>Room creation failed: Bad Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa loomine ei õnnestunud: vigane või vale alias</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -406,22 +407,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/CreateDirect.qml" line="+16"/>
         <source>Create Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Alusta otsevestlust</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>User to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsutav kasutaja</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>@user:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>@kasutaja:koduserver.tippdomeen</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Encryption</source>
-        <translation type="unfinished">Krüptimine</translation>
+        <translation>Krüptimine</translation>
     </message>
 </context>
 <context>
@@ -430,62 +431,62 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../qml/dialogs/CreateRoom.qml" line="+15"/>
         <location line="+125"/>
         <source>Create Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Loo jututuba</translation>
     </message>
     <message>
         <location line="-98"/>
         <source>Name</source>
-        <translation type="unfinished">Nimi</translation>
+        <translation>Nimi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimi puudub</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Topic</source>
-        <translation type="unfinished">Teema</translation>
+        <translation>Teema</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Teema puudub</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Alias</source>
-        <translation type="unfinished">Alias</translation>
+        <translation>Alias</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Public</source>
-        <translation type="unfinished">Avalik jututuba</translation>
+        <translation>Avalik jututuba</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Public rooms can be joined by anyone, private rooms need explicit invites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Avalike jututubadega saavad liituda kõik huvilised, privaatse jututoaga liitumine eeldab kutset.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Trusted</source>
-        <translation type="unfinished"></translation>
+        <translation>Usaldusväärne</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>All invitees are given the same power level as the creator</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõik kutsutavad saavad jututoa loojaga samad õigused</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Encryption</source>
-        <translation type="unfinished">Krüptimine</translation>
+        <translation>Krüptimine</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Caution: Encryption cannot be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Hoiatus: krüptimist ei saa hiljem välja lülitada</translation>
     </message>
 </context>
 <context>
@@ -1576,70 +1577,70 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../qml/dialogs/PowerLevelEditor.qml" line="+24"/>
         <source>Permissions in %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 jututoa õigused</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Be careful when editing permissions. You can&apos;t lower the permissions of people with a same or higher level than you. Be careful when promoting others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Õiguste muutmisel palun ole ettevaatlik. Sinuga samade või sinust kõrgemate õigustega kasutajate õigusi sa madalamaks muuta ei saa. Mõtle hoolega läbi, kui jagad teistele suuremaid õigusi.</translation>
     </message>
     <message>
         <location line="+34"/>
         <source>Roles</source>
-        <translation type="unfinished"></translation>
+        <translation>Õigused</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Users</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajad</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Move permissions between roles to change them</source>
-        <translation type="unfinished"></translation>
+        <translation>Õiguste muutmiseks liiguta toiminguid kasutajarollide vahel</translation>
     </message>
     <message>
         <location line="+22"/>
         <location line="+182"/>
         <source>Administrator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Peakasutaja (%1)</translation>
     </message>
     <message>
         <location line="-180"/>
         <location line="+182"/>
         <source>Moderator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Moderaator (%1)</translation>
     </message>
     <message>
         <location line="-180"/>
         <location line="+182"/>
         <source>Custom (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kohandatud õigused (%1)</translation>
     </message>
     <message>
         <location line="-169"/>
         <source>Remove event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Sündmuse tüübi eemaldamine</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Add event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Sündmuse tüübi lisamine</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>Move users up or down to change their permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Õiguste muutmiseks nihuta kasutajaid üles või alla</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Remove user</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja eemaldamine</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Add user</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja lisamine</translation>
     </message>
 </context>
 <context>
@@ -1647,7 +1648,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location filename="../../src/PowerlevelsEditModels.cpp" line="+530"/>
         <source>Failed to update powerlevel: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Õiguste muutmine ei õnnestunud: %1</translation>
     </message>
 </context>
 <context>
@@ -1655,162 +1656,162 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="-379"/>
         <source>Other events</source>
-        <translation type="unfinished"></translation>
+        <translation>Muud sündmused</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Other state events</source>
-        <translation type="unfinished"></translation>
+        <translation>Muud olekusündmused</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Remove other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Muude kasutajate eemaldamine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Teistele kasutajatele suhtluskeelu seadmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invite other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajatele kutse saatmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact events sent by others</source>
-        <translation type="unfinished"></translation>
+        <translation>Teiste loodud sündmuste muutmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Reactions</source>
-        <translation type="unfinished"></translation>
+        <translation>Reageerimised</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Deprecated aliases events</source>
-        <translation type="unfinished"></translation>
+        <translation>Vana standardi järgsed tegevused aliastega</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa tunnuspildi muutmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room addresses</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa aadresside muutmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send encrypted messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptitud sõnumite saatmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimise kasutusele võtmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change guest access</source>
-        <translation type="unfinished"></translation>
+        <translation>Külaliste ligipääsuõiguste muutmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change history visibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajaloo nähtavuse muutmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change who can join</source>
-        <translation type="unfinished"></translation>
+        <translation>Liitumisreeglite muutmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Sõnumite saatmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room name</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa nime nuutmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa õiguste muutmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the rooms topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa teema muutmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the widgets</source>
-        <translation type="unfinished"></translation>
+        <translation>Vidinate muutmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the widgets (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation>Vidinate muutmine (katseline)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact own events</source>
-        <translation type="unfinished"></translation>
+        <translation>Oma loodud sündmuste muutmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the pinned events</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinnitatud teadete muutmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Upgrade the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Jutuoa versiooni uuendus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Kleepsude saatmine</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Edit child rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Alamjututubade muutmine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change parent spaces</source>
-        <translation type="unfinished"></translation>
+        <translation>Ülemkogukondade muutmine</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõne alustamine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Negotiate a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõne ühendamine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Answer a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõnele vastamine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Hang up a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõne lõpetamine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room emotes</source>
-        <translation type="unfinished"></translation>
+        <translation>Jutuoa emotikonide muutmine</translation>
     </message>
 </context>
 <context>
@@ -1818,7 +1819,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+190"/>
         <source>Other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Muud kasutajad</translation>
     </message>
 </context>
 <context>
@@ -2028,7 +2029,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+7"/>
         <source>Open separately</source>
-        <translation type="unfinished"></translation>
+        <translation>Ava loend eraldi</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2126,7 +2127,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+9"/>
         <source>Start a direct chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Alusta otsevestlust</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2168,42 +2169,42 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+8"/>
         <source>Search...</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsi...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Sort by: </source>
-        <translation type="unfinished"></translation>
+        <translation>Sortimise alus: </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>User ID</source>
-        <translation type="unfinished">Kasutaja tunnus</translation>
+        <translation>Kasutajatunnus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Display name</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvatav nimi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Power level</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja õigused</translation>
     </message>
     <message>
         <location line="+105"/>
         <source>Administrator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Peakasutaja: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Moderator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Moderaator: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tavakasutaja: %1</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -2236,7 +2237,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+117"/>
         <source>Change name of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda selle jututoa nime</translation>
     </message>
     <message numerus="yes">
         <location line="+22"/>
@@ -2249,12 +2250,12 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+8"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaata %1 jututoa liikmeid</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>Change topic of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda selle jututoa teemat</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -2331,12 +2332,12 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     <message>
         <location line="+16"/>
         <source>Permission</source>
-        <translation type="unfinished"></translation>
+        <translation>Õigus</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View and change the permissions in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle jututoa õiguste vaatamine ja muutmine</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2806,159 +2807,159 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
     <message>
         <location line="-221"/>
         <source>%1 has changed the room&apos;s kick powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis selle jututoa õigusi: jututoast välja müksamine %2 -&gt; %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now kick room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n jututoa liige võib kasutajaid jututoast välja müksata.</numerusform>
+            <numerusform>%n jututoa liiget võivad kasutajaid jututoast välja müksata.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now kick room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 võib nüüd kasutajaid jututoast välja müksata.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s redact powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis selle jututoa õigusi: jututoa sisu muutmine %2 -&gt; %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+14"/>
         <source>%n member(s) can now redact room messages.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n kasutaja võib nüüd muuta jututoa sõnumeid.</numerusform>
+            <numerusform>%n kasutajat võivad nüüd muuta jututoa sõnumeid.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 can now redact room messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 võib nüüd muuta jututoa sõnumeid.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s ban powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis selle jututoa õigusi: suhtluskeelu seadmine jututoas %2 -&gt; %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now ban room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n jututoa liige võib kasutajatele selles jututoas seada suhtluskeelu.</numerusform>
+            <numerusform>%n jututoa liiget võivad kasutajatele selles jututoas seada suhtluskeelu.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now ban room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 võib kasutajatele selles jututoas seada suhtluskeelu.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%1 has changed the room&apos;s state_default powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis selle jututoa õigusi: olekusündmuste vaikimisi kasutajaroll %2 -&gt; %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now send state events.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n jututoa liige võib nüüd saata olekusündmusi.</numerusform>
+            <numerusform>%n jututoa liiget võivad nüüd saata olekusündmusi.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now send state events.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 võib nüüd saata olekusündmusi.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 has changed the room&apos;s invite powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis selle jututoa õigusi: kutse saatmine jututuppa %2 -&gt; %3.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now not send any events.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis selle jututoa õigusi: jututoa sündmuste vaikimisi õigused %2 -&gt; %3. Uued kasutajad ei saa nüüd olulisi tegevusi teha.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now send events that are not otherwise restricted.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis selle jututoa õigusi: jututoa sündmuste vaikimisi õigused %2 -&gt; %3. Uued kasutajad nüüd saavad teha tegevusi, mis pole otseselt keelatud.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis selle jututoa õigusi: sündmuste vaikimisi kasutajaroll %2 -&gt; %3.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has made %2 an administrator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 jagas kasutajale %2 peakasutaja õigused.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has made %2 a moderator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 jagas kasutajale %2 moderaatori õigused.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has downgraded %2 to moderator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 vähendas kasutaja %2 õigusi moderaatori õigusteni.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis kasutaja %2 õigusi: %3 -&gt; %4.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>%1 allowed only administrators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lubas vaid peakasutajatel teha järgnevat toimingut: „%2“.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed only moderators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lubas vaid moderaatoritel teha järgnevat toimingut: „%2“.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed everyone to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lubas kõigil teha järgnevat toimingut: „%2“.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from the default to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis toimingu „%2“ jaoks vajalikke õigusi: vaikimisi seadistuste asemel on nüüd %3.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from %3 to %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis toimingu „%2“ jaoks vajalikke õigusi: %3 -&gt; %4.</translation>
     </message>
     <message>
         <location line="+66"/>
         <source>(empty)</source>
-        <translation type="unfinished"></translation>
+        <translation>(tühi)</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 removed the following images from the pack %2:&lt;br&gt;%3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kustutas pildipakist %2 järgnevad pildid:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 added the following images to the pack %2:&lt;br&gt;%3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lisas pildipakki %2 järgnevad pildid:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 changed the sticker and emotes in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis selle jututoa kleepsupakke ja emotikone.</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -3102,12 +3103,12 @@ Põhjus: %4</translation>
     <message>
         <location line="+9"/>
         <source>Settings</source>
-        <translation type="unfinished">Seadistused</translation>
+        <translation>Seadistused</translation>
     </message>
     <message numerus="yes">
         <location line="+12"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n liige</numerusform>
             <numerusform>%n liiget</numerusform>
         </translation>
@@ -3115,7 +3116,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+7"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaata %1 jututoa liikmeid</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -3693,7 +3694,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+2"/>
         <source>Expose room information via D-Bus</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaga jututoa teavet D-Bus&apos;i vahendusel</translation>
     </message>
     <message>
         <location line="+95"/>
@@ -3901,7 +3902,9 @@ siis ajajoone vaade hägustub.</translation>
         <source>Allow third-party plugins and applications to load information about rooms you are in via D-Bus. This can have useful applications, but it also could be used for nefarious purposes. Enable at your own risk.
 
 This setting will take effect upon restart.</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba teistel rakendustel laadida D-Bus&apos;i vahendusel teavet jututubade kohta, mille liige sa oled. Ühtepidi saab selle abil luua kasulikke rakendusi, kuid teisalt saab ka korralikke pahandusi tekitada. Kui lülitad selle võimaluse sisse, siis teed seda omal vastutusel.
+
+Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</translation>
     </message>
     <message>
         <location line="+410"/>
