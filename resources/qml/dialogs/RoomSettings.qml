@@ -194,12 +194,9 @@ ApplicationWindow {
 
                 readOnly: !isTopicEditingAllowed
                 textFormat: isTopicEditingAllowed ? TextEdit.PlainText : TextEdit.RichText
-                text: {
-                    if (roomSettings.plainRoomTopic === "")
-                        return qsTr("<i>No topic set</i>")
-                    else
-                        return isTopicEditingAllowed ? roomSettings.plainRoomTopic : roomSettings.roomTopic
-                }
+                text: isTopicEditingAllowed
+                        ? roomSettings.plainRoomTopic
+                        : (roomSettings.plainRoomTopic === "" ? ("<i>" + qsTr("No topic set") + "</i>") : roomSettings.roomTopic)
                 wrapMode: TextEdit.WordWrap
                 background: null
                 selectByMouse: !Settings.mobileMode
