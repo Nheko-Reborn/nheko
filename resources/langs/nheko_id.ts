@@ -157,17 +157,18 @@
         <location line="+3"/>
         <source>You failed to join %1. You can try to knock, so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamu gagal bergabung %1. Kamu dapat mengetuk, supaya lainnya dapat mengundang kamu masuk. Apakah kamu ingin melakukannya?
+Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketukan kamu:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Apakah kamu ingin mengetuk pada %1? Kamu dapat memberikan alasan secara opsional supaya lainnya dapat menerima ketukan kamu:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Failed to knock room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal mengetuk ruangan: %1</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -182,7 +183,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+34"/>
         <source>Room creation failed: Bad Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Pembuatan ruangan gagal: Alias Tidak Benar</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -405,22 +406,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/CreateDirect.qml" line="+16"/>
         <source>Create Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Buat Obrolan Langsung</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>User to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengguna untuk diundang</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>@user:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>@pengguna:server.tld</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Encryption</source>
-        <translation type="unfinished">Enkripsi</translation>
+        <translation>Enkripsi</translation>
     </message>
 </context>
 <context>
@@ -429,62 +430,62 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../qml/dialogs/CreateRoom.qml" line="+15"/>
         <location line="+125"/>
         <source>Create Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Buat Ruangan</translation>
     </message>
     <message>
         <location line="-98"/>
         <source>Name</source>
-        <translation type="unfinished">Nama</translation>
+        <translation>Nama</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No name</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada nama</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Topic</source>
-        <translation type="unfinished">Topik</translation>
+        <translation>Topik</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada topik</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Alias</source>
-        <translation type="unfinished">Alias</translation>
+        <translation>Alias</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Public</source>
-        <translation type="unfinished">Publik</translation>
+        <translation>Publik</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Public rooms can be joined by anyone, private rooms need explicit invites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruangan publik dapat digabung oleh siapa pun, ruangan privat membutuhkan undangan.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Trusted</source>
-        <translation type="unfinished"></translation>
+        <translation>Dipercayai</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>All invitees are given the same power level as the creator</source>
-        <translation type="unfinished"></translation>
+        <translation>Semua yang diundang akan diberikan tingkat daya yang sama sebagai pembuat</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Encryption</source>
-        <translation type="unfinished">Enkripsi</translation>
+        <translation>Enkripsi</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Caution: Encryption cannot be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Peringatan: Enkripsi tidak dapat dinonaktifkan</translation>
     </message>
 </context>
 <context>
@@ -1575,70 +1576,70 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location filename="../qml/dialogs/PowerLevelEditor.qml" line="+24"/>
         <source>Permissions in %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Perizinan di %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Be careful when editing permissions. You can&apos;t lower the permissions of people with a same or higher level than you. Be careful when promoting others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hati-hati ketika mengedit perizinan. Kamu tidak dapat mengubah tingkat izin orang dengan tingkat yang sama atau tingkat yang lebih tinggi daripada kamu. Hati-hati ketika mempromosikan yang lain.</translation>
     </message>
     <message>
         <location line="+34"/>
         <source>Roles</source>
-        <translation type="unfinished"></translation>
+        <translation>Peran</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Users</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengguna</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Move permissions between roles to change them</source>
-        <translation type="unfinished"></translation>
+        <translation>Pindahkan izin antara peran untuk mengubahnya</translation>
     </message>
     <message>
         <location line="+22"/>
         <location line="+182"/>
         <source>Administrator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Administrator (%1)</translation>
     </message>
     <message>
         <location line="-180"/>
         <location line="+182"/>
         <source>Moderator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Moderator (%1)</translation>
     </message>
     <message>
         <location line="-180"/>
         <location line="+182"/>
         <source>Custom (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kustom (%1)</translation>
     </message>
     <message>
         <location line="-169"/>
         <source>Remove event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Hapus tipe peristiwa</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Add event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahkan tipe peristiwa</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>Move users up or down to change their permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Pindahkan pengguna ke atas atau ke bawah untuk mengubah izin mereka</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Remove user</source>
-        <translation type="unfinished"></translation>
+        <translation>Hapus pengguna</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Add user</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahkan pengguna</translation>
     </message>
 </context>
 <context>
@@ -1646,7 +1647,7 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location filename="../../src/PowerlevelsEditModels.cpp" line="+530"/>
         <source>Failed to update powerlevel: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal memperbarui tingkat daya: %1</translation>
     </message>
 </context>
 <context>
@@ -1654,162 +1655,162 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="-379"/>
         <source>Other events</source>
-        <translation type="unfinished"></translation>
+        <translation>Peristiwa lainnya</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Other state events</source>
-        <translation type="unfinished"></translation>
+        <translation>Peristiwa status lain</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Remove other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Menghapus pengguna lainnya</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Cekal pengguna lain</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invite other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengundang pengguna lainnya</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact events sent by others</source>
-        <translation type="unfinished"></translation>
+        <translation>Meredaksi peristiwa terkirim dari lainnya</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Reactions</source>
-        <translation type="unfinished"></translation>
+        <translation>Reaksi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Deprecated aliases events</source>
-        <translation type="unfinished"></translation>
+        <translation>Peristiwa alias yang usang</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubah avatar ruangan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room addresses</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubah alamat ruangan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send encrypted messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan terenkripsi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengaktifkan enkripsi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change guest access</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengubah akses tamu</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change history visibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengubah visibilitas riwayat</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change who can join</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengubah siapa saja yang dapat bergabung</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room name</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengubah nama ruangan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengubah izin ruangan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the rooms topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengubah topik ruangan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the widgets</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengubah widget</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the widgets (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengubah widget (eksperimental)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact own events</source>
-        <translation type="unfinished"></translation>
+        <translation>Meredaksi peristiwa sendiri</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the pinned events</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengubah peristiwa yang tersemat</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Upgrade the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Meningkatkan ruangan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim stiker</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Edit child rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Edit ruangan anak</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change parent spaces</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengubah space induk</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Memulai sebuah panggilan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Negotiate a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Menegosiasi sebuah panggilan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Answer a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Menjawab sebuah panggilan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Hang up a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengakhiri sebuah panggilan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room emotes</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengubah emoji ruangan</translation>
     </message>
 </context>
 <context>
@@ -1817,7 +1818,7 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+190"/>
         <source>Other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengguna lain</translation>
     </message>
 </context>
 <context>
@@ -2027,7 +2028,7 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+7"/>
         <source>Open separately</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka terpisah</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2125,7 +2126,7 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+9"/>
         <source>Start a direct chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Mulai sebuah obrolan langsung</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2166,42 +2167,42 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+8"/>
         <source>Search...</source>
-        <translation type="unfinished"></translation>
+        <translation>Cari...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Sort by: </source>
-        <translation type="unfinished"></translation>
+        <translation>Urutkan berdasarkan: </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>User ID</source>
-        <translation type="unfinished">ID Pengguna</translation>
+        <translation>ID Pengguna</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Display name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama tampilan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Power level</source>
-        <translation type="unfinished"></translation>
+        <translation>Tingkat daya</translation>
     </message>
     <message>
         <location line="+105"/>
         <source>Administrator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Administrator: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Moderator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Moderator: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengguna: %1</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -2234,7 +2235,7 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+117"/>
         <source>Change name of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubah nama ruangan</translation>
     </message>
     <message numerus="yes">
         <location line="+22"/>
@@ -2246,12 +2247,12 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+8"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan anggota %1</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>Change topic of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubah topik ruangan</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -2328,12 +2329,12 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="+16"/>
         <source>Permission</source>
-        <translation type="unfinished"></translation>
+        <translation>Izin</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View and change the permissions in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Lihat dan ubah izin di ruangan ini</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2802,155 +2803,155 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
     <message>
         <location line="-221"/>
         <source>%1 has changed the room&apos;s kick powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 telah mengubah tingkat daya pengeluaran ruangan dari %2 ke %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now kick room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n anggota sekarang dapat mengeluarkan anggota ruangan.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now kick room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sekarang dapat mengeluarkan anggota ruangan.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s redact powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 telah mengubah tingkat daya redaksi ruangan dari %2 ke %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+14"/>
         <source>%n member(s) can now redact room messages.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n anggota sekarang dapat meredaksikan pesan ruangan.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 can now redact room messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sekarang dapat meredaksikan pesan ruangan.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s ban powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 telah mengubah tingkat daya pencekalan ruangan dari %2 ke %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now ban room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n anggota sekarang dapat mencekal anggota ruangan.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now ban room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sekarang dapat mencekal anggota ruangan.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%1 has changed the room&apos;s state_default powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 telah mengubah tingkat daya state_default ruangan dari %2 ke %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now send state events.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n anggota sekarang dapat mengirim peristiwa status.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now send state events.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sekarang dapat mengirim peristiwa status.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 has changed the room&apos;s invite powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 telah mengubah tingkat daya undangan ruangan dari %2 ke %3.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now not send any events.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 telah mengubah tingkat daya events_default ruangan dari %2 ke %3. Pengguna baru sekarang tidak dapat mengirim peristiwa apa pun.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now send events that are not otherwise restricted.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 telah mengubah tingkat daya events_default ruangan dari %2 ke %3. Pengguna baru sekarang dapat mengirim peristiwa yang tidak dibatasi.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 telah mengubah tingkat daya events_default ruangan dari %2 ke %3.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has made %2 an administrator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 telah membuat %2 sebagai seorang administrator di ruangan ini.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has made %2 a moderator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 telah membuat %2 sebagai seorang moderator di ruangan ini.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has downgraded %2 to moderator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 telah menurunkan %2 sebagai moderator di ruangan ini.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 telah mengubah tingkat daya %2 dari %3 ke %4.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>%1 allowed only administrators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hanya memperbolehkan para administrator untuk mengirim &quot;%2&quot;.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed only moderators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hanya memperbolehkan para moderator untuk mengirim &quot;%2&quot;.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed everyone to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 memperbolehkan semuanya untuk mengirim &quot;%2&quot;.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from the default to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 telah mengubah tingkat daya tipe peristiwa &quot;%2&quot; dari bawaan ke %3.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from %3 to %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 telah mengubah tingkat daya tipe peristiwa &quot;%2&quot; dari %3 ke %4.</translation>
     </message>
     <message>
         <location line="+66"/>
         <source>(empty)</source>
-        <translation type="unfinished"></translation>
+        <translation>(kosong)</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 removed the following images from the pack %2:&lt;br&gt;%3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 menghapus gambar berikut ini dari paket %2:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 added the following images to the pack %2:&lt;br&gt;%3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 menambahkan gambar berikut ini dari paket %2:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 changed the sticker and emotes in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 mengubah stiker dan emoji di ruangan ini.</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -3094,19 +3095,19 @@ Alasan: %4</translation>
     <message>
         <location line="+9"/>
         <source>Settings</source>
-        <translation type="unfinished">Pengaturan</translation>
+        <translation>Pengaturan</translation>
     </message>
     <message numerus="yes">
         <location line="+12"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n anggota</numerusform>
         </translation>
     </message>
     <message>
         <location line="+7"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan anggota %1</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -3683,7 +3684,7 @@ Alasan: %4</translation>
     <message>
         <location line="+2"/>
         <source>Expose room information via D-Bus</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekspos informasi ruangan via D-Bus</translation>
     </message>
     <message>
         <location line="+95"/>
@@ -3891,7 +3892,9 @@ akan diburamkan.</translation>
         <source>Allow third-party plugins and applications to load information about rooms you are in via D-Bus. This can have useful applications, but it also could be used for nefarious purposes. Enable at your own risk.
 
 This setting will take effect upon restart.</source>
-        <translation type="unfinished"></translation>
+        <translation>Perbolehkan plugin dan aplikasi pihak ketiga untuk memuat informasi tentang ruangan kamu berada via D-Bus. Ini dapat memiliki penggunaan yang berguna, tetapi juga dapat digunakan untuk tujuan jahat. Aktifkan dengan risiko kamu sendiri.
+
+Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
     </message>
     <message>
         <location line="+410"/>
