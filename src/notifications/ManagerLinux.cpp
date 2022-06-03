@@ -37,6 +37,7 @@ NotificationsManager::NotificationsManager(QObject *parent)
          QStringLiteral("org.freedesktop.Notifications"),
          QDBusConnection::sessionBus(),
          this)
+  , unityServiceWatcher(new QDBusServiceWatcher(this))
   , hasMarkup_{std::invoke([this]() -> bool {
       auto caps = dbus.call("GetCapabilities").arguments();
       for (const auto &x : qAsConst(caps))
@@ -51,7 +52,6 @@ NotificationsManager::NotificationsManager(QObject *parent)
               return true;
       return false;
   })}
-  , unityServiceWatcher(new QDBusServiceWatcher(this))
 {
     qDBusRegisterMetaType<QImage>();
 
