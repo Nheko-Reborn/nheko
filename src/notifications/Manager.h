@@ -12,6 +12,7 @@
 #include <mtx/responses/notifications.hpp>
 
 #if defined(NHEKO_DBUS_SYS)
+#include <QDBusServiceWatcher>
 #include <QtDBus/QDBusArgument>
 #include <QtDBus/QDBusInterface>
 #endif
@@ -35,6 +36,7 @@ public:
     NotificationsManager(QObject *parent = nullptr);
 
     void postNotification(const mtx::responses::Notification &notification, const QImage &icon);
+    void setNotificationCount(const uint notificationCount);
 
 signals:
     void notificationClicked(const QString roomId, const QString eventId);
@@ -54,6 +56,8 @@ public:
 
 private:
     QDBusInterface dbus;
+    QDBusServiceWatcher *unityServiceWatcher = nullptr;
+    bool unityServiceAvailable               = false;
 
     void systemPostNotification(const QString &room_id,
                                 const QString &event_id,

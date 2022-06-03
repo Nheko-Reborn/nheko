@@ -7,6 +7,7 @@
 #include "notifications/Manager.h"
 
 #include <QDBusConnection>
+#include <QDBusConnectionInterface>
 #include <QDBusMessage>
 #include <QDBusMetaType>
 #include <QDBusPendingCallWatcher>
@@ -50,6 +51,7 @@ NotificationsManager::NotificationsManager(QObject *parent)
               return true;
       return false;
   })}
+  , unityServiceWatcher(new QDBusServiceWatcher(this))
 {
     qDBusRegisterMetaType<QImage>();
 
@@ -79,6 +81,61 @@ NotificationsManager::NotificationsManager(QObject *parent)
             this,
             &NotificationsManager::systemPostNotification,
             Qt::QueuedConnection);
+
+    unityServiceWatcher->setConnection(QDBusConnection::sessionBus());
+    unityServiceWatcher->setWatchMode(QDBusServiceWatcher::WatchForUnregistration |
+                                      QDBusServiceWatcher::WatchForRegistration);
+    unityServiceWatcher->addWatchedService(QStringLiteral("com.canonical.Unity"));
+    connect(unityServiceWatcher,
+            &QDBusServiceWatcher::serviceRegistered,
+            this,
+            [this](const QString &service) {
+                Q_UNUSED(service);
+                unityServiceAvailable = true;
+            });
+    connect(unityServiceWatcher,
+            &QDBusServiceWatcher::serviceUnregistered,
+            this,
+            [this](const QString &service) {
+                Q_UNUSED(service);
+                unityServiceAvailable = false;
+            });
+    QDBusPendingCall listNamesCall =
+      QDBusConnection::sessionBus().interface()->asyncCall(QStringLiteral("ListNames"));
+    QDBusPendingCallWatcher *callWatcher = new QDBusPendingCallWatcher(listNamesCall, this);
+    connect(callWatcher,
+            &QDBusPendingCallWatcher::finished,
+            this,
+            [this](QDBusPendingCallWatcher *watcher) {
+                QDBusPendingReply<QStringList> reply = *watcher;
+                watcher->deleteLater();
+
+                if (reply.isError()) {
+                    return;
+                }
+
+                const QStringList &services = reply.value();
+
+                unityServiceAvailable = services.contains(QLatin1String("com.canonical.Unity"));
+            });
+}
+
+void
+NotificationsManager::setNotificationCount(const uint notificationCount)
+{
+    if (unityServiceAvailable) {
+        const QString launcherId = QLatin1String("nheko.desktop");
+
+        const QVariantMap properties{{QStringLiteral("count-visible"), notificationCount > 0},
+                                     {QStringLiteral("count"), notificationCount}};
+
+        QDBusMessage message =
+          QDBusMessage::createSignal(QStringLiteral("/io/github/NhekoReborn/Nheko/UnityLauncher"),
+                                     QStringLiteral("com.canonical.Unity.LauncherEntry"),
+                                     QStringLiteral("Update"));
+        message.setArguments({launcherId, properties});
+        QDBusConnection::sessionBus().send(message);
+    }
 }
 
 void

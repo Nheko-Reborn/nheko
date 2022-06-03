@@ -173,6 +173,11 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                     MainWindow::instance()->requestActivate();
                 }
             });
+    connect(
+      view_manager_->rooms(),
+      &RoomlistModel::totalUnreadMessageCountUpdated,
+      this,
+      [this](int unreadMessages) { notificationsManager.setNotificationCount(unreadMessages); });
 
     connect(
       this,
