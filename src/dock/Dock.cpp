@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "dock/Dock.h"
-#include <QObject>
 #include <QApplication>
+#include <QObject>
 #if defined(NHEKO_DBUS_SYS)
 #include <qdbusconnectioninterface.h>
 Dock::Dock(QObject *parent)
