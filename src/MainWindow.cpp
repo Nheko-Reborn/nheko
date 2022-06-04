@@ -39,6 +39,7 @@
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
 #include "Utils.h"
+#include "dock/Dock.h"
 #include "emoji/EmojiModel.h"
 #include "emoji/Provider.h"
 #include "encryption/DeviceVerificationFlow.h"
@@ -99,6 +100,9 @@ MainWindow::MainWindow(QWindow *parent)
             SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
     trayIcon_->setVisible(userSettings_->tray());
+    dock_ = new Dock(this);
+    connect(chat_page_, SIGNAL(unreadMessages(int)), dock_, SLOT(setUnreadCount(int)));
+
 
     // load cache on event loop
     QTimer::singleShot(0, this, [this] {

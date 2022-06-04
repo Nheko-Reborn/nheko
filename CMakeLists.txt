@@ -354,6 +354,8 @@ set(SRC_FILES
 	# Generic notification stuff
 	src/notifications/Manager.cpp
 
+	src/dock/Dock.cpp
+
 	src/AvatarProvider.cpp
 	src/BlurhashProvider.cpp
 	src/Cache.cpp
@@ -551,6 +553,7 @@ qt5_wrap_cpp(MOC_HEADERS
 	src/encryption/VerificationManager.h
 
 	src/notifications/Manager.h
+	src/dock/Dock.h
 
 	src/AvatarProvider.h
 	src/BlurhashProvider.h
