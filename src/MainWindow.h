@@ -13,8 +13,8 @@
 #include <QSharedPointer>
 #include <QSystemTrayIcon>
 
-#include "dock/Dock.h"
 #include "UserSettingsPage.h"
+#include "dock/Dock.h"
 
 #include "jdenticoninterface.h"
 

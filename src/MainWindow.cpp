@@ -103,7 +103,6 @@ MainWindow::MainWindow(QWindow *parent)
     dock_ = new Dock(this);
     connect(chat_page_, SIGNAL(unreadMessages(int)), dock_, SLOT(setUnreadCount(int)));
 
-
     // load cache on event loop
     QTimer::singleShot(0, this, [this] {
         if (hasActiveUser()) {
