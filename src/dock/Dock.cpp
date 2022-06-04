@@ -3,7 +3,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "dock/Dock.h"
-#include <qobject.h>
+#include <QObject>
+#include <QApplication>
 #if defined(NHEKO_DBUS_SYS)
 #include <qdbusconnectioninterface.h>
 Dock::Dock(QObject *parent)
@@ -57,7 +58,7 @@ void
 Dock::unitySetNotificationCount(const int count)
 {
     if (unityServiceAvailable) {
-        const QString launcherId = QLatin1String("nheko.desktop");
+        const QString launcherId = qApp->desktopFileName() + QLatin1String(".desktop");
 
         const QVariantMap properties{{QStringLiteral("count-visible"), count > 0},
                                      {QStringLiteral("count"), count}};
