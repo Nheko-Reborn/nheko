@@ -76,6 +76,6 @@ Dock::Dock(QObject *parent)
   : QObject(parent)
 {}
 void
-Dock::setUnreadCount(const int count)
+Dock::setUnreadCount(const int)
 {}
 #endif
