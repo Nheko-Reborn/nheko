@@ -46,13 +46,13 @@ Dock::Dock(QObject *parent)
 
                 unityServiceAvailable = services.contains(QLatin1String("com.canonical.Unity"));
             });
-};
+}
 
 void
 Dock::setUnreadCount(const int count)
 {
     unitySetNotificationCount(count);
-};
+}
 void
 Dock::unitySetNotificationCount(const int count)
 {
@@ -69,7 +69,7 @@ Dock::unitySetNotificationCount(const int count)
         message.setArguments({launcherId, properties});
         QDBusConnection::sessionBus().send(message);
     }
-};
+}
 #else
 void
 Dock::Dock()
