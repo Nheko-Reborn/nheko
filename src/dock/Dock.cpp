@@ -71,7 +71,6 @@ Dock::unitySetNotificationCount(const int count)
     }
 }
 #else
-void
 Dock::Dock(QObject *parent)
   : QObject(parent)
 {}
