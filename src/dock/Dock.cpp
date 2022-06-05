@@ -3,8 +3,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "dock/Dock.h"
+
 #include <QApplication>
-#include <QObject>
+
+#include "Logging.h"
+
 #if defined(NHEKO_DBUS_SYS)
 #include <qdbusconnectioninterface.h>
 Dock::Dock(QObject *parent)
@@ -21,6 +24,7 @@ Dock::Dock(QObject *parent)
             [this](const QString &service) {
                 Q_UNUSED(service);
                 unityServiceAvailable = true;
+                nhlog::ui()->info("Unity service available: {}", unityServiceAvailable);
             });
     connect(unityServiceWatcher,
             &QDBusServiceWatcher::serviceUnregistered,
@@ -28,6 +32,7 @@ Dock::Dock(QObject *parent)
             [this](const QString &service) {
                 Q_UNUSED(service);
                 unityServiceAvailable = false;
+                nhlog::ui()->info("Unity service available: {}", unityServiceAvailable);
             });
     QDBusPendingCall listNamesCall =
       QDBusConnection::sessionBus().interface()->asyncCall(QStringLiteral("ListNames"));
@@ -40,12 +45,14 @@ Dock::Dock(QObject *parent)
                 watcher->deleteLater();
 
                 if (reply.isError()) {
+                    nhlog::ui()->error("Failed to list dbus names");
                     return;
                 }
 
                 const QStringList &services = reply.value();
 
                 unityServiceAvailable = services.contains(QLatin1String("com.canonical.Unity"));
+                nhlog::ui()->info("Unity service available: {}", unityServiceAvailable);
             });
 }
 
@@ -58,7 +65,8 @@ void
 Dock::unitySetNotificationCount(const int count)
 {
     if (unityServiceAvailable) {
-        const QString launcherId = qApp->desktopFileName() + QLatin1String(".desktop");
+        const QString launcherId =
+          QLatin1String("application://%1.desktop").arg(qApp->desktopFileName());
 
         const QVariantMap properties{{QStringLiteral("count-visible"), count > 0},
                                      {QStringLiteral("count"), count}};
