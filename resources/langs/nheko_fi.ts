@@ -416,12 +416,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>@user:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>@käyttäjä:palvelin.tld</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Encryption</source>
-        <translation type="unfinished">Salaus</translation>
+        <translation>Salaus</translation>
     </message>
 </context>
 <context>
@@ -430,12 +430,12 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../qml/dialogs/CreateRoom.qml" line="+15"/>
         <location line="+125"/>
         <source>Create Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Luo huone</translation>
     </message>
     <message>
         <location line="-98"/>
         <source>Name</source>
-        <translation type="unfinished">Nimi</translation>
+        <translation>Nimi</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -445,7 +445,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+8"/>
         <source>Topic</source>
-        <translation type="unfinished">Aihe</translation>
+        <translation>Aihe</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -455,7 +455,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+18"/>
         <source>Alias</source>
-        <translation type="unfinished">Osoite</translation>
+        <translation>Alias</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1619,7 +1619,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="-169"/>
         <source>Remove event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Poista tapahtumatyyppi</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -1660,7 +1660,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Other state events</source>
-        <translation type="unfinished"></translation>
+        <translation>Muut tilatapahtumat</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1715,7 +1715,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Change guest access</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta vieraspääsyä</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2249,7 +2249,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+8"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä huoneen %1 jäsenet</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -2610,7 +2610,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+29"/>
         <source>Failed to create keys for secure server side secret storage!</source>
-        <translation type="unfinished"></translation>
+        <translation>Avainten luominen turvalliseen palvelimen puoliseen salaisuusvarastointiin epäonnistui!</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -2864,15 +2864,15 @@ If you choose verify, you need to have the other device available. If you choose
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now send state events.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n jäsen voi nyt lähettää tilatapahtumia.</numerusform>
+            <numerusform>%n jäsentä voi nyt lähettää tilatapahtumia.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now send state events.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 voi nyt lähettää tilatapahtumia.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -2897,12 +2897,12 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+12"/>
         <source>%1 has made %2 an administrator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on tehnyt käyttäjästä %2 tämän huoneen ylläpitäjän.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has made %2 a moderator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on tehnyt käyttäjästä %2 tämän huoneen moderaattorin.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3113,7 +3113,7 @@ Reason: %4</source>
     <message>
         <location line="+7"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä huoneen %1 jäsenet</translation>
     </message>
     <message>
         <location line="+35"/>
