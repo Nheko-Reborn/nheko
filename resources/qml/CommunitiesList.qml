@@ -185,23 +185,7 @@ Page {
                         bubbleBackgroundColor: communityItem.bubbleBackground
                         bubbleTextColor: communityItem.bubbleText
                         font.pixelSize: fontMetrics.font.pixelSize * 0.6
-                        mayBeVisible: {
-                            if (!communitySidebar.collapsed)
-                                return false
-                            else if (communityItem.muted)
-                                return false
-                            else if (Settings.spaceNotifications === Settings.SpaceNotificationsOff)
-                                return false
-                            else if (Settings.spaceNotifications === Settings.SidebarHiddenRooms)
-                            {
-                                if (communityItem.hidden)
-                                    return true
-                                else
-                                    return false
-                            }
-                            else
-                                return true
-                        }
+                        mayBeVisible: communitySidebar.collapsed && !communityItem.muted && Settings.spaceNotifications
                         anchors.right: avatar.right
                         anchors.bottom: avatar.bottom
                         anchors.margins: -Nheko.paddingSmall
@@ -228,23 +212,7 @@ Page {
                     hasLoudNotification: communityItem.hasLoudNotification
                     bubbleBackgroundColor: communityItem.bubbleBackground
                     bubbleTextColor: communityItem.bubbleText
-                    mayBeVisible: {
-                        if (communitySidebar.collapsed)
-                            return false
-                        else if (communityItem.muted)
-                            return false
-                        else if (Settings.spaceNotification === Settings.SpaceNotificationsOff)
-                            return false
-                        else if (Settings.spaceNotifications === Settings.SidebarHiddenRooms)
-                        {
-                            if (communityItem.hidden)
-                                return true
-                            else
-                                return false
-                        }
-                        else
-                            return true
-                    }
+                    mayBeVisible: !communitySidebar.collapsed && !communityItem.muted && Settings.spaceNotifications
                     Layout.alignment: Qt.AlignRight
                     Layout.leftMargin: Nheko.paddingSmall
                 }
