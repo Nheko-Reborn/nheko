@@ -3339,7 +3339,7 @@ Reason: %4</source>
     <message>
         <location line="+22"/>
         <source>Last seen %1 from %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Nähty viimeksi %1 osoitteesta %2</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3671,7 +3671,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Online backup key</source>
-        <translation type="unfinished"></translation>
+        <translation>Verkkovara-avain</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3976,7 +3976,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+49"/>
         <source>Back</source>
-        <translation type="unfinished">Takaisin</translation>
+        <translation>Takaisin</translation>
     </message>
     <message>
         <location line="-42"/>
