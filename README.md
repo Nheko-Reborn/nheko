@@ -90,11 +90,14 @@ sudo dnf install nheko
 ```
 
 #### Gentoo Linux
+
 ```bash
 sudo eselect repository enable guru
 sudo emaint sync -r guru
 sudo emerge -a nheko
 ```
+
+If you are using Gnome Keyring or KeepassXC as your secrets daemon, ensure that the `gnome-keyring` useflag is enabled on `dev-libs/qtkeychain`.
 
 #### Nix(os)
 
