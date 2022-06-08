@@ -2948,12 +2948,12 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+6"/>
         <source>%1 removed the following images from the pack %2:&lt;br&gt;%3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 poisti paketista %2 seuraavat kuvat:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 added the following images to the pack %2:&lt;br&gt;%3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lisäsi pakettiin %2 seuraavat kuvat:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2999,7 +2999,7 @@ Reason: %4</source>
     <message>
         <location line="+5"/>
         <source>%2 rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 hylkäsi käyttäjän %1 koputuksen.</translation>
     </message>
     <message>
         <location line="-32"/>
@@ -3172,7 +3172,7 @@ Reason: %4</source>
     <message>
         <location line="+22"/>
         <source>Show or hide pinned messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä tai piilota kiinnitetyt viestit</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -3248,9 +3248,9 @@ Reason: %4</source>
     <message numerus="yes">
         <location filename="../qml/UploadBox.qml" line="+79"/>
         <source>Upload %n file(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Lähetä tiedosto</numerusform>
+            <numerusform>Lähetä %n tiedostoa</numerusform>
         </translation>
     </message>
 </context>
@@ -3325,12 +3325,12 @@ Reason: %4</source>
     <message>
         <location line="+9"/>
         <source>Refresh device list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Päivitä laitelista.</translation>
     </message>
     <message>
         <location line="+56"/>
         <source>Sign out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjaudu ulos tältä laitteelta.</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -3350,12 +3350,12 @@ Reason: %4</source>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+153"/>
         <source>Sign out device %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjaudu ulos laitteelta %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>You signed out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjauduit ulos tältä laitteelta.</translation>
     </message>
     <message>
         <location line="+228"/>
@@ -3437,7 +3437,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Enable small Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>Ota pienet avarit käyttöön</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3487,7 +3487,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Use identicons</source>
-        <translation type="unfinished"></translation>
+        <translation>Käytä identikoneja</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3587,12 +3587,12 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>User ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Käyttäjätunnus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Accesstoken</source>
-        <translation type="unfinished"></translation>
+        <translation>Pääsypoletti</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3637,7 +3637,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>TRAY</source>
-        <translation type="unfinished"></translation>
+        <translation>ILMOITUSALUE</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3753,12 +3753,12 @@ Kun poissa päältä, kaikki viestit lähetetään tavallisena tekstinä.</trans
     <message>
         <location line="+4"/>
         <source>Messages get a bubble background. This also triggers some layout changes (WIP).</source>
-        <translation type="unfinished"></translation>
+        <translation>Viestit saavat kuplan muotoisen taustan. Aiheuttaa myös asettelumuutoksia (työn alla).</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Avatars are resized to fit above the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Avatarit sovitetaan mahtumaan viestin yläpuolelle.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3796,13 +3796,14 @@ Tila näytetään aikaleimojen vieressä.</translation>
     <message>
         <location line="+2"/>
         <source>Notify about received messages when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ilmoita vastaanotetuista viesteistä, kun ohjelma ei ole korostettu.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - circle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta käyttäjäavatarien ulkoasua keskusteluissa.
+POIS - neliö, PÄÄLLÄ - ympyrä.</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -3825,13 +3826,15 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
         <location line="+2"/>
         <source>Opens images with an external program when tapping the image.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Avaa kuvat ulkoisella ohjelmalla kuvia napsauttaessa.
+Huomaa, että avatut tiedostot jätetään salaamattomana levylle ja on poistettava manuaalisesti tämän asetuksen ollessa PÄÄLLÄ.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Opens videos with an external program when tapping the video.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Avaa videot ulkoisella ohjelmalla videoita napsauttaessa.
+Huomaa, että avatut tiedostot jätetään salaamattomana levylle ja on poistettava manuaalisesti tämän asetuksen ollessa PÄÄLLÄ.</translation>
     </message>
     <message>
         <location line="+4"/>
