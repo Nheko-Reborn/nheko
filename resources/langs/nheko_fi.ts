@@ -1736,7 +1736,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Change the room name</source>
-        <translation>Muuta huoneen nimi</translation>
+        <translation>Muuta huoneen nimeä</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1791,7 +1791,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+3"/>
         <source>Start a call</source>
-        <translation>Aloita puhelu</translation>
+        <translation>Aloita puheluja</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1801,7 +1801,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Answer a call</source>
-        <translation>Vastaa puheluun</translation>
+        <translation>Vastaa puheluihin</translation>
     </message>
     <message>
         <location line="+2"/>
