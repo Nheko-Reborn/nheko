@@ -152,23 +152,24 @@
     <message>
         <location line="+301"/>
         <source>Knock on room</source>
-        <translation type="unfinished"></translation>
+        <translation>Koputa huoneeseen</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>You failed to join %1. You can try to knock, so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Liittymisesi huoneeseen %1 epäonnistui. Voit yrittää koputtaa, jotta muut voivat kutsua sinut sisälle. Haluatko tehdä sen?
+Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Haluatko todella koputtaa huoneeseen %1? Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Failed to knock room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Huoneeseen koputtaminen epäonnistui: %1</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -183,7 +184,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+34"/>
         <source>Room creation failed: Bad Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Huoneen luominen epäonnistui: Epäkelpo alias</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -1619,12 +1620,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="-169"/>
         <source>Remove event type</source>
-        <translation>Poista tapahtumatyyppi</translation>
+        <translation>Poista tapahtumatyyppejä</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Add event type</source>
-        <translation>Lisää tapahtumatyyppi</translation>
+        <translation>Lisää tapahtumatyyppejä</translation>
     </message>
     <message>
         <location line="+45"/>
@@ -1639,7 +1640,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+0"/>
         <source>Add user</source>
-        <translation>Lisää käyttäjä</translation>
+        <translation>Lisää käyttäjiä</translation>
     </message>
 </context>
 <context>
