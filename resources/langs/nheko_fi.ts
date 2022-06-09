@@ -142,7 +142,7 @@
     <message>
         <location line="+13"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
-        <translation>Levylläsi oleva välimuisti on uudempaa kuin mitä tämä Nhekon versio tukee. Päivitä tai poista välimuistisi.</translation>
+        <translation>Levylläsi oleva välimuisti on uudempaa kuin mitä tämä Nhekon versio tukee. Päivitä Nheko tai poista välimuistisi.</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -369,7 +369,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+2"/>
         <source>Show direct chats.</source>
-        <translation>Näytä suoria keskusteluja.</translation>
+        <translation>Näytä suorat keskustelut.</translation>
     </message>
     <message>
         <location line="+48"/>
@@ -407,7 +407,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location filename="../qml/dialogs/CreateDirect.qml" line="+16"/>
         <source>Create Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Luo suora keskustelu</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -466,7 +466,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+6"/>
         <source>Public rooms can be joined by anyone, private rooms need explicit invites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Julkisiin huoneisiin voi liittyä kuka tahansa, yksityisiin huoneisiin tarvitsee erillisen kutsun.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -476,7 +476,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+6"/>
         <source>All invitees are given the same power level as the creator</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaikki kutsuttavat saavat saman oikeustason kuin huoneen luoja</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -747,7 +747,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+3"/>
         <source>Hidden events</source>
-        <translation>Piilotettua tapahtumaa</translation>
+        <translation>Piilotetut tapahtumat</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -772,7 +772,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+16"/>
         <source>Power level changes</source>
-        <translation>Voimatasojen muutokset</translation>
+        <translation>Oikeustasojen muutokset</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1127,7 +1127,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Login using %1</source>
-        <translation>Kirjaudu sisään käyttäen %1</translation>
+        <translation>Kirjaudu sisään palvelun %1 kautta</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1212,7 +1212,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+14"/>
         <source>%1 changed the pinned messages.</source>
-        <translation>%1 vaihtoi kiinnitettyjä viestejä.</translation>
+        <translation>%1 muutti kiinnitettyjä viestejä.</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -1400,7 +1400,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+8"/>
         <source>View decrypted raw message</source>
-        <translation>Näytä salaukseltaan purettu raaka viesti</translation>
+        <translation>Näytä salaukseltaan purettu sisältö raakamuodossa</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1569,7 +1569,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+12"/>
         <source>unimplemented event: </source>
-        <translation>toistaseksi toteuttamaton tapahtuma: </translation>
+        <translation>toistaiseksi toteuttamaton tapahtuma: </translation>
     </message>
 </context>
 <context>
@@ -1577,12 +1577,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../qml/dialogs/PowerLevelEditor.qml" line="+24"/>
         <source>Permissions in %1</source>
-        <translation>Luvat huoneessa %1</translation>
+        <translation>Oikeudet huoneessa %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Be careful when editing permissions. You can&apos;t lower the permissions of people with a same or higher level than you. Be careful when promoting others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ole varovainen oikeuksien muokkaamisessa. Et voi vähentää käyttäjien oikeuksia, joilla on sama oikeustaso itsesi kanssa tai korkeampi. Ole varovainen muiden ylennyksessä.</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -1597,7 +1597,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+20"/>
         <source>Move permissions between roles to change them</source>
-        <translation type="unfinished"></translation>
+        <translation>Siirrä oikeuksia roolien välillä muuttaaksesi niitä</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -1615,7 +1615,7 @@ Esimerkki: https://server.my:8787</translation>
         <location line="-180"/>
         <location line="+182"/>
         <source>Custom (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Mukautettu (%1)</translation>
     </message>
     <message>
         <location line="-169"/>
@@ -1630,12 +1630,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+45"/>
         <source>Move users up or down to change their permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Siirrä käyttäjiä ylös tai alas muuttaaksesi heidän oikeuksiaan</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Remove user</source>
-        <translation type="unfinished"></translation>
+        <translation>Poista käyttäjiä huoneesta</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -1648,7 +1648,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../../src/PowerlevelsEditModels.cpp" line="+530"/>
         <source>Failed to update powerlevel: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Oikeustason päivitys epäonnistui: %1</translation>
     </message>
 </context>
 <context>
@@ -1666,7 +1666,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Remove other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Poista toisia käyttäjiä huoneesta</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1681,7 +1681,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Redact events sent by others</source>
-        <translation type="unfinished"></translation>
+        <translation>Vedä pois muiden lähettämiä tapahtumia</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1691,12 +1691,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Deprecated aliases events</source>
-        <translation type="unfinished"></translation>
+        <translation>Käytöstä poistettujen aliasten tapahtumat</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta huoneen avataria</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1726,7 +1726,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Change who can join</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta liittymisehtoja</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1741,52 +1741,52 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Change the room permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta huoneen oikeuksia</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the rooms topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta huoneen aihetta</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the widgets</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta pienoisohjelmia</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the widgets (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta pienoisohjelmia (kokeellinen)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact own events</source>
-        <translation type="unfinished"></translation>
+        <translation>Vedä pois omia tapahtumia</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the pinned events</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta kiinnitettyjä tapahtumia</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Upgrade the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Päivitä huoneen versiota</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä tarroja</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Edit child rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa alihuoneita</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change parent spaces</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta yläspaceja</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1796,7 +1796,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Negotiate a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Järjestele puheluita</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1806,12 +1806,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Hang up a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Lopeta puheluita</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room emotes</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta huoneen hymiöitä</translation>
     </message>
 </context>
 <context>
@@ -1957,7 +1957,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+5"/>
         <source>Server does not support registration.</source>
-        <translation>Palvelin ei tue rekisteröimistä.</translation>
+        <translation>Palvelin ei tue rekisteröitymistä.</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -2127,7 +2127,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+9"/>
         <source>Start a direct chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Aloita suora keskustelu</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2150,7 +2150,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../qml/dialogs/RoomMembers.qml" line="+20"/>
         <source>Members of %1</source>
-        <translation>&amp;1 jäsenet</translation>
+        <translation>Huoneen %1 jäsenet</translation>
     </message>
     <message numerus="yes">
         <location line="+32"/>
@@ -2179,17 +2179,17 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+6"/>
         <source>User ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Käyttäjätunnus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Display name</source>
-        <translation type="unfinished"></translation>
+        <translation>Näkyvä nimi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Power level</source>
-        <translation type="unfinished"></translation>
+        <translation>Oikeustaso</translation>
     </message>
     <message>
         <location line="+105"/>
@@ -2332,12 +2332,12 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
     <message>
         <location line="+16"/>
         <source>Permission</source>
-        <translation>Lupa</translation>
+        <translation>Oikeudet</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View and change the permissions in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä ja muuta oikeuksia tässä huoneessa</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2447,7 +2447,7 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
     <message>
         <location line="+33"/>
         <source>No preview available</source>
-        <translation>Esikatselu ei saatavilla</translation>
+        <translation>Esikatselua ei saatavilla</translation>
     </message>
 </context>
 <context>
@@ -2493,7 +2493,7 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
     <message>
         <location line="+20"/>
         <source>Frame rate:</source>
-        <translation>Ruudunpäivitys:</translation>
+        <translation>Ruutunopeus:</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -2583,7 +2583,8 @@ Vaikuttaa, että olet uusi. Ennen kuin voit turvallisesti salata viestisi, meid�
         <location line="+10"/>
         <source>It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.
 If you choose verify, you need to have the other device available. If you choose &quot;enter passphrase&quot;, you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Olet ilmeisesti jo määrittänyt salauksen asetukset tälle käyttäjälle. Päästäksesi käsiksi salattuihin viesteihisi ja merkitäksesi tämän laitteen luotetuksi, voit joko vahvistaa sen olemassaolevalta laitteelta tai syöttää palauttamissalasanasi (jos sellainen on). Valitse yksi vaihtoehdoista alhaalla.
+Jos valitset vahvistamisen, toisen laitteen on oltava saatavilla. Jos valitset salasanan syöttämisen, tarvitset palauttamisavaimesi tai salasanasi. Jos perut, voit vahvistaa itsesi myöhemmin.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2626,7 +2627,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+140"/>
         <source>Identity key changed. This breaks E2EE, so logging out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Identiteettiavain on muuttunut. Tämä estää päästä-päähän salauksen toiminnan, joten sinut kirjataan ulos.</translation>
     </message>
 </context>
 <context>
@@ -2652,7 +2653,7 @@ If you choose verify, you need to have the other device available. If you choose
         <location line="-15"/>
         <location line="+29"/>
         <source>Failed to upload image: %1</source>
-        <translation>Kuvan lähetys epäonnistui: %s</translation>
+        <translation>Kuvan lähetys epäonnistui: %1</translation>
     </message>
 </context>
 <context>
@@ -2806,7 +2807,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="-221"/>
         <source>%1 has changed the room&apos;s kick powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on muuttanut potkimisen oikeustason huoneessa tasosta %2 tasoon %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
@@ -2824,25 +2825,25 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s redact powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on muuttanut tapahtumien poisvetämisen oikeustason huoneessa tasosta %2 tasoon %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+14"/>
         <source>%n member(s) can now redact room messages.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n jäsen voi nyt vetää pois huoneen viestejä.</numerusform>
+            <numerusform>%n jäsentä voi nyt vetää pois huoneen viestejä.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 can now redact room messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 voi nyt vetää pois huoneen viestejä.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s ban powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on muuttanut porttikieltojen antamisen oikeustason huoneessa tasosta %2 tasoon %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
@@ -2860,7 +2861,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+13"/>
         <source>%1 has changed the room&apos;s state_default powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on muuttanut state_default -tapahtuman oikeustason huoneessa tasosta %2 tasoon %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
@@ -2878,22 +2879,22 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+14"/>
         <source>%1 has changed the room&apos;s invite powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on muuttanut kutsumisen oikeustason huoneessa tasosta %2 tasoon %3.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now not send any events.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on muuttanut events_default -tapahtuman oikeustason huoneessa tasosta %2 tasoon %3. Uudet käyttäjät eivät voi enää lähettää tapahtumia.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now send events that are not otherwise restricted.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on muuttanut events_default -tapahtuman oikeustason huoneessa tasosta %2 tasoon %3. Uudet käyttäjät voivat nyt lähettää muutoin rajoittamattomia tapahtumia.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on muuttanut events_default -tapahtuman oikeustason huoneessa tasosta %2 tasoon %3.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2908,37 +2909,37 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+4"/>
         <source>%1 has downgraded %2 to moderator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on alentanut käyttäjän %2 tämän huoneen moderaattoriksi.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on muuttanut käyttäjän %2 oikeustason tasosta %3 tasoon %4.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>%1 allowed only administrators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 salli vain ylläpitäjien lähettää tyypin&quot;%2&quot; tapahtumia.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed only moderators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 salli vain moderaattorien lähettää tyypin&quot;%2&quot; tapahtumia.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed everyone to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 salli kaikkien lähettää tyypin&quot;%2&quot; tapahtumia.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from the default to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on muuttanut tyypin &quot;%2&quot; tapahtuman oikeustason huoneessa oletustasosta tasoon %3.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from %3 to %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 on muuttanut tyypin &quot;%2&quot; tapahtuman oikeustason huoneessa tasosta %2 tasoon %3.</translation>
     </message>
     <message>
         <location line="+66"/>
@@ -2958,7 +2959,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+5"/>
         <source>%1 changed the sticker and emotes in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutti tämän huoneen tarroja ja hymiöitä.</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -2979,7 +2980,8 @@ If you choose verify, you need to have the other device available. If you choose
         <location line="+1"/>
         <source>%1 (%2) removed this message at %3
 Reason: %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) poisti tämän viestin ajankohtana %3
+Syy: %4</translation>
     </message>
     <message>
         <location line="+126"/>
@@ -2994,7 +2996,7 @@ Reason: %4</source>
     <message>
         <location line="+7"/>
         <source>%2 unbanned %1.</source>
-        <translation>%2 poisti käyttäjän %1 porttikiellon</translation>
+        <translation>%2 poisti käyttäjän %1 porttikiellon.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3202,7 +3204,7 @@ Reason: %4</source>
     <message>
         <location line="+69"/>
         <source>Unpin</source>
-        <translation type="unfinished"></translation>
+        <translation>Poista kiinnitys</translation>
     </message>
 </context>
 <context>
@@ -3223,7 +3225,7 @@ Reason: %4</source>
     <message>
         <location filename="../../src/ui/UIA.cpp" line="+59"/>
         <source>No available registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Rekisteröitymistapoja ei ole saatavilla!</translation>
     </message>
     <message>
         <location line="+56"/>
@@ -3432,7 +3434,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Enable message bubbles</source>
-        <translation type="unfinished"></translation>
+        <translation>Käytä kuplan muotoisia viestejä</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3667,7 +3669,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Cross Signing Secrets</source>
-        <translation type="unfinished"></translation>
+        <translation>Ristiinvarmennuksen salaisuudet</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3692,7 +3694,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Expose room information via D-Bus</source>
-        <translation type="unfinished"></translation>
+        <translation>Paljasta huonetiedot D-Bus:in kautta</translation>
     </message>
     <message>
         <location line="+95"/>
@@ -3808,7 +3810,7 @@ POIS - neliö, PÄÄLLÄ - ympyrä.</translation>
     <message>
         <location line="+60"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
-        <translation type="unfinished"></translation>
+        <translation>Omien laitteidesi vahvistamiseen käytettävä avain. Jos avain on välimuistissa, jonkun laitteesi vahvistus tekee siitä vahvistetun kaikille muille laitteillesi, ja käyttäjille, jotka ovat vahvistaneet sinut.</translation>
     </message>
     <message>
         <location line="-64"/>
@@ -3820,7 +3822,7 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
     <message>
         <location line="+7"/>
         <source>Display an identicon instead of a letter when no avatar is set.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä identikoni kirjaimen sijaan, kun avataria ei ole valittu.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3878,7 +3880,7 @@ sumennetaan.</translation>
     <message>
         <location line="+4"/>
         <source>Download message encryption keys from and upload to the encrypted online key backup.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lataa viestien salausavaimet salatusta verkkoavainvarmuuskopiosta ja lähetä avaimet sinne.</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -3900,7 +3902,9 @@ sumennetaan.</translation>
         <source>Allow third-party plugins and applications to load information about rooms you are in via D-Bus. This can have useful applications, but it also could be used for nefarious purposes. Enable at your own risk.
 
 This setting will take effect upon restart.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salli ulkopuolisten liitännäisten ja sovellusten kerätä D-Bus:in kautta tietoa huoneista, joihin olet liittynyt. Tällä voi olla hyödyllisiä käyttötarkoituksia, mutta tätä voi myös käyttää pahantahtoisesti. Ota käyttöön omalla vastuulla.
+
+Tämä asetus tulee voimaan uudelleenkäynnistyksen jälkeen.</translation>
     </message>
     <message>
         <location line="+410"/>
