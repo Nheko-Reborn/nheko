@@ -179,6 +179,32 @@ if(USE_BUNDLED_SPDLOG)
 endif()
 find_package(spdlog 1.0.0 CONFIG REQUIRED)
 
+if(USE_BUNDLED_COEURL)
+	include(FetchContent)
+	FetchContent_Declare(
+		coeurl
+		GIT_REPOSITORY https://nheko.im/Nheko-Reborn/coeurl.git
+		GIT_TAG        v0.1.2
+		)
+	FetchContent_MakeAvailable(coeurl)
+	set(COEURL_TARGET_NAME coeurl::coeurl)
+else()
+	# FindPkgConfig sets this as a cache variable, which breaks find_package
+	if(DEFINED coeurl_FOUND)
+		unset(coeurl_FOUND CACHE)
+	endif()
+	find_package(coeurl 0.1.1 CONFIG)
+	if (coeurl_FOUND)
+		set(COEURL_TARGET_NAME coeurl::coeurl)
+	endif()
+endif()
+
+if(NOT COEURL_TARGET_NAME)
+	find_package(PkgConfig REQUIRED)
+	pkg_check_modules(coeurl REQUIRED IMPORTED_TARGET coeurl>=0.1.1)
+	set(COEURL_TARGET_NAME PkgConfig::coeurl)
+endif()
+
 #
 # LMDB
 #
@@ -398,19 +424,6 @@ if(USE_BUNDLED_OPENSSL)
 	hunter_add_package_safe(OpenSSL)
 endif()
 find_package(OpenSSL 1.1.0 REQUIRED)
-if(USE_BUNDLED_MTXCLIENT)
-	include(FetchContent)
-	FetchContent_Declare(
-		MatrixClient
-		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        754800d226f71864d8b6925e47542d509333e998
-		)
-	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
-	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
-	FetchContent_MakeAvailable(MatrixClient)
-else()
-	find_package(MatrixClient 0.6.2 REQUIRED)
-endif()
 if(USE_BUNDLED_OLM)
 	include(FetchContent)
 	FetchContent_Declare(
@@ -487,6 +500,20 @@ else()
 	add_library(lmdbxx INTERFACE)
 	target_include_directories(lmdbxx INTERFACE ${LMDBXX_INCLUDE_DIR})
 	add_library(lmdbxx::lmdbxx ALIAS lmdbxx)
+endif()
+
+if(USE_BUNDLED_MTXCLIENT)
+	include(FetchContent)
+	FetchContent_Declare(
+		MatrixClient
+		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
+		GIT_TAG        754800d226f71864d8b6925e47542d509333e998
+		)
+	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
+	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
+	FetchContent_MakeAvailable(MatrixClient)
+else()
+	find_package(MatrixClient 0.6.2 REQUIRED)
 endif()
 
 if (VOIP)
@@ -663,6 +690,7 @@ if (USE_BUNDLED_QTKEYCHAIN)
 endif()
 
 target_link_libraries(nheko PRIVATE
+	${COEURL_TARGET_NAME}
 	MatrixClient::MatrixClient
 	cmark::cmark
 	spdlog::spdlog
@@ -694,24 +722,6 @@ if (TARGET PkgConfig::GSTREAMER)
 		target_link_libraries(nheko PRIVATE PkgConfig::XCB)
 		target_compile_definitions(nheko PRIVATE XCB_AVAILABLE)
 	endif()
-endif()
-
-if(USE_BUNDLED_COEURL)
-	include(FetchContent)
-	FetchContent_Declare(
-		coeurl
-		GIT_REPOSITORY https://nheko.im/Nheko-Reborn/coeurl.git
-		GIT_TAG        v0.1.2
-		)
-	FetchContent_MakeAvailable(coeurl)
-	target_link_libraries(nheko PUBLIC coeurl::coeurl)
-elseif(coeurl_DIR)
-	find_package(coeurl CONFIG REQUIRED)
-	target_link_libraries(nheko PUBLIC coeurl::coeurl)
-else()
-	find_package(PkgConfig REQUIRED)
-	pkg_check_modules(coeurl REQUIRED IMPORTED_TARGET coeurl>=0.1.1)
-	target_link_libraries(nheko PUBLIC PkgConfig::coeurl)
 endif()
 
 if(MSVC)
