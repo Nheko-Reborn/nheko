@@ -188,7 +188,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+18"/>
         <source>Room %1 created.</source>
-        <translation>Raum %1 erzeugt.</translation>
+        <translation>Raum %1 erstellt.</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -209,7 +209,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+32"/>
         <source>Kicked user: %1</source>
-        <translation>Gekickter Benutzer: %1</translation>
+        <translation>Entfernter Benutzer: %1</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -219,7 +219,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+3"/>
         <source>Banned user: %1</source>
-        <translation>Gebannter Nutzer: %1</translation>
+        <translation>Verbannter Nutzer: %1</translation>
     </message>
     <message>
         <location line="+8"/>
