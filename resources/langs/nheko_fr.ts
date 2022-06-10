@@ -308,7 +308,7 @@ Vous pouvez donner une raison d&apos;accepter aux autres :</translation>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation>Saisissez le motif de l&apos;expulsion de %1 (%2), ou appuyez sur entrée pour l&apos;omettre :</translation>
+        <translation>Saisissez un motif pour expulser %1 (%2) ou appuyer sur entrée pour ne pas mettre de motif :</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -323,7 +323,7 @@ Vous pouvez donner une raison d&apos;accepter aux autres :</translation>
     <message>
         <location line="+1"/>
         <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
-        <translation>Saisissez le motif du bannissement de %1 (%2), ou appuyez sur entrée pour l&apos;omettre :</translation>
+        <translation>Saisissez un motif pour bannir %1 (%2) ou appuyez sur entrée pour ne pas mettre de motif :</translation>
     </message>
     <message>
         <location filename="../qml/ChatPage.qml" line="+37"/>
