@@ -1380,7 +1380,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+5"/>
         <source>Read receip&amp;ts</source>
-        <translation>Lue kuitt&amp;eja</translation>
+        <translation>Lukukuitt&amp;aukset</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2184,7 +2184,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+1"/>
         <source>Display name</source>
-        <translation>Näkyvä nimi</translation>
+        <translation>Näyttönimi</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2969,7 +2969,7 @@ Jos valitset vahvistamisen, toisen laitteen on oltava saatavilla. Jos valitset s
     <message>
         <location line="+2"/>
         <source>%1 (%2) removed this message at %3</source>
-        <translation>%1 (%2) poisti tämän viestin %3</translation>
+        <translation>%1 (%2) poisti tämän viestin ajankohtana %3</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3559,7 +3559,7 @@ Syy: %4</translation>
     <message>
         <location line="+2"/>
         <source>Camera frame rate</source>
-        <translation>Kameran ruudunpäivitys</translation>
+        <translation>Kameran ruutunopeus</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3704,19 +3704,19 @@ Syy: %4</translation>
     <message>
         <location line="+35"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation>Aseta ilmoitusääni soimaan kun kutsu puheluun tulee</translation>
+        <translation>Aseta ilmoitusääni puhelukutsujen saapumiselle</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation>Aseta viestien suurin leveys aikajanalla (pikseleissä). Tämä voi auttaa luettavuutta laajakuvassa, kun Nheko on täyden ruudun tilassa.</translation>
+        <translation>Aseta viestien suurin leveys aikajanalla (pikseleinä). Tämä voi auttaa luettavuutta laajakuvassa, kun Nheko on täyden ruudun tilassa.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation>Aseta aikakatkaisu (sekunneissa) ikkunan kohdistuksen kadottamiselle
+        <translation>Aseta aikakatkaisu (sekunteina) ikkunan kohdistuksen kadottamiselle
 ennen kuin näkymä sumennetaan.
 Aseta nollaan, jotta sumennetaan heti kohdistus kadotetaan. Suurin arvo 1 tunti (3600 sekuntia)</translation>
     </message>
@@ -3728,7 +3728,7 @@ Aseta nollaan, jotta sumennetaan heti kohdistus kadotetaan. Suurin arvo 1 tunti 
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation>Suurenna fonttikokoa jos näytetään viestit vain muutamalla emojilla.</translation>
+        <translation>Suurenna fonttikokoa näyttäessä vain muutamia emojeja sisältäviä viestejä.</translation>
     </message>
     <message>
         <location line="+2"/>
