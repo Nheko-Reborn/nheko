@@ -20,6 +20,7 @@ set(
 set(CMAKE_CXX_STANDARD 17 CACHE STRING "C++ standard")
 set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE BOOL "Require C++ standard to be supported")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "compile as PIC by default")
+set(CMAKE_AUTOMOC ON)
 
 option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
 include("cmake/HunterGate.cmake")
@@ -179,6 +180,32 @@ if(USE_BUNDLED_SPDLOG)
 endif()
 find_package(spdlog 1.0.0 CONFIG REQUIRED)
 
+if(USE_BUNDLED_COEURL)
+	include(FetchContent)
+	FetchContent_Declare(
+		coeurl
+		GIT_REPOSITORY https://nheko.im/Nheko-Reborn/coeurl.git
+		GIT_TAG        v0.1.2
+		)
+	FetchContent_MakeAvailable(coeurl)
+	set(COEURL_TARGET_NAME coeurl::coeurl)
+else()
+	# FindPkgConfig sets this as a cache variable, which breaks find_package
+	if(DEFINED coeurl_FOUND)
+		unset(coeurl_FOUND CACHE)
+	endif()
+	find_package(coeurl 0.1.1 CONFIG)
+	if (coeurl_FOUND)
+		set(COEURL_TARGET_NAME coeurl::coeurl)
+	endif()
+endif()
+
+if(NOT COEURL_TARGET_NAME)
+	find_package(PkgConfig REQUIRED)
+	pkg_check_modules(coeurl REQUIRED IMPORTED_TARGET coeurl>=0.1.1)
+	set(COEURL_TARGET_NAME PkgConfig::coeurl)
+endif()
+
 #
 # LMDB
 #
@@ -309,87 +336,155 @@ configure_file(cmake/nheko.h config/nheko.h)
 set(SRC_FILES
 	# Dialogs
 	src/dialogs/FallbackAuth.cpp
+	src/dialogs/FallbackAuth.h
 	src/dialogs/ReCaptcha.cpp
+	src/dialogs/ReCaptcha.h
 
 	# Emoji
 	src/emoji/EmojiModel.cpp
+	src/emoji/EmojiModel.h
 	src/emoji/Provider.cpp
-
+	src/emoji/Provider.h
 
 	# Timeline
 	src/timeline/CommunitiesModel.cpp
-	src/timeline/EventStore.cpp
-	src/timeline/InputBar.cpp
-	src/timeline/Reaction.cpp
-	src/timeline/TimelineViewManager.cpp
-	src/timeline/TimelineModel.cpp
+	src/timeline/CommunitiesModel.h
 	src/timeline/DelegateChooser.cpp
+	src/timeline/DelegateChooser.h
+	src/timeline/EventStore.cpp
+	src/timeline/EventStore.h
+	src/timeline/InputBar.cpp
+	src/timeline/InputBar.h
 	src/timeline/Permissions.cpp
+	src/timeline/Permissions.h
 	src/timeline/PresenceEmitter.cpp
+	src/timeline/PresenceEmitter.h
+	src/timeline/Reaction.cpp
+	src/timeline/Reaction.h
 	src/timeline/RoomlistModel.cpp
+	src/timeline/RoomlistModel.h
+	src/timeline/TimelineModel.cpp
+	src/timeline/TimelineModel.h
+	src/timeline/TimelineViewManager.cpp
+	src/timeline/TimelineViewManager.h
 
 	# UI components
 	src/ui/HiddenEvents.cpp
+	src/ui/HiddenEvents.h
 	src/ui/MxcAnimatedImage.cpp
+	src/ui/MxcAnimatedImage.h
 	src/ui/MxcMediaProxy.cpp
+	src/ui/MxcMediaProxy.h
 	src/ui/NhekoCursorShape.cpp
-	src/ui/NhekoEventObserver.cpp
+	src/ui/NhekoCursorShape.h
 	src/ui/NhekoDropArea.cpp
+	src/ui/NhekoDropArea.h
+	src/ui/NhekoEventObserver.cpp
+	src/ui/NhekoEventObserver.h
 	src/ui/NhekoGlobalObject.cpp
+	src/ui/NhekoGlobalObject.h
 	src/ui/RoomSettings.cpp
+	src/ui/RoomSettings.h
 	src/ui/Theme.cpp
+	src/ui/Theme.h
 	src/ui/ThemeManager.cpp
+	src/ui/ThemeManager.h
 	src/ui/UIA.cpp
+	src/ui/UIA.h
 	src/ui/UserProfile.cpp
+	src/ui/UserProfile.h
 
 	src/voip/CallDevices.cpp
+	src/voip/CallDevices.h
 	src/voip/CallManager.cpp
+	src/voip/CallManager.h
 	src/voip/WebRTCSession.cpp
+	src/voip/WebRTCSession.h
 
 	src/encryption/DeviceVerificationFlow.cpp
+	src/encryption/DeviceVerificationFlow.h
 	src/encryption/Olm.cpp
+	src/encryption/Olm.h
 	src/encryption/SelfVerificationStatus.cpp
+	src/encryption/SelfVerificationStatus.h
 	src/encryption/VerificationManager.cpp
+	src/encryption/VerificationManager.h
 
 	# Generic notification stuff
 	src/notifications/Manager.cpp
+	src/notifications/Manager.h
 
 	src/dock/Dock.cpp
+	src/dock/Dock.h
 
 	src/AvatarProvider.cpp
+	src/AvatarProvider.h
 	src/BlurhashProvider.cpp
+	src/BlurhashProvider.h
 	src/Cache.cpp
+	src/Cache.h
+	src/CacheCryptoStructs.h
+	src/CacheStructs.h
+	src/Cache_p.h
 	src/ChatPage.cpp
+	src/ChatPage.h
 	src/Clipboard.cpp
+	src/Clipboard.h
 	src/ColorImageProvider.cpp
-	src/CompletionProxyModel.cpp
-	src/EventAccessors.cpp
-	src/InviteesModel.cpp
-	src/JdenticonProvider.cpp
-	src/Logging.cpp
-	src/LoginPage.cpp
-	src/MainWindow.cpp
-	src/MatrixClient.cpp
-	src/MemberList.cpp
-	src/MxcImageProvider.cpp
-	src/PowerlevelsEditModels.cpp
-	src/ReadReceiptsModel.cpp
-	src/RegisterPage.cpp
-	src/SSOHandler.cpp
+	src/ColorImageProvider.h
 	src/CombinedImagePackModel.cpp
-	src/SingleImagePackModel.cpp
+	src/CombinedImagePackModel.h
+	src/CompletionModelRoles.h
+	src/CompletionProxyModel.cpp
+	src/CompletionProxyModel.h
+	src/Config.h
+	src/EventAccessors.cpp
+	src/EventAccessors.h
 	src/ImagePackListModel.cpp
-	src/TrayIcon.cpp
-	src/UserSettingsPage.cpp
-	src/UsersModel.cpp
+	src/ImagePackListModel.h
+	src/InviteesModel.cpp
+	src/InviteesModel.h
+	src/JdenticonProvider.cpp
+	src/JdenticonProvider.h
+	src/Logging.cpp
+	src/Logging.h
+	src/LoginPage.cpp
+	src/LoginPage.h
+	src/MainWindow.cpp
+	src/MainWindow.h
+	src/MatrixClient.cpp
+	src/MatrixClient.h
+	src/MemberList.cpp
+	src/MemberList.h
+	src/MxcImageProvider.cpp
+	src/MxcImageProvider.h
+	src/PowerlevelsEditModels.cpp
+	src/PowerlevelsEditModels.h
+	src/ReadReceiptsModel.cpp
+	src/ReadReceiptsModel.h
+	src/RegisterPage.cpp
+	src/RegisterPage.h
 	src/RoomDirectoryModel.cpp
+	src/RoomDirectoryModel.h
 	src/RoomsModel.cpp
+	src/RoomsModel.h
+	src/SSOHandler.cpp
+	src/SSOHandler.h
+	src/SingleImagePackModel.cpp
+	src/SingleImagePackModel.h
+	src/TrayIcon.cpp
+	src/TrayIcon.h
+	src/UserSettingsPage.cpp
+	src/UserSettingsPage.h
+	src/UsersModel.cpp
+	src/UsersModel.h
 	src/Utils.cpp
+	src/Utils.h
+
+	includes/jdenticoninterface.h
+
 	src/main.cpp
-
-	third_party/blurhash/blurhash.cpp
 	)
-
 
 include(FeatureSummary)
 
@@ -398,19 +493,6 @@ if(USE_BUNDLED_OPENSSL)
 	hunter_add_package_safe(OpenSSL)
 endif()
 find_package(OpenSSL 1.1.0 REQUIRED)
-if(USE_BUNDLED_MTXCLIENT)
-	include(FetchContent)
-	FetchContent_Declare(
-		MatrixClient
-		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        754800d226f71864d8b6925e47542d509333e998
-		)
-	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
-	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
-	FetchContent_MakeAvailable(MatrixClient)
-else()
-	find_package(MatrixClient 0.6.2 REQUIRED)
-endif()
 if(USE_BUNDLED_OLM)
 	include(FetchContent)
 	FetchContent_Declare(
@@ -489,6 +571,20 @@ else()
 	add_library(lmdbxx::lmdbxx ALIAS lmdbxx)
 endif()
 
+if(USE_BUNDLED_MTXCLIENT)
+	include(FetchContent)
+	FetchContent_Declare(
+		MatrixClient
+		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
+		GIT_TAG        754800d226f71864d8b6925e47542d509333e998
+		)
+	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
+	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
+	FetchContent_MakeAvailable(MatrixClient)
+else()
+	find_package(MatrixClient 0.6.2 REQUIRED)
+endif()
+
 if (VOIP)
 	include(FindPkgConfig)
 	pkg_check_modules(GSTREAMER REQUIRED IMPORTED_TARGET gstreamer-sdp-1.0>=1.18 gstreamer-webrtc-1.0>=1.18)
@@ -508,81 +604,6 @@ if (NOT APPLE AND NOT WIN32)
 	add_compile_definitions(NHEKO_DBUS_SYS)
 endif()
 
-qt5_wrap_cpp(MOC_HEADERS
-	# Dialogs
-	src/dialogs/FallbackAuth.h
-	src/dialogs/ReCaptcha.h
-
-	# Emoji
-	src/emoji/EmojiModel.h
-	src/emoji/Provider.h
-
-	# Timeline
-	src/timeline/CommunitiesModel.h
-	src/timeline/EventStore.h
-	src/timeline/InputBar.h
-	src/timeline/Reaction.h
-	src/timeline/TimelineViewManager.h
-	src/timeline/TimelineModel.h
-	src/timeline/DelegateChooser.h
-	src/timeline/Permissions.h
-	src/timeline/PresenceEmitter.h
-	src/timeline/RoomlistModel.h
-
-	# UI components
-	src/ui/HiddenEvents.h
-	src/ui/MxcAnimatedImage.h
-	src/ui/MxcMediaProxy.h
-	src/ui/NhekoCursorShape.h
-	src/ui/NhekoEventObserver.h
-	src/ui/NhekoDropArea.h
-	src/ui/NhekoGlobalObject.h
-	src/ui/RoomSettings.h
-	src/ui/Theme.h
-	src/ui/ThemeManager.h
-	src/ui/UIA.h
-	src/ui/UserProfile.h
-
-	src/voip/CallDevices.h
-	src/voip/CallManager.h
-	src/voip/WebRTCSession.h
-
-	src/encryption/DeviceVerificationFlow.h
-	src/encryption/Olm.h
-	src/encryption/SelfVerificationStatus.h
-	src/encryption/VerificationManager.h
-
-	src/notifications/Manager.h
-	src/dock/Dock.h
-
-	src/AvatarProvider.h
-	src/BlurhashProvider.h
-	src/CacheCryptoStructs.h
-	src/Cache_p.h
-	src/ChatPage.h
-	src/Clipboard.h
-	src/CombinedImagePackModel.h
-	src/CompletionProxyModel.h
-	src/ImagePackListModel.h
-	src/InviteesModel.h
-	src/JdenticonProvider.h
-	src/LoginPage.h
-	src/MainWindow.h
-	src/MemberList.h
-	src/MxcImageProvider.h
-	src/RegisterPage.h
-	src/RoomsModel.h
-	src/SSOHandler.h
-	src/SingleImagePackModel.h
-	src/TrayIcon.h
-	src/UserSettingsPage.h
-	src/UsersModel.h
-	src/PowerlevelsEditModels.h
-	src/RoomDirectoryModel.h
-	src/RoomsModel.h
-	src/ReadReceiptsModel.h
-)
-
 #
 # Bundle translations.
 #
@@ -591,9 +612,9 @@ set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
 
 if (APPLE)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation -framework Cocoa -framework UserNotifications")
-	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerMac.mm src/notifications/ManagerMac.cpp src/emoji/MacHelper.mm)
+	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerMac.mm src/notifications/ManagerMac.cpp src/emoji/MacHelper.mm src/emoji/MacHelper.h)
 	if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
-		set_source_files_properties( src/notifications/ManagerMac.mm src/emoji/MacHelper.mm PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+		set_source_files_properties( src/notifications/ManagerMac.mm src/emoji/MacHelper.mm src/emoji/MacHelper.h PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
 	endif()
 elseif (WIN32)
 	file(DOWNLOAD
@@ -606,23 +627,19 @@ elseif (WIN32)
 		${PROJECT_SOURCE_DIR}/src/wintoastlib.h
 		EXPECTED_HASH SHA256=b4481023c5782733795838be22bf1a75f45d87458cd4d9a5a75f664a146eea11)
 
-	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerWin.cpp src/wintoastlib.cpp)
+	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerWin.cpp src/wintoastlib.cpp src/wintoastlib.h)
 else ()
 	set(SRC_FILES ${SRC_FILES}
+        src/dbus/NhekoDBusApi.h
+        src/dbus/NhekoDBusBackend.h
         src/dbus/NhekoDBusApi.cpp
         src/dbus/NhekoDBusBackend.cpp
         src/notifications/ManagerLinux.cpp
-	)
-    qt5_wrap_cpp(MOC_HEADERS
-        src/dbus/NhekoDBusApi.h
-        src/dbus/NhekoDBusBackend.h
-	)
+        )
 endif ()
 
 set(NHEKO_DEPS
 	${SRC_FILES}
-	${UI_HEADERS}
-	${MOC_HEADERS}
 	${TRANSLATION_DEPS}
 	${META_FILES_TO_INCLUDE})
 
@@ -655,7 +672,14 @@ else()
 		target_compile_definitions(nheko PRIVATE NHEKO_FLATPAK)
 	endif()
 endif()
+
 target_include_directories(nheko PRIVATE src includes third_party/blurhash third_party/cpp-httplib-0.5.12)
+set(THIRD_PARTY_SRC_FILES
+	third_party/blurhash/blurhash.cpp
+	third_party/blurhash/blurhash.hpp
+	third_party/cpp-httplib-0.5.12/httplib.h
+	)
+target_sources(nheko PRIVATE ${THIRD_PARTY_SRC_FILES})
 
 # Fixup bundled keychain include dirs
 if (USE_BUNDLED_QTKEYCHAIN)
@@ -663,6 +687,7 @@ if (USE_BUNDLED_QTKEYCHAIN)
 endif()
 
 target_link_libraries(nheko PRIVATE
+	${COEURL_TARGET_NAME}
 	MatrixClient::MatrixClient
 	cmark::cmark
 	spdlog::spdlog
@@ -694,24 +719,6 @@ if (TARGET PkgConfig::GSTREAMER)
 		target_link_libraries(nheko PRIVATE PkgConfig::XCB)
 		target_compile_definitions(nheko PRIVATE XCB_AVAILABLE)
 	endif()
-endif()
-
-if(USE_BUNDLED_COEURL)
-	include(FetchContent)
-	FetchContent_Declare(
-		coeurl
-		GIT_REPOSITORY https://nheko.im/Nheko-Reborn/coeurl.git
-		GIT_TAG        v0.1.2
-		)
-	FetchContent_MakeAvailable(coeurl)
-	target_link_libraries(nheko PUBLIC coeurl::coeurl)
-elseif(coeurl_DIR)
-	find_package(coeurl CONFIG REQUIRED)
-	target_link_libraries(nheko PUBLIC coeurl::coeurl)
-else()
-	find_package(PkgConfig REQUIRED)
-	pkg_check_modules(coeurl REQUIRED IMPORTED_TARGET coeurl>=0.1.1)
-	target_link_libraries(nheko PUBLIC PkgConfig::coeurl)
 endif()
 
 if(MSVC)
