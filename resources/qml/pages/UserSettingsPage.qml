@@ -15,7 +15,7 @@ import im.nheko 1.0
 Rectangle {
     id: userSettingsDialog
 
-    property int collapsePoint: 800
+    property int collapsePoint: 600
     property bool collapsed: width < collapsePoint
     color: Nheko.colors.window
 
