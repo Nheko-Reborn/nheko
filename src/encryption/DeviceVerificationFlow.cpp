@@ -157,7 +157,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
       &ChatPage::receivedDeviceVerificationKey,
       this,
       [this](const mtx::events::msg::KeyVerificationKey &msg) {
-          nhlog::crypto()->info("verification: received key");
+          nhlog::crypto()->info(
+            "verification: received key, sender {}, state {}", sender, state().toStdString());
           if (msg.transaction_id.has_value()) {
               if (msg.transaction_id.value() != this->transaction_id)
                   return;
@@ -167,7 +168,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
           }
 
           if (sender) {
-              if (state_ != WaitingForOtherToAccept) {
+              if (state_ != WaitingForOtherToAccept && state_ != WaitingForKeys) {
                   this->cancelVerification(OutOfOrder);
                   return;
               }
@@ -567,12 +568,24 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
         if (!sender)
             this->canonical_json = nlohmann::json(msg);
         else {
-            if (utils::localUser().toStdString() < this->toClient.to_string()) {
+            // resolve glare
+            if (utils::localUser().toStdString() > this->toClient.to_string() &&
+                http::client()->device_id() > this->deviceId.toStdString()) {
+                // treat this as if the user with the smaller mxid and deviceid was the sender of
+                // "start"
                 this->canonical_json = nlohmann::json(msg);
+                this->sender         = false;
+            }
+
+            if (msg.method != mtx::events::msg::VerificationMethods::SASv1) {
+                cancelVerification(DeviceVerificationFlow::Error::OutOfOrder);
+                return;
             }
         }
 
-        if (state_ != PromptStartVerification)
+        // If we didn't send "start", accept the verification (otherwise wait for the other side to
+        // accept
+        if (state_ != PromptStartVerification && !sender)
             this->acceptVerificationRequest();
     } else {
         this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
