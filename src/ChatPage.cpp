@@ -616,6 +616,7 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
         }
     } catch (const lmdb::error &e) {
         nhlog::db()->warn("Logged out in the mean time, dropping sync");
+        return;
     }
 
     nhlog::net()->debug("sync completed: {}", res.next_batch);
