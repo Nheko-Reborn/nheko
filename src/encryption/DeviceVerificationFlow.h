@@ -37,7 +37,7 @@ using sas_ptr = std::unique_ptr<mtx::crypto::SAS>;
  * &&                 |      n  |                                 |                                         |
  * no canonical_json  |      a  |      (m.key.verification.start) |                                         | waitingForKeys
  *                    |      l  |<--------------------------------| Not sending to prevent the glare resolve| && no commitment
- *                    |         |                                 |                                         | && no canonical_json
+ *                    |         |                                 |                               (1)       | && no canonical_json
  *                    |         | m.key.verification.start        |                                         |
  * waitForOtherAccept |         |-------------------------------->| (IF NOT ALREADY ASKED,                  |
  * &&                 |         |                                 |  ASK FOR VERIFICATION REQUEST)          | promptStartVerify, if not accepted
@@ -57,6 +57,9 @@ using sas_ptr = std::unique_ptr<mtx::crypto::SAS>;
  *                    |         |                                 |                                         |
  * success/fail       |         |         m.key.verification.done |                                         | success/fail
  *                    |         |<------------------------------->|                                         |
+ *
+ *  (1) Sometimes the other side does send this start. In this case we run the glare algorithm and send an accept only if
+ *      We are the bigger mxid and deviceid (since we discard our start message). <- GLARE RESOLUTION
  */
 // clang-format on
 class DeviceVerificationFlow : public QObject

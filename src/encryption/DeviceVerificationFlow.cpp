@@ -15,6 +15,7 @@
 #include <QDateTime>
 #include <QTimer>
 #include <iostream>
+#include <tuple>
 
 static constexpr int TIMEOUT = 2 * 60 * 1000; // 2 minutes
 
@@ -569,10 +570,10 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
             this->canonical_json = nlohmann::json(msg);
         else {
             // resolve glare
-            if (utils::localUser().toStdString() > this->toClient.to_string() &&
-                http::client()->device_id() > this->deviceId.toStdString()) {
-                // treat this as if the user with the smaller mxid and deviceid was the sender of
-                // "start"
+            if (std::tuple(this->toClient.to_string(), this->deviceId.toStdString()) <
+                std::tuple(utils::localUser().toStdString(), http::client()->device_id())) {
+                // treat this as if the user with the smaller mxid or smaller deviceid (if the mxid
+                // was the same) was the sender of "start"
                 this->canonical_json = nlohmann::json(msg);
                 this->sender         = false;
             }
