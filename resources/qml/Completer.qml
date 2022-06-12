@@ -115,7 +115,8 @@ Control {
 
         onContentYChanged: deadTimer.restart()
 
-        reuseItems: true
+        // Broken, see https://bugreports.qt.io/browse/QTBUG-102811
+        //reuseItems: true
         implicitWidth: listView.contentItem.childrenRect.width
         model: completer
         verticalLayoutDirection: popup.bottomToTop ? ListView.BottomToTop : ListView.TopToBottom
