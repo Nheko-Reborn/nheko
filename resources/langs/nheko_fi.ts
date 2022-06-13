@@ -3964,7 +3964,7 @@ Tämä asetus tulee voimaan uudelleenkäynnistyksen jälkeen.</translation>
     <message>
         <location filename="../qml/pages/UserSettingsPage.qml" line="+213"/>
         <source>REQUEST</source>
-        <translation>PYYNTÖ</translation>
+        <translation>PYYDÄ</translation>
     </message>
     <message>
         <location line="-4"/>
