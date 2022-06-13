@@ -1172,7 +1172,9 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               "Show buttons to quickly reply, react or access additional options next to each "
               "message.");
         case ReadReceipts:
-            return tr("Show if your message was read.\nStatus is displayed next to timestamps.");
+            return tr(
+              "Show if your message was read.\nStatus is displayed next to timestamps.\nWarning: "
+              "If your homeserver does not support this, your rooms will never be marked as read!");
         case DesktopNotifications:
             return tr("Notify about received messages when the client is not currently focused.");
         case AlertOnNotification:

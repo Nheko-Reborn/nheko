@@ -1728,8 +1728,17 @@ Cache::saveState(const mtx::responses::Sync &res)
                 Receipts receipts;
 
                 for (const auto &[event_id, userReceipts] : receiptsEv->content.receipts) {
-                    for (const auto &[user_id, receipt] : userReceipts.users) {
-                        receipts[event_id][user_id] = receipt.ts;
+                    if (auto r = userReceipts.find(mtx::events::ephemeral::Receipt::Read);
+                        r != userReceipts.end()) {
+                        for (const auto &[user_id, receipt] : r->second.users) {
+                            receipts[event_id][user_id] = receipt.ts;
+                        }
+                    }
+                    if (userReceipts.count(mtx::events::ephemeral::Receipt::ReadPrivate)) {
+                        auto ts = userReceipts.at(mtx::events::ephemeral::Receipt::ReadPrivate)
+                                    .users.at(local_user_id);
+                        if (ts.ts != 0)
+                            receipts[event_id][local_user_id] = ts.ts;
                     }
                 }
                 updateReadReceipt(txn, room.first, receipts);
@@ -1761,12 +1770,15 @@ Cache::saveState(const mtx::responses::Sync &res)
                 std::vector<QString> receipts;
 
                 for (const auto &[event_id, userReceipts] : receiptsEv->content.receipts) {
-                    for (const auto &[user_id, receipt] : userReceipts.users) {
-                        (void)receipt;
+                    if (auto r = userReceipts.find(mtx::events::ephemeral::Receipt::Read);
+                        r != userReceipts.end()) {
+                        for (const auto &[user_id, receipt] : r->second.users) {
+                            (void)receipt;
 
-                        if (user_id != local_user_id) {
-                            receipts.push_back(QString::fromStdString(event_id));
-                            break;
+                            if (user_id != local_user_id) {
+                                receipts.push_back(QString::fromStdString(event_id));
+                                break;
+                            }
                         }
                     }
                 }
