@@ -278,7 +278,7 @@ Rectangle {
                                 }
                                 idx++;
                             }
-                        } else if (positionAt(0, cursorRectangle.y) === 0) {
+                        } else if (positionAt(0, cursorRectangle.y + cursorRectangle.height / 2) === 0) {
                             event.accepted = true;
                             positionCursorAtStart();
                         }
@@ -295,7 +295,7 @@ Rectangle {
                                 }
                                 idx--;
                             }
-                        } else if (positionAt(width, cursorRectangle.y + 2) === messageInput.length) {
+                        } else if (positionAt(width, cursorRectangle.y + cursorRectangle.height / 2) === messageInput.length) {
                             event.accepted = true;
                             positionCursorAtEnd();
                         }
