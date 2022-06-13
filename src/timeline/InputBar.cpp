@@ -101,8 +101,8 @@ InputVideoSurface::supportedPixelFormats(QAbstractVideoBuffer::HandleType type) 
     }
 }
 
-void
-InputBar::paste(bool fromMouse)
+bool
+InputBar::tryPasteAttachment(bool fromMouse)
 {
     const QMimeData *md = nullptr;
 
@@ -113,14 +113,16 @@ InputBar::paste(bool fromMouse)
     }
 
     if (md)
-        insertMimeData(md);
+        return insertMimeData(md);
+
+    return false;
 }
 
-void
+bool
 InputBar::insertMimeData(const QMimeData *md)
 {
     if (!md)
-        return;
+        return false;
 
     nhlog::ui()->debug("Got mime formats: {}",
                        md->formats().join(QStringLiteral(", ")).toStdString());
@@ -171,7 +173,7 @@ InputBar::insertMimeData(const QMimeData *md)
         auto data = md->data(QStringLiteral("x-special/gnome-copied-files")).split('\n');
         if (data.size() < 2) {
             nhlog::ui()->warn("MIME format is malformed, cannot perform paste.");
-            return;
+            return false;
         }
 
         for (int i = 1; i < data.size(); ++i) {
@@ -181,10 +183,13 @@ InputBar::insertMimeData(const QMimeData *md)
             }
         }
     } else if (md->hasText()) {
-        emit insertText(md->text());
+        return false;
     } else {
         nhlog::ui()->debug("formats: {}", md->formats().join(QStringLiteral(", ")).toStdString());
+        return false;
     }
+
+    return true;
 }
 
 void

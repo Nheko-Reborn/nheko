@@ -188,8 +188,7 @@ Rectangle {
                 Keys.onShortcutOverride: event.accepted = (popup.opened && (event.key === Qt.Key_Escape || event.key === Qt.Key_Tab || event.key === Qt.Key_Enter || event.key === Qt.Key_Space))
                 Keys.onPressed: {
                     if (event.matches(StandardKey.Paste)) {
-                        room.input.paste(false);
-                        event.accepted = true;
+                        event.accepted = room.input.tryPasteAttachment(false);
                     } else if (event.key == Qt.Key_Space) {
                         // close popup if user enters space after colon
                         if (cursorPosition == completerTriggeredAt + 1)
@@ -361,11 +360,6 @@ Rectangle {
                 }
 
                 Connections {
-                    function onInsertText(text) {
-                        messageInput.remove(messageInput.selectionStart, messageInput.selectionEnd);
-                        messageInput.insert(messageInput.cursorPosition, text);
-                    }
-
                     function onTextChanged(newText) {
                         messageInput.text = newText;
                         messageInput.cursorPosition = newText.length;
@@ -401,7 +395,7 @@ Rectangle {
                     anchors.fill: parent
                     acceptedButtons: Qt.MiddleButton
                     cursorShape: Qt.IBeamCursor
-                    onClicked: room.input.paste(true)
+                    onPressed: (mouse) => mouse.accepted = room.input.tryPasteAttachment(true)
                 }
 
             }
