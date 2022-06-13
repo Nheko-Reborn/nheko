@@ -83,7 +83,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
     });
 
     connectivityTimer_.setInterval(CHECK_CONNECTIVITY_INTERVAL);
-    connect(&connectivityTimer_, &QTimer::timeout, this, [=]() {
+    connect(&connectivityTimer_, &QTimer::timeout, this, [this]() {
         if (http::client()->access_token().empty()) {
             connectivityTimer_.stop();
             return;
