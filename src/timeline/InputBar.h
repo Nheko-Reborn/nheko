@@ -190,8 +190,8 @@ public slots:
     [[nodiscard]] bool containsAtRoom() const { return containsAtRoom_; }
 
     void send();
-    void paste(bool fromMouse);
-    void insertMimeData(const QMimeData *data);
+    bool tryPasteAttachment(bool fromMouse);
+    bool insertMimeData(const QMimeData *data);
     void updateState(int selectionStart, int selectionEnd, int cursorPosition, const QString &text);
     void openFileSelection();
     [[nodiscard]] bool uploading() const { return uploading_; }
@@ -212,7 +212,6 @@ private slots:
     void removeRunUpload(MediaUpload *upload);
 
 signals:
-    void insertText(QString text);
     void textChanged(QString newText);
     void uploadingChanged(bool value);
     void containsAtRoomChanged();
