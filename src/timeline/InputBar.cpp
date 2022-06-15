@@ -1081,6 +1081,11 @@ InputBar::startUpload(std::unique_ptr<QIODevice> dev, const QString &orgPath, co
     auto upload =
       UploadHandle(new MediaUpload(std::move(dev), format, orgPath, room->isEncrypted(), this));
     connect(upload.get(), &MediaUpload::uploadComplete, this, &InputBar::finalizeUpload);
+    // TODO(Nico): Show a retry option
+    connect(upload.get(), &MediaUpload::uploadFailed, this, [this](MediaUpload *up) {
+        ChatPage::instance()->showNotification(tr("Upload of '%1' failed").arg(up->filename()));
+        removeRunUpload(up);
+    });
 
     unconfirmedUploads.push_back(std::move(upload));
 
