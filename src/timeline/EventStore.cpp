@@ -384,6 +384,7 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
 
     for (const auto &event : events.events) {
         std::set<std::string> relates_to;
+        std::string edited_event;
         if (auto redaction =
               std::get_if<mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(&event)) {
             // fixup reactions
@@ -402,8 +403,12 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
 
             relates_to.insert(redaction->redacts);
         } else {
-            for (const auto &r : mtx::accessors::relations(event).relations)
+            for (const auto &r : mtx::accessors::relations(event).relations) {
                 relates_to.insert(r.event_id);
+
+                if (r.rel_type == mtx::common::RelationType::Replace)
+                    edited_event = r.event_id;
+            }
         }
 
         for (const auto &relates_to_id : relates_to) {
@@ -422,6 +427,16 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                 Index index{room_id_, *idx};
                 events_.remove(index);
                 emit dataChanged(toExternalIdx(*idx), toExternalIdx(*idx));
+            }
+        }
+
+        if (!edited_event.empty()) {
+            for (const auto &downstream_event :
+                 cache::client()->relatedEvents(room_id_, edited_event)) {
+                auto idx = cache::client()->getTimelineIndex(room_id_, downstream_event);
+                if (idx) {
+                    emit dataChanged(toExternalIdx(*idx), toExternalIdx(*idx));
+                }
             }
         }
 
