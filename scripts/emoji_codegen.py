@@ -14,7 +14,7 @@ class Emoji(object):
 
 def generate_qml_list(**kwargs):
     tmpl = Template('''
-const QVector<Emoji> emoji::Provider::emoji = {
+const std::array<Emoji, {{ sum([len(c[1]) for c in kwargs.items()]) }}> emoji::Provider::emoji = {
     {%- for c in kwargs.items() %}
     // {{ c[0].capitalize() }}
     {%- for e in c[1] %}

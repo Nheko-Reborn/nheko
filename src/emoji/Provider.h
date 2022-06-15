@@ -7,10 +7,7 @@
 #pragma once
 
 #include <QObject>
-#include <QSet>
-#include <QString>
-#include <QVector>
-#include <vector>
+#include <array>
 
 namespace emoji {
 Q_NAMESPACE
@@ -49,7 +46,7 @@ class Provider
 {
 public:
     // all emoji for QML purposes
-    static const QVector<Emoji> emoji;
+    static const std::array<Emoji, 3650> emoji;
 };
 
 } // namespace emoji

@@ -7,7 +7,7 @@
 
 using namespace emoji;
 
-const QVector<Emoji> emoji::Provider::emoji = {
+const std::array<Emoji, 3650> emoji::Provider::emoji = {
   // People
   Emoji{QStringLiteral(u"\U0001F600"),
         QStringLiteral(u"grinning"),
