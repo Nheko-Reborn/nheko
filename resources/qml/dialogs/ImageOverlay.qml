@@ -28,6 +28,10 @@ Window {
         onActivated: imageOverlay.close()
     }
 
+    TapHandler {
+        onSingleTapped: imageOverlay.close();
+    }
+
 
     Item {
         id: imgContainer
