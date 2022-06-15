@@ -311,7 +311,9 @@ public:
     void sendMessageEvent(const T &content, mtx::events::EventType eventType);
     RelatedInfo relatedInfo(const QString &id);
 
-    DescInfo lastMessage() const { return lastMessage_; }
+    DescInfo lastMessage() const;
+    uint64_t lastMessageTimestamp() const { return lastMessage_.timestamp; }
+
     bool isSpace() const { return isSpace_; }
     bool isEncrypted() const { return isEncrypted_; }
     crypto::Trust trustlevel() const;

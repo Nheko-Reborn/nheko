@@ -353,14 +353,13 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
   , manager_(manager)
   , permissions_{room_id_}
 {
-    lastMessage_.timestamp = 0;
-
     this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
 
     auto roomInfo            = cache::singleRoomInfo(room_id_.toStdString());
     this->isSpace_           = roomInfo.is_space;
     this->notification_count = roomInfo.notification_count;
     this->highlight_count    = roomInfo.highlight_count;
+    lastMessage_.timestamp   = roomInfo.approximate_last_modification_ts;
 
     // this connection will simplify adding the plainRoomNameChanged() signal everywhere that it
     // needs to be
@@ -1025,10 +1024,21 @@ isYourJoin(const mtx::events::Event<T> &)
     return false;
 }
 
+DescInfo
+TimelineModel::lastMessage() const
+{
+    if (lastMessage_.event_id.isEmpty())
+        QTimer::singleShot(0, this, &TimelineModel::updateLastMessage);
+
+    return lastMessage_;
+}
+
 void
 TimelineModel::updateLastMessage()
 {
-    for (auto it = events.size() - 1; it >= 0; --it) {
+    // only try to generate a preview for the last 1000 messages
+    auto end = std::max(events.size() - 1001, 0);
+    for (auto it = events.size() - 1; it >= end; --it) {
         auto event = events.get(it, decryptDescription);
         if (!event)
             continue;

@@ -1570,6 +1570,47 @@ Cache::updateState(const std::string &room, const mtx::responses::StateEvents &s
     txn.commit();
 }
 
+namespace {
+template<typename T>
+auto
+isMessage(const mtx::events::RoomEvent<T> &e)
+  -> std::enable_if_t<std::is_same<decltype(e.content.msgtype), std::string>::value, bool>
+{
+    return true;
+}
+
+template<typename T>
+auto
+isMessage(const mtx::events::Event<T> &)
+{
+    return false;
+}
+
+template<typename T>
+auto
+isMessage(const mtx::events::EncryptedEvent<T> &)
+{
+    return true;
+}
+
+auto
+isMessage(const mtx::events::RoomEvent<mtx::events::msg::CallInvite> &)
+{
+    return true;
+}
+
+auto
+isMessage(const mtx::events::RoomEvent<mtx::events::msg::CallAnswer> &)
+{
+    return true;
+}
+auto
+isMessage(const mtx::events::RoomEvent<mtx::events::msg::CallHangUp> &)
+{
+    return true;
+}
+}
+
 void
 Cache::saveState(const mtx::responses::Sync &res)
 {
@@ -1623,6 +1664,25 @@ Cache::saveState(const mtx::responses::Sync &res)
         saveTimelineMessages(txn, eventsDb, room.first, room.second.timeline);
 
         RoomInfo updatedInfo;
+        {
+            // retrieve the old tags and modification ts
+            std::string_view data;
+            if (roomsDb_.get(txn, room.first, data)) {
+                try {
+                    RoomInfo tmp     = json::parse(std::string_view(data.data(), data.size()));
+                    updatedInfo.tags = std::move(tmp.tags);
+
+                    updatedInfo.approximate_last_modification_ts =
+                      tmp.approximate_last_modification_ts;
+                } catch (const json::exception &e) {
+                    nhlog::db()->warn("failed to parse room info: room_id ({}), {}: {}",
+                                      room.first,
+                                      std::string(data.data(), data.size()),
+                                      e.what());
+                }
+            }
+        }
+
         updatedInfo.name       = getRoomName(txn, statesdb, membersdb).toStdString();
         updatedInfo.topic      = getRoomTopic(txn, statesdb).toStdString();
         updatedInfo.avatar_url = getRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
@@ -1666,7 +1726,6 @@ Cache::saveState(const mtx::responses::Sync &res)
                 rooms_with_space_updates.insert(room.first);
         }
 
-        bool has_new_tags = false;
         // Process the account_data associated with this room
         if (!room.second.account_data.events.empty()) {
             auto accountDataDb = getAccountDataDb(txn, room.first);
@@ -1691,7 +1750,8 @@ Cache::saveState(const mtx::responses::Sync &res)
                 // for tag events
                 if (std::holds_alternative<AccountDataEvent<account_data::Tags>>(evt)) {
                     auto tags_evt = std::get<AccountDataEvent<account_data::Tags>>(evt);
-                    has_new_tags  = true;
+
+                    updatedInfo.tags.clear();
                     for (const auto &tag : tags_evt.content.tags) {
                         updatedInfo.tags.push_back(tag.first);
                     }
@@ -1704,20 +1764,12 @@ Cache::saveState(const mtx::responses::Sync &res)
                 }
             }
         }
-        if (!has_new_tags) {
-            // retrieve the old tags, they haven't changed
-            std::string_view data;
-            if (roomsDb_.get(txn, room.first, data)) {
-                try {
-                    RoomInfo tmp     = json::parse(std::string_view(data.data(), data.size()));
-                    updatedInfo.tags = tmp.tags;
-                } catch (const json::exception &e) {
-                    nhlog::db()->warn("failed to parse room info: room_id ({}), {}: {}",
-                                      room.first,
-                                      std::string(data.data(), data.size()),
-                                      e.what());
-                }
-            }
+
+        for (const auto &e : room.second.timeline.events) {
+            if (!std::visit([](const auto &e) -> bool { return isMessage(e); }, e))
+                continue;
+            updatedInfo.approximate_last_modification_ts =
+              mtx::accessors::origin_server_ts(e).toMSecsSinceEpoch();
         }
 
         roomsDb_.put(txn, room.first, json(updatedInfo).dump());
@@ -4709,6 +4761,8 @@ to_json(json &j, const RoomInfo &info)
     j["join_rule"]    = info.join_rule;
     j["guest_access"] = info.guest_access;
 
+    j["app_l_ts"] = info.approximate_last_modification_ts;
+
     j["notification_count"] = info.notification_count;
     j["highlight_count"]    = info.highlight_count;
 
@@ -4731,6 +4785,8 @@ from_json(const json &j, RoomInfo &info)
     info.is_space     = j.value("is_space", false);
     info.join_rule    = j.at("join_rule");
     info.guest_access = j.at("guest_access");
+
+    info.approximate_last_modification_ts = j.value("app_l_ts", 0);
 
     info.notification_count = j.value("notification_count", 0);
     info.highlight_count    = j.value("highlight_count", 0);

@@ -121,7 +121,7 @@ RoomlistModel::data(const QModelIndex &index, int role) const
             case Roles::Time:
                 return room->lastMessage().descriptiveTime;
             case Roles::Timestamp:
-                return QVariant{static_cast<quint64>(room->lastMessage().timestamp)};
+                return QVariant{static_cast<quint64>(room->lastMessageTimestamp())};
             case Roles::HasUnreadMessages:
                 return this->roomReadStatus.count(roomid) && this->roomReadStatus.at(roomid);
             case Roles::HasLoudNotification:
@@ -333,7 +333,7 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
             emit totalUnreadMessageCountUpdated(total_unread_msgs);
         });
 
-        newRoom->updateLastMessage();
+        // newRoom->updateLastMessage();
 
         std::vector<QString> previewsToAdd;
         if (newRoom->isSpace()) {

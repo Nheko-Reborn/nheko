@@ -49,7 +49,7 @@ struct DescInfo
     QString userid;
     QString body;
     QString descriptiveTime;
-    uint64_t timestamp;
+    uint64_t timestamp = 0;
     QDateTime datetime;
 };
 
@@ -88,6 +88,10 @@ struct RoomInfo
     bool guest_access                      = false;
     //! The list of tags associated with this room
     std::vector<std::string> tags;
+
+    //! An approximate timestamp of when the last message was sent in the room.
+    //! Use the TimelineModel::lastMessage for an accurate timestamp.
+    uint64_t approximate_last_modification_ts = 0;
 
     uint16_t highlight_count    = 0;
     uint16_t notification_count = 0;
