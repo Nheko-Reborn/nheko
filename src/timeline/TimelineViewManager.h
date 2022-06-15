@@ -12,21 +12,10 @@
 
 #include <mtx/common.hpp>
 #include <mtx/responses/messages.hpp>
-#include <mtx/responses/sync.hpp>
 
-#include "Cache.h"
-#include "JdenticonProvider.h"
-#include "Logging.h"
-#include "TimelineModel.h"
-#include "Utils.h"
-#include "emoji/EmojiModel.h"
-#include "emoji/Provider.h"
-#include "encryption/VerificationManager.h"
 #include "timeline/CommunitiesModel.h"
 #include "timeline/PresenceEmitter.h"
 #include "timeline/RoomlistModel.h"
-#include "voip/CallManager.h"
-#include "voip/WebRTCSession.h"
 
 class MxcImageProvider;
 class BlurhashProvider;
@@ -34,6 +23,13 @@ class ColorImageProvider;
 class UserSettings;
 class ChatPage;
 class ImagePackListModel;
+class TimelineModel;
+class CallManager;
+class VerificationManager;
+
+namespace mtx::responses {
+struct Sync;
+}
 
 class TimelineViewManager : public QObject
 {

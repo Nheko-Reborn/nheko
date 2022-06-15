@@ -8,12 +8,14 @@
 #include <QMimeDatabase>
 #include <QStandardPaths>
 
+#include "Cache.h"
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"
 #include "UserProfile.h"
 #include "Utils.h"
 #include "encryption/DeviceVerificationFlow.h"
+#include "encryption/VerificationManager.h"
 #include "mtx/responses/crypto.hpp"
 #include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"

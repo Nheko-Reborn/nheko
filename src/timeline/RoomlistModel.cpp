@@ -5,6 +5,7 @@
 
 #include "RoomlistModel.h"
 
+#include "Cache.h"
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"
@@ -14,6 +15,8 @@
 #include "TimelineModel.h"
 #include "TimelineViewManager.h"
 #include "UserSettingsPage.h"
+#include "Utils.h"
+#include "voip/CallManager.h"
 
 #ifdef NHEKO_DBUS_SYS
 #include <QDBusConnection>

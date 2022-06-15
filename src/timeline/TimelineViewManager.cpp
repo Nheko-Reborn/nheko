@@ -22,8 +22,11 @@
 #include "RoomsModel.h"
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
+#include "Utils.h"
 #include "emoji/EmojiModel.h"
-#include "emoji/Provider.h"
+#include "encryption/VerificationManager.h"
+#include "voip/CallManager.h"
+#include "voip/WebRTCSession.h"
 
 namespace msgs = mtx::events::msg;
 

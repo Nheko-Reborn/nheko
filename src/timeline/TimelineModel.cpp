@@ -20,6 +20,7 @@
 #include <QVariant>
 #include <utility>
 
+#include "Cache.h"
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "Config.h"

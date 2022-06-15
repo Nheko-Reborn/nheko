@@ -54,6 +54,7 @@
 #include "ui/NhekoEventObserver.h"
 #include "ui/NhekoGlobalObject.h"
 #include "ui/UIA.h"
+#include "voip/CallManager.h"
 #include "voip/WebRTCSession.h"
 
 #ifdef NHEKO_DBUS_SYS
