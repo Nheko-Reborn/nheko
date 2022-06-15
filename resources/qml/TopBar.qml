@@ -271,7 +271,12 @@ Pane {
                         height: implicitHeight
 
                         Reply {
-                            property var e: room ? room.getDump(modelData, "") : {}
+                            id: reply
+                            property var e: room ? room.getDump(modelData, "pins") : {}
+                            Connections {
+                                function onPinnedMessagesChanged() { reply.e = room.getDump(modelData, "pins") }
+                                target: room
+                            }
                             Layout.fillWidth: true
                             Layout.preferredHeight: height
 

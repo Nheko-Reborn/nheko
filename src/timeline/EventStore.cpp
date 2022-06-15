@@ -48,9 +48,13 @@ EventStore::EventStore(std::string room_id, QObject *)
           cache::client()->storeEvent(room_id_, id, {timeline});
 
           if (!relatedTo.empty()) {
-              auto idx = idToIndex(relatedTo);
-              if (idx)
-                  emit dataChanged(*idx, *idx);
+              if (relatedTo == "pins") {
+                  emit pinsChanged();
+              } else {
+                  auto idx = idToIndex(relatedTo);
+                  if (idx)
+                      emit dataChanged(*idx, *idx);
+              }
           }
       },
       Qt::QueuedConnection);

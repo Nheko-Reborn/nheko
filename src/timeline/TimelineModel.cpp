@@ -398,6 +398,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
           "data changed {} to {}", events.size() - to - 1, events.size() - from - 1);
         emit dataChanged(index(events.size() - to - 1, 0), index(events.size() - from - 1, 0));
     });
+    connect(&events, &EventStore::pinsChanged, this, &TimelineModel::pinnedMessagesChanged);
 
     connect(&events, &EventStore::beginInsertRows, this, [this](int from, int to) {
         int first = events.size() - to;

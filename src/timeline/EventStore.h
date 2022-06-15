@@ -101,6 +101,7 @@ signals:
     void beginResetModel();
     void endResetModel();
     void dataChanged(int from, int to);
+    void pinsChanged();
     void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
     void eventFetched(std::string id,
                       std::string relatedTo,
