@@ -68,7 +68,6 @@ public:
     std::vector<std::string> joinedRooms();
 
     QMap<QString, RoomInfo> roomInfo(bool withInvites = true);
-    std::optional<mtx::events::state::CanonicalAlias> getRoomAliases(const std::string &roomid);
     QHash<QString, RoomInfo> invites();
     std::optional<RoomInfo> invite(std::string_view roomid);
     QMap<QString, std::optional<RoomInfo>> spaces();

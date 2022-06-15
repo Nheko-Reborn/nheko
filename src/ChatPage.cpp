@@ -1480,9 +1480,10 @@ ChatPage::handleMatrixUri(QString uri)
         auto targetRoomAlias = mxid1.toStdString();
 
         for (const auto &roomid : joined_rooms) {
-            auto aliases = cache::client()->getRoomAliases(roomid);
+            auto aliases =
+              cache::client()->getStateEvent<mtx::events::state::CanonicalAlias>(roomid);
             if (aliases) {
-                if (aliases->alias == targetRoomAlias) {
+                if (aliases->content.alias == targetRoomAlias) {
                     view_manager_->rooms()->setCurrentRoom(QString::fromStdString(roomid));
                     if (!mxid2.isEmpty())
                         view_manager_->showEvent(QString::fromStdString(roomid), mxid2);

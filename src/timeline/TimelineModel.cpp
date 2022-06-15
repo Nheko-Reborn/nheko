@@ -1761,12 +1761,13 @@ TimelineModel::copyLinkToEvent(const QString &eventId) const
 {
     QStringList vias;
 
-    auto alias = cache::client()->getRoomAliases(room_id_.toStdString());
+    auto alias =
+      cache::client()->getStateEvent<mtx::events::state::CanonicalAlias>(room_id_.toStdString());
     QString room;
     if (alias) {
-        room = QString::fromStdString(alias->alias);
-        if (room.isEmpty() && !alias->alt_aliases.empty()) {
-            room = QString::fromStdString(alias->alt_aliases.front());
+        room = QString::fromStdString(alias->content.alias);
+        if (room.isEmpty() && !alias->content.alt_aliases.empty()) {
+            room = QString::fromStdString(alias->content.alt_aliases.front());
         }
     }
 
