@@ -25,10 +25,6 @@ Control {
     property int rowSpacing: 5
     property alias count: listView.count
 
-    Component.onCompleted: {
-        console.log("RRRRRRRRRR: " + roomId);
-    }
-
     signal completionClicked(string completion)
     signal completionSelected(string id)
 
