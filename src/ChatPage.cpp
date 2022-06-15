@@ -297,6 +297,10 @@ ChatPage::deleteConfigs()
     settings->beginGroup(QStringLiteral("auth"));
     settings->remove(QLatin1String(""));
     settings->endGroup(); // auth
+    if (UserSettings::instance()->profile() != QLatin1String("")) {
+        settings->endGroup(); // profilename
+        settings->endGroup(); // profile
+    }
 
     http::client()->shutdown();
     cache::deleteData();
