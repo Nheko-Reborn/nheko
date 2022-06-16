@@ -2357,7 +2357,7 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
     <message>
         <location line="+6"/>
         <source>Hidden events</source>
-        <translation>Piilotettua tapahtuma</translation>
+        <translation>Piilotetut tapahtumat</translation>
     </message>
     <message>
         <location line="-19"/>
