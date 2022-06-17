@@ -48,6 +48,7 @@ class RoomSettings : public QObject
     Q_PROPERTY(bool isEncryptionEnabled READ isEncryptionEnabled NOTIFY encryptionChanged)
     Q_PROPERTY(bool supportsKnocking READ supportsKnocking CONSTANT)
     Q_PROPERTY(bool supportsRestricted READ supportsRestricted CONSTANT)
+    Q_PROPERTY(bool supportsKnockRestricted READ supportsKnockRestricted CONSTANT)
 
 public:
     RoomSettings(QString roomid, QObject *parent = nullptr);
@@ -74,6 +75,7 @@ public:
     bool isEncryptionEnabled() const;
     bool supportsKnocking() const;
     bool supportsRestricted() const;
+    bool supportsKnockRestricted() const;
 
     Q_INVOKABLE void enableEncryption();
     Q_INVOKABLE void updateAvatar();

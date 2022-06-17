@@ -78,6 +78,8 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
         accessRules_ = 3;
     } else if (info_.join_rule == state::JoinRule::Restricted) {
         accessRules_ = 4;
+    } else if (info_.join_rule == state::JoinRule::KnockRestricted) {
+        accessRules_ = 5;
     }
     emit accessJoinRulesChanged();
 }
@@ -263,6 +265,14 @@ RoomSettings::supportsRestricted() const
            info_.version != "3" && info_.version != "4" && info_.version != "5" &&
            info_.version != "6" && info_.version != "7";
 }
+bool
+RoomSettings::supportsKnockRestricted() const
+{
+    return info_.version != "" && info_.version != "1" && info_.version != "2" &&
+           info_.version != "3" && info_.version != "4" && info_.version != "5" &&
+           info_.version != "6" && info_.version != "7" && info_.version != "8" &&
+           info_.version != "9";
+}
 
 void
 RoomSettings::changeNotifications(int currentIndex)
@@ -348,6 +358,9 @@ RoomSettings::changeAccessRules(int index)
             break;
         case 4:
             event.join_rule = state::JoinRule::Restricted;
+            break;
+        case 5:
+            event.join_rule = state::JoinRule::KnockRestricted;
             break;
         default:
             event.join_rule = state::JoinRule::Invite;

@@ -289,6 +289,9 @@ ApplicationWindow {
                         if (roomSettings.supportsRestricted)
                             opts.push(qsTr("Restricted by membership in other rooms"));
 
+                        if (roomSettings.supportsKnockRestricted)
+                            opts.push(qsTr("Restricted by membership in other rooms or by knocking"));
+
                         return opts;
                     }
                     currentIndex: roomSettings.accessJoinRules

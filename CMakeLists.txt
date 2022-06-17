@@ -579,7 +579,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        b26cd34fe8806f14a1daff2ca4f98474863acf9b
+		GIT_TAG        9ef7f7503c88b2a27e551324bd39a556b56aa8d6
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
