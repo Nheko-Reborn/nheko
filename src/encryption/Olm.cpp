@@ -47,8 +47,8 @@ from_json(const nlohmann::json &obj, OlmMessage &msg)
     if (obj.at("content").at("algorithm") != OLM_ALGO)
         throw std::invalid_argument("invalid algorithm for olm message");
 
-    msg.sender     = obj.at("sender");
-    msg.sender_key = obj.at("content").at("sender_key");
+    msg.sender     = obj.at("sender").get<std::string>();
+    msg.sender_key = obj.at("content").at("sender_key").get<std::string>();
     msg.ciphertext = obj.at("content")
                        .at("ciphertext")
                        .get<std::map<std::string, mtx::events::msg::OlmCipherContent>>();
@@ -122,11 +122,11 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
             continue;
         }
 
-        std::string msg_type = j_msg.at("type");
+        std::string msg_type = j_msg.at("type").get<std::string>();
 
         if (msg_type == to_string(mtx::events::EventType::RoomEncrypted)) {
             try {
-                olm::OlmMessage olm_msg = j_msg;
+                olm::OlmMessage olm_msg = j_msg.get<olm::OlmMessage>();
                 cache::client()->query_keys(
                   olm_msg.sender, [olm_msg](const UserKeyCache &userKeys, mtx::http::RequestErr e) {
                       if (e) {
@@ -147,7 +147,8 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
         } else if (msg_type == to_string(mtx::events::EventType::RoomKeyRequest)) {
             nhlog::crypto()->warn("handling key request event: {}", j_msg.dump(2));
             try {
-                mtx::events::DeviceEvent<mtx::events::msg::KeyRequest> req = j_msg;
+                mtx::events::DeviceEvent<mtx::events::msg::KeyRequest> req =
+                  j_msg.get<mtx::events::DeviceEvent<mtx::events::msg::KeyRequest>>();
                 if (req.content.action == mtx::events::msg::RequestAction::Request)
                     handle_key_request_message(req);
                 else
@@ -246,14 +247,14 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
             // claiming to have sent messages which they didn't. sender must correspond
             // to the user who sent the event, recipient to the local user, and
             // recipient_keys to the local ed25519 key.
-            std::string receiver_ed25519 = payload["recipient_keys"]["ed25519"];
+            std::string receiver_ed25519 = payload["recipient_keys"]["ed25519"].get<std::string>();
             if (receiver_ed25519.empty() ||
                 receiver_ed25519 != olm::client()->identity_keys().ed25519) {
                 nhlog::crypto()->warn("Decrypted event doesn't include our ed25519: {}",
                                       payload.dump());
                 return;
             }
-            std::string receiver = payload["recipient"];
+            std::string receiver = payload["recipient"].get<std::string>();
             if (receiver.empty() || receiver != http::client()->user_id().to_string()) {
                 nhlog::crypto()->warn("Decrypted event doesn't include our user_id: {}",
                                       payload.dump());
@@ -266,7 +267,7 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
             // this check, a client cannot be sure that the sender device owns the
             // private part of the ed25519 key it claims to have in the Olm payload.
             // This is crucial when the ed25519 key corresponds to a verified device.
-            std::string sender_ed25519 = payload["keys"]["ed25519"];
+            std::string sender_ed25519 = payload["keys"]["ed25519"].get<std::string>();
             if (sender_ed25519.empty()) {
                 nhlog::crypto()->warn("Decrypted event doesn't include sender ed25519: {}",
                                       payload.dump());
@@ -294,7 +295,7 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
             }
 
             {
-                std::string msg_type = payload["type"];
+                std::string msg_type = payload["type"].get<std::string>();
                 json event_array     = json::array();
                 event_array.push_back(payload);
 
@@ -1334,7 +1335,7 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                         continue;
                     }
 
-                    auto otk = rd.second.begin()->at("key");
+                    auto otk = rd.second.begin()->at("key").get<std::string>();
 
                     auto sign_key = pks.at(user_id).at(device_id).ed25519;
                     auto id_key   = pks.at(user_id).at(device_id).curve25519;

@@ -1257,7 +1257,8 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
                     json j = deviceKeys->master_keys;
                     j.erase("signatures");
                     j.erase("unsigned");
-                    mtx::crypto::CrossSigningKeys master_key = j;
+                    mtx::crypto::CrossSigningKeys master_key =
+                      j.get<mtx::crypto::CrossSigningKeys>();
                     master_key.signatures[http::client()->user_id().to_string()]
                                          ["ed25519:" + http::client()->device_id()] =
                       olm::client()->sign_message(j.dump());

@@ -7,7 +7,7 @@
 
 #include <QObject>
 
-#include <MatrixClient.h>
+#include <mtxclient/http/client.hpp>
 
 class UIA : public QObject
 {

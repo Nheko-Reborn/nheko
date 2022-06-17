@@ -270,7 +270,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                           json j = their_keys.master_keys;
                           j.erase("signatures");
                           j.erase("unsigned");
-                          mtx::crypto::CrossSigningKeys master_key = j;
+                          mtx::crypto::CrossSigningKeys master_key =
+                            j.get<mtx::crypto::CrossSigningKeys>();
                           master_key.signatures[utils::localUser().toStdString()]
                                                ["ed25519:" + http::client()->device_id()] =
                             olm::client()->sign_message(j.dump());
@@ -292,7 +293,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                   continue;
                               auto ssk = mtx::crypto::PkSigning::from_seed(*secret);
 
-                              mtx::crypto::DeviceKeys dev = j;
+                              mtx::crypto::DeviceKeys dev = j.get<mtx::crypto::DeviceKeys>();
                               dev.signatures[utils::localUser().toStdString()]
                                             ["ed25519:" + ssk.public_key()] = ssk.sign(j.dump());
 
@@ -314,7 +315,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                               continue;
                           auto usk = mtx::crypto::PkSigning::from_seed(*secret);
 
-                          mtx::crypto::CrossSigningKeys master_key = j;
+                          mtx::crypto::CrossSigningKeys master_key =
+                            j.get<mtx::crypto::CrossSigningKeys>();
                           master_key.signatures[utils::localUser().toStdString()]
                                                ["ed25519:" + usk.public_key()] = usk.sign(j.dump());
 

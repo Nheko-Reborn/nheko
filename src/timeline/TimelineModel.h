@@ -464,7 +464,7 @@ private:
 
     friend struct SendMessageVisitor;
 
-    int notification_count = 0, highlight_count = 0;
+    uint64_t notification_count = 0, highlight_count = 0;
 
     unsigned int relatedEventCacheBuster = 0;
 

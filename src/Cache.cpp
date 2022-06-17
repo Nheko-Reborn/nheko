@@ -561,7 +561,7 @@ Cache::roomEncryptionSettings(const std::string &room_id)
 
         if (res) {
             try {
-                StateEvent<Encryption> msg = json::parse(event);
+                StateEvent<Encryption> msg = json::parse(event).get<StateEvent<Encryption>>();
 
                 return msg.content;
             } catch (const json::exception &e) {
@@ -810,7 +810,8 @@ Cache::getOutboundMegolmSession(const std::string &room_id)
         auto obj = json::parse(value);
 
         OutboundGroupSessionDataRef ref{};
-        ref.session = unpickle<OutboundSessionObject>(obj.at("session"), pickle_secret_);
+        ref.session =
+          unpickle<OutboundSessionObject>(obj.at("session").get<std::string>(), pickle_secret_);
 
         MegolmSessionIndex index;
         index.room_id    = room_id;
@@ -1155,7 +1156,7 @@ Cache::runMigrations()
 
                                if (oldMessages.prev_batch.empty())
                                    oldMessages.prev_batch = j["token"].get<std::string>();
-                               else if (j["token"] != oldMessages.prev_batch)
+                               else if (j["token"].get<std::string>() != oldMessages.prev_batch)
                                    break;
 
                                mtx::events::collections::TimelineEvent te;
@@ -1325,7 +1326,7 @@ Cache::runMigrations()
                std::map<std::string, std::string> megolmSessionData;
                while (cursor.get(key, value, MDB_NEXT)) {
                    auto indexVal   = nlohmann::json::parse(key);
-                   auto sender_key = indexVal["sender_key"];
+                   auto sender_key = indexVal["sender_key"].get<std::string>();
                    indexVal.erase("sender_key");
 
                    std::string_view dataVal;
@@ -1549,7 +1550,8 @@ Cache::updateState(const std::string &room, const mtx::responses::StateEvents &s
         std::string_view data;
         if (roomsDb_.get(txn, room, data)) {
             try {
-                updatedInfo = json::parse(std::string_view(data.data(), data.size()));
+                updatedInfo =
+                  json::parse(std::string_view(data.data(), data.size())).get<RoomInfo>();
             } catch (const json::exception &e) {
                 nhlog::db()->warn("failed to parse room info: room_id ({}), {}: {}",
                                   room,
@@ -1669,7 +1671,8 @@ Cache::saveState(const mtx::responses::Sync &res)
             std::string_view data;
             if (roomsDb_.get(txn, room.first, data)) {
                 try {
-                    RoomInfo tmp     = json::parse(std::string_view(data.data(), data.size()));
+                    RoomInfo tmp =
+                      json::parse(std::string_view(data.data(), data.size())).get<RoomInfo>();
                     updatedInfo.tags = std::move(tmp.tags);
 
                     updatedInfo.approximate_last_modification_ts =
@@ -1954,7 +1957,7 @@ Cache::singleRoomInfo(const std::string &room_id)
         // Check if the room is joined.
         if (roomsDb_.get(txn, room_id, data)) {
             try {
-                RoomInfo tmp     = json::parse(data);
+                RoomInfo tmp     = json::parse(data).get<RoomInfo>();
                 tmp.member_count = getMembersDb(txn, room_id).size(txn);
                 tmp.join_rule    = getRoomJoinRule(txn, statesdb);
                 tmp.guest_access = getRoomGuestAccess(txn, statesdb);
@@ -1989,7 +1992,7 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
         // Check if the room is joined.
         if (roomsDb_.get(txn, room, data)) {
             try {
-                RoomInfo tmp     = json::parse(data);
+                RoomInfo tmp     = json::parse(data).get<RoomInfo>();
                 tmp.member_count = getMembersDb(txn, room).size(txn);
                 tmp.join_rule    = getRoomJoinRule(txn, statesdb);
                 tmp.guest_access = getRoomGuestAccess(txn, statesdb);
@@ -2005,7 +2008,7 @@ Cache::getRoomInfo(const std::vector<std::string> &rooms)
             // Check if the room is an invite.
             if (invitesDb_.get(txn, room, data)) {
                 try {
-                    RoomInfo tmp     = json::parse(std::string_view(data));
+                    RoomInfo tmp     = json::parse(std::string_view(data)).get<RoomInfo>();
                     tmp.member_count = getInviteMembersDb(txn, room).size(txn);
 
                     room_info.emplace(QString::fromStdString(room), std::move(tmp));
@@ -2241,7 +2244,7 @@ Cache::roomInfo(bool withInvites)
     // Gather info about the joined rooms.
     auto roomsCursor = lmdb::cursor::open(txn, roomsDb_);
     while (roomsCursor.get(room_id, room_data, MDB_NEXT)) {
-        RoomInfo tmp     = json::parse(std::move(room_data));
+        RoomInfo tmp     = json::parse(std::move(room_data)).get<RoomInfo>();
         tmp.member_count = getMembersDb(txn, std::string(room_id)).size(txn);
         result.insert(QString::fromStdString(std::string(room_id)), std::move(tmp));
     }
@@ -2251,7 +2254,7 @@ Cache::roomInfo(bool withInvites)
         // Gather info about the invites.
         auto invitesCursor = lmdb::cursor::open(txn, invitesDb_);
         while (invitesCursor.get(room_id, room_data, MDB_NEXT)) {
-            RoomInfo tmp     = json::parse(room_data);
+            RoomInfo tmp     = json::parse(room_data).get<RoomInfo>();
             tmp.member_count = getInviteMembersDb(txn, std::string(room_id)).size(txn);
             result.insert(QString::fromStdString(std::string(room_id)), std::move(tmp));
         }
@@ -2478,7 +2481,7 @@ Cache::invites()
 
     while (cursor.get(room_id, room_data, MDB_NEXT)) {
         try {
-            RoomInfo tmp     = json::parse(room_data);
+            RoomInfo tmp     = json::parse(room_data).get<RoomInfo>();
             tmp.member_count = getInviteMembersDb(txn, std::string(room_id)).size(txn);
             result.insert(QString::fromStdString(std::string(room_id)), std::move(tmp));
         } catch (const json::exception &e) {
@@ -2506,7 +2509,7 @@ Cache::invite(std::string_view roomid)
 
     if (invitesDb_.get(txn, roomid, room_data)) {
         try {
-            RoomInfo tmp     = json::parse(room_data);
+            RoomInfo tmp     = json::parse(room_data).get<RoomInfo>();
             tmp.member_count = getInviteMembersDb(txn, std::string(roomid)).size(txn);
             result           = std::move(tmp);
         } catch (const json::exception &e) {
@@ -2532,7 +2535,8 @@ Cache::getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersd
 
     if (res) {
         try {
-            StateEvent<Avatar> msg = json::parse(std::string_view(event.data(), event.size()));
+            StateEvent<Avatar> msg =
+              json::parse(std::string_view(event.data(), event.size())).get<StateEvent<Avatar>>();
 
             if (!msg.content.url.empty())
                 return QString::fromStdString(msg.content.url);
@@ -2553,7 +2557,7 @@ Cache::getRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersd
     // Resolve avatar for 1-1 chats.
     while (cursor.get(user_id, member_data, MDB_NEXT)) {
         try {
-            MemberInfo m = json::parse(member_data);
+            MemberInfo m = json::parse(member_data).get<MemberInfo>();
             if (user_id == localUserId_.toStdString()) {
                 fallback_url = m.avatar_url;
                 continue;
@@ -2583,7 +2587,8 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
 
     if (res) {
         try {
-            StateEvent<Name> msg = json::parse(std::string_view(event.data(), event.size()));
+            StateEvent<Name> msg =
+              json::parse(std::string_view(event.data(), event.size())).get<StateEvent<Name>>();
 
             if (!msg.content.name.empty())
                 return QString::fromStdString(msg.content.name);
@@ -2597,7 +2602,8 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
     if (res) {
         try {
             StateEvent<CanonicalAlias> msg =
-              json::parse(std::string_view(event.data(), event.size()));
+              json::parse(std::string_view(event.data(), event.size()))
+                .get<StateEvent<CanonicalAlias>>();
 
             if (!msg.content.alias.empty())
                 return QString::fromStdString(msg.content.alias);
@@ -2616,7 +2622,7 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
 
     while (cursor.get(user_id, member_data, MDB_NEXT) && ii < 3) {
         try {
-            members.emplace(user_id, json::parse(member_data));
+            members.emplace(user_id, json::parse(member_data).get<MemberInfo>());
         } catch (const json::exception &e) {
             nhlog::db()->warn("failed to parse member info: {}", e.what());
         }
@@ -2657,7 +2663,8 @@ Cache::getRoomJoinRule(lmdb::txn &txn, lmdb::dbi &statesdb)
 
     if (res) {
         try {
-            StateEvent<state::JoinRules> msg = json::parse(event);
+            StateEvent<state::JoinRules> msg =
+              json::parse(event).get<StateEvent<state::JoinRules>>();
             return msg.content.join_rule;
         } catch (const json::exception &e) {
             nhlog::db()->warn("failed to parse m.room.join_rule event: {}", e.what());
@@ -2677,7 +2684,7 @@ Cache::getRoomGuestAccess(lmdb::txn &txn, lmdb::dbi &statesdb)
 
     if (res) {
         try {
-            StateEvent<GuestAccess> msg = json::parse(event);
+            StateEvent<GuestAccess> msg = json::parse(event).get<StateEvent<GuestAccess>>();
             return msg.content.guest_access == AccessState::CanJoin;
         } catch (const json::exception &e) {
             nhlog::db()->warn("failed to parse m.room.guest_access event: {}", e.what());
@@ -2697,7 +2704,7 @@ Cache::getRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb)
 
     if (res) {
         try {
-            StateEvent<Topic> msg = json::parse(event);
+            StateEvent<Topic> msg = json::parse(event).get<StateEvent<Topic>>();
 
             if (!msg.content.topic.empty())
                 return QString::fromStdString(msg.content.topic);
@@ -2720,7 +2727,7 @@ Cache::getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb)
 
     if (res) {
         try {
-            StateEvent<Create> msg = json::parse(event);
+            StateEvent<Create> msg = json::parse(event).get<StateEvent<Create>>();
 
             if (!msg.content.room_version.empty())
                 return QString::fromStdString(msg.content.room_version);
@@ -2744,7 +2751,7 @@ Cache::getRoomIsSpace(lmdb::txn &txn, lmdb::dbi &statesdb)
 
     if (res) {
         try {
-            StateEvent<Create> msg = json::parse(event);
+            StateEvent<Create> msg = json::parse(event).get<StateEvent<Create>>();
 
             return msg.content.type == mtx::events::state::room_type::space;
         } catch (const json::exception &e) {
@@ -2767,7 +2774,7 @@ Cache::getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &members
 
     if (res) {
         try {
-            StrippedEvent<state::Name> msg = json::parse(event);
+            StrippedEvent<state::Name> msg = json::parse(event).get<StrippedEvent<state::Name>>();
             return QString::fromStdString(msg.content.name);
         } catch (const json::exception &e) {
             nhlog::db()->warn("failed to parse m.room.name event: {}", e.what());
@@ -2782,7 +2789,7 @@ Cache::getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &members
             continue;
 
         try {
-            MemberInfo tmp = json::parse(member_data);
+            MemberInfo tmp = json::parse(member_data).get<MemberInfo>();
             cursor.close();
 
             return QString::fromStdString(tmp.name);
@@ -2807,7 +2814,8 @@ Cache::getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &me
 
     if (res) {
         try {
-            StrippedEvent<state::Avatar> msg = json::parse(event);
+            StrippedEvent<state::Avatar> msg =
+              json::parse(event).get<StrippedEvent<state::Avatar>>();
             return QString::fromStdString(msg.content.url);
         } catch (const json::exception &e) {
             nhlog::db()->warn("failed to parse m.room.avatar event: {}", e.what());
@@ -2822,7 +2830,7 @@ Cache::getInviteRoomAvatarUrl(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &me
             continue;
 
         try {
-            MemberInfo tmp = json::parse(member_data);
+            MemberInfo tmp = json::parse(member_data).get<MemberInfo>();
             cursor.close();
 
             return QString::fromStdString(tmp.avatar_url);
@@ -2847,7 +2855,7 @@ Cache::getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &db)
 
     if (res) {
         try {
-            StrippedEvent<Topic> msg = json::parse(event);
+            StrippedEvent<Topic> msg = json::parse(event).get<StrippedEvent<Topic>>();
             return QString::fromStdString(msg.content.topic);
         } catch (const json::exception &e) {
             nhlog::db()->warn("failed to parse m.room.topic event: {}", e.what());
@@ -2868,7 +2876,7 @@ Cache::getInviteRoomIsSpace(lmdb::txn &txn, lmdb::dbi &db)
 
     if (res) {
         try {
-            StrippedEvent<Create> msg = json::parse(event);
+            StrippedEvent<Create> msg = json::parse(event).get<StrippedEvent<Create>>();
             return msg.content.type == mtx::events::state::room_type::space;
         } catch (const json::exception &e) {
             nhlog::db()->warn("failed to parse m.room.topic event: {}", e.what());
@@ -2909,7 +2917,7 @@ Cache::getMember(const std::string &room_id, const std::string &user_id)
 
         std::string_view info;
         if (membersdb.get(txn, user_id, info)) {
-            MemberInfo m = json::parse(info);
+            MemberInfo m = json::parse(info).get<MemberInfo>();
             return m;
         }
     } catch (std::exception &e) {
@@ -2943,7 +2951,7 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
             break;
 
         try {
-            MemberInfo tmp = json::parse(user_data);
+            MemberInfo tmp = json::parse(user_data).get<MemberInfo>();
             members.emplace_back(RoomMember{QString::fromStdString(std::string(user_id)),
                                             QString::fromStdString(tmp.name)});
         } catch (const json::exception &e) {
@@ -2983,7 +2991,7 @@ Cache::getMembersFromInvite(const std::string &room_id, std::size_t startIndex, 
                 break;
 
             try {
-                MemberInfo tmp = json::parse(user_data);
+                MemberInfo tmp = json::parse(user_data).get<MemberInfo>();
                 members.emplace_back(RoomMember{QString::fromStdString(std::string(user_id)),
                                                 QString::fromStdString(tmp.name),
                                                 tmp.is_direct});
@@ -3745,7 +3753,7 @@ Cache::spaces()
             if (!space_child.empty()) {
                 std::string_view room_data;
                 if (roomsDb_.get(txn, space_id, room_data)) {
-                    RoomInfo tmp = json::parse(std::move(room_data));
+                    RoomInfo tmp = json::parse(std::move(room_data)).get<RoomInfo>();
                     ret.insert(QString::fromUtf8(space_id.data(), space_id.size()), tmp);
                 } else {
                     ret.insert(QString::fromUtf8(space_id.data(), space_id.size()), std::nullopt);
@@ -3926,7 +3934,8 @@ Cache::hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes
 
     if (res) {
         try {
-            StateEvent<PowerLevels> msg = json::parse(std::string_view(event.data(), event.size()));
+            StateEvent<PowerLevels> msg = json::parse(std::string_view(event.data(), event.size()))
+                                            .get<StateEvent<PowerLevels>>();
 
             user_level = msg.content.user_level(user_id);
 
@@ -4121,7 +4130,8 @@ Cache::presence(const std::string &user_id)
     auto res = presenceDb_.get(txn, user_id, presenceVal);
 
     if (res) {
-        presence_ = json::parse(std::string_view(presenceVal.data(), presenceVal.size()));
+        presence_ = json::parse(std::string_view(presenceVal.data(), presenceVal.size()))
+                      .get<mtx::events::presence::Presence>();
     }
 
     return presence_;
@@ -4484,7 +4494,7 @@ Cache::verificationCache(const std::string &user_id, lmdb::txn &txn)
         VerificationCache verified_state;
         auto res = db.get(txn, user_id, verifiedVal);
         if (res) {
-            verified_state = json::parse(verifiedVal);
+            verified_state = json::parse(verifiedVal).get<VerificationCache>();
             return verified_state;
         } else {
             return {};
@@ -4507,7 +4517,7 @@ Cache::markDeviceVerified(const std::string &user_id, const std::string &key)
             VerificationCache verified_state;
             auto res = db.get(txn, user_id, val);
             if (res) {
-                verified_state = json::parse(val);
+                verified_state = json::parse(val).get<VerificationCache>();
             }
 
             for (const auto &device : verified_state.device_verified)
@@ -4554,7 +4564,7 @@ Cache::markDeviceUnverified(const std::string &user_id, const std::string &key)
         VerificationCache verified_state;
         auto res = db.get(txn, user_id, val);
         if (res) {
-            verified_state = json::parse(val);
+            verified_state = json::parse(val).get<VerificationCache>();
         }
 
         verified_state.device_verified.erase(key);
@@ -4751,15 +4761,15 @@ to_json(json &j, const RoomInfo &info)
 void
 from_json(const json &j, RoomInfo &info)
 {
-    info.name       = j.at("name");
-    info.topic      = j.at("topic");
-    info.avatar_url = j.at("avatar_url");
+    info.name       = j.at("name").get<std::string>();
+    info.topic      = j.at("topic").get<std::string>();
+    info.avatar_url = j.at("avatar_url").get<std::string>();
     info.version    = j.value(
       "version", QCoreApplication::translate("RoomInfo", "no version stored").toStdString());
-    info.is_invite    = j.at("is_invite");
+    info.is_invite    = j.at("is_invite").get<bool>();
     info.is_space     = j.value("is_space", false);
-    info.join_rule    = j.at("join_rule");
-    info.guest_access = j.at("guest_access");
+    info.join_rule    = j.at("join_rule").get<mtx::events::state::JoinRule>();
+    info.guest_access = j.at("guest_access").get<bool>();
 
     info.approximate_last_modification_ts = j.value("app_l_ts", 0);
 
@@ -4767,7 +4777,7 @@ from_json(const json &j, RoomInfo &info)
     info.highlight_count    = j.value("highlight_count", 0);
 
     if (j.count("member_count"))
-        info.member_count = j.at("member_count");
+        info.member_count = j.at("member_count").get<size_t>();
 
     if (j.count("tags"))
         info.tags = j.at("tags").get<std::vector<std::string>>();
@@ -4798,8 +4808,8 @@ to_json(json &j, const MemberInfo &info)
 void
 from_json(const json &j, MemberInfo &info)
 {
-    info.name       = j.at("name");
-    info.avatar_url = j.at("avatar_url");
+    info.name       = j.at("name").get<std::string>();
+    info.avatar_url = j.at("avatar_url").get<std::string>();
     info.is_direct  = j.value("is_direct", false);
 }
 
@@ -4846,7 +4856,7 @@ to_json(nlohmann::json &obj, const GroupSessionData &msg)
 void
 from_json(const nlohmann::json &obj, GroupSessionData &msg)
 {
-    msg.message_index = obj.at("message_index");
+    msg.message_index = obj.at("message_index").get<uint64_t>();
     msg.timestamp     = obj.value("ts", 0ULL);
     msg.trusted       = obj.value("trust", true);
 
@@ -4870,8 +4880,8 @@ to_json(nlohmann::json &obj, const DevicePublicKeys &msg)
 void
 from_json(const nlohmann::json &obj, DevicePublicKeys &msg)
 {
-    msg.ed25519    = obj.at("ed25519");
-    msg.curve25519 = obj.at("curve25519");
+    msg.ed25519    = obj.at("ed25519").get<std::string>();
+    msg.curve25519 = obj.at("curve25519").get<std::string>();
 }
 
 void
@@ -4884,8 +4894,8 @@ to_json(nlohmann::json &obj, const MegolmSessionIndex &msg)
 void
 from_json(const nlohmann::json &obj, MegolmSessionIndex &msg)
 {
-    msg.room_id    = obj.at("room_id");
-    msg.session_id = obj.at("session_id");
+    msg.room_id    = obj.at("room_id").get<std::string>();
+    msg.session_id = obj.at("session_id").get<std::string>();
 }
 
 void

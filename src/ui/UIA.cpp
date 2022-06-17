@@ -13,6 +13,7 @@
 #include <mtx/responses/common.hpp>
 
 #include "Logging.h"
+#include "MatrixClient.h"
 #include "dialogs/FallbackAuth.h"
 #include "dialogs/ReCaptcha.h"
 
