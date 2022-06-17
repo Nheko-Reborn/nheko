@@ -21,8 +21,6 @@ Q_DECLARE_METATYPE(mtx::responses::Notifications)
 Q_DECLARE_METATYPE(mtx::responses::Rooms)
 Q_DECLARE_METATYPE(mtx::responses::Sync)
 Q_DECLARE_METATYPE(mtx::responses::StateEvents)
-Q_DECLARE_METATYPE(mtx::responses::JoinedGroups)
-Q_DECLARE_METATYPE(mtx::responses::GroupProfile)
 
 // Q_DECLARE_METATYPE(nlohmann::json)
 Q_DECLARE_METATYPE(std::string)
@@ -54,8 +52,6 @@ init()
     qRegisterMetaType<mtx::responses::Rooms>();
     qRegisterMetaType<mtx::responses::Sync>();
     qRegisterMetaType<mtx::responses::StateEvents>();
-    qRegisterMetaType<mtx::responses::JoinedGroups>();
-    qRegisterMetaType<mtx::responses::GroupProfile>();
     qRegisterMetaType<std::string>();
     // qRegisterMetaType<nlohmann::json>();
     qRegisterMetaType<std::vector<std::string>>();
