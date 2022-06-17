@@ -11,6 +11,7 @@ else()
 	option(MAN "Build man page" OFF)
 endif()
 option(FLATPAK "Set this only if Nheko is built as a flatpak" OFF)
+option(JSON_ImplicitConversions "Disable implicit conversions in nlohmann/json" ON)
 
 set(
 	CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/toolchain.cmake"
@@ -684,6 +685,13 @@ target_sources(nheko PRIVATE ${THIRD_PARTY_SRC_FILES})
 # Fixup bundled keychain include dirs
 if (USE_BUNDLED_QTKEYCHAIN)
 	target_include_directories(nheko PRIVATE ${qt5keychain_SOURCE_DIR} ${qt5keychain_BINARY_DIR})
+endif()
+
+if (NOT JSON_ImplicitConversions)
+	set_target_properties(nlohmann_json::nlohmann_json PROPERTIES
+					INTERFACE_COMPILE_DEFINITIONS "JSON_USE_IMPLICIT_CONVERSIONS=\$<BOOL:OFF>;JSON_DIAGNOSTICS=\$<BOOL:OFF>"
+					)
+	target_compile_definitions(nheko PUBLIC JSON_USE_IMPLICIT_CONVERSIONS=0)
 endif()
 
 target_link_libraries(nheko PRIVATE
