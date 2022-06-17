@@ -1326,7 +1326,9 @@ Cache::runMigrations()
                std::map<std::string, std::string> inboundSessions;
                std::map<std::string, std::string> megolmSessionData;
                while (cursor.get(key, value, MDB_NEXT)) {
-                   auto indexVal   = nlohmann::json::parse(key);
+                   auto indexVal = nlohmann::json::parse(key);
+                   if (!indexVal.contains("sender_key") || !indexVal.at("sender_key").is_string())
+                       continue;
                    auto sender_key = indexVal["sender_key"].get<std::string>();
                    indexVal.erase("sender_key");
 
