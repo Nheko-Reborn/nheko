@@ -199,8 +199,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
           if (this->sender == false) {
               this->sendVerificationKey();
           } else {
-              if (this->commitment != mtx::crypto::bin2base64_unpadded(mtx::crypto::sha256(
-                                        msg.key + this->canonical_json.dump()))) {
+              if (this->commitment != mtx::crypto::bin2base64_unpadded(
+                                        mtx::crypto::sha256(msg.key + this->canonical_json))) {
                   this->cancelVerification(DeviceVerificationFlow::Error::MismatchedCommitment);
                   return;
               }
@@ -477,7 +477,7 @@ DeviceVerificationFlow::next()
     } else {
         switch (state_) {
         case PromptStartVerification:
-            if (canonical_json.is_null())
+            if (canonical_json.empty())
                 sendVerificationReady();
             else // legacy path without request and ready
                 acceptVerificationRequest();
@@ -569,14 +569,14 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
             return;
         }
         if (!sender)
-            this->canonical_json = nlohmann::json(msg);
+            this->canonical_json = nlohmann::json(msg).dump();
         else {
             // resolve glare
             if (std::tuple(this->toClient.to_string(), this->deviceId.toStdString()) <
                 std::tuple(utils::localUser().toStdString(), http::client()->device_id())) {
                 // treat this as if the user with the smaller mxid or smaller deviceid (if the mxid
                 // was the same) was the sender of "start"
-                this->canonical_json = nlohmann::json(msg);
+                this->canonical_json = nlohmann::json(msg).dump();
                 this->sender         = false;
             }
 
@@ -610,7 +610,7 @@ DeviceVerificationFlow::acceptVerificationRequest()
     else if (this->method == mtx::events::msg::SASMethods::Decimal)
         req.short_authentication_string = {mtx::events::msg::SASMethods::Decimal};
     req.commitment = mtx::crypto::bin2base64_unpadded(
-      mtx::crypto::sha256(this->sas->public_key() + this->canonical_json.dump()));
+      mtx::crypto::sha256(this->sas->public_key() + this->canonical_json));
 
     send(req);
     setState(WaitingForKeys);
@@ -652,12 +652,12 @@ DeviceVerificationFlow::startVerificationRequest()
     if (this->type == DeviceVerificationFlow::Type::ToDevice) {
         mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationStart> body;
         req.transaction_id   = this->transaction_id;
-        this->canonical_json = nlohmann::json(req);
+        this->canonical_json = nlohmann::json(req).dump();
     } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
         req.relations.relations.push_back(this->relation);
         // Set synthesized to surpress the nheko relation extensions
         req.relations.synthesized = true;
-        this->canonical_json      = nlohmann::json(req);
+        this->canonical_json      = nlohmann::json(req).dump();
     }
     send(req);
     setState(WaitingForOtherToAccept);

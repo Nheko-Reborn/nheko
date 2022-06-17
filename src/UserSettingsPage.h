@@ -11,7 +11,6 @@
 #include <QSettings>
 #include <QSharedPointer>
 
-#include "JdenticonProvider.h"
 #include <optional>
 
 class Toggle;
@@ -254,7 +253,7 @@ public:
     QStringList hiddenPins() const { return hiddenPins_; }
     QStringList hiddenWidgets() const { return hiddenWidgets_; }
     QStringList recentReactions() const { return recentReactions_; }
-    bool useIdenticon() const { return useIdenticon_ && JdenticonProvider::isAvailable(); }
+    bool useIdenticon() const;
     bool openImageExternal() const { return openImageExternal_; }
     bool openVideoExternal() const { return openVideoExternal_; }
     QList<QStringList> collapsedSpaces() const { return collapsedSpaces_; }

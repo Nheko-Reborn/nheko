@@ -24,7 +24,6 @@
 
 #include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
-#include "notifications/Manager.h"
 
 class TimelineViewManager;
 class UserSettings;
@@ -217,7 +216,7 @@ private:
     // Global user settings.
     QSharedPointer<UserSettings> userSettings_;
 
-    NotificationsManager notificationsManager;
+    NotificationsManager *notificationsManager;
     CallManager *callManager_;
 };
 

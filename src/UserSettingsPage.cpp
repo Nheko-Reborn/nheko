@@ -17,6 +17,7 @@
 
 #include "Cache.h"
 #include "Config.h"
+#include "JdenticonProvider.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "UserSettingsPage.h"
@@ -152,6 +153,13 @@ UserSettings::load(std::optional<QString> profile)
 
     applyTheme();
 }
+
+bool
+UserSettings::useIdenticon() const
+{
+    return useIdenticon_ && JdenticonProvider::isAvailable();
+}
+
 void
 UserSettings::setMessageHoverHighlight(bool state)
 {

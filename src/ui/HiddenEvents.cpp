@@ -7,6 +7,7 @@
 #include "Cache_p.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
+#include "timeline/TimelineModel.h"
 
 void
 HiddenEvents::load()

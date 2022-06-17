@@ -6,23 +6,11 @@
 #pragma once
 
 #include <QAbstractListModel>
-#include <QHash>
 #include <QString>
 #include <string>
 #include <vector>
 
-#include "MatrixClient.h"
 #include <mtx/responses/public_rooms.hpp>
-#include <mtxclient/http/errors.hpp>
-
-#include "Logging.h"
-
-namespace mtx::http {
-using RequestErr = const std::optional<mtx::http::ClientError> &;
-}
-namespace mtx::responses {
-struct PublicRooms;
-}
 
 class RoomDirectoryModel : public QAbstractListModel
 {

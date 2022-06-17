@@ -11,7 +11,6 @@
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"
-#include "MainWindow.h"
 #include "MatrixClient.h"
 #include "Olm.h"
 #include "encryption/VerificationManager.h"

@@ -9,7 +9,6 @@
 #include <thread>
 #include <type_traits>
 
-#include <QCache>
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QFileDialog>
@@ -28,9 +27,6 @@
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
-#include "MemberList.h"
-#include "MxcImageProvider.h"
-#include "ReadReceiptsModel.h"
 #include "TimelineViewManager.h"
 #include "Utils.h"
 #include "encryption/Olm.h"

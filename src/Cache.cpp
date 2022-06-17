@@ -4,13 +4,15 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include <limits>
+#include "Cache.h"
+#include "Cache_p.h"
+
 #include <stdexcept>
 #include <variant>
 
-#include <QByteArray>
 #include <QCoreApplication>
 #include <QCryptographicHash>
+#include <QDir>
 #include <QFile>
 #include <QHash>
 #include <QMap>
@@ -24,9 +26,8 @@
 #endif
 
 #include <mtx/responses/common.hpp>
+#include <mtx/responses/messages.hpp>
 
-#include "Cache.h"
-#include "Cache_p.h"
 #include "ChatPage.h"
 #include "EventAccessors.h"
 #include "Logging.h"

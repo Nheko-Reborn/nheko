@@ -47,7 +47,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
   : QObject(parent)
   , isConnected_(true)
   , userSettings_{userSettings}
-  , notificationsManager(this)
+  , notificationsManager(new NotificationsManager(this))
   , callManager_(new CallManager(this))
 {
     setObjectName(QStringLiteral("chatPage"));
@@ -147,7 +147,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                 }
             });
 
-    connect(&notificationsManager,
+    connect(notificationsManager,
             &NotificationsManager::notificationClicked,
             this,
             [this](const QString &roomid, const QString &eventid) {
@@ -160,7 +160,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                     MainWindow::instance()->requestActivate();
                 }
             });
-    connect(&notificationsManager,
+    connect(notificationsManager,
             &NotificationsManager::sendNotificationReply,
             this,
             [this](const QString &roomid, const QString &eventid, const QString &body) {
@@ -396,7 +396,7 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
 
         connect(cache::client(),
                 &Cache::removeNotification,
-                &notificationsManager,
+                notificationsManager,
                 &NotificationsManager::removeNotification);
 
     } catch (const lmdb::error &e) {
@@ -492,7 +492,7 @@ ChatPage::sendNotifications(const mtx::responses::Notifications &res)
                                             96,
                                             this,
                                             [this, item](QPixmap image) {
-                                                notificationsManager.postNotification(
+                                                notificationsManager->postNotification(
                                                   item, image.toImage());
                                             });
                 }

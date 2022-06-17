@@ -8,7 +8,6 @@
 #include <QObject>
 
 #include <mtx/responses/crypto.hpp>
-#include <nlohmann/json.hpp>
 
 #include "CacheCryptoStructs.h"
 #include "Logging.h"
@@ -211,7 +210,7 @@ private:
     sas_ptr sas;
     std::string mac_method;
     std::string commitment;
-    nlohmann::json canonical_json;
+    std::string canonical_json;
 
     std::vector<int> sasList;
     UserKeyCache their_keys;

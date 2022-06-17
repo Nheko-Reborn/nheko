@@ -11,8 +11,6 @@
 #include <optional>
 
 #include <QDateTime>
-#include <QDir>
-#include <QImage>
 #include <QString>
 
 #if __has_include(<lmdbxx/lmdb++.h>)
@@ -22,15 +20,18 @@
 #endif
 #include <nlohmann/json.hpp>
 
-#include <mtx/responses/messages.hpp>
 #include <mtx/responses/notifications.hpp>
 #include <mtx/responses/sync.hpp>
-#include <mtxclient/crypto/client.hpp>
+#include <mtxclient/crypto/types.hpp>
 #include <mtxclient/http/client.hpp>
 
 #include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
 #include "Logging.h"
+
+namespace mtx::responses {
+struct Messages;
+}
 
 class Cache : public QObject
 {

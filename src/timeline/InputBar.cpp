@@ -27,7 +27,6 @@
 #include "CombinedImagePackModel.h"
 #include "Config.h"
 #include "Logging.h"
-#include "MainWindow.h"
 #include "MatrixClient.h"
 #include "TimelineModel.h"
 #include "TimelineViewManager.h"

@@ -13,9 +13,12 @@
 #include <mtx/common.hpp>
 #include <mtx/responses/messages.hpp>
 
+#include "ReadReceiptsModel.h"
 #include "timeline/CommunitiesModel.h"
 #include "timeline/PresenceEmitter.h"
 #include "timeline/RoomlistModel.h"
+#include "ui/RoomSettings.h"
+#include "ui/UserProfile.h"
 
 class MxcImageProvider;
 class BlurhashProvider;

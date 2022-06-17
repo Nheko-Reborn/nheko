@@ -8,7 +8,6 @@
 #include <QAbstractListModel>
 #include <QColor>
 #include <QDate>
-#include <QHash>
 #include <QSet>
 #include <QTimer>
 #include <QVariant>
@@ -23,8 +22,6 @@
 #include "MemberList.h"
 #include "Permissions.h"
 #include "ReadReceiptsModel.h"
-#include "ui/RoomSettings.h"
-#include "ui/UserProfile.h"
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
@@ -33,6 +30,7 @@ namespace mtx::responses {
 struct Timeline;
 struct Messages;
 struct ClaimKeys;
+struct StateEvents;
 }
 struct RelatedInfo;
 
@@ -411,7 +409,7 @@ signals:
     void lastMessageChanged();
     void notificationsChanged();
 
-    void newState(mtx::responses::StateEvents events);
+    void newState(const mtx::responses::StateEvents &events);
 
     void newMessageToSend(mtx::events::collections::TimelineEvents event);
     void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);

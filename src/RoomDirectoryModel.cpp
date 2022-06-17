@@ -4,10 +4,13 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "RoomDirectoryModel.h"
-#include "Cache.h"
-#include "ChatPage.h"
 
 #include <algorithm>
+
+#include "Cache.h"
+#include "ChatPage.h"
+#include "Logging.h"
+#include "MatrixClient.h"
 
 RoomDirectoryModel::RoomDirectoryModel(QObject *parent, const std::string &server)
   : QAbstractListModel(parent)

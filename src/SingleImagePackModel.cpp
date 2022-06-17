@@ -8,6 +8,8 @@
 #include <QFile>
 #include <QMimeDatabase>
 
+#include <mtx/responses/media.hpp>
+
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"

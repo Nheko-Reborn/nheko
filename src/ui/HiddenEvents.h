@@ -8,7 +8,7 @@
 #include <QString>
 #include <QVariantList>
 
-#include "timeline/TimelineModel.h"
+#include <mtx/events/event_type.hpp>
 
 class HiddenEvents : public QObject
 {
