@@ -192,10 +192,12 @@ Item {
         Shortcut {
             sequence: StandardKey.Cancel
             onActivated: {
-                if (chat.model.reply)
-                chat.model.reply = undefined;
+                if(room.input.uploads.length > 0)
+                    room.input.declineUploads();
+                else if(chat.model.reply)
+                    chat.model.reply = undefined;
                 else
-                chat.model.edit = undefined;
+                    chat.model.edit = undefined;
             }
         }
 
