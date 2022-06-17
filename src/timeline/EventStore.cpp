@@ -241,9 +241,9 @@ EventStore::EventStore(std::string room_id, QObject *)
 
                       std::visit(
                         [&pending_event, &original_encrypted, &session, this](auto &msg) {
-                            json doc = {{"type", mtx::events::to_string(msg.type)},
-                                        {"content", json(msg.content)},
-                                        {"room_id", room_id_}};
+                            nlohmann::json doc = {{"type", mtx::events::to_string(msg.type)},
+                                                  {"content", nlohmann::json(msg.content)},
+                                                  {"room_id", room_id_}};
 
                             auto data = olm::encrypt_group_message_with_session(
                               session.session, http::client()->device_id(), doc);

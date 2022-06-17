@@ -1346,9 +1346,9 @@ TimelineModel::sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::
     using namespace mtx::events;
     using namespace mtx::identifiers;
 
-    json doc = {{"type", mtx::events::to_string(eventType)},
-                {"content", json(msg.content)},
-                {"room_id", room_id}};
+    nlohmann::json doc = {{"type", mtx::events::to_string(eventType)},
+                          {"content", nlohmann::json(msg.content)},
+                          {"room_id", room_id}};
 
     try {
         mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> event;

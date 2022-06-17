@@ -152,7 +152,7 @@ SelfVerificationStatus::setupCrosssigning(bool useSSSS, QString password, bool u
                     olm::client()->identity_keys().ed25519 &&
                   myKey.keys["curve25519:" + http::client()->device_id()] ==
                     olm::client()->identity_keys().curve25519) {
-                  json j = myKey;
+                  nlohmann::json j = myKey;
                   j.erase("signatures");
                   j.erase("unsigned");
 

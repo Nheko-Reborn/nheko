@@ -426,7 +426,7 @@ ChatPage::loadStateFromCache()
         nhlog::db()->critical("failed to restore cache: {}", e.what());
         emit dropToLoginPageCb(tr("Failed to restore save data. Please login again."));
         return;
-    } catch (const json::exception &e) {
+    } catch (const nlohmann::json::exception &e) {
         nhlog::db()->critical("failed to parse cache data: {}", e.what());
         emit dropToLoginPageCb(tr("Failed to restore save data. Please login again."));
         return;
@@ -1238,7 +1238,7 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
                       olm::client()->identity_keys().ed25519 &&
                     myKey.keys["curve25519:" + http::client()->device_id()] ==
                       olm::client()->identity_keys().curve25519) {
-                    json j = myKey;
+                    nlohmann::json j = myKey;
                     j.erase("signatures");
                     j.erase("unsigned");
 
@@ -1254,7 +1254,7 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
 
                 if (deviceKeys->master_keys.user_id == http::client()->user_id().to_string() &&
                     deviceKeys->master_keys.keys["ed25519:" + mk.public_key()] == mk.public_key()) {
-                    json j = deviceKeys->master_keys;
+                    nlohmann::json j = deviceKeys->master_keys;
                     j.erase("signatures");
                     j.erase("unsigned");
                     mtx::crypto::CrossSigningKeys master_key =
@@ -1270,7 +1270,7 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
     }
 
     if (!req.signatures.empty()) {
-        nhlog::crypto()->debug("Uploading new signatures: {}", json(req).dump(2));
+        nhlog::crypto()->debug("Uploading new signatures: {}", nlohmann::json(req).dump(2));
         http::client()->keys_signatures_upload(
           req, [](const mtx::responses::KeySignaturesUpload &res, mtx::http::RequestErr err) {
               if (err) {

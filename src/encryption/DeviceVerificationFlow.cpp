@@ -267,7 +267,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                   // verified it
                   for (const auto &mac : msg.mac) {
                       if (their_keys.master_keys.keys.count(mac.first)) {
-                          json j = their_keys.master_keys;
+                          nlohmann::json j = their_keys.master_keys;
                           j.erase("signatures");
                           j.erase("unsigned");
                           mtx::crypto::CrossSigningKeys master_key =
@@ -283,7 +283,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                           auto device_id = this->deviceId.toStdString();
 
                           if (their_keys.device_keys.count(device_id)) {
-                              json j = their_keys.device_keys.at(device_id);
+                              nlohmann::json j = their_keys.device_keys.at(device_id);
                               j.erase("signatures");
                               j.erase("unsigned");
 
@@ -305,7 +305,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                   // Sign their master key with user signing key
                   for (const auto &mac : msg.mac) {
                       if (their_keys.master_keys.keys.count(mac.first)) {
-                          json j = their_keys.master_keys;
+                          nlohmann::json j = their_keys.master_keys;
                           j.erase("signatures");
                           j.erase("unsigned");
 

@@ -116,7 +116,7 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
     nlohmann::json j_msg;
 
     for (const auto &msg : msgs) {
-        j_msg = std::visit([](auto &e) { return json(e); }, std::move(msg));
+        j_msg = std::visit([](auto &e) { return nlohmann::json(e); }, std::move(msg));
         if (j_msg.count("type") == 0) {
             nhlog::crypto()->warn("received message with no type field: {}", j_msg.dump(2));
             continue;
@@ -295,8 +295,8 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
             }
 
             {
-                std::string msg_type = payload["type"].get<std::string>();
-                json event_array     = json::array();
+                std::string msg_type       = payload["type"].get<std::string>();
+                nlohmann::json event_array = nlohmann::json::array();
                 event_array.push_back(payload);
 
                 std::vector<mtx::events::collections::DeviceEvents> temp_events;
@@ -456,7 +456,7 @@ handle_pre_key_olm_message(const std::string &sender,
         return {};
     }
 
-    auto plaintext = json::parse(std::string((char *)output.data(), output.size()));
+    auto plaintext = nlohmann::json::parse(std::string((char *)output.data(), output.size()));
     nhlog::crypto()->debug("decrypted message: \n {}", plaintext.dump(2));
 
     try {
@@ -716,8 +716,8 @@ try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCip
         }
 
         try {
-            return json::parse(std::string_view((char *)text.data(), text.size()));
-        } catch (const json::exception &e) {
+            return nlohmann::json::parse(std::string_view((char *)text.data(), text.size()));
+        } catch (const nlohmann::json::exception &e) {
             nhlog::crypto()->critical("failed to parse the decrypted session msg: {} {}",
                                       e.what(),
                                       std::string_view((char *)text.data(), text.size()));
@@ -980,7 +980,7 @@ send_key_request_for(mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> e,
     request.request_id           = request_id;
     request.requesting_device_id = http::client()->device_id();
 
-    nhlog::crypto()->debug("m.room_key_request: {}", json(request).dump(2));
+    nhlog::crypto()->debug("m.room_key_request: {}", nlohmann::json(request).dump(2));
 
     std::map<mtx::identifiers::User, std::map<std::string, decltype(request)>> body;
     body[mtx::identifiers::parse<mtx::identifiers::User>(e.sender)]["*"] = request;
@@ -1171,7 +1171,7 @@ decryptEvent(const MegolmSessionIndex &index,
 
     try {
         // Add missing fields for the event.
-        json body                = json::parse(msg_str);
+        nlohmann::json body      = nlohmann::json::parse(msg_str);
         body["event_id"]         = event.event_id;
         body["sender"]           = event.sender;
         body["origin_server_ts"] = event.origin_server_ts;
@@ -1212,7 +1212,7 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
 {
     static QMap<QPair<std::string, std::string>, qint64> rateLimit;
 
-    nlohmann::json ev_json = std::visit([](const auto &e) { return json(e); }, event);
+    nlohmann::json ev_json = std::visit([](const auto &e) { return nlohmann::json(e); }, event);
 
     std::map<std::string, std::vector<std::string>> keysToQuery;
     mtx::requests::ClaimKeys claims;
@@ -1450,10 +1450,10 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                           if (!mtx::crypto::verify_identity_signature(
                                 dev.second, device_id, user_id)) {
                               nhlog::crypto()->warn("failed to verify identity keys: {}",
-                                                    json(dev.second).dump(2));
+                                                    nlohmann::json(dev.second).dump(2));
                               continue;
                           }
-                      } catch (const json::exception &e) {
+                      } catch (const nlohmann::json::exception &e) {
                           nhlog::crypto()->warn("failed to parse device key json: {}", e.what());
                           continue;
                       } catch (const mtx::crypto::olm_exception &e) {
