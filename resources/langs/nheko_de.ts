@@ -152,7 +152,7 @@
     <message>
         <location line="+301"/>
         <source>Knock on room</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Raumbeitritt anfragen (anklopfen)</translation>
     </message>
     <message>
         <location line="+3"/>
