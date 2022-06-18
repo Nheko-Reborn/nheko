@@ -669,7 +669,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
-        <translation>Vahvistamattoman laitteen salama, mutta olet luottanut tähän asti tuohon käyttäjään.</translation>
+        <translation>Vahvistamattoman laitteen salaama, mutta olet luottanut tähän asti tuohon käyttäjään.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2671,12 +2671,12 @@ Jos valitset vahvistamisen, toisen laitteen on oltava saatavilla. Jos valitset s
     <message>
         <location line="+2"/>
         <source>Received</source>
-        <translation>Vastaanotetut</translation>
+        <translation>Vastaanotettu</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Read</source>
-        <translation>Lue</translation>
+        <translation>Luettu</translation>
     </message>
 </context>
 <context>
