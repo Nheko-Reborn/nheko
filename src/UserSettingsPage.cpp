@@ -548,6 +548,9 @@ UserSettings::setUseOnlineKeyBackup(bool useBackup)
     useOnlineKeyBackup_ = useBackup;
     emit useOnlineKeyBackupChanged(useBackup);
     save();
+
+    if (useBackup)
+        olm::download_full_keybackup();
 }
 
 void

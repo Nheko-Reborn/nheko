@@ -874,6 +874,73 @@ mark_keys_as_published()
 }
 
 void
+download_full_keybackup()
+{
+    if (!UserSettings::instance()->useOnlineKeyBackup()) {
+        // Online key backup disabled
+        return;
+    }
+
+    auto backupVersion = cache::client()->backupVersion();
+    if (!backupVersion) {
+        // no trusted OKB
+        return;
+    }
+
+    using namespace mtx::crypto;
+
+    auto decryptedSecret = cache::secret(mtx::secret_storage::secrets::megolm_backup_v1);
+    if (!decryptedSecret) {
+        // no backup key available
+        return;
+    }
+    auto sessionDecryptionKey = to_binary_buf(base642bin(*decryptedSecret));
+
+    http::client()->room_keys(
+      backupVersion->version,
+      [sessionDecryptionKey](const mtx::responses::backup::KeysBackup &bk,
+                             mtx::http::RequestErr err) {
+          if (err) {
+              if (err->status_code != 404)
+                  nhlog::crypto()->error("Failed to dowload backup {}:{}: {} - {}",
+                                         mtx::errors::to_string(err->matrix_error.errcode),
+                                         err->matrix_error.error);
+              return;
+          }
+
+          mtx::crypto::ExportedSessionKeys allKeys;
+          try {
+              for (const auto &[room, roomKey] : bk.rooms) {
+                  for (const auto &[session_id, encSession] : roomKey.sessions) {
+                      auto session = decrypt_session(encSession.session_data, sessionDecryptionKey);
+
+                      if (session.algorithm != mtx::crypto::MEGOLM_ALGO)
+                          // don't know this algorithm
+                          return;
+
+                      ExportedSession sess{};
+                      sess.session_id = session_id;
+                      sess.room_id    = room;
+                      sess.algorithm  = mtx::crypto::MEGOLM_ALGO;
+                      sess.forwarding_curve25519_key_chain =
+                        std::move(session.forwarding_curve25519_key_chain);
+                      sess.sender_claimed_keys = std::move(session.sender_claimed_keys);
+                      sess.sender_key          = std::move(session.sender_key);
+                      sess.session_key         = std::move(session.session_key);
+                      allKeys.sessions.push_back(std::move(sess));
+                  }
+              }
+
+              // call on UI thread
+              QTimer::singleShot(0, ChatPage::instance(), [keys = std::move(allKeys)] {
+                  cache::importSessionKeys(keys);
+              });
+          } catch (const lmdb::error &e) {
+              nhlog::crypto()->critical("failed to save inbound megolm session: {}", e.what());
+          }
+      });
+}
+void
 lookup_keybackup(const std::string room, const std::string session_id)
 {
     if (!UserSettings::instance()->useOnlineKeyBackup()) {

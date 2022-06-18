@@ -635,6 +635,9 @@ Cache::exportSessionKeys()
 void
 Cache::importSessionKeys(const mtx::crypto::ExportedSessionKeys &keys)
 {
+    std::size_t importCount = 0;
+
+    auto txn = lmdb::txn::begin(env_);
     for (const auto &s : keys.sessions) {
         MegolmSessionIndex index;
         index.room_id    = s.room_id;
@@ -643,14 +646,49 @@ Cache::importSessionKeys(const mtx::crypto::ExportedSessionKeys &keys)
         GroupSessionData data{};
         data.sender_key                      = s.sender_key;
         data.forwarding_curve25519_key_chain = s.forwarding_curve25519_key_chain;
+        data.trusted                         = false;
+
         if (s.sender_claimed_keys.count("ed25519"))
             data.sender_claimed_ed25519_key = s.sender_claimed_keys.at("ed25519");
 
-        auto exported_session = mtx::crypto::import_session(s.session_key);
+        try {
+            auto exported_session = mtx::crypto::import_session(s.session_key);
 
-        saveInboundMegolmSession(index, std::move(exported_session), data);
-        ChatPage::instance()->receivedSessionKey(index.room_id, index.session_id);
+            using namespace mtx::crypto;
+            const auto key = nlohmann::json(index).dump();
+            const auto pickled =
+              pickle<InboundSessionObject>(exported_session.get(), pickle_secret_);
+
+            std::string_view value;
+            if (inboundMegolmSessionDb_.get(txn, key, value)) {
+                auto oldSession =
+                  unpickle<InboundSessionObject>(std::string(value), pickle_secret_);
+                if (olm_inbound_group_session_first_known_index(exported_session.get()) >=
+                    olm_inbound_group_session_first_known_index(oldSession.get())) {
+                    nhlog::crypto()->warn(
+                      "Not storing inbound session with newer or equal first known index");
+                    continue;
+                }
+            }
+
+            inboundMegolmSessionDb_.put(txn, key, pickled);
+            megolmSessionDataDb_.put(txn, key, nlohmann::json(data).dump());
+
+            ChatPage::instance()->receivedSessionKey(index.room_id, index.session_id);
+            importCount++;
+        } catch (const mtx::crypto::olm_exception &e) {
+            nhlog::crypto()->critical(
+              "failed to import inbound megolm session {}: {}", index.session_id, e.what());
+            continue;
+        } catch (const lmdb::error &e) {
+            nhlog::crypto()->critical(
+              "failed to save inbound megolm session {}: {}", index.session_id, e.what());
+            continue;
+        }
     }
+    txn.commit();
+
+    nhlog::crypto()->info("Imported {} out of {} keys", importCount, keys.sessions.size());
 }
 
 //

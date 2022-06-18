@@ -754,7 +754,6 @@ EventStore::requestSession(const mtx::events::EncryptedEvent<mtx::events::msg::E
     if (suppressKeyRequests)
         return;
 
-    // TODO: Look in key backup
     auto copy    = ev;
     copy.room_id = room_id_;
     if (pending_key_requests.count(ev.content.session_id)) {

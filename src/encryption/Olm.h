@@ -73,6 +73,8 @@ import_inbound_megolm_session(
   const mtx::events::DeviceEvent<mtx::events::msg::ForwardedRoomKey> &roomKey);
 void
 lookup_keybackup(const std::string room, const std::string session_id);
+void
+download_full_keybackup();
 
 nlohmann::json
 handle_pre_key_olm_message(const std::string &sender,
