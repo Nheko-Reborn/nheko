@@ -1082,6 +1082,13 @@ FilteredRoomlistModel::toggleTag(QString roomid, QString tag, bool on)
 }
 
 void
+FilteredRoomlistModel::copyLink(QString roomid)
+{
+    QString link = QString("https://matrix.to/#/%1").arg(roomid);
+    QApplication::clipboard()->setText(link);
+}
+
+void
 FilteredRoomlistModel::nextRoomWithActivity()
 {
     int roomWithMention       = -1;

@@ -184,6 +184,11 @@ Page {
                 onTriggered: newTag.show()
             }
 
+            Platform.MenuItem {
+                text: qsTr("Copy room link")
+                onTriggered: Rooms.copyLink(roomContextMenu.roomid)
+            }
+
         }
 
         delegate: ItemDelegate {
