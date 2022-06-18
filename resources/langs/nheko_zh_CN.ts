@@ -6,18 +6,18 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+108"/>
         <source>Calling...</source>
-        <translation>正在拨打…</translation>
+        <translation>响铃中…</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation>连接中…</translation>
+        <translation>正在连接…</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>你正在分享屏幕</translation>
+        <translation>你正在分享屏幕。</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -27,12 +27,12 @@
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation>开启麦克风</translation>
+        <translation>取消麦克风静音</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation>麦克风静音</translation>
+        <translation>静音麦克风</translation>
     </message>
 </context>
 <context>
@@ -84,7 +84,7 @@
     <message>
         <location line="+16"/>
         <source>Devices</source>
-        <translation type="unfinished">设备</translation>
+        <translation>设备</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -109,7 +109,7 @@
     <message>
         <location line="-31"/>
         <source>No microphone found.</source>
-        <translation>未检测到麦克风</translation>
+        <translation>未检测到麦克风。</translation>
     </message>
 </context>
 <context>
@@ -573,7 +573,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished">Objects</translation>
+        <translation>物品</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -583,7 +583,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished">Flags</translation>
+        <translation>标识</translation>
     </message>
 </context>
 <context>
@@ -923,7 +923,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+65"/>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
 </context>
 <context>
@@ -4194,7 +4194,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+3"/>
         <source>Unknown Message Type</source>
-        <translation type="unfinished"></translation>
+        <translation>未知的消息类型</translation>
     </message>
 </context>
 </TS>
