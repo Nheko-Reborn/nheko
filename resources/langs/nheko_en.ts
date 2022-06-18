@@ -2332,7 +2332,7 @@ Please take note that it can&apos;t be disabled afterwards.</translation>
     <message>
         <location line="+16"/>
         <source>Permission</source>
-        <translation>Permission</translation>
+        <translation>Permissions</translation>
     </message>
     <message>
         <location line="+6"/>
