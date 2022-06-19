@@ -213,7 +213,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+26"/>
         <source>Failed to ban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>未能成功封禁 %2 里的 %1：%3</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -243,7 +243,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+374"/>
         <source>Do you really want to start a private chat with %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>确认与%1开始私密聊天？</translation>
     </message>
     <message>
         <location line="-965"/>
@@ -301,12 +301,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+56"/>
         <source>Reason for the kick</source>
-        <translation type="unfinished"></translation>
+        <translation>踢出原因</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>输入踢出 %1 (%2) 的原因，如无原因请敲回车：</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -316,17 +316,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+13"/>
         <source>Reason for the ban</source>
-        <translation type="unfinished"></translation>
+        <translation>封禁原因</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>输入封禁 %1 (%2) 的原因，如无原因请敲回车：</translation>
     </message>
     <message>
         <location filename="../qml/ChatPage.qml" line="+37"/>
         <source>No network connection</source>
-        <translation type="unfinished"></translation>
+        <translation>网络未连接</translation>
     </message>
 </context>
 <context>
@@ -334,7 +334,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+46"/>
         <source>Hide rooms with this tag or from this space by default.</source>
-        <translation type="unfinished"></translation>
+        <translation>默认隐藏带这个标签或来自此空间的房间。</translation>
     </message>
     <message>
         <location line="+83"/>
@@ -357,12 +357,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Shows all rooms without filtering.</source>
-        <translation type="unfinished"></translation>
+        <translation>展示所有不带过滤器的房间。</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Direct Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>直接聊天</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -392,7 +392,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+7"/>
         <source>Server Notices</source>
-        <translation type="unfinished"></translation>
+        <translation>服务器通知</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -492,17 +492,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/ChatPage.cpp" line="+282"/>
         <source>Decrypt secrets</source>
-        <translation type="unfinished"></translation>
+        <translation>解密密钥</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase to decrypt your secrets:</source>
-        <translation type="unfinished"></translation>
+        <translation>输入你的恢复密钥或口令以解密你的密钥：</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase called %1 to decrypt your secrets:</source>
-        <translation type="unfinished"></translation>
+        <translation>填入你的恢复令牌或名为%1的口令以解密你的密钥</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -512,7 +512,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>Failed to decrypt secrets with the provided recovery key or passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>用提供的恢复令牌或口令解密密钥失败</translation>
     </message>
 </context>
 <context>
@@ -525,17 +525,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+13"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>请验证一下数字。你应该会在另一边看到相同的数字。如果它们不同，请按“它们不一致”来终止验证！</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>它们不匹配</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>匹配一致</translation>
     </message>
 </context>
 <context>
@@ -548,12 +548,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+193"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>人们</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>自然</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -568,7 +568,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished"></translation>
+        <translation>旅行</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -596,17 +596,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+13"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>请验证一下表情。你应该会在另一边看到相同的表情，如果它们不一致，请按“它们不一致”来终止验证！</translation>
     </message>
     <message>
         <location line="+378"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>它们不一致</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>匹配一致</translation>
     </message>
 </context>
 <context>
@@ -629,7 +629,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>There was an error decrypting this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>解密本消息时发生错误。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -639,7 +639,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation type="unfinished"></translation>
+        <translation>该加密密钥被重复使用！聊天时可能插入了假消息！</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -662,17 +662,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+4"/>
         <source>Encrypted by a verified device</source>
-        <translation type="unfinished"></translation>
+        <translation>已被受认证的设备加密</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
-        <translation type="unfinished"></translation>
+        <translation>使用未受认证的设备加密，但你已信任该用户。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device or the key is from an untrusted source like the key backup.</source>
-        <translation type="unfinished"></translation>
+        <translation>由一台不受信任的设备或从备份等不可靠的来源导入的密钥加密</translation>
     </message>
 </context>
 <context>
@@ -680,27 +680,27 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/device-verification/Failed.qml" line="+12"/>
         <source>Verification failed</source>
-        <translation type="unfinished"></translation>
+        <translation>未通过认证</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Other client does not support our verification protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>其他客户端不支持我们的认证协议</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Key mismatch detected!</source>
-        <translation type="unfinished"></translation>
+        <translation>检测到密钥不匹配！</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Device verification timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>设备验证已超时。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Other party canceled the verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>对方取消了认证。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -723,7 +723,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/ForwardCompleter.qml" line="+40"/>
         <source>Forward Message</source>
-        <translation type="unfinished"></translation>
+        <translation>转发</translation>
     </message>
 </context>
 <context>
@@ -732,7 +732,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../../src/ui/HiddenEvents.cpp" line="+79"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>设置隐藏事件失败：%1</translation>
     </message>
 </context>
 <context>
@@ -740,37 +740,37 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/HiddenEventsDialog.qml" line="+33"/>
         <source>Hidden events for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>隐藏 %1 事件</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>隐藏</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>以下事件将被在 %1 中 &lt;b&gt;展示&lt;/b&gt; ：</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in all rooms:</source>
-        <translation type="unfinished"></translation>
+        <translation>以下事件将在所有房间中 &lt;b&gt;展示&lt;/b&gt; ：</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>User events</source>
-        <translation type="unfinished"></translation>
+        <translation>用户事件</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Joins, leaves, avatar and name changes, bans, …</source>
-        <translation type="unfinished"></translation>
+        <translation>用户加入、离开、名称或头像变更、封禁等</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Power level changes</source>
-        <translation type="unfinished"></translation>
+        <translation>权限等级变化</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -788,42 +788,42 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/ImagePackEditorDialog.qml" line="+23"/>
         <source>Editing image pack</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑表情包</translation>
     </message>
     <message>
         <location line="+63"/>
         <source>Add images</source>
-        <translation type="unfinished"></translation>
+        <translation>添加图片</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Images (*.png *.webp *.gif *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>图片（*.png *.webp *.gif *.jpg *.jpeg）</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select images for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>从表情包中选取图像</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Add to pack</source>
-        <translation type="unfinished"></translation>
+        <translation>添加到表情包</translation>
     </message>
     <message>
         <location line="+61"/>
         <source>Change the overview image for this pack</source>
-        <translation type="unfinished"></translation>
+        <translation>变更表情包的缩略图</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Overview Image (*.png *.webp *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>缩略图 (*.png *.webp *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select overview image for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>选择表情包的缩略图</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -833,7 +833,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+8"/>
         <source>Packname</source>
-        <translation type="unfinished"></translation>
+        <translation>包名</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -844,18 +844,18 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location line="+9"/>
         <location line="+70"/>
         <source>Use as Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>作为 Emoji 使用</translation>
     </message>
     <message>
         <location line="-57"/>
         <location line="+70"/>
         <source>Use as Sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>作为贴纸使用</translation>
     </message>
     <message>
         <location line="-32"/>
         <source>Shortcode</source>
-        <translation type="unfinished"></translation>
+        <translation>短代码</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -865,12 +865,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+35"/>
         <source>Remove from pack</source>
-        <translation type="unfinished"></translation>
+        <translation>从表情包中移除</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>移除</translation>
     </message>
 </context>
 <context>
@@ -878,47 +878,47 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/ImagePackSettingsDialog.qml" line="+24"/>
         <source>Image pack settings</source>
-        <translation type="unfinished"></translation>
+        <translation>表情包设置</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Create account pack</source>
-        <translation type="unfinished"></translation>
+        <translation>创建和账户关联的表情包</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>New room pack</source>
-        <translation type="unfinished"></translation>
+        <translation>创建和房间关联的表情包</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Private pack</source>
-        <translation type="unfinished"></translation>
+        <translation>私有表情包</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Pack from this room</source>
-        <translation type="unfinished"></translation>
+        <translation>来自本房间的表情包</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Globally enabled pack</source>
-        <translation type="unfinished"></translation>
+        <translation>全局启用的表情包</translation>
     </message>
     <message>
         <location line="+66"/>
         <source>Enable globally</source>
-        <translation type="unfinished"></translation>
+        <translation>全局启用</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Enables this pack to be used in all rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>允许在所有房间中使用该表情包</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <location line="+65"/>
@@ -944,7 +944,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/InviteDialog.qml" line="+34"/>
         <source>Invite users to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>邀请用户加入 %1</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -965,7 +965,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+84"/>
         <source>Invite</source>
-        <translation type="unfinished"></translation>
+        <translation>邀请</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -978,7 +978,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/JoinRoomDialog.qml" line="+15"/>
         <source>Join room</source>
-        <translation type="unfinished"></translation>
+        <translation>加入房间</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1027,7 +1027,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>Your password.</source>
-        <translation type="unfinished"></translation>
+        <translation>密码</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1037,7 +1037,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>设备名，将在验证你的设备时向其他设备展示。如果不输入则会设置为默认值。</translation>
     </message>
     <message>
         <location line="+10"/>
