@@ -742,7 +742,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location filename="../qml/dialogs/HiddenEventsDialog.qml" line="+33"/>
         <source>Hidden events for %1</source>
-        <translation>Piilotetut tapahtumat kohteelle %1</translation>
+        <translation>Piilotetut tapahtumat huoneelle %1</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -752,7 +752,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+18"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in %1:</source>
-        <translation>Nämä tapahtumat tullaan &lt;b&gt;näyttämään&lt;/b&gt; kohteessa %1:</translation>
+        <translation>Nämä tapahtumat tullaan &lt;b&gt;näyttämään&lt;/b&gt; huoneessa %1:</translation>
     </message>
     <message>
         <location line="+3"/>
