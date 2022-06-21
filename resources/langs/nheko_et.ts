@@ -2332,7 +2332,7 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     <message>
         <location line="+16"/>
         <source>Permission</source>
-        <translation>Õigus</translation>
+        <translation>Õigused</translation>
     </message>
     <message>
         <location line="+6"/>
