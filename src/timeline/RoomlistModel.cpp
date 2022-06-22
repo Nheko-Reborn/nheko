@@ -5,6 +5,9 @@
 
 #include "RoomlistModel.h"
 
+#include <QGuiApplication>
+#include <QClipboard>
+
 #include "Cache.h"
 #include "Cache_p.h"
 #include "ChatPage.h"
@@ -1084,8 +1087,10 @@ FilteredRoomlistModel::toggleTag(QString roomid, QString tag, bool on)
 void
 FilteredRoomlistModel::copyLink(QString roomid)
 {
-    QString link = QString("https://matrix.to/#/%1").arg(roomid);
-    QApplication::clipboard()->setText(link);
+    auto link = QStringLiteral("%1?%2")
+                  .arg(TimelineModel::getBareRoomLink(roomid),
+                       TimelineModel::getRoomVias(roomid));
+    QGuiApplication::clipboard()->setText(link);
 }
 
 void

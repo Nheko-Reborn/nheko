@@ -7,8 +7,6 @@
 
 #include <CacheStructs.h>
 #include <QAbstractListModel>
-#include <QApplication>
-#include <QClipboard>
 #include <QHash>
 #include <QQmlEngine>
 #include <QSharedPointer>
