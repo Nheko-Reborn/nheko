@@ -53,6 +53,8 @@ public:
 private:
     struct Entry
     {
+		~Entry() = default;
+
         std::string type;
         mtx::events::state::power_level_t pl;
     };
@@ -102,6 +104,8 @@ public:
 private:
     struct Entry
     {
+		~Entry() = default;
+
         std::string mxid;
         mtx::events::state::power_level_t pl;
     };
