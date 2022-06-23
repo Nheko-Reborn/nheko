@@ -109,83 +109,6 @@ Page {
 
         }
 
-        Platform.Menu {
-            id: roomContextMenu
-
-            property string roomid
-            property var tags
-
-            function show(roomid_, tags_) {
-                roomid = roomid_;
-                tags = tags_;
-                open();
-            }
-
-            InputDialog {
-                id: newTag
-
-                title: qsTr("New tag")
-                prompt: qsTr("Enter the tag you want to use:")
-                onAccepted: function(text) {
-                    Rooms.toggleTag(roomContextMenu.roomid, "u." + text, true);
-                }
-            }
-
-            Platform.MenuItem {
-                text: qsTr("Open separately")
-                onTriggered: {
-                    var roomWindow = roomWindowComponent.createObject(null, {
-                    "room": Rooms.getRoomById(roomContextMenu.roomid),
-                    "roomPreview": Rooms.getRoomPreviewById(roomContextMenu.roomid)
-                    });
-                    roomWindow.showNormal();
-                    destroyOnClose(roomWindow);
-                }
-            }
-
-            Platform.MenuItem {
-                text: qsTr("Leave room")
-                onTriggered: TimelineManager.openLeaveRoomDialog(roomContextMenu.roomid)
-            }
-
-            Platform.MenuSeparator {
-                text: qsTr("Tag room as:")
-            }
-
-            Instantiator {
-                model: Communities.tagsWithDefault
-                onObjectAdded: roomContextMenu.insertItem(index + 3, object)
-                onObjectRemoved: roomContextMenu.removeItem(object)
-
-                delegate: Platform.MenuItem {
-                    property string t: modelData
-
-                    text: {
-                        switch (t) {
-                        case "m.favourite":
-                            return qsTr("Favourite");
-                        case "m.lowpriority":
-                            return qsTr("Low priority");
-                        case "m.server_notice":
-                            return qsTr("Server notice");
-                        default:
-                            return t.substring(2);
-                        }
-                    }
-                    checkable: true
-                    checked: roomContextMenu.tags !== undefined && roomContextMenu.tags.includes(t)
-                    onTriggered: Rooms.toggleTag(roomContextMenu.roomid, t, checked)
-                }
-
-            }
-
-            Platform.MenuItem {
-                text: qsTr("Create new tag...")
-                onTriggered: newTag.show()
-            }
-
-        }
-
         delegate: ItemDelegate {
             id: roomItem
 
@@ -231,7 +154,7 @@ Page {
             }
             onPressAndHold: {
                 if (!isInvite)
-                    roomContextMenu.show(roomId, tags);
+                    roomContextMenu.open();
 
             }
             states: [
@@ -265,6 +188,74 @@ Page {
                 }
             ]
 
+            Platform.Menu {
+                id: roomContextMenu
+
+                InputDialog {
+                    id: newTag
+
+                    title: qsTr("New tag")
+                    prompt: qsTr("Enter the tag you want to use:")
+                    onAccepted: function(text) {
+                        Rooms.toggleTag(roomId, "u." + text, true);
+                    }
+                }
+
+                Platform.MenuItem {
+                    text: qsTr("Open separately")
+                    onTriggered: {
+                        var roomWindow = roomWindowComponent.createObject(null, {
+                        "room": Rooms.getRoomById(roomId),
+                        "roomPreview": Rooms.getRoomPreviewById(roomId)
+                        });
+                        roomWindow.showNormal();
+                        destroyOnClose(roomWindow);
+                    }
+                }
+
+                Platform.MenuItem {
+                    text: qsTr("Leave room")
+                    onTriggered: TimelineManager.openLeaveRoomDialog(roomId)
+                }
+
+                Platform.MenuSeparator {
+                    text: qsTr("Tag room as:")
+                }
+
+                Instantiator {
+                    model: Communities.tagsWithDefault
+                    onObjectAdded: roomContextMenu.insertItem(index + 3, object)
+                    onObjectRemoved: roomContextMenu.removeItem(object)
+
+                    delegate: Platform.MenuItem {
+                        property string t: modelData
+
+                        text: {
+                            switch (t) {
+                            case "m.favourite":
+                                return qsTr("Favourite");
+                            case "m.lowpriority":
+                                return qsTr("Low priority");
+                            case "m.server_notice":
+                                return qsTr("Server notice");
+                            default:
+                                return t.substring(2);
+                            }
+                        }
+                        checkable: true
+                        checked: tags !== undefined && tags.includes(t)
+                        onTriggered: Rooms.toggleTag(roomId, t, checked)
+                    }
+
+                }
+
+                Platform.MenuItem {
+                    text: qsTr("Create new tag...")
+                    onTriggered: newTag.show()
+                }
+
+            }
+
             // NOTE(Nico): We want to prevent the touch areas from overlapping. For some reason we need to add 1px of padding for that...
             Item {
                 anchors.fill: parent
@@ -274,7 +265,7 @@ Page {
                     acceptedButtons: Qt.RightButton
                     onSingleTapped: {
                         if (!TimelineManager.isInvite)
-                            roomContextMenu.show(roomId, tags);
+                            roomContextMenu.open();
 
                     }
                     gesturePolicy: TapHandler.ReleaseWithinBounds

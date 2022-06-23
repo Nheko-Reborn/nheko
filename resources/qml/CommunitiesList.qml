@@ -32,23 +32,6 @@ Page {
             enabled: !Settings.mobileMode
         }
 
-        Platform.Menu {
-            id: communityContextMenu
-
-            property string tagId
-
-            function show(id_, tags_) {
-                tagId = id_;
-                open();
-            }
-
-            Platform.MenuItem {
-                text: qsTr("Hide rooms with this tag or from this space by default.")
-                onTriggered: Communities.toggleTagId(communityContextMenu.tagId)
-            }
-
-        }
-
         delegate: ItemDelegate {
             id: communityItem
 
@@ -65,7 +48,7 @@ Page {
             ToolTip.text: model.tooltip
             ToolTip.delay: Nheko.tooltipDelay
             onClicked: Communities.setCurrentTagId(model.id)
-            onPressAndHold: communityContextMenu.show(model.id)
+            onPressAndHold: communityContextMenu.open()
             states: [
                 State {
                     name: "highlight"
@@ -97,12 +80,24 @@ Page {
                 }
             ]
 
+            Platform.Menu {
+                id: communityContextMenu
+
+                Platform.MenuItem {
+                    text: qsTr("Hide rooms with this tag or from this space by default.")
+                    checkable: true
+                    checked: model.hidden
+                    onTriggered: Communities.toggleTagId(model.id);
+                }
+
+            }
+
             Item {
                 anchors.fill: parent
 
                 TapHandler {
                     acceptedButtons: Qt.RightButton
-                    onSingleTapped: communityContextMenu.show(model.id)
+                    onSingleTapped: communityContextMenu.open()
                     gesturePolicy: TapHandler.ReleaseWithinBounds
                     acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
                 }
