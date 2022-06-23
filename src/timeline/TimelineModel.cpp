@@ -1752,13 +1752,11 @@ TimelineModel::requestKeyForEvent(const QString &id)
     }
 }
 
-void
-TimelineModel::copyLinkToEvent(const QString &eventId) const
+QString
+TimelineModel::getBareRoomLink(const QString &roomId)
 {
-    QStringList vias;
-
     auto alias =
-      cache::client()->getStateEvent<mtx::events::state::CanonicalAlias>(room_id_.toStdString());
+      cache::client()->getStateEvent<mtx::events::state::CanonicalAlias>(roomId.toStdString());
     QString room;
     if (alias) {
         room = QString::fromStdString(alias->content.alias);
@@ -1768,11 +1766,19 @@ TimelineModel::copyLinkToEvent(const QString &eventId) const
     }
 
     if (room.isEmpty())
-        room = room_id_;
+        room = roomId;
+
+    return QStringLiteral("https://matrix.to/#/%1").arg(QString(QUrl::toPercentEncoding(room)));
+}
+
+QString
+TimelineModel::getRoomVias(const QString &roomId)
+{
+    QStringList vias;
 
     vias.push_back(QStringLiteral("via=%1").arg(QString(
       QUrl::toPercentEncoding(QString::fromStdString(http::client()->user_id().hostname())))));
-    auto members = cache::getMembers(room_id_.toStdString(), 0, 100);
+    auto members = cache::getMembers(roomId.toStdString(), 0, 100);
     for (const auto &m : members) {
         if (vias.size() >= 4)
             break;
@@ -1785,11 +1791,16 @@ TimelineModel::copyLinkToEvent(const QString &eventId) const
             vias.push_back(server);
     }
 
-    auto link = QStringLiteral("https://matrix.to/#/%1/%2?%3")
-                  .arg(QString(QUrl::toPercentEncoding(room)),
-                       QString(QUrl::toPercentEncoding(eventId)),
-                       vias.join('&'));
+    return vias.join("&");
+}
 
+void
+TimelineModel::copyLinkToEvent(const QString &eventId) const
+{
+    auto link = QStringLiteral("%1/%2?%3")
+                  .arg(getBareRoomLink(room_id_),
+                       QString(QUrl::toPercentEncoding(eventId)),
+                       getRoomVias(room_id_));
     QGuiApplication::clipboard()->setText(link);
 }
 

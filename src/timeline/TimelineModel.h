@@ -249,6 +249,9 @@ public:
     bool canFetchMore(const QModelIndex &) const override;
     void fetchMore(const QModelIndex &) override;
 
+    static QString getBareRoomLink(const QString &);
+    static QString getRoomVias(const QString &);
+
     Q_INVOKABLE QString displayName(const QString &id) const;
     Q_INVOKABLE QString avatarUrl(const QString &id) const;
     Q_INVOKABLE QString formatDateSeparator(QDate date) const;
