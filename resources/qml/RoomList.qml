@@ -148,13 +148,18 @@ Page {
                 onTriggered: TimelineManager.openLeaveRoomDialog(roomContextMenu.roomid)
             }
 
+            Platform.MenuItem {
+                text: qsTr("Copy room link")
+                onTriggered: Rooms.copyLink(roomContextMenu.roomid)
+            }
+
             Platform.MenuSeparator {
                 text: qsTr("Tag room as:")
             }
 
             Instantiator {
                 model: Communities.tagsWithDefault
-                onObjectAdded: roomContextMenu.insertItem(index + 3, object)
+                onObjectAdded: roomContextMenu.insertItem(index + 4, object)
                 onObjectRemoved: roomContextMenu.removeItem(object)
 
                 delegate: Platform.MenuItem {
@@ -182,11 +187,6 @@ Page {
             Platform.MenuItem {
                 text: qsTr("Create new tag...")
                 onTriggered: newTag.show()
-            }
-
-            Platform.MenuItem {
-                text: qsTr("Copy room link")
-                onTriggered: Rooms.copyLink(roomContextMenu.roomid)
             }
 
         }

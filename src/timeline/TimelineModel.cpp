@@ -1797,8 +1797,10 @@ TimelineModel::getRoomVias(const QString &roomId)
 void
 TimelineModel::copyLinkToEvent(const QString &eventId) const
 {
-    auto link =
-      QStringLiteral("%1/%2?%3").arg(getBareRoomLink(room_id_), eventId, getRoomVias(room_id_));
+    auto link = QStringLiteral("%1/%2?%3")
+                  .arg(getBareRoomLink(room_id_),
+                       QString(QUrl::toPercentEncoding(eventId)),
+                       getRoomVias(room_id_));
     QGuiApplication::clipboard()->setText(link);
 }
 
