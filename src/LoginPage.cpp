@@ -6,9 +6,12 @@
 
 #include <QDesktopServices>
 
+#include <set>
+
 #include <mtx/identifiers.hpp>
 #include <mtx/requests.hpp>
 #include <mtx/responses/login.hpp>
+#include <mtx/responses/version.hpp>
 
 #include "Config.h"
 #include "Logging.h"
@@ -149,7 +152,8 @@ LoginPage::checkHomeserverVersion()
         return;
     }
 
-    http::client()->versions([this](const mtx::responses::Versions &, mtx::http::RequestErr err) {
+    http::client()->versions([this](const mtx::responses::Versions &versions,
+                                    mtx::http::RequestErr err) {
         if (err) {
             if (err->status_code == 404) {
                 emit versionErrorCb(tr("The required endpoints were not found. "
@@ -167,6 +171,21 @@ LoginPage::checkHomeserverVersion()
 
             emit versionErrorCb(
               tr("An unknown error occured. Make sure the homeserver domain is valid."));
+            return;
+        }
+
+        if (std::find_if(
+              versions.versions.cbegin(), versions.versions.cend(), [](const std::string &v) {
+                  static const std::set<std::string_view, std::less<>> supported{
+                    "v1.1",
+                    "v1.2",
+                    "v1.3",
+                  };
+                  return supported.count(v) != 0;
+              }) == versions.versions.cend()) {
+            emit versionErrorCb(
+              tr("The selected server does not support a version of the Matrix protocol, that this "
+                 "client understands (v1.1, v1.2 or v1.3). You can't sign in."));
             return;
         }
 

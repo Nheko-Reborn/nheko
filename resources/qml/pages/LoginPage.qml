@@ -76,10 +76,12 @@ Item {
             }
 
             MatrixText {
+                Layout.fillWidth: true
                 textFormat: Text.PlainText
                 color: Nheko.theme.error
                 text: login.mxidError
                 visible: text
+                wrapMode: TextEdit.Wrap
             }
 
             MatrixTextField {
@@ -130,10 +132,12 @@ Item {
             }
 
             MatrixText {
+                Layout.fillWidth: true
                 textFormat: Text.PlainText
                 color: Nheko.theme.error
                 text: loginPage.error
                 visible: text
+                wrapMode: TextEdit.Wrap
             }
 
             FlatButton {

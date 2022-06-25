@@ -75,10 +75,12 @@ Item {
             }
 
             MatrixText {
+                Layout.fillWidth: true
                 textFormat: Text.PlainText
                 color: Nheko.theme.error
                 text: regis.hsError
                 visible: text
+                wrapMode: TextEdit.Wrap
             }
 
             RowLayout {
@@ -122,10 +124,12 @@ Item {
             }
 
             MatrixText {
+                Layout.fillWidth: true
                 textFormat: Text.PlainText
                 color: Nheko.theme.error
                 text: regis.usernameError
-                visible: text
+                visible: text && regis.supported
+                wrapMode: TextEdit.Wrap
             }
 
 
@@ -147,10 +151,12 @@ Item {
             }
 
             MatrixText {
+                Layout.fillWidth: true
                 visible: regis.supported
                 textFormat: Text.PlainText
                 color: Nheko.theme.error
                 text: passwordLabel.text != passwordConfirmationLabel.text ? qsTr("Your passwords do not match!") : ""
+                wrapMode: TextEdit.Wrap
             }
 
             MatrixTextField {
@@ -177,10 +183,12 @@ Item {
             }
 
             MatrixText {
+                Layout.fillWidth: true
                 textFormat: Text.PlainText
                 color: Nheko.theme.error
                 text: registrationPage.error
                 visible: text
+                wrapMode: TextEdit.Wrap
             }
 
             FlatButton {
