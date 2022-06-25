@@ -1055,6 +1055,10 @@ TimelineModel::updateLastMessage()
                        ts,
                        time};
             if (description != lastMessage_) {
+                if (lastMessage_.timestamp == 0) {
+                    cache::client()->updateLastMessageTimestamp(room_id_.toStdString(),
+                                                                description.timestamp);
+                }
                 lastMessage_ = description;
                 emit lastMessageChanged();
             }
@@ -1068,6 +1072,10 @@ TimelineModel::updateLastMessage()
           QString::fromStdString(http::client()->user_id().to_string()),
           cache::displayName(room_id_, QString::fromStdString(mtx::accessors::sender(*event))));
         if (description != lastMessage_) {
+            if (lastMessage_.timestamp == 0) {
+                cache::client()->updateLastMessageTimestamp(room_id_.toStdString(),
+                                                            description.timestamp);
+            }
             lastMessage_ = description;
             emit lastMessageChanged();
         }

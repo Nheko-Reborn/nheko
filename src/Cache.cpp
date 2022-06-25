@@ -1815,7 +1815,7 @@ Cache::saveState(const mtx::responses::Sync &res)
             if (!std::visit([](const auto &e) -> bool { return isMessage(e); }, e))
                 continue;
             updatedInfo.approximate_last_modification_ts =
-              mtx::accessors::origin_server_ts(e).toMSecsSinceEpoch();
+              std::visit([](const auto &e) -> bool { return e.origin_server_ts; }, e);
         }
 
         roomsDb_.put(txn, room.first, nlohmann::json(updatedInfo).dump());
@@ -2018,6 +2018,35 @@ Cache::singleRoomInfo(const std::string &room_id)
     }
 
     return RoomInfo();
+}
+void
+Cache::updateLastMessageTimestamp(const std::string &room_id, uint64_t ts)
+{
+    auto txn = lmdb::txn::begin(env_);
+
+    try {
+        auto statesdb = getStatesDb(txn, room_id);
+
+        std::string_view data;
+
+        // Check if the room is joined.
+        if (roomsDb_.get(txn, room_id, data)) {
+            try {
+                RoomInfo tmp                         = nlohmann::json::parse(data).get<RoomInfo>();
+                tmp.approximate_last_modification_ts = ts;
+                roomsDb_.put(txn, room_id, nlohmann::json(tmp).dump());
+                txn.commit();
+                return;
+            } catch (const nlohmann::json::exception &e) {
+                nhlog::db()->warn("failed to parse room info: room_id ({}), {}: {}",
+                                  room_id,
+                                  std::string(data.data(), data.size()),
+                                  e.what());
+            }
+        }
+    } catch (const lmdb::error &e) {
+        nhlog::db()->warn("failed to read room info from db: room_id ({}), {}", room_id, e.what());
+    }
 }
 
 std::map<QString, RoomInfo>
@@ -4820,7 +4849,7 @@ from_json(const nlohmann::json &j, RoomInfo &info)
     info.join_rule    = j.at("join_rule").get<mtx::events::state::JoinRule>();
     info.guest_access = j.at("guest_access").get<bool>();
 
-    info.approximate_last_modification_ts = j.value("app_l_ts", 0);
+    info.approximate_last_modification_ts = j.value<uint64_t>("app_l_ts", 0);
 
     info.notification_count = j.value("notification_count", 0);
     info.highlight_count    = j.value("highlight_count", 0);

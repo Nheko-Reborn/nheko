@@ -298,6 +298,7 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
                              {
                                Roles::HasLoudNotification,
                                Roles::LastMessage,
+                               Roles::Time,
                                Roles::Timestamp,
                                Roles::NotificationCount,
                                Qt::DisplayRole,
