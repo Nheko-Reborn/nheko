@@ -63,11 +63,11 @@ private:
 
     QString registrationError_, hsError_, usernameError_;
 
-    bool registering_ = false;
-    bool supported_ = false;
-    bool lookingUpHs_ = false;
-    bool lookingUpUsername_ = false;
-    bool usernameAvailable_ = false;
+    bool registering_         = false;
+    bool supported_           = false;
+    bool lookingUpHs_         = false;
+    bool lookingUpUsername_   = false;
+    bool usernameAvailable_   = false;
     bool usernameUnavailable_ = false;
 
     QString lastServer;
