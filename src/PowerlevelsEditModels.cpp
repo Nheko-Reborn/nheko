@@ -239,6 +239,7 @@ PowerlevelsTypeListModel::remove(int row)
 
     return true;
 }
+
 void
 PowerlevelsTypeListModel::add(int row, QString type)
 {
@@ -258,6 +259,23 @@ PowerlevelsTypeListModel::add(int row, QString type)
 
     beginInsertRows(QModelIndex(), row + 1, row + 1);
     types.insert(row + 1, Entry{type.toStdString(), types.at(row).pl});
+    endInsertRows();
+}
+
+void
+PowerlevelsTypeListModel::addRole(int64_t role)
+{
+    for (int i = 0; i < types.size(); i++) {
+        if (types[i].pl < role) {
+            beginInsertRows(QModelIndex(), i, i);
+            types.insert(i, Entry{"", role});
+            endInsertRows();
+            return;
+        }
+    }
+
+    beginInsertRows(QModelIndex(), types.size(), types.size());
+    types.push_back(Entry{"", role});
     endInsertRows();
 }
 
@@ -299,10 +317,19 @@ PowerlevelsTypeListModel::moveRows(const QModelIndex &,
     auto pl         = types.at(destinationChild > 0 ? destinationChild - 1 : 0).pl;
     auto sourceItem = types.takeAt(sourceRow);
     sourceItem.pl   = pl;
+
+    auto movedType = sourceItem.type;
+
     if (destinationChild < sourceRow)
         types.insert(destinationChild, std::move(sourceItem));
     else
         types.insert(destinationChild - 1, std::move(sourceItem));
+
+    if (movedType == "m.room.power_levels")
+        emit adminLevelChanged();
+    else if (movedType == "redact")
+        emit moderatorLevelChanged();
+
     return true;
 }
 
@@ -454,6 +481,23 @@ PowerlevelsUserListModel::add(int row, QString user)
     endInsertRows();
 }
 
+void
+PowerlevelsUserListModel::addRole(int64_t role)
+{
+    for (int i = 0; i < users.size(); i++) {
+        if (users[i].pl < role) {
+            beginInsertRows(QModelIndex(), i, i);
+            users.insert(i, Entry{"", role});
+            endInsertRows();
+            return;
+        }
+    }
+
+    beginInsertRows(QModelIndex(), users.size(), users.size());
+    users.push_back(Entry{"", role});
+    endInsertRows();
+}
+
 bool
 PowerlevelsUserListModel::move(int from, int to)
 {
@@ -492,10 +536,17 @@ PowerlevelsUserListModel::moveRows(const QModelIndex &,
     auto pl         = users.at(destinationChild > 0 ? destinationChild - 1 : 0).pl;
     auto sourceItem = users.takeAt(sourceRow);
     sourceItem.pl   = pl;
+
+    auto movedType = sourceItem.mxid;
+
     if (destinationChild < sourceRow)
         users.insert(destinationChild, std::move(sourceItem));
     else
         users.insert(destinationChild - 1, std::move(sourceItem));
+
+    if (movedType == "default")
+        emit defaultUserLevelChanged();
+
     return true;
 }
 
@@ -508,7 +559,20 @@ PowerlevelEditingModels::PowerlevelEditingModels(QString room_id, QObject *paren
   , types_(room_id.toStdString(), powerLevels_, this)
   , users_(room_id.toStdString(), powerLevels_, this)
   , room_id_(room_id.toStdString())
-{}
+{
+    connect(&types_,
+            &PowerlevelsTypeListModel::adminLevelChanged,
+            this,
+            &PowerlevelEditingModels::adminLevelChanged);
+    connect(&types_,
+            &PowerlevelsTypeListModel::moderatorLevelChanged,
+            this,
+            &PowerlevelEditingModels::moderatorLevelChanged);
+    connect(&users_,
+            &PowerlevelsUserListModel::defaultUserLevelChanged,
+            this,
+            &PowerlevelEditingModels::defaultUserLevelChanged);
+}
 
 void
 PowerlevelEditingModels::commit()
@@ -531,4 +595,15 @@ PowerlevelEditingModels::commit()
                   .arg(QString::fromStdString(e->matrix_error.error)));
           }
       });
+}
+
+void
+PowerlevelEditingModels::addRole(int pl)
+{
+    for (const auto &e : types_.types)
+        if (pl == int(e.pl))
+            return;
+
+    types_.addRole(pl);
+    users_.addRole(pl);
 }

@@ -15,6 +15,10 @@ class PowerlevelsTypeListModel : public QAbstractListModel
 {
     Q_OBJECT
 
+signals:
+    void adminLevelChanged();
+    void moderatorLevelChanged();
+
 public:
     enum Roles
     {
@@ -36,6 +40,7 @@ public:
     Q_INVOKABLE bool remove(int row);
     Q_INVOKABLE bool move(int from, int to);
     Q_INVOKABLE void add(int index, QString type);
+    void addRole(int64_t role);
 
     bool moveRows(const QModelIndex &sourceParent,
                   int sourceRow,
@@ -50,7 +55,6 @@ public:
     mtx::events::state::power_level_t eventsDefault();
     mtx::events::state::power_level_t stateDefault();
 
-private:
     struct Entry
     {
         ~Entry() = default;
@@ -67,6 +71,9 @@ private:
 class PowerlevelsUserListModel : public QAbstractListModel
 {
     Q_OBJECT
+
+signals:
+    void defaultUserLevelChanged();
 
 public:
     enum Roles
@@ -91,6 +98,7 @@ public:
     Q_INVOKABLE bool remove(int row);
     Q_INVOKABLE bool move(int from, int to);
     Q_INVOKABLE void add(int index, QString user);
+    void addRole(int64_t role);
 
     bool moveRows(const QModelIndex &sourceParent,
                   int sourceRow,
@@ -101,7 +109,6 @@ public:
     std::map<std::string, mtx::events::state::power_level_t, std::less<>> toUsers();
     mtx::events::state::power_level_t usersDefault();
 
-private:
     struct Entry
     {
         ~Entry() = default;
@@ -121,8 +128,14 @@ class PowerlevelEditingModels : public QObject
 
     Q_PROPERTY(PowerlevelsUserListModel *users READ users CONSTANT)
     Q_PROPERTY(PowerlevelsTypeListModel *types READ types CONSTANT)
-    Q_PROPERTY(qlonglong adminLevel READ adminLevel CONSTANT)
-    Q_PROPERTY(qlonglong moderatorLevel READ moderatorLevel CONSTANT)
+    Q_PROPERTY(qlonglong adminLevel READ adminLevel NOTIFY adminLevelChanged)
+    Q_PROPERTY(qlonglong moderatorLevel READ moderatorLevel NOTIFY moderatorLevelChanged)
+    Q_PROPERTY(qlonglong defaultUserLevel READ defaultUserLevel NOTIFY defaultUserLevelChanged)
+
+signals:
+    void adminLevelChanged();
+    void moderatorLevelChanged();
+    void defaultUserLevelChanged();
 
 public:
     explicit PowerlevelEditingModels(QString room_id, QObject *parent = nullptr);
@@ -134,8 +147,10 @@ public:
         return powerLevels_.state_level(to_string(mtx::events::EventType::RoomPowerLevels));
     }
     qlonglong moderatorLevel() const { return powerLevels_.redact; }
+    qlonglong defaultUserLevel() const { return powerLevels_.users_default; }
 
     Q_INVOKABLE void commit();
+    Q_INVOKABLE void addRole(int pl);
 
     mtx::events::state::PowerLevels powerLevels_;
     PowerlevelsTypeListModel types_;
