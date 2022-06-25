@@ -415,7 +415,10 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
     connect(&events, &EventStore::beginResetModel, this, [this]() { beginResetModel(); });
     connect(&events, &EventStore::endResetModel, this, [this]() { endResetModel(); });
     connect(&events, &EventStore::newEncryptedImage, this, &TimelineModel::newEncryptedImage);
-    connect(&events, &EventStore::fetchedMore, this, [this]() { setPaginationInProgress(false); });
+    connect(&events, &EventStore::fetchedMore, this, [this]() {
+        setPaginationInProgress(false);
+        updateLastMessage();
+    });
     connect(&events,
             &EventStore::startDMVerification,
             this,
