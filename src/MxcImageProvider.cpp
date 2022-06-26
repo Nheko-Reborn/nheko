@@ -97,14 +97,6 @@ clipRadius(QImage img, double radius)
     return out;
 }
 
-QImage
-MxcImageProvider::cropImage(const QImage &image)
-{
-    int delta  = image.width() - image.height();
-    int length = delta >= 0 ? image.height() : image.width();
-    return image.copy(delta >= 0 ? delta / 2 : 0, delta >= 0 ? 0 : -delta / 2, length, length);
-}
-
 void
 MxcImageProvider::download(const QString &id,
                            const QSize &requestedSize,
@@ -152,11 +144,16 @@ MxcImageProvider::download(const QString &id,
                 if (requestedSize.width() <= 0) {
                     image = image.scaledToHeight(requestedSize.height(), Qt::SmoothTransformation);
                 } else {
+                    image = image.scaled(requestedSize,
+                                         cropLocally ? Qt::KeepAspectRatioByExpanding
+                                                     : Qt::KeepAspectRatio,
+                                         Qt::SmoothTransformation);
                     if (cropLocally) {
-                        image = cropImage(image);
+                        image = image.copy((image.width() - requestedSize.width()) / 2,
+                                           (image.height() - requestedSize.height()) / 2,
+                                           requestedSize.width(),
+                                           requestedSize.height());
                     }
-                    image =
-                      image.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
                 }
 
                 if (radius != 0) {
@@ -191,11 +188,16 @@ MxcImageProvider::download(const QString &id,
                       image =
                         image.scaledToHeight(requestedSize.height(), Qt::SmoothTransformation);
                   } else {
+                      image = image.scaled(requestedSize,
+                                           cropLocally ? Qt::KeepAspectRatioByExpanding
+                                                       : Qt::KeepAspectRatio,
+                                           Qt::SmoothTransformation);
                       if (cropLocally) {
-                          image = cropImage(image);
+                          image = image.copy((image.width() - requestedSize.width()) / 2,
+                                             (image.height() - requestedSize.height()) / 2,
+                                             requestedSize.width(),
+                                             requestedSize.height());
                       }
-                      image =
-                        image.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
                   }
 
                   if (radius != 0) {

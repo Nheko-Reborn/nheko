@@ -90,7 +90,4 @@ public slots:
                          std::function<void(QString, QSize, QImage, QString)> then,
                          bool crop     = true,
                          double radius = 0);
-
-private:
-    static QImage cropImage(const QImage &image);
 };
