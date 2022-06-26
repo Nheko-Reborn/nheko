@@ -97,6 +97,14 @@ clipRadius(QImage img, double radius)
     return out;
 }
 
+QImage
+MxcImageProvider::cropImage(const QImage &image)
+{
+    int delta  = image.width() - image.height();
+    int length = delta >= 0 ? image.height() : image.width();
+    return image.copy(delta >= 0 ? delta / 2 : 0, delta >= 0 ? 0 : -delta / 2, length, length);
+}
+
 void
 MxcImageProvider::download(const QString &id,
                            const QSize &requestedSize,
@@ -108,6 +116,12 @@ MxcImageProvider::download(const QString &id,
         nhlog::net()->warn("Attempted to download image with empty ID");
         then(id, QSize{}, QImage{}, QString{});
         return;
+    }
+
+    bool cropLocally = false;
+    if (crop && requestedSize.width() > 96) {
+        crop        = false;
+        cropLocally = true;
     }
 
     std::optional<mtx::crypto::EncryptedFile> encryptionInfo;
@@ -126,7 +140,7 @@ MxcImageProvider::download(const QString &id,
                              .arg(requestedSize.width())
                              .arg(requestedSize.height())
                              .arg(crop ? "crop" : "scale")
-                             .arg(radius);
+                             .arg(cropLocally ? 0 : radius);
         QFileInfo fileInfo(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
                              "/media_cache",
                            fileName);
@@ -138,6 +152,9 @@ MxcImageProvider::download(const QString &id,
                 if (requestedSize.width() <= 0) {
                     image = image.scaledToHeight(requestedSize.height(), Qt::SmoothTransformation);
                 } else {
+                    if (cropLocally) {
+                        image = cropImage(image);
+                    }
                     image =
                       image.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
                 }
@@ -160,8 +177,8 @@ MxcImageProvider::download(const QString &id,
         opts.method  = crop ? "crop" : "scale";
         http::client()->get_thumbnail(
           opts,
-          [fileInfo, requestedSize, radius, then, id, crop](const std::string &res,
-                                                            mtx::http::RequestErr err) {
+          [fileInfo, requestedSize, radius, then, id, crop, cropLocally](
+            const std::string &res, mtx::http::RequestErr err) {
               if (err || res.empty()) {
                   download(id, QSize(), then, crop, radius);
                   return;
@@ -174,6 +191,9 @@ MxcImageProvider::download(const QString &id,
                       image =
                         image.scaledToHeight(requestedSize.height(), Qt::SmoothTransformation);
                   } else {
+                      if (cropLocally) {
+                          image = cropImage(image);
+                      }
                       image =
                         image.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
                   }
