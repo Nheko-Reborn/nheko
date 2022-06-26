@@ -1853,7 +1853,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location filename="../../src/ReadReceiptsModel.cpp" line="+111"/>
         <source>Yesterday, %1</source>
-        <translation>Eilen, &amp;1</translation>
+        <translation>Eilen, %1</translation>
     </message>
 </context>
 <context>
