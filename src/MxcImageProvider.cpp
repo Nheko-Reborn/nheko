@@ -110,6 +110,12 @@ MxcImageProvider::download(const QString &id,
         return;
     }
 
+    bool cropLocally = false;
+    if (crop && requestedSize.width() > 96) {
+        crop        = false;
+        cropLocally = true;
+    }
+
     std::optional<mtx::crypto::EncryptedFile> encryptionInfo;
     auto temp = infos.find("mxc://" + id);
     if (temp != infos.end())
@@ -126,7 +132,7 @@ MxcImageProvider::download(const QString &id,
                              .arg(requestedSize.width())
                              .arg(requestedSize.height())
                              .arg(crop ? "crop" : "scale")
-                             .arg(radius);
+                             .arg(cropLocally ? 0 : radius);
         QFileInfo fileInfo(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
                              "/media_cache",
                            fileName);
@@ -138,8 +144,16 @@ MxcImageProvider::download(const QString &id,
                 if (requestedSize.width() <= 0) {
                     image = image.scaledToHeight(requestedSize.height(), Qt::SmoothTransformation);
                 } else {
-                    image =
-                      image.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                    image = image.scaled(requestedSize,
+                                         cropLocally ? Qt::KeepAspectRatioByExpanding
+                                                     : Qt::KeepAspectRatio,
+                                         Qt::SmoothTransformation);
+                    if (cropLocally) {
+                        image = image.copy((image.width() - requestedSize.width()) / 2,
+                                           (image.height() - requestedSize.height()) / 2,
+                                           requestedSize.width(),
+                                           requestedSize.height());
+                    }
                 }
 
                 if (radius != 0) {
@@ -160,8 +174,8 @@ MxcImageProvider::download(const QString &id,
         opts.method  = crop ? "crop" : "scale";
         http::client()->get_thumbnail(
           opts,
-          [fileInfo, requestedSize, radius, then, id, crop](const std::string &res,
-                                                            mtx::http::RequestErr err) {
+          [fileInfo, requestedSize, radius, then, id, crop, cropLocally](
+            const std::string &res, mtx::http::RequestErr err) {
               if (err || res.empty()) {
                   download(id, QSize(), then, crop, radius);
                   return;
@@ -174,8 +188,16 @@ MxcImageProvider::download(const QString &id,
                       image =
                         image.scaledToHeight(requestedSize.height(), Qt::SmoothTransformation);
                   } else {
-                      image =
-                        image.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                      image = image.scaled(requestedSize,
+                                           cropLocally ? Qt::KeepAspectRatioByExpanding
+                                                       : Qt::KeepAspectRatio,
+                                           Qt::SmoothTransformation);
+                      if (cropLocally) {
+                          image = image.copy((image.width() - requestedSize.width()) / 2,
+                                             (image.height() - requestedSize.height()) / 2,
+                                             requestedSize.width(),
+                                             requestedSize.height());
+                      }
                   }
 
                   if (radius != 0) {
