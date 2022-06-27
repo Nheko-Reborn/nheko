@@ -29,8 +29,8 @@ AbstractButton {
         // Workaround, can't get icon.source working for now...
         anchors.fill: parent
         source: image != "" ? ("image://colorimage/" + image + "?" + ((button.hovered && changeColorOnHover) ? highlightColor : buttonTextColor)) : ""
-        sourceSize.height: button.height * Screen.devicePixelRatio
-        sourceSize.width: button.width * Screen.devicePixelRatio
+        sourceSize.height: button.height
+        sourceSize.width: button.width
         fillMode: Image.PreserveAspectFit
     }
 
