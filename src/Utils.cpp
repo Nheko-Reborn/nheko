@@ -209,9 +209,9 @@ utils::getMessageDescription(const TimelineEvent &event,
     using Notice     = mtx::events::RoomEvent<mtx::events::msg::Notice>;
     using Text       = mtx::events::RoomEvent<mtx::events::msg::Text>;
     using Video      = mtx::events::RoomEvent<mtx::events::msg::Video>;
-    using CallInvite = mtx::events::RoomEvent<mtx::events::msg::CallInvite>;
-    using CallAnswer = mtx::events::RoomEvent<mtx::events::msg::CallAnswer>;
-    using CallHangUp = mtx::events::RoomEvent<mtx::events::msg::CallHangUp>;
+    using CallInvite = mtx::events::RoomEvent<mtx::events::voip::CallInvite>;
+    using CallAnswer = mtx::events::RoomEvent<mtx::events::voip::CallAnswer>;
+    using CallHangUp = mtx::events::RoomEvent<mtx::events::voip::CallHangUp>;
     using Encrypted  = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
     if (std::holds_alternative<Audio>(event)) {

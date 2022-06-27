@@ -64,7 +64,7 @@ public:
     bool createOffer(webrtc::CallType, uint32_t shareWindowId);
     bool acceptOffer(const std::string &sdp);
     bool acceptAnswer(const std::string &sdp);
-    void acceptICECandidates(const std::vector<mtx::events::msg::CallCandidates::Candidate> &);
+    void acceptICECandidates(const std::vector<mtx::events::voip::CallCandidates::Candidate> &);
 
     bool isMicMuted() const;
     bool toggleMicMute();
@@ -78,10 +78,10 @@ public:
 
 signals:
     void offerCreated(const std::string &sdp,
-                      const std::vector<mtx::events::msg::CallCandidates::Candidate> &);
+                      const std::vector<mtx::events::voip::CallCandidates::Candidate> &);
     void answerCreated(const std::string &sdp,
-                       const std::vector<mtx::events::msg::CallCandidates::Candidate> &);
-    void newICECandidate(const mtx::events::msg::CallCandidates::Candidate &);
+                       const std::vector<mtx::events::voip::CallCandidates::Candidate> &);
+    void newICECandidate(const mtx::events::voip::CallCandidates::Candidate &);
     void stateChanged(webrtc::State);
 
 private slots:

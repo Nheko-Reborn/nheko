@@ -107,9 +107,9 @@ messageDescription(const QString &username = QString(),
     using Sticker    = mtx::events::Sticker;
     using Text       = mtx::events::RoomEvent<mtx::events::msg::Text>;
     using Video      = mtx::events::RoomEvent<mtx::events::msg::Video>;
-    using CallInvite = mtx::events::RoomEvent<mtx::events::msg::CallInvite>;
-    using CallAnswer = mtx::events::RoomEvent<mtx::events::msg::CallAnswer>;
-    using CallHangUp = mtx::events::RoomEvent<mtx::events::msg::CallHangUp>;
+    using CallInvite = mtx::events::RoomEvent<mtx::events::voip::CallInvite>;
+    using CallAnswer = mtx::events::RoomEvent<mtx::events::voip::CallAnswer>;
+    using CallHangUp = mtx::events::RoomEvent<mtx::events::voip::CallHangUp>;
     using Encrypted  = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
     if (std::is_same<T, Audio>::value) {

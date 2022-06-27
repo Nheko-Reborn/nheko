@@ -247,10 +247,10 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
       },
       Qt::QueuedConnection);
 
-    connectCallMessage<mtx::events::msg::CallInvite>();
-    connectCallMessage<mtx::events::msg::CallCandidates>();
-    connectCallMessage<mtx::events::msg::CallAnswer>();
-    connectCallMessage<mtx::events::msg::CallHangUp>();
+    connectCallMessage<mtx::events::voip::CallInvite>();
+    connectCallMessage<mtx::events::voip::CallCandidates>();
+    connectCallMessage<mtx::events::voip::CallAnswer>();
+    connectCallMessage<mtx::events::voip::CallHangUp>();
 }
 
 void

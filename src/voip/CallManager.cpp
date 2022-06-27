@@ -36,12 +36,12 @@ extern "C"
 }
 #endif
 
-Q_DECLARE_METATYPE(std::vector<mtx::events::msg::CallCandidates::Candidate>)
-Q_DECLARE_METATYPE(mtx::events::msg::CallCandidates::Candidate)
+Q_DECLARE_METATYPE(std::vector<mtx::events::voip::CallCandidates::Candidate>)
+Q_DECLARE_METATYPE(mtx::events::voip::CallCandidates::Candidate)
 Q_DECLARE_METATYPE(mtx::responses::TurnServer)
 
 using namespace mtx::events;
-using namespace mtx::events::msg;
+using namespace mtx::events::voip;
 
 using webrtc::CallType;
 
@@ -55,8 +55,8 @@ CallManager::CallManager(QObject *parent)
   , session_(WebRTCSession::instance())
   , turnServerTimer_(this)
 {
-    qRegisterMetaType<std::vector<mtx::events::msg::CallCandidates::Candidate>>();
-    qRegisterMetaType<mtx::events::msg::CallCandidates::Candidate>();
+    qRegisterMetaType<std::vector<mtx::events::voip::CallCandidates::Candidate>>();
+    qRegisterMetaType<mtx::events::voip::CallCandidates::Candidate>();
     qRegisterMetaType<mtx::responses::TurnServer>();
 
     connect(
