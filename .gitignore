@@ -4,6 +4,7 @@ cscope*
 .clang_complete
 *wintoastlib*
 /.ccls-cache
+/.cache
 /.exrc
 .gdb_history
 .hunter
