@@ -6,6 +6,7 @@
 import "./ui"
 import QtQuick 2.3
 import QtQuick.Controls 2.3
+import QtQuick.Window 2.15
 import im.nheko 1.0 // for cursor shape
 
 AbstractButton {
@@ -28,6 +29,8 @@ AbstractButton {
         // Workaround, can't get icon.source working for now...
         anchors.fill: parent
         source: image != "" ? ("image://colorimage/" + image + "?" + ((button.hovered && changeColorOnHover) ? highlightColor : buttonTextColor)) : ""
+        sourceSize.height: button.height * Screen.devicePixelRatio
+        sourceSize.width: button.width * Screen.devicePixelRatio
         fillMode: Image.PreserveAspectFit
     }
 
