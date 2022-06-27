@@ -77,7 +77,7 @@ struct CallType
     {
         if constexpr (std::is_same_v<mtx::events::RoomEvent<mtx::events::voip::CallInvite>, T>) {
             const char video[]     = "m=video";
-            const std::string &sdp = e.content.sdp;
+            const std::string &sdp = e.content.offer.sdp;
             return std::search(sdp.cbegin(),
                                sdp.cend(),
                                std::cbegin(video),
