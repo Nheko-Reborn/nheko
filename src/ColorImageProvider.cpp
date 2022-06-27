@@ -6,9 +6,10 @@
 #include "ColorImageProvider.h"
 
 #include <QPainter>
+#include <QIcon> 
 
 QPixmap
-ColorImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &)
+ColorImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &req)
 {
     auto args = id.split('?');
 
@@ -16,7 +17,9 @@ ColorImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &)
 
     if (size)
         *size = QSize(source.width(), source.height());
-
+    
+    if (req.width() > 0 && req.height() > 0)
+        source = QIcon(args[0]).pixmap(req);
     if (args.size() < 2)
         return source;
 
