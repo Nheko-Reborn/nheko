@@ -6,7 +6,6 @@
 import "./ui"
 import QtQuick 2.3
 import QtQuick.Controls 2.3
-import QtQuick.Window 2.15
 import im.nheko 1.0 // for cursor shape
 
 AbstractButton {
