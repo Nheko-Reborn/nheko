@@ -1815,7 +1815,7 @@ Cache::saveState(const mtx::responses::Sync &res)
             if (!std::visit([](const auto &e) -> bool { return isMessage(e); }, e))
                 continue;
             updatedInfo.approximate_last_modification_ts =
-              std::visit([](const auto &e) -> bool { return e.origin_server_ts; }, e);
+              std::visit([](const auto &e) -> uint64_t { return e.origin_server_ts; }, e);
         }
 
         roomsDb_.put(txn, room.first, nlohmann::json(updatedInfo).dump());
@@ -4850,6 +4850,9 @@ from_json(const nlohmann::json &j, RoomInfo &info)
     info.guest_access = j.at("guest_access").get<bool>();
 
     info.approximate_last_modification_ts = j.value<uint64_t>("app_l_ts", 0);
+    // workaround for bad values being stored in the past
+    if (info.approximate_last_modification_ts < 100000000000)
+        info.approximate_last_modification_ts = 0;
 
     info.notification_count = j.value("notification_count", 0);
     info.highlight_count    = j.value("highlight_count", 0);
