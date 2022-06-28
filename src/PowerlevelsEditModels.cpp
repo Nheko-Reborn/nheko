@@ -600,7 +600,7 @@ PowerlevelEditingModels::commit()
 void
 PowerlevelEditingModels::addRole(int pl)
 {
-    for (const auto &e : types_.types)
+    for (const auto &e : qAsConst(types_.types))
         if (pl == int(e.pl))
             return;
 
