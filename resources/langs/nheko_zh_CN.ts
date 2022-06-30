@@ -151,7 +151,7 @@
     <message>
         <location line="+301"/>
         <source>Knock on room</source>
-        <translation type="unfinished"></translation>
+        <translation>敲门</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -187,7 +187,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+18"/>
         <source>Room %1 created.</source>
-        <translation>房间“%1”已创建</translation>
+        <translation>房间 %1 已创建。</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -377,7 +377,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Rooms you have favourited.</source>
-        <translation>你收藏的房间</translation>
+        <translation>你收藏的房间。</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -387,7 +387,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Rooms with low priority.</source>
-        <translation>低优先级房间</translation>
+        <translation>低优先级房间。</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -502,7 +502,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase called %1 to decrypt your secrets:</source>
-        <translation>填入你的恢复令牌或名为%1的口令以解密你的密钥</translation>
+        <translation>填入你的恢复令牌或名为%1的口令以解密你的密钥：</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -672,7 +672,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device or the key is from an untrusted source like the key backup.</source>
-        <translation>由一台不受信任的设备或从备份等不可靠的来源导入的密钥加密</translation>
+        <translation>由一台不受信任的设备或从备份等不可靠的来源导入的密钥加密。</translation>
     </message>
 </context>
 <context>
@@ -685,7 +685,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+18"/>
         <source>Other client does not support our verification protocol.</source>
-        <translation>其他客户端不支持我们的认证协议</translation>
+        <translation>其他客户端不支持我们的认证协议。</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1027,7 +1027,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>Your password.</source>
-        <translation>密码</translation>
+        <translation>你的密码。</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -3029,7 +3029,7 @@ Reason: %4</source>
     <message>
         <location line="-1403"/>
         <source>You joined this room.</source>
-        <translation type="unfinished">您已加入此房间</translation>
+        <translation>您已加入此房间。</translation>
     </message>
     <message>
         <location line="+1355"/>
