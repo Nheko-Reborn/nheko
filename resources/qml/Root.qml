@@ -29,6 +29,10 @@ Pane {
         id: fontMetrics
     }
 
+    RoomDirectoryModel {
+        id: publicRooms
+    }
+
     //Timer {
     //    onTriggered: gc()
     //    interval: 1000

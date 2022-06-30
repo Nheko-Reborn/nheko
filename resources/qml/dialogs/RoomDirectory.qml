@@ -13,8 +13,6 @@ import im.nheko 1.0
 ApplicationWindow {
     id: roomDirectoryWindow
 
-    property RoomDirectoryModel publicRooms
-
     visible: true
     minimumWidth: 340
     minimumHeight: 340
@@ -150,9 +148,6 @@ ApplicationWindow {
 
         }
 
-    }
-
-    publicRooms: RoomDirectoryModel {
     }
 
     header: RowLayout {
