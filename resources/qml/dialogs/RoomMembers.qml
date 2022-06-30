@@ -182,10 +182,10 @@ ApplicationWindow {
                                 return "image://colorimage/:/icons/icons/ui/person.svg?";
                             }
 
-                            width: 16
-                            height: 16
-                            sourceSize.height: height * Screen.devicePixelRatio
-                            sourceSize.width: width * Screen.devicePixelRatio
+                            Layout.preferredWidth: 16
+                            Layout.preferredHeight: 16
+                            sourceSize.width: width
+                            sourceSize.height: height
                             source: sourceUrl + (ma.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
                             ToolTip.visible: ma.hovered
                             ToolTip.text: {
@@ -206,6 +206,8 @@ ApplicationWindow {
                         EncryptionIndicator {
                             id: encryptInd
 
+                            Layout.preferredWidth: 16
+                            Layout.preferredHeight: 16
                             Layout.alignment: Qt.AlignRight
                             visible: room.isEncrypted
                             encrypted: room.isEncrypted
