@@ -257,6 +257,10 @@ Menu {
                         Layout.preferredWidth: 36
                         Layout.preferredHeight: 36
                         hoverEnabled: true
+                        leftPadding: 2
+                        rightPadding: 2
+                        topPadding: 2
+                        bottomPadding: 2
                         ToolTip.text: {
                             switch (model.category) {
                             case Emoji.Category.People:
@@ -294,13 +298,10 @@ Menu {
                         contentItem: Image {
                             horizontalAlignment: Image.AlignHCenter
                             verticalAlignment: Image.AlignVCenter
-                            fillMode: Image.Pad
-                            height: 32
-                            width: 32
                             smooth: true
                             mipmap: true
-                            sourceSize.width: 32 * Screen.devicePixelRatio
-                            sourceSize.height: 32 * Screen.devicePixelRatio
+                            sourceSize.width: width
+                            sourceSize.height: height
                             source: "image://colorimage/" + model.image + "?" + (hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
                         }
 
