@@ -58,8 +58,8 @@ class UserSettings : public QObject
       bool avatarCircles READ avatarCircles WRITE setAvatarCircles NOTIFY avatarCirclesChanged)
     Q_PROPERTY(
       bool decryptSidebar READ decryptSidebar WRITE setDecryptSidebar NOTIFY decryptSidebarChanged)
-    Q_PROPERTY(bool spaceNotifications READ spaceNotifications WRITE
-                 setSpaceNotifications NOTIFY spaceNotificationsChanged)
+    Q_PROPERTY(bool spaceNotifications READ spaceNotifications WRITE setSpaceNotifications NOTIFY
+                 spaceNotificationsChanged)
     Q_PROPERTY(
       bool privacyScreen READ privacyScreen WRITE setPrivacyScreen NOTIFY privacyScreenChanged)
     Q_PROPERTY(int privacyScreenTimeout READ privacyScreenTimeout WRITE setPrivacyScreenTimeout
