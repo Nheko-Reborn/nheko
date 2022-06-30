@@ -67,7 +67,8 @@ public slots:
     void toggleMicMute();
     void toggleLocalPiP() { session_.toggleLocalPiP(); }
     void acceptInvite();
-    void hangUp(mtx::events::voip::CallHangUp::Reason = mtx::events::voip::CallHangUp::Reason::User);
+    void
+      hangUp(mtx::events::voip::CallHangUp::Reason = mtx::events::voip::CallHangUp::Reason::User);
     QStringList windowList();
     void previewWindow(unsigned int windowIndex) const;
 
@@ -92,8 +93,8 @@ private:
     QString callPartyDisplayName_;
     QString callPartyAvatarUrl_;
     std::string callid_;
-    std::string partyid_ = "";
-    std::string invitee_ = "";
+    std::string partyid_       = "";
+    std::string invitee_       = "";
     const uint32_t timeoutms_  = 120000;
     webrtc::CallType callType_ = webrtc::CallType::VOICE;
     bool haveCallInvite_       = false;

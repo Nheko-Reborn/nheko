@@ -44,6 +44,7 @@ using namespace mtx::events;
 using namespace mtx::events::voip;
 
 using webrtc::CallType;
+//! Session Description Object
 typedef RTCSessionDescriptionInit SDO;
 
 namespace {
@@ -66,7 +67,9 @@ CallManager::CallManager(QObject *parent)
       this,
       [this](const std::string &sdp, const std::vector<CallCandidates::Candidate> &candidates) {
           nhlog::ui()->debug("WebRTC: call id: {} - sending offer", callid_);
-          emit newMessage(roomid_, CallInvite{callid_, partyid_, SDO{sdp, SDO::Type::Offer}, "0", timeoutms_, invitee_});
+          emit newMessage(
+            roomid_,
+            CallInvite{callid_, partyid_, SDO{sdp, SDO::Type::Offer}, "0", timeoutms_, invitee_});
           emit newMessage(roomid_, CallCandidates{callid_, partyid_, candidates, "0"});
           std::string callid(callid_);
           QTimer::singleShot(timeoutms_, this, [this, callid]() {
@@ -299,7 +302,8 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
     if (isOnCall() || roomInfo.member_count != 2) {
         emit newMessage(
           QString::fromStdString(callInviteEvent.room_id),
-          CallHangUp{callInviteEvent.content.call_id, partyid_, "0", CallHangUp::Reason::InviteTimeOut});
+          CallHangUp{
+            callInviteEvent.content.call_id, partyid_, "0", CallHangUp::Reason::InviteTimeOut});
         return;
     }
 
