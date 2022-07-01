@@ -4442,11 +4442,15 @@ Cache::markUserKeysOutOfDate(lmdb::txn &txn,
 
         std::string_view oldKeys;
 
-        UserKeyCache cacheEntry;
+        UserKeyCache cacheEntry{};
         auto res = db.get(txn, user, oldKeys);
         if (res) {
-            cacheEntry = nlohmann::json::parse(std::string_view(oldKeys.data(), oldKeys.size()))
-                           .get<UserKeyCache>();
+            try {
+                cacheEntry = nlohmann::json::parse(std::string_view(oldKeys.data(), oldKeys.size()))
+                               .get<UserKeyCache>();
+            } catch (std::exception &e) {
+                nhlog::db()->error("Failed to parse {}: {}", oldKeys, e.what());
+            }
         }
         cacheEntry.last_changed = sync_token;
 
