@@ -692,6 +692,12 @@ InputBar::command(const QString &command, QString args)
     } else if (command == QLatin1String("unban")) {
         ChatPage::instance()->unbanUser(
           room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
+    } else if (command == QLatin1String("redact")) {
+        if (args.startsWith('@')) {
+            room->redactAllFromUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
+        } else if (args.startsWith('$')) {
+            room->redactEvent(args.section(' ', 0, 0), args.section(' ', 1, -1));
+        }
     } else if (command == QLatin1String("roomnick")) {
         mtx::events::state::Member member;
         member.display_name = args.toStdString();

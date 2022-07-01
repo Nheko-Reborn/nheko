@@ -1272,6 +1272,24 @@ TimelineModel::showReadReceipts(QString id)
 }
 
 void
+TimelineModel::redactAllFromUser(const QString &userid, const QString &reason)
+{
+    auto user = userid.toStdString();
+    std::vector<QString> toRedact;
+    for (auto it = events.size() - 1; it >= 0; --it) {
+        auto event = events.get(it, false);
+        if (event && mtx::accessors::sender(*event) == user &&
+            !std::holds_alternative<mtx::events::RoomEvent<mtx::events::msg::Redacted>>(*event)) {
+            toRedact.push_back(QString::fromStdString(mtx::accessors::event_id(*event)));
+        }
+    }
+
+    for (const auto &e : toRedact) {
+        redactEvent(e, reason);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
+}
+void
 TimelineModel::redactEvent(const QString &id, const QString &reason)
 {
     if (!id.isEmpty()) {
