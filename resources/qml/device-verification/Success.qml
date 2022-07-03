@@ -8,40 +8,33 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.10
 import im.nheko 1.0
 
-Pane {
+ColumnLayout {
     property string title: qsTr("Successful Verification")
-    background: Rectangle {
-        color: Nheko.colors.window
+
+    spacing: 16
+
+    Label {
+        id: content
+
+        Layout.preferredWidth: 400
+        Layout.fillWidth: true
+        wrapMode: Text.Wrap
+        text: qsTr("Verification successful! Both sides verified their devices!")
+        color: Nheko.colors.text
+        verticalAlignment: Text.AlignVCenter
     }
 
-    ColumnLayout {
-        anchors.fill: parent
-        spacing: 16
+    Item { Layout.fillHeight: true; }
 
-        Label {
-            id: content
-
-            Layout.preferredWidth: 400
+    RowLayout {
+        Item {
             Layout.fillWidth: true
-            wrapMode: Text.Wrap
-            text: qsTr("Verification successful! Both sides verified their devices!")
-            color: Nheko.colors.text
-            verticalAlignment: Text.AlignVCenter
         }
 
-        Item { Layout.fillHeight: true; }
-
-        RowLayout {
-            Item {
-                Layout.fillWidth: true
-            }
-
-            Button {
-                Layout.alignment: Qt.AlignRight
-                text: qsTr("Close")
-                onClicked: dialog.close()
-            }
-
+        Button {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr("Close")
+            onClicked: dialog.close()
         }
 
     }
