@@ -392,6 +392,17 @@ ColumnLayout {
     }
     Item { Layout.fillHeight: true; }
 
+    Label {
+        Layout.preferredWidth: 400
+        Layout.fillWidth: true
+        wrapMode: Text.Wrap
+        text: qsTr("The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.")
+        color: Nheko.colors.text
+        verticalAlignment: Text.AlignVCenter
+    }
+
+    Item { Layout.fillHeight: true; }
+
     RowLayout {
         Button {
             Layout.alignment: Qt.AlignLeft
