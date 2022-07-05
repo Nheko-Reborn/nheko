@@ -375,31 +375,37 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
     } else if (!room->reply().isEmpty()) {
         auto related = room->relatedInfo(room->reply());
 
-        QString body;
-        bool firstLine = true;
-        auto lines     = related.quoted_body.splitRef(u'\n');
-        for (auto line : qAsConst(lines)) {
-            if (firstLine) {
-                firstLine = false;
-                body      = QStringLiteral("> <%1> %2\n").arg(related.quoted_user, line);
-            } else {
-                body += QStringLiteral("> %1\n").arg(line);
+        // Skip reply fallbacks to users who would cause a room ping with the fallback.
+        // This should be fine, since in some cases the reply fallback can be omitted now and the
+        // alternative is worse! On Element Android this applies to any substring, but that is their
+        // bug to fix.
+        if (!related.quoted_user.startsWith("@room:")) {
+            QString body;
+            bool firstLine = true;
+            auto lines     = related.quoted_body.splitRef(u'\n');
+            for (auto line : qAsConst(lines)) {
+                if (firstLine) {
+                    firstLine = false;
+                    body      = QStringLiteral("> <%1> %2\n").arg(related.quoted_user, line);
+                } else {
+                    body += QStringLiteral("> %1\n").arg(line);
+                }
             }
+
+            text.body = QStringLiteral("%1\n%2").arg(body, msg).toStdString();
+
+            // NOTE(Nico): rich replies always need a formatted_body!
+            text.format = "org.matrix.custom.html";
+            if ((ChatPage::instance()->userSettings()->markdown() &&
+                 useMarkdown == MarkdownOverride::NOT_SPECIFIED) ||
+                useMarkdown == MarkdownOverride::ON)
+                text.formatted_body =
+                  utils::getFormattedQuoteBody(related, utils::markdownToHtml(msg, rainbowify))
+                    .toStdString();
+            else
+                text.formatted_body =
+                  utils::getFormattedQuoteBody(related, msg.toHtmlEscaped()).toStdString();
         }
-
-        text.body = QStringLiteral("%1\n%2").arg(body, msg).toStdString();
-
-        // NOTE(Nico): rich replies always need a formatted_body!
-        text.format = "org.matrix.custom.html";
-        if ((ChatPage::instance()->userSettings()->markdown() &&
-             useMarkdown == MarkdownOverride::NOT_SPECIFIED) ||
-            useMarkdown == MarkdownOverride::ON)
-            text.formatted_body =
-              utils::getFormattedQuoteBody(related, utils::markdownToHtml(msg, rainbowify))
-                .toStdString();
-        else
-            text.formatted_body =
-              utils::getFormattedQuoteBody(related, msg.toHtmlEscaped()).toStdString();
 
         text.relations.relations.push_back(
           {mtx::common::RelationType::InReplyTo, related.related_event});
