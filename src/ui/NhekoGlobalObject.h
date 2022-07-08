@@ -9,6 +9,7 @@
 #include <QObject>
 #include <QPalette>
 
+#include "AliasEditModel.h"
 #include "PowerlevelsEditModels.h"
 #include "Theme.h"
 #include "UserProfile.h"
@@ -58,6 +59,10 @@ public:
     Q_INVOKABLE PowerlevelEditingModels *editPowerlevels(QString room_id_) const
     {
         return new PowerlevelEditingModels(room_id_);
+    }
+    Q_INVOKABLE AliasEditingModel *editAliases(QString room_id_) const
+    {
+        return new AliasEditingModel(room_id_.toStdString());
     }
 
 public slots:

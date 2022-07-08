@@ -10,6 +10,7 @@
 #include <mtx/requests.hpp>
 #include <mtx/responses/login.hpp>
 
+#include "AliasEditModel.h"
 #include "BlurhashProvider.h"
 #include "Cache.h"
 #include "Cache_p.h"
@@ -179,6 +180,13 @@ MainWindow::registerQmlTypes()
     qmlRegisterType<LoginPage>("im.nheko", 1, 0, "Login");
     qmlRegisterType<RegisterPage>("im.nheko", 1, 0, "Registration");
     qmlRegisterType<HiddenEvents>("im.nheko", 1, 0, "HiddenEvents");
+    qmlRegisterUncreatableType<AliasEditingModel>(
+      "im.nheko",
+      1,
+      0,
+      "AliasEditingModel",
+      QStringLiteral("Please use editAliases to create the models"));
+
     qmlRegisterUncreatableType<PowerlevelEditingModels>(
       "im.nheko",
       1,

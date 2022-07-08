@@ -55,13 +55,28 @@ Pane {
 
     }
 
-        function showPLEditor(settings) {
-            var dialog = plEditor.createObject(timelineRoot, {
-                "roomSettings": settings
-            });
-            dialog.show();
-            destroyOnClose(dialog);
+    function showAliasEditor(settings) {
+        var dialog = aliasEditor.createObject(timelineRoot, {
+            "roomSettings": settings
+        });
+        dialog.show();
+        destroyOnClose(dialog);
+    }
+
+    Component {
+        id: aliasEditor
+
+        AliasEditor {
         }
+    }
+
+    function showPLEditor(settings) {
+        var dialog = plEditor.createObject(timelineRoot, {
+            "roomSettings": settings
+        });
+        dialog.show();
+        destroyOnClose(dialog);
+    }
 
     Component {
         id: plEditor

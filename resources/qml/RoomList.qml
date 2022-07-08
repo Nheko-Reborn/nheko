@@ -750,7 +750,7 @@ Page {
                     hoverEnabled: true
                     width: 22
                     height: 22
-                    image: ":/icons/icons/ui/speech-bubbles.svg"
+                    image: ":/icons/icons/ui/room-directory.svg"
                     ToolTip.visible: hovered
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Room directory")

@@ -4,6 +4,7 @@
         <file>icons/ui/angle-arrow-left.svg</file>
         <file>icons/ui/attach.svg</file>
         <file>icons/ui/ban.svg</file>
+        <file>icons/ui/building-shop.svg</file>
         <file>icons/ui/chat.svg</file>
         <file>icons/ui/checkmark.svg</file>
         <file>icons/ui/clock.svg</file>
@@ -36,6 +37,7 @@
         <file>icons/ui/reply.svg</file>
         <file>icons/ui/ribbon.svg</file>
         <file>icons/ui/ribbon_star.svg</file>
+        <file>icons/ui/room-directory.svg</file>
         <file>icons/ui/round-remove-button.svg</file>
         <file>icons/ui/screen-share.svg</file>
         <file>icons/ui/search.svg</file>
@@ -147,6 +149,7 @@
         <file>qml/device-verification/NewVerificationRequest.qml</file>
         <file>qml/device-verification/Success.qml</file>
         <file>qml/device-verification/Waiting.qml</file>
+        <file>qml/dialogs/AliasEditor.qml</file>
         <file>qml/dialogs/CreateDirect.qml</file>
         <file>qml/dialogs/CreateRoom.qml</file>
         <file>qml/dialogs/HiddenEventsDialog.qml</file>

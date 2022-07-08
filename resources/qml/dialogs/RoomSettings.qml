@@ -353,6 +353,18 @@ ApplicationWindow {
                 }
 
                 Label {
+                    text: qsTr("Addresses")
+                    color: Nheko.colors.text
+                }
+
+                Button {
+                    text: qsTr("Configure")
+                    ToolTip.text: qsTr("View and change the addresses/aliases of this room")
+                    onClicked: timelineRoot.showAliasEditor(roomSettings)
+                    Layout.alignment: Qt.AlignRight
+                }
+
+                Label {
                     text: qsTr("Sticker & Emote Settings")
                     color: Nheko.colors.text
                 }

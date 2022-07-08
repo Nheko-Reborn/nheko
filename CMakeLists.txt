@@ -420,6 +420,8 @@ set(SRC_FILES
 	src/dock/Dock.cpp
 	src/dock/Dock.h
 
+	src/AliasEditModel.cpp
+	src/AliasEditModel.h
 	src/AvatarProvider.cpp
 	src/AvatarProvider.h
 	src/BlurhashProvider.cpp
@@ -579,7 +581,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        e93779692fcc00de136234dd48d0af354717b0a1
+		GIT_TAG        842e10c4ae36aba23a20849e766f0c54b19fd4b6
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
