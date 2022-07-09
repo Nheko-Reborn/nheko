@@ -466,7 +466,7 @@ Vous pouvez donner une raison d&apos;accepter aux autres :</translation>
     <message>
         <location line="+6"/>
         <source>Public rooms can be joined by anyone, private rooms need explicit invites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les salons publics sont accessibles à tout le monde tandis que les salons privés ne sont accessibles que sur invitation explicite.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -476,7 +476,7 @@ Vous pouvez donner une raison d&apos;accepter aux autres :</translation>
     <message>
         <location line="+6"/>
         <source>All invitees are given the same power level as the creator</source>
-        <translation type="unfinished"></translation>
+        <translation>Les utilisateurs invités auront les mêmes permissions que le créateur</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -486,7 +486,7 @@ Vous pouvez donner une raison d&apos;accepter aux autres :</translation>
     <message>
         <location line="+6"/>
         <source>Caution: Encryption cannot be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Attention, le chiffrement ne peut pas être désactivé</translation>
     </message>
 </context>
 <context>
