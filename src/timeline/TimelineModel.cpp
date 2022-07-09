@@ -190,6 +190,12 @@ qml_mtx_events::toRoomEventType(mtx::events::EventType e)
         return qml_mtx_events::EventType::Sticker;
     case EventType::Tag:
         return qml_mtx_events::EventType::Tag;
+    case EventType::PolicyRuleUser:
+        return qml_mtx_events::EventType::PolicyRuleUser;
+    case EventType::PolicyRuleRoom:
+        return qml_mtx_events::EventType::PolicyRuleRoom;
+    case EventType::PolicyRuleServer:
+        return qml_mtx_events::EventType::PolicyRuleServer;
     case EventType::SpaceParent:
         return qml_mtx_events::EventType::SpaceParent;
     case EventType::SpaceChild:
@@ -303,6 +309,12 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
     // m.tag
     case qml_mtx_events::Tag:
         return mtx::events::EventType::Tag;
+    case qml_mtx_events::PolicyRuleUser:
+        return mtx::events::EventType::PolicyRuleUser;
+    case qml_mtx_events::PolicyRuleRoom:
+        return mtx::events::EventType::PolicyRuleRoom;
+    case qml_mtx_events::PolicyRuleServer:
+        return mtx::events::EventType::PolicyRuleServer;
     // m.space.parent
     case qml_mtx_events::SpaceParent:
         return mtx::events::EventType::SpaceParent;
@@ -2327,6 +2339,62 @@ TimelineModel::formatImagePackEvent(const QString &id)
         return tr("%1 changed the sticker and emotes in this room.").arg(sender);
     else
         return msg;
+}
+
+QString
+TimelineModel::formatPolicyRule(const QString &id)
+{
+    mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+    if (!e)
+        return {};
+
+    auto qsHtml = [](const std::string &s) { return QString::fromStdString(s).toHtmlEscaped(); };
+    constexpr std::string_view unstable_ban = "org.matrix.mjolnir.ban";
+
+    if (auto userRule =
+          std::get_if<mtx::events::StateEvent<mtx::events::state::policy_rule::UserRule>>(e)) {
+        auto sender = utils::replaceEmoji(displayName(QString::fromStdString(userRule->sender)));
+        if (userRule->content.entity.empty() ||
+            (userRule->content.recommendation !=
+               mtx::events::state::policy_rule::recommendation::ban &&
+             userRule->content.recommendation != unstable_ban)) {
+            return tr("%1 disabled the rule to ban users matching %2.")
+              .arg(sender, qsHtml(userRule->content.entity));
+        } else {
+            return tr("%1 added a rule to ban users matching %2 for '%3'.")
+              .arg(sender, qsHtml(userRule->content.entity), qsHtml(userRule->content.reason));
+        }
+    } else if (auto roomRule =
+                 std::get_if<mtx::events::StateEvent<mtx::events::state::policy_rule::RoomRule>>(
+                   e)) {
+        auto sender = utils::replaceEmoji(displayName(QString::fromStdString(roomRule->sender)));
+        if (roomRule->content.entity.empty() ||
+            (roomRule->content.recommendation !=
+               mtx::events::state::policy_rule::recommendation::ban &&
+             roomRule->content.recommendation != unstable_ban)) {
+            return tr("%1 disabled the rule to ban rooms matching %2.")
+              .arg(sender, qsHtml(roomRule->content.entity));
+        } else {
+            return tr("%1 added a rule to ban rooms matching %2 for '%3'.")
+              .arg(sender, qsHtml(roomRule->content.entity), qsHtml(roomRule->content.reason));
+        }
+    } else if (auto serverRule =
+                 std::get_if<mtx::events::StateEvent<mtx::events::state::policy_rule::ServerRule>>(
+                   e)) {
+        auto sender = utils::replaceEmoji(displayName(QString::fromStdString(serverRule->sender)));
+        if (serverRule->content.entity.empty() ||
+            (serverRule->content.recommendation !=
+               mtx::events::state::policy_rule::recommendation::ban &&
+             serverRule->content.recommendation != unstable_ban)) {
+            return tr("%1 disabled the rule to ban servers matching %2.")
+              .arg(sender, qsHtml(serverRule->content.entity));
+        } else {
+            return tr("%1 added a rule to ban servers matching %2 for '%3'.")
+              .arg(sender, qsHtml(serverRule->content.entity), qsHtml(serverRule->content.reason));
+        }
+    }
+
+    return {};
 }
 
 QVariantMap

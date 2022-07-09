@@ -116,6 +116,12 @@ enum EventType
     ImagePackInAccountData,
     //! m.image_pack.rooms, currently im.ponies.emote_rooms
     ImagePackRooms,
+    // m.policy.rule.user
+    PolicyRuleUser,
+    // m.policy.rule.room
+    PolicyRuleRoom,
+    // m.policy.rule.server
+    PolicyRuleServer,
     // m.space.parent
     SpaceParent,
     // m.space.child
@@ -264,6 +270,7 @@ public:
     Q_INVOKABLE QString formatGuestAccessEvent(const QString &id);
     Q_INVOKABLE QString formatPowerLevelEvent(const QString &id);
     Q_INVOKABLE QString formatImagePackEvent(const QString &id);
+    Q_INVOKABLE QString formatPolicyRule(const QString &id);
     Q_INVOKABLE QVariantMap formatRedactedEvent(const QString &id);
 
     Q_INVOKABLE void viewRawMessage(const QString &id);

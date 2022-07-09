@@ -421,6 +421,48 @@ Item {
         }
 
         DelegateChoice {
+            roleValue: MtxEvent.PolicyRuleUser
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                keepFullText: d.keepFullText
+                isStateEvent: d.isStateEvent
+                formatted: d.relatedEventCacheBuster, room.formatPolicyRule(d.eventId)
+            }
+
+        }
+
+        DelegateChoice {
+            roleValue: MtxEvent.PolicyRuleRoom
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                keepFullText: d.keepFullText
+                isStateEvent: d.isStateEvent
+                formatted: d.relatedEventCacheBuster, room.formatPolicyRule(d.eventId)
+            }
+
+        }
+
+        DelegateChoice {
+            roleValue: MtxEvent.PolicyRuleServer
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                keepFullText: d.keepFullText
+                isStateEvent: d.isStateEvent
+                formatted: d.relatedEventCacheBuster, room.formatPolicyRule(d.eventId)
+            }
+
+        }
+
+        DelegateChoice {
             roleValue: MtxEvent.RoomJoinRules
 
             NoticeMessage {

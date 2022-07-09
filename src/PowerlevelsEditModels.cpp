@@ -198,6 +198,13 @@ PowerlevelsTypeListModel::data(const QModelIndex &index, int role) const
         else if (type.type == "m.sticker")
             return tr("Send stickers");
 
+        else if (type.type == "m.policy.rule.user")
+            return tr("Ban users using policy rules");
+        else if (type.type == "m.policy.rule.room")
+            return tr("Ban rooms using policy rules");
+        else if (type.type == "m.policy.rule.server")
+            return tr("Ban servers using policy rules");
+
         else if (type.type == "m.space.child")
             return tr("Edit child rooms");
         else if (type.type == "m.space.parent")
