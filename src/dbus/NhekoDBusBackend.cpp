@@ -21,6 +21,8 @@ NhekoDBusBackend::NhekoDBusBackend(RoomlistModel *parent)
 QVector<nheko::dbus::RoomInfoItem>
 NhekoDBusBackend::rooms(const QDBusMessage &message)
 {
+    message.setDelayedReply(true);
+
     const auto roomListModel = m_parent->models;
     QSharedPointer<QVector<nheko::dbus::RoomInfoItem>> model{
       new QVector<nheko::dbus::RoomInfoItem>};
@@ -43,8 +45,8 @@ NhekoDBusBackend::rooms(const QDBusMessage &message)
               room->roomId(), alias, room->roomName(), image, room->notificationCount()});
 
             if (model->length() == roomListModelSize) {
-                auto reply = message.createReply();
                 nhlog::ui()->debug("Sending {} rooms over D-Bus...", model->size());
+                auto reply = message.createReply();
                 reply << QVariant::fromValue(*model);
                 QDBusConnection::sessionBus().send(reply);
                 nhlog::ui()->debug("Rooms successfully sent to D-Bus.");
