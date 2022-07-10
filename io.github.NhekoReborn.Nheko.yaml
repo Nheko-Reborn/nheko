@@ -1,5 +1,5 @@
 id: io.github.NhekoReborn.Nheko
-command: nheko
+command: io.github.NhekoReborn.Nheko
 runtime: org.kde.Platform
 runtime-version: '5.15-21.08'
 sdk: org.kde.Sdk
