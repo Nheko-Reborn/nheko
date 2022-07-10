@@ -663,6 +663,10 @@ else()
 	endif()
 endif()
 
+if (FLATPAK)
+	set_target_properties(nheko PROPERTIES OUTPUT_NAME "${APPID}")
+endif()
+
 if(APPLE)
 	target_link_libraries (nheko PRIVATE Qt5::MacExtras)
 elseif(WIN32)
