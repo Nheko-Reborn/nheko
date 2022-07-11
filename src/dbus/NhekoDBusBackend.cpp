@@ -4,6 +4,9 @@
 
 #include "NhekoDBusBackend.h"
 
+#include <mutex>
+
+#include "Cache.h"
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"
@@ -18,17 +21,35 @@ NhekoDBusBackend::NhekoDBusBackend(RoomlistModel *parent)
   , m_parent{parent}
 {}
 
+namespace {
+struct RoomReplyState
+{
+    QVector<nheko::dbus::RoomInfoItem> model;
+    std::map<QString, RoomInfo> roominfos;
+    std::recursive_mutex m;
+};
+}
+
 QVector<nheko::dbus::RoomInfoItem>
 NhekoDBusBackend::rooms(const QDBusMessage &message)
 {
     message.setDelayedReply(true);
+    nhlog::ui()->debug("Rooms requested over D-Bus.");
 
     const auto roomListModel = m_parent->models;
-    QSharedPointer<QVector<nheko::dbus::RoomInfoItem>> model{
-      new QVector<nheko::dbus::RoomInfoItem>};
 
+    auto state = QSharedPointer<RoomReplyState>::create();
+
+    std::vector<std::string> roomids;
+    roomids.reserve(roomids.size());
     for (const auto &room : roomListModel) {
-        auto addRoom = [room, roomListModelSize = roomListModel.size(), message, model](
+        roomids.push_back(room->roomId().toStdString());
+    }
+    state->roominfos = cache::getRoomInfo(roomids);
+
+    std::lock_guard<std::recursive_mutex> parentLock(state->m);
+    for (const auto &room : roomListModel) {
+        auto addRoom = [room, roomListModelSize = roomListModel.size(), message, state](
                          const QImage &image) {
             const auto aliases = cache::client()->getStateEvent<mtx::events::state::CanonicalAlias>(
               room->roomId().toStdString());
@@ -41,24 +62,30 @@ NhekoDBusBackend::rooms(const QDBusMessage &message)
                     alias = QString::fromStdString(val.alt_aliases.front());
             }
 
-            model->push_back(nheko::dbus::RoomInfoItem{
-              room->roomId(), alias, room->roomName(), image, room->notificationCount()});
+            state->model.push_back(nheko::dbus::RoomInfoItem{
+              room->roomId(),
+              alias,
+              QString::fromStdString(state->roominfos[room->roomId()].name),
+              image,
+              room->notificationCount()});
 
-            if (model->length() == roomListModelSize) {
-                nhlog::ui()->debug("Sending {} rooms over D-Bus...", model->size());
+            std::lock_guard<std::recursive_mutex> childLock(state->m);
+            if (state->model.size() == roomListModelSize) {
+                nhlog::ui()->debug("Sending {} rooms over D-Bus...", state->model.size());
                 auto reply = message.createReply();
-                reply << QVariant::fromValue(*model);
+                reply << QVariant::fromValue(state->model);
                 QDBusConnection::sessionBus().send(reply);
                 nhlog::ui()->debug("Rooms successfully sent to D-Bus.");
+            } else {
+                // nhlog::ui()->debug("DBUS: {}/{}", state->model.size(), roomListModelSize);
             }
         };
 
-        auto avatarUrl = room->roomAvatarUrl();
-        if (avatarUrl.isEmpty())
+        if (state->roominfos[room->roomId()].avatar_url.empty())
             addRoom(QImage());
         else
             MainWindow::instance()->imageProvider()->download(
-              avatarUrl.remove("mxc://"),
+              QString::fromStdString(state->roominfos[room->roomId()].avatar_url).remove("mxc://"),
               {96, 96},
               [addRoom](const QString &, const QSize &, const QImage &image, const QString &) {
                   addRoom(image);
