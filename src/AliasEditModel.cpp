@@ -37,8 +37,8 @@ AliasEditingModel::AliasEditingModel(const std::string &rid, QObject *parent)
 
     for (const auto &alias : aliasEvent.alt_aliases) {
         if (!seen_aliases.count(alias)) {
-            aliases.push_back(Entry{aliasEvent.alias, false, true, false});
-            seen_aliases.insert(aliasEvent.alias);
+            aliases.push_back(Entry{alias, false, true, false});
+            seen_aliases.insert(alias);
         }
     }
 
@@ -308,12 +308,12 @@ AliasEditingModel::updatePublishedAliases(std::vector<std::string> advAliases)
                 found = true;
                 break;
             }
+        }
 
-            if (!found) {
-                beginInsertRows(QModelIndex(), aliases.size(), aliases.size());
-                aliases.push_back(Entry{advAlias, false, false, true});
-                endInsertRows();
-            }
+        if (!found) {
+            beginInsertRows(QModelIndex(), aliases.size(), aliases.size());
+            aliases.push_back(Entry{advAlias, false, false, true});
+            endInsertRows();
         }
     }
 }
