@@ -26,7 +26,7 @@ struct RoomReplyState
 {
     QVector<nheko::dbus::RoomInfoItem> model;
     std::map<QString, RoomInfo> roominfos;
-    std::recursive_mutex m;
+    std::mutex m;
 };
 }
 
@@ -47,7 +47,6 @@ NhekoDBusBackend::rooms(const QDBusMessage &message)
     }
     state->roominfos = cache::getRoomInfo(roomids);
 
-    std::lock_guard<std::recursive_mutex> parentLock(state->m);
     for (const auto &room : roomListModel) {
         auto addRoom = [room, roomListModelSize = roomListModel.size(), message, state](
                          const QImage &image) {
@@ -62,6 +61,7 @@ NhekoDBusBackend::rooms(const QDBusMessage &message)
                     alias = QString::fromStdString(val.alt_aliases.front());
             }
 
+            std::lock_guard<std::mutex> childLock(state->m);
             state->model.push_back(nheko::dbus::RoomInfoItem{
               room->roomId(),
               alias,
@@ -69,7 +69,6 @@ NhekoDBusBackend::rooms(const QDBusMessage &message)
               image,
               room->notificationCount()});
 
-            std::lock_guard<std::recursive_mutex> childLock(state->m);
             if (state->model.size() == roomListModelSize) {
                 nhlog::ui()->debug("Sending {} rooms over D-Bus...", state->model.size());
                 auto reply = message.createReply();
