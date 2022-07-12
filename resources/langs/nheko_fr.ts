@@ -441,17 +441,17 @@ Vous pouvez donner une raison d&apos;accepter aux autres :</translation>
     <message>
         <location line="+1"/>
         <source>No name</source>
-        <translation type="unfinished"></translation>
+        <translation>Sans nom</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Topic</source>
-        <translation type="unfinished">Sujet</translation>
+        <translation>Sujet</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Sans sujet</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -461,7 +461,7 @@ Vous pouvez donner une raison d&apos;accepter aux autres :</translation>
     <message>
         <location line="+12"/>
         <source>Public</source>
-        <translation type="unfinished">Public</translation>
+        <translation>Public</translation>
     </message>
     <message>
         <location line="+6"/>
