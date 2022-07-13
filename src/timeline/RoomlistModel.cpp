@@ -330,10 +330,13 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
                                Qt::DisplayRole,
                              });
 
+            if (getRoomById(room_id)->isSpace())
+                return; // no need to update space notifications
+
             int total_unread_msgs = 0;
 
             for (const auto &room : qAsConst(models)) {
-                if (!room.isNull())
+                if (!room.isNull() && !room->isSpace())
                     total_unread_msgs += room->notificationCount();
             }
 

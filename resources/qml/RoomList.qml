@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import "./components"
 import "./dialogs"
 import "./ui"
 import Qt.labs.platform 1.1 as Platform
@@ -294,9 +295,6 @@ Page {
                 anchors.margins: Nheko.paddingMedium
 
                 Avatar {
-                    // In the future we could show an online indicator by setting the userid for the avatar
-                    //userid: Nheko.currentUser.userid
-
                     id: avatar
 
                     enabled: false
@@ -308,33 +306,17 @@ Page {
                     userid: isDirect ? directChatOtherUserId : ""
                     roomid: roomId
 
-                    Rectangle {
+                    NotificationBubble {
                         id: collapsedNotificationBubble
 
+                        notificationCount: roomItem.notificationCount
+                        hasLoudNotification: roomItem.hasLoudNotification
+                        bubbleBackgroundColor: roomItem.bubbleBackground
+                        bubbleTextColor: roomItem.bubbleText
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
                         anchors.margins: -Nheko.paddingSmall
-                        visible: collapsed && notificationCount > 0
-                        enabled: false
-                        Layout.alignment: Qt.AlignRight
-                        height: fontMetrics.averageCharacterWidth * 3
-                        width: Math.max(collapsedBubbleText.width, height)
-                        radius: height / 2
-                        color: hasLoudNotification ? Nheko.theme.red : roomItem.bubbleBackground
-
-                        Label {
-                            id: collapsedBubbleText
-
-                            anchors.centerIn: parent
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            width: Math.max(implicitWidth + Nheko.paddingMedium, parent.height)
-                            font.bold: true
-                            font.pixelSize: fontMetrics.font.pixelSize * 0.8
-                            color: hasLoudNotification ? "white" : roomItem.bubbleText
-                            text: notificationCount > 9999 ? "9999+" : notificationCount
-                        }
-
+                        mayBeVisible: collapsed && (isSpace ? Settings.spaceNotifications : true)
                     }
 
                 }
@@ -351,7 +333,24 @@ Page {
                     height: avatar.height
                     spacing: Nheko.paddingSmall
 
+                    NotificationBubble {
+                        id: notificationBubble
+
+                        parent: isSpace ? titleRow : subtextRow
+                        notificationCount: roomItem.notificationCount
+                        hasLoudNotification: roomItem.hasLoudNotification
+                        bubbleBackgroundColor: roomItem.bubbleBackground
+                        bubbleTextColor: roomItem.bubbleText
+                        Layout.alignment: Qt.AlignRight
+                        Layout.leftMargin: Nheko.paddingSmall
+                        Layout.preferredWidth: implicitWidth
+                        Layout.preferredHeight: implicitHeight
+                        mayBeVisible: !collapsed && (isSpace ? Settings.spaceNotifications : true)
+                    }
+
                     RowLayout {
+                        id: titleRow
+
                         Layout.alignment: Qt.AlignTop
                         Layout.fillWidth: true
                         spacing: Nheko.paddingSmall
@@ -380,6 +379,8 @@ Page {
                     }
 
                     RowLayout {
+                        id: subtextRow
+
                         Layout.fillWidth: true
                         spacing: 0
                         visible: !isSpace
@@ -393,40 +394,6 @@ Page {
                             fullText: lastMessage
                             textFormat: Text.RichText
                             Layout.fillWidth: true
-                        }
-
-                        Rectangle {
-                            id: notificationBubble
-
-                            visible: notificationCount > 0
-                            Layout.alignment: Qt.AlignRight
-                            Layout.leftMargin: Nheko.paddingSmall
-                            height: notificationBubbleText.height + Nheko.paddingMedium
-                            Layout.preferredWidth: Math.max(notificationBubbleText.width, height)
-                            radius: height / 2
-                            color: hasLoudNotification ? Nheko.theme.red : roomItem.bubbleBackground
-                            ToolTip.text: notificationCount
-                            ToolTip.delay: Nheko.tooltipDelay
-                            ToolTip.visible: notificationBubbleHover.hovered && (notificationCount > 9999)
-
-                            Label {
-                                id: notificationBubbleText
-
-                                anchors.centerIn: parent
-                                horizontalAlignment: Text.AlignHCenter
-                                verticalAlignment: Text.AlignVCenter
-                                width: Math.max(implicitWidth + Nheko.paddingMedium, parent.height)
-                                font.bold: true
-                                font.pixelSize: fontMetrics.font.pixelSize * 0.8
-                                color: hasLoudNotification ? "white" : roomItem.bubbleText
-                                text: notificationCount > 9999 ? "9999+" : notificationCount
-
-                                HoverHandler {
-                                    id: notificationBubbleHover
-                                }
-
-                            }
-
                         }
 
                     }

@@ -88,7 +88,8 @@ UserSettings::load(std::optional<QString> profile)
     openImageExternal_ = settings.value(QStringLiteral("user/open_image_external"), false).toBool();
     openVideoExternal_ = settings.value(QStringLiteral("user/open_video_external"), false).toBool();
     decryptSidebar_    = settings.value(QStringLiteral("user/decrypt_sidebar"), true).toBool();
-    privacyScreen_     = settings.value(QStringLiteral("user/privacy_screen"), false).toBool();
+    spaceNotifications_ = settings.value(QStringLiteral("user/space_notifications"), true).toBool();
+    privacyScreen_      = settings.value(QStringLiteral("user/privacy_screen"), false).toBool();
     privacyScreenTimeout_ =
       settings.value(QStringLiteral("user/privacy_screen_timeout"), 0).toInt();
     exposeDBusApi_ = settings.value(QStringLiteral("user/expose_dbus_api"), false).toBool();
@@ -132,7 +133,8 @@ UserSettings::load(std::optional<QString> profile)
     userId_        = settings.value(prefix + "auth/user_id", "").toString();
     deviceId_      = settings.value(prefix + "auth/device_id", "").toString();
     hiddenTags_    = settings.value(prefix + "user/hidden_tags", QStringList{}).toStringList();
-    hiddenPins_    = settings.value(prefix + "user/hidden_pins", QStringList{}).toStringList();
+    mutedTags_  = settings.value(prefix + "user/muted_tags", QStringList{"global"}).toStringList();
+    hiddenPins_ = settings.value(prefix + "user/hidden_pins", QStringList{}).toStringList();
     hiddenWidgets_ = settings.value(prefix + "user/hidden_widgets", QStringList{}).toStringList();
     recentReactions_ =
       settings.value(prefix + "user/recent_reactions", QStringList{}).toStringList();
@@ -220,14 +222,21 @@ UserSettings::setGroupView(bool state)
 }
 
 void
-UserSettings::setHiddenTags(QStringList hiddenTags)
+UserSettings::setHiddenTags(const QStringList &hiddenTags)
 {
     hiddenTags_ = hiddenTags;
     save();
 }
 
 void
-UserSettings::setHiddenPins(QStringList hiddenTags)
+UserSettings::setMutedTags(const QStringList &mutedTags)
+{
+    mutedTags_ = mutedTags;
+    save();
+}
+
+void
+UserSettings::setHiddenPins(const QStringList &hiddenTags)
 {
     hiddenPins_ = hiddenTags;
     save();
@@ -235,7 +244,7 @@ UserSettings::setHiddenPins(QStringList hiddenTags)
 }
 
 void
-UserSettings::setHiddenWidgets(QStringList hiddenTags)
+UserSettings::setHiddenWidgets(const QStringList &hiddenTags)
 {
     hiddenWidgets_ = hiddenTags;
     save();
@@ -413,6 +422,16 @@ UserSettings::setDecryptSidebar(bool state)
         return;
     decryptSidebar_ = state;
     emit decryptSidebarChanged(state);
+    save();
+}
+
+void
+UserSettings::setSpaceNotifications(bool state)
+{
+    if (state == spaceNotifications_)
+        return;
+    spaceNotifications_ = state;
+    emit spaceNotificationsChanged(state);
     save();
 }
 
@@ -777,6 +796,7 @@ UserSettings::save()
 
     settings.setValue(QStringLiteral("avatar_circles"), avatarCircles_);
     settings.setValue(QStringLiteral("decrypt_sidebar"), decryptSidebar_);
+    settings.setValue(QStringLiteral("space_notifications"), spaceNotifications_);
     settings.setValue(QStringLiteral("privacy_screen"), privacyScreen_);
     settings.setValue(QStringLiteral("privacy_screen_timeout"), privacyScreenTimeout_);
     settings.setValue(QStringLiteral("mobile_mode"), mobileMode_);
@@ -830,6 +850,7 @@ UserSettings::save()
                       onlyShareKeysWithVerifiedUsers_);
     settings.setValue(prefix + "user/online_key_backup", useOnlineKeyBackup_);
     settings.setValue(prefix + "user/hidden_tags", hiddenTags_);
+    settings.setValue(prefix + "user/muted_tags", mutedTags_);
     settings.setValue(prefix + "user/hidden_pins", hiddenPins_);
     settings.setValue(prefix + "user/hidden_widgets", hiddenWidgets_);
     settings.setValue(prefix + "user/recent_reactions", recentReactions_);
@@ -923,6 +944,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Open videos with external program");
         case DecryptSidebar:
             return tr("Decrypt messages in sidebar");
+        case SpaceNotifications:
+            return tr("Show message counts for spaces");
         case PrivacyScreen:
             return tr("Privacy Screen");
         case PrivacyScreenTimeout:
@@ -1053,6 +1076,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->openVideoExternal();
         case DecryptSidebar:
             return i->decryptSidebar();
+        case SpaceNotifications:
+            return i->spaceNotifications();
         case PrivacyScreen:
             return i->privacyScreen();
         case PrivacyScreenTimeout:
@@ -1208,6 +1233,9 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case DecryptSidebar:
             return tr("Decrypt the messages shown in the sidebar.\nOnly affects messages in "
                       "encrypted chats.");
+        case SpaceNotifications:
+            return tr(
+              "Choose where to show the total number of notifications contained within a space.");
         case PrivacyScreen:
             return tr("When the window loses focus, the timeline will\nbe blurred.");
         case MobileMode:
@@ -1317,6 +1345,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case ShareKeysWithTrustedUsers:
         case UseOnlineKeyBackup:
         case ExposeDBusApi:
+        case SpaceNotifications:
             return Toggle;
         case Profile:
         case UserId:
@@ -1409,7 +1438,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return fontDb.families();
         case EmojiFont:
             return fontDb.families(QFontDatabase::WritingSystem::Symbol);
-        case Ringtone:
+        case Ringtone: {
             QStringList l{
               QStringLiteral("Mute"),
               QStringLiteral("Default"),
@@ -1418,6 +1447,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             if (!l.contains(i->ringtone()))
                 l.push_back(i->ringtone());
             return l;
+        }
         }
     } else if (role == Good) {
         switch (index.row()) {
@@ -1624,6 +1654,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 return false;
         }
             return i->decryptSidebar();
+        case SpaceNotifications: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setSpaceNotifications(value.toBool());
+                return true;
+            } else
+                return false;
+        }
         case PrivacyScreen: {
             if (value.userType() == QMetaType::Bool) {
                 i->setPrivacyScreen(value.toBool());
@@ -1936,7 +1973,9 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     connect(s.get(), &UserSettings::decryptSidebarChanged, this, [this]() {
         emit dataChanged(index(DecryptSidebar), index(DecryptSidebar), {Value});
     });
-
+    connect(s.get(), &UserSettings::spaceNotificationsChanged, this, [this] {
+        emit dataChanged(index(SpaceNotifications), index(SpaceNotifications), {Value});
+    });
     connect(s.get(), &UserSettings::trayChanged, this, [this]() {
         emit dataChanged(index(Tray), index(Tray), {Value});
         emit dataChanged(index(StartInTray), index(StartInTray), {Enabled});

@@ -48,13 +48,17 @@ public:
         Parent,
         Depth,
         Id,
+        UnreadMessages,
+        HasLoudNotification,
+        Muted,
+        IsDirect,
     };
 
     struct FlatTree
     {
         struct Elem
         {
-            QString name;
+            QString id;
             int depth      = 0;
             bool collapsed = false;
         };
@@ -65,7 +69,7 @@ public:
         int indexOf(const QString &s) const
         {
             for (int i = 0; i < size(); i++)
-                if (tree[i].name == s)
+                if (tree[i].id == s)
                     return i;
             return -1;
         }
@@ -121,7 +125,7 @@ public slots:
     void sync(const mtx::responses::Sync &sync_);
     void clear();
     QString currentTagId() const { return currentTagId_; }
-    void setCurrentTagId(QString tagId);
+    void setCurrentTagId(const QString &tagId);
     void resetCurrentTagId()
     {
         currentTagId_.clear();
@@ -138,6 +142,7 @@ public slots:
         return tagsWD;
     }
     void toggleTagId(QString tagId);
+    void toggleTagMute(QString tagId);
     FilteredCommunitiesModel *filtered() { return new FilteredCommunitiesModel(this, this); }
 
 signals:
@@ -149,9 +154,11 @@ signals:
 private:
     QStringList tags_;
     QString currentTagId_;
-    QStringList hiddentTagIds_;
+    QStringList hiddenTagIds_;
+    QStringList mutedTagIds_;
     FlatTree spaceOrder_;
     std::map<QString, RoomInfo> spaces_;
+    std::vector<std::string> directMessages_;
 
     friend class FilteredCommunitiesModel;
 };
